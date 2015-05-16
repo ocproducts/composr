@@ -71,7 +71,7 @@ default/images/*/*__*.jpeg
 /uploads/*/*
 !/uploads/*/index.html
 !/uploads/*/.htaccess
-!/uploads/website_specific/*.csv
+!/uploads/website_specific/example.csv
 !/uploads/website_specific/*.sql
 !/uploads/website_specific/compo.sr
 /uploads/website_specific/compo.sr/private.pem

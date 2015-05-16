@@ -1,13 +1,13 @@
 # Config files
-config_inc.php
-custom_constants_inc.php
-custom_functions_inc.php
-custom_relationships_inc.php
-custom_strings_inc.php
-mantis_offline.php
+#config_inc.php
+#custom_constants_inc.php
+#custom_functions_inc.php
+#custom_relationships_inc.php
+#custom_strings_inc.php
+#mantis_offline.php
 
 # Files to be deprecated in v1.3
-custom_constant_inc.php
+#custom_constant_inc.php
 
 # Docbook builds
 docbook/*/*/builddate
@@ -27,8 +27,8 @@ docbook/*/*/install
 .settings
 
 # IIS7 
-web.config
+#web.config
 
 #libraries
-library/jpgraph
-library/FirePHPCore
+#library/jpgraph
+#library/FirePHPCore
