@@ -48,6 +48,10 @@ function init__crypt()
          */
         function password_hash($password, $algo, $options)
         {
+            if (function_exists('set_time_limit')) {
+                @set_time_limit(300);
+            }
+
             if (!is_integer($algo)) {
                 trigger_error("password_hash() expects parameter 2 to be long, " . gettype($algo) . " given", E_USER_WARNING);
                 return false;
@@ -219,6 +223,10 @@ function init__crypt()
  */
 function ratchet_hash($password, $salt, $legacy_style = 0)
 {
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(300);
+    }
+
     if (function_exists('password_hash')) {
         return password_hash($salt . md5($password), PASSWORD_BCRYPT, array('cost' => intval(get_option('crypt_ratchet'))));
     }
@@ -241,6 +249,10 @@ function ratchet_hash($password, $salt, $legacy_style = 0)
  */
 function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style = 0)
 {
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(300);
+    }
+
     if ((function_exists('password_verify')) && (preg_match('#^\w+$#', $pass_hash_salted) == 0)) {
         return password_verify($salt . md5($password), $pass_hash_salted);
     }
@@ -259,6 +271,10 @@ function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style 
  */
 function produce_salt()
 {
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(300);
+    }
+
     // md5 used in all the below so that we get nice ASCII characters
 
     if ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
@@ -305,6 +321,10 @@ function get_rand_password()
  */
 function get_secure_random_number()
 {
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(300);
+    }
+
     // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.0/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
     if ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
         $code = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
@@ -328,6 +348,10 @@ function get_secure_random_number()
  */
 function check_master_password($password_given)
 {
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(300);
+    }
+
     if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
         $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
         unset($GLOBALS['SITE_INFO']['admin_password']);
