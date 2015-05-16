@@ -1628,15 +1628,14 @@ function javascript_enforce($j, $theme = null, $minify = null)
     }
 
     if (($support_smart_decaching) || (!$is_cached)) {
-        $_j = strtoupper($j);
-        $found = find_template_place($_j, '', $theme, '.js', 'javascript');
+        $found = find_template_place($j, '', $theme, '.js', 'javascript');
         if ($found === null) {
             return '';
         }
         $theme = $found[0];
-        $fullpath = get_custom_file_base() . '/themes/' . $theme . $found[1] . $_j . $found[2];
+        $fullpath = get_custom_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         if (!is_file($fullpath)) {
-            $fullpath = get_file_base() . '/themes/' . $theme . $found[1] . $_j . $found[2];
+            $fullpath = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         }
 
         if (($j == 'javascript') && (!isset($SITE_INFO['dependency__' . $fullpath]))) {
