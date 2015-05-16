@@ -70,7 +70,7 @@ class Hook_config_crypt_ratchet
             } while (($time_dif < $time_target) && ($cost <= 31));
             $cost--;
         } else {
-            $cost = 10;
+            $cost = 3;
         }
 
         return strval($cost);
