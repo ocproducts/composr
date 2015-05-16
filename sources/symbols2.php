@@ -191,7 +191,7 @@ function ecv2_VALUE_OPTION($lang, $escaped, $param)
     if (isset($param[0])) {
         $value = function_exists('get_value') ? get_value($param[0]) : '';
         if (is_null($value)) {
-            $value = function_exists('get_value') ? get_value($param[0], true) : '';
+            $value = function_exists('get_value') ? get_value($param[0], null, true) : '';
             if (is_null($value)) {
                 $value = isset($param[1]) ? $param[1] : '';
                 if (($param[0] == 'textmate') && ((running_locally()) && (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') !== false))) {

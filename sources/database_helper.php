@@ -242,7 +242,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             if (is_null($db_type)) {
                 $db_type = 'SHORT_TEXT';
                 if (running_script('install')) {
-                    fatal_exit('It seems we are creating an index on a table that is not yet created.');
+                    fatal_exit('It seems we are creating an index on a table & field combo that is not yet created.');
                 }
             }
             if (substr($db_type, 0, 1) != '*') {

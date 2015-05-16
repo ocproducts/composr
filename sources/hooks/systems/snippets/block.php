@@ -67,6 +67,13 @@ class Hook_snippet_block
             $map['raw'] = '1';
         }
 
+        // Cleanup dependencies that will already have been handled
+        global $CSSS, $JAVASCRIPTS;
+        unset($CSSS['global']);
+        unset($CSSS['no_cache']);
+        unset($JAVASCRIPTS['global']);
+        unset($JAVASCRIPTS['staff']);
+
         // And, go
         $out = new Tempcode();
         $out->attach(symbol_tempcode('CSS_TEMPCODE'));

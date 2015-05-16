@@ -463,22 +463,12 @@ function comcode_convert_script()
                 global $CSSS;
                 unset($CSSS['global']);
                 unset($CSSS['no_cache']);
-                foreach (array_keys($CSSS) as $css) {
-                    if (substr($css, 0, 8) == 'merged__') {
-                        unset($CSSS[$css]);
-                    }
-                }
                 $out .= static_evaluate_tempcode(css_tempcode());
             }
             if (get_param_integer('javascript', 0) == 1) {
                 global $JAVASCRIPTS;
                 unset($JAVASCRIPTS['global']);
                 unset($JAVASCRIPTS['staff']);
-                foreach (array_keys($JAVASCRIPTS) as $js) {
-                    if (substr(js, 0, 8) == 'merged__') {
-                        unset($JAVASCRIPTS[js]);
-                    }
-                }
                 $out .= static_evaluate_tempcode(javascript_tempcode());
             }
         }

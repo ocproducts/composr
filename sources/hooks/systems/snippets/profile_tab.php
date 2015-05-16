@@ -52,6 +52,13 @@ class Hook_snippet_profile_tab
             // We need to minimise the dependency stuff that comes out, we don't need any default values
             push_output_state(false, true);
 
+            // Cleanup dependencies that will already have been handled
+            global $CSSS, $JAVASCRIPTS;
+            unset($CSSS['global']);
+            unset($CSSS['no_cache']);
+            unset($JAVASCRIPTS['global']);
+            unset($JAVASCRIPTS['staff']);
+
             // And, go
             $ret = $ob->render_tab($member_id_of, $member_id_viewing);
             $out = new Tempcode();

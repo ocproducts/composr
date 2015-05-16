@@ -733,6 +733,37 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->add_table_field('cache_on', 'special_cache_flags', 'INTEGER');
 
             $GLOBALS['SITE_DB']->add_table_field('comcode_pages', 'p_order', 'INTEGER');
+
+            $GLOBALS['SITE_DB']->create_table('seo_meta_keywords', array(
+                'id' => '*AUTO',
+                'meta_for_type' => 'ID_TEXT',
+                'meta_for_id' => 'ID_TEXT',
+                'meta_keyword' => 'SHORT_TRANS',
+            ));
+
+            $start = 0;
+            $max = 300;
+            do {
+                $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_for_type', 'meta_for_id', 'meta_keywords'), null, '', $max, $start);
+                foreach ($keywords as $_keyword) {
+                    $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));
+                    foreach ($_keywords as $keyword) {
+                        if (trim($keyword) == '') {
+                            continue;
+                        }
+
+                        $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', array(
+                            'meta_for_type' => $_keyword['meta_for_type'],
+                            'meta_for_id' => $_keyword['meta_for_id'],
+                        ) + insert_lang('meta_keyword', $keyword, 2));
+                    }
+                    delete_lang($_keyword['meta_keywords']);
+                }
+                $start += $max;
+            }
+            while (count($keywords) > 0);
+
+            $GLOBALS['SITE_DB']->delete_table_field('seo_meta', 'meta_keywords');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {
@@ -820,37 +851,6 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_index('cached_comcode_pages', '#page_search__combined', array('cc_page_title', 'string_index'));
-
-            $GLOBALS['SITE_DB']->create_table('seo_meta_keywords', array(
-                'id' => '*AUTO',
-                'meta_for_type' => 'ID_TEXT',
-                'meta_for_id' => 'ID_TEXT',
-                'meta_keyword' => 'SHORT_TRANS',
-            ));
-
-            $start = 0;
-            $max = 300;
-            do {
-                $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_for_type', 'meta_for_id', 'meta_keywords'), null, '', $max, $start);
-                foreach ($keywords as $_keyword) {
-                    $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));
-                    foreach ($_keywords as $keyword) {
-                        if (trim($keyword) == '') {
-                            continue;
-                        }
-
-                        $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', array(
-                            'meta_for_type' => $_keyword['meta_for_type'],
-                            'meta_for_id' => $_keyword['meta_for_id'],
-                        ) + insert_lang('meta_keyword', $keyword, 2));
-                    }
-                    delete_lang($_keyword['meta_keywords']);
-                }
-                $start += $max;
-            }
-            while (count($keywords) > 0);
-
-            $GLOBALS['SITE_DB']->delete_table_field('seo_meta', 'meta_keywords');
         }
     }
 

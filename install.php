@@ -2003,7 +2003,7 @@ function step_5_core_2()
         'meta_keyword' => 'SHORT_TRANS',
     ));
     $GLOBALS['SITE_DB']->create_index('seo_meta_keywords', 'keywords_alt_key', array('meta_for_type', 'meta_for_id'));
-    $GLOBALS['SITE_DB']->create_index('seo_meta_keywords', 'ftjoin_dmeta_keywords', array('meta_keywords'));
+    $GLOBALS['SITE_DB']->create_index('seo_meta_keywords', 'ftjoin_dmeta_keywords', array('meta_keyword'));
 
     return do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '685ebf53cf9fc3f728168fed2f01a5a1', 'SOMETHING' => do_lang_tempcode('SECONDARY_CORE_INSTALLED')));
 }
@@ -2119,7 +2119,7 @@ function step_7()
     require_code('addons2');
     $addons = find_all_hooks('systems', 'addon_registry');
     foreach ($addons as $addon => $place) {
-        //if ($place=='sources_custom') continue;  Now we are actually installing custom addons too
+        //if ($place == 'sources_custom') continue;  Now we are actually installing custom addons too
 
         reinstall_addon_soft($addon);
         $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ag3', 'SOMETHING' => do_lang_tempcode('INSTALL_ADDON', escape_html($addon)))));
