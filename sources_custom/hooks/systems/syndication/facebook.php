@@ -77,7 +77,7 @@ class Hook_syndication_facebook
         if (!is_null($member_id)) {
             $save_to .= '__' . strval($member_id);
         }
-        return get_long_value($save_to) !== null;
+        return get_value($save_to, null, true) !== null;
     }
 
     public function auth_set($member_id, $oauth_url)
@@ -157,9 +157,9 @@ class Hook_syndication_facebook
     public function syndicate_user_activity($member_id, $row)
     {
         if (($this->is_available()) && ($this->auth_is_set($member_id))) {
-            $page_syndicate = (get_option('facebook_member_syndicate_to_page') == '1' && get_option('facebook_uid') != '' && get_long_value('facebook_syndicate_to_page__' . strval($member_id)) === '1');
+            $page_syndicate = (get_option('facebook_member_syndicate_to_page') == '1' && get_option('facebook_uid') != '' && get_value('facebook_syndicate_to_page__' . strval($member_id), null, true) === '1');
             return $this->_send(
-                get_long_value('facebook_oauth_token__' . strval($member_id)),
+                get_value('facebook_oauth_token__' . strval($member_id), null, true),
                 $row,
                 $page_syndicate ? get_option('facebook_uid') : 'me',
                 $member_id,

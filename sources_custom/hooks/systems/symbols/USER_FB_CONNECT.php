@@ -29,7 +29,7 @@ class Hook_symbol_USER_FB_CONNECT
         } else {
             // Okay, look to see if they have set up syndication permissions instead, which is the other way around: stores authorisation, but not Facebook ID...
 
-            $token = get_long_value('facebook_oauth_token__' . strval($member_id));
+            $token = get_value('facebook_oauth_token__' . strval($member_id), null, true);
             if (($token === null) || ($token == '')) {
                 return '';
             }

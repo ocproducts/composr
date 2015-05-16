@@ -26,7 +26,7 @@ class Hook_syndication_twitter
         if (!is_null($member_id)) {
             $save_to .= '__' . strval($member_id);
         }
-        return get_long_value($save_to) !== null;
+        return get_value($save_to, null, true) !== null;
     }
 
     public function auth_set($member_id, $oauth_url)
@@ -84,7 +84,7 @@ class Hook_syndication_twitter
     {
         if (($this->is_available()) && ($this->auth_is_set($member_id))) {
             return $this->_send(
-                get_long_value('twitter_oauth_token__' . strval($member_id)), get_long_value('twitter_oauth_token_secret__' . strval($member_id)),
+                get_value('twitter_oauth_token__' . strval($member_id), null, true), get_value('twitter_oauth_token_secret__' . strval($member_id), null, true),
                 $row
             );
         }
