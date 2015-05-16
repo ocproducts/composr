@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+$changed=shell_exec('git diff --cached --name-only');
+
+if (strpos($changed,'data_custom/execute_temp.php')!==false && is_file('data_custom/execute_temp.php'))
+{
+	$data=file_get_contents('data_custom/execute_temp.php');
+	if (preg_match('#function execute_temp\(\)\n\{\n\}#',$data)==0)
+	{
+		echo "Clear out data_custom/execute_temp.php first, to reduce chance of noise/privacy-issues\n";
+		exit(1);
+	}
+}
+
+exit(0);
+

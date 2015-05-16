@@ -1,0 +1,60 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.login_block_cookies {
+	text-align: {!en_right};
+}
+
+.personal_stats_avatar {
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.personal_stats_avatar img {
+	max-width: 100px;
+}
+
+/* Top block */
+
+#top_personal_stats_button {
+	width: 30px;
+	height: 23px;
+	display: inline-block;
+}
+.top_buttons #top_personal_stats_button img {
+	padding: 0 5px; /* This is needed for spacing, but also to ensure a consistent width compared to the notification/inbox buttons */
+	width: 20px;
+	vertical-align: middle;
+}
+
+.global_button_ref_point .personal_stats_avatar {
+	float: right;
+}
+.global_button_ref_point .personal_stats_avatar img {
+	max-width: 60px;
+}
+
+.global_button_ref_point .personal_stats_avatar + h3 {
+	margin-right: 100px;
+	margin-bottom: 0.5em;
+}
+
+.global_button_ref_point ul.compact_list {
+	font-size: 0.95em;
+}
+
+.global_button_ref_point ul.compact_list li {
+	padding: 0.1em 0;
+}
+
+.global_button_ref_point ul.compact_list li .field_name {
+	font-weight: normal;
+}
+
+/* Side block */
+
+.login_block_username {
+	margin-bottom: 1px;
+}

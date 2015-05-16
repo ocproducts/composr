@@ -1,0 +1,55 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.carousel {
+	overflow: hidden;
+	white-space: nowrap;
+	position: relative;
+}
+
+.carousel .img_thumb {
+	max-width: 140px;
+}
+
+.carousel .move_left, .carousel .move_right {
+	min-height: 16px;
+	width: 17px;
+}
+
+.carousel .move_left {
+	margin-right: 20px;
+	padding-right: 5px;
+	float: left;
+	background: url('{$IMG;,carousel/button_left}') left center no-repeat;
+	border-right: 1px dotted {$GET,standard_border};
+}
+
+.carousel .move_left:hover {
+	background-image: url('{$IMG;,carousel/button_left_hover}');
+}
+
+.carousel .move_right {
+	margin-left: 20px;
+	padding-left: 5px;
+	float: right;
+	background: url('{$IMG;,carousel/button_right}') right center no-repeat;
+	border-left: 1px dotted {$GET,standard_border};
+}
+
+.carousel .move_right:hover {
+	background-image: url('{$IMG;,carousel/button_right_hover}');
+}
+
+.carousel .main {
+	overflow: hidden;
+}
+
+.carousel .box, .carousel_temp>* {
+	display: inline-block;
+	max-width: 25em;
+	white-space: normal;
+	vertical-align: top;
+	padding: 0 0.3em;
+}

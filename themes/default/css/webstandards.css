@@ -1,0 +1,38 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/*
+=========================
+==Markup/Code checking===
+=========================
+*/
+
+.webstandards_div {
+	margin-top: 1em;
+	overflow: auto
+}
+
+.webstandards_error {
+	font-weight: bold;
+	font-style: italic;
+	color: {$GET,red_highlight_text};
+}
+
+.webstandards_red_alert {
+	color: {$GET,red_highlight_text};
+}
+
+.webstandards_error_line {
+	font-style: italic;
+	color: {$GET,red_highlight_text};
+}
+
+.webstandards_tag {
+	font-weight: bold;
+}
+
+.webstandards_attribute {
+	font-style: italic;
+}

@@ -1,0 +1,166 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Legal and social responsibilities[/title]
+
+If you are running a website, in particular a large or corporate website, there are important legal and social issues that need to be understood, and procedures or rules need to be put in place.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Rules[/title]
+
+[media width="150" description="The default Composr 'rules' Comcode page if the Setup Wizard has not been run" float="right"]data_custom/images/docs/legal_rules.png[/media]
+It is important to develop a rules page that is consistent with the approach you will take to running your website. You can use rules to lay out guidelines for member behaviour and rationalise punitive action, and to an extent they can provide a legal defence as they demonstrate that you are trying to avoid illegal activities from your website.
+
+It is inevitable that some members will break the rules, maliciously or accidentally, but they are still a powerful tool. A good rules page will list offences of a balanced specificity, along with approximate associated punishments. It may also have a legal element, referencing law, and placing legal responsibility on the user.
+
+Composr provides a number of default rules pages that can be chosen using the Setup Wizard. The rules page is linked into your menus, and is displayed for enforced agreement when a member joins the site. This page can be edited like any Composr Comcode page.
+
+[title="2"]Legal[/title]
+
+[media width="150" description="The default Composr 'legal' Comcode page" float="right"]data_custom/images/docs/legal_page.png[/media]
+Please note that legislature varies globally, so the information here may not all be applicable; it is biased towards UK law (where ocProducts is based and registered). In addition, ocProducts does not accept any responsibility for you or your site's compliance (or non-compliance!) with any laws: the information here is just an aid, and you may wish to consult a legal representative if you feel there may be complicated legal issues associated with your website.
+
+The sub-sections of this section briefly cover the main legal issues you are likely to need to consider.
+
+[title="3"]Privacy[/title]
+
+If you are a commercial entity, or if you hold sensitive personal data, you are more likely to be affected by privacy laws than others.
+
+There is a default 'privacy' page (to hold a [concept]privacy policy[/concept]), which should be edited to correctly detail all the personal data that is collected into your systems, either by request, or by automated means. The page should say every use for this data, especially when the data is available to people outside your organisation, or used actively within your organisation in a non-administrative sense (for marketing, for instance).
+
+Composr holds the following data:
+ - member profiles, including custom profile fields. Profiles are likely visible to any visitor to the site (depending on your zone access configuration), and you can define whether custom profile fields are visible
+ - the 'online status' of all members. This is publicly visible
+ - access statistics that allow you to see where-ever users have been on your site. This is not publicly visible
+ - logs of user interactivity with the site. This is mostly not publicly visible, except for submitted and edited content
+ - point transactions. The point 'giver' may define whether they are anonymous from the public, but they will not be from the staff
+ - security logs for suspected hack-attempts. This is not publicly visible
+ - Private Topics. These are only visible between sender and receiver, and staff (when intentionally viewed)
+ - personal posts. These are only visible between sender and receiver, and staff (may be viewed unintentionally)
+
+It is not necessary to state that submitted-for-publication content will be visible as the user will know this is not personal data at the point of submitting it.
+
+Depending on your jurisdiction and situation, you may need to register with a 'data commissioner' for holding personal data.
+
+You may also wish to include your policy with respect to deletion of publicly submitted content upon request by the submitter or another party.
+
+[title="3"]Accessibility[/title]
+
+It is arguable that under discrimination laws, your website must satisfy the web-accessibility-initiative ([concept]WAI[/concept]), web content accessibility guidelines ([concept]WCAG[/concept]). Fortunately Composr complies to the highest level of accessibility under these guidelines (for [b]all[/b] interfaces: user and administrator), which is rare, as the vast majority of web applications are not close to complying with the lowest level of accessibility.
+
+As a site-maintainer however, there are accessibility guidelines that apply to content that ocProducts can not arrange-for on your behalf. Also, if you modify the default Composr templates, it is very easy to degrade the inbuilt accessibility.
+
+For more information, see our accessibility tutorial.
+
+[title="3"]Sales[/title]
+
+If you use your website to drive 'electronic' sales, then it is likely there is legislature regulating your activities. In the UK, these are known as the 'distance selling regulations' and are essentially involved in making sure that adequate provisions are put in place to make up for the lack of personal communication that is inherent in a brick&mortar store.
+
+Your website would, of course, also be party to legislation on all forms of business, including issues such as tax. International VAT/sales-tax is a particularly complex and situational-dependant topic, so I will not make any attempt to explain it here.
+
+[title="3"]Liability[/title]
+
+Unless you disclaim liability, you may be liable for problems caused directly or indirectly by you or your website. For example, if you allow users to get downloads into your database without having them screened for viruses, it is possible someone could try and hold you legally accountable if they were infected by a virus from software from your download database, unless you made it explicit that you disclaim responsibility for this.
+
+Please note that it is not usually possible to disclaim liability for everything that might affect you.
+
+[title="3"]Illegal content[/title]
+
+As you need to avoid liability (unless you want it) for damage to 'persons', you also need to avoid getting into a position where you are held legally liable for the hosting of illegal content. It is unlikely you can fully disclaim responsibility for content on your site: although many 'warez' and 'file sharing' websites (perhaps, laughably) claim a defence like this, it is very shaky legal ground, and you should not let yourself get into such a position.
+Perhaps the best way to tackle this problem is a three-pronged approach:
+ - Perform cursory checks to make sure submitted data is not illegal
+ - Add member rules that prohibit uploading of illegal content
+ - Disclaim liability for such content (whilst this would likely not work if your website became littered with illegal content, it is perhaps more defensible for exceptions)
+Of course there is a big difference between highly criminal content (such as terrorist advice, if it is illegal in your jurisdiction) and minor civil-law-breaking content, such as unintended copyright infringement.
+
+You may wish to add to your legal page that you disclaim liability for mis-use of registered trademarks, and that they remain the property of their respective owners.
+
+[title="3"]Discussion of illegal activities[/title]
+
+The advice for illegal content generally applies to the discussion of illegal activities also. There is, however, a fine line between discussing the merits of illegal activity and the incitement of it: this is very likely to be an issue on any active community, and you will need to consider how you will deal with it.
+
+[title="3"]Computer mis-use[/title]
+
+It is likely that you will experience attempts to hack into your website by malicious users and 'bots' which automatically probe websites for vulnerabilities. Fortunately Composr is extremely sophisticated when it comes to 'hack attack' detection, and will block, and log, these attempts. Composr provides a two-layer security approach: it is engineered to use secure practices, and proactively detects when its interfaces are being abused.
+
+However, even with all this, there are two-hundred and sixty-thousand (at the time of writing) lines of code that could potentially contain vulnerabilities. You therefore should keep backups, and if you run a high profile website, know how to attempt to track down miscreants and subject them to legal action.
+
+If a vulnerability is found, ocProducts [page="site:free_tickets"]would like to know about it[/page], and will deal with it promptly and responsibly, for the sake of all our users.
+
+It is also possible that miscreants will attempt to use your website as a vehicle for mischief directed at others. There are not many ways to do this, and we know of no ways to cause serious abuses, but you should keep it in mind that it may be possible, and consider adding a disclaimer into your legal page for it.
+
+[title="2"]Social[/title]
+
+The sub-sections of this section briefly cover the main social issues you are likely to need to consider. By running a website with community features, such as a forum, or chat-rooms, you are in essence making yourself or your team, community leaders, and therefore you hold the responsibilities that come with this.
+
+[title="3"]Offensive content and moderation[/title]
+
+It is unfortunate but inevitable that in most social climates, people will have strongly opposing views about what is appropriate behaviour. I have personal experience moderating forums, and know people may be explosively passionate about their views, and highly accusative of those who do not carry them.
+
+Most opposing views are political in some sense, and usually related to the divide between traditionalism/conservatism and liberalism.
+
+You need to make three main decisions:
+ - Are you going to reach a balance between extremes (if so, make some decisions on where the balance lies), or moderate against your-own or someone-else's personal/corporate views?
+ - Are you going to define a level of what is 'appropriate' for your community, not based on personal view, but merely what you think your community should be allowed to discuss?
+ - Are you going to limit discussion of topics related purely on relevance to a central topic?
+These decisions more than anything will mould the feeling of your community and held you set specific rules and policies.
+
+When it comes to moderation, the words 'freedom' and 'offensive' very often get carried around:
+ - if you moderate someone, it is likely they will accuse you of 'removing their freedom' (even though your website is not public property)
+ - if you allow someone to be offensive to others, they will likely accuse you of building a website that is a vehicle to propaganda or an agenda they disagree with
+It is inevitable that you will be '[i]damned if you do and damned if you don't[/i]', so you need to be able to cope fairly with criticism.
+
+[title="3"]Children and young teenagers[/title]
+
+There is a US law, [concept]COPPA[/concept] (Children's Online Privacy Protection Act), that you need to comply with if your (US) website targets children under 13 for membership, or if you know that members of your website are under 13. More information on this law is available here from the COPPA website (see 'see also').
+
+Australia has a similar law that you can use the same system for, COPA. If you are targeting COPA, adjust the [tt]COPPA_MAIL[/tt] language string to reflect this.
+
+If COPPA support is configured in [concept]Conversr[/concept], then when visitors try to join they will be added as non-validated if they are too young, with a notice to send in a COPPA form to you via mail or fax.
+In addition to Composr's COPPA support, you should also add your real-world contact details to your privacy policy, along with thorough details about what custom profile fields may be filled in, how the information is used, how it is disclosed (if at all), and specification of various parent rights (which are listed on the COPPA website).
+
+In order to enable COPPA you need to turn on "COPPA enabled", and configure your fax number and postal address.
+
+Young members (or even older members) are often nieve, as they have less experience of the world and often have lived relatively sheltered lives. Therefore you should actively protect these members from:
+ - inappropriate exposure of materials by other members (such as pornography or other sexual content)
+ - stalkers
+ - paedophiles
+The Private Topic (PT) system (of [concept]Conversr[/concept]) can be a particular hot spot. You need to develop a policy of whether you should moderate the PTs of (certain?) members to avoid issues such as online stalking, and you need to make this available in your privacy policy -- usually this would only be undertaken at the request of the other (unwilling?) participant of the PT.
+
+[title="3"]Freedom of discussion vs 'off-topic'[/title]
+
+You should make a decision upon this:
+ - is it necessary to stick to discussing certain topics in certain places?
+ - or, should members be free to discuss whatever they wish anywhere?
+ - Or, will there be a compromise depending on circumstance and location
+The answer is likely to depend on whether your community is primarily a social community, or whether it exists for some other purpose
+
+[title="3"]Discrimination[/title]
+
+You may wish to consider anti-discrimination clauses in your rules, possibly citing what you areas consider to be discriminatory (such as gender, race, appearance, and sexuality).
+
+[title="3"]Abuse[/title]
+
+You may wish to make rules and policies regarding abuse between members.
+
+[title="3"]Psychologies[/title]
+
+As a community-leader, you should be aware that members of your community may have differing psychologies. It is actually likely that in many large online communities you could have users at extreme ends of the spectrum, and therefore you may wish to have policies in place to monitor such users in order to maintain a healthy balance, and protect the more vulnerable users. With a basic awareness of psychology you may identify issues and be able to help people who may otherwise be isolated (someone very active online may be socially-isolated offline).
+
+[title="3"]Handling feedback[/title]
+
+You should develop a policy about how you handle feedback. This is of particular importance to commercial entities:
+ - will you leave negative feedback visible and possibly have negative views on your very own website?
+ - will you moderate negative feedback and be accused of suppressing the truth?
+ - will you consciously make sure there is no publicly visible outlet for negative feedback on the site, and remove any that is found for being 'off-topic'?
+
+[concepts
+ 1_key="privacy policy"   1_value="A standard term applied to the document that lays out a website's privacy policy; some laws specifically refer to a privacy policy and require a separate document for it"
+ 2_key="COPPA"            2_value="Children's Online Privacy Protection Act; a US law that affects websites that have child members"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
+ - [url="The COPPA website"]http://www.coppa.org/comply.htm[/url]
+ - [page="_SEARCH:tut_do"]Dos and Do-nots of an (Composr) website[/page]
+
+{$SET,tutorial_tags,Advice & Guidance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Guidance on the legal and social issues that webmasters need to understood.}[block]main_tutorial_rating[/block]

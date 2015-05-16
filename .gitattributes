@@ -1,0 +1,57 @@
+# Autodetect most text files
+* text=auto
+
+# Definitively text files 
+*.TXT text
+*.bat text
+*.cms text
+*.config text
+*.crt text
+*.css text
+*.csv text
+*.editfrom text
+*.hdf text
+*.htm text
+*.html text
+*.ini text
+*.java text
+*.js text
+*.log text
+*.php text
+*.plist text
+*.pre text
+*.properties text
+*.sh text
+*.sql text
+*.tpl text
+*.txt text
+*.xml text
+*.xsd text
+
+# Ensure those won't be messed up with
+*.class binary
+*.dat binary
+*.db binary
+*.dll binary
+*.exe binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.jpg binary
+*.swf binary
+*.tar binary
+*.tcp binary
+*.ttf binary
+*.wav binary
+*.zip binary
+*.lcd binary
+*.mp3 binary
+*.mp4 binary
+*.png binary
+*.xap binary
+*.rws binary
+*.multi binary
+*.mf binary
+*.kbd binary
+*.aiml binary
+*.alias binary

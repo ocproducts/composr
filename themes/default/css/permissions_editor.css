@@ -1,0 +1,33 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.privileges input[type="button"] {
+	width: 3em;
+}
+
+.privileges td {
+	text-align: {!en_right};
+	vertical-align: middle;
+	padding-{!en_right}: 4px; /* Fixes firefox bug of scrollbar appearing for .wide_table_wrap */
+}
+
+.permission_header_cell {
+	vertical-align: middle;
+}
+
+.match_key_name_column {
+	width: 15em;
+}
+
+.heading_group {
+	display: block;
+	text-align: right;
+}
+
+.heading_presets {
+	margin-top: 0.5em;
+	display: block;
+	text-align: left;
+}

@@ -1,0 +1,3 @@
+[title]{$SITE_NAME} Rules[/title]
+
+[include="_SEARCH"]_rules[/include]

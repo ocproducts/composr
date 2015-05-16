@@ -1,0 +1,90 @@
+[block=":rules,cms:cms_comcode_pages,site:rules,forum:rules" caption="[title]{$SITE_NAME} Rules[/title]"]main_only_if_match[/block]
+
+[title="2"]Liability[/title]
+
+We will not guarantee the accuracy, validity, integrity or security status of any content on this website, and will accept no liability from any issues that may result from it. We do not scan all hosted files for viruses.
+
+User posted content is out of our control unless we have known about the presence of it for at least one full week.
+
+[title="2"]Accounts and your behaviour[/title]
+
+Do not join this website more than once (hence creating multiple accounts). If you cannot remember your password, use the 'lost password' feature, which is available on the login page. If problems persist, contact the staff.
+
+Do not pose as, or wilfully act as, a member of staff.
+
+[title="2"]General posting/submission guidelines[/title]
+
+Do not post any copyrighted material for which you have no right to do so.
+
+Do not repeatedly use strong/harsh swearing or sexual references.
+
+Do not be too sexually graphic. Do not link to or post pornography, and only mild and non-sexually motivated nudity is allowed.
+
+Staff have the right to edit, censor, delete or otherwise modify any content message they feel is inappropriate, without any warning given to the poster.
+
+Do not submit any content that you know to contain viruses or commonly exploited security holes.
+
+Any content submitted to us, will not necessarily be removed by request. We are not bound to remove submitted content and anything submitted should be assumed to be staying on our servers, publicly accessible permanently. By submitting, you are aware of the consequences of this, and take responsibility of it, and may not at any time insist on content being withdrawn.
+
+Do not try to bypass the word filter: filtered words are placed in the filter in accordance with guidelines, and obvious misspellings or equally obnoxious alternatives, only serve to work against the wishes of the staff.
+
+Do not post spoilers (material that reveals information relating to the subject matter of this website before the majority of members have learnt it through the channels they would wish to) in your topic titles. If you wish to post spoilers inside a topic give good warning about their presence, or use the Comcode 'hide' tag.
+
+Do not post a link to a website that contains material that would be in violation of the rules if posted directly on this website. Special exceptions may be given by the staff when clear warnings are put in place.
+
+Do not incite illegal activity, either directly, or by educating with the obvious purpose to make it more achievable.
+
+Do not spam this website:
+ - you must be moderately confident that anything posted will interest at least a minority of the members.
+ - you must not post material more than once unless there is good reason, from the point of view of other members.
+
+Do not intentionally disrupt the enjoyment of this website by other users. 'Enjoyment' has a general meaning for the purposes of this rule - for example, robust argument in a debate forum would be considered 'enjoyable', as debaters would wish for it.
+
+This website is private properly and hence any form of censorship is allowed at the discretion of the staff - you agree not to consider this website a forum for free speech if the staff consider it breaks the rules.
+
+[title="2"]Forum and Chat[/title]
+
+Be respectful of the opinions of other members, and do not discriminate it based on nationality, sexuality, gender, religion or race. Do not flame or degrade other members. If you have a problem with another members actions, contact a member of staff.
+
+[title="2"]Forum[/title]
+
+Do not double post (post consecutively in a topic) on the forum unless...
+ - You have new information to add after several days since your previous post was made
+ - You are bumping a topic after several days of no replies
+ - You are quoting various posts, and feel the need to do so in separate posts
+
+Do not complain in-topic about the subject being too far off-topic or otherwise breaking rules. Use the 'report post' feature to alert a member of staff instead. Leave it to staff to establish what is and is not acceptable posting.
+
+[title="2"]Chat[/title]
+
+In no circumstances may you use the chat rooms to start or continue sexually suggestive dialogue with any member under the age of consent (whichever age is highest between any geographic region where the hypothetical parties are located).
+
+[title="2"]Signatures[/title]
+
+Images in your signature should not exceed 50k in size, 468 pixels wide, or 110 pixels tall. For a guideline, this is about five lines of standard-sized text space. Text in your signature should also not exceed more than 5 lines of normal-sized text space.
+
+Remember that a big signature is not always a good signature. Keep it nice and simple. Feel free to advertise your website if you wish, if the link to it does not itself break site rules.
+
+[title="2"]Avatars[/title]
+
+For your own sake, avoid trying to use .bmp files as avatars - the system will not let you, because you should compress them to a more appropriate format, such as the .png format.
+Avatars size is restricted by the system according to your usergroup.
+
+[title="2"]Points[/title]
+
+Do not abuse the point system - every gift point transaction must be justifiable to the staff, in both quantity and purpose.
+
+[title="2"]Hacking[/title]
+
+You may not, unless explicitly given permission by a high-ranking member of staff, try to hack into this website. For the purpose of this rule, 'hacking' includes any technique designed to compromise the security or stability of the website.
+
+[title="2"]Privacy[/title]
+
+Acceptance of these rules implies acceptance of the [page=":privacy"]privacy policy[/page] (which includes details of how this website uses cookies).
+
+
+[title="2"]Violation[/title]
+
+The staff reserve the right to ban any member who breaks any rule, whether the rule is agreed as broken by the alleged offender or not. No warning or explanations need be given.
+
+The staff also reserve the right to change these rules at any time.

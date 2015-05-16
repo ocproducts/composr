@@ -1,0 +1,142 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Introduction to web design[/title]
+
+This tutorial is an introduction to the artistic side of web development -- web design.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Introduction[/title]
+
+With the improvement in web technology, web design has grown from cheesy layouts consisting of big borders, tiled background and animated GIFs -- to an application of the creative arts, blurring into the commercial design industry.
+
+Nowadays visitors expect an important website to be as impressive as a glossy magazine, or a TV show, and good design is the route to this.
+
+[title="2"]Design skills[/title]
+
+I can't possibly teach design in one tutorial, but I will try to give an idea of the basics, and then point to further resources.
+
+Design is about communication: communicating style, communicating a brand, communicating ideas, communication information, and communicating function.
+
+[title="3"]Style and brand[/title]
+
+What does a design say? Colour, pattern, language, and many other factors, all imply things about a website and organisation. A well conceived brand consists of certain tenants, and the design implementation of that brand effectively communicates them.
+
+Consider a simple example: a website with a dark background, smooth gradients around shades of brown, and vivid and short pieces of text, might be great for a website selling chocolates. It would communicate the simple pleasure of chocolate, and subliminally reinforce the concept via the chocolate-like colours. On every mental level it puts chocolate fully into the mind of the visitor, and can work to trigger the right feelings, and the overall richness and effect works to leave a lasting impression (lasting mental imprint).
+
+However, for this kind of design to be used on an environmental website might be a bit of a disaster:
+ - The visitor would expect to see green -- they'd somehow feel brown was wrong, and perhaps even think the site does not come across as convincing.
+ - Also, the use of green would work as a trigger/recall to their existing mental model of what 'environmental' is all about. Not using green would be a wasted opportunity.
+ - Simple seduction and call for a one-off direct-action is not likely to work for a true environmental brand (it might work for some kind of pseudo-environmental natural hair product though). An environmental brand would typically seek to influence based on making someone feel guilty, [i]or[/i] fearful of the future, [i]or[/i] providing them an opportunity to feel good about themselves. This would typically be done through an eye-catching header, backed up with a substantial body of text.
+
+Brands also have their own distinct 'personalities' which should be reflected. What's the difference between a Reebok and a Nike? The brands will aim to influence a specific group of people in a way that resonates with what is important to them, and use their unique identity to establish a feeling of authenticity, a fashion, and customer loyalty.
+
+Of course, different people think in different ways. As a programmer I think in terms of logics all the time and am very much a "left-brained" thinker (more inclined to study words than pick up from visual cues and emotive techniques). As a software user reading this tutorial you may well be the same. It is critical with design that you learn to appreciate how different people think, and come up with a design that hits all the right spots -- that works with different people's psychologies.
+
+A brand will typically include a logo, specification of what fonts to use in what circumstances (e.g. headers may have a special font), a colour scheme, a set of reusable styles (e.g. a way to show a box, or a pull-quote), suggested style of language, and a set of brand principles.
+
+Oh... also when it comes to style, things should look pretty! ;)
+
+[title="3"]Ideas and information[/title]
+
+How do you communicate complex ideas effectively (we live in an increasingly complex, rushed, media-saturated, world)? One way is just to start typing and hope people will read everything you say. That's a good start, but for important pages of a website you should go a lot further than this.
+
+Your text should be organised to draw the right people in, whilst simultaneously allowing people who won't be interested to not read anything. For example, a good large headline can capture the attention of people, immediately guiding people who are interested to read on, and allowing people who won't be interested to not. Often a web design will have lots of these headlines in different places -- such as as titles of boxes placed in highly visible areas.
+A common technique is the 'inverted pyramid', and this works very well for front pages. You start with a simple headline, then a longer summary, and continue to the full article. In other words, as people read on they get to see a more thorough version of what you're trying to say. There are many other techniques you can use, such as "pull quotes" (pulling out key parts of text as excerpts, shown in large text near where they appear in the article), or use of bold.
+
+You've undoubtedly heard the phrase "A picture speaks a thousand words" -- it's very true, and important to bear in mind. Would you rather read 3 paragraphs, or see a diagram that you can understand at a glance?
+
+Position and style can also communicate ideas, often via use of convention. For example, footer links on websites are a common convention -- people know to look there for a "Contact us" link, for example. Use this kind of thing to your advantage.
+
+[title="3"]Function[/title]
+
+In a good website, form and function are equally important. Without form, most people are unlikely to be attracted to what the site has to offer and are likely to be confused. Without function it's all a waste of time.
+
+Design can be used to make a website user-friendly, by heavy use of convention and visual metaphor. For example, a button with a downward arrow on it by both convention and metaphor, will intuitively be understood to expand some text. A 'carousel' interface (a horizontal scroller) might smoothly fade out instead of harshly cutting off, to imply there is something hidden out of view.
+
+A good design ingeniously uses beautiful form (e.g. icons) to achieve practical ends relating to usability.
+
+[title="2"]Design principles[/title]
+
+An attractive design appears as a work of art. However with enough practice anybody can learn how to make such a design, whether or not they have 'natural talent'.
+The following is true of just about every attractive design:
+ - There is plenty of white-space. White-space is used to build a 'visual hierarchy'. For example, a title has space around it, implying its dominance. For example, a box has space around it, making it jump out.
+ - Almost everything in the design will serve a purpose. There is so much to communicate, 'dead communication' can not be afforded. For example, if a background colour is used in a certain area, it is probably to make something seem separate to adjacent text. Keep things simple, and make form and function work in harmony.
+ - Attention will have been given to dominance. For example, important concepts may be given more space, their own colours, or larger text sizes. This goes both ways -- unimportant concepts will be given less spacing. Again, form and function comes together here -- different techniques for dominance should lead to a balanced design that comes together 'like a tapestry'.
+ - There will be attention to detail. For example, the following would look sloppy and distract the viewer from seeing the beauty:
+  - a word in a headline wrapping onto a second line on its own
+  - bad JPEG compression
+  - big chunks of white-space that do not serve any effective purpose
+ - It will mimic nature. As a species we are naturally inclined to find what nature has attractive to us. Smooth gradients, a lack of abruptness, and complementary colour tones are all usual in nature, and look good.
+ - The eye is guided to key points via visual points of interest.
+ - Everything will generally flow visually.
+
+[title="3"]Practical example for beginners: how to make an attractive box[/title]
+
+A simple way to make an attractive box is:
+ - give the box a background colour.
+ - put a border around the box with a colour that is half way between the box's background colour and the background colour of what is adjacent to the box. This will highlight and smooth the transition.
+ - put a moderate amount of white-space (margin) around the box.
+ - put a moderate amount of white-space (padding) inside the box.
+ - make the box float to the right.
+
+In [abbr="Cascading Style Sheets"]CSS[/abbr], this would be implemented with something like the following:
+[code]
+<div style="float: right; padding: 10px; margin: 20px; background: #d0e0a3; border: 1px solid #98c126;">
+	Text in box
+</div>
+[/code]
+
+Of course, in Composr there are 'standard boxes', so normally you'd actually use one of these, and just style how you'd like them to look by changing the existing CSS. The standard boxes give you built-in consistency, and free features like curved corners.
+
+[title="2"]Resources[/title]
+
+If you are really dedicated to being a good designer, the best way to learn is through practice, but also reading good books on design.
+I recommend the following:
+ - Graphic design school (ISBN: [tt]0-500-28526-8[/tt])
+ - Universal principles of design (ISBN: [tt]1-59253-007-9[/tt])
+ - Site-seeing (ISBN: [tt]0-7645-3674-5[/tt])
+
+[title="2"]Web Technologies[/title]
+
+Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our "Introduction to XHTML, CSS and JavaScript" tutorial.
+
+[title="2"]Software[/title]
+
+The de-facto standard software for making web designs is Photoshop. Photoshop is a powerful, expensive, and complex piece of software, but if you want to make really good designs that aren't visually simple it's probably what you'll want to use. (Simpler designs could be built on-the-fly using CSS, assuming the designer has a good imagination and grasp of the technology.)
+
+Instead of Photoshop you could consider:
+ - [url="Paint.net"]http://www.getpaint.net/[/url] (free, Windows-only)
+ - [url="GIMP"]http://www.gimp.org/[/url] / [url="GIMPshop"]http://plasticbugs.com/[/url] (free)
+ - [url="Corel Paint Shop Pro"]http://www.jasc.com/[/url] (cheaper than Photoshop -- but less powerful)
+ - [url="Adobe Fireworks"]http://www.adobe.com/products/fireworks/[/url] (more web-orientated, but less powerful)
+
+There is an enormous amount to know when it comes to using this kind of software, including:
+ - Colour spaces
+ - Layers
+ - Masking
+ - Filters
+ - Patterns
+ - Brushes
+ - Techniques for using all the little features and tools
+Therefore be aware you'll need to devote a considerable amount of time. However, don't worry as you don't need to learn every technique at once.
+
+You may find the best way to learn is through tutorials. Here are some sites featuring tutorials for Photoshop:
+ - http://www.good-tutorials.com/
+ - http://www.tutorialized.com/tutorials/Photoshop/1
+ - http://www.photoshopstar.com/
+ - http://psd.tutsplus.com/
+
+[concepts
+ 1_key="Photoshop"                 1_value="The de-facto standard software for web designers"
+ 2_key="Visual hierarchy"          2_value="A good design lays out elements into a visual hierarchy, where the organisation of the hierarchy helps convey the natural structure of the information"
+ 3_key="Information design"        3_value="The skill and practice of preparing information so people can use it with efficiency and effectiveness"
+ 4_key="Brand"                     4_value="A set of principles and styles that form a virtual identity"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+ - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
+ - [page="_SEARCH:tut_fringe"]Favicons, Web fonts, Media file compatibility[/page]
+
+{$SET,tutorial_tags,core_themeing,Design & Themeing,regular}{$SET,tutorial_add_date,May 2009}{$SET,tutorial_summary,This tutorial is an introduction to the artistic side of web design.}[block]main_tutorial_rating[/block]

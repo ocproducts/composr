@@ -1,0 +1,50 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Custom pages of information (via Comcode)[/title]
+[surround]
+[box="Note" width="25em" float="right"]If you are using short URLs, then '<base-url>/<zone>/pg/<page-name>' will also access the page.[/box]
+You may easily add new pages of information to Composr by making a 'Comcode page'.
+A Comcode page is a page written in Comcode, and thus is almost written in plain text. Like any page in Composr, a Comcode page is accessed by using:
+'[tt]<base-url>/<zone>/index.php?page=<page-name>[/tt]'.
+[/surround]
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Making pages[/title]
+
+[media width="150" description="The WYSIWYG editor may be used to edit Comcode pages, although it provides less control" float="right"]data_custom/images/docs/comcode_pages_wysiwyg.png[/media]
+[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/comcode_pages_edit.png[/media]
+
+There are two supported ways to add a new Comcode page in Composr:
+ - Go to Content Management > Pages (Comcode pages), and give a new page name in the '<zone>:<page-name>' format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be ':<page-name>'). If you don't use a colon, a default zone will be picked.
+ - Just to type in the URL to where you want the page to be, and click the given link to add the missing page.
+
+[media width="150" description="The easy way to add a Comcode page" float="left"]data_custom/images/docs/comcode_pages_easyadd.png[/media]
+[media width="150" description="The edited Comcode page looks like this" float="right"]data_custom/images/docs/comcode_pages_view.png[/media]
+Once the Comcode page editor is open, you can pretty much just type your page in plain-text, with small diversions to indicate special formatting (most notably, the 'title' tag, which every page should include). It is beyond the scope of this tutorial to explain Comcode: see the Comcode tutorial for this.
+
+[title="2"]Blocks[/title]
+
+[box="Important note" width="25em" float="left"][tt][block=parameter]<block-name>[/block][/tt] is a shorthand for [tt][block param=parameter]<block-name>[/block][/tt].[/box]
+More advanced pages, such as the default start page in the Welcome Zone, and the panels, make use of 'blocks'. Blocks are dynamic elements, tied into Comcode pages via the Comcode '[tt]block[/tt]' tag.
+By 'dynamic element', I mean an element that automatically generates content that could not be prepared, such as a list of recent topics on a forum, or information about the currently logged in user.
+The actual block to use, is just the contents within the [tt][block][/tt] tag, and the parameters to the block are just the parameters given to the [tt][block][/tt] tag.
+[surround]
+[media width="150" description="An illustration to how blocks work" float="right"]data_custom/images/docs/comcode_pages_blocks.png[/media]
+At the time of writing, Composr contains 67 blocks to choose from.
+Blocks can be classified into:
+ - Main blocks (blocks inserted into the internal body of the site)
+ - Side blocks (blocks shown on the side of the site, in [tt]panel_left[/tt] or [tt]panel_right[/tt])
+ - Bottom blocks (blocks intended for the site footer)
+[/surround]
+
+[concepts
+ 1_key="Comcode page"   1_value="A Composr page written in Comcode, editable from inside Composr"
+ 2_key="Block"          2_value="A dynamic element designed to be inserted into a Comcode page via the \[block] tag"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+ - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via comcode)[/page]
+
+{$SET,tutorial_tags,Pages,Content,core_comcode_pages,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to add new pages, using Comcode. It couldn't be simpler to do: Comcode pages almost look like plain text.}[block]main_tutorial_rating[/block]

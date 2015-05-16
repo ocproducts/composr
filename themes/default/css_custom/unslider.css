@@ -1,0 +1,125 @@
+.unslider, .unslider * {
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+
+.unslider {
+	position: relative;
+	overflow: auto;
+
+	width: 100%;
+	margin-top: 0.7em;
+
+	-webkit-font-smoothing: antialiased;
+	font: 14px/23px proxima-nova-alt, "Proxima Nova Alt", sans-serif; /* Loaded up by Typekit in the BLOCK_MAIN_UNSLIDER.tpl template */
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+
+	background: {$GET,area_background};
+	text-shadow: 0 0 1px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.3);
+	box-shadow: 0 1px 2px 1px rgba(0,0,0,0.25);
+}
+.unslider, .unslider a {
+	color: {$GET,box_title_text} !important;
+}
+.unslider>ul {
+	list-style: none;
+	width: 300%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+.unslider>ul>li {
+	display: block;
+	float: left;
+	width: 33%;
+	height: 100%;
+	margin: 0;
+
+	box-shadow: inset 0 -3px 6px rgba(0,0,0,0.1);
+}
+
+.unslider>ul>li div.feature_background_image {
+	padding: 150px 0 110px;
+	{$BETA_CSS_PROPERTY,background-size: 100% 100%;}
+	background-repeat: no-repeat;
+}
+
+.unslider>ul>li div.feature_background_image, .unslider>ul>li div.feature_image, .unslider>ul>li div.feature_video {
+	height: 100%;
+}
+
+.unslider>ul>li div.feature_image img,
+.unslider>ul>li div.feature_video iframe, .unslider>ul>li div.feature_video object, .unslider>ul>li div.feature_video embed, .unslider>ul>li div.feature_video video,
+.unslider>ul>li div.feature_image div, .unslider>ul>li div.feature_video div {
+	/* Takes precedence over anything in the HTML, i.e. like object.width */
+	width: 100% !important;
+	height: 100% !important;
+}
+
+.unslider h1, .unslider h2, .unslider h3, .unslider h4 {
+	font-weight: 300;
+	font-family: bree-web, Bree, sans-serif;
+	font-size: 40px;
+	line-height: 52px;
+	margin-top: 0;
+	border-bottom: 0;
+	color: {$GET,box_title_text};
+}
+
+.unslider .dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 20px;
+
+	list-style-type: none;
+	text-align: center;
+
+	margin: 0;
+	padding: 0;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
+
+	z-index: 1000;
+}
+.unslider .dots li {
+	list-style-type: none;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin: 0 4px;
+	padding: 0;
+	line-height: 0;
+	font-size: 0;
+
+	border: 2px solid #fff;
+	border-radius: 6px;
+	background: #fff;
+
+	cursor: pointer;
+	opacity: 0.4;
+
+	{$BETA_CSS_PROPERTY,transition: background 0.5s, opacity 0.5s;}
+	{$BETA_CSS_PROPERTY,filter: drop-shadow(0 1px 2px rgba(0\,0\,0\,0.3));}
+}
+.unslider .dots li.active {
+	opacity: 1;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px), (max-width: 900px) {
+	.unslider.responsive h1, .unslider.responsive h2, .unslider.responsive h3, .unslider.responsive h4 {
+		font-size: 24px;
+		line-height: 30px;
+	}
+
+	.unslider.responsive ul>li div.feature_background_image {
+		padding-top: 90px;
+		height: 240px;
+	}
+}

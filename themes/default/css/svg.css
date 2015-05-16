@@ -1,0 +1,49 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.pie_chart, .bar_chart, .key_box, .axis_marker, .axis_line {
+	stroke: black;
+	stroke-width: 1;
+}
+
+.axis_background_line {
+	stroke: gray;
+	stroke-width: 1;
+}
+
+.average_line {
+	stroke: red;
+	stroke-width: 1;
+}
+
+.scatter_graph_marker {
+	stroke: green;
+	stroke-width: 1;
+}
+
+.scatter_graph {
+	fill: none;
+	stroke: black;
+	stroke-width: 1;
+}
+
+.bar_chart_text, .scatter_graph_text {
+	font-size: 12px;
+	fill: black;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.key_text, .axis_marker_text{
+	font-size: 10px;
+	fill: black;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.axis_text {
+	fill: red;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+

@@ -1,0 +1,24 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.box___newsletter_confirm_wrap, textarea#chosen_categories {
+	font-family: courier, monospace;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.menu__site_meta__newsletters {
+	background-image: url('{$IMG,icons/24x24/menu/site_meta/newsletters}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.menu__site_meta__newsletters {
+		background-image: url('{$IMG,icons/48x48/menu/site_meta/newsletters}') !important;
+	}
+}

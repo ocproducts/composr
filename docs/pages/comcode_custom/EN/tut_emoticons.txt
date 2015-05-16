@@ -1,0 +1,32 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: The Composr emoticon system[/title]
+
+{!cns:DOC_EMOTICONS}
+
+If you are using a third-party forum, that forum will be responsible for management of emoticons, and Composr will use those from the forum.
+
+If you are using the Composr forum, Conversr, emoticon management features are provided, as well as a very large set of emoticons.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Conversr emoticons[/title]
+[surround]
+[media width="150" description="Adding an emoticon" float="right"]data_custom/images/docs/emoticons_add.png[/media]
+Conversr emoticons are tied into the theme image system, although you are unlikely to need to know this as the images may be manipulated using direct features (Admin Zoen > Style > Emoticons).
+
+Images are associated with the 'code' that is typed to place the emoticon. You may have multiple codes per image, by using a single image in multiple emoticons: the interface allows you to select from existing images when you add. It is possible to bulk import emoticons from zip files.
+
+Emoticons are given a relevancy level, which determines which areas they are listed for use in. The relevancy levels are described in the interface.
+You can also determine whether an emoticon can be used as a 'topic emoticon' (an emoticon placed next to a topic on the forum). It is best to only use standard sized emoticons as topic emoticons.
+[/surround]
+[block]main_emoticon_codes[/block]
+
+[concepts
+ 1_key="Emoticon"   1_value="A small graphical of a facial expression placed into the flow of text by typing a special symbol that often resembles the face as laid sideways; provides emotional sub-text"
+ 2_key="Smiley"     2_value="A synonym for emoticon"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+
+{$SET,tutorial_tags,core_cns,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Find out about all the funky-cool emoticons that come with Composr, and how to extinguish them or add more.}[block]main_tutorial_rating[/block]

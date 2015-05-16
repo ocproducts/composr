@@ -1,0 +1,35 @@
+[title sub="You are in the Admin Zone"]Dashboard[/title]
+
+[title="2"]Tasks[/title]
+{| 60%:37% wide floats
+| [block]main_staff_checklist[/block]
+| [block defer="1"]main_staff_new_version[/block]
+{+START,IF,{$CNS}}[block="Reported posts forum,Staff" title="Staff forum" limit="3" failsafe="1"]main_forum_topics[/block]{+END}
+
+[box="Miscellaneous links" options="tray_open"]
+[list]
+[*][page="forum:topicview::website_comment_topics/feedback_block_main" ignore_if_hidden="1"]View website feedback[/page]
+[*][page="adminzone:admin_stats"]View statistics[/page]
+[*][i]Additional links further down[/i]
+[/list]
+[/box]
+
+[block]main_staff_tips[/block]
+|}
+[title="2"]Latest activity [size="0.8"]([page="adminzone:admin_actionlog"]more[/page])[/size][/title]
+{| 60%:37% wide floats
+| [box="Website Activity" options="tray_open"][block]main_staff_actions[/block][/box]
+| [block]main_db_notes[/block]
+
+{+START,IF,{$ADDON_INSTALLED,syndication_blocks}}{$BLOCK,block=side_rss,param={$BRAND_BASE_URL}/backend.php?mode=news&type=rss&select=1\,2\,3\,29&days=100,title=Composr news,cache=1}{+END}
+|}
+[title="2"]Other Websites[/title]
+{| 60%:37% wide floats
+| [block defer="1"]main_staff_website_monitoring[/block]
+
+[title="2"]Recommend Composr[/title]
+
+Know someone who needs a website?
+[page=":recommend:browse:cms=1"]Recommend Composr[/page] and they'll be sent a link to your own site too.
+| [block]main_staff_links[/block]
+|}

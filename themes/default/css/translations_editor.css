@@ -1,0 +1,25 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+td.translate_line_first {
+	padding: 0.5em;
+}
+
+.translate_line_second {
+	padding: 0.5em 0.5em 2em 0.5em;
+}
+
+.translate_line_second textarea {
+	border-style: dotted;
+}
+
+.translate_original_text {
+	color: {$GET,unfilled_input_text};
+}
+
+.translate_iframe {
+	height: 130px;
+	width: 100%;
+}

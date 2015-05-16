@@ -1,0 +1,1 @@
+<sup>{CONTENT}</sup>

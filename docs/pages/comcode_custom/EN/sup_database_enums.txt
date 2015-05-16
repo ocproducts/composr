@@ -1,0 +1,67 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Supplementary: Using Enums with MySQL[/title]
+
+We haven't used ENUMs in Composr as they're not well-standard in SQL. However that shouldn't stop you using them in your own code if you wish to (everyone here uses MySQL anyway to be honest).
+
+The actual data types coming out of / going into, MySQL for select/insert/update queries, will be strings or integers, so there's actually going to be no complexity in terms of actual input of data values.
+
+Our main problem is that we need to have a way to find all different values of an ENUM, within our PHP code.
+
+According to the MySQL manual:
+[quote="MySQL manual"]
+To determine all possible values for an ENUM column, use [tt]SHOW COLUMNS FROM tbl_name LIKE 'enum_col'[/tt] and parse the ENUM definition in the Type column of the output.
+[/quote]
+
+In terms of asking MySQL for the possible ENUM values...
+
+The database driver [tt]query[/tt] method is smart enough to know that [tt]SHOW[/tt] queries return a result, so you'll get MySQL rows right back. We try and keep the APIs very simple.
+
+The clunky thing here is the parsing of what MySQL gives out!
+
+I did a test inside [tt]data_custom/execute_temp.php[/tt] which is our official playground file.
+
+I created a test table:
+[media thumb="0"]data_custom/images/docs/sup_database_enums_1.png[/media]
+
+I queried the SHOW stuff:
+[media thumb="0"]data_custom/images/docs/sup_database_enums_2.png[/media]
+[media thumb="0"]data_custom/images/docs/sup_database_enums_3.png[/media]
+
+I wrote a quick parser:
+[media thumb="0"]data_custom/images/docs/sup_database_enums_4.png[/media]
+[media thumb="0"]data_custom/images/docs/sup_database_enums_5.png[/media]
+
+Here's my code...
+[code="PHP"]
+function execute_temp()
+{
+	$r=$GLOBALS['SITE_DB']->query("SHOW COLUMNS FROM test_tbl LIKE 'test_col'");
+	$enum_vals=array_map('quote_trim',explode(',',preg_replace('#^.*\((.*)\).*$#','$1',$r[0]['Type'])));
+	@print_r($enum_vals);
+}
+
+function quote_trim($in)
+{
+	return trim($in,"'");
+}
+[/code]
+
+[title="2"]Running regular queries[/title]
+
+I should have actually had the table prefix on the start of my table name, so I am renaming [tt]test_tbl[/tt] to [tt]cms_test_tbl[/tt] (my prefix is [tt]cms_[/tt]).
+
+This allows me to use other parts of Composr's query API, as consistent table prefixing is assumed (i.e. the prefix is auto-added to any supplied table names) when you're not writing manual SQL.
+
+[code="PHP"]
+$GLOBALS['SITE_DB']->query_delete('test_tbl'); // Wipe current table contents
+
+// Put some stuff in, trying with both the enum values, and enum indexes
+$GLOBALS['SITE_DB']->query_insert('test_tbl',array('test_col'=>'a'));
+$GLOBALS['SITE_DB']->query_insert('test_tbl',array('test_col'=>2)); // 2nd index relates to 'b' (the second enum value)
+
+// Should the contents
+@print_r($GLOBALS['SITE_DB']->query_select('test_tbl'));
+[/code]
+
+[media thumb="0"]data_custom/images/docs/sup_database_enums_6.png[/media]
+
+{$SET,tutorial_tags,Development,PHP,expert}{$SET,tutorial_add_date,May 2014}{$SET,tutorial_summary,How to use MySQL database enums within Composr.}[block]main_tutorial_rating[/block]

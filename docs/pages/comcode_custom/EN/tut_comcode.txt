@@ -1,0 +1,230 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Comcode and the attachment system[/title]
+
+Comcode is the Composr 'mark-up language'.
+
+The main uses of Comcode are:
+ - Intuitive content authoring (written just like plain text, no paragraph tags, special white-space rules, etc)
+ - Tying in dynamic functionality (such as filtered content)
+ - Tying in prebuilt special-effects (such as tabs or carousels)
+ - Basic website layout
+ - As a container for HTML (and other standard web technologies), for more advanced layout
+
+Many fields in Composr support Comcode, and 'Comcode pages' may be used to layout pages and panels of your site without having to do complex template editing, and without needing to use a restrictive layout configurer. The front pages and panels of Composr are, by default, Comcode pages.
+
+Unlike HTML, you do not need to use any complex syntax for Comcode -- Comcode is written more naturally, and is converted into HTML for you (combining in whatever Composr content/data is needed to make things work). Comcode adds a lot of power that HTML cannot itself provide; for example, with Comcode you can easily add an automatically-generated table of contents, or draw on the power from any of our pre-designed dynamic 'blocks' (blocks are described in our 'Advanced Pages of information (via Comcode)' tutorial).
+
+To be clear, Comcode is not a general language for designing websites. It is not in general an HTML-substitute, it is designed to work alongside it (it can embed it). Your primary design would still be done using standard technologies (HTML, CSS, JavaScript). The Composr panels and front page are, by default, Comcode pages, so you can lay it out all in Comcode, but not much more than a block-block-block kind of sequential layout -- you'll drop to the level of HTML (via the Comcode 'semihtml' or 'html' tags) for fine-tuned layout.
+
+Those familiar with forum systems may see that Comcode is similar to [concept]BBCode[/concept] in some respects.
+There isn't a lot of need to directly learn Comcode, because our editor has a tag assistant to build Comcode tags for you. Never-the-less, it doesn't hurt to know some of the tools you can use, especially if you choose to have the WYSIWYG editor disabled.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The basics/title]
+
+Comcode is primarily written and laid out as plain-text. Special tags (and other codes) are then interpreted with meanings:
+[list]
+[*] emoticon codes may be used (for Conversr, these are listed in the 'The Composr emoticon system' tutorial)
+[*] Comcode tags may be used to change content, such as [tt][b]text[/b][/tt] to make some text bold
+[*] Comcode tags may be used to add content, such as  [tt][block]main_contact_us[/block][/tt] to add a dynamic comments box
+[*] horizontal lines may be added by placing a few '-'s on their own line
+[*] HTML-style entities can be use to place special characters inside the text (e.g. [tt]&reg;[/tt])
+[*] member profile links can be placed by typing [tt]{{username-goes-here}}[/tt], or [tt]{{?username-goes-here}}[/tt] to show extra details when the mouse is hovered over and send a notification to the referenced member ([concept]Conversr[/concept] only)
+[*] member profile links can also be placed by typing the simpler syntax (Conversr-only, always shows the extra details), [tt]@username-goes-here[/tt]; the simpler syntax is a bit more flimsy due to the possibility for ambiguity if usernames have spaces
+[*] [concept]Wiki+[/concept] page-links can be placed by typing [tt][[pagename-goes-here]][/tt], or [tt][[pagename-goes-here#anchor]][/tt]
+[*] table syntax (described in separate section)
+[*] list syntax (described in separate section)
+[*] [concept]Tempcode[/concept] symbols and directives may be used, such as [tt]{$USERNAME}[/tt] to display the username of the current user (described in separate section)
+[*] certain shortcuts may be used, such as [tt](c)[/tt] for (c) (described in separate section)
+[/list]
+
+Additionally:
+ - Hyperlinks may be written directly, and are automatically detected; these will be interpreted by the media rendering system (for example, a YouTube video hyperlink would result in the video being embedded)
+
+[title="3"]Table syntax[/title]
+
+Table syntax is written as in the following examples...
+
+[code]
+{| This is the table summary
+! Header 1, row 1
+! Header 2, row 1
+|-
+| Cell 1, row 1
+| Cell 2, row 1
+|-
+| Cell 1, row 2
+| Cell 2, row 2
+|}
+[/code]
+
+or in reduced form,
+
+[code]
+{| This is the table summary
+! Header 1, row 1 !! Header 2, row 1
+|-
+| Cell 1, row 1 || Cell 2, row 1
+|-
+| Cell 1, row 2 || Cell 2, row 2
+|}
+[/code]
+
+[title="3"]List syntax[/title]
+[surround]
+[media width="150" description="The example in action" float="right"]data_custom/images/docs/comcode_list.png[/media]
+To create a list, you just need to start typing elements of the list using the list syntax. A line that is in the first level of a list is identified by the line starting with ' - '. Subsequent lines that have the same prefix are shown as subsequent items in the same list. If you wish to extend the list to a second level, just add the first line of the second level with two spaces before the hyphen, so that the line starts with '  - '; of course, you should start a second level of a list somewhere within the first level. Your list may have as many levels as you like, just by adding extra spaces in the lines at a certain depth. Be careful to not jump from, for instance, a depth of 1 straight to a depth of 3, as this will result in a Comcode error. This all sounds more complex than it is, so I will give an example to show how in fact, it is really very easy to do:
+[/surround]
+[code]
+ - 1
+ - 2
+  - 2.1
+   - 2.1.1
+  - 2.2
+ - 3
+  - 3.1
+[/code]
+
+See how simple it is: the number of spaces before the hyphen identifies the list level, the hyphen identifies it is a list, and then after a space (to make it look better when writing it) comes the actual line of the list.
+
+You can also create ordered lists...
+[code]
+Easy as:
+a) a
+b) bee
+c) sea
+
+Easy as:
+1) one
+2) two
+3) three
+[/code]
+
+If you need a list element to span multiple lines, you'll need to use the Comcode 'list' tag instead.
+
+[title="3"]Shortcuts[/title]
+
+There are some short-cuts for use to use:
+ - [tt](c)[/tt] for (c)
+ - [tt](r)[/tt] for (r)
+ - [tt]--[/tt] for --
+ - [tt]---[/tt] for ---
+
+[title="3"]Symbols and directives[/title]
+
+Symbols and directives from [concept]Tempcode[/concept] may also be used in Comcode. For a list of symbols/directives, see the 'Tempcode programming' tutorial. It is rare that you will want to include these as they are primarily designed for usage from templates. However, sometimes they can be useful.
+
+[title="3"]Tag syntax[/title]
+
+Tags are written as in a way similar to HTML, except using the '[]' brackets instead of the '<>' brackets, and a slightly more user-friendly notation.
+All tags have an opening tag, written [tag], and a closing tag, written [/tag]. The text between the tags is either:
+ - something the tags modify
+ - an otherwise critical parameter for the tags; for example, for the 'block' tag, it is the name of the block
+
+Tags may also take other parameters rather than the tag 'contents' (what the tag has 'embedded'). These are written in like as follows:
+[tt][tag a="a-value" b="b-value"]contents[/tag][/tt], where 'a' and 'b' are merely examples of named parameters, of which there can be any number. Often tags have a special parameter that is of critical importance, that we name 'param'. A short-hand for writing:
+[code]
+[tag param="value"]contents[/tag]
+[/code]
+is writing:
+[code]
+[tag="value"]contents[/tag]
+[/code]
+This only applies to the 'param' parameter, and does not need to be used if you do not want to.
+
+If a tag is referenced that does not actually exist, then it won't be read as a tag: it'll just display as plain text.
+
+If you need to include the [tt]"[/tt] symbol inside a tag parameter, you can put it in as [tt]\"[/tt] (e.g. [tt][quote="Mr \"Happy\""][/quote][/tt]).
+Also, if you need to literally display a tag without it being parsed, you may type [tt]\[[/tt] for the opening bracket (e.g. [tt]\[i do not want this as italics][/tt]).
+
+[title="2"]WYSIWYG[/title]
+
+Composr provides a [concept]WYSIWYG[/concept] editor for those who would rather not type Comcode directly. You may mix in raw Comcode with the normal formatted text of the WYSIWYG editor if you wish; this is necessary if you need to insert things that don't have a regular appearance, such as blocks.
+
+Composr uses the Comcode 'semihtml' tag is used in order to mix HTML and Comcode. You don't see this within the editor, but it is used when saving. Any HTML is subjected to Composr's whitelist/blacklist filter when it is being parsed for final output (see the "Security" section of the "Advanced Comcode" tutorial), unless the Comcode was submitted by staff in which case it would not be filtered.
+
+The HTML produced by the WYSIWYG editor is kept as HTML unless the "Convert HTML to Comcode" option is enabled. However, this conversion option is not recommended for the vast majority of users because it will corrupt some custom HTML, and may change some of the alignments.
+Note that Composr will actually consider any Comcode fully-surrounded by 'semihtml' tags as coming from the WYSIWYG editor.
+
+If you want "Convert HTML to Comcode" in general then make sure you add this code to the bottom of any Comcode that should not have it:
+[code]{$,page hint: no_smart_conversion}[/code]
+The code is not visible, but passes on as a processing hint to Composr.
+
+[title="2"]Wrapping[/title]
+
+When a tag is said to 'wrap' Comcode, it essentially adds on properties. For example:
+[code]
+[b][i]text[/i][/b]
+[/code]
+The 'text' is both emboldened and italicised.
+
+[title="2"]Spacing[/title]
+
+Comcode will create HTML that is laid out similarly to the Comcode. So, if you type two spaces between words, you'll see those two spaces. If you do 5 blank lines, you'll (roughly) see 5 blank lines.
+
+If you are using a lot of complex code, it is nice to be able to use white-space (e.g. indentation) to lay it all out. The 'semihtml' tag will allow you to do this, as runs of white-space will be collapsed into a single white-space (like it is in HTML).
+
+A small note about generated HTML:
+For tags where generated-HTML would add automatic blank lines (visually speaking) after them (e.g. [tt]title[/tt]), blank lines in Comcode after them are skipped in order to allow the Comcode itself to be attractive without affecting layout.
+
+[title="2"]Tag reference[/title]
+
+Tags may be easily added via the "Comcode Tag Assistant" feature in Composr, which lists all tags and provides an input mechanism for each. In addition, new tags may be created (discussed in the 'Advanced Comcode' tutorial).
+
+[title="3"]Formatting tags[/title]
+
+These tags define formatting, but some also have semantic meaning (meaning that is interpreted by computers, to give cues to search engines or accessibility devices). Try to think in terms of making your styling have combined presentational and semantic meaning, for accessibility as well as making your writing intuitive.
+
+[title="3"]Semantic tags[/title]
+
+These are 'semantic' tags, meaning they do very few (if any) display changes, but code up extra meanings into your documents.
+
+A note about paragraphs:
+Comcode has excellent support for semantics, but there is just one small area where it isn't able to support them, which is paragraphs. In Comcode the XHTML5 is created using XHTML <kbd>br</kbd> (line break) tags to separate lines. This has few practical ramifications known to us, and it is by necessity to make sure Comcode produces conformant and consistent XHTML5. However if you want to use 'p' tags, you should use the Comcode 'semihtml' tag so that you have full control over how whitespace will display.
+
+[title="2"]Attachments[/title]
+
+[media width="150" description="Adding an attachment" float="left"]data_custom/images/docs/comcode_attachment_add.png[/media]
+[media width="150" description="Editing an attachment" float="right"]data_custom/images/docs/comcode_attachment_edit.png[/media]
+Composr has a powerful attachment system that is integrated into Comcode, with a number of content types support attachments, such as news articles and Conversr forum posts.
+Using them couldn't be easier: you just choose a file (or many files) from your computer, and Composr will automatically add an 'attachment' tag into the Comcode you are writing. You may then move that tag to any location you want, for placement of the actual attachment when the content is viewed. There is special built in support for in-line display of various media forms, and support of download of other types of file; any file can be added so long as the file type is in the allowed list of file types defined in the Admin Zone (see the security tutorial for a discussion on  this).
+
+Attachments may be given special captions, which are usually displayed as a part of the attachment box.
+Images have automatically generated and cached thumbnails.
+[surround]
+[box="Important note" width="25em" float="right"]Be careful when placing attachment tags in a Comcode spot that does not support attachments natively. This is supported, but the attachment will be deleted if its original content is deleted, as non-native Comcode spots have no way of recording that they have used it. In addition, if a viewer does not have access to the attachment's original content, they won't have access to your copy&pasted usage to a non-native Comcode spot.[/box]
+If you go back to edit the content with your attachment, you will see that it has been given a number, whereas it as just marked as 'new' when being added. You may actually copy and paste the attachment tag into any other area of Comcode, so as to re-use the attachment. Anyone with permission to access any of the attachment supporting content locations that the attachment is placed in will be able to view/download it. The attachment will remain in the system until all content that using it is edited to stop using it, or deleted.
+[/surround]
+
+[concepts
+ 0_key="Mark-up language" 0_value="A language designed so that text may be laid out by surrounding special elements around portions of the text to define meta-properties (such as font)"
+ 1_key="Comcode"          1_value="Composr's mark-up language for the creation of formatted text and inclusion of dynamic elements"
+ 2_key="Attachment"       2_value="A file attached to Comcode via a 'posting page' supporting Comcode field; attachments have special support for rich media"
+ 3_key="Semi-HTML"        3_value="HTML and Comcode mixed freely together"
+ 4_key="WYSIWYG"          4_value="What-You-See-Is-What-You-Get: the name of the type of interactive editing interface used for formatting text in many programs, including modern word processors"
+]Concepts[/concepts]
+
+[title="2"]Auto-save[/title]
+
+If you type into a "posting form" (news posting, forum topic creation and replies, Wiki+ posting, Comcode page editing), then auto-save will be in place.
+Auto-save is automatic and runs behind the scenes. As you type it will save onto the server, if it has not saved within the last 20 seconds.
+
+Auto-save can protect you if your computer crashes, if your Internet connection is lost, etc.
+
+You will be prompted whether to restore when going back into the content posting UI you didn't finish the save from.
+
+Note that the auto-save assumes that you are not switching browsers, as it stores flags indicating the presence of recovery data by using cookies in the browser.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_comcode_pages"]Custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:tut_emoticons"]The Composr emoticon system[/page]
+ - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
+ - [page="_SEARCH:tut_wysiwyg"]WYSIWYG editing[/page]
+ - [page="_SEARCH:tut_tempcode"]Tempcode Programming[/page]
+ - [page="_SEARCH:tut_security"]Security[/page]
+ - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
+ - [page="site:userguide_comcode"]Comcode User-guide[/page]
+
+{$SET,tutorial_tags,Content,core_rich_media,Structure and navigation,novice}{$SET,tutorial_add_date,Sep 2008}{$SET,tutorial_summary,Create dynamic effects and display rich media, without having to write any XHTML, CSS, or JavaScript.}[block]main_tutorial_rating[/block]

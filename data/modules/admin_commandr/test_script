@@ -1,0 +1,3 @@
+echo "Hello world!"
+edit /database/zones/zone_name=adminzone/zone_theme
+echo "Goodbye world!"

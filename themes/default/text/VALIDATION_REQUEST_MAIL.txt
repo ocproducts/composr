@@ -1,0 +1,10 @@
+{!UNVALIDATED_MAIL_A@,{USERNAME}}
+{!UNVALIDATED_MAIL_B@}
+
+{!UNVALIDATED_MAIL_C@}
+
+{!DETAILS_LIST@}
+ - {!TYPE@} {TYPE@}
+ - {!IDENTIFIER@} {ID@}
+ - [url="{!CLICK_TO_EDIT#}"]{URL@}[/url]
+

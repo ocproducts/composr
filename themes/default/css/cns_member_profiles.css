@@ -1,0 +1,230 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.cns_profile_column {
+	background-color: {$GET,area_background};
+	border: 1px solid {$GET,pale_border};
+	margin-top: 1em;
+}
+
+.cns_profile_about_field_name_column {
+	width: 13em;
+}
+
+.cns_profile_about_field_value_column {
+	width: 100%;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.cns_profile_column {
+		padding: 0.5em;
+		font-size: 0.9em;
+	}
+
+	.cns_profile_column h2 {
+		margin-top: 1em;
+	}
+
+	.cns_profile_main {
+		padding: 10px 0 0 0;
+		float: left;
+		width: 100%;
+	}
+
+	.cns_member_profile_avatar {
+		text-align: center;
+		margin-top: 1em;
+	}
+/*{+END}*/
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.cns_profile_column {
+		float: right;
+		width: 14em;
+		padding: 1em;
+		font-size: 0.9em;
+	}
+
+	.cns_profile_column h2:first-child {
+		margin-top: 0;
+	}
+	.cns_profile_column h2 {
+		margin-top: 2em;
+	}
+
+	.cns_profile_main {
+		padding: 1em 16em 0 0;
+	}
+
+	.cns_member_profile_avatar {
+		text-align: center;
+		margin-top: 1.5em;
+	}
+/*{+END}*/
+
+.cns_profile_column ul.nl li {
+	overflow: hidden;
+	margin-bottom: 0.5em;
+	padding-top: 4px;
+}
+
+.cns_profile_column ul.nl li a {
+}
+
+.cns_profile_column ul.nl li img {
+	float: left;
+	margin-right: 0.5em;
+	margin-top: -4px; /* Tied to "padding-top: 4px;" on ".cns_profile_column ul.nl li" */
+}
+
+.cns_member_profile_avatar img {
+	border: 1px solid {$GET,standard_border};
+	max-width: 100px;
+}
+
+.cns_profile_points {
+	margin: 0.5em 0;
+	text-align: center;
+	font-size: 1.3em;
+}
+
+.cns_member_profile_photo {
+	text-align: center;
+}
+
+.cns_member_profile_photo img {
+	border: 1px solid {$GET,standard_border};
+	max-width: 100%;
+}
+
+table.cns_profile_details {
+	border-collapse: collapse;
+}
+
+table.cns_profile_details th {
+	padding: 0.5em;
+	border-right: 1px solid {$GET,pale_border};
+	font-weight: bold !important;
+}
+
+table.cns_profile_details td {
+	padding: 0.5em;
+	font-size: 1em;
+}
+
+table.cns_profile_details .associated_details {
+	display: block;
+}
+
+table.cns_profile_fields {
+	border-collapse: collapse;
+}
+
+table.cns_profile_fields th {
+	color: {$GET,heading_text};
+	border-right: 1px solid {$GET,pale_border};
+	vertical-align: middle;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	table.cns_profile_fields th {
+		font-size: 1em;
+		padding: 0.5em 0.5em 0.5em 0;
+	}
+/*{+END}*/
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	table.cns_profile_fields th {
+		font-size: 1.2em;
+		padding: 1em 1em 1em 0;
+	}
+/*{+END}*/
+
+table.cns_profile_fields td {
+	padding: 1em 0 1em 1em;
+	font-size: 0.9em;
+	vertical-align: middle;
+}
+
+table.cns_profile_fields th, table.cns_profile_fields td {
+	border-bottom: 1px solid {$GET,pale_border};
+}
+
+table.cns_profile_fields tr:last-of-type th, table.cns_profile_fields tr:last-of-type td {
+	border-bottom: none;
+}
+
+table.cns_profile_statistics th {
+	border-right: 1px solid {$GET,pale_border};
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	table.cns_profile_statistics {
+		border-collapse: collapse;
+		font-size: 0.9em;
+	}
+
+	table.cns_profile_statistics th {
+		font-weight: normal;
+		padding: 0.5em 0.5em 0.5em 0;
+	}
+
+	table.cns_profile_statistics td {
+		padding: 0.5em 0 0.5em 0.5em;
+		min-width: 1em;
+	}
+/*{+END}*/
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	table.cns_profile_statistics {
+		border-collapse: collapse;
+	}
+
+	table.cns_profile_statistics th {
+		font-weight: bold;
+		padding: 0.5em 1em 0.5em 0;
+	}
+
+	table.cns_profile_statistics td {
+		padding: 0.5em 0 0.5em 1em;
+	}
+/*{+END}*/
+
+.cns_profile_friends {
+	overflow: hidden;
+}
+
+.cns_profile_friends>.box {
+	margin: 0.5em 0 1em 0;
+	border: 1px solid {$GET,standard_border};
+	background: {$GET,area_background};
+}
+
+/*
+=========================
+=========Editing=========
+=========================
+*/
+
+.cns_sig_requirements {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 25em;
+		margin: 1em auto !important;
+	/*{+END}*/
+}
+
+.cns_avatar_page_old_avatar {
+	float: {!en_right};
+	padding: 1em 0.5em 1em 1em;
+	text-align: {!en_right};
+}
+
+.cns_current_sig_wrap {
+	margin-bottom: 1.5em;
+}
+
+.decryption_overlay label {
+	font-weight: bold;
+}

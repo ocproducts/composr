@@ -1,0 +1,276 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Security[/title]
+
+ocProducts has put a lot of effort into making Composr very secure. We:
+ - perform the practices of producing secure and robust code
+ - scan and penalise security hot-spots (such as database queries)
+ - design the Composr architecture to abstract away common security hot-spots wherever possible
+ - have designed Composr to actively detect and log possible security issues via defining and enforcing tight interfaces into Composr, and consistency rules
+ - develop on our own version of PHP that can detect XSS security holes
+
+If you find a flaw in Composr's security please contact us so that we may have time to fix the problem before hackers get a chance to exploit it on innocent users.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Security logs[/title]
+
+Composr defines a large number of 'hack attack' situations, and in case of any of these situations occurring it will: stop the execution; send out an e-mail detailing the attack; and log the attack in the security log. These situations are varied, but the most common is when input is found that does not match input constraints (for example, a script parameter which should be a number is not).
+
+[media width="150" description="A security alert for a real hack-attempt" float="right"]data_custom/images/docs/security_attack.png[/media]
+If you get alerts that suggest someone is actively trying to hack into your website, it is advisable to ban their IP address at the web server level as soon as humanely possible (unless they have already been automatically banned). This is just a precaution, but it is possible (although unlikely) that a skilled hacker who is referring to Composr source code has only accidentally triggered an alert, and may have found an alternative vulnerability in your site already, or may find one soon. Of course we know of no such vulnerabilities, and we do in fact consider it unlikely that a direct vulnerability will be found in Composr, but it is always best to be cautious with regards security. You should also be aware that a hacker may change their IP address, simply by changing their Internet connection, or working through proxies: you may decide in this case of a serious attack, to consult authorities, passing them the IP address of the offender and the hack-attack e-mail.
+
+Most security logs are accidental (caused by mistyped URLs, or buggy software) or are caused by bots. The screen-shot shows a typical hack-attack by a bot that crawls the web looking for vulnerable scripts: in this case, the bot is trying to use a parameter of the Composr poll voting form to send an e-mail, on the basis that by trying to abuse every form it finds, it will eventually find one that does work as a spam relay: it would then latch on to this and use the victim website as a mass spam relay, for as long as it can. In this case it hit a Composr site, so was logged.
+
+[title="2"]Alert types[/title]
+
+At the time of writing, the following types of alert are defined:
+ - [b]DODGY_GET_HACK[/b], A suspicious URL was given that includes characters looking like they may be there to do dodgy things. As URLs are generally clean of symbols, it is safe for Composr to detect dangerous looking ones, such as file system paths, new line characters, and HTML symbols
+ - [s][b]REFERRER_IFRAME_HACK[/b], It looks like someone tried to abuse an iframe in Composr, where the iframe URL was given by the main page URL. By doing this, social engineering, or referrer faking, might be achievable[/s] -- [i]not currently in use, we now use alternative and more reliable CSRF-prevention methods[/i]
+ - [b]EVIL_POSTED_FORM_HACK[/b], This may be due to a social engineering attack, where a logged in administrator has been tricked into filling in a form targeted to delete something from the website (CSRF)
+ - [b]VOTE_CHEAT[/b], The user tried to vote outside the allowed range of options (e.g. 11 or -2). I can think of no way this could be done accidentally
+ - [b]SCRIPT_UPLOAD_HACK[/b], The user tried to upload a PHP script. This may well be innocent (if they are uploading a saved web-page with .php in the URL for example, or if they are uploading a script they expect people to be able to download in raw form)
+ - [b]ASCII_ENTITY_URL_HACK[/b], The user introduced HTML into a Comcode HTML tag that used ASCII-encoded entities. This is likely to be innocent, but is blocked because it can be used to trick JavaScript filtration
+ - [b]SCRIPT_TAG_HACK[/b], The user tried to introduce a script tag. This would be likely to be a hack attempt if it wasn't for the fact that by default, ordinary members cannot submit any HTML at all; it is therefore likely that a privileged user has out-stepped the norm, or a privileged member is not to be trusted
+ - [b]SCRIPT_URL_HACK[/b] / [b]SCRIPT_URL_HACK_2[/b], This is highly likely to be a hack attempt, as a user explicitly specified a URL which was code and not a real URL
+ - [b]LAME_SPAM_HACK[/b], This is a blocked spam attempt, where a Guest user posted with the terms [tt][link[/tt] and [tt]<a [/tt] within a single post, almost certainly a common kind of "try everything" attempt to get spam links posted (Composr does not even support a 'link' bbcode tag)
+ - [b]TRY_TO_DOWNLOAD_SCRIPT[/b], The user tried to add a download with a manual URL that links to private files that are not meant to be downloadable. This may be an honest mistake -- but if it is [tt]_config.php[/tt], then it is very likely to be a hack attempt. A more detailed explanation follows further in this tutorial
+ - [b]TICKET_OTHERS_HACK[/b], The user tried to access support tickets from another user. This is either a bug (we know of no way it would happen normally), or a hack attempt
+ - [b]TICKET_SYSTEM_WEIRD[/b], The user tried to access a support ticket with an non-standard name. This is either a bug, or a hack attempt; if it is a hack attempt, it is probably not one that would get anywhere even if it was not blocked
+ - [b]ORDERBY_HACK[/b], Tried to change the SQL ordering attribute, perhaps for SQL injection
+ - [b]BYPASS_VALIDATION_HACK[/b], The user tried to specify that their content be validated even though they had no form option to specify it as such. The user is therefore very likely to be trying to hack the site by specifying options that don't exist for them in the hope they will go unfiltered
+ - [b]HEADER_SPLIT_HACK[/b], A URL was submitted that contains a blank line. The submitter of the content with this URL is very likely to be a hacker, as there is no conventional way this situation could be come by
+ - [b]EVAL_HACK[/b], The EVAL command would have executed arbitrary code if it was not blocked. This is extremely likely to be a hack attempt and should be taken seriously
+ - [b]PATH_HACK[/b], Tried to use a file path redirection to get outside intended directory
+ - [b]ADMINCENTRE_ACCESS_DENIED[/b], The user tried to access a secured zone without permission. This is unlikely to be a serious attack, as the user may just have been following a misplaced URL, or messing about. This error is not enabled by default on Composr because we found that Google ads triggered it massively!
+ - [b]PHP_DOWNLOAD_INNOCENT[/b], Somehow a PHP file got referenced in the download system. This should have been filtered by 'TRY_TO_DOWNLOAD_SCRIPT', but was not. This is a serious security breach if it happens
+ - [b]BRUTEFORCE_LOGIN_HACK[/b], Someone gave incorrect login details 30 times over a 15 minute period (brute-force attack)
+
+[title="2"]Input filtering[/title]
+
+We have 4 privileges relating to input filtering:
+1) Avoid broad input filtering security layer
+2) Use dangerous Comcode
+3) Use potentially-troublesome Comcode
+4) Subject to a more liberal HTML filter
+
+"Avoid broad input filtering security layer" turns on filtering that may result in some data loss, but gives an additional level of security in case we have an actual security hole at another layer.
+This generally protects against:
+ - Request parameters that look like the file paths of particularly sensitive files
+ - Request parameters that look like particularly dangerous HTML, or miscellaneous vectors for injecting CSS or JavaScript code
+It is generally a good idea to not given untrusted users this privilege, as the need for such users to be able to post text that looks like file paths, dangerous HTML, or JavaScript, is not very high.
+
+"Use dangerous Comcode" should only be granted to trusted staff. Users with this permission can effectively exert full control over the site, via placement of advanced blocks.
+
+"Use potentially-troublesome Comcode" is fairly safe to give. Without it we will try and filter out certain stuff that may be annoying (such as particular interactive interfaces), but not an actual security risk.
+
+"Subject to a more liberal HTML filter" is fairly safe to give, but for high security sites best avoided. If granted, users can basically use whatever HTML they want, if we don't see that HTML as a security risk (insecure HTML will be cleaned up automatically). Without this, there's a particular white-list of allowed HTML (not specifically tags, but tag patterns), corresponding to HTML created directly within the WYSIWYG editor. Users may get confused why content they paste into the WYSIWYG editor comes out a mess, as pasted content is unlikely to use only white-listed HTML segments.
+
+We also have of internal checks that always run, many related to "Alert types" (see above), including:
+a) Constraining of input parameters for filename-only scenarios ([tt]filter_naughty[/tt], [tt]PATH_HACK[/tt])
+b) Constraining of input parameters for codename-only scenarios ([tt]filter_naughty_harsh[/tt], [tt]EVAL_HACK[/tt])
+c) Checks for URL fields, e.g. making sure "data:" URLs are not submitted, or special characters that could allow interference with HTTP headers ([tt]DODGY_GET_HACK[/tt])
+d) Checks for posted JavaScript URLs ("javascript:"), anywhere ([tt]SCRIPT_URL_HACK_2[/tt])
+e) Referrer checks, to make sure POST requests aren't being made from non-trusted sites (i.e. CSRF-prevention, [tt]EVIL_POSTED_FORM_HACK[/tt])
+f) [s]Input field length, so that strangely long parameter inputs are not accepted in most cases[/s] ([i]this was removed, it didn't raise security, and created bugs[/i])
+g) External redirections, so that hackers can't create URLs linking to your site that immediately redirect you to an unsafe third-party site (this kind of thing can trick users into thinking they have clicked onto your site, when they're not there anymore). This isn't logged as a hack-attack, as it can happen too innocently, but it is filtered out.
+h) Obvious spamming (some common spam patterns are so obvious, we can just route them direct to [tt]LAME_SPAM_HACK[/tt])
+i) Click-jacking frame protection, using standard [tt]X-Frame-Options[/tt] functionality
+j) Generally making sure things are filled in when required, and expected numbers really are numbers
+
+We also have standard output escaping mechanisms so that attempts to inject bad data do not lead to bad outcomes.
+
+In summary, we have defense across a number of layers, and code without making poor assumptions. This is called "defense in depth" -- programmers are fallible, so it's best to have multiple lines of defense.
+
+[title="2"]Anti-spam measures[/title]
+
+[media width="150" description="In this config option that embeds an \"E-mail the staff\" link, the address is obfuscated so most bots won't understand it" float="right"]data_custom/images/docs/security_antispam.png[/media]
+Throughout Composr, measures are taken to reduce the chance of e-mail addresses being harvested for use by spammers. Typically, spammers gather e-mail addresses by using bots to automatically scavenge text that looks like an e-mail address from web pages; however Composr does not display member e-mail addresses publicly at all, and instead provides a 'contact member' module. In addition, whenever the staff address, or a staff member's address , is shown, it is [concept]obfuscated[/concept], so as to make it unlikely to be picked up as an e-mail address.
+
+[title="2"]Failed logins[/title]
+
+[media width="150" description="Failed login attempts" float="right"]data_custom/images/docs/security_logins.png[/media]
+When a user tries to login Composr, but fails, it is logged. A proportion (approximately 15%) of these failures turn out to be real attempts to gain unauthorised access to the site, as demonstrated in the screen-shot.
+
+[title="2"]robots.txt[/title]
+
+To remove the possibility of search engines indexing the login screens of your Admin Zone you can create a [tt]robots.txt[/tt] file on the root of your domain name:
+[code]
+User-agent: *
+Disallow: /adminzone/
+Sitemap: http://yourwebsite/cms_sitemap.xml
+Sitemap: http://yourwebsite/cms_news_sitemap.xml
+[/code]
+
+I also added a line there to say where your XML Sitemap is.
+
+[title="2"]File-type white-list[/title]
+
+In the security configuration, Composr defines a list of file types that may be uploaded to the website, via the various upload mechanisms that exist in Composr, such as that of the download module and the attachment system. By default, this white-list is roughly (this is not kept up-to-date):
+ - sql,odt,ods,ps,pdf,doc,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,avi,mov,mpg,mpeg,asf,wmv,ram,ra,rm,qt,mov,zip,tar,rar,gz,wav,mp3,ogg,torrent,php
+
+It is important to understand that there are two sides to the security of file uploads:
+ - on the server-side, it must be impossible for a file to be uploaded that might execute on the server, instead of download (such as a php file). You may have noticed that php is an allowed file extension in the list: this is because php uploads are explicitly blocked internally, but only in the situation where the file would be stored on disk with its original extension (which the attachment system does not do)
+ - on the client-side, it must be impossible for a file to be uploaded that might get downloaded and automatically execute a malicious action on a client computer. One example of such a file type is, to the surprise of most, 'html'. .html files can contain JavaScript, which could be used, if the file was downloaded from the main website domain, to transmit the user's login cookies to any arbitrary hacker. Therefore it is crucial that html files, and other files (swf,fla,svg,xml are suspected to be dangerous at this time) are not added to the list
+
+The client-side HTML situation is unfortunate, as in theory, Composr should be able to control how a downloaded file is treated by something called a 'mime-type': if Composr defines a mime-type for an unknown file-type, or dangerous file-type, as that of a plain-download, it should never do anything but download-directly. However, Microsoft Internet Explorer does not comply with the mime-format and will execute based on file type even when a mime-type is explicitly given: if you do not like this situation, I suggest you direct your disdain toward Microsoft as you consider appropriate. [b]Update:[/b] Microsoft saw the light and IE8 has improved things. Composr will set the switch IE8 has introduced to disable this functionality.
+
+[title="2"]Protect your domain name[/title]
+
+It is important that you don't use a public domain name, or give people access to upload their own sites to your domain. If you do, basic web browser security walls will be broken down, and someone malicious could use techniques to extract your access from you. Giving other's access to subdomains is generally okay, so long as you are careful to configure your cookies so that only the main domain can read them.
+
+[title="2"]Protect your session security[/title]
+
+We recommend the 'Enforce IP addresses for sessions' option is left enabled. If you are on some kind of network such as TOR where your IP address may randomly change, we advise to not use this when administering Composr -- it will greatly reduce your security. If you have an ISP where your IP address changes very frequently, you may want to consider a more reliable ISP.
+
+For a break-down of the risk of disabling this option, see [url="this tracker discussion"]{$BRAND_BASE_URL}/tracker/view.php?id=708[/url].
+
+[title="2"]Client-side measures[/title]
+
+[title="3"]Referrers[/title]
+
+All users with privileged access should have referrers enabled in their web browser. Without this, Composr can't prevent malicious requests being redirected through to your own website's forms from other (malicious) websites.
+By default browsers do have referrers enabled, but some firewall products may disable them for very minor privacy reasons (to stop a website knowing what link you followed to get to it, which most people would agree is not really a privacy issue to them at all).
+
+To check you have referrers enabled, go to Commandr (Admin Zone > Tools > Commandr) and type:
+[code]
+:echo cms_srv('HTTP_REFERER');
+[/code]
+You'll get a URL back that is a URL under your own website.
+
+If you get a blank result, or something like 'unset' or 'hidden', you need to find out why referrers are disabled and re-enable them.
+
+[title="2"]Techniques for increasing security further[/title]
+
+This section details some techniques to increase the security of your site. Most of these techniques are either advanced, or unattractive for most Composr users, which is why they are not included in the default Composr configuration.
+
+[title="3"]Guest access[/title]
+
+[media width="150" description="Securing the member joining process" float="right"]data_custom/images/docs/security_cns_members.png[/media]
+In order to reduce the risk of hackers gaining unauthorised access to areas of your website, you could close down access to all possible areas except to vetted members. By default, Composr is set up to deny guest access to almost all of the site; however, security can be improved further by only allowing members to become fully joined after a manual vetting process.
+To force members to be vetted, you need to enable the 'Require member validation' option, as shown in the screen-shot.
+
+It is possible to use HTTP-Authentication to deny access to the whole of Composr to anyone without a pre-allocated HTTP-Auth password. For more information on this, see 'related topics'.
+
+[title="3"]SSL[/title]
+
+{!security:DOC_SSL}
+
+SSL certificates vary in price immensely, but the price generally depends on the strength of encryption, the prominence of the root certificate authority (a more respected authority may charge more because it carries out more checks, and thus experienced users feel more confident with it), the distance from the root certificate authority the certificate is, and the validity length.
+
+You may decide to do this if the pages transmit confidential information; obvious targets are the login and join pages.
+
+Assuming you have already installed the SSL certificate on the server, you can set up SSL in Composr as follows:
+Go to the Admin Zone > Security > SSL/TLS (HTTPS) configuration, and tick (check) the boxes for the following pages... [tt]:join[/tt], [tt]:login[/tt], [tt]:purchase[/tt], [tt]:shopping[/tt], [tt]site:members[/tt]. (These are the pages that purchases or passwords happen on -- but you can enable for other pages too if you like)
+(this assumes that you have the [tt]ssl[/tt] addon installed)
+
+If you are not able to use SSL, don't think that your site is very insecure: it probably is possible for a hacker to gather the password during transit, but it would not be easy. Sometimes when we consider computer security we lose sight of the insecurities we face every day: it is possible a death cult could take over your office for a week whilst fighting off the military with heavy rocket propelled grenades: likelihoods need to be kept within proportion. This said, if you have very sensitive information, or run an e-commerce site, SSL is essential, as the stakes are high enough for criminal interest to be stimulated.
+
+Note that a page viewed under HTTPS will use HTTPS for all images and other embedded files. The banner will be disabled to make sure this requirement is enforced. The reason for this is that users should not get mixed environment messages that warn them about potential security problems. Template makers and coders should be careful to use the proper Composr mechanisms for referencing resources.
+
+Please be aware Composr can not function with a base URL that is HTTPS, or with server-level restrictions enforcing it's directories to work via HTTPS. HTTPS must be specified by specifying within Composr what pages are to use it (Composr-level), not on a web-server-level.
+
+[title="3"]Secured zones[/title]
+
+[media width="150" description="Securing a zone so that an explicitly logged-in session is required" float="right"]data_custom/images/docs/security_require_session.png[/media]
+It is possible to configure zones so that they require a session to access them. This means that a user can only access the zone if they have actively chosen, in the specific web browser window that is currently being used, to login: login cookies alone cannot gain them access.
+
+This might seem like a very strange thing to enforce, but there is a very good reason: it is very easy for someone to create a malicious website that contains a form with a target of your website, such that that form directs a malicious action when you are tricked to fill it in and click 'submit'. If a barrier of a required session was not imposed, this action could go unabated with your access level direct to perform some malicious action by proxy through you.
+
+The Admin Zone is configured to behave like this by-default, as it is extremely critical, but you may choose to also secure the 'site' zone in the similar fashion.
+
+Composr does provide a secondary defence against this scenario, by checking referrers, but we do not consider referrers secure based on two facts:
+ - this seems an area where there may be web browser vulnerabilities, or unfortunate situations, that lead to inaccuracy of this data
+ - user firewalls, ironically, often block this data (for privacy reasons), preventing us from using it to add to security
+
+[title="3"]Restricting logins[/title]
+
+[media width="150" description="Restricting login so it can only be done for IP addresses that are confirmed via e-mail" float="right"]data_custom/images/docs/security_ip_enquire.png[/media]
+In [concept]Conversr[/concept], it is possible to set usergroups so that members of those usergroups may only immediately login from IP addresses that have been confirmed as valid. To confirm an address as valid, an e-mail is sent out to the member with a confirmation link.
+
+This technique reduces the chance of someone gaining unauthorised access to an account, but is also very annoying for users who do not have a stable IP address.
+
+[title="3"]Optimum server environment[/title]
+
+It is an unfortunate fact that shared web hosting environments are almost always very insecure, as different users with hosting accounts on the web server may interfere with your files on a number of levels. In addition, by extension, if one of the other accounts on the server becomes compromised, your files could also be.
+
+If you run a website with particularly privileged information, or security is critical for other reasons, we highly advise you operate your web server from a dedicated server.
+
+The main issue with shared hosting, is that, unless either:
+[list="1"]
+[*]the environment for hosting accounts is restricted to being PHP-only, with safe-mode (which limits PHP and hence Composr in a negative way) or open_base_dir (which we advise) enabled
+[*]or, the server is set to run web scripts on different hosting accounts using the account holder user-names
+[/list]
+then every web-server-created/writeable file, and your database, is fully writeable to by any other account holder.
+
+If you are fortunate enough to be in situation 2, but not fortunate enough to be in situation 1 (fortunate, depending on your needs of course), then Composr needs special configuration to make use of it. You need to make it so that no files are 'world writeable' (which is the case unless you have suddenly switched to this environment) and so that _config.php is not world writeable or world readable (to protect your database password). Composr is clever enough to detect your situation, and hence will not [concept]chmod[/concept] any PHP-created-files to a world-writeable state as it normal does (it normally does this so that both the account holder user and the web server user have write access to this file- and making them world writeable is the only way to achieve this in a hosting environment).
+
+[title="2"]_config.php[/title]
+
+By default, [tt]_config.php[/tt] is left 'world-writeable' by the installer. This allows the configuration editor to work with it, and allowed the file to be initially filled, but does represent a potential security risk on a shared server.
+
+Whilst many files are world writeable, this file is a particular target, because it may be executed. Therefore if someone on a shared server can write to the file, perhaps via shell access, then they can execute code on your site, possibly unnoticed. It is worth noting that if they had shell access, they could trash your database and uploads anyway, but not so easily execute code on your domain.
+
+To solve this problem, simply remove execute permission for the _config.php file.
+
+It may seem an obvious solution, to not use an executable file to store configuration information. However this file contains critical data, and therefore if it was a file that would be downloaded if accessed instead of executed, this critical data would be exposed; the usual advice is to put the file outside of a downloadable location, or to restrict download, but this is tenuous due to differing web environments Composr must on: in trying to increase security, there would be a big likelihood we could incidentally decrease it.
+
+[title="2"]Master password[/title]
+
+For added security you can remove the:
+[code]
+$SITE_INFO['master_password']='...';
+[/code]
+line from [tt]_config.php[/tt].
+
+It is best to remove it completely, not comment it out. This prevents master password based logins to tools such as the code editor and upgrader.
+
+It means:
+1) If someone found a vulnerability that allowed them to read the hashed master password out of [tt]_config.php[/tt], they could not use Composr-specific rainbow tables to get the original password and therefore login.
+2) Bruce force login attempts cannot work.
+
+[title="2"]Denial Of Service prevention[/title]
+
+Composr is a sophisticated system and comes with an unavoidable overhead. This increases the opportunity for a malicious individual/group to try and take down a server by flooding it with requests. Composr is designed to prevent against this -- it will ban flooders and hackattack repeaters after a point. However, the normal IP banning that Composr uses works via the database, and hence a significant overhead is taken before the ban can be detected. To workaround this, Composr can write IP bans directly into the Apache .htaccess file (obviously, Apache only) -- to do this, the .htaccess file must be writeable by the web server (typically, 666 permissions, although as explained, a well configured environment won't need that).
+
+[title="2"]Rooted-website prevention[/title]
+
+"Rooting" a server involves hacking the web server account and leaving a 'backdoor'. 'Rooting' is either done from some direction that Composr cannot monitor (such as via another web application), or done via a yet unknown vulnerability in Composr.
+
+There is a special script ([tt]rootkit_detection.php[/tt]) that will help detect if Composr PHP files or critical/sensitive database settings are changed, by off-server comparison of data. This is a very advanced script and requires a level of expertise that is outside the scope of this documentation. This method isn't foolproof, but does significantly raise the bar security-wise, reducing the chance that any particular hacker will be able to compromise your website.
+
+[title="2"]HTTP authentication[/title]
+
+There is nothing stopping you using HTTP authentication served by your web server on top of the website if you want some extra security. However, you should let requests from the web server itself through that without needing to authenticate so that it can read it's own URLs (otherwise you could have some problems, such as security errors when editing theme images).
+
+[title="2"]The "TRY_TO_DOWNLOAD_SCRIPT" error in detail[/title]
+
+The full error is:
+[quote]
+Tried to add a downloaded file that points to a script: so they could get the script contents (e.g. passwords)
+[/quote]
+
+The error is saying that the server tried to check the URL was valid but that it found the downloaded file was different to what there was on disk. That suggests to Composr that there's a security issue, that some kind of script is behind the URL, and therefore to not allow a 'trusted' relative URL to it because direct access could bypass security layers. If you really do want to link to a script you can via an absolute URL &ndash; Composr never trusts absolute URLs.
+
+This error could also be caused by some server configuration issue too. For example:
+1) If the server cannot download files from itself properly to check, and whatever it does manage to access is returning HTTP '200' (file found) messages. This seems unlikely but it can be surprising what weird situations happen "in the wild".
+2) If something on the server is interfering with downloads. Something like the new Apache [tt]mod_spdy[/tt] module could cause something like this. That might alter images during transfer and Composr would not receive the file it expected to be checking.
+
+[concepts
+ 1_key="SSL"          1_value="Secure Socket Layer -- encryption over Internet connections so as to avoid interception of information"
+ 2_key="white-list"   2_value="White lists show what things are allowed, as opposed to what are not (black lists); they are theoretically better (but not always practical), as they guard against changes that could add insecurity (e.g. if a file type suddenly starts supporting dangerous macros and wasn't black-listed, it would spell trouble) or oversights"
+ 3_key="obfuscated"   3_value="Muddled up, made difficult to understand: but still correct"
+ 4_key="mime-type"    4_value="A special code that identifies a file type; this allows web systems to make it explicit how files should be treated (e.g. as an attachment, as a 'open in' link, or as a pure file download), rather than being bound by the file extension (which can't really be changed)"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
+ - [page="_SEARCH:tut_chmod"]Linux file permissions[/page]
+ - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page]
+ - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]
+ - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
+ - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
+ - [url="http://www.robotstxt.org/robotstxt.html"]robots.txt help[/url]
+
+{$SET,tutorial_tags,ssl,securitylogging,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]

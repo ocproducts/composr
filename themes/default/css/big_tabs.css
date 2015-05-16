@@ -1,0 +1,50 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.comcode_big_tab_controller {
+	float: left;
+	width: 186px;
+}
+
+.comcode_big_tab_controller a {
+	display: block;
+	height: 41px;
+	font-size: 0.92em;
+	outline: 0;
+	font-weight: bold;
+	line-height: 40px;
+	padding-left: 16px !important;
+	margin-bottom: 2px !important;
+}
+
+.big_tab_inactive a {
+	background: url('{$IMG_INLINE;,big_tabs_controller_button}') no-repeat !important;
+}
+
+.big_tab_active a, .big_tab_inactive a:hover {
+	background: url('{$IMG_INLINE;,big_tabs_controller_button_active}') no-repeat !important;
+}
+
+.big_tab_first.big_tab_inactive a {
+	background: url('{$IMG_INLINE;,big_tabs_controller_button_top}') no-repeat !important;
+}
+
+.big_tab_first.big_tab_active a, .big_tab_first.big_tab_inactive a:hover {
+	background: url('{$IMG_INLINE;,big_tabs_controller_button_top_active}') no-repeat !important;
+}
+
+.comcode_big_tab {
+	/*{+START,IF,{$MOBILE}}*/
+		float: left;
+		margin: 1em 0;
+	/*{+END}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		margin-left: 186px; /* 2px gap to workaround IE lameness */
+		min-height: 190px;
+	/*{+END}*/
+	padding: 1em;
+	border: 2px solid {$GET,pale_border};
+	background-color: {$GET,area_background};
+}

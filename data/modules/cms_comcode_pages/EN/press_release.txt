@@ -1,0 +1,38 @@
+[title="1"]Press Release (a template guide)[/title]
+
+[title="2"]Foo and Bar announce merger[/title]
+
+By Jane Doe
+August 15, 2014
+
+[b]Sheffield, UK[/b] &ndash; Foo Inc and Bar Inc announced today that they would merge into a single organisation, Foobar Inc.
+
+The combined company will continue to offer the products and services previously provided by the individual companies.
+
+The merger will allow Foobar Inc to provide a full stack Foo service, to the benefit of new and existing customers. This is an exciting time for everyone involved in the rapidly advancing Foo market.
+
+Foo Inc will purchase 95% of the stock of Bar Inc, taking over majority ownership, and dissolving Bar Inc. The remaining shareholders of Bar Inc will be provided equity in Foo Inc at a price of 33 GBP per share. Foo Inc will be renamed to Foobar Inc, and the board of Bar Inc will join the board of Foo Inc in the new management structure.
+
+
+[b]About Foo Inc[/b]
+
+Foo Inc has been providing fully-serviced Foo installations since 2002. For more information, see:
+http://foo.example.com/
+
+[b]About Bar Inc[/b]
+
+Bar Inc has been providing Bar components meeting full ISO regulations since 2007. For more information, see:
+http://bar.example.com/
+
+
+[b]Contact[/b]
+
+To learn more about this merger, please contact:
+
+[address]
+Bob Friendly, Media Relations
+1234 Netherhope Road
+Office: (0114) 1234567
+Fax: (0114) 1234560
+[/address]
+[email]bob@example.com[/email]

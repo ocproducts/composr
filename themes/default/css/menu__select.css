@@ -1,0 +1,12 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.menu_type__select ul {
+	margin: 0.25em 0 0 0 !important;
+}
+
+.menu_type__select li {
+	padding: 0.4em 0.5em !important;
+}

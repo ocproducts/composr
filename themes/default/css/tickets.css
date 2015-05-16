@@ -1,0 +1,76 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.support_tickets th {
+	text-align: left !important;
+}
+
+.support_tickets th, .support_tickets td {
+	padding: 1em;
+}
+
+.closed_ticket {
+	font-style: italic;
+	float: right;
+	padding-{!en_left}: 3em;
+	white-space: nowrap;
+}
+
+body table.results_table tbody tr.unclosed_ticket td {
+	background-color: {$GET,yellow_highlight_background} !important;
+}
+
+.ticket_title {
+	font-weight: bold;
+}
+
+.ticket_type {
+}
+
+.ticket_num_posts {
+}
+
+.ticket_first_poster {
+}
+
+.ticket_last_poster {
+}
+
+.ticket_age {
+}
+
+/* Viewing a ticket */
+
+.ticket_page_text {
+	margin-bottom: 2em;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.buttons__add_ticket {
+	background-image: url('{$IMG,icons/24x24/buttons/add_ticket}') !important;
+}
+.buttons__new_reply_staff_only {
+	background-image: url('{$IMG,icons/24x24/buttons/new_reply_staff_only}') !important;
+}
+.menu__adminzone__security__permissions__privileges {
+	background-image: url('{$IMG,icons/24x24/menu/adminzone/security/permissions/privileges}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.buttons__add_ticket {
+		background-image: url('{$IMG,icons/48x48/buttons/add_ticket}') !important;
+	}
+	.buttons__new_reply_staff_only {
+		background-image: url('{$IMG,icons/48x48/buttons/new_reply_staff_only}') !important;
+	}
+	.menu__adminzone__security__permissions__privileges {
+		background-image: url('{$IMG,icons/48x48/menu/adminzone/security/permissions/privileges}') !important;
+	}
+}

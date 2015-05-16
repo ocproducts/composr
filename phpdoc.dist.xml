@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+	<title><![CDATA[<a href="http://compo.sr/">Composr</a> API documentation]]></title>
+	<parser>
+		<target>docs/api</target>
+		<markers>
+			<item>TODO</item>
+			<item>FIXME</item>
+			<item>IDEA</item>
+			<item>LEGACY</item>
+			<item>FUDGE</item>
+			<item>HACKHACK</item>
+			<!--<item>XHTMLXHTML</item>	Don't want to report these-->
+		</markers>
+		<extensions>
+			<extension>php</extension>
+		</extensions>
+		<visibility></visibility>
+	</parser>
+	<transformer>
+		<target>docs/api</target>
+	</transformer>
+	<logging>
+		<level>info</level>
+		<paths>
+			<default>{APP_ROOT}/phpdoc-{DATE}.log</default>
+			<errors>{APP_ROOT}/phpdoc-{DATE}.errors.log</errors>
+		</paths>
+	</logging>
+	<transformations>
+		<template name="composr-api-template" />
+	</transformations>
+	<files>
+		<directory>sources/</directory>
+		<ignore>sources/hooks/</ignore>
+		<ignore>sources/blocks/</ignore>
+		<ignore>sources/forum/aef.php</ignore>
+		<ignore>sources/forum/ipb*.php</ignore>
+		<ignore>sources/forum/mybb.php</ignore>
+		<ignore>sources/forum/none.php</ignore>
+		<ignore>sources/forum/phpbb*.php</ignore>
+		<ignore>sources/forum/smf*.php</ignore>
+		<ignore>sources/forum/vb*.php</ignore>
+		<ignore>sources/forum/wbb*.php</ignore>
+		<ignore>sources/forum/wowbb.php</ignore>
+		<ignore>sources/database/access.php</ignore>
+		<ignore>sources/database/ibm.php</ignore>
+		<ignore>sources/database/oracle.php</ignore>
+		<ignore>sources/database/postgresql.php</ignore>
+		<ignore>sources/database/sqlite.php</ignore>
+		<ignore>sources/database/sqlserver.php</ignore>
+		<ignore>sources/diff.php</ignore>
+		<ignore>sources/jsmin.php</ignore>
+		<ignore>sources/firephp.php</ignore>
+		<ignore>sources/minikernel.php</ignore>
+	</files>
+</phpdoc>

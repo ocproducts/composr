@@ -1,0 +1,165 @@
+[title sub="Written by Philip Withnall, ocProducts"]Composr Tutorial: Running chatrooms (features and advice)[/title]
+
+{!chat:DOC_CHAT}
+
+More information about using the chatroom functionality is available within Composr itself, on the [tt]userguide_chatcode[/tt] page. You might want to link this page onto your menus using the menu editor (it's in the site zone).
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The chat interface[/title]
+
+[media width="150" description="Choosing a chatroom to enter" float="right"]data_custom/images/docs/chat_Chatroom-list.png[/media]
+The main chat interface (comprising the chat lobby, and each chatroom) is what most users of the chat system will see; it's where all the messages are posted and received, and thus where most activity happens.
+
+A link to the chat lobby placed on the menus of your website, and when loaded, presents you with a list of all chatrooms you are eligible to enter (i.e. ones you don't have permission to access or you've been banned from don't appear). If you have the right permissions (the 'Edit mid-impact (medium visibility) content' privilege, and access to the [tt]cms_chat[/tt] module), appropriate links also appear to the moderation module.
+
+You will also see a friend list, which you can use to start instant messaging conversations. Instant Messaging conversations are like conversations in chatrooms, except rooms do not need to be created -- they are run on purely a private invitation basis and very quick to get going.
+
+[title="3"]Chatrooms[/title]
+
+[media width="150" description="Inside a chatroom" float="left"]data_custom/images/docs/chat_Chat-message-window.png[/media]
+Once in a chatroom, you're presented with a automatically-updating window of the current chat messages, an input area at the top (with an expandable formatting buttons area), and some options at the bottom.
+
+[media width="150" description="Chatroom options" float="right"]data_custom/images/docs/chat_Chatroom-options.png[/media]
+To send a message, simply enter it in the input box at the top, and press "enter", or click the "Submit message" button. The input box will be emptied, and your message will appear in the message window shortly afterwards. Messages from other conversants in the same chatroom appear periodically in the messages window.
+
+The options at the bottom of the chatroom page control how your messages appear to others, and there are also some links to pertinent links provided below. The list of links is filtered according to permissions.
+
+[title="3"]Instant Messaging[/title]
+
+Instant Messaging (IM) conversations can be started just by clicking on a name from the friend list. To add a member to your friend list, just visit the member's profile and click the appropriate link ([concept]Conversr[/concept]-only) -- alternatively, you can type in usernames to add from the chat lobby. If you wish to start a conversation with multiple people, you may do so by ticking (checking) them and clicking the appropriate button. You can also tick (check) people and add them in to an existing conversation.
+There is also a configuration option that allows you to start IM conversations by clicking on usernames ("Clicking a username starts an IM"). Ordinarily this action would link to a member profile view screen, but for 'chat-based' websites, starting an IM may be more appropriate.
+
+You may have multiple simultaneous conversations, as conversations are separated using tabs.
+
+If a member is not in the lobby when they are invited to start a conversation then they will be sent an e-mail alert after you make the first message in a conversation with them, inviting them to visit the lobby. Upon visiting the lobby all active conversations that they have started or been invited to will appear.
+It is recommended that members who make a lot of use of the IM system leave the lobby open, so that they are easily reachable. By the time you respond to your e-mail alert, the conversant who wishes to talk to you may have lost interest. [b]Alternatively[/b], there is a configuration option ("Site-wide IM") you can enable that essentially turns your whole website into the chat lobby, so that pop-up windows instantly appear for any new conversation that someone starts with a member (assuming the member is somewhere on the website of course).
+
+Conversations may be closed by clicking the 'Close' button. If you do not close a conversation then it will remain in the system unless you are the only member who has not closed it and you have since left the lobby.
+
+The friend list shows online status indication for all your friends, and similar statuses are shown for all conversants within active conversations. These statuses are dynamically updated as members come and go (there's no need to reload your browser window). Members may be:
+ - online (using the website, but not in the lobby)
+ - offline (not using the website at all)
+ - active (in the lobby)
+ - away (was in the lobby recently, but is not anymore -- may be online, or may be offline)
+
+If a member signs in, or a new message is posted in a conversation, then the browser window may flash (depending on your web browser). A sound will also play  if you have left sound enabled. In addition, when a member signs in an activity indicator will mention that they have just signed in and the indicator will remain for a number of seconds.
+
+[title="3"]Blocking[/title]
+
+You may choose to block members. Blocked members cannot easily see when you are online -- it is the Composr equivalent of hiding from a member. However, just as in the real world, someone paying close attention will not be fooled, as they will see your activity and notice that you are not ever online, and 'join the dots' to realise that you have blocked them.
+
+[title="3"]Downloading chat logs[/title]
+
+[media width="150" description="Link to download chat logs" float="left"]data_custom/images/docs/chat_Download-chat-logs-link.png[/media]
+[media width="150" description="The chat log download preparation interface" float="right"]data_custom/images/docs/chat_Download-chat-logs.png[/media]
+You can download logs of any chat conversations. To do this, simply click the "Download chat logs" link at the bottom of a chatroom (i.e. from inside the chatroom). You will be presented with a form, where you can specify the time/date range from which to collect messages. Clicking submit will process the request, and provide you with the logs.
+
+[title="3"]Setting sound effects[/title]
+
+Chatroom users may set sound effects for different chat actions (from the link provided in the chat lobby), and also override the sound effects so they are different for different members. New sound effects may be uploaded in [tt].mp3[/tt] format, or effects may be chosen from the inbuilt sound effect library.
+
+[title="3"]Creating a private room[/title]
+[surround]
+[media width="150" description="The private room creation interface" float="left"]data_custom/images/docs/chat_Create-private-room.png[/media]
+Private chatrooms are the chat equivalent of an [concept]Conversr[/concept] Private Topic. Anybody can create them, but only certain specified people can view them and use them. If a private chatroom is unvisited and unused for (by default) more than 24 hours, it will be automatically deleted.
+
+When creating a private chatroom, bear in mind what sort of purpose you're creating the room to fulfil, and try to outline this in the room entry message. Make sure you add some members or usergroups to the allow/disallow lists as well, or the room you create won't be private at all (unless you define access, access is public)!
+
+Once created, the private chatroom will be visible in the chatrooms list for all eligible members.
+[/surround]
+[title="2"]Moderation[/title]
+
+The moderation interface for the chat system (in the [tt]cms_chat[/tt] module) allows the editing/deletion of chat messages.
+
+[title="3"]Inline moderation[/title]
+
+[media width="150" description="Inline moderation options" float="right"]data_custom/images/docs/chat_Chat-inline-moderation-links.png[/media]
+Each post in a chatroom is displayed with a few potent links, which allow users with the correct privileges to edit the message, or ban the user. Clicking on each link will take you to a page specific to each action.
+
+[title="3"]Editing messages[/title]
+
+[media width="150" description="Choosing a room to moderate" float="left"]data_custom/images/docs/chat_Moderation-panel-rooms.png[/media]
+[media width="150" description="Messages to moderate" float="right"]data_custom/images/docs/chat_Moderation-panel-messages.png[/media]
+To edit messages, you have to use the chat system moderation page, which resides in the Content Management Zone, but can be accessed using one of the several moderation links peppered around the main chat interface. The main moderation screen lists all the chatrooms on the system, as well as pertinent information such as how many messages have been posted in each room. Clicking on a room name takes you to a more specific interface for that room.
+
+[media width="150" description="Moderating a message" float="right"]data_custom/images/docs/chat_Moderation-panel-edit-message.png[/media]
+This interface lists all messages in the room (with chatcode unparsed), with some useful information and a link to the member profile view screen of the submitter. Clicking on the message post date takes you to a message-edit page. On this page, you can edit the message details, and submit them. The changes won't immediately be reflected in the views of anybody using the relevant chatroom, but if a new user joins, or if somebody refreshes the room, they'll see the changes.
+
+[title="3"]Deleting messages[/title]
+
+To delete a chat message, simply go to its edit screen, and tick (check) the "Delete" box, then submit the page. The message will be completely erased from history. Please note that this might take a significant chunk out of a conversation, so should be used sparingly; editing is probably a better way to go.
+
+[title="3"]Deleting all messages[/title]
+
+[media width="150" description="The link to delete all messages in a room" float="right"]data_custom/images/docs/chat_Delete-all-messages-link.png[/media]
+Sometimes it's necessary to delete all the messages in a chatroom, whether to preserve sanctity/sanity, or simply to clean up. To delete all the messages in a chatroom, navigate to the specified chatroom's moderation page (where all the messages are listed), and click the "Delete all messages" link. A confirmation page will appear. Clicking "Proceed" from the confirmation will result in permanent deletion of all the messages.
+
+[title="2"]Administration[/title]
+[surround]
+[media width="150" description="Selecting a chatroom for administration" float="left"]data_custom/images/docs/chat_Administration-chatrooms.png[/media]
+The administration interface to the chat system allows the manipulation of chatrooms themselves. It is found in Admin Zone > Structure > Chatrooms.
+[/surround]
+[title="3"]Adding chatrooms[/title]
+
+[media width="150" description="The administration interface to add a chatroom" float="right"]data_custom/images/docs/chat_Administration-add-chatroom.png[/media]
+The form to add a chatroom to the system is under the 'Add chatroom' icon.
+
+Submitting the form will create the chatroom, and it will be immediately visible and accessible to all eligible conversants.
+
+[title="3"]Editing chatrooms[/title]
+
+[media width="150" description="The administration interface to edit a chatroom" float="right"]data_custom/images/docs/chat_Administration-edit-chatroom.png[/media]
+Click on the 'Edit chatroom' icon to see a list of all the chatrooms. Clicking on the name of a chatroom will bring you to the edit form for that chatroom.
+
+All the options are the same as for the add chatroom form, and submitting the form makes the changes immediately visible to users of the chat system.
+
+[title="3"]Deleting chatrooms[/title]
+
+To delete a chatroom, simply go to that chatroom's edit screen, and tick (check) the "Delete" box, then click the "Save" button. The chatroom will be completely erased, and so will all messages in that chatroom. Any conversants using that chatroom will receive an error the next time they refresh, or the next time the system checks for messages.
+
+[title="3"]Deleting all chatrooms[/title]
+[surround]
+[media width="150" description="The link to delete all chatrooms" float="left"]data_custom/images/docs/chat_Delete-all-rooms-link.png[/media]
+[media width="150" description="Confirmation for deleting all chatrooms" float="right"]data_custom/images/docs/chat_Delete-all-chatrooms.png[/media]
+If you want to delete all the chatrooms, and all the chat messages on the system (this is a drastic measure), you must click the "Delete all rooms" icon. You will be presented with a verbose confirmation page. Clicking "Proceed" will delete everything. You may go back in your browser to cancel the procedure.
+
+
+[box="The shoutbox"]
+If you are using the shoutbox block, which works via a chatroom, you will have just deleted its associated chatroom.
+Be sure to create a new chatroom for the shoutbox to feed from and re-associate it via the block parameter (or if you didn't use a block parameter, the block will automatically associate with the new chatroom as it'll be the first one).
+[/box]
+[/surround]
+[title="2"]Advice for younger users[/title]
+
+Teenagers and children may hear many stories of chatrooms being dangerous and that they should stay away from them. As an administrator, you should place some emphasis on safety, and make sure your younger users are aware of the following guidelines:
+ - Do not arrange to meet people met in a chatroom
+ - Do not trust anybody you meet in a chatroom -- no matter what they tell you, they don't have to be telling the truth
+ - Do not send photos, reveal your real name, or do webcam sessions
+ - Remember: anybody could be using the chatrooms; not just people like you
+If users of your chatrooms are aware of this advice, and take heed of it, hopefully no problems will arise. However, it would be wise to occasionally (or frequently) check on what's going on in each chatroom, just to be sure. The moderation facilities are there for a reason.
+
+[title="2"]Bots (advanced)[/title]
+
+The Chatroom system supports bots. These are described in the chatcode userguide, but basically chatroom users can send private messages to "bot" and get messages back.
+
+Programmers can add new bots by writing new hook code files (the existing ones in [tt]sources/hooks/modules/chat_bots[/tt] serve as examples).
+
+It is easy to imagine useful bots that could be created; as just one example, imagine a bot that could answer questions based on searching an FAQ catalogue.
+
+[title="2"]Live sales chat[/title]
+
+Composr caters well for public/private chatrooms, and private instant messaging, but is not designed specifically for one-on-one live chat sessions between guest visitors and a staff team.
+For this we advise integration external software, which should be very easy. For an example of a free live chat solution see [url="Comm100"]http://www.comm100.com/livechat/features.aspx[/url].
+This is one of the few cases where relying on a third party tool does not provide user experience problems, as it's a use-case that is quite oblique to the rest of the website experience (works in a popup, and is an isolated sequence of interactions).
+
+[concepts
+ 1_key="Chatroom"   1_value="An online congregation point, where many people can talk simultaneously -- over the internet -- in one big text-based conversation (similar to IRC)"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
+
+{$SET,tutorial_tags,Chatrooms,chat,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes really cool AJAX-driven chat and instant messaging functionality. Read about the features, and see general advice.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,47 @@
+.website_body .column_wrapper, .website_body .column_wrapper_2 {
+	visibility: hidden;
+	width: 950px;
+	overflow: hidden;
+	/*overflow-x: scroll; If you want this the visibility: hidden must be removed*/
+}
+
+.website_body .column_wrapper .column {
+	width: 283px;
+	visibility: visible;
+}
+
+.website_body .column_wrapper_2 .column {
+	width: 420px;
+	visibility: visible;
+}
+
+.column {
+	margin: 0 25px;
+	color: #535353;
+	font-size: 0.95em;
+	text-align: justify;
+}
+
+.column ul {
+	text-align: left;
+}
+
+.column>:first-child {
+	margin-top: 0;
+}
+
+.column.first {
+	margin-left: 0;
+}
+
+.column.first:first-letter {
+	font-size: 1.5em;
+}
+
+.column.last {
+	margin-right: 0;
+}
+
+.column img {
+	max-width: 100%;
+}

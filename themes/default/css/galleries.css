@@ -1,0 +1,338 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Both flow mode and viewing entries */
+
+.gallery_entry_details {
+	margin-bottom: 1em;
+}
+
+.gallery_member_details {
+	min-width: 24em;
+}
+
+.gallery_entry_field_name_column {
+	width: 8.5em;
+}
+
+.gallery_entry_field_value_column {
+	width: 16em;
+}
+
+.delete_cross_button, .delete_cross_button div {
+	display: inline;
+}
+.delete_cross_button input,
+.gallery_regular_thumb .mass_select_marker,
+.flow_mode_thumb .mass_select_marker {
+	position: absolute;
+	right: 2px;
+	top: 2px;
+	{$BETA_CSS_PROPERTY,backface-visibility: hidden;} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,opacity: 0.0;}
+	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+}
+.gallery_regular_thumb .mass_select_marker,
+.flow_mode_thumb .mass_select_marker {
+	right: 7px !important;
+}
+.gallery_regular_thumb .mass_select_marker input,
+.flow_mode_thumb .mass_select_marker input {
+	float: none !important;
+	margin: 0 0 0 0 !important;
+}
+.gallery_regular_thumb,
+.flow_mode_thumb {
+	position: relative;
+}
+.gallery_regular_thumb:hover .delete_cross_button input,
+.flow_mode_thumb:hover .delete_cross_button input,
+.gallery_regular_thumb:hover .mass_select_marker,
+.flow_mode_thumb:hover .mass_select_marker {
+	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+}
+.gallery_regular_thumb .delete_cross_button input:hover,
+.flow_mode_thumb .delete_cross_button input:hover,
+.gallery_regular_thumb .mass_select_marker:hover,
+.flow_mode_thumb .mass_select_marker:hover {
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+}
+
+/* Non flow-mode only */
+
+{$,Our standard Composr-wide thumbnail image size is defined by the thumb_width option}
+{$SET,gallery_thumb_size,{$CONFIG_OPTION,thumb_width}px}
+{$,However actually lets make them smaller custom sizes for the gallery and let CSS scale-down the larger thumbnail images}
+{$SET,gallery_thumb_size,170px}
+{$,That is not the most efficient approach - which would be to use the Tempcode THUMBNAIL symbol in the GALLERY_IMAGE/GALLERY_VIDEO templates to generate idealised thumbnails and tie them into the HTML - but that is fiddly and messy, requires more thought and planning by the web designer}
+{$,Or, of course we could use the standard thumbnail size, or change the standard thumbnail size, but that would affect other systems which may want the larger thumbnails}
+
+.gallery_grid_cell_wrap {
+	overflow: hidden;
+
+	/* Fiddle it so our grid cells will be flush with the left */
+	margin-left: -0.5em;
+	width: 100%;
+}
+
+.gallery_grid_cell {
+	float: {!en_left};
+	padding: 0.4em;
+}
+
+.gallery_regular_thumb {
+	font-size: 0.85em;
+	border: 1px solid {$GET,standard_border};
+	background-color: {$GET,area_background};
+	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
+	/*{+START,IF,{$MOBILE}}*/
+		display: inline-block;
+	/*{+END}*/
+}
+
+.gallery_media_title_cropped * {
+	vertical-align: middle;
+}
+.gallery_media_title_cropped>span {
+	max-width: 120px;
+	display: inline-block;
+	white-space: nowrap;
+	{$BETA_CSS_PROPERTY,text-overflow: ellipsis;}
+	overflow: hidden;
+}
+
+.img_thumb_wrap {
+	/* Essentially adds padding around thumbnails; the thumbnails are sized to fit a box as tightly as possible, but unused space is not stored inside the images themselves */
+	width: {$GET,gallery_thumb_size};
+	height: {$GET,gallery_thumb_size};
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.img_thumb_wrap a {
+	outline: 0;
+}
+
+.img_thumb_wrap .img_thumb {
+	vertical-align: bottom; /* Removes gap under this centered inline image, by moving it to baseline */
+
+	/* Maybe the thumbnail size has been reduced at some point - guard against this */
+	max-width: {$GET,gallery_thumb_size};
+	max-height: {$GET,gallery_thumb_size};
+}
+
+
+.fp_col_block .img_thumb_wrap {
+	width: 120px;
+	height: 120px;
+}
+.fp_col_block .img_thumb_wrap .img_thumb {
+	max-width: 120px;
+	max-height: 120px;
+	display: block;
+}
+
+.gallery_regular_thumb p, .gallery_regular_thumb .grating {
+	margin: 0.5em;
+	min-height: 1.5em;
+}
+
+.gallery_regular_thumb .grating {
+	float: right;
+}
+
+.gallery_tooltip {
+	font-size: 0.85em;
+}
+
+.gallery_tooltip h3 {
+	margin-bottom: 0.85em;
+}
+
+/* Flow-mode only */
+
+.flow_mode_details .gallery_entry_details .box {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+.flow_mode_details .gallery_entry_details .box.staff_actions {
+	margin-top: 1em !important;
+}
+
+.flow_mode_thumb {
+	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	display: inline-block;
+	/*{+START,IF,{$MOBILE}}*/
+		margin: 0.5em;
+	/*{+END}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		margin: 0 1em;
+	/*{+END}*/
+	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+}
+.flow_mode_thumb:hover, body.touch_enabled .flow_mode_thumb {
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+}
+.flow_mode_thumb .img_thumb {
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+}
+
+.flow_mode_thumb img {
+	max-width: 150px; /* Smaller, for carousel */
+}
+
+.flow_mode_video {
+	margin-bottom: 1em;
+}
+
+/* Viewing entries */
+
+.gallery_entry_screen {
+	width: 100%;
+	min-height: 100%;
+}
+
+.nav_mid {
+	margin-top: 0.5em;
+}
+
+.slideshow_speed {
+	position: absolute;
+	right: 2px;
+	top: 0;
+}
+
+.slideshow_speed input {
+	width: 3em;
+}
+
+.media_box .box {
+	margin-top: 0;
+}
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.media_box .gallery_entry_details {
+		margin-left: 1em;
+		max-width: 18em;
+	}
+
+	.media_box .gallery_entry_details table {
+		margin-top: 0;
+	}
+/*{+END}*/
+
+/* The timer countdown */
+.changer {
+	font-weight: bold;
+	font-family: Courier, monospace;
+	font-size: 1.2em;
+}
+
+/* side_galleries block */
+
+.side_galleries_block p {
+	margin-top: 0.5em;
+}
+
+.side_galleries_block_exp {
+	font-weight: bold;
+	background: none;
+	color: {$GET,slightly_seeded_text};
+}
+
+.side_galleries_block ul.compact_list {
+	margin: 0;
+	padding: 0;
+}
+
+.side_galleries_block ul.compact_list li {
+	margin: 0 0 0 22px;
+	padding: 0;
+}
+
+/* Image fader block */
+
+.image_fader_box {
+	position: relative;
+	border: 1px solid {$GET,standard_border};
+	display: inline-block;
+}
+
+.image_fader_box img {
+	display: block;
+}
+
+/* If nested in a box already */
+.box_inner>.image_fader_box {
+	border: 0;
+}
+
+.gallery_tease_pic_wrap {
+	margin-bottom: 1.5em;
+}
+
+.gallery_tease_pic_wrap h2, .gallery_tease_pic_wrap h3 {
+	max-width: 18em;
+}
+
+.gallery_tease_pic {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 40em;
+	/*{+END}*/
+	margin: 0 auto;
+	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
+}
+
+.gallery_tease_pic_pic {
+	float: {!en_right};
+	margin-{!en_left}: 0.5em;
+	text-align: {!en_right};
+}
+
+.gallery_tease_pic>.box {
+	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 0;}
+}
+
+#tease_scrolling_text {
+	width: 23em;
+}
+
+/* Make sure it fits okay on the side panel */
+.global_side_panel .gallery_tease_pic {
+	width: auto;
+}
+.global_side_panel .gallery_tease_pic_wrap h2, .global_side_panel .gallery_tease_pic_wrap h3 {
+	display: none;
+}
+.global_side_panel .img_thumb_wrap .img_thumb {
+	max-width: 100%;
+}
+
+/* Miscellaneous media handling */
+
+.gallery_pdf {
+	width: 100%;
+	height: 600px;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.buttons__slideshow {
+	background-image: url('{$IMG,icons/24x24/buttons/slideshow}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.buttons__slideshow {
+		background-image: url('{$IMG,icons/48x48/buttons/slideshow}') !important;
+	}
+}

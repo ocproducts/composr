@@ -1,0 +1,586 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Chat lobby (except IM) */
+
+.box___chat_lobby_screen_rooms {
+	margin-top: 2em;
+}
+
+.chat_rooms h3, .chat_actions h3 {
+	border-bottom: 0;
+}
+
+.chat_rooms {
+	width: 50%;
+	padding-left: 1em;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+
+.chat_rooms .associated_details:last-child {
+	display: block;
+}
+
+.chat_actions {
+	float: {!en_right};
+	width: 50%;
+	padding-left: 1em;
+	border-left: 1px solid {$GET,pale_border};
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	padding-bottom: 1em;
+}
+
+.chat_actions li {
+	margin: 0.5em 0 !important;
+}
+
+.chat_multi_tab {
+	background: url('{$IMG;,icons/16x16/help}') no-repeat;
+	padding-{!en_left}: 20px;
+	margin: 21px 0 8px 4px;
+	font-size: 0.9em;
+	width: 70%;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.chat_multi_tab {
+		background-image: url('{$IMG;,icons/32x32/help}');
+		background-size: 16px 16px;
+	}
+}
+
+/* Chat rooms */
+
+.chat_you_are {
+	float: {!en_right};
+	text-align: {!en_right};
+	margin: 2px;
+}
+
+.chat_you_are img {
+	width: 18px;
+}
+
+.chat_posting_area {
+	border: 1px solid {$GET,pale_border};
+	padding: 0.5em;
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+}
+
+.chat_posting_area textarea, .chat_posting_area input, .chat_posting_area img {
+	vertical-align: middle;
+}
+
+.chat_posting_area textarea {
+	margin-top: 0;
+	width: 20em;
+	margin-right: 1em;
+}
+
+.below_main_chat_window {
+	margin-top: 2em;
+	margin-bottom: 4em;
+}
+
+#chat_comcode_panel {
+	margin-top: 1em;
+}
+
+.chat_options_title {
+	margin-top: 0.5em;
+}
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.chat_room_options, .chat_room_actions {
+		float: {!en_left};
+		width: 50%;
+		min-height: 16em;
+	}
+
+	.chat_room_options {
+		padding: 0.5em;
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	}
+
+	.chat_room_actions {
+		padding-left: 1em;
+		border-left: 1px solid {$GET,pale_border};
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	}
+
+	.chat_colour_option, .chat_font_option {
+		float: {!en_left};
+		width: 50%;
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	}
+
+	.chat_colour_option {
+		padding-{!en_right}: 0.5em;
+	}
+/*{+END}*/
+
+.chat_colour_option label {
+	display: block;
+}
+
+.chat_colour_option p:first-child, .chat_font_option p:first-child {
+	margin-top: 0;
+	margin-bottom: 0.25em;
+}
+.chat_colour_option p:last-child, .chat_font_option p:last-child {
+	margin-top: 0.25em;
+	margin-bottom: 0;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.chat_room_options, .chat_room_actions {
+		padding: 0.5em;
+	}
+
+	.chat_options_title, .chat_options, chat_colour_option, .chat_font_option {
+		margin: 1em 0;
+	}
+
+	.chat_room_options p:last-child {
+		margin: 0;
+	}
+/*{+END}*/
+
+/* Chat message stream */
+
+.messages_window_full_chat {
+	max-height: 35em;
+	overflow: auto; /* Needed for Opera, very strange */
+}
+
+.messages_window {
+	vertical-align: middle;
+	overflow: auto;
+	margin-top: 1em;
+}
+
+.chat_message {
+	border: 1px solid {$GET,pale_border};
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_2_background});}
+	background-color: {$GET,area_background};
+	padding: 0.5em;
+	margin: 1em 0;
+	overflow: hidden;
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+}
+
+.chat_lobby_convos_area_messages .chat_message {
+	margin: 0.6em 0;
+}
+
+.chat_message blockquote {
+	margin: 0;
+}
+
+.ghost .chat_message .associated_links_block_group {
+	display: none;
+}
+
+.chat_message_old {
+	background-color: {$GET,area_faded_background} !important;
+}
+
+.chat_avatar {
+	float: {!en_right};
+	width: 50px;
+	margin-{!en_left}: 0.5em;
+}
+.chat_lobby_convos_area_messages .chat_avatar {
+	width: 30px;
+}
+
+/* Post details */
+.chat_message>div {
+	border: 1px dotted {$GET,standard_border};
+	border-left: 0;
+	margin: 0.5em 0.5em 0.5em -0.5em;
+	padding: 0.2em;
+	font-size: 0.9em;
+	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	margin-right: 60px;
+}
+.chat_lobby_convos_area_messages .chat_message>div {
+	margin-right: 40px;
+}
+.chat_message>div:hover, body.touch_enabled .chat_message>div {
+	{$BETA_CSS_PROPERTY,opacity: 1;}
+}
+.chat_operator_staff a, .chat_operator_staff a:visited, .chat_operator_staff a:hover {
+	color: {$GET,red_highlight_text};
+}
+.chat_message_by {
+	font-style: italic;
+}
+
+/* Instant messaging */
+
+.loading_overlay {
+	position: absolute;
+	left: 20%;
+	width: 60%;
+	top: 30%;
+	border: 1px solid {$GET,pale_border};
+	background-color: {$GET,area_background};
+	font-size: 1.5em;
+	padding: 3em;
+	text-align: center;
+}
+
+.chat_im_convos_wrap {
+	margin-top: 3em;
+}
+
+.alert_box_wrap {
+	padding-top: 3em;
+}
+
+.chat_lobby_friends {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		float: {!en_left};
+		width: 17em;
+	/*{+END}*/
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+
+.chat_lobby_friends input {
+	vertical-align: middle;
+}
+
+.chat_lobby_convos {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		float: {!en_left};
+		width: 24em;
+		margin-{!en_right}: 1em;
+		border-{!en_right}: 1px solid {$GET,pale_border};
+		min-height: 29.5em;
+		padding-{!en_right}: 0.5em;
+	/*{+END}*/
+	margin-top: 1em;
+	margin-{!en_left}: 0.75em;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+
+.chat_lobby_convos_tabs {
+	border-left: 0;
+	border-right: 0;
+	border-top: 0;
+	border-bottom: 1px solid;
+	border-color: {$GET,pale_border};
+	min-height: 21px;
+	overflow: hidden;
+}
+
+.chat_lobby_convos_tab_first {
+}
+
+.chat_lobby_convos_current_tab {
+	text-shadow: 1px 1px 1px {$GET,standard_border};
+}
+
+.chat_lobby_convos_tab_new_messages {
+	color: {$GET,red_highlight_text};
+}
+
+.chat_lobby_convos_tab_uptodate, .chat_lobby_convos_tab_new_messages {
+	background: url('{$IMG;,tab}');
+	background-repeat: no-repeat;
+	float: {!en_left};
+	padding: 3px 5px 0 5px;
+	height: 20px;
+	border-right: 1px solid {$GET,pale_border};
+	text-align: center;
+}
+
+.chat_lobby_convos_areas {
+}
+
+.chat_participant_avatar {
+	display: block;
+	width: 45px;
+	float: {!en_left};
+	margin-{!en_right}: 3px;
+}
+
+.chat_lobby_convos_area {
+	overflow: hidden;
+}
+
+.chat_lobby_convos_area_main {
+	width: 14em;
+	overflow: hidden;
+	float: left;
+}
+
+.chat_lobby_convos_area_messages {
+	margin: 1em 0;
+	height: 20em;
+}
+
+.chat_friends_column {
+	width: 25px;
+}
+
+.chat_name_column, .chat_online_column {
+	width: auto;
+}
+
+.chat_choose_column {
+	width: 25px;
+}
+
+.im_post_bits {
+}
+
+.im_post_bits .horiz_field_sep {
+	display: inline !important;
+}
+
+.im_post_bits input, .im_post_bits img {
+	vertical-align: top;
+	margin-top: 3px !important;
+	/* For some reason aligning to middle added extra space */
+}
+
+.im_post_bits span {
+	float: {!en_right};
+}
+
+.im_post_field {
+	margin: 0 0 0 1px;
+	width: 13.5em;
+	overflow: hidden;
+}
+
+.im_close_button {
+	text-align: {!en_right};
+	margin-bottom: 1em;
+}
+
+.im_close_button input {
+	width: 8em;
+}
+
+.friend_active {
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+}
+.friend_inactive {
+	{$BETA_CSS_PROPERTY,opacity: 0.4;}
+}
+
+.friend_actions {
+	margin: 1em 0;
+}
+
+.friend_actions input {
+	width: 100%;
+	text-align: left;
+	margin: 0.2em 0 !important;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+
+.chat_lobby_convos_area_bar {
+	float: {!en_right};
+	margin-left: 1em;
+	width: 8.2em;
+	overflow: hidden;
+}
+
+.chat_lobby_convos_area_participants {
+	height: 19.5em;
+	overflow: auto;
+}
+
+.chat_lobby_convos_area_participants .none {
+	color: {$GET,red_highlight_text};
+}
+
+.chat_lobby_im_participant .float_surrounder a {
+	display: block;
+}
+
+.sound_effects_form p {
+	margin-bottom: 0;
+	padding-bottom: 1em;
+}
+
+/* Instant messaging (site-wide) */
+
+.sitewide_im_popup_body {
+	background-color: {$GET,area_background} !important;
+}
+
+.chat_sound_effects_checkbox {
+	margin-top: -2.2em;
+}
+
+.im_event {
+	position: fixed;
+	width: 11em;
+	z-index: 1000;
+	overflow: hidden;
+	background-color: {$GET,floating_alert_background};
+	color: {$GET,native_ui_foreground};
+	border: 1px solid {$GET,pale_border};
+	{$BETA_CSS_PROPERTY,box-shadow: 0px 0px 20px {$GET,dark_shadow};}
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	padding: 1em;
+}
+
+.im_event p {
+	margin-top: 0;
+}
+
+.im_event .im_popup_close_button {
+	float: {!en_right};
+	margin: 0 0 0.5em 0.5em;
+	cursor: pointer;
+}
+
+.im_event .im_popup_avatar {
+	float: {!en_left};
+	width: 25px;
+	height: 25px;
+	margin-{!en_right}: 0.5em;
+}
+
+.im_event .actions_list {
+	float: right;
+}
+
+/* Shoutbox */
+
+.shoutbox_message {
+	font-weight: bold;
+	font-size: 0.9em;
+	text-indent: 0;
+	margin: 0;
+}
+
+/* Friends block */
+
+.global_side_panel {
+	position: relative;
+}
+
+.block_side_friends {
+	/*position: fixed;	Useful start for tying to bottom, but you probably want to leave a footer gap so you can move it fully down
+	bottom: 7.5em;
+	background-color: {$GET,main_background};
+	width: 13em;
+	padding: 0 1em;
+	margin-left: -1em;*/
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.buttons__ignore {
+	background-image: url('{$IMG,icons/24x24/buttons/ignore}') !important;
+}
+.menu__social__chat__chat {
+	background-image: url('{$IMG,icons/24x24/menu/social/chat/chat}') !important;
+}
+.menu__social__chat__sound {
+	background-image: url('{$IMG,icons/24x24/menu/social/chat/sound}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.buttons__ignore {
+		background-image: url('{$IMG,icons/48x48/buttons/ignore}') !important;
+	}
+	.menu__social__chat__chat {
+		background-image: url('{$IMG,icons/48x48/menu/social/chat/chat}') !important;
+	}
+	.menu__social__chat__sound {
+		background-image: url('{$IMG,icons/48x48/menu/social/chat/sound}') !important;
+	}
+}
+
+/*
+=========================
+==========Icons==========
+=========================
+*/
+
+ul.icon_links_block_group {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	float: right;
+	/*{+START,IF,{$MOBILE}}*/
+		margin: 1em 0;
+	/*{+END}*/
+}
+
+ul.icon_links_block_group>li {
+	list-style-type: none;
+	margin: 0 0 0 1em;
+	padding: 0 0 0 17px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-position: 0 2px;
+	min-height: 15px;
+}
+
+.icon_14_add {
+	background-image: url('{$IMG,icons/14x14/add}') !important;
+}
+.icon_14_edit2 {
+	background-image: url('{$IMG,icons/14x14/edit2}') !important;
+}
+.icon_14_export {
+	background-image: url('{$IMG,icons/14x14/export}') !important;
+}
+.icon_14_proceed {
+	background-image: url('{$IMG,icons/14x14/proceed}') !important;
+}
+.icon_14_remove_manage {
+	background-image: url('{$IMG,icons/14x14/remove_manage}') !important;
+}
+.icon_14_remove {
+	background-image: url('{$IMG,icons/14x14/remove}') !important;
+}
+.icon_14_sound_effects {
+	background-image: url('{$IMG,icons/14x14/sound_effects}') !important;
+}
+.icon_14_tools {
+	background-image: url('{$IMG,icons/14x14/tools}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.icon_14_add {
+		background-image: url('{$IMG,icons/28x28/add}') !important;
+	}
+	.icon_14_edit2 {
+		background-image: url('{$IMG,icons/28x28/edit2}') !important;
+	}
+	.icon_14_export {
+		background-image: url('{$IMG,icons/28x28/export}') !important;
+	}
+	.icon_14_proceed {
+		background-image: url('{$IMG,icons/28x28/proceed}') !important;
+	}
+	.icon_14_remove_manage {
+		background-image: url('{$IMG,icons/28x28/remove_manage}') !important;
+	}
+	.icon_14_remove {
+		background-image: url('{$IMG,icons/28x28/remove}') !important;
+	}
+	.icon_14_sound_effects {
+		background-image: url('{$IMG,icons/28x28/sound_effects}') !important;
+	}
+	.icon_14_tools {
+		background-image: url('{$IMG,icons/28x28/tools}') !important;
+	}
+}

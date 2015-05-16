@@ -1,0 +1,119 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Creating sub-communities (and sub-sites)[/title]
+
+Composr is designed to be able to support large community sites, and a common features of the largest sites is to have sub-communities within the larger community. There are a number of features in Composr to support this, including:
+ - [b]Zones[/b] (different zones may be created for each sub-community, located under a URL beneath the main site, with their own set of pages)
+ - [b]Redirection pages[/b] (using redirection pages, common modules, such as the download module, may be made to appear as if they are running from individual zones)
+ - [b]Categories, and virtual roots[/b] (using a combination of separate categories [and sub-branches there-of] for different sub-communities, and the 'virtual root' system, it can be made to appear that each sub-community has their own catalogue/download/gallery
+ - [b]Comcode pages, Chat rooms, Polls[/b] (all these support individual creating and referencing, such that different instances can be presented to different sub-communities)
+ - [b]Banners, Calendar[/b] (all these support category based referencing such that a division between sub-community interests can be created)
+ - [b]Sub-forums[/b] (different communities can be given their own branch of the discussion forums, with the [concept]Conversr[/concept] 'Clubs' feature providing special support for this)
+ - [b]Themes[/b] (different themes may be applied to different zones, giving sub-communities individual looks)
+ - [b]Usergroups and access privileges[/b] (members of sub-communities may be grouped by usergroup, and permissions assigned accordingly)
+ - [b]Custom profile fields[/b] [[concept]Conversr[/concept] users only] (custom profile fields can be made so that they only apply to a single usergroup: thus allowing specification of user data that applies only to specific sub-communities)
+ - [i]More advanced techniques discussed in "Advanced techniques for multi-site-networks"[/i]
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Multi-Site-Networks[/title]
+
+For some sites, it is advantageous to be able to create a whole website for each sub-community, each with its own settings, yet sharing a single member database and forums. This is possible using a Composr configuration known as a 'multi-site-network' and essentially involves separate Composr installs that are tied together by sharing a forum database. Composr provides special features for multi-site-network sites, and there is separate tutorial on them: as they involve separate installs, most of the features described in this tutorial are not necessary.
+
+Advantages to using a multi-site network:
+ - Full control
+ - Cleaner administrative separation
+ - Special multi-site-network features, such as the 'netlink' system
+
+Disadvantages to using a multi-site network:
+ - Overhead of additional configuration and maintenance
+
+[title="2"]Zones[/title]
+
+[media width="150" description="Adding a new zone for our Church Of Santa subcommunity" float="right"]data_custom/images/docs/subcom_zone_add.png[/media]
+Composr zones are sub-directories of your site, that operate with different settings. By default, Composr contains a number of zones:
+ - Welcome ([tt]/[/tt])
+ - Admin Zone ([tt]/adminzone[/tt]) -- Where Composr is configured
+ - Collaboration ([tt]/collaboration[/tt]) -- Where privileged members may access collaboration tools
+ - Site ([tt]/site[/tt]) -- Where the majority of the Composr modules are, by default
+ - Docs ([tt]/docs[/tt]) -- Documentation
+ - CMS ([tt]/cms[/tt])
+ - Forum ([tt]/forum[/tt]) -- For Conversr users only
+[surround]
+[media width="150" description="Viewing our zone (in its custom theme)" float="left"]data_custom/images/docs/subcom_church_santa.png[/media]
+You may add new zones, edit zones, delete zones, and move pages between zones from the Admin Zone (Structure section). When performing an action that will add, rename or delete a zone, you will need to provide details that tell Composr how it can do this; this is because on the majority of web hosting configurations, PHP does not have full access to files on the hosting account. These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
+[media width="150" description="To finalise the zone, FTP details will be needed so Composr can create the directory structure properly" float="right"]data_custom/images/docs/subcom_zone_afm.png[/media]
+
+To change the logo image for a zone, add a theme image named '<zone-name>-logo'. By default zones use the logo image of the Welcome Zone.
+[/surround]
+[title="2"]Redirection pages[/title]
+[surround]
+[media width="150" description="Managing redirection pages" float="left"]data_custom/images/docs/subcom_redirects.png[/media]
+[media width="150" description="Adding a download category for the NewTown Parish subcommunity" float="right"]data_custom/images/docs/subcom_cat_add.png[/media]
+{!redirects:DOC_REDIRECTS}
+
+Redirections are useful for a number of reasons, including:
+ - Sharing modules between zones
+ - Making short-cuts to zone/page combinations
+ - Making it so obvious URL mistakes can be automatically corrected
+ - When moving pages, a redirect may be placed so that links are not broken
+
+To reach the Redirects module go to Admin Zone > Structure > Redirects.
+
+[box="Special tip"]If you want a module to behave as if it was completely moved, you can set up a transparent redirect from your desired location to the actual location, and then a non-transparent redirect from the actual location to the desired location. Composr will sense your intent, so when you do something that searches for that module (e.g. for the Wiki+ module, doing a Wiki+ link) it will go to where you want. For example, if you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone, you could set up these redirects: [tt]site:supermembers[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i] [b]and[/b] [tt]collaboration:supermembers[/tt]-->[tt]site:supermembers[/tt] [i]non-transparent[/i]. Composr will see the transparent redirect as an indication the supermembers module really has a proper home in the site zone, and it will see the non-transparent redirect as an indication the supermembers module really does not have a proper home in the collaboration zone; Composr will respect these indications and link to the module in its new home.[/box]
+[/surround]
+[title="2"]Virtual roots[/title]
+[surround]
+[media width="150" description="Viewing the download category we added, we can find the virtualisation URL" float="right"]data_custom/images/docs/subcom_cat_view.png[/media]
+A number of Composr modules contain categories organised into a tree structure, including:
+ - galleries
+ - download categories
+ - catalogue categories
+[/surround]
+[surround]
+[media width="150" description="The virtualed download category" float="left"]data_custom/images/docs/subcom_virtualed.png[/media]
+If sub-community categories are stored under a common sub-tree of the full category tree, then the root of the 'sub-tree' may be made into the apparent root of the full-tree, by picking it as a virtual-root. This is easy to do, and doesn't involve any kind of configuration other than finding the URL to enter the module with. To find this URL you just look for the link of the current category in the breadcrumbs on a category screen (it'll have something similar to 'keep_root' in it): this is a mouthful to explain, but really very simple. Once you have the URL, you may wish to add it to to the menu of your sub-communities zone.
+
+Here are some step-by-step instructions:
+1) Browse into the forum you'd like to be the virtual root. You need to be logged in as a staff member when you do this
+2) Look at the breadcrumbs. You should see the final (rightmost) link in the chain is also a link. This might appear strange, because you're already on the page so why would a link be shown? The reason is that it is an anchor to let you create a virtual root link
+3) Click the link
+4) You should see now you have set a virtual root
+5) Take the URL you're at and put it on your menus as required
+[/surround]
+[title="2"]Usergroup management[/title]
+
+[media width="150" description="Adding a new usergroup" float="left"]data_custom/images/docs/subcom_usergroup_add.png[/media]
+The [concept]Conversr[/concept] system has a powerful usergroup system, based on the ability for members to be in a primary usergroup, and any number of secondary usergroups. When members join they are placed, by default, in the lowest usergroup in a 'ranked' progression of usergroups: the member moves up along these ranked usergroups as they accumulate points, and their visible rank, and privileges change in accordance. It is recommended that you leave all non-staff members such that their primary usergroup stays within this rank progression, and use secondary usergroups for the purpose of placing them in sub-communities, and granting additional permissions (a member has the 'best' permission combination out of all the permissions granted to all of their usergroups).
+
+Conversr allows you to choose which secondary usergroups a member is placed in when they join. Setting of default usergroups allows you to give people permission "by default", but to take it away if they abuse it without having to put them onto a different rank progression. For example, a 'debates' forum could be created and only the 'Civil Debater' usergroup given access; the 'Civil Debater' usergroup could be a default usergroup, meaning all have access by default -- however, members who demonstrated an inability to debate in a civil manner could be removed from it.
+
+It is also possible to give members a choice from a number of primary usergroups when they join. This is especially useful for what I call 'role-based communities', where different members use the website in such a way that is distinct to their role on it. By assigning usergroup according to role, it is possible to use various Composr features in order to customise the site for each role provided.
+
+[media width="150" description="Managing the members of a usergroup" float="right"]data_custom/images/docs/subcom_group_manage.png[/media]
+You may opt to assign a leader to secondary usergroups, or to leave them leaderless. A usergroup leader has the ability to control who is in their usergroup, taking pressure away from the staff. Otherwise, only administrators may add users to usergroups (this is not done using privileges, as it would grant the ability for any member with such as privilege to escalate themselves to administrator status).
+
+Members may apply to join usergroups if they wish, and the usergroup leader or administrators may decide to accept or decline their application; members may also choose to 'resign' from a usergroup. All usergroup membership management is performed on the usergroup-view page.
+
+You can attach new rank images to usergroups on the usergroup editing screen. The usergroups admin module (which allows selection of a usergroup to edit) is available from Admin Zone > Security > Usergroups.
+
+[title="2"]Clubs[/title]
+
+The [concept]Conversr[/concept] system provides a clubs feature. Clubs are special usergroups:
+ - that can not have special permissions (they are not shown in permission editing interfaces)
+ - that may be joined and left like ordinary usergroups (via secondary usergroup membership)
+ - that come with their own forum (privileges to this are automatically assigned when the club and forum are created and cannot be revoked through the Composr permission editing interfaces)
+ - may be added by ordinary members
+Clubs are provided so that members may create their own sub-communities on the website. They are not given any special permissions so as to not overcomplicate the regular permission configuration process (as potentially you might have hundreds or even thousands of clubs).
+
+The club forum has default permissions that only allow website staff and club members into it. The club functionality provides no special moderation controls -- so by default the forum would need to be moderated by the website staff, rather than self-moderated. As it is a regular forum, additional permission changes can be achieved manually (for example, creating a new usergroup for the club's management and assigning moderator permissions over the forum to members of that).
+
+[concepts
+ 1_key="virtual root"       1_value="Virtual roots allow you to split a Composr tree based content system (such as the download system) so it appears to have multiple databases"
+ 2_key="redirection page"   2_value="Allows pages to be redirected to from different zone/page combinations, either transparently, or with a redirection message"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks[/page]
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+
+{$SET,tutorial_tags,redirects_editor,cns_clubs,Structure and navigation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A common features of the largest community sites is to have sub-communities within the larger community. See how.}[block]main_tutorial_rating[/block]

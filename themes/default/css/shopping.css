@@ -1,0 +1,129 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Cart screen */
+
+table.cart_table td {
+	vertical-align: middle;
+}
+
+.cart_buttons {
+	overflow: hidden;
+}
+
+.cart_update_buttons {
+	float: left;
+}
+
+.cart_continue_button {
+	float: right;
+}
+
+table.cart_payment_summary {
+	width: 100%;
+	table-layout: fixed;
+	font-size: 1.2em;
+	margin: 2em 0;
+	border-top: 1px solid {$GET,pale_border};
+	border-bottom: 1px solid {$GET,pale_border};
+}
+
+table.cart_payment_summary th {
+	text-align: right;
+	width: 100%;
+}
+
+table.cart_payment_summary td {
+	text-align: right;
+	width: 6em;
+}
+
+table.cart_payment_summary th, table.cart_payment_summary td {
+	padding: 0.5em 0;
+}
+
+table.cart_payment_summary .price {
+	font-weight: bold;
+}
+
+.cart_proceed_button {
+	float: right;
+}
+
+.cart_proceed_button form {
+	padding-left: 2em;
+}
+
+.checkout_text {
+	color: {$GET,slightly_seeded_text};
+	font-size: 0.9em;
+	margin-top: 1em;
+	margin-left: 1em;
+}
+
+.checkout_text input {
+	float: left;
+	margin-right: 1em;
+	margin-bottom: 1em; /* To prevent awkward wrapping of the label */
+}
+
+.checkout_text label {
+}
+
+/* Admin order management interface */
+
+.orders_actions_dropdown {
+	width: 10em;
+}
+
+table.shipping_address {
+	border: 0;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.buttons__cart_add {
+	background-image: url('{$IMG,icons/24x24/buttons/cart_add}') !important;
+}
+.buttons__cart_checkout {
+	background-image: url('{$IMG,icons/24x24/buttons/cart_checkout}') !important;
+}
+.buttons__cart_empty {
+	background-image: url('{$IMG,icons/24x24/buttons/cart_empty}') !important;
+}
+.buttons__cart_update {
+	background-image: url('{$IMG,icons/24x24/buttons/cart_update}') !important;
+}
+.buttons__cart_view {
+	background-image: url('{$IMG,icons/24x24/buttons/cart_view}') !important;
+}
+.menu__rich_content__catalogues__products {
+	background-image: url('{$IMG,icons/24x24/menu/rich_content/catalogues/products}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.buttons__cart_add {
+		background-image: url('{$IMG,icons/48x48/buttons/cart_add}') !important;
+	}
+	.buttons__cart_checkout {
+		background-image: url('{$IMG,icons/48x48/buttons/cart_checkout}') !important;
+	}
+	.buttons__cart_empty {
+		background-image: url('{$IMG,icons/48x48/buttons/cart_empty}') !important;
+	}
+	.buttons__cart_update {
+		background-image: url('{$IMG,icons/48x48/buttons/cart_update}') !important;
+	}
+	.buttons__cart_view {
+		background-image: url('{$IMG,icons/48x48/buttons/cart_view}') !important;
+	}
+	.menu__rich_content__catalogues__products {
+		background-image: url('{$IMG,icons/48x48/menu/rich_content/catalogues/products}') !important;
+	}
+}

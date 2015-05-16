@@ -1,0 +1,61 @@
+<!-- We can cut off breadcrumb chains from a point (by match-key page-link) and specify everything else that is to appear toward the beginning of the chain (by page-link) -->
+<breadcrumbs>
+	<!-- Rules used to unify modules under zone into single breadcrumb tree going back through zone front pages to the site zone front page... -->
+	<substitution match_key="forum:forumview">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="site:_WILD_NOT_START:browse">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="site:_WILD_NOT_START">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="site:wiki:browse:1"> <!-- Wiki+ has a special URL structure -->
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="collaboration:_WILD_NOT_START">
+		<link label="{!COLLABORATION}">collaboration:</link>
+	</substitution>
+	<substitution match_key="collaboration:start">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="docs:_WILD_NOT_START">
+		<link label="{!HELP}">docs:</link>
+	</substitution>
+	<substitution match_key="docs:tutorials">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="cms:cms">
+		<link label="{!HOME}">:</link>
+	</substitution>
+	<substitution match_key="adminzone:_WILD_NOT_START:.*">
+		<link label="{!ADMIN_ZONE}">adminzone:</link>
+	</substitution>
+	<substitution match_key="adminzone:start">
+		<link label="{!HOME}">:</link>
+	</substitution>
+
+	<!-- Simple blog links back to home page (what most people want for a personal blog) -->
+	<substitution match_key="_WILD:news:view:blog=1">
+		<link label="{!HOME}">:</link>
+	</substitution>
+
+	<!-- Simple catalogue links back to home page (most people don't want to expose catalogues technically as such) -->
+	<substitution match_key="_WILD:catalogues:category:.*">
+		<link label="{!HOME}">:</link>
+	</substitution>
+
+	<!-- Examples follow... -->
+
+	<!-- If you created and go to a gallery named "example_distorted_gallery" this will give you a special breadcrumb path -->
+	<!--<substitution label="Distorted gallery" match_key="site:galleries:browse:example_distorted_gallery">
+		<link label="Our page">site:page_for_distorted_gallery</link>
+	</substitution>-->
+
+	<!-- Extend it a bit more, -->
+	<!--<substitution label="Our page" match_key="site:page_for_distorted_gallery">
+		<link label="Home">:start</link>
+	</substitution>-->
+</breadcrumbs>
+
+<!-- Note PHP regular expressions are allowed -->

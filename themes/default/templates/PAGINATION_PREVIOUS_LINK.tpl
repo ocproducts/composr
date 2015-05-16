@@ -1,0 +1,1 @@
+<a rel="prev{+START,IF_PASSED,REL} {REL*}{+END}" accesskey="j" target="_self" href="{URL*}" title="&laquo;&nbsp;{!PREVIOUS}: {!RESULTS_LAUNCHER_JUMP,{P*},{TITLE*}}" class="light">&laquo;{+START,IF,{$NOT,{$MOBILE}}}&nbsp;{!PREVIOUS}{+END}</a>

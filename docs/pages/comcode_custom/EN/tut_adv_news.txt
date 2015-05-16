@@ -1,0 +1,124 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced news[/title]
+
+This tutorial describes some of the more complex features available for news, including blogging and syndication.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Personal Categories / Blogs[/title]
+
+[surround]
+[media width="150" description="A blog being started by adding news to a category that will automatically be created" float="left"]data_custom/images/docs/adv_news_blog.png[/media]
+[media width="150" description="The blog in action" float="right"]data_custom/images/docs/adv_news_blog_2.png[/media]
+Composr has advanced support for blogging: members in permitted usergroups may have their own personal news categories, otherwise known as 'blogs' (short for 'web logs').
+[/surround]
+
+[surround]
+[media width="150" description="The blog is linked to in the member profile" float="right"]data_custom/images/docs/adv_news_profile.png[/media]
+To create a 'blog', a member only needs to choose to add news, and select their own personal category; if the category does not yet exist, it will be displayed as 'new', and created automatically upon submission. The news will display on the front page of the website (by default), and the blog for the member may be viewed from the links given in their member profile.
+
+There is a blogs CMS interface separate to the news CMS interface. This is provided for two reasons:
+1) as a niceity so that you don't need to explain 'blogs are news' to your users
+2) so you can lock down access, so that members may submit to blogs but not website news
+The presence of the blogs CMS interface does not stop you using the regular news CMS interface to submit blog posts.
+[/surround]
+
+[title="2"]Advanced filtering of the news archive[/title]
+
+The news system supports some advanced filtering:
+ - Whether to show just non-blog posts, blog posts, or both
+ - Whether to limit results to within certain news categories
+ - As above, but double filtered so that news is only returned if it matches a second category filter also (this allows you to have a two-level news categorisation system, useful for large news sites)
+
+The news blocks take parameters representing these filters, and then the links they spawn relay those, throughout the various navigation links.
+Also, when you view a news post you can see what categories it is in and choose a new filter to limit results just to ones within that category.
+
+[title="2"]News category lists[/title]
+
+The default view of the news module is the news archive, i.e. showing chronological news posts, drawn out dependent on the configured above category filtering.
+
+There are also category index screens
+The menu editor can find the entry-points for these new screens, but for reference they are:
+ - [tt]site:news:select[/tt] -- list of all news categories (including blogs)
+ - [tt]site:news:cat_select[/tt]] -- list of all news categories (excluding blogs)
+ - [tt]site:news:blog_select[/tt]] -- list of all blogs
+
+The index screens are generally useful for two reasons:
+1) If you want to direct users to see a list of categories/blogs
+2) If you want something to help you generate our the links to individual categories/blogs. Follow through from these and you will find URLs to specific categories/blogs (i.e. filtered versions of the news archive). Maybe you had thought the software could only show blogs on a member profile tab: not true :).
+
+[title="2"]Feeds[/title]
+
+[surround]
+[media width="150" description="Syndication links are displayed in the news block" float="right"]data_custom/images/docs/adv_news_rss_1.png[/media]
+Composr supports the two main formats for syndication of news (and most other kinds of content) in clean XML format: 'Atom' and 'RSS'. These formats are simple representations of news that may be viewed using an external program such as 'FeedReader', or incorporated onto another website. Composr itself provides two blocks that allow display of RSS and atom feeds in a news-like fashion (including feeds from other Composr sites, or any other site that provides them).
+[/surround]
+
+[surround]
+[media width="150" description="RSS/Atom are really XML formats, and look a bit like this" float="right"]data_custom/images/docs/adv_news_rss_xml.png[/media]
+Links to view the feeds are made available from the news blocks, as well as from the web browsers auto-discovery mechanism. If the news block is filtered (for a blog, for example) the link will open up the feed with the same filter. The URLs are not intended to be viewed directly, although we have used a technology called 'XSLT' to allow them to be displayed in the browser if desired; instead, they should be copied and pasted to another program.
+[/surround]
+
+The [page="_SEARCH:tut_comcode"]Comcode[/page] syntax you should use to place the main block in a page is as follows:
+[code][block="http://example.com/feed.xml"]main_rss[/block][/code]
+
+You may also use the compressed version intended for the sides of pages:
+[code][block="http://example.com/feed.xml"]side_rss[/block][/code]
+
+[media width="150" description="FeedReader is a good free program for viewing feeds" float="right"]data_custom/images/docs/adv_news_feedreader.png[/media]
+Please note that you should trust a feed before you consider placing it on your site, as it is possible for them to contain JavaScript that could intercept your password cookies, and perform other malicious actions.
+
+Before RSS and Atom became popular, there was a type of feed called a 'JavaScript feed', and also feeds that work via 'iframes'. Composr supports use of these feeds simply by putting the HTML that the feed maintainers ask you to use in your website, inside a Comcode HTML tag. The nature of these feeds are such that they embed portions of HTML into your own site, either via JavaScript adding it directly on the client-side (users computers), or via a frame: they provide a simple bridge, rather than a clean feed.
+
+To see all the feeds available in Composr (news is just the most typical usage for them), you may go to [tt]http://yourbaseurl/backend.php[/tt]: you will be presented with a screen that lists the feeds. The screen here is written in yet another language named OPML, and again made viewable in a web browser using XSLT.
+
+[title="3"]Yahoo Pipes[/title]
+
+If you want to merge or filter feeds, [url="Yahoo Pipes"]http://pipes.yahoo.com/[/url] is an absolutely fantastic tool. You basically tell it to look at a set of RSS feeds, give it some filters, and you get an RSS feed you can then plug into Composr.
+
+[title="2"]Trackbacks[/title]
+
+[surround]
+[media width="150" description="Special invisible mark-up code in the Composr HTML allows systems to see how they can place trackbacks to Composr" float="left"]data_custom/images/docs/adv_news_trackbacks_method.png[/media]
+[media width="150" description="Trackbacks as displayed" float="right"]data_custom/images/docs/adv_news_show_trackbacks.png[/media]
+Trackbacks are an advanced standard-based blogging feature, that allow a link to be established from an article on one blog to an article on another. It basically is a citation mechanism.
+[/surround]
+
+Trackbacks work as follows:
+1) The original article has a 'trackback' link written into the HTML
+2) When a blogger decides to write an article based upon the original article, they inform their software of the source article they are citing
+3) The software loads up the trackback link so as to inform the original article of the new one.
+4) The original article then can display a list of articles that lead on from it, along with other features such as comments.
+
+Composr can send trackbacks for news and receive them for almost any kind of content.
+
+[title="2"]Avatars in news posts[/title]
+
+By default news posts show the news category image rather than the poster's avatar.
+
+If you uninstall the 'authors' addon it will automatically change to showing avatars. The reason being that default Composr acts more like a news site than a community site -- but by removing 'authors' you tell it you're not interested in that focus.
+
+Instead of removing the 'authors' addon you could change the [tt]NEWS_BOX[/tt] template -- this template encodes the logic described above, so by changing the template you can achieve either behaviour, or any combination.
+
+[title="2"]Integrating third-party widgets[/title]
+
+There are a lot of 'widgets' out there for blogging platforms and there's nothing stopping you using them with Composr too. For example, [url="this widget"]http://www.backtype.com/widgets/backtweets[/url] allows you to see what people are saying about your article on Twitter. You could easily put the HTML provided into your [tt]NEWS_ENTRY_SCREEN[/tt] template.
+
+[title="2"]Make news archive screens show summaries[/title]
+
+The default news archive screen shows just the news headlines. By adding [tt]:inline=1[/tt] to the page-link you can make it show like the news block does.
+
+[concepts
+ 1_key="Blog"        1_value="A contraction of web-log: the popular term for an on-line journal"
+ 2_key="Blogger"     2_value="Someone who runs a blog"
+ 3_key="RSS"         3_value="Really simple syndication: a family of news feed formats"
+ 4_key="Atom"        4_value="A news feed format made official by a standards body"
+ 5_key="Trackback"   5_value="A trackback is placed at the content home-site when a blogger references a piece of content- in essence, allowing the source material to automatically link to those that reference/quote/comment-upon it"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
+ - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+ - [url="FeedReader"]http://www.feedreader.com/[/url]
+
+{$SET,tutorial_tags,News,syndication_blocks,syndication,news_shared,news,core_feedback_features,Content,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details on some of the more complex features available for news, including blogging and syndication.}[block]main_tutorial_rating[/block]

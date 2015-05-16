@@ -1,0 +1,252 @@
+[title]Comcode help[/title]
+
+Comcode is used for formatting input data (the data marked as being comcode).
+
+{+START,IF,{$IS_STAFF}}[highlight]For full Comcode help, see the [url="Composr Comcode tutorial"]{$TUTORIAL_URL*,tut_comcode}[/url] (only staff see this link).[/highlight]
+{+END}
+The title for this page and smaller title below were generated using [tt][title]Comcode help[/title][/tt] and [tt][title="2"]Lists[/title][/tt].
+
+[title="2"]Lists[/title]
+
+The list shown on the right is generated using the Comcode below.
+Numbers are used on the example list to provide a frame of reference -- your lists would have text rather than numbers.
+
+[semihtml]
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table">
+<colgroup>
+	<col style="width: 50%" />
+	<col style="width: 50%" />
+</colgroup>
+
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+<tr><td>
+[/semihtml][code]
+A list
+ - 1
+ - 2
+  - 2.1
+   - 2.1.1
+    - 2.1.1.1
+  - 2.2
+ - 3
+[/code][semihtml]
+</td><td>
+[/semihtml]A list
+ - 1
+ - 2
+  - 2.1
+   - 2.1.1
+    - 2.1.1.1
+  - 2.2
+ - 3[semihtml]
+</td></tr>
+</tbody>
+</table></div>
+[/semihtml]
+[title="2"]Emoticons[/title]
+
+Emoticons are inputted just by entering the emoticon code, e.g. [tt]:)[/tt].
+
+[block]main_emoticon_codes[/block]
+
+[title="2"]Shortcuts[/title]
+
+Shortcuts are also entered just by inputting their code, e.g. [tt](c)[/tt].
+
+[semihtml]
+<table class="columned_table results_table">
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+	<tr><td>[tt](c)[/tt]</td><td>[/semihtml](c)[semihtml]</td></tr>
+	<tr><td>[tt](r)[/tt]</td><td>[/semihtml](r)[semihtml]</td></tr>
+</tbody>
+</table>
+[/semihtml]
+[title="2"]Code blocks[/title]
+
+[semihtml]
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table">
+<colgroup>
+	<col style="width: 50%" />
+	<col style="width: 50%" />
+</colgroup>
+
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+<tr><td>
+[tt][code="php"]<br />
+function cms()<br />
+{<br />
+&nbsp;&nbsp;&nbsp;echo "Example PHP syntax highlighting";<br />
+}<br />
+[/code][/tt]
+</td><td>
+[/semihtml][code="php"]
+function cms()
+{
+	echo "Example PHP syntax highlighting";
+}
+[/code][semihtml]</td></tr>
+</tbody>
+</table></div>
+[/semihtml]
+[title="2"]Images[/title]
+
+You can put inline images into your text easily and quickly, with the [tt][img][/tt] tag. There is also a thumbnail tag [tt][thumb][/tt] which will show (and cache) a thumbnail of an image. If the tag is given a URL as a parameter as well as the main URL, then that will be used as the thumbnail.
+
+[semihtml]
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table">
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+	<tr><td>[tt][img="Logo"]themes/default/images/no_image.png[/img][/tt]</td><td>[img="Logo"]themes/default/images/no_image.png[/img]</td></tr>
+	<tr><td>[tt][thumb="Logo"]themes/default/images/no_image.png[/thumb][/tt]</td><td>[thumb="Logo"]themes/default/images/no_image.png[/thumb]</td></tr>
+</tbody>
+</table></div>
+[/semihtml]
+[title="2"]Security[/title]
+
+Long text which isn't naturally breakable into lines is forced into pieces.
+
+Normallythistextwouldbewrappedwhenthereisaspaceorafullstopbythebrowseriftexthasnoneoftheseitruinsthelayoutofthepagesitforciblywrapstextforyou.
+
+JavaScript script tags, onX handlers and URLs will all be filtered/blocked. Don't use them unless you want the staff to be alerted to a suspected hacking attempt!
+
+[title="2"]Links[/title]
+
+[semihtml]
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table">
+<colgroup>
+	<col style="width: 50%" />
+	<col style="width: 50%" />
+</colgroup>
+
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+	<tr><td>[tt][url="This is a link"][/tt]{$BASE_URL}[tt][/url][/tt]</td><td>[url="This is a link"]{$BASE_URL}[/url]</td></tr>
+	<tr><td>[tt][email="My E-Mail"]fake_address@example.com[/email][/tt]</td><td>[email="My E-Mail"]fake_address@example.com[/email]</td></tr>
+	<tr><td>[tt][page="cms:cms"]Content Management[/page][/tt]</td><td>[page="cms:cms"]Content Management[/page]</td></tr>
+</tbody>
+</table></div>
+[/semihtml]
+[title="2"]Boxes[/title]
+
+You can put things in boxes. For example:
+[code][box="My Box"]Testing boxes[/box][/code]
+...produces:
+[box="My Box"]Testing boxes[/box]
+
+[title="2"]Formatting[/title]
+
+[semihtml]
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table">
+<colgroup>
+	<col style="width: 50%" />
+	<col style="width: 50%" />
+</colgroup>
+
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+	<tr><td>[tt][b]text[/b][/tt]</td><td>[b]text[/b]</td></tr>
+	<tr><td>[tt][u]text[/u][/tt]</td><td>[u]text[/u]</td></tr>
+	<tr><td>[tt][i]text[/i][/tt]</td><td>[i]text[/i]</td></tr>
+	<tr><td>[tt][s]text[/s][/tt]</td><td>[s]text[/s]</td></tr>
+	<tr><td>[tt][font param="Helvetica" size="3" color="red"]text[/font][/tt]</td><td>[font param="Helvetica" size="3" color="red"]text[/font]</td></tr>
+	<tr><td>[tt]----------------------[/tt]</td><td>
+[/semihtml]----------------------[semihtml]
+</td></tr>
+</tbody>
+</table></div>
+[/semihtml]
+[title="2"]Mathematical notation[/title]
+
+[semihtml]
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table">
+<colgroup>
+	<col style="width: 50%" />
+	<col style="width: 50%" />
+</colgroup>
+
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+	<tr><td>[tt]a[sub]2[/sub][/tt]</td><td>a[sub]2[/sub]</td></tr>
+	<tr><td>[tt]a[sup]2[/sup][/tt]</td><td>a[sup]2[/sup]</td></tr>
+</tbody>
+</table></div>
+[/semihtml]
+[title="2"]Attachments[/title]
+
+You can use attachments with a number of different comcode forms. The attachment tags are automatically inserted into your Comcode when you choose an attachment, and you may re-arrange them to move the attachments around; you may also wish to change the width, height, description, or set the type to 'download'. After adding your attachments you may re-use them in other pieces of comcode, and the attachment will exist until all references are deleted.
+
+Attachments may be movies, flash animations, audio, images or general downloads. The website automatically decides how to treat your attachment.
+
+Users may add attachments according to their quota, and re-use other people's attachments according to privileges.
+
+[title="2"]Advanced[/title]
+
+[semihtml]
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table">
+<thead>
+	<tr>
+		<th>{!CODE}</th>
+		<th>{!RESULT}</th>
+	</tr>
+</thead>
+
+<tbody>
+	<tr><td>[tt][hide="Secret"]This is an example of hidden text.[/hide][/tt]</td><td>[hide="Secret"]This is an example of hidden text.[/hide]</td></tr>
+	<tr><td>[tt][reference type="url" param="Wikipedia"]http://wikipedia.org[/reference][/tt]</td><td>[reference type="url" param="Wikipedia"]http://wikipedia.org[/reference]</td></tr>
+	<tr><td>[tt][quote param="Philip"]This is an example of a quote.[/quote][/tt]</td><td>[quote param="Philip"]This is an example of a quote.[/quote]</td></tr>
+	<tr><td>[tt][staff_note]This isn't rendered (not even for staff), but is saved. Staff can view it when editing the comcode.[/staff_note][/tt]</td><td>[staff_note]This isn't rendered (not even for staff), but is saved. Staff can view it when editing the comcode.[/staff_note]</td></tr>
+</tbody>
+</table></div>
+[/semihtml]
+{+START,IF,{$ADDON_INSTALLED,custom_comcode}}
+[title="2"]Custom Comcode tags[/title]
+
+These Custom Comcode tags have been added by the staff...
+
+[block]main_custom_comcode_tags[/block]
+{+END}

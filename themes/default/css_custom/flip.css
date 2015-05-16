@@ -1,0 +1,10 @@
+.flipbox {
+	width: 140px;
+	height: 140px;
+	line-height: 140px;
+	background-color: #ff9000;
+	font-family: 'ChunkFive Regular', Tahoma, Helvetica, sans-serif;
+	font-size: 2.5em;
+	color: #ffffff;
+	text-align: center;
+}

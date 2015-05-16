@@ -1,0 +1,106 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced installation[/title]
+
+This tutorial covers advanced installation issues which most users do not need to be concerned with.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Quick installation, without the quick installer![/title]
+
+If you have difficulties with the quick installer, and do not wish to upload all the files and perform chmodding individually, then you may wish to unzip directly to the server.
+
+Note that if you are on a suEXEC-style server the installer will tell you about it, and you will not need to set permissions.
+
+[title="3"]Installing via the Linux shell[/title]
+
+If you have difficulties with the quick installer, and do not wish to upload all the files and perform chmodding individually, then you may wish to unzip directly to the server.
+Due to the varying configurations of Linux servers, we can't provide precise instructions, so we do not recommend that anyone perform this if they are not already comfortable with the Linux shell. It also may not be that you actually have shell access on the server to do this.
+We are not responsible for misuse of these commands; if you do not know the effect each will have on your system, do not run them until you do. Do not run subsequent commands if one command fails, or you might make a mess.
+A sequence of commands similar to the following need to be run...
+
+
+Enter the web directory:
+[code]
+cd httpdocs
+[/code]
+Download the archive from ocProducts:
+[code]
+wget <url-to-composr-zip-file>
+[/code]
+Unzip the archive:
+[code]
+unzip cms-<version>.zip
+[/code]
+Remove the archive:
+[code]
+rm cms-<version>.zip -f
+[/code]
+(if you are running a web server where the web server runs with the same credentials as the hosting account user, then do not perform the following two steps [this is unusual])
+
+Fix all the necessary file permissions:
+[code]
+sh fixperms.sh
+[/code]
+You must then launch the URL to the install.php in your web browser, and proceed through the installation steps.
+After this, you must delete the install.php file:
+[code]
+rm install.php -f
+[/code]
+
+[title="3"]Unzipping from a web hosting control panel[/title]
+
+Many web hosting control panels allow you to unzip uploaded files, using their file manager. You can do this on the manual installer archive.
+
+You can avoid setting permissions on all files except [tt]_config.php[/tt] by using the [tt]upgrader.php[/tt] script after installing, to do a 'fix permissions'. This only works if you have FTP working though, and if you did, you probably would have used the quick installer anyway -- so it might not be an option for you. If you have shell access you can try [tt]fixperms.sh[/tt] (see above), but otherwise you'll need to manually set permissions.
+
+[title="2"]Installing on Windows (IIS)[/title]
+
+This section mostly only applies if you are using Microsoft's web server, Internet Information Server (IIS).
+
+See the 'Installing Composr on a Windows desktop' tutorial if you just want to install on your own computer and you are just using your website locally, behind a firewall.
+
+There are two problems, relating to file permissions, that complicate the installation on Windows. Unfortunately these problems are completely out of our control, and apply to any PHP system installed on a Windows server: all we can do is help you get through them. Most home systems have full permissions set by default, so are actually easier to install on than Linux. However, web-hosting companies require a tighter permission scheme due to their shared hosting environments.
+
+The first problem is that there is no real standard on Windows to exactly what file permissions are appropriate. To understand file permissions, you must understand that the web-server (or the PHP CGI client, if in CGI mode) runs PHP scripts under a user-name that is not just 'Administrator' (which would be a highly foolish thing to do). What that user-name is depends on how the environment was configured; it may be a generic web user (usually named [tt]IUSR_<computer-name>[/tt]), or it may be the user-name tied to your own web-hosting account. It is this user-name that needs to have access to write to certain directories and files inside your installation.
+A generic trick is to use the user-name 'Network' as the user-name to grant permissions to. Whilst this is not the user-name that the script runs at, it is a virtual user-name representing any user-name on the Windows Domain that the computer on; setting permissions to this should do the trick, but at the expensive of it granting more permissions than are required. Ideally, you should find out exactly what user-name PHP scripts run as, and grant permissions to it.
+
+The second problem is that there is no automated way to set file permissions on a Windows machine from a PHP script. This leaves three possibilities for a Windows machine user:
+ - Set it so the Composr installation directory has full permissions for the PHP-user before extraction. Whether this is secure or not really depends upon your environment; if CGI is disabled, and PHP has 'open_base_dir' enabled, then it may be secure from tampering by other server users. Also, if there are no other server users, then it shouldn't be a problem. This trick assumes that the directory has been set to have files created in it inherit permissions; this is usually so, and perhaps something you can ensure is true yourself.
+ - Ask the server administrator to execute, or find a way to execute yourself, the [tt]fixperms.bat[/tt] file. This will set the file permissions for you, but this is an advanced option and may be prone to environmental issues. If using the quick installer, the bat file will need running at the point the installer complains about file permissions; otherwise it should be executed before installation.
+ - Manually set the file permissions. See the Installation tutorial for a list of file permissions that need to be set. Where Linux would require '666' (for a file) or '777' (for a directory) permissions, you would need to assign write permissions as specified above.
+
+Due to these problems, we would have to recommend that if you have a choice, that you don't use a Windows web-host unless you are experienced with the Windows security model. It is more complex, less standard, and less documented, than the Linux model (although, actually a lot more powerful).
+
+[title="2"]CGI servers[/title]
+
+It has been reported to us that some systems require PHP scripts to be given execute permissions. This is a very rare (and insecure) configuration, but if there is this requirement, the following files need to be given execute permission...
+ - Any index.php file
+ - All PHP files in the root directory, except [tt]_config.php[/tt]
+ - All PHP files in the data directory
+ - All PHP files in the main directory for a zone (e.g. /, and /adminzone) directories
+
+The quick installer handles this automatically.
+
+[title="2"]Post installation tweaking[/title]
+
+[media width="150" description="The config editor" float="right"]data_custom/images/docs/adv_installation_config.png[/media]
+If you need to change Composr installation environment settings, you may use the config_editor.php script (located in your installation directory) to change the settings. To operate the script, you will need the admin password that you specified at installation. The configuration editor works upon a separate subsystem to the main Composr code, and is completely independent of any forum or database environment: in other words, if Composr fails to function (perhaps if you moved servers, and your database settings are no longer valid), the configuration editor will continue to work.
+
+[title="2"]Advice for web-hosts[/title]
+
+If you are a hosting administrator and would like to configure PHP on a server for optimum compatibility with Composr, we recommend the following:
+ - That safe mode be disabled. Safe mode ties the hands of powerful PHP scripts like Composr and prevents or impedes them performing advanced features.
+ - That open_basedir be enabled as a substitute for safe mode. This can be used to restrict PHP activity to the users' home directories, stopping PHP being used as a medium for tampering with other sites.
+ - That you consider whether CGI script (including Perl) support is necessary; if CGI support is disabled, and PHP is the only module-based scripting environment, then PHP security settings can be used to restrict users from tampering with each others' sites (as long as shell access is disabled).
+ - That you consider disabling shell access for all except users that require it.
+ - That 'allow_url_fopen' is disabled
+ - That the file upload and post data limits are put to at least 10MB.
+ - That you consider implementing the Apache Su-Exec feature.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_install"]Installation[/page]
+ - [page="_SEARCH:tut_security"]Security[/page]
+ - [page="_SEARCH:tut_web_hosting"]Web hosting[/page]
+ - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
+
+{$SET,tutorial_tags,windows_helper_scripts,linux_helper_scripts,installer,core_database_drivers,Installation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial covers advanced installation issues which most users do not need to be concerned with.}[block]main_tutorial_rating[/block]

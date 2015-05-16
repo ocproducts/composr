@@ -1,0 +1,43 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.email_body {
+	font-size: 13px;
+
+	background: {$GET,area_5_background};
+	padding: 1em;
+	border: 1px solid {$GET,pale_border};
+}
+
+.email_logo {
+	margin: 0 0 1.5em 0;
+}
+
+.email_body .box {
+	color: {$GET,slightly_seeded_text};
+	line-height: 1.6em;
+	padding: 0.8em 2em;
+}
+
+.email_body .box  h2 {
+	border-bottom: 0;
+}
+
+.email_body hr {
+	border-bottom: 4px solid {$GET,hr};
+}
+
+.email_footer {
+	overflow: hidden;
+	font-weight: 500;
+}
+
+.email_footer .email_copyright {
+	float: left;
+}
+
+.email_footer .email_url {
+	float: right;
+}

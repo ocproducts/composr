@@ -1,0 +1,366 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Facebook Support[/title]
+
+This tutorial describes Composr Facebook integration. It mostly describes functionality supplied by the non-bundled Facebook Support addon. This functionality includes:
+ - Showing data from Facebook
+ - Sharing to Facebook (manually)
+ - Logging in using Facebook
+ - Automatically syndicating content to Facebook
+ - OpenGraph support (meta-data)
+
+You may want to get a developer to help configure things. We're helping people getting Composr integrated, even when you're not a developer, but bear in mind that it can be tricky sometimes. Facebook is in flux, and Composr has to play catch-up quite a lot. All the standards involved in the integration are also in flux. Things are a lot better than they were, but still not always ideal. Any screenshots we show for Facebook could be out-dated by the time you read this.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Configuration and Authorisation[/title]
+
+Before you can use any of the Facebook Support addon features you need to configure it.
+
+[title="3"]Step 1) Configuration on Facebook[/title]
+
+Integration is done via configuring an app on Facebook; no actual app code needs writing, but this is how you get an API key.
+
+1) Go to [url="set up your app on Facebook"]https://developers.facebook.com/apps/[/url]
+2) Click on right upper corner "Add a New App" button
+3) Select "Website"
+4) Type your site name
+5) Click "Create New Facebook App ID"
+6) Choose a Category
+7) Click the button
+8) Enter the "Site URL". It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name.
+9) Scroll back up and click "Skip quickstart"
+10) Note down your App ID and your App Secret
+
+[title="4"]Special case: Delegating access[/title]
+
+If you need to add someone else to your Facebook app (what you added above), to help development/debug it:
+1) Go to [url="Facebook developer apps section"]https://developers.facebook.com/apps[/url]
+2) Click the "Edit App" button
+3) Click "Developer roles" under the "Settings" menu
+4) Click "Add" over the Administrators section
+5) Type their Facebook ID (the one they chose, not the numeric one) -- or, if they are your Facebook friend, just their name will work
+
+[title="4"]Special case: Testing on a private server (e.g. localhost)[/title]
+
+To use the Facebook login support your Facebook app needs to be told the domain name you are using. This is for security reasons and because it saves login cookies to this domain. It can't be a domain like 'localhost' or 'mycomputer', so if you are testing on a local computer you will need to create an imaginary domain name and link it into 127.0.0.1 via your computers 'hosts' file, and configure your [tt]_config.php[/tt] file to use that as the base URL.
+
+For example, [tt]mycomposrtestsite.com[/tt], with a line like the following in your hosts file:
+[code]
+127.0.0.1 mycomposrtestsite.com
+[/code]
+
+All major operating systems support a hosts file. Rackspace provide a nice [url="tutorial for editing the hosts file"]http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file[/url].
+
+Note there is no need to use a real domain name, it can be completely made up.
+
+[title="3"]Step 2) Install the Composr Facebook Support addon[/title]
+
+[surround]
+[media width="150" description="Choosing addon" float="right"]data_custom/images/docs/facebook_addon_b.png[/media][media width="150" description="Going to import a non-bundled addon" float="right"]data_custom/images/docs/facebook_addon_a.png[/media]To install...
+
+1) Go to Admin Zone > Structure > Addons.
+2) Scroll down and go to "Import non-bundled addon(s)".
+3) Click the "Download" option, expand Third Party Integration, and select Facebook Support
+4) Click the Import non-bundled addon(s) button
+5) Proceed through normally.
+[/surround]
+
+[title="3"]Special case: Theme integration (advanced)[/title]
+
+Installing the addon to Composr will override some key templates to [tt]themes/default/templates_custom[/tt]; this may be blocked by your existing themeing having its own overrides already in place. If you have a theme with overrides in place then you'll need to amend those overrides to incorporate the changes within the new overrides from the default theme. The templates involved are:
+ - [tt]themes/default/templates_custom/BLOCK_SIDE_PERSONAL_STATS_NO.tpl[/tt]
+ - [tt]themes/default/templates_custom/BLOCK_SIDE_PERSONAL_STATS.tpl[/tt]
+ - [tt]themes/default/templates_custom/LOGIN_SCREEN.tpl[/tt]
+ - [tt]themes/default/templates_custom/CNS_GUEST_BAR.tpl[/tt]
+ - [tt]themes/default/templates_custom/BLOCK_MAIN_SCREEN_ACTIONS.tpl[/tt]
+ - [tt]themes/default/templates_custom/BLOCK_TOP_LOGIN.tpl[/tt]
+
+[title="3"]Step 3) Configuration[/title]
+
+[surround]
+[media width="150" description="Composr configuration options" float="right"]data_custom/images/docs/facebook_config.png[/media]
+1) Go to Admin Zone > Setup > Configuration > User/usergroup options > Facebook syndication / login.
+2) Configure the "Facebook app ID" and "Facebook app secret" options. You noted down the values earlier.
+3) Also configure the "Facebook page ID" option. This is a useful helper tool: http://findmyfacebookid.com/.
+
+Make sure your site is not closed (you can change the settings in Admin Zone > Setup > Configuration > Site Options > Closed site). Facebook integration cannot work if Facebook is denied from connecting back to your website.
+[/surround]
+
+[title="3"]Step 4) Authorisation[/title]
+
+1) Go to Admin Zone > Setup > Facebook syndication / login
+2) Follow the instructions given
+
+[title="2"]Integration blocks[/title]
+
+We have the following Composr blocks, based upon the Facebook [url="Social Plugins"]https://developers.facebook.com/docs/plugins/[/url]:
+ - [tt]main_facebook_page[/tt] (based on Page plugin)
+ - [tt]main_facebook_like[/tt] (based on Like plugin)
+ - [tt]main_facebook_comments[/tt] (based on Comments plugin)
+
+The plugins are mostly just thin wrappers to what Facebook does. If you want to tweak any options that we haven't made specific block options for you can just edit the appropriate templates. For example, [tt]BLOCK_MAIN_FACEBOOK_COMMENTS.tpl[/tt] is the template used by the [tt]main_facebook_comments[/tt] block.
+
+If you wish you can use Facebook code directly within Composr. This would allow you to do integrations we have not made a block for, sure as the [url="Embedded Posts"]https://developers.facebook.com/docs/plugins/embedded-posts[/url] integration (that let's you embed a specific individual Facebook post).
+
+You probably will not want to use [tt]main_facebook_like[/tt], as a Like Button is already pre-integrated into Composr's [tt]main_screen_actions[/tt] block (i.e. the social sharing block). [tt]main_screen_actions[/tt] is already embedded throughout key default Composr templates.
+
+[title="3"]main_facebook_page[/title]
+
+This block can be used to show Facebook page fans, and Facebook page posts. There are block options to determine what exactly to show in it.
+
+This is the block you are most likely going to want to use.
+
+[title="3"]main_facebook_like[/title]
+
+This block is very straight-forward: it puts in a Facebook "Like" when clicked by a user, for the URL it is placed on. It doesn't require the user to be logged in to Composr using Facebook, but they will need to be logged into Facebook itself.
+
+[title="3"]main_facebook_comments[/title]
+
+This block is useful if you want people to be able to comment on your site directly using their Facebook accounts, rather than native Composr accounts (or Composr accounts tied to their Facebook account).
+
+Most webmasters will not want to use this, as usually encouraging users to create a native account is strongly preferable.
+You can consider having both Facebook comments, and native Composr comments, but this would be messy.
+
+The Facebook comments block will only work if placed somewhere where Guest access is allowed, as it relies on OpenGraph to gather details of the page it is placed on (OpenGraph is described later in this tutorial).
+
+You can either place this block manually within Comcode, similar to the standard Composr [tt]main_comments[/tt] block -- or, you can modify Composr templates to place this block instead of the default comments. For example, in [tt]DOWNLOAD_SCREEN.tpl[/tt] you can change [tt]{COMMENT_DETAILS}[/tt] to [tt]{$BLOCK,block=main_facebook_comments}[/tt], so that Facebook comments are used for downloads, rather than native Composr comments.
+
+[title="2"]Social sharing[/title]
+
+[i]This section is relevant even if you are not using the Facebook Support addon[/i]
+
+The [tt]main_screen_actions[/tt] block contains a Facebook share link if the Facebook Support addon is not installed. If the Facebook Support addon is installed it becomes a Like Button instead.
+
+It is important to understand how the Facebook share button works. The button does not transfer the shared page's image/title to Facebook. Instead, Facebook comes back at the shared URL, and looks at the OpenGraph meta tags. OpenGraph is described in the next section.
+
+[title="2"]Meta-data when people link to you from Facebook (OpenGraph)[/title]
+
+[i]This section is relevant even if you are not using the Facebook Support addon[/i]
+
+[url="OpenGraph"]http://ogp.me/[/url] is a Facebook-sponsored standard for web-page meta-data.
+
+Composr automatically includes OpenGraph data in your pages, so that Facebook can automatically discern information about URLs on your website. This is handled in the [tt]HTML_HEAD.tpl[/tt] template. It is built on top of Composr's standard meta-data system. Note that we also can support other meta-data formats such as Dublin Core, but that is outside the scope of this tutorial (we're focusing only on Facebook meta-data here, even though in some cases Facebook may itself support other meta-data standards).
+
+The following OpenGraph data (or extensions to OpenGraph) is provided, where possible:
+ - [tt]og:title[/tt] -- Content title
+ - [tt]og:type[/tt] -- Content type (e.g. News)
+ - [tt]og:url[/tt] -- Canonical URL to the content (i.e. stripped down/standardised URL)
+ - [tt]og:site_name[/tt] -- Site name
+ - [tt]og:description[/tt] -- Description for page content
+ - [tt]og:image[/tt] -- URL to page image
+ - [tt]og:video[/tt] -- URL to page video
+  - [tt]og:video:width[/tt] -- Width of video
+  - [tt]og:video:height[/tt] -- Height of video
+  - [tt]og:video:type[/tt] -- Mime-type of video
+ - [tt]og:locale[/tt] -- Page locale (advanced)
+ - News:
+  - [tt]article:published_time[/tt] -- Article posting time
+  - [tt]article:modified_time[/tt] -- Article modification time
+  - [tt]article:section[/tt] -- Article category
+  - [tt]article:tag[/tt] -- Article meta-keywords
+  - [tt]article:author[/tt] -- Article author
+ - Member profiles:
+  - [tt]profile:username[/tt] -- Username
+ - [tt]fb:admins[/tt] -- Facebook user ID of page admin ([i]disabled by default as auto-detected data is probably wrong, can be filled manually via a template edit to [tt]HTML_HEAD.tpl[/tt][/i])
+ - [tt]fb:app_id[/tt] -- ID of Facebook app used on the site ([i]disabled by default to save bandwidth, it's not usually useful[/i])
+
+Facebook provides a [url="tool for testing OpenGraph data"]https://developers.facebook.com/tools/debug/[/url].
+
+For OpenGraph to work, the content must have public access. If you deny Guests access to the content then OpenGraph tags cannot be accessed by Facebook and Facebook would then have to refer to the page as a login screen. That's not awful (you probably don't want content titles and images to leak to unauthorised users anyway), but bear it in mind. Similarly, if the site is closed, Facebook won't be able to access OpenGraph.
+
+[title="3"]Images ([tt]og:image[/tt])[/title]
+
+The Composr code hints what image to use for OpenGraph. There are 3 possibilities:
+1) Where possible, a natural image is used. For example, when viewing a gallery image, the thumbnail will be the OpenGraph image.
+2) For content types with no natural image, often a theme image icon is used.
+3) Otherwise the [tt]logo/standalone_logo[/tt] theme image is used (as it is coded as the fallback in the [tt]HTML_HEAD.tpl[/tt] template). i.e. Composr will fall-back to using your site logo if it can't find some other appropriate image.
+4) (If the OpenGraph image code was removed from [tt]HTML_HEAD.tpl[/tt], Facebook would choose its own image)
+
+[title="4"]Special case: If you use huge thumbnails[/title]
+
+Note that Facebook does have minimum/maximum sizes and file-sizes for images. If you use enormous thumbnails on your site, your [tt]HTML_HEAD.tpl[/tt] template could need customising to re-thumbnail the files.
+
+[title="4"]Changing default content-type images (advanced)[/title]
+
+This example shows how to change the topic syndication to use a custom theme image, rather than the [tt]icons/48x48/menu/social/forum/forums[/tt] theme image.
+
+1) Theme image...
+
+Add a theme image called [tt]opengraph_defaults/forums[/tt] to the default theme.
+
+Either do this via Composr's interface, or simpler just create a [tt]themes/default/images_custom/opengraph_defaults/[/tt] directory and upload a [tt]forums.png[/tt] file to it.
+
+2) Template...
+
+Edit the [tt]HTML_HEAD.tpl[/tt] template...
+
+Change:
+[code="HTML"]
+{+START,IF_NON_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$META_DATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
+[/code]
+To:
+[code="HTML"]
+{+START,IF_NON_EMPTY,{$META_DATA,image}}
+	{$SET,generic_forum_image,{$EQ,{$META_DATA,image},{$IMG,icons/48x48/menu/social/forum/forums}}}
+
+	{+START,IF,{$GET,generic_forum_image}}
+		<meta property="og:image" content="{$IMG*,opengraph_defaults/forums}" />
+	{+END}
+
+	{+START,IF,{$NOT,{$GET,generic_forum_image}}}
+		<meta property="og:image" content="{$META_DATA*,image}" />
+	{+END}
+{+END}
+{+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/trimmed_logo}" />{+END}
+[/code]
+
+Our new code detects if the OpenGraph image was set as [tt]icons/48x48/menu/social/forum/forums[/tt] and performs a substitution to our custom one.
+
+Our change won't reflect on Facebook for existing syndications until Facebook refreshes it's caching. But eventually it will, i.e. it will work retroactively.
+
+[title="2"]Logging in using Facebook[/title]
+
+You can allow users to log in to your Composr site using their Facebook accounts.
+
+Be aware that this is a trade-off: allowing quick log in, but limiting your ability to control sign-ups. Facebook login differs from normal Composr joining in the following ways:
+ - Password or username restriction rules will not apply, as the user does not choose these on your site
+ - Rule acceptance will not happen (so make sure you link to your rules somewhere); Facebook login is generally designed as one-click, so extra steps are the antithesis of this
+ - There is only one step, unless there are required Custom Profile Fields configured in Composr (in which case a profile completion step is required)
+ - E-mail address confirmation is not required
+
+This functionality is enabled via a configuration option at Admin Zone > Setup > Configuration > User/usergroup options > Facebook syndication / login. 
+
+Enabling the option turns on some template changes that incorporate the Facebook login button into the site design.
+(See the "Special case: Theme integration" section)
+
+The following details are taken from Facebook profiles:
+ - Date-of-birth
+ - E-mail address
+ - Timezone (rough conversion from a time offset)
+ - Username
+ - Photo
+ - Language (if a direct match is found)
+
+There are a number of configuration options you can set regarding active synchronisation of some of the above details. If synchronisation is enabled then if they are changed on Facebook the new settings copy through next time the user accesses your site. Regardless of configuration, synchronisation happens the first time a Facebook login occurs.
+
+[title="3"]How the process basically works[/title]
+
+When a user logs in using Facebook, Composr never is given the Facebook username and password of that user. Composr stores the Facebook account ID into the member account, and communicates securely with Facebook to ask Facebook if that member is logged in. So in effect (from Composr's point of view) it is a passwordless login.
+
+[title="3"]Technical details regarding sessions (advanced)[/title]
+
+Facebook login is achieved via JavaScript and Facebook cookies, which is the standard integration Facebook provide. There are alternate mechanisms available in Facebook's API (server-side driven authentication) but we don't implement them at this time (see "Ongoing work").
+
+Because the login happens in JavaScript rather than using Composr login cookies, if there is no active Composr session anymore, the page will be served as Guest until Facebook's JavaScript code sets a new Facebook session. When that happens we immediately/automatically refresh, so Composr can use the Facebook session to start an Composr session (i.e. the refreshed page will then be logged in).
+
+You could increase the Composr session length to prevent these regular refreshes, but it's not really advisable, as it lowers security (longer sessions = greater risk of attack by someone trying to steal session IDs). A lot of popular non-Composr sites do do that, so take that as you will.
+
+[title="3"]Technical details regarding refreshes (advanced)[/title]
+
+As described in the previous section, the Composr page has to refresh itself when it detects a Facebook session is available but the Composr member is not yet logged in.
+
+When it refreshes for the first time it appends [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt] to the URL, as a marker so our JavaScript knows it has made an attempt. If it has failed to make the login connection it refreshes again with [tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt]. It tries no further attempts. It does it like this (only up to two re-attempts) because various kinds of connectivity problem, authorisation problem, or problems on Facebook, could otherwise lead to infinite refreshing.
+
+When testing log in, make sure you're not starting a login from a URL with any of the above described  [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt]/[tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt] markers in it. Also never use such URLs for sharing or putting in your navigation.
+
+[title="3"]Problems on Facebook's end[/title]
+
+Be aware that logging in with Facebook is putting a dependency on Facebook's systems always working. Every once in a while, perhaps an hour per month, Facebook does have some problems on their end that block things working correctly.
+
+[title="3"]Logging out[/title]
+
+[surround]
+[media width="150" description="Removing login permission on Facebook (2)" float="right"]data_custom/images/docs/facebook_logout_b.png[/media][media width="150" description="Removing login permission on Facebook (1)" float="right"]data_custom/images/docs/facebook_logout_a.png[/media]Facebook is particularly aggressive at maintaining its logins: you can't directly log out from individual sites as such. We can't workaround that within Composr's code. Facebook actually has rules saying that sites must enforce automatic logins, so contractually log out is not allowed even if there was a way we could do it.
+
+A user who wishes to de-link Facebook to your site has two choices:
+1) Log out of Facebook entirely (probably undesirable)
+2) Remove your website from the allowed apps, via Facebook's privacy settings (see images).
+[/surround]
+
+[title="3"]Account binding (advanced)[/title]
+
+If you are logged in, but your account is not attached to Facebook, and you are using the [tt]side_personal_stats[/tt] block in your design (which is [b]not[/b] used by default in Composr), Composr will include a login button to let you bind your existing account to Facebook. This is a feature to let existing users syndicate their activity to Facebook.
+
+Once an account is bound, it is just like any other Facebook-tied account -- logging in works via your external Facebook login. i.e. your password is wiped out of the account and it gets tied to your Facebook account.
+
+The login button is placed there within an overridden version of the [tt]BLOCK_SIDE_PERSONAL_STATS.tpl[/tt] template.
+
+If you do not want this, edit the template, remove this code:
+[code="HTML"]
+{+START,IF,{$CNS}}{+START,IF,{$NEQ,{$CPF_VALUE,m_password_compat_scheme},facebook}}
+	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
+		<div class="fb-login-button" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_stream,offline_access{+END}"></div>
+	{+END}
+{+END}{+END}
+[/code]
+This will not affect the version of the block for logging in that is shown to guests (that is a different template, [tt]BLOCK_SIDE_PERSONAL_STATS_NO.tpl[/tt]).
+
+[title="3"]Account de-binding[/title]
+
+If you joined using Facebook, or bound an existing account using Facebook (as above), you may want to convert it (back) to a normal account.
+This is very simple. Just do a "reset password" on your account and it will be turned into a normal account you log in with.
+
+[title="3"]Links in member profiles[/title]
+
+[i]This section is relevant even if you are not using the Facebook Support addon[/i]
+
+Composr comes with a default "Facebook profile" Custom Profile Field, available to members.
+
+The Facebook login process does [b]not[/b] populate this field. You may delete the field if you wish, as the Facebook Connect support automatically inserts a link back elsewhere on the profile -- or you may keep it for users to fill in if they are not logging in with Facebook but want to link to themselves anyway.
+
+[title="2"]Activity syndication[/title]
+
+[i]Most of this advice applies to the Composr non-bundled Twitter Support addon too[/i]
+
+You can (in theory) have content automatically syndicate to Facebook in 2 ways:
+1) Site level: All News & Calendar events, to the configured Facebook page/group/user
+2) Personal: Activity, to the wall of individual members
+
+[title="3"]Site level[/title]
+
+You will get syndication options on the news add/edit and calendar event add/edit forms. These will syndicate the news/event to the Facebook page/group/user associated with the site.
+
+There are some important caveats:
+1) This does not work for scheduled publishing, only live actions.
+2) You will need to reauthorise your site's Facebook connection (see Configuration and Authorisation) every 60 days, due to Facebook authorisation tokens having a limited life-span (Facebook documentation: "Facebook's SDKs will get long-lived access tokens, good for about 60 days."). Once upon a time this was not an issue, but Facebook decided to tighten their API policies, presumably to stop spam and increase security.
+3) It is only for News and Calendar events (but that's usually fine, most people don't like too much getting spammed over to Facebook).
+4) It is only for guest-accessible content. Composr maintains this security rule because syndication would otherwise be automatically announcing and linking to content that was intended as private. That means, the zone, page, and category, for the content must all be guest accessible. Whether the site is closed is not a consideration.
+
+People often wonder why you can syndicate everything personally, but not everything on a site level. Essentially we think of these things differently. A site syndicates headline things, while a person syndicates more personal things. If something is a headline thing, it's going to have an associated news post, or calendar event, regardless of what other kinds of content may be involved. So, site syndication is focused on those news posts and calendar events. You can always manually post to Facebook if there is something else you want to draw attention to.
+
+[title="4"]Maybe just keep it simple / separate-out responsibilites?[/title]
+
+You may prefer to use a dedicated service such as [url="Twitterfeed"]http://twitterfeed.com[/url] to tie in any of the Composr RSS feeds. This is a more flexible and automated solution. Twitterfeed is subject to the same [url="60 day issue"]http://blog.twitterfeed.com/post/60359135452/an-easier-way-to-re-connect-facebook-accounts[/url] Composr is though (it's unavoidable).
+
+Also, don't discount the idea of simply manually sharing things. It really doesn't take long and gives you more control and quality assurance (i.e. you'll get to see how the sharing actually looks). You can find third-party tools to do cross-posting across multiple social media sites in one go.
+
+[title="3"]Personal[/title]
+
+Personal syndication requires the non-bundled Activity Feed addon to be installed.
+
+If "Activity Feed" is installed then members have a choice whether to automatically syndicate all their activities.
+The member's set this choice (i.e. enable/disable syndication) via their activity feed settings (on the activity tab of their account).
+Whether member's logged in with Facebook automatically syndicate or not is determined via the "Automatically enable syndication" configuration option.
+Personal syndication works for member's not logged in with Facebook as well, but it needs a separate authorisation on their activity feed settings.
+
+Typically the syndication goes to the user's Facebook account, but it can go the site's Facebook page if the following conditions are all met:
+1) the "Option to syndicate to a Facebook page" option is set
+2) the Facebook page's access is opened up to public write access
+3) The member chose to do this in their activity feed settings (on their activity tab)
+
+[title="2"]Ongoing work[/title]
+
+Composr integrations with services such as Facebook are ongoing projects. Facebook will often change their capabilities and deprecate old systems. Therefore be aware that nothing is set in stone.
+
+Facebook will e-mail out notices about changes in functionality and has a phased 'opt in' system before it forces everyone to update; we try and track these but usually they only affect a minority of Facebook apps and not Composr.
+
+If Facebook does change something to stop the addon working, ocProducts isn't necessarily going to guarantee to jump on changing our addon too; if Facebook integration is important to you be ready to help sponsor ongoing maintenance of the addon to ensure it is funded.
+
+We may add additional functionality to the addon in the future, again mainly if it is sponsored. There is plenty of scope to push further integration.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_members"]Composr member system[/page]
+ - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
+ - [page="_SEARCH:tut_metadata"]Meta Data[/page]
+
+{$SET,tutorial_tags,facebook_support,activity_feed,Social,regular}{$SET,tutorial_add_date,Apr 2015}{$SET,tutorial_summary,Details of Composr Facebook support, particularly capabilities of the non-bundled Facebook Support addon.}[block]main_tutorial_rating[/block]

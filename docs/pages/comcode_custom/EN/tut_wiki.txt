@@ -1,0 +1,76 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Custom structured content (via Wiki+)[/title]
+
+This tutorial will describe the Wiki+ system, which is Composr's equivalent to a wiki.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]About Wiki+[/title]
+
+[media width="150" description="Viewing a Wiki+ page" float="right"]data_custom/images/docs/wiki_page.png[/media]
+{!wiki:DOC_WIKI}
+
+[title="2"]Pages and posts[/title]
+
+[media width="150" description="Making a Wiki+ post" float="right"]data_custom/images/docs/wiki_post.png[/media]
+Wiki+ consists of a pages which may include a page description and any number of posts. If there are no posts, or if the page has been configured to hide them (the per-page "Hide posts" option), then the pages appear much like those on a wiki; otherwise it functions more like a forum.
+
+Pages may also contain a list of pages that are 'underneath' the page; however, a page can be underneath any number of pages, as the Wiki+ hierarchy is loosely defined (technically it is a node based network rather than a real tree structure). When pages are accessed from different paths, the path to the page as it has been accessed is displayed, so that back-tracking is easier, and that the user does not get confused by the path suddenly changing when they enter a 'child' page.
+If you do not choose to develop a tree structure then Wiki+ navigation will be much like the navigation of a wiki- Comcode has special wiki-like support for making quick links between Wiki+ pages just by writing [tt][[pagename]][/tt].
+
+This simple structure of posts, pages, and children, is Wiki+'s core. There are of course peripheral features, such as:
+ - Giving pages some 'page text', which sits above the posts on that page; this text is staff decided, and thus provides an authoritative space.
+ - Jumping to a random page.
+ - Seeing a list of recent changes to the database.
+ - Moving posts.[media width="150" description="Editing the Wiki+ tree" float="right"]data_custom/images/docs/wiki_tree_edit.png[/media]
+
+ - Merging posts.
+ - Viewing the tree structure of the whole database (transferred in a compressed format, and reduced so as only to show a single path to any page).
+ - Search
+ - Editing posts
+
+This simplicity is key to the flexibility of the system- it is a system of control built around organised text, and how that text is used and structured is completely up to the website staff.
+
+[title="3"]Posting on the front page[/title]
+
+Members need the "Place content in a featured position" privilege to post on the front page of Wiki+.
+
+[title="2"]Maintenance[/title]
+
+The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an adhoc basis, by either:
+1) referencing them in the child-list for a page (available under the 'Edit Tree' button),
+2) or by referencing them via the special Comcode syntax ([tt][[pagename]][/tt]).
+The 'Edit Wiki+ page' selection list in the Content Management Zone may be used to find/select pages which have been orphaned from the Wiki+ hierarchy.
+In a typical set-up, staff are given access to modify the Wiki+ tree, whilst ordinary users rely on the Comcode syntax to create new inline links. Whether ordinary users are given access to add new pages can vary substantially between deployments, depending heavily on what role Wiki+ is being used for.
+
+[title="3"]Orphaned pages[/title]
+
+Orphaned pages should not be perceived as a bad thing. It's fine to have pages not linked into the tree structure, if you're linking to them in the typical wiki-code style syntax ([[page name]]). Comcode has subsumed that part of wiki-code.
+It's a choice you have. You can link in both ways, one way, or the other way.
+
+[title="2"]Moderation[/title]
+
+As Wiki+ is (by default) open to posting by any user, you may feel it is necessary to moderate posts: especially as they may detract from the quality of the database. When a member posts, an e-mail is sent to the staff e-mail address: this will help you to moderate posts on the system, as they are made.
+
+It is possible to provide greater open-access to Wiki+, so that anyone may edit all page details and navigation, in the same way that they may do so on a wiki. If you wish to enable the permissions for this (Admin Zone > Security > Privileges, Wiki+ section) then you will likely want to make use of the page history feature to revert unwanted changes, as well as Composr's site-wide tracing and moderation abilities.
+
+[title="2"]Expanding images[/title]
+
+On a Wiki+ page with a lot of thumb-nailed images, you may wish to click the expand buttons to expand the thumbnails to display the full-size images, so that you don't need to click on them all to view them at their native resolution. You may either enlarge all images within a single post, or enlarge every image on the page.
+
+[title="2"]Viewing the complete tree structure[/title]
+
+Please note that when you do this you view with guest access -- so some pages may be missing from the view.
+
+[title="2"]Revision history[/title]
+
+You can see the edits a page has gone through via the revision history on the edit screen of a page. Changes are shown in a tooltip, plus you can revert to earlier versions.
+
+[concepts
+ 1_key="Wiki+"   1_value="A collaborative hierarchical database system in Composr"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_catalogues"]Creating structured information (via catalogues)[/page]
+
+{$SET,tutorial_tags,Wiki+,wiki,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The Wiki+ system is Composr's equivalent to a wiki, but extended with additional features.}[block]main_tutorial_rating[/block]

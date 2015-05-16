@@ -1,0 +1,155 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Field map display */
+
+.catalogue_fieldmap_field_name_column {
+	width: 13em;
+}
+
+.catalogue_fieldmap_field_value_column {
+	width: 100%;
+}
+
+/* Tabular display */
+
+.catalogue_tabular_view_link_column {
+	width: 8em;
+}
+
+.catalogue_tabular_rating_column {
+	width: 85px;
+}
+
+/* Grid display */
+
+.display_type_GRID {
+	margin: 0 0 1em;
+	/*padding: 0 0 0 0.5em; Indentation is ugly, but would balance against margin-right: 0.5em; */
+	position: relative;
+	z-index: 1;
+	border: 1px;
+}
+
+.display_type_GRID .box {
+	float: left;
+	margin-right: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.display_type_GRID .box h3 span {
+	max-width: {$CONFIG_OPTION,thumb_width}px;
+	display: inline-block;
+}
+
+.display_type_GRID .catalogue_entry_box_thumbnail {
+	min-width: {$CONFIG_OPTION,thumb_width}px;
+	min-height: {$ADD,4,{$CONFIG_OPTION,thumb_width}}px;
+	text-align: center;
+}
+
+/* Catalogue product entry screen */
+
+.catalogue_fields_table {
+	margin: 1em 0;
+	font-size: 0.85em;
+}
+
+.catalogue_fields_table th, .catalogue_fields_table td {
+	padding: 0.5em;
+	text-align: left;
+}
+
+.catalogue_entry_screen .ratings .rating_box {
+	float: left;
+	margin-right: 1em;
+}
+
+/* eCommerce cart link template */
+
+.cart_info {
+	overflow: hidden;
+}
+
+.product_view .cart_info {
+	margin-bottom: 2em;
+}
+
+.cart_info .box {
+	margin-top: 0.25em;
+}
+
+.cart_info .rating_part {
+	padding-top: 1em;
+	float: left;
+}
+
+.cart_info img, .cart_info span {
+	vertical-align: middle;
+}
+
+.cart_link {
+	float: right;
+}
+
+/* eCommerce cart button template */
+
+.add_to_cart {
+	width: 100px;
+	padding-top: 1em;
+}
+
+.purchase_buy {
+	float: left;
+	margin-right: 0.5em;
+}
+
+.tax_opted_out {
+	font-size: 0.85em;
+}
+
+/* eCommerce product entry screen AND eCommerce product entries */
+
+.price_box {
+	font-weight: bold;
+	margin: 1em 0;
+	font-size: 1.15em;
+}
+
+/* eCommerce product entries */
+
+/* eCommerce product entry screen */
+
+.product_view .catalogue_entry_box_thumbnail {
+	float: right;
+	margin: 3em 0 3em 3em;
+}
+
+.product_view .sku {
+	float: right;
+	padding-top: 0.5em;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.menu__cms__catalogues__add_one_catalogue {
+	background-image: url('{$IMG,icons/24x24/menu/cms/catalogues/add_one_catalogue}') !important;
+}
+.menu__cms__catalogues__edit_this_catalogue {
+	background-image: url('{$IMG,icons/24x24/menu/cms/catalogues/edit_this_catalogue}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.menu__cms__catalogues__add_one_catalogue {
+		background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/add_one_catalogue}') !important;
+	}
+	.menu__cms__catalogues__edit_this_catalogue {
+		background-image: url('{$IMG,icons/48x48/menu/cms/catalogues/edit_this_catalogue}') !important;
+	}
+}

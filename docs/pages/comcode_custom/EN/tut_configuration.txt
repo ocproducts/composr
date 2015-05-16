@@ -1,0 +1,271 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Basic configuration[/title]
+
+Once Composr is installed, there is some basic configuration to do before your website is ready to open.
+
+During basic configuration, you will be familiarising yourself with Composr for the first time. Please be patient: there is a lot to Composr, but once you have a mental image of how things work, you will find it a very powerful and malleable system.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Things to do[/title]
+
+[box="Important note" width="25em" float="right"]Important note: Login using an administration username. If you installed using Conversr (Composr's own forum system), the username and password will have been specified during installation (with the username being 'admin' by default).[/box]
+When the installer finishes, you have a choice to either view your website, or run the Setup Wizard. The Setup Wizard link will direct you into the 'Admin Zone', which requires to login. If you choose to view your website, you are presented with a screen saying that the site is closed, with a login link. Once logged in, there is a link to the Admin Zone in your 'login block' (alternatively, you can always access your 'Admin Zone' directly by appending /adminzone to your website's URL).
+
+[title="2"]The Setup Wizard[/title]
+
+{!config:DOC_SETUPWIZARD}
+
+A very common mistake is to think of the Setup Wizard as a core part of Composr that you re-run whenever you want to make certain changes. This is not the case: it is a tool to help you get started, and not the main method for configuring Composr. Anything in the Setup Wizard is configurable elsewhere within Composr. Anything you see pre-set in there does not necessarily represent the current configuration of your site, just the default outcome of running the wizard.
+
+We actually give out a warning if you re-run the Setup Wizard for these reasons.
+
+If you run the Setup Wizard, you may wonder later what it actually did, especially if you want to undo it. The Setup Wizard can perform the following behind-the-scenes functions:
+ - Generating a "Theme Wizard" theme. You can access the Theme Wizard from Admin Zone > Style > Themes, Theme Wizard link (under Add Theme).
+ - Generating a "Logo Generator" logo. You can access the Logo Generator separately, from Admin Zone > Style > Logo Wizard.
+ - Setting site options. You can access these from Admin Zone > Setup > Configuration.
+ - Removing predefined content. Predefined content can be removed (e.g. default banners). Once this is removed you'd need to put it back manually, by adding it as you would any other content.
+ - Setting redirects and setting guest access. The "single public zone" feature sets up some transparent redirects (Under Admin Zone > Structure > Redirects), as well as giving guests access to the Site Zone. The redirects map the site versions of 'start', 'panel_left', and 'panel_right', to the welcome-zone pages -- in other words, binding them together as one.
+ - Placing blocks. You can place/change blocks, via the "Edit in zone editor" links you see under panels when logged in under a staff account.
+ - Copying rules. You can edit the rules page manually, from "Comcode pages" in the Content Management Zone.
+
+[title="2"]Notifications[/title]
+
+Chances are that you'll want e-mailing whenever things happen on your site. So go and edit your profile, changing your notification settings.
+In particular you'll probably want to know about content needing validation, various kinds of messaging activity (e.g. support ticket posting), and eCommerce activity.
+
+[title="2"]Editing basic site configuration[/title]
+
+[media width="150" description="The list of configuration sections" float="left"]data_custom/images/docs/configuration.png[/media]
+[media width="150" description="The most important area of the configuration" float="right"]data_custom/images/docs/configuration_actual.png[/media]
+If you didn't use the Setup Wizard you will probably have noticed by now that many options are initially set to derivatives of 'Composr-?', but all these can all be changed to suit the content and theme of your website (Composr can be entirely debranded, nobody needs to know what software you are running for your site). When you visit the full configuration page to fine tune your configuration, you will see that configuration options are split into a number of subsections. Scroll down your browser window until you find the section entitled, 'General'. From this, you may specify the most important details. Once done, scroll to the bottom of the page and click the obvious button.
+
+There are many more options in the main configuration, and the actual options available depend on which modules are installed.
+
+[title="2"]Editing zones for header text[/title]
+
+[media width="150" description="Editing a zone" float="right"]data_custom/images/docs/configuration_zone.png[/media]
+If you chose not to use the Setup Wizard, you will see that 'Welcome to Composr-?' is still written in the title-bar of most user viewable pages. To change this, you need to edit your website's zones so as to give them new 'header text'. A zone is simply a collection of pages, accessible from a common 'URL sub-directory' (such as [tt]http://example.com/zone[/tt]). The 'Admin Zone' is an example of a zone, as it consists of many different pages related to the administration of your site, all underneath 'adminzone' in the URL. The very base of your site, where sub-directories branch off from, is called the 'Welcome Zone' (this is equivalent to the [tt]base_url[/tt] in the installation options).
+
+The two zones you need to edit to specify your own header text are:
+ - Welcome (this is to greet users and provide the opportunity to join)
+ - Site (this is a zone where most pages are stored; by default it is only accessible to users who have joined, but you may change this by editing zone access permissions)
+
+Editing zones may be carried out from the Admin Zone, as indicated in the screen-shots.
+
+[title="2"]Editing default Comcode pages[/title]
+
+[media width="150" description="The list of Comcode pages to be edited/deleted" float="left"]data_custom/images/docs/configuration_comcode_pages.png[/media]
+A Comcode page is a page in the system that you can edit either via a [concept]WYSIWYG[/concept] editor, or a very simple [concept]mark-up language[/concept] called Comcode. If you want to write a page without any special formatting, you can just type it out in plain-text, and this will usually be valid Comcode and display as you would expect it to; you can also add 'tags' to identify things such as titles and links.
+
+[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/configuration_page.png[/media]
+
+Comcode pages may be selected for editing from the Comcode pages editor in the Admin Zone. The list to choose from has them listed in 'zone:page-name' format, which is a very common naming convention in Composr that is a bit like an 'Composr URL' (it's called a 'page-link'). The default Comcode pages are:
+
+[html]
+<table class="columned_table results_table wide_table">
+   <tr>
+      <th>Zone</th>
+      <th>Page</th>
+      <th>Purpose</th>
+   </tr>
+   <tr>
+      <td>All</td>
+      <td>start</td>
+      <td>This is the default front-page of a zone</td>
+   </tr>
+   <tr>
+      <td>All</td>
+      <td>panel_left, and sometimes panel_right (and also any [tt]panel_[/tt] page may be added and used by a user, if a template such as [tt]GLOBAL_HTML_WRAP.tpl[/tt] references them)</td>
+      <td>Your actual menus, either side of your pages, are assembled by Comcode pages. Not all zones have menu pages, and there are other ones available that are un-used by default. They may also be turned off on a per-zone basis, by making a zone 'wide'.</td>
+   </tr>
+   <tr>
+      <td>Welcome</td>
+      <td>sitemap</td>
+      <td>The Site Map, which by default, is automatically generated using a special block.</td>
+   </tr>
+   <tr>
+      <td>Welcome</td>
+      <td>_rules</td>
+      <td>Site rules, also shown when joining the website.</td>
+   </tr>
+   <tr>
+      <td>Welcome</td>
+      <td>privacy</td>
+      <td>Privacy information.</td>
+   </tr>
+   <tr>
+      <td>Welcome</td>
+      <td>feedback</td>
+      <td>This provides a feedback form, linked from the footer.</td>
+   </tr>
+   <tr>
+      <td>Site</td>
+      <td>help</td>
+      <td>Help for your site. Contains default information on points, etc.</td>
+   </tr>
+   <tr>
+      <td>Collaboration Zone</td>
+      <td>about</td>
+      <td>This describes the Collaboration Zone (if you have that installed). I recommend that you don't edit this yet.</td>
+   </tr>
+</table>
+[/html]
+
+[box="Tip" width="25em" float="right"]Using a combination of changing a zones start page, page redirections, and zone/page access permissions, you may change the front page of your site to any of your choosing. For example, you can change the front page to be in-line forums by:
+1) editing the Welcome Zone to use 'forums' as the start page
+2) creating a page redirection from '','forums' to 'site','forums' (because the 'forums' module isn't actually in the Welcome Zone)
+3) changing your 'site' zone access permissions to grant guest access.[/box]
+The documentation is in-fact provided in Comcode format itself, but you are not likely to want to edit this.
+
+There are a number of built-in page templates available. These are shown when you add a new page from Content Management > Pages.
+The templates are designed to help you in the following ways:
+ - So you don't need to think too hard about what kind of pages your site would benefit from
+  - Note we don't provide an FAQ page template because we have a default FAQ catalogue instead
+ - So you get some reasonable default layouts and graphics (any website benefits greatly from professional design, but the samples are enough to get most sites started)
+ - Specific and detailed advice you can work to, particularly on how to structure persuasive or engaging articles (we think we've saved you a lot of self-education here, bringing together techniques from journalism, PR, sales, and brand marketing, into a single set of convenient techniques)
+
+[title="2"]Editing logo theme images[/title]
+
+[media width="150" description="Choosing theme images to edit" float="left"]data_custom/images/docs/configuration_logo_1.png[/media]
+You will want to change your logo to give your site an individual identity. You may either do this manually, or by using the Logo Wizard; the rest of this section will assume that you are doing it manually.
+
+When you change images, styling, or low-level HTML structure (defined in templates), you are editing the theme of the site. Therefore to do it, you should go to Admin Zone > Style > Themes.
+When you choose to manage images in the default theme, you will be warned against editing the default theme; for this simple task, the warning is irrelevant, and we therefore recommend you click 'ok'. If you are feeling adventurous, you could add a new theme, and continue sculpting your theme as you go.
+
+Choose 'logo/-logo' (the logo for the Welcome Zone, and the logo for any zone that does not have its own) from the drop-down list presented. After clicking the button you will see the current image; all you need to do is create your own replacement on your computer (as a .jpeg/.jpg, .png, .gif or .png file) and choose to browse for it to upload. You do not need to erase the current URL, as your upload will replace it, and you definitely should leave the 'Name' field unchanged.
+
+[media width="150" description="Editing a logo theme image" float="right"]data_custom/images/docs/configuration_logo_2.png[/media]
+
+Your choice of image file formats:
+ - Do not ever try and use '.bmp' files with Composr, as they do not have proper compression, and are designed for Windows only.
+ - It is also ill-advised to use '.gif' files, as the format was encumbered by patents until recently that prevented its usage on most Linux installations, and hence if Composr ever needed to create a thumbnail for one, it is unlikely to be able to.
+ - PNG files never lose quality, and are well compressed and supported.
+ - JPEG files can be very small, if you reduce the quality, or acceptable quality and comparable to PNG files in file-size.
+
+[title="2"]Editing menus[/title]
+
+[media width="150" description="The left hand panel" float="left"]data_custom/images/docs/configuration_left.png[/media]
+[media width="150" description="The menu editor" float="right"]data_custom/images/docs/configuration_menu_editor.png[/media]
+In Composr, menus are placed on panels via a Composr feature called a 'block'; the panel consist of Comcode that can display blocks (those blocks are given parameters within that Comcode), of which one type is the menu-block.
+
+You may wish to remove some of the links from the default menus on your installation. To do this, log in as an administrator and click the 'Edit menu' link. Using the menu editor is beyond the scope of this tutorial.
+
+[title="2"]Default banners[/title]
+
+If you are not running a community site, you will almost certainly want to delete the default banners. Three banners are added into the system by default, to give websites a 'leg up' and a working view of the banner rotation: but they may not be appropriate. If you ran the Setup Wizard then you have already been given a choice to remove these banners automatically.
+
+[title="2"]Environment configuration[/title]
+[surround]
+[media width="150" description="Your base-configuration" float="right"]data_custom/images/docs/configuration_environment.png[/media]
+{!config:DOC_BASE_CONFIGURATION}
+[/surround]
+[title="2"]Scheduling[/title]
+
+In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task for the '[tt]data/cron_bridge.php[/tt]' file on an every-minute basis. By doing this, you tie in Composr's scheduler with the server's scheduler. This [tt]cron_bridge.php[/tt] file can either be run up by calling the URL, or by passing the PHP file through the PHP interpreter. Don't call up the URL by hand because if you do then Composr will start assuming the scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
+
+[title="3"]Specific advice for Linux[/title]
+
+On Linux the following command might work for a Composr installation in the '[tt]/home/funkysite/htdocs[/tt]' directory:
+[code]
+php /home/funkysite/htdocs/data/cron_bridge.php
+[/code]
+On Linux, the system level scheduler is 'Cron', and the process of adding a task is known as 'setting up a Cronjob'. Many web hosting control panels allow you to do this.
+
+[title="4"]Sandboxes CRON[/title]
+
+Some webhosts only allow you to execute CRON commands directly under your home directory. This means you cannot call up the PHP command directory like above.
+A workaround is to make a [tt]data/cron_bridge.sh[/tt] file (with execute permissions) containing:
+[code]
+#!/bin/sh
+php cron_bridge.php
+[/code]
+and tell CRON to execute [tt]/home/funkysite/htdocs/data/cron_bridge.sh[/tt].
+
+[title="3"]Specific advice for Windows[/title]
+
+On Windows the following command might work for a Composr installation in the '[tt]c:\sites\funkysite\www[/tt]' directory:
+[code]
+c:\php\php.exe c:\sites\funkysite\www\data\cron_bridge.php
+[/code]
+On Windows, either the hosting control panel will provide a similar scheduler to Cron, or you can use the Windows' 'Scheduled Tasks' feature as described below (assuming you have access).
+
+The following is a Windows Vista scheduler step by step process for scheduling the running of [tt]cron_bridge.php[/tt] every 5 minutes to enable the scheduler:
+1) Open up Windows Task scheduler
+2) Click 'Create Basic Task'
+3) Give it a name and a description
+4) Click 'Daily'
+5) Set the Time and to re-occur every 1 Day
+6) Click 'Start a Program'
+7) Under program/script add the location of [tt]php.exe[/tt] on your system something like [tt]"C:\php\php.exe"[/tt] -- also include the double Quote Marks ("") surrounding the file location
+8) Under 'Arguments' add the location to the [tt]cron_bridge.php[/tt] file which for the example above would be [tt]"c:\sites\funkysite\www"[/tt] (note how the PHP command is split across two parameters -- step 7 having the [tt]php.exe[/tt] path and step 8 having the PHP file path) -- again surround in quote marks.
+9) Click 'Next'
+10) Tick (check) "Open the properties dialog for this task when I finish"
+11) Click 'Finish'
+12) Click 'Triggers' (top of window)
+13) Double click the trigger from the list
+14) Tick (check) 'repeat task every' box
+15) Change the "1 Hour to 5 Minutes" for the duration of "Indefinitely"
+16) Click 'OK'
+17) Click 'OK'
+This should have now added a schedule within windows scheduler to run the [tt]cron_bridge.php[/tt] file every 5 minutes. This step by step was created using Windows Vista, the process may change slightly in other versions of Windows.
+
+[title="3"]General advice[/title]
+
+The above examples are very specific, assuming the path to the appropriate PHP executable file, and also the file system conventions of the server for where virtual-host websites are stored. The path to [tt]cron_bridge.php[/tt] must be a filesystem path, not an [abbr="File Transfer Protocol"]FTP[/abbr] path.
+
+Composr may be able to detect the command to use for you. Try opening up a URL like [tt]http://yourbaseurl/data/cron_bridge.php?querymode=1[/tt]. The script should output a command for you to use.
+
+A good test is to try running the command you end up choosing manually in a command prompt, to check it is correct.
+
+You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at least every 10 minutes.
+
+Aspects of Composr that support scheduling include:
+ - the calendar
+ - newsletters
+ - news
+ - backups
+ - welcome e-mails
+ - XML sitemap generation
+ - catalogue view reports and classified timeouts
+ - stats cleanup
+ - reminders for registration confirmation mails that were not ever actioned
+ - newsletters (dripping out e-mails over a period of time, to stop resource spiking)
+
+[title="3"]Help -- my web host does not support CRON![/title]
+
+In the event your hosting platform does not allow you access to CRON, there are a number of options available to you.
+ - EasyCron provide direct instructions for Composr, and free and paid plans: http://www.easycron.com/tutorials/how-to-set-up-cron-job-for-composr
+ - Other free options are http://www.mywebcron.com/ (up to every 5 minutes), http://www.setcronjob.com/ (up to every 5 minutes but the schedule needs to be re-set every week) and http://www.onlinecronjobs.com/ (up to 5 jobs twice a day).
+
+Simply sign up and  add the URL i.e. [tt]http://yourwebsiteaddress.com/data/cron_bridge.php[/tt] to the scheduler and set how often you want it to run.
+
+[title="3"]Caveats[/title]
+
+If you enable the mail queue (recommended for performance), then e-mail will be sent in the background via the scheduler. However, if the scheduler stops running for a period, e-mails could queue up. We have had a report of this happening to a user and then the webhost deciding to block the scheduler from running, compounding the problem. If such an event happens it is best to discuss it with the webhost, then perhaps deciding to ease CRON back in on a lower execution interval (e.g. once per hour, then back to normal after the queue is emptied).
+
+[title="2"]Closed site, and opening[/title]
+[surround]
+[media width="150" description="Your site is initially closed" float="right"]data_custom/images/docs/configuration_closed.png[/media]
+It's not advertised in the interface, but it is possible for a user to join a closed Conversr-powered site if they have been given the URL to the join module (they can't see any panels in this event). Once they have joined they can't log in though unless they have subsequently been put in a usergroup with 'Access closed site' permission. The reasoning here is that the staff may give out the join URL and ask someone to use it, and then give special access because they want them to be able to get in early. If you do not like this behaviour, you can alter the join-module's permissions so that the Guest usergroup cannot access it.
+
+Once you feel your site is ready for the general public, you will want to 'open the doors' so to speak. You can do this from the configuration: find the options in the Admin Zone, the Configuration page, the Site Configuration section, the 'Closed Site' subsection.
+[/surround]
+
+[concepts
+ 1_key=".htaccess"                         1_value="A file used by the Apache web server to set configuration options that apply to the directory (and sub-directories thereof-) that the file is contained in"
+ 2_key="Main Admin Zone Configuration"     2_value="The 'Configuration' module of the Admin Zone"
+ 3_key="Base-configuration"                3_value="The Base-configuration for low-level settings such as database settings, available from config_editor.php"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_install"]Basic installation[/page]
+ - [page="_SEARCH:tut_security"]Security[/page]
+ - [page="_SEARCH:tut_themes"]Themeing your website[/page]
+ - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
+ - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+ - [page="_SEARCH:tut_menus"]Customising what's on the menus[/page]
+ - [page="_SEARCH:tut_adv_configuration"]Advanced Configuration[/page]
+
+{$SET,tutorial_tags,zone_logos,setupwizard,help_page,core_configuration,Configuration,Installation,pinned,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Once Composr is installed, there is some basic configuration to do before your website is ready to open. We discuss it here.}[block]main_tutorial_rating[/block]

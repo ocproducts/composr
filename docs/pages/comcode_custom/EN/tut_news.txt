@@ -1,0 +1,133 @@
+[title sub="Written by Allen Ellis, ocProducts"]Composr Tutorial: Releasing news & running a Blog[/title]
+
+{!news:DOC_NEWS}
+
+The news system can be used for website news, press releases, community news, blogs, or any other kind of article.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Adding news[/title]
+
+[media width="150" description="An add link is presented on the news block" float="left"]data_custom/images/docs/news_link.png[/media]
+[media width="150" description="The screen that you add news from" float="right"]data_custom/images/docs/news_add_page.png[/media]
+When you first install your website, you may notice that there are no news posts. Adding more news posts is very simple.
+
+From the front page, you'll notice the news block (assuming you didn't disable it in the Setup Wizard). At the bottom of that block is a link: 'Add News'. This link is only visible to members with sufficient permission to add news.
+
+This screen is a standard form in Composr, and the red fields indicate required fields.
+
+ - [b]Title[/b]: this is the title (headline) that your news post will have
+ - [b]Main category[/b]: This is the primary category that your news announcement will be listed in; it is special when compared to secondary categories as access to the primary news category is required for anyone to see or read the article
+ - [b]Secondary category[/b]: In this space, you may choose additional categories for this post to be listed in. (hold ctrl to select more than one)
+ - [b]Source[/b]: the primary source/author of this source. It may be you
+ - [b]Allow rating[/b]: With this option ticked, your members will be able to rate your news announcement on a scale of 1/10
+ - [b]Allow comments[/b]: With this option ticked, your members will be able to leave comments at the end of your news announcement
+ - [b]Allow trackbacks[/b]: With this option ticked, your members will have to ability to [[trackback]] this announcement
+ - [b]Notes[/b]: This is additional information that the staff will be able to see when they are validating this post
+ - [b]Validated[/b]: Tick this and this announcement will be visible and posted after you click 'add news'. If you leave this unticked, it will remain in a validation queue until it is either validated or deleted by the staff
+ - [b]News article[/b]: In this space, you can write your news announcement in detail, with options to include formatting and/or emoticons
+ - [b]News summary[/b]: this is a brief summary (1 or 2 paragraphs) of your news announcement. If your announcement is less than 2 paragraphs or so, you may choose to not write a summary at all (in which case Composr is smart enough to use the actual article in place of a summary)
+ - [b]Attachments[/b]: At the bottom of the page, you have the ability to add as many attachments to this post from your computer as you like
+
+After being validated by the staff, your news announcement will be visible on the front page unless you choose to schedule for it to be only made visible on a certain date and time. If you chose for it to be in the 'personal category of myname', then it will also be available by clicking the 'Blog' link in your profile.
+
+[title="2"]More detail[/title]
+
+[title="3"]Permissions[/title]
+
+News entries may be in multiple news categories, but a user needs access to the primary news category to be able to read the news.
+
+[title="3"]Scheduled news / Manual date selection[/title]
+
+See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the scheduler.
+
+You will see an advance scheduling option once the scheduler is enabled (requires the Composr 'calendar' addon to be installed also).
+
+Scheduling posts work by having the entry initially non-validated, then it will be auto-validated at the chosen time.
+
+[title="3"]Enabling member blogs[/title]
+
+Blog posts are just news posts that exist in a category that is owned by a member. A member's blog is displayed in a tab on their member profile (Conversr-only). Depending on how you set up your news block on your main site, they may or may not display in it.
+
+There is a dedicated blog posting module in the Content Management zone. It is a stripped down version of the main news posting module, designed to make blog posting simpler.
+
+Permissions required for blogs are:
+ - Permission to access the [tt]cms[/tt] zone [set in Admin Zone > Security > Permission tree editor]
+ - Permissions to access the [tt]cms:cms_blogs[/tt] page (it's on by default) [set in Admin Zone > Security > Permission tree editor]
+ - The 'have personal categories permission' [set in Admin Zone > Security > Global privileges]
+ - The 'add mid-level content permission' [set in Admin Zone > Security > Privileges, or in the permission tree editor if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
+
+[title="3"]Advanced: Pinging[/title]
+
+'Pinging' (in the context of blogging) refers to an automatic alert feature that some software (including Composr) has. When you write a news post the URL to the news post can automatically be given to one or more ping services (defined in the Configuration, under the 'Feature options' category). These ping services typically are blog search engines, and the ping action automatically tells the search engine to go and index your new article.
+
+A default service of [tt]http://pingomatic.com/ping/?title={title}&blogurl={url}&rssurl={rss}[/tt] is configured for you. This particular service is a ping relay service which takes your ping and relays it off to many other ping services for you. Most users therefore won't have a reason to add any additional ping services.
+
+The ping descriptors are just normal URLs, except you can put these three little placeholders in them which Composr will use to insert the specifics of any article being pinned:
+ - {title} (which will become the title of the article)
+ - {url} (which will become the URL of the article)
+ - {rss} (which will become the URL to your news RSS feed)
+
+Pinging will only happen for news categories which may be accessed by guests.
+
+[title="2"]Alternative strategies[/title]
+
+[title="2"]Show RSS feeds[/title]
+
+RSS feeds can be displayed by placing the [tt]main_rss[/tt] block. This block is very straight-forward to configure, and like any block, may be added using the 'Add block' button when editing a Comcode page.
+
+[title="3"]Showing forum topics as news[/title]
+
+You may wish to use an 'Announcements' forum to make your news. If you wish to do this, use the [tt]main_forum_news[/tt] block instead of the [tt]main_news[/tt] block, and add news by posting in the forum you chose for your forum news (this choice is made by a parameter to the block).
+
+[title="2"]Import from blogging systems[/title]
+
+You can import from any system that can export RSS files. We have extended support for the extra data that Wordpress and Blogger put into their exported RSS files.
+
+[title="3"]Wordpress import[/title]
+
+You can import from Wordpress XML exports (RSS files), or direct from the database.
+The database method is more thorough, but the XML files will work well enough for most users and are easier to experiment with in advance on a test site.
+
+Note that we can not import:
+ - [i]for posts and pages...[/i]
+  - custom fields \[the postmeta table] (importing to news would probably be a bad idea for such content anyway -- it would be better to import to catalogues rather than continue Wordpress's shoe-horned custom-field implementation, although we don't currently have any code to do this -- unless you can get Wordpress's data into a CSV file)
+  - full taxonomy for categories (description, and hierarchy, and groups)
+  - child order (Composr doesn't have it, child pages are shown alphabetically, or page-linking is done manually)
+  - pinned (you should manually re-assign awards to stuff, and set up award layout via Comcode page layout or templating)
+ - [i]for comments...[/i]
+  - comment custom fields \[the commentmeta table] (we can't -- Composr doesn't have custom fields for comments)
+  - comment karma (Composr points work differently)
+ - [i]for users...[/i]
+  - user display names
+  - user URLs
+  - cpfs \[the usermeta table]
+  - [i]This support could be added, but most Wordpress sites don't make much use of the user database, and those that do may use a secondary user database[/i]
+ - links
+ - the main menu
+ - choice and layout of widgets
+ - short-codes (except for 'caption' which is the main one)
+ - [i]anything relating solely to particular Wordpress addons[/i], e.g. Buddypress
+
+We load everything into memory at once, which isn't ideal, but simplifies the code a lot. It's safe because import is a one-off event and a blog wouldn't normally use gigabytes of data.
+
+Passworded pages are changed to pages with no access permissions. Passworded post content is made admin-only.
+
+Categories and Tags are both imported from the same set of terms. You may wish to rationalise this manually after import is finished, probably by deleting some secondary categories that you don't really want.
+
+[title="2"]Representative images[/title]
+
+News categories may have a representative image for the category. By default news in that category (by primary category) will use that image.
+News may also have a manual representative image uploaded, or have a manual selection from any theme image under the 'newscats' theme image directory. These options are under 'Advanced' on the news add/edit form.
+
+By default Composr will automatically size down uploaded images to the configured thumbnail size. This may be turned off via a hidden option, if an advanced themer is doing dynamic thumbnail generation and doesn't want things down-sized in advance. This hidden option is documented in the Code Book and named [tt]resize_rep_images[/tt].
+
+If you go back to edit some news and want to see what uploaded images is currently set, you will see it can be observed via hovering the mouse over the word 'existing'.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_adv_news"]Advanced News[/page]
+ - [page="_SEARCH:tut_configuration"]Configuration[/page]
+ - [page="_SEARCH:tut_newsletter"]Running a newsletter[/page]
+
+{$SET,tutorial_tags,News,syndication_blocks,syndication,news_shared,news,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to use the news system for website news, press releases, blogs, or any other kind of article.}[block]main_tutorial_rating[/block]

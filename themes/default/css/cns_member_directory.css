@@ -1,0 +1,108 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.block_main_members {
+	font-size: 0;
+}
+
+.block_main_members .associated_details {
+	margin: 0;
+}
+
+.block_main_members>div {
+	vertical-align: top;
+	font-size: 12px;
+	display: inline-block;
+	padding: 0.5em 0.25em; /* Vertical gap is bigger because horizontal gap also includes a space between the inline blocks */
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;} /* Exact percentage widths are chosen to match the per_row block parameter */
+}
+
+.block_main_members__avatars>div, .block_main_members__photos>div, .block_main_members__media>div {
+	text-align: center;
+}
+
+.block_main_members__media .gallery_tease_pic_wrap {
+	text-align: left;
+}
+.block_main_members__media.has_item_width .img_thumb_wrap {
+	width: 100% !important;
+	height: auto !important;
+	max-width: none !important;
+	max-height: none !important;
+	display: inline-block;
+}
+.block_main_members__media.has_item_width .img_thumb {
+	width: 100% !important;
+	max-width: none !important;
+	max-height: none !important;
+}
+
+.block_main_members__avatars img, .block_main_members__photos img {
+	width: 100%;
+}
+.block_main_members__avatars p, .block_main_members__photos p {
+	margin: 0.25em 0;
+}
+
+.block_main_members__boxes .box_inner {
+	margin: 0;
+}
+.block_main_members__boxes .cns_member_box {
+	min-width: 23em;
+	min-height: 8em;
+}
+.block_main_members__boxes .cns_member_box_avatar {
+	float: right;
+	margin-top: 0.5em; /* balance the th/td to the left, which have some padding above */
+	margin-left: 1em;
+}
+.block_main_members__boxes table {
+	margin: 0;
+}
+.block_main_members__boxes table th {
+	width: auto;
+	min-width: 0;
+}
+.block_main_members__boxes table td {
+	width: auto;
+	min-width: 0;
+}
+
+/* Search filter UI */
+
+.advanced_member_search {
+	margin-bottom: 1.5em;
+}
+.block_main_members__avatars .advanced_member_search+p,
+.block_main_members__photos .advanced_member_search+p,
+.block_main_members__boxes .advanced_member_search+p,
+.block_main_members__media .advanced_member_search+p {
+	margin-bottom: 0;
+}
+
+.advanced_member_search .box_inner {
+	margin: 0.25em;
+}
+
+.advanced_member_search .search_option {
+	width: 10em;
+	padding: 0.3em;
+	margin: 0;
+	float: left;
+}
+
+.advanced_member_search .search_option label {
+	display: block;
+}
+
+.advanced_member_search .search_option_value {
+	width: 100%;
+	margin-bottom: 0;
+}
+
+.advanced_member_search .search_button {
+	float: right;
+	margin-top: 0.6em;
+}

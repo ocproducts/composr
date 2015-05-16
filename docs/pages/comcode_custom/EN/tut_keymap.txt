@@ -1,0 +1,46 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Composr keyboard shortcuts[/title]
+
+Many functions in a Composr website may be activated by key code, rather than clicking or using tab to move between components. This short tutorial will list these key codes.
+
+These key codes are based on the UK government standard for accessibility.
+
+On most web browsers you can activate a key shortcut by holding down the Alt key and pressing the key code (hold down the Ctrl key on a Mac). You may need to hold down the Shift key in addition.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Key map[/title]
+
+[b][tt]C[/tt][/b] Continue to followup page
+[b][tt]G[/tt][/b] Go back to the top of the page
+[b][tt]I[/tt][/b] Admin Zone (staff only)
+[b][tt]J[/tt][/b] Previous
+[b][tt]K[/tt][/b] Another/Next
+[b][tt]L[/tt][/b] Login/Logout
+[b][tt]M[/tt][/b] Activate the management menu (staff only)
+[b][tt]N[/tt][/b] Activate bookmarks menu
+[b][tt]O[/tt][/b] Open Commandr (staff only)
+[b][tt]P[/tt][/b] Preview
+[b][tt]Q[/tt][/b] Activate edit link (staff only)
+[b][tt]R[/tt][/b] Rate
+[b][tt]S[/tt][/b] Skip navigation
+[b][tt]U[/tt][/b] Submit form
+[b][tt]W[/tt][/b] Switch user (staff only)
+[b][tt]X[/tt][/b] Go to the main posting area of a posting form
+[b][tt]Y[/tt][/b] Go to advanced screen
+[b][tt]Z[/tt][/b] Select the zone list
+[b][tt]1[/tt][/b] Home page
+[b][tt]2[/tt][/b] News archive
+[b][tt]3[/tt][/b] Site map
+[b][tt]4[/tt][/b] Search
+[b][tt]5[/tt][/b] Staff page
+[b][tt]6[/tt][/b] Help
+[b][tt]7[/tt][/b] Rules
+[b][tt]8[/tt][/b] View the website privacy policy
+[b][tt]9[/tt][/b] Feedback form
+[b][tt]0[/tt][/b] Keyboard map
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
+
+{$SET,tutorial_tags,Web standards & Accessibility,Administration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Many functions may be activated by key code, rather than clicking. Find out the key codes you can use in this tutorial.}[block]main_tutorial_rating[/block]

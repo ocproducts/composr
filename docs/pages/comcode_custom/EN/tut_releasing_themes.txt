@@ -1,0 +1,54 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Releasing a theme[/title]
+
+If you've developed your own theme for Composr, and would like to share it with others, we strongly encourage you to do so via the {$BRAND_BASE_URL} theme gallery.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Why distribute a theme[/title]
+
+ - The way for users to get a very different look to their website is to either re-theme it themselves, download a theme from the Composr site (or another source), or to buy the services of a professional to do the themeing for them. By releasing a theme, you are helping other Composr users, and giving yourself and your site some publicity for it.
+ - It's a good way to earn respect in the community -- and points.
+
+[title="2"]How to make a theme pack[/title]
+
+[media width="150" description="Making a theme pack using the 'addon' facility" float="right"]data_custom/images/docs/releasing_themes_make.png[/media]
+Details on how to create a theme are outside the scope of this tutorial, and included in the 'Themeing your site' tutorial.
+
+To actually make a theme pack that is ready for release, you just need to export your theme as an addon (as in the screen-shot).
+
+[title="2"]Releasing your theme pack[/title]
+
+Once this is done, all you need to do is to upload the addon to our site:
+1) Go to our website
+2) Go to the community section
+3) Go to the themes section
+4) Use the 'Add a new download' link
+5) Fill in the Name/Upload/Author/Description and click the "Add a new download" button
+6) You will be invited on what to do next; we like it if users submit images to go with their theme so that's a good next step
+
+Your theme will at first be non-validated (i.e. not live for download), but we will go and validate the theme as soon as we can after we receive it. Please be patient.
+
+[title="2"]Editing your theme pack[/title]
+
+You can edit your download via the edit link when viewing it.
+
+[title="2"]How other users get your theme pack[/title]
+
+Theme packs are just packaged as normal Composr addons, so are installed from Admin Zone > Setup > Addons.
+The user will need to import the addon into their own site, which they can do either by point and click (all compo.sr's addons are shown for easy import), or via uploading the .tar file after downloading it manually from {$BRAND_BASE_URL}.
+Once a theme is installed, it is available from the 'Manage themes' section of Composr, and can be set as active.
+
+[title="2"]Automatic upgrades with new versions[/title]
+
+Themes are built for a specific version of Composr. Particularly, the CSS files used are based on those from the default theme.
+Sometimes a new version of Composr will change the CSS files, perhaps for reasons of styling a new feature, fixing a styling bug, or improving browser compatibility.
+
+In order to allow such CSS changes to (hopefully) come through to the new theme from the altered default theme, upon upgrade, we store the source CSS files of the default theme within your theme as [tt]*.editfrom[/tt] files. These files tell the upgrader what the CSS files were built from so it can compare that against the latest default theme CSS files (i.e. see what has changed in the upgrade), and apply those differences to your CSS files (if there are any in the upgrade).
+This upgrade process happens on individual site's that use your theme, and hence why the [tt]*.editfrom[/tt] files are included with what you release.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+ - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
+
+{$SET,tutorial_tags,Contributing,core_themeing,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A short tutorial explaining how to share a theme with other Composr webmasters, by exporting it as an addon.}[block]main_tutorial_rating[/block]

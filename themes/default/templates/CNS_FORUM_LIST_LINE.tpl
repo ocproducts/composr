@@ -1,0 +1,1 @@
+{PRE*} {+START,IF_NON_EMPTY,{CAT_BIT}}{$UCASE*,{CAT_BIT}} &gt;{+END} {NAME*}

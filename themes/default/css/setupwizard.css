@@ -1,0 +1,16 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.box__setupwizard>.box_inner>h2 {
+	text-align: left;
+	padding-left: 0.75em;
+	padding-top: 0.75em;
+	padding-bottom: 0.75em;
+}
+
+.progress_indicator {
+	float: right;
+	margin-top: 0.7em;
+}

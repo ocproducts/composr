@@ -1,0 +1,26 @@
+[title sub="Written by Salman Abbas, ocProducts"]Composr Tutorial: Using responsive design techniques[/title]
+
+TODO
+
+FOLLOWS ARE SOME NOTES...
+
+ocPortal supports responsive design if you make a theme that uses media queries. It's really nothing to do with the CMS, it's to do with your CSS. If you don't like mobile mode you can turn it off, then code whatever media rules you want.
+
+It is a decision that should be made with an engineering mindset, not a marketing mindset. Using responsive design leads to much higher bandwidth requirements over cellular connections and means you need to have the exact same page and site structure for every device – whether that is or is not appropriate really depends on the nature of the website.
+
+ocPortal supports responsive design if you make a theme that uses media queries. It's really nothing to do with the CMS, it's to do with your CSS. If you don't like mobile mode you can turn it off, then code whatever media rules you want.
+
+As for our own site design, there will be separate desktop/tablet and mobile versions, and as normal with ocPortal it will auto-detect whatever is most appropriate. There will be some responsive design to differentiate between desktop and tablet. Responsive design shouldn't be considered an end unto itself -- you want a mobile site to be highly optimised, sending all the CSS for every device over a cellular connection, plus all the content you send to desktop in the same page structure, is not necessarily a very good plan for an efficient site. So we are going to a bigger effort and having a mobile mode so that we can properly optimise it.
+
+Responsive design is a key technology, appropriate as the sole way to handle mobile on many kinds of relatively simple content site, and for allowing optimisation for different sized tablets and desktop. But if you look at many popular sites, you can see that more complex sites often don't do it that way -- e.g. Facebook and Google both have separate mobile sites. Don't let marketing buzz cloud engineering decisions. Using responsive design as the primary way to handle mobile is actually the sub-optimal easy way out, which may be appropriate in order to keep implementation simple and harmonised if the site is just serving articles.
+
+
+[contents]decimal,lower-alpha[/contents]
+
+TODO
+
+[concepts
+ 1_key="TODO"   1_value="TODO"
+]Concepts[/concepts]
+
+{$SET,tutorial_tags,Mobile,Design & Themeing,CSS,regular,pinned}{$SET,tutorial_add_date,Jan 2014}{$SET,tutorial_summary,TODO}[block]main_tutorial_rating[/block]

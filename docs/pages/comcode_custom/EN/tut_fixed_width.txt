@@ -1,0 +1,27 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Fixed-width layouts[/title]
+
+Fixed width is available as a theme option in Composr, and is on by default. This tutorial explains the implementation and pros & cons of it.
+
+A topic of regular disagreement in web design is whether 'fixed-width' designs or 'fluid' designs are better. A fixed-width design is one where the horizontal width of the website is fixed, so that it doesn't change when different resolutions are selected.
+
+Proponents of fixed-width argue:
+ - that fluid designs (non fixed-width designs) can not function well, because things will always break down when the width significantly exceeds what was tested
+ - that fixed-width designs are graphically easier to achieve
+ - that fixed-width designs are easier to read from
+ - that fixed-width designs are more attractive, because it allows more artistic control
+
+Opponents of fixed-width argue:
+ - that fixed-width designs make unreasonable assumptions about how web sites should be viewed; for example, mobile devices would fail to have enough width for a typical fixed-width design yet are prevented from automatically performing adjustments
+ - that people with large resolutions can always make their browser window smaller
+ - that using fixed-width is done by those that are applying traditional design skills to the new online medium without adjusting them properly for that medium
+
+Most modern designs are fixed with on desktop computers, and have "responsive design" adjustments to make them look good on different devices.
+
+[title="2"]See Also[/title]
+
+ - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - [page="_SEARCH:tut_releasing_themes"]Themeing your site[/page]
+ - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+
+{$SET,tutorial_tags,core_themeing,Design & Themeing,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A very practical tutorial showing how to created a fixed-width layout, and how to change the site header.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,3 @@
+<div>
+	{TEMPCODE}
+</div>

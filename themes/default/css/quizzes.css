@@ -1,0 +1,152 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Form */
+
+.quiz_timer {
+	position: fixed;
+	left: 0.5em;
+	bottom: 0;
+	z-index: 100;
+	background: rgba(209,201,13,0.3);
+	{$BETA_CSS_PROPERTY,user-select: none;}
+	padding: 0.3em;
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+}
+
+.quiz_form table {
+	counter-reset: quiz_num;
+}
+
+.quiz_field_name_column {
+	width: 28em;
+}
+
+.quiz_field_input_column {
+	width: 100%;
+}
+
+.quiz_form th {
+	padding: 0.5em 2em 0.5em 4em;
+}
+
+.quiz_form td {
+	padding: 0.5em 2em 0.5em 1.5em;
+	vertical-align: middle;
+}
+
+.quiz_form th>span.field_name {
+	position: relative;
+	display: inline-block;
+	padding-left: 60px;
+	z-index: 10;
+	padding-top: 0.5em;
+	min-height: 2.5em;
+}
+
+.quiz_form th:before {
+	content: counter(quiz_num);
+	counter-increment: quiz_num;
+	z-index: 5;
+	font-size: 3.5em;
+	position: absolute;
+	left: 30px;
+	color: {$GET,th_secondary_text};
+	line-height: 0.8em;
+}
+
+.quiz_form .filledin th:before {
+	font-size: 1.5em;
+}
+
+.quiz_form .filledin td:before {
+	float: right;
+	width: 30px;
+	height: 30px;
+	content: " ";
+	/*content: "\221a"; Cool but misleading*/
+	color: {$GET,green_highlight_text};
+	{$BETA_CSS_PROPERTY,opacity: 0.6;}
+	background: url('{$IMG;,cns_emoticons/thumbs}') top right no-repeat; /* For IE8, which doesn't support CSS3 */
+}
+
+.quiz_form .filledin:nth-child(7n+1) td:before {
+	background: url('{$IMG;,cns_emoticons/thumbs}') top right no-repeat;
+}
+
+.quiz_form .filledin:nth-child(7n+2) td:before {
+	background: url('{$IMG;,cns_emoticons/hippie}') top right no-repeat;
+}
+
+.quiz_form .filledin:nth-child(7n+3) td:before {
+	background: url('{$IMG;,cns_emoticons/guitar}') top right no-repeat;
+}
+
+.quiz_form .filledin:nth-child(7n+4) td:before {
+	background: url('{$IMG;,cns_emoticons/cool}') top right no-repeat;
+}
+
+.quiz_form .filledin:nth-child(7n+5) td:before {
+	background: url('{$IMG;,cns_emoticons/glee}') top right no-repeat;
+}
+
+.quiz_form .filledin:nth-child(7n+6) td:before {
+	background: url('{$IMG;,cns_emoticons/nod}') top right no-repeat;
+}
+
+.quiz_form .filledin:nth-child(7n+7) td:before {
+	background: url('{$IMG;,cns_emoticons/party}') top right no-repeat;
+}
+
+.quiz_form tr.filledin.field_input th, .quiz_form tr.filledin.field_input td {
+	{$BETA_CSS_PROPERTY,opacity: 0.4;}
+}
+
+/*.quiz_form tr.field_input th, .quiz_form tr.field_input td {   Annoying assumption about mouse use
+	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+}*/
+
+.quiz_form tr.field_input:hover th, .quiz_form tr.field_input:hover td, body.touch_enabled .quiz_form tr.field_input th, body.touch_enabled .quiz_form tr.field_input td {
+	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}
+}
+
+.quiz_form td .input_radio {
+	display: inline-block;
+}
+
+.quiz_form td label {
+	vertical-align: top;
+}
+
+.quiz_form .radio_list, .quiz_form .various_ticks, .quiz_result_question, .quiz_result_given_answer, .quiz_result_answer {
+	font-weight: bold;
+}
+
+.quiz_form tr.field_input .constrain_field {
+	margin-right: 35px;
+	display: block;
+}
+
+/* Results */
+
+.quiz_done_results_col_was_correct {
+	width: 24px;
+}
+
+.quiz_done_results_col_question {
+	width: 40%;
+}
+
+.quiz_done_results_col_given_answer {
+	width: 30%;
+}
+
+.quiz_done_results_col_correct_answer {
+	width: 30%;
+}
+
+.quiz_answer_status {
+	text-align: center;
+}

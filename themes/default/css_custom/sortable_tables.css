@@ -1,0 +1,53 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2012
+*/
+
+.sortable_table th span {
+	display: inline-block;
+	float: left;
+}
+
+.sortable_table td {
+	word-wrap: break-word;
+}
+
+.sortable_table .table-nofilter td {
+	font-size: 4px;
+	border-top: 0;
+}
+
+/* Sorting */
+.sortable_table th.table-sortable span {
+	cursor: pointer;
+	background-image: url('{$IMG;,sortable_tables/sortable}');
+	background-position: center left;
+	background-repeat: no-repeat;
+	padding-left: 16px;
+}
+.sortable_table th.table-sorted-asc span {
+	background-image: url('{$IMG;,sortable_tables/sorted_up}');
+	background-position: center left;
+	background-repeat: no-repeat;
+}
+.sortable_table th.table-sorted-desc span {
+	background-image: url('{$IMG;,sortable_tables/sorted_down}');
+	background-position: center left;
+	background-repeat: no-repeat;
+}
+.sortable_table th.table-filtered span {
+	background-image: url('{$IMG;,sortable_tables/filter}');
+	background-position: center left;
+	background-repeat: no-repeat;
+}
+.sortable_table select.table-autofilter, .sortable_table input.table-autofilter {
+	font-size: smaller;
+	float: right;
+	margin-top: 0;
+}
+.sortable_table select.table-autofilter {
+	max-width: 9em;
+}
+.sortable_table input.table-autofilter {
+	width: 8em;
+}

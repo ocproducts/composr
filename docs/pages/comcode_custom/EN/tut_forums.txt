@@ -1,0 +1,130 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Organising discussion forums[/title]
+
+This tutorial will explain how discussion forums work in [concept]Conversr[/concept], and how best to organise them.
+
+Conversr is sometimes abbreviated as CNS.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Structure[/title]
+
+[media width="150" description="Adding a forum" float="left"]data_custom/images/docs/forums_add.png[/media]
+[media width="150" description="When editing forums, the full structure is displayed, with an opportunity to re-order both groupings and sub-forums within" float="right"]data_custom/images/docs/forums_edit.png[/media]
+{!cns:DOC_FORUMS}
+
+Forums are actually a very powerful collaboration tool, not merely limited to chat. For example, ocProducts use a forum as an integral part of the processs for the designing of the software you're using right now: it is surprising what forums and topics can be made to represent.
+
+[media width="150" description="Rough structure of the discussion forums" float="right"]data_custom/images/docs/forums_structure.png[/media]
+So, now that I have explained the structure of a discussion forum, I will explain what each of these constructs are for.
+
+A forum exists to organise topics into some kind of common subject. For example, it is common for a website to have a debates forum, which contains member-created topics, each representing a single debate. A topic in the debates forum such as a topic titled 'Does extraterrestrial life exist?', contains a number of member-created posts, that together form a continuing line of discussion. A topic gets created, in the most appropriate forum, when a member wishes to discuss something and knows of no topic to continue (by making a new post in); the topic is started with a single post, that leads the discussion, by the member who made the topic.
+
+The sub-forum system exists so that forums may be organised such that subjects are logically sub-classified in such a way as to prevent an 'explosion' of forums displayed on the home forum (which would be cluttered and difficult to navigate). Whether a forum with sub-forums should itself be able to hold topics is up to you, but often allowing this is a useful technique for allowing placement of a topic that classifies under a forum, but not one of the sub-forums.
+
+[media width="150" description="Adding a forum grouping" float="left"]data_custom/images/docs/forums_grouping_add.png[/media]
+[box="Important note" width="25em" float="right"]Whilst discussion forums are primarily meant for discussion, they may in-fact be used for the general purpose of conveying information. It is often typical for a topic that may-not-be-replied-to be made by staff to convey some form of alert: the discussion forums might be used rather than news, or some other Composr medium, due to the easiness of creating and organising topics, the flexibility of the medium, or to target an audience that views the discussion forums more regularly than the other mediums.[/box]
+{!cns:DOC_FORUM_CATEGORIES}
+
+[title="2"]Topics in a forum[/title]
+
+Within a forum, there are a number of to modify a topic, to change their behaviour:
+ - A topic may be 'pinned' (also known as 'stickied' in some systems). A pinned topic is placed at the top of the topic list, usually as it contains importer information
+ - A topic may be 'sunk'. This is the opposite of pinning -- a sunk topic will display at the bottom of the topic list, on the last page of results
+ - A topic may be made 'cascading'. Cascaded topics appear in all forums in the forum tree, underneath (and including) the forum they are placed in. The cascade property is often used to make forum-wide announcements
+ - A topic may be 'closed'. Only those with the necessary privilege may post in a closed topic
+ - The validation status of a topic (or post) may be changed. Topics that are not validated are only viewable by moderators and the topic creator. Whether topics are automatically set as validated or not depends on permissions (specifically the 'May bypass low-impact validation' permission)
+
+Topics may be moved between forums by moderators.
+
+[title="2"]Strategies for organising your forums[/title]
+[surround]
+[media width="150" description="A home forum" float="left"]data_custom/images/docs/forums_view.png[/media]
+[media width="150" description="A sub-forum of the home forum" float="right"]data_custom/images/docs/forums_view_2.png[/media]
+When you design your discussion forums, you need to decide what forums you will create, and how to organise them. A very common mistake is to create far too many forums, which has the effect of diluting your community, and making it feel dead: which in return often terminally reduces member activity. If a month after creating a forum, you expect it to have less than ten topics, then you probably should not be making it: remember: you can always add new forums later, and mass move topics into them. Conversely, it would be a mistake to create too few forums, leading to a situation where it is difficult to locate topics.
+[/surround]
+Conversr creates a default forum structure which is appropriate for a small or new community. To encourage discussion specific to your site, you may wish to add a new grouping with perhaps 3 forums (sub-forums of the home forum) placed in that grouping.
+
+[title="2"]Using access permissions effectively[/title]
+
+All forums define whether members of each usergroup has access to them, as well as allowing privilege overrides.
+
+As normal with the Composr permission system, members have the 'best' permissions out of those available to each of their usergroups. This means that if a user has "edit mid-impact content" (for example) permission given to them in any usergroup that they are a member of, they will receive that permission. There is one exception-- if the permission is defined as a global privilege, any overrides (per-forum permissions) will take precedence.
+
+It is common to deny most user groups any kind of access to certain forums, such as staff forums, to make them private to all but select members. You do this through [b]view[/b] access. Remember those select members will also inherit their highest member permission for other usergroups they belong to.
+
+It is also common to partially limit access to certain important forums, such as a 'News forum', so that the content of the forum can be kept clean. Through some customising of permissions and adding different groups the News forum you could constrain some users to their own news items, and stop others from adding new ones. In this case you could have a contributor, an editor, and regular members. Each having different access.
+
+[title="3"]View access[/title]
+
+The view access check box gives view access only to a forum.
+
+If a forum view access box is unchecked for any particular group that means there is no view access to the forum for the particular group. Un-checking the forum view access check box does not stop or take away any permissions it simply takes away view access for a single group.
+
+If a user belongs to a another group that has the view access check box checked then the member will not only have forum access, they will have access permisisons at the 'best' permissions out of those available to each of their membership usergroups (even if some of the other usergroups do not themselves have view permissions they can still contribute other permissions into the mix).
+
+[title="3"]Setting bypass-validation access[/title]
+
+By default, forum permissions are set so that members need their posts validating before they show up. This can be changed using Composr's standard permission functionality, but as it is a common task, we thought we'd explain it as an example...
+
+You'll need to enable the following global privilege:
+ - 'Avoid validation (approval) for lowrange content', if a member is to be able to post without requiring validation
+ - 'Avoid validation (approval) for midrange content', if a member is to be able to create a topic without requiring validation
+
+You can set them in 3 places (in order from highest level to lowest level):
+1) in the 'Submission' set of the global privilege settings (go to Admin Zone > Security > Privileges, then the Submission section)
+2) Or, you can use the Permissions Tree Editor (go to Admin Zone > Security > Permissions Tree Editor) to set these on the 'forumview' module (if you don't want these to apply globally for the whole site)
+3) Or, you can set them against specific forums in either the Permissions Tree Editor or the editing screen of a forum
+
+This flexibility is very intentional- you have a choice of setting things at a high level to apply to the whole website, but also the choice to make overrides at a lower level.
+
+[title="3"]Anonymous posting[/title]
+
+Members have a feature where they can choose to post anonymously. If they do this, their post will show as a guest post.
+
+If you see guest posts somewhere where guests cannot post then this is probably why.
+
+Staff can track which user made the post via clicking on the 'Guest' label and hence investigating the IP address. This is no different to an investigation on a normal Guest post.
+
+[title="2"]Replying[/title]
+
+Replies can either be made beneath the topic ("quick reply"), or via the full reply screen.
+
+If your users are confused by the quick reply function (for example, they miss the WYSIWYG), you can turn off the 'Use quick reply' privilege for them.
+
+[title="2"]Topic polls[/title]
+
+Topics may have a poll attached to them (by any member) by default, so as to gauge opinion tied to a discussion. These polls are separate to the main Composr poll system, and have different options. Forum polls may only be used by members, and there are options to restrict:
+ - viewing of poll results until the poll is 'un-blinded'
+ - voting, such that that members must reply to the topic of the poll before they may vote in it
+
+[title="2"]Editing posts[/title]
+
+If you edit a post, you get to choose whether it shows as edited or not. The default is usually to do so, but if you edit quickly (within 3 minutes), it will be unchecked as it is assumed the edit is a quick correction rather than a retraction which should be advertised.
+
+Staff can view full post history -- edits aren't secret from staff.
+
+[title="2"]Deleting posts[/title]
+
+If somehow a corrupt post makes it through and obscures the delete button after it, you can manually delete (or edit) it from the edit URL:
+[tt]http://baseurl/forum/topics/edit_post/postid.htm[/tt]
+You can find the post ID from above (before) the post in the topicview.
+
+[concepts
+ 1_key="discussion forums"   1_value="A system for discussing issues; topics contain posts, and topics are placed within forums which themselves are structured"
+ 2_key="forum"               2_value="A place for the archiving and posting of topics (discussions)"
+ 3_key="sub-forum"           3_value="A forum underneath another forum in the forum tree structure"
+ 4_key="forum grouping"      4_value="A categorisation of a forum, distinct from the tree structure"
+ 5_key="topic"               5_value="A sequence of posts"
+ 6_key="post"                6_value="A piece of writing made by a user and displayed as a continuation, or start, of a topic"
+ 7_key="pin"                 7_value="A pinned topic is displayed above a non-pinned topic (otherwise, date order is used for sorting)"
+ 8_key="sunk"                8_value="A sunk topic is displayed beneath all other topics"
+ 9_key="cascade"             9_value="A cascading topic is displayed in its forum, and all subforums there-of"
+10_key="home forum"         10_value="The forum at the root of the forum tree structure"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_forum_helpdesk"]Running a discussion-forum-based helpdesk[/page]
+ - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
+
+{$SET,tutorial_tags,Forum,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial will explain how discussion forums work in Conversr, and how best to organise them.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,11 @@
+[title]404 Not Found[/title]
+
+The requested URL was not found on the server.
+
+[title="2"]Site-Map[/title]
+
+[block=",use_page_groupings=1" type="sitemap" quick_cache="1"]menu[/block]
+
+[title="2"]Search[/title]
+
+[block]main_search[/block]

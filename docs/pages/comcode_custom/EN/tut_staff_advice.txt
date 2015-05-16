@@ -1,0 +1,56 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advice for choosing and managing staff[/title]
+
+This is a short tutorial for tips on choosing staff, for those Internet sites that are wholly built as virtual communities run by volunteers.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Choosing staff[/title]
+
+Choosing staff for a virtual community is often more difficult than for a company, as usually:
+ - staff are unpaid, so thus only very dedicated individuals will be truly interested in the position
+ - staff may have severe time constraints, or priorities that detract from their ability to invest time and effort in their role
+ - often staff are never met 'in the real world', so it is more difficult to get to know them quickly (as body language is not available, for instance)
+ - often due to the amateur nature of virtual communities, CVs (known as 'Resumes' in some English-speaking countries) are not appropriate; hence it is difficult to gauge the ability and/or experience of a potential staff member
+ - the primary motivator of staff may be ego and reputation, rather than money, and hence it is easy to cause discontent (jealousy, in-fighting, etc) when implementing necessary changes
+
+To find staff, you may want to approach community members (or members in related communities) to ask whether they are interested in joining; members may also approach you, or show particular interest, that allows you to approach each other. When finding staff:
+ - be aware that advertising for staff rarely works. If you do this, you are more likely to attract people who want to be seen in a position or want to experience a position, who are already a community member; the chance of this person having the skills needed is about the chance of picking a random person for the role
+ - be aware that if people approach you for a position personally, try not to be biased in their favour, relative to others you may wish to find, ask, or who have asked more formally
+ - avoid asking your friends on the basis that you know them and know their skills: they must also have interest and time, and these are rare
+ - avoid judging them using the wrong criteria: for example, do not judge based on professionalism and quality of language, if their proposed role is a 'behind the scenes' one. People have different skills and interests, and different ideas about what is important: it is much better to judge a persons appropriateness for a specific role, than them as a person. In fact, often different characteristics are essential for different roles: for example, often artists will like detail, and technical people will like wide scope- these often conflict, but a lot of good can come from that
+
+If you believe a potential member has the important combination of:
+ - interest (whether direct, or because it somehow serves them)
+ - time
+ - skill
+ - maturity/discipline
+then they may be appropriate to take on. You might not have the luxury of many people to choose from if you run a small community: but frankly if this is the case, and there is little to suggest the community might grow, efforts for recruitment might be futile.
+
+I would suggest that new staff members are recruited with relatively minor responsibilities and 'rank' (whatever form that may take). This allows you to reward your staff when they work well by promoting them, and keeps up morale for existing staff, who know that their position cannot be threatened by 'lazy new staff who don't really contribute anything'.
+
+A digression from all the advice given so far, would be to actually not choose staff at all, and instead allow the Composr points system to choose them for you: as they participate more, and as they are given more gift points. An automatic usergroup progression could be put in place that promotes them to have further access.
+
+Whilst this is an interesting concept, with interesting properties (such as an ability for anyone to make the site come alive wholly on their own work, even when no other staff are around) and might work in practice, it is worth noting it should be done with caution. The points system is open for abuse in areas if kept unchecked: someone may gain points by spamming.
+
+[title="2"]Managing staff[/title]
+
+A common problem in virtual communities is that of the 'slave driver' site owner. Virtual communities mirror the 'real world' in many respects, and nobody likes to have a bad boss. Management is about bringing out the best in people, and in many ways, an understanding of the basic psychological of your staff members is necessary: remember that staff are human, and need encouragement, and want to 'get something back' from the work they do.
+
+Here is some general advice on managing staff in a virtual community:
+ - Do not force too much work on your staff. Don't expand your site such as to dilute the efforts of your staff, possibly across a diluted community: this will decrease morale, and quite possibly, the quality of your site. 'Quality not quantity' (or I prefer to be less sweeping: 'Sufficient quality before considering a greater quantity', but that is not so poetic!)
+ - Do not hold your staff ultimately responsible for the running of your site; it is the role of a manager to make sure the staff under them are functioning properly, not just to hand out responsibilities and forget about them
+ - Show interest in your staff members' progress and problems: do not just force them to work in a vacuum, unless you know they feel and work best that way. Have regular chats and appraisals (discussions of them and their progress): whether formal, or simply by being social with them. Tell them when they've done a good job, so they feel good about themselves. Give them positive criticism when they have done a job that is not sufficient, such that they learn how to correct any issues
+ - Maintain a community between your staff, so they may work together as an effective team, sharing information, and ideas
+ - Make sure staff members follow the same rules that (with laid out exceptions) non-staff members follow, and any additional staff rules: staff should not become 'gods'. If a staff member breaks a rule, talk to them personally to discuss it, and if they persist against your wishes, remove them from your staff and tell them the reason you have done it
+ - Give enough freedom and control to your staff to allow them to excel, without you getting in their way; for example, it is often good that trusted staff have FTP access, so as not to have to store up lists of things they depend on you to do. Promote initiative, as long as they do not out-step what is reasonable/important
+
+[title="2"]Avoid treading on each others' toes[/title]
+
+Composr has special 'conflict detection' support implemented throughout. If a member of staff tries to work on some resource that is already being worked upon by another member of staff, a clear warning will be given.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_staff"]Coordination between staff and staff/members[/page]
+
+{$SET,tutorial_tags,staff,Advice & Guidance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A short tutorial with tips for choosing staff, written for community websites run by volunteers.}[block]main_tutorial_rating[/block]

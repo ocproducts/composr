@@ -1,0 +1,1 @@
+<li><span class="birthday">{+START,IF_PASSED,IF_PASSED_AND_TRUE}<em>{+END}<a {+START,IF_PASSED,COLOUR}class="{COLOUR}" {+END}href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>{+START,IF_PASSED,IF_PASSED_AND_TRUE}</em>{+END}</span></li>

@@ -1,0 +1,1 @@
+[center][b](Remember: this is a default {$BRAND_NAME} page and should probably be edited as needed.)[/b][/center]

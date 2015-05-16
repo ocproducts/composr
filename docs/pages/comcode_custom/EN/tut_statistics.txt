@@ -1,0 +1,121 @@
+[title sub="Written by Philip Withnall, ocProducts"]Composr Tutorial: Activity statistics for your site (analytics)[/title]
+
+{!stats:DOC_STATISTICS}
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The administration interface[/title]
+
+The administration interface resides in the Admin Zone, under the Audit section.
+
+Be aware that hits coming from the web server itself will be filtered from the stats, so if you are running a web server on your own computer you may not see any results if nobody else has used your website yet.
+
+[title="3"]Installing geo-location data[/title]
+[surround]
+[media width="150" description="The menu link to install geolocation data" float="left"]data_custom/images/docs/statistics_Install-geolocation-data-link.png[/media]
+[media width="150" description="The message shown when installing geolocation data" float="right"]data_custom/images/docs/statistics_Installing-geolocation-data.png[/media]
+{!stats:DOC_INSTALL_GEOLOCATION_DATA}
+
+[box="Important note" width="25em" float="right"]Do not disturb the geolocation data installation process. You will be informed when it is complete.[/box]
+
+Once the geo-location data is installed, all the extra statistics can be used.
+[/surround]
+[title="3"]Page view statistics[/title]
+
+{!stats:DOC_PAGE_STATISTICS}
+
+[title="3"]Per-page breakdowns[/title]
+
+The per-page breakdowns list more detailed statistics for each page, in various forms, but all have a graph. The following statistics are present:
+ - Views per hour
+ - Views per day
+ - Views per week
+ - Views per month
+ - Browsers used to view this page
+ - Referrers to this page
+ - Operating Systems used to view this page
+ - Regionalities this page has been viewed from
+
+[title="3"]Users online statistics[/title]
+
+{!stats:DOC_USERS_ONLINE_STATISTICS}
+
+[title="3"]Submission statistics[/title]
+
+{!stats:DOC_SUBMISSION_STATISTICS}
+
+[title="3"]Top referrers[/title]
+
+{!stats:DOC_TOP_REFERRERS}
+
+[title="3"]Top Google keywords[/title]
+
+{!stats:DOC_TOP_SEARCH_KEYWORDS}
+
+[title="3"]Page load times[/title]
+
+{!stats:DOC_LOAD_TIMES}
+
+[title="2"]Download statistics[/title]
+[surround]
+There is a screen for download statistics, but you may also wish to allow your visitors to see some trends...
+
+[media width="150" description="The download statistics box" float="right"]data_custom/images/docs/statistics_Download-statistics.png[/media]
+There are two methods for revealing download trends to your visitors:
+1) Download statistics are generally available on an individual download page
+2) You can also pull out key downloads for the benefit of your visitors is to use one of the download blocks: [i]most popular downloads[/i], and [i]most recently-added downloads[/i]. These are explained below.
+[/surround]
+[title="3"]Most popular downloads[/title]
+[surround]
+[media width="150" description="The most popular downloads block" float="left"]data_custom/images/docs/statistics_Top-downloads-block.png[/media]
+The most popular downloads block obviously displays the most popular (i.e. most frequently downloaded) downloads. It can be added using the Block assistant, available via the 'Add block' icon when editing Comcode pages.
+
+When rendered, these blocks also show how many downloads each listed download has received, and when they were added.
+[/surround]
+[title="3"]Most recently-added downloads[/title]
+[surround]
+[media width="150" description="The most recently-added downloads block" float="left"]data_custom/images/docs/statistics_Recently-added-downloads-block.png[/media]
+The most-recently added downloads block does indeed display the most recently-added downloads. It can be added using the Block assistant, available via the 'Add block' icon when editing Comcode pages.
+
+When rendered, this block also shows when each listed download was added, and how many downloads it has received.
+[/surround]
+[title="2"]Other statistics[/title]
+[surround]
+[media width="150" description="View statistics are shown for various forms of content" float="right"]data_custom/images/docs/statistics_News-item-stats.png[/media]
+All content will automatically store download/view statistics as appropriate, which will usually be displayed on the respective entry screen.
+
+An example of this would be news entries: each news entry records how many times it is viewed, and displays this number on its view screen.
+[/surround]
+
+[title="2"]Conversr statistics[/title]
+
+The following statistics screens exist to show [concept]Conversr[/concept] data:
+ - Demographics (summarise the ages of your members)
+ - Posting rates (identify trends in daily posting rates)
+
+[title="2"]The statistics block[/title]
+
+The [tt]side_stats[/tt] block shows various figures that relate to your website's activity and archive size. The exact details shown are configurable (in the main Composr configuration) from quite a wide selection.
+
+[title="2"]Real-time analytics[/title]
+
+{!DOC_REALTIME_RAIN}
+
+It is a good way to visualise how people are using the site. This works best when the site has multiple online users performing options, but you can rewind the clock to a time when you know this was happening.
+
+[title="2"]Google Analytics[/title]
+
+[url="Google Analytics"]http://www.google.com/analytics/[/url] is an excellent free package for analysing website activity, allowing you to spot all kinds of trends in your data.
+
+We don't consider Google Analytics a competitor to our own inbuilt analytics -- both offer different features, complementing each other. Google Analytics is easy to install, we have support built in so you just need to enter your analytics code in the Composr configuration.
+
+[concepts
+ 1_key="SVG"            1_value="Scaleable Vector Graphics, a text-markup-based graphics format that allows infinite scalability of graphics without texture loss due to being vector-based (co-ordinate-delimited shapes) instead of pixel based (specific data for each pixel)."
+ 2_key="Geo-location"   2_value="The process of using some type of individually-identifiable information to find out where in the world somebody is."
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+
+{$SET,tutorial_tags,Analytics,stats_block,stats,realtime_rain,Administration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Find out about the different kinds of statistics/analytics that you can use to analyse your visitors.}[block]main_tutorial_rating[/block]

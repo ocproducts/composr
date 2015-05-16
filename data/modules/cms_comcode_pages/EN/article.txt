@@ -1,0 +1,97 @@
+[title="1"]Article (a template guide)[/title]
+
+[i]This guide provides advice from journalism to sales letters. It's in a template rather than a tutorial so that you can chop the advice down (i.e. mark it off) while you write in your real text above it.[/i]
+
+[title="2"]The inverted pyramid[/title]
+
+Using the inverted pyramid style yields results.
+
+Writing using the inverted pyramid style has been shown to be effective in capturing attention.
+
+When busy people are reading they tend to scan read the first few words of an article, then read deeper into it. They won't all read to the end, so by progressively giving more and more information you can:
+ - entice readers;
+ - avoid boring those that wouldn't want to read the article;
+ - serve a range of different interest levels.
+
+[title="2"]Who is the audience?[/title]
+
+You need to be clear on who you are writing for. Are they an expert, or a novice? Are they highly educated, or may not have secondary education? Define concepts in appropriate detail, as and when is appropriate, for the particular needs and interests of your audience. Avoid using complex words for the casual reader, but use established terminology as a short-hand for writing to the expert.
+
+If it is a persuasive piece:
+ - you may want to put a lot more thought into who the reader is, perhaps building up a written persona describing them (make sure such people exists in enough number, and would realistically be a customer!).
+ - as a general rule describe things in terms of benefits rather than features.
+
+[title="2"]Basic parameters and ideas[/title]
+
+Consider some basic parameters that you can plan against, and assess your final article against...
+
+Do you need images? Original photos, or stock graphics? How many? Note that some people best learn via reading, while others learn better through images, or even video.
+How many words should your article be?
+Will you be using outbound links?
+Do you need to build in particular key words or phrases, for SEO purposes?
+Are you intentionally writing the article on the back of a particular craze, and hence aligning it to people interested in that?
+If it is a sales piece, have you considered providing an offer to incentivise, and potentially add a sense for urgency (perhaps using the [tt]main_countdown[/tt] block to count down to the end of an offer)?
+Do you want to tie in some third-party live chat software, to capture leads who are reading the article?
+
+[quote="Sage"]
+Do you need to gather some quotes or testimonials?
+[/quote]
+
+[title="3"]Long copy or short copy?[/title]
+
+There is a long-standing debate on whether to use long copy or short copy. This simply refers to the length of your piece. Most modern content writers and branding experts use short copy, however both techniques can work well and have strong advocates. Generally short copy is good for quickly getting a response from a busy reader, while long copy can build considerable rapport, a loyal readership, and potentially lead to a bigger goal. Your choice of copy technique may be determined by other factors, such as brand, platform limitations, or editorial guidelines.
+
+Short copy techniques may include:
+ - A large headline image or video
+ - Story-telling through images
+ - Short snappy sentences, typically stating key points or benefits, perhaps directly or perhaps indirectly
+ - Minimal text that gets across a key message, usually either heavily emotionally-driven, or a direct delivery of unique-selling-point(s)
+ - Termination with a call to action (for example, a join link, an ecommerce link, a newsletter signup block, or a phone number)
+
+Long copy techniques may include:
+ - (Most of the techniques of short copy)
+ - More elaborate story-telling
+  - traditional story-telling, from a particular narrative viewpoint (for example, a character perspective)
+  - sales letters: getting into the readers head by talking in a personal way, addressing likely objections/doubts, laying out strong logical reasoning for them taking in your message the way you want them to
+ - More elaborate definition of a USP, defining both the problem and the solution
+ - Use of different styles (font, colour, [highlight]highlights[/highlight], italics, etc) to call out key points throughout the article, building structure and delivering key messages (often the same repeated messages written in different ways)
+ - Interspersed quotes and testimonials
+ - A whole range of psychological techniques, such as co-opting the view-point of those who may otherwise be opposed to your piece, framing, tapping into primal feelings; hopefully you'll only use those ethically!
+ - A guarantee
+ - A final "p.s." section
+ - Talking about free bonuses that have been thrown in
+ - May be written for skim-readers, immersed-readers, or ideally both
+
+[title="2"]Split testing[/title]
+
+The call to action is ideal for split-testing (aka A/B testing), to identify what version of your copy works best.
+To gather data you could, for example:
+ - give a different phone number extension for different randomised versions of the copy
+ - pass through a different software [tt]keep_referrer[/tt] parameter to the join page, e.g. [page=":join:keep_referrer=2"]a[/page] or [page=":join:keep_referrer=3"]b[/page] (in this case make sure '2' and '3' are the IDs of admin accounts, so you can then use the non-bundled [tt]referrals[/tt] addon to track the referrals these accounts make)
+ - inject different Google Analytics tracker codes
+
+{+START,CASES,{$SET_RAND,a,b}}
+a=This is shown in random case A.
+b=This is shown in random case B.
+{+END}
+
+[title="2"]Address the key angles[/title]
+
+Give a full picture:
+Who. What. When. Where. Why. How.
+
+What angle is your article taking that makes it worthwhile? Is it merely conveying information? Is it about something new, is it simply an entertaining read, is it designed to educate?
+
+[title="2"]Add some sizzle[/title]
+
+Most readers want to read an article that connects to them on an emotional level. Make sure to cover the personal interest (for example personal challenges, a life story, a shocking truth, or something incredible to the reader).
+
+Think about what people like and respond to, and how this could be built into the article. Add controversy if there is some but remain honest. Use hyperbole, if appropriate. Consider carefully crafting a gripping headline.
+
+Consider using humour.
+
+[title="2"]Get it proof-read[/title]
+
+Everybody makes mistakes. Either get a friend or colleague to proof-read your work, or at least read it again several times yourself.
+
+Depending on the need for demonstrating accuracy, you may want to build citations, or at least quotes.

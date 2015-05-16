@@ -1,0 +1,1057 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Helping improve site accessibility for disabled users[/title]
+
+[media width="150" description="Composr accessibility compliance" float="right"]data_custom/images/docs/accessibility_excel.png[/media]
+The [concept]W3C[/concept], the standards organisation responsible for core web standards, has a project, the web accessibility initiative ([concept]WAI[/concept]), that defines a standard for the creation of accessible web pages: the web content accessibility guidelines ([concept]WCAG[/concept]). In addition, U.S. federal agencies are required by law to meet [concept]section 508[/concept] guidelines on accessibility.
+
+[media width="150" description="Composr in a text-mode browser" float="left"]data_custom/images/docs/accessibility_links.png[/media]
+Accessibility is concerned with ensuring web sites are accessible to those with differing needs, in particular those with disabilities. Naturally, a web site cannot be made accessible to all forms of disability, but with some work, they can cater for a large proportion of disabled users, such as blind or partially-sighted users. The basic premise, is that things implied to by visual artefacts, such as colour and position, are not universal for people with various forms of impairment, and by making information explicit in your HTML mark-up ('semantic' mark-up, because the structure now extends to conceptual structure, to a degree), you can make your site more accessible to them; for example, by explicitly linking the text associated with an input form field, a blind user (who is without visual aids) knows, without difficulty, what the field is for.
+
+[media width="150" description="Composr accessibility compliance" float="left"]data_custom/images/docs/accessibility_labels.png[/media]
+Under U.K. law, and other jurisdictions, there is anti-discrimination legislation that covers the provision of services. It is arguable that this legislation covers designing websites such that they conform with accessibility standards. Therefore if you are a business operating in such a jurisdiction, it is highly advisable that you conform.
+
+[media width="150" description="Composr has an inbuilt webstandards checker to ensure high compliance against many standards" float="right"]data_custom/images/docs/accessibility_enable_webstandards_checker.png[/media]
+In addition to making a site accessible by the disabled, good accessibility practice also helps usability. For example,
+ - by making sure that web pages are given a so-called [concept]semantic[/concept] structure, they automatically become more usable on text-only web browsers. A system administrator needing to access an intranet externally via a remote console would find this particularly useful.
+ - forms become more usable, as you do not need to click directly on the sometimes small check-boxes, radio-buttons, and lists to activate them: you can click on any part of the label as well. This makes filling in forms a lot quicker, as less precision mouse work is required.
+ - A good way to test the quality of a website is to see if this is possible on it: on most it is not.
+ - by improving navigation for those who cannot navigate between links as fast as others, navigation is also sped up for others. For example, by creating a site-map, everyone benefits.
+
+Composr complies with the highest level of the WCAG (to the latest version at the time of writing, 1.0) guidelines, level 3. Few websites are close to reaching level 1, but our inbuilt webstandards checking technology allows Composr users to get an edge in this area. Composr also meets section 508 guidelines, the XHTML and CSS specification, as well as many other minor considerations that other software has no automated way of checking for. Composr conforms to these standards throughout -- from screens that only users will view, up to those an administrator uses -- and meets the highest level of the [concept]ATAG[/concept].
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Web master concerns[/title]
+
+[media width="150" description="Composr displays HTML and any errors in an easily readable fashion" float="right"]data_custom/images/docs/accessibility_webstandards_checker.png[/media]
+After you have decided on the layout of your website, and created appropriate pages, you will need to create a site-map. The site-map is linked to from the bottom of every Composr page, and you will see that Composr comes with a default place-holder.
+
+The complexity of your site-map depends upon the complexity of your website. A small website may be able to just point the user to the left hand menu, whilst a large website should detail the full site structure, with links to all pages that should be directly accessible.
+
+[media width="150" description="This image displays how colour can be used to improve usability, but without it being required to understand an interface" float="left"]data_custom/images/docs/accessibility_colour_useful_not_needed.png[/media]
+The checkpoint tables included in this document, under the template compliance section, include checkpoints that apply to webmaster rather, or in addition to, the design of Composr itself. Therefore it is important to read this table and act in accordance with it. Web-master concerns are mainly:[html]<ul><li>Fill in optional captions for media</li>
+<li>Layout your site in a clear and consistent manner</li>
+<li>Do not fill your site with multimedia without providing information about that multimedia</li>
+<li>Avoid using Comcode tags that make the page dynamic in the user web browser, such as [ticker] and [jumping]</li></ul>[/html]
+
+It is possible to use Comcode in such a way that a page becomes invalid. Usually this is not something that would be accidentally triggered, as there is a correlation between common sense and webstandards checking for most of these scenarios. An example error would occur if you put a \[block] tag inside a \[url] tag: intuitively, this does not make sense, as a block could not be a sensible link title.
+
+It is also possible to degrade validation by creating different items of content that share the same title. For example, if two forums share the same title, it is likely that on the forum page there will by an error due to two separate links sharing the same link text. Composr avoids this when it is reasonable to think that two links may share a title, by providing additional distinguishing information for the link, but does not universally distinguish all links in the portal in such a way, as to do so would merely make the link-text closer to that of the URL, undermining the accessibility in itself by making them overly complex. To work-around this, simply try to choose distinctive titles for your content.
+
+[title="2"]Template compliance[/title]
+
+This section will detail Composr compliance with the guidelines, with any relevant notes. The check-list is taken directly from the W3C specification. If the templates are edited, and conformance is still desired, then it is recommended that you enable the webstandards checker whilst editing templates (only staff will see the error messages even when it is enabled): the webstandards checker is of enormous practical assistance in finding and describing errors, for all relevant specifications. The table will detail any special information relating to how Composr is designed to work with some of the more tricky requirements.
+
+Please note that whilst Composr works without JavaScript, some times alternatives have to be used. For example, the menu editor requires JavaScript, so if JavaScript is not usable, the \[menu] Comcode tag must be used instead.
+
+[title="3"]Priority 1 checkpoints[/title]
+
+[html]
+<table class="columned_table results_table wide_table">
+	<tr>
+		<th colspan="2">
+			In General (Priority 1)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent">1.1</a>&nbsp;Provide
+			a text equivalent for every non-text element (e.g., via &quot;alt&quot;,
+			&quot;longdesc&quot;, or in element content). <em>This includes</em>:
+			images, graphical representations of text (including symbols),
+			image map regions, animations (e.g., animated GIFs), applets and
+			programmatic objects, ascii art, frames, scripts, images used as
+			list bullets, spacers, graphical buttons, sounds (played with or
+			without user interaction), stand-alone audio files, audio tracks
+			of video, and video. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-color-convey">2.1</a>&nbsp;Ensure
+			that all information conveyed with color is also available without
+			color, for example from context or markup. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-identify-changes">4.1</a>&nbsp;Clearly
+			identify changes in the natural language of a document's text and
+			any text equivalents (e.g., captions). 
+			</p>
+		</td>
+		<td>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-order-style-sheets">6.1</a>&nbsp;Organize
+			documents so they may be read without style sheets. For example,
+			when an HTML document is rendered without associated style sheets,
+			it must still be possible to read the document. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-dynamic-source">6.2</a>&nbsp;Ensure
+			that equivalents for dynamic content are updated when the dynamic
+			content changes.
+			</p>
+		</td>
+		<td>
+			<p>Composr works without JavaScript.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-avoid-flicker">7.1</a>&nbsp;Until
+			user agents allow users to control flickering, avoid causing the
+			screen to flicker. 
+			</p>
+		</td>
+		<td>
+			<p>The web-master should avoid such content,
+			including usage of the [ticker] Comcode tag, and possibly the
+			[jumping] Comcode tag.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-simple-and-straightforward">14.1</a>&nbsp;Use
+			the clearest and simplest language appropriate for a site's
+			content. 
+			</p>
+		</td>
+		<td>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use images and image maps (Priority 1)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-redundant-server-links">1.2</a>&nbsp;Provide
+			redundant text links for each active region of a server-side image
+			map. 
+			</p>
+		</td>
+		<td>
+			<p>Not applicable.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-client-side-maps">9.1</a>&nbsp;Provide
+			client-side image maps instead of server-side image maps except
+			where the regions cannot be defined with an available geometric
+			shape.
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use tables (Priority 1)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-table-headers">5.1</a>&nbsp;For
+			data tables, identify row and column headers. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-table-structure">5.2</a>&nbsp;For
+			data tables that have two or more logical levels of row or column
+			headers, use markup to associate data cells and header cells. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use frames (Priority 1)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-frame-titles">12.1</a>&nbsp;Title
+			each frame to facilitate frame identification and navigation. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use applets and scripts (Priority 1)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-scripts">6.3</a>&nbsp;Ensure
+			that pages are usable when scripts, applets, or other programmatic
+			objects are turned off or not supported. If this is not possible,
+			provide equivalent information on an alternative accessible page. 
+			</p>
+		</td>
+		<td>
+			<p>Composr works without JavaScript.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use multimedia (Priority 1)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-auditory-descriptions">1.3</a>&nbsp;Until
+			user agents can automatically read aloud the text equivalent of a
+			visual track, provide an auditory description of the important
+			information of the visual track of a multimedia presentation. 
+			</p>
+		</td>
+		<td>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-synchronize-equivalents">1.4</a>&nbsp;For
+			any time-based multimedia presentation (e.g., a movie or
+			animation), synchronize equivalent alternatives (e.g., captions or
+			auditory descriptions of the visual track) with the presentation. 
+			</p>
+		</td>
+		<td>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if all else fails (Priority 1)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-alt-pages">11.4</a>&nbsp;If,
+			after best efforts, you cannot create an accessible page, provide
+			a link to an alternative page that uses W3C technologies, is
+			accessible, has equivalent information (or functionality), and is
+			updated as often as the inaccessible (original) page. 
+			</p>
+		</td>
+		<td>
+			<p>Composr can provide an accessible page, and
+			the user can add such a link if they wish.</p>
+		</td>
+	</tr>
+</table>
+[/html]
+
+[title="3"]Priority 2 checkpoints[/title]
+
+[html]
+<table class="columned_table results_table wide_table">
+	<tr>
+		<th colspan="2">
+			In General (Priority 2)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-color-contrast">2.2</a>&nbsp;Ensure
+			that foreground and background color combinations provide
+			sufficient contrast when viewed by someone having color deficits
+			or when viewed on a black and white screen. [Priority&nbsp;2 for
+			images, Priority&nbsp;3 for text]. 
+			</p>
+		</td>
+		<td>
+			<p>Composr is designed to high graphic
+			standards that precludes such bad contrast.</p>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-use-markup">3.1</a>&nbsp;When
+			an appropriate markup language exists, use markup rather than
+			images to convey information. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies (SVG statistics, for example).</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-identify-grammar">3.2</a>&nbsp;Create
+			documents that validate to published formal grammars. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-style-sheets">3.3</a>&nbsp;Use
+			style sheets to control layout and presentation. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-relative-units">3.4</a>&nbsp;Use
+			relative rather than absolute units in markup language attribute
+			values and style sheet property values. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies. Note that this does not totally preclude
+			using absolute units, just when they are better replaced with
+			relative units. Composr webstandards checker prevents fonts from having
+			absolute size.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-logical-headings">3.5</a>&nbsp;Use
+			header elements to convey document structure and use them
+			according to specification. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-list-structure">3.6</a>&nbsp;Mark
+			up lists and list items properly. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies (menus for example).</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-quotes">3.7</a>&nbsp;Mark
+			up quotations. Do not use quotation markup for formatting effects
+			such as indentation. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies (main_quotes for example).</p>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-fallback-page">6.5</a>&nbsp;Ensure
+			that dynamic content is accessible or provide an alternative
+			presentation or page. 
+			</p>
+		</td>
+		<td>
+			<p>Composr works without JavaScript.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-avoid-blinking">7.2</a>&nbsp;Until
+			user agents allow users to control blinking, avoid causing content
+			to blink (i.e., change presentation at a regular rate, such as
+			turning on and off). 
+			</p>
+		</td>
+		<td>
+			<p>See 7.1.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-no-periodic-refresh">7.4</a>&nbsp;Until
+			user agents provide the ability to stop the refresh, do not create
+			periodically auto-refreshing pages. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies, except for hidden refreshing iframe's which
+			are necessary to specific functions.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-no-auto-forward">7.5</a>&nbsp;Until
+			user agents provide the ability to stop auto-redirect, do not use
+			markup to redirect pages automatically. Instead, configure the
+			server to perform redirects. 
+			</p>
+		</td>
+		<td>
+			<p>Unlike most web systems, Composr will not
+			show &ldquo;you are being redirected&rdquo; pages. Refresh is
+			either automatic (often via the location header), or a user must
+			confirm by clicking a continue link.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-avoid-pop-ups">10.1</a>&nbsp;Until
+			user agents allow users to turn off spawned windows, do not cause
+			pop-ups or other windows to appear and do not change the current
+			window without informing the user. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies. Note that despite the
+			wording of this check-list entry, it is allowed to cause a pop-up
+			when there is sufficient warning, which Composr always provides.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-latest-w3c-specs">11.1</a>&nbsp;Use
+			W3C technologies when they are available and appropriate for a
+			task and use the latest versions when supported. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-avoid-deprecated">11.2</a>&nbsp;Avoid
+			deprecated features of W3C technologies. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-group-information">12.3</a>&nbsp;Divide
+			large blocks of information into more manageable groups where
+			natural and appropriate. 
+			</p>
+		</td>
+		<td>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-meaningful-links">13.1</a>&nbsp;Clearly
+			identify the target of each link. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-use-metadata">13.2</a>&nbsp;Provide
+			metadata to add semantic information to pages and sites. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-site-description">13.3</a>&nbsp;Provide
+			information about the general layout of a site (e.g., a site map
+			or table of contents). 
+			</p>
+		</td>
+		<td>
+			<p>Composr provides a template for the
+			web-master to fill in.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-clear-nav-mechanism">13.4</a>&nbsp;Use
+			navigation mechanisms in a consistent manner. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use tables (Priority 2)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-avoid-table-for-layout">5.3</a>&nbsp;Do
+			not use tables for layout unless the table makes sense when
+			linearized. Otherwise, if the table does not make sense, provide
+			an alternative equivalent (which may be a linearized version). 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies. Note that layout tables <strong>are</strong> allowed,
+			but Composr hardly uses them anywhere (only when a CSS limitation needs to be overcome).</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-table-layout">5.4</a>&nbsp;If
+			a table is used for layout, do not use any structural markup for
+			the purpose of visual formatting. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use frames (Priority 2)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-frame-longdesc">12.2</a>&nbsp;Describe
+			the purpose of frames and how frames relate to each other if it is
+			not obvious by frame titles alone. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use forms (Priority 2)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-unassociated-labels">10.2</a>&nbsp;Until
+			user agents support explicit associations between labels and form
+			controls, for all form controls with implicitly associated labels,
+			ensure that the label is properly positioned. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+			<p>When attaching a label is visually impractical,
+			an invisible label is rendered: this should still be available for
+			technologies such as screen-readers, but be invisible under
+			ordinary use.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-associate-labels">12.4</a>&nbsp;Associate
+			labels explicitly with their controls. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use applets and scripts (Priority 2)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-keyboard-operable-scripts">6.4</a>&nbsp;For
+			scripts and applets, ensure that event handlers are input
+			device-independent. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done where possible, and
+			Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-avoid-movement">7.3</a>&nbsp;Until
+			user agents allow users to freeze moving content, avoid movement
+			in pages. 
+			</p>
+		</td>
+		<td>
+			<p>See 7.1.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-directly-accessible">8.1</a>&nbsp;Make
+			programmatic elements such as scripts and applets directly
+			accessible or compatible with assistive technologies [Priority&nbsp;1
+			if functionality is important and not presented elsewhere,
+			otherwise Priority&nbsp;2.]
+			</p>
+		</td>
+		<td>
+			<p>Composr works without JavaScript.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-keyboard-operable">9.2</a>&nbsp;Ensure
+			that any element that has its own interface can be operated in a
+			device-independent manner. 
+			</p>
+		</td>
+		<td>
+			<p>See 6.4. Some features would not be available without a mouse,
+			but these are always unnecessary.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-device-independent-events">9.3</a>&nbsp;For
+			scripts, specify logical event handlers rather than
+			device-dependent event handlers. 
+			</p>
+		</td>
+		<td>
+			<p>See 6.4.</p>
+		</td>
+	</tr>
+</table>
+[/html]
+
+[title="3"]Priority 3 checkpoints[/title]
+
+[html]
+<table class="columned_table results_table wide_table">
+	<tr>
+		<th colspan="2">
+			In General (Priority 3)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-expand-abbr">4.2</a>&nbsp;Specify
+			the expansion of each abbreviation or acronym in a document where
+			it first occurs. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-identify-lang">4.3</a>&nbsp;Identify
+			the primary natural language of a document. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-tab-order">9.4</a>&nbsp;Create
+			a logical tab order through links, form controls, and objects. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies, and to an extent, the Composr webstandards checker
+			ensures this is done.</p>
+			<p>Note that most applicable elements have no
+			specific tab-order, as the automatic order suits.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-keyboard-shortcuts">9.5</a>&nbsp;Provide
+			keyboard shortcuts to important links (including those in
+			client-side image maps), form controls, and groups of form
+			controls. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-divide-links">10.5</a>&nbsp;Until
+			user agents (including assistive technologies) render adjacent
+			links distinctly, include non-link, printable characters
+			(surrounded by spaces) between adjacent links. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done.</p>
+			<p>In order to achieve it, &lt;span style=&rdquo;display:
+			none&rdquo;&gt;, &lt;/span&gt; is often used in templates. This
+			is invisible, but semantically present: hence
+			allowing visual style to be unaffected, but providing an aid for
+			<em>screen-readers</em>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-content-preferences">11.3</a>&nbsp;Provide
+			information so that users may receive documents according to their
+			preferences (e.g., language, content type, etc.) 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies (the language block, for example).</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-nav-bar">13.5</a>&nbsp;Provide
+			navigation bars to highlight and give access to the navigation
+			mechanism. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies (the menu system, for example).</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-group-links">13.6</a>&nbsp;Group
+			related links, identify the group (for user agents), and, until
+			user agents do so, provide a way to bypass the group. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-searches">13.7</a>&nbsp;If
+			search functions are provided, enable different types of searches
+			for different skill levels and preferences. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies (search page has advanced options, but not
+			immediately available).</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-front-loading">13.8</a>&nbsp;Place
+			distinguishing information at the beginning of headings,
+			paragraphs, lists, etc. 
+			</p>
+		</td>
+		<td>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-bundled-version">13.9</a>&nbsp;Provide
+			information about document collections (i.e., documents comprising
+			multiple pages.). 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-skip-over-ascii">13.10</a>&nbsp;Provide
+			a means to skip over multi-line ASCII art. 
+			</p>
+		</td>
+		<td>
+			<p>It is very strange that this is in the
+			standard. Not applicable.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-icons">14.2</a>&nbsp;Supplement
+			text with graphic or auditory presentations where they will
+			facilitate comprehension of the page. 
+			</p>
+		</td>
+		<td>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-consistent-style">14.3</a>&nbsp;Create
+			a style of presentation that is consistent across pages. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+			<p>This applies to web-masters.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use images and image maps (Priority 3)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-redundant-client-links">1.5</a>&nbsp;Until
+			user agents render text equivalents for client-side image map
+			links, provide redundant text links for each active region of a
+			client-side image map. 
+			</p>
+		</td>
+		<td>
+			<p>Composr complies.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use tables (Priority 3)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-table-summaries">5.5</a>&nbsp;Provide
+			summaries for tables. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done. Standard layout
+			strings show the form of the table. Layout tables have an empty
+			summary.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-abbreviate-labels">5.6</a>&nbsp;Provide
+			abbreviations for header labels. 
+			</p>
+		</td>
+		<td>
+			<p>Composr webstandards checker ensures this is done when an abbreviation is
+			needed (long header labels).</p>
+			<p>To achieve this, we often put a code-name into
+			the &lt;th&gt; abbr attribute. Whilst this is biased to English,
+			it is an abbreviation and does solve the problem at hand in an
+			appropriate way.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-linear-tables">10.3</a>&nbsp;Until
+			user agents (including assistive technologies) render side-by-side
+			text correctly, provide a linear text alternative (on the current
+			page or some other) for <em>all</em> tables that lay out text in
+			parallel, word-wrapped columns. 
+			</p>
+		</td>
+		<td>
+			<p>Assistive technologies now provide this.</p>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			And if you use forms (Priority 3)
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<p><a href="http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-place-holders">10.4</a>&nbsp;Until
+			user agents handle empty controls correctly, include default,
+			place-holding characters in edit boxes and text areas.</p>
+		</td>
+		<td>
+			<p>Assistive technologies now provide this.</p>
+		</td>
+	</tr>
+</table>
+[/html]
+
+[title="2"]Example accessibility problems[/title]
+
+[title="3"]Flash[/title]
+
+Macromedia Flash is inherently inaccessible to those with certain kinds of disabilities, because it assumes that the web browsing is a visual, mouse-orientated experience. Whilst Flash does not deserve harsh criticism for this (almost all of traditional desktop interfaces make the same assumption), it is inferior to well written (X)HTML from the accessibility perspective. HTML's document model of interfaces provides the 'semantic' structure that allows web pages to be accessible.
+
+Therefore, to make an accessible website, Flash should be avoided for anything other than auxillary usage that XHTML could not reasonably achieve.
+
+[title="3"]JavaScript[/title]
+
+As with Flash, the usage of JavaScript often degrades from the clean document model of (X)HTML that allows accessibility. As there is no way for a web browser to distinguish between JavaScript that does operate with alternative user interfaces and JavaScript that does actually actively detract from accessibility of the plain document, it must be assumed that JavaScript might be fully disabled.
+
+Hence, interfaces that rely on JavaScript, such as core navigation menus that are dynamically constructed from nothing using JavaScript, would not be acceptable for an accessible website. In contrast, Composr does have optional JavaScript powered menus, but they are primarily grounded in actual predefined XHTML and hence accessible.
+
+[title="3"]Abused markup[/title]
+
+Web designers often abuse HTML tags in order to achieve visual side-effects that those tags come with.
+For example:
+[code="HTML"]
+<blockquote>
+   This is indented.
+</blockquote>
+[/code]
+
+The 'blockquote' tag is intended to markup quoted information, but has the side-effect of indenting text. Web browser technology designed to assist those with disabilities may make use of the so-called 'semantics' of a documents markup in order to better express it to the user, but the user would be misled in situations where such markup was used incorrectly.
+
+The correct way to achieve the indentation effect would be to use CSS as follows:
+[code="HTML"]
+<div style="padding-left: 50px">
+   This is indented.
+</div>
+[/code]
+
+Preferably, the CSS information would be moved into it's own named class, with the properties stored in the [tt]global.css[/tt] styled sheet (so that they may be easily edited at a later date, or overridden if the user has their own specially designed 'override' style sheet), but this is not nearly as critical as the misuse of markup.
+
+[title="3"]Confusing text[/title]
+
+Writing skills are important for a website targetted at the general-public, and especially so when a segment of the audience have cognitive disorders.
+Take the following text, for example:
+[quote]
+[title="4"]Introduction[/title]
+
+Here you will find forums, chat rooms, and I will post the latest news that our team has for you.
+
+We especially envision provisioning the latest information pertaining to Consuperrabiotriaxilator for the esteemed reader.
+
+[title="4"]More details[/title]
+
+This is the website of Virtual Mega Cyber Products, developers of Consuperrabiotriaxilator.
+[/quote]
+
+Whilst this example is somewhat ridiculous, it is not actually far from the reality of many ill-considered websites.
+Major writing errors in this example include:
+ - Not providing any useful information in the titles. These occupy large amounts of space, and an opportunity wasted if not used effectively.
+ - Assuming the reader knows information that they probably do not.
+ - Not providing the most key information near the start.
+ - Using pretentious language that only aids to confuse rather than impress.
+ - Using complex terminology without explaining it.
+
+These issues go beyond accessibility, and are very relevant to the marketing of your website: never over-estimate the attention span of your reader, or their ability to realise what is obvious to you.
+
+[title="3"]Invalid markup[/title]
+
+This is an example of an invalid XHTML-strict fragment:
+[code="HTML"]
+<p><font color=red>First paragraph.
+<p>Second paragraph.</font>
+[/code]
+
+This markup is incorrect for a number of reasons:
+ - All tags that are opened must always be closed, yet the two 'p' tags have not been.
+ - Tags must not overlap, yet the 'font' tag is defined in the first paragraph, and extends after that paragraph has ended.
+ - The font tag is not present in XHTML-strict.
+ - All attributes must be quoted, whilst the 'color' attribute is not.
+
+Whilst none of these issues are directly related to accessibility, the strict adherence to the latest XHTML and CSS specifications increases the accessibility as the standards are increasingly designed for it.
+For example:
+ - Clearly defining where tags start and end allows user agents more certainty over the correct interpretation, and hence they can be better expressed non-visually. Whilst there are rules for interpreting HTML in a way that is fully expressed, there is no guarantee that the author's intent is that of the interpretations assumption.
+ - Overlapping tags might make sense visually, but are unnecessarily complex when expressed non-visually.
+ - CSS is preferable to the use of the 'font' tag because the user may override the presentation with that of their own; for example, a user could increase the contrast between certain colours by overriding part of a CSS class.
+ - Using a simple and consistant strict grammar makes document markup easier to read and understand, and hence reduces the chance of making other errors due to the reduction in distraction.
+
+[title="3"]Ommited accessibility information[/title]
+
+This is an example of a table that has not been marked up in an accessible fashion:
+[code="HTML"]
+<table class="results_table">
+   <tr>
+      <td>Name</td>
+      <td>Ronald</td>
+   </tr>
+   <tr>
+      <td>Age</td>
+      <td>32</td>
+   </tr>
+   <tr>
+      <td>Location</td>
+      <td>Leeds</td>
+   </tr>
+</table>
+[/code]
+
+If visually scanned, it is obvious how this table is laid out. However, non-visual user agents would read out each data cell with equal prominence and the user would need to build up an understand of it themselves based on this raw 'linearised' stream of information; this is especially problematic when data tables and layout tables are mixed without any distinguishing marks.
+If properly marked-up, the user would get an understand with greater ease. Whilst this might seem a minor issue, it is infact very important because it lowers the burden for a user who is likely to have many other problems that are less avoidable.
+
+A properly marked-up version, using Composr conventions, would look as follows:
+
+[code="HTML"]
+<table class="map_table results_table">
+   <tr>
+      <th>Name</th>
+      <td>Ronald</td>
+   </tr>
+   <tr>
+      <th>Age</th>
+      <td>32</td>
+   </tr>
+   <tr>
+      <th>Location</th>
+      <td>Leeds</td>
+   </tr>
+</table>
+[/code]
+
+[concepts
+ 1_key="WAI"         1_value="Web Accessibility Initiative; a group working under the W3C who are the official standards organisation behind the world wide web."
+ 2_key="WCAG"        2_value="Web Content Accessibility Guidelines, as written under the WAI."
+ 3_key="Semantic"    3_value="Roughly means 'meaning', and often used as the opposite to 'syntax'. Semanticly constructed web pages have well considered structural definition, leading to some aspects of meaning in the layout."
+ 4_key="Section 508" 4_value="Accessibility legislation similar to WCAG, that applies to US federal institutions."
+ 5_key="ATAG"        5_value="Authoring Tool Accessibility Guidelines."
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:atag"]Authoring Tool Accessibility Guidelines 2.0 -- Composr version 3.0 compliance[/page]
+ - [url="WAI specification"]http://www.w3.org/TR/WAI-WEBCONTENT/[/url]
+ - [url="Popular accessibility validator"]http://www.contentquality.com/[/url]
+ - [url="W3C validators"]http://validator.w3.org/[/url]
+ - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+
+{$SET,tutorial_tags,Web standards & Accessibility,core_webstandards,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,We discuss how to ensure your website remains accessible to people with disabilities (Composr meets WCAG out-of-the-box).}[block]main_tutorial_rating[/block]

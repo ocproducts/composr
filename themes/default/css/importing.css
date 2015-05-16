@@ -1,0 +1,9 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.import_actions th, .import_line_more {
+	text-align: {!en_right};
+}
+

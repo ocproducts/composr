@@ -1,0 +1,17 @@
+[block=":rules,cms:cms_comcode_pages,site:rules,forum:rules" caption="[title]{$SITE_NAME} Rules[/title]"]main_only_if_match[/block]
+
+Do not:
+ - spam this website, or members that use it
+ - hack this website
+ - commit or incite crimes on this website
+ - intentionally disrupt the enjoyment of this website for a majority of other members
+
+The staff may:
+ - ban a member for any reason, without warning or explanation
+ - view any content that is stored-on, or transferred-through, this website
+
+The staff are not responsible for any content posted on this website by members, accept no liability, and provide no warranty.
+
+[title="2"]Privacy[/title]
+
+Acceptance of these rules implies acceptance of the [page=":privacy"]privacy policy[/page] (which includes details of how this website uses cookies).

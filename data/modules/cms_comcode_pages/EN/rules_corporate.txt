@@ -1,0 +1,38 @@
+[block=":rules,cms:cms_comcode_pages,site:rules,forum:rules" caption="[title]{$SITE_NAME} Rules[/title]"]main_only_if_match[/block]
+
+[title="2"]Usage[/title]
+
+This is a company website, and it must be used in coordination with this. The company and staff are not responsible for content placed on this website by ordinary members: no liability is accepted for the possible results of this content, and no warranty is provided for it.
+
+You must not:
+ - post any sexually suggestive content
+ - post any obscene content or use obscene language (including language designed to avoid the word filter)
+ - post any discriminatory content
+ - post any dangerous content
+ - use the website as a forum for controversial topics, such as debates
+ - post off-topic or irrelevant material, or post any material multiple times without good reason from the point of view of the staff
+ - incite (directly or indirectly) any illegal activity (be it covered by criminal or civil law)
+ - post any copyrighted material for which you have no right to do so
+ - post information relating to, related to, or links directing to, any company in direct or near-direct competition with our own
+ - use this website to advertise
+ - pose as, or wilfully act as, a member of staff
+ - attempt to hack into this website
+ - use the features of this website to subvert the company or staff
+
+[title="2"]External content[/title]
+
+Advertisements are not under the complete control of this site and we do not take full responsibility for their content.
+
+Linked sites are outside the control of us and we disclaim any responsibility for their content.
+
+[title="2"]Our rights[/title]
+
+We reserve the rights to:
+ - remove or change posted content as we feel appropriate, with no warnings, explanation or mention.
+ - monitor the usage of this site, including all content, whether publicly viewable or not
+ - change these rules at any time, without warning
+ - ban any member without explanation if any of these rules are deemed as broken by the staff
+
+[title="2"]Privacy[/title]
+
+Acceptance of these rules implies acceptance of the [page=":privacy"]privacy policy[/page] (which includes details of how this website uses cookies).

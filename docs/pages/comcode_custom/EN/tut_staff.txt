@@ -1,0 +1,110 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Coordination between staff and staff/members[/title]
+
+When you run a Composr site, you do not merely create a website for people to visit. As an interactive, dynamic, system, Composr can provide different features for different users, and in particular, different features for staff than are available to ordinary members or visitors. Some of these features are specifically written to be for staff, some of these are a result of the [concept]privileges[/concept] system, and some are the combination between the ability to create new categories/forums and control access to these using permissions. The term 'staff' is used loosely in this tutorial, to mean anyone with the necessary permission: by default, it is staff who have the mentioned permissions, but this may be altered.
+
+Staff can use these features to distinguish themselves from ordinary users, and to collaborate together towards the operation of the website. This tutorial will cover a number of these features and how you might use them; some of these referenced features will be presented according to the [concept]Conversr[/concept] system but are also likely to be included in third-party forum solutions in some form.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Staff and the staff page[/title]
+
+[media width="150" description="The staff list" float="left"]data_custom/images/docs/staff_list.png[/media]
+[media width="150" description="Viewing a staff member" float="right"]data_custom/images/docs/staff_actual.png[/media]
+{!staff:DOC_STAFF}
+
+You can configure staff from the staff administration page. This is available from the Admin Zone > Security > Staff. The staff administration page allows you to choose staff (if the staff filter is on) as well as configure their listed details. You may also configure their details by editing the corresponding custom profile fields from your forums profile editing screen.
+
+By default, Conversr is installed with a single staff member, 'admin'. It is recommended that this member be left as a general purpose 'site representative', not used solely by any single staff member. It is also useful as a fail-safe account, because as a super-administrator, 'admin' can access any part of your Composr-based site.
+
+[title="2"]Coordinating with other staff[/title]
+
+[title="3"]Private forums[/title]
+[surround]
+[media width="150" description="Now you see it..." float="left"]data_custom/images/docs/staff_forums_1.png[/media]
+[media width="150" description="Now you don't (because I logged out and hence lost my staff permissions)" float="right"]data_custom/images/docs/staff_forums_2.png[/media]
+A very effective feature in running a website, where there are multiple staff involved, are forum permissions. By using a forum where only members in staff usergroups may gain access, staff can collaborate on matters relating to the operation of the site. Many members may not realise it, but often staff forums of large sites are almost as busy as the publicly accessible forums.
+
+Conversr creates a default staff forum for you on installation.
+[/surround]
+
+[title="3"]Conflict detection[/title]
+
+If more than one user is editing the same thing at the same time, Composr will put out a notice informing you. You can then coordinate with the other user so that you don't overwrite each other's changes.
+
+[title="3"]Staff checklist[/title]
+
+On the Admin Zone front page is a checklist of tasks to be performed. This combines tasks that are auto-detected with a set of shared manually added tasks.
+
+You can also share links and notes on the Admin Zone front page.
+
+[title="3"]Staff notifications, and the messaging system[/title]
+
+Staff have access to a wide variety of notifications, to be informed on what is happening on the site.
+
+In particular, if the [tt]main_contact_us[/block] (staff messaging system) is being used for user contact messages, messages will be directed to a shared location in the Admin Zone (and notifications sent out), and staff will be able to take responsibility for handling the contents of the message.
+
+[title="3"]Notes within content[/title]
+
+You may wish to use the Comcode 'staff_note' tag to embed comments within resource Comcode. For example, adding a comment to a news post.
+Additionally, most content has an explicit 'staff notes' field for you to share notes within.
+
+[title="3"]Validation and workflows[/title]
+
+You may wish to intentionally not validate content, even when a staff member adds it. This provides an opportunity for another member of staff (perhaps monitoring the needs-validation notification type) to check the content is ready for publishing.
+
+Larger enterprises may require a more sophisticated workflow system. Composr has a non-bundled workflows addon, which provides a fully-managed process of multiple configurable approval steps for content (to different staff usergroups), before it goes live. The workflow system can be implemented for different content types, and is currently implemented for galleries out-of-the-box. Enterprise customers will want the system tuning for individual needs. If you require an advanced enterprise workflow system, you should enquire with ocProducts with your specific needs, and whatever system you require can be set up for you.
+
+[title="3"]Staging sites[/title]
+
+For large sites, particularly tightly-run operations, you will want to test stuff on a staging site before making it live. Because of the constant flow of community content into the live database, it is not usually viable to just replace the whole live site with the staging site. You'll therefore need a more sophisticated process.
+
+Novice users may simply copy & paste stuff from a test/staging site, to a live site. This works reasonably for most cases of new content, but not when more wide-spread changes are required, such as changes in menu layout or whole new categories.
+
+Advanced users who are mainly aiming to stage content changes can use the [page="_SEARCH:tut_repository"]Composr repository[/page] WebDAV feature to mass-copy data between sites.
+
+Programmers managing site deployment also have a number of options, as Composr includes a number of APIs for import/export of content types (for example, menus). These are handy when used in coordination with the popular [tt]git[/tt] tool (i.e. hosting site code in git, and writing deployment scripts to deploy things such as menu changes).
+
+There's no magic-bullet when it comes to staging site changes in any software because of all the different change factors that could be involved (e.g. interconnected structural changes between two diverged versions of a website). However a skilled team has many options available to them, so can always come up with a workable deployment plan for both small and major site updates.
+
+[title="3"]Version control[/title]
+
+There are a few angles to version control on a Composr site:
+1) Composr automatically does version control for Comcode pages and theme CSS/templates (i.e. the main parts of Composr websites)
+2) You should always have a good backup automated backup plan in place
+3) You can make use of the popular [tt]git[/tt] tool (useful for enterprise users)
+
+On point '3':
+[tt]git[/tt] is a standard tool to use when making code changes, but not for database changes. However it is possible to use WebDAV in coordination with [tt]git[/tt] to manually do formal "commits" when changes are made to a website. If you are an enterprise interested in this functionality, you'll likely want to take on ocProducts as consultants to test/tune this functionality to your particular content needs, or set up an automated system if appropriate.
+
+[title="2"]Topic reporting[/title]
+
+[media width="150" description="A post needs a report / warning" float="left"]data_custom/images/docs/staff_report_1.png[/media]
+[media width="150" description="An offended member reports the post" float="right"]data_custom/images/docs/staff_report_2.png[/media]
+On busy forums, it is often impossible for staff to read every post that is made. Therefore there is a facility for members to report problem posts to the staff (with an additional reporter message), so that the staff can then perform any appropriate action on the post.
+
+Once a post is reported, the reported is actually created as a topic in the default 'Reported posts' forum. This method is, at the time of writing, unique to Composr, and allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with. We have found it often to be the case that staff will report posts themselves, so that they can easily bring them (and possibly their related action) to the attention of other staff.
+[media width="150" description="The staff will see the report in the 'reported posts' forum" float="right"]data_custom/images/docs/staff_report_3.png[/media]
+
+[title="2"]Warning members[/title]
+
+Conversr provides a facility for warning members. This is just one example of a punitive measure that may be taken out against a member. For full details, see the 'Tools for punishment' section of the '[page="_SEARCH:tut_censor"]Policing a community site[/page]' tutorial.
+
+[title="2"]Whispering[/title]
+
+When members use the Conversr whisper feature to make inline-personal-posts, they are visible to moderators (which by default, equates to the same as staff, dependant on specific forum permissions). This has two consequences:
+1) moderators can tell when members abuse the feature
+2) moderators can use the feature to write in-topic messages to each other (and hence, all other moderators too, due to the ability for all the moderators to see them all). It may be necessary to reign back your staff if they use this feature too much and make sarcastic remarks: the unforeseen may become reality, with the target of the sarcasm becoming staff at a later date, and seeing such remarks.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_users"]People in their roles[/page]
+ - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_correspondance"]Correspondence between users[/page]
+ - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
+ - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
+ - [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks[/page]
+ - [page="_SEARCH:tut_repository"]The Composr repository[/page]
+
+{$SET,tutorial_tags,staff,cns_warnings,cns_reported_posts,Collaboration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A discussion on the features Composr provides for members, and for staff - and how permissions divide them.}[block]main_tutorial_rating[/block]

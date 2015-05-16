@@ -1,0 +1,49 @@
+<fieldRestrictions>
+	<qualify pages="purchase" types="pay" fields="cv2">
+		<minLength error="!ecommerce:BAD_SECURITY_CODE">3</minLength>
+		<maxLength error="!ecommerce:BAD_SECURITY_CODE">4</maxLength>
+	</qualify>
+	<qualify pages="purchase" types="pay" fields="start_date,expiry_date">
+		<minLength error="!ecommerce:BAD_CARD_DATE">5</minLength>
+		<maxLength error="!ecommerce:BAD_CARD_DATE">5</maxLength>
+	</qualify>
+	<filter notstaff="1">
+		<qualify pages="cms_news" types="add,_add" fields="post">
+			<!--<minLength>5</minLength>-->
+			<!--<maxLength>32000</maxLength>-->
+			<!--<shun>Testing</shun>-->
+			<!--<disallowedWord>shit*</disallowedWord>-->
+			<!--<disallowedSubstring>I shouldn't be telling you this, but</disallowedSubstring>-->
+		</qualify>
+		<qualify pages="cms_news" types="add,_add" fields="title">
+			<!--<removeShout />-->
+		</qualify>
+		<qualify pages="cms_comcode_pages" fields="post">
+			<!--<disallowedWord>shit*</disallowedWord>-->
+		</qualify>
+		<qualify pages="topics" fields="title">
+			<maxLength error="!TITLE_TOO_LONG">120</maxLength>
+		</qualify>
+	</filter>
+
+	<!-- Example as might be used for a custom module -->
+	<qualify pages="property" types="add,_add,_edit,__edit" fields="descrip_features,descrip_accomodation,descrip_exterior">
+		<maxLength error="!property:P_DESCRIPT_TOO_LONG">1500</maxLength>
+	</qualify>
+</fieldRestrictions>
+
+<!--
+
+More possibilities:
+		<sentenceCase />
+		<titleCase />
+		<filter notstaff="1" groups="1,4,5,6,7,8,9">
+			<prepend>(THIS POST HAS NOT YET BEEN CHECKED BY STAFF. WE DO NOT CONDONE IT'S CONTENT)\n\n</prepend>
+			<append>\n\n(THIS POST HAS NOT YET BEEN CHECKED BY STAFF. WE DO NOT CONDONE IT'S CONTENT)</append>
+		</filter>
+		<possibilitySet error="That is not an allowed answer" secretive="1">1,2,4,8,16</possibilitySet>
+
+		<qualify pages="join" types="step2" fields="email_address">
+			<replace>you@example.com</replace>
+		</qualify>
+-->

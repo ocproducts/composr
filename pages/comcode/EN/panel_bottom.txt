@@ -1,0 +1,5 @@
+[semihtml]
+{+START,IF,{$AND,{$ADDON_INSTALLED,cns_forum},{$CNS},{$ADDON_INSTALLED,redirects_editor},{$OR,{$EQ,{$PAGE},chat,users_online,points,pointstore,warnings,contact_member,groups,rules,members,leader_board},{$EQ,{$ZONE},forum}}}}
+	[block]main_bottom_bar[/block]
+{+END}
+[/semihtml]

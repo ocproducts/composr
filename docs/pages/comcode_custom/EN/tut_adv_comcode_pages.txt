@@ -1,0 +1,73 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced custom pages of information[/title]
+
+Composr provides features to allow Comcode pages to be very feature rich. This tutorial explains two advanced aspects to this: blocks and 'inline attachments'. It will also explain how Composr allows your website content to be organised using different methodologies.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Blocks[/title]
+
+If you have read the 'custom pages of information' tutorial, you will know that using Comcode pages, you can type in text that visually resembles the look of the page (unlike HTML, which can look very complicated). This is a very powerful tool, but it is ultimately limited by the fact that you are only producing a document, not an interactive, data-bound, part of a website: if this was all you could do (forgetting modules for a minute), then Composr would not be much more powerful than a word processor.
+
+Composr has a concept called a 'block'. Blocks are essentially building blocks that can be inserted into a Comcode page in order to add the aforementioned interactive and date-bound functionality that is so important to a modern website. At the time of writing, Composr contains 67 blocks (at the time of writing) for you to use, and we are planning more of them for future versions.
+
+[title="2"]How to use a block[/title]
+
+[media width="150" description="Actual Comcode that references blocks" float="right"]data_custom/images/docs/adv_comcode_pages.png[/media]
+Unlike other systems that you may have experience with, Composr blocks (such as news blocks or poll blocks) are not arranged graphically. Usage of blocks is easiest shown by example. If you login to your site as your administrator user, and choose to edit the front page of the Welcome Zone, then you will see the page consists of Comcode: in particular, you will see that the '\[block]' tag is used many times in the page.
+To use a block, all you actually need to do is to use the Comcode '\[block]' tag, with the name of the block as the tag contents. Parameters passed to the block simply get placed as parameters for the block tag itself.
+
+The available blocks are classified into three groups:
+ - Side blocks. These are intended to be shown on a menu page.
+ - Main blocks. These are intended to be shown on the body of the site (an actual page).
+ - Bottom blocks. These are intended for use in the footer of the site.
+These classifications are not fixed however. It is common, for example, to use the [tt]main_poll[/tt] block on a menu; by re-templating, any pre-written visual assumptions about placement may be broken down.
+
+[title="2"]Cheating[/title]
+
+As mentioned in the above section, you can add a block using the Comcode '\[block]' tag. However, you don't need to type this code manually -- instead just click the obvious 'Block' button and Composr will provide a popup wizard to help you.
+The Wizard will generate the Comcode for you and place it approximately where your caret was. You can move it around by cut&pasting.
+
+[title="2"]Available blocks[/title]
+
+Use the "block construction assistant" (linked to via the 'Add block' button on the Comcode page editing screen). This assistant will list all the blocks, provide a helpful interface to defining the block parameters, and allow you to preview the blocks.
+
+[title="2"]Website content organisation[/title]
+
+Web Content Management systems typically provide one of two systems for organising content:
+ - Organising content types separately via modules
+ - Organising content types together via a single tree structure (or often, just categories without an actual tree structure)
+
+Composr organises content types via modules (with their own tree structures), but it also provides functionality so that your website can appear organised under a single tree structure.
+
+Comcode pages may be organised to form a tree structure and then those Comcode pages may have blocks placed within them to display content.
+
+[title="3"]Embedding entries[/title]
+
+To embed entries you may use the '[tt]main_content[/tt]' block. This is described in more detail in the 'Providing featured content' tutorial.
+
+[title="3"]Embedding categories[/title]
+
+The '[tt]main_multi_content[/tt]', '[tt]main_cc_embed[/tt]', '[tt]main_gallery_embed'[/tt] and '[tt]main_news[/tt]' blocks allow you to combine categories with your own personal wrapping Comcode, which is a very useful tool if you wish to integrate them tightly into your site. We do not, however, provide this functionality for all kinds of module because it would become over-complex. We provide a special module->block feature to bridge this (further details in the 'Provided featured content' tutorial).
+
+[title="2"]Exporting attachments[/title]
+
+[surround]
+[media width="150" description="Where to export a Comcode page from" float="left"]data_custom/images/docs/adv_comcode_export.png[/media]
+[media width="150" description="An exported Comcode page consists of text like this" float="right"]data_custom/images/docs/adv_comcode_exported.png[/media]
+Comcode pages support attachments, so that media may be arranged in the document to make a rich experience. When you create or edit your page, you have the option to add your attachments, and to arrange the Comcode attachment tags in your document, to perfect the layout.
+The Comcode system also has support for 'inline attachments', which are constructed in a similar way to how attachments are stored in e-mail addresses (technically, it is called base64-encoding). This feature is very useful if you want to give a Comcode page, complete with attachments (images, or downloads, for instance), to another Composr user (for example, we are using it to distribute tutorials). When 'inline attachments' are found, Composr will extract them, much like the extracting of an archive, and rewrite the page so as to reference the extracted files as if the attachments were uploading locally.
+To export a Comcode page with 'inline attachments', choose to edit the page, and click the 'Export page' link.
+[/surround]
+
+[concepts
+ 1_key="Block"   1_value="Building blocks that can be inserted into a Comcode page, in order to add interactive and date-bound functionality"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+ - [page="_SEARCH:tut_featured"]Providing featured content[/page]
+ - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
+ - [page="_SEARCH:tut_comcode_pages"]Custom pages of information (via Comcode)[/page]
+
+{$SET,tutorial_tags,Pages,Content,core_comcode_pages,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to add dynamism and inline content to your pages, using blocks; and multimedia, using attachments.}[block]main_tutorial_rating[/block]

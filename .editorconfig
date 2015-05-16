@@ -1,0 +1,120 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = false
+indent_style = space
+indent_size = tab
+indent_brace_style = K&R
+tab_width = 4
+charset = utf-8
+trim_trailing_whitespace = false
+max_line_length = 10000
+quote_type = single
+curly_bracket_next_line = false
+spaces_around_operators = true
+spaces_around_brackets = outside
+
+[*.php]
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.css]
+indent_style = tab
+tab_width = 3
+
+[*.tpl]
+indent_style = tab
+quote_type = double
+tab_width = 3
+
+[*.js]
+indent_style = tab  
+quote_type = single
+tab_width = 3
+
+
+# Some files should not be reformatted (NB: Max .editorconfig line length is 200)...
+# git checkout -- _tests/simpletest data/editarea/edit_area_compressor.php data_custom/upload-crop/upload_crop_v1.2.php sources/diff.php sources/firephp.php sources/jsmin.php \
+#  sources/stemmer_EN.php sources_custom/GTranslate.php sources_custom/Swift-4.1.1 sources_custom/facebook sources_custom/geshi.php sources_custom/geshi sources_custom/getid3 \
+#  sources_custom/openid.php sources_custom/photobucket sources_custom/php-crossword sources_custom/programe sources_custom/sabredav sources_custom/vimeo.php
+
+
+# PHPStorm settings (.idea/codeStyleSettings.xml)...
+
+#<?xml version="1.0" encoding="UTF-8"?>
+#<project version="4">
+#  <component name="ProjectCodeStyleSettingsManager">
+#    <option name="PER_PROJECT_SETTINGS">
+#      <value>
+#        <option name="OTHER_INDENT_OPTIONS">
+#          <value>
+#            <option name="INDENT_SIZE" value="3" />
+#            <option name="CONTINUATION_INDENT_SIZE" value="3" />
+#            <option name="TAB_SIZE" value="3" />
+#            <option name="USE_TAB_CHARACTER" value="true" />
+#            <option name="SMART_TABS" value="false" />
+#            <option name="LABEL_INDENT_SIZE" value="0" />
+#            <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+#            <option name="USE_RELATIVE_INDENTS" value="false" />
+#          </value>
+#        </option>
+#        <option name="LINE_SEPARATOR" value="&#10;" />
+#        <option name="HTML_ATTRIBUTE_WRAP" value="0" />
+#        <PHPCodeStyleSettings>
+#          <option name="ALIGN_PHPDOC_PARAM_NAMES" value="true" />
+#          <option name="PHPDOC_BLANK_LINE_BEFORE_TAGS" value="true" />
+#          <option name="LOWER_CASE_BOOLEAN_CONST" value="true" />
+#          <option name="LOWER_CASE_NULL_CONST" value="true" />
+#        </PHPCodeStyleSettings>
+#        <XML>
+#          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+#        </XML>
+#        <codeStyleSettings language="CSS">
+#          <indentOptions>
+#            <option name="INDENT_SIZE" value="3" />
+#            <option name="CONTINUATION_INDENT_SIZE" value="3" />
+#            <option name="TAB_SIZE" value="3" />
+#            <option name="USE_TAB_CHARACTER" value="true" />
+#          </indentOptions>
+#        </codeStyleSettings>
+#        <codeStyleSettings language="JavaScript">
+#          <indentOptions>
+#            <option name="INDENT_SIZE" value="3" />
+#            <option name="CONTINUATION_INDENT_SIZE" value="3" />
+#            <option name="TAB_SIZE" value="3" />
+#            <option name="USE_TAB_CHARACTER" value="true" />
+#          </indentOptions>
+#        </codeStyleSettings>
+#        <codeStyleSettings language="PHP">
+#          <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
+#          <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+#          <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+#          <option name="ALIGN_MULTILINE_ARRAY_INITIALIZER_EXPRESSION" value="true" />
+#          <option name="IF_BRACE_FORCE" value="3" />
+#          <option name="DOWHILE_BRACE_FORCE" value="3" />
+#          <option name="WHILE_BRACE_FORCE" value="3" />
+#          <option name="FOR_BRACE_FORCE" value="3" />
+#        </codeStyleSettings>
+#        <codeStyleSettings language="SQL">
+#          <indentOptions>
+#            <option name="INDENT_SIZE" value="3" />
+#            <option name="CONTINUATION_INDENT_SIZE" value="3" />
+#            <option name="TAB_SIZE" value="3" />
+#            <option name="USE_TAB_CHARACTER" value="true" />
+#          </indentOptions>
+#        </codeStyleSettings>
+#        <codeStyleSettings language="XML">
+#          <indentOptions>
+#            <option name="INDENT_SIZE" value="3" />
+#            <option name="CONTINUATION_INDENT_SIZE" value="3" />
+#            <option name="TAB_SIZE" value="3" />
+#            <option name="USE_TAB_CHARACTER" value="true" />
+#          </indentOptions>
+#        </codeStyleSettings>
+#      </value>
+#    </option>
+#    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+#  </component>
+#</project>
+

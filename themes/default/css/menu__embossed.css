@@ -1,0 +1,79 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Embossed menus should be flush to their box */
+.box___block_menu_embossed>.box_inner>h3 {
+	margin: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+.box___block_menu_embossed>.box_inner {
+	margin: 0;
+	position: relative;
+}
+.box___block_menu_embossed>.box_inner .inline_wip_message {
+	margin: 0.5em;
+}
+.box___block_menu_embossed .edit_menu_link_inline {
+	position: absolute;
+	right: 0;
+	bottom: 1px;
+}
+.box___block_menu_embossed nav, .box___block_menu_embossed li {
+	border-left: 0;
+	border-right: 0;
+}
+.box___block_menu_embossed nav, .box___block_menu_embossed li:last-child {
+	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
+	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
+	border-bottom: 0;
+}
+
+.menu_type__embossed {
+	overflow: hidden;
+	border-left: 1px solid {$GET,standard_border};
+	border-right: 1px solid {$GET,standard_border};
+	border-bottom: 1px solid {$GET,standard_border};
+}
+
+.menu_type__embossed, .menu_type__embossed li {
+	background-color: {$GET,area_background};
+}
+
+.menu_type__embossed li {
+	border-top: 1px solid {$GET,standard_border};
+}
+
+.menu_type__embossed li.current {
+	background-color: {$GET,area_highlight_left_complement_background} !important;
+	font-weight: bold;
+}
+
+.menu_type__embossed li:hover {
+	background-color: {$GET,area_highlight_right_complement_background} !important;
+	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
+}
+
+.menu_type__embossed a {
+	display: block;
+	padding: 0.4em 0.5em;
+	outline: 0;
+	/*{+START,IF,{$NEQ,{$LANG},EN}}*/
+		font-size: 0.72em;
+	/*{+END}*/
+}
+
+.menu_type__embossed a, .menu_type__embossed a:visited, .menu_type__embossed a:hover {
+	text-decoration: none;
+}
+
+.menu_type__embossed img, .menu_type__embossed span {
+	vertical-align: middle;
+}
+
+.menu_type__embossed img {
+	margin-right: 0.5em;
+	width: 20px;
+}

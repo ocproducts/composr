@@ -1,0 +1,4 @@
+<li>
+	{CONTENT}
+</li>
+

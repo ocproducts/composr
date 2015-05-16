@@ -1,0 +1,101 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.screen_actions_outer {
+	margin: 2em 0;
+}
+
+.screen_actions {
+	overflow: hidden;
+}
+
+.screen_actions div {
+	margin-{!en_right}: 1.25em;
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	width: 20px;
+	height: 20px;
+	float: {!en_left};
+}
+
+.screen_actions div:last-child {
+	margin-right: 0;
+}
+
+.screen_actions div a {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+}
+
+.screen_actions div a span {
+	display: none;
+}
+
+.screen_actions .facebook_like {
+	margin-right: 0;
+}
+
+.screen_actions .print {
+	background-image: url('{$IMG_INLINE;,icons/24x24/links/print}');
+}
+
+.screen_actions .recommend {
+	background-image: url('{$IMG_INLINE;,icons/24x24/menu/site_meta/recommend}');
+}
+
+.screen_actions .favorites {
+	background-image: url('{$IMG_INLINE;,icons/24x24/links/favorites}');
+}
+
+.screen_actions .facebook {
+	background-image: url('{$IMG_INLINE;,icons/24x24/links/facebook}');
+}
+
+.screen_actions .twitter {
+	background-image: url('{$IMG_INLINE;,icons/24x24/links/twitter}');
+}
+
+.screen_actions .stumbleupon {
+	background-image: url('{$IMG_INLINE;,icons/24x24/links/stumbleupon}');
+}
+
+.screen_actions .digg {
+	background-image: url('{$IMG_INLINE;,icons/24x24/links/digg}');
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.screen_actions .print {
+		background-image: url('{$IMG;,icons/48x48/links/print}');
+	}
+
+	.screen_actions .recommend {
+		background-image: url('{$IMG;,icons/48x48/menu/site_meta/recommend}');
+	}
+
+	.screen_actions .favorites {
+		background-image: url('{$IMG;,icons/48x48/links/favorites}');
+	}
+
+	.screen_actions .facebook {
+		background-image: url('{$IMG;,icons/48x48/links/facebook}');
+	}
+
+	.screen_actions .twitter {
+		background-image: url('{$IMG;,icons/48x48/links/twitter}');
+	}
+
+	.screen_actions .stumbleupon {
+		background-image: url('{$IMG;,icons/48x48/links/stumbleupon}');
+	}
+
+	.screen_actions .digg {
+		background-image: url('{$IMG;,icons/48x48/links/digg}');
+	}
+}
+
+.screen_actions .google_plusone {
+	margin-top: 2px;
+}

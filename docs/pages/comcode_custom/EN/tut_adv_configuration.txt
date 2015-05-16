@@ -1,0 +1,124 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced configuration[/title]
+
+This tutorial will cover various advanced aspects of Composr configuration.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Configuration[/title]
+
+Many advanced configuration options are presented and described in the main Admin Zone configuration module. As these are self explanatory, they will not be explained here in depth.
+Advanced configuration options include (but are not limited to):
+ - Enabling and disabling cacheing
+ - Setting up details for an external SMTP server, if PHP can not itself send e-mails
+ - Configuring details for various optional Composr features, such as the Point Store and galleries
+ - Configuring details for logging
+ - Configuring the Admin Zone todo-list block
+
+[title="2"]Addons[/title]
+
+Composr is split into a series of addons. All the addons are installed when you install Composr but it is recommended that you should remove any that aren't needed once you are familiar with the software. This is so as to make sure the non-required/unconfigured functionality doesn't accidentally get discovered by your visitors, and that any unnecessary complexity is removed. Less is more when it comes to good design, and if you ensure you have only the right set of features on your site then you can better tailor it for your visitors.
+
+To uninstall addons go to Admin Zone > Setup > Addons. Any addons that are uninstalled will be archived so you can restore them later if you wish (although any data you created for the addons, such as entries, will be permanently lost).
+
+[title="2"]Permissions[/title]
+
+Composr has a rich, multi-layered, permission system. In creation of this system we have tried to strike a balance to keep all of these factors high:
+ - power
+ - ease-of-use
+ - quickness of configuration
+
+[media width="150" description="Privileges are set like this" float="right"]data_custom/images/docs/adv_config_specific.png[/media]
+Composr has two main types of permission:
+1) privileges
+2) access permissions (for defining what may be viewed)
+
+Composr uses a "best of" permission system, meaning that a member has the best possible access that the combination of all usergroups that they are in could give them. The one exception to this is when permissions are overridden for a page/catalogue/category the user will be limited by the override even if only a subset of their usergroup set is overridden at that level.
+
+[title="3"]Privileges[/title]
+
+Privileges allow the assignment of permissions to usergroups via check-boxes. Privileges have a very specific meaning, rather than perform a higher level role of deciding whether something may be viewed.
+Broadly, privileges are used to grant things like 'whether a member can access the site when it is closed', as well as to define sweeping permissions for content classes.
+Sweeping permissions are there so that instead of making you specify who can control (edit/delete/etc) each/every content-item/type-of-content/category-contents individually, you can specify them by impact-class.
+The 'impact' scheme is used to classify content according to its impact to the website and prominence. The following privileges may be set for usergroups for each of adding, editing and deleting content:
+ - low impact content (things most people will probably not notice, like forum posts, Wiki+ posts, calendar events)
+ - medium impact content (things most people are likely to notice, like downloads, banners, gallery images and videos, author profiles, catalogue entries, inactive polls, forum topics)
+ - high impact content (things on the front page, like active poll, Comcode pages, news, quizzes)
+ - (for editing/deleting only) only their own low impact content
+ - (for editing/deleting only) only their own medium impact content
+ - (for editing/deleting only) only their own high impact content
+
+You can optionally override privilege settings in almost all the places where you may set access permissions. This provides a far greater degree of control but is completely optional, because if you do not choose to do any overriding then the global privileges will be used. You have the power of fine-grained control, and the simplicity of only having to do fine-grained control when you need to set a special case.
+
+Using the Permissions Tree Editor you may configure access and privileges for almost any aspect of the system, as well as make batch changes with great efficiency.
+
+For a good real-world example of how to set up privileges, see the 'Setting bypass-validation access' section of the [page="_SEARCH:tut_forums"]organising discussion forums[/page] tutorial.
+
+[title="3"]Access permissions[/title]
+
+Composr access permissions do not work via an 'inheritance' system as such. Think of the above levels as barriers, not inheritance points. You need to get past each barrier to access a resource.
+
+Access permissions are also configured by check-boxes. Composr supports a layered system of access permissions, where to access an entry, you need permissions to certain things 'above' the entry:
+1) Zone access permissions
+2) Page access permissions
+3) Catalogue access permissions (catalogues only)
+4) Category access permissions (where forums and galleries count as categories in this context)
+To configure access permissions, you may edit the resource the permissions are for, or use the Permissions Tree Editor. For example, to edit zone access permissions, you need to edit the appropriate zone, or browse to the zone in the Permissions Tree Editor.
+
+[title="2"]Installation options (base-configuration)[/title]
+
+If your core configuration settings change, if you move servers for example, then Composr may cease to function. To ameliorate this, an external configuration editor is provided that can reconfigure the [tt]_config.php[/tt] that stores core configuration settings, such as database access details.
+
+To launch the external config editor, go to the Admin Zone > Setup > Configuration > Installation Options.
+If you are locked outside Composr, you will need to open up the [tt]<base-url>/config_editor.php[/tt] URL manually.
+
+The password to enter the config editor is the password you specified during installation (the 'Master password'). If you have forgotten it, you will need to edit [tt]_config.php[/tt] by hand.
+
+[box="Note" width="25em" float="right"]If you change servers you will also need to set file permissions. Please read the advanced installation tutorial for details on this. If you upload new themes, you will need to set permissions on the [tt]templates_cached/<lang>[/tt] and [tt]*_custom[/tt] directories after uploading.[/box]
+You may use the config editor to:
+ - Change the default site language
+ - Change the database driver
+ - Change the forum driver
+ - Change the e-mail domain
+ - Change the base-URL
+ - Change forum and site database details
+ - Change cookie details
+ - Force 'short URLs' to be disabled, if you enabled it, but it failed to function correctly, locking you out of Composr
+
+[title="2"]Advanced page structure changes[/title]
+
+You may delete, and move pages using the [concept]Sitemap editor[/concept].
+
+If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via 'page' tags) will become invalid, unless they were specified as being in the zone named '_SEARCH' (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the 'Creating Sub-communities' tutorial. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
+
+It is recommended that you never move pages because it complicates the upgrade process. It is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
+
+[title="2"].htaccess[/title]
+[surround]
+[media width="150" description="Finding how to change your settings" float="right"]data_custom/images/docs/phpsettings.png[/media]
+You can try and get PHP and the web server to use an optimal configuration, via a special file named '.htaccess'. If you want the 'short URLs' option to be enabled, this step is necessary.
+Note that the file may already exist, potentially for either of two reasons:
+1) It was already there from before Composr was installed.
+2) Composr's quick installer automatically created an optimal file for you.
+
+To try this, use FTP (or an equivalent tool) to rename the included 'recommended.htaccess' to '.htaccess' (or if the file already existed, manually copy & paste in the extra lines). Our recommended options will tighten up your security where possible, and make sure Composr has certain PHP and Apache features turned on.
+There are three caveats here:
+[list="1"]
+[*]it will only work on an Apache (basically, Linux) server. Windows IIS servers are either managed from the IIS Administrative Tools, or from a web hosting control panel.
+[*]CGI server configurations can not use [tt].htaccess[/tt] files to configure PHP settings. On CGI servers (and note this works on IIS CGI servers), you need to create special [tt]php.ini[/tt] files. For more information, see our [page="_SEARCH:faq"]FAQ[/page] ("How do I set PHP settings on a CGI server?"). This said, you can probably still set the [i]non-PHP[/i] settings in your [tt].htaccess[/tt] (see below).
+[*]some web-hosts do not allow [tt].htaccess[/tt] files to be used to change any options, resulting in an error message. To test for this try [tt]plain.htaccess[/tt] instead of [tt]recommended.htaccess[/tt]:
+[list]
+[*]If this succeeds, you are running CGI and you can't set PHP options from your [tt].htaccess[/tt], so read (2) above. Keep your [tt].htaccess[/tt] file though, it's still worth having even without the PHP options.
+[*]If this fails too you will need to rename the file back and consult your web-host.
+[/list]
+[/list]
+[/surround]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_configuration"]Basic Configuration[/page]
+ - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_msn"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_permissions"]Access Control and Privileges[/page]
+ - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+
+{$SET,tutorial_tags,core_configuration,apache_config_files,Configuration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting permissions. Search-Engine-Friendly URLs. Addons. Changing installation options.}[block]main_tutorial_rating[/block]

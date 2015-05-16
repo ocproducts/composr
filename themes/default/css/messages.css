@@ -1,0 +1,45 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.site_special_message {
+	padding: {$?,{$MOBILE},3,9}em 0;
+	text-align: center;
+}
+
+.ssm_warn {
+	background: url('{$IMG;,messageicons/warn_large}') right 20px no-repeat;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		padding: 85px 220px 100px 30px;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		padding-bottom: 170px;
+	/*{+END}*/
+}
+
+.expanded_advice {
+	padding: 0 {$?,{$MOBILE},0,230px} 200px 0;
+}
+
+.ssm_inform {
+	background: url('{$IMG;,messageicons/inform_large}') right 20px no-repeat;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		padding: 85px 220px 100px 30px;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		padding-bottom: 170px;
+	/*{+END}*/
+}
+
+.site_special_message_inner, .site_special_message_alt_inner {
+	display: inline-block;
+}
+
+.closed_site_special_message {
+	margin: {$?,{$MOBILE},3em 2em,10em auto};
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 38em;
+	/*{+END}*/
+	text-align: center;
+}

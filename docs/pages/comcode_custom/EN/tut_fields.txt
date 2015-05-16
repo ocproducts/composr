@@ -1,0 +1,997 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Custom fields[/title]
+
+When building catalogues, custom fields for inbuilt content types, and Custom Profile Fields, you have a unified set of fields to choose from.
+This tutorial describes all the different fields and their options.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Text[/title]
+
+[title="3"]short_trans[/title]
+
+{|
+! Title
+| A brief line of translatable/Comcode text
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text (linked through translate table)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_trans.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_trans.png[/media]
+|}
+
+[title="3"]short_trans_multi[/title]
+
+{|
+! Title
+| Multiple brief lines of translatable/Comcode text
+|-
+! Storage format (for programmer reference)
+| Text separated by linebreaks (no character limit) (linked through translate table)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
+
+[tt]num_required[/tt] (the number of required values; default is 0 or 1 depending on if required is set)
+
+[tt]cms_type=line|codename|integer|float|email[/tt] (which Composr styling and validation code to use; default is line)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_trans_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_trans_multi.png[/media]
+|}
+
+[title="3"]short_text[/title]
+
+{|
+! Title
+| A brief line of text (no Comcode support)
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]maxlength[/tt] (the number of characters to have as a maximum; default is 255)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_text.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_text.png[/media]
+|}
+
+[title="3"]short_text_multi[/title]
+
+{|
+! Title
+| Multiple brief lines of text (no Comcode support)
+|-
+! Storage format (for programmer reference)
+| Text separated by linebreaks (no character limit)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
+
+[tt]num_required[/tt] (the number of required values; default is 0 or 1 depending on if required is set)
+
+[tt]cms_type=line|codename|integer|float|email[/tt] (which Composr styling and validation code to use; default is line)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__short_text_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__short_text_multi.png[/media]
+|}
+
+[title="3"]long_trans[/title]
+
+{|
+! Title
+| A paragraph(s) of translatable/Comcode text
+|-
+! Storage format (for programmer reference)
+| Text (linked through translate table)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]wysiwyg=on|off[/tt] (whether to enable the WYSIWYG editor; default is on)
+
+[tt]wordwrap=on|off[/tt] (whether to word-wrap lines in the editor, as opposed to horizontal scrolling; default is on)
+
+[tt]input_size[/tt] (the number of lines in the text area; default is 9)
+
+[tt]maxlength[/tt] (the number of characters to have as a maximum; default is to have no limit)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__long_trans.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__long_trans.png[/media]
+|}
+
+[title="3"]long_text[/title]
+
+{|
+! Title
+| A paragraph(s) of text (no Comcode support)
+|-
+! Storage format (for programmer reference)
+| Text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]widget=text|huge[/tt] (widget type, huge is a full-width input and does not support the input_size option; default is text)
+
+[tt]wordwrap=on|off[/tt] (whether to word-wrap lines in the editor, as opposed to horizontal scrolling; default is on)
+
+[tt]input_size[/tt] (the number of lines in the text area; default is 9)
+
+[tt]maxlength[/tt] (the number of characters to have as a maximum; default is to have no limit)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__long_text.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__long_text.png[/media]
+|}
+
+[title="3"]posting_field[/title]
+
+{|
+! Title
+| A paragraph(s) of Comcode, with attachment support
+|-
+! Storage format (for programmer reference)
+| Text (linked through translate table)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__posting_field.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__posting_field.png[/media]
+|}
+
+[title="3"]codename[/title]
+
+{|
+! Title
+| A codename (short sequence of numbers and letters, no spaces)
+|-
+! Storage format (for programmer reference)
+| [tt]RANDOM[/tt]: 10 random numbers and letters (for catalogues it will be enforced as unique also)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| codename When adding there is no UI if 'RANDOM' was used.
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__codename.png[/media]
+|}
+
+[title="3"]password[/title]
+
+{|
+! Title
+| A password (i.e. masked input)
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__password.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__password.png[/media]
+|}
+
+[title="3"]email[/title]
+
+{|
+! Title
+| An e-mail address
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text (e-mail address, or blank)
+|-
+! Special default values
+| [tt]![/tt]: Current member's configured e-mail address
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__email.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__email.png[/media]
+|}
+
+[title="2"]Numbers[/title]
+
+[title="3"]integer[/title]
+
+{|
+! Title
+| An integer (whole number, e.g. 5)
+|-
+! Storage format (for programmer reference)
+| Integer, or null
+|-
+! Special default values
+| [tt]AUTO_INCREMENT[/tt]: An automatically assigned sequential number
+|-
+! Supported field options
+| [tt]range_search=on|off[/tt]: search forms will allow a range-based search
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__integer.png[/media]
+NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__integer.png[/media]
+|}
+
+[title="3"]float[/title]
+
+{|
+! Title
+| A float (decimal number, e.g. 3.2)
+|-
+! Storage format (for programmer reference)
+| Floating point number, or null
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]range_search=on|off[/tt]: search forms will allow a range-based search
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__float.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__float.png[/media]
+|}
+
+[title="2"]Choices[/title]
+
+[title="3"]list[/title]
+
+{|
+! Title
+| A value chosen from a list
+|-
+! Storage format (for programmer reference)
+| Selected/input text (programmer note: no character limit, so we can support very long list items)
+|-
+! Special default values
+| Options are delimited by "|" (e.g. "This|That|Other"), with the real default value coming first. If you want the real default to be blank, start the list with a blank (it won't allow actual selection unless the list is set as non-required).
+
+The pathname relative to a .csv file (relative to base directory), if the non-bundled Nested CPF CSV Lists addon is installed.
+|-
+! Supported field options
+| [tt]custom_values=on|off[/tt] (whether to allow a custom typed value; if enabled then inline list widgets will not be available; default is off)
+
+[tt]dynamic_choices[/tt] (whether to feed custom values back in as possible selections for others; default is off)
+
+[tt]value_remap=none|country[/tt] (if set to country then the full country names are shown for ISO country codes in the list options; default is none)
+
+[tt]auto_sort=on|off[/tt] (whether to sort the list options; default is off)
+
+[tt]input_size[/tt] (the number of options shown in the list before scrolling is required, applies only to the 'inline' widget type; default is 9)
+
+[tt]widget=radio|inline|dropdown|inline_huge|dropdown_huge[/tt] (whether to use a radio buttons, an inline list, or a dropdown list; default is dropdown)
+
+[tt]csv_heading[/tt] (the column from the .csv file to use, if the default was set as a .csv file; default is to use the first column)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__dropdown.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__inline.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__inline_huge.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list__radio.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__dropdown.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__inline.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__inline_huge.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list__radio.png[/media]
+|}
+
+[title="3"]list_multi[/title]
+
+{|
+! Title
+| Multiple values chosen from a list
+|-
+! Storage format (for programmer reference)
+| Selected/input text separated by linebreaks
+|-
+! Special default values
+| Options are delimited by "|" (e.g. "This|That|Other").
+
+The pathname relative to a .csv file (relative to base directory), if the non-bundled Nested CPF CSV Lists addon is installed.
+|-
+! Supported field options
+| [tt]auto_sort=off|frontend|backend|both[/tt] (choose front-end to sort the selected choices, choose back-end to sort the list options, choose both to sort both; default is off)
+
+[tt]show_unset_values=on|off[/tt] (whether to show non-set list options on the front-end with a cross next to them; default is off)
+
+[tt]custom_values=off|single|multiple[/tt] (whether to allow a custom typed value; default is off)
+
+[tt]dynamic_choices[/tt] (whether to feed custom values back in as possible selections for others; default is off)
+
+[tt]widget=vertical_checkboxes|horizontal_checkboxes|multilist[/tt] (what input style to use; default is multilist)
+
+[tt]input_size[/tt] (the number of options shown in the list before scrolling is required, applies only to the 'inline' widget type; default is 5)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi__horizontal_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi__vertical_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__list_multi__multilist.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi__horizontal_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi__vertical_checkboxes.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__list_multi__multilist.png[/media]
+|}
+
+[title="3"]tick[/title]
+
+{|
+! Title
+| Checkbox ('Yes' or 'No')
+|-
+! Storage format (for programmer reference)
+| Integer (0 or 1)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__tick__required.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0" description="If set as non-required it will actually be a drop-down input with 3 possible values (N/A, No, Yes)"]data_custom/images/docs/core_fields_backend__tick__not_required.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__tick__required.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__tick__not_required.png[/media]
+|}
+
+[title="2"]Uploads/URLs[/title]
+
+The fields that take "uploaded" files allow you to select files direct from your computer.
+
+The first image-like field will be injected into screen meta-data (i.e. will come up on Facebook shares due to being the OpenGraph image for the entry).
+
+[title="3"]upload[/title]
+
+{|
+! Title
+| An uploaded file
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text ([tt]<url>[::<original_filename>][/tt], or blank)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]filetype_filter[/tt] (comma separated list of file extensions; default is not to have a filter)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__upload.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__upload.png[/media]
+|}
+
+[title="3"]upload_multi[/title]
+
+{|
+! Title
+| Multiple uploaded files
+|-
+! Storage format (for programmer reference)
+| [tt]<url>[::<original_filename>][/tt] separated by linebreaks
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
+
+[tt]filetype_filter[/tt] (comma separated list of file extensions; default is not to have a filter)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__upload_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__upload_multi.png[/media]
+|}
+
+[title="3"]picture[/title]
+
+{|
+! Title
+| An uploaded picture
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text (URL, or blank)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]width[/tt] (the width all the media will be shown at; default is to auto-detect for each individual file)
+
+[tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__picture.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__picture.png[/media]
+|}
+
+[title="3"]picture_multi[/title]
+
+{|
+! Title
+| Multiple uploaded pictures
+|-
+! Storage format (for programmer reference)
+| URLs separated by linebreaks
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]width[/tt] (the width all the media will be shown at; default is to auto-detect for each individual file)
+
+[tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__picture_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__picture_multi.png[/media]
+|}
+
+[title="3"]video[/title]
+
+{|
+! Title
+| An uploaded video
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text ([tt]<url>[ <width> <height> <length>][/tt], or blank) (if we can we will transcode the video and create a thumbnail)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]width[/tt] (the width all the media will be shown at; default is to auto-detect for each individual file)
+
+[tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__video.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__video.png[/media]
+|}
+
+[title="3"]video_multi[/title]
+
+{|
+! Title
+| Multiple uploaded videos
+|-
+! Storage format (for programmer reference)
+| [tt]<url>[ <width> <height> <length>][/tt] separated by linebreaks (if we can we will transcode the video and create a thumbnail)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]width[/tt] (the width all the media will be shown at; default is to auto-detect for each individual file)
+
+[tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__video_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__video_multi.png[/media]
+NB: You can see I uploaded a non-web-safe video as the first video. We do support these, but they'll only play on browsers with an appropriate plugin installed (unlike mine).
+|}
+
+[title="3"]url[/title]
+
+{|
+! Title
+| An URL
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text (URL, or blank); common URL errors will be fixed
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__url.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__url.png[/media]
+|}
+
+[title="3"]url_multi[/title]
+
+{|
+! Title
+| Multiple URLs
+|-
+! Storage format (for programmer reference)
+| URLs separated by linebreaks; common URL errors will be fixed
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__url_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__url_multi.png[/media]
+|}
+
+[title="3"]page_link[/title]
+
+{|
+! Title
+| A page-link (i.e. in-site link)
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text ([tt]<page-link>[ <link-title>][/tt])
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__page_link.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__page_link.png[/media]
+|}
+
+[title="3"]theme_image[/title]
+
+{|
+! Title
+| An image from the xxx directory of theme images
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text (theme image ID, or blank)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]width[/tt] (the width all the media will be shown at; default is to auto-detect for each individual file)
+
+[tt]height[/tt] (the height all the media will be shown at; default is to auto-detect for each individual file)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__theme_image.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__theme_image.png[/media]
+|}
+
+[title="2"]Magic fields[/title]
+
+[title="3"]guid[/title]
+
+{|
+! Title
+| A GUID (Globally-Unique Identifier)
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text (though less stored)
+|-
+! Special default values
+| N/A: Default is auto-assigned
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| When adding there is no UI. When editing it looks like [tt]codename[/tt]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__guid.png[/media]
+|}
+
+[title="2"]References[/title]
+
+[title="3"]isbn[/title]
+
+{|
+! Title
+| ISBN code
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__isbn.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__isbn.png[/media]
+|}
+
+[title="3"]reference[/title]
+
+{|
+! Title
+| A reference to a catalogue entry in xxx catalogue
+|-
+! Storage format (for programmer reference)
+| Content ID (to whatever catalogue the reference is for), or blank
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__reference.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__reference.png[/media]
+|}
+
+[title="3"]reference_multi[/title]
+
+{|
+! Title
+| Multiple references to a catalogue entry in xxx catalogue
+|-
+! Storage format (for programmer reference)
+| Content IDs (to whatever catalogue the reference is for) separated by linebreaks
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__reference_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__reference_multi.png[/media]
+|}
+
+[title="3"]content_link[/title]
+
+{|
+! Title
+| A link to an item of 'xxx' content
+|-
+! Storage format (for programmer reference)
+| Content ID, or blank
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__content_link.png[/media]
+NB: Where we support Composr tree-list inputters (like shown for 'reference') for the content types that use them. This screenshot shows input for a 'poll', which is a flat structure and hence just works via a normal drop-down list.
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__content_link.png[/media]
+|}
+
+[title="3"]content_link_multi[/title]
+
+{|
+! Title
+| Multiple links to an item of 'xxx' content
+|-
+! Storage format (for programmer reference)
+| Content IDs separated by linebreaks
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__content_link_multi.png[/media]
+NB: Where we support Composr tree-list inputters (like shown for 'reference') for the content types that use them. This screenshot shows input for a 'poll', which is a flat structure and hence just works via a normal drop-down list.
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__content_link_multi.png[/media]
+|}
+
+[title="3"]member[/title]
+
+{|
+! Title
+| A member ID
+|-
+! Storage format (for programmer reference)
+| Member ID, or null
+|-
+! Special default values
+| [tt]![/tt]: Current user's username
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__member.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__member.png[/media]
+|}
+
+[title="3"]member_multi[/title]
+
+{|
+! Title
+| Multiple member IDs
+|-
+! Storage format (for programmer reference)
+| Member IDs separated by linebreaks
+|-
+! Special default values
+| [tt]![/tt]: Current user's username
+|-
+! Supported field options
+| [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__member_multi.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__member_multi.png[/media]
+|}
+
+[title="3"]author[/title]
+
+{|
+! Title
+| An author configured on the system
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text (author)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__author.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__author.png[/media]
+|}
+
+[title="2"]Other[/title]
+
+[title="3"]color[/title]
+
+{|
+! Title
+| A colour
+|-
+! Storage format (for programmer reference)
+| Colour hex code with no “#” (e.g. AAAAAA), or blank
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__color.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__color.png[/media]
+NB: There is no special styling by default: this field exists so as to provide a colour-picker field input for those who will then take the data and use it in a useful way.
+|}
+
+[title="3"]date[/title]
+
+{|
+! Title
+| A date/time
+|-
+! Storage format (for programmer reference)
+| yyyy-mm-dd hh:mm, or blank
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]min_year=YYYY[/tt]
+
+[tt]max_year=YYYY[/tt] (defaults place selection around current year)
+
+[tt]range_search=on|off[/tt]: search forms will allow a range-based search
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__date.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__date.png[/media]
+|}
+
+[title="3"]just_date[/title]
+
+{|
+! Title
+| A date
+|-
+! Storage format (for programmer reference)
+| yyyy-mm-dd, or blank (due to fixed alignment, string inequality comparisons work effectively)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]min_year=YYYY[/tt]
+
+[tt]max_year=YYYY[/tt] (defaults place selection around current year)
+
+[tt]range_search=on|off[/tt]: search forms will allow a range-based search
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__just_date.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__just_date.png[/media]
+|}
+
+[title="3"]just_time[/title]
+
+{|
+! Title
+| A time
+|-
+! Storage format (for programmer reference)
+| hh:mm, or blank (due to fixed alignment, string inequality comparisons work effectively)
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]range_search=on|off[/tt]: search forms will allow a range-based search
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__just_time.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__just_time.png[/media]
+|}
+
+[title="3"]tel[/title]
+
+{|
+! Title
+| A telephone number
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_backend__tel.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/core_fields_frontend__tel.png[/media]
+|}
+
+[title="2"]Blank fields[/title]
+
+In almost all cases a field left as blank will not show in the default templates at all.
+'color' is the only exception to this (at the time of writing), as there is no way to actually leave that input field blank.
+
+[title="2"]Styling multiple-selection fields[/title]
+
+The fields that support multiple-selection will typically output the different selections sequentially without much styling. It is up to the theme designer to write CSS rules to lay these out in an appropriate way.
+
+[title="2"]Programming (advanced)[/title]
+
+Generally the fields system is built on top of the lower level fields API within Composr, which is itself built on standard Composr templates.
+
+[title="3"]Extending the set of fields[/title]
+
+Programmers may add new field types by writing new [tt]systems/fields[/tt] hook code files. Programming is beyond the scope of this tutorial, but it is relatively easy for a programmer to see how the existing hooks were coded (all existing fields are hook-based too).
+
+[concepts
+ 1_key="Front-end"   1_value="The regular website"
+ 2_key="Back-end"    2_value="The administration, adding, editing, etc"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_catalogues"]Catalogues[/page]
+
+{$SET,tutorial_tags,core_fields,catalogues,Power tools,novice}{$SET,tutorial_add_date,Apr 2015}{$SET,tutorial_summary,Detailed information on the different field types supported by Composr.}[block]main_tutorial_rating[/block]

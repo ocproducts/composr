@@ -1,0 +1,14 @@
+<aggregateTypes>
+	<aggregateType name="example">
+		<resource type="group" label="{LABEL*}" template_label="Newbie" />
+		<resource type="poll" label="Thoughts on our new {LABEL*} division?">
+			<property key="answer1">{POSITIVE_RESPONSE*}</property>
+			<property key="answer2">{NEGATIVE_RESPONSE*}</property>
+		</resource>
+		<resource type="download_category" label="Files for {LABEL*}">
+			<access value="1" usergroup="{LABEL*}" member="{$MEMBER*}" />
+			<privilege preset="moderate" usergroup="{LABEL*}" member="{$MEMBER*}" />
+			<privilege name="bypass_validation_midrange_content" value="0" usergroup="{LABEL*}" member="{$MEMBER*}" />
+		</resource>
+	</aggregateType>
+</aggregateTypes>

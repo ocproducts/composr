@@ -1,0 +1,209 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Customising what's on the menus[/title]
+
+{!menus:DOC_MENUS} There are two ways to define menus:
+[list="1"]
+[*]Comcode menus. These are described in the 'Comcode' tutorial
+[*]Menu-editor managed menus. These are described in this tutorial and the usual approach
+[/list]
+Panel-pages are described in the 'Site structure' tutorial, and also in the 'Custom pages of information (via Comcode)' tutorial.
+
+Comcode menus and menu-editor managed menus are alternatives to each other: both produce the same visual interface, using the same templates, but one is written and laid out in plain-text (Comcode menus) and one is constructed in an editor (managed menus).
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Comcode menus verses Managed menus[/title]
+
+There are advantages and disadvantages for both types of menu inside a panel page.
+
+Comcode menus:
+[tt]+[/tt]	Quick to edit for those who prefer to do things in a quick but technical way
+[tt]+[/tt]	Unifies the panel pages and menus under a single editing interface
+[tt]-[/tt]	Complex syntax
+
+Managed menus:
+[tt]+[/tt]	User friendly
+[tt]+[/tt]	Provides menus with greater power (context dependant menus)
+[tt]+[/tt]	Provides an interface to find all 'entry points' and easily add them to the menu
+[tt]-[/tt]	The admin interface is not designed to be accessible for those with disabilities (it requires JavaScript)
+
+Almost all users would best choose managed menus.
+
+[title="2"]Template sets / menu types[/title]
+
+The Comcode/managed menu system supports 'template sets' to allow different kinds of menu on a website.
+The template set to use is specified as one of the parameters to the '[tt]menu[/tt]' block.
+
+The following template sets exist:
+ - [b]embossed[/b] (the default type, a very simple single-layered type for side-placed menus; does not support multiple-levels)
+ - [b]tree[/b] (for side-placed menus where branches can be contracted and expanded as drawers; supports multiple-levels)
+ - [b]popup[/b] (a very nice type for side-placed menus where branches may popup as overlays by hovering the mouse over other branches; supports multiple-levels)
+ - [b]dropdown[/b] (a nice type for top-placed menus; supports multiple-levels)
+ - [b]sitemap[/b] (a spaced out menu type with expanders and contractors, designed for display on a page)
+ - [b]select[/b] (select menu items via a dropdown list; does not support multiple-levels)
+
+The menus themselves aren't saved against how the data is to be used, but for usability reasons Composr will adapt the menu interface a bit depending on the context you're editing for (i.e. the edit menu button will open up the menu editor in with an interface optimised for how the menu was displayed for that instance).
+
+[title="2"]Panel pages[/title]
+
+[media width="150" description="Links to edit a panel page and to edit managed menus" float="right"]data_custom/images/docs/menus_edit_links.png[/media]
+Please see the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial for more information on panel pages. This section is only intended to provide a brief orientation to help further clarify the menu relationship. Basically panel pages are pages beginning with the name 'panel_' in the zone of the page being viewed.
+
+Your panel pages by default are just Comcode pages that use the block tag for arrangement of blocks, such as the managed menu block, 'menu'. Blocks are described in the 'Advanced custom pages of information (via Comcode)' tutorial, but basically, you can use any of the blocks that begin with the name 'side_' on your panel pages to add dynamic elements, as well as any Comcode (Comcode menus are actually created using the Comcode 'menu' tag). To edit a panel page, make sure you are logged in as a staff member and click the 'edit page' link underneath the pages as they are seen.
+
+Menus are not used by default in panels, as we use drop-down menus in the main site header. However, most of the menu types are designed for use in panels.
+
+Some information:
+ - Panel pages need to be Comcode pages if you want to use the Composr Comcode/managed menu features, but otherwise there is nothing stopping you constructing panel pages as HTML or modules if you wish to
+ - You will very rarely want to put new Comcode menus or managed menus onto anything other than a panel page, although there is nothing stopping you putting them anywhere Comcode or Tempcode is supported.
+
+These two statements may confuse you, but I thought it was important at this point to make it clear that Composr is completely flexible when it comes to menu management: we provide default features, but you can divert from them as you wish to when it comes to your own website. The rest of this tutorial will assume that you are using the standard combination of [i]managed menus[/i] on [i]Comcode panel pages[/i].
+
+[title="2"]Adding and editing managed menus[/title]
+
+[media width="150" description="Adding a new menu" float="right"]data_custom/images/docs/menus_add_link.png[/media]
+The easiest way to add a new managed menu is to edit a panel page so as to include a 'menu' block that uses a menu with a codename of what you want to create. You can use the 'Add block' button to help you do this. When you view the saved panel Composr will detect the menu is missing, and place a link to create the menu there instead of the menu itself (in much the same way it detects a missing page and allows the creation of a new Comcode page).
+
+It is important to [b]not[/b] click to add a new menu from the Comcode page preview (i.e. when still editing the Comcode page / Zone), unless you open the add link in a new window/tab: this is because the Comcode page editing will not have been confirmed, hence making you repeat the page editing process.
+
+The easiest way to edit a managed menu is to click the 'edit menu' link shown underneath, much like when clicking the 'edit page' link to edit the panel page.
+
+[title="2"]The menu editor[/title]
+
+[media width="150" description="The menu editor" float="right"]data_custom/images/docs/menus_editor.png[/media]
+The menu editing interface is split into three main sections:
+ - the actual menu tree structure
+ - a form for editing a branch in the tree structure (invisible, until one of the branches is selected)
+ - a Sitemap tool to find 'entry points' for insertion into the selected branch's URL field
+
+Menus are a tree structure made up of branches, where each branch may be a simple link and/or be a container for more child branches. For a branch with children that branch can be set to be initially expanded or contracted.
+
+The 'add branch' tool, used in conjunction with the branch-type drop-down list (shown for each branch) allows the full structure to be developed. When you change a branch so it can have children (contracted or expanded branch), you will see that suddenly you may create sub-branches for it.
+
+In the form part of the interface there are the following fields:
+ - a field for a caption
+ - a field for a tooltip
+ - a field for a URL or entry-point
+ - a field for match-keys -- match-keys are a powerful tool for making menus 'context sensitive'.
+ - a check-box to determine if the link opens in a new window
+ - a check-box to determine whether the link will be shown only if there is permission to actually view the page (slight efficiency hit)
+ - options to automatically include Sitemap children (useful if you want to have deep menus that automatically expand as you add new content categories)
+
+[title="2"]Entry points[/title]
+
+Entry points are used in the site-tree tool in the menu editor.
+
+Entry points are basically Composr links that are robust to changes in your website and are of the syntax, '[tt]<zone>:<page>[:<param>=<val>...][/tt]'. In other words, they all have at least a zone and a page, and may also specify additional parameters: for example, '[tt]site:downloads:type=add[/tt]' is the entry point to add a download. If you do not want to hard-code what zone a page is in (perhaps because you might move it in the future), you may specify '_SEARCH' (do a search, which is slightly inefficient) or '_SELF' (the zone the menu is being displayed in).
+
+Entry points are the subset of all "page-links" that point to specific parts of the software, rather than some content that you have added. Page-links are described in full in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
+
+Don't worry too much about entry point syntax as Composr will automatically convert any local URLs that you paste into the menu editor's URL field.
+
+To copy an entry point to a branch in the menu editor you need to:
+ - select the caption field of an item in the menu (this will cause an editing form to become available for that menu item)
+ - click the entry point in the Sitemap tool
+You will then see the URL has been changed to the entry point you want. Do not be alarmed that this was placed in the 'URL' field, as the field also supports page-links (of which entry points are a type of).
+
+[title="2"]Images[/title]
+
+Any theme images available with a prefix of [tt]icons/[/tt] will be available for attachment to menu items, so long as those theme images are defined in the default theme.
+You can have different versions of the images for different themes, but they must be available on the default theme too.
+
+The simple way to add them if you don't want to use the theme image management to upload them individually is to upload the images to [tt]themes/default/images_custom/icons/[/tt].
+
+We supply a very large selection by default, including some generic and abstract icons for use on your own pages, if you don't want to create your own icons.
+
+You can also find many icons online using websites such as [url="http://findicons.com/"]Find Icons[/url].
+
+[title="2"]Indicating of the current page[/title]
+
+Composr will try and calculate the current page and pass this into the branch templates. It does this via the [tt]CURRENT[/tt] and [tt]CURRENT_ZONE[/tt] parameters. [tt]CURRENT[/tt] is only set if every component of the branch page-link matches the current URL (although the current URL can have additional components). [tt]CURRENT_ZONE[/tt] just checks the zone matches.
+
+[title="3"]Caveat[/title]
+
+Current page detection can only do this accurately while caching is enabled if each menu link goes to a different zone/page/type combination.
+If you have menu items that only vary based on some other parameter you will need to disable caching for your menu block.
+
+[title="2"]Advanced[/title]
+
+[title="3"]Menu auto-generation / chaining[/title]
+
+There is a way to include the Sitemap directly into menus.
+This is used:
+ - for the main sitemap page, which includes the whole Sitemap.
+ - for the admin menu, which includes stuff just from the Admin Zone and Content Management Zone.
+ - for the default frontend dropdown menu (although many users will switch this out to a fully managed menu)
+
+The syntax looks like this:
+[code]
+adminzone:,include=contents,max_recurse_depth=3,use_page_groupings=1 + cms:,include=wrapper,max_recurse_depth=2,use_page_groupings=1
+[/code]
+This is the code used to insert the admin menu.
+It consists of:
+ - a number of sections separated by " + "
+ - each section starts with a page-link, then has optional options, separated by commas
+ - options are:
+  - [tt]include[/tt] -- either [tt]children[/tt] or [tt]wrapper[/tt] ([i]this only applies to calls directly made to the menu block). [tt]children[/tt] says to include the children of the page-link, while [tt]wrapper[/tt] says to include the whole branch including the wrapper node.
+  - [tt]max_recurse_depth[/tt] -- if set, this is a number specifying how deep the menu should go
+  - [tt]use_page_groupings[/tt] -- if set to 1, page-groupings (i.e. the hard-coded page organisation, separate to zone structure) will be used
+  - [tt]valid_node_types[/tt] -- a "|" separated list of Sitemap node-types to include (advanced)
+  - [tt]child_cutoff[/tt] -- the maximum number of children a node may have (if this limit is exceeded [i]no[/i] children will be shown for that node)
+  - [tt]consider_secondary_categories[/tt] -- if set to 1, secondary categorisations will be considered, meaning nodes may be duplicated
+  - [tt]consider_validation[/tt] -- if set to 1, non-validated resources will not be shown
+  - [tt]title[/tt] -- forced override for node title
+  - [tt]icon[/tt] -- forced override for node icon (a theme image under [tt]icons/24x24[/tt])
+
+When you add a new branch to a managed menu, you can choose to include the Sitemap at the given page-link "over" or "under" that branch. This allows you to chain parts of the Sitemap into your managed menu, giving you the best of both worlds (configurability but also auto-maintenance of displayed categories).
+
+[title="3"]Caching[/title]
+
+The menu block is cached. There is one small issue with the caching: if you have multiple links on a menu under the same page (e.g. to two different galleries), it won't show the 'current page' properly when cached because it caches against page-name rather than URL (necessary to stop the database getting huge).
+To resolve this you will need to turn off the caching for the block by adding a parameter like [tt]cache=0[/tt]. This will not affect performance much.
+
+[concepts
+ 1_key="Match-key"      1_value="Page-link style identifiers used to do pattern matching against URLs"
+ 2_key="Comcode menu"   2_value="A menu created via the Comcode 'menu' tag"
+ 3_key="Managed menu"   3_value="A menu created by the menu editor"
+ 4_key="Panel page"     4_value="A specially named page that sits on an edge of the main page for all pages in its zone (although a templator could place it anywhere, edges are most common)"
+]Concepts[/concepts]
+
+[title="2"]Match-keys[/title]
+
+The menu system can use match-keys for matching against the URL the menu is being viewed from, to determine whether a branch will be shown. If the URL matches against one of the match-keys for a branch, then the branch will be shown, otherwise it won't. Note that if you leave the "Restrict link visibility" field blank, none of this checking happens, and the branch is shown.
+
+Match-keys may also be used in other places in Composr, for other kinds of matching purposes.
+
+[concept]Match-key[/concept]s are usually written exactly like page-links, but are instead used only for matching. They do not need to point to anything, unlike page-links which are actually convertible into real URLs.
+
+For an explanation of page-links and entry points, see the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
+
+The only differences between a page-link and a match-key are:
+ - Match-keys may use '_WILD' as the zone or page in order to skip checking against zone/page
+ - Related to the above, it makes no sense to use '_SEARCH' or '_SELF' as the zone/page in a match-key
+ - While all specified components of a match-key enforce a match, the URL may also have additional parameters and the match-key does not need to state them -- i.e. the match-key may specify a subset of the parameters of a URL, broadening the match
+
+An example match-key list is '_WILD:cms_downloads:type=add,_WILD:cms_galleries:type=edit'. This would match URLs that were generated from the following page-links (whether these page-links points themselves actually work is irrelevant):
+ - [tt]cms:cms_downloads:type=add[/tt]
+ - [tt]randomzone:cms_downloads:type=add[/tt]
+ - [tt]:cms_downloads:type=add:wide=1[/tt]
+ - [tt]cms:cms_galleries:type=edit[/tt]
+ - [tt]adminzone:cms_galleries:type=edit:keep_no_webstandards_check=1[/tt]
+
+It would not match URLs generated from the following page-links:
+ - [tt]site:cms_galleries:type=add[/tt]
+ - [tt]randomzone:cms_example[/tt]
+ - [tt]:cms_downloads:type=edit:wide=1[/tt]
+
+In the menu editor, multiple match-keys may be entered in the "Restrict link visibility" field with commas to separate them.
+
+[title="3"]Contextual entry-points[/title]
+
+If you do not want to hard-code what zone a page is in (perhaps because you might move it in the future), you may specify the entry-point zone as '_SEARCH' (do a search, which is slightly inefficient) or '_SELF' (the zone the menu is being displayed in).
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:tut_comcode_pages"]Custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Advanced custom pages of information[/page]
+ - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+
+{$SET,tutorial_tags,core_menus,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,All about Composr's menu system. Did you know you can set up and configure as many different levels of navigation as you like?}[block]main_tutorial_rating[/block]

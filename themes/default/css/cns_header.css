@@ -1,0 +1,178 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.cns_information_bar { /* either CNS_GUEST_BAR.tpl or CNS_MEMBER_BAR.tpl */
+	font-size: 0.9em;
+}
+
+.cns_information_bar_outer>.toggleable_tray {
+	margin: 0; /* Undoes what .box_inner sets, so that our dividers are flush with the box border */
+	width: auto !important;
+}
+
+.cns_information_bar_outer .toggleable_tray_title img {
+	{$BETA_CSS_PROPERTY,opacity: 0.2;}
+}
+.cns_information_bar_outer .toggleable_tray_title:hover img, body.touch_enabled .cns_information_bar_outer body.touch_enabled .toggleable_tray_title img {
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+}
+
+.cns_member_column>*:first-child, .cns_guest_column>*:first-child {
+	margin-top: 0;
+}
+.cns_member_column>*:last-child, .cns_guest_column>*:last-child {
+	margin-bottom: 0;
+}
+
+.cns_member_column, .cns_guest_column {
+	padding: 0.8em;
+	vertical-align: top;
+	margin-{!en_left}: -1px;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		float: {!en_left};
+		border-{!en_left}: 1px solid {$GET,pale_border};
+	/*{+END}*/
+}
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.cns_member_column {
+		height: 9em; /* 8em seems okay on Mac, 9em needed on Windows */
+	}
+/*{+END}*/
+
+.cns_guest_column {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		height: 3em;
+	/*{+END}*/
+}
+
+.cns_guest_column_a * {
+	vertical-align: middle;
+}
+
+.cns_guest_column_a .horizontal_links, .cns_guest_column_a .horizontal_links li {
+	vertical-align: top; /* This rebalances it in the alignment order due to the extra element nesting */
+}
+
+.cns_guest_column_b {
+	float: {!en_right};
+	text-align: {!en_right};
+}
+
+.cns_member_column_a {
+	text-align: center;
+	vertical-align: middle;
+	border-{!en_left}: 0;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 112px;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		float: right;
+	/*{+END}*/
+}
+
+.cns_member_column_a img {
+	max-width: 100px;
+}
+
+.cns_member_column_b {
+	border-{!en_left}: 0;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 20em;
+	/*{+END}*/
+}
+
+.cns_member_column_c {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 25.3em; /* The extra 0.3em needed for iPad */
+	/*{+END}*/
+}
+
+.cns_member_column_d {
+	white-space: nowrap;
+}
+
+.cns_member_column_title {
+	font-weight: bold;
+	display: inline;
+}
+
+.cns_member_column_pts {
+	color: {$GET,red_highlight_text};
+	font-weight: bold;
+}
+
+.cns_notification {
+	margin: 1em;
+	padding: 0 0.2em;
+	font-size: 0.95em;
+	border: 0px solid !important;
+	{$BETA_CSS_PROPERTY,border-radius: 15px !important;}
+}
+
+.cns_notification .associated_links_block_group {
+	margin-top: 0.5em !important;
+}
+
+.cns_notification strong {
+	white-space: nowrap;
+}
+
+.cns_notification_intro_line {
+	font-size: 1.05em;
+	cursor: pointer;
+}
+.cns_notification_type {
+}
+.cns_notification_type_title {
+	font-weight: bold;
+}
+.cns_notification_by {
+	font-style: italic;
+}
+.cns_notification_time {
+	font-style: italic;
+}
+
+.cns_notification_post {
+	margin: 0.5em 1em 0 1em;
+	padding: 2em;
+	border: 1px solid {$GET,pale_border};
+	background: {$GET,area_background};
+}
+
+.cns_search_box {
+	margin-bottom: 1em;
+}
+
+.cns_search_box input[type="text"] {
+	margin: 0;
+	width: 14em;
+}
+
+.cns_member_column_last_visit {
+	white-space: normal;
+}
+
+.cns_member_column_last_visit ul {
+	margin: 0;
+	padding: 0;
+}
+
+.cns_member_column_last_visit span {
+	white-space: nowrap;
+}
+
+.cns_member_column_last_visit li {
+	white-space: nowrap;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		margin: 0 0 0 1em;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		margin: 0.5em 0 0.5em 1em;
+	/*{+END}*/
+	padding: 0;
+	list-style-type: none;
+}

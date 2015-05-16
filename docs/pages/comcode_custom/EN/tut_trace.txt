@@ -1,0 +1,81 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: IP addresses and tracing users[/title]
+
+If you find there is malicious activity on your website, you may feel the need to try and trace this activity back to a real world source, or the very least, to identify a troublesome computer.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Tracing users[/title]
+
+[box="Tip" width="25em" float="right"]Computers often have more than one [concept]IP address[/concept] (one for each 'network interface', such as a network card or modem). If you want to find your own IP address, as Composr sees it, hold the mouse over the 'Account' link in your personal block. A useful website is http://www.myipaddress.com.[/box]
+[media width="150" description="DNSstuff is a very useful website for looking into technical Internet related issues" float="left"]data_custom/images/docs/trace_dnsstuff.png[/media]
+To trace users, you need to identify the computer performing the malicious action: unfortunately (from this perspective), the Internet is largely anonymous and decentralised, and without any clear legal authority to turn to. To some extent, a computer on the Internet can be identified by virtue of its 'IP address' (Internet Protocol address); an IP address is a 4 byte piece of data (traditionally, although a new 6 byte standard has been worked on for a number of years now), represented usually in a human readable form of 4 numbers (0-255) separated by dots. There are a number of different sources of IP addresses, however the decentralisation of the system can lead to abuse; these sources are:
+
+[box="Tip" width="25em" float="right"]To find out about your network settings on Windows, type 'ipconfig /all' at a command prompt. On Linux or Mac, type 'ifconfig'.[/box]
+
+ - [concept]ISP[/concept] (Internet service provider) assigned IP addresses, via DHCP (dynamic host configuration protocol). These are provided to computers when they, or their Internet router, sign on to the Internet via an ISP). This is the most usual situation, and as these change, it can not be relied upon that a user will keep their address; however, addresses usually are similar, and can be 'wildcarded' by the Composr IP ban feature. It is possible other users might at some point get that address, even though it is not very likely: if you place a ban on a wide range of addresses, such as [tt]14.*.*.*[/tt], you are increasing the likelihood of a conflict to a dangerously high percentage, especially if an IP address belongs to a popular ISP
+ - ISP (Internet service provider) assigned fixed IP addresses. Some ISPs provide these, often at additional cost
+ - Local network IP address [tt]10.0.*.*[/tt] or [tt]192.168.*.*[/tt] type (non-routeable [can't travel across the Internet] and open for anyone's local usage as it does not need to assigned by any authority, which means that something odd is happening if you find one of these)
+ - Localhost IP address, [tt]127.0.0.1[/tt]. If you see this, then the request came from the server, or the IP address was added to the Composr database arbitrarily by some code because the true one was not known (often importers do this)
+
+[box="Tip" width="25em" float="right"]To find out what your computer thinks the IP address of an Internet server is, type 'nslookup <server-domain-name>' at a command prompt.[/box]
+There is a scheme for the allocation and organisation of IP addresses -- they are leased in large blocks. The number of addresses in the blocks depend on what 'class' of block is being leased. This is outside the scope of this tutorial, except to make the point that IP addresses belonging to the same computer network (often, an ISP, and hence, the network being all users of that ISP from a certain roughly geographic region) share a common address prefix.
+
+There is a major problem with identifying users by IP address, and that is one of [concept]proxy[/concept]s and [concept]gateway[/concept]s (also known as, [concept]NAT[/concept] [network address translation]). If a network is 'behind' a server that makes Internet requests on their behalf, and relays information back using its own internal algorithms, then all users of this server may be seen under a single IP address. Composr will try and detect the 'true' IP address, based on the information available, but we cannot guarantee this will be the case. AOL is renowned for using proxy servers, and will particularly jump rapidly between IP addresses when the AOL browser is used. For the gateway case, it is more than likely that a large school, for example, would use a gateway, rather than exposing all school computers to the Internet via their own IP addresses (in this sense, a NAT/gateway is a form of firewall).
+
+[title="2"]Tools at your disposal[/title]
+
+[media width="150" description="Tools available in the Admin Zone security section" float="right"]data_custom/images/docs/trace_menu.png[/media]
+[media width="150" description="Tools available in the Admin Zone usage section" float="right"]data_custom/images/docs/trace_menu2.png[/media]
+Composr provides a number of features for tracking IP addresses:
+ - When a guest makes a post on [concept]Conversr[/concept], the IP address is viewable by putting the mouse over the listed name of the guest poster (where the user-name of a real member usually resides). If you click it, it'll do an investigate-user operation on the IP address
+ - For every page view, the IP address of the page viewer is stored. This allows detection of what areas of the site a viewer has visited, and in what order
+ - Whenever a submission is made, the IP address is stored. The submitter banning management interface shows these IP addresses in its drop-down list
+Composr provides modules for working with IP addresses:
+ - The 'Investigate user' module is the main tool for finding information about an IP address (access it from Admin Zone > Tools > Members > Investigate user)
+ - The 'Action Logs' module (access it from the Admin Zone > Audit > Actions logs) can be used to quickly find out information from a submit that wasn't immediately available (for example, if a user submitted something without being logged-in and hence was not identified, but if by an IP address scan, they were in-fact identifiable). The module can also be used to ban or unban a submitter, based on both member (prevents the member submitting again) and IP address (prevents the IP address being used to access the site)
+ - The 'Banned IP addresses' (access it from Admin Zone > Security > Banner IP addresses) module can be used to enter IP addresses for banning, along with free-form notes
+
+[media width="150" description="Managing banned IP addresses" float="right"]data_custom/images/docs/trace_ip_bans.png[/media]
+Note that banned IP addresses are restricted from accessing Composr from a very earlier point. Composr ([concept]Conversr[/concept]) does also support banning of members based upon a user profile setting, which provides a 'You have been banned' style message. In addition, members may be placed in a banned usergroup that has restricted privileges. To summarise, there are many types of banning:
+ - member submission
+ - IP address
+ - member
+ - banned usergroup
+in addition to various other punitive measures, such as removing rank, or charging points. See 'Policing a community site' for more information.
+[surround]
+[media width="150" description="Choosing a member to view the action logs of" float="left"]data_custom/images/docs/trace_dig_1.png[/media]
+[media width="150" description="Digging a submitter" float="left"]data_custom/images/docs/trace_dig_2.png[/media]
+[box="Tip" width="25em" float="right"]http://www.dnsstuff.com and http://www.samspade.org/ are very useful websites for Internet digging.[/box]
+[/surround]
+[title="2"]A closer look at the Investigate User module[/title]
+
+[media width="150" description="Options available during an investigation" float="right"]data_custom/images/docs/trace_investigate_2.png[/media]
+[media width="150" description="Starting an investigation" float="right"]data_custom/images/docs/trace_investigate_1.png[/media]
+{!security:DOC_INVESTIGATE_USER}
+ - DNS lookup - this will find try and find a domain name attached to the IP address, and then the IP address attached to the domain name: with a second IP address, further analysis might be performed
+ - WHOIS query - this will try and find a domain name attached to the IP address, and then try to find real-world details about the registered owner of that domain name
+ - Ping - this will see if the computer with the IP address responds to &lsquo;pings&rsquo;; servers often will, but desktop computers rarely will
+ - Tracert - this will find the network route between the server that provides this web tool, and the server of the IP address; it provides an impression of the locality and connectivity of the associated computer
+ - Geo-lookup - this will try and find the geographical location of the IP address; it can be widely inaccurate however: for example, in the past UK AOL users have been shown as being located in the US
+
+[concepts
+ 1_key="IP address"  1_value="Every computer connected to the Internet has an IP address of its own, although the IP address may change if that computer has 'rented' it via DHCP"
+ 2_key="DHCP"        2_value="Dynamic Host Configuration Protocol: a protocol that hands out IP addresses to computers on a network (including those connecting to the Internet), often arbitarily"
+ 3_key="ISP"         3_value="An Internet Service Provider"
+ 4_key="gateway"     4_value="A gateway routes packets between one network to another (e.g. between a network and the Internet) via NAT"
+ 5_key="NAT"         5_value="Network Address Translation. NAT allows two networks to communicate with IP addresses that a normal router could not have joined together"
+ 6_key="firewall"    6_value="A computer/box that limits network traffic between networks; some firewalls are also routers"
+ 7_key="proxy"       7_value="A proxy server allows computers on a network to connect to the Internet via special proxy server protocols that encapsulate requests; the proxy server then decodes and executes them, relaying the results"
+ 8_key="router"      8_value="A router joins two networks; non-gateway routers actually join the networks such that all computers on a network being joined with the Internet become a part of the Internet themselves"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_security"]Security[/page]
+ - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_mod"]Basic forum moderation[/page]
+ - [page="_SEARCH:tut_members"]Composr member system[/page]
+ - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
+
+{$SET,tutorial_tags,Security,securitylogging,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,If you find a hacker, you may want to try and trace them back to a real world source. We introduce you to your toolkit.}[block]main_tutorial_rating[/block]

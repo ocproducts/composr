@@ -1,0 +1,78 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Browser version requirements[/title]
+
+This is a tutorial that details the default browser requirements for visitors to a Composr site.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The browser wars and vendors/versions[/title]
+
+Towards the end of the 1990s, after Microsoft started seriously competing with Netscape rather than matching it, there was a very fast period of Internet development. Microsoft and Netscape both created technologies and submitted them to the W3C for standardisation, and the two browsers developed head-to-head, until Netscape essentially went out of business due to loss of sales when Internet Explorer was bundled with Windows and all ISPs switched to supporting it instead of Netscape Navigator.
+Once Netscape was truly 'buried', Internet Explorer essentially stagnated for many years, left with a lot of rough edges with respect to the standards the W3C had designed and moved forward in the interim. Somewhat in the sidelines, Netscape was rebuilt in Open Source as a browser framework designed specifically to standards (packaged as Mozilla, and more recently Firefox), and browsers such as Opera and Konqueror also got developed to be of a similar quality. The renewed competition, and the time for 'the dust to settle' has provided the environment for a movement for web sites to strictly be designed such that the web technologies they use draw on W3C/JavaScript standards only. This has a left an environment where Internet Explorer is clearly seen to be inferior in terms of standard compliance, and browser compatibility mostly involves avoiding features that IE does not support or flaws in implementation. However, this is changing, as Microsoft woke up to their popular competition from Firefox, and released Internet Explorer version 7 (and then, version 8, and soon version 9).
+
+Composr is designed to work on all serious modern browsers. At the time of writing, this means that we aim to support:
+ - IE9
+ - IE8 (without full display fidelity)
+ - Opera (a popular, commercially developed, but now free, browser)
+ - Konqueror (an important browser on Linux, almost a default browser)
+ - Firefox
+ - Safari (the default browser on Mac OS X, based on Konqueror)
+ - Google Chrome
+
+With browsers other than IE, we support the latest version. This is because their users are very likely to keep the browsers up-to-date.
+
+We also provide support for high quality text-mode browsers such as 'Lynx' and browsers designed for people with disabilities. The inherent nature of this support is that it is partial support for an 'accessible' experience, rather than a 'wizz-bang' experience.
+
+[title="2"]Technologies[/title]
+
+Composr makes use of a number of client-side web technologies, including:
+ - XHTML5 (HTML formalised to be a proper XML format) -- structure, glue and content for a document
+ - CSS -- stylisation for structured content
+ - JavaScript -- interactive functionality
+ - PNG -- for images
+ - RSS, Atom and OPML -- (optional) feed technology, to export Composr news
+ - XSLT -- (optional) technology to make RSS, Atom and OPML display in a web browser
+ - XML -- for content import/export
+
+XHTML is like the glue that any supported browser will support. A lot of 'HTML' pages are actually technically XHTML, as an XHTML document is almost viewable on a pure-HTML (read: very old) browser.
+CSS and JavaScript are potentially unavailable on text-mode/accessibility browsers, however they are not required in these contexts.
+PNG is an image file format. PNG is used in favour to GIF, as it supports images more than 256 colours, 'alpha transparency' (blended transparency that is not tied to background colour) and is not encumbered by software patents.
+
+RSS, Atom and OPML are usually viewed in a separate program, such as 'FeedReader'. However, the latest generation of web browsers also provide their own feed subscription support. Firefox supports 'Active Bookmarks' that are assembled from links in an RSS feed: this works with Composr news.
+
+[title="2"]JavaScript[/title]
+
+JavaScript may be disabled by visitors to Composr. Sometimes users consider it unsafe and disable it (there is a strong case to this, but it is a very limiting thing to do), although by doing so on the modern web, most websites will not work.
+
+If a Composr visitor has JavaScript disabled then certain functionality will not work, such as viewing the Wiki+ tree or using the menu editor (appropriate Composr error messages will be given explaining why); in addition, other functionality reduces in ability due to a lack of interactive ability in the web browser: for example, the Comcode 'hide' tag will drop-down to the level where the content isn't actually hidden by default.
+
+The main reason for Composr not requiring JavaScript is that interactive functionality is usually inaccessible for those with certain forms of disability such as blindness. By disabling JavaScript in their accessible browser, or by the browser not supporting it anyway, they may get a better experience.
+
+[title="2"]Cookies[/title]
+
+Composr does not require cookie support, although it is recommended. To at least have 'session cookies' enabled is strongly recommended, as otherwise Composr will need to carry additional data along in the URL.
+
+[title="2"]Desktop settings[/title]
+
+A screen-resolution of at least 1024x768 is strongly suggested, as this is the minimum resolution that we design the default theme for.
+Composr users must be using 15 bit colour or higher. In other words, 256 colour is not supported: users are very unlikely to be using this any more.
+
+[title="2"]Printing[/title]
+
+It is not usually appropriate for a printed webpage to look like it does on the screen. For example, margins would want removing from each side of the site, social media links should not show, background images should be disabled, and so on.
+There are 3 approaches to solving this problem that work together:
+1) Browsers automatically disable background images, when printing
+2) CSS provides a mechanism for specifying different display rules for the printed version; Composr makes use of this
+3) Composr has a parameter, [tt]wide_print[/tt], that will influence some aspects of how pages are put together
+
+The Composr [tt]wide_print[/tt] parameter is activated from either:
+a) The link from the [tt]side_printer_friendly[/tt] block
+b) The link from the [tt]main_screen_actions[/tt] block
+c) [i]Or, a link you've put together yourself[/i]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_accessibility"]Making an accessible website with Composr[/page]
+ - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions[/page]
+ - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+
+{$SET,tutorial_tags,printer_friendly_block,Introduction,Design & Themeing,CSS,JavaScript,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial details the browser requirements for visitors to a Composr site, determined by the CSS/XHTML/JavaScript in our default theme.}[block]main_tutorial_rating[/block]

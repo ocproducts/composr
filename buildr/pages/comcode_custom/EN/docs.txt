@@ -1,0 +1,629 @@
+[title]Guide[/title]
+
+This guide was mostly written, very kindly, by "MrDefender" (with help from woohoo16yoman and Chris Graham). It's set through a series of tutorials directed at adding content to Buildr, but should be read through by all users in its completeness, to get a proper understanding of how things work.
+
+Since it was written there have been some changes to the user interface, but those are self-explanatory. This tutorial shows a common example for a 'Star Trek' themed Buildr; this is just an example, and Buildr can be used for anything from a 'Wizard of Oz' recreation to a board game.
+
+[title="2"]Contents[/title]
+
+[contents][/contents]
+
+[title="2"]Basics[/title]
+
+[title="3"]What is Buildr?[/title]
+
+First, We'll start with a basic explanation of what 'Buildr' is).
+
+Buildr is a 'Multi-User Dungeon' (MUD), open to all joined members. It's a RPG web-based game. You walk around and collect items, solve quests, chat with other players. You can think of Buildr as a MMORPG :) (but for free ;))
+
+The concept of a MUD is basically the same as any MMORPG game, you explore the different realms, solving quests, you spend 'skill points' (refereed as 'Points' in Buildr), to build rooms, realms, portals and items. These have the property of expanding a realm.
+
+Buildr Game is online, so you will need to be connected to the internet to play, its free and easy to use. The only thing you 'pay' for is when you add your own rooms, realms portals and items using points, or when you buy items off of other players.
+
+[title="3"]What are points?[/title]
+
+You use those points in Buildr to build realms, rooms, items and/or portals, and to buy things.
+
+There are many ways to gain points for use in Buildr:
+ - Submitting news.
+ - Submitting downloads.
+ - Participating in the discussion forums.
+ - Participating in the community chat room.
+ - Being an active member of the community such that people want to give you gift points.
+ - Asking for people to give gifts points in discussion forums for your Buildr project (if you think your project is a 'good thing').
+
+[title="3"]The Co-ordinates Information[/title]
+
+In any room you visit, there will always be information to help you figure out where you are.
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.0.png[/img]
+
+'Deck 10: Hydroponics' is the name of the realm you're currently in.
+'Corridor' is the name of the room you're currently in.
+
+'3:0:-1' is the co-ordinates information
+
+[html]<div style="margin-left: 30px">[/html]3 represents the number of the realm you are on.
+0 represents your current position on the X axis (horizontal on the realm)
+-1 represents your current position on the Y axis (vertical on the realm)[html]</div>[/html]
+
+Do you recall mathematics? The 'grids'?
+
+[html]<div style="margin-left: 30px">[/html]X is horizontal going from <= -10 to 10 =>
+Y is vertical, going from -10 (under x) to 10 (above x).
+The area where they both meet is considered '0'[html]</div>[/html]
+
+The co-ordinate information is valuable if you request help from a member of the staff. This information can help the staff members find you more quickly.
+
+[title="3"]How to use the Map[/title]
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.1.png[/img]
+
+If you scroll down, you will see a link called 'map'. Click on it and a map will open in another window. Switch to the map so you can see it. It should look something like...
+
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.2.png"][img="Example image" width="548" height="619"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.2.png[/img][/url]
+ - The Green lined square represents your current location on the realm.
+ - The question marks '?' represent a room that you haven't visited yet.
+ - The name you see above the co-ordinates is the name of the owner of the room,the name that appears the most times on the map is the owner of and generally, the realm.
+ - The Red lines represent a locked direction, meaning you can't create a room at that location until someone unlocks it (if they ever want too...). Example: If to the right is locked, you can't make a room to the right. To completely lock a direction off, you must lock the direction in every surrounding room there are any surrounding rooms. This will prevent people on the if outside from being trapped inside the room.... This is why you shouldn't lock off all of the directions.
+
+[html]<div style="margin-left: 30px">[/html]If you take a look at...
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png"][img="Example image" width="544" height="433"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png[/img][/url]
+you will see the room is the only one locked on all sides.
+This means that people can come in but not come out. This is 'bad'.
+
+If you look at...
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.1.png[/img]
+you will see that the surrounding rooms have locked the way into your room. Meaning no one can get in but anyone can get out. This is most likely a bad thing as no one can get into the room...
+
+Now, take a look at...
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.2.png[/img]
+this is a room locked on all sides [b]and[/b] the surrounding rooms locked on the side where your room could've been accessed.[html]</div>[/html]
+
+[title="3"]The Realm List[/title]
+
+If you click on the 'realms' link, you will be brought to a page that displays the following information for all of the current realms.
+
+[html]
+<table class="columned_table results_table wide_table">
+	 <tr>
+		  <td><h4>Object</h4></td>
+		  <td><h4>Example</h4></td>
+	 </tr>
+	 <tr>
+		  <td>&nbsp;</td>
+		  <td>&nbsp;</td>
+	 </tr>
+	 <tr>
+		  <td>Realm Name</td>
+		  <td>Deck 8 - Primary Computer Core</td>
+	 </tr>
+	 <tr>
+		  <td>Realm Number</td>
+		  <td>20</td>
+	 </tr>
+	 <tr>
+		  <td>Number of rooms</td>
+		  <td>20 rooms</td>
+	 </tr>
+	 <tr>
+		  <td>Realm Status</td>
+		  <td>Public</td>
+	 </tr>
+	 <tr>
+		  <td>Owner of the Realm</td>
+		  <td>mrdefender</td>
+	 </tr>
+</table>
+[/html]
+
+[title="4"]Descriptions[/title]
+
+[b]Realm name[/b]: This will appear in any and all rooms on the realm. It is located on the first part of the co-ordinate information.
+
+[b]Realm Number[/b]: This is the number of the specific realm. It is acquired when you create a realm. If the last realm that was created is 20, then your new realm would be 21.
+
+[b]# of Rooms[/b]: This is the number of rooms currently located on the realm. Remember.. Everything is basically a room a 'Corridor' is a room...
+
+[b]Realm Status[/b]: This determines if you can modify (add to) the realm or not. Private=only the owner and staff members can modify the realm. Public=anyone can modify the realm.
+
+[b]Owner of Realm[/b]: This is basically the person who created the realm. If the realm is private,only this person (and staff members) can modify the realm. The owner can also delete his realm, and everything on it.
+
+[title="3"]The main interface: Navigation[/title]
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.4.png[/img]
+
+You can only move in 4 directions at any time, if the direction isn't locked. Up, down, left and right. Simply click on the link in the direction you wish to go.
+
+If you look at the picture, 'Firing Ranger' is up, 'Phaser Range' is to the left, 'Corridor' is down and 'Tactical Office' is to the right. Simply click in which room you wish to enter, once inside, you will have another 4 directions in which you can move.
+
+[title="3"]The main interface: Administration[/title]
+
+If you made the room you are currently in, or made the realm you are currently on, you can edit these rooms/realms by scrolling down and clicking on either 'Edit Realm' or 'Edit Room'.There are also 2 options to delete the 'room' or 'realm', it will ask for confirmation before removing the room or realm.
+
+[title="3"]The main interface: Interaction[/title]
+
+As with any other RPG based game, interaction is key to the game. You can chat with anyone currently in in the same room as you by typing a message shown in....
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.5.0.png[/img]
+
+then clicking on chat.
+
+If you wish to send a message to only 1 person, use the drop down menu ('everyone') and select which player you wish to talk with.
+
+After you made your selection and typed in your message, click 'chat' or press enter to send your message to the entire room or to the specific player.
+
+If you see a message that has bee italicised (italic), then that means that the sender is 'private messaging' you, meaning he sent a message to you and only you.
+
+When/if this happens, [b]it is important[/b] that you send a reply [b]to him and only him[/b]!. Use the drop down menu and click on the username that sent you the message.
+
+[title="4"]Using text format[/title]
+
+It is possible to format your message or room or realm text using Comcode. To make it easier, we'll show you some examples as well as explaining how to use it. Remember to always close your format code with a / . Of course, you can combine multiple commands... just remember that any command you open, you need to close.
+
+[html]
+<table class="columned_table results_table wide_table">
+	 <tr>
+		  <td>BOLD:</td>
+		  <td>[b]your text[/b]</td>
+		  <td>This will have 'your text' in bold.</td>
+	 </tr>
+	 <tr>
+		  <td>ITALIC:</td>
+		  <td>[i]your text[/i]</td>
+		  <td>This will have 'your text' italicised.</td>
+	 </tr>
+	 <tr>
+		  <td>UNDERLINED:</td>
+		  <td>[u]your text[/u]</td>
+		  <td>This will make 'your text' underlined.</td>
+	 </tr>
+</table>
+[/html]
+
+[title="4"]Font sizes and colours[/title]
+
+[html]
+<table class="columned_table results_table wide_table">
+	 <tr>
+		  <td>COLOR: </td>
+		  <td>[font color="color"]your text[/font] will have the text appear as the colour provided.</td>
+	 </tr>
+	 <tr>
+		  <td>SIZE: </td>
+		  <td>[font size="size"]your text[/font] will have the text appear at the size you provided.</td>
+	 </tr>
+	 <tr>
+		  <td>FACE: </td>
+		  <td>[font face="fontname"]your text[/font] will have the text appear as the provided font.</td>
+	 </tr>
+</table>
+[/html]
+
+You can combine all of them together also, using any combination of the color, size and face parameters to the font tag.
+
+[title="4"]Making Lists[/title]
+
+You can also make point-form lists by putting " - " at the start of each list item line.
+
+[title="4"]Making Links[/title]
+
+Follow the following example to create links:
+
+[html]
+[url="link text"]http://www.something.com/something[/url]
+[/html]
+
+[title="4"]Using Smilies[/title]
+
+Smilies are available for the chat interface. Click the emoticons link to get a popup to help you apply them.
+
+[title="4"]Refreshing the chat screen[/title]
+
+[b]It is very important that you do not use the 'refresh' button of your browser when using Buildr.[/b]
+
+If you wish to refresh the screen, there is an option in the drop down menu that should be set to default. Also, the screen refreshes every 5 seconds.
+
+[title="4"]Clearing the chat screen[/title]
+
+Suffice it to say that the chat screen will eventually be large. You can easily remove some messages from the chat screen with the 'Delete-Matching-Text' option in the drop down menu below the chat screen but above the control panel with all the links like 'inventory', 'map', 'realms', etc.. By default, 'Refresh Screen' should be the current selection. Select it and we'll proceed with defining what to be removed.
+
+If you leave the 'parameter' field empty, all of your messages will be removed. If you enter text or part of a message, all of your messages with that word will be removed.. Please note this only applies to you and only you... the others will be able to see your old messages.
+
+[title="3"]Emergency transportation[/title]
+
+If you're stuck at any place at any time, you can use the 'emergency teleport out' function to be instantly transported to deck 5, at co-ordinates 0:0:0 (the lobby of deck 5). In other words you will be sent back to the start of the game, but you will keep your inventory.
+
+NOTE: If you're trapped in a jail, it will also work. Though when you are sent to jail, you lose all of your items anyways. So trying to abuse this will be a waste of time.
+
+[title="3"]Game over: you're dead[/title]
+
+When you're health is down to 0, you die. You lose all your items and you start back at the main lobby of them main realm. you also have 10 points of health to restart with. The only way to lose health is by failing to answer a troll and being punished by losing health.
+
+[title="2"]How to make a room in Buildr[/title]
+
+[title="3"]Room Information[/title]
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.1.png[/img]
+
+[b]Room Name[/b]: This is what your room will be called. It will appear in the navigation menu when someone is close enough, and when someone is inside the room.
+
+[b]Room Text[/b]: The Room text is displayed inside the room, it can't be viewed anywhere else.
+
+[html]<div style="margin-left: 30px">[/html][img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.2.png[/img][html]</div>[/html]
+
+[html]<div style="margin-left: 30px">[/html][url="{$BASE_URL}/data_custom/modules/buildr/docs/room1.3.png"][img="Example image" width="554" height="176"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.3.png[/img][/url][html]</div>[/html]
+
+Entrance Question: If you wish to have privacy, or make this room 'special', you can specify a password. This field is for the Question.
+
+[html]<div style="margin-left: 30px">[/html][img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/roompw1.0.png[/img][html]</div>[/html]
+
+Questions can be anything from "What is the first digit of PI?" ('special room') or "Enter authorisation code" (general question for those who wish this room be private.)
+
+[b]Entrance Answer[/b]:
+[html]<div style="margin-left: 30px">[/html]The answer to the provided question mentioned above. You can use multiple answers if more than 1 answer is possible...
+
+The answer to the question above has multiple responses.
+Example; 3:three[html]</div>[/html]
+
+[b]Entrance Fail Message[/b]: This will appear in the 'status' bar at the top of the room you were in.
+[html]<div style="margin-left: 30px">[/html][img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/roompw1.1.png[/img][html]</div>[/html]
+
+[b]Required Item[/b]:
+[html]<div style="margin-left: 30px">[/html]The specified item will be required before entering the room. Even if you put a password, the item is still required even if you submitted the right password. If the item is "BRIBE" then any bribe-item is required to enter.[html]</div>[/html]
+
+[b]Direction Lock[/b]:
+[html]<div style="margin-left: 30px">[/html]Locking a specified direction will prevent anyone from building at that location or moving at the location. On the map, the locked directions appear as red lines. You can lock a room in 4 directions; up, down, left and right.[html]</div>[/html]
+
+[html]<div style="margin-left: 30px">[/html]Example: If I were to build a room upwards, enter the room and lock the direction down, I wouldn't be able to get out since the down direction has been locked. However people would still be able to come in: in effect I have created a one-way-wall.[html]</div>[/html]
+
+[b]Allow Portal[/b]:
+[html]<div style="margin-left: 30px">[/html]If you choose to allow a portal (yes, by default) anyone can build a portal to or from your room. A portal allows a player to instantly be transported to the target area by simply clicking on it. A perfect example is a Turbolift, transporter room or shuttle bay.[html]</div>[/html]
+
+[b]Picture of Room[/b]:
+[html]<div style="margin-left: 30px">[/html]You can provide a picture of your room by either providing a file from your computer (browse) or by entering a URL/link to your picture if you have it on a website. Please do not leach from other peoples websites without permission.[html]</div>[/html]
+
+[b]Position[/b]:
+[html]<div style="margin-left: 30px">[/html]The position tab lets you configure at what position from your current area you wish to have your room built. The circle you need to click is to the right of the word.
+Up [] , Down [] , Right [] and Left []
+NOTE: You [b]can't[/b] build a room if a bulkhead is in the way locked positions). To make sure the direction isn't locked, check the map for red lines. Red lines mean locked off directions and a green lined square is your position relative to the realm.[html]</div>[/html]
+
+[title="3"]How to edit your room[/title]
+
+If you wish to edit your room, simply return to your room and scroll down to the bottom of Buildr and click on 'Edit room'. A page will load with the same settings you used to create your room. There's also 4 new boxes at the bottom of the page, which will be covered at a later time in this tutorial.
+
+[title="3"]How to protect your room[/title]
+
+If you made your room with the idea of it being your quarters or your room alone, you can protect your room with a password.
+This can be done at anytime, even when creating the room. But for now, let's pretend the room in question has already been made.
+ - Proceed to your room and enter it, scroll down to the bottom of the page and click on 'Edit Room'.
+ - Find the following fields; 'entrance question' and 'entrance answer'.
+  - In 'Entrance Question', type in something like 'Enter authorisation code' or anything else that doesn't give an obvious clue to the answer (so that only you would know it).
+  - Then, enter your 'password' in the 'answer' box, but be warned that the password won't be masked at anytime... Instead of appearing as '********' it will be shown as 'password'.
+ - Click submit and voila! Your own quarters for you alone.
+
+If, for any reason, you forgot your password or cant get in.. there's a little trick that you can use. Instead of entering a password, enter 'cheat'. This will allow you and Administrators/moderators to get in the room, at which time you can modify/check your password.
+
+If you really want even more protection (sort of), you can even make the room unreachable unless you have a specific item.
+This can be an existing item or a new item. The Downside of this option is that if anyone has that item, and guessed your password... they can enter your quarters.
+
+The item protection doesn't apply for you or a member of the staff, it will only display a message in the 'status' section like 'You don't have the item, but...'
+
+You can use the item requirement option if you made a quest, where you need to answer a question and find a item so that you can complete your quest.
+
+[title="3"]How to move a room[/title]
+
+If you wish to move a room that was already created by yourself, scroll down to the bottom of Buildr and click 'edit room'. The last 3 fields are the ones you need.
+
+First, open up the map and find a spot where you want the room to be moved. Simply add the different co-ordinates.
+
+Let's say a room is at 25:7:-8 and you want to move your room to right. The co-ordinates would be 25:7:-7.
+
+The more to the right the room needs to be, the greater the X number is. (-10 to 0 to 10).
+The more towards the right, the greater the X number is. (-3,-2,-1... 1,2,3,4....)
+The more towards the left, the lower the X number is. (-1,-2,-3,-4,-5, ....)
+The more upwards a room gets, the lower the Y number gets. (-3,-2,-1... 1,2,3,4....)
+The more downwards a room gets, the higher the Y number gets. (-1, -2,-3,-4,-5, ....)
+
+[title="3"]How to delete your room[/title]
+
+If you wish to remove your room for any reason, the task is simple.
+ - Go to the room in question and enter it.
+ - Scroll down and click on delete room.
+
+[b]Before[/b] Confirming the process, you must know that if you created a unique item, the item copy will be removed as well, but the item itself remains in the database so you can make a copy of said item somewhere else if you need to.
+
+If this checks out, then click submit and you will be sent to the Realm's lobby.
+
+When the room is deleted, you will receive a 70% refund of the original price. The current price for a room is 40 points, Which means you will receive 28 points.
+
+[title="2"]How to make a realm in Buildr[/title]
+
+This short tutorial will show you how to make a realm in Buildr.
+
+Why would you want to make a realm? So many reasons.... To name a few:
+ - Make a Small (single realm) or Big (multiple realm) Planet.
+ - Make a Mission or 'Quest'
+ - Make a Sector in space, or other area
+ - Make a Deck for a Starship
+ - Contribute a realm to someone
+ - Have Fun
+ - Experiment with Buildr
+
+To name a few.... ;)
+
+Now, let's get cracking!
+
+[title="3"]Realm Information[/title]
+
+Click on 'Add Realm' at the bottom of the page (under the actions bar)
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.1.png[/img]
+
+Just to let you know, all these options can be changed at any time by either you or a moderator.
+
+We'll deal with the first set of boxes.
+
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/realm1.2.png"][img="Example image" width="675" height="416"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.2.png[/img][/url]
+
+[b]Realm Name[/b]:
+[html]<div style="margin-left: 30px">[/html]This will be the name of the realm you wish to create. It will also appear in the first part of the location details. You should try to keep this short.
+Example: 'Deck 08 - Primary Computer Core' is my realm name.[html]</div>[/html]
+
+[b]Troll Name[/b]:
+[html]<div style="margin-left: 30px">[/html]This will be the name of your 'Troll'. A troll is a NPC (non-player character) who will walk around the corridors of your realm and will ask questions to put visitors to the test. If they do not answer at least one question, they will be penalised. (see below for questions) Example: 'Tuvok' would appear as 'Tuvok (Troll)' in your realm.[html]</div>[/html]
+
+[b]Jail Name[/b]:
+[html]<div style="margin-left: 30px">[/html]A Jail is where a player will be sent if they failed to pick pocket someone. They will remain there until someone gets them out. But we'll cover this later, in another tutorial.
+Example:
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.3.png[/img]
+'Defender's Quarters' is the Jail name, it appears in the corridors as one of the links. (like 'corridor')[html]</div>[/html]
+
+[b]Jail Text[/b]:
+[html]<div style="margin-left: 30px">[/html]The 'Welcome To Defender's Quarters' would be the jail's text.
+Normally, people decide to put something like 'You're In The Brig' or 'You're in Jail!!' and so on.[html]</div>[/html]
+
+[b]Jail Picture[/b]:
+[html]<div style="margin-left: 30px">[/html]As with any room, you can provide a picture for it. This picture will be shown next to the navigation pad. You can also specify a URL (file on a website) for your picture. Accepted file types are JPG, GIF and PNG filetypes.[html]</div>[/html]
+
+The same 'Jail' information is applied for the 'jailhouse'.
+The difference is that a Jail House is like a security office, instead of the Brig...
+
+[b]Lobby Name[/b]:
+[html]<div style="margin-left: 30px">[/html]The lobby name is a general area where players can 'hang out', a general area.[html]</div>[/html]
+
+[b]Lobby Text[/b]:
+[html]<div style="margin-left: 30px">[/html]The room text for the Lobby is entered here.[html]</div>[/html]
+
+[b]Lobby Picture[/b]:
+[html]<div style="margin-left: 30px">[/html]The picture of the lobby room. It can be uploaded or specified as a URL.[html]</div>[/html]
+
+[b]Private Realm[/b]:
+[html]<div style="margin-left: 30px">[/html]Checking this box will make the realm so that no one else (excluding moderators and administrators) from making a room on your realm.[html]</div>[/html]
+
+[title="4"]Questions And Answers[/title]
+
+There are a total of 30 boxes (x2 for the answers)
+
+This section is for your Troll. A troll will randomly ask questions to other players at any time during his 'stroll' along the realm. This is where you can specify what questions to ask. All of these are optional, but it is recommended to have a high number of questions and answers (answers must be provided).
+
+The Troll will ask a maximum of 3 questions at any time. Please be [b]very[/b] Specific with your questions and answers. Remember, [b]these have to be answerable[/b]!
+
+[b]Example[/b]: (The Bad Way)
+
+[html]<div style="margin-left: 30px">[/html]Q: How many in a dozen? A: 12
+This is considered a bad idea, as a baker's dozen contains 13: be specific.[html]</div>[/html]
+
+[b]Example[/b]: (The Good Way)
+
+[html]<div style="margin-left: 30px">[/html]Q: How many in a regular dozen A: 12
+You have to make sure that people will completely understand the question.[html]</div>[/html]
+
+If you're using a word answers, you can specify more than one possible answer... You can separate answers with colons ' : '
+
+[b]Example[/b]: (The Bad Way)
+
+[html]<div style="margin-left: 30px">[/html]Q: What is the first digit of PI?
+A: Three[html]</div>[/html]
+
+[b]Example[/b]: (The Good Way)
+
+[html]<div style="margin-left: 30px">[/html]A: 3:Three[html]</div>[/html]
+
+When you're finished with the questions, we can proceed to the final step.
+
+[title="3"]Completing your realm[/title]
+
+Now, double check to make sure you have everything covered.
+Once you've doubled-checked it scroll down to the bottom of the page and look to the left.
+
+Click on 'Submit' , another page loads.
+
+In the 'status' section on top of the room picture and navigation, your realm number appears. Write this down as you need it to get to work. You will need to make a portal to the following co-ordinates: #:0:0 Where # is your realm number.
+
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/realm1.4.png"][img="Example image" width="524" height="37"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.4.png[/img][/url]
+
+[title="3"]Reaching your realm[/title]
+
+So you finished creating a realm. Congratulations. Now you're probably thinking along the lines of "Ok... Now... what the heck do I do?" or "Eh.. Great... Now what? etc...
+
+Well, we need to make a portal to reach your realm. First, find a room that allows portals by looking at the map for a 'portal spot' square. The green lined square is your current position, while the red lines specify locked directions, meaning you cant go through there.
+
+Make your way to the portal spot then scroll down and select 'add portal'. A new page will load and show some options.
+
+[b]Portal Name[/b]: This is what the link will be called.
+[b]Portal Text[/b]: After clicking the link, this text will appear in the status window.
+[b]Dest. Realm[/b]: The realm number you were told to remember in step 3.
+[b]Dest. X[/b]: The co-ordinate for X. The only available number here is 0 as only 1 room exists.
+[b]Dest. Y[/b]: The co-ordinate for Y. The only available number here is 0 as only 1 room exists.
+
+After the portal is created, you can click the new link and voil�, you're in your own realm!
+
+[title="3"]Realms: The objective of a troll[/title]
+
+A troll is a required feature for any realm, its there to make the realm more challenging. If you run into a troll, it may ask you some questions you provided. If you fail to answer all of the questions, you can be penalised in one of the following ways:
+ - You will be reduced in health
+ - You will be sent to the lobby, the first room created in the realm.
+ - You will have an item removed at random.
+
+[title="3"]Realms: The purpose of a brig room[/title]
+
+If someone tries to pick pocket another player or troll, and fails, they will be sent to the brig where they must use a bribable item to bribe the guard and flee the brig.
+
+They can also request help from a member of the staff to assist you.
+
+When you're sent to the jail (for pickpocketing), you have your items removed.
+
+To exit the jail, you need to bribe the guard. As you have no bribes when you are jailed, someone with 3 bribes must come along to save you. One to get in, one to get out, and one to get you out. Staff members can also get you out of jail by teleporting you. Or if you are really stuck, you can do an 'emergency beamout'.
+
+As a realm owner, you have the possibility of making the brig open... by adding a portal in the jail and having the portal teleport the user to somewhere else.
+
+Clever naming for the jail is highly recommended. Examples are: "Brig", "Confined Quarters", "Airlock", and so on.
+
+Also people unhappy with having a jail-like room in a realm can make modifications to the default layout
+ - Disable the bribe requirement so people can walk out unstopped. For example, this could be called a 'summary action court'
+ - Create jail/jailhouse walls and perhaps remove the jailhouse, so that people get stuck there completely
+ - Add a portal (only the realm owner can do this). For example, this could be like a 'mission failed, beam back to the ship' situation
+ - Extend the jail to be a whole prison complex (maybe as part of the mission: you need to be sent to jail)
+
+[title="3"]Realms: Ingenuity for realm[/title]
+
+If you're looking for your realm to have that special feeling... You should make a unique and innovative realm. Here are a few pointers.
+ - Make Rooms that require players to answer questions and/or riddles.</li>
+ - Make Rooms that require players to find a specified item before entering.</li>
+ - Make Some Hidden Rooms, and items scattered around your realm.</li>
+ - Make a Room for Community Interaction</li>
+ - Use Humorous room texts and pictures that can provide a comical feeling to players.</li>
+ - Make Trophy like items that can make the player feel proud about earning the item.</li>
+ - Use a wide variety of interesting pictures and make galleries.
+
+[title="3"]Deleting a realm[/title]
+
+For some reason, at one point or another, you might wish to delete the realm.
+
+This IS possible only if there has been no other-player expansion in the realm and may require extensive work... As the portals to the realm will also require them to be deleted.
+
+Go to your realm (any where on it) and scroll down and click 'delete realm'.
+
+BEFORE confirming the task, be sure to take the following in note.. You may receive a 'refund' at about 70% of the original price of the realm, which is currently 120 points, meaning you would receive 84 points.
+
+[title="2"]How to make a portal in Buildr[/title]
+
+This short tutorial will show you how to make a portal in Buildr.
+
+A portal is a one way link to another destination on Buildr, if you need to get back to where you were, you'll have to create another portal.
+
+Now, let's get cracking!
+
+[title="3"]Finding a location[/title]
+
+First, click on the map link at the bottom of the screen and look for a square with 'portal spot' written inside. This means that that location can have a portal to and from that room. The Green lined square is your current position.
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.0.png[/img]
+
+Use the navigation system to reach the room, once there you can click on the 'add portal' link.
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.1.png[/img]
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.2.png[/img]
+
+When creating a room, you can choose to allow or deny people from making a portal by checking or unchecking (respectively) the box next to 'Allow Portal'.
+
+[title="3"]Creating a portal[/title]
+
+[b]Portal Name[/b]: This will be the 'link' text. It should explain where the portal will go.
+Example: "Deck 08 - Primary Computer Core"
+
+[b]Portal Text[/b]: The text that will appear in the status window after a player used the portal.This text appears only once after you used the portal.
+
+[html]<div style="margin-left: 30px">[/html]Example 1: If you make a portal to deck 8, a portal text could be something like "The Turbolift stopped at deck 8."
+Example 2: Your portal name is "Bajoran Wormhole", the portal text could be something like "You entered Quadrant-D safely".[html]</div>[/html]
+
+[b]Destination Realm[/b]: Usually, this is a 2 digit number. You can find the realm by going to it and looking at the first number in the co-ordinates...
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.3.png[/img]
+
+You can also find a realm number from the realm list.
+
+Be sure to check the 'status' message for any errors.
+
+[title="3"]Editing your portal[/title]
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.4.png[/img]
+
+If you wish to edit any of the fields above, you can do so at any time your in the room where your portal is. When you enter the room, you'll notice a 'Edit' next to your portal. Only a moderator or the portal's creator can modify the portal's settings.
+
+Click on edit and consult the fields from Step 3 for more details.
+
+[title="3"]Deleting your portal[/title]
+
+[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.5.png[/img]
+
+If you wish, you could also Delete a portal, but you must understand that if this is the only portal out of this realm, that you should make sure that there are no other players on your realm. They will be trapped and need assistance from a moderator to get out.
+
+Deleting your portal will require a confirmation, as well as give you 70% of the original price as a refund/interest/tax.
+
+In this case, you will receive 35 points.
+
+[title="2"]Adding an item[/title]
+
+To add an item to a room, you first must find out why you're adding it. Is it just as a supplement to the room, is it because it's necessary to get into another room, or is it because that item is a healthy/bribable item? This could have an effect on options you select for the room.
+
+To add an item to your room, (or another's room) simply click the "Add an item" link. Select a good image for your item, whether you link to it or upload it. Make sure that the name of the item isn't too long.
+
+When choosing to add an item, the options to have it be brittle or healthy should be considered. Is it food? Check healthy. Is it something that is of value? Check bribable. Is it a "guide" or "map" which would help you gain health in real life? Check healthy. This way, you can again add a greater sense of realism to Buildr.
+
+People may make copies of certain items (additional item sources) in other rooms that the makers have been chosen to be allowed to make copies. When checking or unchecking this box, consider again what the purpose of your item is. If it's made for allowing access to a secret or special room, don't make it replaceable. But if it's something like food or a guide or map, then it would make sense to have it replicateable.
+
+You can delete items as long as they are not in circulation yet. When dealing with item copies, the only way to delete it is to edit it to make it non-infinite, and then pick it up.
+
+An item is either free or or it costs a certain amount of money. When you make an item that costs something, you get 70% of the cost when someone buys it. If an item is really heavily priced, make sure it's non-infinite, so the rareness of that item can attribute to its value. Some items can be pickpocketed, but beware that the troll of the realm is watching you very closely.
+
+So, consider the price of the item you're making. If this item is non-infinite, meaning only one person can have it, then it would probably be very high-priced and it would probably be not very wise to make it replicable, unless you want people to get it for cheap. So the price, replicatability, and finity of the item you are making have a great deal to do with each other. Make sure they make sense, and correspond with each other.
+
+As you can see, items can be shifted around a lot just in one single day. Items can be taken from you by trolls. So, it is recommended you make sure you have a copy or original of that item in your own quarters, so nobody except staff will mess with it (and we won't.)
+
+To make an item is simple: just click the add an item option and select a few choices. But you should be careful of the sensibility and validity of the item you're making, so that people don't start wondering why the heck that item even exists at all. So choose an item to add to a room to make Buildr, the realm, and the room realistic and playable, and then maybe even make some points off it.
+
+Once people have items, they can drop them, give them, or use them. At the time of writing, the only usable items that are usable directly are healthy ones. When you enter a room a specific item, or any bribable item, might be required to get in.
+Other people can try and pickpocket your items, but they risk being sent to jail and having all their items confiscated. Its recommended that you store your items in a 'home' (a room only you can access) to avoid this.
+
+[title="2"]Concept of Ownership and Privacy in Buildr[/title]
+
+What would an RPG environment be without a feeling of exclusivity? Not much. That's why we have given you the ability to have your own personal items that no one else can have, have your own rooms that no one else can get in, and even have your own realms with a three-room or more suite.
+
+People can own their own "quarters" in a realm. This is pretty cool. In your rooms, you can store things that you want to keep safe from the troll of the realm, who may steal your stuff if you're not careful. You can guard these rooms with a simple password.
+
+When you make the room, just type something like "Password?" in the Entrance Question box, and then type any kind of password you want into the Entrance Question Answer box. To add something fun for a Entrance Fail message, type something along the lines of "Access Denied. Security Turrets armed."
+
+If you have so much stuff that you just need to organise it all, you can even make your own realm. Just make your rooms with the portal allowance turned off so they're not portal points (you will need to edit the default lobby and turn this option off, once you made your own sole portal), and then feel safe that no one can go to the realm except you. Make sure to make your sole portal to your realm in a safe location, where not just anybody can access it. Then, you can have as many rooms as you want. Making your own realm is expensive, though, and unless you have a lot of stuff you need to organise, it's probably not worth it. If you want to have complete control over the realm, but also want to allow people to go there, allow portal points in the realm, but add the realm as a 'private realm.'
+
+I'll leave you with some general rules about Buildr:
+ - Items that are not replaceable can be considered private (you control them).
+ - Ownership of anything can, in extreme circumstances, be changed by staff. You can edit your own things to hand ownership to someone else.
+ - Anyone who makes a room is credited with making that room on the map.
+ - Staff are not responsible for anything seen on Buildr, but we will try to keep it as clean as possible. If you see anything objectionable, report it.
+ - Do not put any information of actual value onto Buildr. Remember, any passwords are viewable by staff, so it may be wise to use specific passwords that aren't usable to gain access to anything else outside Buildr.
+
+Have fun making your own private and exclusive areas!
+
+[title="2"]Obtaining good pictures[/title]
+
+As you may notice from room to room, alot of users have pictures for their item(s), room(s) or realm(s).
+
+On average, a good size picture for a room is 430x??? and 200x??? is an average size for an item. Using images makes your room or item look more professional.
+
+The only filetypes currently compatible with Buildr are JPG/JPEG, GIF and PNG.
+
+[title="2"]Policy on Staff in Buildr[/title]
+
+Staff can do basically whatever they want in Buildr. They can edit everything from items to realms, change passwords, images, and go into your quarters without having to know anything. This is pretty much the same concept as in the forums. Now, they do have a lot of power, but they won't abuse it.
+
+So, we can do basically anything we want, but just remember, we're here to help and to improve your experience in our very own Multi-User-Dungeon.
+
+Here is a summary of what admins can do...
+ - Instantly teleport anyone to any position in the entirity of the Buildr
+ - Enter any room regardless of passwords or required items
+ - Hurt or heal players
+ - Ban or unban players
+ - Confiscate items
+

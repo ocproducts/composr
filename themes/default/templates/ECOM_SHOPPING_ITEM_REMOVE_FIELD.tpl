@@ -1,0 +1,1 @@
+<label for="remove_{PRODUCT_ID*}" class="accessibility_hidden">{!REMOVE_FROM_CART}:</label> <input onclick="var button=document.getElementById('cart_update_button'); button.className=button.className.replace(' button_faded','');" type="checkbox" name="remove_{PRODUCT_ID*}" id="remove_{PRODUCT_ID*}" value="1" />

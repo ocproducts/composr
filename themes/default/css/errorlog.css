@@ -1,0 +1,12 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.permissions_failed {
+	overflow: scroll;
+	font-family: Courier, monospace;
+	height: 400px;
+	white-space: pre;
+}
+

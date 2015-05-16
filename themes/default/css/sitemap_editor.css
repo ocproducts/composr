@@ -1,0 +1,127 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.tree_list__root_tree_list {
+	height: 358px;
+	overflow: auto;
+}
+
+.sitemap_left {
+	width: 50%;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	padding-right: 1em;
+}
+
+.pt_editor, .sitemap_editor {
+	height: auto;
+	overflow: visible;
+}
+
+.sitemap_right {
+	float: {!en_right};
+	width: 50%;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+
+
+/*
+=========================
+=Permission tree editor==
+=========================
+*/
+
+.pt_editor .ajax_tree_cat_icon {
+	display: none;
+}
+
+.pte_tips {
+	font-size: 0.9em;
+}
+
+.pte_tree {
+	position: relative;
+	min-height: 8em
+}
+
+.pte_icon_box {
+	width: 15em;
+	position: absolute;
+	{!en_right}: 1em;
+	top: 0;
+}
+
+.pte_icon_box select {
+	width: 8em;
+}
+
+.pte_icon_box p {
+	font-size: 0.9em;
+}
+
+.pte_help_box {
+	float: {!en_right};
+	width: 24em;
+	margin-{!en_left}: 1em;
+}
+
+.pte_set_box {
+	margin-top: 1em;
+}
+
+/*
+=========================
+==Generate page sitemap==
+=========================
+*/
+
+.generate_page_sitemap_screen ul.page_structure {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.generate_page_sitemap_screen ul.page_structure>li {
+	margin: 0.75em 0.5em;
+	padding: 0.75em 0.5em;
+	border: 1px solid {$GET,standard_border};
+}
+
+.generate_page_sitemap_screen ul.page_structure>li,
+.generate_page_sitemap_screen ul.page_structure>li>ul.page_structure>li>ul.page_structure>li,
+.generate_page_sitemap_screen ul.page_structure>li>ul.page_structure>li>ul.page_structure>li>ul.page_structure>li>ul.page_structure>li {
+	background: {$GET,area_3_background};
+}
+
+.generate_page_sitemap_screen ul.page_structure>li>ul.page_structure>li,
+.generate_page_sitemap_screen ul.page_structure>li>ul.page_structure>li>ul.page_structure>li>ul.page_structure>li,
+.generate_page_sitemap_screen ul.page_structure>li>ul.page_structure>li>ul.page_structure>li>ul.page_structure>li>ul.page_structure>li>ul.page_structure>li {
+	background: {$GET,area_5_background};
+}
+
+.generate_page_sitemap_screen .page_structure .page_state span {
+	font-size: 0.8em;
+	padding: 0.2em;
+	margin-left: 2em;
+	display: inline-block;
+	border: 1px solid {$GET,light_error_border};
+	background: {$GET,light_error_background};
+}
+
+.generate_page_sitemap_screen ul.page_structure ul.menu_links {
+	list-style-type: none;
+	margin: 0.5em 0 0 0;
+	padding: 0;
+}
+
+.generate_page_sitemap_screen ul.page_structure ul.menu_links li {
+	margin: 0;
+	padding: 0;
+}
+
+.generate_page_sitemap_screen ul.page_structure ul.menu_links .breadcrumbs span:last-child {
+	font-weight: normal;
+}
+
+

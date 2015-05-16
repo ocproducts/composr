@@ -1,0 +1,2 @@
+[block failsafe="1"]side_stats[/block]
+[block failsafe="1"]main_newsletter_signup[/block]

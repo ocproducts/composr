@@ -1,0 +1,14 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.hit_counter {
+	font-family: 'Courier New', 'Courier', monospace;
+	font-size: 1.5em;
+}
+
+.hit_counter, .hit_counter div {
+	display: inline-block;
+}
+

@@ -1,0 +1,100 @@
+[title sub="Written by Allen Ellis, ocProducts"]Composr Tutorial: Searching your website[/title]
+
+As you add content to your website, it becomes increasingly important that your visitors are able to find your content when they need to. Composr includes a 'search' feature, which allows you to search your entire website for content.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Simple searching[/title]
+
+[media width="150" description="The search block" float="right"]data_custom/images/docs/search_block.png[/media]
+By default, there is a 'search' block that sits on a panel of the 'Site' zone of your website (assuming it was not disabled in the Setup Wizard). This is the easiest way to use the search. There is a text box where you can type what you're looking for. The 'Search Content' button will then search your entire website for matching content and results will be displayed on a results screen.
+
+[title="2"]Detailed searches[/title]
+
+If you would like to carry out detailed searches, there is a 'More' button in the search content block. Clicking this will bring you to the main search screen, which has several options:
+
+[title="3"]Search For[/title]
+
+[media width="150" description="Detailed searches" float="right"]data_custom/images/docs/search_details.png[/media]
+This is the text box where you type the content that you're searching for.
+
+[title="3"]Boolean Search[/title]
+
+Choosing to do a boolean search will make several more options available:
+ - Content must contain all of these words
+ - Content must contain one or more of these words
+These two options are self-explanatory.
+
+After selecting 'Boolean search', you also gain the several searching possibilities, that you may activate as follows:
+ - Put speech marks around words that you would like to occur in sequence
+ - Put a '-' before a word to shun it
+ - Put a '+' before a word to require it.
+
+[title="3"]Search only titles[/title]
+
+With this option checked, Composr will only search titles of content.
+
+[title="3"]Author/Submitter[/title]
+
+In this field, you can type the name of a member on the website. If you do this, Composr will only look for entries that this person has submitted. It also matches against author names.
+
+[title="3"]Submitted within the previous[/title]
+
+In this field, you can set a cut-off date, to not show entries that are older.
+
+[title="3"]Sort by[/title]
+
+In this field, you can specify what order you would like your results shown in.
+
+[title="3"]Search the following content types[/title]
+
+Placing a checkmark beside each content type will cause Composr to search for entries in these content types. Clearing the checkbox will cause Composr not to search in these locations.
+
+[title="2"]Advanced searches[/title]
+[surround]
+[media width="150" description="Performing an advanced search for a specific content type" float="right"]data_custom/images/docs/search_advanced.png[/media]
+Many forms of content allow advanced searches which allow you to search underneath a chosen category. For members and catalogues you may also perform template searches. An advanced search limits you to that individual content type. The advanced searching screen is reached by clicking one of the 'Advanced' links on the main search screen.
+[/surround]
+[title="2"]Searching from the Forum[/title]
+[surround]
+[media width="150" description="The search button on the forum" float="left"]data_custom/images/docs/search_forum.png[/media]
+
+To initiate a search while in the forum (our own [concept]Conversr[/concept] forum), you need to click the 'Search' button on the forum or use the contextual search box on the forum member bar. The contextual search will search beneath your current forum if you are on a forum-view screen, or within your current topic if you are on a topic-view screen.
+[/surround]
+
+[title="2"]OpenSearch[/title]
+
+Composr can support [url="OpenSearch"]http://www.opensearch.org/[/url], which allows your users to search your website from directly within their web browser (currently available in Firefox and Internet Explorer). It also supports 'Google Suggest' style search suggestions, based on past searches performed.
+
+By default OpenSearch is configured (via the [tt]HTML_HEAD[/tt] template) to only be active within a zone named 'docs' and for it to only search Comcode pages. You can, however, configure it to perform any search types you like via changing the code used in this template. You should make sure you have a 'favicon' before enabling OpenSearch, as it is important the web browser has one of these available to use.
+
+[title="2"]Improving search results[/title]
+
+The title fields, and meta keyword fields, get precedence when search results are determined. Tuning these manually for your can improve search results considerably.
+
+If you are using MySQL, also considering turning the [url="MySQL minimum word length"]http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_ft_min_word_len[/url] down to 3 (the default 4).
+
+[title="2"]MySQL[/title]
+
+Ultimately, full-text search effectiveness resides in MySQL (or whatever database you use), not Composr. For example, indexing does not work on very small words, very common words, and may split things up you did not expect to be (e.g. [tt]an-example[/tt] would split to two words).
+
+True boolean search is much more accurate, but also much slower due to a lack of indexing. Composr will only use true boolean search if boolean search is selected and it thinks MySQL's fulltext-based boolean search won't be able to handle the query itself (e.g. due to using short words). Programmers can alter this logic based on editing the [tt]is_under_radar[/tt] function.
+
+[title="2"]Search autocompletion[/title]
+
+When you start typing out a search it can autocomplete. This is based on:
+ - Common past searches
+ - Matching keywords for the search type
+ - Matching titles for the search type
+
+All these cases are controlled via privileges (the "Autocomplete searches based on xxx" ones), as potentially it is a leak of private or privileged information. No permissions are checked, so if you grant the privileges then content titles and keywords from private content can potentially leak out.
+
+[title="2"]Did you mean?[/title]
+
+If you have spell checking enabled on your server (pspell or enchant PHP extension), then misspellings will result in a suggestion to run a search on an autocorrected search term. Any keyword terms on the site will be considered real words and not autocorrected.
+
+[concepts
+ 1_key="Boolean search"   1_value="A search carried out by testing for exact word or phrasal matches to a number of criteria"
+]Concepts[/concepts]
+
+{$SET,tutorial_tags,Content,search,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Find out how Composr's search engine can make it easy to search all the content on your website at once.}[block]main_tutorial_rating[/block]

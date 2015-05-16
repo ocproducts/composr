@@ -1,0 +1,5 @@
+<Files *.pem>
+order deny,allow
+deny from all
+</Files> 
+

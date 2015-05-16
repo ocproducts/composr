@@ -1,0 +1,832 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* General form-related styles */
+
+.required_field_warning {
+	border: 1px solid {$GET,standard_border};
+	overflow: hidden;
+	padding: 0.5em;
+	/*	Style rather extreme, but re-enable if you wish
+	background-color: {$GET,required_background};
+	*/
+	font-weight: bold;
+	font-size: 0.85em;
+	margin: 1.5em auto 1em auto;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 11em;
+	/*{+END}*/
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+}
+
+.required_star {
+	{$BETA_CSS_PROPERTY,opacity: 0.4;}
+	color: {$GET,red_highlight_text};
+}
+
+.comcode_supported {
+	font-size: 0.85em;
+}
+
+div.comcode_supported {
+	margin-top: 0.25em;
+	float: right;
+}
+
+.input_erroneous {
+	background-color: {$GET,red_highlight_background} !important;
+}
+
+.input_erroneous.container_for_wysiwyg {
+	{$BETA_CSS_PROPERTY,border-radius: 6px;} /* WYSISWYG is curved so this stops it creating an ugly clash */
+}
+
+.input_error_here {
+	font-size: 0.9em;
+	display: block;
+	padding: 1em 1em 1em 35px;
+	border: 1px solid {$GET,light_error_border};
+	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.input_error_here {
+		background-image: url('{$IMG;,icons/48x48/status/notice}');
+		background-size: 24px 24px;
+	}
+}
+
+/* This is used to fix a problem on screen readers (we don't want a paragraph used) */
+span.form_field_name {
+	/*display: inline-block;	Actually, this breaks vertical centring, so let it be inline*/
+}
+
+.locked_field {
+	{$BETA_CSS_PROPERTY,opacity: 0.3;}
+}
+
+/* Overrides .toggleable_tray_button */
+.form_table .toggleable_tray_button {
+	color: {$GET,heading_text} !important;
+	font-weight: normal !important;
+}
+.form_table .toggleable_tray_button .help_icon {
+	float: none;
+	vertical-align: middle;
+}
+
+/* Layout of the form table */
+
+table.form_table { /* Some people think tables for forms are bad semantics. You can change it if you like, but we consider tables the optimal semantics (field name column, field input column, each field being a row). It's a conscious decision. Also all modern browsers allow complete styling control to change how tables are displayed, so there is no visual constraint here. */
+	border-collapse: collapse;
+	border: 1px solid {$GET,pale_border};
+	margin: 1em 0;
+}
+
+.toggleable_tray>.wide_table_wrap:first-child>.form_table {
+	margin-top: 0;
+}
+
+/*
+Curved borders would be cool, but it does not work well with the carefully defined internal cell borders which we have
+.form_table>tbody>tr:first-child>:first-child {
+	{$BETA_CSS_PROPERTY,border-top-left-radius: 15px;}
+}
+.form_table>tbody>tr:first-child>:last-child {
+	{$BETA_CSS_PROPERTY,border-top-right-radius: 15px;}
+}
+.form_table>tbody>tr:last-child>:first-child {
+	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 15px;}
+}
+.form_table>tbody>tr:last-child>:last-child {
+	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 15px;}
+}
+*/
+
+.form_table_field_name {
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	text-align: left;
+	color: {$GET,slightly_seeded_text};
+	padding-top: 0.95em !important;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	th.form_table_field_name {
+		border-bottom: 0 !important;
+	}
+	td.form_table_field_input {
+		border-top: 0 !important;
+
+		/* No separate gradient, continue on from the end of the form_table_field_name gradient */
+		background-image: none !important;
+		background-color: {$GET,area_2_background} !important;
+	}
+
+	.form_table_field_name .help_icon {
+		float: right;
+	}
+/*{+END}*/
+
+.form_table_field_name h3 {
+	border: 0;
+	margin: 0;
+}
+
+.form_table_description_above_cell {
+	text-align: left !important;
+}
+.form_table_description_above_cell .field_name {
+	float: left;
+	margin-top: 4px;
+}
+
+.form_table_field_name, .form_table_field_input, .form_table_huge_field,
+th.form_table_field_name, /* Extra specificity to take precedence over th.de_th */
+.form_table_field_spacer>th, .form_table_field_spacer>td, .form_table_description_above_cell, .form_table_description_under_cell
+{
+	border: 1px solid {$GET,pale_border};
+	color: {$GET,slightly_seeded_text} !important;
+	padding: 0.5em 0.75em;
+	background-color: {$GET,area_background} !important; /* !important is so has priority over .de_th */
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_2_background});}
+}
+.form_table_field_input>div:first-child>p:first-child {
+	margin-top: 0;
+}
+.form_table_field_input input {
+	margin-top: 0;
+}
+
+.form_table_field_name a, .form_table_field_input a, .form_table_huge_field a,
+th.form_table_field_name a, /* Extra specificity to take precedence over th.de_th */
+.form_table_field_spacer>th a, .form_table_field_spacer>td a, .form_table_description_above_cell a, .form_table_description_under_cell a
+{
+	color: {$GET,a.link} !important;
+}
+
+.form_table_field_input select, .form_table_field_input input, .form_table_field_input img {
+	vertical-align: middle;
+}
+.form_table_field_input .constrain_field {
+	display: inline;
+}
+.form_table_field_input .wide_field {
+	width: {$?,{$MOBILE},100%,27em};
+	max-width: 100%;
+}
+
+/* Tone it all down for forms inside tabs */
+.tab_surround tbody th, .tab_surround tbody td, .tab_surround .form_table .required {
+	background: none !important;
+}
+
+.form_table_field_spacer>th, .form_table_field_spacer>td, .form_table_description_above_cell {
+	border-bottom: 0;
+}
+
+.form_table_huge_field {
+	border-top: 0;
+}
+
+.form_table_huge_field_description_is_under {
+	border-top: 1px solid {$GET,pale_border};
+	border-bottom: 0 !important;
+}
+
+.form_table .required {
+	/*	Style rather extreme, but re-enable if you wish
+	background-color: {$GET,required_background} !important;
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,required_2_background}\, {$GET,required_background}) !important;}
+	*/
+}
+
+.form_table .filledin .required {
+	background-color: {$GET,area_background} !important;
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,required_2_background}\, {$GET,required_background}) !important;}
+}
+
+/* Field sets */
+
+.innocuous_fieldset .preview {
+	float: right;
+	text-align: right;
+	width: 120px;
+	height: 50px;
+	margin-top: 10px;
+	margin-right: 10px;
+}
+.innocuous_fieldset .preview img {
+	border: 1px solid {$GET,pale_border};
+	max-width: 100%;
+	max-height: 100%;
+}
+.innocuous_fieldset.has_preview .wide_field {
+	max-width: 300px;
+}
+
+/* Particular input types */
+
+.form_table .form_table_field_input select {
+	max-width: 18em;
+}
+
+.upload_field_msg {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+	display: inline-block;
+}
+
+.people_list {
+	background-color: {$GET,area_background};
+	color: {$GET,slightly_seeded_text};
+	width: auto;
+	border: 1px solid {$GET,pale_border};
+}
+
+.password_strength {
+	float: right;
+	width: 100px;
+	border: 1px solid {$GET,standard_border};
+	display: none;
+}
+
+.password_strength_inner {
+	height: 1em;
+	width: 0;
+}
+
+.input_colour, .input_list, .input_line, .input_integer,
+.input_author, .input_username, .input_colour, .input_email, .input_codename,
+.input_tick, .input_float, .input_text, .input_upload, .input_radio {
+}
+
+.input_colour_required, .input_list_required, .input_line_required, .input_integer_required,
+.input_author_required, .input_username_required, .input_colour_required, .input_email_required, .input_codename_required,
+.input_tick_required, .input_float_required, .input_text_required, .input_upload_required {
+}
+
+.input_dimensions {
+	display: inline-block;
+}
+.input_dimensions input {
+	width: 3em !important;
+}
+.input_dimensions, .input_dimensions * {
+	vertical-align: middle;
+}
+
+.upload_field {
+	max-width: 30em; /* Upload field HTML is complex, we need to force size down so that the help icon can align correctly */
+}
+
+.upload_field input[type="button"] {
+	margin-top: 2px;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.input_upload, .input_upload_required {
+		max-width: 240px;
+	}
+/*{+END}*/
+
+.radio_description {
+	margin-top: -1.3em !important;
+	margin-bottom: 1em !important;
+}
+
+.syndication_options {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/* Special validated checkbox */
+.form_table_field_input>input[name="validated"].input_tick:before, .form_table_field_input>input[name="validated"].input_tick {
+	width: {$ADD,5,{$IMG_WIDTH%,{$IMG,1x/editor/off}}}px;
+	height: {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
+	display: inline-block;
+	cursor: pointer;
+}
+.form_table_field_input>input[name="validated"].input_tick:before {
+	content: "";
+	background: red;
+	visibility: visible;
+	background: url('{$IMG;,1x/editor/off}') no-repeat;
+}
+.form_table_field_input>input[name="validated"].input_tick:checked:before {
+	background-image: url('{$IMG;,1x/editor/on}') !important;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.form_table_field_input>input[name="validated"].input_tick:before {
+		background-image: url('{$IMG;,2x/editor/off}');
+		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/off}}px {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
+	}
+	.form_table_field_input>input[name="validated"].input_tick:checked:before {
+		background-image: url('{$IMG;,2x/editor/on}') !important;
+		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/on}}px {$IMG_HEIGHT%,{$IMG,1x/editor/on}}px;
+	}
+}
+.form_table_field_input>input[name="validated"].input_tick {
+	padding-right: 0.5em;
+	visibility: hidden;
+}
+
+.various_ticks {
+	margin: -0.5em 0 -0.5em -0.5em;
+	white-space: nowrap;
+}
+
+.syndication_options span {
+	white-space: nowrap;
+	border-{!en_right}: 1px solid {$GET,pale_border};
+	font-size: 0.9em;
+	padding-right: 0.5em;
+	margin-right: 0.3em;
+}
+.syndication_options span:last-child {
+	border-{!en_right}: 0;
+}
+
+.various_ticks .input_individual_tick, .various_ticks .input_other_tick {
+	padding: 1em 1em 1em 0.5em; /* Designed to make it fill whole box, i.e. equalise against the th's (to the left) height */
+	float: {!en_left};
+	font-size: 0.9em;
+	vertical-align: middle;
+}
+
+.various_ticks .input_individual_tick {
+}
+
+.various_ticks .input_other_tick {
+	clear: both;
+}
+
+.various_ticks .input_individual_tick input {
+	margin-bottom: 0;
+}
+
+.radio_list_picture {
+	float: {!en_left};
+	white-space: nowrap;
+	padding: 0.5em;
+	font-size: 0.8em;
+	min-height: 35px;
+	min-width: 35px;
+	cursor: pointer;
+}
+.radio_list_picture label {
+	cursor: pointer;
+}
+
+.radio_list_picture.linear {
+	float: none;
+	margin: 1em;
+	border: 1px solid {$GET,standard_border};
+}
+
+.radio_list_picture img {
+	max-width: 100px;
+}
+
+.radio_list_picture {
+	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+}
+.radio_list_picture:hover, .radio_list_picture.selected {
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+}
+
+.selectable_theme_image {
+	padding: 0.3em;
+	margin: 1px;
+}
+
+/* Form colour chooser */
+
+.form_table .css_colour_chooser_name {
+	width: 190px;
+}
+
+.css_colour_strip {
+	float: left;
+	width: 4px;
+	height: 15px;
+}
+
+.css_colour_chooser {
+	height: 50px;
+	margin: 0 auto;
+}
+
+.field_input .css_colour_chooser {
+	width: auto;
+	height: auto;
+	margin: 0;
+}
+
+.css_colour_chooser_name {
+	font-weight: bold;
+	float: left;
+}
+
+.css_colour_chooser_name input {
+	color: {$GET,unfilled_input_text};
+	margin-top: 0.5em;
+	display: block;
+}
+
+.css_colour_chooser_from {
+	float: left;
+	margin: 0 0 0 10px;
+}
+
+.field_input .css_colour_chooser_from {
+	display: none;
+}
+
+.css_colour_chooser_to {
+	float: right;
+	margin-left: 0;
+}
+
+.css_colour_chooser_fixed {
+	width: 366px;
+	float: left;
+	margin-top: 3px; /* As the selection bars overflow a bit */
+}
+
+.field_input .css_colour_chooser_fixed {
+	width: 306px;
+}
+
+.css_colour_chooser_from, .css_colour_chooser_to {
+	padding-top: 7px;
+	height: 38px;
+	font-size: 0.9em;
+	width: 50px;
+	display: inline;
+	font-weight: bold;
+	text-align: center;
+	cursor: default;
+}
+
+.css_colour_chooser_colour {
+	height: 45px;
+	width: 256px;
+	display: inline;
+}
+
+.css_colour_chooser_colour>div {
+	overflow: hidden;
+}
+
+.css_colour_chooser_context {
+	padding-top: 50px;
+	font-style: italic;
+}
+
+/* Previews */
+
+.form_screen_iframe {
+	width: 100%;
+	height: 0; /* Will be dynamically adjusted */
+}
+
+.preview_box {
+	margin: 1em 0;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.preview_box {
+		padding: 209px 33px 159px 31px;
+		background: url('{$IMG;,iphone}') no-repeat;
+		cursor: crosshair;
+	}
+	.preview_box_inner {
+		overflow: hidden;
+		width: 320px;
+		height: 355px;
+	}
+/*{+END}*/
+
+.preview_checking_box {
+	width: 34em;
+	margin: 1em auto 3em auto;
+}
+
+/* Posting forms */
+
+.word_count {
+	float: right;
+	font-size: 0.8em;
+	padding: 4px;
+}
+
+.posting_form_main_comcode_button {
+	float: {!en_right};
+	margin-top: 1em;
+}
+
+.posting_form_insert_buttons {
+	background-color: {$GET,area_background};
+}
+
+.posting_form_wrap_buttons {
+	background-color: {$GET,point_of_interest_background};
+	white-space: nowrap; /* Needed for IE8 */
+}
+
+.posting_form_wrap_buttons, .posting_form_insert_buttons {
+	float: {!en_right};
+	border: 1px solid {$GET,standard_border};
+	padding: 0.5em;
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+
+.posting_form_insert_buttons span, .posting_form_insert_buttons img, .posting_form_wrap_buttons img, .posting_form_insert_buttons input, .posting_form_wrap_buttons input, .posting_form_wrap_buttons select {
+	vertical-align: middle;
+}
+
+.posting_form_insert_buttons .divider {
+	margin-left: 0.2em;
+	border-left: 1px solid {$GET,standard_border};
+	padding-left: 0.4em;
+}
+
+.emoticon_chooser {
+	padding: 0.5em;
+	margin-top: 0.5em !important;
+}
+
+.emoticon_chooser a {
+	text-decoration: none; /* Tone minor link down a bit */
+}
+.emoticon_chooser a:hover {
+	text-decoration: underline;
+}
+
+.attachments_field_name_column {
+	width: 18em;
+}
+
+.box .attachments_field_name_column {
+	width: 14em;
+}
+
+.attachments_field_input_column {
+	width: 100%;
+}
+
+/* Permissions */
+
+.permissions_matrix_wrap {
+	width: 100%;
+	overflow-x: auto;
+	outline: 0;
+	padding-bottom: 1px;
+
+	/* Fix for overhanging borders */
+	padding-right: 2px;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+
+.permissions_matrix_wrap select {
+	max-width: 11em;
+	white-space: nowrap;
+	font-size: 0.8em !important;
+}
+
+.permissions_matrix_wrap .group_header, .permissions_matrix_wrap .view_header, .permissions_matrix_wrap .privilege_header {
+	vertical-align: bottom;
+}
+
+.permission_field_name_column {
+	width: 24em;
+}
+
+.permission_column {
+	width: 2.5em;
+}
+
+.permission_copy_column {
+	width: 3.8em;
+}
+
+.permissions_matrix_wrap .form_table_field_input, .privileges td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* Special supra-context stuff for forms */
+
+.form_group {
+	margin-bottom: 1.5em;
+}
+
+.skip_step_button_wrap {
+	height: 35px;
+}
+
+.skip_step_button_wrap div {
+	float: {!en_right};
+}
+
+.skip_step_button_wrap_with_req_note {
+	margin: -52px 0 0 0;
+}
+
+.form_set_indent {
+	margin-{!en_left}: 2em;
+}
+
+.fields_set_item {
+	background: {$GET,main_background};
+	padding: 0.75em 0.5em;
+	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border: 1px solid {$GET,pale_border};
+}
+
+.fields_set_item + .fields_set_item {
+	margin-top: 1em;
+}
+
+.fields_set_radio {
+	margin-bottom: 0.5em;
+}
+
+.fields_set_contents .associated_details {
+	margin-top: 0.2em;
+}
+
+/* Spruce up defaults for form fields */
+
+.form_table input[type="text"], .form_table input[type="email"], .form_table input[type="password"], .form_table textarea,
+.form_table_field_input select, .form_table_field_input textarea {
+	font-size: 1.12em;
+}
+
+.form_table input[type="text"], .form_table input[type="email"], .form_table input[type="password"], .form_table textarea {
+	{$BETA_CSS_PROPERTY,border-radius: 4px;}
+	border: 1px solid {$GET,standard_border};
+	padding: 0.2em;
+}
+
+.form_table input[type="number"] {
+	width: 6em;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.form_table input[type="file"] {
+		max-width: 6em;
+	}
+/*{+END}*/
+
+/*
+================================
+== WYSIWYG (CKEditor) styling ==
+================================
+*/
+
+/* Reset some Composr styles that impact CKEditor */
+.cke_reset_all div[role="tabpanel"] {
+	padding-left: 0;
+	padding-right: 0;
+}
+.cke_reset_all div[role="tabpanel"]>:first-child {
+	margin-top: 0;
+}
+.cke_reset_all div[role="tabpanel"]>:last-child {
+	margin-bottom: 0;
+}
+
+/* Icons for our custom plugins (we specify ours this way for greatest flexibility) */
+
+.cke_button__composr_block_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_block.png') !important;
+	background-size: 16px !important;
+}
+.cke_button__composr_comcode_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_comcode.png') !important;
+	background-size: 16px !important;
+}
+.cke_button__composr_page_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_page.png') !important;
+	background-size: 16px !important;
+}
+.cke_button__composr_quote_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_quote.png') !important;
+	background-size: 16px !important;
+}
+.cke_button__composr_box_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_box.png') !important;
+	background-size: 16px !important;
+}
+.cke_button__composr_code_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_code.png') !important;
+	background-size: 16px !important;
+}
+.cke_button__composr_image_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_image.png') !important;
+	background-size: 16px !important;
+}
+.moono .cke_button__composr_image_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/composr_image__moono.png') !important;
+}
+.cke_button__spellchecktoggle_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/spellchecktoggle/images/spellchecktoggle.png') !important;
+	background-size: 16px !important;
+}
+.moono .cke_button__spellchecktoggle_icon {
+	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/spellchecktoggle/images/spellchecktoggle__moono.png') !important;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.cke_button__composr_block_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_block.png') !important;
+	}
+	.cke_button__composr_comcode_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_comcode.png') !important;
+	}
+	.cke_button__composr_page_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_page.png') !important;
+	}
+	.cke_button__composr_quote_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_quote.png') !important;
+	}
+	.cke_button__composr_box_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_box.png') !important;
+	}
+	.cke_button__composr_code_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_code.png') !important;
+	}
+	.cke_button__composr_image_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_image.png') !important;
+	}
+	.moono .cke_button__composr_image_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_image__moono.png') !important;
+	}
+	.cke_button__spellchecktoggle_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/spellchecktoggle/images/hidpi/spellchecktoggle.png') !important;
+	}
+	.moono .cke_button__spellchecktoggle_icon {
+		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/spellchecktoggle/images/hidpi/spellchecktoggle__moono.png') !important;
+	}
+}
+
+/* Change some Composr styles to look more appropriate within a WYSIWYG editor */
+
+#wysiwyg_editor #screen_title {
+	display: block !important;
+}
+
+#wysiwyg_editor th, #wysiwyg_editor td {
+	border: 1px dotted {$GET,native_ui_foreground};
+}
+
+#wysiwyg_editor .comcode_fake_table > div, #wysiwyg_editor .fp_col_block {
+	outline: 1px dotted;
+	margin: 1px 0;
+}
+
+/* Composr editing UI */
+
+comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}} {
+	background-color: {$GET,native_ui_active_background};
+}
+
+#wysiwyg_editor kbd.cms_keep, #wysiwyg_editor kbd.cms_keep_block {
+	background-color: {$GET,native_ui_active_background};
+}
+
+#wysiwyg_editor kbd.cms_keep_block {
+	display: block;
+	border: 1px dotted gray;
+	padding: 2px;
+}
+
+#wysiwyg_editor input.cms_keep_ui_controlled, #wysiwyg_editor input.cms_keep_ui_controlled:focus, #wysiwyg_editor input.cms_keep_ui_controlled::selection {
+	border: 1px dashed gray;
+	text-align: center;
+	color: {$GET,native_ui_foreground};
+	background: {$GET,native_ui_active_background} url('{$IMG;,icons/16x16/editor/comcode}') right 2px no-repeat;
+	background-size: 16px 16px;
+	padding: 1px 25px 1px 2px;
+}
+/* Separately specified, as the weird selector breaks whole compound selector on Chrome */
+#wysiwyg_editor input.cms_keep_ui_controlled::-moz-selection {
+	color: {$GET,native_ui_foreground};
+	background-color: {$GET,native_ui_active_background};
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	#wysiwyg_editor input.cms_keep_ui_controlled {
+		background-image: url('{$IMG;,icons/32x32/editor/comcode}');
+	}
+}
+
+/* Other styles */
+
+body#wysiwyg_editor {
+	/* IE9 selectability fix */
+	width: 100%;
+	min-height: 140px;
+}

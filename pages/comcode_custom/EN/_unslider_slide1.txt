@@ -1,0 +1,7 @@
+[semihtml]
+<div class="feature_background_image" style="background-image: url('{$IMG;*,unslider_backgrounds/sunset}');">
+	[title="2"]The Composr slider that just slides.[/title]
+
+	No unnecessary markup, no coding knowledge needed, and it's less than 3kb.
+</div>
+[/semihtml]

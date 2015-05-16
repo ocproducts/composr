@@ -1,0 +1,83 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Theme Lifecycle[/title]
+
+If you've developed a theme, you'll need to keep it updated as new Composr versions come out.
+Where possible we try and automate this, but automation is imperfect.
+This tutorial will explain how theme overrides get made, the consequences of overrides, and how to keep them in sync.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The start of an override[/title]
+
+Imagine you have a new empty theme. Nothing is overridden in it, it is just an empty shell built on top of the default theme.
+
+[box="A note about override chains"]
+All themes inherit any non-overridden files direct from the default theme (there is no system for chaining themes together into a complex inheritance system). It is possible for files to be overridden [i]within[/i] the default theme, if you need an override to apply to many themes but don't want to individually override it into each theme. It is also possible to do some really fancy tricks with Tempcode, to simulate chained themes, if you've got a programmer-mindset. For the purpose of simplicity in this tutorial we'll assume nothing is overridden within the default theme.
+[/box]
+
+Now, you go and edit the [tt]global.css[/tt] within your theme. At this point [tt]global.css[/tt] has been overridden within your theme, and you have diverged from the [tt]global.css[/tt] shipped with Composr and upgraded between releases. The override was necessary to make your customisations, but simultaneously you have become responsible for maintaining your own version of it.
+
+It is useful to understand what is happening when you make an override, in terms of the files.
+
+The default theme's [tt]global.css[/tt] is at [tt]themes/default/css/global.css[/tt].
+Let's imagine your theme is called [tt]example[/tt]. The CSS would be overridden to [tt]themes/example/css_custom/global.css[/tt] when you make your initial changes.
+
+Additionally, at this point of initial override, the original [tt]themes/default/css/global.css[/tt] (i.e. without any of your changes) is copied to [tt]themes/example/css_custom/global.css.editfrom[/tt]. This file is useful as a future point of reference, and we'll come back to it.
+
+If you create your theme using the Theme Wizard, the process is similar, but happening automatically. The Theme Wizard overrides any CSS file that defines colours, which includes [tt]global.css[/tt].
+
+This override process is exactly the same for templates (including JavaScript templates), and CSS files.
+
+[title="2"]The template cache[/title]
+
+Composr never actually directly serves CSS files to the visitor web browsers. First the CSS files are compiled with Tempcode, and then they are minified. The Tempcode process allows Composr to properly tie-in theme images, language string references, colour references, and to separately compile out the mobile and desktop versions of the CSS, amongst other things.
+
+Templates are obviously not served direct to the visitor web browser either.
+
+In both cases compiled/cached files are stored in the [tt]themes/example/templates_cached/EN[/tt] directory (assuming English).
+
+It is important that you never try and directly edit files under the template cache as they will be overridden arbitrarily in the future.
+
+[title="2"]Further edits[/title]
+
+Each subsequent change you make to an overridden file will save a backup.
+
+Continuing our [tt]global.css[/tt] example, editing it would create [tt]themes/example/css_custom/global.css.(current-unix-timestamp)[/tt] as a backup.
+The current-unix-timestamp is just a number (the number of seconds since 1980). Higher numbers represent more recent backups.
+
+[title="2"]After an upgrade[/title]
+
+We will make sporadic changes to the default theme files between releases, typically to fix bugs, or workaround issues in particular web browsers.
+However, as discussed these may not automatically turn up in your own overrides -- so necessary bug fixes may be missing from your own theme.
+We work to improve our automated theme upgrade process, so hopefully this will get better over time, but it's a complex matter and will never be perfect.
+
+This is where the [tt].editfrom[/tt] files are useful...
+
+First install a diff tool on your own desktop machine such as [url="WinMerge"]http://winmerge.org/[/url].
+
+Then download the themes directory from your server, to your own desktop machine.
+
+Comparing these files:
+[tt]themes/example/css_custom/global.css.editfrom[/tt]
+[tt]themes/default/css/global.css[/tt]
+would show all changes made in the default theme since you first made your override (i.e. official changes).
+
+Comparing these files:
+[tt]themes/example/css_custom/global.css.editfrom[/tt]
+[tt]themes/example/css_custom/global.css[/tt]
+would show all the changes you directly made within your own theme (i.e. your changes).
+
+Comparing these files:
+[tt]themes/default/css/global.css[/tt]
+[tt]themes/example/css_custom/global.css[/tt]
+would show all the differences between the default theme and your own theme (i.e. the changes you directly made, any the changes made in the default theme since you first made your override).
+
+Therefore using a diff tool you can locate what changes you need to make back into your custom theme, then upload your updated file(s).
+
+It is easier to do this on your desktop than trying to do it all directly through a web server / Composr's normal theme-editing user interface.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+ - [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page]
+
+{$SET,tutorial_tags,core_themeing,Design & Themeing,Maintenance,regular}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,How the files in a theme are managed, from initial theme creation, through upgrades.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,175 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running a newsletter[/title]
+
+{!newsletter:DOC_NEWSLETTER}
+
+Think carefully about how you wish to mix news, forum announcements or forum news, and newsletters for your site: in particular, you may wish to post more news than you send newsletters, or post to both news and newsletters, because news stays on your site in a permanent archive. You may also wish to prepare and use the same content for news as you do newsletters, so as to present a common message.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Composr newsletters[/title]
+
+[surround]
+[box="Important note" width="25em" float="right"]Newsletter subscription is distinct from membership, in that a subscription is solely tied to an e-mail address, and there is no formal tie between a subscription and a member account, and vice versa. This said, the newsletter subscription has special support for sending out newsletters to usergroup members regardless of whether they have specifically subscribed to a newsletter (it only shows usergroups that have at least one member in them with a configured e-mail address). If you only ever e-mail members, it is better to ask them to join target usergroups rather than target newsletters.[/box]
+Composr newsletters support a concept of 'interest levels', which you can use to control sending of information, such that only subscribers with sufficient interest in your site get the most trivial newsletters, and all subscribers get the most critical newsletters. You may have multiple newsletters in Composr, for each of which members may choose to subscribe with an interest level of their choosing.
+
+The interest levels feature is off-by-default, but even when disabled you may see it mentioned within the administrative interface. This is because if you ever do have it turned on you may accumulate members who chose an interest level, and you may make use of that data even if you no longer request new subscribers to set their interest levels (by disabling them again).
+[/surround]
+
+[surround]
+[media width="150" description="Subscribing to the newsletter" float="right"]data_custom/images/docs/newsletter_subscribe.png[/media]
+Newsletter subscribers may use a password, chosen at subscription (or randomly assigned, depending on how signup happened), to control their subscription settings. They may change their interest level for all newsletters, as well as remove interest totally. They may also have their password reset for the event that they lost it: this is only possible via confirmation of a reset, received via a link sent to the subscription e-mail address. As passwords may be reset at any time, and are only used in rare circumstances, there is no feature to choose your password.
+[/surround]
+
+[title="2"]Newsletter signup[/title]
+
+You will typically invite people to join the newsletter via the [tt]main_newsletter_signup[/tt] block.
+You can also have people signup directly via the [tt]site:newsletter[/tt] module.
+
+The newsletter process has a mandatory e-mail confirmation step so as to stop people signing up others to the newsletter, which may be illegal in some jurisdictions and is at least a nuisance.
+
+When a user hits the block and subscribes through it, one of the following situations will happen:
+ - A new subscription -- Composr will sign them up and send a confirmation e-mail
+ - An existing subscription never confirmed -- Composr will treat this as a refresh to a new subscription, re-sending the confirmation e-mail
+ - An existing subscription -- Composr will show an error
+
+The maintenace module is a bit richer:
+ - A new subscription -- Composr will sign them up and send a confirmation e-mail
+ - An existing subscription never confirmed -- Composr will treat this as a refresh to a new subscription, re-sending the confirmation e-mail (regardless of what password was entered)
+ - An existing subscription, with the wrong maintenance password -- Composr will give an error (with an option to re-set the password), unless you are logged in with a privileged account
+ - An existing subscription, with the correct maintenance password -- Composr will update the newsletter subscription
+
+The block sets only for a single newsletter, and does not support subscription levels. The maintenance module can do for multiple newsletters at once, and does support subscription levels. This difference between block and maintenance page is intentional, as the block is intended only for new signups to a specific newsletter, not for changing existing subscriptions.
+
+[title="2"]Sending newsletters[/title]
+
+Newsletters are created using Comcode, and sent out in a dual format: both text and HTML. Most users will be able to read the HTML variant, as this is now by far the standard for common e-mail messages; however if they have this disabled, or an unusual e-mail client that cannot read HTML mails, then they will see the plain text version, which is your original Comcode.
+
+[box="Important note" width="25em" float="right"]You can use the WYSIWYG editor for making newsletters if you wish, but it is not advisable because plain-text readers will get some really ugly plain-text from it. If you make the newsletter using manual Comcode, the plain-text readers will see the Comcode, which is intrinsically easy to read.[/box]
+When you send a newsletter you choose where to send it. Usergroups/newsletters with no members (to be precise, no members that can receive emails) will not be shown as options.
+
+In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL_WRAP[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
+
+On the 'compose newsletter' screen there is a link to view newsletter subscribers. This will show all newsletter subscribers at all subscription levels.
+
+When composing your newsletter you will be given a choice to send it out at a scheduled time. This is particularly useful for companies that need to coordinate a marketing plan.
+
+Before your newsletter is sent, you have an opportunity to preview it, so you can ensure it is correct. Look at your preview carefully, as it is easy to make minor typographical or layout mistakes that would affect the professionalism portrayed in these bulk e-mails. You will also be e-mailed the newsletter during the preview stage so that you can perform the ultimate check.
+
+If you have [page="_SEARCH:tut_configuration"]CRON enabled[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
+
+[title="2"]Sent newsletters[/title]
+
+There is a newsletter archive available, so that you may browse through past newsletters, to make sure you present a consistent image, and generally keep track of what has been sent out in bulk for professional reasons.
+
+[title="2"]What's new ('new content')[/title]
+
+[media width="150" description="Sending a 'new content' newsletter" float="right"]data_custom/images/docs/newsletter_new.png[/media]
+{!newsletter:DOC_NEWSLETTER_CONTENT}
+
+In a similar vein, you may create newsletters from news. To do this, just visit the view page for the news that you wish to use and click the appropriate link. You will then be given the choice to refine the newsletter before it is sent.
+
+For each content type supported, it shows only if there are less than 300 items that would be covered. If there are 300 or more, then it considers the content type too common to include and no items are shown.
+
+[title="2"]Customised targeting[/title]
+
+You may export the newsletter subscribers to a [acronym="Comma-separated Values"]CSV[/acronym] file, change it somehow (using whatever strategy you like) and then choose to send out newsletters to your altered copy of the CSV file.
+
+This can be used in many ways, such as:
+ - Splitting up the subscribers, to do split testing
+ - Manually removing competitors from the list
+ - Picking out certain members from the newsletter list based on some kind of characteristic (you might use extra software to correlate this against another database in some way)
+ - Migrating the subscriber list to another piece of dedicated newsletter software, or sending it to an expert newsletter design company for targeting
+
+You can also import from a CSV file. Composr is quite flexible in supporting different layouts-- it will try and auto-sense things.
+
+Note that if you are using interest levels, each set of users with a different interest level should be stored in a different CSV file, as when you import them they would all be imported to the same one.
+
+[title="2"]Manually unsubscribing a member[/title]
+
+The easiest way is to go to where members signup, and act on their behalf.
+
+To unsubscribe a member from a newsletter:
+1) Log in with your administrative account, if you haven't already got an admin login open
+2) Go to the newsletter page (the [tt]site:newsletter[/tt] page-link)
+3) Enter the email address you wish to unsubscribe. Leave all other fields blank.
+4) If you have interest levels enabled: change "Subscription level for <newsletter name>" to "Not subscribed". If you do not have interest levels enabled, untick (uncheck) "Subscribe to <newsletter name>".
+5) Click "Join newsletter/Change settings"
+This works, even though the maintenance password was left blank, because Composr acknowledges your overriding administrative access.
+
+[title="2"]Templated newsletters[/title]
+
+Want to take things to the next level with your newsletters? You can create full HTML newsletters, with embedded unsubscribe links, using newsletter templating.
+
+Creating templated newsletters is best shown by example (this is the newsletter itself, fed into the field when you send the newsletter, or put inside the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template that prepopulates that field):
+[codebox]
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={!charset}" />
+<title>{title*}</title>
+</head>
+<body>
+	{$,Try and figure out the best greeting from the data available - we prefer to welcome people by forename but we might not have it}
+	<p>Dear \{+START,IF_NON_EMPTY,{forename}\}{forename}\{+END\}\{+START,IF_EMPTY,{forename}\}{name}\{+END\},</p>
+
+	{$PARAGRAPH,{$?,{$IS_EMPTY,{CONTENT}},Your text goes here.,{CONTENT}}}
+
+	\{+START,IF_NON_EMPTY,{unsub_url}\}
+	<p>You're receiving this newsletter because you subscribed at some point. Not interested anymore? <a href="{unsub_url*}">Unsubscribe</a>.</p>
+	\{+END\}
+	\{+START,IF_EMPTY,{unsub_url}\}
+	<p>You're receiving this e-mail because you are a member on {$SITE_NAME*}.</p>
+	\{+END\}
+</body>
+</html>
+[/codebox]
+
+Note how the example includes the 'html' tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard '[tt]MAIL[/tt]' template.
+
+You have the following template variables available to you (beyond all the default capabilities of Comcode):
+ - [b]title[/b], The subject line of the email (and also the equivalent of '[tt]{TITLE}[/tt]' in the [tt]MAIL[/tt] template)
+ - [b]forename[/b], The forename of the subscriber (may be blank if it is not known)
+ - [b]surname[/b], The surname of the subscriber (may be blank if it is not known)
+ - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER[/tt] language string -- depending on what data is available on the reader)
+ - [b]member_id[/b], The member ID of the subscriber, or blank if there is no discerned member ID
+ - [b]email_address[/b], The email address of the subscriber
+ - [b]sendid[/b], A special code identifying the subscriber (starts with 'm' if it is a member, or 'n' if it is a newsletter subscriber)
+ - [b]unsub_url[/b], A URL to unsubscribe from (one-click unsubscribe for newsletter recipients, a link to account settings for other recipients). If you are using [tt]unsub_url[/tt] in a Comcode newsletter it is very important not to insert it plainly, as Composr will look at the link for a link caption and incidentally click that link for every user. Instead use a Comcode 'url' tag and hence tell Composr what caption to give the link.
+
+If you are going to go down this path it is strongly recommended to tick (check) the 'HTML only' box when you go to send your newsletters, as the auto-generated text equivalents will not be easily readable.
+The vast majority of email applications have HTML capabilities nowadays, so you are not really sacrificing anything if you do this.
+
+This bit may confuse you: [tt]{+START,IF_NON_EMPTY,{forename}}{forename}{+END}{+START,IF_EMPTY,{forename}}{name}{+END}[/tt]
+It is saying "if the forename is available, use the forename, if the forename is not available, use the username".
+
+[title="2"]Bounce filtering[/title]
+
+There is a feature for removing newsletter subscribers that bounce e-mails (i.e. dead e-mail accounts). This stops noise coming back when you send out a newsletter, and increases the efficiency of future sends.
+
+The removal process also removes the "allow staff e-mails" setting from members who have a matching e-mail address.
+
+For this tool to work, you must have the PHP IMAP extension on your server.
+
+You should manually move anything sent to your website e-mail address that looks like a bounce e-mail into a new bounces folder, and then run the tool upon that folder:
+ - Go to Admin Zone > Tools > Newsletter
+ - Select the "Bounce filter" icon.
+ - Enter your server IMAP details.
+ - Select your bounces folder (if Composr can see one that matches the word "bounce", it will be auto-selected). Note that if you select a folder with too many e-mail messages in (i.e. something that doesn't just contain bounce e-mails) then Composr could give you an error due to running out of memory
+
+Composr will then show e-mail addresses found within e-mails in the selected folder, where it can find a matching newsletter/member account for an e-mail address. Any e-mail address attached to an e-mail that looks like a bounce e-mail will be auto-ticked (auto-checked). If you are confident the IMAP folder only contained bounces, you can tick (check) the remaining addresses.
+
+If you proceed through, all ticked (checked) e-mails will be removed from the newsletter / have their "allow staff e-mail" member setting disabled.
+
+[title="2"]Blocking senders[/title]
+
+If you wish to create a list of e-mail addresses to never send to, you can do so by making an [tt]uploads/website_specific/newsletter_blocked.csv[/tt] file. Put each e-mail address on it's own line. A CSV file with a single column is the same thing as a simple text file with one entry per line, so it's really simple to edit, whichever way you wish to work. The filter works behind-the-scenes between you choosing to send out your newsletter, and Composr actually sending it. If you have the filter successfully in place then Composr will confirm this with an "You have a [tt]uploads/website_specific/newsletter_blocked.csv[/tt] file in place, blocking (number of addresses) e-mail addresses from receiving the newsletter." message on the newsletter authoring screen ("Send out issue").
+The block list is useful for situations such as:
+ - A previous send failed part-way-through for some reason, and you have a list of users you know it did get sent to already.
+ - You maintain a manual list of users who have unsubscribed and you are very careful to not send to them, even if someone re-subscribes them.
+ - You want to block a list of e-mail addresses you know belong to competitors.
+You may add additional columns to the CSV file, which will be ignored. You can use this for keeping notes, for example. If you do this make sure you save as a true CSV file (comma-separated) though, not a TSV file.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
+
+{$SET,tutorial_tags,Newsletters,newsletter,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to send out news bulletins to newsletter subscribers, and to members of your community.}[block]main_tutorial_rating[/block]

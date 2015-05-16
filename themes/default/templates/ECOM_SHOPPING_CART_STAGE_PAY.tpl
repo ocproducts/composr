@@ -1,0 +1,3 @@
+<p>{!PAYMENT}</p>
+
+{TRANSACTION_BUTTON}

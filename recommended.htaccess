@@ -1,0 +1,158 @@
+# Disable inaccurate security scanning (Composr has it's own). This disabling only works with modsecurity1 unfortunately.
+<IfModule mod_security.c>
+SecFilterEngine Off
+SecFilterScanPOST Off
+SecRuleRemoveById 300018 340147 340014 950119 950120 973331
+</IfModule>
+
+<IfModule mod_php5.c>
+# Composr needs uploads; many hosts leave these low
+php_value post_max_size "16M"
+php_value upload_max_filesize "16M"
+
+# Turn insecure things off
+php_flag allow_url_fopen off
+php_flag register_globals off
+
+# Put some limits up. Composr is stable enough not to cause problems- it'll only use higher limits when it really needs them
+php_value memory_limit "128M"
+php_value max_execution_time "30"
+php_value max_input_vars "2000"
+
+# This causes unstability (and is known/documented to) but some hosts turn it on
+php_value mbstring.func_overload "0"
+
+# Suhosin can cause problems on configuration, language editing, and Catalogue forms, which use a lot of fields
+php_value suhosin.post.max_vars "2000"
+php_value suhosin.request.max_vars "2000"
+php_value suhosin.cookie.max_vars "100"
+php_value suhosin.cookie.max_name_length "150"
+php_value suhosin.post.max_value_length "100000000"
+php_value suhosin.request.max_value_length "100000000"
+php_value suhosin.post.max_totalname_length "20000"
+php_value suhosin.request.max_totalname_length "20000"
+php_flag suhosin.cookie.encrypt off
+php_flag suhosin.sql.union off
+php_flag suhosin.sql.comment off
+php_flag suhosin.sql.multiselect off
+php_flag suhosin.upload.remove_binary off
+</IfModule>
+
+# This unavoidably kills filedump folder creation, and stops us controlling our script execution time
+# php_flag safe_mode off		But unfortunately we can't control it except from php.ini
+
+# Sandbox Composr to it's own directory
+# php_value open_basedir "/tmp:/home/blah/public_html/composr/"		But needs customising for your server and only works outside php.ini in PHP6+
+
+# Set Composr to handle 404 errors. Assume Composr is in the root
+<FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
+ErrorDocument 404 /index.php?page=404
+</FilesMatch>
+
+# Compress some static resources
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
+</IfModule>
+
+# We do not want for tar files, due to IE bug http://blogs.msdn.com/b/wndp/archive/2006/08/21/content-encoding-not-equal-content-type.aspx (IE won't decompress again as it thinks it's a mistake)
+<IfModule mod_setenvif.c>
+SetEnvIfNoCase Request_URI \.tar$ no-gzip dont-vary
+</IfModule>
+
+<IfModule mod_rewrite.c>
+
+# Needed for mod_rewrite. Disable this line if your server does not have AllowOverride permission (can be one cause of Internal Server Errors)
+Options +SymLinksIfOwnerMatch -MultiViews
+
+RewriteEngine on
+
+# If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
+
+# Serve pre-compressed CSS/JS files if they exist and the client accepts gzip
+<FilesMatch "\.js\.gz($|\?)">
+ForceType application/javascript
+Header set Content-Encoding: gzip
+Header append Vary: Accept-Encoding
+</FilesMatch>
+<FilesMatch "\.css\.gz($|\?)">
+ForceType text/css
+Header set Content-Encoding: gzip
+Header append Vary: Accept-Encoding
+</FilesMatch>
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{REQUEST_FILENAME}\.gz -s
+RewriteRule (.*/templates_cached/[^/]*/[^/]*\.(css|js)) $1.gz [QSA]
+SetEnvIfNoCase Request_URI (.*/templates_cached/[^/]*/[^/]*\.(css|js)) no-gzip
+
+# Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
+RewriteCond $1 ^\d+.shtml [OR]
+RewriteCond %{DOCUMENT_ROOT}/$1 -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/$1 -l [OR]
+RewriteCond %{DOCUMENT_ROOT}/$1 -d
+RewriteRule (.*) - [L]
+
+# crossdomain.xml is actually Composr-driven
+RewriteRule ^crossdomain.xml data/crossdomain.php
+
+# WebDAV implementation (requires the non-bundled WebDAV addon)
+RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+
+#FAILOVER STARTS
+### LEAVE THIS ALONE, AUTOMATICALLY MAINTAINED ###
+#FAILOVER ENDS
+
+# Redirect away from modules called directly by URL. Helpful as it allows you to "run" a module file in a debugger and still see it running.
+RewriteRule ^([^=]*)pages/(modules|modules\_custom)/([^/]*)\.php$ $1index.php\?page=$3 [L,QSA,R]
+
+# PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
+RewriteRule ^([^=]*)pg/s/([^\&\?]*)/index\.php$ $1index.php\?page=wiki&id=$2 [L,QSA]
+
+# PG STYLE: These are standard patterns
+RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)/index\.php(.*)$ $1index.php\?page=$2&type=$3&id=$4$5 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/index\.php(.*)$ $1index.php\?page=$2&type=$3$4 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?]*)/index\.php(.*)$ $1index.php\?page=$2$3 [L,QSA]
+RewriteRule ^([^=]*)pg/index\.php(.*)$ $1index.php\?page=$3 [L,QSA]
+
+# PG STYLE: Now the same as the above sets, but without any additional parameters (and thus no index.php)
+RewriteRule ^([^=]*)pg/s/([^\&\?]*)$ $1index.php\?page=wiki&id=$2 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)/$ $1index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)$ $1index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)$ $1index.php\?page=$2&type=$3 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?]*)$ $1index.php\?page=$2 [L,QSA]
+
+# PG STYLE: And these for those nasty situations where index.php was missing and we couldn't do anything about it (usually due to keep_session creeping into a semi-cached URL)
+RewriteRule ^([^=]*)pg/s/([^\&\?\.]*)&(.*)$ $1index.php\?$3&page=wiki&id=$2 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$ $1index.php\?$5&page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$ $1index.php\?$4&page=$2&type=$3 [L,QSA]
+RewriteRule ^([^=]*)pg/([^/\&\?\.]*)&(.*)$ $1index.php\?$3&page=$2 [L,QSA]
+
+# HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
+RewriteRule ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+RewriteRule ^s/([^\&\?]*)\.htm$ index\.php\?page=wiki&id=$1 [L,QSA]
+
+# HTM STYLE: These are standard patterns
+RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
+RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
+RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
+RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
+
+# SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
+#RewriteRule ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+#RewriteRule ^s/([^\&\?]*)$ index\.php\?page=wiki&id=$1 [L,QSA]
+
+# SIMPLE STYLE: These are standard patterns
+#RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)$ $1/index.php\?page=$2&type=$3 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)$ $1/index.php\?page=$2 [L,QSA]
+#RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
+#RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,QSA]
+#RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,QSA]
+</IfModule>
+
+
+order allow,deny
+# IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with it's own DB-based banning - this makes DOS/hack attack prevention stronger)
+# deny from xxx.xx.x.x (leave this comment here!)
+allow from all

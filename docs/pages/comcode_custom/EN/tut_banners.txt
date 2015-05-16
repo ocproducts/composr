@@ -1,0 +1,143 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running advertisements (via the banner system)[/title]
+
+[surround]
+[media width="150" description="A banner" float="right"]data_custom/images/docs/banners_action.png[/media]
+{!banners:DOC_BANNERS}
+[/surround]
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Managing your own banner rotation[/title]
+
+[media width="150" description="Adding a banner" float="right"]data_custom/images/docs/banners_add.png[/media]
+There are many options to allow a rich and flexible rotation system. These include:
+ - The deployment agreement. A permanent banner can always be shown. A campaign banner is given a finite number of 'clicks', and will not be shown when the clicks have run out (although that number is editable). Default banners can always be shown, but are generally set to only appear when there are no permanent or campaign banners.
+ - You may specify a banner type. Types are set up to enforce certain restrictions (image dimensions, and file size) on the banners within that type. It is possible to call up the Composr banner.php with '?b_type=<type>' on the URL, which will force only banners of that type to be shown. Likewise, the 'BANNER' symbols first parameter can be set to <type> (e.g. [tt]{$BANNER,skyscraper}[/tt]). This is useful for a number of things, but perhaps the most significant is that is allows you to distinguish between banners of different sizes, storing each in an effectively separate rotation. You can then edit your templates to reference these different rotations, by pasting in the appropriate HTML (see BANNER.tpl for an unfiltered example -- this is the HTML used for the banner that appears in the top-right by default).
+ - Banners may be given an expiration date; this is useful in many situations, such as if a banner becomes inappropriate after an advertised event finishes, or if a client has only paid until a certain date.
+ - The 'importance modulus' allows you to balance the likelihoods of different banners being shown. It is not a percentage or fraction, but a high number (higher than other banners are given on average) should be given to a banner that is more likely to be shown.
+
+Important note: The campaign banner system allows a hit-balancing system, whereby the site the banner is for may show your network banners itself, and for each click they put into your network, they get an extra click out.
+
+[title="2"]More on balancing banners[/title]
+
+All banners are balanced against each other by an attribute known as the 'importance modulus', which is defined for every banner. The banner with the highest importance level is the one most likely to get shown. As new banners are added, importance modulus of banners will be needed to be adjusted higher if they're chance of being shown is required not to go down; this would be at the detriment of the banners you did not adjust the importance levels of.
+
+In other words, the importance modulus is not a chance of a banner being shown, but only a balancing factor. If you have 900 banners with importance 1, then a banner with importance modulus 100 has a 10% chance of being shown.
+
+The system will show permanent and campaign banners as a 50:50 split. Default banners can appear instead of either though, but only according to their importance level.
+
+[title="2"]Supported file types[/title]
+
+The banner system supports 4 different broad categories of file type:
+ - images
+ - flash (swf format)
+ - text
+ - urls (which are shown using frames)
+ - pure HTML
+ - HTML, with support for embedded PHP code
+
+[title="3"]Text[/title]
+
+You can add textual banners, which by default look exactly like Google Text ads. The best thing though is that you can set them to be 'hot text', which means that any Comcode will be scanned for use of the keywords, with matches leading to inline display of the text banners.
+
+[title="3"]Frames[/title]
+
+If you specify a URL to a script (such as the URL to another Composr installation's banner.php) instead of an image, then that script will be loaded in a frame, and is assumed to provide its own rotation inside that space. Because of this, only the script URL is required in place of the image URL, and the actual 'URL' field may be left blank and will be ignored (as the linked rotation provides these itself).
+
+Linking to non-image URLs instead of images is handy in a number of situations, including:
+ - if you want to chain banner networks together
+ - if you want to link to a textual banner
+ - if you want to make a page that displays a randomised banner based on some kind of algorithm (such as choosing randomly from a folder of pictures)
+
+[title="3"]Using a banner network's HTML[/title]
+[surround]
+[media width="150" description="Configuring the HTML to an external banner/rotation" float="left"]data_custom/images/docs/banners_config.png[/media]
+In order to use banners from an existing banner network, you often are asked to incorporate a chunk of HTML into your site. Composr makes this easy for you, as you can add banners consisting of raw HTML (or even PHP code).
+
+If you are using Google Adsense and don't see any banners, [url="http://yurko.net/blog/2010/03/website-related/white-space-instead-adsense-ads.html"]consider whether your account is set up correctly[/url].
+[/surround]
+
+Banners are shared on a site network using an iframe going to a URL like:
+[tt]http://centralsite/banner.php?source=sitename&b_type=bannertype[/tt]
+This code is given out when you add a banner. The 'source' comes from the name of the banner you added, which for purposes of a banner network, is considered also as the name of the site also showing banners in the network. A source site won't be shown its own banners. If you wish you may just strip out the source parameter if you don't need such a restriction -- if, for example, you are just using the banner sharing code all within your own site.
+
+[title="2"]Permissions[/title]
+
+[title="3"]Who may view what[/title]
+
+If you turn on the "Permissions" option (Admin Zone > Setup > Configuration > Feature options, Banners option group), you'll be able to configure which usergroups may view which individual banners. This is useful for banner targeting -- and the flip side of that is you can avoid showing inappropriate banners, e.g. adults banners to minors.
+
+[title="3"]Who may avoid banners[/title]
+
+Any usergroup with the "Avoid banners" permission will not see banners. Super administrators will have this permission (as they always have all permissions), and hence super administrators will never see banners. To test banners from a super administrator account (such as the default 'admin' account), use the 'SU' feature to switch to the test account: add [tt]&keep_su=test[/tt] onto the end of a URL.
+
+[title="2"]Banner status[/title]
+[surround]
+[media width="150" description="Viewing the status of a banner" float="left"]data_custom/images/docs/banners_view.png[/media]
+There is a facility for staff and banner submitters to view the status of their banner. Information about how much the banner has been viewed and clicked is shown, as well as the equivalent statistics for how the banners associated website (if there is one) has viewed and clicked the banner network.
+
+The details shown may have important statistical significance. For example, a banner that is viewed a lot, but never clicked, may not be a 'profitable' one to have in the rotation (note however, that a simple banner view could impact a visitor, and thus it actually being clicked is not always a measure of the user impact).
+[/surround]
+[title="2"]Having multiple banner sets[/title]
+
+You may have multiple sets of banners, determined by the 'Type' of the banners. A banners 'Type' defines what set it goes in.
+
+Each of these sets may be called up as a separate rotation, displayed in a different place, and it is often useful as a convention to use sets to group together those banners that have the same width and height.
+
+To set up a new rotation, displayed in the layout in a space of your choosing, use the following instructions.
+
+a) Copy this code from the [tt]GLOBAL_HTML_WRAP[/tt] template:
+[codebox]
+   {$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner parameter twice}
+   {+START,IF_NON_EMPTY,{$GET,BANNER}}
+      <div class="global_banner" style="text-align: {!en_right}">{$GET,BANNER}</div>
+   {+END}
+[/codebox]
+
+b) Change this bit of the above:
+[code]
+{$BANNER}
+[/code]
+to:
+[code]
+{$BANNER,example}
+[/code]
+Where 'example' is changed for whatever type string you've used for the banner set you want to show.
+
+c) Change the [tt]global_banner[/tt] CSS class used in the code snippet to a new CSS class of your own choosing (or just pull it out if you don't require any special styling around your banner).
+
+d) Place the code in any template you like (or multiple ones). Obviously you'll need to write it in in such a way as for it to fit well into the layout. This is a standard CSS/XHTML themeing issue.
+
+[title="2"]The Point Store[/title]
+
+If you wish to use your banner space, in part of full, for showing banners that your community want, then you may wish to enable the Point Store, to allow members to buy banners using points.
+
+More information on the Point Store is provided in the 'Creating an economy/reward-system for members via points' tutorial.
+
+Alternatively, or in conjunction with the Point Store, members may simple submit banners, and you may choose to validate them without requiring the members to spend points.
+
+[title="2"]Troubleshooting[/title]
+
+If banners won't show check:
+1) Banners are enabled in the configuration.
+2) You are not viewing as a super-administrator or any other usergroup that has 'Avoid banners' permission.
+3) Your banner is validated.
+4) Your banner has not expired.
+5) Your banner has hits assigned, is a permanent banner, or is a default banner and there aren't non-default banners obscuring it.
+6) That the banner type your banner is in is displayed (by default only the default 'General' banners are displayed, in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template). See "Having multiple banner sets".
+7) The banner type has permissions for the viewer's usergroup.
+8) The "Community advert chance" configuration option is not set to zero.
+
+[concepts
+ 1_key="Default banner"       1_value="A banner that is displayable at any time (i.e. both when campaign and permanent banners would be chosen for viewing), but is intended to have a low importance level such that it is shown when the system is low on banners"
+ 2_key="Campaign banner"      2_value="A banner that has a limited number of hits, but with support for hit balancing should the banner be tied to a site that is generating banner network clicks"
+ 3_key="Importance modulus"   3_value="A number representing the how likely a banner is to be shown, releative to the other importance moduli (in essence, they are ratios to each other of how likely the banner will be shown)"
+ 4_key="Hit balancing"        4_value="A feature that allows a banner network to be created such that banners get as many hits out of the system as their sites put clicks into the system"
+ 5_key="Banner"               5_value="An advertising banner"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points[/page]
+
+{$SET,tutorial_tags,Banners,eCommerce,banners,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Use the banners system to run multiple advertising campaigns on your website, using multiple media profiles.}[block]main_tutorial_rating[/block]

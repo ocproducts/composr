@@ -1,0 +1,98 @@
+[title sub="Recommending {$SITE_NAME}"]Help[/title]
+
+When you recommend our site or a piece of content on our site, you can either:
+ - type in the details of your contacts manually
+ - upload a [abbr="comma-separated Values"]CSV[/abbr] file of contact details
+
+[title="2"]CSV files[/title]
+
+If you choose to upload a CSV file we will give you a choice to choose which contacts you would like to recommend to before sending -- don't worry we won't spam anyone on your contact list!
+
+Our recommend tool should work with all major software and web applications that support CSV, and we have prepared instructions for retrieving CSV files from the following software:
+
+[title="2"]Windows Live Mail[/title]
+
+1) Start Windows Live Mail.
+2) Click on the &quot;Contacts&quot; icon at the bottom of the left column.
+3) On the Windows Live Contacts toolbar, click File | Export &#9658;, and then choose Comma Separated Values (.CSV)
+4) Browse to a folder where you want to store your contacts and give it a name; click Next.
+5) Select the fields you want to save; click Finish.
+6) You will see a progress window that tells you the export is being actioned; the window closes.
+7) You can now close the Windows Live Contacts window. The process is complete.
+8) Find the .csv file in the location in which you saved it.
+
+[title="3"]Windows Mail[/title]
+
+1) Start Windows Mail;
+2) Click on "Tools" and then on "Windows Contacts";
+3) On the toolbar, click Export (*), and then choose CSV (comma-separated Values).
+3) Select a folder where you want to store your contacts and then click OK;
+4) When a message appears telling you that the contacts export process has completed, click OK, and then click Close.
+
+* If you do not see an export button on your toolbar it means that your folder is not marked as a contacts containing folder. Right click on the Contacts folder and click on Properties. Click on the Customize tab. You will see the following feature: Use this folder type as a template. Choose Contacts and click Ok. Now you should see the aforementioned Export button.
+
+[title="3"]Outlook Express[/title]
+
+1) Start Outlook Express;
+2) Click on "Export" and then on "Address Book";
+3) Choose "Text File (comma-separated Values)";
+4) Select the folder where they will be stored and the filename;
+5) Click the "Next" button;
+6) Click the "Finish" button to complete contact export;
+7) Click on "Close" button to close the window.
+
+[title="3"]Mozilla Thunderbird[/title]
+
+1) Start Thunderbird;
+2) Click on "Tools" from the top menu, and then select "Address Book";
+3) In this "Address Book" select "Tools" and then "Export";
+4) Select "comma-separated" from "Save as type" select box;
+5) Enter the name for the exported (saved) file;
+6) Click on "Save" button and you are done.
+
+[title="3"]Microsoft Outlook[/title]
+
+1) Start Outlook
+2) From the left side menu select "Contacts";
+3) From the "File" menu select "Import and Export...";
+4) Select Export to a file from "Choose and an action to perform:" and click on the "Next" button;
+5) Select "comma-separated Values (Windows)" from the "Create a file of type:" select box and click on the "Next" button;
+6) Select a folder from which the contacts will be exported (usually the "Contacts" folder) and click the "Next" button;
+7) Select the filename of the exported file and its location and click the "Next" button;
+8) Click "Finish" button and you are done.
+
+[title="3"]Gmail[/title]
+
+1) Log into your Gmail email account;
+2) Click on Contact from the left menu;
+3) Click on "Export" in the top right title bar;
+4) Select the contacts group that you want to export (i.e. "Everyone (All Contacts)" to export all contacts);
+5) Select "Google's CSV format (for importing into another Google account)." on "What format would you like to export to?";
+6) Click the "Export" button;
+7) Save the file.
+
+[title="3"]Yahoo[/title]
+
+1) Log into your Yahoo email account;
+2) Click on Contact from the top menu;
+3) Click on the 'Import/Export' link on top right;
+4) From the "Export" page section, click on the "Yahoo! CSV:" "Export Now" button;
+5) Save the file.
+
+[title="3"]Hotmail[/title]
+
+1) Log into your Live.com email account;
+2) Click on "Contact list" from the left menu;
+3) From the middle-top menu select "Manage" and then "Export";
+4) Enter the security image characters into the text box and click "Export";
+5) Save the file.
+
+[title="3"]LinkedIn[/title]
+
+1) Log into your LinkedIn account;
+2) Click on Contacts from the left menu;
+3) At the very bottom click "Export connections";
+4) Select "Yahoo! Mail (.CSV file)"
+5) Type the security image in the text box;
+6) Click the "Export" button;
+7) Save the file.

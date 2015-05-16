@@ -1,0 +1,79 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Basic forum moderation[/title]
+
+The term 'moderation' is usually (in web applications) applied only to discussion forums and refers to the managing of topics, posts and polls, and managing the community in general (Composr also uses the term for chatroom and Wiki+ moderation, but these are not discussed in this tutorial).
+
+This tutorial will explain what is possible in Composr, although these features are all very easy to find and use.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Moderating topics[/title]
+
+[media width="150" description="Moderation actions are presented underneath topics when they are individually viewed" float="right"]data_custom/images/docs/mod_topic.png[/media]
+Topics may be individually moderated from inside the topic, or mass moderated from the forum-view, by using the 'mark topic' feature in conjunction with the 'topic actions' drop-down list.
+
+Topic moderation actions are:
+ - moving topics
+ - deleting topics
+ - editing topics
+ - closing, pinning, sinking, and cascading topics (these are available individually, or together by editing the topic)
+ - validating topics
+[surround]
+[media width="150" description="Mass moderation of topics is performed by selecting topics and then choosing an action" float="right"]data_custom/images/docs/mod_topics.png[/media]
+[media width="150" description="When editing a topic, various options may be simultaneously changed" float="left"]data_custom/images/docs/mod_edit_topic.png[/media]
+All these actions are very straight-forward.
+[/surround]
+[title="2"]Moderating posts[/title]
+
+[media width="150" description="Moderation links are present underneath posts" float="right"]data_custom/images/docs/mod_post.png[/media]
+Posts may be individually moderated, or mass moderated. Both these actions are done from inside the topic where the posts reside.
+
+Post moderation actions are:
+ - merge posts into (this can only be done with mass moderation)
+ - split posts from
+ - deleting posts
+ - editing posts
+ - validation posts
+
+[media width="150" description="Mass moderation of posts is performed by selecting posts and then choosing an action" float="right"]data_custom/images/docs/mod_posts.png[/media]
+The 'split posts from' feature moves posts out of the current topic and into a new one.
+
+The 'merge posts into' feature moves posts out of the current topic and into an existing one.
+
+When moving to a new topic, the title of the topic is as of the first moved post. If the first moved post has no title the topic will be given an arbitrary title (which you may later edit).
+
+Deleted posts will be kept behind in the 'post history'. Post history can be accessed in three ways:
+ - Clicking the 'history' button next to a post (for edited posts only)
+ - Clicking the 'post history' link in a member profile
+ - Selecting the 'topic history' topic action
+The 'post history' feature allows you to view text text of all revisions a post has gone through, and restore deleted posts. It is also possible to delete post history. The 'post history' feature was designed so you can track moderations, including moderations done by actual posters (in case they are trying to cover something up).
+
+[media width="150" description="Mass moving posts results in this interface" float="right"]data_custom/images/docs/mod_move_posts.png[/media]
+
+[title="2"]Self moderation[/title]
+
+Whether members may moderate their own posts and topics depends on their privileges. The forum permissions are set in exactly the same way as other permissions in Composr are.
+
+[title="2"]Validation[/title]
+
+Without the right permissions members will not be able to make topics and posts without them being initially marked as validated. If you have chosen to configure your forum like this then you will need to check all non-validated topics and posts for suitability of content, and choose to validate or delete them depending on this.
+
+[title="2"]Important posts[/title]
+
+Moderators may choose to flag a post of theirs as important. This will usually be used to carry one of three meanings:
+ - the post contains important information
+ - the moderator is exerting their authority
+ - the post was created by a multi-moderation, and hence is automated or otherwise standardised
+
+[concepts
+ 1_key="Moderation"        1_value="The process of managing a discussion forum's content and community"
+ 2_key="Mass moderation"   2_value="Moderation applies simultaneously across multiple items of content"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
+ - [page="_SEARCH:tut_forum_helpdesk"]Running a discussion-forum-based helpdesk[/page]
+ - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
+ - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
+
+{$SET,tutorial_tags,Forum,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial explains how to moderate topics and posts under Conversr, and how post approval works.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,279 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Choosing how to publish[/title]
+
+When it comes to deciding how to release information, things can be difficult with Composr. Not due to complexity, or lack of features -- but because Composr offers so much to choose from, that you actually have the opportunity to sit back, and think, 'which is best for me?'.
+
+This tutorial will summarise the main ways to release information in Composr, and the relative advantages and disadvantages of each.
+
+There are other ways of releasing information in Composr not mentioned here, such as newsletters, and other less-obvious ways. However this tutorial focuses on published and archived forms, rather than the full range.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The ways[/title]
+
+The main ways to release information in Composr are:
+ - Comcode pages
+ - News articles
+ - Catalogues
+ - Wiki+
+ - Discussion forums
+ - Downloads
+
+Comcode pages are usually the most appropriate way of releasing permanent information, as they are standalone, and thus not cluttered with additional module-specific information and navigation mechanism, and not linked in with any complex metaphor.
+
+News articles are great for releasing "update" information. They are permanently archived and linkable, and thus may be used for permanent information, but this will only really be desirable for uses such as journals due to the explicit dating of the material.
+
+Catalogues store information in a database-like fashion, with a strict record format that the stored information must comply with. This is therefore very appropriate for holding records, but feels forced for holding documents.
+
+Wiki+ is a very adhoc system, and designed as a community database (but not in the formal sense of a database with records). It is great for storing structured information when presentation is less important than efficiency of use.
+
+Discussion forums are even more adhoc from Wiki+, and whilst they can be heavily structured, they are designed to hold transitory information. Two distinct advantages are the efficiency that moderation features provide, and the fact that users tend to 'lurk' on forums and thus information released through forums reaches them fast.
+
+Downloads may be used to release information indirectly, essentially via archive.
+
+[title="2"]Comparison table[/title]
+
+[html]
+<table class="columned_table results_table wide_table">
+	<thead>
+		<tr>
+			<th>
+			</th>
+			<th>
+				Comcode pages
+			</th>
+			<th>
+				News articles
+			</th>
+			<th>
+				Catalogues
+			</th>
+			<th>
+				Wiki+
+			</th>
+			<th>
+				Discussion Forums
+			</th>
+			<th>
+				Downloads
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<p>User submittable</p>
+			</td>
+			<td>
+				<p>Not really</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Supports validation</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Quick to add (to)</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Automatically indexed</p>
+			</td>
+			<td>
+				<p>No, except on site-map</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Clean</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Moderately</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>The content is not on the page: it is
+				provided there.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Regularly browsed</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Moderately</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Structured data</p>
+			</td>
+			<td>
+				<p>No, unless you use Custom Comcode tags for this</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Moderately (via post templates)</p>
+			</td>
+			<td>
+				<p>Any file type can be presented for
+				download.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Transitory</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Easy to re-organise</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>No (and you wouldn't!)</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+			<td>
+				<p>Yes</p>
+			</td>
+			<td>
+				<p>Yes, very!</p>
+			</td>
+			<td>
+				<p>No</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]
+
+{$SET,tutorial_tags,wiki,cns_forum,news,downloads,core_comcode_pages,catalogues,Content,Pages,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details on different publishing features available in Composr, and their advantages/disadvantages.}[block]main_tutorial_rating[/block]

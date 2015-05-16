@@ -1,0 +1,69 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+#ze_panels_wrap {
+	min-height: 520px;
+}
+
+#p_panel_left {
+	left: 0;
+	border-right: 3px solid {$GET,tab_border};
+	z-index: 10;
+}
+
+#p_panel_right {
+	right: 0;
+	border-left: 3px solid {$GET,tab_border};
+	z-index: 10;
+}
+
+.ze_tabs {
+	background-color: {$GET,native_ui_background};
+}
+
+.ze_tabs .tab {
+	min-width: 3.4em;
+}
+
+#info_panel_left, #info_panel_right, #edit_panel_left, #edit_panel_right, #view_panel_left, #view_panel_right, #settings_panel_left, #settings_panel_right {
+	padding: 0 1em;
+}
+#view_panel_left {
+	padding: 1em;
+}
+
+.ze_panel {
+	width: 19em;
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: auto;
+	outline: 0;
+	height: 520px;
+	background-color: {$GET,area_background};
+	border-bottom: 3px solid {$GET,tab_border};
+}
+
+.ze_panel_expanded {
+	width: 45em;
+}
+
+.ze_middle {
+	margin: 0 19em;
+}
+
+#p_panel_right .tab {
+	float: right;
+}
+
+.ze_textarea {
+	width: 100%;
+	height: 320px;
+}
+
+.ze_textarea_middle {
+	width: 100%;
+	height: 320px;
+}
+

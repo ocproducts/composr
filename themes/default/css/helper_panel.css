@@ -1,0 +1,66 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.helper_panel ~ .global_middle {
+	margin-right: 265px !important;
+}
+.helper_panel_hidden ~ .global_middle {
+	margin-right: 16px !important;
+}
+
+.helper_panel {
+	width: 265px;
+	{$BETA_CSS_PROPERTY,transition: width 0.2s linear !important;}
+}
+.helper_panel_hidden {
+	width: 30px !important;
+}
+
+#helper_panel_toggle {
+	outline: 0;
+	float: {!en_right};
+	margin: 12px 6px;
+}
+
+#helper_panel_toggle img {
+	vertical-align: middle;
+}
+
+.global_helper_panel_wrap {
+	border: 1px solid {$GET,pale_border};
+	background-color: {$GET,area_3_background};
+	overflow: hidden;
+	position: relative;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	{$BETA_CSS_PROPERTY,border-top-left-radius: 15px;}
+	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 15px;}
+}
+
+.global_helper_panel {
+	padding: 1em;
+	position: relative;
+	min-height: 450px;
+}
+
+.global_side_panel .global_helper_panel .box {
+	font-size: 1em;
+}
+
+.global_helper_panel_text {
+	z-index: 4;
+	position: relative;
+}
+
+.global_helper_panel_text_over {
+}
+
+.global_helper_panel_html {
+	position: absolute;
+	/*bottom: -270px;*/
+	z-index: 2;
+	width: {$?,{$MOBILE},315,390}px;
+}
+

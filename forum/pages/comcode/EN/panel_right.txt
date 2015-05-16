@@ -1,0 +1,5 @@
+[surround="boxless_space"]
+[block failsafe="1"]main_leader_board[/block]
+[block failsafe="1"]side_calendar[/block]
+[block failsafe="1"]side_shoutbox[/block]
+[/surround]

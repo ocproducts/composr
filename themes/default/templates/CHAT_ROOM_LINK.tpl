@@ -1,0 +1,1 @@
+<li><a href="{URL*}">{+START,FRACTIONAL_EDITABLE,{NAME},room_name,_SEARCH:admin_chat:__edit:{ID}}{NAME*}{+END}</a> <em class="associated_details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated_details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>

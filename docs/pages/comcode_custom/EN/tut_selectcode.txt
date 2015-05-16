@@ -1,0 +1,126 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Filtering using Selectcode syntax[/title]
+
+Selectcode is a special Composr syntax (language) for writing filter lists. In other words, it is a way of writing down what you would like to be matched.
+Various areas of Composr support the Selectcode syntax, including the [tt]main_content[/tt] block, and the [tt]if_in_group[/tt] Comcode tag.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The syntax[/title]
+
+Selectcode is a comma-separated list of match-specifier tokens, where a match-specifier may be:
+ - an acceptable-literal (e.g. '1').
+ - an avoiding-literal (e.g. '!1')
+ - a bounded acceptable-range (e.g. '1-3')
+ - a non-bounded acceptable-range (e.g. '3+')
+ - an acceptable subtree (e.g. '3*')
+ - an avoiding subtree (e.g. '3~')
+ - an acceptable set of direct descendents (e.g. '3>')
+ - all-acceptable '*'
+
+[title="2"]Examples[/title]
+
+It's easier than it sounds. Here are some examples...
+
+Match either 1, 3, or 6 and higher.
+[code="selectcode"]
+1,3,6+
+[/code]
+
+Match anything except 2, 4, and 5 (which turns out the same as the above example, assuming we are working only with numeric IDs and 1 is the lowest ID).
+[code="selectcode"]
+*,!2,!4,!5
+[/code]
+
+Match anything within the range 1 to 5, except 3.
+[code="selectcode"]
+1-5,!3
+[/code]
+
+[title="2"]Subtree matching[/title]
+
+The above examples all work with numeric IDs, and work on lists. In applicable contexts Selectcode can also be used to write tree structure matches. Here are some examples...
+
+Match anything under a gallery named 'foo':
+[code]
+foo*
+[/code]
+
+Match anything under a category (e.g. a gallery) named 'foo', but not 'foo' itself:
+[code]
+foo*,!foo
+[/code]
+
+Match anything  except anything under '3':
+[code]
+*,3~
+[/code]
+
+Match anything  directly under '3':
+[code]
+3>
+[/code]
+
+[title="2"]Numeric or not?[/title]
+
+Selectcode does not care whether it is matching against numeric or string IDs. However, of course if you are writing a filter and applying it to something, the choice will be made for you. For example, the gallery system uses string IDs for categories, and the download system uses numeric IDs for categories.
+The only caveat is for string ID systems you obviously can't use number range specifiers.
+
+[title="2"]Trees or not?[/title]
+
+Obviously you can only use the tree match specifiers if you are applying the filter for something that supports tree structures.
+
+[title="2"]Categories or entries?[/title]
+
+Selectcode is not written specifically to be for matching against category IDs or entry IDs, it again depends what the filter is applied to.
+However, if you are using tree match specifiers then these will be written against categories even if you are matching against entries. For example, if you are writing a filter to match against download entries, and you use tree match specifiers, the tree match specifiers would be referring to download categories, whilst the other specifiers would be referring to download entries.
+
+[title="2"]Blank filters, and precedence[/title]
+
+A blank filter will match [i]nothing[/i]. If you want to match everything you must write a filter as "[tt]*[/tt]".
+
+Selectcode precedence is not based on order, it is based on the rule "pick out what is accepted then remove what is avoided". In other words, the filter first works out what IDs pass (e.g. "*" or "5" or "1-30" or "bar*") and then removes and IDs that have been explicitly marked as 'avoid' (e.g. "!3" or "foo~").
+
+[title="3"]Not[/title]
+
+It is important to understand that "!" does not really mean 'not', it means 'avoid' or 'except'. There is no way to use Selectcode to match on a negative, you can only limit what positive matches are accepted.
+
+Let's say we want to match anyone not in usergroup #14 using the Tempcode [tt]IS_IN_GROUP[/tt] symbol, which happens to work via Selectcode.
+
+[title="4"]Attempt 1[/title]
+
+[code]
+{+START,IF,{$IS_IN_GROUP,!14}}...{+END}
+[/code]
+This is incorrect, because we haven't defined any positive matches.
+
+[title="4"]Attempt 2[/title]
+
+[code]
+{+START,IF,{$IS_IN_GROUP,*,!14}}...{+END}
+[/code]
+This is also incorrect, because it would match if a member happened to be in another group additionally to usergroup #14.
+
+[title="4"]Attempt 3[/title]
+
+[code]
+{+START,IF,{$NOT,{$IS_IN_GROUP,14}}}...{+END}
+[/code]
+Finally, this is correct. It negates the Selectcode after it runs, via the Tempcode [tt]NOT[/tt] symbol.
+
+[title="2"]Finding IDs[/title]
+
+You may wonder how to find IDs for use in filtering. The best way is to look at the 'edit' URL for the entries. They will contain something like '&id=5', where 5 would be the ID of that particular entry.
+
+[concepts
+ 0_key="Selectcode"  0_value="Composr's syntax for concisely specifying things to choose, e.g. 1-4,7"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_fields_filter"]The form field filter system[/page]
+ - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+ - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via comcode)[/page]
+ - [page="_SEARCH:tut_filtercode"]Filtering using Filtercode syntax[/page]
+
+{$SET,tutorial_tags,Power tools,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Selectcode is our language for saying what content you would like to be matched/selected. Learn how to use it.}[block]main_tutorial_rating[/block]

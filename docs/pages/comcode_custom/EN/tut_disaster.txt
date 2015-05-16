@@ -1,0 +1,129 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Disaster recovery[/title]
+
+[i]The Composr 'error log' screen points to this tutorial. If you think you have found a bug, please [page="site:free_tickets"]report it[/page]. The rest of this tutorial deals with potential disaster situations -- an error in the error log does not imply a disaster has happened.[/i]
+
+This tutorial will go through some solutions to 'disasterous' scenarios that could happen on an unstable web server configuration. It does not cover all that could go wrong by any means, as there are literally an infinite number of things that could go wrong if Composr is running in an unreliable environment.
+
+I am going to assume that you have access to phpMyAdmin for the purposes of this tutorial. phpMyAdmin is a user-friendly web-based frontend to MySQL, and is available from most hosting control panels. For more information, see the [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page] tutorial.
+
+If you need a quick data rescue, consider [page="site:support"]using ocProducts support[/page] (you can submit an emergency ticket, so long as you have some credit in your support account).
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Repairing a corrupted copy of Composr[/title]
+
+The upgrader tool (accessible via [tt]upgrader.php[/tt]) contains a very useful 'integrity checker' which can find out-dated and corrupt files. You can use this tool at any point, regardless of whether you have recently upgraded or not.
+
+[title="2"]Repairing corrupted MySQL tables[/title]
+
+Instructions are provided in the [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page] tutorial.
+
+If you don't have phpMyAdmin, whatever database management tool should have an equivalent feature as table repair is a standard MySQL mechanism.
+
+If you don't have any visual database management tool, you should look into getting one. However if you are technical you can use the command line using the MySQL [tt]REPAIR TABLE <tablename>[/tt] command, or the [tt]myisamchk[/tt] program to batch fix all [tt]*.MYI[/tt] files while having the MySQL server temporarily off-line.
+
+[title="2"]Fixing a theme[/title]
+
+If you've set up a theme, that is activated, and you've edited it in such a way that you can no longer realistically use the Admin Zone, you'll need to rescue your theme.
+
+If you still are logged in as admin or the default theme is accessible from guest accounts, use the 'Safe mode' link you were asked to bookmark during the Setup Wizard -- this will allow you to use your website, using the default theme. If you have forgotten the link, it's any link to your website with [tt]&keep_theme=default[/tt] added to the end of the URL.
+
+If you are not logged in as admin, connect to your web server using FTP, then rename all the folders inside the [tt]themes[/tt] folder except [tt]default[/tt]. For instance, if you have folders [tt]my_theme[/tt] and [tt]another_theme[/tt] and [tt]default[/tt], rename the first two to [tt]my_theme.old[/tt] and [tt]another_theme.old[/tt], but leave [tt]default[/tt] along. This renaming will essentially temporarily erase your themes and force Composr to use the default theme regardless of permissions. Now change the theme selection on your site back back to default, rename your theme folders back to their prior names (remove the [tt].old[/tt] suffix you added), fix your theme, and then restore your theme selection.
+
+[title="2"]Changing an account password[/title]
+
+If you've misset a Composr account password and for whatever reason can't use the 'lost password' feature to reset it (perhaps because of an invalid/non-existent e-mail address for that account, or a faulty/non-existent mail server, or a protected admin account), then you'll want to manually reset it.
+Obviously this needs a greater level of access than ordinary members would have. We could either use:
+ - Database access
+ - Disk access
+
+[title="3"]Via the database[/title]
+
+For this, I am assuming that you are using [concept]Conversr[/concept]. If you are using another forum then the method will be similar, but will be done upon the data of that forum.
+
+[media width="150" description="Select to browse the f_members table" float="left"]data_custom/images/docs/disaster_pass_1.png[/media]
+[media width="150" description="Edit the row for the username for which the password should be changed" float="right"]data_custom/images/docs/disaster_pass_2.png[/media]
+1) Enter phpMyAdmin
+
+2) Browse the contents of the Composr f_members table (named [tt]cms2_f_members[/tt] if you used the default table prefix).
+
+3) You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
+
+[media width="150" description="Change the settings and 'Go'" float="right"]data_custom/images/docs/disaster_pass_3.png[/media]
+4) There are numerous fields, but we only need to change three:
+ - [tt]m_pass_hash_salted[/tt] should be given the new password. It is essential that you also choose 'MD5' from the list to the left of the input field, so that the password gets 'encrypted' (Composr assumes an encrypted password and if it is not then it will not successfully log in).
+ - [tt]m_pass_salt[/tt] should be blanked out.
+ - [tt]m_password_compat_scheme[/tt] should be set to the literal value 'md5'.
+
+5) Scroll to the bottom of the form and click 'Go'.
+
+You should now be able to log in to Composr using your new password.
+
+[title="3"]Via the disk[/title]
+
+If you need to 'hack' your way in to the site using your FTP access, you can place a temporary backdoor.
+
+Go to http://www.myipaddress.com/ and copy your IP address, then put it into your [tt]_config.php[/tt] file:
+[codebox]
+$SITE_INFO['backdoor_ip']='12.34.56.78'; // Enable to a real IP address to force login from FTP access (if lost admin password)
+[/codebox]
+
+You will then be logged in as the first admin user there is. Additionally membership bans, probation, and flood control, will not apply when using the backdoor (so it is useful if your account was locked somehow, e.g. by a malicious other staff member).
+
+It should go without saying that you should only use this 'backdoor' for a short space of time and not disclose your IP address to third parties when doing it. ocProducts makes no claims to how secure this backdoor might be and you open it up entirely at your own risk.
+
+[title="2"]Changing the master password[/title]
+
+If you need to log in to the upgrader, config editor, or code editor, you'll need the master password.
+
+If you have forgotten it, to change it just edit the [tt]_config.php[/tt] file:
+[code]
+$SITE_INFO['admin_password']='...';
+[/code]
+Change the [tt]...[/tt] bit to the actual password you want. You don't need to encrypt it, just put it in exactly.
+
+You should then encrypt your password via changing the password within the [tt]/config_editor.php[/tt] script.
+
+[title="2"]Unbanning an IP[/title]
+
+[media width="150" description="Select to browse the banned_ip table" float="left"]data_custom/images/docs/disaster_ban_1.png[/media]
+[media width="150" description="Delete the row corresponding to your IP address" float="right"]data_custom/images/docs/disaster_ban_2.png[/media]
+If you are unfortunate enough to have somehow been banned from your own website, use phpMyAdmin to browse the 'banned_ip' table, and delete the row containing your IP address. If you don't know your IP address then you can find it out from http://www.myipaddress.com/.
+
+[title="2"]Resetting page ownerships[/title]
+
+If you delete or demote an admin, you may find lots of pages now show Comcode permission errors (even default ones, which are assigned to the first site admin automatically).
+
+To fix this, edit the Comcode page and assign a new submitter via the edit form.
+
+To do it en-masse, you can run this in Commandr (this example assumes you are reassigning from member #5 to member #2):
+[code]
+:$GLOBALS['SITE_DB']->query_update('comcode_pages',array('p_submitter'=>2),array('p_submitter'=>5));
+[/code]
+and then clear the Comcode page cache from Admin Zone > Tools > Cleanup tools.
+
+[title="2"]Changing base configuration[/title]
+
+If your server base configuration has changed (such as your database password, for example) then you need to update Composr's [tt]_config.php[/tt] config file to reflect this. You can either do this directly, or you can do it via launching the [tt]config_editor.php[/tt] script installed at the base of your website (you will need your master password to do this).
+
+[title="2"]Removing Facebook from an account[/title]
+
+If you have associated an account with Facebook, you can remove it by doing a password reset on that account.
+
+[title="2"]Problems with addons[/title]
+
+If you find an addon is crashing your site, the Safe Mode link ([tt]http://yoursite/index.php?keep_safe_mode=1[/tt]) can help. It should let you into your site to uninstall the addon causing the problem.
+
+The above requires for to be logged in at admin, which you may not be or be able to do. You can usually also uninstall an addon by examining the raw TAR file from the addon directory. Any files inside it should be deleted manually from your website.
+
+[title="2"]Disabling short URLs[/title]
+
+Short URLs are subject to your web host supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
+You can use the [tt]config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]config_editor.php[/tt] script, login, look for the "Whether to block the short-URL (mod_rewrite)" option, set it to [tt]1[/tt], and then save the configuration.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+ - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr users[/page]
+
+{$SET,tutorial_tags,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Some 'life saving' solutions to disasterous scenarios that can happen on an unstable web server configuration.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,37 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Username autocomplete */
+
+.-sew-list-container {
+	background: {$GET,native_ui_background};
+	border: 1px solid {$GET,pale_border};
+	border-radius: 3px;
+	{$BETA_CSS_PROPERTY,box-shadow: 0 0 10px {$GET,standard_border};}
+	min-width: 15em;
+}
+
+.-sew-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.-sew-list-item {
+	display: block;
+	padding: 0.5em 1em;
+	border-bottom: 1px solid {$GET,pale_border};
+	cursor: pointer;
+}
+
+.-sew-list-item small {
+	color: {$GET,seed};
+}
+
+.-sew-list-item.selected {
+	color: {$GET,native_ui_selected_foreground};
+	background: {$GET,area_current_background};
+	text-decoration: none;
+}

@@ -1,0 +1,188 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/*
+The dropdown CSS is generally split into "toplevel" and "nlevel", with a different set of HTML and rules for each.
+"nlevel" is everything other than the top level.
+
+For example:
+ "toplevel" makes the whole li clickable by making the inside anchor a block. The image is in the link.
+ "nlevel" has the image to the left of the anchor, like with most of the other menu types.
+*/
+
+
+.global_navigation .menu_type__dropdown {
+	float: left;
+}
+
+.menu_type__dropdown li.toplevel {
+	float: {!en_left};
+	border-{!en_left}: 1px solid {$GET,standard_border};
+	margin-{!en_right}: -1px;
+	margin-bottom: 0;
+	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
+	/*{+START,IF,{$EQ,{$LANG},EN}}*/
+		font-size: 0.9em;
+	/*{+END}*/
+	/*{+START,IF,{$NEQ,{$LANG},EN}}*/
+		font-size: 0.72em;
+	/*{+END}*/
+	padding: 0.5em 0.25em;
+}
+
+.menu_type__dropdown li.toplevel.first {
+	border-left: 0;
+}
+
+.menu_type__dropdown li.toplevel.last {
+	float: none !important; /* so it eats all space remaining */
+	overflow: hidden; /* so it is shunted against it's left-hand neighbours without overlapping */
+	margin-{!en_right}: 0 !important; /* as would cause wrapping with the overflow hidden */
+	position: relative;
+	{!en_left}: -1px; /* In place of margin-right */
+	border-left: 0;
+}
+
+.menu_type__dropdown li.toplevel.menu_spacer {
+	height: 1.15em;
+	width: 4em;
+	padding: 0.5em;
+	float: {!en_left};
+}
+
+.menu_type__dropdown a.toplevel_link {
+	display: block;
+	padding: 0.4em 0.5em;
+	outline: 0;
+	text-decoration: none;
+	color: inherit;
+}
+
+.menu_type__dropdown .has_children>a.toplevel_link:after {
+	content: "\025BC"; /* Downward arrow */
+	vertical-align: middle;
+	padding-left: 0.5em;
+	font-size: 0.8em;
+	display: inline-block;
+	margin-top: 4px;
+}
+
+.menu_type__dropdown li.toplevel.last a {
+	border-left: 1px solid {$GET,standard_border};
+}
+
+.menu_type__dropdown .toplevel_link a, .menu_type__dropdown .toplevel_link a:visited, .menu_type__dropdown .toplevel_link a:hover {
+	text-decoration: none;
+}
+
+.menu_type__dropdown .toplevel.current .toplevel_link span, .menu_type__dropdown .toplevel .toplevel_link:hover span {
+	text-decoration: underline;
+}
+.menu_type__dropdown .toplevel .toplevel_link.non_link:hover span {
+	text-decoration: none;
+}
+
+.menu_type__dropdown .toplevel_link img {
+	max-width: 20px;
+}
+
+
+.menu_type__dropdown ul.nlevel {
+	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
+	line-height: 1.4em;
+	border-top: 1px solid {$GET,standard_border};
+	border-left: 1px solid {$GET,standard_border};
+	border-right: 1px solid {$GET,standard_border};
+}
+
+.menu_type__dropdown ul.nlevel ul.nlevel {
+	margin-top: -1px; /* To compensate for border size */
+}
+
+.menu_type__dropdown .nlevel li {
+	padding: 0.3em 0.4em !important;
+	white-space: nowrap;
+	overflow: hidden; /* Needed as images are set to float */
+}
+
+.menu_type__dropdown .nlevel li:hover, .menu_type__dropdown .nlevel li.current {
+	background-color: {$GET,dropdown_menu_text};
+}
+
+.menu_type__dropdown .nlevel li, .menu_type__dropdown .nlevel .menu_spacer {
+	background-color: {$GET,dropdown_menu_background};
+	font-weight: normal;
+	border-bottom: 1px solid {$GET,standard_border};
+	min-height: 20px;
+
+	/* We do want wrapping for this, as menu labels could be longer than the available space between the start of the dropdown label and the edge of the fixed width */
+	max-width: 18em;
+	white-space: normal;
+}
+
+.menu_type__dropdown .nlevel .menu_spacer {
+	display: block;
+	padding-{!en_right}: 0;
+}
+
+.menu_type__dropdown ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
+	padding-{!en_left}: 14px;
+	background-size: 6px 6px;
+}
+
+.menu_type__dropdown .nlevel a, .menu_type__dropdown .nlevel a:visited {
+	text-decoration: none;
+}
+
+.menu_type__dropdown .nlevel a:hover {
+	text-decoration: underline;
+}
+
+.menu_type__dropdown .nlevel, .menu_type__dropdown .nlevel a, .menu_type__dropdown .nlevel a:visited, .menu_type__dropdown .nlevel a:hover {
+	color: {$GET,slightly_seeded_text} !important;
+}
+
+.menu_type__dropdown .nlevel .current a {
+	background: transparent url('{$IMG;,1x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
+}
+.menu_type__dropdown .nlevel .has_img>a, .menu_type__dropdown .nlevel.current.has_img>a {
+	background: none !important;
+}
+
+.menu_type__dropdown .nlevel .non_current a {
+	background: transparent url('{$IMG;,1x/menus/menu_bullet}') no-repeat 5px 6px;
+}
+
+.menu_type__dropdown .nlevel .non_current a:hover {
+	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.menu_type__dropdown .nlevel .current a {
+		background: transparent url('{$IMG;,2x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
+	}
+
+	.menu_type__dropdown .nlevel .non_current a {
+		background: transparent url('{$IMG;,2x/menus/menu_bullet}') no-repeat 5px 6px;
+	}
+
+	.menu_type__dropdown .nlevel .non_current a:hover {
+		background: transparent url('{$IMG;,2x/menus/menu_bullet_hover}') no-repeat 5px 6px;
+	}
+}
+
+.menu_type__dropdown .nlevel .has_img>img {
+	width: 20px;
+	float: left; /* So that wrapping alignment is neat */
+}
+
+
+.menu_type__dropdown img, .menu_type__dropdown span {
+	vertical-align: middle;
+}
+
+.menu_type__dropdown img {
+	margin-right: 0.5em;
+}

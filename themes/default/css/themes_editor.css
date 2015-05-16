@@ -1,0 +1,160 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.theme_wizard_preview_wrap {
+	margin: 1.5em 0;
+	overflow: scroll;
+}
+
+.theme_wizard_colour, .theme_wizard_info_box_label, .theme_wizard_change_colour {
+	font-weight: bold;
+}
+
+.theme_wizard_use_colour {
+	font-weight: bold;
+	text-align: center;
+}
+
+.theme_wizard_preview {
+	width: 100%;
+	height: 300px;
+}
+
+.theme_wizard_info_box {
+	float: {!en_right};
+	text-align: center;
+}
+
+.theme_manage_table {
+	margin: 1em 0;
+}
+
+.theme_manage_table table {
+	border-collapse: collapse;
+}
+
+.theme_manage_table th, .theme_manage_table td {
+	border: 1px solid {$GET,standard_border};
+}
+
+.theme_manage_table td {
+	padding: 0.5em;
+	vertical-align: middle;
+}
+
+.manage_theme_theme_usage, .theme_manage_footnote {
+	font-size: 0.95em;
+}
+
+.theme_manage_footnote {
+	margin: 0.5em 0 1.5em 0;
+}
+
+.theme_manage_table dt, .theme_manage_table dd {
+	margin: 0;
+}
+.theme_manage_table dt {
+	float: left;
+	padding-right: 0.5em;
+}
+.theme_manage_table dd {
+	display: block;
+}
+
+.theme_manage_table a {
+	font-size: 0.9em;
+}
+
+.manage_theme_export * {
+	vertical-align: middle;
+}
+
+.theme_image_preview {
+	float: {!en_left};
+	margin-{!en_right}: 0.5em;
+	margin-top: 1em;
+	max-width: 100%;
+}
+
+.css_editor_selector_tips {
+	width: 50%;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	float: left;
+	margin-top: 1em;
+	font-size: 0.9em;
+	padding: 0.5em;
+}
+
+#selectors_inner ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+#selectors_inner li {
+	display: inline-block;
+	margin: 0.2em;
+	padding: 0.2em;
+	background-color: {$GET,area_background};
+	font-size: 0.9em;
+}
+
+#colours_go_here {
+	margin-top: 3em;
+}
+
+.tpl_dropdown_row_a {
+	background-color: {$GET,area_zebra_background};
+}
+
+.tpl_dropdown_row_b {
+	background-color: {$GET,area_background};
+}
+
+.tpl_dropdown_row_a, .tpl_dropdown_row_b {
+	padding: 0.3em;
+}
+
+.original_template {
+	margin-top: 3em;
+}
+
+/* Logo Wizard */
+
+.theme_image__background_theme_image .radio_list_picture {
+	max-width: 50%;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+.theme_image__logo_theme_image .radio_list_picture img, .theme_image__background_theme_image .radio_list_picture img {
+	max-width: 100%;
+}
+
+.page_running_admin_themewizard .radio_list label {
+	float: left;
+	min-width: 19em;
+	height: 2em;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.buttons__simple {
+	background-image: url('{$IMG,icons/24x24/buttons/simple}') !important;
+}
+.buttons__advanced {
+	background-image: url('{$IMG,icons/24x24/buttons/advanced}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.buttons__simple {
+		background-image: url('{$IMG,icons/48x48/buttons/simple}') !important;
+	}
+	.buttons__advanced {
+		background-image: url('{$IMG,icons/48x48/buttons/advanced}') !important;
+	}
+}

@@ -1,0 +1,7 @@
+[semihtml]
+<div class="feature_background_image" style="background-image: url('{$IMG;*,unslider_backgrounds/wood}');">
+	[title="2"]Fluid, flexible, fantastically minimal.[/title]
+
+	Manage your slides as pages. Use any Comcode you wish.
+</div>
+[/semihtml]

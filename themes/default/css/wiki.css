@@ -1,0 +1,68 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.pe_wiki_page_description {
+	margin-bottom: 1.5em;
+}
+
+.wiki_post_below {
+	padding-top: 0.5em;
+}
+
+.wiki_page_children {
+	margin-bottom: 1.5em;
+}
+
+.wiki_screen .wiki_link {
+	font-size: 1em !important;
+}
+
+.wiki_screen .wiki_link a {
+	background: none !important;
+	padding: 0 !important;
+}
+
+/* Posts */
+
+.wiki_topic_poster_name {
+	float: {!en_left};
+	margin-{!en_left}: 0.5em;
+	padding-{!en_right}: 0.5em;
+	border-{!en_right}: 1px solid {$GET,standard_border};
+}
+
+.wiki_rating_inside {
+	padding-left: 3em;
+}
+
+.wiki_topic_post_area {
+	background-color: {$GET,area_5_background} !important;
+	padding: 1em !important;
+}
+
+.wiki_mass_select_marker {
+	float: right;
+	border: 0 !important;
+}
+
+.wiki_post_buttons {
+	padding: 0.5em !important;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.buttons__edit_tree {
+	background-image: url('{$IMG,icons/24x24/buttons/edit_tree}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.buttons__edit_tree {
+		background-image: url('{$IMG,icons/48x48/buttons/edit_tree}') !important;
+	}
+}

@@ -1,0 +1,51 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.purchase_button {
+	text-align: center;
+}
+
+.purchase_licence {
+	width: 100%;
+	font-family: Courier, monospace;
+}
+
+.purchase_screen_contents {
+	min-height: 18em;
+}
+
+.subscriptions_cancel_button {
+	text-align: {!en_right};
+}
+
+.purchase_wizard_field_name_column {
+	width: 16em;
+}
+
+.purchase_wizard_field_input_column {
+	width: 100%;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.menu__adminzone__audit__ecommerce__subscriptions {
+	background-image: url('{$IMG,icons/24x24/menu/adminzone/audit/ecommerce/subscriptions}') !important;
+}
+.menu__rich_content__ecommerce__purchase {
+	background-image: url('{$IMG,icons/24x24/menu/rich_content/ecommerce/purchase}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.menu__adminzone__audit__ecommerce__subscriptions {
+		background-image: url('{$IMG,icons/48x48/menu/adminzone/audit/ecommerce/subscriptions}') !important;
+	}
+	.menu__rich_content__ecommerce__purchase {
+		background-image: url('{$IMG,icons/48x48/menu/rich_content/ecommerce/purchase}') !important;
+	}
+}

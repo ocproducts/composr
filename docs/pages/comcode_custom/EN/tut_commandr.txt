@@ -1,0 +1,83 @@
+[title sub="Written by Philip Withnall, ocProducts"]Composr Tutorial: Commandr[/title]
+
+Commandr, the Composr Command-Line Environment, is designed for experienced system administrators who find command-lines faster to use than GUI-based alternatives.
+
+We designed Commandr to supplement the features of the Admin Zone, rather than to replace them. The interface allows you to enter commands in the form of:
+ - PHP code
+ - SQL database queries
+ - Commandr-code scripts
+ - Commandr-code commands, which you can use to fully interact with the Composr Repository
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Commands[/title]
+
+Although the system is very flexible, there are many commands to use, designed for interaction with the Composr Repository and other systems designed specifically for Commandr. Since UNIX is the grandfather of almost all of the operating systems where command-line use is most prevalent -- and administrators comfortable with command-lines will probably be UNIX experts -- many of the commands mirror their UNIX counterparts.
+
+The basic format for a command is as follows:
+[code]command_name -o -long_option -o2=value -long_option2="value 2" parameter1 "parameter 2" parameter3[/code]
+This example consists of:
+ - A command name (no spaces)
+ - followed by a list of options (either in short or long format; this is decided by the command in question) with optional values (quoted if they contain spaces)
+ - then a list of parameter values (quoted if they contain spaces).
+
+Commandr supports backslashing, so you can escape any quotes in values you're passing:
+[code]echo "Grandma said: \"Hello world!\""[/code]
+
+For a full list of Commandr commands, simply execute the [tt]commands[/tt] command in Commandr:
+[code]
+commands
+[/code]
+
+[title="2"]PHP code[/title]
+
+PHP can be entered and executed by Commandr, simply by prefixing the code to be executed with a colon (":"). The returned data will be displayed as best as possible (its type will be determined and outputted as appropriate). Multiple PHP commands may be executed (separated by semi-colons, as per normal PHP code).
+For example:
+[code]
+:echo "Hello"; echo " World.";
+[/code]
+
+Commandr will attempt to store variables and included files between command requests (using a cookie) to make it possible to execute command sequences without having to put them all on one line.
+
+[title="2"]SQL queries[/title]
+
+SQL queries can also be executed by Commandr, simply by prefixing the query to be executed with an 'at' symbol ("@"). As with PHP commands, the query results will be outputted in an appropriate manner.
+
+Separating multiple queries using semicolons is [i]not[/i] supported.
+
+Even though Commandr commands are single-line, pasting multi-line commands in usually works. The only exception would be if the line breaks are a part of strings within the query, in which case they would end up replaced by spaces.
+
+You are allowed to do non-read queries, such as INSERTs and DELETEs, but you'll be told "Error: Your search yielded no results.". Ignore that, it's just a generic messages to tell you explicitly that no results were shown.
+
+[title="2"]The filesystem[/title]
+
+One of the main features of Commandr is the fact that various facets of Composr can be manipulated through a virtual filesystem, known as the Composr Repository (aka Commandr-fs). There are many different kinds of directory tied into the filesystem and it is quite simple to write more as hooks if you know how to program.
+
+To use the repository, simply navigate around using the standard UNIX filesystem commands ([tt]cd[/tt], [tt]pwd[/tt], [tt]ls[/tt], etc.), and modify files in a similar fashion to change the appropriate behind-the-scenes value.
+
+To learn more about the filesystem, which is also used by other parts of Composr, see [page="_SEARCH:tut_repository"]the repository tutorial[/page].
+
+[title="2"]Scripts[/title]
+
+Commands can be put together in scripts and saved for later use in the [tt]bin[/tt] filesystem. These can be executed on the Commandr command-line just by entering the name of the script, or can alternatively be scheduled for execution by the calendar to run at some point in the future (possibly routinely).
+
+[title="2"]Running from a normal operating system command prompt[/title]
+
+Commandr can tie directly into your operating system shell. For example, on Linux you can start it up with:
+[code]
+php data/commandr.php
+[/code]
+It is primarily designed for use from an HTML interface, so things like the text file editor will not work, but generally it will work as expected.
+
+[title="2"]Commandrchat[/title]
+
+The final feature of Commandr is Commandrchat, which allows users of Commandr to chat with each other across the internet. It is used via the [tt]commandrchat[/tt] command, taking a website URL and message as parameters (remember to double-quote them if they contain spaces). The system is designed to be resistant to intrusions, as each message is checked before it is displayed.
+
+Commandrchat is designed to allow website administrators to communicate with each other and share tips, tricks and experiences with Composr.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:tut_repository"]The Composr repository[/page]
+
+{$SET,tutorial_tags,Power tools,Administration,commandr,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Did you know you can reconfigure half your site�s systems in a few easy keystrokes? We explore this and more...}[block]main_tutorial_rating[/block]

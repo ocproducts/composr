@@ -1,0 +1,38 @@
+[title="1"]Competitor Comparison[/title]
+
+{| wide
+
+! 
+! Foo
+! Bar
+! {$SITE_NAME}
+
+|-
+
+! Lorem
+| [img="Yes"]{$IMG,icons/24x24/buttons/yes}[/img]
+| [img="No"]{$IMG,icons/24x24/buttons/no}[/img]
+| [img="Yes"]{$IMG,icons/24x24/buttons/yes}[/img]
+
+|-
+
+! Ipsum
+| [img="No"]{$IMG,icons/24x24/buttons/no}[/img]
+| [img="No"]{$IMG,icons/24x24/buttons/no}[/img]
+| [img="Yes"]{$IMG,icons/24x24/buttons/yes}[/img]
+
+|-
+
+! Ipso
+| [img="No"]{$IMG,icons/24x24/buttons/no}[/img]
+| [img="No"]{$IMG,icons/24x24/buttons/no}[/img]
+| [img="Yes"]{$IMG,icons/24x24/buttons/yes}[/img]
+
+|-
+
+! Facto
+| [img="No"]{$IMG,icons/24x24/buttons/no}[/img]
+| [img="No"]{$IMG,icons/24x24/buttons/no}[/img]
+| [img="Yes"]{$IMG,icons/24x24/buttons/yes}[/img]
+
+|}

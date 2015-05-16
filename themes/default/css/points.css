@@ -1,0 +1,168 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+.charge_amount {
+	background-color: {$GET,native_ui_alertfield_background};
+	color: {$GET,native_ui_alertfield_foreground};
+}
+
+.box___points_profile {
+	background-image: none !important;
+}
+
+.points_give_box_header {
+	margin-top: 0;
+	font-size: 0.85em;
+	padding-bottom: 0.5em;
+	margin-bottom: 1.3em;
+	border-bottom: 1px solid {$GET,pale_border};
+}
+
+.points_give_box_header span {
+	color: {$GET,heading_text};
+	font-size: 1.1em;
+	display: inline-block;
+	font-weight: bold;
+	padding-right: 0.5em;
+	border-right: 1px solid {$GET,divider_line};
+	margin-right: 0.5em;
+}
+
+.points_anon {
+	margin-left: 2em;
+}
+
+.points_give_choice_line .points_anon {
+	margin-left: 0;
+}
+
+.points_anon *, .points_give_choices input {
+	vertical-align: middle;
+	margin: 0;
+}
+
+.points_earned {
+	margin-right: {$?,{$MOBILE},5.1,15}em;
+}
+
+.points_give_choices {
+	font-size: 0.9em;
+	padding-right: 1em;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		border-right: 1px solid {$GET,pale_border};
+		margin-right: 27em;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		margin-right: 1em;
+	/*{+END}*/
+}
+
+.points_give_choices .sub_option {
+	font-size: 0.9em;
+	white-space: nowrap;
+}
+
+.points_give_shared_options {
+	float: right;
+	/*{+START,IF,{$MOBILE}}*/
+		width: 21.9em;
+		margin: 4em 0em 1em 0em;
+	/*{+END}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 23em;
+		margin-top: 1em;
+	/*{+END}*/
+}
+
+.points_boxes {
+	float: right;
+}
+
+.points_box {
+	width: 14em;
+	margin: 0 0 2em 1em;
+	text-align: center;
+}
+
+.points_box .intro {
+	font-weight: bold;
+}
+
+.points_box .figure {
+	font-size: 1.8em;
+}
+
+table.points_summary_table {
+	border-collapse: collapse;
+	/*{+START,IF,{$MOBILE}}*/
+		margin-left: 2em;
+		width: 100%;
+	/*{+END}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		margin-left: 0;
+	/*{+END}*/
+}
+
+table.points_summary_table thead {
+	display: none;
+}
+
+table.points_summary_table td {
+	padding: 0.5em 0.8em;
+}
+
+table.points_summary_table .equation {
+	border-left: 1px solid {$GET,standard_border};
+}
+
+table.points_summary_table .answer {
+	font-weight: bold;
+	padding-left: 0;
+}
+
+/* Leaderboard */
+
+.box___points_leader_board_week {
+	width: 30em; /* Stop the wide table within being too big */
+}
+
+.box___points_leader_board_week .leader_board_table th {
+	width: 10em;
+}
+
+.leader_board_table th, .leader_board_table td {
+	vertical-align: middle;
+	text-align: left;
+}
+
+.leader_board_rank {
+	display: none;
+}
+
+/* Point store */
+
+.pointstore_item_tag {
+	font-style: italic;
+}
+
+.pointstore_welcome {
+	text-align: center;
+}
+
+/*
+=========================
+=========Buttons=========
+=========================
+*/
+
+.buttons__points {
+	background-image: url('{$IMG,icons/24x24/buttons/points}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	.buttons__points {
+		background-image: url('{$IMG,icons/48x48/buttons/points}') !important;
+	}
+}

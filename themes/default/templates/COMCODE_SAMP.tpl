@@ -1,0 +1,1 @@
+<samp>{CONTENT}</samp>

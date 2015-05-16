@@ -1,0 +1,154 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Favicons, Web fonts, Media file compatibility[/title]
+
+This tutorial will explain and detail some of the fringe features of web technologies.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Favicons[/title]
+
+Microsoft created a technology that allows websites to have their own little icons, for placement in the Favorites menu, and the web browser window icon. This technology has since been adopted for use by other web browsers.
+
+Favicons are supported in Composr, and to use one you just need to edit the 'favicon' theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
+
+Please note that on Internet Explorer the favicon will only be used for the web browser window for a page that has been put into the Favorites/Bookmarks. It is this action that triggers the web browser to acknowledge and cache the icon.
+
+The default icon actually contains multiple sizes:
+ - 16x16 &ndash; Standard size for browsers
+ - 24x24 &ndash; IE9 pinned site size for user interface
+ - 32x32 &ndash; IE new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
+ - 48x48 &ndash; Windows site
+
+[title="3"]Apple web clip icons[/title]
+
+These icons show on the iPhone and iPod Touch home screens, if you choose to bookmark a site there. They can be set by editing the 'webclipicon' theme image.
+
+The default icon actually contains multiple sizes:
+ - 120x120 &ndash; iPhone retina touch iOS7
+ - 144x144 &ndash; IE10 Metro tile for pinned site
+ - 152x152 &ndash; iPad retina touch iOS7
+
+[title="2"]Web fonts[/title]
+
+Fonts have always been a tricky area in computing, as the actual font typeface is a copyrighted works, and hence cannot be distributed without a licence. This problem extends to the Internet, where there is a stronger need for common fonts than there ever was. It is important to remember that not all viewers to a website will be using Microsoft Windows, and therefore they will not all have the set of default windows fonts.
+
+Fortunately there are three things that improve on this situation:
+ - there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information)
+ - CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use
+ - [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts
+
+[title="3"]Fonts within content[/title]
+
+The WYSIWYG editor will not select a font by default.
+
+Unlike a word processor, whatever is being edited is going to end up inserted into a wider existing document context (i.e. into your overall web design). This means that whatever font was used within that wider context would be the default font. This is best for most cases. For example:
+ - If the theme font default is changed, it will sweep across all content automatically
+ - You can have different fonts in different contexts. For example, perhaps emails should have a different font to the main website.
+
+The default Composr theme defines a font in the [tt]global.css[/tt] as follows:
+[code="CSS"]
+body, .email_body, textarea, input, td, th {
+	/* 'Open Sans' is a Google font, and only will be enabled if uncommented in HTML_HEAD.tpl -- so normally it is Segoe UI (Windows, newer version of Tahoma) or Tahoma that is active (available on Windows and Mac since Leopard) or a similar humanist sans-serif font */
+	font-family: 'Open Sans', 'Segoe UI', Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+[/code]
+
+[title="2"]Media file compatibility[/title]
+
+[title="3"]Images[/title]
+
+The advice here is simple: use PNG, JPEG or GIF formats, but never other formats, such as BMP. Remember that renaming a file is not akin to changing its format: the file internally must actually be in the format its file extension specifies.
+
+Usually you should always use PNG.
+There are two exceptional cases though:
+1) If you need animation, use GIF
+2) If you do not need transparency, and don't mind some quality loss, use JPEG
+
+[title="3"]Sound and Video[/title]
+
+Sound and video formats are an area of extreme complexity unfortunately, as is their use on the web.
+
+Unlike for most file types, video files cannot be identified fully be file extension. The file extensions identifies the 'container format' (such as MPEG or AVI) but not the 'codec' used for the video data and which codec was used for the sound data. Codecs are often proprietary, and tied to Windows, and they often aren't installed on user's computers. Some codecs and container formats require specific software, as vendors such as Microsoft, Apple and Real tend to lock each others formats out, as they battle for supremacy.
+
+You have a choice between six options:
+ - Use an old badly compressed format -- this is likely very in-feasible, due to high file size
+ - Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
+ - Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
+ - Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
+ - Use standard MPEG technology other than h264 -- the drawback to this is that MPEG standardisation has declined, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
+ - Use an open alternative such as those sponsored by the BBC, or Ogg, or Google (WebM) -- using them is technical difficult, and users generally need to install special software
+
+Our practical advice is to always use h264/mp3, which has worked on all major browsers for a number of years.
+
+[title="4"]MPEG[/title]
+
+MPEG is a standardisation committee who release waves of MPEG standards (basically, standards for audio and video). The committee is made up of people from many companies, such as Apple, Microsoft. There are a huge number of MPEG standards, and each contain many 'parts' (which are standards of their own). The parts are then defined across many profiles, levels, and versions, and there are many customisations out there too. There are often multiple names to refer to the different parts, as they all have their own history to them.
+
+There is a great deal of confusion around the MPEG formats, because the abbeviations commonly used outside the official specifications can be very ambiguous. Here's what the terms typically actually mean:
+ - [b]mp3[/b] is actually MPEG-2 Part 3 (audio format).
+ - [b]aac[/b] is MPEG-2 Part 7 (audio format).
+ - [b]mp4[/b] is actually MPEG-4 Part 14 (container format).
+ - [b]MPEG-4 video[/b] is actually MPEG-4 Part 2 (video format).
+ - [b]h264[/b] is MPEG-4 Part 10 (video format).
+
+The clear points of confusion are:
+1) mp3 is an audio codec, not "MPEG-3". The '3' comes from 'part 3', not the overall MPEG number. [i]MPEG-3[/i] doesn't exist to avoid confusion.
+2) mp4 is the MPEG-4 container format, but that doesn't mean you should put what is typically referred to as MPEG-4 video in it (because that's not web-safe, only h264 is).
+
+For web-safe videos you need to use either the aac or mp3 audio codec, the h264 video codec, and the mp4 container format.
+
+[title="2"]Achieving advanced designs with the custom graphics block[/title]
+
+It's commonplace nowadays for professional designers/developers working on static sites to make use of:
+ - Rich typography
+ - Text overlaid onto images
+ - Custom rollovers
+
+[title="3"]Rich typography[/title]
+
+It's well known that built-in web browser font support is severely limited, for two reasons:
+1) There is only a small set of fonts you can trust to be installed on a users computer (the "Web fonts")
+2) Browser fonts can often look ugly when put against smooth designs, as they are not always anti-aliased (depends on operating system and web browser)
+
+Fortunately using something like Google Fonts allows you to get access to a much larger set of fonts. Composr has no special support for it, but that is not needed -- it is very easy to integrate via a change to the [tt]HTML_HEAD[/tt] template and the CSS.
+
+[title="3"]Text overlaid onto images[/title]
+
+It is very common for the best modern designs to have content text built direct into graphics. The only solution until now has been for web developers to make lots of variants of the same image, each with different text. Now it is possible to have a site generate its own graphics, so it is easy for any content writers to extend and maintain, without ever going back into Photoshop.
+
+Here is a simple example of a custom button:
+
+[code]
+[block="text_overlay" data="This is a test" img="button1"]main_custom_gfx[/block]
+[/code]
+
+(we've built the button graphic here into Composr itself, and the Theme Wizard will style it -- but you can tell the block to write onto any theme image of your choice using the 'img' parameter)
+
+Full list of parameters:
+ - img (the code of the Theme image to use)
+ - data (the text to write)
+ - font_size (e.g. "12" for 12pt)
+ - 'x' and 'y' (where to write the text)
+ - color (has to be 6 hex digits, e.g. 'FFFFFF')
+ - font (e.g. "Vera" for the [tt]data/fonts/Vera.ttf[/tt] file we bundle with Composr [there are a number of other ttf files in that directory ready for use])
+ - center (set to "1" to center the text)
+
+[title="3"]Custom rollovers[/title]
+
+Take the above example further, how would you like to automatically have [b]both[/b] frames of a rollover generated for you?
+
+[code]
+[block="rollover_button" data="This is a test" img1="button1" img2="button2"]main_custom_gfx[/block]
+[/code]
+
+This takes the same parameters, except 'img' is now 'img1', and there is also an 'img2'.
+
+[title="3"]And, for programmers, more[/title]
+
+You have probably spotted that all these examples are using a new block, 'main_custom_gfx'. The three cases above are what we have supplied 'out of the box', but programmers can write additional renderers in PHP code (hooks) to create configurable graphics of any complexity.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - [page="_SEARCH:tut_metadata"]Meta Data[/page]
+
+{$SET,tutorial_tags,core_graphic_text,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial will explain and detail some of the features of web technologies that are often forgotten.}[block]main_tutorial_rating[/block]

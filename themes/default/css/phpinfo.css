@@ -1,0 +1,24 @@
+/* There is no need to edit this file - it is only used for displaying the PHP-info tool */
+
+.page_running_admin_phpinfo .breadcrumbs {
+	margin-bottom: 1em;
+}
+
+.page_running_admin_phpinfo h1.p {
+	float: right;
+	margin-top: 2em;
+	font-size: 1.5em;
+}
+
+.page_running_admin_phpinfo table {
+	border-collapse: collapse;
+}
+
+.page_running_admin_phpinfo table td, .page_running_admin_phpinfo table th {
+	border: 1px solid {$GET,standard_border};
+}
+
+.page_running_admin_phpinfo .e {font-weight: bold; color: {$GET,native_ui_foreground};}
+.page_running_admin_phpinfo .h {font-weight: bold; color: {$GET,native_ui_foreground};}
+.page_running_admin_phpinfo .v {color: {$GET,native_ui_foreground};}
+.page_running_admin_phpinfo .vr {text-align: right; color: {$GET,native_ui_foreground};}

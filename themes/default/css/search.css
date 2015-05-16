@@ -1,0 +1,106 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+.constrain_search_block {
+	width: 17em;
+}
+
+.search_advanced_title {
+	padding: 1em 0;
+}
+
+.google_search_box {
+	margin-top: 3em;
+	text-align: center;
+}
+
+.search_tabular_header {
+	padding: 1em 0;
+}
+
+.google_search_button {
+	white-space: nowrap;
+}
+
+.google_search_descrip {
+	font-size: 0.8em;
+}
+
+.google_search_descrip img {
+	float: {!en_left};
+	margin-{!en_right}: 5px;
+}
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.main_search_form .search_content {
+		width: 300px;
+		max-width: 100%;
+	}
+/*{+END}*/
+
+.search_for_search_domain {
+	font-style: italic;
+	padding-{!en_left}: 30px;
+}
+
+.search_for_search_domain_more {
+	text-align: {!en_right};
+}
+
+.boolean_options {
+	margin-{!en_left}: 40px;
+}
+
+.boolean_options label {
+	display: block;
+}
+
+.search_option {
+	padding: 0.2em 0;
+}
+
+.search_option+.left {
+	max-width: 40em;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.search_option label {
+		float: {!en_left};
+	}
+/*{+END}*/
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.search_option label {
+		float: {!en_left};
+		width: 250px;
+		max-width: 100%;
+	}
+
+	.search_option_value, .search_option select {
+		width: 20em;
+		max-width: 100%;
+		font-size: 1em; /* Makes em units consistent for both input types */
+	}
+/*{+END}*/
+
+.search_option * {
+	margin-left: 0;
+}
+
+.search_result {
+	margin-top: 1em;
+	overflow: hidden;
+}
+
+.search_field_table th {
+	vertical-align: middle;
+}
+
+.search_sort {
+	max-width: 100%;
+}

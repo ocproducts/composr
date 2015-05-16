@@ -1,0 +1,481 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/*{+START,IF,{$MOBILE}}*/
+	.calendar_week th a, .calendar_month th a, .calendar_day th a, .calendar_week th span, .calendar_month th span, .calendar_day th span {
+		writing-mode: tb-rl;
+	}
+/*{+END}*/
+
+abbr.dtstart, abbr.dtend {
+	border-bottom: 0;
+}
+
+/*
+=========================
+=========Yearly==========
+=========================
+*/
+
+.calendar_year_wrap {
+	border-collapse: collapse;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.calendar_year_wrap {
+		display: block;
+	}
+
+	.calendar_year_wrap>tbody>tr {
+		display: block;
+	}
+
+	.calendar_year_wrap>tbody>tr>td {
+		display: block;
+		padding: 3em;
+		overflow: hidden;
+	}
+/*{+END}*/
+
+.calendar_year_month {
+	height: 150px;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: 33%;
+	/*{+END}*/
+	vertical-align: top;
+	text-align: center;
+	padding: 0.5em;
+}
+
+.calendar_year_month table {
+	border-collapse: collapse;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.calendar_year_month th {
+	width: 33%;
+}
+
+.calendar_year_month_day {
+	width: {$DIV_FLOAT,100,7}%;
+	height: 1.8em;
+	border: 1px solid {$GET,standard_border};
+}
+
+.calendar_year_month_day div {
+	display: inline;
+	width: 100%;
+	height: 30px;
+}
+
+.calendar_year_month_day img {
+	float: {!en_right};
+	display: block;
+}
+
+/*
+=========================
+=========Monthly=========
+=========================
+*/
+
+.calendar_month {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+.calendar_month th {
+	font-size: 0.9em;
+	border: 1px solid {$GET,box_title_background}; /* Obscures border */
+	padding: 1em 0;
+	vertical-align: middle;
+}
+
+.calendar_month_entry {
+	display: inline;
+	width: 100%;
+	height: 2em;
+}
+
+.calendar_month_day {
+	height: 6em;
+}
+
+.calendar_month_day div {
+	z-index: 10;
+	float: {!en_right};
+}
+
+.calendar_month_column_heading {
+	width: 7%;
+}
+.calendar_month_column_day {
+	width: 13%;
+}
+
+/*
+=========================
+=========Weekly==========
+=========================
+*/
+
+.calendar_week {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.calendar_week th {
+	border: 1px solid {$GET,box_title_background}; /* Obscures border */
+}
+
+.calendar_week_hour { /* Left-most column */
+	width: 8em;
+	height: 3em;
+	vertical-align: middle;
+}
+
+/*
+=========================
+==========Day============
+=========================
+*/
+
+.calendar_day_table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.calendar_day_table th {
+	width: 8em;
+	height: 3em;
+	vertical-align: middle;
+}
+
+.calendar_day_entry {
+	width: 100%;
+	height: 100%;
+}
+
+.calendar_day_entry_time {
+	display: block;
+}
+
+.calendar_day_entry_description {
+	padding-top: 2em;
+}
+
+.calendar_day_icon {
+	float: {!en_left};
+	margin-{!en_right}: 0.5em;
+}
+
+.calendar_day_priority {
+	float: {!en_right};
+	margin-{!en_right}: 0.5em;
+}
+
+.calendar_day_entry_title {
+	font-weight: bold;
+}
+
+.calendar_day_entry_time {
+	font-size: 0.8em;
+}
+
+/*
+=========================
+===Main screen global====
+=========================
+*/
+
+.calendar_top_navigation {
+	margin-left: 1px;
+	margin-bottom: 1em;
+	padding-left: 1px; /* To compensate for -1px offset on calendar_date_span_link_inner */
+	overflow: hidden;
+}
+
+.calendar_date_span_link {
+	float: {!en_left};
+	width: 25%;
+	text-align: center;
+}
+
+.calendar_date_span_link_inner {
+	border: 1px solid {$GET,standard_border};
+	background-color: {$GET,area_faded_background};
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_4_background}\, {$GET,area_5_background});}
+	color: {$GET,area_key_text};
+	padding: 0.3em;
+	margin-left: -1px; /* To stop the double borders at join points */
+	padding: 0.5em 0;
+	min-height: 1.3em;
+}
+
+.calendar_date_span_link:first-child .calendar_date_span_link_inner {
+	{$BETA_CSS_PROPERTY,border-top-left-radius: 5px;}
+	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
+}
+.calendar_date_span_link:last-child .calendar_date_span_link_inner {
+	{$BETA_CSS_PROPERTY,border-top-right-radius: 5px;}
+	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
+}
+
+.calendar_date_span_link_inner>span {
+	font-weight: bold;
+}
+
+.box___calendar_main_screen_interests {
+	margin-top: 2em;
+}
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.event_interest_box {
+		width: 50%;
+		padding: 0.5em;
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	}
+/*{+END}*/
+
+.calendar_main_page_hidden_data {
+	padding: 0.5em;
+}
+
+/*
+=========================
+==Misc calendar tables===
+=========================
+*/
+
+.side_calendar .calendar_priority_na,
+.side_calendar .calendar_priority_1,
+.side_calendar .calendar_priority_2,
+.side_calendar .calendar_priority_3,
+.side_calendar .calendar_priority_4,
+.side_calendar .calendar_priority_5,
+.side_calendar .calendar_priority_free_time,
+.side_calendar .calendar_free_time,
+.side_calendar .calendar_active {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		font-size: 0.8em; /* On mobile we don't display in a side panel so actually there is more width - plus we want bigger cells for fat fingers */
+	/*{+END}*/
+	padding: 0.5em 0.2em;
+}
+
+.calendar_priority_na,
+.calendar_priority_1,
+.calendar_priority_2,
+.calendar_priority_3,
+.calendar_priority_4,
+.calendar_priority_5,
+.calendar_priority_free_time,
+.calendar_free_time,
+.calendar_active {
+	padding: 0.5em;
+}
+
+.calendar_day_table th, .calendar_year_month th {
+	border: 1px solid {$GET,box_title_background}; /* Matches border above, but uses bg-color so invisible */
+}
+
+/* The following classes are for the varying degress of priority that
+	certain calendar events can hold. These can be used if, for example, you
+	want to design higher priority events to have a darker background or an
+	image. 1 is the highest priority, with 5 being the lowest. */
+
+.calendar_priority_na {
+}
+
+.calendar_priority_1 {
+}
+
+.calendar_priority_2 {
+}
+
+.calendar_priority_3 {
+}
+
+.calendar_priority_4 {
+}
+
+.calendar_priority_5 {
+}
+
+.calendar_free_time {
+}
+
+.calendar_free_time_hourly {  /* for free time in a given hour, as opposed to .calendar_free_time, which manages free time in a month, week, or year */
+}
+
+/* -- */
+
+.calendar_current {
+	background-color: {$GET,area_current_background};
+}
+
+.calendar_day_table td, .calendar_week td, .calendar_month td, .calendar_year_wrap td {
+	border: 1px solid {$GET,standard_border};
+}
+
+.calendar_day_table td:hover, .calendar_week td:hover, .calendar_month td:hover, .calendar_year_month_table td:hover {
+	color: {$GET,area_key_text};
+	background-color: {$GET,area_hover_2_background};
+}
+td.day_spacer:hover {
+	background-color: transparent !important;
+}
+
+.calendar_multiple {
+	background-color: {$GET,red_highlight_background};
+}
+
+/*
+=========================
+======View event=========
+=========================
+*/
+
+.no_description {
+	font-style: italic;
+	text-align: center;
+}
+
+.event_subscriptions {
+	margin: 1em 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	.event_right {
+		float: right;
+		width: 15em;
+	}
+	.event_right .ratings {
+		width: auto;
+		float: none;
+	}
+
+	.event_left {
+		margin-right: 16em;
+	}
+
+	.event_subscriptions>li {
+		font-size: 0.9em;
+		vertical-align: middle;
+	}
+/*{+END}*/
+
+.event_left .box, .event_right .box {
+	margin-top: 0;
+}
+
+.event_right .trackbacks {
+	width: auto;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.event_right {
+		float: left;
+		width: 100%;
+	}
+
+	.event_left {
+		float: left;
+		width: 100%;
+		margin: 1em 0;
+	}
+
+	.event_subscribe {
+		font-size: 0.85em;
+		font-weight: bold;
+		margin-top: 0.25em;
+		line-height: 2em;
+	}
+
+	.event_subscriptions>li {
+		font-size: 0.95em;
+		vertical-align: middle;
+		margin-{!en_right}: 6px;
+		float: {!en_left};
+	}
+/*{+END}*/
+
+.event_type_image {
+	float: {!en_left};
+	margin-{!en_right}: 0.5em;
+}
+
+/*
+=========================
+=========Block===========
+=========================
+*/
+
+.side_calendar_wrap {
+	overflow-x: hidden;
+}
+
+.side_calendar {
+	border-collapse: collapse;
+}
+
+.side_calendar th {
+	border: 1px solid {$GET,standard_border};
+}
+
+.calendar_weekly_column {
+	width: 14.29%;
+}
+
+.event_listing_col_1 {
+	width: 32px;
+}
+.global_side_panel .event_listing_col_1 {
+	width: 28px;
+}
+
+.event_listing_col_2 {
+	width: 6em;
+}
+.global_side_panel .event_listing_col_2 {
+	width: 4em;
+}
+
+.event_listing_col_3 {
+}
+
+.events_listing_table th, .events_listing_table td {
+	vertical-align: middle;
+}
+
+.global_side_panel .events_listing_table th {
+	padding: 0;
+}
+.global_side_panel .events_listing_table th img {
+	width: 23px;
+}
+
+.event_listing_day {
+	text-decoration: underline;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.box___block_side_calendar .box_inner {
+	margin-left: 0.2em;
+	margin-right: 0.2em;
+	margin-bottom: 0.2em;
+}
+
+.box___block_side_calendar h3 {
+	margin-bottom: 0.3em;
+}
+
+.side_calendar .calendar_year_month_day {
+	background-color: {$GET,area_background};
+}

@@ -1,0 +1,44 @@
+[title="1"]About Us[/title]
+
+{$SITE_NAME} is a leader in both foo and bar. We've been going from strength to strength since 1999.
+
+[title="2"]Mission[/title]
+
+It should not be hard to foo and bar. We're dedicated to making fooing and barring as easy for you as possible.
+
+[title="2"]History[/title]
+
+[surround]
+[section="Founding" default="1"]We were founded in 1999 by John and Jane Doe.[/section]
+[section="The early years"]Since our founding we iterated continuously and expanded our offerings, creating the product line you see today.[/section]
+[section="Expansion"]With our innovative portfolio we expanded significantly into overseas market, across three continents.[/section]
+[section="Acquisitions"]In 2014 we acquired suppliers to create supply chain efficiencies, resulting in lower prices.[/section]
+[section_controller]Founding,The early years,Expansion,Acquisitions[/section_controller]
+[/surround]
+
+[title="2"]Key Staff[/title]
+
+ - [url="{$MEMBER_PROFILE_URL,2}"]John Doe, CEO[/url]
+ - [url="{$MEMBER_PROFILE_URL,2}"]Jane Doe, President[/url]
+ - [url="{$MEMBER_PROFILE_URL,2}"]Laa-Laa, Head of Sales[/url]
+ - [url="{$MEMBER_PROFILE_URL,2}"]Po, Head of Design[/url]
+ - [url="{$MEMBER_PROFILE_URL,2}"]Dipsy, CTO[/url]
+ - [url="{$MEMBER_PROFILE_URL,2}"]Tinky Winky, CFO[/url]
+
+[title="2"]Roadmap[/title]
+
+[surround]
+[big_tab_controller switch_time=""]Short-term goals,Medium-term goals,Long-term goals[/big_tab_controller]
+[big_tab="Short-term goals" default="1"]
+ - Improving global-reach of our collection of widgets
+ - Expanding our support team
+[/big_tab]
+[big_tab="Medium-term goals"]
+ - Extending our collection of widgets
+ - Supply of widgets in a wider range of colours
+[/big_tab]
+[big_tab="Long-term goals"]
+ - Global domination of the widgets market
+ - Ability to design your own widgets, using our patent-pending Widget Factory technology
+[/big_tab]
+[/surround]

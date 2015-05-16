@@ -1,0 +1,6 @@
+#!/usr/bin/env php
+<?php
+
+shell_exec('fixperms.sh');
+
+exit(0);

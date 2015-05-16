@@ -1,0 +1,84 @@
+[title sub="Written by Allen Ellis, ocProducts"]Composr Tutorial: Admin Zone overview[/title]
+
+{!menus:DOC_ADMIN_ZONE} It can be accessed from anywhere by choosing the 'Admin Zone' zone link which appears at the bottom of every default-themed Composr page. You may be prompted to login again to confirm your current session -- this is for added security.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]First glance[/title]
+
+[media width="150" description="The Admin Zone at first glance" float="right"]data_custom/images/docs/adminzone_first_glance.png[/media]
+The Admin Zone is divided into sections, with links across the top-panel to allow easy access to each -- most of the tabs will take you to an interface with icons that allows you to navigate throughout the system.
+
+[title="2"]Content Management Zone[/title]
+
+{!menus:DOC_CMS}
+
+[title="2"]Admin Zone[/title]
+
+[title="3"]To-do list[/title]
+
+[media width="150" description="The to-do list" float="right"]data_custom/images/docs/adminzone_todo_list.png[/media]
+The first section in your content area is your to-do list. This is an automatically generated list of things that need to be done on your website. Some are day-to-day updates, such as changing your image of the day or adding news. Some are less frequent and more critical, such as making backups and sending newsletters.
+
+Composr will attempt to mark whether or not these actions have been completely recently. For example, if it has been more than 24 hours since you updated your image of the day, it will be marked as 'not done'. You can choose how often you would like to do these activities (for example, making backups monthly instead of weekly) by going to the Setup Section then the 'Configuration' icon and then 'Administrative options'.
+
+[title="3"]Version Information[/title]
+
+This section shows information about the current version of Composr that you are using, and whether or not it is the most recent one. If not, you will be given a link to upgrade to the latest version.
+
+[title="3"]Notes[/title]
+
+[media width="150" description="The note area" float="right"]data_custom/images/docs/adminzone_notes.png[/media]
+This is an area for you and your staff to make notes. You can write anything you need in this space, and it will be shared between you and all of your other staff.
+
+[title="3"]Tips[/title]
+
+You will be provided with a large number of handy tips. They are organised into 4 levels of increasing difficulty with a combined total of about 60 tips.
+
+[title="3"]Watch-list[/title]
+
+This section allows you to compare some statistics of your website, to others. The sites included can be changed via the edit button on the block.
+
+[title="3"]Links[/title]
+
+This section provides a selection of useful links. The links may be edited via the edit button on the block.
+
+[title="3"]Action log[/title]
+
+This section shows recent administrative/content actions on your website.
+
+[title="2"]Miscellaneous other Admin features[/title]
+
+This part of the tutorial details some miscellaneous administrative features that are not covered in other tutorials.
+
+[title="3"]Error Log[/title]
+
+The Error Log (under the Audit menu) shows any errors that have occurred within Composr. It does not include errors relating to the normal running of your website (for example, incorrectly filled forms, or issues with non-configured features).
+
+Usually these errors will be automatically e-mailed to the developers (although this is configurable), but if you find anything you are not aware of, you may consider reporting as a possible bug.
+
+[title="3"]Content reviews[/title]
+
+If the [tt]content_reviews[/tt] addon is installed, you can set content to be re-reviewed after a particular date. This is useful for keeping your website up-to-date.
+You can also set the last review date to be shown visibly to users. This might be very useful from some legal and customer service standpoints -- it is essentially an automatic public declaration of content that may be outdated, and thus that you should not necessarily be held to what it says.
+
+The content review settings are shown on content add/edit forms.
+
+[title="2"]Printing[/title]
+
+It is not usually appropriate for a printed webpage to look like it does on the screen. For example, margins would want removing from each side of the site, social media links should not show, background images should be disabled, and so on.
+There are 3 approaches to solving this problem that work together:
+1) Browsers automatically disable background images, when printing
+2) CSS provides a mechanism for specifying different display rules for the printed version; Composr makes use of this
+3) Composr has a parameter, [tt]wide_print[/tt], that will influence some aspects of how pages are put together
+
+The Composr [tt]wide_print[/tt] parameter is activated from either:
+a) The link from the [tt]side_printer_friendly[/tt] block
+b) The link from the [tt]main_screen_actions[/tt] block
+c) [i]Or, a link you've put together yourself[/i]
+
+[concepts
+ 1_key="Admin Zone"   1_value="The zone used to perform most site maintenance, accessible only by staff"
+]Concepts[/concepts]
+
+{$SET,tutorial_tags,Administration,errorlog,core_adminzone_dashboard,content_reviews,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An explanation of how to use the Admin Zone, and the special features available from the Admin Zone front page.}[block]main_tutorial_rating[/block]

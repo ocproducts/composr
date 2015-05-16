@@ -1,0 +1,147 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+/* Checklist */
+
+a.top_left_toggleicon {
+	color: {$GET,inverted_text};
+	padding: 1px 0 5px 28px !important;
+	font-size: 0.8em;
+	float: left;
+	background: url('{$IMG;,checklist/toggleicon}') no-repeat 10px 1px !important;
+	{$BETA_CSS_PROPERTY,opacity: 0.7;} display: inline-block;/*Needed for IE8*/
+}
+
+a.top_left_toggleicon:hover {
+	background: url('{$IMG;,checklist/toggleicon2}') no-repeat 10px 1px !important;
+	{$BETA_CSS_PROPERTY,opacity: 1.0;} display: inline-block;/*Needed for IE8*/
+}
+
+.checklist_header {
+	color: {$GET,slightly_seeded_text};
+	font-size: 1.1em;
+	font-weight: bold;
+	border-bottom: 1px solid {$GET,pale_border};
+}
+
+.checklist_row {
+	border: 1px solid {$GET,pale_border};
+	padding: 0.2em;
+	background-color: {$GET,main_background};
+}
+.checklist_row:hover {
+	background-color: {$GET,area_hover_2_background};
+}
+.checklist_row+.checklist_row {
+	border-top-width: 0;
+}
+.task_hidden+.checklist_row {
+	border-top-width: 1px !important;
+}
+
+.checklist_other_maintenance .checklist_row {
+	float: left;
+	width: 50%;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	min-height: 3.8em;
+}
+
+.checklist_task {
+	margin: 0.3em 0 0.5em 0.5em;
+	float: left;
+}
+
+.checklist_task>span {
+	display: inline-block;
+	max-width: 350px;
+}
+
+.checklist_task>* {
+	vertical-align: middle;
+}
+
+.checklist_task_status {
+	font-size: 0.85em;
+	margin: 0.3em 0.5em 0.3em 0;
+	float: {!en_right};
+}
+
+.checklist_task_status img, .checklist_task_status span {
+	vertical-align: middle;
+}
+
+.add_custom_task {
+	margin-top: 0.5em;
+	border: 1px solid {$GET,pale_border};
+	padding-top: 0.2em;
+	font-size: 0.9em;
+}
+
+/* Tips */
+
+.tips_wrap {
+	padding: 0;
+	margin: 0;
+}
+
+.tips {
+	width: 100%;
+}
+
+.tips_trail {
+	bottom: 5px;
+	left: 15px;
+}
+
+/* New version indicator */
+
+.staff_new_versions .notes_about {
+	display: none;
+}
+
+.staff_new_versions .version {
+	margin: 0.5em 0;
+	padding: 0.3em;
+	border: 1px solid {$GET,standard_border};
+	background-color: {$GET,area_background};
+	overflow: hidden;
+	position: relative;
+}
+
+.staff_new_versions .version_number {
+	font-weight: bold;
+	float: right;
+	color: {$GET,area_text};
+	font-size: 1.2em;
+}
+
+.staff_new_versions .version_news_link {
+	float: right;
+	margin-right: 1em;
+}
+
+.staff_new_versions .version_help_icon {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+
+.staff_new_versions .version_details {
+	margin-top: 0.61em; /* 0.61 to workaround weird bug where border for surrounding box was disappearing */
+	float: left;
+	width: 100%;
+}
+
+.staff_new_versions .version_button {
+	display: block;
+}
+
+.staff_new_versions .img_wrap {
+	text-align: center;
+}
+
+.staff_new_versions .img_wrap img {
+	max-width: 100%;
+}

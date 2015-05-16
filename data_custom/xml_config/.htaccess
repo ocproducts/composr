@@ -1,0 +1,45 @@
+<Files "errorlog.php">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "profiling.*.log">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "ecommerce.log">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "tempcode.log">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "resourcefs.log">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "big_query_screens.log">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "queries.log">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "fields.xml">
+Order Allow,Deny
+Deny from all
+</Files>
+
+<Files "breadcrumbs.xml">
+Order Allow,Deny
+Deny from all
+</Files>
+

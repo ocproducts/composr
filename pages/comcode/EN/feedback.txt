@@ -1,0 +1,13 @@
+[title="1"]Leave feedback[/title]
+
+You can leave us private feedback here. We don't normally reply directly to feedback -- but we do read it all.
+
+[semihtml]
+{+START,IF,{$NOT,{$ADDON_INSTALLED,staff_messaging}}}
+	[email]{$STAFF_ADDRESS}[/email]
+{+END}
+
+{+START,IF,{$ADDON_INSTALLED,staff_messaging}}
+	[block title=""]main_contact_us[/block]
+{+END}
+[/semihtml]

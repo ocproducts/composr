@@ -1,0 +1,106 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Improving your search engine ranking[/title]
+
+For most web sites, it is important to draw in visitors. There are many ways to do this, and one of these ways is by improving your site's 'findability' in search engines; this includes presence in the results for keywords appropriate to the visitors you wish to attract, and your actual position in the displayed search results.
+
+It is worth noting at this point, that it is my view that search engine ranking is only one small part in the 'visitor equation'. There are many ways to attract visitors, including:
+ - having a good domain name for the subject matter (e.g. buyspoons.com for a company selling spoons)
+ - having a domain name that people can easily say and remember (e.g. amazon.com, ebay.com, yahoo.com, google.com, microsoft.com -- note they are all two syllable, and 'flow' and/or relate and/or bring up imagery)
+ - having a URL that is given out directly or close-to directly, such as a business card, or a sign
+ - Internet banner (or similar) advertising
+ - 'placement' of your URL in a prime location, such as in a directory, or made available by someone who has it in their interest to 'pipe' users to you
+ - On-line or off-line word-of-mouth, either by you, or by your visitors
+ - Quality of content, such that your site becomes the place to go
+ - associate your site with an official cause. A site which is somehow the natural place for people following this cause, will naturally get more hits.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]How web crawlers work[/title]
+
+Search engines work via one of four techniques (or a combination):
+ - manually maintained directories (e.g. Google uses the OpenDmoz directory)
+ - accessing databases (e.g. Google uses Wikipedia)
+ - web crawling (e.g. Google has one of the best web crawlers)
+ - aggregation/taking of data from other search engines (e.g. Yahoo used to use Google)
+
+A web crawler is a tool that will automatically find websites on the Internet, via hyperlinks to them. The basis of the process is very simple:
+ - the web crawler starts with a set of pages it already knows
+ - the web crawler goes to these pages, and:
+ - indexes the page
+ - finds what hyperlinks are on the page, and remembers them
+ - stores the pages it has found in its list of pages it knows, and hence these pages will themselves be crawled, and so on
+Generally, web crawlers will build an index over a period of time, and 'jump' into the new index routinely. These indexes are unimaginably large, and an enormous computational infrastructure is needed to make the system work.
+
+[media width="150" description="composr SEO options" float="right"]data_custom/images/docs/seo_options.png[/media]
+It is because of this web crawling process that it is important to be linked to. If there are no links to your web site on pages that themselves are crawled, it might never be found unless you tell the search engine about it by hand. Google uses a 'PageRank' system which actually factors in the number of links to a page as a part of the result ranking of that page (on the basis that a page with more links to it is more popular and therefore more relevant).
+
+[title="2"]Techniques[/title]
+
+There are a number of techniques that will improve your site's search engine status, some of which are supported with special Composr features. Some of these techniques are:
+ - Use good, accessible and 'semantic' HTML, and lay-out your site in an accessible fashion. By default, Composr has support for the highest level of accessibility, and has perfectly conformant HTML (except in certain areas where conformance is not possible, due to web browser limitations). By providing a well constructed site, search engines will be able to index your site more appropriately and thoroughly, and they may regard it more highly. It is a convenient parallel that accessibility features to help the disabled, also help search engines (especially site-maps and alt-text)[media width="150" description="SEO options for Composr content" float="right"]data_custom/images/docs/seo_content.png[/media]
+ - Set well considered meta keywords and descriptions for your site as a whole, and for individual items of content that you consider particularly important. Try to make it so that your content and keywords correlate: if your keywords also appear in your text, search engines are likely to strengthen their ranking of your site against them. Composr will try and automatically pick a list of keywords for any added entry of content if you do not specify them, but you should hand edit this list if you have time
+ - Use good Comcode page titles. Composr will use page titles as a part of the actual title-bar title of your site, thus allowing you to get keywords into a prime position of consideration for search engine crawlers
+ - Likewise, use good hyperlink titles
+ - Get keywords into your own URLs (the choice of domain name, the URL path, and the URL filename). Composr's "URL Monikers" feature will help here
+ - Get your site linked to by as many quality sites as possible: the more popular the sites, the better (don't get linked to on "link farms" though). This is not just good for the obvious reason of getting hits from those sites, but will also make search engines think your site is popular (in particular, the google PageRank algorithm basically bases website popularity on the number of links it gets)
+ - Add your site to directories, including large directories of any kind of website, and small specialist directories relevant to your website
+ - Make sure your XML Sitemap is being generated (you will need the CRON bridge scheduler working for this), and submit the sitemap to Google. This is described in more detail in the next section
+ - Submit your site to additional search engines (Google, Yahoo, Microsoft and Ask are automatic via the XML Sitemap); note that when you submit a site to a search engine, you are only giving it optional information, as they are designed to find web sites regardless of whether they are submitted or not. You might want to pay for a service that submits to multiple search engines for you, but be wary of this: search engines may mark these submissions as spam if your submission does not match that search engines submission policy (many of which in fact exclude submission from such bulk services). Note that some search engines require payment for listing
+ - Don't waste your time submitting to obscure search engines
+ - Do not 'cheat' search engines by making pages with a lot of hidden words: search engines will penalise you for it
+ - Make a lot of good written content, so search engines have more to index against. Of course, this will also add to the quality of your site
+ - Use the short URL feature, as search engines will then see pages opened up with different parameters (to access different content) as separate. This means they are more likely to consider them separately
+ - Use unlinked "landing pages" that are linked to from other websites. For example, you might make an article landing page that is linked to from a directory of articles. The purpose is to give search engines something extra and real to index without distracting your primary visitor flow
+
+There are many rogues and companies out there that will promise unachievable things when it comes to getting high search engine rankings: a site that a user would not want to visit and respect, is not going to be able to abuse search engine ranking schemes easily. Our best advice for this is that you should focus on quality, not cheating the system: quality is easier, and cheating will usually end up working against you.
+
+[title="2"]XML Sitemap[/title]
+
+Composr supports the XML Sitemap format, which is recognised by:
+ - Google
+ - Yahoo
+ - Microsoft
+ - Ask
+
+Composr will generate a very thorough Sitemap for your website, providing links to all content, even forum topics ([concept]Conversr[/concept] only).
+
+Composr will also automatically submit the Sitemap to the above search engines every 24 hours, so long as the CRON bridge scheduler is enabled and the 'Auto-submit sitemap' option is on. Configuration of the CRON bridge is described in the "Basic configuration" tutorial. You will know if it is not working because your Admin Zone front page will say so.
+
+If you cannot configure the CRON bridge scheduler for some reason, you can force generation of the sitemap by opening up [tt]http://yourbaseurl/data/force_sitemap_generation.php?keep_su=Guest[/tt], and then manually submitting the URL of the Sitemap (which will show in the browser address bar after it's generated) to the search engines.
+
+To test your Sitemap is generating correctly, open up [tt]http://yourbaseurl/cms_sitemap.xml[/tt]. You should see an [abbr="eXtensible Markup Language"]XML[/abbr] document showing all your URLs.
+
+[box="Important note about Google"]
+For Google to accept the automated Sitemap submissions you need to first submit it via [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]. After you have done this, future automated submissions will go straight through. Google webmaster tools is a great tool in its own right to see how your website is performing on Google.
+[/box]
+
+[title="2"]URL Monikers[/title]
+
+The Composr URL moniker feature will put keywords into the URLs instead of ID numbers, which is great for SEO but also makes the URLs more comprehensible to humans.
+
+One small disadvantage of URL Monikers, is it makes it a bit harder to find out ID numbers, as you can't just look in URLs. However, you can still find them on edit links, or if you look in the HTML source you will often see:
+[code]
+<meta name="DC.Identifier" content="http://baseurl/data/page_link_redirect.php?id=_SEARCH%3Asomemodule%3Aview%3A13" />
+[/code]
+This is very cryptic, but the ID number is on the end after [tt]%3A[/tt] (in this example, it's 13).
+
+[concepts
+ 1_key="SEO"           1_value="Search engine optimisation: the process of improving a website's ranking in search engine results"
+ 2_key="Crawler"       2_value="The 'work horse' of search engines that moves between links on the world-wide-web, finding and analysing web-pages"
+ 3_key="XML Sitemap"   3_value="A standard format for listing the pages of your website, recognised by all the major search engines"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+ - [page="_SEARCH:tut_configuration"]Basic configuration[/page]
+ - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
+ - [url="Submit to Google"]http://www.google.com/addurl.html[/url]
+ - [url="Submit to Yahoo"]http://docs.yahoo.com/info/suggest/[/url]
+ - [url="Submit to Ask-Jeeves"]https://sitesubmit.ask.com/Main/login.jsp[/url]
+ - [url="Submit to Lycos"]http://insite.lycos.com/[/url]
+ - [url="Submit to Overture"]http://overture.com/[/url]
+ - [url="Submit to OpenDMOZ"]http://www.dmoz.org/add.html[/url]
+ - [url="Sitemaps specification"]http://www.sitemaps.org/[/url]
+ - [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]
+
+{$SET,tutorial_tags,SEO,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most web sites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]

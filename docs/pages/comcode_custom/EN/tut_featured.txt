@@ -1,0 +1,161 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Providing featured content[/title]
+
+[media width="150" description="The Admin Zone provides a list of tasks, including rotation of featured content" float="right"]data_custom/images/docs/featured_checklist.png[/media]
+There are a number of Composr systems that provide featured content, rather than archives of content, or actively worked-upon content. These systems are:
+ - the award system
+  - award holder display
+  - randomisation display
+  - content display
+ - image of the day
+ - random quotes
+ - polls (although these are covered in the 'Feedback' tutorial)
+ - community billboard messages (although this is covered in the 'Points' tutorial)
+
+This is a short tutorial briefly covering these systems, and featured content in general.
+
+Benefits of providing featured content include:
+ - giving your site a 'fresh' feeling, and a feeling that it is an active site
+ - giving variety to your site, without much effort
+ - drawing users in, such that they regularly re-visit to see what new content is featured
+ - putting content in a prime position so as to draw attention to it, perhaps as a reward for the content creator, perhaps for its relevancy, or perhaps to recommend it
+
+The obvious disadvantage of non-randomised featured content is the effort that is taken to maintain it. The Admin Zone provides a tool on your front page to assist with this, but it will only be able to do so if you regularly check it.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Awards[/title]
+
+The award/content systems allows you to select out content for featuring. It may be used in three ways:
+ - display of content assigned as the current holder of an award (via the [tt]main_awards[/tt] block, or by browsing the [tt]awards[/tt] page). An award must exist (create new awards in Admin Zone > Setup > Awards) before it can be assigned.
+ - random display of content in any arbitrary categories (via the [tt]main_content[/tt] block) with full [concept]Selectcode support[/concept]. No award needs to exist for this, as assignment is done via block parameters.
+ - display of any arbitrary item of content (via the [tt]main_content[/tt] block). No award needs to exist for this, as assignment is done via block parameters.
+
+[media width="150" description="Making an award" float="right"]data_custom/images/docs/featured_award.png[/media]
+You may use the award system with any of the following types of content:
+ - authors
+ - calendar events
+ - catalogues
+ - catalogue categories
+ - catalogue entries
+ - Wiki+ pages
+ - Wiki+ posts
+ - comcode pages
+ - downloads
+ - download categories
+ - forum posts
+ - forum topics
+ - forums
+ - galleries
+ - images
+ - members
+ - news
+ - quizzes
+ - usergroups
+ - videos
+
+So, why are are these awards so useful? Well, we find users often come to us wanting to be able to feature different entries of the same thing on their front page. For example, a boating club might have a catalogue filled with different types of yacht, and want to be able to have them shown on the front page.
+
+Keeping this yacht example, I will now explain each of the three ways that the award system may be used.
+
+[title="3"]Display of content assigned as the current holder of an award[/title]
+
+[media width="150" description="Making a download as holder of the default 'Download of the week' award" float="right"]data_custom/images/docs/featured_dotw.png[/media]
+
+If you wanted to choose a different yacht to display every week, for example, then you can just:
+ - create a catalogue award
+ - place the award block on the front page and set it to refer to the award you just made (the Block assistant will help you, accessible from the 'Add block' button on the Comcode page editing screen)
+ - change the 'Yacht of the week' just by editing a yacht's catalogue entry (or when you add an entry, make it 'Yacht of the week' immediately)
+
+Composr has one award that is pre-created by default: Download Of The Week. This is provided because independent 'Download Of The Week' functionality was provided in Composr prior to the creation of the award system and subsequently dropped as an independent system.
+
+Each award has its own archive, under the [tt]points[/tt] page. The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
+
+You can configure the awards (when you add or edit the award itself) to carry a number of points. If you do this, the submitter of content given that award will be given some points, and that'll show up on their points profile.
+
+[title="3"]Arbitrary randomisation display[/title]
+
+If you do not want to go to the effort of creating an award and manually awarding content for it, then you can just use the '[tt]main_content[/tt]' block in randomisation mode. You get the choice of which categories you want to randomly display from by way of a 'select' block parameter (written in [concept]Selectcode support[/concept] syntax).
+
+By doing this you use the award system without actually using an award.
+
+[title="3"]Arbitrary content display[/title]
+
+If you want to display a specific item of content as you require, but without actually wrapping it up in an actual award, then you may use the '[tt]main_content[/tt]' block with parameters to specify exactly what item you wish to display.
+
+As with randomisation, this allows you to use the award system without actually using an award.
+
+[title="2"]Using module screens as blocks[/title]
+
+Whilst the '[tt]main_content[/tt]' block (see above) can show content within blocks, it is conceivable that you might want to display full module screens as if they were blocks. This is possible with the '[tt]main_include_module[/tt]' block.
+
+For example:
+[code]
+[block="_SEARCH:topicview:browse:1" strip_title="1" only_if_permissions="0"]main_include_module[/block]
+[/code]
+would show Conversr topic #1 in a block, without running permission checks, and with the title removed.
+
+[title="2"]Image of the day[/title]
+
+[i]As of Composr version 10, the IOTDs addon is not bundled[/i]
+
+[media width="150" description="Adding an IOTD" float="left"]data_custom/images/docs/featured_iotd_add.png[/media]
+[media width="150" description="Choosing an IOTD" float="right"]data_custom/images/docs/featured_iotd_choose.png[/media]
+{!iotds:DOC_IOTDS} You can turn them off by removing the block from your front page if you wish (unless you already deselected using the Setup Wizard).
+
+Often website users are the best source of IOTDs, and if you have granted submit access (configurable in the Permissions Tree Editor), they will be able to submit them into your queue.
+
+The IOTD system does not manage IOTDs for you: you need to change IOTD yourself. To make this easy, we recommend that you keep on top of the IOTDs that users submit, deleting the poor ones, so as to make picking new ones straight-forward.
+
+[media width="150" description="The IOTD block displays like this" float="right"]data_custom/images/docs/featured_iotd_view.png[/media]
+To pick an IOTD, you select one from those shown on the IOTD queue page, editing it so as to 'use it immediately'. Old IOTDs may be browsed from the IOTD archive page, which is linked to from the IOTD block.
+
+You may change 'of the day' to anything of your choosing by editing language strings in the Composr language editor (the 'iotds' language file).
+
+If you do not wish to use both the IOTD and gallery systems on the same website then you may wish to drop the use of IOTDs in favour of an image award.
+
+[title="2"]Random quotes[/title]
+
+{!quotes:DOC_QUOTES} To access quote administration, go to: Admin Zone > Style section > Edit quotes.
+
+You will find that by default a selection of deep quotes are provided.
+
+If block cacheing is on, quotes will be rotated on a daily basis.
+
+[title="2"]Pulling out forum content[/title]
+
+There are 4 blocks for pulling out forum content:
+1) [tt]side_forum_news[/tt] -- show forum topics, in news-style, as a side block
+2) [tt]main_forum_news[/tt] -- show forum topics, in news-style, as a main block
+3) [tt]bottom_forum_news[/tt] -- show forum topics, in news-style, as a ticker
+4) [tt]main_forum_topics[/tt] -- show forum topics, as either a side block or a main block
+
+Three of these show in a news-style, and are most useful for those who prefer to use their forum to post news, rather than the dedicated Composr news system. Most users will want to use the [tt]main_forum_topics[/tt] block.
+
+The blocks are configurable, but generally you will typically use them to show the most recent topics from a particular set of forums.
+
+[title="2"]Count-downs[/title]
+
+Count-downs are provided via the [tt]main_countdown[/tt] block. You can configure the date/time the count-down is running to, and Composr will automatically maintain the count-down for you. Once it passes the date/time, it displays negative time.
+You may place as many independent count-downs as you like.
+
+[title="2"]Hit counts[/title]
+
+Hit counters may be placed via the [tt]main_count[/tt] block. Hit counters are considered quite antiquated generally, but may be useful to you in some cases. Note that hits from bots, or repeat hits, are not filtered out.
+You may place as many independent hit counters as you like.
+
+[concepts
+ 1_key="IOTD"   1_value="[Image of the day]. An image and associated caption, generally shown on your front page, intended for regular changing"
+ 2_key="DOTW"   2_value="[Download of the week]"
+ 3_key="Award system"   3_value="A system for picking out content for prominent display"
+ 4_key="Award"  4_value="Awards are created for a specific content type with specific details and then content of that content type may be given the award; past holders of the award are displayed in an archive"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]
+ - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
+ - [page="_SEARCH:tut_adv_galleries"]Providing galleries[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Advanced custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
+
+{$SET,tutorial_tags,iotds,random_quotes,polls,forum_blocks,counting_blocks,awards,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to pull out content from your website, and put it in a featured spot. There are a number of methods available.}[block]main_tutorial_rating[/block]

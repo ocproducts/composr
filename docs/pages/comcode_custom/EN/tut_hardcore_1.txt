@@ -1,0 +1,137 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Making an addon (part 1)[/title]
+
+At ocProducts we really want to encourage users of Composr to start making addons and releasing them in an Open Source code ecosystem. In order to get the ball rolling we've done a number of things:
+ - Made a powerful framework for customising Composr and releasing addons
+ - Written a huge Code Book, which explains all Composr's conventions, systems, and APIs
+ - Written a number of tutorials, such as these
+ - Released our own semi-official addons, as examples
+ - Assisted, answering technical questions
+ - Provided a distribution system
+ - Made Composr Open Source
+However, at the end of the day addon-making is in the hands of users -- whilst we can empower, we cannot write all the actual addons ourselves unless we're paid to do so. Therefore users who need addons need to 'carry the torch', promoting and being active in the Composr community. The more everyone puts in, the more everyone gets out -- our users together are stronger than we are.
+
+The 'Making an addon' series of tutorials are highly technical, intended for those who already know PHP programming and the basics of Composr's modularity. You can always go to web to search and learn it.
+If you have any questions or want to discuss solutions, we've created forums on our website for each tutorial in this series. [b]Please[/b] ask questions there, even if they seem basic.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Development Environment/Files[/title]
+
+[media width="150" description="Use an environment you're comfortable in" float="left"]data_custom/images/docs/hardcore_windows.png[/media]
+[media width="150" description="To be able to search through files efficiently is essential" float="right"]data_custom/images/docs/hardcore_search.png[/media]
+Personally I develop Composr on my own computer under Windows. I have a PHP webserver setup and I manipulate files directly on my hard disk. I have cacheing disabled on my Composr install so that I don't have to mess around decacheing when I change files directly.
+
+One of the most handy things about developing on the desktop is to be able to quickly run file contents searches in Windows to find out where stuff is done. Unfortunately though, by default Windows will not search inside most non-Microsoft file types unless you do some special set up. Here is a [url="guide to what to do"]http://www.howtogeek.com/99406/how-to-search-for-text-inside-of-any-file-using-windows-search/[/url] to fix this -- use the technique for the ".php", ".css" and ".tpl" file types.
+Once this is done you'll be able to quickly find things by opening up an explorer window and hitting F3.
+Alternatively, you can use an alternate search tool such as [url="Agent Ransack"]http://www.mythicsoft.com/agentransack[/url].
+
+Composr might seem a bit daunting with its (approximately) 4,000 files, but remember they are just files, and you don't need to understand everything to make changes -- you only need an understanding of the core stuff, and the stuff your changes interact with. If you take backups of a file, you can restore that file to a prior state just by restoring your backup. If you add a file and it breaks things, you can delete it if you really need to.
+
+[media width="150" description="A good editor is essential" float="left"]data_custom/images/docs/hardcore_context.png[/media]
+[media width="150" description="Firefox is probably the best browser to develop in, thanks to the great selection of powerful extensions" float="right"]data_custom/images/docs/hardcore_browser.png[/media]
+
+[title="2"]Making a counter block[/title]
+
+We're going to be making a new Composr block that does 'counting down' or 'counting up' to a date/time given as a parameter to that block. Knowledge of PHP basics is required.
+
+Since we are going to make a block, we'll quickly go over the fundamentals of what blocks do in Composr.
+
+Blocks are fully self-contained units. Blocks have no limit in the amount of code or page space they may take. There are two kinds:
+[list]
+[*]mini-block (very simple to code, no class required, recommended for quick coding)
+[*](regular) block (supports caching, supports install/uninstall code, uses OOP, recommended for mature codebases)
+[/list]
+
+We will create a mini-block for this example, as follows:
+[tt]Block name:[/tt] [tt]main_counter[/tt] (the PHP file will be [tt]sources_custom/miniblocks/main_counter.php[/tt])
+[tt]Coding method:[/tt] A simple mini-block (without using template or language file).
+
+[codebox]
+<?php
+
+$target = $map['param'];
+if (!is_numeric($target)) {
+    $target = strtotime($target);
+} else {
+    $target = intval($target); // Let's accept either a timestamp or human strings that PHP's 'strtotime' can understand
+}
+$seconds_to_go = $target - time();
+if ($seconds_to_go >= 0) {
+    $positive_seconds_to_go = $seconds_to_go;
+} else {
+    $positive_seconds_to_go = -$seconds_to_go;
+}
+$hours = floor($positive_seconds_to_go / 60 / 60);
+$positive_seconds_to_go -= $hours * 60 * 60;
+$minutes = floor($positive_seconds_to_go / 60);
+$positive_seconds_to_go -= $minutes * 60;
+$seconds = $positive_seconds_to_go;
+$time = $hours . ':' . $minutes . ':' . $seconds;
+if ($seconds_to_go >= 0) {
+    echo <<<END
+{$time} hours to go.
+END;
+} else {
+    echo <<<END
+{$time} hours since.
+END;
+}
+?>
+[/codebox]
+
+
+Now to use our block, we just need to put some Comcode into the page that we want it on:
+[code]
+Some famous event...
+[block="5 Apr 2063"]main_counter[/block]
+[/code]
+
+[media width="150" description="A very simple countdown block -- but it'd be easy to style it and put it to work on useful tasks!" float="right"]data_custom/images/docs/hardcore_count.png[/media]
+
+[title="2"]Exercises[/title]
+
+At the end of each of the tutorial in this series I will be releasing some exercises out. If you complete them, or have trouble completing them, post about it in the Developing forum.
+
+[title="3"]Exercise-1: Hit counter[/title]
+
+Make a block that acts as a good old-style hit counter. To do this you'll probably want to use the '[tt]get_value[/tt]' and '[tt]set_value[/tt]' functions. I'm not going to tell you where they are because you can find them yourself by doing a file search for '[tt]function get_value([/tt]' -- once you do, you can view the actual source code for the functions in your text editor.
+
+[title="3"]Exercise-2: Post requestor[/title]
+
+Make a block that detects if the current logged in member has ever posted on the forum. If they have, don't do any output, but if they haven't output a suggestion that they make a post.
+You might go about this in one of two ways:
+ - Writing it by checking post count, which can be read via the Composr forum driver system ([tt]$count=$GLOBALS['FORUM_DRIVER']->get_post_count(get_member());[/tt]
+ - Assuming a forum type, such as Conversr, and querying the database ([tt]$count=$GLOBALS['FORUM_DB']->query_select_value('<post table name>','COUNT(*)',array('<poster field id>'=>get_member()));[/tt])
+
+The second is more adventurous and help you get used to using the database, which is always helpful.
+
+[title="2"]Points challenge[/title]
+
+10 compo.sr points will be given to the first member to explain a yet-unexplained bug in this code...
+[code="PHP"]
+$data='blahblah';
+$output=new Tempcode();
+$output.='<p>First paragraph</p>';
+$output.='<p>Some data: '.$data.'</p>';
+$output->evaluate();
+$GLOBALS['SITE_DB']->query('UPDATE cms2_whatever_table SET whatever_property='.get_param_string('sent_value'));
+[/code]
+The race is on.
+
+1 point will be automatically given to anybody who posts on our forum because you get a point for each forum post anyway ;). Please do use our forum!
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_hardcore_2"]Making an addon (part 2)[/page]
+ - [page="_SEARCH:tut_hardcore_3"]Making an addon (part 3)[/page]
+ - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:tut_framework"]The Composr programming framework[/page]
+ - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
+ - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
+ - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+ - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [url="PHP website"]http://www.php.net[/url] (I recommend you get the CHM reference guide -- very useful, I have it open all day!)
+
+{$SET,tutorial_tags,Development,PHP,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The first in a series of practical tutorials showing how to create addons.}[block]main_tutorial_rating[/block]
