@@ -1573,6 +1573,26 @@ function step_5_write_config()
         warn_exit(do_lang_tempcode('INSTALL_WRITE_ERROR', escape_html($config_file)));
     }
 
+    fwrite($config_file_handle, '
+
+if (!function_exists(\'git_repos\')) {
+    /**
+     * Find the git branch name. This is useful for making this config file context-adaptive (i.e. dev settings vs production settings).
+     *
+     * @return ?ID_TEXT Branch name (null: not in git)
+     */
+    function git_repos()
+    {
+        $path = dirname(__FILE__).\'/.git/HEAD\';
+        if (!is_file($path)) return \'\';
+        $lines = file($path);
+        $parts = explode(\'/\',$lines[0]);
+        return trim(end($parts));
+    }
+}
+
+');
+
     // Write in inputted settings
     foreach ($_POST as $key => $val) {
         if (in_array($key, array(
@@ -1662,25 +1682,6 @@ if (appengine_is_live()) {
 ";
         fwrite($config_file_handle, preg_replace('#^\t\t\t#m', '', $gae_live_code));
     }
-
-    fwrite($config_file_handle, '
-
-if (!function_exists(\'git_repos\')) {
-    /**
-     * Find the git branch name. This is useful for making this config file context-adaptive (i.e. dev settings vs production settings).
-     *
-     * @return ?ID_TEXT Branch name (null: not in git)
-     */
-    function git_repos()
-    {
-        $path = dirname(__FILE__).\'/.git/HEAD\';
-        if (!is_file($path)) return \'\';
-        $lines = file($path);
-        $parts = explode(\'/\',$lines[0]);
-        return trim(end($parts));
-    }
-}
-');
 
     // ---
 

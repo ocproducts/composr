@@ -14,7 +14,7 @@ if [ -e "data_custom/failover_rewritemap.txt" ]; then
 	echo > data_custom/failover_rewritemap.txt
 	echo > data_custom/failover_rewritemap__mobile.txt
 fi
-echo "\n\ndefine('DO_PLANNED_DECACHE', true);" >> _config.php
+echo $'\n\ndefine(\'DO_PLANNED_DECACHE\', true);' >> _config.php
 
 if [ -e "sites" ]; then
    find . -name "*.tcd" -exec rm -f {} \;
