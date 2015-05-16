@@ -50,6 +50,10 @@ class Hook_config_crypt_ratchet
      */
     public function get_default()
     {
+        return '10';
+
+        // We don't use the below code, because switching from a dev server to a slower live server could be very traumatic
+
         if (function_exists('password_hash')) {
             /**
              * This code will benchmark your server to determine how high of a cost you can
@@ -70,7 +74,7 @@ class Hook_config_crypt_ratchet
             } while (($time_dif < $time_target) && ($cost <= 31));
             $cost--;
         } else {
-            $cost = 3;
+            $cost = 10;
         }
 
         return strval($cost);
