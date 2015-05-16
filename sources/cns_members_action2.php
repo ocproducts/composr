@@ -987,7 +987,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
     if (!is_null($password)) { // Password change
         // Security, clear out sessions from other people on this user - just in case the reset is due to suspicious activity
-        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'sessions WHERE the_user=' . strval($member_id) . ' AND ' . db_string_not_equal_to('the_session', get_session_id()));
+        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'sessions WHERE member_id=' . strval($member_id) . ' AND ' . db_string_not_equal_to('the_session', get_session_id()));
 
         if (!$skip_checks) {
             if (($member_id == get_member()) || (get_value('disable_password_change_notifications_for_staff') !== '1')) {
