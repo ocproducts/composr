@@ -1,0 +1,128 @@
+[semihtml]
+{$REQUIRE_CSS,composr_homesite__contributions}
+
+{$REQUIRE_JAVASCRIPT,jquery-ui}
+{$REQUIRE_CSS,jquery.ui.all}
+
+<div class="cntRow">
+	<div class="cntLeft">
+		<div class="cntL_Row">
+			[title]Considering helping out?[/title]
+
+			<p>Do you want to help our mission: bringing a way that empowers the masses to create better websites on saner budgets?</p>
+
+			<p>It's a lofty goal, and we'd love your help!</p>
+
+			<h3>Why do you want <em>my</em> help?</h3>
+
+			<div class="sept"></div>
+
+			<p>By virtue of the fact that you are reading this, you have at least some interest in web development and/or Composr. This makes you perfect for so many reasons:</p>
+
+			<ul class="cntLi">
+				<li>The enthusiasm of you and others is key: so many jobs, such as spreading the word, could never be done well on automatic &ndash; and if we tried to do everything ourselves, we couldn't sustain the product and community</li>
+				<li>You're different. Different from us, and different from many other Composr users &ndash; either in little or big ways. This diversity is exactly what we need - a variety of skills make Composr more valuable for everybody. Share your own special perspectives and talents.</li>
+				<li>We need feedback from people on the front lines. What would you improve in Composr?</li>
+			</ul>
+
+			<p>So how exactly can you give back? That depends on your talents. Whether you're a developer, a good writer, have some cash to help drive the project, or just have some darned-good ideas, you can support the mission.</p>
+
+			<h3 class="text-center">Here are a few ideas of ways to help</h3>
+
+			<div class="septHead"></div>
+		</div>
+
+		<div class="cntL_Row">
+			<div id="vertical_container">
+				<h1 class="accordion_toggle">Money</h1>
+
+				<div class="accordion_content">
+                    [block="money" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
+				</div>
+
+				<h1 class="accordion_toggle">Skill-based</h1>
+				<div class="accordion_content">
+                    [block="skill_based" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
+				</div>
+
+				<h1 class="accordion_toggle">Evangelism</h1>
+				<div class="accordion_content">
+                    [block="evangelism" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
+				</div>
+
+				<h1 class="accordion_toggle">On compo.sr</h1>
+				<div class="accordion_content">
+                    [block="our_site" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
+				</div>
+
+				<h1 class="accordion_toggle">Usability and stability</h1>
+				<div class="accordion_content">
+                    [block="usability" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
+				</div>
+
+				<h1 class="accordion_toggle">Other</h1>
+				<div class="accordion_content">
+                    [block="other" raw="1" quick_cache="1" cache="1"]composr_homesite_featuretray[/block]
+				</div>
+			</div><!--accordion closed-->
+		</div>
+
+		<div class="cntL_Row">
+			<h3>What's in it for you?</h3>
+
+			<div class="sept"></div>
+
+			<p>For one thing, you're helping in our mission to make the web development world a better place for people who aren't necessarily programmers or millionaires. You can be a big help to the hard-working ocProducts team who've continued to spend years on very modest incomes to see the vision come to pass. By its very nature the Open Source model depends on people like you to share talents in big and small ways.</p>
+
+			<p>In addition, we highlight members who have made significant contributions via our community leader-board, ranks, and display of recent activity.</p>
+
+			<p>Finally, people who contribute significantly will be well respected and thanked by the community. It feels good!</p>
+
+			<h3>How to get started</h3>
+
+			<div class="sept"></div>
+
+			<p>Just go ahead and pick something on the above list and go for it! Be a self-starter and don't let anything hold you back. Again &ndash; even tiny efforts like micro-blogging do some good for the project. So why not?</p>
+		</div>
+	</div>
+
+	<div class="cntRight">
+		<div class="cntR_Row">
+			<div class="tesBlock">
+				<div class="tesHead2">
+					Things you can do right now
+				</div>
+
+				<div class="quoteCst">
+                    <div style="display: block; width: 180px; height: 150px; background: transparent url(http://cdn.hotscripts.com/img/widgets/rt_180x150-1.gif) 0 0 no-repeat;"><p style="width: auto; margin: 0 0 12px; padding: 50px 0 0 8px; font: normal 11px/13px Arial, Helvetica, sans-serif; color: #fff; text-align: left;"><strong>Like our script?</strong> Rate it at <a target="_blank" href="http://www.hotscripts.com/category/scripts/php/scripts-programs/portal-systems/?RID=224699" style="color: #fff; text-decoration: none;" >HotScripts</a> > <a target="_blank" href="http://www.hotscripts.com/?RID=224699" style="color: #fff; text-decoration: none;">Hot Scripts</a></p><form action="http://www.hotscripts.com/rate/32832/?RID=224699" method="post" style="margin: 0; padding: 0 0 0 12px; text-align: left; overflow: hidden;"><div style="margin: 0; padding: 0; width: 97px; float: left; clear: none; font: normal 11px/19px Tahoma, Arial, Helvetica, sans-serif;"><input type="radio" name="rate" id="Excellent" value="5" style="margin: 0 4px 0 0;" /><label for="Excellent">Excellent</label><br /><input type="radio" name="rate" id="Very Good" value="4" style="margin: 0 4px 0 0;" /><label for="Very Good">Very Good</label><br /><input type="radio" name="rate" id="Good" value="3" style="margin: 0 4px 0 0;" /><label for="Good">Good</label></div><div style="margin: 0; padding: 0; float: left; clear: none; font: normal 11px/19px Tahoma, Arial, Helvetica, sans-serif;"><input type="radio" name="rate" id="Fair" value="2" style="margin: 0 4px 0 0;" /><label for="Fair">Fair</label><br /><input type="radio" name="rate" id="Poor" value="1" style="margin: 0 4px 0 0;" /><label for="Poor">Poor</label><br /><input type="image" src="http://cdn.hotscripts.com/img/widgets/btn_vote-2.gif" style="width: 50px; height: 17px; overflow: hidden; float: left; margin: 2px 0 0 2px; clear: none; padding: 0; border: 0;" /></div></form></div>
+
+					<div class="break"></div>
+
+					<p><strong><a href="http://www.hotscripts.com/account/index.html?section=reviews&type=addnew&listing_id=32832">Review us on Hotscripts</a></strong></p>
+
+					<div class="break"></div>
+
+					<p><strong><a href="http://php.opensourcecms.com/scripts/details.php?scriptid=210">Rate us on OpenSourceCMS</a></strong></p>
+
+					<div class="break"></div>
+
+					<p><strong><a href="http://www.facebook.com/pages/Composr/80430912569">Like us on Facebook</a></strong></p>
+
+					<div class="break"></div>
+
+					<p><strong><a href="https://twitter.com/composr_cms">Follow us on Twitter</a></strong></p>
+
+					<div class="break"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>//<![CDATA[
+	$(function() {
+		$('#vertical_container').accordion({ heightStyle: "content" });
+	});
+//]]></script>
+
+[/semihtml]

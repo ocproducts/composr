@@ -1,0 +1,488 @@
+[semihtml]
+{$REQUIRE_CSS,composr_homesite__ocproducts}
+
+{$REQUIRE_CSS,jquery.megahomepage-slidedeck}
+{$REQUIRE_JAVASCRIPT,jquery.megahomepage}
+{$REQUIRE_JAVASCRIPT,jquery.easing}
+{$REQUIRE_JAVASCRIPT,jquery.slidedeck}
+{$REQUIRE_JAVASCRIPT,jquery.tytabs}
+
+<div class="cntRow">
+	[title]ocProducts: The Composr Pros[/title]
+    <span class="ComTopTxt">The client benefits from the combination of our expertise<br />and the powerful features of our software.</span>
+</div>
+
+<div class="cntRow">
+	<div class="hSliderHold">
+		<div class="hSliderInner">
+			<div class="hSlider">
+				<div class="con">
+					<div class="slidedeck-home-page containerSlider">
+						<dl class="slidedeck cont-slider">
+							<dt class="spine spine_1"></dt>
+							<dd class="active slide slide_1"><img alt="" class="cardImage" height="300" src="{$IMG*,composr_homesite/ocproducts/comp-slider1}" width="725" /></dd>
+
+							<dt class="spine spine_2 next">
+								<div class="index"></div>
+
+								<ul class="verticalSlideNav slide-Nav">
+									<li class="nav_1 active"><a class="nav_1" href="#1">Nav 1</a></li>
+
+									<li class="nav_2"><a class="nav_2" href="#2">Nav 2</a></li>
+
+									<li class="nav_3"><a class="nav_3" href="#3">Nav 3</a></li>
+
+									<li class="nav_4"><a class="nav_4" href="#4">Nav 4</a></li>
+								</ul>
+								<!--<div style="position: absolute; top: 25px; left: 823px; overflow: hidden; z-index: 20000; display: none;" class="activeCorner spine_2"></div>-->
+							</dt>
+
+							<dd class="slide slide_2">
+								<ul class="slidesVertical">
+									<li class="case verticalSlide_1"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/slider-2a}" width="725" /></li>
+
+									<li class="case verticalSlide_2"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/slider-2b}" width="725" /></li>
+
+									<li class="case verticalSlide_3"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/slider-2c}" width="725" /></li>
+
+									<li class="case verticalSlide_4"><img alt="jquery accordion" height="300" src="{$IMG*,composr_homesite/ocproducts/slider-2d}" width="725" /></li>
+								</ul>
+								<a class="vertical-prev-next previous no-display" href="#previous">Previous</a>
+								<a class="vertical-prev-next next" href="#next">Next</a>
+							</dd>
+
+							<dt class="spine spine_3"></dt>
+							<dd class="slide slide_3"><img alt="jquery accordion" src="{$IMG*,composr_homesite/ocproducts/slide3}" /></dd>
+
+							<dt class="spine spine_4"></dt>
+							<dd class="slide slide_4"><img alt="jquery accordion" src="{$IMG*,composr_homesite/ocproducts/slide4}" /></dd>
+
+							<dt class="spine spine_5 last"></dt>
+							<dd class="slide slide_5 last"><img alt="slide" src="{$IMG*,composr_homesite/ocproducts/slide5}" /></dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+
+			<div class="hSliderBtm"></div>
+		</div>
+	</div>
+</div>
+
+<div class="cntRow">
+	<p>Rather than building several 'pages' and calling it a website, we specialising in providing real tools you need to succeed in today's competitive online world of highly sophisticated beautiful social websites.</p>
+
+	<p>In addition, our first-class websites include practical tools (like SEO) that actually make a website effective.</p>
+
+	<p>&nbsp;</p>
+</div>
+
+<div class="cntRow">
+	<div class="rowHead text-center">
+		Why not a regular web design company?
+	</div>
+
+	<h4 class="colrBl fWt text-center">Through our unique relationship with Composr *1, you'll receive:</h4><br />
+</div>
+
+<div class="cntRow">
+	<div class="comp_box_hold">
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img1}" /></div><span>Service from a world-class web development company with an active web presence and public fan base.</span>
+	</div>
+
+	<div class="comp_box_hold">
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img2}" /></div><span>Cost-effectiveness, by leveraging Composr's features and avoid reinventing the wheel.</span>
+	</div>
+
+	<div class="comp_box_hold">
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img3}" /></div><span>A low-maintenance web solution with capacity for low-cost growth.</span>
+	</div>
+
+	<div class="comp_box_hold">
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img4}" /></div><span>An integrated web solution with advanced functionality and features.</span>
+	</div>
+
+	<div class="comp_box_hold">
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img5}" /></div><span>Software that has passed the tests of time.</span>
+	</div>
+
+	<div class="comp_box_hold">
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img6}" /></div><span>Reduced reliance on third-party software/technology: avoid buck-passing.</span>
+	</div>
+</div>
+
+<div class="cntRow">
+	<div class="dlPdf">
+		<div class="dlPdfBtn">
+			<p><a href="#">Read more about our company's approach.</a></p>
+            <span>(we can do non-Composr solutions too, if appropriate)</span>
+		</div>
+	</div>
+</div>
+
+<div class="cntRow">
+	<div class="cntLeft">
+		<div class="cntL_Row">
+			<div class="thumbHead">
+				Stats and facts:
+			</div>
+
+			<p>Blinded by tech? See our <a href="#">glossary</a>.</p><br />
+		</div>
+
+		<div class="cntL_Row">
+			<div class="thumbComp">
+				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img7}" /></div>
+
+				<p><strong>Testimony</strong><br />
+				<span><a href="#">View portfolio &amp; case studies »</a></span></p>
+			</div>
+
+			<div class="thumbComp">
+				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img8}" /></div>
+
+				<p><strong>The social revolution</strong><br />
+				<span><a href="#">Beyond websites »</a></span></p>
+			</div>
+
+			<div class="thumbCompLast">
+				<div class="thumbImg"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img9}" /></div>
+
+				<p><strong>Ready to contact us?</strong><br />
+				<span><a href="#">Open a ticket »</a></span></p>
+			</div>
+		</div>
+
+		<div class="cntL_Row">
+			<h3 class="colrBl text-center">The world-class web development team is waiting to hear from you</h3><br />
+
+			<div class="compCol_lft marRht">
+				<p>To get started, <a href="#">open a ticket</a> with your requirements. We'll respond promptly with a free quote *1, *5.</p>
+			</div>
+
+			<div class="compCol_lft">
+				<p>Or, fill in our <a href="#">project briefing survey</a> to tell us your website development needs directly.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="cntRight">
+		<div class="cntR_Row"></div>
+
+		<div class="cntR_Row">
+			<div class="tesBlockWt">
+				<div class="tesHead2">
+					Our CEO's blog
+				</div>
+
+				<div class="quoteCst">
+					<p class="ceo"><img alt="Chris Graham" class="ceoPic" src="{$IMG*,composr_homesite/ocproducts/comp_chris}" />As well as a programmer, I'm managing director of my company, ocProducts. I basically do everything that no one else&hellip;</p>
+
+					<ul class="liRcol">
+						<li><a href="#">Development update</a> <span class=" highlight_span">18 November 2013</span></li>
+
+						<li><a href="#">New emoticons</a> <span class=" highlight_span">15 October 2013</span></li>
+
+						<li><a href="#">Understanding viewports on mobile devices</a><span class=" highlight_span">25 August 2013</span></li>
+					</ul>
+
+					<div class="rdMore">
+						<a href="#">Read blog</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="compSepr"></div>
+
+<div class="cntRow comp_cnt1">
+	<div class="comp_col">
+		<div class="comp_col_head">
+			We're not only about technology
+		</div>
+
+		<p>It's vital that you get a beautiful web design that carries your brand and gives your users confidence:</p>
+
+		<ul>
+			<li>We won't just use template, you'll have a real designer working for you, someone with experience</li>
+
+			<li>We include logo design, if you want it</li>
+
+			<li>Free use of professional stock photography<br />
+			<span>(if you're a design agency, we'll build your design)</span></li>
+		</ul>
+
+		<p>We want your users to keep coming back to you, not a competitor. A great and charming user experience helps.</p>
+	</div>
+
+	<div class="comp_col">
+		<div class="comp_col_head">
+			We make our projects partnerships
+		</div>
+
+		<p>As our business partner you will get *2:</p>
+
+		<ul>
+			<li>To liaise directly with a project manager in charge of your web design project.</li>
+
+			<li>A free email account and domain name (if you take out our low-cost hosting option).</li>
+
+			<li>Inbuilt search engine optimisation and automatic search engine submission.</li>
+
+			<li>Inbuilt web analytics</li>
+
+			<li>A website that is compatible with all the major web browsers (Internet Explorer, Firefox, Google Chrome, Safari, and Opera)</li>
+
+			<li>Comprehensive support to make your site as successful as it can be (under our support account service)</li>
+		</ul>
+
+		<p>We also have the skills and resources to provide all kinds of other design/development services as-required, such as user-testing sessions and mobile-app development.</p>
+	</div>
+</div>
+
+<div class="cntRow comp_cnt2">
+	<div id="tabsholder2">
+		<br />
+
+		<h1 class="text-center">The website design process</h1>
+
+		<ul class="tabs comp">
+			<li class="compli" id="tabz1">How do we do it?</li>
+
+			<li class="compli" id="tabz2">What do we charge?</li>
+
+			<li class="compli" id="tabz3">What to provide us</li>
+		</ul>
+
+		<div class="contents marginbot">
+			<div class="tabscontent" id="contentz1">
+				<div class="LcolTab">
+					<div class="picDia">
+						<a href="{$BASE_URL*}/uploads/website_specific/compo.sr/process.png" rel="lightbox"><img alt="ocProducts process diagram" src="{$IMG*,composr_homesite/ocproducts/img-diagram}" /></a>
+					</div>
+                    <span>(click the diagram for a larger version)</span>
+				</div>
+
+				<div class="RcolTab">
+					<h3>How do we do it?</h3>
+
+					<p>Take a look inside our usual full-agency website design process *3:</p>
+
+					<p>The process begins with you submitting your requirements. There is no "one size fits all": every web solution we do is written to the needs of that customer. We work to agree on a website development plan with a fixed-price quote, then submit diagrams and screen designs for approval.</p>
+
+					<p>After you sign-off, our website development begins. This phase includes regular progress updates plus thorough testing where we critically review our work against a wide range of quality and standards compliance criteria. Then we prepare a live demo for you to evaluate.</p>
+
+					<p>When everyone is happy, we deploy the new website, and remain on-call for further support needs with our Experts by the Hour service.</p>
+				</div>
+			</div>
+
+			<div class="tabscontent" id="contentz2">
+				<p>&nbsp;</p>
+
+				<h3>What do we charge?</h3>
+
+				<p>For all full-agency developments, we charge our standard hourly rates which incorporate all our development costs. Currently:</p>
+
+				<p><strong>Web designer:</strong> <span class="highLt">£40 GBP</span> per hour.<br />
+				<strong>Web developer:</strong> <span class="highLt">£60 GBP</span> per hour.<br />
+				<strong>Project manager:</strong><span class="highLt">£40 GBP</span> per hour.</p>
+
+				<p>Prices typically start from about £2,500 GBP for a professionally designed website, with £10,000 GBP being a typical amount for a website with a lot of awesome-new functionality.</p>
+
+				<p>You will receive your initial quote once we have identified your particular needs.</p>
+			</div>
+
+			<div class="tabscontent" id="contentz3">
+				<p>&nbsp;</p>
+
+				<h3>What to provide us</h3>
+
+				<p>It is best if you can provide detailed specifications to design for, because it reduces the risk of misunderstanding and things go much more quickly.</p>
+
+				<p>Examples:</p>
+
+				<p>&bull; Website objectives<br />
+				&bull; Feature lists for development<br />
+				&bull; Sketches of how screens should look (if you have strong ideas in this area)<br />
+				&bull; Descriptions of behaviour</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="cntRow">
+	<div class="comp_btm_list">
+		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img17}" /></div>
+
+		<div class="btmli_rht">
+			<h3 class="colrBl">Comparison to other web designers - don't get ripped off!</h3>
+
+			<div class="sept"></div>
+
+			<p>A lot (possibly the majority) of companies cut-corners and generally do a shoddy web design job. We've put together a document explaining what to look out for and another on pricing. We're upfront about our costs, most web design companies advertise their lowest quotes but have their highest-budget projects in their portfolio.</p>
+		</div>
+	</div>
+
+	<div class="comp_btm_list">
+		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img11}" /></div>
+
+		<div class="btmli_rht">
+			<h3 class="colrBl">Insist your web designer provides a mature approach</h3>
+
+			<div class="sept"></div>
+
+			<p>Through experience we have learnt the need for taking great care in our work. We can create test sets, deployment plans, risk assessments, and (where appropriate) UML diagrams. Ask us how we will manage your shop-front responsibly, and if you are receiving quotes from other companies ensure that your quotes are made against the level of service you need.</p>
+		</div>
+	</div>
+
+	<div class="comp_btm_list">
+		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img12}" /></div>
+
+		<div class="btmli_rht">
+			<h3 class="colrBl">Don't be fooled by a slick pitch</h3>
+
+			<div class="sept"></div>
+
+			<p>A lot (possibly the majority) of companies cut-corners and generally do a shoddy web design job. We've put together a document explaining what to look out for and another on pricing. We're upfront about our costs, most web design companies advertise their lowest quotes but have their highest-budget projects in their portfolio.</p>
+		</div>
+	</div>
+
+	<div class="comp_btm_list">
+		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img13}" /></div>
+
+		<div class="btmli_rht">
+			<h3 class="colrBl">Agency or support ticket?</h3>
+
+			<div class="sept"></div>
+
+			<p>A lot (possibly the majority) of companies cut-corners and generally do a shoddy web design job. We've put together a document explaining what to look out for and another on pricing. We're upfront about our costs, most web design companies advertise their lowest quotes but have their highest-budget projects in their portfolio.</p>
+		</div>
+	</div>
+
+	<div class="comp_btm_list">
+		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img14}" /></div>
+
+		<div class="btmli_rht">
+			<h3 class="colrBl">Project funding</h3>
+
+			<div class="sept"></div>
+
+			<p>A lot (possibly the majority) of companies cut-corners and generally do a shoddy web design job. We've put together a document explaining what to look out for and another on pricing. We're upfront about our costs, most web design companies advertise their lowest quotes but have their highest-budget projects in their portfolio.</p>
+		</div>
+	</div>
+
+	<div class="comp_btm_list">
+		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img15}" /></div>
+
+		<div class="btmli_rht">
+			<h3 class="colrBl">Working in partnership</h3>
+
+			<div class="sept"></div>
+
+			<p>As well as being able to provide a high quality full agency service, we enjoy working on web design projects with other professionals in partnership. For example, we can work with designers as a development provider &ndash; making the design and vision real, and implementing extreme technology as required. If you would like to work with us then [page="site:tickets:ticket:ticket_template=agency:cost=free"]we would love to hear from you[/page].</p>
+		</div>
+	</div>
+
+	<div class="comp_btm_list">
+		<div class="btm_list_img"><img alt="img" src="{$IMG*,composr_homesite/ocproducts/comp_img16}" /></div>
+
+		<div class="btmli_rht">
+			<h3 class="colrBl">The few web development things we cannot do</h3>
+
+			<div class="sept"></div>
+
+			<p>We don't do Flash websites. We work to [url="W3C standards"]http://www.w3.org/standards/[/url] (the proper standards for consistent reliable accessible web-sites), and Flash isn't one of these. Flash won't work on iPads or iPhones, hurts search result positions, and is considered by some a 'rogue' tool in web-design. Modern websites can still be very flashy without needing Adobe Flash. Where it is needed (usually, for online games) we'll partner up with a specialist.</p>
+		</div>
+	</div>
+
+	<div class="sept"></div>
+
+	<p>&nbsp;</p>
+
+	<p>*1 &ndash; sometimes we'll put you in touch with one of our partner companies to provide your solution, in which case your business relationship and the project responsibility would be with this partner company and not ocProducts. These companies are chosen by ocProducts due to their experience of Composr, their established working relationship with the developers, and their experience running projects. They will often subcontract the most technical work back to ocProducts. We do this so we can focus on continuing to develop the world-class Composr technology, and because ocProducts doesn't always have the free staff capacity to run large projects when other trusted companies do. Also sometimes other experienced companies are better placed geographically to lead a project.</p>
+
+	<p>*2 &ndash; this is usually the case, but some projects may differ. The negotiated project scope takes precedence over what is discussed on this page.</p>
+
+	<p>*3 &ndash; our partner companies may have other processes, or the process may be tuned differently according to the needs of your project. The exact process should be confirmed during initial discussions.</p>
+
+	<p>*4 &ndash; for longer distance travel, we will usually need to charge for travel time and costs</p>
+
+	<p>*5 &ndash; if taking a quote would take a long time, we may give a price range indication while seeking to confirm you have a realistic budget, after which we'll produce a more accurate quote</p>
+</div>
+
+<script>//<![CDATA[
+	$(document).ready(function() {
+		TheSlideDeck = $('.slidedeck-home-page .slidedeck').slidedeck({
+			scroll: 'stop',
+			cufonRefresh: ".slidedeck-home-page dt"
+		}).loaded(function() {
+			$('.slidedeck-home-page .slide .verticalSlideNav').each(function() {
+				$(this).parents('dd.slide').prevAll('dt.spine:first').append(this);
+			});
+		}).vertical({
+			before: function(deck) {
+				if(deck.current == 0) {
+					$(deck.navChildren.context).find('a.vertical-prev-next.previous').hide();
+				} else {
+					$(deck.navChildren.context).find('a.vertical-prev-next.previous')[0].style.display = "";
+				}
+				if(deck.current == (deck.slides.length - 1)) {
+					$(deck.navChildren.context).find('a.vertical-prev-next.next').hide();
+				} else {
+					$(deck.navChildren.context).find('a.vertical-prev-next.next')[0].style.display = "";
+				}
+			},
+			complete: function(deck) {
+				if(deck.current == 0) {
+					$(deck.navChildren.context).find('a.vertical-prev-next.previous').hide();
+				} else {
+					$(deck.navChildren.context).find('a.vertical-prev-next.previous')[0].style.display = "";
+				}
+				if(deck.current == (deck.slides.length - 1)) {
+					$(deck.navChildren.context).find('a.vertical-prev-next.next').hide();
+				} else {
+					$(deck.navChildren.context).find('a.vertical-prev-next.next')[0].style.display = "";
+				}
+			}
+		});
+
+		$('.slidedeck-home-page a.vertical-prev-next').bind('click', function(event) {
+			event.preventDefault();
+			switch(this.href.split('#')[1]) {
+				case "previous":
+					$('.slidedeck-home-page .slidedeck').slidedeck().vertical().prev();
+					break;
+				case "next":
+					$('.slidedeck-home-page .slidedeck').slidedeck().vertical().next();
+					break;
+			}
+		});
+
+		$('.slidedeck-home-page a.vertical-prev-next.previous').hide();
+
+		$(document).ready(function() {
+			$('.slidedeck-home-page dl.slidedeck a.vertical-nav.next').click(function() {
+				$('.slidedeck-home-page .slidedeck').slidedeck().vertical().next();
+			});
+			$('.slidedeck-home-page dl.slidedeck a.vertical-nav.prev').click(function() {
+				$('.slidedeck-home-page .slidedeck').slidedeck().vertical().prev();
+			});
+		});
+	});
+//]]></script>
+
+<script>//<![CDATA[
+	$(document).ready(function() {
+		$("#tabsholder2").tytabs({
+			prefixtabs:"tabz",
+			prefixcontent:"contentz",
+			classcontent:"tabscontent",
+			tabinit:"1",
+			catchget:"tab2",
+			fadespeed:"normal"
+		});
+	});
+//]]></script>
+[/semihtml]

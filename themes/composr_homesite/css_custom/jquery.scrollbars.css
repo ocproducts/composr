@@ -1,0 +1,86 @@
+.scrollElement.scrollRoot { overflow: hidden; }
+.rootWrap {
+	overflow-x: auto;
+	overflow-y: hidden;
+	height:360px !important;
+}
+.scrollElement.axisInUseX .rootWrap { overflow-x: hidden; }
+.scrollElement.axisInUseY .rootWrap { overflow-y: hidden; }
+
+.scrollElement.scrollRoot:focus {
+	outline: none;
+}
+
+.scrollElement.dragConX {
+	height: 10px;
+	left: 0;
+	width: 100%;
+	bottom: 0;
+}
+
+.scrollElement.dragConY {
+	width: 10px;
+	top: 0;
+	height: 100%;
+	right: 0;
+	display:none;
+}
+
+.scrollElement.dragCon {
+	position: absolute;
+	background:#FFF;
+	opacity:0.8;
+	top:260px;
+	margin-left:350px;
+	-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
+	-webkit-box-shadow: #223E53 0px 0px 5px;-moz-box-shadow: #000 0px 0px 5px; box-shadow: #223E53 0px 0px 5px;
+}
+
+.scrollElement.drag {
+	position: absolute;
+	top: 0;
+	width:25px; 
+	height:25px;
+	display:block;
+	left: 0;
+	background-image:url('{$IMG;,jquery-plugins/scroll_btn}'); background-repeat:no-repeat; background-position:left top;
+}
+
+.scrollElement.dragX {
+	min-width: 5%;
+	max-width: 95%;
+	height: 100%;
+	width:25px; 
+	height:25px;
+	margin-top:-7px;
+}
+.scrollElement.dragX:hover{cursor:pointer;}
+
+.scrollElement.dragY {
+	min-height: 5%;
+	max-height: 95%;
+	width: 100%;
+}
+
+.scrollElement.dragConInner {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
+.scrollElement.contentWrap {
+	float: left;
+	position: relative;
+	min-width: 100%;
+	min-height: 100%;
+}
+
+.scrollElement.unselectable {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

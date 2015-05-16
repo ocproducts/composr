@@ -1,0 +1,45 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2015
+*/
+
+{+START,INCLUDE,screen_actions,.css,css,default}{+END}
+
+.screen_actions_outer {
+	float: left;
+	width: 99%;
+}
+
+.screen_actions {
+	margin:0.5em 1em !important;
+}
+
+.extended_screen_actions .screen_actions_outer {
+	border: 0;
+	background: none;
+	margin: 0;
+}
+
+.extended_screen_actions .screen_actions div {
+	width: auto;
+	margin-right: 1em;
+}
+
+.extended_screen_actions .screen_actions div:last-child {
+	margin-right: 0;
+}
+
+.extended_screen_actions .screen_actions div a {
+	width: auto;
+	color: #667ea4;
+}
+
+.extended_screen_actions .screen_actions div a span {
+	display: inline;
+	padding-left: 25px;
+	vertical-align: middle;
+}
+
+.extended_screen_actions .screen_actions .google_plusone {
+	margin-top: 0;
+}

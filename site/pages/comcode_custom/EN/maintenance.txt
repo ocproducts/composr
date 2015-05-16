@@ -1,0 +1,69 @@
+[title]Maintenance Policy[/title]
+
+It is an unfortunate but inevitable fact that computer software has bugs. Composr is no exception, and although we work to make sure every single bug gets fixed, we aren't able to make sure every past version ever released is kept bug-free. It is essential that users understand our maintenance policy, and perform upgrades as we suggest.
+
+[title="2"]Flaw policy[/title]
+
+Bugs and security issues are both classified as 'flaws'. There are two classifications of flaw:
+ - Major. A major security or integrity issue, or a bug so significant that it cuts off major functionality.
+ - Minor. Any flaw that is not major.
+
+ocProducts has a rolling support status for versions of Composr. Versions may be classified as: BETA, STABLE, SUPPORTED, DEFUNCT.
+A 'SUPPORTED' version is a past major version where the initial release of the following version was made in the past 8 months. A 'DEFUNCT' version is older than a 'SUPPORTED' version.
+Flaws are handled for the different support statuses as follows:
+ - BETA VERSION. ocProducts will release a new beta version with all bugs up to the major flaw fixed.
+ - STABLE VERSION. ocProducts will release a new version with all bugs up to the major flaw fixed.
+ - SUPPORTED VERSION. ocProducts will release a new version with only the major flaw fixed, as any minor bugs truly will be minor as a whole new version had been developed before they were found. Note that any installation issues or compatibility issues with new software are degraded to minor flaws when considering the 'SUPPORTED' version, and hence not fixed in it.
+ - DEFUNCT VERSION. No flaws are handled.
+
+Please note that if Composr is installed by a hosting-control-panel, it is very unlikely that it will be up-to-date. Thus, hosting-control-panel installs will need immediate upgrade.
+
+[title="3"]Example[/title]
+
+At the time of writing, the support statuses for Composr versions are:
+ - 4.0.x - this is 'BETA'
+ - 3.x.x - this is 'STABLE' (the latest minor version of this is 3.2.10)
+ - 2.5.x - this is 'DEFUNCT'
+ - 2.1.x - this is 'DEFUNCT'
+ - 2.0.x - this is 'DEFUNCT'
+ - 1.0.x - this is 'DEFUNCT'
+
+but soon it will be:
+ - 4.0.x - this is 'STABLE'
+ - 3.x.x - this is 'SUPPORTED' (the latest minor version of this is 3.2.10)
+ - 2.5.x - this is 'DEFUNCT'
+ - 2.1.x - this is 'DEFUNCT'
+ - 2.0.x - this is 'DEFUNCT'
+ - 1.0.x - this is 'DEFUNCT'
+
+As an example, if a major flaw was found that exists in 4.0.x, 3.x.x, 2.6.1, then ocProducts would:
+ - fix 4.0.x silently (as it is in beta)
+ - release 3.2.11, with a direct upgrade package for 3.2.x users (you can jump between minor releases of a major version without problem)
+
+Once 4.0.x is out - if the flaw was minor, then ocProducts would just:
+ - fix 4.0.x silently
+
+[title="2"]Security policy[/title]
+
+ocProducts believes in being open about how we treat security issues. By explaining how we deal with security issues and why we deal with them in the way we do, we hope that you can better understand how to keep your site patched up. Unfortunately it is virtually impossible to write computer code that doesn't have security issues, because even the smallest mistake or unintended-consequence can lead to them - ocProducts has very strong standards for writing code to minimalise security holes, as well as in-house developed automatic scanning technology, and layers of redundant security built in to Composr itself. Even with all this though, problems will inevitably by found.
+
+There is a security philosophy known as 'full disclosure'. The basis of this is that vulnerabilities are specified in the open soon after they are found. Whilst implementing this would be an act of openness from us, we have decided to not implement it because we have large numbers of users who do not have the expertise and funds to rapidly react to such public disclosures. By not giving full details of security holes, we make it harder for hackers to find them - reducing the threat by increasing the investment a hacker needs to make. However, we strongly encourage users to keep up to date with all patch releases, because we may have fixed vulnerabilities. The idea is that we make it harder for hackers by not disclosing vulnerabilities, but we quickly release patches and thus don't leave conscientious users vulnerable to persistent hackers. If less-conscientious users don't patch then at least the vulnerabilities aren't disclosed, and if they were disclosed the users would not likely have patched anyway and therefore be in even greater danger. We never sit on vulnerabilities.
+
+ocProducts reacts to vulnerabilities different depending on whether we classify them as 'major' or 'minor'.
+ - Major vulnerabilities are considered a 'major flaw', and hence new versions for 'SUPPORTED', 'STABLE' and 'BETA' are released quickly after the flaw is found. The vulnerabilities are mentioned as existing (along with the severity) in the notes accompanying a new release, the 'version notes' for the prior version, and in a newsletter; there is one exception to this: if the vulnerability is obscure enough to only affect a small proportion of users, it may not be mentioned (keep reading this section for more details on this).
+ - Minor vulnerabilities either have a low risk or are so inherently commonplace in all similar software that making new releases to fix each of them is unfeasible. These vulnerabilities are silently fixed, and if there are enough of them or if they are borderline cases, the next minor release mentions their existance. Sometimes a minor vulnerability will be treated as a major one if it has already been disclosed by a third-party (due to an elevated risk).
+
+As stated, we will not always disclose the existence of low-risk vulnerabilities. We appreciate that some might consider this a 'cover up' on ocProduct's part, but the reality is that the decision is made for two reasons:
+ - to avoid alarming users
+ - and most importantly, to avoid alerting hackers
+We hope by being up-front, our users will appreciate this and keep their version of Composr up-to-date with the latest stable version of the major version they are using (and within 8 months of release, the latest major version). If users do this, their sites will stay patched for all vulnerabilities ocProducts knows of.
+
+[title="2"]Extra help[/title]
+
+We understand that requiring to keep critical/sensitive sites up-to-date is a burden, especially for busy or non-technical users. Keeping just one version of Composr stable is an immense task for us, so we hope you understand that by focusing our resources, we provide the best total quality possible.
+
+ocProducts is however, able to upgrade websites up-to-date with the latest version of Composr under our support scheme. We are also able to "back-port" bug fixes to older versions (keep older versions up-to-date), if we are paid to do so for the time it takes us to do it. If either of these possibilities interests you, please [page="site:support"]contact us[/page].
+
+[title="2"]Reporting flaws[/title]
+
+Please report all flaws by [page="site:free_tickets"]contacting us privately[/page].

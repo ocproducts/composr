@@ -1,0 +1,195 @@
+[semihtml]
+{$REQUIRE_CSS,composr_homesite__support}
+
+<div class="cntRow">
+	[title]Support[/title]
+</div>
+
+<div class="cntRow">
+	<h3 class="colrBl">Free resources:</h3>
+
+	<p>Use these if you're on a budget or just like to customise things on your own.</p>
+</div>
+
+<div class="cntRow">
+	<ul class="srBoxes">
+		<li>
+			<div class="srPic">
+				<a href="{$PAGE_LINK*,docs:tutorials}"><img alt="" src="{$IMG*,composr_homesite/support/sr-pic1}" /></a>
+			</div>
+
+			<div class="srTitle">
+				<a href="{$PAGE_LINK*,docs:tutorials}">Documentation</a>
+			</div>
+
+			<div class="srPara">
+				Over 200 tutorials to help you.
+			</div>
+		</li>
+
+		<li>
+			<div class="srPic">
+				<a href="{$PAGE_LINK*,docs:faq}"><img alt="" src="{$IMG*,composr_homesite/support/sr-pic2}" /></a>
+			</div>
+
+			<div class="srTitle">
+				<a href="{$PAGE_LINK*,docs:faq}">Frequently Asked Questions</a>
+			</div>
+
+			<div class="srPara">
+				Answers to common questions.
+			</div>
+		</li>
+
+		<li class="noMar">
+			<div class="srPic">
+				<a href="TODO"><img alt="" src="{$IMG*,composr_homesite/support/sr-pic3}" /></a>
+			</div>
+
+			<div class="srTitle">
+				<a href="TODO">Known Bugs</a>
+			</div>
+
+			<div class="srPara">
+				Hot-fixes for known bugs.
+			</div>
+		</li>
+
+		<li>
+			<div class="srPic">
+				<a href="{$PAGE_LINK*,forum}"><img alt="" src="{$IMG*,composr_homesite/support/sr-pic5}" /></a>
+			</div>
+
+			<div class="srTitle">
+				<a href="{$PAGE_LINK*,forum}">Community forum</a><br />(and <a href="{$PAGE_LINK*,site:chat}">chat room</a>)
+			</div>
+
+			<div class="srPara">
+				Engage with the Composr community.
+			</div>
+		</li>
+
+		<li>
+			<div class="srPic">
+				<a href="{$PAGE_LINK*,docs:codebook}"><img alt="" src="{$IMG*,composr_homesite/support/sr-pic4}" /></a>
+			</div>
+
+			<div class="srTitle">
+				<a href="{$PAGE_LINK*,docs:codebook}">Developers' Code Book</a>
+			</div>
+
+			<div class="srPara">
+				The official programmer's manual.
+			</div>
+		</li>
+
+		<li class="noMar">
+			<div class="srPic">
+				[url="/docs/api/"]<img alt="" src="{$IMG*,composr_homesite/support/sr-pic6}" />[/url]
+			</div>
+
+			<div class="srTitle">
+				[url="/docs/api/"]Developers' API guide[/url]
+			</div>
+
+			<div class="srPara">
+				Composr's auto-generated PHP [abbr="Application Programming Interface"]API[/abbr] documentation.
+			</div>
+		</li>
+	</ul>
+</div>
+
+<div class="cntRow">
+	<h3 class="colrBl">Get in touch:</h3>
+
+	<p>Sometimes it's best to go straight to the source, which is why we provide several ways to contact us.</p>
+
+	<p>If you have general feedback, a bug report, or a business enquiry, please take advantage of our free ticket type: contact us.</p>
+
+	<p>For all other support questions, you can choose between either our pre-paid commercial support system: Experts by the hour, or our Full agency service for complete site deployment.</p>
+
+	<p>We recommend any commercial users maintain a balance of support credits so we can help immediately.</p>
+</div>
+
+<div class="cntRow">
+	<div class="srBtmBlock">
+		<div class="srBtmImg"><img alt="Contact" src="{$IMG*,composr_homesite/support/sr_contact}" /></div>
+
+		<div class="srBtmTitle">
+			CONTACT US
+		</div>
+
+		<div class="srBtmBlockInner">
+			<p>If you need to [b]report a bug[/b] or have a [b]business enquiry[/b], please let us know.</p>
+
+			<p>We also value your feedback about our [b]documentation[/b] or [b]in general[/b], though sadly [page="docs:tut_software_feedback"]we cannot respond directly[/page].</p>
+
+			<p>(No support or &ldquo;do you support this feature&rdquo; questions through here please)</p>
+		</div>
+
+		<div class="commonBtn cntr">
+			[page="site:free_tickets"]Contact us[/page]
+		</div>
+	</div>
+
+	<div class="srBtmBlock">
+		<div class="srBtmImg"><img alt="Hour" src="{$IMG*,composr_homesite/support/sr_by_hour}" /></div>
+
+		<div class="srBtmTitle">
+			EXPERTS BY THE HOUR
+		</div>
+
+		<div class="srBtmBlockInner">
+			<p>Receive any of the following pre-paid support options:</p>
+
+			<ul class="srBtmLi">
+				<li>Installation</li>
+				<li>Hourly support</li>
+				<li>Custom development</li>
+				<li>1-on-1 training</li>
+			</ul>
+
+			<p>To learn more, click the link below.</p>
+		</div>
+
+		<div class="commonBtn cntr">
+			[page="site:commercial_support"]Experts by the hour[/page]
+		</div>
+	</div>
+
+	<div class="srBtmBlock srBtmLast">
+		<div class="srBtmImg"><img alt="Agency" src="{$IMG*,composr_homesite/support/sr_contact}" /></div>
+
+		<div class="srBtmTitle">
+			FULL AGENCY SERVICE
+		</div>
+
+		<div class="srBtmBlockInner">
+			<p>For 1-on-1 service on projects costing £600 GBP and above, we offer:</p>
+
+			<ul class="srBtmLi">
+				<li>Direct contact options</li>
+				<li>Formal requirements documents and [abbr="Unified Modelling Language"]UML[/abbr] diagrams</li>
+				<li>Project management</li>
+				<li>Complete design and development</li>
+			</ul>
+
+			<p>To learn more, click below&hellip;</p>
+		</div>
+
+		<div class="commonBtn cntrLast">
+			[page="ocproducts:start"]Hire ocProducts[/page]
+		</div>
+	</div>
+</div>
+
+<div class="cntRow">
+	<p>Composr is made by ocProducts Ltd, a [tooltip="Company number 05321273
+
+Our address is: [b][address]ocProducts Ltd, Walkley House, Burnaby Crescent, Sheffield, S6 2RZ[/address][/b]"]UK-based company[/tooltip] specialising in cutting-edge website solutions.</p>
+
+	<h3 class="colrBl">Partner programme</h3>
+
+	<p>In addition to support from ocProducts (the core Composr development company), there may be other providers who can provide services to you. All Composr partners are listed in the [page="site:catalogues:category:catalogue_name=partners"]partner directory[/page].</p>
+</div>
+[/semihtml]

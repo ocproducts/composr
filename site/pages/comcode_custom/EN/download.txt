@@ -1,0 +1,189 @@
+[semihtml]
+{$REQUIRE_CSS,composr_homesite__download}
+
+<div class="cntRow">
+	<div class="cntLeft">
+		<div class="cntL_Row">
+			[title]Download Composr[/title]
+
+			<p>If you don't have hosting yet, we recommend <a href="#">Arvixe</a>. Arvixe hosting comes with Composr pre-installed.</p>
+
+			<p class="text-center"><a href="#"><img alt="Arvixe hosting preloaded with Composr" src="{$IMG*,composr_homesite/download/arvixe-banner}" /></a></p>
+
+            <p>If you do already have hosting, the next step is to transfer the installation files to your server.</p>
+
+            [block]composr_homesite_download[/block]
+
+			<h1>Cloud &amp; <acronym title="Software as a Service">SaaS</acronym> hosting</h1>
+
+			<h3 class="colrBl">Scaleability</h3>
+
+			<div class="sept"></div>
+
+			<p>Composr will work on most kinds of PHP cloud hosting such as [url="PHP Fog"]https://www.phpfog.com/[/url], [url="Rackspace Cloud Sites"]http://www.rackspace.com/cloud/cloud_hosting_products/sites/[/url] and [url="Amazon EC2"]http://aws.amazon.com/ec2/[/url]. [url="Bitnami"]http://bitnami.org/cloud/[/url] provide quality cloud hosting, and Composr EC2 images.</p>
+
+			<p>We have inbuilt support for the kind of advanced features needed for scaling Composr installations.</p>
+
+			<h3 class="colrBl">Other installers</h3>
+
+			<div class="sept"></div>
+
+			<p>Composr is also available on:</p>
+
+			<div class="cntL_Row">
+				<div id="div_dlLogo">
+					<ul>
+						<li><a href="http://www.microsoft.com/web/gallery/composr.aspx" target="_blank"><img alt="Microsoft Web Platform" src="{$IMG*,composr_homesite/download/logo-microsoft}" /></a></li>
+						<li><a href="http://www.softaculous.com/softwares/cms/composr" target="_blank"><img alt="Softaculous" src="{$IMG*,composr_homesite/download/logo-softaculous}" /></a></li>
+						<li><a href="http://installatron.com/" target="_blank"><img alt="Installatron" src="{$IMG*,composr_homesite/download/logo-installatron}" /></a></li>
+						<li><a href="http://bitnami.org/" target="_blank"><img alt="Bitnami" src="{$IMG*,composr_homesite/download/logo-bitnami}" /></a></li>
+						<li><a href="http://www.mojomarketplace.com/search?query=composr&amp;item_type_id=all"><img alt="Mojo marketplace" src="{$IMG*,composr_homesite/download/logo-mojo}" /></a></li>
+						<!--<li><a href="http://apsstandard.org"><img alt="APS standard" src="{$IMG*,composr_homesite/download/logo-aps}" /></a></li>-->
+                        <li><a href="http://www.ampps.com/"><img src="{$IMG*,composr_homesite/download/logo-ampps}" alt="AMPPS"></a></li>
+					</ul>
+				</div>
+
+				<div id="div_dlLogo1" style="display:none">
+					<p>We'd love to be on:</p>
+
+					<ul>
+						<li><a href="https://netenberg.com/fantastico.php" target="_blank"><img alt="Fantastico" src="{$IMG*,composr_homesite/download/logo-fantastico}" /></a></li>
+						<li><a href="http://cpanel.net/" target="_blank" title="cpanel"><img alt="Cpanel" src="{$IMG*,composr_homesite/download/logo-cpanel}" /></a></li>
+						<li><a href="http://www.parallels.com/products/plesk/" target="_blank" title="Plesk"><img alt="plesk" src="{$IMG*,composr_homesite/download/logo-plesk}" /></a></li>
+						<li><a href="http://www.ensim.com/" target="_blank" title="ensim"><img alt="Ensim" src="{$IMG*,composr_homesite/download/logo-ensim}" /></a></li>
+					</ul>
+
+					<p>But we need our users to petition them for this, as they are not currently wanting to add new scripts.</p>
+				</div>
+
+				<div class="dlMore">
+					<a href="#" onclick="showHide('div_dlLogo1'); this.parentNode.parentNode.removeChild(this.parentNode); return false;">Coming soon? &hellip;</a>
+				</div>
+			</div>
+
+			<h1>For Developers</h1>
+
+			<h3 class="colrBl">Git read access</h3>
+
+			<div class="sept"></div>
+
+			<p><a href="http://git-scm.com/">Git</a> is the revision control system we use to collaborate on Composr.</p>
+
+			<p>You can access the repository on <a href="https://github.com/ocproducts/composr">Github</a>.</p>
+
+			<p>We often commit fixes to Git before patch releases come out.</p>
+
+			<p>Be aware that the Git repository also has all the ocProducts addons in it. We develop them in there, to keep them up-to-date. There is a script called [tt]killjunk.sh[/tt] which will erase them.</p>
+
+			<h3 class="colrBl">Git write access</h3>
+
+			<div class="sept"></div>
+
+			<p>Composr development is sponsored and led by ocProducts, who is the primary developer. However we do accept and encourage external contributions. Composr is a community project after all, even if we do centrally ensure its quality. We will hand out write-access to Git as appropriate (essentially when someone shows a serious commitment to the project in the form of high-quality code). Until you get Git access you'll need to make patches and put them on the tracker.</p>
+		</div>
+	</div>
+
+	<div class="cntRight">
+		<div class="cntR_Row">
+			<div class="tesBlock">
+				<div class="tesHead">
+					Are you upgrading?
+				</div>
+
+				<div class="quoteCst">
+					<p>Instead of using this page, you should login to your Admin Zone. You'll see a link to upgrade there.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="cntR_Row">
+			<div class="tesBlockWt">
+				<div class="tesHead2">
+					Looking for addons and themes?
+				</div>
+
+				<div class="quoteCst">
+					<!--<div class="rdMore"><a href="#">Read more</a></div>-->
+
+					<p>Go to our <a href="#">community section</a>.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="cntR_Row">
+			<div class="tesBlockWt">
+				<div class="tesHead2">
+					Hosting requirements
+				</div>
+
+				<div class="quoteCst">
+					<ul class="liRcol">
+						<li>Apache or IIS or nginx</li>
+						<li>50MB of disk space</li>
+						<li>MySQL 5 or higher</li>
+						<li>PHP 5.1 or higher, with the following supported:
+							<ul>
+								<li>GD2</li>
+								<li>Memory limit 32MB or higher</li>
+								<li>File uploads 5MB or higher</li>
+							</ul>
+						</li>
+					</ul><!--<div class="rdMore"><a href="#">Read more</a></div>-->
+
+					<p>We recommended [url="Arvixe Composr hosting"]http://www.arvixe.com/5256-223-3-122.html[/url]. It's great quality hosting and they'll even install Composr for you.</p>
+
+					<p>For more information and recommendations, see our [page="docs:tut_web_hosting"]web hosting[/page].</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="cntR_Row">
+			<div class="tesBlockWt">
+				<div class="tesHead2">
+					Forum integration
+				</div>
+
+				<div class="quoteCst">
+					<p>Composr has it's own forum and member system (Conversr), but can also integrate with some third party ones out-of-the-box:</p>
+
+					<ul class="liRcol">
+                        <li>Burning Board 2.0 / 2.2/Lite</li>
+                        <li>[abbr="Invision Board"]IPB[/abbr] 1.1-1.3 / 2.0-2.3</li>
+                        <li>phpBB 2.0-3.0</li>
+                        <li>[abbr="Simple Machine Forum"]SMF[/abbr] 1.0 / 1.1 / 2.0</li>
+                        <li>[abbr="vBulletin"]vB[/abbr] 2.2 / 3.0-3.7</li>
+                        <li>WowBB 1.7</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="cntR_Row">
+			<div class="tesBlockWt">
+				<div class="tesHead2">
+					Other integration
+				</div>
+
+				<div class="quoteCst">
+					<p>Conversr can integrate with an [abbr="Lightweight Directory Access Protocol"]LDAP[/abbr] server, facilitating tie in with [tooltip="i.e. tie in with Windows networks"]Active Directory[/tooltip] and [tooltip="i.e. tie in with Linux networks"]OpenLDAP[/tooltip] logins.</p>
+
+					<p>Conversr can also integrate with [tooltip="Systems that use the web browser to perform the login itself, via a standard popup authentication box"]HTTP authentication systems[/tooltip], facilitating integration with any login system that uses this mechanism.</p>
+
+					<p>A powerful framework and a number of programming tools are provided, to accelerate integration with other scripts and web-apps.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>//<![CDATA[
+	function showHide(elementid) {
+		if (document.getElementById(elementid).style.display == 'none') {
+			document.getElementById(elementid).style.display = '';
+		} else {
+			document.getElementById(elementid).style.display = 'none';
+		}
+	}
+//]]></script>
+
+[/semihtml]

@@ -1,0 +1,75 @@
+.bnrHolder { margin:0px auto; width:100%; height:526px; display:block; background-image:url('{$IMG;,composr_homesite/start/bnr-bg}'); background-repeat:repeat-x; background-position:bottom left; }
+.headBnr { margin:0px auto; width:960px; height:526px; display:block; background-image:url('{$IMG;,composr_homesite/start/bnr-inr-bg}'); background-repeat:repeat-x; background-position:bottom left; }
+.banner { float:left; width:960px; height:526px; }
+.bnrtext { float:left; width:940px; padding:15px 10px 22px 10px; font-size:34px; color:#000; text-align:center; font-weight:bold; }
+
+.bannerImg { float:left; width:600px; height:403px; }
+.orange { color:#E5922D !important; }
+.textTop { float:left; width:360px; height:90px; font-size:24px; font-weight:bold; margin-top:74px; line-height:32px; }
+.textBtm { float:left; width:360px; height:100px; font-size:20px; font-weight:bold; color:#FFF; margin-top:36px; text-shadow:1px 1px #D36603; }
+.topBtn { float:left; width:260px; height:74px; background-image:url('{$IMG;,composr_homesite/start/top-btn-bg}'); background-position:left top; background-repeat:no-repeat; margin:10px 0px 0px 0px; }
+.topBtn a { color:#000; text-align:center; font-size:18px; font-weight:bold; margin:38px 0px 0px 40px; display:block; } 
+.topBtn a:hover { color:#E5922C; text-shadow:1px 1px #FFF; text-decoration:none; }
+
+.cntCol1 { float:left; width:310px; padding-right:10px; }
+.cntCol2 { float:left; width:264px; height:269px; padding:0px 18px; background-image:url('{$IMG;,composr_homesite/start/download-composr-img}'); background-position:center top; background-repeat:no-repeat; overflow:hidden; text-indent:-9999px; opacity:1; transition:opacity .25s ease-in-out; -moz-transition:opacity .25s ease-in-out; -webkit-transition:opacity .25s ease-in-out; }
+
+.cntCol2:hover { background-position:center bottom; opacity:0.6; }
+
+.cntCol2 a { width:264px; height:269px; display:block; }
+.cntCol3 { float:left; width:330px; padding-left:10px; }
+.cntCol1 .head { float:left; width:310px; padding-bottom:20px; font-size:24px; color:#E5922C; }
+.cntCol1 p { font-size:14px; line-height:22px; color:#666666; padding-bottom:15px; }
+.cntCol3 .head { float:left; width:320px; padding-bottom:20px; font-size:21px; color:#E5922C; background-image:url('{$IMG;,composr_homesite/start/accelerate-blurred-img}'); background-repeat:no-repeat; background-position:12px 29px; }
+.cntCol3 .head span { color:#333; font-weight:bold; font-style:italic; font-size:17px; font-weight:bold; }
+
+.cntCol3 ul { list-style-type:none; float:left; width:330px; padding-bottom:1px; background-image:url('{$IMG;,composr_homesite/start/tick-img}'); background-repeat:no-repeat; background-position:110px 0px; }
+.cntCol3 ul li { float:left; width:300px; padding-left:30px; height:34px; line-height:30px; padding-bottom:2px; background-image:url('{$IMG;,composr_homesite/start/arrow-bullet}'); background-repeat:no-repeat; background-position:5px 9px; font-size:14px; color:#666666; }
+
+.cntCol3 ul li span { float:left; width:300px; height:34px; line-height:30px; background-image:url('{$IMG;,composr_homesite/start/cnt-main-li-seperator}'); background-repeat:no-repeat; background-position:0px 32px; font-size:14px; color:#666666; }
+.cntCol3 ul li span.last { background-image:none; }
+.cntCol3 ul li span:hover { cursor:text; text-decoration:none; }
+
+/*Tutorial Library*/
+
+.libHolder { float:left; width:960px; height:auto; padding:20px 0px 22px 0px; background-image:url('{$IMG;,composr_homesite/start/lib-hold-shadow}'); background-repeat:no-repeat; background-position:bottom center; }
+.libHead { float:left; width:960px; height:47px; background-image:url('{$IMG;,composr_homesite/tut-lib-head-bg}'); background-repeat:repeat-x; background-position:top left; text-align:center; font-size:24px; font-weight:bold; color:#FFF; line-height:47px; text-shadow:1px 1px #45526D; -webkit-border-radius:13px 13px 0px 0px;-moz-border-radius:13px 13px 0px 0px;border-radius:13px 13px 0px 0px; }
+
+/*Palette section*/
+
+.paletteHold { float:left; width:960px; }
+.palHead { float:left; width:960px; height:100px; background-image:url('{$IMG;,composr_homesite/start/palette-top-bg}'); background-repeat:no-repeat; background-position:bottom center; }
+.palBtm { float:left; width:960px; height:60px; margin-top:-10px; background-image:url('{$IMG;,composr_homesite/start/palette-btm-bg}'); background-repeat:no-repeat; background-position:top center; }
+
+.palBox { float:left; width:960px; height:150px; }
+.palBox ul { margin:0; padding:0; float:left; width:960px; height:150px; }
+.palBox ul li { float:left; width:100px; height:150px; margin-right:7px; text-indent:-9999px; overflow:hidden; display:block; }
+.palBox ul li:last-child { margin-right:0px; }
+.palBox ul li.bx1 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:0px 0px; }
+.palBox ul li.bx2 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-108px 0px; }
+.palBox ul li.bx3 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-215px 0px; }
+.palBox ul li.bx4 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-322px 0px; }
+.palBox ul li.bx5 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-429px 0px; }
+.palBox ul li.bx6 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-536px 0px; }
+.palBox ul li.bx7 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-643px 0px; }
+.palBox ul li.bx8 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-752px 0px; }
+.palBox ul li.bx9 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-859px 0px; margin-right:0px; }
+
+.palBox ul li.bx1:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:0px -151px; }
+.palBox ul li.bx2:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-108px -151px; }
+.palBox ul li.bx3:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-215px -151px; }
+.palBox ul li.bx4:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-322px -151px; }
+.palBox ul li.bx5:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-429px -151px; }
+.palBox ul li.bx6:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-536px -151px; }
+.palBox ul li.bx7:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-643px -151px; }
+.palBox ul li.bx8:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-752px -151px; }
+.palBox ul li.bx9:hover { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-859px -151px; margin-right:0px; }
+
+.palBox ul li a { display:block; width:100px; height:150px; }
+.palBox ul li { -webkit-transition:margin 0.5s ease-out; -moz-transition:margin 0.5s ease-out; -o-transition:margin 0.5s ease-out; }
+.palBox ul li:hover { cursor:pointer; margin-top:-10px; }
+
+
+.readMoreBtn { margin:30px auto 0px; width:116px; height:28px; line-height:28px; text-align:center; color:#9B9DA2; text-shadow:1px 1px #FFF; background-image:url('{$IMG;,composr_homesite/start/read-more-btn}'); background-repeat:no-repeat; background-position:left top; font-weight:bold; font-size:14px; }
+.readMoreBtn a { text-decoration:none; color:#9B9DA2; display:block; width:116px; height:28px; }
+.readMoreBtn a:hover { color:#E5922C; text-shadow:1px 1px #FFF; }

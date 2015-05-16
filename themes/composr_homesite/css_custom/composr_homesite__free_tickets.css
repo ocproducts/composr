@@ -1,0 +1,16 @@
+.FTholder { float:left; width:960px; padding:20px 0px; }
+.cntLB { float:left; width:370px; height:auto; overflow:hidden; padding-bottom:20px; }
+.cntRB { float:left; width:520px; height:auto; overflow:hidden; padding:20px; margin-left:26px; {$BETA_CSS_PROPERTY,border-radius:9px 9px 9px 9px;} background-color:#F5FBFC; border:1px solid #DFECEC; color:#666; font-size:14px; }
+.cntRB p { width:100%; line-height:22px; padding-bottom:15px; display:block; }
+
+.imgHold { float:left; width:128px; height:128px; margin-right:20px; }
+.ftHead { float:left; width:210px; height:30px; padding-bottom:10px; font-size:22px; font-weight:bold; color:#667EA4; }
+.ftDesc { float:left; width:210px; height:auto; line-height:22px; font-size:14px; color:#666; }
+
+
+.btnDft { float:left; display:block; height:40px; display:block; text-align:left; line-height:40px; background-color:#677EA4; {$BETA_CSS_PROPERTY,border-radius:4px;} /*background-image:url('{$IMG;,composr_homesite/btn-left-bg}'); background-repeat:no-repeat; background-position:10px 0px;*/ border-right:2px solid #445673; border-bottom:2px solid #445673; margin-right:10px; }
+.btnDft a { color:#FFF; display:block; height:40px; padding:0px 30px; text-shadow:1px 1px #000; }
+.btnDft:hover { opacity:0.8; }
+.ftImg1 { margin-top:42px; }
+.ftImg2 { margin-top:14px; }
+.ftImg3 { margin-top:24px; }

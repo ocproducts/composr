@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Newsletter</title>
+</head>
+
+<body style="background:#f1f6fa; margin:20px; font-family:'Trebuchet MS', Arial, Helvetica, sans-serif; font-size:13px;">
+<div style="width:600px; margin:0 auto; background:#fff; ">
+	<div style="width:570px; float:left; padding:15px; background:#fff;"><img src="{$IMG*,composr_homesite/newsletter/logo}" width="246" height="95" /></div>
+    <div style="width:570px; float:left; padding:15px; background:#6480a8;">
+    	<h2 style="color:#f9a339; font-size:35px; margin:0">Heading One</h2>
+        <p style="font-size:17px; color:#fff ">You can also use the Debranding tool from the Admin Zone to make documentation point towards your own install, by setting your own site's base URL as the brand URL. </p>
+    </div>
+    <div style="width:570px; float:left; padding:15px; background:#fff;">
+    	<h2 style="color:#f9a339; font-size:20px; margin:0; padding-bottom:15px; border-bottom:#ccc solid 1px;">Title One</h2>
+        <p style="line-height:22px; color:#666; font-size:14px; padding-bottom:20px; border-bottom:#f9a339 solid 7px; margin-bottom:2px;">
+
+        {CONTENT}
+        
+        </p>
+        <div style="width:570px; float:left; padding-top:30px; padding-bottom:25px; border-top:#f9a339 solid 1px; color:#666; ">
+        	<span style="text-align:left; float:left;">Copyright &copy; {$DATE,Y}</span>
+            <span style="text-align:rigt; float:right;"><a href="{$PAGE_LINK*,:}">Composr CMS</a></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+\{+START,IF_NON_EMPTY,{unsub_url}\}
+-------------------------
+
+[font size="0.8"]\{$?,\{$IS_EMPTY,\{member_id\}\},\{!NEWSLETTER_UNSUBSCRIBE_NEWSLETTER,\{unsub_url\}\},\{!NEWSLETTER_UNSUBSCRIBE_MEMBER,\{unsub_url\}\}\}[/font]
+\{+END\}

@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+/* Container */
+.verticalslider {border: none; overflow: hidden; width: 956px; margin: 0 auto; margin-top: 25px; padding-bottom:0px; height: auto; overflow:hidden; border-top:1px solid #CCC;  border-right:1px solid #CCC;   }
+
+/* Tabs */
+.verticalslider_tabs {float: left; width: 240px;}
+.verticalslider_tabs, .verticalslider_tabs li{margin: 0px; padding: 0px;}
+.verticalslider_tabs li{list-style-type: none;}
+.verticalslider_tabs li:last-child{border-bottom:1px solid #CCC;}
+.verticalslider_tabs a:link, .verticalslider_tabs a:visited{display: block; width: 190px; height: 24px; padding: 14px 10px 6px 39px; background-color: #F0F2F6; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; font-size: 15px; font-weight: normal; color: #667EA4;  border-right: 1px solid #CCC; border-top: 1px solid #CCC; border-left: 1px solid #CCC; text-decoration: none; position:relative;}
+.verticalslider_tabs a:hover, .verticalslider_tabs a:active{ background-color: #fcfcfc;}
+.verticalslider_tabs li:first-child a:link, .verticalslider_tabs li:first-child a:visited{border-top: none; height: 30px;  }
+.verticalslider_tabs .activeTab a:link, .verticalslider_tabs .activeTab a:visited{background: #ffffff; border-right: 1px solid #ffffff;}
+.verticalslider_tabs .activeTab a:hover, .verticalslider_tabs .activeTab a:active{background: #ffffff; border-right: 1px solid #ffffff;}
+.verticalslider .arrow { display:none; width: 27px; height: 60px; position: absolute; z-index: 1000; margin-left: 250px; margin-top: -55px; }
+
+/* Contents */
+.verticalslider_contents{float: left; width: 710px; height:36em; display: block; overflow:hidden; margin: 0px; padding: 10px 0px 20px 0px; border-left:1px solid #CCC; border-bottom:1px solid #CCC; background-color:#FFF;}
+.verticalslider_contents>li{margin: 0px; padding: 0px; width: 710px; position: absolute; height: auto !important; overflow: hidden; padding: 0px; display: none; list-style-type: none; }
+
+.verticalslider_contents>li h2{font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; color: #E5922C; font-size:22px; margin: 5px 20px; padding: 0px; border-bottom:1px solid #E7EAED; padding-bottom:3px;}
+.verticalslider_contents>li h3{font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; color: #667EA4; font-size:15px; margin: 5px 20px; padding: 0px; border-bottom:1px solid #E7EAED; padding-bottom:3px; font-weight:normal;}
+.verticalslider_contents>li p{ margin: 5px 20px; padding-bottom: 10px; color: #666; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; font-size: 13px; }
+
+.verticalslider_contents .activeContent{display: inline;}
+
+.verticalslider_contents ul{margin:10px 0 0 0; padding:0; list-style:none; float:left; width:710px; height:auto; padding-bottom:10px;}
+.verticalslider_contents ul li{float:left; width:650px; height:auto; padding-bottom:10px; padding-left:20px; margin-left:20px; display:block; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:13px; color:#666; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:0px 5px; line-height:22px;}
+.verticalslider_contents ul li a{text-decoration:none; color:#E5922C;}
+.verticalslider_contents ul li a:hover{ text-decoration:underline;}
+
+
+/*Li Icons*/
+.verticalslider_tabs>li:nth-child(1) a:link{ background-image:url('{$IMG;,composr_homesite/commercial_support/com_sr_tab1}'); background-repeat:no-repeat; background-position:7px 10px; display:block;}
+.verticalslider_tabs>li:nth-child(2) a:link{ background-image:url('{$IMG;,composr_homesite/commercial_support/com_sr_tab2}'); background-repeat:no-repeat; background-position:7px 10px; display:block; }
+.verticalslider_tabs>li:nth-child(3) a:link{ background-image:url('{$IMG;,composr_homesite/commercial_support/com_sr_tab3}'); background-repeat:no-repeat; background-position:7px 10px; display:block;}
+.verticalslider_tabs>li:nth-child(4) a:link{ background-image:url('{$IMG;,composr_homesite/commercial_support/com_sr_tab4}'); background-repeat:no-repeat; background-position:7px 10px; display:block;}
+.verticalslider_tabs>li:nth-child(5) a:link{ background-image:url('{$IMG;,composr_homesite/commercial_support/com_sr_tab5}'); background-repeat:no-repeat; background-position:7px 10px; display:block;}
+

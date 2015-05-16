@@ -1,0 +1,421 @@
+[title]Web design glossary[/title]
+
+We don't blame you if you get a little bit baffled by all the terminology involved in modern web design. Here are the top 100 buzzwords that will help you understand what you are buying (or what you might want to enquire about buying).
+
+If you're still confused, why not give us a ring? We'll be happy to explain.
+
+[html]
+<table class="solidborder very_spaced_table">
+	<tbody>
+		<tr>
+			<td>Accessibility</td>
+			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen reader' or represented on a braille-reader.</td>
+		</tr>
+		<tr>
+			<td>Adsense</td>
+			<td>Adsense is Google's business program for getting paid money for the placement of relevant Adword ads on your web page (contextual advertising).</td>
+		</tr>
+		<tr>
+			<td>Adwords</td>
+			<td>Adwords is Google's business program for paying money for the placement of adverts on Google searches and the websites of relevant Adsense customers.</td>
+		</tr>
+		<tr>
+			<td>AJAX</td>
+			<td>A technique for web pages to send background messages to the server (and receive responses/data) without the whole page having to be reloaded.</td>
+		</tr>
+		<tr>
+			<td>Analytics</td>
+			<td>The process and technology for the quantitative study of how visitors interact with your website. Modern analytics tools are much more powerful than the previous statistic tools, able to observe more specific behaviours and trends within and between pages.</td>
+		</tr>
+		<tr>
+			<td>Apache</td>
+			<td>The most common web server software.</td>
+		</tr>
+		<tr>
+			<td>API</td>
+			<td>Application Programming Interface, a way for a website to access a particular service, often on a visitors computer or a third-party web server. For example, a payment gateway is accessed using an API.</td>
+		</tr>
+		<tr>
+			<td>ASP.net</td>
+			<td>A programming language, similar to PHP.</td>
+		</tr>
+		<tr>
+			<td>Back-end</td>
+			<td>This term refers to computer code designed to run on a web server (as opposed to a visitors web browser). Back-end code often deals with database access and security, and assembly of pages from content and other components.</td>
+		</tr>
+		<tr>
+			<td>Back-link</td>
+			<td>A link to a webpage of yours, from a webpage on an external website. i.e. when someone is linking to you. Having high quality back-links helps SEO.</td>
+		</tr>
+		<tr>
+			<td>Bandwidth</td>
+			<td>This either refers to how much data a visitor can send or receive per second (measured in megabits for a modern Internet connection), or how much total data is transferred from your website each month. If your website transfers a lot of data each month, it's ongoing bandwidth will need to be high too, so they are essentially different ways of looking at the same thing. If you have particularly 'heavy' web pages (for example, video) you may end up using a lot of bandwidth. Video websites need to be careful not to exceed hosting limits, as this amount of bandwidth can be very expensive.</td>
+		</tr>
+		<tr>
+			<td>Billboard / slide-show / slider</td>
+			<td>A graphics effect used on the front page of many websites, where a transitioning series of large images are used to provide an attractive overview of a site/service.</td>
+		</tr>
+		<tr>
+			<td>Blog</td>
+			<td>Originally this term referred to a standalone website consisting just of personal news updates. However the term is used more broadly and refers to a website or a part of a website where news updates are made.</td>
+		</tr>
+		<tr>
+			<td>Bot</td>
+			<td>A computer program written to access web pages. Search engines use bots to index websites. Some hackers create malicious bots, designed to hack into web pages that aren't securely implemented.</td>
+		</tr>
+		<tr>
+			<td>Bounce rate</td>
+			<td>The percentage of visitors that leave your website from the first page they reach on it.</td>
+		</tr>
+		<tr>
+			<td>Breadcrumbs</td>
+			<td>Like in the story of Hansel and Gretel, breadcrumbs are designed to show the way home. The 'breadcrumb trail' shows the path from the website home page, to the web page you are on, with the intermediary steps. It is useful to help the user understand where they are on the overall website structure and how to navigate back up it to increasingly more general pages.</td>
+		</tr>
+		<tr>
+			<td>Cache</td>
+			<td>Caching is used by computers to avoid having to repeat 'costly' actions. Generally there are two kinds of caching: caching of computations, and caching of network transfers. Web servers will often remember the result of calculations so that they don't need to do them again. Web browsers and web servers both often implement ways of remembering downloaded pages so that they don't need downloading again. Caching is a vital technique for providing reasonable website performance, but it can also cause problems when out-of-date content can be shown.</td>
+		</tr>
+		<tr>
+			<td>Call To Action</td>
+			<td>A call to action is a strong request on your website for your visitor to do something, like sign up to a newsletter or to call a phone number. It is an important and simple technique to guide/lead your users to do particular actions.</td>
+		</tr>
+		<tr>
+			<td>Carousel</td>
+			<td>A navigation mechanism where clickable pictures are shown in a little horizontally-scrollable sub-area of the web page.</td>
+		</tr>
+		<tr>
+			<td>The Cloud</td>
+			<td>The Cloud' is an umbrella term for services delivered over the Internet where it is not fully defined where exactly the service comes from. It works via an intermediate broker service that will disseminate web page requests out to a number of possible actual web servers. This is useful for three main reasons: it allows complex or busy websites to function when the demand exceeds what a single server can do, it allows less complex or busy websites to easily share server resources with others, and it allows general purpose services (such as backup services) to be implemented in a very general way so that individual sites do not need individual maintenance.</td>
+		</tr>
+		<tr>
+			<td>Content Management System</td>
+			<td>Computer software for managing content, such as publishing it, classifying it, and controlling access. CMSs often provide web interfaces for direct live editing of content, making the publishing process much easier and more efficient. They also often provide easy ways to share navigation menus between pages, and automatically link new content into navigation. A CMS is great for easy management of news, product catalogues, and image galleries. Composr provides all the features mentioned here, but many more.
+			</td>
+		</tr>
+		<tr>
+			<td>Cookie</td>
+			<td>A piece of data a website has saved on a visitors computer. Because not every visitor to a website is logged in to it and because there is no consistent persistent way to identify a particular visitor to a website, the website saves things like user preferences to a cookie (or often it just saves a single 'session' identifier into a cookie, which it can then use to match up against the data saved on the server).</td>
+		</tr>
+		<tr>
+			<td>CSS</td>
+			<td>Cascading Style Sheets, the W3C specification for defining the layout and appearance of a web page.</td>
+		</tr>
+		<tr>
+			<td>CSV</td>
+			<td>A computer file format for spreadsheets. It is a very simple format supported by all spreadsheet software, and therefore works effectively as a standard spreadsheet format.</td>
+		</tr>
+		<tr>
+			<td>Database</td>
+			<td>An organised store of data. Web sites often use database to store user accounts and content.</td>
+		</tr>
+		<tr>
+			<td>DNS</td>
+			<td>Domain Name System, the system that allows a visitor to access a web server by using the domain name associated with it.</td>
+		</tr>
+		<tr>
+			<td>Domain Name</td>
+			<td>A name that identifies a web server (or, in a cloud environment, a service in general). Domain names, such as ocportal.com, are easier for humans to work with than IP addresses, and are often dictated-by branding, or dictate branding.</td>
+		</tr>
+		<tr>
+			<td>Dublin Core</td>
+			<td>A meta data standard for identifying things such as the authorship of a particular web page. Dublin Core is a good way to provide additional data within web pages.</td>
+		</tr>
+		<tr>
+			<td>Facebook App</td>
+			<td>A web application designed to run on top of the Facebook website. It can interact with Facebook user accounts, but provide it's own functionality. Many Facebook Apps are games (such as Farmville).</td>
+		</tr>
+		<tr>
+			<td>Facebook Connect</td>
+			<td>A mechanism for logging into a website using a Facebook account login. It prevents the need for users to create a new user account just for your website. There are benefits and drawbacks to Facebook Connect, so it is best to provide your own account system in addition to it (assuming your website has a login function).</td>
+		</tr>
+		<tr>
+			<td>Facebook Page</td>
+			<td>You can create a page for your brand on Facebook, which is free to do. Facebook users can then become 'fans' of your page, which will show up in their personal feed and on their profiles, helping spread the word out to their friends who may have similar interests. You can post status updates on your page, which is similar to sending out a newsletter to your subscribers (you can post special offers and competitions, for instance). If you have a page you can also place a 'like' button on your own website so that passing Facebook users can easily show their interest to their friends direct from your website.</td>
+		</tr>
+		<tr>
+			<td>Favicon</td>
+			<td>A small icon that shows in the toolbar when someone is visiting your website, and next to a bookmark to it (when users bookmark your site).</td>
+		</tr>
+		<tr>
+			<td>Fixed width vs Fluid width</td>
+			<td>A fixed width website is designed to have a particular width, often with a background showing at the edges if the web browser window is wider than this width. Most websites are fixed width as it is easier to design for a consistent display. Sites that are not fixed width are fluid width.</td>
+		</tr>
+		<tr>
+			<td>Flash</td>
+			<td>An Adobe technology for providing 'flashy' content on a web page. It works via a plugin and is not a W3C web standard. It is less commonly used now as HTML5 technologies provide many of the features that used to require Flash, and Flash doesn't work on the iPhone or iPad.</td>
+		</tr>
+		<tr>
+			<td>Front-end</td>
+			<td>This term refers to computer code designed to run on a web browser (as opposed to a visitors web server). Front-end code often deals with visual effects and sophisticated user interfaces. Users will often be swayed to use the website that looks best, not just because it provides a better experience, but also because many people will very quickly consider the best looking website as the market leader (because they believe the market leader will be the one who is most successful in the marketplace and therefore able to be investing most heavily in their website).</td>
+		</tr>
+		<tr>
+			<td>FTP</td>
+			<td>File Transfer Protocol, a way of putting files onto a web server.</td>
+		</tr>
+		<tr>
+			<td>GIF</td>
+			<td>A computer file format for images. GIF files can only consist of 256 colours, and only support basic transparency. They are used less than they once were, PNG files are typically used now instead.</td>
+		</tr>
+		<tr>
+			<td>Git</td>
+			<td>A tool for managing and storing code, logging changes so that all code has a complete auditable change history.</td>
+		</tr>
+		<tr>
+			<td>Google+</td>
+			<td>Google's social network. Google also have a +1 button that can be displayed on a website and recommend resources to other logged in Google users who are in their Google contact lists/circles.</td>
+		</tr>
+		<tr>
+			<td>Heat map</td>
+			<td>An analytics mechanism for seeing where users tend to focus their mouse. This is correlated strongly with where they are looking, so is a nice cost-effective way for identifying how users focus on a web page, and therefore is helpful in guiding design optimisation to ensure users look at what you want them to.</td>
+		</tr>
+		<tr>
+			<td>HTML</td>
+			<td>The language web pages are written in. It is a 'mark-up' language, which means it structures the content of a page (for example, defines what text is a heading). 'XHTML' is like HTML but written to be valid-XML also (XML is defined further down).</td>
+		</tr>
+		<tr>
+			<td>HTML5</td>
+			<td>For marketers, the next generation of HTML, CSS, XML, and Javascript technologies. For developers, specifically the next version of the HTML language. As of summer 2010, HTML5 is not yet finalised by the W3C as a stable language, but is still well enough supported for practical use of some of it's features.</td>
+		</tr>
+		<tr>
+			<td>iframe</td>
+			<td>A way to embed one web page inside another.</td>
+		</tr>
+		<tr>
+			<td>Information Architecture</td>
+			<td>The study of how websites are structured, to make it as easy to find what you want as possible. For sophisticated projects it is a good idea to plan out &lsquo;user journeys&rsquo; through the site in advance of actual visual design.</td>
+		</tr>
+		<tr>
+			<td>Interaction Design</td>
+			<td>The study of how complex interfaces are designed for maximum usability.</td>
+		</tr>
+		<tr>
+			<td>Interface</td>
+			<td>A particular part of a web page that can be interacted with. The interface refers to the mechanisms of interacting with the computer (visually, mouse clicking, keypresses, etc).</td>
+		</tr>
+		<tr>
+			<td>IP address</td>
+			<td>The way of identifying a computer on the Internet. It is not very reliable because a computer's IP address may regularly change. The IP address of a web server rarely changes.</td>
+		</tr>
+		<tr>
+			<td>Javascript</td>
+			<td>The programming language used to give a webpage interactive functionality.</td>
+		</tr>
+		<tr>
+			<td>JAWS</td>
+			<td>A screen reader so that blind users may use a website. JAWS is something users may install on their own computer (it's a commercial software application). If a website has blind users it is advisable to give it some testing with JAWS.</td>
+		</tr>
+		<tr>
+			<td>JPEG</td>
+			<td>A computer file format for images. JPEG files are inaccurate, but as a result they are very small. They make files smaller by representing an image in terms of patterns of nature that we recognise, rather than directly as pixels.</td>
+		</tr>
+		<tr>
+			<td>Keyword</td>
+			<td>A word chosen to identify a web page or content item. An item typically is assigned about 10 keywords. These have traditionally helped with search engine optimisation, but now are mainly useful just for your own website's searching and organisation.</td>
+		</tr>
+		<tr>
+			<td>Landing page</td>
+			<td>A particular page designed as a 'starting point' for visitors reaching your site. Most websites have just a single landing page (the 'home page'), but more advanced marketing campaigns often dictate creating different landing pages for different campaigns (often linked to from particular newsletters).</td>
+		</tr>
+		<tr>
+			<td>Lightbox</td>
+			<td>A graphics effect used when you click on a small image thumbnail and the full image overlays the current page in an attractive dismissable box. Lightbox's are a type of 'overlay'.</td>
+		</tr>
+		<tr>
+			<td>Linux</td>
+			<td>An operating system, the most popular one used on servers.</td>
+		</tr>
+		<tr>
+			<td>Markup</td>
+			<td>A markup language is a way to add structure and meaning to content, in addition to the actual text. It binds things together and defines relationships, by adding special 'markup tags' around parts of the content</td>
+		</tr>
+		<tr>
+			<td>Meta data</td>
+			<td>Data about data. For example, keywords and summaries are examples of meta data.</td>
+		</tr>
+		<tr>
+			<td>Microsite</td>
+			<td>A mini website made for a specific marketing campaign.</td>
+		</tr>
+		<tr>
+			<td>Mobile Phone App</td>
+			<td>iPhone and Android phone handsets support their own kinds of 'app'. These often mix web technologies with more traditional kinds of programming technology, and need to be specially coded. Mobile apps are extremely popular with user's, but also quite costly to develop. Mobile website designs are a lower-cost (but lower quality) alternative, as code can usually be shared with the main desktop web design.</td>
+		</tr>
+		<tr>
+			<td>Multivariate testing / split testing</td>
+			<td>Testing multiple versions of a page by randomly directly visitors to different versions and then analysing which worked best to achieve some particular goals (or to put another way, which avoid undesirable drop-offs). For example, you may want to test out which of two different headlines produces the best result. The technique is quite costly as it involves ongoing tuning and analysis, but can have powerful results.</td>
+		</tr>
+		<tr>
+			<td>MySQL</td>
+			<td>The most common database software used for powering websites.</td>
+		</tr>
+		<tr>
+			<td>Navigation</td>
+			<td>The particular structure of menus and links used for finding your way around a website.</td>
+		</tr>
+		<tr>
+			<td>Composr</td>
+			<td>The Open Source Content Management System developed by ocProducts.</td>
+		</tr>
+		<tr>
+			<td>Open Source Software</td>
+			<td>Software that is free to use and where the source code (what the programmer actually typed) is available also, so that anyone may enhance it further for no cost. Open Source Software avoids the problem of clients getting locked-in to using the original developer to able to make further developments to a website.</td>
+		</tr>
+		<tr>
+			<td>Overlay</td>
+			<td>A modern replacement for a 'popup window'. Overlays show on top of normal web page contents and are often used for adverts or to display content that doesn't need it's own full page but should not be embedded directly either.</td>
+		</tr>
+		<tr>
+			<td>PageRank</td>
+			<td>One of the ways Google ranks web pages: by how many other pages link through to it and the importance of those pages.</td>
+		</tr>
+		<tr>
+			<td>Pay-Per-Click (PPC)</td>
+			<td>The normal mode of advertising, where you have to pay out each time someone clicks your ad. As opposed to Pay-Per-Impression (pay for each time the ad is viewed) or Pay-Per-Sale (pay when people who clicked the ad actually bought something on your site).</td>
+		</tr>
+		<tr>
+			<td>Payment gateway</td>
+			<td>A service that links a merchant bank account to your website. Payment gateways allow your website to take money from credit cards, for example.</td>
+		</tr>
+		<tr>
+			<td>Photoshop</td>
+			<td>Expensive professional software for graphics. Photoshop saves PSD files.</td>
+		</tr>
+		<tr>
+			<td>PHP</td>
+			<td>The most common programming language for making non-static websites (for example, websites that provide search features, or product catalogues).</td>
+		</tr>
+		<tr>
+			<td>PNG</td>
+			<td>A computer file format for images. PNG files are 100% accurate, and support partial transparency so that your website can have attractive blending.</td>
+		</tr>
+		<tr>
+			<td>Rank</td>
+			<td>Your position in a search engine for a particular search term. You want a 'high rank'.</td>
+		</tr>
+		<tr>
+			<td>Replication</td>
+			<td>The technical process where a database runs across different servers. It is necessary if your website has a very large volume of traffic and complex functionality. Cloud Services rarely automatically implement replication, or if they do they require programming to a completely different kind of database to what is standard.</td>
+		</tr>
+		<tr>
+			<td>Resolution</td>
+			<td>How many pixels across and down there are on the screen. Websites are typically designed for user's with 1024x768 and upwards, although mobile websites need to work on 320x240. In actual fact, screen quality has improved remarkably in recent years, and we tend to design to a particular "virtual resolution" while showing higher fidelity (higher-dpi) to users with better screens.</td>
+		</tr>
+		<tr>
+			<td>Responsive design</td>
+			<td>A website technique for providing different layout rules for different screen sizes.</td>
+		</tr>
+		<tr>
+			<td>RSS</td>
+			<td>A way for a website to provide a news feed, so that user's may view the news in a separate newsreader, or so that other websites can syndicate your news.</td>
+		</tr>
+		<tr>
+			<td>Ruby On Rails</td>
+			<td>A programming language, similar to PHP.</td>
+		</tr>
+		<tr>
+			<td>Schema.org</td>
+			<td>A meta data/markup scheme for embedding additional data inside a web page so that search engines (and other machine tools) can better understand it. For example, it allows you to tell a search engine that a page contains reviews for a product, and identify the particular reviewers.</td>
+		</tr>
+		<tr>
+			<td>Search Engine</td>
+			<td>A tool that trawls through the web, finding web pages and indexing their contents, so that you can then find pages by searching for key words. Google is a search engine.</td>
+		</tr>
+		<tr>
+			<td>Semantics</td>
+			<td>The meaning of some data. We talk about good web pages being written with 'semantics', which means that they use proper mark-up so that machine tools to identify what they are all about.</td>
+		</tr>
+		<tr>
+			<td>SEO</td>
+			<td>Search Engine Optimisation, the attempt to make a web page have a higher search engine rank. SEO techniques can be categorised as 'White Hat' (reputable techniques, a sensible effort to properly represent your site) or 'Black Hat' (dirty tricks that will likely make Google penalise your site). White Hat SEO typically involves connecting your site up to other websites in meaningful ways, and ensuring the contents of the web page are simple and reflective of what people will search for to find it.</td>
+		</tr>
+		<tr>
+			<td>Server</td>
+			<td>A computer permanently switched on and connected to the Internet from which services, such as websites, can be delivered from.</td>
+		</tr>
+		<tr>
+			<td>SMS Gateway</td>
+			<td>A service that allows your website to send SMS messages. SMS Gateways are commercial entities: you need to pay for credits for messages to be sent, and a programmer needs to hook your website up to the service.</td>
+		</tr>
+		<tr>
+			<td>Social media</td>
+			<td>An umbrella term for marketing using online social tools such as Twitter and Facebook, as well as older tools like commenting and forums.</td>
+		</tr>
+		<tr>
+			<td>Social network</td>
+			<td>A social application that connects people, such as Facebook, Google+, LinkedIn, or Twitter.</td>
+		</tr>
+		<tr>
+			<td>Specification</td>
+			<td>For a project, it is the formal detailing of what will be in that project and how it must function. There are also specifications for most Internet standards (HTML, CSS, etc) and they define how those standards will work, so that everyone involved in implementing them can make things work together consistently and correctly.</td>
+		</tr>
+		<tr>
+			<td>SSL Certificate</td>
+			<td>An SSL certificate is needed for when you need to encrypt traffic between the web server and visitor web browsers, such as when taking credit card details. SSL certificates need to be purchased for your domain name, and need to be installed on your web server. Many web hosting services will not work with an SSL certificate as you need a dedicated IP address for your particular website.</td>
+		</tr>
+		<tr>
+			<td>Staging server</td>
+			<td>A separate copy of your website may be installed on a staging server, for you to prepare changes in advance, and experiment, without impacting your live website.</td>
+		</tr>
+		<tr>
+			<td>Twitter</td>
+			<td>Twitter is a social network focused on fast dissemination of small updates and news between and across networks of users.</td>
+		</tr>
+		<tr>
+			<td>UML</td>
+			<td>Unified Modelling Language is a series of different kinds of diagram, used for formally specifying behaviours in advance of them being fully implemented in computer code.</td>
+		</tr>
+		<tr>
+			<td>Usability</td>
+			<td>A general term for making things user-friendly and effective. Good usability often requires significant investment in user testing and ongoing tuning of designs, but it can be very worthwhile (or absolutely necessary in many cases). User-friendly websites follow conventions (for example, labelling a contact page 'Contact us' rather than 'Send us a message'), and make it easy and quick to navigate around and perform key website tasks. Poor interfaces require the user to study concepts before they can work, good ones are intuitive and metaphorical. With proper testing you often find issues you had no idea about, as people often think about things in very different ways and issues like undesired ambiguities in wording can lead to serious misunderstandings. Usability testing can range from simply watching stakeholders use the website, to seeking impartial participants who match the target customer profile. There are some basic things you need to do when conducting a usability test, particularly explaining any confusion users have is your fault not theirs, giving them background information, setting particular clear and simple tasks in advance that provide good coverage of the usage scenarios you wish to optimise, and providing any supplementary material they might need to complete the test. It is best to record tasks using a tool such as <a target="_blank" title="Jing (this link will open in a new window)" href="http://www.techsmith.com/jing/">Jing</a>, but at minimum copious notes should be taken for every small misstep a user makes, and resolutions decided. For the test to be realistic it is best to give no or few hints to the user and to not give any emotional signals whilst they are working (if lots of hints are needed perhaps the task was poorly explained). After a test is finished, you should debrief the testers, and ask if they have any general or specific feedback to give. Depending on budget, you might test with just a few people to get rid of the biggest issues, or you might run tests iteratively with larger groups until everyone in the final group completes each task successfully.</td>
+		</tr>
+		<tr>
+			<td>W3C</td>
+			<td>The organisation responsible for defining and promoting web standards.</td>
+		</tr>
+		<tr>
+			<td>WCAG</td>
+			<td>The Web Content Accessibility Guidelines: W3C's guidelines on how to make an accessible website.</td>
+		</tr>
+		<tr>
+			<td>Web 2.0</td>
+			<td>A vague umbrella term for various non-specific generational changes in interface design, initiated by AJAX becoming possible on all major web browsers, as well as maturation of the web as a social tool used by a wider audience. The terms 'social media' and 'AJAX' are now usually used instead of 'Web 2.0', and fortunately these terms are more clear.</td>
+		</tr>
+		<tr>
+			<td>Web Application</td>
+			<td>An interactive piece of software written to be accessed via a web browser, made with and accessed by standard web technologies.</td>
+		</tr>
+		<tr>
+			<td>Web Browser</td>
+			<td>A tool for accessing web pages and navigating the web. Examples include: Google Chrome, Safari, Firefox, Internet Explorer, and Opera.</td>
+		</tr>
+		<tr>
+			<td>Web design</td>
+			<td>The process of designing a website or individual web page. Now that web technology is more sophisticated and competition has raised expectations, this term tends to be used only loosely: large projects involve a number of different design roles often performed by different people working together as a team.</td>
+		</tr>
+		<tr>
+			<td>Web development</td>
+			<td>The process of implementing a web design. The terms 'web design' and 'web development' overlap, but things like PHP-programming would normally be done by a specialist web developer rather than someone with a design background.</td>
+		</tr>
+		<tr>
+			<td>Web hosting</td>
+			<td>Websites are hosted on a server, but often the server is only accessed via a specific 'web hosting account' on it. These web hosting accounts are sold and configured separately, as a web server will often have many web hosting accounts.</td>
+		</tr>
+		<tr>
+			<td>Web server</td>
+			<td>Software that delivers web content from the actual web server machine to a visitors web browser. It basically connects a server's hard disk to the web.</td>
+		</tr>
+		<tr>
+			<td>Webmaster</td>
+			<td>An old term that typically refers to the website administer or owner. It is useful as a general term for the person responsible for a website, although in reality there may be a whole team of people responsible.</td>
+		</tr>
+		<tr>
+			<td>WYSIWYG</td>
+			<td>What You See Is What You Get. This term refers to how tools like Microsoft Word work &ndash; during editing text is displayed as it would be printed and displayed to a user. i.e. the actual display is manipulated intuitively until it looks correct. CMS's often have support for creating text content using WYSIWYG. This has advantages (ease of use) and disadvantages (it can mask accessibility issues, and make it hard to make the content automatically adapt for different display scenarios, such as mobile phones, or showing different content to users who are not logged in).</td>
+		</tr>
+		<tr>
+			<td>XML</td>
+			<td>A way of marking up text to add meaning to it. An XML document is written to a 'schema' (different schema's allow representation of different kinds of documents). For example, XHTML is an XML schema for representing web pages, defining what is a heading, what is a table, etc. XML schemas can be written for anything, for example to define news feeds, or to define listings on a property website (identifying to the computer what is the address, what is the description, etc).</td>
+		</tr>
+	</tbody>
+</table>
+[/html]

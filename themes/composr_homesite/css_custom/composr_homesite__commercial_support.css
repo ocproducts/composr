@@ -1,0 +1,31 @@
+.comSr { width:660px; padding:30px 0px; }
+.comSr tr { width:660px; border-bottom:1px solid #FFF; padding:0px; }
+.comSr tr>* { font-weight:normal; padding:10px 5px; text-align:left; line-height:22px; }
+.comSr tr>*.Hdr { width:154px; background-color:#677EA4; border-right:1px solid #8D9EBB; color:#FFF; font-size:14px; }
+.comSr tr>*.Hdr:last-child { border-right:0px; }
+.comSr tr>*.tdBody { width:154px; background-color:#F0F2F6; border-right:1px solid #FFF; color:#666; font-size:13px; }
+.comSr tr>*.tdBody:last-child { border-right:0px; }
+
+.comSr ul li.tdBody span { font-size:12px; }
+
+.page_running_commercial_support .cntRow h3 {
+	margin-bottom:0;
+}
+.comSrTab { float:left; width:960px; height:auto; overflow:hidden; margin:0px 0px 30px 0px; }
+
+.SelCdt { float:left; width:240px; margin-bottom:20px; }
+
+.Cdt { float:left; width:35px; padding-left:10px; font-weight:bold; height:32px; text-align:left; line-height:32px; color:#666; }
+.CdtSel { float:left; width:180px; background-color:#FCF0E2; border:1px solid #DDBA87; font-weight:normal; height:auto; padding:5px; text-align:left; margin-top:8px; display:block; {$BETA_CSS_PROPERTY,border-radius:4px;} }
+
+.topTble { width:240px; }
+.topTble tr { width:240px; border-bottom:1px solid #FFF; padding:0px; }
+.topTble tr>* { font-weight:normal; padding:10px 5px; text-align:left; line-height:22px; }
+.topTble thead th { width:109px; background-color:#E5922C; border-right:1px solid #DDBA87; color:#FFF; font-size:13px; }
+.topTble thead th:last-child { border-right:0px; }
+.topTble tbody tr>* { width:109px; background-color:#FCF0E2; border-right:1px solid #FFF; color:#666; font-size:13px; }
+.topTble tbody tr>*:last-child { border-right:0px; }
+
+.purchaseBtn { float:left; width:160px; height:42px; line-height:42px; font-size:15px; text-align:center; color:#FFF; margin:20px 0px 0px 36px; background-color:#E5922C; border-bottom:2px solid #7B4A0F; border-right:2px solid #7B4A0F; {$BETA_CSS_PROPERTY,border-radius:4px;} }
+.purchaseBtn a { color:#FFF; width:160px; height:42px; display:block; }
+.purchaseBtn:hover { background-color:#EBAB5C; }

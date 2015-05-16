@@ -1,0 +1,23 @@
+[title]Composr demo[/title]
+
+To set up your personal demo we just need a few details from you:
+ - A name for the demo which we'll use in your temporary URL.
+ - Your email address (so emails on the demo go to you, and so we can keep in contact).
+ - A password for you to log in to the demo with.
+
+[font size="1.1"]&raquo; [page="site:sites:myocp"]Proceed with instant set up of your personal demo[/page].[/font]
+
+
+
+[box="Shared demo: OpenSourceCMS" type="light"]
+If you'd prefer to avoid entering the details required to set up your own demo you can also use the [url="OpenSourceCMS demo"]http://www.opensourcecms.com/demo/1/194/Composr[/url].
+Log in with the username 'admin' and the password 'demo123' (*).
+
+If you ever receive an error about a missing page or file, it is probably because the demo is in the process of automatically being reset. Wait a moment and try again.
+
+[font size="0.8"](*) This password is subject to change outside our control -- if you can't log in, check the [url="main opensourcecms site"]http://php.opensourcecms.com/scripts/details.php?scriptid=210&name=Composr[/url] for the password.[/font]
+[/box]
+
+[box="Shared demo: our example site" type="light"]
+We have a [url="http://shareddemo.myocp.com/"]second shared demo[/url], populated with example content.
+[/box]
