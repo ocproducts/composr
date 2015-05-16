@@ -62,9 +62,11 @@ class Hook_snippet_profile_tab
             // And, go
             $ret = $ob->render_tab($member_id_of, $member_id_viewing);
             $out = new Tempcode();
+            $eval = $ret[1]->evaluate();
             $out->attach(symbol_tempcode('CSS_TEMPCODE'));
             $out->attach(symbol_tempcode('JS_TEMPCODE'));
-            $out->attach($ret[1]);
+            $out->attach($eval);
+            $out->attach(symbol_tempcode('JS_TEMPCODE', array('footer')));
             return $out;
         }
         return do_template('INLINE_WIP_MESSAGE', array('_GUID' => 'aae58043638dac785405a42e9578202b', 'MESSAGE' => do_lang_tempcode('INTERNAL_ERROR')));
