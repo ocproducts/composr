@@ -69,6 +69,9 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
         if (preg_match('#^https?://www\.facebook\.com/video\.php\?v=(\w+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
+        if (preg_match('#^https?://www\.facebook\.com/.*/videos/.*/(\d+)/#', $url) != 0) {
+            return MEDIA_RECOG_PRECEDENCE_HIGH;
+        }
         if (preg_match('#^https?://www\.facebook\.com/photo\.php\?v=(\w+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
@@ -113,7 +116,11 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
         if (is_object($url)) {
             $url = $url->evaluate();
         }
-        $attributes['remote_id'] = preg_replace('#^(https?://www\.facebook\.com/photo\.php|https?://www\.facebook\.com/video\.php|https?://www\.facebook\.com/video/video\.php)\?v=(\w+)#', '${2}', $url);
+        if (preg_match('#^https?://www\.facebook\.com/.*/videos/.*/(\d+)/#', $url) != 0) {
+            $attributes['remote_id'] = preg_replace('#^https?://www\.facebook\.com/.*/videos/.*/(\d+)#', '${1}', $url);
+        } else {
+            $attributes['remote_id'] = preg_replace('#^(https?://www\.facebook\.com/photo\.php|https?://www\.facebook\.com/video\.php|https?://www\.facebook\.com/video/video\.php)\?v=(\w+)#', '${2}', $url);
+        }
         return do_template('MEDIA_VIDEO_FACEBOOK', array('_GUID' => 'f9ba7e3b94d421791233cf3a34508ed7', 'HOOK' => 'video_facebook') + _create_media_template_parameters($url, $attributes, $as_admin, $source_member));
     }
 }
