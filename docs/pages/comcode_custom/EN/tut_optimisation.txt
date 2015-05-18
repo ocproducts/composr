@@ -448,7 +448,7 @@ Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_moving"]Moving servers (including copying themes manually)[/page]
+ - [page="_SEARCH:tut_moving"]Moving sites[/page]
  - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
  - https://www.woorank.com
 

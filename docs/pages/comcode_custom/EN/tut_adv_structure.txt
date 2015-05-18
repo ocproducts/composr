@@ -1,0 +1,45 @@
+[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced site structure and flow[/title]
+
+This tutorial contains some advanced information about managing the structure and flow of a Composr website.
+
+It doesn't flow in any particular way -- it is a series of separate pieces of guidance.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Controlling the flow through add screens)[/title]
+
+You may want to provide a link to an add screen then redirect the user somewhere else after they've finished. i.e. don't show them the default "what would you like to do next?" screen, send them somewhere specific.
+
+You can do this via the standard 'redirect' parameter, which contains the URL to redirect the user to after an action is performed.
+
+For example, consider this page-link we may have placed on a menu:
+[code]
+cms:cms_news:add
+[/code]
+If we want to direct the user to a page that explains how submissions are modified, we could change it to:
+[code]
+cms:cms_news:add:redirect={$PAGE_LINK,site:news_thankyou}
+[/code]
+If we want to direct the user back to where they were, we could change it to:
+[code]
+cms:cms_news:add:redirect={$SELF_URL}
+[/code]
+
+For example, if we have a template that has a URL passed into it, like say:
+[code]
+<a href="{URL*}">Go somewhere</a>
+[/code]
+We could change it to:
+[code]
+<a href="{URL*}?redirect={$PAGE_LINK&,site:news_thankyou}">Go somewhere</a>
+/
+<a href="{URL*}&redirect={$PAGE_LINK&,site:news_thankyou}">Go somewhere</a>
+[/code]
+(depending on whether the URL contains an "?" already or not, which typically depends on your URL scheme)
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+
+{$SET,tutorial_tags,page_management,core_zone_editor,breadcrumbs,Structure and navigation,advanced}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,Some advanced information about managing the structure and flow of a Composr website.}[block]main_tutorial_rating[/block]

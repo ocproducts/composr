@@ -75,6 +75,19 @@ The final feature of Commandr is Commandrchat, which allows users of Commandr to
 
 Commandrchat is designed to allow website administrators to communicate with each other and share tips, tricks and experiences with Composr.
 
+[title="2"]Bulk actions for Composr[/title]
+
+Commandr is a very effective way to automate tedious maintenance tasks. For example, if you want to delete a set of images and you have their IDs, you could execute this Commandr code:
+
+[code]
+:require_code('galleries2');
+$ids=array(1,2,3,4,5);
+foreach ($ids as $id) delete_image($id,true);
+[/code]
+(paste it all in in one go, not as separate line inputs)
+
+The code simply interfaces with the standard Composr APIs.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]

@@ -2,11 +2,44 @@
 
 To put a website on-to the Internet, you need to arrange for 'web hosting'. This is usually done by paying for the services of a [concept]web host[/concept], who will provide you space-on and access-to, a computer (a web server) that is permanently connected to the Internet via a high-speed connection.
 
-Users with high requirements for CPU, memory, security, privacy, autonomy or disk space, may opt to get a [concept]dedicated server[/concept]. This is more expensive, and usually requires additional maintenance by the user, but for some users, is highly advisable.
-
-(In various places in this tutorial, I will mention that ocProducts is available for support. This is of particular relevance for employers who desire special help with the creation of their website, rather than creating the necessary skills in-house or hiring outside help from elsewhere. If this interests you, please [page="site:support"]contact us[/page] and we will respond promptly.)
+This tutorial covers requirements for hosting Composr and some general information about web hosting and security.
 
 [contents]decimal,lower-alpha[/contents]
+
+[title="2"]Different hosting options[/title]
+
+You have the following options for hosting Composr (roughly):
+ - Traditional shared web hosting (with a control panel)
+ - Traditional VPS web hosting (with a control panel)
+ - Traditional VPS web hosting (without a control panel)
+ - Dedicated Linux server (with a control panel)
+ - Dedicated Linux server (without a control panel)
+ - Hosting on your own Windows desktop (for development purposes)
+ - Hosting on a Windows server
+ - Hosting on your own Mac desktop (for development purposes)
+ - [concept]IaaS[/concept] cloud hosting (e.g. Amazon EC2, Azure, Rackspace)
+ - [concept]PaaS[/concept] cloud hosting (e.g. AppFog, Heroku, Rackspace Cloud, Engine Yard, OpenShift)
+ - Google App Engine, which is a special case of PaaS due to the high-level of organisation you need to work within. It is covered in [page="_SEARCH:tut_google_appengine"]its own tutorial[/page].
+
+The vast majority of users will choose traditional shared web hosting, or traditional VPS web hosting with a control panel.
+
+Users with high requirements for CPU, memory, security, privacy, autonomy or disk space, may opt to get a [concept]dedicated server[/concept]. This is more expensive, and usually requires additional maintenance by the user, but for some users, is highly advisable.
+
+Programmers will often prefer IaaS and PaaS hosting in order to get scalability. However scalability is not automatic with any system, so programmers need to put serious consideration into infrastructure. This is discussed more in the [page="_SEARCH:tut_optimisation"]Optimising[/page] tutorial.
+
+Regardless of your choice, you'll always be running the same underlying software (PHP etc). For the purpose of this tutorial the differences don't really matter, except where we provide specific advice on configuring platforms.
+We have various different installation tutorials that go into details on how to install on the different hosting options.
+
+[title="2"]Recommended web host[/title]
+
+We recommend Arvixe for Composr hosting. Arvixe have worked with the Composr developers to ensure the hosting is perfectly tuned for Composr, and the Composr developers intend to make sure this remains the case across Composr versions. Arvixe is an established company, a friend to Open Source software, and provides good value and great quality servers. We maintain a good working relationship with the management of the company.
+
+You can even buy hosting with Arvixe and have Composr automatically installed for you from the get go: [url="Arvixe Composr hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].
+
+A bit of advice if you choose to not use our recommended host and go purely on a price comparison:
+Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap web hosts are only suitable for those with very basic needs.
+
+[semihtml]<a class="link_exempt" href="http://www.arvixe.com/5256-223-3-122.html" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
 
 [title="2"]Requirements and recommendations[/title]
 
@@ -29,7 +62,7 @@ Composr requires:
   - no other explicit disabling of standard functionality that we require. Commonly web hosts do this using modsecurity, suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, whilst caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with debug mode on). A higher limit, e.g. 40MB, may be required if running PHP4.
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free web hosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
- - A web server that runs MySQL (*), version 4.1 or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often web hosts will quote a number of databases that web-hosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost
+ - A web server that runs MySQL (*), version 4.1 or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often web hosts will quote a number of databases that web-hosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable web-host
  - A web server running IIS (the Microsoft web server), Apache (the common Linux web server), or LiteSpeed. It is very unlikely you will find a web-host that provides something else. Other servers might work but are not supported
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
@@ -66,10 +99,11 @@ If you need to be able to easily remove 'bounce' emails from newsletter subscrib
 
 If encrypted CPFs are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial), the PHP OpenSSL extension is required.
 
-[title="3"]Package installation[/title]
+[title="3"]Package installation (advanced)[/title]
 
-This section contains some suggestions for which packages to install on different Linux distributions to get a good PHP environment.
-It is not actively maintained. Package names may change, but it is designed to give a leg-up to people configure new Linux servers.
+This section contains some suggestions for which packages to install on different Linux distributions to get a good PHP environment. It is only applicable to people who aren't on traditional hosting with a control panel to manage things from.
+
+This section is not actively maintained. Package names may change, but it is designed to give a leg-up to people configuring new Linux servers.
 
 [title="4"]Ubuntu/Debian[/title]
 
@@ -93,20 +127,7 @@ Some lines in the default PHP ini ([tt]/etc/php.ini[/tt]) file need changing:
 [tt]post_max_size = 8M[/tt] --> [tt]post_max_size = 500M[/tt]
 [tt];date.timezone = [/tt] --> [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
 
-[title="2"]Recommended web host[/title]
-
-We recommend Arvixe for Composr hosting. Arvixe have worked with the Composr developers to ensure the hosting is perfectly tuned for Composr, and the Composr developers intend to make sure this remains the case across Composr versions. Arvixe is an established company, a friend to Open Source software, and provides good value and great quality servers. We maintain a good working relationship with the management of the company.
-
-You can even buy hosting with Arvixe and have Composr automatically installed for you from the get go: [url="Arvixe Composr hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].
-
-A bit of advice if you choose to not use our recommended host and go purely on a price comparison:
-Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap web hosts are only suitable for those with very basic needs.
-
-[semihtml]<a class="link_exempt" href="http://www.arvixe.com/5256-223-3-122.html" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
-
-[title="2"]Forum drivers[/title]
-
-Please note that many 'forum systems' are referred to as 'bulletin boards', and that a 'forum' within 'forums' is often referred to as a 'board'. We consistently use the terms 'discussion forums', 'forums' and 'forum' to describe these.
+[title="2"]Forum drivers (advanced)[/title]
 
 If you wish to integrate an existing forum into Composr, rather than use our own, the forum must be one of:
  - Advanced Electron Forum 1
@@ -119,6 +140,8 @@ If you wish to integrate an existing forum into Composr, rather than use our own
  - WowBB 1.7
 If your forum is not on the list, we may be able to add support via our [page="site:support"]Experts by the hour[/page] service.
 
+Please note that many 'forum systems' are referred to as 'bulletin boards', and that a 'forum' within 'forums' is often referred to as a 'board'. We consistently use the terms 'discussion forums', 'forums' and 'forum' to describe these.
+
 We also provide converters for most of the above to our forum system, Conversr. If you currently use one of these systems, you have the option to convert it.
 
 [box="Tip" width="25em" float="right"]Instead of naming the forum "Website comment topics" or "Website Support Tickets", you could name it "Mysite comment hub", "Mysite help region", or anything else you choose. Just be sure to change the configuration option to reflect it.
@@ -129,13 +152,13 @@ You may also wish to create hidden a forum called 'Website support tickets' if y
 
 [title="2"]Domain names[/title]
 
-Most websites prefer to have a short and memorable Internet address, direct to their front page. In order to achieve this, you will need to pay for control of a domain name. A very large number of companies will provide these domains, and the facility to bind these names to your web-server, for a very low fee. It is usually your own responsibility to seek and register the domain name for your site, but ocProducts may be able to register one on your behalf to assist you in the creation of your website.
+Most websites prefer to have a short and memorable Internet address, direct to their front page. In order to achieve this, you will need to pay for control of a domain name. A very large number of companies will provide these domains, and the facility to bind these names to your web-server, for a very low fee.
 
 It is important to note that domain names are licensed on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
 
-[title="2"]Responsibilities[/title]
+[title="2"]Ongoing maintenance responsibilities[/title]
 
-Usually the web host will take responsibility for the daily maintenance of the server. For example, keeping the server software, usually [concept]Linux[/concept] and common Linux software, up to date with security and stability [concept]patches[/concept]. However few web hosts will take responsibility for the maintenance (including backups) of your space on the server. If you are in need of assistance with this, ocProducts staff are available for support, however, normally we do not take responsibility for maintenance issues that are not strictly related to our software.
+Usually the web host will take responsibility for the daily maintenance of the server. For example, keeping the server software, usually [concept]Linux[/concept] and common Linux software, up to date with security and stability [concept]patches[/concept]. However few web hosts will take serious responsibility for the maintenance (including backups) of your space on the server. If you are not using a traditional web host then you probably are responsible for absolutely everything, so make sure you are comfortable with that.
 
 It is important to understand the responsibilities for the various aspects of creating, maintaining and operating your website, before you launch your endeavour.
 
@@ -161,7 +184,7 @@ The server itself, has a file system, much like a desktop computer, and is usual
 /var/mysql/your-database-name/
 /var/mysql/your-database-name/<database-files>[/tt]
 
-Of course this is only a partial detailing of the directory structure, but the intent is to provide you with an overview of what is really happening on your server. Usually you will not be able to, using your control panel or FTP, see outside of '/home/your-account-name/'. When you install Composr, you usually would place the quick installer or manual installer files inside '/home/your-account-name/httpdocs/'; this is the directory that becomes accessible at the base URL of your website.
+Of course this is only a partial detailing of the directory structure, but the intent is to provide you with an overview of what is really happening on your server. Usually you will not be able to, using your control panel or SFTP/FTP, see outside of '/home/your-account-name/'. When you install Composr, you usually would place the quick installer or manual installer files inside '/home/your-account-name/httpdocs/'; this is the directory that becomes accessible at the base URL of your website.
 
 For instance, if your account on the server was associated with a domain name, 'mywebsite.com', then [tt]http://www.mywebsite.com/index.php[/tt] would be tied to the file system file, '/home/your-account-name/httpdocs/index.php' (often the 'www.' is removable, but not on all servers).
 In addition, from your main FTP account, the same file would likely be '/httpdocs/index.php'.
@@ -175,31 +198,37 @@ In other words, three views of the file system exist, according to context:
 
 As previously mentioned, this file system is merely illustrative. Different servers use different conventions; for example 'httpdocs' is often 'public_html' or 'www'.
 
-[title="2"]Server security[/title]
+[title="2"]Server security (advanced)[/title]
 
-This section details complex scenarios, that only advanced users will understand.
+There are two ways that web hosts may use to manage web application on the server:
+ - Shared user
+ - suEXEC-style
 
-Towards the start of this document I briefly mentioned how a dedicated server would provide extra security and privacy. The reason for this is that, unless the server is heavily locked down (often at the detriment to its users needs), then different server users are likely to be able to access and interfere with (erase and edit) each others files. This is highly unfortunate, and not widely known or understood, but is a result of the server architecture and applies to any PHP web application. Your account on the server has a username, much like your username on your own computer; files you upload are assigned to this username, and hence tampering with them is not possible for others. However, on almost all servers, the PHP environment itself, for all web sites on the server, runs with the privileges of the the same user (usually, a user named 'nobody'). This has three consequences:
- - Composr files that the web server user needs to write have to be made accessible to the web server. The way this is done is by making them available to every user on the server. Therefore these files are exposed to any user on the server with access to files outside of their account directory, which for non-locked-down servers, is every user
- - Any file that is uploaded to the website via Composr, or created by Composr, is fully accessible and modifiable by any other user on the server
- - Any user on the server may have unrestricted access to your database
+With a shared user, all sites run code as a user such as [tt]apache[/tt] or [tt]nobody[/tt]. This is simpler for the host to configure, but it is not a good idea for security. It also is the reason so much 'chmodding' may be needed (so the shared user has write access to files specifically on your account). In this scenario they will typically then lock other things down, such as denying shell access and setting an [tt]open_basedir[/tt] to sandbox PHP -- but rarely are these restrictions enough and it's an inherently incorrect approach for a shared web-host to take. Different server users are likely to be able to access and interfere with (erase and edit) each others files. We strongly advise any web-hosts to use a suEXEC-style environment.
 
-Of course if other clients of the web-host interfere with your data, the web-host may be able to intercede on your behalf.
+With a suEXEC-style hosting environment, sites run code under the same account that the site is held in. This is simpler, easier to configure, and more secure. "suEXEC" refers specifically to how the Apache server manages this, other server software will refer to it in different ways.
 
-[title="2"]Advanced: OpenSSL encryption[/title]
+[title="3"]Worked example of a shared user permission scheme[/title]
 
-If you wish to have encrypted [concept]Conversr[/concept] custom profile fields, the PHP OpenSSL extension must be installed and configured. Further to this, a public/private key pair must be generated for the site, and uploaded to the server.
+Without suEXEC the web server will run under a web-server-specific user, such as [tt]apache[/tt] or [tt]nobody[/tt].
 
-To generate the public/private key pair, you will need access to a computer running OpenSSL; either a local one, or your server via SSH. At a shell, execute the following commands to generate the public/private key pair:
+It is a good idea to understand the disparity of file ownership that can happen...
 
-[code]openssl genrsa -aes256 -out private.pem 2048
-openssl rsa -in private.pem -out public.pem -outform PEM -pubout[/code]
+Let's assume the web server runs as [tt]apache[/tt], and your user account is [tt]bob[/tt].
 
-The first command will generate a private key with a passphrase supplied when [tt]openssl[/tt] requests it. The passphrase must be long, secure, and kept private, as it's the only way to access the private key (and thus the encrypted data). The second command will generate a public key from the private key, and will require the [i]same[/i] passphrase to be entered again.
+Any file created by the web server (or PHP) would be owned by [tt]apache[/tt]. For example, Composr uploads, or Composr revision files.
 
-Once the key pair has been generated, they should be uploaded to your server, somewhere where they [b]cannot be accessed from the Internet[/b] (so not in your [tt]htdocs[/tt] directory). They should have their permissions set such that they can be read by your web server process, but nobody else.
+Any files you manually uploaded (e.g. via FTP) would be owned by [tt]bob[/tt].
 
-The final step is to configure Composr to use the key pair to encrypt data. In the "Privacy options" section of your Composr configuration, set the "Encryption key" option to be the path and filename of the public key file ([tt]public.pem[/tt]), and the "Decryption key" option to be the path and filename of the private key file ([tt]private.pem[/tt]). If these options are not visible, it's because your server does not have the OpenSSL PHP extension installed or configured correctly.
+Both of these situations present a disparity in the permission scheme.
+
+If [tt]apache[/tt] wants to write to a file you uploaded, it cannot, [i]unless you specified world-write permissions on the file[/i]. This is why we talk about file permissions in our documentation, saying exactly what needs to be set.
+
+If you want to edit or delete a file made by the web server, using your FTP account, you cannot, [i]unless the server had specified world-write permissions on the file[/i]. Fortunately Composr is quite smart and it actually [i]does[/i] set world-write permissions on the [tt]apache[/tt] owned files. It does this because it automatically detects the disparity between the account owner and the user the server is running as.
+Composr detects the account owner by seeing who owns the [tt]index.php[/tt] file.
+
+So, the main take-away is:
+[indent]If you do not have suexec, any files the web server needs to be able to write to need to be either reassigned to be owned by the web server (if you are a server admin you can do that, it's more secure if other users have login access to your web server) or given world-write permissions (what most Composr users would have to do)[/indent]
 
 [title="2"]PHP-Info[/title]
 
@@ -208,8 +237,13 @@ The final step is to configure Composr to use the key pair to encrypt data. In t
 [concepts
  1_key="web host"           1_value="A provider of Internet server facilities"
  2_key="dedicated server"   2_value="A server that is not shared with others"
- 3_key="Linux"              3_value="The Linux operating system, very well suited to servers"
- 4_key="patches"            4_value="Patches are upgrades to software designed to fix problems, especially security ones nowadays"
+ 3_key="VPS"                3_value="A virtual private server. This works via allowing multiple virtual machines to run on a real host machine. Typically this is what cloud hosting is using behind-the-scenes"
+ 4_key="Linux"              4_value="The Linux operating system, very well suited to servers"
+ 5_key="patches"            5_value="Patches are upgrades to software designed to fix problems, especially security ones nowadays"
+ 6_key="IaaS"               6_value="Infrastructure as a service. This is cloud hosting based on direct provision of VPSs."
+ 7_key="PaaS"               7_value="Platform as a service. This is cloud hosting based on providing direct support and configurability for particular programming language(s). It typically will hide the complexities of VPS management from you."
+ 8_key="SaaS"               8_value="Software as a service. This is what you are using when you create something like a Facebook page or a hosted blog, where you don't ever need to directly install/configure the software. This has advantages but severely limits configurability. Composr could be delivered as SaaS but the majority of users want a high degree of control over their sites."
+ 9_key="Traditional hosting"  9_value="Hosting managed via a web host. Support is provided, servers are kept up-to-date, and control panels are provided for relatively easy system management."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

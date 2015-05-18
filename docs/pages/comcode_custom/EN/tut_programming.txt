@@ -534,6 +534,7 @@ N/A is used to mark characters that have a special meaning.
 
 [title="2"]See also[/title]
 
+ - [page="_SEARCH:sup_hardcore_blocks"]A PHP/Composr coding primer[/page]
  - [page="_SEARCH:tut_webapp"]Web-applications, Composr, and PHP[/page]
  - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]

@@ -374,10 +374,10 @@ This would create: [tt]Module index > Root > Foo > Bar[/tt]
 
 [code="PHP"]
 breadcrumb_set_parents(array(
-    array('_SELF:_SELF:misc','Module index'), // type=misc
-    array('_SELF:_SELF:category:1','Root'), // type=category&id=1
-    array('_SELF:_SELF:category:3','Foo'), // type=category&id=3
-    array('_SELF:_SELF:category:6','Bar'), // type=category&id=6
+    array('_SELF:_SELF:misc', 'Module index'), // type=misc
+    array('_SELF:_SELF:category:1', 'Root'), // type=category&id=1
+    array('_SELF:_SELF:category:3', 'Foo'), // type=category&id=3
+    array('_SELF:_SELF:category:6', 'Bar'), // type=category&id=6
 ));
 [/code]
 
@@ -387,18 +387,18 @@ Composr automatically puts stuff in front, and puts the title of the current pag
 
 Of course, in real code you are more likely to put this together in a loop, so your code will be more like:
 [code="PHP"]
-$breadcrumbs=array();
-$_category_id=$category_id;
+$breadcrumbs = array();
+$_category_id = $category_id;
 do // Recursively find parents and put each as a breadcrumb
 {
-    list($_category_id,$_category_name)=find_parent($_category_id);
-    if ($_category_id!==NULL)
+    list($_category_id, $_category_name) = find_parent($_category_id);
+    if ($_category_id !== null)
     {
-        $breadcrumbs[]=array('_SELF:_SELF:category:'.strval($_category_id),$_category_name);
+        $breadcrumbs[] = array('_SELF:_SELF:category:' . strval($_category_id), $_category_name);
     }
 }
-while ($_category_id!==NULL);
-$breadcrumbs[]=array('_SELF:_SELF:misc','Module index');
+while ($_category_id !== null);
+$breadcrumbs[] = array('_SELF:_SELF:misc', 'Module index');
 breadcrumb_set_parents(array_reverse($breadcrumbs));
 [/code]
 
@@ -645,10 +645,12 @@ We have established the following design goals (in no particular order):
 
 [title="4"]Import or forum driver?[/title]
 
-Forum/member integration, done using a forum driver, allows Composr to integrate with an existing forum/member system in a number of ways. One of the biggest is so that you don't need to separately log in to both systems. Composr also uses the forum's members and usergroups, and stores/reads posts from the forum. Forum/member integration is achieved via forum drivers. Composr always uses one forum driver, and the default is the 'Conversr' driver which actually allows Composr to use it's own inbuilt forum (Conversr).
+Forum/member integration, done using a forum driver, allows Composr to integrate with an existing forum/member system in a number of ways. One of the biggest is so that you don't need to separately log in to both systems. Composr also uses the forum's members and usergroups, and stores/reads posts from the forum. Forum/member integration is achieved via forum drivers.
+
+Composr always uses one forum driver. The user picks a forum driver when the install and the default is the 'Conversr' driver which actually allows Composr to use it's own inbuilt forum (Conversr).
 
 Generally ocProduct's advises people not to use forum/member integration, but rather to use the inbuilt Conversr forum instead (and therefore the 'Conversr' driver). This is because it's much cleaner just to have one piece of software. This said, people often have valid reasons for avoiding a migration.
-If one wishes to use Conversr but currently uses a different forum/member-system, then importing is the answer. If one doesn't care about Conversr but currently uses a different forum/member-system, a forum driver is the answer.
+If one wishes to use Conversr but currently uses a different forum/member-system, then importing is the answer. If one doesn't care about Conversr but currently uses a different forum/member-system, then a forum driver is the answer.
 
 Sometimes you want the advantages of migration, but don't want to move too quickly. ocProduct's approach to supporting these kinds of migrations is to provide forum drivers, but also importers, so people can choose to move to Composr slowly in two separate steps:
 1) install Composr using a forum driver
@@ -666,9 +668,13 @@ If neither of the above reasons apply then it won't make any difference which yo
 
 As a general rule, if a Composr table is stored in a table starting 'f_', then it is a part of the inbuilt forum (Conversr) and should be accessed via FORUM_DB. You should also consider whether you should be accessing it directly, as opposed to using the forum driver interface -- as any code you write will be assuming Conversr is being used.
 
+In the case of Conversr, the forum driver just ties into the lower-level Conversr API. In the case of others, it's a basic clean-room implementation of accessing the relevant forum software's DB and files.
+
+Stuff that is not an Conversr feature but uses the forum, has to go through the official forum driver interface. We can supplement functionality exclusively targeted for Conversr with a [tt]if (get_forum_type() == 'cns')[/tt] guard. If we are coding functionality that is directly a part of Conversr (i.e. accessed in some Conversr-only part of the system, like the forum zone), then we don't need to worry about any of this.
+
 [title="4"]Writing a forum driver[/title]
 
-There's not a lot to say about this, as there are so many existing forum drivers in Composr to look-at/refer-to and they all follow a pattern. The API is mature and simple.
+A forum driver works via a [tt]sources/forum/*.php[/tt] file. A forum driver is basically an implementation to a standardised interface, and is accessed from ocPortal via [tt]$GLOBALS['FORUM_DRIVER'][/tt]. There's not a lot to say about this, as there are so many existing forum drivers in Composr to look-at/refer-to and they all follow a pattern. The API is mature and simple.
 
 To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's 'forum_type' option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member ID's are group ID's) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it whilst you debug it -- then install again from scratch using your new forum driver from the offset.
 

@@ -71,7 +71,7 @@ Composr initialisation can be controlled by a few global variables in the entry-
 
 Composr is split into addons. Some addons are core, some are optional. Optional addons may be removed, and the removal results in file-deletion. Composr has inbuilt addon import and export support, that allows a user to use and distribute packaged addons for Composr.
 
-Addons contain module-pages, and it is these modules that define things like database structure. Modules are independently versioned, but the versions of individual modules are hidden from user -- the module versions exist so that modules have a way of tracking when they need to upgrade themselves (a mismatch between the version on-disk, and the installed version in the database will prompt a module to upgrade itself).
+Addons contain module-pages (and blocks), and it is these modules (and blocks) that define things like database structure. Actually addons may define this too directly in their registry file, but it is rare for us to do it this way. Modules (and blocks) are independently versioned, but the versions of individual modules (and blocks) are hidden from user -- the module versions exist so that modules have a way of tracking when they need to upgrade themselves (a mismatch between the version on-disk, and the installed version in the database will prompt a module to upgrade itself).
 
 Composr knows an addon is installed if there is an '[tt]addon_registry[/tt]' hook present. File lists for addons are defined in these hooks. Templates may work against the 'ADDON_INSTALLED' symbol, to guard dependencies; likewise, code may use the [tt]addon_installed[/tt] function. In some cases, modularisation is enforced using hooks rather than extra logic; this is done in the case where there is a clear concept that can be created, which might be useful for other people to add into in the future (e.g. the 'side_stats' blocks allows different addons to plug in hooks so their stats can be displayed). Third-party addons do not have so much luxury over adding extra code into the main Composr code, so must rely on either existing hooks, or code overriding.
 
@@ -80,6 +80,14 @@ Addons may define dependencies.
 In the case where we have an addons [addon A] hook for another addon [addon B] (e.g. the galleries hook for the newsletter addon), we place the hook in addon A. This is because the hook would only run if addon B is there, so placing it in addon A is safe -- but if it was placed in addon B and addon A wasn't installed, it would fail unless we wrote extra code. Composr will auto create directories that do not exist -- directories aren't a part of addons, only individual files.
 
 Config options that have dependencies between two modules (e.g. the [tt]points_ADD_DOWNLOAD[/tt] option -- which needs points and downloads) should have a default value evaluation of NULL if the foreign dependency is not met. So for this example, the option is part of the downloads addon, and the default is NULL if the points addon is not installed.
+
+[title="4"]User management of addons[/title]
+
+If a user is installing an addon (from Admin Zone > Structure > Addons), it will install any modules/blocks within it, if said module/block was not already installed.
+
+If a user is uninstalling an addon, it will uninstall any modules/blocks within it.
+
+A user should upgrade an addon by installing it on top of itself. i.e. don't uninstall the old version, but install the new version on top. Composr detects not to do a fresh install by checking if it is already installed.
 
 [title="3"]Modules[/title]
 
@@ -140,11 +148,11 @@ Now let's do some simple Composr API calls.
 [code="PHP"]
 <?php
 
-$username=$GLOBALS['FORUM_DRIVER']->get_username(get_member());
-echo '<p>Hello, '.htmlentities($username).'.</p>';
+$username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+echo '<p>Hello, ' . htmlentities($username) . '.</p>';
 
-$time=get_timezoned_date(time());
-echo '<p>It is '.htmlentities($time).'.</p>';
+$time = get_timezoned_date(time());
+echo '<p>It is ' . htmlentities($time) . '.</p>';
 [/code]
 
 [title="5"]Example 3[/title]
@@ -158,33 +166,31 @@ header('Content-type: text/plain');
 header('Content-disposition: attachment; filename="example.csv"');
 
 // Some arbitrary data to output
-$example_data=array(
+$example_data = array(
 	array(
-		'country'=>'UK',
-		'capital'=>'London',
+		'country' => 'UK',
+		'capital' => 'London',
 	),
 	array(
-		'country'=>'France',
-		'capital'=>'Paris',
+		'country' => 'France',
+		'capital' => 'Paris',
 	),
 );
 
 foreach ($example_data as $i=>$row)
 {
 	// If first row, show show headings
-	if ($i==0)
-	{
+	if ($i == 0) {
 		foreach (array_keys($row) as $heading)
 		{
-			echo csv_escape($heading).',';
+			echo csv_escape($heading) . ',';
 		}
 		echo "\n";
 	}
 
 	// Show values
-	foreach ($row as $value)
-	{
-		echo csv_escape($value).',';
+	foreach ($row as $value) {
+		echo csv_escape($value) . ',';
 	}
 	echo "\n";
 }

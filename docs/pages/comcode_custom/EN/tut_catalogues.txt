@@ -304,6 +304,7 @@ A similar caveat holds true for custom profile fields, which share the same fiel
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_fields"]Custom fields[/page]
+ - [page="_SEARCH:sup_catalogues"]Catalogues in Composr[/page]
  - [page="_SEARCH:tut_comcode_pages"]Custom pages of information (via Comcode)[/page]
 
-{$SET,tutorial_tags,Catalogues,core_fields,catalogues,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The catalogue system is a bit like a visual database system such as Microsoft Access. The possibilities are endless.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Catalogues,core_fields,catalogues,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The catalogue system lets you set up your own databases on your website.}[block]main_tutorial_rating[/block]

@@ -80,6 +80,28 @@ This short tutorial aims simply to clarify what all these terms to relate to, an
 </table>
 [/html]
 
+[title="2"]How to rename the guest user (advanced, Conversr-only)[/title]
+
+Some Composr users want to change the term "Guest", for whatever reason. For example, maybe a hotel doesn't want to confuse an anonymous user with an actual hotel guest on their website.
+
+Composr is not hard-coded with the name of the Guest user, however it is a little work to change it.
+
+Let's imagine you are changing "Guest" to "Anonymous user".
+
+First, you need to change some language strings. Go to the Admin Zone and do a search for [tt]guest[/tt]. You will see that [tt]GUEST[/tt] and [tt]GUESTS[/tt] come up under "Language". These are both in the [tt]global.ini[/tt] language file, so click through one of them and you'll be able to change both on the same form.
+Change [tt]GUEST[/tt] to "Anonymous user" and [tt]GUESTS[/tt] to "Anonymous users".
+You'll find lots of other more casual occurrences throughout various strings. Change whichever you consider worth changing.
+
+Next go to Admin Zone > Security > Usergroups and edit the Guests usergroup. Change its title to "Anonymous users".
+
+Next you'll need to change any posts by guests on the forum, as the name Guest is saved in when the post is made. Go to Admin Zone > Tools > Commandr, and enter this command...
+[code]
+:$GLOBALS['FORUM_DB']->query_update('f_posts',array('p_poster_name_if_guest'=>'Anonymous user'),array('p_poster_name_if_guest'=>'Guest'));
+[/code]
+This will batch-update the database.
+
+That should do it!
+
 [concepts
  1_key="visitor"               1_value="Someone who visits the site in some vague sense"
  2_key="user"                  2_value="Someone who uses the site in a determinable way"

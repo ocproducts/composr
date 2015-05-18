@@ -95,6 +95,8 @@ I recommend the following:
  - Universal principles of design (ISBN: [tt]1-59253-007-9[/tt])
  - Site-seeing (ISBN: [tt]0-7645-3674-5[/tt])
 
+To decide on a colour scheme consider an online tool like [url="http://www.colorschemer.com/online.html"]ColorSchemer[/url].
+
 [title="2"]Web Technologies[/title]
 
 Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our "Introduction to XHTML, CSS and JavaScript" tutorial.

@@ -192,16 +192,18 @@ This technique reduces the chance of someone gaining unauthorised access to an a
 
 It is an unfortunate fact that shared web hosting environments are almost always very insecure, as different users with hosting accounts on the web server may interfere with your files on a number of levels. In addition, by extension, if one of the other accounts on the server becomes compromised, your files could also be.
 
-If you run a website with particularly privileged information, or security is critical for other reasons, we highly advise you operate your web server from a dedicated server.
+If you run a website with particularly privileged information, or security is critical for other reasons, we highly advise you operate your web server from a dedicated server(s).
 
 The main issue with shared hosting, is that, unless either:
 [list="1"]
-[*]the environment for hosting accounts is restricted to being PHP-only, with safe-mode (which limits PHP and hence Composr in a negative way) or open_base_dir (which we advise) enabled
-[*]or, the server is set to run web scripts on different hosting accounts using the account holder user-names
+[*]the environment for hosting accounts is restricted to being PHP-only, with safe-mode (which limits PHP and hence Composr in a negative way) or [tt]open_basedir[/tt] (which we advise) enabled
+[*]or, the server is set to run web scripts on different hosting accounts using the account holder user-names (suEXEC)
 [/list]
 then every web-server-created/writeable file, and your database, is fully writeable to by any other account holder.
 
 If you are fortunate enough to be in situation 2, but not fortunate enough to be in situation 1 (fortunate, depending on your needs of course), then Composr needs special configuration to make use of it. You need to make it so that no files are 'world writeable' (which is the case unless you have suddenly switched to this environment) and so that _config.php is not world writeable or world readable (to protect your database password). Composr is clever enough to detect your situation, and hence will not [concept]chmod[/concept] any PHP-created-files to a world-writeable state as it normal does (it normally does this so that both the account holder user and the web server user have write access to this file- and making them world writeable is the only way to achieve this in a hosting environment).
+
+More information is provided in the [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page] tutorial.
 
 [title="2"]_config.php[/title]
 
@@ -209,7 +211,7 @@ By default, [tt]_config.php[/tt] is left 'world-writeable' by the installer. Thi
 
 Whilst many files are world writeable, this file is a particular target, because it may be executed. Therefore if someone on a shared server can write to the file, perhaps via shell access, then they can execute code on your site, possibly unnoticed. It is worth noting that if they had shell access, they could trash your database and uploads anyway, but not so easily execute code on your domain.
 
-To solve this problem, simply remove execute permission for the _config.php file.
+To solve this problem, simply remove execute permission for the [tt]_config.php[/tt] file.
 
 It may seem an obvious solution, to not use an executable file to store configuration information. However this file contains critical data, and therefore if it was a file that would be downloaded if accessed instead of executed, this critical data would be exposed; the usual advice is to put the file outside of a downloadable location, or to restrict download, but this is tenuous due to differing web environments Composr must on: in trying to increase security, there would be a big likelihood we could incidentally decrease it.
 
@@ -253,6 +255,31 @@ The error is saying that the server tried to check the URL was valid but that it
 This error could also be caused by some server configuration issue too. For example:
 1) If the server cannot download files from itself properly to check, and whatever it does manage to access is returning HTTP '200' (file found) messages. This seems unlikely but it can be surprising what weird situations happen "in the wild".
 2) If something on the server is interfering with downloads. Something like the new Apache [tt]mod_spdy[/tt] module could cause something like this. That might alter images during transfer and Composr would not receive the file it expected to be checking.
+
+[title="2"]Have you been hacked?[/title]
+
+This advice is not specific to Composr, but rather a writeup on how web scripts generally can get hacked. It is not discussing any security holes in Composr, or anything specific to Composr's history.
+
+If you are ever hacked, it is much more likely that you'd be attacked automatically than individually. Hackers write scripts to automatically probe servers for common vulnerability categories, or specific vulnerabilities.
+
+A telltale sign of being hacked is unrecognised code or redirects suddenly showing up on your website.
+
+Often these kinds of hacks run on the server level, going from one site to the next on the server. That is possible if files are set to be world-writable (i.e. another account on the server can access your files for writing if that's the case), which should not be necessary on most modern hosting as suEXEC is now commonplace (PHP can write to its own files without special access). Composr tries to limit file permissions if it detects suEXEC.
+
+This said, it is easy for permissions to get set too liberally when uploading. This can happen if an FTP client is set to mirror local permissions, and local permissions are set to full write -- or if the client or server just has default permissions that are too high.
+
+The above is the most likely scenario and is quite common amongst people running web scripts.
+
+The other less likely possibilities that come to mind would be:
+1) some hole in some script on your account. It could be any script you have because this kind of situation often combines with the likely one above: some script on the server somewhere has a hole, then the hacker tunnels through that to infect other things on the server that have too liberal permissions. Or, if you do have correct permissions, some script on your hosting account, affecting other things on your hosting account.
+2) something local to your PC. That seems unlikely because it would be a lot of work for a virus to do this, and they'd have more commonplace targets (only a small proportion of people will have their own websites).
+3) some server-level vulnerability, e.g. in PHP or Apache, or the FTP server.
+
+To find the true cause of a hack it is a good idea to go through your access logs to find any evidence of malicious-appearing requests that happened around the time of your files being modified (you can easily find the last-modification date for your files).
+
+However, be careful that once you have a cause identified, you do a full cleanup/restore as well as addressing that cause. You don't want to miss something a hacker might have left behind. It is best if you seek expert help for this.
+
+Most users never get hacked, so it's pretty bad luck if you have been (or, you've not updated scripts with important security updates in :S).
 
 [concepts
  1_key="SSL"          1_value="Secure Socket Layer -- encryption over Internet connections so as to avoid interception of information"

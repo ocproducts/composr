@@ -1,16 +1,42 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Installing Composr on a Windows desktop[/title]
+[title sub="Written by Jean Gosselin, and Chris Graham (ocProducts)"]Composr Tutorial: Installing Composr on a Windows desktop[/title]
 
 This tutorial will explain how to get a Composr installation running on your own Windows computer. Linux is easier as it usually comes with everything Composr requires pre-installed.
 
-This tutorial will give basic instructions for installation of the various pieces of system software that Composr requires, instructing to read the products' own documentation when necessary. It is well worth pointing out that there are a number of 'all in one' packages that may be used to install AMP ([concept]Apache[/concept], [concept]MySQL[/concept] and [concept]PHP[/concept]) without any special configuration for them to appropriately bind to each other. This may be preferable, but by doing so you inevitably will not know as much about the environment that was created for you. See WAMP-Server link under 'See Also' for this.
-
-It is important to remember that if you are transferring files such as themes between one Composr installation and another, you need to set file permissions appropriately after copying.
-
+This tutorial will give basic instructions for installation of the various pieces of system software that Composr requires, instructing to read the products' own documentation when necessary.
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Microsoft Web Platform[/title]
+[title="2"]Software mass-packaging[/title]
 
-This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a Microsoft Web Platform installer for Composr. If you download the Microsoft Web Platform, you'll find Composr is in there.
+It is well worth pointing out that there are a number of 'all in one' packages that may be used to install AMP ([concept]Apache[/concept], [concept]MySQL[/concept] and [concept]PHP[/concept]) without any special configuration for them to appropriately bind to each other. This may be preferable and we will cover it first. However, by doing so you inevitably will not know as much about the environment that was created for you.
+
+[title="3"]Bitnami[/title]
+
+There is a [url="Composr software stack for Bitnami"]https://bitnami.com/stack/composr[/url] that allows easy installation on Windows. (Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
+
+Bitnami is professionally-maintained and a good choice. They also provide all kinds of hosting and virtual machine services.
+
+[title="3"]WampServer[/title]
+
+[url="WampServer"]http://www.wampserver.com/en/index.php[/url] lets you mass install the software for running an Apache-based server.
+
+[hide="Detailed graphic instructions for installing on WampServer"]
+Detailed WampServer installation instructions:
+[img]data_custom/images/docs/wampserver.png[/img]
+
+Setting up a database in WampServer:
+[img]data_custom/images/docs/wampserver_mysql.jpg[/img]
+
+Installing Composr on WampServer:
+[img]data_custom/images/docs/wampserver_composr.jpg[/img]
+[/hide]
+
+[title="3"]EasyPHP[/title]
+
+[url="EasyPHP"]http://www.easyphp.org/[/url] is similar to WampServer.
+
+[title="3"]Microsoft Web Platform[/title]
+
+This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a Microsoft Web Platform installer for Composr. If you download the Microsoft Web Platform, you'll find Composr is in there. (Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
 
 This should work well, however we aren't able to regularly test it as it is very different from our normal development environment and workflow. Microsoft test the integration each time we publish an update.
 
@@ -20,17 +46,19 @@ You may want to set full permissions on the install directory, at least initiall
 
 One small note -- if you are developing locally, then choose to use WebMatrix to push a local site live, make sure you adjust the base URL setting in your [tt]_config.php[/tt] file to reflect your live URL.
 
-[title="2"]Web server[/title]
+[title="2"]Manually installing the software[/title]
+
+[title="3"]Web server[/title]
 
 The first thing you will need is a web server. Depending on your version of Windows, you may have the Windows web server available to you (Internet Information Server, or the cut down Personal Web Server).
 
 If not, the best course of action is to install Apache. Go to http://httpd.apache.org and download and install whichever Windows release you are comfortable with. The PHP folk recommend to avoid version 2, but if you are only running Composr locally for yourself, it doesn't matter. You may wish to enable 'mod_rewrite' in Apache.
 
-[title="2"]PHP[/title]
+[title="3"]PHP[/title]
 
 Next you will need a copy of PHP installed. Go to http://php.net and download and install the latest stable Windows release. Follow the instructions to get it integrated with your web server: these may be rather complex, but it would be self-defeating for us to try and re-write them for you.
 
-[title="2"]MySQL[/title]
+[title="3"]MySQL[/title]
 
 Go to http://mysql.com and download and install the latest stable Windows release. MySQL comes with a powerful Windows installer, so configuring MySQL itself should be a walk in the park.
 

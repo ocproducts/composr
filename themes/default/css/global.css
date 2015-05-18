@@ -3145,6 +3145,7 @@ input.magic_image_edit_link {
 	background-repeat: no-repeat;
 	background-position: right 7px top 3px;
 	background-image: url('{$IMG_INLINE;,gradient}');
+	/*{$BETA_CSS_PROPERTY,background: linear-gradient(to bottom, {$GET,lgrad} 0%,{$GET,dgrad} 100%);} If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;

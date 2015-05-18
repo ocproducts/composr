@@ -50,9 +50,11 @@ We will make sporadic changes to the default theme files between releases, typic
 However, as discussed these may not automatically turn up in your own overrides -- so necessary bug fixes may be missing from your own theme.
 We work to improve our automated theme upgrade process, so hopefully this will get better over time, but it's a complex matter and will never be perfect.
 
-This is where the [tt].editfrom[/tt] files are useful...
+It is often better to go through the process by hand, or to go over by hand to perfect what the automatic results haven't done quite right.
 
-First install a diff tool on your own desktop machine such as [url="WinMerge"]http://winmerge.org/[/url].
+This is where the auto-created [tt].editfrom[/tt] files are useful...
+
+First install a diff tool on your own desktop machine such as [url="WinMerge"]http://winmerge.org/[/url]. DiffMerge on Mac, and Kompare on Linux are similar.
 
 Then download the themes directory from your server, to your own desktop machine.
 
@@ -74,6 +76,9 @@ would show all the differences between the default theme and your own theme (i.e
 Therefore using a diff tool you can locate what changes you need to make back into your custom theme, then upload your updated file(s).
 
 It is easier to do this on your desktop than trying to do it all directly through a web server / Composr's normal theme-editing user interface.
+
+Here is some documentation for Winmerge that explains how to use these kinds of tools (they're all very similar) a bit better:
+http://tour.winmerge.org/
 
 [title="2"]See also[/title]
 

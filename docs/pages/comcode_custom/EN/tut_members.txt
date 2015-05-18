@@ -45,14 +45,22 @@ The recommendation module performs two functions:
 
 General recommendation is very straight-forward. Composr provides the ability to upload contact lists, from various e-mail software, so you can recommend to many people at once. Members may customise the message sent out when their recommendation is made.
 
+[title="4"]Invites[/title]
+
+If you enable invites (the "Invites enabled" option), new members may only join if they have received an invite by an existing member.
+
 You can enable "Invites" in the configuration (the "Invites enabled" option) if you do not want members to be able to join in the usual way, and instead only allow them to join if they receive an invitation from an existing member.
 This process works as follows:
  - An existing member goes to the 'recommend' module to refer another member to the website (make sure you put a link to this somewhere on your menus so they can find it).
  - That member will choose to make the recommendation as an invite.
  - That member will put in the e-mail address of the person being invited.
  - Composr will send out an invitation e-mail.
- - The person being invited will be given a link to join and instructed to input the e-mail address they were invited to.
+ - The person being invited will be given a link to join and instructed to input the e-mail address they were invited to. An invite will only work if the invited user signs up using the exact same e-mail address that an invitation was sent to.
  - Assuming the person inputted the invited e-mail address, the invite will be successful.
+
+Members have a limited number of invites to use, determined by the "Invites per-day" option. Other than this, there are no controls or restrictions on invitation -- it is fully automated.
+
+There is no direct way to request an invitation. Someone must know someone who is already a member to get one. If admins wish to hand out invitations, they have unlimited to give. Of course, admins may also set up new members manually. Invitation-request could therefore be implemented manually, via a contact form.
 
 [title="3"]Pre-joining members[/title]
 
@@ -205,6 +213,14 @@ There are two ways to create a new avatars. Avatars are just theme images in Com
 7) Upload all your avatar image files to here. Use filenames with alphanumeric characters, no spaces.
 
 That's it, the new avatar set will be visible immediately.
+
+[title="5"]Default avatars[/title]
+
+You have 3 options when it comes to assigning default avatars to members.
+
+1) [b]Design solution[/b]. In any template that uses an avatar, put in code to display a theme image of your choice when there is no avatar to display. I don't really recommend this unless you are very comfortable doing lots of template editing.
+2) [b]Configured default[/b]. You can add a default. Add a [tt]ocf_default_avatars/default.png[/tt] theme image.
+3) [b]Randomisation solution[/b]. There is a configuration option, "Assign random avatars", that you can enable.
 
 [title="3"]Edit title[/title]
 

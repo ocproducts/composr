@@ -93,9 +93,10 @@ If you are moving a page from one zone to another, any page-links to that page (
 It is recommended that you never move pages because it complicates the upgrade process. It is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
 
 [title="2"].htaccess[/title]
+
 [surround]
 [media width="150" description="Finding how to change your settings" float="right"]data_custom/images/docs/phpsettings.png[/media]
-You can try and get PHP and the web server to use an optimal configuration, via a special file named '.htaccess'. If you want the 'short URLs' option to be enabled, this step is necessary.
+You can try and get PHP and the web server to use an optimal configuration, via a special file named '.htaccess'. If you want the 'URL scheme' option to be enabled, this step is necessary.
 Note that the file may already exist, potentially for either of two reasons:
 1) It was already there from before Composr was installed.
 2) Composr's quick installer automatically created an optimal file for you.
@@ -112,6 +113,21 @@ There are three caveats here:
 [/list]
 [/list]
 [/surround]
+
+[title="2"]OpenSSL encryption (advanced)[/title]
+
+If you wish to have encrypted [concept]Conversr[/concept] custom profile fields, the PHP OpenSSL extension must be installed and configured. Further to this, a public/private key pair must be generated for the site, and uploaded to the server.
+
+To generate the public/private key pair, you will need access to a computer running OpenSSL; either a local one, or your server via SSH. At a shell, execute the following commands to generate the public/private key pair:
+
+[code]openssl genrsa -aes256 -out private.pem 2048
+openssl rsa -in private.pem -out public.pem -outform PEM -pubout[/code]
+
+The first command will generate a private key with a passphrase supplied when [tt]openssl[/tt] requests it. The passphrase must be long, secure, and kept private, as it's the only way to access the private key (and thus the encrypted data). The second command will generate a public key from the private key, and will require the [i]same[/i] passphrase to be entered again.
+
+Once the key pair has been generated, they should be uploaded to your server, somewhere where they [b]cannot be accessed from the Internet[/b] (so not in your [tt]htdocs[/tt] directory). They should have their permissions set such that they can be read by your web server process, but nobody else.
+
+The final step is to configure Composr to use the key pair to encrypt data. In the "Privacy options" section of your Composr configuration, set the "Encryption key" option to be the path and filename of the public key file ([tt]public.pem[/tt]), and the "Decryption key" option to be the path and filename of the private key file ([tt]private.pem[/tt]). If these options are not visible, it's because your server does not have the OpenSSL PHP extension installed or configured correctly.
 
 [title="2"]See also[/title]
 

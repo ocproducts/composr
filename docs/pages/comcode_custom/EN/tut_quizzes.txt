@@ -7,6 +7,11 @@
 
 [title="2"]Types of quiz[/title]
 
+In summary:
+ - Survey: collect results from entrants, no wrong answers
+ - Test: entrants pass or fail
+ - Competition: winners picked from those on top scores
+
 [title="3"]Competitive[/title]
 
 Competitions are entered by members and marked; winners may then be chosen from the Admin Zone.

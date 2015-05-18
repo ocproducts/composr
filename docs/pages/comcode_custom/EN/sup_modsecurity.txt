@@ -1,0 +1,78 @@
+[title sub="Written by temp1024 and Chris Graham (ocProducts)"]Composr Supplementary: Advanced site structure and flow[/title]
+
+ModSecurity is an "application firewall" which is often installed by Linux-based web hosts.
+
+It's a mixed blessing. By its very nature, it provides limitations on what web systems can do. So in some sense, it breaks standards-based behaviour of web servers. It does this though to raise security, by blocking what it perceives to be malicious server requests, and that's a good thing.
+
+The problem we need to deal with is false-positives -- i.e. ModSecurity thinks something is an attack, when it is in fact normal behaviour.
+
+[contents]decimal,lower-alpha[/contents]
+
+ModSecurity v1 could be disabled by a .htaccess file, but ModSecurity v2 cannot. ModSecurity is designed for use in enterprise environments, and the makers support it as such -- but it is deployed by a lot of web hosts. This leads to an unfortunate problems of responsibility. The ModSecurity authors think that the people managing the servers have control over what runs on them. The web hosts just want to layer in some extra security, and often have little understanding of how ModSecurity works, or what systems their customer's will install. Therefore unfortunately users are sometimes stuck in the middle. Your web host has a responsibility to provide the service they advertise, so if Composr gets blocked, you have every right to insist that they unblock whatever is stopping it.
+
+Composr itself contains its own inbuilt firewall, which also blocks many malicious requests. Composr is also built with proper data management APIs and internal layers so that most vulnerabilities aren't possible. This said, as long as ModSecurity is configured right, it is a good thing to have both.
+
+It is not usually easy to know if ModSecurity is blocking you. You will usually see some kind of Apache error message, such as the very generic '500 Internal Server Error'/'402 Forbidden' message. ModSecurity does not explicitly state the problem so that hackers have less clues to why they are blocked. Apache error logs usually contain the full reason, however.
+
+ModSecurity works by a rule set, and rules are typically given a unique identifying number. There are various rule sets out there. An official one is maintained, but also some organisations maintain their own rule sets for 'value add' within their own firewall products based around ModSecurity. What follows is an explanation of common false-positives that Composr can trigger...
+
+[title="2"]300018 -- URLs inside URLs[/title]
+
+This rule blocks URLs being passed as parameters within URLs. Composr regularly does this when you need to be redirected back to where you were at when performing an action. For example, if you are logging in, it encodes where to redirect you back to via a URL parameter. The recommend page facility also uses it.
+
+This only occurs if short URLs are not enabled, because the rule works by detecting .php, and it won't do this with short URLs.
+
+We could probably work around this problem in Composr by encoding the parameter so that it no longer looks like a URL, but this would be messy and have to work across both Javascript and PHP within Composr, so the complexity cost is too high.
+
+[title="2"]340007 / 340095 / 340113 / 340118 / 340128 / 340147 / 340148 / 340149 / 340157 / 340159 / 350147 / 350148 / 380006 / 380018 / 390708 / 390727 / 973331 -- WYSIWYG editing, template editing and code editor[/title]
+
+It is possible to get Javascript code into the WYSIWYG editor. This will then trigger this rule.
+
+To workaround you could manually remove the code from the editor's source view, if the code was not intended to be there.
+
+It is likely that there are rules out there that block the WYSIWYG editor completely, but IDs for these aren't known at this time.
+
+[title="2"]340014 / 390904 -- Commandr[/title]
+
+Commandr has a virtual unix filesystem, and stores the current directory in a cookie. If you enter the "/etc" directory, this rule will think you are trying to hack into the server's real filesystem.
+
+[title="2"]300076 / 340007 / 340011 / 340014 / 340016 / 340017 / 340021 / 340027 / 340029 / 340095 / 340118 / 340128 / 340131 / 340133 / 340144 / 340147 / 340148 / 340157 / 340164 / 350147 / 350148 / 380006 / 380018 / 380019 / 380020 / 380021 / 390709 / 390715 / 390801 / 390810 / 393449 -- Code Editor[/title]
+
+This occurs when using the code editor to edit php code. If you try and save code changes (by pressing the edit button at the bottom of the code editor) and you do not receive a confirmation pop-up message, then this is the most likely cause. Your browser development tools (network tab) will report this as a 403 or 500 error for http:// your_domain.com/your_site/code_editor.php?type=edit .
+
+[title="2"]340016 / 340149 / 350147 / 350148 / 390707 -- Translate/re-phrase the software[/title]
+Using the [b]Translate/re-phrase the software[/b] feature.
+
+[title="2"]340095 -- XML Import[/title]
+Importing XML data via [b]Admin Zone » Tools » XML data management > XML Import[/b].
+
+[title="2"]380800 -- PHP Info[/title]
+Using the [b]Tools » PHP Info[/b] feature.
+
+[title="2"]340009 -- Site options[/title]
+Saving changes on [b]Admin Zone » Configuration » Site options[/b] page.
+
+[title="2"]950801 -- Anything[/title]
+
+This rule (not on by default) introduces the assumption that the site is running utf8, so validates lots of text against it. This is a very bad assumption -- PHP doesn't even support utf8 by default.
+
+----
+
+Instead of disabling these rules, most issues can be avoided by the host removing the appropriate line from their configuration.
+
+For hosts using ModSecurity v1, remove:
+[code]
+SecFilterScanPOST On
+[/code]
+For hosts using ModSecurity v2, remove:
+[code]
+SecRequestBodyAccess On
+[/code]
+
+ModSecurity has this off by default, but turning it on causes most of the problems because it probes into request data rather than just URLs (basically).
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page]
+
+{$SET,tutorial_tags,intermediate}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,Explanation of how to configure ModSecurity for Composr.}[block]main_tutorial_rating[/block]

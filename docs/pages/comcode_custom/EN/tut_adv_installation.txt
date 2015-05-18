@@ -52,13 +52,128 @@ Many web hosting control panels allow you to unzip uploaded files, using their f
 
 You can avoid setting permissions on all files except [tt]_config.php[/tt] by using the [tt]upgrader.php[/tt] script after installing, to do a 'fix permissions'. This only works if you have FTP working though, and if you did, you probably would have used the quick installer anyway -- so it might not be an option for you. If you have shell access you can try [tt]fixperms.sh[/tt] (see above), but otherwise you'll need to manually set permissions.
 
+[title="2"]Permissions[/title]
+
+If you have to use the manual installer and are not on a suEXEC-style system then you will need to set permissions on files and directories manually.
+
+[box="Tip" width="25em" float="right"]Note for Linux-server users: If you are on a suEXEC-system (where the PHP script is run as your own user), the default 744 and 644 permissions should be suitable (with _config.php being 600 for additional security). The installer will tell you if you are on a suEXEC-system, otherwise assume you are not and you still will need to set the permissions.[/box]
+[box="Tip" width="25em" float="right"]Note for Windows-server users: Permission setting can be complex and is discussed in depth in the [page="_SEARCH:tut_adv_installation"]advanced installation[/page] tutorial. You may be able to avoid setting any permissions at all though.[/box]
+If you chose the manual installer, you now need to set the appropriate permissions for your files and folders (read on). You usually do not need to set any permissions if you chose the quick installer.
+
+If you have "shell access" (ask your web host if you don't know), then you can automatically set these permissions by logging into your server with a program like [url="putty"]http://www.putty.nl[/url], and executing the file [tt]fixperms.sh[/tt].
+
+If you don't have shell access, then you will need to manually set each folder to the correct permissions.
+
+Here are the directories that need file permissions setting:
+
+[media width="150" description="Tick (check) the highlighted boxes for all the files/folders listed to the left. This screenshot was taken on a Mac using Cyberduck, but the process is similar for other software. Usually to get to a screen like this you right-click on a file/folder and choose something like 'Properties'." float="right"]data_custom/images/docs/install_chmod.png[/media]
+Set the following to [b]777[/b]: (full directory permissions)
+ - adminzone/pages/comcode_custom
+ - adminzone/pages/comcode_custom/<for-each-language>
+ - adminzone/pages/html_custom/<for-each-language>
+ - adminzone/pages/html_custom
+ - cms/pages/comcode_custom
+ - cms/pages/comcode_custom/<for-each-language>
+ - cms/pages/html_custom/<for-each-language>
+ - cms/pages/html_custom
+ - collaboration/pages/comcode_custom
+ - collaboration/pages/comcode_custom/<for-each-language>
+ - collaboration/pages/html_custom/<for-each-language>
+ - collaboration/pages/html_custom
+ - data_custom/modules/chat
+ - data_custom/modules/web_notifications
+ - data_custom/modules/admin_stats
+ - data_custom/modules/admin_backup
+ - data_custom/spelling
+ - data_custom/spelling/personal_dicts
+ - data_custom/xml_config
+ - exports/backups
+ - exports/file_backups
+ - exports/addons
+ - forum/pages/comcode_custom
+ - forum/pages/comcode_custom/<for-each-language>
+ - forum/pages/html_custom/<for-each-language>
+ - forum/pages/html_custom
+ - imports/addons
+ - caches/lang
+ - caches/lang/<for-each-language>
+ - caches/self_learning
+ - caches/self_learning/<for-each-language>
+ - caches/guest_pages
+ - caches/guest_pages/<for-each-language>
+ - caches/persistent
+ - lang_custom
+ - lang_custom/<for-each-language>
+ - pages/comcode_custom
+ - pages/comcode_custom/<for-each-language>
+ - pages/html_custom/<for-each-language>
+ - pages/html_custom
+ - safe_mode_temp
+ - site/pages/comcode_custom
+ - site/pages/comcode_custom/<for-each-language>
+ - site/pages/html_custom/<for-each-language>
+ - site/pages/html_custom
+ - text_custom
+ - text_custom/<for-each-language>
+ - themes/map.ini
+ - themes/<for-each-theme>/theme.ini
+ - themes/<for-each-theme>/css_custom
+ - themes/<for-each-theme>/images_custom
+ - themes/<for-each-theme>/templates_custom
+ - themes/<for-each-theme>/javascript_custom
+ - themes/<for-each-theme>/xml_custom
+ - themes/<for-each-theme>/text_custom
+ - themes/<for-each-theme>/templates_cached
+ - themes/<for-each-theme>/templates_cached/<for-each-language>
+ - tmp ([i]this is a folder needed only by the quick installer -- and you will need to make it and set permissions immediately or wait until the quick installer makes it and then fails due to lack of permissions on it[/i])
+ - uploads/attachments
+ - uploads/attachments_thumbs
+ - uploads/auto_thumbs
+ - uploads/banners
+ - uploads/catalogues
+ - uploads/downloads
+ - uploads/filedump
+ - uploads/galleries
+ - uploads/galleries_thumbs
+ - uploads/repimages
+ - uploads/incoming
+ - uploads/cns_avatars
+ - uploads/cns_cpf_upload
+ - uploads/cns_photos
+ - uploads/cns_photos_thumbs
+ - uploads/personal_sound_effects
+ - uploads/watermarks
+ - uploads/website_specific
+
+Set the following to [b]666[/b]: (full read/write permissions)
+ - data_custom/errorlog.php
+ - data_custom/functions.dat
+ - data_custom/modules/chat/chat_last_msg.dat
+ - data_custom/modules/chat/chat_last_event.dat
+ - data_custom/permissioncheckslog.php (if it exists)
+ - _config.php
+ - cms_sitemap.xml
+ - cms_news_sitemap.xml
+
+Remember -- if you chose the quick install option, it's likely that none of these permission settings are required.
+
+[title="3"]CGI servers[/title]
+
+It has been reported to us that some systems require PHP scripts to be given execute permissions. This is a very rare (and insecure) configuration, but if there is this requirement, the following files need to be given execute permission...
+ - Any index.php file
+ - All PHP files in the root directory, except [tt]_config.php[/tt]
+ - All PHP files in the data directory
+ - All PHP files in the main directory for a zone (e.g. /, and /adminzone) directories
+
+The quick installer handles this automatically.
+
 [title="2"]Installing on Windows (IIS)[/title]
 
 This section mostly only applies if you are using Microsoft's web server, Internet Information Server (IIS).
 
-See the 'Installing Composr on a Windows desktop' tutorial if you just want to install on your own computer and you are just using your website locally, behind a firewall.
+See the 'Installing Composr on a Windows desktop' tutorial if you just want to install on your own computer and you are just using your website locally, behind a firewall -- or if you are installing via the Microsoft Web Application Gallery (which will set permissions for you).
 
-There are two problems, relating to file permissions, that complicate the installation on Windows. Unfortunately these problems are completely out of our control, and apply to any PHP system installed on a Windows server: all we can do is help you get through them. Most home systems have full permissions set by default, so are actually easier to install on than Linux. However, web-hosting companies require a tighter permission scheme due to their shared hosting environments.
+There are two problems relating to file permissions, that complicate the installation on Windows. Unfortunately these problems are completely out of our control, and apply to any PHP system installed on a Windows server: all we can do is help you get through them. Most home systems have full permissions set by default, so are actually easier to install on than Linux. However, web-hosting companies require a tighter permission scheme due to their shared hosting environments.
 
 The first problem is that there is no real standard on Windows to exactly what file permissions are appropriate. To understand file permissions, you must understand that the web-server (or the PHP CGI client, if in CGI mode) runs PHP scripts under a user-name that is not just 'Administrator' (which would be a highly foolish thing to do). What that user-name is depends on how the environment was configured; it may be a generic web user (usually named [tt]IUSR_<computer-name>[/tt]), or it may be the user-name tied to your own web-hosting account. It is this user-name that needs to have access to write to certain directories and files inside your installation.
 A generic trick is to use the user-name 'Network' as the user-name to grant permissions to. Whilst this is not the user-name that the script runs at, it is a virtual user-name representing any user-name on the Windows Domain that the computer on; setting permissions to this should do the trick, but at the expensive of it granting more permissions than are required. Ideally, you should find out exactly what user-name PHP scripts run as, and grant permissions to it.
@@ -70,31 +185,24 @@ The second problem is that there is no automated way to set file permissions on 
 
 Due to these problems, we would have to recommend that if you have a choice, that you don't use a Windows web-host unless you are experienced with the Windows security model. It is more complex, less standard, and less documented, than the Linux model (although, actually a lot more powerful).
 
-[title="2"]CGI servers[/title]
+[title="2"]Installing on Cloud hosting[/title]
 
-It has been reported to us that some systems require PHP scripts to be given execute permissions. This is a very rare (and insecure) configuration, but if there is this requirement, the following files need to be given execute permission...
- - Any index.php file
- - All PHP files in the root directory, except [tt]_config.php[/tt]
- - All PHP files in the data directory
- - All PHP files in the main directory for a zone (e.g. /, and /adminzone) directories
+There is nothing stopping Composr working on compatible cloud hosting.
 
-The quick installer handles this automatically.
+One note is that PaaS providers may host files separately to where execution happens, and this can slow down disk access. You may need to change the "Number of files per cycle" in the quick installer to something lower such as 50 to avoid time-outs (e.g. white screens).
+
+[title="3"]Rackspace Cloud[/title]
+
+Specifically on Rackspace Cloud, you will need to set execution permissions of the [tt]install.php[/tt] file lower than the defaults may have been after you uploaded:
+ - Open your SFTP/FTP client and find [tt]install.php[/tt]
+ - Access the permissions for the file, and remove [tt]write[/tt] access for the [tt]owner[/tt], [tt]group[/tt], and [tt]others[/tt] (the UNIX code for this is [tt]444[/tt])
 
 [title="2"]Post installation tweaking[/title]
 
 [media width="150" description="The config editor" float="right"]data_custom/images/docs/adv_installation_config.png[/media]
-If you need to change Composr installation environment settings, you may use the config_editor.php script (located in your installation directory) to change the settings. To operate the script, you will need the admin password that you specified at installation. The configuration editor works upon a separate subsystem to the main Composr code, and is completely independent of any forum or database environment: in other words, if Composr fails to function (perhaps if you moved servers, and your database settings are no longer valid), the configuration editor will continue to work.
+If you need to change Composr installation environment settings, you may use the [tt]config_editor.php[/tt] script (located in your installation directory, opened up via calling its URL) to change the settings. To operate the script, you will need the admin password that you specified at installation.
 
-[title="2"]Advice for web-hosts[/title]
-
-If you are a hosting administrator and would like to configure PHP on a server for optimum compatibility with Composr, we recommend the following:
- - That safe mode be disabled. Safe mode ties the hands of powerful PHP scripts like Composr and prevents or impedes them performing advanced features.
- - That open_basedir be enabled as a substitute for safe mode. This can be used to restrict PHP activity to the users' home directories, stopping PHP being used as a medium for tampering with other sites.
- - That you consider whether CGI script (including Perl) support is necessary; if CGI support is disabled, and PHP is the only module-based scripting environment, then PHP security settings can be used to restrict users from tampering with each others' sites (as long as shell access is disabled).
- - That you consider disabling shell access for all except users that require it.
- - That 'allow_url_fopen' is disabled
- - That the file upload and post data limits are put to at least 10MB.
- - That you consider implementing the Apache Su-Exec feature.
+The configuration editor works upon a separate subsystem to the main Composr code, and is completely independent of any forum or database environment: in other words, if Composr fails to function (perhaps if you moved servers, and your database settings are no longer valid), the configuration editor will continue to work.
 
 [title="2"]See also[/title]
 
@@ -102,5 +210,6 @@ If you are a hosting administrator and would like to configure PHP on a server f
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_web_hosting"]Web hosting[/page]
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
+ - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
 
 {$SET,tutorial_tags,windows_helper_scripts,linux_helper_scripts,installer,core_database_drivers,Installation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial covers advanced installation issues which most users do not need to be concerned with.}[block]main_tutorial_rating[/block]
