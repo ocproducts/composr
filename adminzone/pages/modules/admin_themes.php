@@ -1478,7 +1478,7 @@ class Module_admin_themes
             foreach ($filesarray as $file) {
                 $full_path = ((strpos($file, '/default/templates/') !== false) ? get_file_base() : get_custom_file_base()) . '/themes/' . $file;
                 $contents = file_get_contents($full_path);
-                if ((stripos($contents, strtolower($search)) !== false) || (stripos($file, strtolower($search)) !== false)) {
+                if ((stripos($contents, $search) !== false) || (stripos($file, $search) !== false)) {
                     $_url = build_url(array('page' => '_SELF', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . $file), '_SELF');
                     $results->attach(do_template('INDEX_SCREEN_ENTRY', array('_GUID' => 'ed744a45728f3d7c1082a3dda893f352', 'URL' => $_url, 'NAME' => $file)));
                 }

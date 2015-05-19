@@ -66,9 +66,9 @@ function generate_text_summary($_temp_summary, $words_searched)
             if (strtoupper($content_bit) == $content_bit) { // all upper case so don't want case sensitive
                 $content_bit_pos = strpos($_temp_summary, $content_bit, $last_pos);
             } else {
-                $content_bit_pos = strpos($_temp_summary_lower, strtolower($content_bit), $last_pos);
+                $content_bit_pos = stripos($_temp_summary_lower, $content_bit, $last_pos);
                 if (strpos($content_bit, '-') !== false) {
-                    $content_bit_pos_2 = strpos($_temp_summary_lower, strtolower(str_replace('-', '', $content_bit)), $last_pos);
+                    $content_bit_pos_2 = strpos($_temp_summary_lower, str_replace('-', '', $content_bit), $last_pos);
                     if (($content_bit_pos_2 !== false) && (($content_bit_pos === false) || ($content_bit_pos_2 < $content_bit_pos))) {
                         $content_bit_pos = $content_bit_pos_2;
                         $content_bit_matched = str_replace('-', '', $content_bit);

@@ -154,7 +154,7 @@ function namelike_script()
                     if ($n_eval == '') {
                         continue;
                     }
-                    if ((stripos($n_eval, strtolower($id)) !== false) && (has_actual_page_access(get_member(), $i[2][0], $i[2][2]))) {
+                    if ((stripos($n_eval, $id) !== false) && (has_actual_page_access(get_member(), $i[2][0], $i[2][2]))) {
                         $names[] = '"' . $n_eval . '"';
                     }
                 }

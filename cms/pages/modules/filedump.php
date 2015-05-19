@@ -662,7 +662,7 @@ class Module_filedump
     {
         if ($type_filter == '') {
             if ($search != '') {
-                if ((stripos(basename($place), strtolower($search)) !== false) || (stripos($description, strtolower($search)) !== false)) {// Directory itself matches
+                if ((stripos(basename($place), $search) !== false) || (stripos($description, $search) !== false)) {// Directory itself matches
                     return true;
                 }
             } else {
@@ -715,7 +715,7 @@ class Module_filedump
     public function _matches_filter($filename, $_description, $search, $type_filter)
     {
         if ($search != '') {
-            if ((stripos($filename, strtolower($search)) === false) && (stripos($_description, strtolower($search)) === false)) {
+            if ((stripos($filename, $search) === false) && (stripos($_description, $search) === false)) {
                 return false;
             }
         }

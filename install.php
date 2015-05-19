@@ -741,7 +741,7 @@ function step_4()
     $use_persistent = false;
     require_code('version');
     $table_prefix = get_default_table_prefix();
-    if (strpos(strtoupper(PHP_OS), 'WIN') !== false) {
+    if (stripos(PHP_OS, 'win') !== false) {
         $db_site_host = '127.0.0.1';
     } else {
         $db_site_host = 'localhost';

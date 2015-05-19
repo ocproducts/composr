@@ -25,11 +25,6 @@ class lang_test_set extends cms_test_case
         parent::setUp();
     }
 
-    public function str_ipos($haystack, $needle, $offset = 0)
-    {
-        return strpos(strtoupper($haystack), strtoupper($needle), $offset);
-    }
-
     public function testLangMistakes()
     {
         $verbose = false;
@@ -48,56 +43,56 @@ class lang_test_set extends cms_test_case
             _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, null, false);
 
             foreach ($input as $key => $string) {
-                if ($this->str_ipos($string, 'thankyou') !== false) {
+                if (stripos($string, 'thankyou') !== false) {
                     $this->assertTrue(false, 'The word \'thankyou\' was used in ' . $file . '. This should be changed to \'thank you\'.');
                 }
-                if ($this->str_ipos($string, 'unvalidated') !== false) {
+                if (stripos($string, 'unvalidated') !== false) {
                     $this->assertTrue(false, 'The word \'unvalidated\' was used in ' . $file . '. This should be changed to \'non-validated\'.');
                 }
-                if ($this->str_ipos($string, 'add-on') !== false) {
+                if (stripos($string, 'add-on') !== false) {
                     $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
                 }
-                if ($this->str_ipos($string, 'preceeding') !== false) {
+                if (stripos($string, 'preceeding') !== false) {
                     $this->assertTrue(false, 'The word \'preceeding\' was used in ' . $file . '. This should be changed to \'proceeding\'.');
                 }
-                if ($this->str_ipos($string, 'publically') !== false) {
+                if (stripos($string, 'publically') !== false) {
                     $this->assertTrue(false, 'The word \'publically\' was used in ' . $file . '. This should be changed to \'publicly\'.');
                 }
-                if ($this->str_ipos($string, 'seperate') !== false) {
+                if (stripos($string, 'seperate') !== false) {
                     $this->assertTrue(false, 'The word \'seperate\' was used in ' . $file . '. This should be changed to \'separate\'.');
                 }
-                if ($this->str_ipos($string, 'chat room') !== false) {
+                if (stripos($string, 'chat room') !== false) {
                     $this->assertTrue(false, 'The phrase \'chat room\' was used in ' . $file . '. This should be changed to \'chatroom\'.');
                 }
-                if ($this->str_ipos($string, 'URL\'s') !== false) {
+                if (stripos($string, 'URL\'s') !== false) {
                     $this->assertTrue(false, 'The acronym \'URLs\' was used in ' . $file . '. This should be changed to \'URLs\'.');
                 }
-                if ($this->str_ipos($string, 'user-group') !== false) {
+                if (stripos($string, 'user-group') !== false) {
                     $this->assertTrue(false, 'The term \'user-group\' was used in ' . $file . '. This should be changed to \'usergroup\'.');
                 }
-                if ($this->str_ipos($string, 'supermember') !== false) {
+                if (stripos($string, 'supermember') !== false) {
                     $this->assertTrue(false, 'The term \'supermember\' was used in ' . $file . '. This should be changed to \'super-member\'.');
                 }
-                if ($this->str_ipos($string, 'user name') !== false) {
+                if (stripos($string, 'user name') !== false) {
                     $this->assertTrue(false, 'The term \'user name\' was used in ' . $file . '. This should be changed to \'username\'.');
                 }
-                if ($this->str_ipos($string, 'built in') !== false) {
+                if (stripos($string, 'built in') !== false) {
                     $this->assertTrue(false, 'The phrase \'built in\' was used in ' . $file . '. This should be changed to \'built-in\'.');
                 }
-                if (($this->str_ipos($string, 'email') !== false) && ($this->str_ipos($string, '/') === false) && ($this->str_ipos($string, 'codename') === false)) {
+                if ((stripos($string, 'email') !== false) && (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) {
                     $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. This should be changed to \'e-mail\'.');
                 }
-                if ($this->str_ipos($string, 'web site') !== false) {
+                if (stripos($string, 'web site') !== false) {
                     $this->assertTrue(false, 'The phrase \'web site\' was used in ' . $file . '. This should be changed to \'website\'.');
                 }
-                if ($this->str_ipos($string, 'ID\'s') !== false) {
+                if (stripos($string, 'ID\'s') !== false) {
                     $this->assertTrue(false, 'The term \'ID\'s\' was used in ' . $file . '. This should be changed to \'IDs\'.');
                 }
-                if ($this->str_ipos($string, 'comma separated') !== false) {
+                if (stripos($string, 'comma separated') !== false) {
                     $this->assertTrue(false, 'The phrase \'comma separated\' was used in ' . $file . '. This should be changed to \'comma-separated\'.');
                 }
 
-                //if ($this->str_ipos($string,'center')!==false) $this->assertTrue(false,'The word \'center\' was used in '.$file.'. This should be changed to \'centre\'.');
+                //if (stripos($string,'center')!==false) $this->assertTrue(false,'The word \'center\' was used in '.$file.'. This should be changed to \'centre\'.');
 
                 if ($file != 'upgrade.ini' && $key != 'NO_PHP_IN_TEMPLATES' && $key != 'WHAT_TO_EXPECT' && $key != 'DESCRIPTION_INCLUDE_CMS_ADVERT' && $key != 'INCLUDE_CMS_ADVERT' && $key != 'UNINSTALL_WARNING' && $key != 'SOFTWARE_CHAT_EXTRA' && (strpos($key, 'SETUPWIZARD') === false) && $key != 'CANNOT_CONNECT_HOME' && $key != 'NO_GD_ON_SERVER' && $key != 'MYSQL_TOO_OLD' && $key != 'LOW_MEMORY_LIMIT' && $key != 'NO_ZIP_ON_SERVER' && $key != 'WARNING_MBSTRING_FUNC_OVERLOAD' && $key != 'DISABLED_FUNCTION' && $file != 'lang.ini' && $file != 'version.ini' && $file != 'debrand.ini' && $file != 'import.ini' && $file != 'installer.ini' && $file != 'commandr.ini' && $file != 'addons.ini' && strpos($string, 'Composr') !== false) {
                     $this->assertTrue(false, 'The word \'Composr\' was used in ' . $file . ' (' . $key . '). This should probably be changed to \'the software\'.');
@@ -107,10 +102,10 @@ class lang_test_set extends cms_test_case
                     $this->assertTrue(false, 'The term \'comcode\' was used in ' . $file . '. This should be changed to \'Comcode\'.');
                 }
 
-                if (($verbose) && ($this->str_ipos($string, 'user') !== false)) {
+                if (($verbose) && (stripos($string, 'user') !== false)) {
                     $this->assertTrue(false, 'The term \'user\' was used in ' . $file . '. This might need to be changed to \'member\', depending on the circumstances.');
                 }
-                if ($this->str_ipos($string, 'set-up') !== false) {
+                if (stripos($string, 'set-up') !== false) {
                     $this->assertTrue(false, 'The phrase \'set-up\' was used in ' . $file . '. This might need to be changed to \'setup\', depending on the usage.');
                 }
                 if (($verbose) && (strpos($string, '\n') !== false)) {

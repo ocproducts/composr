@@ -574,7 +574,7 @@ class Module_admin_lang
             $fields = new Tempcode();
             global $LANGUAGE_STRINGS_CACHE;
             foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $key => $value) {
-                if (stripos($value, strtolower($search)) !== false) {
+                if (stripos($value, $search) !== false) {
                     $fields->attach(form_input_text($key, '', 'l_' . $key, str_replace('\n', "\n", $value), false));
                 }
             }
