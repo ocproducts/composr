@@ -432,7 +432,7 @@ class Module_admin_themewizard
         sort($fonts);
         require_css('fonts');
         foreach ($fonts as $font) {
-            if (strpos(strtolower($font), 'veranda') !== false) {
+            if (stripos($font, 'veranda') !== false) {
                 continue; // Not licensed for this, only used as a web standards patch for vertical text
             }
 

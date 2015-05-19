@@ -142,10 +142,10 @@ if ($javascript) {
             }
             $line++;
         }
-        if (strpos(strtolower($contents), 'unsubscribe') === false) {
+        if (stripos($contents, 'unsubscribe') === false) {
             echo 'ISSUE "' . $to_use . '" ' . strval($line) . ' ' . strval($pos) . ' ' . do_lang('MAIL_UNSUBSCRIBE') . "\n";
         }
-        if ((strpos(strtolower($contents), 'web version') === false) && (strpos(strtolower($contents), 'if you are') === false)) {
+        if ((stripos($contents, 'web version') === false) && (stripos($contents, 'if you are') === false)) {
             echo 'ISSUE "' . $to_use . '" ' . strval($line) . ' ' . strval($pos) . ' ' . do_lang('MAIL_WEB_VERSION') . "\n";
         }
         $nasty_keywords = explode("\n", "

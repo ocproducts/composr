@@ -394,7 +394,7 @@ function block_helper_script()
                     } else {
                         $fields->attach(form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false));
                     }
-                } elseif ((($default == '0') || ($default == '1') || (strpos($description, '\'0\'') !== false) || (strpos($description, '\'1\'') !== false)) && (do_lang('BLOCK_IND_WHETHER') != '') && (strpos(strtolower($description), do_lang('BLOCK_IND_WHETHER')) !== false)) { // checkbox
+                } elseif ((($default == '0') || ($default == '1') || (strpos($description, '\'0\'') !== false) || (strpos($description, '\'1\'') !== false)) && (do_lang('BLOCK_IND_WHETHER') != '') && (stripos($description, do_lang('BLOCK_IND_WHETHER')) !== false)) { // checkbox
                     $fields->attach(form_input_tick(titleify($parameter), escape_html($description), $parameter, $default == '1'));
                 } elseif ((do_lang('BLOCK_IND_NUMERIC') != '') && (strpos($description, do_lang('BLOCK_IND_NUMERIC')) !== false)) { // numeric
                     $fields->attach(form_input_integer(titleify($parameter), escape_html($description), $parameter, ($default == '') ? null : intval($default), false));

@@ -838,6 +838,11 @@ function get_webservice_result($error_message)
         }
     }
 
+    // Certain thing(s) are too common and should not result in queries
+    if (strpos($error_message, 'was referenced') !== false) {
+        return null;
+    }
+
     // Talk to web service
     $brand = get_value('rebrand_name');
     if (is_null($brand)) {

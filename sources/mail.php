@@ -113,6 +113,11 @@ function comcode_to_clean_text($message_plain, $for_extract = false)
 {
     //$message_plain=str_replace("\n",'',$message_plain);
 
+    // Very simple case
+    if ((strpos($message_plain, '[') === false) && (strpos($message_plain, '{') === false)) {
+        return $message_plain;
+    }
+
     // If it is just HTML encapsulated in Comcode, force our best HTML to text conversion first
     if ((substr($message_plain, 0, 10) == '[semihtml]') && (substr(trim($message_plain), -11) == '[/semihtml]')) {
         $_message_plain = trim($message_plain);
@@ -131,6 +136,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false)
         }
     }
 
+    // Now is a very simple case (after we converted HTML to Comcode)
     if ((strpos($message_plain, '[') === false) && (strpos($message_plain, '{') === false)) {
         return $message_plain;
     }

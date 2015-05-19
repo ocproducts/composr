@@ -945,10 +945,10 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
     if (!$close) { // Intentionally placed after labelling is checked
         if (($tag == 'input') || ($tag == 'select')) {
-            if (($GLOBALS['WEBSTANDARDS_MANUAL']) && (isset($attributes['name'])) && (strpos(strtolower($GLOBALS['OUT']), 'privacy') === false)) {
+            if (($GLOBALS['WEBSTANDARDS_MANUAL']) && (isset($attributes['name'])) && (stripos($GLOBALS['OUT'], 'privacy') === false)) {
                 $privacy = array('dob', 'name', 'age', 'address', 'date_of_birth', 'dateofbirth', 'email', 'e_mail', 'gender', 'salutation');
                 foreach ($privacy as $priv) {
-                    if (strpos(strtolower($attributes['name']), $priv) !== false) {
+                    if (stripos($attributes['name'], $priv) !== false) {
                         $errors[] = array('MANUAL_PRIVACY');
                     }
                 }

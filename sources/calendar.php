@@ -589,11 +589,11 @@ function date_range($from, $to, $do_time = true, $force_absolute = false, $timez
         $pm_a = date('a', $from);
         $pm_b = date('a', $to);
         if ($pm_a == $pm_b) {
-            $date1 = locale_filter(my_strftime(do_lang('calendar_minute_ampm_known'), $from));
-            $date2 = locale_filter(my_strftime(do_lang('calendar_minute'), $to));
+            $date1 = locale_filter(cms_strftime(do_lang('calendar_minute_ampm_known'), $from));
+            $date2 = locale_filter(cms_strftime(do_lang('calendar_minute'), $to));
         } else {
-            $date1 = locale_filter(my_strftime(do_lang('calendar_minute'), $from));
-            $date2 = locale_filter(my_strftime(do_lang('calendar_minute'), $to));
+            $date1 = locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
+            $date2 = locale_filter(cms_strftime(do_lang('calendar_minute'), $to));
         }
         $_date1 = str_replace(do_lang('calendar_minute_no_minutes'), '', $date1);
         $_date2 = str_replace(do_lang('calendar_minute_no_minutes'), '', $date2);

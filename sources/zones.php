@@ -766,13 +766,15 @@ function load_module_page($string, $codename, &$out = null)
  */
 function find_all_zones($search = false, $get_titles = false, $force_all = false, $start = 0, $max = 50)
 {
+    $collapse_user_zones = (get_option('collapse_user_zones') == '1');
+
     if ($search) {
         $out = array('');
 
         $dh = opendir(get_file_base());
         while (($file = readdir($dh)) !== false) {
             if (($file != '.') && ($file != '..') && (is_dir($file)) && (is_readable(get_file_base() . '/' . $file)) && (is_file(get_file_base() . '/' . $file . '/index.php')) && (is_dir(get_file_base() . '/' . $file . '/pages/modules'))) {
-                if ((get_option('collapse_user_zones') == '1') && ($file == 'site')) {
+                if (($collapse_user_zones) && ($file == 'site')) {
                     continue;
                 }
 
@@ -816,13 +818,12 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
     $zones_titled = array();
     $zones = array();
     foreach ($rows as $zone) {
-        if ((get_option('collapse_user_zones') == '1') && ($zone['zone_name'] == 'site')) {
+        if (($collapse_user_zones) && ($zone['zone_name'] == 'site')) {
             continue;
         }
 
         $zone['_zone_title'] = get_translated_text($zone['zone_title']);
 
-        $folder = get_file_base() . '/' . $zone['zone_name'] . '/pages';
         if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (is_file(get_file_base() . '/' . $zone['zone_name'] . '/index.php'))) {
             $zones[] = $zone['zone_name'];
             $zones_titled[$zone['zone_name']] = array($zone['zone_name'], $zone['_zone_title'], $zone['zone_default_page'], $zone);

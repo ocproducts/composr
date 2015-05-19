@@ -385,7 +385,7 @@ class Module_admin_newsletter extends Standard_crud_module
                             if (in_array(strtolower($val), array('confirm code', strtolower(do_lang('CONFIRM_CODE'))))) {
                                 $code_confirm_index = $j;
                             }
-                            if ((strpos(strtolower($val), 'time') !== false) || (strpos(strtolower($val), 'date') !== false) || (strtolower($val) == do_lang('JOIN_DATE'))) {
+                            if ((stripos($val, 'time') !== false) || (stripos($val, 'date') !== false) || (strtolower($val) == do_lang('JOIN_DATE'))) {
                                 $jointime_index = $j;
                             }
                         }
@@ -512,7 +512,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $folders = new Tempcode();
         foreach ($_folders as $folder => $label) {
-            $selected = ((get_option('imap_folder') != '') && (get_option('imap_folder') == $folder)) || ((get_option('imap_folder') == '') && (strpos(strtolower($folder), 'bounce') !== false));
+            $selected = ((get_option('imap_folder') != '') && (get_option('imap_folder') == $folder)) || ((get_option('imap_folder') == '') && (stripos($folder, 'bounce') !== false));
             $folders->attach(form_input_list_entry($folder, $selected, $label));
         }
 

@@ -275,7 +275,7 @@ function is_page_https($zone, $page)
             $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), null, '', null, null, true);
             $HTTPS_PAGES_CACHE = array();
             foreach ($results as $r) {
-                $HTTPS_PAGES_CACHE[$r['https_page_name']] = 1;
+                $HTTPS_PAGES_CACHE[$r['https_page_name']] = true;
             }
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('HTTPS_PAGES_CACHE', $HTTPS_PAGES_CACHE);
@@ -809,6 +809,10 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
  */
 function url_is_local($url)
 {
+    if (substr($url, 0, 7) == 'themes/' || substr($url, 0, 8) == 'uploads/') {
+        return true;
+    }
+
     if ($url == '') {
         return true;
     }

@@ -236,7 +236,7 @@ class Block_main_sortable_table
         } else {
             // Database table...
 
-            if (strpos(strtolower($file), 'f_members') !== false) {
+            if (stripos($file, 'f_members') !== false) {
                 return paragraph('Security filter disallows display of the ' . escape_html($file) . ' table.', 'red_alert');
             }
 

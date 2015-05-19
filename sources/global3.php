@@ -975,19 +975,20 @@ function addon_installed($addon, $non_bundled_too = false)
 function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
 {
     $str = number_format($num, $decs_wanted, '.', '');
-    $decs_here = strlen($str) - strpos($str, '.') - 1;
+    $dot_pos = strpos($str, '.');
+    $decs_here = ($dot_pos === false) ? 0 : (strlen($str) - $dot_pos - 1);
     if ($decs_here < $decs_wanted) {
         for ($i = 0; $i < $decs_wanted - $decs_here; $i++) {
             $str .= '0';
         }
-    } else {
+    } elseif ($decs_here > $decs_wanted) {
         $str = substr($str, 0, strlen($str) - $decs_here + $decs_wanted);
-        if ($decs_wanted == 0) {
+        if ($decs_wanted == 0 && !$only_needed_decs) {
             $str = rtrim($str, '.');
         }
     }
     if ($only_needed_decs) {
-        $str = preg_replace('#\.$#', '', preg_replace('#0+$#', '', $str));
+        $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
 }
@@ -1644,7 +1645,9 @@ function normalise_ip_address($ip, $amount = null)
     }
 
     // ...and another
-    $ip = preg_replace('#%14$#', '', $ip);
+    if (strpos($ip, '%') !== false) {
+        $ip = preg_replace('#%14$#', '', $ip);
+    }
 
     if (!is_valid_ip($ip)) {
         $ip_cache[$ip][$amount] = '';

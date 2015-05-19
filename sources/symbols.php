@@ -1327,7 +1327,7 @@ function symbol_truncator($param, $type, $tooltip_if_truncated = null)
         $html = escape_html($param[0]);
     }
 
-    if ((isset($not_html[$amount])/*optimisation*/) && ((cms_mb_strlen($not_html) > $amount)) || (strpos(strtolower($html), '<img') !== false)) {
+    if ((isset($not_html[$amount])/*optimisation*/) && ((cms_mb_strlen($not_html) > $amount)) || (stripos($html, '<img') !== false)) {
         $tooltip = ((isset($param[2])) && ($param[2] == '1'));
         $literal_pos = isset($param[4]) ? ($param[4] == '1') : false;
         $grammar_completeness_tolerance = isset($param[5]) ? floatval($param[5]) : 0.0;
@@ -2088,7 +2088,7 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
             if (array_key_exists(intval($param[0]), $fields)) {
                 $_value = $fields[intval($param[0])];
             }
-        } elseif ((substr($param[0], 0, 2) == 'm_') && (strpos(strtolower($param[0]), 'hash') === false) && (strpos(strtolower($param[0]), 'salt') === false)) {
+        } elseif ((substr($param[0], 0, 2) == 'm_') && (stripos($param[0], 'hash') === false) && (stripos($param[0], 'salt') === false)) {
             $_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field(isset($param[1]) ? intval($param[1]) : get_member(), $param[0]);
         } else {
             if (preg_match('#^[a-z\_\d]*$#', $param[0]) != 0) {
@@ -3292,7 +3292,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
         if ((!array_key_exists(2, $param)) || ($param[2] == '1')) {
             $timestamp = utctime_to_usertime($timestamp);
         }
-        $value = locale_filter(my_strftime($param[0], $timestamp));
+        $value = locale_filter(cms_strftime($param[0], $timestamp));
         if ($value == $param[0]) {// If no conversion happened then the syntax must have been for 'date' not 'strftime'
             $value = date($param[0], $timestamp);
         }

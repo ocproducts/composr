@@ -356,7 +356,7 @@ class Module_admin
         }
 
         foreach ($section_limitations as $l) {
-            if (strpos(strtolower($results_type), strtolower($l)) !== false) {
+            if (stripos($results_type, strtolower($l)) !== false) {
                 return true;
             }
         }

@@ -397,13 +397,19 @@ function wysiwygify_media_set($semihtml)
  */
 function semihtml_to_comcode($semihtml, $force = false)
 {
-    require_code('obfuscate');
     $semihtml = trim($semihtml);
 
     // Optimisation, not long enough to clean up
     if (cms_trim($semihtml, strlen($semihtml) < 30) == '') {
         return '';
     }
+
+    $decoded = html_entity_decode($semihtml, ENT_QUOTES, get_charset());
+    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($decoded, '&') === false) {
+        return $decoded;
+    }
+
+    require_code('obfuscate');
 
     safe_ini_set('pcre.backtrack_limit', '10000000');
 

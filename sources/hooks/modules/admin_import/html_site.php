@@ -372,12 +372,12 @@ class Hook_html_site
                         $current = substr($title_a, $start, $end - $start + 1);
                         foreach ($titles_in_reference_files as $title_b) {
                             if ($title_a != $title_b) {
-                                if (strpos(strtolower($title_b), strtolower($current)) === false) {
+                                if (stripos($title_b, strtolower($current)) === false) {
                                     continue 2;
                                 }
                             }
                         }
-                        if (strpos(strtolower($title_b), strtolower($current)) !== false) {
+                        if (stripos($title_b, strtolower($current)) !== false) {
                             if (strlen($current) > strlen($lcs)) {
                                 $lcs = $current;
                             }

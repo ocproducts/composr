@@ -249,16 +249,20 @@ function usertime_to_utctime($timestamp = null, $member = null)
  * @param  ?TIME $timestamp The timestamp (null: now). Assumed to already be timezone-shifted as required
  * @return string The formatted string.
  */
-function my_strftime($format, $timestamp = null)
+function cms_strftime($format, $timestamp = null)
 {
     if ($timestamp === null) {
         $timestamp = time();
     }
 
-    if (strpos(strtolower(PHP_OS), 'win') === 0) {
+    static $is_windows = null;
+    if ($is_windows === null) {
+        $is_windows = (stripos(PHP_OS, 'win') === 0)
+    }
+    if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
     }
-    $ret = strftime(str_replace('%i', date('g', $timestamp), str_replace('%k', date('S', $timestamp), $format)), $timestamp);
+    $ret = strftime(str_replace(array('%i', '%k'), array(date('g', $timestamp), date('S', $timestamp)), $format), $timestamp);
     if ($ret === false) {
         $ret = '';
     }
@@ -300,8 +304,8 @@ function get_timezoned_date($timestamp, $include_time = true, $verbose = false, 
     $date_string1 = ($verbose) ? do_lang('date_verbose_date') : do_lang('date_regular_date'); // The date renderer string
     $joiner = ($verbose) ? do_lang('date_verbose_joiner') : do_lang('date_regular_joiner');
     $date_string2 = ($include_time) ? ($verbose ? do_lang('date_verbose_time') : do_lang('date_regular_time')) : ''; // The time renderer string
-    $ret1 = my_strftime($date_string1, $usered_timestamp);
-    $ret2 = ($date_string2 == '') ? '' : my_strftime($date_string2, $usered_timestamp);
+    $ret1 = cms_strftime($date_string1, $usered_timestamp);
+    $ret2 = ($date_string2 == '') ? '' : cms_strftime($date_string2, $usered_timestamp);
     $ret = $ret1 . (($ret2 == '') ? '' : ($joiner . $ret2));
 
     // If we can do contextual dates, have our shot
@@ -309,7 +313,7 @@ function get_timezoned_date($timestamp, $include_time = true, $verbose = false, 
         $avoid_contextual_dates = true;
     }
     if (!$avoid_contextual_dates) {
-        $today = my_strftime($date_string1, $usered_now_timestamp);
+        $today = cms_strftime($date_string1, $usered_now_timestamp);
 
         if ($ret1 == $today) { // It is/was today
             $ret = /*Today is obvious do_lang('TODAY').$joiner.*/
@@ -318,18 +322,18 @@ function get_timezoned_date($timestamp, $include_time = true, $verbose = false, 
                 $ret = do_lang('TODAY'); // it'll be because avoid contextual dates is not on
             }
         } else {
-            $yesterday = my_strftime($date_string1, $usered_now_timestamp - 24 * 60 * 60);
+            $yesterday = cms_strftime($date_string1, $usered_now_timestamp - 24 * 60 * 60);
             if ($ret1 == $yesterday) { // It is/was yesterday
                 $ret = do_lang('YESTERDAY') . (($ret2 == '') ? '' : ($joiner . $ret2));
             } else {
-                $week = my_strftime('%U %Y', $usered_timestamp);
-                $now_week = my_strftime('%U %Y', $usered_now_timestamp);
+                $week = cms_strftime('%U %Y', $usered_timestamp);
+                $now_week = cms_strftime('%U %Y', $usered_now_timestamp);
                 if ($week == $now_week) { // It is/was this week
                     $date_string1 = do_lang('date_withinweek_date'); // The date renderer string
                     $joiner = do_lang('date_withinweek_joiner');
                     $date_string2 = ($include_time) ? do_lang('date_regular_time') : ''; // The time renderer string
-                    $ret1 = my_strftime($date_string1, $usered_timestamp);
-                    $ret2 = ($date_string2 == '') ? '' : my_strftime($date_string2, $usered_timestamp);
+                    $ret1 = cms_strftime($date_string1, $usered_timestamp);
+                    $ret2 = ($date_string2 == '') ? '' : cms_strftime($date_string2, $usered_timestamp);
                     $ret = $ret1 . (($ret2 == '') ? '' : ($joiner . $ret2));
                 } // We could go on, and check for month, and year, but it would serve little value - probably would make the user think more than help.
             }
@@ -381,7 +385,7 @@ function get_timezoned_time($timestamp, $avoid_contextual_dates = false, $member
 
     $date_string = do_lang('date_withinday');
     $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
-    $ret = my_strftime($date_string, $usered_timestamp);
+    $ret = cms_strftime($date_string, $usered_timestamp);
 
     return locale_filter($ret);
 }

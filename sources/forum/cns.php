@@ -715,7 +715,7 @@ class Forum_driver_cns extends Forum_driver_base
         if (is_numeric($forum)) {
             $result = intval($forum);
         } else {
-            $result = $this->connection->query_select_value_if_there('f_forums', 'id', array('f_name' => $forum));
+            $result = $this->forum_id_from_name($forum);
             if ($forum == get_option('comments_forum_name')) { // Fix performance for next time
                 require_code('config2');
                 set_option('comments_forum_name', strval($result));

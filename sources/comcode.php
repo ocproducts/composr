@@ -188,16 +188,20 @@ function strip_comcode($text, $for_extract = false)
         $text = comcode_to_clean_text($text, $for_extract);
     }
 
-    global $VALID_COMCODE_TAGS;
-    foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
-        if ($tag == 'i') {
-            $text = preg_replace('#\[/?' . $tag . '\]#', '', $text);
-        } else {
-            $text = preg_replace('#\[/?' . $tag . '[^\]]*\]#', '', $text);
+    if (strpos($text,'[') !== false) {
+        global $VALID_COMCODE_TAGS;
+        foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
+            if ($tag == 'i') {
+                $text = preg_replace('#\[/?' . $tag . '\]#', '', $text);
+            } else {
+                $text = preg_replace('#\[/?' . $tag . '[^\]]*\]#', '', $text);
+            }
         }
     }
 
-    $text = str_replace(array('&hellip;', '&middot;', '&ndash;', '&mdash;'), array('...', '-', '-', '-'), $text);
+    if (strpos($text,'&') !== false) {
+        $text = str_replace(array('&hellip;', '&middot;', '&ndash;', '&mdash;'), array('...', '-', '-', '-'), $text);
+    }
 
     return $text;
 }

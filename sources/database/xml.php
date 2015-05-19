@@ -1001,7 +1001,7 @@ class Database_Static_xml
                 }
             }
             $full_path = $db[0] . '/' . $table_name . '/' . $file;
-            if ((strlen($full_path) >= 255) && (strpos(strtolower(PHP_OS), 'win') !== false)) {
+            if ((strlen($full_path) >= 255) && (stripos(PHP_OS, 'win') !== false)) {
                 continue; // :(
             }
             $read = $this->_read_record($full_path, $schema, $must_contain, $include_unused_fields);
@@ -1283,7 +1283,7 @@ class Database_Static_xml
             $this->_write_record($db, $table_name . '/sup', $guid, $record_copy, $fail_ok, true);
         }
 
-        if ((strlen($path) > 255) && (strpos(strtolower(PHP_OS), 'win') !== false)) {
+        if ((strlen($path) > 255) && (stripos(PHP_OS, 'win') !== false)) {
             attach_message('File path too long on Windows (' . $path . ')', 'warn');
             return;
         }

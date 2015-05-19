@@ -1928,11 +1928,11 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
         $comcode = preg_replace('#(\\\\)+(\[/(html|semihtml)\])#', '\2', $comcode); // Stops sneaky trying to trick the end of the HTML tag to hack this function
 
         if (($in_html) && ($in_semihtml)) {
-            $ahead_end = max(strpos(strtolower($comcode), '[/html]', $pos), strpos(strtolower($comcode), '[/semihtml]', $pos));
+            $ahead_end = max(stripos($comcode, '[/html]', $pos), stripos($comcode, '[/semihtml]', $pos));
         } elseif ($in_html) {
-            $ahead_end = strpos(strtolower($comcode), '[/html]', $pos);
+            $ahead_end = stripos($comcode, '[/html]', $pos);
         } elseif ($in_semihtml) {
-            $ahead_end = strpos(strtolower($comcode), '[/semihtml]', $pos);
+            $ahead_end = stripos($comcode, '[/semihtml]', $pos);
         } else {
             $ahead_end = false;
         }

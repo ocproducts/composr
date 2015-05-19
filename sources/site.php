@@ -1886,7 +1886,7 @@ function log_stats($string, $pg_time)
         $os = '';
     }
 
-    if ((get_option('bot_stats') == '1') && ((strpos(strtolower($browser), 'http:') !== false) || (strpos(strtolower($browser), 'bot') !== false) || (get_bot_type() !== null))) {
+    if ((get_option('bot_stats') == '1') && ((stripos($browser, 'http:') !== false) || (stripos($browser, 'bot') !== false) || (get_bot_type() !== null))) {
         return;
     }
 

@@ -81,15 +81,12 @@ class Forum_driver_base
     {
         $url = mixed();
 
-        if ((!$definitely_profile) && ($id != $this->get_guest_id()) && (addon_installed('chat')) && (has_privilege(get_member(), 'start_im'))) {
-            $username_click_im = get_option('username_click_im');
-            if ($username_click_im == '1') {
-                $url = build_url(array('page' => 'chat', 'type' => 'browse', 'enter_im' => $id), get_module_zone('chat'));
-                if (!$tempcode_okay) {
-                    $url = $url->evaluate();
-                }
-                return $url;
+        if ((!$definitely_profile) && (get_option('username_click_im') == '1') && ($id != $this->get_guest_id()) && (addon_installed('chat')) && (has_privilege(get_member(), 'start_im'))) {
+            $url = build_url(array('page' => 'chat', 'type' => 'browse', 'enter_im' => $id), get_module_zone('chat'));
+            if (!$tempcode_okay) {
+                $url = $url->evaluate();
             }
+            return $url;
         }
 
         $url = $this->_member_profile_url($id, $tempcode_okay);
@@ -272,7 +269,7 @@ class Forum_driver_base
             }
 
             if ((isset($this->connection)) && ($this->connection->connection_write != $GLOBALS['SITE_DB']->connection_write) && (get_option('is_on_staff_filter', true) === '1') && (get_forum_type() != 'none') && (!$GLOBALS['FORUM_DRIVER']->disable_staff_filter())) {
-                if (strpos(strtolower(get_cms_cpf('sites', $id)), strtolower(substr(get_site_name(), 0, 200))) === false) {
+                if (stripos(get_cms_cpf('sites', $id), strtolower(substr(get_site_name(), 0, 200))) === false) {
                     $IS_STAFF_CACHE[$id] = false;
                     return false;
                 }

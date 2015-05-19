@@ -310,7 +310,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
             foreach ($subtree as $subtree_i) {
                 foreach ($ids_and_parents as $id => $parent_id) {
                     if (!is_string($parent_id)) {
-                        $parent_id = is_null($parent_id) ? '' : strval($parent_id);
+                        $parent_id = ($parent_id === null) ? '' : strval($parent_id);
                     }
                     if (!is_string($subtree_i)) {
                         $subtree_i = strval($subtree_i);
@@ -492,7 +492,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
                 $this_details = $db->query_select('catalogue_categories cc JOIN ' . $db->get_table_prefix() . 'catalogues c ON c.c_name=cc.c_name', array('cc_parent_id', 'cc.c_name', 'c_is_tree'), array('id' => intval($matches[1])), '', 1);
                 if ($this_details[0]['c_is_tree'] == 0) {
                     $out_or .= _selectcode_eq($parent_field_name, $matches[1], $numeric_category_set_ids);
-                } elseif (is_null($this_details[0]['cc_parent_id'])) {
+                } elseif ($this_details[0]['cc_parent_id'] === null) {
                     if ($this_details[0]['cc_parent_id'] === null) {
                         $out_or .= db_string_equal_to('c_name', $this_details[0]['c_name']);
                     } else {

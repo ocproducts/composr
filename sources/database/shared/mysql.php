@@ -297,7 +297,10 @@ class Database_super_mysql
      */
     public function db_encode_like($pattern)
     {
-        $ret = preg_replace('#([^\\\\])\\\\\\\\_#', '${1}\_', $this->db_escape_string($pattern));
+        $ret = $this->db_escape_string($pattern);
+        if (strpos($ret, '\\') !== false) {
+            $ret = preg_replace('#([^\\\\])\\\\\\\\_#', '${1}\_', $ret);
+        }
         return $ret;
     }
 

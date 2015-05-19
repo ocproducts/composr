@@ -588,7 +588,7 @@ class Module_calendar
                 $next_timestamp = mktime(0, 0, 0, $next_month, 1, $next_year);
                 $next = date('Y-m', $next_timestamp);
 
-                $title_date = locale_filter(my_strftime(do_lang('calendar_month_in_year_verbose'), $timestamp));
+                $title_date = locale_filter(cms_strftime(do_lang('calendar_month_in_year_verbose'), $timestamp));
                 if ($private !== 1) {
                     $this->title = get_screen_title('CALENDAR_SPECIFIC', true, array(escape_html($title_date)));
                 } else {
@@ -790,7 +790,7 @@ class Module_calendar
         foreach ($happenings as $happening) {
             list($e_id, $event, $from, $to, $real_from, $real_to, $utc_real_from) = $happening;
 
-            $date = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $from));
+            $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
             if (is_numeric($e_id)) {
                 $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id));
                 $url = build_url($map, '_SELF');
@@ -945,7 +945,7 @@ class Module_calendar
                     $date = date('D:H', $from);
                     $explode2 = explode(':', $date);
                     if ((intval($explode2[1]) == $i) && ($day_remap[$explode2[0]] == $j)) {
-                        $date = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $real_from));
+                        $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
                         if (is_numeric($e_id)) {
                             $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id, 'back' => 'week'));
                             $url = build_url($map, '_SELF');
@@ -1179,7 +1179,7 @@ class Module_calendar
                 list($e_id, $event, $from, $to, $real_from, $real_to, $utc_real_from) = $happening;
                 $date = date('d', $from);
                 if (intval($date) == $i) {
-                    $date = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $real_from));
+                    $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
 
                     if (is_numeric($e_id)) {
                         $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id, 'back' => 'month'));
@@ -1524,7 +1524,7 @@ class Module_calendar
             $to = null;
 
             $to_day_formatted = null;
-            $human_readable_time_range = is_null($event['e_start_hour']) ? '' : locale_filter(my_strftime(do_lang('calendar_minute'), $from));
+            $human_readable_time_range = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
         }
 
         // Recurrences

@@ -304,7 +304,7 @@ function is_non_human_email($subject, $body, $full_header)
         'Undeliverable',
     );
     foreach ($junk_strings as $j) {
-        if ((strpos(strtolower($subject), strtolower($j)) !== false) || (strpos(strtolower($body), strtolower($j)) !== false)) {
+        if ((stripos($subject, strtolower($j)) !== false) || (stripos($body, strtolower($j)) !== false)) {
             $junk = true;
         }
     }

@@ -130,7 +130,7 @@ class Hook_fields_date
         }
 
         if ($ev != '') {
-            if (strpos(strtolower($ev), 'now') !== false) {
+            if (stripos($ev, 'now') !== false) {
                 $time = time();
             } else {
                 // Y-m-d H:i
