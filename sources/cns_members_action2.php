@@ -678,7 +678,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         list(, , $storage_type) = $ob->get_field_value_row_bits($custom_field);
 
         if ((!is_null($member_id)) && ($member_id != get_member())) {
-            $custom_field['cf_required']=0;
+            $custom_field['cf_required'] = 0;
         }
 
         $existing_field = (!is_null($custom_fields)) && (array_key_exists($custom_field['id'], $custom_fields));

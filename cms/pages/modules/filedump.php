@@ -1310,7 +1310,7 @@ class Module_filedump
                 'path' => substr($place, 0, 80),
                 'the_member' => get_member(),
             );
-            $map += insert_lang($description['description'], 3);
+            $map += insert_lang($description, 'description', 3);
             $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
             // Logging etc

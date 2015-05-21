@@ -188,7 +188,7 @@ function strip_comcode($text, $for_extract = false)
         $text = comcode_to_clean_text($text, $for_extract);
     }
 
-    if (strpos($text,'[') !== false) {
+    if (strpos($text, '[') !== false) {
         global $VALID_COMCODE_TAGS;
         foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
             if ($tag == 'i') {
@@ -199,7 +199,7 @@ function strip_comcode($text, $for_extract = false)
         }
     }
 
-    if (strpos($text,'&') !== false) {
+    if (strpos($text, '&') !== false) {
         $text = str_replace(array('&hellip;', '&middot;', '&ndash;', '&mdash;'), array('...', '-', '-', '-'), $text);
     }
 

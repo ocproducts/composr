@@ -3101,6 +3101,17 @@ function set_error_handler($error_handler)
 }
 
 /**
+ * Sets a user-defined exception handler function.
+ *
+ * @param  mixed $exception_handler The call back.
+ * @return mixed The previously defined error handler.
+ */
+function set_exception_handler($exception_handler)
+{
+    return '';
+}
+
+/**
  * Send a cookie.
  *
  * @sets_output_state
@@ -3328,6 +3339,19 @@ function strlen($str)
  * @return ~integer                     The offset it is found at (false: not found).
  */
 function strpos($haystack, $needle, $offset = 0)
+{
+    return 0;
+}
+
+/**
+ * Find position of first occurrence of a string (case-insensitive).
+ *
+ * @param  string $haystack Haystack.
+ * @param  string $needle Needle.
+ * @param  integer $offset Offset to search from.
+ * @return ~integer                     The offset it is found at (false: not found).
+ */
+function stripos($haystack, $needle, $offset = 0)
 {
     return 0;
 }
