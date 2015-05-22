@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Disaster recovery[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Disaster recovery[/title]
 
 [i]The Composr 'error log' screen points to this tutorial. If you think you have found a bug, please [page="site:free_tickets"]report it[/page]. The rest of this tutorial deals with potential disaster situations -- an error in the error log does not imply a disaster has happened.[/i]
 

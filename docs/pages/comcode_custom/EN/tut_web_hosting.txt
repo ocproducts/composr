@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Web hosting for Composr[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Web hosting for Composr[/title]
 
 To put a website on-to the Internet, you need to arrange for 'web hosting'. This is usually done by paying for the services of a [concept]web host[/concept], who will provide you space-on and access-to, a computer (a web server) that is permanently connected to the Internet via a high-speed connection.
 

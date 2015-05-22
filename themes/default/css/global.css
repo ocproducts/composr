@@ -3997,9 +3997,9 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 }
 
 .comcode_table_of_contents ol {
-	list-style-position: inside;
-	padding-{!en_left}: 12px !important;
-	margin: 0 !important;
+	padding: 0;
+	margin: 0;
+	margin-{!en_left}: 20px !important;
 }
 .comcode_table_of_contents li {
 	margin: 0.2em 0 !important;

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Providing galleries[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Providing galleries[/title]
 
 {!galleries:DOC_GALLERIES} This tutorial describes the basic gallery features, and how to use them.
 

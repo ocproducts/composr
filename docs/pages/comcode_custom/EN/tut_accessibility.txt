@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Helping improve site accessibility for disabled users[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Helping improve site accessibility for disabled users[/title]
 
 [media width="150" description="Composr accessibility compliance" float="right"]data_custom/images/docs/accessibility_excel.png[/media]
 The [concept]W3C[/concept], the standards organisation responsible for core web standards, has a project, the web accessibility initiative ([concept]WAI[/concept]), that defines a standard for the creation of accessible web pages: the web content accessibility guidelines ([concept]WCAG[/concept]). In addition, U.S. federal agencies are required by law to meet [concept]section 508[/concept] guidelines on accessibility.

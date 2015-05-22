@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Organising discussion forums[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Organising discussion forums[/title]
 
 This tutorial will explain how discussion forums work in [concept]Conversr[/concept], and how best to organise them.
 

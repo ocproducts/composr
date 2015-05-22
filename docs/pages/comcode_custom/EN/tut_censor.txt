@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Dealing with annoying users[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Dealing with annoying users[/title]
 
 Depending on your site policies (for a good discussion of this, see the 'Legal and social responsibilities' tutorial), you are likely to require some tools to help you maintain the policy. Some of these tools actively enforce your policy, some of them allow you to 'moderate' to maintain your own policy, and some of them provide punishment for users that abuse policy (such that they may be removed from causing further harm, or made an example of such that other users do not 'follow suit').
 

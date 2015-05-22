@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Nuances of forum integration[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Nuances of forum integration[/title]
 
 Composr supports integration with a wide variety of forum systems through our forum driver system. Integration is seamless for the most part, but there are a few issues as described in this tutorial.
 

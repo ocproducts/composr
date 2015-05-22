@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Meta Data[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Meta Data[/title]
 
 This tutorial provides an explanation of how meta data works within Composr.
 

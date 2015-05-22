@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Custom structured content (via catalogues)[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Custom structured content (via catalogues)[/title]
 
 [media width="150" description="Adding a catalogue" float="right"]data_custom/images/docs/catalogues_add.png[/media]
 {!catalogues:DOC_CATALOGUES}
@@ -305,6 +305,6 @@ A similar caveat holds true for custom profile fields, which share the same fiel
 
  - [page="_SEARCH:tut_fields"]Custom fields[/page]
  - [page="_SEARCH:sup_catalogues"]Catalogues in Composr[/page]
- - [page="_SEARCH:tut_comcode_pages"]Custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
 
 {$SET,tutorial_tags,Catalogues,core_fields,catalogues,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The catalogue system lets you set up your own databases on your website.}[block]main_tutorial_rating[/block]

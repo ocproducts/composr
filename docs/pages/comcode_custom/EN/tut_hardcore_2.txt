@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Making an addon (part 2)[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Making an addon (part 2)[/title]
 
 Welcome to the second of our series of addon making tutorials. If you haven't yet read the first tutorial then it's advisable that you do so before reading this one.
 
@@ -113,6 +113,6 @@ To claim your prize, post in the Addons forum and 'report post' with the phrase 
  - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
  - [page="_SEARCH:codebook"]Composr Code Book[/page]
- - [url="PHP website"]http://www.php.net[/url] (I recommend you get the CHM reference guide -- very useful, I have it open all day!)
+ - [url="PHP website"]http://www.php.net[/url]
 
 {$SET,tutorial_tags,Development,PHP,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The second in a series of practical tutorials showing how to create addons.}[block]main_tutorial_rating[/block]

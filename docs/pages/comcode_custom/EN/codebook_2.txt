@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Code Book, part 2[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Code Book, part 2[/title]
 
 [surround="spaced_list"]
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]

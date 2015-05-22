@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: The form field filter system[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The form field filter system[/title]
 
 Composr provides an advanced feature for manipulating forms and the results of forms using filters without having to change the PHP code. By the end of this tutorial you will understand the enormous power this can give you.
 This features are intended for power-users, using an XML config file for defining the filters.

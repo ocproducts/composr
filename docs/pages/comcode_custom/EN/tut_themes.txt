@@ -1,4 +1,4 @@
-[title sub="Written by Allen Ellis, ocProducts"]Composr Tutorial: Themeing your site[/title]
+[title sub="Written by Allen Ellis (ocProducts)"]Composr Tutorial: Themeing your site[/title]
 
 {!themes:DOC_THEMES}
 
@@ -192,9 +192,11 @@ For more tips, see [page="forum:topicview:browse:9553"]a walk-through guide[/pag
 
  - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
  - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
+ - [page="_SEARCH:tut_mobile"]Mobile design[/page]
  - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
  - [page="_SEARCH:tut_releasing_themes"]Releasing a theme[/page]
  - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:sup_making_a_theme"]Making a new theme[/page]
 
 {$SET,tutorial_tags,themewizard,core_themeing,core_primary_layout,core_html_abstractions,core_form_interfaces,core_abstract_interfaces,core_abstract_components,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Our key themeing tutorial - how to re-theme your site, by changing CSS, templates, and theme images.}[block]main_tutorial_rating[/block]

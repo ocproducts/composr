@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Facebook Support[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Facebook Support[/title]
 
 This tutorial describes Composr Facebook integration. It mostly describes functionality supplied by the non-bundled Facebook Support addon. This functionality includes:
  - Showing data from Facebook

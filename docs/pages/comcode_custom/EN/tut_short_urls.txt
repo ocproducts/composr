@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: URL schemes in Composr[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: URL schemes in Composr[/title]
 
 Composr supports short URLs. [i]Officially[/i] we only support them in Apache, but practically you can get them working on any web server.
 

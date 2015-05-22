@@ -1,0 +1,86 @@
+[title sub="Written by Salman Abbas (ocProducts), Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
+
+Composr has great support for mobile. You can design for mobile in two ways:
+ - Mobile mode
+ - Responsive Design
+
+This tutorial explains which you might choose, and provides some guidance.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]The two methods[/title]
+
+Responsive design allows page layout to adapt to different browser sizes (i.e. different screen sizes, particularly between desktops, tablets, and smartphones). It is fun to test on a desktop machine -- on a responsive site you can resize your browser window and see major changes to how a page looks. Adaptability was always a consideration to some extent in web design, but responsive design takes it to a totally different level. Responsive design is based around "media queries", whereby the CSS author defines the browser width thresholds where different style rules will apply and the different rules for each. As a standard CSS technology there is nothing special Composr has to support to allow you to use it -- you can use it right away as long as you are comfortable writing CSS (which you need to be anyway if you are doing a major themeing effort).
+
+Mobile mode on the other hand works via serving different HTML based on whether the viewer is on a desktop/tablet machine compared to a smartphone. The choice between mobile and desktop mode is made by automatic analysis of the browser "user agent". The default theme also has a link in the footer to change what was autodetected.
+
+[title="2"]Which is better?[/title]
+
+There is an engineering decision to be made for any site to decide what is best for that site. Don't just assume responsive design is newer and better, because there really are trade-offs involved. If you look at popular sites like Google or Facebook or YouTube, you'll see they have a separate mobile mode, and it's for this kind of reasoning. Other popular and modern websites, like tech news sites or company sites, often have really good responsive design.
+
+The default theme uses a small amount of responsive design so that pages look good on both tablets and desktops.
+Otherwise, mobile mode is the way mobile pages are served in the default theme. This however is only our default: we do it like that for practical reasons, as most users aren't in a position to put a lot of thought into maintaining quality responsive design CSS (it's a bit too complex for the average webmaster).
+
+Ultimately the control and decision is in your hands. 
+
+Pros of responsive design:
+ - Optimise against a wider range of devices, including different sizes of tablet and phone
+ - Show something mindblowing for desktop users with huge browser windows
+ - No complexity of there being a mode choice in the system
+
+Pros of mobile mode:
+ - Simpler to test: only two modes
+ - It makes it easier to understand page structure, as there is a particular layout for desktop, and a particular layout for mobile, and you don't need to think of everything as very fluid
+ - More powerful than CSS, as HTML structure can be served in a totally different way
+ - Page structure can be optimised based on screen size and bandwidth; for example, long pages can be served to desktop users, and lots of smaller linked pages to mobile users
+ - Lower bandwidth: it does not send all style rules for all devices to mobile users on poor network connections
+
+If sites are relatively simple, giving content without a lot of features, and a good amount of design time is being put into the theme, we would recommend a responsive design. Also, magazine-style sites work really well as responsive designs.
+If sites have a lot of features through which interaction might happen, and you don't have a lot of time/experience for themeing and optimising it all, the mobile mode is a more efficient way of building out your site.
+
+[title="2"]Mobile mode themeing[/title]
+
+You can use the Tempcode [tt]{$MOBILE}[/tt] symbol to make changes based on what mode things are running in:
+[code]
+{+START,IF,{$MOBILE}}
+This shows to mobile devices.
+{+END}
+{+START,IF,{$NOT,{$MOBILE}}}
+This does not show to mobile devices.
+{+END}
+[/code]
+
+This works in Comcode pages, templates, and also CSS.
+
+If you do not want certain pages to use mobile mode at all then you can edit the theme settings to white-list which pages you have taken to time to optimise for mobile.
+
+[title="2"]Using responsive design techniques[/title]
+
+TODO
+
+[title="2"]General advice for designing on mobile[/title]
+
+While mobile/tablet devices are amazing in their power, they are still fundamentally limited when compared to traditional desktop browsers.
+
+Here are some things to bear in mind:
+ - Mobile processors are much slower than desktop processors. Don't overload your site with too much JavaScript.
+ - Users will often be accessing on slow mobile connections, so keep your page weight reasonable.
+ - Don't try and squeeze too many dynamic features on any single page. Instead you should take it as an opportunity to allow your design to 'breath' and spread features out over a number of pages.
+ - The idea of 'hovering' (hovering the mouse) is not really there on mobile. Browsers let you tap to activate hover status, but it's really not very good.
+  - Never put critical data inside tooltips. Consider tooltips an enhancement that benefit desktop users, rather than a key place where you can put important information.
+  - Don't spend too much energy making fancy hover states (fades, colour changes, etc) for things if your audience is unlikely to see them.
+  - Avoid drop-down menus, or make it so that either:
+   - the top level of a drop-down node is not a link but will instead allow tap to open the drop-down
+   - the page linked to via the top level of a drop-down node has navigation within that page (i.e. links). Therefore the drop-down options are no more than shortcuts for desktop users, not essential navigation
+ - Don't design anything within a page to use scrollbars, as this is poorly supported on mobile (of course, scrolling on the main page is fine)
+
+[concepts
+ 1_key="Responsive design"   1_value="A powerful technique to allow web page layout to reflow for devices of different sizes."
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
+ - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+
+{$SET,tutorial_tags,Mobile,Design & Themeing,CSS,regular,pinned}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,This tutorial explains both Composr's mobile mode and responsive design techniques.}[block]main_tutorial_rating[/block]

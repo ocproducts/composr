@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running a collaboration hub: the Collaboration Zone[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a collaboration hub: the Collaboration Zone[/title]
 
 Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool. Many of these features are, by default, pooled together and placed in the 'Collaboration Zone', a Composr zone available, by default, only to staff and Super-Members (if the latter group exists).
 

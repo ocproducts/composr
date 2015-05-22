@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Feedback and user interaction[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Feedback and user interaction[/title]
 
 Composr allows you to create a highly interactive site if you desire, with numerous features for user feedback at your disposal.
 
@@ -70,6 +70,6 @@ Any numbers of different polls may be shown on your website if you choose to sel
  - [page="_SEARCH:tut_support_desk"]Running an on-line help desk with Composr[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_adv_news"]Advanced news[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
 
 {$SET,tutorial_tags,Feedback features,staff_messaging,core_feedback_features,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr helps you create a highly interactive site, with features for user interaction/feedback at your disposal.}[block]main_tutorial_rating[/block]

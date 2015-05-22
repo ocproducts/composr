@@ -1,4 +1,4 @@
-[title sub="Written by Allen Ellis, ocProducts"]Composr Tutorial: Searching your website[/title]
+[title sub="Written by Allen Ellis (ocProducts)"]Composr Tutorial: Searching your website[/title]
 
 As you add content to your website, it becomes increasingly important that your visitors are able to find your content when they need to. Composr includes a 'search' feature, which allows you to search your entire website for content.
 
@@ -92,6 +92,85 @@ All these cases are controlled via privileges (the "Autocomplete searches based 
 [title="2"]Did you mean?[/title]
 
 If you have spell checking enabled on your server (pspell or enchant PHP extension), then misspellings will result in a suggestion to run a search on an autocorrected search term. Any keyword terms on the site will be considered real words and not autocorrected.
+
+[title="2"]Slow searches on large sites (advanced)[/title]
+
+If you have very large database tables due to very large amounts of content, or having large amounts of content on a multi-language site, you may experience slow-down doing some searches.
+
+In-fact, the slow-down will cause read locks which prevent writes to those tables. Composr is designed to generally function without database write access, but it's not a good situation to have.
+
+This is a problem that MySQL has with fulltext search. It is not specific to Composr in any way but is worth us documenting.
+
+The problem happens particularly when Composr has to combine the fulltext search with other search constraints.
+
+The inherent technical problem is that if you:
+a) run the fulltext first -- you have to spend a lot of time limiting those hits down to those that match other constraints. The time taken doing this can be extreme if only a small percentage (or even 0%) match your other search constraints, especially for a broad match that has potentially 10's of thousands of fulltext hits -- it will basically go on for ever because it never hits a maximum and thus never ends the query.
+a) run the fulltext last -- MySQL can't use the fulltext index effectively, having to throw away large numbers of matches while intersecting against the huge pool of possible rows that matched the other search constraints.
+
+Or in other terms, calculating the intersection between fulltext hits, and other constraints (e.g. forum permissions, or search context) is unindexable and potentially a vast calculation.
+
+This is a serious problem on large databases, but not noticed by most users.
+
+Fortunately we have 3 workarounds.
+
+[title="3"]Workaround 1: Auto-kill slow searches[/title]
+
+A workaround is to auto-kill searches that take too long (over 5-10 seconds). It requires server-level MySQL access. That is only a proportion of searches (typically ones with a lot of results, yet none matching the other constraints you are searching against).
+
+1) Put this into your [tt]my.cnf/my.ini[/tt] file:
+[code]
+event_scheduler=ON
+[/code]
+
+2) Restart MySQL.
+
+3) Run [tt]mysql[/tt]
+
+4) Run this query: [tt]USE <yourdbname>;[/tt]
+
+5) Run this query:
+[code]
+delimiter |
+
+DROP EVENT IF EXISTS killslowsearches;
+
+CREATE EVENT killslowsearches ON SCHEDULE EVERY 5 SECOND
+
+DO
+        BEGIN
+        DECLARE done INT DEFAULT 0;
+        DECLARE connid INT UNSIGNED;
+        DECLARE cur1 CURSOR FOR SELECT ID FROM information_schema.PROCESSLIST 
+            WHERE COMMAND = 'Query' AND INFO LIKE '%text_original) AGAINST%' AND TIME >= 5;
+
+        DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+        OPEN cur1;
+
+        REPEAT
+                FETCH cur1 INTO connid;
+                IF NOT done THEN
+                        KILL connid;
+                END IF;
+        UNTIL done END REPEAT;
+        CLOSE cur1;
+        END|
+[/code]
+
+---
+
+[title="3"]Workaround 2: Auto-kill slow searches[/title]
+
+An alternate workaround is possible in MySQL 5.7+, as MySQL have introduced a query timeout setting.
+Set it in MySQL like:
+[code]
+SET GLOBAL MAX_STATEMENT_TIME=10000;
+[/code]
+(this is for 10 seconds, i.e. 10,000 milliseconds)
+
+[title="3"]Workaround 3: Auto-kill slow searches[/title]
+
+Another possible workaround might be to switch to InnoDB tables in MySQL 5.6+/MariaDB. However this is untested, and won't stop slow queries (it'll just stop them locking the whole table and slowing other users down).
 
 [concepts
  1_key="Boolean search"   1_value="A search carried out by testing for exact word or phrasal matches to a number of criteria"

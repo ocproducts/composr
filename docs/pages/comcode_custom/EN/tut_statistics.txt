@@ -1,4 +1,4 @@
-[title sub="Written by Philip Withnall, ocProducts"]Composr Tutorial: Activity statistics for your site (analytics)[/title]
+[title sub="Written by Philip Withnall (ocProducts)"]Composr Tutorial: Activity statistics for your site (analytics)[/title]
 
 {!stats:DOC_STATISTICS}
 

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Providing featured content[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Providing featured content[/title]
 
 [media width="150" description="The Admin Zone provides a list of tasks, including rotation of featured content" float="right"]data_custom/images/docs/featured_checklist.png[/media]
 There are a number of Composr systems that provide featured content, rather than archives of content, or actively worked-upon content. These systems are:
@@ -155,7 +155,7 @@ You may place as many independent hit counters as you like.
  - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]
  - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
  - [page="_SEARCH:tut_adv_galleries"]Providing galleries[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Advanced custom pages of information (via Comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
  - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
 
 {$SET,tutorial_tags,iotds,random_quotes,polls,forum_blocks,counting_blocks,awards,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to pull out content from your website, and put it in a featured spot. There are a number of methods available.}[block]main_tutorial_rating[/block]

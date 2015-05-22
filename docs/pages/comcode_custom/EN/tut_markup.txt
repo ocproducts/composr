@@ -1,4 +1,4 @@
-[title sub="Written by Philip Withnall, ocProducts"]Composr Tutorial: Introduction to XHTML, CSS and JavaScript[/title]
+[title sub="Written by Philip Withnall (ocProducts)"]Composr Tutorial: Introduction to XHTML, CSS and JavaScript[/title]
 
 This tutorial is an introduction to the main standard web technologies that Composr is built upon. It does not explain any technologies specific to Composr. If you need to learn about the Composr's own Tempcode technology, please read the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial.
 

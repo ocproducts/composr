@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Cleanup tools[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Cleanup tools[/title]
 
 Composr is designed to really help you with your website in every way possible, but without intruding or making assumptions. A number of tools are provided that may help you maintain your web site.
 

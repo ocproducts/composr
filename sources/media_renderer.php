@@ -167,10 +167,10 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
                 }
             }
         }
-        if (count($found) != 0) {
-            arsort($found);
-            return array_keys($found);
-        }
+    }
+    if (count($found) != 0) {
+        arsort($found);
+        return array_keys($found);
     }
 
     return null;

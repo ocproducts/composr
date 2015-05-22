@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running a virtual support desk[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a virtual support desk[/title]
 
 [media width="150" description="Configuring the support ticket and comment topic systems" float="right"]data_custom/images/docs/support_forum_config.png[/media]
 Composr can be used as an effective support desk tool. For those unfamiliar with the concept of a support desk, or who may not relate their personal needs to being an application of such, these are some common properties of a support desk system:

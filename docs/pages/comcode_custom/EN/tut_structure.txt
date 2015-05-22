@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Composr site structure[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Composr site structure[/title]
 
 Composr has a number of interacting systems, that together form the structure and navigation paradigm of your website. This tutorial will provide advanced detail to these systems, and show how they fit together. Users who just want to get content won't need to understand the full details of the Composr structure, but users needing complex navigations will.
 
@@ -95,7 +95,7 @@ The [tt]GLOBAL_HTML_WRAP.tpl[/tt] template defines how these panels fit together
 
 If '[tt]&keep_wide=1[/tt]'/'[tt]&wide=1[/tt]' is attached to the URL, the target page for any links will  not use any left/right panels. If '[tt]&keep_wide_high=1[/tt]'/'[tt]&wide_high=1[/tt]' is attached to the URL, the target page for any links will not use any left/right/top/bottom panels, and won't use the standard visual header or footer.
 
-Panel pages (by default) are Comcode pages that arrange blocks, some of which may be used to display menus. Blocks are described in the 'Custom pages of information (via Comcode pages)' tutorial, and are essentially dynamic sections of code (such as link menus, a login box, a search box, etc) that are pinpointed onto a Comcode page. Blocks may be inserted onto a Comcode page, and also into templates.
+Panel pages (by default) are Comcode pages that arrange blocks, some of which may be used to display menus. Blocks are described in the 'Adding standalone pages of content (via Comcode pages)' tutorial, and are essentially dynamic sections of code (such as link menus, a login box, a search box, etc) that are pinpointed onto a Comcode page. Blocks may be inserted onto a Comcode page, and also into templates.
 
 [title="4"]Boxes[/title]
 
@@ -253,10 +253,10 @@ There is a breadcrumb override facility in the Admin Zone that allows you to cha
  - [page="_SEARCH:tut_menus"]Customising what's on the menus[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
- - [page="_SEARCH:tut_comcode_pages"]Custom pages of information (via Comcode)[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Advanced custom pages of information[/page]
+ - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
  - [page="_SEARCH:tut_repository"]The Composr repository[/page]
  - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
  - [page="_SEARCH:tut_adv_structure"]Advanced site structure and flow[/page]
 
-{$SET,tutorial_tags,page_management,core_zone_editor,breadcrumbs,Structure and navigation,intermediate}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An explanation of the Composr systems that together form the structure and navigation for Composr-powered websites.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,page_management,core_zone_editor,breadcrumbs,Structure and navigation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An explanation of the Composr systems that together form the structure and navigation for Composr-powered websites.}[block]main_tutorial_rating[/block]

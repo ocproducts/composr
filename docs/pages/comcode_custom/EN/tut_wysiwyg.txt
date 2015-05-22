@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: WYSIWYG editing[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: WYSIWYG editing[/title]
 
 Composr "Long text" Comcode content is, by default, edited using a WYSIWYG editor. This tutorial provides some guidance on the WYSIWYG editor, including advanced information for those wanting to push it to the limit.
 

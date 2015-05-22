@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Providing downloads[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Providing downloads[/title]
 
 {!downloads:DOC_DOWNLOADS}
 

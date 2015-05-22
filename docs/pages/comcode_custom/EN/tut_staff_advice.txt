@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advice for choosing and managing staff[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advice for choosing and managing staff[/title]
 
 This is a short tutorial for tips on choosing staff, for those Internet sites that are wholly built as virtual communities run by volunteers.
 

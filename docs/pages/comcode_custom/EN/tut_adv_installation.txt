@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced installation[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advanced installation[/title]
 
 This tutorial covers advanced installation issues which most users do not need to be concerned with.
 

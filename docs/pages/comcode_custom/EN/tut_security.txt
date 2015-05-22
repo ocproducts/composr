@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Security[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Security[/title]
 
 ocProducts has put a lot of effort into making Composr very secure. We:
  - perform the practices of producing secure and robust code

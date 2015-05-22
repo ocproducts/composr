@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: The Composr repository[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr repository[/title]
 
 The Composr repository is a shadow representation of Composr's data.
 

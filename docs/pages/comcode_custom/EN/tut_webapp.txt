@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Web-applications, Composr, and PHP[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Web-applications, Composr, and PHP[/title]
 
 This tutorial will provide some background into the different kinds of solutions that are out there for creating websites. It is not only specific to Composr -- rather we hope to explain the inherent advantages of using a CMS such as our own.
 

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Code Book, contents and introduction[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Code Book, contents and introduction[/title]
 
 [surround="spaced_list"]
 The Code Book contains documentation to teach experienced developers how to program for Composr.

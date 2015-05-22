@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Performing an upgrade[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Performing an upgrade[/title]
 
 This tutorial will give background information for this process of upgrading Composr. The Composr upgrader does step you through the process, but further information will be given here so that you may gain a further understanding.
 

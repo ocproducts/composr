@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Introduction to programming[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Introduction to programming[/title]
 
 This tutorial serves as an introduction to programming, with a particular emphasis on PHP. Programming knowledge is not necessary to use Composr, and we do not provide support for re/new-programming issues, but those who wish to do advance customisation by themselves, or are otherwise interested, may wish to read this tutorial. This tutorial is not intended to fully explain PHP programming: few examples are given, as hopefully you will be able to use Composr source code to see examples, and use this tutorial as an explanation of the 'syntax'.
 
@@ -539,6 +539,6 @@ N/A is used to mark characters that have a special meaning.
  - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
  - [page="_SEARCH:codebook"]Composr Code Book[/page]
- - [url="PHP website"]http://www.php.net[/url] (I recommend you get the CHM reference guide -- very useful, I have it open all day!)
+ - [url="PHP website"]http://www.php.net[/url]
 
 {$SET,tutorial_tags,Development,PHP,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This huge tutorial serves as an introduction to programming, with a particular emphasis on PHP.}[block]main_tutorial_rating[/block]

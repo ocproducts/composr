@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Filtering using Filtercode syntax[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Filtering using Filtercode syntax[/title]
 
 Composr contains a filtering system for selecting content based upon defined filters. Filtercode is the language for defining filter strings, and is an advanced feature of Composr. It is not to be confused with Selectcode, which is the language for determining what categories to return results from.
 
@@ -136,7 +136,7 @@ If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCR
  - [page="_SEARCH:tut_fields_filter"]The form field filter system[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
  - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
 
 {$SET,tutorial_tags,Power tools,expert}{$SET,tutorial_add_date,Aug 2010}{$SET,tutorial_summary,How to filter content based upon field filtering queries.}[block]main_tutorial_rating[/block]

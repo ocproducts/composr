@@ -572,6 +572,7 @@ class Module_admin_themes
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
+
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR_THEME'), 'author', $author, true));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_WIDE'), do_lang_tempcode('DESCRIPTION_SUPPORTS_WIDE'), 'supports_wide', $supports_wide == 1));
@@ -579,7 +580,9 @@ class Module_admin_themes
         if ($name != 'default') {
             $fields->attach(get_category_permissions_for_environment('theme', $name, null, null, ($name == '')));
         }
+
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '805d278a21d59eaa4568c2a77fbb5073', 'TITLE' => do_lang_tempcode('ACTIONS'))));
+
         $fields->attach(form_input_tick(do_lang_tempcode('USE_ON_ZONES'), do_lang_tempcode('DESCRIPTION_USE_ON_ZONES'), 'use_on_all', $use_on_all_zones));
 
         // Mapping

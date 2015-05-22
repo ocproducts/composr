@@ -75,4 +75,4 @@ ModSecurity has this off by default, but turning it on causes most of the proble
 
  - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page]
 
-{$SET,tutorial_tags,intermediate}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,Explanation of how to configure ModSecurity for Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,regular}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,Explanation of how to configure ModSecurity for Composr.}[block]main_tutorial_rating[/block]

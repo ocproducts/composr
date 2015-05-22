@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Installing on Google App Engine[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Installing on Google App Engine[/title]
 
 [b]This functionality is currently not working. It works on the development server, but a GAE crash has prevented us making it work live. Google are investigating the issue.[/b]
 

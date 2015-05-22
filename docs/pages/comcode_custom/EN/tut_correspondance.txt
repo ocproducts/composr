@@ -1,4 +1,4 @@
-[title sub="Written by Philip Withnall, ocProducts"]Composr Tutorial: Correspondence between members[/title]
+[title sub="Written by Philip Withnall (ocProducts)"]Composr Tutorial: Correspondence between members[/title]
 
 At times you'll want to know how to talk to your members privately (i.e. not on the public forum). This tutorial only applies to websites using [concept]Conversr[/concept] -- if you're running another forum system, you'll have to consult its documentation with reference to "private/personal messaging". This tutorial covers Private Topics and inline personal posts.
 

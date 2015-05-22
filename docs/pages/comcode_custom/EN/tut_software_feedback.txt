@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Reporting problems and providing feedback[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Reporting problems and providing feedback[/title]
 
 This tutorial will provide you some advice for reporting different kinds of feedback for Composr. It will teach you how to do it the right way, specifically:
  - Comprehensively (you don't want to provide vague unactionable feedback)

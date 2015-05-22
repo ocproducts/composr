@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced provision of downloads[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advanced provision of downloads[/title]
 
 The Composr download system is an advanced system, specifically designed to be an effective tool on sites with very large numbers of downloads. It is also integrated with the points system, which is useful for sites where members publish their own 'works' as downloads.
 

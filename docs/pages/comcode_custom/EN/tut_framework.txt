@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: The Composr programming framework[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr programming framework[/title]
 
 [media width="150" description="Composr has a well documented API (code)" float="right"]data_custom/images/docs/framework_api.png[/media]
 Composr is not just a web application, but also a programming framework. Composr defines a very large, fully documented, API, and has numerous mechanisms for the addition of code. Programmers are able to cleanly extend or override any aspect of the system, to enhance Composr or bend Composr in any area necessary.
@@ -213,6 +213,6 @@ If you still are not convinced that Composr is the right choice for you, conside
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
  - [url="API guide"]{$BRAND_BASE_URL}/docs/api/[/url]
  - [page="_SEARCH:codebook"]Composr Code Book[/page]
- - [url="PHP website"]http://www.php.net[/url] (I recommend you get the CHM reference guide -- very useful, I have it open all day!)
+ - [url="PHP website"]http://www.php.net[/url]
 
 {$SET,tutorial_tags,core_addon_management,code_editor,Development,PHP,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr is not just a web application, but also a programming framework. Find out how the puzzle pieces fit together.}[block]main_tutorial_rating[/block]

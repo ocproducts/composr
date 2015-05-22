@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr/ocProducts FAQ[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr/ocProducts FAQ[/title]
 
 This page will answer frequently asked questions (FAQs) about Composr and ocProducts.
 
@@ -9,6 +9,10 @@ This page will answer frequently asked questions (FAQs) about Composr and ocProd
 [title="3"]What is Composr?[/title]
 
 Composr is a CMS (Content Management System) that allows you to create and manage your interactive and dynamic website from an easy to use administration interface. Composr is unique by the combination of a vast and diverse range of provided functionality, out-of-the-box usability, and an ability for almost unlimited customisation. Feature areas include Content, Community, Corporate (Enterprise), Collaboration and Commerce.
+
+[title="3"]What is ocPortal?[/title]
+
+Composr was called ocPortal for the first 11 years of its existence. You'll still find the name ocPortal popping up in various places.
 
 [title="3"]Why not just hire a programmer to create something from scratch?[/title]
 
@@ -32,25 +36,19 @@ No honest and competent company can guarantee their web application to be comple
  - have a written set of security standards that all developers comply with
  - have designed the Composr architecture to abstract away common security problems, such as 'SQL injections'
  - have written our code to pro-actively detect suspicious activity, alerting the user to it
- - have prepared a [page="_SEARCH:tut_security"]'security' tutorial[/page] giving a high level of technical detail on how to 'lock down' Composr beyond the high level of security provided by default
+ - have prepared a [page="_SEARCH:tut_security"]security tutorial[/page] giving a high level of technical detail on how to 'lock down' Composr beyond the high level of security provided by default
 
 If there does turn out to be a security flaw in Composr, we will endeavour to fix it as quickly as we possibly can.
 
 If you believe you have found a security flaw in Composr please [page="site:free_tickets"]contact us[/page], so we may fix it before hackers can find and exploit it.
 
-We have a [page="site:maintenance"]published policy[/page] on how we handle security and stability issues.
-
-[title="3"]What are the host requirements for Composr?[/title]
-
-Please see the [page="_SEARCH:tut_web_hosting"]'Web Hosting' tutorial[/page].
-
 [title="3"]Is Composr standards-compliant?[/title]
 
-We have gone to great lengths to make our code 100% compliant with all major standards, and present well in popular modern browsers. Composr even includes an inbuilt webstandards checker that ensures compliance with these standards, as well as identifies common mistakes and browser incompatibilities.
+We have gone to great lengths to make our code compliant with all major standards, and present well in popular modern browsers. Composr even includes an inbuilt webstandards checker that ensures compliance with these standards, as well as identifies common mistakes and browser incompatibilities.
 
 Supported standards include true XHTML5 support, valid hack-free CSS and the highest WAI accessibility standard (level 3) -- very few, if any, competing systems can claim this.
 
-As web standards are evolving and we often need to make use of ones that are not yet finalised, sometimes checker tools may product some warnings. This is normal for any modern website, as things are moving ahead so fast.
+As web standards are evolving and we often need to make use of ones that are not yet finalised, sometimes checker tools may produce some warnings. This is normal for any modern website, as things are moving ahead so fast.
 
 [title="3"]Do you support blogging?[/title]
 
@@ -68,7 +66,7 @@ Classified ads are supported in the 'catalogues' system. You'd add a catalogue f
 
 [title="3"]Will you implement (some feature)?[/title]
 
-ocProducts is very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="feedback_policy"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
+ocProducts is very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
  - we need to integrate any changes into our long-term development roadmap, but this is always changing as the Internet (and economy) evolves very rapidly and priorities shift, and new ideas often make old ideas irrelevant
  - we need for us to design a clean product suitable for our wider user-base, which makes decisions on features almost impossible to do in advance because it requires multiple levels of design before we can be completely clear on how things might work, and how well they would in relation to other plans and wider goals
 Users who need a new feature should bear in mind that Composr is Open Source and thus third-parties may advance development, or we support feature sponsorship on our tracker. We therefore try to explain that Composr as it stands today is a solid reliable product, but if you require enhancements then you should take responsibility to budget or plan for this in terms of sponsoring or contributing (this is part of the spirit of Open Source -- it is free, but it requires community investment to move forward).
@@ -114,7 +112,7 @@ What if the commercial vendor doesn't treat your relationship seriously, but you
 What if you want to have an in-house team make changes to the product?
 What if a commercial vendor has put in hidden backdoors for themselves or for governments?
 
-There are huge risks with commercial and/or closed-source solutions, and these risks are often far more serious than solution pricing. The risks of closed software could easily be the difference between a project succeeding and a project failing before launch, or a project having to be restarted ever couple of years.
+There are huge risks with commercial and/or closed-source solutions, and these risks are often far more serious than solution pricing. The risks of closed software could easily be the difference between a project succeeding and a project failing before launch, or a project having to be restarted every couple of years.
 
 [title="3"]How much does a website cost?[/title]
 
@@ -152,6 +150,8 @@ Composr is a British (in fact, English) company, so spelling is in British Engli
 
 [title="3"]The ocProducts development services are expensive aren't they?[/title]
 
+(We acknowledge this answer is very anglo-centric)
+
 The cost of developing complex websites does surprise some people, considering much of the software is free &ndash; but we are proud that we are actually a lot cheaper than the real competition, and our software provides substantial savings in the amount of time it takes to develop a complex site. Some people have an understanding of prices based on how the web was 10 years ago, when sites did a lot less and looked a lot worse, but over the years prices have risen in line with expectations (here's a [url="nice pricing explanation"]http://www.bigclick.com.au/blog/2009/04/05/is-web-development-expensive/[/url]).
 Professional service fees are calculated based on [page="forum:topicview:browse:10111"]what we've learnt through years in business[/page], or in other words, it's what has to be charged to remain a viable business (it's very competitive out there).
 Generally there are [url="3 brackets of professional fee"]http://www.howmuchdoesawebsitecost.com/[/url]:
@@ -181,6 +181,10 @@ And, if the company turns evil or otherwise fails to manage the project effectiv
 Composr is extremely compatible with different server configurations, tuned to work with many different problematic servers over a decade, and developed with automatic compatibility detection software. Unfortunately some web hosts provide crippled versions of PHP, that are either rewritten to limit functionality, or configured to disable basic functionality (unfortunately PHP allows any piece of hundreds of items of basic functionality to be arbitrarily disabled). In addition, cheap web hosts often fit large numbers of users onto a single shared server, which can result in a rationing of server resources that is not in any way workable.
 
 [title="2"]Compatibility[/title]
+
+[title="3"]What are the host requirements for Composr?[/title]
+
+Please see the [page="_SEARCH:tut_web_hosting"]'Web Hosting' tutorial[/page].
 
 [title="3"]Do you recommend Windows or Linux servers?[/title]
 
@@ -248,13 +252,15 @@ A new install will be slow at first, while templates/CSS/JavaScript/blocks compi
 
 [title="3"]Why do my backups not work?[/title]
 
-If there is something about your server configuration that prevents PHP scripts from executing for a long time, even if left running in the background, this will cause the backup system to fail. To check this is not an error, rather than a time-out, check your Composr error log.
+If there is something about your server configuration that prevents PHP scripts from executing for a long time, even if left running in the background, this will cause the backup system to fail. To check this is not an error, rather than a time-out, check your Composr error log. We recommend you do backups at the server-level though, not the Composr level.
 
 [title="3"]How do I get more than <just a few megabytes> of upload support?[/title]
 
 PHP defines its own upload limits, which Composr can not exceed. Try renaming the bundled 'recommended.htaccess' file to '.htaccess'. If this fails read the answer to "Why does [tt]recommended.htaccess[/tt] not work?". If you still have problems you will need to persuade the server administrator to increase the limits defined in the PHP 'post_max_size' and 'upload_max_filesize' options.
 
-Please note that it is not advisable to try and upload more than around 50MB, regard of server limits. HTTP uploads (uploads from web forms) are very unreliable -- the smallest connection problem results in the entire download failing, as there is no error correction or resume support.
+By the way, make sure you define MB units like '50M', not '50MB'. 'MB' is not a recognised unit by PHP.
+
+Please note that it is not advisable to try and upload more than around 200MB, regard of server limits. HTTP uploads (uploads from web forms) are very unreliable -- the smallest connection problem results in the entire download failing, as there is no error correction or resume support.
 Composr provides ways to reference files uploaded via other means (e.g. [abbr="File Transfer Protocol"]FTP[/abbr]):
  - the Comcode [tt]media[/tt] tag can reference files by URL
  - the downloads addon supports referencing existing URLs, copying of existing remote URLs, and even batch importing from FTP directories
@@ -276,19 +282,15 @@ It may be possible to get Composr to raise the memory limit for you. Our default
 If renaming the [tt]recommended.htaccess[/tt] file results in "Internal Server Error" error messages, see the "I've renamed recommended.htaccess to .htaccess, but why Composr won't load anymore" answer below.
 If you are not successful in raising the memory limit you will need to contact the web host to ask them to do it, as on some hosts the limit is locked down at a server level.
 
-[title="3"]Why do I get errors about 'imagetypes()' or other errors relating to image or GD?[/title]
-
-You may have enabled 'GD' in your configuration, but do not actually have GD configured into PHP. GD comes as standard, and is very widespread across web-hosts, and Composr uses it for various areas. Officially, GD is required, but if you encounter problems when it is disabled in your configuration, please submit a bug report.
-
 [title="3"]Why do I get an Internal Server Error or '500' error when saving the site configuration, using the WYSIWYG editor, or editing templates?[/title]
 
-Your server has an extension called 'mod_security' enabled. We have an article about this in the community documentation.
+Your server has an extension called 'ModSecurity' enabled. We have an article about this in the community documentation.
 
 [title="3"]Why do I get an Internal Server Error or '500' error (often when adding a new zone or going to the Installation Options)?[/title]
 
 Check that the PHP file you are loaded up by URL (e.g. [tt]config_editor.php[/tt] or [tt]mynewzone/index.php[/tt]) does [b]not[/b] have write access (use your FTP tool to 'chmod' the file). Often Apache servers will not allow script files to load if they have write access.
 
-[title="3"]I've renamed recommended.htaccess to .htaccess, but why Composr won't load anymore (Internal Server Error or '500' error)?[/title]
+[title="3"]I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?[/title]
 
 Unfortunately the Apache web server gives very poor error feedback, and setting features that it's configuration environment doesn't understand can cause it to fail. Try commenting out lines (put "#" at the start of the line) to work out what lines cause the problems, and leave those lines commented out.
 Read the next question's answer also.
@@ -324,9 +326,13 @@ register_globals="off"
 ; Put some limits up. Composr is stable enough not to cause problems- it'll only use higher limits when it really needs them
 memory_limit="128M"
 max_input_time="60"
+max_input_vars="2000"
 
 ; This unavoidably kills filedump folder creation, and stops us controlling our script execution time
 safe_mode="off"
+
+; This causes unstability (and is known/documented to) but some hosts turn it on
+mbstring.func_overload="0"
 
 ; Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
 suhosin.post.max_vars="2000"
@@ -405,7 +411,7 @@ Please check the documentation -- we have a [page="_SEARCH:tut_moving"]tutorial 
 
 [title="3"]Why don't non-validated posts show up in the staff checklist?[/title]
 
-This is an intentional design decision, to make sure the tally only took into account website resources, and wasn't always 'spammed to the point of meaninglessness' by an ongoing stream of forum posts. However, we have since learnt that some users prefer the tally to be more transparent, and thus we have made an unofficial method to set this. Please see the 'hidden functionality' section of our Code Book (available from our Documentation section):
+This is an intentional design decision, to make sure the tally only took into account website resources, and wasn't always 'spammed to the point of meaninglessness' by an ongoing stream of forum posts. However, we have since learnt that some users prefer the tally to be more transparent, and thus we have made an unofficial method to set this. Please see the 'hidden functionality' section of our Code Book (available from our Documentation section).
 
 [title="3"]Why do I get an error about a missing comment topic forum when I try to use comment topics?[/title]
 
@@ -426,7 +432,7 @@ Simply remove [tt]{$,page hint: no_wysiwyg}[/tt] from the bottom of the page's C
 
 [title="3"]Various blocks require ID codes for what content to include. Where do I find these?[/title]
 
-Look at the URL you see in the web browser address bar when you have clicked through to edit that piece of content. It'll include the ID (usually a number) near the end. If the ID is not a number, it will have been manually chosen.
+Look at the URL you see in the web browser address bar when you have clicked through to edit that piece of content. It'll include the ID (usually a number) near the end. If the ID is not a number, it will have been manually chosen by you (e.g. gallery names are manually chosen).
 
 [title="3"]PHP files need to end with "?>" but none of Composr's do[/title]
 
@@ -434,7 +440,7 @@ This is a common misunderstanding. It is actually the documented PHP best practi
 
 [title="3"]Why isn't all the code Object Orientated?[/title]
 
-We do use a lot of OOP in Composr, but a lot of the general library code is not in classes. Some programmers will strongly disagree with this way of coding, but it is done for performance reasons and productivity reasons. For a number of reasons, heavy use of OOP adds performance costs to a dynamic language like PHP (code parse time, including memory, and execution time). Software like the Linux kernel or Wordpress don't use much OOP at all, and are wildly successful, and the promises of the OOP-powered software component revolution never really worked out in practice. We consider it a good idea for programmers to consider practicalities over religion, with a proper cost/benefit analysis rather than an extreme/dismissive attitude.
+We do use a lot of OOP in Composr, but a lot of the general library code is not in classes. Some programmers will strongly disagree with this way of coding, but it is done for performance reasons and productivity reasons. For a number of reasons, heavy use of OOP adds performance costs to a dynamic language like PHP (code parse time, memory usage, and execution time). Software like the Linux kernel or Wordpress don't use much OOP at all, and are wildly successful. We go into more detail about the reasonings behind these conscious engineering decisions in the Code Book.
 
 [title="2"]Themes/Appearance[/title]
 
@@ -464,10 +470,10 @@ No, there is too much CSS to feasibly make a map as is often used for forum soft
 
 [title="3"]How can I change how times are displayed?[/title]
 
-You can either change the settings for the whole of Composr by changing key strings in the [tt]global[/tt] language file, or you can make specific changes for individual templates. To make changes for individual templates, use the [tt]FROM_TIMESTAMP[/tt] symbol on the [tt]RAW_[/tt] prefixed equivalent that usually exists to the default date/time parameter to the template. For example, [tt]{$FROM_TIMESTAMP*,%d %y,{RAW_DATE}}[/tt]. For documentation about the syntax, please see the PHP manual:
+To change the settings for the whole of Composr you change some key strings in the [tt]global[/tt] language file. For documentation about the syntax, please see the PHP manual:
 http://uk2.php.net/manual/en/function.strftime.php
 
-[title="3"]How do I edit the XHTML head and/or the opening and closing XHTML body tags?[/title]
+[title="3"]How do I edit the HTML head and/or the opening and closing HTML body tags?[/title]
 
 It is all in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template.
 
@@ -498,9 +504,6 @@ There is often confusion about the difference between a block and a box. A block
 The box type a block uses is changeable by editing the template of that block; this is often useful if you want to place a [tt]main[/tt] block on a panel where a [tt]side[/tt] block would usually go.
 If you want to make your own box in Comcode, just use the 'box' Comcode tag around some existing Comcode.
 If you want to place a block, use the 'Add block' button you see whilst editing Comcode pages.
-
-[b]How do I enable native right-click in the WYSIWYG editor?[/b]
-We use ckeditor, which disables this. However, if you edit the [tt]WYSIWYG_SETTINGS[/tt] template in Composr then you'll see we left a comment showing what plugins to disable to allow native right-click to be restored.
 
 ---
 

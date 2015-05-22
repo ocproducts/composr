@@ -1,4 +1,4 @@
-[title sub="Written by Rajesh Kumar, ocProducts"]Composr Tutorial: Writing mobile apps - the Composr Mobile SDK[/title]
+[title sub="Written by Rajesh Kumar (ocProducts)"]Composr Tutorial: Writing mobile apps - the Composr Mobile SDK[/title]
 
 TODO
 

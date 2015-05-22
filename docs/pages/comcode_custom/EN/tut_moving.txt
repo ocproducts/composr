@@ -1,12 +1,20 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Moving sites[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Moving sites[/title]
 
 [box="Important note" width="25em" float="right"]When moving sites, do not install Composr on the new one -- transference is done at the file and database level, not by importing Composr data into a new installation.[/box]
 
 The Composr quick installer handles all the work to installing Composr on a server automatically. However, if you choose to move to another server, some of this work will need to be re-done. This tutorial will explain the issues involved.
 
-This tutorial will assume you are moving servers. If you are moving hosting accounts within the same server you can follow the same process.
+This tutorial will assume you are moving servers. If you are moving hosting accounts within the same server you can follow the same process. If you are merely changing URLs within the same hosting account then all you need to do is move the files (if appropriate) and change the base URL setting (see "Changing URL").
 
 [contents]decimal,lower-alpha[/contents]
+
+[title="2"]Introduction[/title]
+
+There are two fundamental parts to an Composr site:
+1) The files
+2) The database
+
+To copy to another server/hosting-account, you would need to copy both.
 
 [title="2"]Files[/title]
 
@@ -49,24 +57,30 @@ Backup is best done using the shell, via the [tt]mysqldump[/tt] command.
 [code]
 mysqldump -uusername -ppassword database > filename.sql
 [/code]
-If you can't use the shell:
-Reasonable web hosts allow it to work via phpMyAdmin; bad web hosts pretend to but it ends up timing-out with an error message and/or a truncated file.
+Download the .sql file to your machine. This file is called an "SQL dump".
 
-Download the file to your own machine, then upload it to your new server using SFTP/FTP.
+[box="If you can't use the shell"]
+Reasonable web hosts allow you to directly download an SQL dump via phpMyAdmin. [tt]mysqldump[/tt] is preferrable as it is more reliable, but phpMyAdmin usually works. Be aware though that bad web hosts pretend to but it ends up timing-out with an error message and/or a truncated file.
+[/box]
 
-Restoration is best done using the shell, via the [tt]mysql[/tt] command:
+Upload the SQL dump to your new server using SFTP/FTP.
+
+Restoration is then best done via the [tt]mysql[/tt] command:
 [code]
 mysql -uusername -ppassword database < filename.sql
 [/code]
-If you don't have shell access to import a database you'll probably end up trying to use whatever the web hosting control panel provides, which is usually phpMyAdmin. However you will struggle to import large databases with this. You may therefore find this tool useful: http://www.ozerov.de/bigdump/.
 
-If the database settings are different, you will need to use the [tt]config_editor.php[/tt] script to update your Composr settings (or edit [tt]_config.php[/tt] by hand).
+[box="If you can't use the shell"]
+If you don't have shell access to import a database you'll probably end up using phpMyAdmin again to restore. However you will struggle to import large databases with this, as it is much more problematic restoring than backing up. You may therefore find this tool useful: http://www.ozerov.de/bigdump/.
+[/box]
+
+If the new database settings are different to the old ones, you will need to use the [tt]config_editor.php[/tt] script to update your Composr settings (or edit [tt]_config.php[/tt] by hand).
 You may need to update the following settings:
 [tt]db_site[/tt], [tt]db_site_host[/tt], [tt]db_site_user[/tt], [tt]db_site_password[/tt], [tt]db_forums[/tt], [tt]db_forums_host[/tt], [tt]db_forums_user[/tt], [tt]db_forums_password[/tt]
 
 [title="2"]Changing URL[/title]
 
-If you are moving URLs, then you need to use the base configuration editor (the [tt]config_editor.php[/tt] script) to change your base URL setting, and then to clear your caches using the [tt]upgrader.php[/tt] script.
+If you are moving URLs, then you need to use the base configuration editor (the [tt]config_editor.php[/tt] script) to change your base URL setting. Composr automatically will clear out your caches if it sees the base URL has changed.
 
 [title="3"]Caches[/title]
 

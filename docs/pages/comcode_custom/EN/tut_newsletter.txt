@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Running a newsletter[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a newsletter[/title]
 
 {!newsletter:DOC_NEWSLETTER}
 

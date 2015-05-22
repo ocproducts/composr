@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Favicons, Web fonts, Media file compatibility[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Favicons, Web fonts, Media file compatibility[/title]
 
 This tutorial will explain and detail some of the fringe features of web technologies.
 

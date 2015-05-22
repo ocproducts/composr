@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Filtering using Selectcode syntax[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Filtering using Selectcode syntax[/title]
 
 Selectcode is a special Composr syntax (language) for writing filter lists. In other words, it is a way of writing down what you would like to be matched.
 Various areas of Composr support the Selectcode syntax, including the [tt]main_content[/tt] block, and the [tt]if_in_group[/tt] Comcode tag.
@@ -120,7 +120,7 @@ You may wonder how to find IDs for use in filtering. The best way is to look at 
  - [page="_SEARCH:tut_fields_filter"]The form field filter system[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Advanced Custom pages of information (via comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
  - [page="_SEARCH:tut_filtercode"]Filtering using Filtercode syntax[/page]
 
 {$SET,tutorial_tags,Power tools,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Selectcode is our language for saying what content you would like to be matched/selected. Learn how to use it.}[block]main_tutorial_rating[/block]

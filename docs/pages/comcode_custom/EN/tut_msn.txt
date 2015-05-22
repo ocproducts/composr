@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced techniques for multi-site-networks[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advanced techniques for multi-site-networks[/title]
 
 {!menus:DOC_NETLINK}
 

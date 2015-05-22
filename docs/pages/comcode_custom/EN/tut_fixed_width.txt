@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Fixed-width layouts[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Fixed-width layouts[/title]
 
 Fixed width is available as a theme option in Composr, and is on by default. This tutorial explains the implementation and pros & cons of it.
 

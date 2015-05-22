@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Addon index[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Addon index[/title]
 
 This tutorial features an index of the Composr addons, with links to tutorials that are relevant to them, and other useful information and links.
 
@@ -255,7 +255,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
 			<td>Manage new pages on the website, known as Comcode pages.</td>
 			<!--<td>Yes</td>-->
 			<td><kbd></kbd></td>
-			<td><a href="http://compo.sr/docs10/tut_comcode_pages.htm">Custom pages of information (via Comcode)</a><br /><br /><a href="http://compo.sr/docs10/tut_adv_comcode_pages.htm">Advanced custom pages of information</a><br /><br /><a href="http://compo.sr/docs10/tut_information.htm">Choosing how to publish</a></td>
+			<td><a href="http://compo.sr/docs10/tut_comcode_pages.htm">Adding standalone pages of content (via Comcode)</a><br /><br /><a href="http://compo.sr/docs10/tut_adv_comcode_pages.htm">Advanced Adding standalone pages of content</a><br /><br /><a href="http://compo.sr/docs10/tut_information.htm">Choosing how to publish</a></td>
 			<td></td>
 			<td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_comcode_pages&amp;status_id=10">Link</a></td>
 		</tr>

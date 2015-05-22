@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Coordination between staff and staff/members[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Coordination between staff and staff/members[/title]
 
 When you run a Composr site, you do not merely create a website for people to visit. As an interactive, dynamic, system, Composr can provide different features for different users, and in particular, different features for staff than are available to ordinary members or visitors. Some of these features are specifically written to be for staff, some of these are a result of the [concept]privileges[/concept] system, and some are the combination between the ability to create new categories/forums and control access to these using permissions. The term 'staff' is used loosely in this tutorial, to mean anyone with the necessary permission: by default, it is staff who have the mentioned permissions, but this may be altered.
 

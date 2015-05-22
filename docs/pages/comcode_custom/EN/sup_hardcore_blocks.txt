@@ -1,4 +1,4 @@
-[title sub="Written by Chris Warburton, ocProducts"]Composr Supplementary: A PHP/Composr coding primer[/title]
+[title sub="Written by Chris Warburton (ocProducts)"]Composr Supplementary: A PHP/Composr coding primer[/title]
 
 This tutorial will explain the fundamentals of PHP and Composr programming, with a focus around building mini-blocks in Composr.
 It will work through various practical examples, building up key theoretical understanding in the process.
@@ -638,6 +638,10 @@ Although types are very useful for finding programming mistakes, like most of PH
 
 [title="2"]See also[/title]
 
+ - [page="_SEARCH:tut_hardcore_1"]Making an addon (part 1)[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
+ - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [page="_SEARCH:tut_hardcore_minimodules"]Writing mini-modules[/page]
+ - [url="PHP website"]http://www.php.net[/url]
 
-{$SET,tutorial_tags,Development,PHP,intermediate}{$SET,tutorial_add_date,Aug 12}{$SET,tutorial_summary,A worked guide to writing new PHP code for Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Development,PHP,regular}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,A worked guide to writing new PHP code for Composr.}[block]main_tutorial_rating[/block]

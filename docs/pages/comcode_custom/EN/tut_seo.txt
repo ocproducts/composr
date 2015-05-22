@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Improving your search engine ranking[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Improving your search engine ranking[/title]
 
 For most web sites, it is important to draw in visitors. There are many ways to do this, and one of these ways is by improving your site's 'findability' in search engines; this includes presence in the results for keywords appropriate to the visitors you wish to attract, and your actual position in the displayed search results.
 
@@ -82,6 +82,25 @@ One small disadvantage of URL Monikers, is it makes it a bit harder to find out 
 <meta name="DC.Identifier" content="http://baseurl/data/page_link_redirect.php?id=_SEARCH%3Asomemodule%3Aview%3A13" />
 [/code]
 This is very cryptic, but the ID number is on the end after [tt]%3A[/tt] (in this example, it's 13).
+
+[title="2"]Google Webmaster Tools[/title]
+
+Google Webmaster Tools lets you monitor search engine crawling activity on your website. Other search engines often have similar systems.
+You first need to prove ownership of a particular site via an automated process, then the range of tools become available to you.
+
+[title="3"]Stay calm[/title]
+
+People often have questions regarding Google Webmaster Tools because it displays various errors and warnings and people fear these impact SEO.
+
+Most errors displayed have nothing to do with hurting your general search ranking, they are only warnings about specific URLs, rather the site as a whole. Any non-trivial site will have many of these errors, if only because sites change over time and Google has old URLs in its database. Google obviously is not going to penalise all these websites, and won't penalise you for some untidiness either.
+
+It's important to understand that Google doesn't do a lot of negotiation about what exactly it should do with your site. There are a few standards that kind of give it hints, like [tt]robots.txt[/tt], canonical URLs, nofollow headers, robot meta tags, the XML sitemap, and it doesn't put URLs containing HTTP errors into it's search index, but generally what it does is it trawls through your site repeatedly, noting down all the URLs it finds. It then remembers the URLs and will continue to try them in the future, regardless of whether they are valid anymore.
+
+Often access-denied errors show up. You should not think of Google being given a error as something necessarily wrong with your site. It simply means Google made a request, and received an error response. That is a normal and legitimate thing to happen, especially if it is a 401 "access denied" response. It's a normal part of the web, not a system failure. This is a subtle but important point: Google getting a 401 response is not like a police caution, it is normal and instructional. It is an error with respect to that URL not being accessible, but not an error with respect to a system failure or even implication of a bad link (it is valid to give users a link that returns a 401 response in some cases, for example, telling them to log in).
+
+An anally-retentive attitude isn't wholly bad to SEO, especially if you are tuning pages or crafting how things are linked together -- but it doesn't work well if you take Webmaster Tool warnings out of context, as something that needs to be eliminated 100%. Google Webmaster Tools provide these warnings to help you review things in general.
+
+Of course, if you are seeing an error on a particular URL and you want that URL to be crawled, you should look into it.
 
 [concepts
  1_key="SEO"           1_value="Search engine optimisation: the process of improving a website's ranking in search engine results"

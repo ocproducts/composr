@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Advanced configuration[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advanced configuration[/title]
 
 This tutorial will cover various advanced aspects of Composr configuration.
 

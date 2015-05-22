@@ -1,4 +1,4 @@
-[title sub="Written by Rajesh Kumar, ocProducts"]Composr Tutorial: Analytics and A/B testing - using Google Analytics[/title]
+[title sub="Written by Rajesh Kumar (ocProducts)"]Composr Tutorial: Analytics and A/B testing - using Google Analytics[/title]
 
 TODO
 

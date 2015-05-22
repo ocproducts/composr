@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: Notifications[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Notifications[/title]
 
 Composr includes a highly-configurable notification system for members to be alerted on what is going on.
 
@@ -74,6 +74,17 @@ You will see the following columns:
 If no checkboxes are checked then the members will not be able to recieve the notification at all. This is quite a common configuration, essentially allowing you to turn off a notification for the whole website.
 
 Note that the settings apply to all members (while respecting the notification permissions). You cannot set against specific usergroups.
+
+[title="2"]Security[/title]
+
+Notifications broadly fall into 3 categories:
+1) Notifications sent directly to a specific member, relating to them
+2) Privilege-affected notifications, e.g. monitoring a download category, and hence needing access to that category to receive the notification
+3) Staff notifications
+
+To stop Composr becoming bloated/over-complex, there is no configurable granularity with Staff notifications. Any one with the "May listen to notifications intended for staff" privilege may receive them.
+
+However, you may come into a situation where you do want some granularity. A nice workaround is to have a staff account with a gmail address, and use gmail forwarding rules to forward to others based upon subject line. Then deny regular staff the "May listen to notifications intended for staff" privilege.
 
 [title="2"]See also[/title]
 

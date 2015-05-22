@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham, ocProducts"]Composr Tutorial: People in their roles[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: People in their roles[/title]
 
 Composr is a huge product, and as a result, has a large number of concepts designed for various systems within it.
 
