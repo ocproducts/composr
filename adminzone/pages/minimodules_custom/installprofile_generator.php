@@ -107,7 +107,7 @@ $profile .= <<<END
 END;
 $hooks = find_all_hooks('modules', 'admin_setupwizard');
 foreach (array_keys($hooks) as $hook) {
-    $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
+    $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
     if (!file_exists($path)) {
         $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
     }

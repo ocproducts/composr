@@ -247,7 +247,7 @@ class Module_admin_setupwizard
         $installprofiles->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
         require_code('zones2');
         foreach (array_keys($hooks) as $hook) {
-            $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
+            $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
             if (!file_exists($path)) {
                 $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
             }
@@ -409,8 +409,10 @@ class Module_admin_setupwizard
         ));
         // ... unless the install profile really is shunning them
         foreach ($addon_list_override_to_off_by_default as $_to_find) {
-            $_found = array_search($_to_find, $addon_list_on_by_default);
-            unset($addon_list_on_by_default[$_found]);
+            if (!is_null($addon_list_on_by_default)) {
+                $_found = array_search($_to_find, $addon_list_on_by_default);
+                unset($addon_list_on_by_default[$_found]);
+            }
             $_found = array_search($_to_find, $addon_list_advanced_on_by_default);
             unset($addon_list_advanced_on_by_default[$_found]);
         }
@@ -465,7 +467,7 @@ class Module_admin_setupwizard
             if ((substr($addon_name, 0, 5) != 'core_') && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
                 $is_advanced_on_by_default = in_array($addon_name, $addon_list_advanced_on_by_default);
                 $is_advanced_off_by_default = in_array($addon_name, $addon_list_advanced_off_by_default);
-                $install_by_default = ((in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || ((is_null($addon_list_on_by_default)) && (!$is_advanced_off_by_default)));
+                $install_by_default = ((!is_null($addon_list_on_by_default)) && (in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || ((is_null($addon_list_on_by_default)) && (!$is_advanced_off_by_default)));
 
                 $addon_description = $row['description'];
                 if ((substr($addon_description, -1) != '.') && ($addon_description != '')) {
@@ -514,7 +516,7 @@ class Module_admin_setupwizard
 
         $installprofile = post_param_string('installprofile', '');
         if ($installprofile != '') {
-            $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard_installprofiles/' . filter_naughty_harsh($installprofile) . '.php';
+            $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($installprofile) . '.php';
             if (!file_exists($path)) {
                 $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($installprofile) . '.php';
             }
@@ -529,7 +531,7 @@ class Module_admin_setupwizard
         $hooks = find_all_hooks('modules', 'admin_setupwizard');
         foreach (array_keys($hooks) as $hook) {
             if (post_param_integer('addon_' . $hook, 0) == 1) {
-                $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
+                $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                 if (!file_exists($path)) {
                     $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                 }
@@ -960,7 +962,7 @@ class Module_admin_setupwizard
                         $addon_info['author'] = ''; // Fudge, to stop it dying on warnings for official addons
 
                         // Check dependencies
-                        $dependencies = $addon_info['dependencies_on_this'];
+                        $dependencies = isset($addon_info['dependencies_on_this']) ? $addon_info['dependencies_on_this'] : array();
                         foreach (array_keys($uninstalling) as $d) {
                             if (in_array($d, $dependencies)) {// Can mark this dependency as irrelevant, as we are uninstalling the addon for it anyway
                                 unset($dependencies[array_search($d, $dependencies)]);
@@ -1020,7 +1022,7 @@ class Module_admin_setupwizard
             $hooks = find_all_hooks('modules', 'admin_setupwizard');
             foreach (array_keys($hooks) as $hook) {
                 if ((post_param_integer('addon_' . $hook, 0) == 1) || ($hook == 'core')) {
-                    $path = get_file_base() . '/sources_custom/modules/systems/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
+                    $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                     if (!file_exists($path)) {
                         $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                     }
@@ -1156,7 +1158,7 @@ class Module_admin_setupwizard
         return do_next_manager($this->title, do_lang_tempcode('SUCCESS'),
             array(
                 array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'edit'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
-                array('menu/pages/help', array(null, array(), '')),
+                array('menu/start', array(null, array(), '')),
                 array('menu/cms/cms', array(null, array(), 'cms')),
                 array('menu/adminzone/adminzone', array(null, array(), 'adminzone')),
             ),
