@@ -25,7 +25,7 @@ There is a major problem with identifying users by IP address, and that is one o
 [title="2"]Tools at your disposal[/title]
 
 [media width="150" description="Tools available in the Admin Zone security section" float="right"]data_custom/images/docs/trace_menu.png[/media]
-[media width="150" description="Tools available in the Admin Zone usage section" float="right"]data_custom/images/docs/trace_menu2.png[/media]
+[media width="150" description="Tools available in the Admin Zone Audit Section" float="right"]data_custom/images/docs/trace_menu2.png[/media]
 Composr provides a number of features for tracking IP addresses:
  - When a guest makes a post on [concept]Conversr[/concept], the IP address is viewable by putting the mouse over the listed name of the guest poster (where the user-name of a real member usually resides). If you click it, it'll do an investigate-user operation on the IP address
  - For every page view, the IP address of the page viewer is stored. This allows detection of what areas of the site a viewer has visited, and in what order

@@ -60,7 +60,7 @@ In general:
  - [b]Write for a broad audience[/b]. Other users are probably also reading your report. Don't write the report as something about you and your site, try to keep the focus on the problem itself, and Composr.
  - [b]Assume the staff have amnesia[/b]. You may have previously interacted with staff, and therefore assume details of this will be remembered. However, assuming 4 issues are dealt with per day, that means 1460 issues per year - so please forgive that staff will often dump their memory after dealing with something.
 
-If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in the Admin Zone, under the Usage section). The error log shows all non-user-errors that have occurred on your site.
+If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in the Admin Zone, under the Audit Section). The error log shows all non-user-errors that have occurred on your site.
 
 If your report is not clear enough for us to [i]mmediately[/i] see it as a bug we may require you to post with a commercial ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
 
