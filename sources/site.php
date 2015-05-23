@@ -475,11 +475,19 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
     if ($link_to_self_entrypoint) {
         $label = ($BREADCRUMB_SET_SELF === null) ? $DISPLAYED_TITLE : $BREADCRUMB_SET_SELF;
         if ($label !== null) {
-            if (count($BREADCRUMB_SET_PARENTS) != 0) {
-                $stub->attach(do_template('BREADCRUMB_SEPARATOR'));
+            $label_eval = is_object($label) ? $label->evaluate() : $label;
+            $last_breadcrumb_label_eval = $BREADCRUMB_SET_PARENTS[count($BREADCRUMB_SET_PARENTS) - 1][1];
+            if (is_object($last_breadcrumb_label_eval)) {
+                $last_breadcrumb_label_eval->evaluate();
             }
 
-            $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+            if ($label_eval != $last_breadcrumb_label_eval) {
+                if (count($BREADCRUMB_SET_PARENTS) != 0) {
+                    $stub->attach(do_template('BREADCRUMB_SEPARATOR'));
+                }
+
+                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+            }
         }
     }
 
@@ -1769,7 +1777,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
 function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_sir = true, $jumps = 0)
 {
     if ($jumps == 10) {
-        return array();
+        return array(); // Probably a loop
     }
 
     $map = array('page' => $the_page);
@@ -1831,10 +1839,8 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
     if (!$no_link_for_me_sir) {
         $segments[] = array($page_link, $title);
     } else {
-        if ($jumps == 0) {
-            if (!(((is_string($title)) && ($title == '')) || ((is_object($title)) && ($title->is_empty())))) {
-                $segments[] = array('', $title);
-            }
+        if (!(((is_string($title)) && ($title == '')) || ((is_object($title)) && ($title->is_empty())))) {
+            $segments[] = array('', $title);
         }
     }
 
