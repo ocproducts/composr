@@ -139,7 +139,7 @@ class Hook_addon_registry_composr_homesite_support_credits
             'sources_custom/hooks/systems/page_groupings/support_credits.php',
             'adminzone/pages/modules_custom/admin_customers.php',
             'lang_custom/EN/customers.ini',
-            'text_custom/EN/support_credits_licence.txt',
+            'text_custom/EN/support_credits_terms.txt',
             'sources_custom/hooks/modules/members/customers.php',
             'sources_custom/hooks/systems/ecommerce/support_credits.php',
             'sources_custom/hooks/systems/cns_cpf_filter/customers.php',

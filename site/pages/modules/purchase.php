@@ -198,8 +198,8 @@ class Module_purchase
         if ($type == 'message') {
             return $this->message();
         }
-        if ($type == 'licence') {
-            return $this->licence();
+        if ($type == 'terms') {
+            return $this->terms();
         }
         if ($type == 'details') {
             return $this->details();
@@ -311,12 +311,12 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $licence = method_exists($object, 'get_agreement') ? $object->get_agreement($type_code) : '';
+        $terms = method_exists($object, 'get_terms') ? $object->get_terms($type_code) : '';
         $fields = method_exists($object, 'get_needed_fields') ? $object->get_needed_fields($type_code) : null;
         if ((!is_null($fields)) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => ($licence == '') ? (is_null($fields) ? 'pay' : 'details') : 'licence', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
+        $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
 
         if (method_exists($object, 'product_info')) {
             $text->attach($object->product_info(get_param_integer('type_code'), $this->title));
@@ -332,11 +332,11 @@ class Module_purchase
     }
 
     /**
-     * Licence agreement step.
+     * Terms and conditions step.
      *
      * @return tempcode The result of execution.
      */
-    public function licence()
+    public function terms()
     {
         require_lang('installer');
 
@@ -352,14 +352,14 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $licence = $object->get_agreement($type_code);
+        $terms = $object->get_terms($type_code);
         $fields = $object->get_needed_fields($type_code);
         if ((!is_null($fields)) && ($fields->is_empty())) {
             $fields = null;
         }
         $url = build_url(array('page' => '_SELF', 'type' => is_null($fields) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_LICENCE', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'LICENCE' => $licence)), $this->title, null);
+        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_LICENCE', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'LICENCE' => $terms)), $this->title, null);
     }
 
     /**

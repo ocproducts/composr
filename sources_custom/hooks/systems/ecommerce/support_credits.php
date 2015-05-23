@@ -90,14 +90,14 @@ class Hook_ecommerce_support_credits
     }
 
     /**
-     * Get the agreement for use in the purchase wizard.
+     * Get the terms and conditions for use in the purchase wizard.
      *
      * @return string The message.
      */
-    public function get_agreement()
+    public function get_terms()
     {
         require_code('textfiles');
-        return read_text_file('support_credits_licence', 'EN');
+        return read_text_file('support_credits_terms', 'EN');
     }
 
     /**

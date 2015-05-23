@@ -697,7 +697,7 @@ class Hook_ecommerce_catalogue_items
             }
         }
 
-        $licence = method_exists($this, 'get_agreement') ? $this->get_agreement(strval($id)) : '';
+        $terms = method_exists($this, 'get_terms') ? $this->get_terms(strval($id)) : '';
 
         $fields = method_exists($this, 'get_needed_fields') ? $this->get_needed_fields(strval($id)) : null;
 
@@ -713,7 +713,7 @@ class Hook_ecommerce_catalogue_items
 
         $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
 
-        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($licence == '') ? (is_null($fields) ? 'pay' : 'details') : 'licence', 'type_code' => strval($id), 'id' => $id), '_SELF');
+        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
 
         $map['CART_BUTTONS'] = do_template('CATALOGUE_ENTRY_CART_BUTTONS', array(
             '_GUID' => 'd4491c6e221b1f06375a6427da062bac',

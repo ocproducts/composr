@@ -280,6 +280,7 @@ class Module_admin
             array('block', 'widget'), // Joomla uses 'module', but we don't want to synonym this as it means something else in Composr
             array('moniker', 'slug'),
             array('guest', 'anonymous'),
+            array('rules', 'license', 'licence', 'agreement', 'terms', 'conditions'),
         );
     }
 
