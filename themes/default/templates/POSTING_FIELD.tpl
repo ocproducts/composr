@@ -40,7 +40,7 @@
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,posting_field}}}
-		<th {+START,IF,{$NOT,{$MOBILE}}}colspan="2" {+END}class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
+		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
 			{$GET,posting_field}
 		</th>
 	{+END}
@@ -114,7 +114,7 @@
 
 {+START,IF_NON_EMPTY,{ATTACHMENTS}}
 	<tr class="form_table_field_spacer">
-		<th {+START,IF,{$NOT,{$MOBILE}}}colspan="2" {+END}class="table_heading_cell">
+		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			{+START,IF,{$JS_ON}}
 				<a class="toggleable_tray_button" id="fes_attachments" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0]); return false;" href="#"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			{+END}

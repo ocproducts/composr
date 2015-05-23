@@ -18,7 +18,7 @@
 			<tbody>
 				{+START,LOOP,EFFECTS}
 					<tr class="form_table_field_spacer">
-						<th {+START,IF,{$NOT,{$MOBILE}}}colspan="2" {+END} class="table_heading_cell">
+						<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}  class="table_heading_cell">
 							<span class="faux_h2">{EFFECT_TITLE*}</span>
 						</th>
 					</tr>
@@ -37,11 +37,11 @@
 						<td id="form_table_field_input__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">
 							<select name="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">
 								{+START,IF_PASSED,USERNAME}
-									<option {+START,IF,{$EQ,-1,{VALUE}}}selected="selected" {+END}value="-1">{$STRIP_TAGS,{!_UNSET}}</option>
+									<option{+START,IF,{$EQ,-1,{VALUE}}} selected="selected"{+END} value="-1">{$STRIP_TAGS,{!_UNSET}}</option>
 								{+END}
-								<option {+START,IF,{$EQ,,{VALUE}}}selected="selected" {+END}value="">{!NONE_EM}</option>
+								<option{+START,IF,{$EQ,,{VALUE}}} selected="selected"{+END} value="">{!NONE_EM}</option>
 								{+START,LOOP,LIBRARY}
-									<option {+START,IF,{$EQ,{EFFECT},{VALUE}}}selected="selected" {+END}value="{EFFECT*}">{EFFECT_SHORT*}</option>
+									<option{+START,IF,{$EQ,{EFFECT},{VALUE}}} selected="selected"{+END} value="{EFFECT*}">{EFFECT_SHORT*}</option>
 								{+END}
 								{+START,IF,{$EQ,{$SUBSTR,{VALUE},0,8},uploads/}}
 									<option selected="selected" value="{VALUE*}">{!CUSTOM_UPLOAD}</option>

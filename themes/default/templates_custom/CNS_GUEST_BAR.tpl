@@ -15,7 +15,7 @@
 						<input size="15" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" value="{!USERNAME}" id="member_bar_login_username" name="login_username" />
 						<input size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
-							<label for="remember">{!REMEMBER_ME}:</label> <input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}}checked="checked" {+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }" {+END}type="checkbox" value="1" id="remember" name="remember" />
+							<label for="remember">{!REMEMBER_ME}:</label> <input{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
 						<input class="menu__site_meta__user_actions__login button_screen_item" type="submit" value="{!_LOGIN}" />
 

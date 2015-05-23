@@ -3,7 +3,7 @@
 		{+START,IF_NON_EMPTY,{ACTION_URL}}
 			<div class="purchase_buy">
 				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}">	
-					<input class="buttons__cart_add button_screen_item" {+START,IF,{OUT_OF_STOCK}}onclick="window.fauxmodal_alert('{!OUT_OF_STOCK;}'); return false;" {+END}type="submit" value="{!ADD_TO_CART}" />
+					<input class="buttons__cart_add button_screen_item"{+START,IF,{OUT_OF_STOCK}} onclick="window.fauxmodal_alert('{!OUT_OF_STOCK;}'); return false;"{+END} type="submit" value="{!ADD_TO_CART}" />
 					<input type="hidden" id="quantity" name="quantity" value="1" />
 					<input type="hidden" name="product_id" value="{PRODUCT_ID*}" />	
 				</form>

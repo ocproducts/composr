@@ -67,10 +67,10 @@
 
 <label for="{NAME*}_latitude">
 	Latitude
-	<input onchange="place_marker(this.form.elements['latitude'].value,this.form.elements['longitude'].value);" type="number" step="any" {+START,IF,{REQUIRED}}class="hidden_required" {+END}id="{NAME*}_latitude" name="latitude" value="{LATITUDE*}" />
+	<input onchange="place_marker(this.form.elements['latitude'].value,this.form.elements['longitude'].value);" type="number" step="any"{+START,IF,{REQUIRED}} class="hidden_required"{+END} id="{NAME*}_latitude" name="latitude" value="{LATITUDE*}" />
 </label>
 
 <label for="{NAME*}_longitude">
 	Longitude
-	<input onchange="place_marker(this.form.elements['latitude'].value,this.form.elements['longitude'].value);" type="number" step="any" {+START,IF,{REQUIRED}}class="hidden_required" {+END}id="{NAME*}_longitude" name="longitude" value="{LONGITUDE*}" />
+	<input onchange="place_marker(this.form.elements['latitude'].value,this.form.elements['longitude'].value);" type="number" step="any"{+START,IF,{REQUIRED}} class="hidden_required"{+END} id="{NAME*}_longitude" name="longitude" value="{LONGITUDE*}" />
 </label>

@@ -8,7 +8,7 @@
 	{+END}
 </div>
 <div class="accessibility_hidden"><label for="captcha">{!captcha:AUDIO_CAPTCHA}</label></div>
-<input {+START,IF_PASSED,TABINDEX}tabindex="{TABINDEX*}" {+END}maxlength="6" size="6" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
+<input{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="6" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
 
 <script>// <![CDATA[
 	var showevent=(typeof window.onpageshow!='undefined')?'pageshow':'load';

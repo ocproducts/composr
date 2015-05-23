@@ -21,7 +21,7 @@
 				{+END}
 			</h3>
 		{+END}
-		<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray{+END}" {+START,IF_PASSED,EXPAND_TYPE}aria-expanded="false" {+END}id="comments_posting_form_outer" style="{$JS_ON,display: {DISPLAY*},}">
+		<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="{$JS_ON,display: {DISPLAY*},}">
 			<div class="comments_posting_form_inner">
 				<div class="wide_table_wrap"><table class="map_table wide_table">
 					{+START,IF,{$NOT,{$MOBILE}}}
@@ -242,7 +242,7 @@
 							{+END}
 						{+END}
 						{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-						<input onclick="handle_comments_posting_form_submit(this,event);" tabindex="7" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" {+START,IF,{$JS_ON}}type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}}type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
+						<input onclick="handle_comments_posting_form_submit(this,event);" tabindex="7" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
 					</div>
 				</div>
 			</div>

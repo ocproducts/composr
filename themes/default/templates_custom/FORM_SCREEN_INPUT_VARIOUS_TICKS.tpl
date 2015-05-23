@@ -16,7 +16,7 @@
 				<div class="various_ticks float_surrounder">
 					{+START,LOOP,OUT}
 						<div class="input_individual_tick">
-							<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1" {+START,IF,{DISABLED}}disabled="disabled" {+END}/> {PRETTY_NAME*}</label>
+							<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input_tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1"{+START,IF,{DISABLED}} disabled="disabled"{+END} /> {PRETTY_NAME*}</label>
 							<input type="hidden" name="label_for__{NAME*}" value="{PRETTY_NAME*}" />
 							<input name="tick_on_form__{NAME*}" value="0" type="hidden" />
 						</div>

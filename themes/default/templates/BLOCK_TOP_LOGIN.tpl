@@ -8,7 +8,7 @@
 
 			{+START,IF,{$CONFIG_OPTION,password_cookies}}
 				<label class="accessibility_hidden" for="s_remember">{!REMEMBER_ME}</label>
-				<input title="{!REMEMBER_ME}" {+START,IF,{$CONFIG_OPTION,remember_me_by_default}}checked="checked" {+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }" {+END}type="checkbox" value="1" id="s_remember" name="remember" />
+				<input title="{!REMEMBER_ME}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} type="checkbox" value="1" id="s_remember" name="remember" />
 			{+END}
 
 			<input class="menu__site_meta__user_actions__login button_screen_item" type="submit" value="{!_LOGIN}" />

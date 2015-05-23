@@ -103,7 +103,7 @@
 
 						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+window.encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { set_inner_html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" autocomplete="off" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}">
 							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
-							<input {+START,IF,{$MOBILE}}autocorrect="off" {+END}autocomplete="off" size="18" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" value="{!USERNAME}" id="friend_username" name="friend_username" /><input class="menu___generic_admin__add_one button_micro" type="submit" value="{!ADD}" />
+							<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" value="{!USERNAME}" id="friend_username" name="friend_username" /><input class="menu___generic_admin__add_one button_micro" type="submit" value="{!ADD}" />
 						</form>
 					{+END}
 

@@ -8,7 +8,7 @@
 			{+START,IF,{$EQ,{INPUT_FIELDS},1}}
 				<div class="constrain_field">
 					<label class="accessibility_hidden" for="search_content">{!SEARCH}</label>
-					<input {+START,IF,{$MOBILE}}autocorrect="off" {+END}autocomplete="off" maxlength="255" class="wide_field" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="search_content" name="content" value="" />
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="search_content" name="content" value="" />
 				</div>
 			{+END}
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}
@@ -21,7 +21,7 @@
 								</th>
 								<td>
 									<label class="accessibility_hidden" for="search_{_loop_key*}">{_loop_var*}</label>
-									<input {+START,IF,{$MOBILE}}autocorrect="off" {+END}autocomplete="off" maxlength="255"{+START,IF,{$EQ,{_loop_key},content}} onkeyup="update_ajax_search_list(this,event);" {+END}type="text" id="search_{_loop_key*}" name="{_loop_key*}" value="" />
+									<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255"{+START,IF,{$EQ,{_loop_key},content}} onkeyup="update_ajax_search_list(this,event);"{+END} type="text" id="search_{_loop_key*}" name="{_loop_key*}" value="" />
 								</td>
 							</tr>
 						</tbody>

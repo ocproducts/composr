@@ -86,7 +86,7 @@
 						<form class="webstandards_checker_off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
 							<div>
 								{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-								<input {+START,IF,{$NOT,{$IS_GUEST}}}title="{!MARKER} #{ID*}" {+END}value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
+								<input{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
 							</div>
 						</form>
 					</div>

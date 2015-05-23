@@ -7,8 +7,8 @@
 				{+START,IF,{$CONFIG_OPTION,enable_markup_webstandards}}
 					<p>
 						<span class="field_name">{!WEBSTANDARDS}:</span>
-						<input title="{!DESCRIPTION_WEBSTANDARDS_ON_PREVIEW_0}" {+START,IF,{$NOT,{$HAS_PRIVILEGE,perform_webstandards_check_by_default}}}checked="checked" {+END}type="radio" name="perform_webstandards_check" value="0" id="perform_webstandards_check_no" /><label for="perform_webstandards_check_no">{!NO}</label>
-						<input title="{!DESCRIPTION_WEBSTANDARDS_ON_PREVIEW_1}" {+START,IF,{$HAS_PRIVILEGE,perform_webstandards_check_by_default}}checked="checked" {+END}type="radio" name="perform_webstandards_check" value="1" id="perform_webstandards_check_yes" /><label for="perform_webstandards_check_yes">{!YES}</label>
+						<input title="{!DESCRIPTION_WEBSTANDARDS_ON_PREVIEW_0}"{+START,IF,{$NOT,{$HAS_PRIVILEGE,perform_webstandards_check_by_default}}} checked="checked"{+END} type="radio" name="perform_webstandards_check" value="0" id="perform_webstandards_check_no" /><label for="perform_webstandards_check_no">{!NO}</label>
+						<input title="{!DESCRIPTION_WEBSTANDARDS_ON_PREVIEW_1}"{+START,IF,{$HAS_PRIVILEGE,perform_webstandards_check_by_default}} checked="checked"{+END} type="radio" name="perform_webstandards_check" value="1" id="perform_webstandards_check_yes" /><label for="perform_webstandards_check_yes">{!YES}</label>
 						<input title="{!DESCRIPTION_WEBSTANDARDS_ON_PREVIEW_2}" type="radio" name="perform_webstandards_check" value="2" id="perform_webstandards_check_more" /><label for="perform_webstandards_check_more">{!MANUAL_CHECKS_TOO}</label>
 					</p>
 				{+END}
@@ -38,7 +38,7 @@
 	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 		<input class="tabs__preview button_screen" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,window.form_preview_url{+START,IF_PASSED_AND_TRUE,SEPARATE_PREVIEW},true{+END})) { if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements)) form.submit(); return true; } return false;" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
 	{+END}{+END}{+END}
-	<input class="{SUBMIT_ICON*} button_screen" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; return do_form_submit(form,event);" {+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM}id="submit_button" accesskey="u" {+END}tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" {+START,IF,{$JS_ON}}type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}}type="submit"{+END} value="{SUBMIT_NAME*}" />
+	<input class="{SUBMIT_ICON*} button_screen" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; return do_form_submit(form,event);"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit_button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{SUBMIT_NAME*}" />
 </p>
 
 <script>// <![CDATA[

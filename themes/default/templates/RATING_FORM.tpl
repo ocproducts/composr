@@ -43,7 +43,7 @@
 						<div class="rating_type_title">
 							<a id="rating__{$GET,identifier}_jump" rel="dorating"></a>
 
-							{+START,IF_EMPTY,{TITLE}}<div class="accessibility_hidden">{+END}<label {+START,IF_EMPTY,{TYPE}}accesskey="r" {+END}for="rating__{$GET,identifier}"><strong>{+START,IF_EMPTY,{TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}:{+END}</strong></label>{+START,IF_EMPTY,{TITLE}}</div>{+END}
+							{+START,IF_EMPTY,{TITLE}}<div class="accessibility_hidden">{+END}<label{+START,IF_EMPTY,{TYPE}} accesskey="r"{+END} for="rating__{$GET,identifier}"><strong>{+START,IF_EMPTY,{TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}:{+END}</strong></label>{+START,IF_EMPTY,{TITLE}}</div>{+END}
 						</div>
 
 						<div class="rating_inner">

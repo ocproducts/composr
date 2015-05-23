@@ -112,7 +112,7 @@
 
 					{$REQUIRE_JAVASCRIPT,people_lists}
 
-					<input {+START,IF,{$MOBILE}}autocorrect="off" {+END}autocomplete="off" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username" type="text" id="username" name="username" value="{$USERNAME*}" />
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username" type="text" id="username" name="username" value="{$USERNAME*}" />
 					<input class="button_micro buttons__proceed" type="submit" value="{!ASSIGN_TO}" />
 				</form>
 			</li>
