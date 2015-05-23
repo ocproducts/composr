@@ -109,6 +109,10 @@ class Hook_rss_comcode_pages
                     $summary = xmlentities(get_translated_text($rows2[$id]['meta_description']));
                 }
                 if (array_key_exists($id, $rows3)) {
+					if ((!has_privilege(get_member(),'see_unvalidated')) && ($rows3[$id]['p_validated'] == 0) && (addon_installed('unvalidated'))) {
+						continue;
+                    }
+
                     $author = $GLOBALS['FORUM_DRIVER']->get_username($rows3[$id]['p_submitter']);
                     $news_date = date($date_string, $rows3[$id]['p_add_date']);
                     $edit_date = date($date_string, $rows3[$id]['p_edit_date']);

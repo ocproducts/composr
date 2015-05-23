@@ -302,7 +302,8 @@ This generally does not matter a lot (because anything that you ask to store wil
 
 Composr 10+ uses utf-8 tables by default and utf-8 internally, so none of this is an issue. It should work automatically, but you should still have a basic understanding of how collations work.
 
-[media width="150" description="phpMyAdmin exports" float="right"]data_custom/images/docs/intl_phpmyadmin_settings.png[/media]When Composr 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-1) by default, because this is what the default English language pack uses. MySQL doesn't make it easy to convert the character set of the database, so the best way to do it is to export to an SQL dump, edit the dump in a text editor, and reimport into a new database:
+[media width="150" description="phpMyAdmin exports" float="right"]data_custom/images/docs/intl_phpmyadmin_settings.png[/media]
+When Composr 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-1) by default, because this is what the default English language pack uses. MySQL doesn't make it easy to convert the character set of the database, so the best way to do it is to export to an SQL dump, edit the dump in a text editor, and reimport into a new database:
  - Use phpMyAdmin to export all the tables to a [tt].sql[/tt] file on your computer; if it asks what character set to make the file, choose UTF-8
   - Make sure to not include multiple rows in each [tt]INSERT[/tt] statement, as MySQL may not be able to reimport it on some servers (see the screenshot to the right for how to set this on phpMyAdmin, although it may vary from one version to another)
  - Do whatever you would normally do to backup your database; that will usually mean keeping a copy of the above file (but ensure it is complete before relying on it, sometimes SQL dumps don't download correctly)

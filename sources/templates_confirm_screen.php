@@ -41,7 +41,7 @@ function confirm_screen($title, $preview, $url_type, $back_url_type = null, $sup
         $back_url = $back_url_type;
     }
 
-    if ((is_string($url_type)) && (strlen($url_type) < 10)) {
+    if ((is_string($url_type)) && (!looks_like_url($url_type))) {
         $url = build_url(array('page' => '_SELF', 'type' => $url_type), '_SELF', null, true);
     } else {
         $url = $url_type;

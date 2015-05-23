@@ -947,9 +947,15 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     $table = $cma_entry_info['table'] . ' r';
                     $table .= $privacy_join;
 
+                    if (substr($cma_entry_info['table'], 0, 2) == 'f_') {
+                        $db = $GLOBALS['FORUM_DB'];
+                    } else {
+                        $db = $GLOBALS['SITE_DB'];
+                    }
+
                     $skip_children = false;
                     if ($child_cutoff !== null) {
-                        $count = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)', $where, $extra_where_entries . $privacy_where);
+                        $count = $db->query_select_value($table, 'COUNT(*)', $where, $extra_where_entries . $privacy_where);
                         if ($count > $child_cutoff) {
                             $skip_children = true;
                         }
@@ -994,9 +1000,15 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 $table .= ' JOIN ' . $cma_info['connection']->get_table_prefix() . $cma_info['table'] . ' r2 ON r2.' . $cma_info['id_field'] . '=r.' . $cma_info['parent_spec__field_name'];
             }
 
+            if (substr($cma_info['table'], 0, 2) == 'f_') {
+                $db = $GLOBALS['FORUM_DB'];
+            } else {
+                $db = $GLOBALS['SITE_DB'];
+            }
+
             $skip_children = false;
             if ($child_cutoff !== null) {
-                $count = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)', $where);
+                $count = $db->query_select_value($table, 'COUNT(*)', $where);
                 if ($count > $child_cutoff) {
                     $skip_children = true;
                 }

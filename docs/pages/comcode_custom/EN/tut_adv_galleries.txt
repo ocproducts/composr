@@ -57,7 +57,8 @@ Personal galleries, like personal news categories, may be created on demand, sim
 
 
 
-[media width="150" description="Viewing an image in a member gallery" float="right"]data_custom/images/docs/adv_gallery_member.png[/media]An example of a complex gallery hierarchy is as follows:
+[media width="150" description="Viewing an image in a member gallery" float="right"]data_custom/images/docs/adv_gallery_member.png[/media]
+An example of a complex gallery hierarchy is as follows:
  - (root)
   - Germany Holiday Photos 2004 (*)
    - Benjamin's Photos (+)

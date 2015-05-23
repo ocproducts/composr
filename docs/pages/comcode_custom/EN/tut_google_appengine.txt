@@ -60,7 +60,8 @@ Extract the Composr manual installation package to a directory on your developme
 
 [media width="150" description="The application launcher, after the application has been created.
 
-I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/appengine_launcher.png[/media]Start up the GAE launcher.
+I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/appengine_launcher.png[/media]
+Start up the GAE launcher.
 
 (the exact tool/process may depend on what platform you are using -- i.e. Windows/Linux/Mac. These instructions have been written on a Mac. If you have Windows you may struggle with the command line a bit. [url="Cygwin"]http://www.cygwin.com/[/url] is great.)
 

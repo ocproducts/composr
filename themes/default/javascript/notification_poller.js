@@ -61,6 +61,9 @@ function poll_for_notifications(forced_update,delay)
 
 function _poll_for_notifications(raw_ajax_result)
 {
+	if (typeof raw_ajax_result.getElementsByTagName=='undefined')
+		return; // Some kind of error
+
 	var time_node=raw_ajax_result.getElementsByTagName('time')[0];
 	window.notifications_time_barrier=window.parseInt(get_inner_html(time_node));
 

@@ -414,7 +414,8 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
                 }
                 $banner_type_rows[$b_type] = $banner_type_row;
             }
-            $content = do_template('BANNER_IMAGE', array('_GUID' => '6aaf45b7bb7349393024c24458549e9e', 'URL' => $url, 'B_TYPE' => $b_type, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height']), 'SOURCE' => $source, 'DEST' => $name, 'CAPTION' => $caption, 'IMG' => $img_url));
+            $local = (url_is_local($url)) || (substr($url, 0, strlen(get_base_url())) == get_base_url());
+            $content = do_template('BANNER_IMAGE', array('_GUID' => '6aaf45b7bb7349393024c24458549e9e', 'LOCAL' => $local, 'URL' => $url, 'B_TYPE' => $b_type, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height']), 'SOURCE' => $source, 'DEST' => $name, 'CAPTION' => $caption, 'IMG' => $img_url));
         } else { // Iframe
             if (url_is_local($img_url)) {
                 $img_url = get_custom_base_url() . '/' . $img_url;

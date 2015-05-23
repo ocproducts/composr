@@ -54,7 +54,7 @@ class Hook_rss_downloads
             $_categories[$i]['_title'] = get_translated_text($_category['category']);
         }
         $categories = collapse_2d_complexity('id', '_title', $_categories);
-        $query = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'download_downloads WHERE add_date>' . strval($cutoff) . ' AND ' . $filters . ' ORDER BY add_date DESC';
+        $query = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'download_downloads WHERE add_date>' . strval($cutoff) . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1 ' : '') . ' AND ' . $filters . ' ORDER BY add_date DESC';
         $rows = $GLOBALS['SITE_DB']->query($query, $max);
         foreach ($rows as $row) {
             $id = strval($row['id']);

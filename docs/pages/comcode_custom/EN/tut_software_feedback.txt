@@ -214,7 +214,8 @@ Bear in mind that the primary defence to something suddenly going wrong with you
 
 [title="2"]Providing feedback, or making feature requests[/title]
 
-[media width="150" float="right"]data_custom/images/docs/482033_challenge.jpg[/media]Feedback is one of the most important signals for us when developing Composr. Our users are often able to show us ideas from new angles, which play a big role in Composr's future. Unfortunately, it is often not possible for us to comment on whether or not any certain feature will be developed.
+[media width="150" float="right"]data_custom/images/docs/482033_challenge.jpg[/media]
+Feedback is one of the most important signals for us when developing Composr. Our users are often able to show us ideas from new angles, which play a big role in Composr's future. Unfortunately, it is often not possible for us to comment on whether or not any certain feature will be developed.
 
 The reason we can't comment on user feedback is because whether we answer 'yes' or 'no' we end up in a difficult situation, as described below. 
 
@@ -255,7 +256,8 @@ As well as 'yes' vs 'no', there are the matters of strategy and of release manag
 
 [title="4"]Strategy[/title]
 
-[media width="150" float="right"]data_custom/images/docs/feature_workflow.png[/media]Each major Composr release usually hosts a wide range of new features, but also concentrates development on one particular overall objective. Typically we do this because we want to do something big and the only way to do it is to make a 'release mission'.
+[media width="150" float="right"]data_custom/images/docs/feature_workflow.png[/media]
+Each major Composr release usually hosts a wide range of new features, but also concentrates development on one particular overall objective. Typically we do this because we want to do something big and the only way to do it is to make a 'release mission'.
 
 This said, feature sponsorships necessarily take precedence over internal strategy by the developers.
 

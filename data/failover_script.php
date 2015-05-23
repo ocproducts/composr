@@ -59,7 +59,7 @@ $required_settings = array(
 global $SITE_INFO;
 foreach ($required_settings as $setting) {
     if (empty($SITE_INFO[$setting])) {
-        exit('Missing/empty info.php setting: ' . $setting);
+        exit('Missing/empty _config.php setting: ' . $setting);
     }
 }
 
@@ -182,9 +182,11 @@ function is_failing($url)
     if ($SITE_INFO['failover_mode'] == 'auto_off') {
         set_failover_mode('auto_on');
 
+        $scan_url = $SITE_INFO['base_url'] . '/data/failover_script.php';
+
         $base_url = parse_url($SITE_INFO['base_url']);
         $subject = 'Failover mode activated for ' . $base_url['host'];
-        $message = "Failover mode activated when running the following check:\n" . $url . "\n\nWhen the problem has been corrected it will automatically disable.\nIf this is a false alarm somehow you can force failover mode off manually by setting \$SITE_INFO['failover_mode']='off'; in info.php";
+        $message = "Failover mode activated when running the following check:\n" . $url . "\n\nWhen the problem has been corrected it will automatically disable.\nIf this is a false alarm somehow you can force failover mode off manually by setting \$SITE_INFO['failover_mode']='off'; in _config.php\n\nYou xan force an immediate rescan from:\n{$scan_url}";
         send_failover_email($subject, $message);
     }
 
@@ -215,7 +217,7 @@ function set_failover_mode($new_mode)
 {
     global $FILE_BASE, $SITE_INFO;
 
-    $path = $FILE_BASE . '/info.php';
+    $path = $FILE_BASE . '/_config.php';
     $config_contents = file_get_contents($path);
     $orig_config_contents = $config_contents;
     $config_contents = preg_replace('#^(\$SITE_INFO\[\'failover_mode\'\]\s*=\s*\')[^\']+(\';)#m', '$1' . addslashes($new_mode) . '$2', $config_contents);

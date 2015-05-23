@@ -472,7 +472,7 @@ function is_on_multi_site_network($db = null)
     if ($db !== null) {
         return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write != $GLOBALS['FORUM_DB']->connection_write));
     }
-    return ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+    return ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
 }
 
 /**

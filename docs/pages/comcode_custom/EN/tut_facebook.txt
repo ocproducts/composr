@@ -55,7 +55,8 @@ Note there is no need to use a real domain name, it can be completely made up.
 [title="3"]Step 2) Install the Composr Facebook Support addon[/title]
 
 [surround]
-[media width="150" description="Choosing addon" float="right"]data_custom/images/docs/facebook_addon_b.png[/media][media width="150" description="Going to import a non-bundled addon" float="right"]data_custom/images/docs/facebook_addon_a.png[/media]To install...
+[media width="150" description="Choosing addon" float="right"]data_custom/images/docs/facebook_addon_b.png[/media][media width="150" description="Going to import a non-bundled addon" float="right"]data_custom/images/docs/facebook_addon_a.png[/media]
+To install...
 
 1) Go to Admin Zone > Structure > Addons.
 2) Scroll down and go to "Import non-bundled addon(s)".
@@ -269,7 +270,8 @@ Be aware that logging in with Facebook is putting a dependency on Facebook's sys
 [title="3"]Logging out[/title]
 
 [surround]
-[media width="150" description="Removing login permission on Facebook (2)" float="right"]data_custom/images/docs/facebook_logout_b.png[/media][media width="150" description="Removing login permission on Facebook (1)" float="right"]data_custom/images/docs/facebook_logout_a.png[/media]Facebook is particularly aggressive at maintaining its logins: you can't directly log out from individual sites as such. We can't workaround that within Composr's code. Facebook actually has rules saying that sites must enforce automatic logins, so contractually log out is not allowed even if there was a way we could do it.
+[media width="150" description="Removing login permission on Facebook (2)" float="right"]data_custom/images/docs/facebook_logout_b.png[/media][media width="150" description="Removing login permission on Facebook (1)" float="right"]data_custom/images/docs/facebook_logout_a.png[/media]
+Facebook is particularly aggressive at maintaining its logins: you can't directly log out from individual sites as such. We can't workaround that within Composr's code. Facebook actually has rules saying that sites must enforce automatic logins, so contractually log out is not allowed even if there was a way we could do it.
 
 A user who wishes to de-link Facebook to your site has two choices:
 1) Log out of Facebook entirely (probably undesirable)

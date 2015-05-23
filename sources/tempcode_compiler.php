@@ -797,7 +797,8 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     $merged = array();
     $just_done_string = false;
     foreach ($current_level_data as $c) {
-    	if ($c[0] == '"' && $c[strlen($c) - 1] == '"' && strpos($c, '"', 1) == strlen($c) - 1) {
+        $c_stripped_down = str_replace(array('\\\\', '\\"'), array('', ''), $c); // Remove literal slashes and literal quotes so we can do an accurate scan to ensure it is all one string
+    	if ($c_stripped_down[0] == '"' && strpos($c_stripped_down, '"', 1) == strlen($c_stripped_down) - 1) {
             if ($just_done_string) {
                 $pi = count($merged) - 1;
                 $merged[$pi] = substr($merged[$pi], 0, strlen($merged[$pi]) - 1) . substr($c, 1, strlen($c) - 1);

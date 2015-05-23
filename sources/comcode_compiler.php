@@ -56,7 +56,7 @@ function init__comcode_compiler()
 
     // These tags don't have <br />'s done right after them because they are their own block-end (like a paragraph). They may contain textcode lists and rules
     global $BLOCK_TAGS;
-    $BLOCK_TAGS = array('media_set' => true, 'section' => true, 'section_controller' => true, 'tabs' => true, 'tab' => true, 'big_tab' => true, 'big_tab_controller' => true, 'carousel' => true, 'surround' => true, 'contents' => true, 'concepts' => true, 'codebox' => true, 'code' => true, 'list' => true, 'indent' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true, 'staff_note' => true, 'reference' => true, 'menu' => true, 'title' => true, 'box' => true, 'quote' => true, 'block' => true, 'hide' => true, 'overlay' => true);
+    $BLOCK_TAGS = array('media_set' => true, 'section' => true, 'section_controller' => true, 'tabs' => true, 'tab' => true, 'big_tab' => true, 'big_tab_controller' => true, 'carousel' => true, 'surround' => true, 'contents' => true, 'concepts' => true, 'codebox' => true, 'code' => true, 'list' => true, 'indent' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true, 'staff_note' => true, 'reference' => true, 'menu' => true, 'title' => true, 'box' => true, 'quote' => true, 'block' => true, 'hide' => true, 'overlay' => true, 'media' => true, 'attachment' => true, 'attachment_safe' => true);
 
     // These tags can only be used by privileged members
     global $DANGEROUS_TAGS;
