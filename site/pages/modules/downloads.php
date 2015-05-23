@@ -53,6 +53,11 @@ class Module_downloads
 
         delete_privilege('download');
 
+        delete_privilege('autocomplete_keyword_download_category');
+        delete_privilege('autocomplete_title_download_category');
+        delete_privilege('autocomplete_keyword_download');
+        delete_privilege('autocomplete_title_download');
+
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'downloads'));
 
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'downloads'));

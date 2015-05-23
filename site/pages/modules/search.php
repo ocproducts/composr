@@ -48,6 +48,10 @@ class Module_search
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('searches_saved');
         $GLOBALS['SITE_DB']->drop_table_if_exists('searches_logged');
+
+        delete_privilege('autocomplete_past_search');
+        delete_privilege('autocomplete_keyword_comcode_page');
+        delete_privilege('autocomplete_title_comcode_page');
     }
 
     /**

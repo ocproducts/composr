@@ -57,6 +57,9 @@ class Module_quiz
         delete_privilege('bypass_quiz_repeat_time_restriction');
         delete_privilege('bypass_quiz_timer');
         delete_privilege('view_others_quiz_results');
+
+        delete_privilege('autocomplete_keyword_quiz');
+        delete_privilege('autocomplete_title_quiz');
     }
 
     /**

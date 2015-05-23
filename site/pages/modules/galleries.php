@@ -55,6 +55,13 @@ class Module_galleries
         delete_privilege('high_personal_gallery_limit');
         delete_privilege('no_personal_gallery_limit');
 
+        delete_privilege('autocomplete_keyword_gallery');
+        delete_privilege('autocomplete_title_gallery');
+        delete_privilege('autocomplete_keyword_image');
+        delete_privilege('autocomplete_title_image');
+        delete_privilege('autocomplete_keyword_videos');
+        delete_privilege('autocomplete_title_videos');
+
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'galleries'));
 
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'galleries'));

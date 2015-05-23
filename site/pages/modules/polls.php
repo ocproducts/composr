@@ -51,6 +51,9 @@ class Module_polls
 
         delete_privilege('choose_poll');
 
+        delete_privilege('autocomplete_keyword_poll');
+        delete_privilege('autocomplete_title_poll');
+
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'polls'));
 
         $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('points_gained_voting');

@@ -69,6 +69,9 @@ class Module_catalogues
         deldir_contents(get_custom_file_base() . '/uploads/catalogues', true);
 
         delete_privilege('high_catalogue_entry_timeout');
+
+        delete_privilege('autocomplete_keyword_catalogue_category');
+        delete_privilege('autocomplete_title_catalogue_category');
     }
 
     /**

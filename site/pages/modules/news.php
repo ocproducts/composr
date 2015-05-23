@@ -57,6 +57,9 @@ class Module_news
         $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'news'));
 
         delete_attachments('news');
+
+        delete_privilege('autocomplete_keyword_news');
+        delete_privilege('autocomplete_title_news');
     }
 
     /**

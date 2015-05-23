@@ -68,6 +68,9 @@ class Module_calendar
         delete_privilege('sense_personal_conflicts');
         delete_privilege('calendar_add_to_others');
 
+        delete_privilege('autocomplete_keyword_event');
+        delete_privilege('autocomplete_title_event');
+
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'calendar'));
     }
 
