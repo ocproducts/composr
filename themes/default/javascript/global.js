@@ -121,11 +121,11 @@ function script_load_stuff()
 				var stuck_nav=stuck_navs[i];
 				var stuck_nav_height=(typeof stuck_nav.real_height=='undefined')?find_height(stuck_nav,true,true):stuck_nav.real_height;
 				stuck_nav.real_height=stuck_nav_height;
-				var pos_y=find_pos_y(stuck_nav.parentNode);
+				var pos_y=find_pos_y(stuck_nav.parentNode,true);
 				var footer_height=find_height(document.getElementsByTagName('footer')[0]);
 				var panel_bottom=document.getElementById('panel_bottom');
 				if (panel_bottom) footer_height+=find_height(panel_bottom);
-				if (stuck_nav_height<get_window_height()-footer_height)
+				if (stuck_nav_height<get_window_height()-footer_height) // If there's space in the window to make it "float" between header/footer
 				{
 					var extra_height=(get_window_scroll_y()-pos_y);
 					if (extra_height>0)
@@ -1762,7 +1762,7 @@ function get_window_scroll_y(win)
 function find_pos_x(obj,not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
 {
 	if (typeof not_relative=='undefined') not_relative=false;
-	var ret=obj.getBoundingClientRect().left;
+	var ret=obj.getBoundingClientRect().left+get_window_scroll_x();
 	if (!not_relative)
 	{
 		var position;
@@ -1782,7 +1782,7 @@ function find_pos_x(obj,not_relative) /* if not_relative is true it gets the pos
 function find_pos_y(obj,not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
 {
 	if (typeof not_relative=='undefined') not_relative=false;
-	var ret=obj.getBoundingClientRect().top;
+	var ret=obj.getBoundingClientRect().top+get_window_scroll_y();
 	if (!not_relative)
 	{
 		var position;

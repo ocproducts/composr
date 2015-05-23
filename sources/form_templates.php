@@ -1964,18 +1964,19 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         $default_year = is_null($default_time) ? null : intval(date('Y', $default_time));
     }
 
-    if ((!is_null($year_start)) && (!is_null($default_year))) {
-        if ($default_year < $year_start) {
-            $year_start = $default_year;
-        }
+    if ($total_years_to_show < 0) {
+        $year_start = intval(date('Y')) + $total_years_to_show;
+    }
+    if ((!is_null($year_start)) && (!is_null($default_year)) && ($default_year < $year_start)) {
+        $year_start = $default_year;
     }
 
     $year_end = mixed();
-    if (!is_null($total_years_to_show)) {
+    if ((!is_null($total_years_to_show)) && (!is_null($year_start)) && ($total_years_to_show >= 0)) {
         $year_end = $year_start + $total_years_to_show;
-        if ((!is_null($default_year)) && ($default_year > $year_end)) {
-            $year_end = $default_year;
-        }
+    }
+    if ((!is_null($default_year)) && (!is_null($year_end)) && ($default_year > $year_end)) {
+        $year_end = $default_year;
     }
 
     if ($null_default) {
@@ -2005,11 +2006,11 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         'HOUR' => is_null($default_hour) ? '' : strval($default_hour),
         'MINUTE' => is_null($default_minute) ? '' : strval($default_minute),
 
-        'MIN_DATE_DAY' => '1',
-        'MIN_DATE_MONTH' => '1',
+        'MIN_DATE_DAY' => is_null($year_start) ? '' : '1',
+        'MIN_DATE_MONTH' => is_null($year_start) ? '' : '1',
         'MIN_DATE_YEAR' => is_null($year_start) ? '' : strval($year_start),
-        'MAX_DATE_DAY' => '1',
-        'MAX_DATE_MONTH' => '1',
+        'MAX_DATE_DAY' => is_null($year_end) ? '' : '1',
+        'MAX_DATE_MONTH' => is_null($year_end) ? '' : '1',
         'MAX_DATE_YEAR' => is_null($year_end) ? '' : strval($year_end),
     ));
 }

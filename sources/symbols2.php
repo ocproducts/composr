@@ -2423,7 +2423,7 @@ function ecv2_PAD_LEFT($lang, $escaped, $param)
     }
 
     if (isset($param[1])) {
-        $value = str_pad($param[0], intval($param[1]), array_key_exists(2, $param) ? $param[2] : '', STR_PAD_LEFT);
+        $value = str_pad($param[0], intval($param[1]), array_key_exists(2, $param) ? $param[2] : ' ', STR_PAD_LEFT);
     }
 
     if ($escaped != array()) {
@@ -2448,7 +2448,7 @@ function ecv2_PAD_RIGHT($lang, $escaped, $param)
     }
 
     if (isset($param[1])) {
-        $value = str_pad($param[0], intval($param[1]), array_key_exists(2, $param) ? $param[2] : '', STR_PAD_RIGHT);
+        $value = str_pad($param[0], intval($param[1]), array_key_exists(2, $param) ? $param[2] : ' ', STR_PAD_RIGHT);
     }
 
     if ($escaped != array()) {
