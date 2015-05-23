@@ -107,7 +107,7 @@ class Block_main_comcode_page_children
             $child['TITLE'] = $title;
             $child['PAGE'] = $child['the_page'];
             $child['ZONE'] = get_comcode_zone($child['the_page']);
-            $child['ORDER'] = $child['order'];
+            $child['ORDER'] = $child['p_order'];
 
             $children[$i] = $child;
         }

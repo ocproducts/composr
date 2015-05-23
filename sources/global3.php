@@ -437,7 +437,6 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
     restore_output_state(true); // Here we reset some Tempcode environmental stuff, because template compilation or preprocessing may have dirtied things
 
     if (!running_script('dload') && !running_script('attachment') && !running_script('index') && !running_script('approve_ip')) {
-        global $ATTACHED_MESSAGES;
         $global = do_template('STANDALONE_HTML_WRAP', array(
             '_GUID' => 'fe818a6fb0870f0b211e8e52adb23f26',
             'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -457,10 +456,19 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         $global->singular_bind('MIDDLE', $middle);
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
-        $global = do_template('GLOBAL_HTML_WRAP', array(
-            '_GUID' => '592faa2c0e8bf2dc3492de2c11ca7131',
-            'MIDDLE' => $middle,
-        ));
+        if (headers_sent()) {
+            $global = do_template('STANDALONE_HTML_WRAP', array(
+                'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
+                'FRAME' => false,
+                'TARGET' => '_self',
+                'CONTENT' => $middle,
+            ));
+        } else {
+            $global = do_template('GLOBAL_HTML_WRAP', array(
+                '_GUID' => '592faa2c0e8bf2dc3492de2c11ca7131',
+                'MIDDLE' => $middle,
+            ));
+        }
         $global->handle_symbol_preprocessing();
     }
 
