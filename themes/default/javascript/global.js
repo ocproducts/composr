@@ -2731,6 +2731,7 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 				if (node_upper=='SCRIPT')
 				{
 					script_tag_dependencies['to_load'].push(this_node);
+					this_node.async=false;
 					this_node.onload=this_node.onreadystatechange=function() {
 						if ((typeof this_node.readyState=='undefined') || (this_node.readyState=='complete') || (this_node.readyState=='loaded'))
 						{
