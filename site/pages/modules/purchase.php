@@ -150,6 +150,7 @@ class Module_purchase
         require_lang('ecommerce');
 
         $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('PURCHASE_STAGE_' . $type)));
+        breadcrumb_set_self(do_lang_tempcode('PURCHASE_STAGE_' . $type));
 
         if ($type == 'browse') {
             breadcrumb_set_self(do_lang_tempcode('PURCHASING'));
@@ -356,7 +357,7 @@ class Module_purchase
         if ((!is_null($fields)) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => is_null($fields) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true, true);
+        $url = build_url(array('page' => '_SELF', 'type' => is_null($fields) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_LICENCE', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'LICENCE' => $licence)), $this->title, null);
     }
@@ -369,6 +370,10 @@ class Module_purchase
     public function details()
     {
         require_code('form_templates');
+
+        if (get_param_integer('accepted', 0) == 1) {
+            attach_message(do_lang_tempcode('LICENCE_WAS_ACCEPTED'), 'inform');
+        }
 
         $type_code = get_param_string('type_code');
 

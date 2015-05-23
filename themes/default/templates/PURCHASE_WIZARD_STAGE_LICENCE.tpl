@@ -3,12 +3,21 @@
 
 	{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
 
-	<p class="lonely_label"><label for="licence">{!LICENCE}:</label></p>
-	<div class="constrain_field">
-		<textarea readonly="readonly" class="purchase_licence" id="licence" name="licence" cols="50" rows="11">{LICENCE*}</textarea>
-	</div>
+	<p>{!AGREEMENT_PROCESS}</p>
 
-	<p class="purchase_button">
-		<input onclick="disable_button_just_clicked(this);" class="buttons__yes button_screen" type="submit" value="{!I_AGREE}" />
+	<p class="lonely_label">{!AGREEMENT}:</p>
+
+	<div class="purchase_licence">{LICENCE*}</div>
+
+	<p>
+		<input type="checkbox" id="confirm" name="confirm" value="1" onclick="document.getElementById('proceed_button').disabled=!this.checked;" /><label for="confirm">{!I_AGREE}</label>
+	</p>
+
+	<p>
+		{+START,IF,{$JS_ON}}
+			<button onclick="disable_button_just_clicked(this); document.location='{$PAGE_LINK;*,:}'; return false;" class="buttons__no button_screen">{!I_DISAGREE}</button>
+		{+END}
+
+		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__yes button_screen" type="submit" value="{!PROCEED}"{+START,IF,{$JS_ON}} disabled="disabled"{+END} id="proceed_button" />
 	</p>
 </form>

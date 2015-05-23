@@ -476,7 +476,7 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
         $label = ($BREADCRUMB_SET_SELF === null) ? $DISPLAYED_TITLE : $BREADCRUMB_SET_SELF;
         if ($label !== null) {
             $label_eval = is_object($label) ? $label->evaluate() : $label;
-            $last_breadcrumb_label_eval = $BREADCRUMB_SET_PARENTS[count($BREADCRUMB_SET_PARENTS) - 1][1];
+            $last_breadcrumb_label_eval = (count($BREADCRUMB_SET_PARENTS) == 0) ? '' : $BREADCRUMB_SET_PARENTS[count($BREADCRUMB_SET_PARENTS) - 1][1];
             if (is_object($last_breadcrumb_label_eval)) {
                 $last_breadcrumb_label_eval->evaluate();
             }

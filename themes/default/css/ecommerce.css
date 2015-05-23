@@ -10,6 +10,7 @@
 .purchase_licence {
 	width: 100%;
 	font-family: Courier, monospace;
+	white-space: pre-wrap;
 }
 
 .purchase_screen_contents {
