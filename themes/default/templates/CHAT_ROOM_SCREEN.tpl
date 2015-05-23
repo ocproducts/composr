@@ -32,10 +32,6 @@
 				{+END}
 			{+END}
 		</div>
-		<div class="chat_you_are">
-			{!LOGGED_IN_AS,{YOUR_NAME*}}
-			<img alt="" src="{$IMG*,icons/24x24/tabs/member_account/profile2}" srcset="{$IMG*,icons/48x48/tabs/member_account/profile2} 2x" />
-		</div>
 		<div class="right">
 			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('chat_comcode_panel');"><img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
 		</div>

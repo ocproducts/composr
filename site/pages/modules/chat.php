@@ -609,14 +609,14 @@ class Module_chat
         $messages_link = find_script('messages') . '?room_id=' . strval($room_id) . '&zone=' . get_zone_name() . $keep->evaluate();
         $buttons = new Tempcode();
         $_buttons = array(
-            'url',
+            //'url', Bloat
             'thumb',
-            'email',
+            //'email', Bloat
             'code',
             'hide'
         );
         if (has_privilege(get_member(), 'comcode_dangerous')) {
-            $_buttons[] = 'html';
+            //$_buttons[] = 'html'; Bloat
         }
         foreach ($_buttons as $button) {
             $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '4fd75edb2d091b1c78a71c653efb18f0', 'DIVIDER' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));

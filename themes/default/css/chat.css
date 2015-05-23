@@ -52,16 +52,6 @@
 
 /* Chat rooms */
 
-.chat_you_are {
-	float: {!en_right};
-	text-align: {!en_right};
-	margin: 2px;
-}
-
-.chat_you_are img {
-	width: 18px;
-}
-
 .chat_posting_area {
 	border: 1px solid {$GET,pale_border};
 	padding: 0.5em;
@@ -245,7 +235,7 @@
 .chat_lobby_friends {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		float: {!en_left};
-		width: 17em;
+		width: 16em;
 	/*{+END}*/
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
@@ -561,26 +551,34 @@ ul.icon_links_block_group>li {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
 	.icon_14_add {
 		background-image: url('{$IMG,icons/28x28/add}') !important;
+		background-size: 14px 14px;
 	}
 	.icon_14_edit2 {
 		background-image: url('{$IMG,icons/28x28/edit2}') !important;
+		background-size: 14px 14px;
 	}
 	.icon_14_export {
 		background-image: url('{$IMG,icons/28x28/export}') !important;
+		background-size: 14px 14px;
 	}
 	.icon_14_proceed {
 		background-image: url('{$IMG,icons/28x28/proceed}') !important;
+		background-size: 14px 14px;
 	}
 	.icon_14_remove_manage {
 		background-image: url('{$IMG,icons/28x28/remove_manage}') !important;
+		background-size: 14px 14px;
 	}
 	.icon_14_remove {
 		background-image: url('{$IMG,icons/28x28/remove}') !important;
+		background-size: 14px 14px;
 	}
 	.icon_14_sound_effects {
 		background-image: url('{$IMG,icons/28x28/sound_effects}') !important;
+		background-size: 14px 14px;
 	}
 	.icon_14_tools {
 		background-image: url('{$IMG,icons/28x28/tools}') !important;
+		background-size: 14px 14px;
 	}
 }

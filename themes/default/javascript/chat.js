@@ -248,8 +248,7 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 			var func=function(result) {
 				window.top_window.currently_sending_message=false;
 				element.disabled=false;
-
-				var responses=result.responseXML.getElementsByTagName('result');
+				var responses=result.getElementsByTagName('result');
 				if (responses[0])
 				{
 					process_chat_xml_messages(responses[0],true);
@@ -884,7 +883,7 @@ function _start_im(people,may_recycle)
 	set_inner_html(div,'{!LOADING;^}');
 	document.body.appendChild(div);
 	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&people='+people+'&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false)),function(result) {
-		var responses=result.responseXML.getElementsByTagName('result');
+		var responses=result.getElementsByTagName('result');
 		if (responses[0])
 		{
 			window.instant_go=true;

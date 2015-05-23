@@ -860,7 +860,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
         if (is_guest()) {
             $time_last_map = array('ip_address' => get_ip_address(), 'system_message' => 0);
         } else {
-            $time_last_map = array('user_id' => get_member(), 'system_message' => 0);
+            $time_last_map = array('member_id' => get_member(), 'system_message' => 0);
         }
         $time_last_message = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_messages', 'MAX(date_and_time)', $time_last_map);
         if (!is_null($time_last_message)) {

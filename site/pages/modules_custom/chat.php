@@ -139,7 +139,7 @@ class Mx_chat extends Module_chat
             <ul id="rooms"></ul>
         ';
 
-        $seteffectslink = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*,'redirect'=>get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true);
+        $seteffectslink = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*,'redirect'=>get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
 
         $friends = array();
         $friend_rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('*'), array('member_likes' => get_member()));
