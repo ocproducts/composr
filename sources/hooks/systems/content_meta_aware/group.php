@@ -58,8 +58,8 @@ class Hook_content_meta_aware_group
             'title_field' => 'g_name',
             'title_field_dereference' => true,
             'description_field' => null,
-            'thumb_field' => 'g_rank_image',
-            'thumb_field_is_theme_image' => true,
+            //'thumb_field' => 'g_rank_image',  Looks ugly, often missing and random sizes
+            //'thumb_field_is_theme_image' => true,
 
             'view_page_link_pattern' => '_SEARCH:groups:view:_WILD',
             'edit_page_link_pattern' => 'adminzone:admin_cns_groups:_edit:_WILD',

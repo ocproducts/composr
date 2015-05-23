@@ -17,7 +17,7 @@
 
 {+START,IF,{$NOT,{TOP_LEVEL}}}
 	<li{+START,IF,{$GET,HAS_CHILDREN}} onmousemove="return pop_up_menu('{MENU|;*}_dexpand_{$GET;*,RAND}',null,'{MENU|;*}_d',event,true);"{+END} class="nlevel {$?,{CURRENT},current,non_current} has_img" onkeypress="this.onclick(event);" onclick="click_link(this.getElementsByTagName('a')[0]);">
-		{+START,IF_NON_EMPTY,{$GET,img}}<img width="20" height="20" alt="" src="{$GET*,img}" srcset="{$GET*,img_2x} 2x" />{+END}
+		{+START,IF_NON_EMPTY,{$GET,img}}<img alt="" src="{$GET*,img}" srcset="{$GET*,img_2x} 2x" />{+END}
 		{+START,IF_NON_EMPTY,{URL}}
 			<a{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} onkeypress="this.onclick(event);" onclick="cancel_bubbling(event);" {+START,IF,{$GET,HAS_CHILDREN}} class="drawer"{+END}>{CAPTION}</a>{+START,IF,{$GET,HAS_CHILDREN}}&nbsp;<span>&rarr;</span>{+END}
 		{+END}
