@@ -1036,6 +1036,9 @@ function clever_set_value(form,element,value)
 				if (element.options[i].value==value)
 				{
 					element.selectedIndex=i;
+					if (typeof $(element).select2!='undefined') {
+						$(element).trigger('change');
+					}
 				}
 			}
 			break;

@@ -806,13 +806,17 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 } else {
                     $struct['extra_meta']['image'] = $row[$cma_info['thumb_field']];
                 }
-                if ((isset($cma_info['thumb_field_is_theme_image'])) && ($cma_info['thumb_field_is_theme_image'])) {
-                    if ($struct['extra_meta']['image'] != '') {
-                        $struct['extra_meta']['image'] = find_theme_image($struct['extra_meta']['image'], true);
-                    }
+                if ($struct['extra_meta']['image'] == '') {
+                    $struct['extra_meta']['image'] = null;
                 } else {
-                    if ((url_is_local($struct['extra_meta']['image'])) && ($struct['extra_meta']['image'] != '')) {
-                        $struct['extra_meta']['image'] = get_custom_base_url() . '/' . $struct['extra_meta']['image'];
+                    if ((isset($cma_info['thumb_field_is_theme_image'])) && ($cma_info['thumb_field_is_theme_image'])) {
+                        if ($struct['extra_meta']['image'] != '') {
+                            $struct['extra_meta']['image'] = find_theme_image($struct['extra_meta']['image'], true);
+                        }
+                    } else {
+                        if ((url_is_local($struct['extra_meta']['image'])) && ($struct['extra_meta']['image'] != '')) {
+                            $struct['extra_meta']['image'] = get_custom_base_url() . '/' . $struct['extra_meta']['image'];
+                        }
                     }
                 }
             }

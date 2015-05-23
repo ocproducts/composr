@@ -1121,7 +1121,18 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     public $catalogue = true;
     public $content_type = 'catalogue_category';
     public $upload = 'image';
-    public $javascript = 'if (document.getElementById(\'move_days_lower\')) { var mt=document.getElementById(\'move_target\'); var form=mt.form; var crf=function() { var s=mt.selectedIndex==0; form.elements[\'move_days_lower\'].disabled=s; form.elements[\'move_days_higher\'].disabled=s; }; crf(); mt.onclick=crf; }';
+    public $javascript = '
+        if (document.getElementById(\'move_days_lower\')) {
+            var mt=document.getElementById(\'move_target\');
+            var form=mt.form;
+            var crf=function() {
+                var s=(mt.selectedIndex==0);
+                form.elements[\'move_days_lower\'].disabled=s;
+                form.elements[\'move_days_higher\'].disabled=s;
+            };
+            crf();
+            mt.onclick=crf;
+        }';
     public $menu_label = 'CATALOGUES';
     public $table = 'catalogue_categories';
     public $title_is_multi_lang = false;
