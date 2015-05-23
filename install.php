@@ -2845,7 +2845,9 @@ END;
     $clauses[] = <<<END
 # Compress some static resources
 <IfModule mod_deflate.c>
+<IfModule mod_filter.c>
 AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
+</IfModule>
 </IfModule>
 
 # We do not want for tar files, due to IE bug http://blogs.msdn.com/b/wndp/archive/2006/08/21/content-encoding-not-equal-content-type.aspx (IE won't decompress again as it thinks it's a mistake)
