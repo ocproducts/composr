@@ -82,6 +82,99 @@ class Module_tutorials
 
         // Insert default external tutorials
         $external_tutorials = array(
+            // YouTube videos
+            array(
+                'title' => 'Installing ocPortal with Softaculous in cPanel',
+                'url' => 'https://www.youtube.com/watch?v=GnEqFPMUQmw',
+                'author' => 'NixiHost',
+                'difficulty_level' => 'novice',
+                'summary' => 'A demonstration of how to easily install ocPortal (now Composr) on a hosting account that has Softaculous. Produced by a webhost that does (NixiHost).',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Installation'),
+            ),
+            array(
+                'title' => 'Implementing a "Shopping discounts" feature',
+                'url' => 'https://www.youtube.com/watch?v=ucTaHpd3ObA',
+                'author' => 'Chris Graham (ocProducts)',
+                'difficulty_level' => 'expert',
+                'summary' => 'A live programming tutorial, implementing a new "discounts" feature into the shopping catalogues. Shows you how coding for Composr gets done.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Development', 'PHP', 'Catalogues', 'eCommerce'),
+            ),
+            array(
+                'title' => 'Using diff tools to upgrade an ocPortal theme',
+                'url' => 'https://www.youtube.com/watch?v=rm8joO6FpYA',
+                'author' => 'Chris Graham (ocProducts)',
+                'difficulty_level' => 'regular',
+                'summary' => 'How to use a diff tool to find changes made in a theme, or upgrade the files in a theme.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Maintenance', 'Upgrading'),
+            ),
+            array(
+                'title' => 'Changing the ocPortal header image',
+                'url' => 'https://www.youtube.com/watch?v=-5MZOTdxFcU',
+                'author' => 'Chris Graham (ocProducts)',
+                'difficulty_level' => 'novice',
+                'summary' => 'A live themeing tutorial showing how to change the page header. Note that this was for an older version so is very outdated.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Design & Themeing'),
+            ),
+            array(
+                'title' => 'Themes 201 - building a totally new design',
+                'url' => 'https://www.youtube.com/watch?v=e8ArVn-Jb8Q',
+                'author' => 'Allen Ellis (ocProducts)',
+                'difficulty_level' => 'expert',
+                'summary' => 'A live themeing tutorial showing how to build a totally new design. Note that this was for an older version so is very outdated.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Design & Themeing'),
+            ),
+            array(
+                'title' => 'Themes 101 - replacing the header',
+                'url' => 'https://www.youtube.com/watch?v=0uEwY8DAYPs',
+                'author' => 'Allen Ellis (ocProducts)',
+                'difficulty_level' => 'regular',
+                'summary' => 'A live themeing tutorial showing how to change the header. Note that this was for an older version so is quite outdated.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Design & Themeing'),
+            ),
+            array(
+                'title' => 'Custom Comcode tags',
+                'url' => 'https://www.youtube.com/watch?v=dBuBiYuGE0E',
+                'author' => 'Allen Ellis (ocProducts)',
+                'difficulty_level' => 'novice',
+                'summary' => 'How to extend Comcode using Custom Comcode tags.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Content'),
+            ),
+            array(
+                'title' => 'SU and the if_in_group tag',
+                'url' => 'https://www.youtube.com/watch?v=J6OGys3s6v8',
+                'author' => 'Allen Ellis (ocProducts)',
+                'difficulty_level' => 'novice',
+                'summary' => 'How to switch users under your admin login, and how to customise page contents based on usergroup membership.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Structure and navigation', 'Content', 'Security', 'Members'),
+            ),
+            array(
+                'title' => 'Embedding a Google map',
+                'url' => 'https://www.youtube.com/watch?v=T3o7mj0OU4Q',
+                'author' => 'Allen Ellis (ocProducts)',
+                'difficulty_level' => 'novice',
+                'summary' => 'Tutorial showing how to embed an HTML widget (Google Maps in this case) into a Comcode page.',
+                'icon' => 'tutorial_icons/video',
+                'media_type' => 'video',
+                'tags' => array('Content'),
+            ),
+
+            // Books
             array(
                 'title' => 'The 22 Immutable Laws Of Branding',
                 'url' => 'http://www.amazon.co.uk/gp/product/1861976054/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1861976054&linkCode=as2&tag=ocportal-21&linkId=UYNVBEDIBTERUFIR',
@@ -429,8 +522,6 @@ class Module_tutorials
 
         // TODO: Write code to bootstrap existing external tutorials...
         //  Arvixe
-        //  Ones on Youtube
-        //  (we have some more videos to add to Youtube too)
     }
 
     /**
