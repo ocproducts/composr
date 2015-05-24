@@ -138,7 +138,6 @@ class Hook_addon_registry_composr_release_build
             'adminzone/pages/minimodules_custom/push_bugfix.php',
             'adminzone/pages/minimodules_custom/plug_guid.php',
             'exports/builds/index.html',
-            'data_custom/builds',
             'data_custom/builds/index.html',
             'data_custom/builds/readme.txt',
         );
