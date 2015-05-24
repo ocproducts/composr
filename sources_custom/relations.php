@@ -127,7 +127,6 @@ function get_innodb_data_types()
         'IP' => 'varchar(40)', // 15 for ip4, but we now support ip6
         'LANGUAGE_NAME' => 'varchar(5)',
         'URLPATH' => 'varchar(255)',
-        'MD5' => 'varchar(33)'
     );
 
     return $type_remap;

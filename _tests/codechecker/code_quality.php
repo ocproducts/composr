@@ -841,7 +841,7 @@ function check_variable_list($LOCAL_VARIABLES, $offset = -1)
             if (in_array($t, array('MEMBER', 'SHORT_INTEGER', 'UINTEGER', 'AUTO_LINK', 'BINARY', 'GROUP', 'TIME'))) {
                 $t = 'integer';
             }
-            if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'MD5', 'EMAIL'))) {
+            if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
                 $t = 'string';
             }
             if (in_array($t, array('tempcode'))) {
@@ -2094,7 +2094,7 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
         if (in_array($type, array('AUTO', 'INTEGER', 'UINTEGER', 'SHORT_TRANS', 'LONG_TRANS', 'SHORT_TRANS__COMCODE', 'LONG_TRANS__COMCODE', 'MEMBER', 'MEMBER', 'SHORT_INTEGER', 'AUTO_LINK', 'BINARY', 'GROUP', 'TIME'))) {
             $allowed_types['integer'] = 1;
         }
-        if (in_array($type, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'MD5', 'EMAIL'))) {
+        if (in_array($type, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
             $allowed_types['string'] = 1;
         }
         if (in_array($type, array('tempcode'))) {
@@ -2135,7 +2135,7 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
             return true;
         }
     }
-    if (in_array($actual_type, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'MD5', 'EMAIL'))) {
+    if (in_array($actual_type, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
         if (isset($allowed_types['string'])) {
             return true;
         }

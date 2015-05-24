@@ -97,11 +97,14 @@
 							</td>
 						</tr>
 
-						<tr>
-							<td colspan="2">
-								{$REVIEW_STATUS,download,{ID}}
-							</td>
-						</tr>
+						{$SET,review_status,{$REVIEW_STATUS,download,{ID}}}
+						{+START,IF_NON_EMPTY,{$GET,review_status}}
+							<tr>
+								<td colspan="2">
+									{$GET,review_status}
+								</td>
+							</tr>
+						{+END}
 					</tbody>
 				</table></div>
 			</div>

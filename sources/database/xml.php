@@ -199,7 +199,6 @@ class Database_Static_xml
             'IP' => 'IP',
             'LANGUAGE_NAME' => 'LANGUAGE_NAME',
             'URLPATH' => 'URLPATH',
-            'MD5' => 'MD5'
         );
         return $type_remap;
     }
@@ -796,7 +795,6 @@ class Database_Static_xml
                     'IP' => 40,
                     'LANGUAGE_NAME' => 5,
                     'URLPATH' => 255,
-                    'MD5' => 33,
                     'UINTEGER' => 10, // Fudge as we need to send in unsigned integers using strings, as PHP can't hold them
                 );
 

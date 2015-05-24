@@ -75,7 +75,7 @@ class Module_newsletter
                 'email' => 'SHORT_TEXT',
                 'join_time' => 'TIME',
                 'code_confirm' => 'INTEGER',
-                'the_password' => 'MD5',
+                'the_password' => 'SHORT_TEXT',
                 'pass_salt' => 'ID_TEXT',
                 'language' => 'ID_TEXT',
                 'n_forename' => 'SHORT_TEXT',
@@ -155,6 +155,7 @@ class Module_newsletter
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 11)) {
             $GLOBALS['SITE_DB']->rename_table('newsletter', 'newsletter_subscribers');
+            $GLOBALS['SITE_DB']->alter_table_field('newsletter_subscribers', 'the_password', 'SHORT_TEXT');
         }
     }
 
@@ -192,6 +193,7 @@ class Module_newsletter
 
         if ($type == 'browse') {
             $this->title = get_screen_title('_NEWSLETTER_JOIN', true, array(escape_html(get_option('newsletter_title'))));
+            breadcrumb_set_self(do_lang_tempcode('NEWSLETTER'));
         }
 
         if ($type == 'unsub') {
@@ -200,19 +202,19 @@ class Module_newsletter
 
         if ($type == 'reset') {
             breadcrumb_set_self(do_lang_tempcode('NEWSLETTER_PASSWORD_BEEN_RESET'));
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', get_option('newsletter_title'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('NEWSLETTER'))));
 
             $this->title = get_screen_title(get_option('newsletter_title'), false);
         }
 
         if ($type == 'confirm') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', get_option('newsletter_title'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('NEWSLETTER'))));
 
             $this->title = get_screen_title(get_option('newsletter_title'), false);
         }
 
         if ($type == 'do') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', get_option('newsletter_title'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('NEWSLETTER'))));
 
             $this->title = get_screen_title('_NEWSLETTER_JOIN', true, array(escape_html(get_option('newsletter_title'))));
         }

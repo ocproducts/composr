@@ -126,7 +126,12 @@ function find_filedump_links($focus = '')
                 } else {
                     $query .= ' AND ' . $_field_name . ' LIKE \'' . db_encode_like('%uploads/filedump' . $_focus . '%') . '\'';
                 }
-                $results = $GLOBALS['SITE_DB']->query($query, null, null, false, false, array($field_name => $field_type));
+                if (substr($table, 0, 2) == 'f_') {
+                    $db = $GLOBALS['FORUM_DB'];
+                } else {
+                    $db = $GLOBALS['SITE_DB'];
+                }
+                $results = $db->query($query, null, null, false, false, array($field_name => $field_type));
                 foreach ($results as $r) {
                     extract_filedump_links(get_translated_text($r[$field_name]), array($r, $field_name), $focus, $paths_used);
                 }

@@ -72,10 +72,10 @@
 }
 
 .download_now {
-	padding-left: 47px;
+	padding-left: 24px;
 	background: url('{$IMG_INLINE;,icons/24x24/menu/rich_content/downloads}') no-repeat;
 	text-align: center;
-	min-height: 55px;
+	min-height: 50px;
 }
 
 .download_now h4 {

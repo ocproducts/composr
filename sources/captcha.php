@@ -43,7 +43,7 @@ function captcha_script()
 
         warn_exit(do_lang_tempcode('CAPTCHA_NO_SESSION'));*/
     }
-    mt_srand($code_needed); // Important: to stop averaging out of different attempts. This makes the distortion consistent for that particular code.
+    mt_srand(crc32($code_needed)); // Important: to stop averaging out of different attempts. This makes the distortion consistent for that particular code.
 
     safe_ini_set('ocproducts.xss_detect', '0');
 
@@ -165,7 +165,7 @@ function captcha_script()
         <head>
             <title>' . do_lang('CONTACT_STAFF_TO_JOIN_IF_IMPAIRED') . '</title>
         </head>
-        <body>
+        <body style="margin: 0">
         ';
         echo '<div style="width: ' . strval($width) . 'px; font-size: 0; line-height: 0">';
         for ($j = 0; $j < $height; $j++) {

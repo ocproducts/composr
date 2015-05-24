@@ -429,7 +429,19 @@ function get_logo_url($zone_name = null)
  */
 function breadcrumbs($show_self = true)
 {
+    static $out = null;
+    if ($out !== null) {
+        return $out;
+    }
+
     global $BREADCRUMB_SET_PARENTS, $BREADCRUMBS;
+
+    // Special hard-coded link to sitemap structure for Admin and CMS zones
+    $zone = get_zone_name();
+    if ((($zone == 'adminzone') || ($zone == 'cms')) && (get_option('deeper_admin_breadcrumbs') == '1')) {
+        require_code('site_adminzone');
+        $BREADCRUMB_SET_PARENTS = array_merge(adminzone_extended_breadcrumbs(), $BREADCRUMB_SET_PARENTS);
+    }
 
     // Substitutions
     if ((addon_installed('breadcrumbs')) && (function_exists('xml_parser_create'))) {
@@ -459,13 +471,6 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
 {
     global $BREADCRUMB_SET_PARENTS, $DISPLAYED_TITLE, $BREADCRUMB_SET_SELF;
 
-    // Special hard-coded link to sitemap structure for Admin and CMS zones
-    $zone = get_zone_name();
-    if ((($zone == 'adminzone') || ($zone == 'cms')) && (get_option('deeper_admin_breadcrumbs') == '1')) {
-        require_code('site_adminzone');
-        $BREADCRUMB_SET_PARENTS = array_merge(adminzone_extended_breadcrumbs(), $BREADCRUMB_SET_PARENTS);
-    }
-
     $stub = new Tempcode();
 
     // Specified parents
@@ -478,9 +483,8 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
             $label_eval = is_object($label) ? $label->evaluate() : $label;
             $last_breadcrumb_label_eval = (count($BREADCRUMB_SET_PARENTS) == 0) ? '' : $BREADCRUMB_SET_PARENTS[count($BREADCRUMB_SET_PARENTS) - 1][1];
             if (is_object($last_breadcrumb_label_eval)) {
-                $last_breadcrumb_label_eval->evaluate();
+                $last_breadcrumb_label_eval = $last_breadcrumb_label_eval->evaluate();
             }
-
             if ($label_eval != $last_breadcrumb_label_eval) {
                 if (count($BREADCRUMB_SET_PARENTS) != 0) {
                     $stub->attach(do_template('BREADCRUMB_SEPARATOR'));

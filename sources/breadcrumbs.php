@@ -54,6 +54,7 @@ function load_breadcrumb_substitutions($segments)
 
     $segments_new = array();
     $done_one = false;
+
     foreach ($segments as $i => $segment) {
         if (is_object($segment[1])) {
             $segment[1] = $segment[1]->evaluate();

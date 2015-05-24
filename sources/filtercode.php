@@ -261,7 +261,6 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                         case 'REAL':
                             $field_type = 'float';
                             break;
-                        case 'MD5':
                         case 'URLPATH':
                         case 'IP':
                         case 'LONG_TEXT':
@@ -675,7 +674,6 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
                 $field_type = 'float';
                 $filter_key = $table_join_code_here . '.' . $inner_filter_key;
                 break;
-            case 'MD5':
             case 'URLPATH':
             case 'LANGUAGE_NAME':
             case 'IP':

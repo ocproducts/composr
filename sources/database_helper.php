@@ -75,7 +75,6 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
                           'IP' => 15 + 1,
                           'LANGUAGE_NAME' => 5 + 1,
                           'URLPATH' => 255 + 1,
-                          'MD5' => 33 + 1,
                           'unicode_SHORT_TEXT' => $take_unicode_into_account * 255 + 1,
                           'unicode_LONG_TEXT' => $take_unicode_into_account * 255 + 1,
                           'unicode_ID_TEXT' => $take_unicode_into_account * 80 + 1,
@@ -121,7 +120,7 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
         }
         $total_size_unicode += $data_sizes[(array_key_exists('unicode_' . $field, $data_sizes) ? 'unicode_' : '') . $field];
 
-        if (($null) && (!$skip_null_check) && (($field == 'MINIID_TEXT') || ($field == 'ID_TEXT') || ($field == 'LANGUAGE_NAME') || ($field == 'MD5') || ($field == 'IP') || ($field == 'URLPATH') || ($field == 'LONG_TEXT') || ($field == 'SHORT_TEXT'))) { // Needed for Oracle, really
+        if (($null) && (!$skip_null_check) && (($field == 'MINIID_TEXT') || ($field == 'ID_TEXT') || ($field == 'LANGUAGE_NAME') || ($field == 'IP') || ($field == 'URLPATH') || ($field == 'LONG_TEXT') || ($field == 'SHORT_TEXT'))) { // Needed for Oracle, really
             fatal_exit('You may not have a NULL string field');
         }
         //if (($key) && (substr($id_name,0,1)!='#') && (!$size_restricted) && (($field=='LONG_TEXT'))) fatal_exit('You may not use a '.$field.' field for part of a key');    We now size restrict using "(255)"
@@ -431,7 +430,6 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
             case 'IP':
             case 'LANGUAGE_NAME':
             case 'URLPATH':
-            case 'MD5':
                 $default = '';
                 break;
         }

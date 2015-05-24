@@ -577,7 +577,6 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
         'LANGUAGE_NAME',
         'URLPATH',
         'PATH',
-        'MD5',
         'EMAIL',
         'string',
         'integer',
@@ -746,11 +745,6 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
             break;
         case 'PATH':
             if (!is_string($value)) {
-                _fail_php_type_check($type, $function_name, $name, $value, $echo);
-            }
-            break;
-        case 'MD5':
-            if ((!is_string($value)) || (strlen($value) > 33)) {
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
             break;
@@ -1037,7 +1031,7 @@ function cms_type_to_hhvm_type($t)
     if (in_array($t, array('MEMBER', 'SHORT_INTEGER', 'UINTEGER', 'AUTO_LINK', 'BINARY', 'GROUP', 'TIME'))) {
         $t = 'integer';
     }
-    if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'MD5', 'EMAIL'))) {
+    if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
         $t = 'string';
     }
     if (in_array($t, array('tempcode'))) {

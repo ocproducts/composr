@@ -117,7 +117,6 @@ class Database_Static_postgresql
             'IP' => 'varchar(40)',
             'LANGUAGE_NAME' => 'varchar(5)',
             'URLPATH' => 'varchar(255)',
-            'MD5' => 'varchar(33)'
         );
         return $type_remap;
     }

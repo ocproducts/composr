@@ -149,10 +149,6 @@ class Hook_cleanup_criticise_mysql_fields
                         //$type='LANGUAGE_NAME';   Ideally, but we cannot assume
                         $type = 'ID_TEXT';
                         break;
-                    case 'varchar(33)':
-                        //$type='MD5'; Ideally, but we cannot assume
-                        $type = 'ID_TEXT';
-                        break;
                     case 'varchar(40)':
                         if (strpos($field, 'ip_address') !== false) {
                             $type = 'IP';

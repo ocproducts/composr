@@ -840,6 +840,7 @@ class Module_filedump
         }
         $list = new Tempcode();
         $list->attach(form_input_list_entry('', false, do_lang('MEDIA_TYPE_')));
+        require_code('media_renderer');
         $hooks = find_all_hooks('systems', 'media_rendering');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/media_rendering/' . $hook);
@@ -1126,7 +1127,7 @@ class Module_filedump
                                 'path' => substr($place, 0, 80),
                                 'the_member' => get_member(),
                             );
-                            $map += insert_lang_comcode('description', $description, 3);
+                            $map += insert_lang($description['description'], 3);
                             $GLOBALS['SITE_DB']->query_insert('filedump', $map);
                         }
                         break;
@@ -1219,7 +1220,7 @@ class Module_filedump
             'path' => substr($place, 0, 80),
             'the_member' => get_member(),
         );
-        $map += insert_lang_comcode('description', $description, 3);
+        $map += insert_lang($description['description'], 3);
         $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
         log_it('FILEDUMP_CREATE_FOLDER', $name, $place);
@@ -1310,7 +1311,7 @@ class Module_filedump
                 'path' => substr($place, 0, 80),
                 'the_member' => get_member(),
             );
-            $map += insert_lang($description, 'description', 3);
+            $map += insert_lang('description', $description, 3);
             $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
             // Logging etc
