@@ -1101,7 +1101,7 @@ class Module_topics
         $hidden = $this->keep_markers();
 
         $breadcrumbs = cns_forum_breadcrumbs($forum_id, null, null, false);
-        $breadcrumbs[] = do_lang_tempcode('MOVE_TOPICS');
+        breadcrumb_set_self(do_lang_tempcode('MOVE_TOPICS'));
         breadcrumb_set_parents($breadcrumbs);
 
         $title = get_screen_title('MOVE_TOPICS');
@@ -1528,7 +1528,7 @@ class Module_topics
             }
 
             $breadcrumbs = cns_forum_breadcrumbs($forum_id, null, null, false);
-            $breadcrumbs[] = do_lang_tempcode('ADD_TOPIC');
+            breadcrumb_set_self(do_lang_tempcode('ADD_TOPIC'));
             breadcrumb_set_parents($breadcrumbs);
         }
 
