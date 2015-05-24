@@ -206,8 +206,13 @@ function _build_sitemap_menu($menu)
             $node['title'] = comcode_to_tempcode($title);
         }
         if ($icon !== null) {
-            $node['extra_meta']['image'] = find_theme_image('icons/24x24/' . $icon);
-            $node['extra_meta']['image_2x'] = find_theme_image('icons/48x48/' . $icon);
+            if (find_theme_image('icons/24x24/' . $icon, true) == '' && find_theme_image('icons/32x32/' . $icon, true) != '') {
+                $node['extra_meta']['image'] = find_theme_image('icons/32x32/' . $icon);
+                $node['extra_meta']['image_2x'] = '';
+            } else {
+                $node['extra_meta']['image'] = find_theme_image('icons/24x24/' . $icon);
+                $node['extra_meta']['image_2x'] = find_theme_image('icons/48x48/' . $icon);
+            }
         }
 
         switch ($include) {

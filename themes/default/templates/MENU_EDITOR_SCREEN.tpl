@@ -34,7 +34,7 @@
 			</div>
 
 			<p class="proceed_button">
-				<input accesskey="u" class="buttons__save button_screen" type="submit" value="{!SAVE}" onclick="if (check_menu('{!MISSING_CAPTION_ERROR;}','{!MISSING_URL_ERROR;}')) { disable_button_just_clicked(this); return true; } else return false;" />
+				<input accesskey="u" class="buttons__save button_screen" type="submit" value="{!SAVE}" onclick="if (check_menu()) { disable_button_just_clicked(this); return true; } else return false;" />
 			</p>
 		</div>
 
@@ -115,5 +115,5 @@
 	var cf=function() { var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) smooth_scroll(find_pos_y(document.getElementById('caption_'+window.current_selection))); };
 	document.getElementById('url').ondblclick=cf;
 	document.getElementById('caption_long').ondblclick=cf;
-	document.getElementById('match_tags').ondblclick=cf;
+	document.getElementById('page_only').ondblclick=cf;
 //]]></script>

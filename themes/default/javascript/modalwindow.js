@@ -790,9 +790,13 @@ function ModalWindow()
 				{
 					_this.option('right');
 				} else
-				if ((key_code==13/*enter*/) && (this.yes))
+				if ((key_code==13/*enter*/) && (_this.yes))
 				{
 					_this.option('yes');
+				}
+				if ((key_code==13/*enter*/) && (_this.finished))
+				{
+					_this.option('finished');
 				} else if ((key_code==27/*esc*/) && (_this.cancel_button) && ((_this.type=='prompt') || (_this.type=='confirm') || (_this.type=='lightbox') || (_this.type=='alert')))
 				{
 					_this.option('cancel');

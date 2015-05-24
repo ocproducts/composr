@@ -281,6 +281,7 @@ class Module_admin
             array('moniker', 'slug'),
             array('guest', 'anonymous'),
             array('rules', 'license', 'licence', 'agreement', 'terms', 'conditions', 'legals'),
+            array('dashboard', 'console', 'status'),
         );
     }
 

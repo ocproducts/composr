@@ -221,8 +221,8 @@ class Hook_sitemap_page extends Hook_sitemap_base
                 $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                     true, // $check_perms
                     null, // $member_id
-                    $use_page_groupings, // $be_deferential
-                    $simplified
+                    true, // $support_crosslinks
+                    $simplified || $use_page_groupings // $be_deferential
                 ));
 
                 $has_entry_points = false;

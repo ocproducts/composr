@@ -295,7 +295,7 @@ class Module_admin_menus
         require_code('themes2');
         $list->attach(create_selection_list_theme_images(null, null, false, true, 'icons/'));
         $fields_template->attach(form_input_list(do_lang_tempcode('THEME_IMAGE'), do_lang_tempcode('DESCRIPTION_THEME_IMAGE_FOR_MENU_ITEM'), 'theme_img_code', $list, null, false, false, get_all_image_ids_type('icons', true)));
-        $fields_template->attach(form_input_line(do_lang_tempcode('RESTRICT_PAGE_VISIBILITY'), do_lang_tempcode('MENU_ENTRY_MATCH_KEYS'), 'match_tags', '', false));
+        $fields_template->attach(form_input_line(do_lang_tempcode('RESTRICT_PAGE_VISIBILITY'), do_lang_tempcode('MENU_ENTRY_MATCH_KEYS'), 'page_only', '', false));
         $list = new Tempcode();
         $list->attach(form_input_list_entry('0', false, do_lang_tempcode('INCLUDE_SITEMAP_NO')));
         $list->attach(form_input_list_entry('1', false, do_lang_tempcode('INCLUDE_SITEMAP_OVER')));
@@ -471,7 +471,7 @@ class Module_admin_menus
         // Load in details of menu item
         $caption = post_param_string('caption_' . strval($id), ''); // Default needed to workaround Opera problem
         $caption_long = post_param_string('caption_long_' . strval($id), ''); // Default needed to workaround Opera problem
-        $page_only = post_param_string('match_tags_' . strval($id), ''); // Default needed to workaround Opera problem
+        $page_only = post_param_string('page_only_' . strval($id), ''); // Default needed to workaround Opera problem
         $theme_img_code = post_param_string('theme_img_code_' . strval($id), ''); // Default needed to workaround Opera problem
         $check_permissions = post_param_integer('check_perms_' . strval($id), 0);
         $branch_type = post_param_string('branch_type_' . strval($id), 'branch_plus'); // Default needed to workaround Opera problem

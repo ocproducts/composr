@@ -3,15 +3,15 @@
 		<label id="label_caption_{I*}" for="caption_{I*}">{!CAPTION}: </label>
 		<input maxlength="255" onfocus="make_field_selected(this);" ondblclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));" type="text" value="{CAPTION*}" id="caption_{I*}" name="caption_{I*}" />
 
-		<input type="hidden" value="{CAPTION_LONG*}" id="caption_long_{I*}" name="caption_long_{I*}" />
-		<input type="hidden" value="{URL*}" id="url_{I*}" name="url_{I*}" />
-		<input type="hidden" id="match_tags_{I*}" name="match_tags_{I*}" value="{PAGE_ONLY*}" />
-		<input type="hidden" id="theme_img_code_{I*}" name="theme_img_code_{I*}" value="{THEME_IMG_CODE*}" />
+		<input type="hidden" id="caption_long_{I*}" name="caption_long_{I*}" value="{CAPTION_LONG*}"{+START,IF_EMPTY,{CAPTION_LONG}} disabled="disabled"{+END} />
+		<input type="hidden" id="url_{I*}" name="url_{I*}" value="{URL*}" />
+		<input type="hidden" id="page_only_{I*}" name="page_only_{I*}" value="{PAGE_ONLY*}"{+START,IF_EMPTY,{PAGE_ONLY}} disabled="disabled"{+END} />
+		<input type="hidden" id="theme_img_code_{I*}" name="theme_img_code_{I*}" value="{THEME_IMG_CODE*}"{+START,IF_EMPTY,{THEME_IMG_CODE}} disabled="disabled"{+END} />
 		<input type="hidden" id="parent_{I*}" name="parent_{I*}" value="{PARENT*}" />
 		<input type="hidden" id="order_{I*}" name="order_{I*}" value="{ORDER*}" />
-		<input type="hidden" id="new_window_{I*}" name="new_window_{I*}" value="{NEW_WINDOW*}" />
-		<input type="hidden" id="check_perms_{I*}" name="check_perms_{I*}" value="{CHECK_PERMS*}" />
-		<input type="hidden" id="include_sitemap_{I*}" name="include_sitemap_{I*}" value="{INCLUDE_SITEMAP*}" />
+		<input type="hidden" id="new_window_{I*}" name="new_window_{I*}" value="{NEW_WINDOW*}"{+START,IF,{$EQ,{NEW_WINDOW},0}} disabled="disabled"{+END} />
+		<input type="hidden" id="check_perms_{I*}" name="check_perms_{I*}" value="{CHECK_PERMS*}"{+START,IF,{$EQ,{CHECK_PERMS},0}} disabled="disabled"{+END} />
+		<input type="hidden" id="include_sitemap_{I*}" name="include_sitemap_{I*}" value="{INCLUDE_SITEMAP*}"{+START,IF,{$EQ,{INCLUDE_SITEMAP},0}} disabled="disabled"{+END} />
 		<div class="accessibility_hidden"><label id="label_branch_type_{I*}" for="branch_type_{I*}">{!MENU_ENTRY_BRANCH}</label></div>
 		<select style="display: none" onclick="this.onchange(event);" onchange="menu_editor_branch_type_change(this.name.substr(12,this.name.length));" title="{$STRIP_TAGS,{!MENU_ENTRY_BRANCH;}}" id="branch_type_{I*}" name="branch_type_{I*}">
 			{+START,IF,{$NOT,{CLICKABLE_SECTIONS}}}

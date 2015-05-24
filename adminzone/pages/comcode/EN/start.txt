@@ -1,4 +1,4 @@
-[title sub="You are in the Admin Zone"]Dashboard[/title]
+[title sub="You are in the Admin Zone (you will find a link to return Home in the footer)"]Admin Dashboard[/title]
 
 [title="2"]Tasks[/title]
 {| 60%:37% wide floats

@@ -131,7 +131,7 @@ function menu_management_script()
             }
         } elseif (($key == 'url') || ($key == 'theme_img_code')) {
             $changes['i_' . $key] = $val;
-        } elseif ($key == 'match_tags') {
+        } elseif ($key == 'page_only') {
             $changes['i_page_only'] = $val;
         }
     }

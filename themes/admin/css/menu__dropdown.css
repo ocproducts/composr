@@ -67,6 +67,7 @@ For example:
 	text-decoration: none;
 	text-align: center;
 	color: {$GET,area_text};
+	max-width: 107px;
 }
 
 .menu_type__dropdown a.toplevel_link span {
