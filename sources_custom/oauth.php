@@ -12,7 +12,11 @@ function ensure_got_oauth_client_id($service_name, $has_sep_key = false)
     if ($client_id == '') {
         $title = get_screen_title('OAUTH_TITLE', true, array($service_name));
 
-        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'FEATURE', 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_GALLERY_SYNDICATION');
+        require_code('hooks/systems/config/' . $service_name . '_client_id');
+        $ob = object_factory('Hook_config_' . $service_name . '_client_id');
+        $info = $ob->get_details();
+
+        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_' . $info['group']);
         require_code('site2');
         smart_redirect($config_url);
     }

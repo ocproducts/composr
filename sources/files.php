@@ -320,6 +320,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
                                 // Temporary files
                                 'tmp' => '.*',
+                                'inc' => 'safe_mode_temp',
+                                'dat' => 'safe_mode_temp',
                                 'bak' => '.*',
 
                                 // HHVM Hack converted files (built on-the-fly)
@@ -371,6 +373,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'chat_last_msg.dat' => 'data_custom/modules/chat',
             'latest.dat' => 'data_custom/modules/web_notifications',
             'permissioncheckslog.php' => 'data_custom',
+            'failover_rewritemap.txt' => 'data_custom',
+            'failover_rewritemap__mobile.txt' => 'data_custom',
         );
     }
 

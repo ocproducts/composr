@@ -706,6 +706,10 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
         $default = '';
     }
 
+    if ($default == 'inherit') {
+        $default = '';
+    }
+
     $default = filter_form_field_default($name, $default);
 
     $tabindex = get_form_field_tabindex($tabindex);

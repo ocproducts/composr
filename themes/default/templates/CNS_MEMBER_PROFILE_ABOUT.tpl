@@ -15,84 +15,86 @@
 			{+END}
 		</ul>
 
-		<h2>{!MORE_ACCOUNT_LINKS,{$DISPLAYED_USERNAME*,{USERNAME}}}</h2>
+		<div class="cns_account_links">
+			<h2>{!MORE_ACCOUNT_LINKS,{$DISPLAYED_USERNAME*,{USERNAME}}}</h2>
 
-		{+START,IF,{VIEW_PROFILES}}
-			{+START,LOOP,CUSTOM_FIELDS}
-				{$SET,is_messenger_field,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME},{!DEFAULT_CPF_im_jabber_NAME},{!DEFAULT_CPF_sn_twitter_NAME},{!DEFAULT_CPF_sn_facebook_NAME},{!DEFAULT_CPF_sn_google_NAME}}}
-				{+START,IF,{$GET,is_messenger_field}}
-					{+START,SET,messenger_fields}
-						{$GET,messenger_fields}
-						{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME}}}<li><a title="{!PHONE_THEM_UP} {!LINK_NEW_WINDOW}" href="skype:{RAW_VALUE*}?call">{!PHONE_THEM_UP}</a> (Skype)</li>{+END}
-						{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_jabber_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="xmpp:{RAW_VALUE*}">{!MESSAGE_THEM}</a> (Jabber/XMPP)</li>{+END}
-						{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_twitter_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW_VALUE*}" rel="me">@{RAW_VALUE*}</a> (Twitter)</li>{+END}
-						{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_facebook_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Facebook</a></li>{+END}
-						{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_google_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Google+</a></li>{+END}
+			{+START,IF,{VIEW_PROFILES}}
+				{+START,LOOP,CUSTOM_FIELDS}
+					{$SET,is_messenger_field,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME},{!DEFAULT_CPF_im_jabber_NAME},{!DEFAULT_CPF_sn_twitter_NAME},{!DEFAULT_CPF_sn_facebook_NAME},{!DEFAULT_CPF_sn_google_NAME}}}
+					{+START,IF,{$GET,is_messenger_field}}
+						{+START,SET,messenger_fields}
+							{$GET,messenger_fields}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME}}}<li><a title="{!PHONE_THEM_UP} {!LINK_NEW_WINDOW}" href="skype:{RAW_VALUE*}?call">{!PHONE_THEM_UP}</a> (Skype)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_jabber_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="xmpp:{RAW_VALUE*}">{!MESSAGE_THEM}</a> (Jabber/XMPP)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_twitter_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW_VALUE*}" rel="me">@{RAW_VALUE*}</a> (Twitter)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_facebook_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Facebook</a></li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_google_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Google+</a></li>{+END}
+						{+END}
 					{+END}
 				{+END}
 			{+END}
-		{+END}
-		{+START,IF_NON_EMPTY,{ACTIONS_contact}{$GET,messenger_fields}}
-			<div>
-				<h3>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!CONTRACT}: {!CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTACT}</a>
-				</h3>
+			{+START,IF_NON_EMPTY,{ACTIONS_contact}{$GET,messenger_fields}}
+				<div>
+					<h3>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!CONTRACT}: {!CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTACT}</a>
+					</h3>
 
-				<nav class="toggleable_tray" style="display: block" role="navigation">
-					<ul class="nl">
-						{ACTIONS_contact}
-						{$GET,messenger_fields}
-					</ul>
-				</nav>
-			</div>
-		{+END}
+					<nav class="toggleable_tray" style="display: block" role="navigation">
+						<ul class="nl">
+							{ACTIONS_contact}
+							{$GET,messenger_fields}
+						</ul>
+					</nav>
+				</div>
+			{+END}
 
-		{+START,IF_NON_EMPTY,{ACTIONS_content}}
-			<div>
-				<h3>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTENT}</a>
-				</h3>
+			{+START,IF_NON_EMPTY,{ACTIONS_content}}
+				<div>
+					<h3>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTENT}</a>
+					</h3>
 
-				<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
-					<ul class="nl">
-						{ACTIONS_content}
-					</ul>
-				</nav>
-			</div>
-		{+END}
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+						<ul class="nl">
+							{ACTIONS_content}
+						</ul>
+					</nav>
+				</div>
+			{+END}
 
-		{+START,IF_NON_EMPTY,{ACTIONS_views}{ACTIONS_profile}}
-			<div>
-				<h3>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!ACCOUNT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!ACCOUNT}</a>
-				</h3>
+			{+START,IF_NON_EMPTY,{ACTIONS_views}{ACTIONS_profile}}
+				<div>
+					<h3>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!ACCOUNT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!ACCOUNT}</a>
+					</h3>
 
-				<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
-					<ul class="nl">
-						{ACTIONS_views}
-						{ACTIONS_profile}
-					</ul>
-				</nav>
-			</div>
-		{+END}
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+						<ul class="nl">
+							{ACTIONS_views}
+							{ACTIONS_profile}
+						</ul>
+					</nav>
+				</div>
+			{+END}
 
-		{+START,IF_NON_EMPTY,{ACTIONS_audit}}
-			<div>
-				<h3>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!AUDIT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!AUDIT}</a>
-				</h3>
+			{+START,IF_NON_EMPTY,{ACTIONS_audit}}
+				<div>
+					<h3>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!AUDIT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!AUDIT}</a>
+					</h3>
 
-				<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
-					<ul class="nl">
-						{ACTIONS_audit}
-					</ul>
-				</nav>
-			</div>
-		{+END}
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+						<ul class="nl">
+							{ACTIONS_audit}
+						</ul>
+					</nav>
+				</div>
+			{+END}
+		</div>
 
 		{$REVIEW_STATUS,member,{MEMBER_ID}}
 	</div>
@@ -257,7 +259,7 @@
 
 		{+START,IF,{VIEW_PROFILES}}
 		<div class="stats_overwrap">
-			<h2>{!ACTIVITY}</h2>
+			<h2>{!TRACKING}</h2>
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_statistics">

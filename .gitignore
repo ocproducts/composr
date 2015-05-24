@@ -3,6 +3,7 @@
 ._*
 test_a
 /safe_mode_temp/*.dat
+/safe_mode_temp/subs.inc
 /sources_custom/user_sync__customise.php
 /www.pid
 .DS_Store
@@ -54,6 +55,8 @@ default/images/*/*__*.jpg
 /uploads/*/*__*.jpeg
 images_custom/*/*__*.jpeg
 default/images/*/*__*.jpeg
+/data_custom/failover_rewritemap.txt
+/data_custom/failover_rewritemap__mobile.txt
 
 ; The matched files should be blocked for the main Composr dev repository but not for Composr projects
 /.htaccess
@@ -115,3 +118,5 @@ pages/html_custom/*/*.htm
 *.tempfile
 /data_custom/modules/user_export/out.csv
 /data_custom/execute_temp.php
+cms.sql
+

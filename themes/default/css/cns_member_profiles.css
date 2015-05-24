@@ -64,21 +64,6 @@
 	}
 /*{+END}*/
 
-.cns_profile_column ul.nl li {
-	overflow: hidden;
-	margin-bottom: 0.5em;
-	padding-top: 4px;
-}
-
-.cns_profile_column ul.nl li a {
-}
-
-.cns_profile_column ul.nl li img {
-	float: left;
-	margin-right: 0.5em;
-	margin-top: -4px; /* Tied to "padding-top: 4px;" on ".cns_profile_column ul.nl li" */
-}
-
 .cns_member_profile_avatar img {
 	border: 1px solid {$GET,standard_border};
 	max-width: 100px;
@@ -200,6 +185,23 @@ table.cns_profile_statistics th {
 	margin: 0.5em 0 1em 0;
 	border: 1px solid {$GET,standard_border};
 	background: {$GET,area_background};
+}
+
+.cns_account_links ul.nl li {
+	overflow: hidden;
+	margin-bottom: 0.5em;
+	padding-top: 4px;
+}
+
+.cns_account_links .toggleable_tray_button img {
+	width: 15px;
+}
+
+.cns_account_links .toggleable_tray img {
+	float: left;
+	margin-right: 0.5em;
+	margin-top: -2px; /* Tied to "padding-top: 4px;" on ".cns_account_links ul.nl li" */
+	width: 20px;
 }
 
 /*

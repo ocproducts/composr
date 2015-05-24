@@ -18,7 +18,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 <body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 	{$,This is the main site header}
 	{+START,IF,{$SHOW_HEADER}}
-		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="stuck_nav">
+		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,The main logo}
 			<h1 class="accessibility_hidden"><a class="logo_outer" target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}"{+START,IF,{$NOT,{$MOBILE}}} width="{$IMG_WIDTH*,{$LOGO_URL},1}" height="{$IMG_HEIGHT*,{$LOGO_URL},1}"{+END} title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
 
