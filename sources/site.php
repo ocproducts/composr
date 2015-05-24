@@ -1695,8 +1695,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         if ((($codename == 'panel_left') || ($codename == 'panel_right')) && (has_js()) && (has_actual_page_access(get_member(), 'admin_zones'))) {
             $edit_url = build_url(array('page' => 'admin_zones', 'type' => '_editor', 'id' => get_zone_name(), 'redirect' => $redirect), get_module_zone('admin_zones'));
         } else {
-            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename,/*'lang'=>user_lang(),*/
-                                        'redirect' => $redirect), get_module_zone('cms_comcode_pages'));
+            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */'redirect' => $redirect), get_module_zone('cms_comcode_pages'));
         }
     } else {
         $edit_url = new Tempcode();
@@ -1780,10 +1779,15 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
  */
 function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_sir = true, $jumps = 0)
 {
+    // Cut off broken recursion
     if ($jumps == 10) {
         return array(); // Probably a loop
     }
+    if ($the_page == '') {
+        return array();
+    }
 
+    // Find link
     $map = array('page' => $the_page);
     if ($jumps == 0) {
         $map['keep_page_root'] = $the_page;
@@ -1792,35 +1796,27 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
     }
     $page_link = build_page_link($map, $the_zone);
 
-    if ($the_page == '') {
-        return array();
-    }
-    if ($the_page == $root) {
-        if ($no_link_for_me_sir) {
-            return array();
-        }
-        $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $the_page, 'the_zone' => $the_zone));
-        $title = null;
-        if ($_title !== null) {
-            $title = get_translated_text($_title, null, null, true);
-        }
-        if ($_title === null) {
-            $title = escape_html($the_page);
-        }
-        return array(array($page_link, $title));
-    }
-
+    // Find title
     global $PT_PAIR_CACHE_CP;
     if (!array_key_exists($the_page, $PT_PAIR_CACHE_CP)) {
         $page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages b ON (a.the_page=b.the_page AND a.the_zone=b.the_zone)', array('cc_page_title', 'p_parent_page', 'string_index'), array('a.the_page' => $the_page, 'a.the_zone' => $the_zone), '', 1, null, false, array('string_index' => 'LONG_TRANS__COMCODE', 'cc_page_title' => '?SHORT_TRANS'));
         if (!array_key_exists(0, $page_rows)) {
+            global $DISPLAYED_TITLE;
+
+            push_output_state();
+            $DISPLAYED_TITLE = new Tempcode();
             request_page($the_page, false, $the_zone, null, true); // It's not cached, force the issue and then try again...
+            $temp_title = $DISPLAYED_TITLE;
+            restore_output_state();
+
             $page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages b ON (a.the_page=b.the_page AND a.the_zone=b.the_zone)', array('cc_page_title', 'p_parent_page', 'string_index'), array('a.the_page' => $the_page, 'a.the_zone' => $the_zone), '', 1, null, false, array('string_index' => 'LONG_TRANS__COMCODE', 'cc_page_title' => '?SHORT_TRANS'));
             if (!array_key_exists(0, $page_rows)) { // Oh well, fallback (maybe page doesn't exist yet, ?)...
-                $_title = $the_page;
                 $PT_PAIR_CACHE_CP[$the_page] = array();
-                $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = escape_html($_title);
-                $PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] = null;
+                $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $temp_title->evaluate();
+                if ($PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] == '') {
+                    $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = escape_html($the_page);
+                }
+                $PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] = '';
             }
         }
         if (array_key_exists(0, $page_rows)) {
@@ -1832,14 +1828,26 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
             $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $_title;
         }
     }
-
     $title = $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'];
     if ($title === null) {
-        $title = $the_page;
+        $title = escape_html($the_page);
     }
 
-    $segments = array();
+    // End of recursion
+    if ($the_page == $root) {
+        if ($no_link_for_me_sir) {
+            return array();
+        }
+        return array(array($page_link, $title));
+    }
 
+    // Cut off broken recursion
+    if ($PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] == $the_page) {
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($the_page)));
+    }
+
+    // Our point in the chain
+    $segments = array();
     if (!$no_link_for_me_sir) {
         $segments[] = array($page_link, $title);
     } else {
@@ -1848,12 +1856,8 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
         }
     }
 
-    if ($PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] == $the_page) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($the_page)));
-    }
-
+    // Further recursion
     $below = comcode_breadcrumbs($PT_PAIR_CACHE_CP[$the_page]['p_parent_page'], $the_zone, $root, false, $jumps + 1);
-
     return array_merge($below, $segments);
 }
 

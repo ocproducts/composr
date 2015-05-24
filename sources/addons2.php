@@ -826,8 +826,7 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
             if (!$overwrite->is_empty()) {
                 $overwrite->attach(do_lang_tempcode('LIST_SEP'));
             }
-            $overwrite->attach(escape_html(/*do_lang('ROOT').'/'.*/
-                (($entry['path'][0] == '/') ? substr($entry['path'], 1) : $entry['path'])));
+            $overwrite->attach(escape_html((($entry['path'][0] == '/') ? substr($entry['path'], 1) : $entry['path'])));
             $this_overwrite = true;
         } else {
             $this_overwrite = false;

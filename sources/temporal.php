@@ -316,8 +316,7 @@ function get_timezoned_date($timestamp, $include_time = true, $verbose = false, 
         $today = cms_strftime($date_string1, $usered_now_timestamp);
 
         if ($ret1 == $today) { // It is/was today
-            $ret = /*Today is obvious do_lang('TODAY').$joiner.*/
-                $ret2;
+            $ret = /*Today is obvious do_lang('TODAY').$joiner.*/$ret2;
             if ($ret == '') {
                 $ret = do_lang('TODAY'); // it'll be because avoid contextual dates is not on
             }

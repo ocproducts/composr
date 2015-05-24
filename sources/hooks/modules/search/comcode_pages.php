@@ -317,7 +317,9 @@ class Hook_search_comcode_pages extends FieldsSearchHook
                 $backup_search__contents_bits = $SEARCH__CONTENT_BITS;
                 $SEARCH__CONTENT_BITS = null; // We do not want highlighting, as it'll result in far too much Comcode being parsed (ok for short snippets, not many full pages!)
                 $GLOBALS['TEMPCODE_SETGET']['no_comcode_page_edit_links'] = '1';
+                push_output_state();
                 $temp_summary = request_page($page, true, $zone, strpos($comcode_file, '/comcode_custom/') ? 'comcode_custom' : 'comcode', true);
+                restore_output_state();
                 $SEARCH__CONTENT_BITS = $backup_search__contents_bits;
                 $GLOBALS['OVERRIDE_SELF_ZONE'] = null;
                 $LAX_COMCODE = false;

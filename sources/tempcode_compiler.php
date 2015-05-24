@@ -580,8 +580,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 break;
                         }
                         if ($directive_name == 'SET_NOPREEVAL') { // Needs to be dynamic
-                            $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/
-                            ;
+                            $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/;
                             $_past_level_data = implode('.', $past_level_data);
                             $unset_code = '';
                             if (strpos($_past_level_data, 'isset($bound') !== false) {// Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.

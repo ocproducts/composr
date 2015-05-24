@@ -940,7 +940,7 @@ class Module_topicview
             'MODERATOR_ACTIONS' => $moderator_actions,
             'MARKED_POST_ACTIONS' => $marked_post_actions,
             'QUICK_REPLY' => $quick_reply,
-            'BREADCRUMBS' => $this->breadcrumbs,
+            'BREADCRUMBS' => breadcrumbs_get_default_stub(),
             'POLL' => $poll,
             'BUTTON_SCREENS' => $buttons,
             'POSTS' => $posts,

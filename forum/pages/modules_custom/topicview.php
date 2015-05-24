@@ -18,6 +18,7 @@ function init__forum__pages__modules_custom__topicview($in = null)
 
 function jestr_filtering_wrap($in)
 {
+    $orig = $in;
     $in = '<div>' . $in . '</div>';
     $matches = array();
     $num_matches = preg_match_all('#(>)([^<>]+)(<)#Us', $in, $matches, PREG_SET_ORDER);

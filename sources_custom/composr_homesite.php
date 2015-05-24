@@ -218,8 +218,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'%\' IDENTIFIED BY \'' . db_escape_string($GLOBALS['SITE_INFO']['mysql_demonstratr_password']) . '\''); // tcp/ip
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'localhost\' IDENTIFIED BY \'' . db_escape_string($GLOBALS['SITE_INFO']['mysql_demonstratr_password']) . '\''); // local socket
-    $cmd = 'mysql -h' . /*$server*/
-           'localhost' . ' -Ddemonstratr_site_' . $codename . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' < ' . special_demonstratr_dir() . '/template.sql';
+    $cmd = 'mysql -h' . /*$server*/'localhost' . ' -Ddemonstratr_site_' . $codename . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' < ' . special_demonstratr_dir() . '/template.sql';
     if (get_member() == 6) {
         attach_message($cmd, 'inform');
     }
@@ -582,8 +581,7 @@ function do_backup_script()
     $file_array = zip_scan_folder(special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($id));
     $tmp_path = cms_tempnam('demonstratr_backup');
     $user = substr(md5('demonstratr_site_' . $id), 0, 16);
-    shell_exec('mysqldump -h' . /*$server*/
-               'localhost' . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
+    shell_exec('mysqldump -h' . /*$server*/'localhost' . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
     $file_array[] = array('full_path' => $tmp_path, 'name' => 'database.sql', 'time' => time());
     $data = create_zip_file($file_array);
     unlink($tmp_path);

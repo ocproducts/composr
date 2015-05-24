@@ -263,7 +263,9 @@ class Block_main_content
             if ($content_type == 'comcode_page') { // FUDGEFUDGE
                 // Try and force a parse of the page, so it's in the system
                 $bits = explode(':', $content_id);
+                push_output_state();
                 $result = request_page(array_key_exists(1, $bits) ? $bits[1] : get_comcode_zone($bits[0]), false, $bits[0], 'comcode_custom', true);
+                restore_output_state();
                 if ($result === null || $result->is_empty()) {
                     return new Tempcode();
                 }

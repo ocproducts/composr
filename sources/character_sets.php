@@ -47,8 +47,7 @@ function _convert_data_encodings($known_utf8 = false)
         safe_ini_set('unicode.semantics', '1');
 
         $done_something = true;
-    } elseif (($known_utf8) && /*test method works...*/
-              (will_be_unicode_neutered(serialize($_GET) . serialize($_POST))) && (in_array(strtolower($charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))
+    } elseif (($known_utf8) && /*test method works...*/(will_be_unicode_neutered(serialize($_GET) . serialize($_POST))) && (in_array(strtolower($charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))
     ) { // Preferred as it will sub entities where there's no equivalent character
         do_environment_utf8_conversion($charset);
 
@@ -470,8 +469,7 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
         $internal_charset = get_charset();
     }
 
-    if ((strtolower($input_charset) == 'utf-8') && /*test method works...*/
-        (will_be_unicode_neutered($data)) && (in_array(strtolower($internal_charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))
+    if ((strtolower($input_charset) == 'utf-8') && /*test method works...*/(will_be_unicode_neutered($data)) && (in_array(strtolower($internal_charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))
     ) { // Preferred as it will sub entities where there's no equivalent character
         $test = entity_utf8_decode($data, $internal_charset);
         if ($test !== false) {

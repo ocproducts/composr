@@ -258,13 +258,19 @@ function new_html__initialise(element)
 						set_inner_html(span,escape_html(element.alt));
 					}
 					element.parentNode.insertBefore(span,element);
+					var span_proxy=span.cloneNode(true); // So we can measure width even with hidden tabs
+					span_proxy.style.position='absolute';
+					span_proxy.style.visibility='hidden';
+					document.body.appendChild(span_proxy);
 					window.setTimeout(function() {
+						var width=find_width(span_proxy)+15;
+						span_proxy.parentNode.removeChild(span_proxy);
 						if (element.parentNode.nodeName.toLowerCase()=='th' || element.parentNode.nodeName.toLowerCase()=='td')
 						{
-							element.parentNode.style.height=find_width(span)+'px';
+							element.parentNode.style.height=width+'px';
 						} else
 						{
-							element.parentNode.style.minHeight=find_width(span)+'px';
+							element.parentNode.style.minHeight=width+'px';
 						}
 					},0);
 				}

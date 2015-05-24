@@ -658,8 +658,7 @@ class Hook_addon_registry_calendar
                     $month = do_lorem_template('CALENDAR_YEAR_MONTH', array(
                         'ENTRIES' => $_entries,
                     ));
-                    $months .= $month->evaluate() /*XHTMLXHTML*/
-                    ;
+                    $months .= $month->evaluate() /*XHTMLXHTML*/;
                 }
                 $month_rows->attach(do_lorem_template('CALENDAR_YEAR_MONTH_ROW', array(
                     'MONTHS' => $months,

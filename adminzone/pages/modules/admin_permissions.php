@@ -546,8 +546,7 @@ class Module_admin_permissions
 
                 $has_not_restriction = !in_array($gid, $access_rows);
 
-                $cells->attach(do_template('PERMISSION_CELL', array('_GUID' => '3d5fe8c61007d9665111fc9536f6ddf0', 'CHECKED' => !$has_not_restriction, 'HUMAN' => do_lang_tempcode('RESTRICTION_CELL',/*$zone.'__'.*/
-                    escape_html($page['page_name']), escape_html($g_name)), 'NAME' => 'p_' . strval($id) . '__' . strval($gid))));
+                $cells->attach(do_template('PERMISSION_CELL', array('_GUID' => '3d5fe8c61007d9665111fc9536f6ddf0', 'CHECKED' => !$has_not_restriction, 'HUMAN' => do_lang_tempcode('RESTRICTION_CELL', /*$zone.'__'.*/escape_html($page['page_name']), escape_html($g_name)), 'NAME' => 'p_' . strval($id) . '__' . strval($gid))));
                 $code .= 'form.elements[\'' . 'p_' . strval($id) . '__' . strval($gid) . '\'].checked=this.value==\'+\';';
             }
 

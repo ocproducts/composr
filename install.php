@@ -1372,8 +1372,7 @@ function step_5_ftp()
 
         if (($filename != '_config.php') || (!in_array('_config.php', $files))) {
             if (
-                (($overwrite_ok) || (!file_exists(get_file_base() . '/' . $filename)) || (/*@ for possible race condition reported in #53910*/
-                        @filemtime(get_file_base() . '/' . $filename) < filemtime(get_file_base() . '/install.php')) || (filesize(get_file_base() . '/' . $filename) != $file_size))
+                (($overwrite_ok) || (!file_exists(get_file_base() . '/' . $filename)) || (/*@ for possible race condition reported in #53910*/@filemtime(get_file_base() . '/' . $filename) < filemtime(get_file_base() . '/install.php')) || (filesize(get_file_base() . '/' . $filename) != $file_size))
                 &&
                 (($filename != 'forum/index.php') || (!file_exists(get_file_base() . '/' . $filename)))
             ) {

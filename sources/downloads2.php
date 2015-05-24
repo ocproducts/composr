@@ -116,8 +116,7 @@ function dload_script()
         $extension = strtolower($breakdown['extension']);
     }
     if (url_is_local($full)) {
-        $_full = get_custom_file_base() . '/' . rawurldecode(/*filter_naughty*/
-                ($full));
+        $_full = get_custom_file_base() . '/' . rawurldecode(/*filter_naughty*/($full));
     } else {
         $_full = rawurldecode($full);
     }
