@@ -290,9 +290,14 @@ function ecv($lang, $escaped, $type, $name, $param)
                             if ($value != '') {
                                 $value .= $delim;
                             }
-                            $value .= (is_integer($key) ? integer_format($key) : $key) . '=' . $val;
+                            $value .= escape_html((is_integer($key) ? integer_format($key) : $key) . '=' . $val);
                         }
                     } else {
+                        foreach ($array as &$key) {
+                            if ((isset($param[3])) && ($param[3]->evaluate() == '1')) {
+                                $key = escape_html($key);
+                            }
+                        }
                         $value = implode($param[0]->evaluate(), $array);
                     }
                 }

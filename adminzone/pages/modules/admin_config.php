@@ -56,7 +56,7 @@ class Module_admin_config
             'browse' => array('CONFIGURATION', 'menu/adminzone/setup/config/config'),
         );
 
-        $ret['base'] = array('BASE_CONFIGURATION', $support_crosslinks/*The virtual nodes for categories don't have an icon so match that*/ ? null : 'menu/adminzone/setup/config/base_config');
+        $ret['base'] = array('BASE_CONFIGURATION', $support_crosslinks && $be_deferential/*The virtual nodes for categories don't have an icon so match that*/ ? null : 'menu/adminzone/setup/config/base_config');
 
         if (!$be_deferential) {
             if (addon_installed('xml_fields')) {
@@ -696,7 +696,7 @@ class Module_admin_config
                     $value = '';
                 }
             } elseif (($myrow['type'] == 'usergroup') && (get_forum_type() == 'cns')) {
-                $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'name', array('id' => post_param_integer($name)));
+                $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
                 if (is_null($_value)) {
                     $value = '';
                 } else {

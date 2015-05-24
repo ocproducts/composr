@@ -128,11 +128,12 @@ form.activities_remove input.remove_cross::-moz-focus-inner { /* What's this all
 	float: right;
 	text-align: right;
 	width: 14em;
+	margin-top: -2px;
 }
 
 #activities_update_notify {
 	white-space: normal;
 	font-size: 0.85em;
-	margin: 0;
+	margin: 0.25em 0 0 0;
 }
 

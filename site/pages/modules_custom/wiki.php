@@ -34,11 +34,10 @@
 
 class Mx_wiki extends Module_wiki
 {
-    public function run_start()
+    public function run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
-
-        return parent::run_start();
+        return parent::run();
     }
 
     public function changes()

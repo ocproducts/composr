@@ -225,7 +225,7 @@ function activities_ajax_update_list_handler()
                     '_GUID' => '02dfa8b02040f56d76b783ddb8fb382f',
                     'LANG_STRING' => 'RAW_DUMP',
                     'ADDON' => $row['a_addon'],
-                    'ADDON_ICON' => find_addon_icon($row['a_addon']),
+                    'ADDON_ICON' => ($row['a_addon'] == '') ? '' : find_addon_icon($row['a_addon']),
                     'MESSAGE' => $message,
                     'AVATAR' => $member_avatar,
                     'MEMBER_ID' => strval($row['a_member_id']),

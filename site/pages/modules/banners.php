@@ -179,7 +179,7 @@ class Module_banners
                 't_is_textual' => 0,
                 't_image_width' => 728,
                 't_image_height' => 90,
-                't_max_file_size' => 80,
+                't_max_file_size' => 150,
                 't_comcode_inline' => 0
             ));
 

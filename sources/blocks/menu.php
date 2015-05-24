@@ -89,6 +89,10 @@ class Block_menu
             }
         }
 
+        if ($map['param'] == '') {
+            disable_php_memory_limit();
+        }
+
         require_code('menus');
         $menu = build_menu($type, $map['param'], $silent_failure == '1');
         $menu->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
