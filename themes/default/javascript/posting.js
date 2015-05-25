@@ -995,6 +995,10 @@ function _handle_form_saving(event,element,force)
 	{
 		element=(typeof event.target!='undefined')?event.target:event.srcElement;
 	}
+	if ((typeof element=='undefined') || (element===null))
+	{
+		return null; // Some weird error, perhaps an extension fired this event
+	}
 
 	var value=clever_find_value(element.form,element);
 	if ((event.type=='keypress') && (is_typed_input(element)))
