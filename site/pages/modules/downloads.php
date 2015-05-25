@@ -464,35 +464,33 @@ class Module_downloads
         $root = $this->root;
         $category = $this->category;
 
-        $cat_sort = get_param_string('cat_sort', 't1.text_original ASC');
-        $sort = get_param_string('sort', get_option('downloads_default_sort_order'));
-
         $description = get_translated_tempcode('download_downloads', $category, 'description');
 
         // Sorting
-        if (is_null($sort)) {
-            $sort = get_param_string('sort', null);
-            if (is_null($sort)) {
-                $sort = 'name ASC';
-            }
-        }
-        if ((strtoupper($sort) != strtoupper('name ASC')) && (strtoupper($sort) != strtoupper('name DESC'))
+        $sort = get_param_string('sort', get_option('downloads_default_sort_order'));
+        if ((strtoupper($sort) != strtoupper('title ASC')) && (strtoupper($sort) != strtoupper('title DESC'))
             && (strtoupper($sort) != strtoupper('file_size ASC')) && (strtoupper($sort) != strtoupper('file_size DESC'))
-            && (strtoupper($sort) != strtoupper('num_downloads DESC')) && (strtoupper($sort) != strtoupper('add_date ASC'))
+            && (strtoupper($sort) != strtoupper('num_downloads DESC'))
+            && (strtoupper($sort) != strtoupper('add_date DESC')) && (strtoupper($sort) != strtoupper('add_date ASC'))
             && (strtoupper($sort) != strtoupper('compound_rating DESC')) && (strtoupper($sort) != strtoupper('compound_rating ASC'))
             && (strtoupper($sort) != strtoupper('average_rating DESC')) && (strtoupper($sort) != strtoupper('average_rating ASC'))
             && (strtoupper($sort) != strtoupper('fixed_random ASC'))
-            && (strtoupper($sort) != strtoupper('add_date DESC'))
         ) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
         $_selectors = array(
-            'name ASC' => 'TITLE',
+            'title ASC' => 'TITLE',
             'file_size ASC' => 'SMALLEST_FIRST',
             'file_size DESC' => 'LARGEST_FIRST',
             'num_downloads DESC' => 'MOST_DOWNLOADED',
-            'average_rating DESC' => 'RATING',
-            'compound_rating DESC' => 'POPULARITY',
+        );
+        if (get_option('is_on_rating') == '1') {
+            $_selectors = array(
+                'average_rating DESC' => 'RATING',
+                'compound_rating DESC' => 'POPULARITY',
+            );
+        }
+        $_selectors = array(
             'add_date ASC' => 'OLDEST_FIRST',
             'add_date DESC' => 'NEWEST_FIRST',
             'fixed_random ASC' => 'RANDOM',

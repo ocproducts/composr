@@ -177,7 +177,7 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_table('webstandards_checked_once', array(
-                'hash' => '*MD5'
+                'hash' => '*SHORT_TEXT'
             ));
 
             $GLOBALS['SITE_DB']->create_table('edit_pings', array(

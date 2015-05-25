@@ -455,19 +455,26 @@ class Block_main_multi_content
                             break;
                         }
                         $sort = $first_id_field;
-                    default: // Some manual order
-                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
-                        break;
                     case 'title':
+                    case 'title ASC':
+                    case 'title DESC':
+                        if ($sort == 'title') {
+                            $sort .= ' DESC';
+                        }
+                        $sort_order = preg_replace('#^.* #', '', $sort);
+
                         if ((array_key_exists('title_field', $info)) && (strpos($info['title_field'], ':') === false)) {
                             if ($info['title_field_dereference']) {
-                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ASC', $max, $start, false, true, $lang_fields);
+                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ' . $sort_order, $max, $start, false, true, $lang_fields);
                             } else {
-                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['title_field'] . ' ASC', $max, $start, false, true, $lang_fields);
+                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['title_field'] . ' ' . $sort_order, $max, $start, false, true, $lang_fields);
                             }
                         } else {
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $first_id_field . ' ASC', $max, $start, false, true, $lang_fields);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $first_id_field . ' ' . $sort_order, $max, $start, false, true, $lang_fields);
                         }
+                        break;
+                    default: // Some manual order
+                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                         break;
                 }
             }

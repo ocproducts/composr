@@ -1241,7 +1241,7 @@ class Forum_driver_mybb extends Forum_driver_base
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
      * @param  MEMBER $userid The member ID
-     * @param  MD5 $password_hashed The md5-hashed password
+     * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login
      * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set

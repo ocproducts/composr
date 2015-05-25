@@ -23,7 +23,7 @@
  *
  * @param  string $code The code.
  * @param  string $function Name of the function.
- * @return MD5 The MD5 hash (blank: no such function).
+ * @return SHORT_TEXT The MD5 hash (blank: no such function).
  */
 function get_function_hash($code, $function)
 {
