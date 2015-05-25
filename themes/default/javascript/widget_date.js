@@ -294,7 +294,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
       return this;
     };
     $(function() {
-      if (!Modernizr.inputtypes.date) {
+      if (!Modernizr.inputtypes.date || navigator.userAgent.indexOf('Firefox/') != -1) {
         $('input[type="date"]').inputDate();
       }
       return null;
@@ -680,7 +680,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
       return this;
     };
     $(function() {
-      if (!Modernizr.inputtypes.time) {
+      if (!Modernizr.inputtypes.time || navigator.userAgent.indexOf('Firefox/') != -1) {
         $('input[type="time"]').inputTime();
       }
       return null;

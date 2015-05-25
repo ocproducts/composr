@@ -131,6 +131,7 @@ class Module_admin_menus
     public function choose_menu_name()
     {
         require_code('form_templates');
+
         $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
         $list = new Tempcode();//form_input_list_entry('',false,do_lang_tempcode('NA_EM'));
         foreach ($rows as $row) {
@@ -138,6 +139,10 @@ class Module_admin_menus
             $label = do_lang_tempcode('MENU_ITEM_COUNT', escape_html($row['i_menu']), escape_html(integer_format($item_count)));
             $list->attach(form_input_list_entry($row['i_menu'], false, $label));
         }
+        if ($list->is_empty()) {
+            $list->attach(form_input_list_entry('', false, do_lang_tempcode('DEFAULT')));
+        }
+
         $fields = new Tempcode();
 
         $set_name = 'menu';
@@ -215,6 +220,9 @@ class Module_admin_menus
             copy_from_sitemap_to_new_menu($id, $copy_from);
             if (post_param_integer('switch_over', 0) == 1) {
                 set_option('header_menu_call_string', $id);
+
+                require_code('caches3');
+                erase_cached_templates();
             }
         }
 
