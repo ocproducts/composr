@@ -173,7 +173,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	display: inline;
 }
 .form_table_field_input .wide_field {
-	width: {$?,{$MOBILE},100%,27em};
+	width: {$?,{$MOBILE},100%,26em};
 	max-width: 100%;
 }
 

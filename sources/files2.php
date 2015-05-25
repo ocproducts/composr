@@ -84,13 +84,7 @@ function cache_and_carry($func, $args)
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
     if (is_file($path)) {
-        $tmp = @unserialize(file_get_contents($path));
-        if ($tmp !== false)
-        {
-            list($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME) = $tmp;
-        } else {
-            $ret = false;
-        }
+        $ret = @unserialize(file_get_contents($path));
     } else {
         $ret = call_user_func_array($func, $args);
         $tmp = array($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
@@ -1807,13 +1801,13 @@ function get_webpage_meta_details($url)
     }
 
     $result = cache_and_carry('http_download_file', array($url, 1024 * 10, false, false, 'Composr', null, null, null, null, null, null, null, null, 2.0));
-    if ((is_string($result)) && ($result[1] !== null) && (strpos($result[1], 'html') !== false) && $result[4] == '200') {
+    if ((is_array($result)) && ($result[1] !== null) && (strpos($result[1], 'html') !== false) && $result[4] == '200') {
         $html = $result[0];
 
         // In ascending precedence
         $headers = array(
             't_title' => array(
-                '<title[^>]*\s*>\s*(.*)\s*\s*<\s*/title\s*>',
+                '<title[^>]*>\s*(.*)\s*</title>',
             ),
             't_meta_title' => array(
                 '<meta\s+name="?DC\.Title"?\s+content="?([^"<>]*)"?\s*/?' . '>',

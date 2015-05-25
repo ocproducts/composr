@@ -52,7 +52,7 @@ class Hook_media_rendering_email
      */
     public function recognises_mime_type($mime_type)
     {
-        return MEDIA_RECOG_PRECEDENCE_TRIVIAL;
+        return MEDIA_RECOG_PRECEDENCE_NONE;
     }
 
     /**
@@ -63,7 +63,7 @@ class Hook_media_rendering_email
      */
     public function recognises_url($url)
     {
-        return MEDIA_RECOG_PRECEDENCE_TRIVIAL;
+        return MEDIA_RECOG_PRECEDENCE_NONE;
     }
 
     /**

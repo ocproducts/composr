@@ -1360,12 +1360,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         foreach (array_keys($link_handlers) as $link_handler) {
                                             require_code('hooks/systems/comcode_link_handlers/' . $link_handler);
                                             $link_handler_ob = object_factory('Hook_comcode_link_handler_' . $link_handler, true);
-                                            if (is_null($link_handler_ob)) {
-                                                continue;
-                                            }
-                                            $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
-                                            if (!is_null($embed_output)) {
-                                                break;
+                                            if (!is_null($link_handler_ob)) {
+                                                $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
                                             }
                                         }
                                     }

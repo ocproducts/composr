@@ -63,6 +63,13 @@ class Hook_media_rendering_code
      */
     public function recognises_url($url)
     {
+        if (strpos($url, '://localhost/') !== false && strpos(get_base_url(), '://localhost/') === false) {
+            return MEDIA_RECOG_PRECEDENCE_NONE;
+        }
+        if (strpos($url, '://127.0.0.1/') !== false && strpos(get_base_url(), '://127.0.0.1/') === false) {
+            return MEDIA_RECOG_PRECEDENCE_NONE;
+        }
+
         return MEDIA_RECOG_PRECEDENCE_TRIVIAL;
     }
 
@@ -85,7 +92,7 @@ class Hook_media_rendering_code
         if (url_is_local($url)) {
             $url = get_custom_base_url() . '/' . $url;
         }
-        $file_contents = http_download_file($url, 1024 * 1024 * 20/*reasonable limit*/);
+        $file_contents = http_download_file($url, 1024 * 1024 * 20/*reasonable limit*/, false);
 
         require_code('files');
         require_code('comcode_renderer');
