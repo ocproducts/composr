@@ -800,6 +800,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'adminzone/pages/minimodules_custom/doc_index_build.php',
             'docs/pages/comcode_custom/EN/tut_addon_index.txt',
             'sources_custom/tutorials.php',
+            'sources_custom/tutorials_arvixe.php',
             'sources_custom/blocks/main_tutorial_rating.php',
             'sources_custom/blocks/main_tutorials_carousel.php',
             'docs/pages/modules_custom/tutorials.php',

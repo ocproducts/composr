@@ -105,7 +105,7 @@ class Module_tutorials
             ),
             array(
                 'title' => 'Using diff tools to upgrade an ocPortal theme',
-                'url' => 'https://www.youtube.com/watch?v=rm8joO6FpYA',
+                'url' => 'https://www.youtube.com/watch?v=0M8KWaM3bwk',
                 'author' => 'Chris Graham (ocProducts)',
                 'difficulty_level' => 'regular',
                 'summary' => 'How to use a diff tool to find changes made in a theme, or upgrade the files in a theme.',
@@ -520,8 +520,8 @@ class Module_tutorials
             }
         }
 
-        // TODO: Write code to bootstrap existing external tutorials...
-        //  Arvixe
+        require_code('tutorials_arvixe');
+        import_tutorials_from_arvixe();
     }
 
     /**

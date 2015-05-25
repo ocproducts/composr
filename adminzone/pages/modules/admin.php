@@ -239,7 +239,7 @@ class Module_admin
             array('overlay', 'popup', 'dialog', 'window'),
             array('option', 'setting', 'value'),
             array('configure', 'configuration', 'setup', 'install', 'core_configuration'),
-            array('emoticon', 'smiley', 'face', 'emoji'),
+            array('emoticon', 'smiley', 'smile', 'face', 'emoji'),
             array('forum', 'board', 'bbs', 'cns_forum'),
             array('thread', 'topic'),
             array('karma', 'point'),
@@ -282,6 +282,7 @@ class Module_admin
             array('guest', 'anonymous'),
             array('rules', 'license', 'licence', 'agreement', 'terms', 'conditions', 'legals'),
             array('dashboard', 'console', 'status'),
+            array('menu', 'navigation'),
         );
     }
 
