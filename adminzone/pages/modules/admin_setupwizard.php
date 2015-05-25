@@ -464,7 +464,7 @@ class Module_admin_setupwizard
         sort_maps_by($all_addons, 'name');
         require_code('addons');
         foreach ($all_addons as $addon_name => $row) {
-            if ((substr($addon_name, 0, 5) != 'core_') && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
+            if (($addon_name != 'core') && (substr($addon_name, 0, 5) != 'core_') && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
                 $is_advanced_on_by_default = in_array($addon_name, $addon_list_advanced_on_by_default);
                 $is_advanced_off_by_default = in_array($addon_name, $addon_list_advanced_off_by_default);
                 $install_by_default = ((!is_null($addon_list_on_by_default)) && (in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || ((is_null($addon_list_on_by_default)) && (!$is_advanced_off_by_default)));
