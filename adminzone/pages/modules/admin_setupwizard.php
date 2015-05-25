@@ -978,7 +978,7 @@ class Module_admin_setupwizard
             if (!file_exists(get_file_base() . '/.git')) { // Only uninstall if we're not working from a git repository
                 foreach ($uninstalling as $addon_info) {
                     // Archive it off to exports/addons
-                    if ($addon_info['addon_files'] != array()) {
+                    if ($addon_info['files'] != array()) {
                         $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $addon_info['name'])) . '.tar';
                         create_addon(
                             $file,
