@@ -403,10 +403,10 @@ function wysiwyg_editor_init_for(element,id)
 
 	// Mainly used by autosaving
 	editor.on('key', function (event) {
-		if (typeof element.externalonKeyPress!='undefined')
+		if (typeof element.externalOnKeyPress!='undefined')
 		{
 			element.value=editor.getData();
-			element.externalonKeyPress(event,element);
+			element.externalOnKeyPress(event,element);
 		}
 	});
 

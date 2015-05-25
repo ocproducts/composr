@@ -272,6 +272,12 @@ function erase_cached_templates($preserve_some = false)
                                 ||
                                 ((substr($file, -4) == '.css') && ((!$using_less) || (($file != 'global.css') && ($file != 'global_mobile.css'))))
                             ))
+                        ||
+                        ((!$preserve_some) && (
+                                (substr($file, -6) == '.js.gz')
+                                ||
+                                ((substr($file, -7) == '.css.gz') && ((!$using_less) || (($file != 'global.css.gz') && ($file != 'global_mobile.css.gz'))))
+                            ))
                     ) {
                         $i = 0;
                         while ((@unlink($path . $file) === false) && ($i < 5)) {

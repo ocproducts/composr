@@ -383,6 +383,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/sitemap.php',
             '_tests/tests/unit_tests/blocks.php',
             '_tests/tests/unit_tests/commandr_fs.php',
+            '_tests/tests/unit_tests/config.php',
             '_tests/tests/unit_tests/downloads.php',
             '_tests/tests/unit_tests/downloads_category.php',
             '_tests/tests/unit_tests/ecommerce.php',

@@ -698,7 +698,7 @@ function init_form_saving(form_id)
 			// Register events for auto-save
 			add_event_listener_abstract(form.elements[i],'keypress',handle_form_saving);
 			add_event_listener_abstract(form.elements[i],'blur',handle_form_saving);
-			form.elements[i].externalonKeyPress=handle_form_saving;
+			form.elements[i].externalOnKeyPress=handle_form_saving;
 		}
 	}
 
@@ -993,7 +993,7 @@ function _handle_form_saving(event,element,force)
 
 	if (typeof element=='undefined')
 	{
-		element=(event.element)?event.element:event.srcElement;
+		element=(typeof event.target!='undefined')?event.target:event.srcElement;
 	}
 
 	var value=clever_find_value(element.form,element);
