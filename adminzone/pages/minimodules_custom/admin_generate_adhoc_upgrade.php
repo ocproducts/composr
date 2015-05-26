@@ -56,7 +56,7 @@ if ($type == 'auto_probe') {
         global $SITE_INFO;
         $backup = $SITE_INFO;
         require_once($probe_dir . '/_config.php');
-        $linked_db = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
+        $linked_db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
         $auto_probe += collapse_1d_complexity('addon_name', $linked_db->query_select('addons', array('addon_name')));
         $SITE_INFO = $backup;
 

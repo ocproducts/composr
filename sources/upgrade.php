@@ -2254,7 +2254,7 @@ function upgrade_sharedinstall_sites($from = 0)
         _general_db_init();
 
         // Reset DB
-        $GLOBALS['SITE_DB'] = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
+        $GLOBALS['SITE_DB'] = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
         $GLOBALS['FORUM_DB'] = $GLOBALS['SITE_DB'];
 
         // NB: File path will be ok

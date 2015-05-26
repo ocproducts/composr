@@ -732,7 +732,7 @@ function _get_wordpress_db_data()
     }
 
     // Create DB connection
-    $db = new Database_driver($db_name, $host_name, $db_user, $db_passwrod, $db_table_prefix);
+    $db = new DatabaseConnector($db_name, $host_name, $db_user, $db_passwrod, $db_table_prefix);
 
     $users = $db->query('SELECT * FROM ' . db_escape_string($db_name) . '.' . db_escape_string($db_table_prefix) . '_users', null, null, true);
     if (is_null($users)) {

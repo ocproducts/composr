@@ -212,7 +212,7 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
 function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 {
     // Create database, set title and description and domain
-    $master_conn = new Database_driver(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
+    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
     $master_conn->query('CREATE DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
@@ -223,7 +223,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
         attach_message($cmd, 'inform');
     }
     shell_exec($cmd);
-    $db_conn = new Database_driver('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $GLOBALS['SITE_INFO']['mysql_demonstratr_password'], 'cms_');
+    $db_conn = new DatabaseConnector('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $GLOBALS['SITE_INFO']['mysql_demonstratr_password'], 'cms_');
     $db_conn->query_update('config', array('c_value' => $email_address), array('c_name' => 'staff_address'), '', 1);
     $pass = md5($password);
     $salt = '';
@@ -662,7 +662,7 @@ function demonstratr_delete_old_sites()
 function demonstratr_delete_site($server, $codename, $bulk = false)
 {
     // Database
-    $master_conn = new Database_driver(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
+    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, null, true);

@@ -624,7 +624,7 @@ function load_user_stuff()
         if (($SITE_INFO['forum_type'] == 'cns') && (!is_on_multi_site_network()) && (!$GLOBALS['DEV_MODE'])) { // NB: In debug mode needs separating so we can properly test our boundaries
             $FORUM_DRIVER->connection = &$SITE_DB;
         } elseif ($SITE_INFO['forum_type'] != 'none') {
-            $FORUM_DRIVER->connection = new Database_driver(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $FORUM_DRIVER->get_drivered_table_prefix());
+            $FORUM_DRIVER->connection = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $FORUM_DRIVER->get_drivered_table_prefix());
         }
         $FORUM_DRIVER->MEMBER_ROWS_CACHED = array();
         /** The connection to the active forum database.

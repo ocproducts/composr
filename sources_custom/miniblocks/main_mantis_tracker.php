@@ -51,7 +51,7 @@ require_code('xhtml');
 $max = get_param_integer('mantis_max', 10);
 $start = get_param_integer('mantis_start', 0);
 
-$db = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), '');
+$db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), '');
 
 $where = 'duplicate_id=0';
 $where .= ' AND view_state=10';

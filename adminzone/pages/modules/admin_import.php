@@ -408,7 +408,7 @@ class Module_admin_import
         if (($db_name == get_db_site()) && ($importer == 'cms_merge') && ($db_table_prefix == $GLOBALS['SITE_DB']->get_table_prefix())) {
             warn_exit(do_lang_tempcode('IMPORT_SELF_NO'));
         }
-        $import_source = is_null($db_name) ? null : new Database_driver($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
+        $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
         unset($import_source);
 
         // Save data
@@ -568,7 +568,7 @@ class Module_admin_import
             warn_exit(do_lang_tempcode('IMPORT_SELF_NO'));
         }
 
-        $import_source = is_null($db_name) ? null : new Database_driver($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
+        $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
 
         // Some preliminary tests
         $happy = get_param_integer('happy', 0);

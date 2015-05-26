@@ -19,7 +19,7 @@ function xml_dump_script()
     global $SITE_INFO;
     if (array_key_exists('db_chain_type', $SITE_INFO)) {
         require_code('database/' . $SITE_INFO['db_chain_type']);
-        $chain_db = new Database_driver($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
+        $chain_db = new DatabaseConnector($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
     } else {
         warn_exit('It makes no sense to run this script if you have not set up the following config options in _config.php: db_chain_type, db_chain_host, db_chain_user, db_chain_password, db_chain');
     }

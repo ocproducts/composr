@@ -1137,14 +1137,14 @@ function check_method($c, $c_pos, $function_guard = '')
         // Special rule for 'this->connection'
         if (($c[1][1] == 'this') && ($c[1][2][1][1] == 'connection')) {
             $method = $c[1][2][2][1][1];
-            $class = 'Database_driver';
+            $class = 'DatabaseConnector';
             return actual_check_method($class, $method, $params, $c_pos, $function_guard);
         }
 
         // Special rule for $GLOBALS['?_DB']
         if (($c[1][1] == 'GLOBALS') && (substr($c[1][2][1][1][0], -3) == 'LITERAL') && (substr($c[1][2][1][1][1], -3) == '_DB')) {
             $method = $c[1][2][2][1][1];
-            $class = 'Database_driver';
+            $class = 'DatabaseConnector';
             return actual_check_method($class, $method, $params, $c_pos, $function_guard);
         }
 
@@ -1255,7 +1255,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         }
     }
 
-    if ($class == 'Database_driver') {
+    if ($class == 'DatabaseConnector') {
         $param = $c[2];
         if ((count($param) >= 2) && ($param[0][0] == 'LITERAL')) {
             $table = $param[0][1][1];
@@ -1510,7 +1510,7 @@ function get_insecure_functions()
                  'better_parse_ini_file', 'deldir_contents',
                  'include', 'include_once', 'require', 'require_once',
                  'escapeshellarg', 'escapeshellcmd', 'exec', 'passthru', 'proc_open', 'shell_exec', 'system',
-                 'Database_driver.query', 'Database_driver._query', 'Database_driver.query_value_if_there');
+                 'DatabaseConnector.query', 'DatabaseConnector._query', 'DatabaseConnector.query_value_if_there');
 }
 
 /*

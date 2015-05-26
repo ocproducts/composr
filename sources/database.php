@@ -60,7 +60,7 @@ function init__database()
          *
          * @global object $SITE_DB
          */
-        $SITE_DB = new Database_driver(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
+        $SITE_DB = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
     }
 
     global $UPON_QUERY_HOOKS_CACHE;
@@ -480,7 +480,7 @@ function is_on_multi_site_network($db = null)
  *
  * @package    core
  */
-class Database_driver
+class DatabaseConnector
 {
     public $table_prefix;
     public $connection_read, $connection_write;
@@ -546,7 +546,7 @@ class Database_driver
     {
         global $FILECACHE_OBJECT;
         require_code('database/xml');
-        $chain_db = new Database_driver(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
+        $chain_db = new DatabaseConnector(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
         $chain_connection = &$chain_db->connection_write;
         if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
             $chain_connection = call_user_func_array(array($chain_db->static_ob, 'db_get_connection'), $chain_connection);

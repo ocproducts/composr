@@ -85,7 +85,7 @@ function init__database__xml()
     global $SITE_INFO;
     if ((array_key_exists('db_chain_type', $SITE_INFO)) && (!running_script('xml_db_import')) && (get_param_integer('keep_no_chain', 0) != 1)) {
         require_code('database/' . $SITE_INFO['db_chain_type']);
-        $GLOBALS['XML_CHAIN_DB'] = new Database_driver($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
+        $GLOBALS['XML_CHAIN_DB'] = new DatabaseConnector($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
     } else {
         $GLOBALS['XML_CHAIN_DB'] = null;
     }

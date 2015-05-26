@@ -1121,7 +1121,7 @@ function step_5()
     // Give warning if database contains data
     require_code('database');
     if (post_param_integer('confirm', 0) == 0) {
-        $tmp = new Database_driver(trim(post_param_string('db_site')), trim(post_param_string('db_site_host')), trim(post_param_string('db_site_user')), trim(post_param_string('db_site_password')), $table_prefix);
+        $tmp = new DatabaseConnector(trim(post_param_string('db_site')), trim(post_param_string('db_site_host')), trim(post_param_string('db_site_user')), trim(post_param_string('db_site_password')), $table_prefix);
         $test = $tmp->query_select_value_if_there('config', 'c_value', array('c_name' => 'is_on_block_cache'), '', true);
         unset($tmp);
         if (!is_null($test)) {
@@ -1151,7 +1151,7 @@ function step_5()
 
     // Give warning if setting up a multi-site-network to a bad database
     if (($_POST['db_forums'] != $_POST['db_site']) && (get_forum_type() == 'cns')) {
-        $tmp = new Database_driver(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), $table_prefix);
+        $tmp = new DatabaseConnector(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), $table_prefix);
         if (is_null($tmp->query_select_value_if_there('db_meta', 'COUNT(*)', null, '', true))) {
             warn_exit(do_lang_tempcode('MSN_FORUM_DB_NOT_CNS_ALREADY'));
         }
@@ -1768,7 +1768,7 @@ function step_5_uninstall()
     require_code('config');
 
     if (post_param_string('forum_type') != 'none') {
-        $tmp = new Database_driver(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), '');
+        $tmp = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), '');
         unset($tmp);
     }
 
@@ -2066,7 +2066,7 @@ function big_installation_common()
     require_code('forum/' . $forum_type);
     $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_' . filter_naughty_harsh($forum_type));
     if ($forum_type != 'none') {
-        $GLOBALS['FORUM_DRIVER']->connection = new Database_driver(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix());
+        $GLOBALS['FORUM_DRIVER']->connection = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix());
     }
     $GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED = array();
     $GLOBALS['FORUM_DB'] = &$GLOBALS['FORUM_DRIVER']->connection;
@@ -2451,9 +2451,9 @@ function handle_self_referencing_embedment()
             $SITE_INFO['db_type'] = get_param_string('db_type');
             require_code('database');
             if (get_param_string('db_site') == '') {
-                $db = new Database_driver(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
+                $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
             } else {
-                $db = new Database_driver(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
+                $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
             }
             $connection = &$db->connection_write;
             if (count($connection) > 4) { // Okay, we can't be lazy anymore
