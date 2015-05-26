@@ -73,8 +73,8 @@
 {+START,IF_NON_EMPTY,{$META_DATA,type}}<meta property="og:type" content="{$REPLACE*, ,_,{$LCASE,{$META_DATA,type}}}" />{+END}
 <meta property="og:url" content="{$CANONICAL_URL*}" /><meta property="og:site_name" content="{$SITE_NAME*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
-	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
-	this is usually better... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid}" />{+END}
+	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid,1}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
+	this is usually better... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid,1}" />{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$META_DATA,description}}<meta property="og:description" content="{$TRIM,{$META_DATA*,description}}" />{+END}
 {+START,IF_NON_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$META_DATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}

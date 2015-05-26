@@ -198,7 +198,15 @@ function get_option($name, $missing_ok = false)
 
         require_code('config2');
         $value = get_default_option($name);
-        set_option($name, $value, 0);
+        if ($value === null) {
+            if ($missing_ok) {
+                return null;
+            }
+
+            attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+        } else {
+            set_option($name, $value, 0);
+        }
 
         $GET_OPTION_LOOP = false;
     }

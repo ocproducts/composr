@@ -530,7 +530,7 @@ class Module_admin_setupwizard
 
         $hooks = find_all_hooks('modules', 'admin_setupwizard');
         foreach (array_keys($hooks) as $hook) {
-            if (post_param_integer('addon_' . $hook, 0) == 1) {
+            if ((post_param_integer('addon_' . $hook, 0) == 1) && ($hook != 'core')) {
                 $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
                 if (!file_exists($path)) {
                     $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook) . '.php';
@@ -548,7 +548,7 @@ class Module_admin_setupwizard
                 }
             }
         }
-        require_code('hooks/modules/admin_setupwizard/core'); // Core one is not named after an addon (so won't run above) and also explicitly goes last
+        require_code('hooks/modules/admin_setupwizard/core'); // Core one explicitly goes last
         $hook = object_factory('Hook_sw_core', true);
         if (method_exists($hook, 'get_fields')) {
             $hook_fields = $hook->get_fields($field_defaults);

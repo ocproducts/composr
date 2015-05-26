@@ -899,10 +899,9 @@ function _fatal_exit($text, $return = false)
     if (running_script('commandr')) {
         require_code('xml');
 
-        header('Content-Type: text/xml');
-        header('HTTP/1.0 200 Ok');
+        @header('Content-Type: text/xml');
+        @header('HTTP/1.0 200 Ok');
 
-        header('Content-type: text/xml');
         $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
 <response>
     <result>

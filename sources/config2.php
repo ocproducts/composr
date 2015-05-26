@@ -94,7 +94,12 @@ function _multi_lang()
  */
 function get_default_option($name)
 {
-    require_code('hooks/systems/config/' . filter_naughty($name));
+    $path = 'hooks/systems/config/' . filter_naughty($name);
+    if (!is_file(get_file_base() . '/sources/' . $path) && !is_file(get_file_base() . '/sources_custom/' . $path)) {
+        return null;
+    }
+
+    require_code($path);
     $ob = object_factory('Hook_config_' . $name);
 
     $value = $ob->get_default();
