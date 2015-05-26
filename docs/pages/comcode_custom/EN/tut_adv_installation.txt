@@ -204,6 +204,22 @@ If you need to change Composr installation environment settings, you may use the
 
 The configuration editor works upon a separate subsystem to the main Composr code, and is completely independent of any forum or database environment: in other words, if Composr fails to function (perhaps if you moved servers, and your database settings are no longer valid), the configuration editor will continue to work.
 
+[title="2"]Working out of git[/title]
+
+It is possible to run Composr direct from a [url="main git repository"]http://github.com/ocproducts/composr[/url] checkout.
+
+However, be aware the main git repository contains all non-bundled addons. It is used by developers who want to keep everything in the ecosystem in-harmony when developing new features.
+
+If you are going to run from the main git repository, it is best to install it properly rather than just downloading the zip from github. Then you can do [tt]git pull[/tt] commands whenever you want to update the code with the latest changes.
+
+If you are a programmer making your own standalone site you can use git, but you should make your own repository from a normal Composr install.
+
+Here is some specific advice for people working from our git repository:
+ - To temporarily turn off addons, use safe mode ([tt]&keep_safe_mode=1[/tt])
+ - There is a script, [tt]killjunk.sh[/tt] which should remove files from non-bundled addons. However it won't uninstall their database tables so must be run prior to making a new install. If this script is run you become out-of-sync with git and further pulls won't work.
+ - Running from git runs Composr in dev mode, which adds extra constraints and checks (or maybe even removes some designed for live sites). No live site should ever be left in dev mode. To change that add this to [tt]_config.php[/tt]: [tt]$SITE_INFO['dev_mode'] = '0';[/tt]
+ - To stop Composr complaints about the installer being there, while also blocking the installer from running, create empty [tt]install_ok[/tt] and [tt]install_locked[/tt] files.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_install"]Installation[/page]
