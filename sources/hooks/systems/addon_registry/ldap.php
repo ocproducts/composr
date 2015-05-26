@@ -114,7 +114,6 @@ class Hook_addon_registry_ldap
             'sources/hooks/systems/config/ldap_member_search_qualifier.php',
             'sources/hooks/systems/config/ldap_none_bind_logins.php',
             'sources/hooks/systems/config/ldap_version.php',
-            'sources/hooks/systems/config/windows_auth_is_enabled.php',
             'sources/hooks/systems/addon_registry/ldap.php',
             'themes/default/templates/CNS_LDAP_LIST_ENTRY.tpl',
             'themes/default/templates/CNS_LDAP_SYNC_SCREEN.tpl',

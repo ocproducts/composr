@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    ldap
+ * @package    core
  */
 
 /**
@@ -39,7 +39,7 @@ class Hook_config_windows_auth_is_enabled
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'ldap',
+            'addon' => 'core',
         );
     }
 
