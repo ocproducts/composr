@@ -297,7 +297,7 @@ function step_1()
             }
         } else {
             $files = @unserialize(file_get_contents(get_file_base() . '/data/files.dat'));
-            if (($files !== false) && (!file_exists(get_file_base() . '/.svn'))) {
+            if (($files !== false) && (!file_exists(get_file_base() . '/.git'))) {
                 $missing = array();
                 $corrupt = array();
 

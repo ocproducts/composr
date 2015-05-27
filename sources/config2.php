@@ -95,7 +95,7 @@ function _multi_lang()
 function get_default_option($name)
 {
     $path = 'hooks/systems/config/' . filter_naughty($name);
-    if (!is_file(get_file_base() . '/sources/' . $path) && !is_file(get_file_base() . '/sources_custom/' . $path)) {
+    if (!is_file(get_file_base() . '/sources/' . $path . '.php') && !is_file(get_file_base() . '/sources_custom/' . $path . '.php')) {
         return null;
     }
 

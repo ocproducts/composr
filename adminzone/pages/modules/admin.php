@@ -283,6 +283,7 @@ class Module_admin
             array('rules', 'license', 'licence', 'agreement', 'terms', 'conditions', 'legals'),
             array('dashboard', 'console', 'status'),
             array('menu', 'navigation'),
+            array('permalink', 'url', 'link'),
         );
     }
 

@@ -87,7 +87,7 @@ function incoming_uploads_script()
         $max_length = 255;
         $field_type_test = $GLOBALS['SITE_DB']->query_select_value('db_meta', 'm_type', array('m_name' => 'i_orig_filename'));
         if ($field_type_test == 'ID_TEXT') {
-            $max_length = 80; // Legacy
+            $max_length = 80; // LEGACY
         }
         $name = substr($name, max(0, strlen($name) - $max_length));
 
