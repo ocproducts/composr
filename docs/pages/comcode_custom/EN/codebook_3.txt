@@ -427,11 +427,13 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome emails don't get mistargeted/over-sent
   - [tt]memory_tracking[/tt] -- set this to the number of megabytes peak memory usage after which you want the execution URL to be silently logged to the error log (useful for debugging memory usage on a live site). The value must be an integer, with no trailing 'M'. This does not impose a memory limit, which is 64MB by default in Composr, but may be turned off within certain carefully-chosen execution contexts (usually admin tasks which are necessarily memory consuming). Requires PHP 5.2+.
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to enable the Composr profiler, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
+  - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permissioncheckslog.php[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
  - For system-integrators
   - [tt]agency_email_address[/tt] -- set this to a secondary e-mail address where you would like all error e-mails to go (the primary one being the staff address). Only set this if you are an agency and want to receive error e-mails in addition/instead of your client
  - For back-end developers
   - [tt]textmate[/tt] -- set this to '1' if you are developing on a local machine and use the Apple Mac TextMate editor. It will cause TextMate editing links to come up in stack traces
   - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and it's short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials)
+  - [tt]git_autopull[/tt] -- set this to '1' if git changes should automatically be pulled every minute (less frequently if the CRON interval is longer). Assumes a suEXEC-like server and a git deployment and working [tt]shell_exec[/tt]
  - Low-level tuning
   - [tt]no_individual_gallery_view[/tt] -- set this to '1' if all images/videos in a flow-mode gallery must be viewed from the flow-mode view (never individually)
   - [tt]root_cat__images[/tt] -- you can set this to the codename of a gallery, which will be the root for gallery selection on the gallery addon's Add Image form (root is not shown as an option). Alternatively, it can be an Selectcode string.
@@ -492,8 +494,6 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs
   - [tt]stupidity_mode[/tt] -- set to 'leet' or 'bork', for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
- - Debugging
-  - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permissioncheckslog.php[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
 
 [title="3"]Hidden 'keep' parameters[/title]
 

@@ -500,6 +500,7 @@ class Hook_addon_registry_core
             'themes/default/css/install.css',
             'lang/EN/installer.ini',
             'lang/EN/encryption.ini',
+            'sources/hooks/systems/cron/git_autopull.php',
             'sources/hooks/systems/cron/group_member_timeouts.php',
             'sources/group_member_timeouts.php',
             'adminzone/pages/modules/admin_group_member_timeouts.php',
