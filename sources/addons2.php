@@ -707,10 +707,14 @@ function uninstall_addon($addon)
 
                 $matches = array();
                 if (preg_match('#([^/]*)/?pages/modules(_custom)?/(.*)\.php#', $filename, $matches) != 0) {
-                    uninstall_module($matches[1], $matches[3]);
+                    if ($matches[2] != '_custom' || !is_file(get_file_base() . '/' . $filename)) {
+                        uninstall_module($matches[1], $matches[3]);
+                    }
                 }
                 if (preg_match('#sources(_custom)?/blocks/(.*)\.php#', $filename, $matches) != 0) {
-                    uninstall_block($matches[2]);
+                    if ($matches[1] != '_custom' || !is_file(get_file_base() . '/' . $filename)) {
+                        uninstall_block($matches[2]);
+                    }
                 }
                 if (preg_match('#^([^/]*)/index\.php#', $filename, $matches) != 0) {
                     actual_delete_zone_lite($matches[1]);

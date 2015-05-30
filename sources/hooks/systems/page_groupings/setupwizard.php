@@ -37,7 +37,7 @@ class Hook_page_groupings_setupwizard
         }
 
         return array(
-            array('setup', 'menu/adminzone/setup/SETUPWIZARD', array('admin_setupwizard', array('type' => 'browse'), get_module_zone('admin_setupwizard')), do_lang_tempcode('config:SETUPWIZARD'), 'config:DOC_SETUPWIZARD'),
+            array('setup', 'menu/adminzone/setup/setupwizard', array('admin_setupwizard', array('type' => 'browse'), get_module_zone('admin_setupwizard')), do_lang_tempcode('config:SETUPWIZARD'), 'config:DOC_SETUPWIZARD'),
         );
     }
 }

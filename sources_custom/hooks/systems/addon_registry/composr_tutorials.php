@@ -855,7 +855,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'themes/default/templates_custom/BLOCK_MAIN_TUTORIALS_CAROUSEL.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_TUTORIAL_RATING.tpl',
             'themes/default/templates_custom/TUTORIAL_INDEX_SCREEN.tpl',
-            'cms/pages/modules_custom/cms/cms_tutorials.php',
+            'cms/pages/modules_custom/cms_tutorials.php',
             'lang_custom/EN/tutorials.ini',
         );
     }
