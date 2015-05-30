@@ -44,11 +44,11 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
 
     // Existing member, allow blank to persist if such a privilege
     if (!is_null($member_id)) {
-        if (is_null(current_value)) {
-            $current_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_' . $field_class);
+        if (is_null($current_value)) {
+            $current_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, ($field_class == 'dob') ? ('m_' . $field_class . '_day') : ('m_' . $field_class));
         }
 
-        if (($current_value == '') && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
+        if ((empty($current_value)) && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
             return false;
         }
     }

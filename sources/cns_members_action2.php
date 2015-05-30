@@ -702,20 +702,15 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
                 $value = remove_magic_encryption_marker($value);
             }
 
-            if ((!is_null($member_id)) && ($custom_field['cf_required'] == 1))
-            {
-                // Field not required for staff doing editing of another member
-                if ($member_id != get_member()) {
-                    $custom_field['cf_required'] = 0;
-                }
-
-                // Field not required if not yet filled in but member already registered, if PRIVILEGE ON for that. Prevents annoyance for new required CPFs added later.
-                if (!member_field_is_required($member_id, 'required_cpfs', $value)) {
-                    $custom_field['cf_required'] = 0;
-                }
+            if (!member_field_is_required($member_id, 'required_cpfs', $value)) {
+                $custom_field['cf_required'] = 0;
             }
         } else {
             $value = $custom_field['cf_default'];
+
+            if (!member_field_is_required($member_id, 'required_cpfs', '')) {
+                $custom_field['cf_required'] = 0;
+            }
         }
         $result = new Tempcode();
         $_description = escape_html(get_translated_text($custom_field['cf_description'], $GLOBALS['FORUM_DB']));
