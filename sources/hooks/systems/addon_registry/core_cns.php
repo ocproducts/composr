@@ -176,7 +176,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/maximum_username_length.php',
             'sources/hooks/systems/config/minimum_password_length.php',
             'sources/hooks/systems/config/minimum_username_length.php',
-            'sources/hooks/systems/config/no_dob_ask.php',
+            'sources/hooks/systems/config/dobs.php',
             'sources/hooks/systems/config/one_per_email_address.php',
             'sources/hooks/systems/config/privacy_fax.php',
             'sources/hooks/systems/config/privacy_postal_address.php',

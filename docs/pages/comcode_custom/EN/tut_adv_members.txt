@@ -157,6 +157,35 @@ By default the values of the CPFs are not publicly viewable.
 
 Some CPFS are only activated by certain addons. They are pre-installed as they may be shared between addons, yet may not be used by any. They show so you can know they are there, but are no made available for use to reduce feature-bloat. If no addons currently use them, they show in the list as unused and inaccessible. If you want them, you can install an addon that uses them, or simply add your own alternative CPF. The [tt]ecommerce[/tt] addon uses quite a few.
 
+[title="2"]Required fields[/title]
+
+The following fields usually need filling in:
+ - E-mail address
+ - Date of birth
+ - Any custom profile field set to required
+
+However, there are a selection of privileges to soften this a bit. There are 3 common scenarios that show why we might want to soften the requirements:
+1) A staff-member adding an account on someone else's behalf, and not knowing the full details
+2) (Similar to the above) Members were mass-imported but with partial details, and you don't want staff doing editing of those accounts to have to fill things in
+3) A field was enabled or set to required after members joined, and you don't want to force them to fill it in next time they go to edit their account for some other purpose (potentially annoying!)
+
+The privileges are:
+ - Bypass filling-in required custom profile fields
+ - Bypass filling-in required custom profile fields on existing accounts
+ - Bypass filling-in e-mail address account options
+ - Bypass filling-in e-mail address account options on existing accounts
+ - Bypass filling-in date of birth account options
+ - Bypass filling-in date of birth account options on existing accounts
+
+Note that there are effectively two sets of privileges:
+a) Wholesale bypass of requirement (e.g. Bypass filling-in required custom profile fields)
+b) Bypass of requirement on existing accounts (e.g. Bypass filling-in required custom profile fields on existing accounts)
+
+The wholesale bypass would typically be granted to staff and mainly exists for scenario 1. If lets staff add new accounts without having to fill everything in that would usually be required. It also is useful to generally remove the required-field status for date of birth and/or e-mail address fields (CPFs have individual required statuses so it is less useful for those).
+The privilege on existing accounts is a weaker privilege that cover scenarios 2 and 3 well. They mean that if someone is editing an account (their own or someone else's) and the field is currently blank, they don't have to fill it in. However, if the field is already filled in then they will [i]not[/i] be allowed to blank it out.
+
+Note that there is an option "Take date of births". If that is disabled then date of birth fields will be completely disabled, and hence the above date of birth privileges won't have any effect. We allow date of birth to be either enabled or disabled because on some sites it would not be an appropriate thing to ask about. If date of birth is enabled but not required then the field will be titled as "Birthday" to indicate the lowered formality.
+
 [title="2"]Welcome E-mails[/title]
 [surround]
 [media width="150" description="Creating a welcome e-mail" float="right"]data_custom/images/docs/adv_members_welcome_email.png[/media]

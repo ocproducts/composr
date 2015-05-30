@@ -239,9 +239,6 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->drop_table_if_exists('f_forum_tracking');
         $GLOBALS['FORUM_DB']->drop_table_if_exists('f_topic_tracking');
     }
-    if ((!is_null($upgrade_from)) && ($upgrade_from < 8.1)) {
-        delete_config_option('no_dob_ask');
-    }
     if ((is_null($upgrade_from)) || ($upgrade_from < 10.0)) {
         $GLOBALS['FORUM_DB']->create_table('f_group_join_log', array(
             'id' => '*AUTO',
@@ -263,6 +260,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_password_history', 'p_member_id', array('p_member_id'));
     }
     if ((!is_null($upgrade_from)) && ($upgrade_from < 10.0)) {
+        delete_config_option('no_dob_ask');
+
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_by');
 
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_profile_views', 'UINTEGER');
@@ -888,5 +887,12 @@ function install_cns($upgrade_from = null)
         // Has to be done after f_groups is added
         add_privilege('SECTION_FORUMS', 'exceed_post_edit_time_limit', false);
         add_privilege('SECTION_FORUMS', 'exceed_post_delete_time_limit', false);
+
+        add_privilege('SECTION_FORUMS', 'bypass_required_cpfs');
+        add_privilege('SECTION_FORUMS', 'bypass_required_cpfs_if_already_empty');
+        add_privilege('SECTION_FORUMS', 'bypass_email_address');
+        add_privilege('SECTION_FORUMS', 'bypass_email_address_if_already_empty');
+        add_privilege('SECTION_FORUMS', 'bypass_dob');
+        add_privilege('SECTION_FORUMS', 'bypass_dob_if_already_empty');
     }
 }

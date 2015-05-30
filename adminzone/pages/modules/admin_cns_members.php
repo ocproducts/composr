@@ -283,9 +283,18 @@ class Module_admin_cns_members
         // Read in data
         $username = trim(post_param_string('username'));
         $password = trim(post_param_string('password'));
-        $email_address = trim(post_param_string('email_address', ''));
+        $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
         require_code('temporal2');
         list($dob_year, $dob_month, $dob_day) = get_input_date_components('dob');
+        if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
+            if (member_field_is_required(null, 'dob', null, null)) {
+                warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
+            }
+
+            $dob_day = -1;
+            $dob_month = -1;
+            $dob_year = -1;
+        }
         $reveal_age = post_param_integer('reveal_age', 0);
         $timezone = post_param_string('timezone', get_site_timezone());
         $language = post_param_string('language', get_site_default_lang());

@@ -19,6 +19,44 @@
  */
 
 /**
+ * Find whether a member's field must be filled in.
+ *
+ * @param  ?MEMBER $member_id The member being edited (null: new member).
+ * @param  string $field_class Special code representing what kind of field it is.
+ * @set email_address dob required_cpfs
+ * @param  ?string $current_value The value the field has now (null: lookup from member record; cannot do this for a CPF).
+ * @param  ?MEMBER $editing_member The member doing the adding/editing operation (null: current member).
+ * @return boolean Whether the field must be filled in.
+ */
+function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null)
+{
+    if (($field_class == 'dob') && (get_option('dobs') == '0')) {
+        return false;
+    }
+
+    if (is_null($editing_member)) {
+        $editing_member = get_member();
+    }
+
+    if (has_privilege($editing_member, 'bypass_' . $field_class)) {
+        return false;
+    }
+
+    // Existing member, allow blank to persist if such a privilege
+    if (!is_null($member_id)) {
+        if (is_null(current_value)) {
+            $current_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_' . $field_class);
+        }
+
+        if (($current_value == '') && (has_privilege($editing_member, 'bypass_' . $field_class . '_if_already_empty'))) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
  * Add a member.
  *
  * @param  SHORT_TEXT $username The username.

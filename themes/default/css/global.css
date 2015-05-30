@@ -3015,13 +3015,18 @@ ul.buttons_group, ul.associated_links_block_group {
 
 .alt_field:before {
 	content: "\00bb"; /* raquo */
+	padding-left: 1em;
+	padding-right: 0.2em;
+}
+.related_field {
+	font-style: italic;
+	font-weight: normal;
 }
 .related_field:before {
+	font-style: normal;
 	content: "\203a"; /* rsaquo */
-	font-size: 1.2em;
-}
-.alt_field:before, .related_field:before {
-	padding-left: 1em;
+	padding-bottom: 5px;
+	padding-left: 0.5em;
 	padding-right: 0.2em;
 }
 

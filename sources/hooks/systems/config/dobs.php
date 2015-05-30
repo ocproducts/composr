@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_no_dob_ask
+class Hook_config_dobs
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,13 @@ class Hook_config_no_dob_ask
     public function get_details()
     {
         return array(
-            'human_name' => 'NO_DOB_ASK',
-            'type' => 'list',
+            'human_name' => 'DOBS',
+            'type' => 'tick',
             'category' => 'USERS',
             'group' => 'JOINING',
-            'explanation' => 'CONFIG_OPTION_no_dob_ask',
+            'explanation' => 'CONFIG_OPTION_dobs',
             'shared_hosting_restricted' => '0',
-            'list_options' => '0|1|2',
+            'list_options' => '',
 
             'addon' => 'core_cns',
         );
@@ -50,6 +50,6 @@ class Hook_config_no_dob_ask
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

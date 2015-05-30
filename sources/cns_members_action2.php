@@ -277,11 +277,19 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
 function cns_read_in_custom_fields($custom_fields, $member_id = null)
 {
     require_code('fields');
+    require_code('cns_members_action');
 
     $actual_custom_fields = array();
     foreach ($custom_fields as $custom_field) {
         $ob = get_fields_hook($custom_field['cf_type']);
+
         $old_value = is_null($member_id) ? null : $GLOBALS['FORUM_DB']->query_select_value('f_member_custom_fields', 'field_' . strval($custom_field['id']), array('mf_member_id' => $member_id));
+
+        // Field not required if not yet filled in but member already registered, if PRIVILEGE ON for that. Prevents annoyance for new required CPFs added later.
+        if (!member_field_is_required($member_id, 'required_cpfs', $old_value)) {
+            $custom_field['cf_required'] = 0;
+        }
+
         $value = $ob->inputted_to_field_value(true, $custom_field, 'uploads/cns_cpf_upload', $old_value);
         if ((fractional_edit()) && ($value != STRING_MAGIC_NULL)) {
             $rendered = $ob->render_field_value($custom_field, $value, 0, null, 'f_members', $member_id, 'ce_id', 'cf_id', 'field_' . strval($custom_field['id']), $member_id);
@@ -373,6 +381,7 @@ function cns_get_member_fields($mini_mode = true, $member_id = null, $groups = n
 function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $groups = null, $email_address = '', $preview_posts = null, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $theme = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $validated = 1, $primary_group = null, $username = '', $is_perm_banned = 0, $special_type = '', $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null)
 {
     require_code('form_templates');
+    require_code('cns_members_action');
 
     $preview_posts = take_param_int_modeavg($preview_posts, 'm_preview_posts', 'f_members', 0);
 
@@ -383,12 +392,6 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     }
 
     $hidden = new Tempcode();
-
-    if (has_actual_page_access(get_member(), 'admin_cns_members')) {
-        $dob_optional = true;
-    } else {
-        $dob_optional = (get_option('no_dob_ask') == '2');
-    }
 
     if ($member_id === $GLOBALS['CNS_DRIVER']->get_guest_id()) {
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
@@ -454,17 +457,21 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
                 $email_description = do_lang_tempcode('MUST_BE_REAL_ADDRESS');
             }
         }
-        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), $email_description, 'email_address', $email_address, !has_privilege(get_member(), 'member_maintenance')));
+
+        $email_address_required = member_field_is_required($member_id, 'email_address');
+
+        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), $email_description, 'email_address', $email_address, $email_address_required));
         if ((is_null($member_id)) && ($email_address == '') && (get_option('email_confirm_join') == '1')) {
-            $fields->attach(form_input_email(do_lang_tempcode('CONFIRM_EMAIL_ADDRESS'), '', 'email_address_confirm', '', !has_privilege(get_member(), 'member_maintenance')));
+            $fields->attach(form_input_email(do_lang_tempcode('CONFIRM_EMAIL_ADDRESS'), '', 'email_address_confirm', '', $email_address_required));
         }
     }
 
     // DOB
     if (cns_field_editable('dob', $special_type)) {
         $default_time = is_null($dob_month) ? null : usertime_to_utctime(mktime(0, 0, 0, $dob_month, $dob_day, $dob_year));
-        if (get_option('no_dob_ask') != '1') {
-            $fields->attach(form_input_date(do_lang_tempcode((get_option('no_dob_ask') == '2') ? 'BIRTHDAY' : 'DATE_OF_BIRTH'), '', 'dob', !$dob_optional, false, false, $default_time, -130));
+        if (get_option('dobs') == '1') {
+            $dob_required = member_field_is_required($member_id, 'dob');
+            $fields->attach(form_input_date(do_lang_tempcode($dob_required ? 'DATE_OF_BIRTH' : 'BIRTHDAY'), '', 'dob', $dob_required, false, false, $default_time, -130));
             if (addon_installed('cns_forum')) {
                 $fields->attach(form_input_tick(do_lang_tempcode('RELATED_FIELD', do_lang_tempcode('REVEAL_AGE')), do_lang_tempcode('DESCRIPTION_REVEAL_AGE'), 'reveal_age', $reveal_age == 1));
             }
@@ -651,6 +658,8 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
  */
 function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $groups = null, $custom_fields = null)
 {
+    require_code('cns_members_action');
+
     $fields = new Tempcode();
     $hidden = new Tempcode();
 
@@ -677,10 +686,6 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         $ob = get_fields_hook($custom_field['cf_type']);
         list(, , $storage_type) = $ob->get_field_value_row_bits($custom_field);
 
-        if ((!is_null($member_id)) && ($member_id != get_member())) {
-            $custom_field['cf_required'] = 0;
-        }
-
         $existing_field = (!is_null($custom_fields)) && (array_key_exists($custom_field['id'], $custom_fields));
         if ($existing_field) {
             $value = mixed();
@@ -695,6 +700,19 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
             }
             if (($custom_field['cf_encrypted'] == 1) && (is_encryption_enabled())) {
                 $value = remove_magic_encryption_marker($value);
+            }
+
+            if ((!is_null($member_id)) && ($custom_field['cf_required'] == 1))
+            {
+                // Field not required for staff doing editing of another member
+                if ($member_id != get_member()) {
+                    $custom_field['cf_required'] = 0;
+                }
+
+                // Field not required if not yet filled in but member already registered, if PRIVILEGE ON for that. Prevents annoyance for new required CPFs added later.
+                if (!member_field_is_required($member_id, 'required_cpfs', $value)) {
+                    $custom_field['cf_required'] = 0;
+                }
             }
         } else {
             $value = $custom_field['cf_default'];
@@ -789,13 +807,16 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
 function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated = null, $username = null, $password = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $join_time = null, $avatar_url = null, $signature = null, $is_perm_banned = null, $photo_url = null, $photo_thumb_url = null, $salt = null, $password_compatibility_scheme = null, $skip_checks = false)
 {
     require_code('type_sanitisation');
+    require_code('cns_members_action');
 
     $update = array();
 
     if (!$skip_checks) {
         $old_email_address = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_email_address');
 
-        if ((!is_null($email_address)) && (($email_address != '') || (($old_email_address != '') && (!has_privilege(get_member(), 'member_maintenance')))) && (!is_email_address($email_address))) {
+        $email_address_required = member_field_is_required($member_id, 'email_address');
+
+        if ((!is_null($email_address)) && ($email_address != '') && (!is_email_address($email_address))) {
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
     }

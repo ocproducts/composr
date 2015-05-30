@@ -222,7 +222,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         warn_exit(make_string_tempcode(escape_html(do_lang('PASSWORD_MISMATCH'))));
     }
     $confirm_email_address = post_param_string('email_address_confirm', null);
-    $email_address = trim(post_param_string('email_address'));
+    $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
     if (!is_null($confirm_email_address)) {
         if (trim($confirm_email_address) != $email_address) {
             warn_exit(make_string_tempcode(escape_html(do_lang('EMAIL_ADDRESS_MISMATCH'))));
@@ -244,6 +244,15 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
     require_code('temporal2');
     list($dob_year, $dob_month, $dob_day) = get_input_date_components('dob');
+    if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
+        if (member_field_is_required(null, 'dob', null, null)) {
+            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
+        }
+
+        $dob_day = -1;
+        $dob_month = -1;
+        $dob_year = -1;
+    }
     $reveal_age = post_param_integer('reveal_age', 0);
     $timezone = post_param_string('timezone', get_users_timezone());
     $language = post_param_string('language', get_site_default_lang());
