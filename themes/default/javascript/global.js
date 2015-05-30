@@ -311,16 +311,6 @@ function new_html__initialise(element)
 			break;
 
 		case 'form':
-			if (element.className.indexOf('autocomplete')!=-1)
-			{
-				element.setAttribute('autocomplete','on');
-			} else
-			{
-				var dont_autocomplete=['edit_username','edit_password'];
-				for (var j=0;j<dont_autocomplete.length;j++) // Done in very specific way, as Firefox will nuke any explicitly non-autocompleted values when clicking back also
-					if (element.elements[dont_autocomplete[j]]) element.elements[dont_autocomplete[j]].setAttribute('autocomplete','off');
-			}
-
 			// HTML editor
 			if (typeof window.load_html_edit!='undefined')
 			{

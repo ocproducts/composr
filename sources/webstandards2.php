@@ -466,7 +466,6 @@ function init__webstandards2()
         'embed.height' => $enforce_inumber,
         'embed.src' => $enforce_link,
         'embed.width' => $enforce_inumber,
-        //'input.autocomplete'=>'on|off', // Unofficial extension
         'input.accept' => '.+',
         'input.accesskey' => $enforce_character,
         'input.alt' => '.*',

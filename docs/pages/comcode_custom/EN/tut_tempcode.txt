@@ -253,6 +253,10 @@ Tempcode does not have explicit data-types, everything is text. However we may i
 		<td>{$TRIM, abc }</td>
 		<td>Trim any textual or XHTML white-space from the given string.</td>
 	</tr>
+	<tr style="background: #FFDDDD">
+		<td>{$DEEP_CLEAN, abc }</td>
+		<td>Apply the deep clean process on the parameter. Clean common ugly patterns out, such as leading white-space, all-caps, or paste-from-Word problems.</td>
+	</tr>
 </tbody></table>
 [/html]
 

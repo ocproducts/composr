@@ -43,7 +43,7 @@ class Persistent_cacheing_memcache extends Memcache
     public function load_objects_list()
     {
         if (is_null($this->objects_list)) {
-            $this->objects_list = parent::get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
+            $this->objects_list = $this->get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
             if ($this->objects_list === false) {
                 $this->objects_list = array();
             }
@@ -60,10 +60,11 @@ class Persistent_cacheing_memcache extends Memcache
      */
     public function get($key, $min_cache_date = null)
     {
-        $data = parent::get($key, $min_cache_date);
-        if ($data === false) {
+        $_data = parent::get($key);
+        if ($_data === false) {
             return null;
         }
+        $data = unserialize($_data);
         if ((!is_null($min_cache_date)) && ($data[0] < $min_cache_date)) {
             return null;
         }
@@ -84,7 +85,7 @@ class Persistent_cacheing_memcache extends Memcache
         $objects_list = $this->load_objects_list();
         if (!array_key_exists($key, $objects_list)) {
             $objects_list[$key] = true;
-            parent::set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+            $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0);
         }
 
         parent::set($key, array(time(), $data), $flags, $expire_secs);
@@ -100,7 +101,7 @@ class Persistent_cacheing_memcache extends Memcache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        parent::set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        //$this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0); Wasteful
 
         parent::delete($key);
     }
@@ -112,7 +113,7 @@ class Persistent_cacheing_memcache extends Memcache
     {
         // Update list of persistent-objects
         $objects_list = array();
-        parent::set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0);
 
         parent::flush();
     }

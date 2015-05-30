@@ -97,7 +97,7 @@ class Persistent_cacheing_wincache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        //wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
 
         wincache_ucache_delete($key);
     }

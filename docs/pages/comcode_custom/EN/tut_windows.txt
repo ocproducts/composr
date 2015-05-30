@@ -17,7 +17,7 @@ Bitnami is professionally-maintained and a good choice. They also provide all ki
 
 [title="3"]WampServer[/title]
 
-[url="WampServer"]http://www.wampserver.com/en/index.php[/url] lets you mass install the software for running an Apache-based server.
+[url="WampServer"]http://www.wampserver.com/en/[/url] lets you mass install the software for running an Apache-based server.
 
 [hide="Detailed graphic instructions for installing on WampServer"]
 Detailed WampServer installation instructions:
@@ -105,7 +105,7 @@ Once the permissions are set, just run through the installer, and you should hav
 
 [title="2"]See also[/title]
 
- - [url="WAMP-Server"]http://www.wampserver.com/en/index.php[/url]
+ - [url="WAMP-Server"]http://www.wampserver.com/en/[/url]
  - [url="MySQL homesite"]http://mysql.com/[/url]
  - [url="Apache homesite"]http://httpd.apache.org/[/url]
  - [url="PHP homesite"]http://php.net/[/url]

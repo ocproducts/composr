@@ -996,7 +996,6 @@ class Hook_addon_registry_core_cns
             'URL' => placeholder_url(),
             'SUBMIT_ICON' => 'buttons__edit',
             'SUBMIT_NAME' => lorem_phrase(),
-            'AUTOCOMPLETE' => false,
             'SKIP_WEBSTANDARDS' => true,
             'TABS' => $tabs2,
             'HIDDEN' => '',

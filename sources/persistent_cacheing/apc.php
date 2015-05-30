@@ -92,7 +92,7 @@ class Persistent_cacheing_apccache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        @apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        //@apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
 
         apc_delete($key);
     }

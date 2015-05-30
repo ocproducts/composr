@@ -109,11 +109,11 @@ class Persistent_cacheing_eacceleratorcache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        if (function_exists('eaccelerator_put')) {
+        /*if (function_exists('eaccelerator_put')) {    Wasteful
             eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
         } elseif (function_exists('mmcache_put')) {
             mmcache_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
-        }
+        }*/
 
         if (function_exists('eaccelerator_rm')) {
             eaccelerator_rm($key);

@@ -22,18 +22,18 @@ The tag may take 3 attributes (all optional, but they may also be used together)
  - 'fields', a comma-separated list of strings (with wildcard support) indicating the names of parameters on which the contained restrictions apply
 
 The 'filter' tag again is used to limit the situations under which restriction tags may apply, but it filters based on membership rather than context. The tag may take 3 attributes (all optional, but they may also be used together):
- - 'notstaff', if this is set to '1' then the contained restrictions will only apply to non-staff (if you leave it out it will apply to all)
+ - 'notStaff', if this is set to '1' then the contained restrictions will only apply to non-staff (if you leave it out it will apply to all)
  - 'groups', a comma-separated list of usergroup ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)
  - 'members', a comma-separated list of member ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)
 
 [title="2"]Restriction tags[/title]
 
 The following restriction tags are supported for manipulating form results:
- - 'minlength', give an error if the field value does not meet the minimum length. This is useful to prevent people posting poorly completed entries.
- - 'maxlength', give an error if the field value does not meet the maximum length.
- - 'possibilityset', give an error if the field value does not match the contained wildcard expression. If you apply the 'secretive' attribute with a value of '1' then the user will not be told what the possible values are, which is useful if you are trying to implement a password (e.g. you can only send me a PT if you use the word "abracadabra" in it).
- - 'disallowedsubstring', provide an error if the field value contains a match for the contained wildcard expression. This is useful as a blocking word-filter. Unlike the main Composr word filter, you have full qualification and filter support, so it is selectively applied as you require.
- - 'disallowedword', as above but will only match whole words.
+ - 'minLength', give an error if the field value does not meet the minimum length. This is useful to prevent people posting poorly completed entries.
+ - 'maxLength', give an error if the field value does not meet the maximum length.
+ - 'possibilitySet', give an error if the field value does not match the contained wildcard expression. If you apply the 'secretive' attribute with a value of '1' then the user will not be told what the possible values are, which is useful if you are trying to implement a password (e.g. you can only send me a PT if you use the word "abracadabra" in it).
+ - 'disallowedSubstring', provide an error if the field value contains a match for the contained wildcard expression. This is useful as a blocking word-filter. Unlike the main Composr word filter, you have full qualification and filter support, so it is selectively applied as you require.
+ - 'disallowedWord', as above but will only match whole words.
  - 'shun', provide an error if the field value equals the contained wildcard expression. This is different from 'disallowedsubstring' simply because it shuns complete matches against the field value rather than substrings.
  - 'pattern', provide an error if the given regular expression does not pass
 
@@ -41,9 +41,10 @@ You may give each of these restriction tags an 'error' attribute, which will be 
 
 The following restriction tags are supported for manipulating form results, and also default form field values:
  - 'replace', replace the value of the attribute 'from' in the field value with the contents of the tag. This is useful if for example you renamed your product and you wanted people to stop using the old product name on your website.
- - 'removeshout', filter out shouting in the field value (ENTIRELY UPPER CASE FIELD VALUES). This is useful for making a forum appear more civil.
- - 'sentencecase', make the field value sentence case.
- - 'titlecase', make the field value Title Case.
+ - 'removeShout', filter out shouting in the field value (ENTIRELY UPPER CASE FIELD VALUES). This is useful for making a forum appear more civil.
+ - 'sentenceCase', make the field value sentence case.
+ - 'titleCase', make the field value Title Case.
+ - 'deepClean', apply the deep clean process on the field value. Clean common ugly patterns out, such as leading white-space, all-caps, or paste-from-Word problems. This is a potentially disruptive operation, so only use it on data that has been entered by n00bs.
  - 'append', append something to the field value. This is useful if you want submissions from non-staff to be flagged with a disclaimer message.
  - 'prepend', prepend something to the field value.
 

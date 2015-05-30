@@ -2,7 +2,7 @@
 	{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 {+END}
 
-<form autocomplete="off" title="{!PRIMARY_PAGE_FORM}" id="posting_form" method="post" enctype="multipart/form-data" action="{URL*}"{+START,IF_PASSED_AND_TRUE,AUTOCOMPLETE} class="autocomplete"{+END}>
+<form title="{!PRIMARY_PAGE_FORM}" id="posting_form" method="post" enctype="multipart/form-data" action="{URL*}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

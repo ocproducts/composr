@@ -995,9 +995,6 @@ footer .global_minilinks a:hover, footer .global_minilinks .button_hyperlink:hov
 =========================
 */
 
-.autocomplete { /* Membership of this class is used as a tag to allow form autocompletion */
-}
-
 .webstandards_checker_off { /* Membership of this class is used as a tag to turn off the webstandards checker */
 	display: inline-block; /* To stop it breaking text-align: center */
 	width: 100%;

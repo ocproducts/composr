@@ -169,7 +169,6 @@ class Hook_profiles_tabs_edit
             'URL' => $url,
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
-            'AUTOCOMPLETE' => false,
             'SKIP_WEBSTANDARDS' => true,
             'TABS' => $_tabs,
         ));

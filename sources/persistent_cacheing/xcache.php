@@ -92,7 +92,7 @@ class Persistent_cacheing_xcache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        xcache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        //xcache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
 
         xcache_unset($key);
     }

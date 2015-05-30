@@ -352,9 +352,9 @@ function persistent_cache_get($key, $min_cache_date = null)
     if ($test !== null) {
         return $test;
     }
-    if (!is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {
+    /*if (!is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {  Server-wide bad idea
         $test = $PERSISTENT_CACHE->get(('cms' . float_to_raw_string(cms_version_number())) . serialize($key), $min_cache_date); // And last we'll try server-wide
-    }
+    }*/
     return $test;
 }
 
@@ -376,9 +376,10 @@ function persistent_cache_set($key, $data, $server_wide = false, $expire_secs = 
         $expire_secs = $server_wide ? 0 : (60 * 60);
     }
 
-    if (is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {
+    /*if (is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {   Server-wide bad idea
         $server_wide = false;
-    }
+    }*/
+    $server_wide = false;
 
     $PERSISTENT_CACHE->set(($server_wide ? ('cms' . float_to_raw_string(cms_version_number())) : get_file_base()) . serialize($key), $data, 0, $expire_secs);
 }
@@ -411,9 +412,9 @@ function persistent_cache_delete($key, $substring = false)
         }
     } else {
         $PERSISTENT_CACHE->delete(get_file_base() . serialize($key));
-        if (!is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {
+        /*if (!is_a($PERSISTENT_CACHE, 'Persistent_cacheing_filecache')) {  Server-wide bad idea
             $PERSISTENT_CACHE->delete('cms' . float_to_raw_string(cms_version_number()) . serialize($key));
-        }
+        }*/
     }
 }
 

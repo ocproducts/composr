@@ -2,7 +2,7 @@
 	<section class="box box___block_side_personal_stats_no"><div class="box_inner">
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
-		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="autocomplete">
+		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
 			<div>
 				<div class="constrain_field">
 					<div class="accessibility_hidden"><label for="ps_login_username">{!USERNAME}{+START,IF,{$AND,{$CNS},{$CONFIG_OPTION,one_per_email_address}}} / {!EMAIL_ADDRESS}{+END}</label></div>

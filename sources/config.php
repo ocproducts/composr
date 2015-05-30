@@ -345,6 +345,7 @@ function get_value_newer_than($name, $cutoff, $elective_or_lengthy = false)
  * @param  ID_TEXT $name The name of the value
  * @param  SHORT_TEXT $value The value
  * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
+ * @return SHORT_TEXT The value just set, same as $value (just as a niceity so that Commandr users can see something "happen")
  */
 function set_value($name, $value, $elective_or_lengthy = false)
 {
@@ -353,7 +354,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
         if ($value !== null) {
             $GLOBALS['SITE_DB']->query_insert('values_elective', array('date_and_time' => time(), 'the_value' => $value, 'the_name' => $name));
         }
-        return;
+        return $value;
     }
 
     global $VALUE_OPTIONS_CACHE;
@@ -368,6 +369,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
     if (function_exists('persistent_cache_set')) {
         persistent_cache_set('VALUES', $VALUE_OPTIONS_CACHE);
     }
+    return $value;
 }
 
 /**

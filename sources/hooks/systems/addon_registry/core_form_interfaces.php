@@ -1296,6 +1296,7 @@ class Hook_addon_registry_core_form_interfaces
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
             'REQUIRED' => '',
+            '_REQUIRED' => false,
             'DEFAULT' => '',
             'HOOK' => '',
             'ROOT_ID' => '',

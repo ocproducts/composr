@@ -1559,6 +1559,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         'TABINDEX' => strval($tabindex),
         'NAME' => $name,
         'REQUIRED' => $_required,
+        '_REQUIRED' => $required,
         'DEFAULT' => is_null($default) ? '' : $default,
         'HOOK' => $hook,
         'ROOT_ID' => is_null($root_id) ? '' : $root_id,
