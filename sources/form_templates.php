@@ -1970,16 +1970,23 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
     }
 
     if ($total_years_to_show < 0) {
+        // Assumes $year_start = null; if it is not, weird parameters were passed
         $year_start = intval(date('Y')) + $total_years_to_show;
     }
+    // Fix if out of range
     if ((!is_null($year_start)) && (!is_null($default_year)) && ($default_year < $year_start)) {
         $year_start = $default_year;
     }
 
     $year_end = mixed();
-    if ((!is_null($total_years_to_show)) && (!is_null($year_start)) && ($total_years_to_show >= 0)) {
-        $year_end = $year_start + $total_years_to_show;
+    if ((!is_null($total_years_to_show)) && (!is_null($year_start))) {
+        if ($total_years_to_show >= 0) {
+            $year_end = $year_start + $total_years_to_show;
+        } else {
+            $year_end = $year_start - $total_years_to_show;
+        }
     }
+    // Fix if out of range
     if ((!is_null($default_year)) && (!is_null($year_end)) && ($default_year > $year_end)) {
         $year_end = $default_year;
     }
@@ -2014,8 +2021,8 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         'MIN_DATE_DAY' => is_null($year_start) ? '' : '1',
         'MIN_DATE_MONTH' => is_null($year_start) ? '' : '1',
         'MIN_DATE_YEAR' => is_null($year_start) ? '' : strval($year_start),
-        'MAX_DATE_DAY' => is_null($year_end) ? '' : '1',
-        'MAX_DATE_MONTH' => is_null($year_end) ? '' : '1',
+        'MAX_DATE_DAY' => is_null($year_end) ? '' : '31',
+        'MAX_DATE_MONTH' => is_null($year_end) ? '' : '12',
         'MAX_DATE_YEAR' => is_null($year_end) ? '' : strval($year_end),
     ));
 }

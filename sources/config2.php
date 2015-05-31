@@ -149,7 +149,7 @@ function set_option($name, $value, $will_be_formally_set = 1)
             return; // Don't save in the installer
         }
 
-        $GLOBALS['SITE_DB']->query_insert('config', $map);
+        $GLOBALS['SITE_DB']->query_insert('config', $map, false, true/*block race condition errors*/);
     } else {
         $needs_dereference = $CONFIG_OPTIONS_CACHE[$name]['c_needs_dereference'];
     }

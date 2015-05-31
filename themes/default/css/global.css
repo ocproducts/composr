@@ -3174,7 +3174,7 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	background-position: left 7px top 3px !important;
 }
 .button_screen_item {
-	padding: 3px 33px 4px 7px;
+	padding: 3px 30px 4px 5px;
 	background-position: right 7px top 3px;
 	background-size: 18px 18px;
 	font-size: 13px;

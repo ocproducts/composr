@@ -188,6 +188,9 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         $calendarDiv.appendTo(calendarContainer);
         $calendarDiv.datepicker({
           dateFormat: 'MM dd, yy',
+          changeMonth: true,
+          changeYear: true,
+          yearRange: (min && max) ? (min.getFullYear()+":"+max.getFullYear()) : "-100:+30",
           showButtonPanel: true,
           beforeShowDay: function(dateObj) {
             var dateDays, minDays;
@@ -213,15 +216,20 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         if (Modernizr.csstransitions) {
           calendarDiv.className = "date-calendar-dialog date-closed";
           $dateBtn.click(function(event) {
-            $calendarDiv.off('transitionend oTransitionEnd webkitTransitionEnd MSTransitionEnd');
-            calendarDiv.style.display = 'block';
-            calendarDiv.className = "date-calendar-dialog date-open";
+            if ($('.date-calendar-dialog.date-open').length > 0) {
+              closeFunc();
+ 				} else {
+              $calendarDiv.off('transitionend oTransitionEnd webkitTransitionEnd MSTransitionEnd');
+              calendarDiv.style.display = 'block';
+              calendarDiv.className = "date-calendar-dialog date-open";
+ 				}
             event.preventDefault();
             return false;
           });
           closeFunc = function(event) {
             var transitionend_function;
-            if (calendarDiv.className === "date-calendar-dialog date-open") {
+            if ($('.date-calendar-dialog.date-open').length > 0) {
+              calendarDiv = $('.date-calendar-dialog.date-open')[0];
               transitionend_function = function(event, ui) {
                 calendarDiv.style.display = 'none';
                 $calendarDiv.off("transitionend oTransitionEnd webkitTransitionEnd MSTransitionEnd", transitionend_function);
@@ -237,7 +245,11 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
           };
         } else {
           $dateBtn.click(function(event) {
-            $calendarDiv.fadeIn('fast');
+            if ($('.date-calendar-dialog.date-open').length > 0) {
+              closeFunc();
+				} else {
+              $calendarDiv.fadeIn('fast');
+				}
             event.preventDefault();
             return false;
           });
@@ -249,7 +261,6 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
             return null;
           };
         }
-        $calendarDiv.mouseleave(closeFunc);
         $calendarDiv.datepicker("option", "onSelect", function(dateText, inst) {
           var dateObj;
           dateObj = $.datepicker.parseDate('MM dd, yy', dateText);

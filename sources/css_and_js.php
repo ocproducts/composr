@@ -239,7 +239,7 @@ function css_compile($active_theme, $theme, $c, $fullpath, $css_cache_path, $min
         }
 
         require_code('tempcode_compiler');
-        $temp = template_to_tempcode(file_get_contents($global_fullpath), 0, false, '', $active_theme, user_lang());
+        $temp = template_to_tempcode(file_get_contents($global_fullpath), 0, false, $c, $active_theme, user_lang());
         $temp->evaluate(); // We just need it to evaluate, not do anything with it
     }
 

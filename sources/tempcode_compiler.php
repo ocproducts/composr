@@ -904,7 +904,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     }
 
     cms_profile_start_for('_do_template');
-    $result = template_to_tempcode($template_contents, 0, false, ($suffix != '.tpl') ? '' : $codename, $theme_orig, $lang);
+    $result = template_to_tempcode($template_contents, 0, false, $codename, $theme_orig, $lang);
     cms_profile_end_for('_do_template', $codename . $suffix);
     if (($CACHE_TEMPLATES) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (($suffix == '.tpl') || ($codename == 'no_cache'))) {
         $path2 = get_custom_file_base() . '/themes/' . $theme_orig . '/templates_cached/' . filter_naughty($lang);
@@ -1005,7 +1005,7 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
     $funcdefs = array();
     $seq_parts = array();
     foreach ($parts_groups as $parts_group) {
-        $myfunc = 'tcpfunc_' . (($codename == '') ? fast_uniqid() : $codename) . '_' . strval(count($seq_parts) + 1);
+        $myfunc = 'tcpfunc_' . fast_uniqid() . '_' . strval(count($seq_parts) + 1);
         $funcdef = build_closure_function($myfunc, $parts_group);
         $funcdefs[$myfunc] = $funcdef;
         $seq_parts[] = array(array($myfunc, array(/* Is currently unbound */), TC_KNOWN, '', ''));

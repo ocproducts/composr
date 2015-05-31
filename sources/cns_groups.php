@@ -339,7 +339,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
             global $PROBATION_GROUP_CACHE;
             if (is_null($PROBATION_GROUP_CACHE)) {
                 $probation_group = get_option('probation_usergroup');
-                $PROBATION_GROUP = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('name') => $probation_group));
+                $PROBATION_GROUP = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
                 if (is_null($PROBATION_GROUP_CACHE)) {
                     $PROBATION_GROUP_CACHE = false;
                 }
