@@ -51,7 +51,7 @@ div.comcode_supported {
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.input_error_here {
 		background-image: url('{$IMG;,icons/48x48/status/notice}');
 		background-size: 24px 24px;
@@ -301,35 +301,41 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	white-space: nowrap;
 }
 
-/* Special validated checkbox */
-.form_table_field_input>input[name="validated"].input_tick:before, .form_table_field_input>input[name="validated"].input_tick {
+/* Special validated checkbox; use of span.validated_checkbox is due to http://stackoverflow.com/questions/6949148/css-after-not-adding-content-to-certain-elements */
+span.validated_checkbox, span.validated_checkbox+input[name="validated"].input_tick {
 	width: {$ADD,5,{$IMG_WIDTH%,{$IMG,1x/editor/off}}}px;
 	height: {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
 	display: inline-block;
 	cursor: pointer;
 }
-.form_table_field_input>input[name="validated"].input_tick:before {
+span.validated_checkbox {
 	content: "";
-	background: red;
-	visibility: visible;
 	background: url('{$IMG;,1x/editor/off}') no-repeat;
+	position: absolute;
 }
-.form_table_field_input>input[name="validated"].input_tick:checked:before {
+span.validated_checkbox.checked {
 	background-image: url('{$IMG;,1x/editor/on}') !important;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
-	.form_table_field_input>input[name="validated"].input_tick:before {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+	span.validated_checkbox {
 		background-image: url('{$IMG;,2x/editor/off}');
 		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/off}}px {$IMG_HEIGHT%,{$IMG,1x/editor/off}}px;
 	}
-	.form_table_field_input>input[name="validated"].input_tick:checked:before {
+	span.validated_checkbox.checked {
 		background-image: url('{$IMG;,2x/editor/on}') !important;
 		background-size: {$IMG_WIDTH%,{$IMG,1x/editor/on}}px {$IMG_HEIGHT%,{$IMG,1x/editor/on}}px;
 	}
 }
-.form_table_field_input>input[name="validated"].input_tick {
+span.validated_checkbox+input[name="validated"].input_tick {
 	padding-right: 0.5em;
-	visibility: hidden;
+	z-index: 10000;
+	position: relative;
+	{$BETA_CSS_PROPERTY,opacity: 0;}
+}
+
+.date-datepicker-button {
+	font-size: 1.15em;
+	vertical-align: middle;
 }
 
 .various_ticks {
@@ -369,7 +375,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .radio_list_picture {
 	float: {!en_left};
 	white-space: nowrap;
-	padding: 0.5em;
+	padding: 0.25em;
 	font-size: 0.8em;
 	min-height: 35px;
 	min-width: 35px;
@@ -740,7 +746,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .moono .cke_button__spellchecktoggle_icon {
 	background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/spellchecktoggle/images/spellchecktoggle__moono.png') !important;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.cke_button__composr_block_icon {
 		background-image: url('{$BASE_URL;}/{$CKEDITOR_PATH;}/plugins/composr/images/hidpi/composr_block.png') !important;
 	}
@@ -817,7 +823,7 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	#wysiwyg_editor input.cms_keep_ui_controlled {
 		background-image: url('{$IMG;,icons/32x32/editor/comcode}');
 	}

@@ -35,3 +35,5 @@ Please use our public download system for releasing final (public) files, as thi
 
 Most members will only be able to delete their own files, but all files are viewable to all other super-members, and may be downloaded by anyone who knows the URL.
 {+END}
+
+[block]main_comcode_page_children[/block]

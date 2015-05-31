@@ -27,7 +27,7 @@
 	background-position: 3px 3px;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	#web_notifications_button {
 		background-image: url('{$IMG;,icons/48x48/tool_buttons/notifications}');
 		background-size: 24px 24px;

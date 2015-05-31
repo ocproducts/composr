@@ -80,7 +80,7 @@
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_hover}') no-repeat 5px 6px;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu_type__popup .current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_current}');
 	}

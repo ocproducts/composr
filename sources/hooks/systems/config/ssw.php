@@ -50,6 +50,6 @@ class Hook_config_ssw
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

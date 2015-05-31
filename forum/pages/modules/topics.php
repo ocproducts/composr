@@ -2285,7 +2285,7 @@ END;
                     $start_hour = intval(date('H', $schedule));
                     $start_minute = intval(date('i', $schedule));
                     require_code('calendar2');
-                    $event_id = add_calendar_event(db_get_first_id(), '', null, 0, do_lang('ADD_POST'), $schedule_code, 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour, $start_minute);
+                    $event_id = add_calendar_event(db_get_first_id(), '', null, 0, do_lang('ADD_SCHEDULED_TOPIC', $topic_title), $schedule_code, 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour, $start_minute);
                     regenerate_event_reminder_jobs($event_id);
 
                     $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_validated' => 0), array('id' => $topic_id), '', 1);

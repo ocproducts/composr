@@ -63,7 +63,7 @@ body table.results_table tbody tr.unclosed_ticket td {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/security/permissions/privileges}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.buttons__add_ticket {
 		background-image: url('{$IMG,icons/48x48/buttons/add_ticket}') !important;
 	}

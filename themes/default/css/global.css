@@ -1039,7 +1039,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	background-position: {!en_left} 5px;
 	background-repeat: no-repeat;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.nothing_here, .more_here {
 		background-image: url('{$IMG_INLINE;,2x/cannot_show}');
 		background-size: 9px 6px;
@@ -1240,7 +1240,7 @@ div.red_alert, p.red_alert {
 	border: 1px solid {$GET,dark_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	div.red_alert, p.red_alert {
 		background-image: url('{$IMG;,icons/48x48/status/notice}');
 		background-size: 24px 24px;
@@ -1489,7 +1489,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.boxless_space .box>.box_inner>h1, .boxless_space .box>.box_inner>h2, .boxless_space .box>.box_inner>h3, .boxless_space .box>.box_inner>h4, .boxless_space .box>.box_inner>h5, .boxless_space .box>.box_inner>h6, .boxless_space .box>.toggleable_tray_title {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
@@ -1713,7 +1713,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	margin-left: 20.2em;
 	position: absolute;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.box.box_arrow>span {
 		background-image: url('{$IMG;,2x/box_arrow}');
 		background-size: 13px 7px;
@@ -2267,7 +2267,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	background: url('{$IMG_INLINE;,icons/14x14/action_link}') 0 3px no-repeat;
 	background-size: 14px 14px;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.index_screen_fancier_entry_link {
 		background-image: url('{$IMG_INLINE;,icons/28x28/action_link}');
 	}
@@ -2721,7 +2721,7 @@ ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 ul.actions_list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 	background: url('{$IMG_INLINE;,icons/14x14/action_link}') left 4px no-repeat;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	ul.actions_list>li, ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 		background-image: url('{$IMG_INLINE;,icons/28x28/action_link}');
 		background-size: 14px 14px;
@@ -2822,7 +2822,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	background-origin: content-box;
 	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
 		background-image: url('{$IMG_INLINE;,icons/48x48/tabs/settings}');
 		background-size: 24px 24px;
@@ -3460,7 +3460,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	background-image: url('{$IMG,icons/24x24/tabs/preview}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.buttons__menu__pages__help {
 		background-image: url('{$IMG,icons/48x48/menu/pages/help}') !important;
 	}
@@ -3934,7 +3934,7 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	background-image: url('{$IMG;,icons/14x14/wiki_link_hover}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.comcode_concept a {
 		background-image: url('{$IMG;,2x/arrow_box}') !important;
 		background-size: 12px 13px;
@@ -4295,7 +4295,7 @@ a[rel="lightbox"] {
 		background-image: none !important;
 	}
 
-	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 		a[href^="mailto:"] {
 			background-image: url('{$IMG;,icons/32x32/filetypes/email_link}');
 			background-size: 16px 16px;
@@ -4378,7 +4378,7 @@ a[rel="lightbox"] {
 		padding: 0 0 5px 22px !important;
 	}
 
-	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 		.print_icon {
 			background-image: url('{$IMG;,icons/48x48/links/print}');
 			background-size: 24px 24px;

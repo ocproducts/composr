@@ -96,3 +96,5 @@ Our recommend tool should work with all major software and web applications that
 5) Type the security image in the text box;
 6) Click the "Export" button;
 7) Save the file.
+
+[block]main_comcode_page_children[/block]

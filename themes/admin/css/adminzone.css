@@ -150,7 +150,7 @@ footer .global_minilinks {
 	background-image: url('{$IMG,icons/24x24/menu/adminzone/tools/upgrade}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu__adminzone__tools__cleanup {
 		background-image: url('{$IMG,icons/48x48/menu/adminzone/tools/cleanup}') !important;
 	}

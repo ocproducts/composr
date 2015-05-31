@@ -54,7 +54,7 @@
 	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
 	color: {$GET,WB};
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu_type__mobile li {
 		background-image: url('{$IMG;,icons/48x48/buttons/proceed}');
 		background-size: 24px 24px;

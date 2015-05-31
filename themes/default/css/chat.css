@@ -43,7 +43,7 @@
 	font-size: 0.9em;
 	width: 70%;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.chat_multi_tab {
 		background-image: url('{$IMG;,icons/32x32/help}');
 		background-size: 16px 16px;
@@ -485,7 +485,7 @@
 	background-image: url('{$IMG,icons/24x24/menu/social/chat/sound}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.buttons__ignore {
 		background-image: url('{$IMG,icons/48x48/buttons/ignore}') !important;
 	}
@@ -548,7 +548,7 @@ ul.icon_links_block_group>li {
 	background-image: url('{$IMG,icons/14x14/tools}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.icon_14_add {
 		background-image: url('{$IMG,icons/28x28/add}') !important;
 		background-size: 14px 14px;

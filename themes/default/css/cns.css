@@ -473,6 +473,9 @@ hr.cns_sig_barrier {
 	margin: 1em 0;
 	font-size: 0.85em;
 }
+.cns_topic_actions * {
+	vertical-align: middle;
+}
 
 .cns_topic_control_functions label, .cns_topic_actions label {
 	white-space: nowrap;
@@ -813,7 +816,7 @@ hr.cns_sig_barrier {
 	background-image: url('{$IMG,icons/24x24/buttons/threaded}') !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.buttons__forum {
 		background-image: url('{$IMG,icons/48x48/buttons/forum}') !important;
 	}

@@ -95,7 +95,7 @@
 	cursor: pointer;
 	width: 15em;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu_editor_branch input[type="text"] {
 		background-image: url('{$IMG;,icons/28x28/action_small}');
 	}

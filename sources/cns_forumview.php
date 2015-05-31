@@ -415,7 +415,8 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
 
     // Pre-load it, so meta-data isn't altered later
     $bak = $GLOBALS['META_DATA'];
-    $topic['first_post'] = get_translated_tempcode('f_topics', $topic_row, 't_cache_first_post', $GLOBALS['FORUM_DB']);
+    $topic_row_tedit = array('id' => $topic_row['id'], 't_cache_first_post' => $topic_row['t_cache_first_post'], 't_cache_first_post__text_parsed' => multi_lang_content() ? null : $topic_row['t_cache_first_post__text_parsed'], 't_cache_first_post__source_user' => multi_lang_content() ? null : $topic_row['t_cache_first_post__source_user']);
+    $topic['first_post'] = get_translated_tempcode('f_topics', $topic_row_tedit, 't_cache_first_post', $GLOBALS['FORUM_DB']);
     $topic['first_post']->evaluate();
     $GLOBALS['META_DATA'] = $bak;
 

@@ -61,8 +61,5 @@ The system can be used for all kinds of things, such as posting reference materi
 
 The staff will make clear how the Wiki+ system is employed on this website.
 {+END}
-[title="2"]Comcode[/title]
-
-You can use [page="_SEARCH:userguide_comcode"]Comcode[/page] to spice up your posts.
 
 [block]main_comcode_page_children[/block]

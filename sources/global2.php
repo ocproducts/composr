@@ -532,7 +532,11 @@ function disable_php_memory_limit()
 {
     $shl = @ini_get('suhosin.memory_limit');
     if (($shl === false) || ($shl == '') || ($shl == '0')) {
-        safe_ini_set('memory_limit', '64M');
+        $default_memory_limit = '64M';
+        if ($GLOBALS['RELATIVE_PATH'] == 'adminzone' || $GLOBALS['RELATIVE_PATH'] == 'cms') {
+            $default_memory_limit = '128M';
+        }
+        safe_ini_set('memory_limit', '128M');
         safe_ini_set('memory_limit', '-1');
     } else {
         if (is_numeric($shl)) {

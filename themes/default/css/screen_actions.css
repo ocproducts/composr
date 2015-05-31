@@ -66,7 +66,7 @@
 	background-image: url('{$IMG_INLINE;,icons/24x24/links/digg}');
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192ddpx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.screen_actions .print {
 		background-image: url('{$IMG;,icons/48x48/links/print}');
 	}
