@@ -176,6 +176,8 @@ The Composr code hints what image to use for OpenGraph. There are 3 possibilitie
 3) Otherwise the [tt]logo/standalone_logo[/tt] theme image is used (as it is coded as the fallback in the [tt]HTML_HEAD.tpl[/tt] template). i.e. Composr will fall-back to using your site logo if it can't find some other appropriate image.
 4) (If the OpenGraph image code was removed from [tt]HTML_HEAD.tpl[/tt], Facebook would choose its own image)
 
+For catalogues you'll need to delete [tt]uploads/catalogues/.htaccess[/tt] for the image sharing to work. Deleting this file is safe so long as you don't have any files in there protected by catalogue permissions that you do not want to be directly accessible.
+
 [title="4"]Special case: If you use huge thumbnails[/title]
 
 Note that Facebook does have minimum/maximum sizes and file-sizes for images. If you use enormous thumbnails on your site, your [tt]HTML_HEAD.tpl[/tt] template could need customising to re-thumbnail the files.
