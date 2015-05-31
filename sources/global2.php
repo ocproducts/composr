@@ -411,6 +411,9 @@ function init__global2()
     $default_memory_limit = get_value('memory_limit');
     if ((is_null($default_memory_limit)) || ($default_memory_limit == '') || ($default_memory_limit == '0') || ($default_memory_limit == '-1')) {
         $default_memory_limit = '64M';
+        if ($GLOBALS['RELATIVE_PATH'] == 'adminzone' || $GLOBALS['RELATIVE_PATH'] == 'cms') {
+            $default_memory_limit = '128M';
+        }
     } else {
         if (substr($default_memory_limit, -2) == 'MB') {
             $default_memory_limit = substr($default_memory_limit, 0, strlen($default_memory_limit) - 1);
