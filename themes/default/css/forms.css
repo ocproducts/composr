@@ -810,7 +810,7 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	padding: 2px;
 }
 
-#wysiwyg_editor input.cms_keep_ui_controlled, #wysiwyg_editor input.cms_keep_ui_controlled:focus, #wysiwyg_editor input.cms_keep_ui_controlled::selection {
+#wysiwyg_editor input.cms_keep_ui_controlled, #wysiwyg_editor input.cms_keep_ui_controlled:focus {
 	border: 1px dashed gray;
 	text-align: center;
 	color: {$GET,native_ui_foreground};
@@ -818,7 +818,11 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	background-size: 16px 16px;
 	padding: 1px 25px 1px 2px;
 }
-/* Separately specified, as the weird selector breaks whole compound selector on Chrome */
+/* Separately specified, as the weird selector breaks whole compound selector on some browsers */
+#wysiwyg_editor input.cms_keep_ui_controlled::selection {
+	color: {$GET,native_ui_foreground};
+	background-color: {$GET,native_ui_active_background};
+}
 #wysiwyg_editor input.cms_keep_ui_controlled::-moz-selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
