@@ -86,6 +86,8 @@ function s_update_show(data,stat)
 					set_inner_html(this_li,Base64.decode(jQuery(this).text()));
 				});
 
+				document.getElementById('activity_-1').style.display='none';
+
 				list_elements=jQuery('li','#activities_feed'); // Refresh, so as to include the new activity nodes
 
 				if ((!window.activities_feed_grow) && (list_elements.length>window.activities_feed_max)) // Remove anything passed the grow length

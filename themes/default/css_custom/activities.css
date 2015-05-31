@@ -61,11 +61,6 @@ form.activities_remove .remove_cross:hover {
 	cursor: pointer;
 }
 
-form.activities_remove .remove_cross:active {
-	background: url('{$IMG;,stop12_active}') transparent no-repeat;
-	cursor: pointer;
-}
-
 form.activities_remove input.remove_cross::-moz-focus-inner { /* What's this all about, eh? Standards compliant are we Mozilla? What-ever*/
 	border: 0;
 }

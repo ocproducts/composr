@@ -171,7 +171,6 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'themes/default/templates_custom/CNS_MEMBER_PROFILE_ACTIVITIES.tpl',
             'themes/default/images_custom/stop12.png',
             'themes/default/images_custom/stop12_hover.png',
-            'themes/default/images_custom/stop12_active.png',
             'themes/default/css_custom/activities.css',
             'sources_custom/hooks/systems/syndication/index.html',
             'sources_custom/hooks/systems/profiles_tabs/activities.php',
