@@ -82,7 +82,9 @@ class Module_admin_cns_members
             //$ret['_SEARCH:admin_cns_groups:browse']=array('USERGROUPS','menu/social/groups');
             //if (addon_installed('staff'))
             // $ret['_SEARCH:admin_staff:browse']=array('STAFF','menu/site_meta/staff');
-            $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
+            if (addon_installed('warnings')) {
+                $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
+            }
         }
 
         return $ret;
