@@ -338,6 +338,8 @@ function find_available_addons($installed_too = true)
 
             if (!empty($info['copyright_attribution'])) {
                 $info['copyright_attribution'] = explode("\n", $info['copyright_attribution']);
+            } else {
+                $info['copyright_attribution'] = array ();
             }
             if (empty($info['licence'])) {
                 $info['category'] = '(Unstated)';

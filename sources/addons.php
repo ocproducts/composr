@@ -227,7 +227,18 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
                 @eval($data);
                 $ob = object_factory('Hook_addon_registry_' . $addon_name, true);
                 if (($ob !== null) && (method_exists($ob, 'get_default_icon'))) {
-                    return get_base_url() . '/' . str_replace('%2F', '/', urlencode($ob->get_default_icon()));
+                    $file = $ob->get_default_icon();
+                    if (file_exists(get_file_base() . '/' . $file)) {
+                        return get_base_url() . '/' . str_replace('%2F', '/', urlencode($ob->get_default_icon()));
+                    } else {
+                        require_code('mime_types');
+                        $file = $ob->get_default_icon();
+                        $image_data = tar_get_file($tar_file, $file);
+                        if ($image_data === null) {
+                            continue;
+                        }
+                        return 'data:' . get_mime_type(get_file_extension($file), true) . ';base64,' . base64_encode($image_data['data']);
+                    }
                 }
             }
 
