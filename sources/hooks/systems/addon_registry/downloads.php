@@ -176,6 +176,8 @@ class Hook_addon_registry_downloads
             'sources/hooks/systems/tasks/import_filesystem_downloads.php',
             'sources/hooks/systems/tasks/import_ftp_downloads.php',
             'sources/hooks/systems/tasks/index_download.php',
+            'site/download_gateway.php',
+            'themes/default/templates/DOWNLOAD_GATEWAY.tpl',
         );
     }
 
@@ -196,7 +198,8 @@ class Hook_addon_registry_downloads
             'templates/DOWNLOAD_SCREEN_IMAGE.tpl' => 'download_screen',
             'templates/DOWNLOAD_GALLERY_IMAGE_CELL.tpl' => 'download_screen',
             'templates/DOWNLOAD_GALLERY_ROW.tpl' => 'download_screen',
-            'templates/DOWNLOAD_SCREEN.tpl' => 'download_screen'
+            'templates/DOWNLOAD_SCREEN.tpl' => 'download_screen',
+            'templates/DOWNLOAD_GATEWAY.tpl' => 'download_gateway'
         );
     }
 
