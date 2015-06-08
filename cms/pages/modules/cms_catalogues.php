@@ -719,6 +719,8 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $id = actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_data['add_time'], $meta_data['submitter'], null, $meta_data['views']);
 
+        set_url_moniker('catalogue_entry', strval($id));
+
         if (addon_installed('content_privacy')) {
             require_code('content_privacy2');
             list($privacy_level, $additional_access) = read_privacy_fields();
@@ -1374,6 +1376,9 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('catalogue_category', null);
 
         $category_id = actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $meta_data['add_time']);
+
+        set_url_moniker('catalogue_category', strval($category_id));
+
         if (get_value('disable_cat_cat_perms') !== '1') {
             $this->set_permissions(strval($category_id));
         }
@@ -1800,6 +1805,9 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('catalogue', null);
 
         actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $meta_data['add_time']);
+
+        set_url_moniker('catalogue', $name);
+
         $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => $name));
 
         $this->set_permissions($name);

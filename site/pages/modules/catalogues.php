@@ -244,13 +244,13 @@ class Module_catalogues
             // Projects
             actual_add_catalogue('projects', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), C_DT_FIELDMAPS, 0, '', 30);
             $fields = array(
-                array('NAME', 'DESCRIPTION_NAME', 'short_trans', 1, 1),
-                array('MAINTAINER', 'DESCRIPTION_MAINTAINER', 'member', 0, 1),
-                array('DESCRIPTION', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1),
-                array('PROJECT_PROGRESS', 'DESCRIPTION_PROJECT_PROGRESS', 'integer', 0, 1)
+                array('NAME', 'DESCRIPTION_NAME', 'short_trans', 1, 1, ''),
+                array('MAINTAINER', 'DESCRIPTION_MAINTAINER', 'member', 0, 1, '!'),
+                array('DESCRIPTION', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, ''),
+                array('PROJECT_PROGRESS', 'DESCRIPTION_PROJECT_PROGRESS', 'integer', 0, 1, '0')
             );
             foreach ($fields as $i => $field) {
-                actual_add_catalogue_field('projects', lang_code_to_default_content('cf_name', $field[0], false, 3), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, '', $field[4]);
+                actual_add_catalogue_field('projects', lang_code_to_default_content('cf_name', $field[0], false, 3), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, $default, $field[4]);
             }
             $cat_id = actual_add_catalogue_category('projects', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), '', null, '');
             foreach (array_keys($groups) as $group_id) {
@@ -837,6 +837,7 @@ class Module_catalogues
             'CONTENT' => $content,
             'ADD_CAT_URL' => $add_cat_url,
             'EDIT_URL' => $edit_url,
+            'EDIT_LABEL' => do_lang_tempcode('EDIT_CATALOGUE'),
         ));
     }
 

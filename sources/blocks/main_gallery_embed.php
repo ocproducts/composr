@@ -97,11 +97,11 @@ class Block_main_gallery_embed
         if (!array_key_exists('select', $map)) {
             $map['select'] = '*';
         }
-        $where_sup .= selectcode_to_sqlfragment($map['select'], 'id');
+        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['select'], 'id');
         if (!array_key_exists('video_select', $map)) {
             $map['video_select'] = '*';
         }
-        $where_sup .= selectcode_to_sqlfragment($map['video_select'], 'id');
+        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['video_select'], 'id');
 
         // Day filtering
         $_days = array_key_exists('days', $map) ? $map['days'] : '';

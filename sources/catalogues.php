@@ -1272,7 +1272,7 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
                     return array('cv_value' => null);
 
                 default:
-                    return array('cv_value' => '');
+                    return array('cv_value' => '', 'cv_value__text_parsed' => '', 'cv_value__source_user' => null);
             }
         }
         $value = $catalogue_entry_cache[$entry_id][$field_id];

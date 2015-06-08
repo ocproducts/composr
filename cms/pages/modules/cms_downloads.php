@@ -572,8 +572,10 @@ class Module_cms_downloads extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('download', null);
         actual_meta_data_get_fields__special($meta_data, 'num_downloads', 0);
 
-        $id = add_download($category_id, $name, fixup_protocolless_urls($url), $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_data['add_time'],/*$meta_data['num_downloads']*/
-            0, $meta_data['views'], $meta_data['submitter']);
+        $id = add_download($category_id, $name, fixup_protocolless_urls($url), $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_data['add_time'],/*$meta_data['num_downloads']*/0, $meta_data['views'], $meta_data['submitter']);
+
+        set_url_moniker('download', strval($id));
+
         if (addon_installed('galleries')) {
             require_code('permissions2');
             set_category_permissions_from_environment('galleries', 'download_' . strval($id));
@@ -981,6 +983,11 @@ class Module_cms_downloads_cat extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('download_category', null);
 
         $category_id = add_download_category($category, $parent_id, $description, $notes, $rep_image, $meta_data['add_time']);
+
+        set_url_moniker('download_category', strval($category_id));
+
+        set_url_moniker('download_category', strval($category_id));
+
         $this->set_permissions(strval($category_id));
 
         if (addon_installed('content_reviews')) {

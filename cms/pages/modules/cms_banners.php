@@ -660,6 +660,8 @@ class Module_cms_banners_cat extends Standard_crud_module
 
         add_banner_type($id, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline);
 
+        set_url_moniker('banner_type', $id);
+
         if (addon_installed('content_reviews')) {
             content_review_set('banner_type', $id);
         }

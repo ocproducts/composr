@@ -42,6 +42,7 @@
 		{+START,INCLUDE,FORM_STANDARD_END}
 			FORM_NAME=posting_form
 			SUPPORT_AUTOSAVE={SUPPORT_AUTOSAVE}
+			EXTRA_BUTTONS={$GET,extra_buttons}
 		{+END}
 
 		<input type="hidden" name="comcode__post" value="1" />

@@ -370,6 +370,9 @@ class Module_cms_polls extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('poll', null);
 
         $id = add_poll($question, $option1, $option2, $option3, $option4, $option5, $option6, $option7, $option8, $option9, $option10, $num_options, post_param_integer('validated', 0), $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['add_time'], $meta_data['submitter'], null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, $meta_data['views'], $meta_data['edit_time']);
+
+        set_url_moniker('poll', strval($id));
+
         $current = post_param_integer('validated', 0);
         if ($current == 1) {
             if (!has_privilege(get_member(), 'choose_poll')) {

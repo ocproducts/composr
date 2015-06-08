@@ -444,6 +444,8 @@ class Module_cms_quiz extends Standard_crud_module
             $meta_data['add_time']
         );
 
+        set_url_moniker('quiz', strval($id));
+
         $this->set_permissions(strval($id));
 
         if (($validated == 1) || (!addon_installed('unvalidated'))) {

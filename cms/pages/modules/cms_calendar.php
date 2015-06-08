@@ -829,6 +829,8 @@ class Module_cms_calendar extends Standard_crud_module
 
         $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['views'], $meta_data['add_time'], $meta_data['edit_time']);
 
+        set_url_moniker('event', strval($id));
+
         // Reminders
         if (has_privilege(get_member(), 'set_reminders')) {
             if (function_exists('set_time_limit')) {
@@ -1399,6 +1401,8 @@ class Module_cms_calendar_cat extends Standard_crud_module
         $logo = post_param_image('image', null, 'calendar', false);
 
         $id = add_event_type(post_param_string('title'), $logo, post_param_string('external_feed'));
+
+        set_url_moniker('calendar_type', strval($id));
 
         $this->set_permissions(strval($id));
 

@@ -334,6 +334,8 @@ class Module_cms_authors
 
             add_author($author, $url, $member_id, post_param_string('description'), post_param_string('skills'), post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
 
+            set_url_moniker('author', strval($author));
+
             require_code('fields');
             if (has_tied_catalogue('author')) {
                 save_form_custom_fields('author', $author);

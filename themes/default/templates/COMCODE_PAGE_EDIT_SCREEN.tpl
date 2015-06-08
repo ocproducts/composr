@@ -7,13 +7,11 @@
 
 {TEXT}
 
-{POSTING_FORM}
-
 {+START,IF,{$NOT,{NEW}}}
-	<div class="buttons_group">
-		<a class="menu___generic_admin__delete button_screen_item" href="{DELETE_URL*}"><span>{!DELETE}: {ZONE*}:{FILE*}</span></a>
-	</div>
+	{$SET,extra_buttons,<a class="menu___generic_admin__delete button_screen" href="{DELETE_URL*}"><span>{!DELETE}</span></a>}
 {+END}
+
+{POSTING_FORM}
 
 {REVISION_HISTORY}
 

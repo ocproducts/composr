@@ -220,6 +220,8 @@ class Module_admin_chat extends Standard_crud_module
 
         $id = add_chatroom(post_param_string('c_welcome'), post_param_string('room_name'), $GLOBALS['FORUM_DRIVER']->get_member_from_username(post_param_string('room_owner')), $allow2, $allow2_groups, $disallow2, $disallow2_groups, post_param_string('room_lang', user_lang()));
 
+        set_url_moniker('chat', strval($id));
+
         $this->set_permissions($id);
 
         if (addon_installed('content_reviews')) {

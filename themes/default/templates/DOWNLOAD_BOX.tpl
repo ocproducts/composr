@@ -32,20 +32,6 @@
 		</dl>
 	</div>
 
-	<div class="hide_if_not_in_panel">
-		<p class="tiny_paragraph"><a title="{NAME*}: {!BY_SIMPLE,{AUTHOR*}}" href="{URL*}">{+START,FRACTIONAL_EDITABLE,{NAME},name,_SEARCH:cms_downloads:__edit:{ID}}{NAME*}{+END}</a></p>
-
-		<p class="tiny_paragraph associated_details">
-			{+START,IF_PASSED,RATING}<span class="right">{RATING}</span>{+END}
-
-			{+START,IF,{$INLINE_STATS}}{DOWNLOADS*} {!COUNT_DOWNLOADS}{+END}
-		</p>
-
-		<p class="tiny_paragraph associated_details">
-			{!ADDED} {DATE*}
-		</p>
-	</div>
-
 	<div class="hide_if_in_panel">
 		{+START,IF_NON_EMPTY,{IMGCODE}}
 			<div class="download_box_pic"><a href="{URL*}">{IMGCODE}</a></div>

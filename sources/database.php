@@ -79,10 +79,10 @@ function db_map_restrict($row, $fields)
     $out = array();
     foreach ($fields as $field) {
         $out[$field] = $row[$field];
-        if (isset($row[$field . '__text_parsed'])) {
+        if (array_key_exists($field . '__text_parsed', $row)) {
             $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
         }
-        if (isset($row[$field . '__source_user'])) {
+        if (array_key_exists($field . '__source_user', $row)) {
             $out[$field . '__source_user'] = $row[$field . '__source_user'];
         }
     }

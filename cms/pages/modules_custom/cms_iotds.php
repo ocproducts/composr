@@ -319,6 +319,8 @@ class Module_cms_iotds extends Standard_crud_module
 
         $id = add_iotd($url, $title, $caption, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['add_time'], $meta_data['submitter'], 0, null, $meta_data['views']);
 
+        set_url_moniker('iotd', strval($id));
+
         if (($validated == 1) || (!addon_installed('unvalidated'))) {
             if (has_actual_page_access(get_modal_user(), 'iotds')) {
                 require_code('activities');

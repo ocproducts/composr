@@ -238,6 +238,39 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
         }
     }
 
+    if (!is_null($content_id)) {
+        set_url_moniker($content_type, $content_id, $fields_to_skip, $new_content_id);
+    }
+
+    return array(
+        'views' => $views,
+        'submitter' => $submitter,
+        'add_time' => $add_time,
+        'edit_time' => $edit_time,
+        /*'url_moniker'=>$url_moniker, was handled internally*/
+    );
+}
+
+/**
+ * Set a URL moniker for a resource.
+ *
+ * @param  ID_TEXT $content_type The type of resource (e.g. download)
+ * @param  ID_TEXT $content_id The old ID of the resource
+ * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
+ * @param  ?ID_TEXT $new_content_id The new ID of the resource (null: not being renamed)
+ */
+function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
+{
+    require_lang('meta_data');
+
+    if (is_null($fields_to_skip)) {
+        $fields_to_skip = array();
+    }
+
+    require_code('content');
+    $ob = get_content_object($content_type);
+    $info = $ob->info();
+
     $url_moniker = mixed();
     if (($info['support_url_monikers']) && (!in_array('url_moniker', $fields_to_skip))) {
         $url_moniker = post_param_string('meta_url_moniker', '');
@@ -414,14 +447,6 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
             }
         }
     }
-
-    return array(
-        'views' => $views,
-        'submitter' => $submitter,
-        'add_time' => $add_time,
-        'edit_time' => $edit_time,
-        /*'url_moniker'=>$url_moniker, was handled internally*/
-    );
 }
 
 /**

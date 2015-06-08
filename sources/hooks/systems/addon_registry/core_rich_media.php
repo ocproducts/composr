@@ -137,7 +137,7 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_DFN.tpl',
             'themes/default/templates/COMCODE_EDITOR_BUTTON.tpl',
             'themes/default/templates/COMCODE_EDITOR_MICRO_BUTTON.tpl',
-            'themes/default/templates/COMCODE_EDIT_SCREEN.tpl',
+            'themes/default/templates/COMCODE_PAGE_EDIT_SCREEN.tpl',
             'themes/default/templates/COMCODE_EMAIL.tpl',
             'themes/default/templates/COMCODE_FONT.tpl',
             'themes/default/templates/COMCODE_TELETYPE.tpl',
@@ -326,7 +326,7 @@ class Hook_addon_registry_core_rich_media
             'templates/ATTACHMENTS_BROWSER.tpl' => 'attachments_browser',
             'templates/COMCODE_BIG_TABS_TAB.tpl' => 'comcode_big_tabs',
             'templates/COMCODE_BIG_TABS_CONTROLLER.tpl' => 'comcode_big_tabs',
-            'templates/COMCODE_EDIT_SCREEN.tpl' => 'comcode_edit_screen',
+            'templates/COMCODE_PAGE_EDIT_SCREEN.tpl' => 'comcode_page_edit_screen',
             'templates/COMCODE_TOOLTIP.tpl' => 'comcode_tooltip',
             'templates/COMCODE_CRITICAL_PARSE_ERROR.tpl' => 'comcode_critical_parse_error',
             'templates/COMCODE_MISTAKE_ERROR.tpl' => 'comcode_mistake_screen',
@@ -477,11 +477,11 @@ class Hook_addon_registry_core_rich_media
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__comcode_edit_screen()
+    public function tpl_preview__comcode_page_edit_screen()
     {
         require_lang('zones');
         return array(
-            lorem_globalise(do_lorem_template('COMCODE_EDIT_SCREEN', array(
+            lorem_globalise(do_lorem_template('COMCODE_PAGE_EDIT_SCREEN', array(
                 'NEW' => lorem_phrase(),
                 'PING_URL' => placeholder_url(),
                 'WARNING_DETAILS' => '',

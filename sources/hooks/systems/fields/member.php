@@ -127,7 +127,7 @@ class Hook_fields_member
         if ($actual_value === do_lang('NA')) {
             $actual_value = null;
         }
-        if ($actual_value == '') {
+        if ($actual_value == '' || $actual_value == '!') {
             if ($field['cf_default'] == '!') {
                 $actual_value = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             }

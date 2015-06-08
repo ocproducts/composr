@@ -557,6 +557,8 @@ class Module_cms_news extends Standard_crud_module
 
         $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $url);
 
+        set_url_moniker('news', strval($id));
+
         $main_news_category = $GLOBALS['SITE_DB']->query_select_value('news', 'news_category', array('id' => $id));
         $this->donext_type = $main_news_category;
 
@@ -966,6 +968,8 @@ class Module_cms_news_cat extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('news_category', null);
 
         $id = add_news_category($title, $img, $notes);
+
+        set_url_moniker('news_category', strval($id));
 
         $this->set_permissions($id);
 

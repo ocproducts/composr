@@ -2298,6 +2298,8 @@ END;
             }
             $first_post = true;
 
+            set_url_moniker('topic', strval($topic_id));
+
             require_code('fields');
             if (has_tied_catalogue('topic')) {
                 save_form_custom_fields('topic', strval($topic_id));
@@ -2386,6 +2388,8 @@ END;
         $meta_data = actual_meta_data_get_fields('post', null);
 
         $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $meta_data['add_time'], $meta_data['submitter'], $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, $sunk, null, $anonymous == 1, $forum_id == -1 || is_null($forum_id), $forum_id == -1 || is_null($forum_id), false, $parent_id);
+
+        set_url_moniker('post', strval($post_id));
 
         if (addon_installed('awards')) {
             require_code('awards');

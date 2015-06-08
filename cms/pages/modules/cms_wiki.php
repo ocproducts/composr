@@ -315,6 +315,8 @@ class Module_cms_wiki
 
         $id = wiki_add_page(post_param_string('title'), post_param_string('post'), post_param_string('notes', ''), (get_option('wiki_enable_content_posts') == '1') ? post_param_integer('hide_posts', 0) : 1, $meta_data['submitter'], $meta_data['add_time'], $meta_data['views'], post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), null, false);
 
+        set_url_moniker('wiki_page', strval($id));
+
         require_code('permissions2');
         set_category_permissions_from_environment('wiki_page', strval($id), 'cms_wiki');
 

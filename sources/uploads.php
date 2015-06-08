@@ -640,7 +640,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
             require_code('hooks/systems/media_rendering/oembed');
             $oembed_ob = object_factory('Hook_media_rendering_oembed');
             if ($oembed_ob->recognises_mime_type($meta_details['t_mime_type'], $meta_details) || $oembed_ob->recognises_url($url[0])) {
-                $oembed = $oembed_ob->get_oembed_data_result($url[0], array('width' => '1280', 'height' => '1024'));
+                $oembed = $oembed_ob->get_oembed_data_result($url[0], array('width' => get_option('video_width_setting'), 'height' => get_option('video_height_setting')));
                 if (($oembed !== null) && ($oembed['type'] == 'photo')) {
                     $url[0] = preg_replace('#.*(https?://)#', '${1}', array_key_exists('url', $oembed) ? $oembed['url'] : $oembed['thumbnail_url']); // Get thumbnail, but strip noembed.com (for example) resizer-proxy prefix if there
                     $url[1] = basename(urldecode($url[0]));

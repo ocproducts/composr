@@ -176,15 +176,16 @@ class Module_cms_galleries extends Standard_crud_module
 
         $cat = get_param_string('cat', '');
         if ($cat != '') {
-            if (strpos($type, 'd') !== false) {
-                $remaining = $this->check_images_allowed($cat, true);
-                if (!is_null($remaining)) {
-                    $this->add_text = paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', escape_html(integer_format($remaining))));
-                }
-            } elseif (strpos($type, 'v') !== false) {
+            if (strpos($type, '_other') !== false) { // Video
                 $remaining = $this->alt_crud_module->check_videos_allowed($cat, true);
                 if (!is_null($remaining)) {
                     $this->alt_crud_module->add_text->attach(paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', escape_html(integer_format($remaining)))));
+                }
+            }
+            elseif (strpos($type, '_category') === false) { // Image
+                $remaining = $this->check_images_allowed($cat, true);
+                if (!is_null($remaining)) {
+                    $this->add_text = paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', escape_html(integer_format($remaining))));
                 }
             }
         }
@@ -1278,6 +1279,8 @@ class Module_cms_galleries extends Standard_crud_module
 
         $id = add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views']);
 
+        set_url_moniker('image', strval($id));
+
         if (addon_installed('content_privacy')) {
             require_code('content_privacy2');
             list($privacy_level, $additional_access) = read_privacy_fields();
@@ -1504,7 +1507,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 $filename = $_FILES['video__upload']['name'];
                 list($_video_width, $_video_height, $_video_length) = get_video_details($_FILES['video__upload']['tmp_name'], $filename);
             } else {
-                @var_dump($_FILES);exit();
+                $url = post_param_string('video__url', '');
                 if ($url == '') {
                     return array(null, null, null);
                 }
@@ -1519,7 +1522,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 require_code('hooks/systems/media_rendering/oembed');
                 $oembed_ob = object_factory('Hook_media_rendering_oembed');
                 if ($oembed_ob->recognises_mime_type($meta_details['t_mime_type'], $meta_details) || $oembed_ob->recognises_url($url)) {
-                    $oembed = $oembed_ob->get_oembed_data_result($url, array('width' => '1280', 'height' => '1024'));
+                    $oembed = $oembed_ob->get_oembed_data_result($url, array('width' => get_option('video_width_setting'), 'height' => get_option('video_height_setting')));
                     if (isset($oembed['width'])) {
                         $_video_width = $oembed['width'];
                     }
@@ -1860,6 +1863,8 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('video', null);
 
         $id = add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views']);
+
+        set_url_moniker('video', strval($id));
 
         if (addon_installed('content_privacy')) {
             require_code('content_privacy2');
@@ -2262,6 +2267,8 @@ class Module_cms_galleries_cat extends Standard_crud_module
 
         add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $url, $watermark_top_left[0], $watermark_top_right[0], $watermark_bottom_left[0], $watermark_bottom_right[0], $allow_rating, $allow_comments, false, $meta_data['add_time'], $meta_data['submitter']);
 
+        set_url_moniker('gallery', $name);
+
         $this->set_permissions($name);
 
         if (addon_installed('content_reviews')) {
@@ -2480,7 +2487,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             /* SPECIALLY TYPED 'LINKS' */
             array_merge($extra, array(
                 array($video ? 'menu/cms/galleries/add_one_video' : 'menu/cms/galleries/add_one_image', array('_SELF', array('type' => $video ? 'add_other' : 'add', 'cat' => ((!$video && !$support_images) || ($video && !$support_videos) || (is_null($cat))) ? null : $cat), '_SELF'), do_lang($video ? 'ADD_VIDEO' : 'ADD_IMAGE')),
-                array($video ? 'menu/cms/galleries/add_one_image' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => $video ? 'add_other' : 'add', 'cat' => (($video && !$support_images) || (!$video && !$support_videos) || (is_null($cat))) ? null : $cat), '_SELF'), do_lang($video ? 'ADD_IMAGE' : 'ADD_VIDEO')),
+                array($video ? 'menu/cms/galleries/add_one_image' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => $video ? 'add' : 'add_other', 'cat' => (($video && !$support_images) || (!$video && !$support_videos) || (is_null($cat))) ? null : $cat), '_SELF'), do_lang($video ? 'ADD_IMAGE' : 'ADD_VIDEO')),
                 (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_video' : 'menu/cms/galleries/edit_one_image', array('_SELF', array('type' => $video ? 'edit_other' : 'edit'), '_SELF'), do_lang($video ? 'EDIT_VIDEO' : 'EDIT_IMAGE')) : null), // Edit one
                 (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_image' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => $video ? 'edit' : 'edit_other'), '_SELF'), do_lang($video ? 'EDIT_IMAGE' : 'EDIT_VIDEO')) : null), // Edit one
                 has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('menu/_generic_admin/import', array('_SELF', array('type' => '_import', 'name' => $cat), '_SELF'), do_lang('GALLERY_IMPORT')) : null

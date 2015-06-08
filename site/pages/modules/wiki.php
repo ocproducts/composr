@@ -1108,6 +1108,8 @@ class Module_wiki
             require_code('content2');
             $post_id = wiki_add_post($id, $message, $validated, $meta_data['submitter'], true, $meta_data['add_time'], $meta_data['views']);
 
+            set_url_moniker('wiki_post', strval($post_id));
+
             if ($validated == 0) {
                 require_code('submit');
                 $edit_url = build_url(array('page' => 'wiki', 'type' => 'post', 'post_id' => $post_id, 'validated' => 1), '_SELF', null, false, false, true);

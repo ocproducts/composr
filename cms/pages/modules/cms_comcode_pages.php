@@ -905,7 +905,7 @@ class Module_cms_comcode_pages
 
         list($warning_details, $ping_url) = handle_conflict_resolution($page_link);
 
-        return do_template('COMCODE_EDIT_SCREEN', array(
+        return do_template('COMCODE_PAGE_EDIT_SCREEN', array(
             '_GUID' => 'ec1d773684757f5bf6f39cf931555bf2',
             'NEW' => $new,
             'PING_URL' => $ping_url,

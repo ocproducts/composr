@@ -757,6 +757,8 @@ class Module_chat
 
         $new_room_id = add_chatroom(post_param_string('c_welcome'), $room_name, get_member(), $allow2, $allow2_groups, $disallow2, $disallow2_groups, $room_lang);
 
+        set_url_moniker('chat', strval($new_room_id));
+
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
             content_review_set('chat', strval($new_room_id));

@@ -221,11 +221,7 @@ function actual_add_catalogue_field($c_name, $name, $description, $type, $order,
 
             $map = array('cf_id' => $cf_id, 'ce_id' => $entry);
             if (strpos($_type, '_trans') !== false) {
-                if (!is_null($default)) {
-                    $map += insert_lang_comcode('cv_value', $default, 3);
-                } else {
-                    $map['cv_value'] = null;
-                }
+                $map += insert_lang_comcode('cv_value', is_null($default) ? '' : $default, 3);
             } elseif ($_type == 'float') {
                 $map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : floatval($default);
             } elseif ($_type == 'integer') {
