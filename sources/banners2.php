@@ -174,7 +174,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
                     @unlink(get_custom_file_base() . '/' . rawurldecode($test_url));
                     sync_file(rawurldecode($test_url));
                 }
-                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE', integer_format(intval(ceil(strlen($data) / 1024))), integer_format($banner_type_row['t_max_file_size'])));
+                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE', escape_html(integer_format(intval(ceil(strlen($data) / 1024)))), escape_html(integer_format($banner_type_row['t_max_file_size']))));
             }
             if ((function_exists('imagetypes')) && (substr($test_url, -4) != '.swf')) {
                 require_code('images');
@@ -203,7 +203,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
                             @unlink(get_custom_file_base() . '/' . rawurldecode($test_url));
                             sync_file(rawurldecode($test_url));
                         }
-                        warn_exit(do_lang_tempcode('BANNER_RES_BAD', integer_format($banner_type_row['t_image_width']), integer_format($banner_type_row['t_image_height'])));
+                        warn_exit(do_lang_tempcode('BANNER_RES_BAD', escape_html(integer_format($banner_type_row['t_image_width'])), escape_html(integer_format($banner_type_row['t_image_height']))));
                     }
                 }
             }
@@ -222,7 +222,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
         }
 
         if (strlen($title_text) > $banner_type_row['t_max_file_size']) {
-            warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', integer_format(strlen($title_text)), integer_format($banner_type_row['t_max_file_size'])));
+            warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', escape_html(integer_format(strlen($title_text))), escape_html(integer_format($banner_type_row['t_max_file_size']))));
         }
     }
 

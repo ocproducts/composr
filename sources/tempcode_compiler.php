@@ -188,7 +188,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     if ($tolerate_errors) {
                         continue;
                     }
-                    warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                    warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                 }
                 $current_level_data = array();
                 switch (isset($next_token[0]) ? $next_token[0] : '') {
@@ -241,7 +241,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 $past_level_mode = $current_level_mode;
                 if ($stack == array()) {
                     if (!$tolerate_errors) {
-                        warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), integer_format(1 + _length_so_far($bits, $i))));
+                        warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + _length_so_far($bits, $i)))));
                     }
                 } else {
                     list($current_level_mode, $current_level_data, $current_level_params, , , , $num_preprocessable_bits) = array_pop($stack);
@@ -518,21 +518,21 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         list($current_level_mode, $current_level_data, $current_level_params, $directive_level_mode, $directive_level_data, $directive_level_params, $num_preprocessable_bits) = array_pop($stack);
                         if (!is_array($directive_level_params)) {
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         $directive_opener_params = array_merge($directive_level_params, array($directive_level_data));
                         if (($directive_level_mode != PARSE_DIRECTIVE) || ($directive_opener_params[0][0] != '"START"')) {
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
 
                         // Handle directive
@@ -540,7 +540,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                            warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         $directive_params = '';
                         $first_directive_param = '""';
@@ -783,7 +783,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     if ((!array_key_exists('LAX_COMCODE', $GLOBALS)) || ($GLOBALS['LAX_COMCODE'] === false)) {
         if ($stack != array()) {
             if (!$tolerate_errors) {
-                warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n"))));
+                warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
             }
         }
     }

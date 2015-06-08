@@ -68,9 +68,9 @@ class Hook_pointstore_bank
         require_code('form_templates');
         $fields = new Tempcode();
 
-        $fields->attach(form_input_integer(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_BANK_AMOUNT', integer_format($points_left)), 'amount', $points_left, true));
+        $fields->attach(form_input_integer(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_BANK_AMOUNT', escape_html(integer_format($points_left))), 'amount', $points_left, true));
 
-        $text = do_lang_tempcode('BANK_A', integer_format($points_left));
+        $text = do_lang_tempcode('BANK_A', escape_html(integer_format($points_left)), escape_html($_bank_dividend));
 
         return do_template('FORM_SCREEN', array('_GUID' => 'f58cd830101bd4b440d42a8b8d4e39aa', 'TITLE' => $title, 'TEXT' => $text, 'URL' => $next_url, 'FIELDS' => $fields, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
     }
@@ -105,7 +105,7 @@ class Hook_pointstore_bank
         $GLOBALS['SITE_DB']->query_insert('bank', array('add_time' => time(), 'member_id' => get_member(), 'amount' => strval($amount), 'dividend' => $bank_dividend));
 
         // Show message
-        $result = do_lang_tempcode('BANKING_CONGRATULATIONS', integer_format($amount), integer_format($bank_dividend));
+        $result = do_lang_tempcode('BANKING_CONGRATULATIONS', escape_html(integer_format($amount)), escape_html(integer_format($bank_dividend)));
 
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($title, $url, $result);

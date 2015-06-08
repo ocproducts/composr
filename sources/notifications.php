@@ -525,7 +525,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                 'd_frequency' => $frequency,
                 'd_read' => 0,
             );
-            $map += insert_lang('d_message', $message, 4);
+            $map += insert_lang_comcode('d_message', $message, 4);
             $GLOBALS['SITE_DB']->query_insert('digestives_tin', $map);
 
             $GLOBALS['SITE_DB']->query_insert('digestives_consumed', array(

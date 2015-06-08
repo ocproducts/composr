@@ -94,7 +94,7 @@ function dload_script()
 
                 $dif = $cost - available_points($member);
                 if (($dif > 0) && (!has_privilege(get_member(), 'have_negative_gift_points'))) {
-                    warn_exit(do_lang_tempcode('LACKING_POINTS', integer_format($dif)));
+                    warn_exit(do_lang_tempcode('LACKING_POINTS', escape_html(integer_format($dif))));
                 }
                 require_code('points2');
                 charge_member($member, $cost, do_lang('DOWNLOADED_THIS', get_translated_text($myrow['name'])));

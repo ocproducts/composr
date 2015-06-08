@@ -1127,7 +1127,7 @@ class Module_filedump
                                 'path' => substr($place, 0, 80),
                                 'the_member' => get_member(),
                             );
-                            $map += insert_lang($description['description'], 3);
+                            $map += insert_lang($description, 3);
                             $GLOBALS['SITE_DB']->query_insert('filedump', $map);
                         }
                         break;
@@ -1220,7 +1220,7 @@ class Module_filedump
             'path' => substr($place, 0, 80),
             'the_member' => get_member(),
         );
-        $map += insert_lang($description['description'], 3);
+        $map += insert_lang($description, 3);
         $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
         log_it('FILEDUMP_CREATE_FOLDER', $name, $place);
@@ -1255,7 +1255,7 @@ class Module_filedump
             if ((!is_plupload()) && (!is_uploaded_file($file['tmp_name']))) {
                 $max_size = get_max_file_size();
                 if (($file['error'] == 1) || ($file['error'] == 2)) {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))));
                 } elseif ((isset($file)) && (($file['error'] == 3) || ($file['error'] == 6) || ($file['error'] == 7))) {
                     warn_exit(do_lang_tempcode('ERROR_UPLOADING_' . strval($file['error'])));
                 } else {
@@ -1278,7 +1278,7 @@ class Module_filedump
             // Too big?
             $max_size = get_max_file_size();
             if ($file['size'] > $max_size) {
-                attach_message(do_lang_tempcode('FILE_TOO_BIG', integer_format(intval($max_size))), 'warn');
+                attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(intval($max_size)))), 'warn');
                 continue;
             }
 

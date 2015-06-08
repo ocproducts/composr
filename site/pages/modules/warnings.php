@@ -183,13 +183,13 @@ class Module_warnings extends Standard_crud_module
             $is_warning = escape_html($row['w_is_warning'] ? do_lang_tempcode('YES') : do_lang_tempcode('NO'));
 
             $changed_usergroup_from = escape_html((is_null($row['p_changed_usergroup_from']) ? do_lang_tempcode('NO') : do_lang_tempcode('YES')));
-            $charged_points = ($row['p_charged_points'] == 0) ? new Tempcode() : div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_charge'), '_SELF'), do_lang_tempcode('RESTORE_POINTS', integer_format($row['p_charged_points'])), false, true, '', null, form_input_hidden('id', strval($row['id']))), 'dsgsgdfgddgdf');
+            $charged_points = ($row['p_charged_points'] == 0) ? new Tempcode() : div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_charge'), '_SELF'), do_lang_tempcode('RESTORE_POINTS', escape_html(integer_format($row['p_charged_points']))), false, true, '', null, form_input_hidden('id', strval($row['id']))), 'dsgsgdfgddgdf');
             $undoing = new Tempcode();
             if ($row['p_probation'] == 0) {
                 $_undoing_link = new Tempcode();
             } else {
                 $_undoing_url = build_url(array('page' => '_SELF', 'type' => 'undo_probation'), '_SELF');
-                $_undoing_link = div(hyperlink($_undoing_url, do_lang_tempcode('REMOVE_PROBATION_DAYS', integer_format($row['p_probation'])), false, false, '', null, form_input_hidden('id', strval($row['id']))), '46t54yhrtghdfhdhdfg');
+                $_undoing_link = div(hyperlink($_undoing_url, do_lang_tempcode('REMOVE_PROBATION_DAYS', escape_html(integer_format($row['p_probation']))), false, false, '', null, form_input_hidden('id', strval($row['id']))), '46t54yhrtghdfhdhdfg');
             }
             $undoing->attach($_undoing_link);
             if (addon_installed('points')) {
@@ -408,7 +408,7 @@ class Module_warnings extends Standard_crud_module
             if (is_object($profile_url)) {
                 $profile_url = $profile_url->evaluate();
             }
-            $this->add_text = do_lang_tempcode('HAS_ALREADY_X_WARNINGS', escape_html($username), integer_format($num_warnings), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url)));
+            $this->add_text = do_lang_tempcode('HAS_ALREADY_X_WARNINGS', escape_html($username), escape_html(integer_format($num_warnings)), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url)));
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'cb4511a58a4c78eb75346a468e6e6fdf', 'TITLE' => do_lang_tempcode('MODULE_TRANS_NAME_warnings'))));

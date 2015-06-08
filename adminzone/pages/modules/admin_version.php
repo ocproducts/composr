@@ -678,14 +678,14 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('digestives_tin', 'd_read', array('d_read'));
             $GLOBALS['SITE_DB']->create_index('digestives_tin', 'unread', array('d_to_member_id', 'd_read'));
 
-            rename_config_option('cms_show_conceded_mode_link', 'show_conceded_mode_link');
-            rename_config_option('cms_show_personal_adminzone_link', 'show_personal_adminzone_link');
-            rename_config_option('cms_show_personal_last_visit', 'show_personal_last_visit');
-            rename_config_option('cms_show_personal_sub_links', 'show_personal_sub_links');
-            rename_config_option('cms_show_personal_usergroup', 'show_personal_usergroup');
-            rename_config_option('cms_show_staff_page_actions', 'show_staff_page_actions');
-            rename_config_option('cms_show_su', 'show_su');
-            rename_config_option('cms_show_avatar', 'show_avatar');
+            rename_config_option('ocp_show_conceded_mode_link', 'show_conceded_mode_link');
+            rename_config_option('ocp_show_personal_adminzone_link', 'show_personal_adminzone_link');
+            rename_config_option('ocp_show_personal_last_visit', 'show_personal_last_visit');
+            rename_config_option('ocp_show_personal_sub_links', 'show_personal_sub_links');
+            rename_config_option('ocp_show_personal_usergroup', 'show_personal_usergroup');
+            rename_config_option('ocp_show_staff_page_actions', 'show_staff_page_actions');
+            rename_config_option('ocp_show_su', 'show_su');
+            rename_config_option('ocp_show_avatar', 'show_avatar');
 
             $GLOBALS['SITE_DB']->add_table_field('logged_mail_messages', 'm_extra_cc_addresses', 'LONG_TEXT', serialize(array()));
             $GLOBALS['SITE_DB']->add_table_field('logged_mail_messages', 'm_extra_bcc_addresses', 'LONG_TEXT', serialize(array()));

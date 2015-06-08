@@ -110,7 +110,7 @@ class Hook_pointstore_banners
         // We can purchase a banner...
         $initial_hits = intval(get_option('initial_banner_hits'));
         $banner_price = intval(get_option('banner_setup'));
-        $text = paragraph(do_lang_tempcode('BANNERS_DESCRIPTION', integer_format($initial_hits), integer_format($banner_price)));
+        $text = paragraph(do_lang_tempcode('BANNERS_DESCRIPTION', escape_html(integer_format($initial_hits)), escape_html(integer_format($banner_price))));
         list($fields, $javascript) = get_banner_form_fields(true);
         $title = get_screen_title('ADD_BANNER');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_newbanner', 'id' => 'banners', 'uploading' => 1), '_SELF');
@@ -287,7 +287,7 @@ class Hook_pointstore_banners
         // Screen
         require_code('form_templates');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_upgradebanner', 'id' => 'banners'), '_SELF');
-        $text = paragraph(do_lang_tempcode('IMPORTANCE_BUY', integer_format($hitcost), integer_format($impcost)));
+        $text = paragraph(do_lang_tempcode('IMPORTANCE_BUY', escape_html(integer_format($hitcost)), escape_html(integer_format($impcost))));
         $fields = form_input_line(do_lang_tempcode('IMPORTANCE'), do_lang_tempcode('IMPORTANCE_UPGRADE_DESCRIPTION'), 'importance', '1', true);
         $fields->attach(form_input_line(do_lang_tempcode('EXTRA_HITS'), do_lang_tempcode('EXTRA_HITS_DESCRIPTION'), 'hits', '50', true));
         return do_template('FORM_SCREEN', array('_GUID' => '550b0368236dcf58726a1895162ad6c2', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('UPGRADE'), 'HIDDEN' => '', 'URL' => $post_url, 'TITLE' => $title, 'FIELDS' => $fields, 'TEXT' => $text));
@@ -356,7 +356,7 @@ class Hook_pointstore_banners
             $keep->attach(form_input_hidden('hits', strval($futhit)));
             $keep->attach(form_input_hidden('importance', strval($futimp)));
             $keep->attach(form_input_hidden('ord', '1'));
-            $action = do_lang_tempcode('BANNER_UPGRADE_CONFIRM', integer_format($futimp), integer_format($futhit));
+            $action = do_lang_tempcode('BANNER_UPGRADE_CONFIRM', escape_html(integer_format($futimp)), escape_html(integer_format($futhit)));
 
             return do_template('POINTSTORE_CONFIRM_SCREEN', array(
                 '_GUID' => 'acdde0bd41ccd1459bbd7a1e9ca5ed68',

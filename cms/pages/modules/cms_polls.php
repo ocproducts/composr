@@ -251,16 +251,16 @@ class Module_cms_polls extends Standard_crud_module
         $fields = new Tempcode();
         require_code('form_templates');
         $fields->attach(form_input_line_comcode(do_lang_tempcode('QUESTION'), do_lang_tempcode('DESCRIPTION_QUESTION'), 'question', $question, true));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(1)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option1', $a1, true));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(2)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option2', $a2, true));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(3)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option3', $a3, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(4)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option4', $a4, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(5)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option5', $a5, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(6)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option6', $a6, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(7)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option7', $a7, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(8)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option8', $a8, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(9)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option9', $a9, false));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', integer_format(10)), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option10', $a10, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(1))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option1', $a1, true));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(2))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option2', $a2, true));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(3))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option3', $a3, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(4))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option4', $a4, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(5))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option5', $a5, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(6))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option6', $a6, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(7))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option7', $a7, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(8))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option8', $a8, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(9))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option9', $a9, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(10))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option10', $a10, false));
         if (has_privilege(get_member(), 'choose_poll')) {
             if ($question == '') {
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('poll', 'is_current', array('is_current' => 1));

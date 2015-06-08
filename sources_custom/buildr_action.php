@@ -150,7 +150,7 @@ function add_item_wrap_copy($member_id, $name, $cost, $not_infinite)
     if (!has_privilege($member_id, 'administer_buildr')) {
         $price = get_price('mud_item_copy');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         require_code('points2');
         charge_member($member_id, $price, do_lang('W_MADE_OCWORLD', $name));
@@ -259,7 +259,7 @@ function add_room_wrap($member_id, $relative, $name, $text, $password_question, 
     if (!has_privilege($member_id, 'administer_buildr')) {
         $price = get_price('mud_room');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         require_code('points2');
         charge_member($member_id, $price, do_lang('W_MADE_ROOM_OCWORLD', $name));
@@ -363,7 +363,7 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
 
         $price = get_price('mud_realm');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         require_code('points2');
         charge_member($member_id, $price, do_lang('W_MADE_REALM_OCWORLD', $name));
@@ -507,7 +507,7 @@ function add_portal_wrap($member_id, $name, $text, $end_location_realm, $end_loc
         require_code('points2');
         $price = get_price('mud_portal');
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         charge_member($member_id, $price, do_lang('W_MADE_PORTAL_OCWORLD', $name));
     }

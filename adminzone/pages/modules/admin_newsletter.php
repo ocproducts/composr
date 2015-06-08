@@ -222,7 +222,7 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         $num_in_queue = $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)');
         if ($num_in_queue > 0) {
-            attach_message(do_lang_tempcode('NEWSLETTER_DRIP_SEND_QUEUE', integer_format($num_in_queue)), 'inform');
+            attach_message(do_lang_tempcode('NEWSLETTER_DRIP_SEND_QUEUE', escape_html(integer_format($num_in_queue))), 'inform');
         }
 
         require_code('templates_donext');
@@ -459,7 +459,7 @@ class Module_admin_newsletter extends Standard_crud_module
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
 
-        return inform_screen($this->title, do_lang_tempcode('NEWSLETTER_IMPORTED_THIS', integer_format($count), integer_format($count2)));
+        return inform_screen($this->title, do_lang_tempcode('NEWSLETTER_IMPORTED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2))));
     }
 
     /**
@@ -1388,11 +1388,11 @@ class Module_admin_newsletter extends Standard_crud_module
                 $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_PREFIX', escape_html($newsletter_title)), do_lang_tempcode('DESCRIPTION_NOSUBSCRIPTION_LEVEL', escape_html(integer_format($c4)), escape_html($newsletter_description)), strval($newsletter['id']), $level >= 1, null, '4'));
             } else {
                 $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', $level == 0, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_0_ALT'), do_lang_tempcode('NUM_READERS', integer_format(0)))));
-                $l->attach(form_input_list_entry('1', $level == 1, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_1'), do_lang_tempcode('NUM_READERS', integer_format($c1)))));
-                $l->attach(form_input_list_entry('2', $level == 2, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_2'), do_lang_tempcode('NUM_READERS', integer_format($c2)))));
-                $l->attach(form_input_list_entry('3', $level == 3, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_3'), do_lang_tempcode('NUM_READERS', integer_format($c3)))));
-                $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_4'), do_lang_tempcode('NUM_READERS', integer_format($c4)))));
+                $l->attach(form_input_list_entry('0', $level == 0, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_0_ALT'), do_lang_tempcode('NUM_READERS', escape_html(integer_format(0))))));
+                $l->attach(form_input_list_entry('1', $level == 1, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_1'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c1))))));
+                $l->attach(form_input_list_entry('2', $level == 2, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_2'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c2))))));
+                $l->attach(form_input_list_entry('3', $level == 3, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_3'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c3))))));
+                $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_4'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c4))))));
 
                 $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_LEVEL_FOR', escape_html($newsletter_title)), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL', escape_html($newsletter_description)), strval($newsletter['id']), $l));
             }
@@ -1400,7 +1400,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
         if (get_forum_type() == 'cns') {
             $c5 = $this->_count_level(-1, 5, $lang);
-            $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_CNS'), do_lang_tempcode('NUM_READERS', integer_format($c5)), '-1', false));
+            $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_CNS'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c5))), '-1', false));
             $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
             foreach ($groups as $group_id => $group) {
                 if ($group_id != db_get_first_id()) {
@@ -1409,7 +1409,7 @@ class Module_admin_newsletter extends Standard_crud_module
                     $_c = newsletter_who_send_to($map, $lang, 0, 0);
                     $c6 = $_c[6]['g' . strval($group_id)];
                     if ($c6 != 0) {
-                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('GROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', integer_format($c6)), 'g' . strval($group_id), post_param_integer('g' . strval($group_id), 0) == 1));
+                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('GROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c6))), 'g' . strval($group_id), post_param_integer('g' . strval($group_id), 0) == 1));
                     }
                 }
             }

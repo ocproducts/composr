@@ -751,7 +751,7 @@ class Module_catalogues
         // Not done via main_multi_content block due to need for custom filtering
         $query = 'FROM ' . get_table_prefix() . 'catalogues c';
         if (can_arbitrary_groupby()) {
-            $query .= ' JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.c_name=c.c_name';
+            $query .= ' LEFT JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.c_name=c.c_name';
         }
         $query .= ' WHERE ';
         $query .= is_null($ecommerce) ? '1=1' : ('c_ecommerce=' . strval($ecommerce));

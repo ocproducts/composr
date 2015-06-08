@@ -1515,17 +1515,17 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
             $maximum_username_length = intval($_maximum_username_length);
             if ((cms_mb_strlen($username) > $maximum_username_length) && ($username_changed)) {
                 if ($return_errors) {
-                    return do_lang_tempcode('USERNAME_TOO_LONG', integer_format($maximum_username_length));
+                    return do_lang_tempcode('USERNAME_TOO_LONG', escape_html(integer_format($maximum_username_length)));
                 }
-                warn_exit(do_lang_tempcode('USERNAME_TOO_LONG', integer_format($maximum_username_length)));
+                warn_exit(do_lang_tempcode('USERNAME_TOO_LONG', escape_html(integer_format($maximum_username_length))));
             }
             $_minimum_username_length = get_option('minimum_username_length');
             $minimum_username_length = intval($_minimum_username_length);
             if ((cms_mb_strlen($username) < $minimum_username_length) && ($username_changed)) {
                 if ($return_errors) {
-                    return do_lang_tempcode('USERNAME_TOO_SHORT', integer_format($minimum_username_length));
+                    return do_lang_tempcode('USERNAME_TOO_SHORT', escape_html(integer_format($minimum_username_length)));
                 }
-                warn_exit(do_lang_tempcode('USERNAME_TOO_SHORT', integer_format($minimum_username_length)));
+                warn_exit(do_lang_tempcode('USERNAME_TOO_SHORT', escape_html(integer_format($minimum_username_length))));
             }
         }
         if (!is_null($password)) {

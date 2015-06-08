@@ -683,7 +683,7 @@ class Module_topicview
                 $private = new Tempcode();
             }
             if ($_poll['maximum_selections'] > 1) {
-                $num_choices = paragraph(($_poll['minimum_selections'] == $_poll['maximum_selections']) ? do_lang_tempcode('POLL_NOT_ENOUGH_ERROR_2', integer_format($_poll['minimum_selections'])) : do_lang_tempcode('POLL_NOT_ENOUGH_ERROR', integer_format($_poll['minimum_selections']), integer_format($_poll['maximum_selections'])), 'dsfsdfsdfs');
+                $num_choices = paragraph(($_poll['minimum_selections'] == $_poll['maximum_selections']) ? do_lang_tempcode('POLL_NOT_ENOUGH_ERROR_2', escape_html(integer_format($_poll['minimum_selections']))) : do_lang_tempcode('POLL_NOT_ENOUGH_ERROR', escape_html(integer_format($_poll['minimum_selections'])), escape_html(integer_format($_poll['maximum_selections']))), 'dsfsdfsdfs');
             } else {
                 $num_choices = new Tempcode();
             }

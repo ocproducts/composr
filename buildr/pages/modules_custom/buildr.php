@@ -456,7 +456,7 @@ class Module_buildr
 
                     ocw_refresh_with_message(do_lang_tempcode('W_TROLL_YOU', escape_html($penalty)), 'warn');
                 } else {
-                    ocw_refresh_with_message(do_lang_tempcode('W_TROLL_THANKYOU', integer_format($pass)));
+                    ocw_refresh_with_message(do_lang_tempcode('W_TROLL_THANKYOU', escape_html(integer_format($pass))));
                 }
             } else { // Answer question screen
                 $troll_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'troll_name', array('id' => $realm));

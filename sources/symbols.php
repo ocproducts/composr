@@ -4064,7 +4064,7 @@ function ecv_COMMENT_COUNT($lang, $escaped, $param)
                     if (is_array($_comments)) {
                         $_value = do_lang_tempcode('_COMMENTS', escape_html(integer_format($count)));
                     } else {
-                        $_value = do_lang_tempcode('_COMMENTS', integer_format(0));
+                        $_value = do_lang_tempcode('_COMMENTS', escape_html(integer_format(0)));
                     }
                     $value = $_value->evaluate();
                 }

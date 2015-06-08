@@ -115,7 +115,7 @@ function init__site__pages__modules_custom__galleries($code)
         $code
     );
 
-    $code = str_replace("function run()\n    {", "function run()\n    { i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);", $code);
+    $code = str_replace("function pre_run()\n    {", "function pre_run()\n    { i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);", $code);
 
     return $code;
 }

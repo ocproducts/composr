@@ -462,8 +462,8 @@ class Module_banners
         $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
         if ($has_banner_network) {
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSFROM'), integer_format($myrow['hits_from']), false, 'hits_from'));
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSFROM'), integer_format($myrow['views_from']), false, 'views_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSFROM'), escape_html(integer_format($myrow['hits_from'])), false, 'hits_from'));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSFROM'), escape_html(integer_format($myrow['views_from'])), false, 'views_from'));
         }
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['hits_to']))), false, 'hits_to'));
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to']))), false, 'views_to'));

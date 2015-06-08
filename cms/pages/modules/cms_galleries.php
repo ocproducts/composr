@@ -179,12 +179,12 @@ class Module_cms_galleries extends Standard_crud_module
             if (strpos($type, 'd') !== false) {
                 $remaining = $this->check_images_allowed($cat, true);
                 if (!is_null($remaining)) {
-                    $this->add_text = paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', integer_format($remaining)));
+                    $this->add_text = paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', escape_html(integer_format($remaining))));
                 }
             } elseif (strpos($type, 'v') !== false) {
                 $remaining = $this->alt_crud_module->check_videos_allowed($cat, true);
                 if (!is_null($remaining)) {
-                    $this->alt_crud_module->add_text->attach(paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', integer_format($remaining))));
+                    $this->alt_crud_module->add_text->attach(paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', escape_html(integer_format($remaining)))));
                 }
             }
         }
@@ -1500,11 +1500,11 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $video_height = post_param_integer('video_height', 0);
         if (($video_width == 0) || ($video_height == 0) || ($video_length == 0)) {
             require_code('uploads');
-            if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
-                $filename = $_FILES['file']['name'];
-                list($_video_width, $_video_height, $_video_length) = get_video_details($_FILES['file']['tmp_name'], $filename);
+            if (((is_plupload(true)) && (array_key_exists('video__upload', $_FILES))) || ((array_key_exists('video__upload', $_FILES)) && (is_uploaded_file($_FILES['video__upload']['tmp_name'])))) {
+                $filename = $_FILES['video__upload']['name'];
+                list($_video_width, $_video_height, $_video_length) = get_video_details($_FILES['video__upload']['tmp_name'], $filename);
             } else {
-                $url = post_param_string('url', '');
+                @var_dump($_FILES);exit();
                 if ($url == '') {
                     return array(null, null, null);
                 }

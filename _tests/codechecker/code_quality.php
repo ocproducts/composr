@@ -1959,7 +1959,7 @@ function get_variable_type($variable)
     if (count($temp) != 0) {
         return is_array($temp[0]) ? $temp[0][0] : $temp[0]; // We'll assume the first set type is the actual type
     }
-    return 'null';
+    return 'mixed';
 }
 
 function check_literal($literal)

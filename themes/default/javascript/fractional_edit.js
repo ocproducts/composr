@@ -75,7 +75,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 		/*{+END}*/
 		input.style.top=(y+8)+'px';
 		input.style.margin=0;
-		var to_copy=['padding-top','padding-left','font-size','font-weight','font-style'];
+		var to_copy=['font-size','font-weight','font-style'];
 		if (type=='line')
 		{
 			to_copy.push('border');

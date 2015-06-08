@@ -278,13 +278,13 @@ class Hook_profiles_tabs_about
             $days_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0 / 60.0 / 24.0)));
             $months_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0 / 60.0 / 24.0 / 31.0)));
             if ($minutes_ago < 180) {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MINUTES', integer_format($minutes_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MINUTES', escape_html(integer_format($minutes_ago)));
             } elseif ($hours_ago < 72) {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_HOURS', integer_format($hours_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_HOURS', escape_html(integer_format($hours_ago)));
             } elseif ($days_ago < 93) {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_DAYS', integer_format($days_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_DAYS', escape_html(integer_format($days_ago)));
             } else {
-                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MONTHS', integer_format($months_ago));
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MONTHS', escape_html(integer_format($months_ago)));
             }
         }
 

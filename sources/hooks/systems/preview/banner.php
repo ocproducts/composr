@@ -73,7 +73,7 @@ class Hook_preview_banner
             }
 
             if (strlen($title_text) > $banner_type_row['t_max_file_size']) {
-                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', integer_format(strlen($title_text)), integer_format($banner_type_row['t_max_file_size'])));
+                warn_exit(do_lang_tempcode('BANNER_TOO_LARGE_2', escape_html(integer_format(strlen($title_text))), escape_html(integer_format($banner_type_row['t_max_file_size']))));
             }
         }
 

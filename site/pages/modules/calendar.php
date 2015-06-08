@@ -739,7 +739,7 @@ class Module_calendar
         $fields = new Tempcode();
         require_code('form_templates');
         for ($i = 0; $i < 10; $i++) {
-            $fields->attach(form_input_line(do_lang_tempcode('FEED', integer_format($i + 1)), '', 'feed_' . strval($i), cms_admirecookie('feed_' . strval($i)), false));
+            $fields->attach(form_input_line(do_lang_tempcode('FEED', escape_html(integer_format($i + 1))), '', 'feed_' . strval($i), cms_admirecookie('feed_' . strval($i)), false));
         }
         $rss_form = do_template('FORM', array('_GUID' => '1756a3c6a5a105ef8b2b9d2ebc9e4e86', 'HIDDEN' => '', 'TEXT' => do_lang_tempcode('DESCRIPTION_FEEDS_TO_OVERLAY'), 'URL' => get_self_url(), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
 

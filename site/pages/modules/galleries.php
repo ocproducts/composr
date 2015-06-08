@@ -424,7 +424,7 @@ class Module_galleries
                     array(
                         make_string_tempcode(get_translated_text($myrow['title'])),
                         make_string_tempcode('title'),
-                        make_string_tempcode('_SEARCH:cms_galleries:__edit:' . strval($id)),
+                        make_string_tempcode((($type == 'video') ? '_SEARCH:cms_galleries:__edit_other' : '_SEARCH:cms_galleries:__edit:') . strval($id)),
                         make_string_tempcode('1'),
                         make_string_tempcode('1'),
                         make_string_tempcode(has_edit_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat)) ? '1' : '0'),

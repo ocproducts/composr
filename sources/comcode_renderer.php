@@ -392,7 +392,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
             }
         }
         if (is_null($name)) {
-            warn_exit(do_lang_tempcode('COMCODE_ERROR', $message, integer_format($line)));
+            warn_exit(do_lang_tempcode('COMCODE_ERROR', $message, escape_html(integer_format($line))));
         }
     }
 
@@ -706,7 +706,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
 
                 if ($s_title === null) {
-                    $s_title = do_lang_tempcode('FORUM_POST_NUMBERED', integer_format($post_id));
+                    $s_title = do_lang_tempcode('FORUM_POST_NUMBERED', escape_html(integer_format($post_id)));
                 }
             } else {
                 $s_title = make_string_tempcode($attributes['param']);
@@ -2023,7 +2023,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if ($urls[0] == '') {
                     require_code('images');
                     require_code('files2');
-                    $temp_tpl = do_template('WARNING_BOX', array('_GUID' => '81dce25ce8c1e0a9a2407315df0cf99c', 'WARNING' => do_lang_tempcode('ATTACHMENT_WOULD_NOT_UPLOAD', float_format(get_max_file_size() / 1024 / 1024), float_format(get_max_image_size() / 1024 / 1024))));
+                    $temp_tpl = do_template('WARNING_BOX', array('_GUID' => '81dce25ce8c1e0a9a2407315df0cf99c', 'WARNING' => do_lang_tempcode('ATTACHMENT_WOULD_NOT_UPLOAD', escape_html(float_format(get_max_file_size() / 1024 / 1024)), escape_html(float_format(get_max_image_size() / 1024 / 1024)))));
                     break;
                 }
 

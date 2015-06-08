@@ -86,7 +86,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
 
         // Get thumbnail
-        $urls = get_url($field_url, '', $upload_to, 0, CMS_UPLOAD_IMAGE, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name, $copy_to_server);
+        $urls = get_url($field_url, '', $upload_to, 0, $upload_type, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name, $copy_to_server);
         if ($thumb_url !== null) {
             $thumb_url = $urls[1];
         }
@@ -104,7 +104,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
             $filename = urldecode(basename($url));
 
             // Get thumbnail
-            $urls = get_url($field_filedump, '', $upload_to, 0, CMS_UPLOAD_IMAGE, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
+            $urls = get_url($field_filedump, '', $upload_to, 0, $upload_type, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
             if ($thumb_url !== null) {
                 $thumb_url = $urls[1];
             }
@@ -340,10 +340,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         if (!has_privilege($member_id, 'exceed_filesize_limit')) {
             if ($_FILES[$attach_name]['size'] > $max_size) {
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)), 'warn');
+                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))));
                 }
             }
         }
@@ -426,10 +426,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 $max_size = intval(get_option('max_download_size')) * 1024;
                 if (strlen($file) > $max_size) {
                     if ($accept_errors) {
-                        attach_message(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)), 'warn');
+                        attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))), 'warn');
                         return array('', '', '', '');
                     } else {
-                        warn_exit(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)));
+                        warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))));
                     }
                 }
             }
@@ -459,17 +459,17 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         if ((array_key_exists($attach_name, $_FILES)) && (array_key_exists('error', $_FILES[$attach_name])) && (($_FILES[$attach_name]['error'] != 4) || ($should_get_something)) && ($_FILES[$attach_name]['error'] != 0)) { // If we uploaded
             if ($_FILES[$attach_name]['error'] == 1) {
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)), 'warn');
+                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', integer_format($max_size)));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))));
                 }
             } elseif ($_FILES[$attach_name]['error'] == 2) {
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('FILE_TOO_BIG_QUOTA', integer_format($max_size)), 'warn');
+                    attach_message(do_lang_tempcode('FILE_TOO_BIG_QUOTA', escape_html(integer_format($max_size))), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG_QUOTA', integer_format($max_size)));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG_QUOTA', escape_html(integer_format($max_size))));
                 }
             } elseif (($_FILES[$attach_name]['error'] == 3) || ($_FILES[$attach_name]['error'] == 4) || ($_FILES[$attach_name]['error'] == 6) || ($_FILES[$attach_name]['error'] == 7)) {
                 attach_message(do_lang_tempcode('ERROR_UPLOADING_' . strval($_FILES[$attach_name]['error'])), 'warn');
@@ -492,10 +492,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         if ((array_key_exists($thumb_attach_name, $_FILES)) && ((is_uploaded_file($_FILES[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
             if ($_FILES[$thumb_attach_name]['size'] > get_max_image_size()) {
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('FILE_TOO_BIG', integer_format(get_max_image_size())), 'warn');
+                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', integer_format(get_max_image_size())));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))));
                 }
             }
 
@@ -540,10 +540,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         if ((array_key_exists($thumb_attach_name, $_FILES)) && ((is_uploaded_file($_FILES[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
             if ($_FILES[$thumb_attach_name]['size'] > get_max_image_size()) {
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('FILE_TOO_BIG', integer_format(get_max_image_size())), 'warn');
+                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', integer_format(get_max_image_size())));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))));
                 }
             }
 

@@ -274,7 +274,7 @@ class Module_admin_ecommerce extends Standard_crud_module
                 $ref_point = isset($mails[$i]) ? $mails[$i]['ref_point'] : 'start';
                 $ref_point_offset = isset($mails[$i]) ? $mails[$i]['ref_point_offset'] : 0;
 
-                $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('EXTRA_SUBSCRIPTION_MAIL', integer_format($i + 1)), 'SECTION_HIDDEN' => ($subject == ''))));
+                $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('EXTRA_SUBSCRIPTION_MAIL', escape_html(integer_format($i + 1))), 'SECTION_HIDDEN' => ($subject == ''))));
                 $fields->attach(form_input_line_comcode(do_lang_tempcode('SUBJECT'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_SUBJECT'), 'subject_' . strval($i), $subject, false));
                 $fields->attach(form_input_text_comcode(do_lang_tempcode('BODY'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_BODY'), 'body_' . strval($i), $body, false, null, true));
                 $radios = new Tempcode();

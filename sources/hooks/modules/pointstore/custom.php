@@ -200,7 +200,7 @@ class Hook_pointstore_custom
 
         // Check points
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         return do_template('POINTSTORE_CUSTOM_ITEM_SCREEN', array('_GUID' => 'bc57d8775b5471935b08f85082ba34ec', 'TITLE' => $title, 'ONE_PER_MEMBER' => ($rows[0]['c_one_per_member'] == 1), 'COST' => integer_format($cost), 'REMAINING' => integer_format($points_left - $cost), 'NEXT_URL' => $next_url));
@@ -232,7 +232,7 @@ class Hook_pointstore_custom
         // Check points
         $points_left = available_points(get_member());
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         if ($row['c_one_per_member'] == 1) {

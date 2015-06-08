@@ -84,7 +84,7 @@ class Hook_pointstore_community_billboard
         $fields->attach(form_input_integer(do_lang_tempcode('NUMBER_DAYS'), do_lang_tempcode('NUMBER_DAYS_DESCRIPTION'), 'days', 1, true));
 
         $price = intval(get_option('community_billboard'));
-        $text = paragraph(do_lang_tempcode('COMMUNITY_BILLBOARD_GUIDE', integer_format($price)));
+        $text = paragraph(do_lang_tempcode('COMMUNITY_BILLBOARD_GUIDE', escape_html(integer_format($price))));
 
         // Return template
         $post_url = build_url(array('page' => '_SELF', 'type' => '__community_billboard', 'id' => 'community_billboard'), '_SELF');
@@ -121,11 +121,11 @@ class Hook_pointstore_community_billboard
         }
 
         if (($points_left < $total) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('COMMUNITY_BILLBOARD_LACK_POINTS', integer_format($days), integer_format($total), array(integer_format($points_left))));
+            return warn_screen($title, do_lang_tempcode('COMMUNITY_BILLBOARD_LACK_POINTS', escape_html(integer_format($days)), escape_html(integer_format($total)), array(integer_format($points_left))));
         }
 
         // The order screen...
-        $action = do_lang_tempcode('CONFIRM_COMMUNITY_BILLBOARD', integer_format($days));
+        $action = do_lang_tempcode('CONFIRM_COMMUNITY_BILLBOARD', escape_html(integer_format($days)));
         $keep = form_input_hidden('message', $message);
         $keep->attach(form_input_hidden('days', strval($days)));
         $proceed_url = build_url(array('page' => '_SELF', 'type' => '___community_billboard', 'id' => 'community_billboard'), '_SELF');
@@ -167,7 +167,7 @@ class Hook_pointstore_community_billboard
         $total = $day_price * $days;
 
         if (($points_left < $total) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('COMMUNITY_BILLBOARD_LACK_POINTS', integer_format($days), integer_format($total), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('COMMUNITY_BILLBOARD_LACK_POINTS', escape_html(integer_format($days)), escape_html(integer_format($total)), escape_html(integer_format($points_left))));
         }
 
         // Add this to the database

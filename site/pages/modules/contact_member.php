@@ -158,7 +158,7 @@ class Module_contact_member
         $hidden = new Tempcode();
         if ($size != 0) {
             handle_max_file_size($hidden);
-            $fields->attach(form_input_upload_multi(do_lang_tempcode('_ATTACHMENT'), do_lang_tempcode('EMAIL_ATTACHMENTS', integer_format($size)), 'attachment', false));
+            $fields->attach(form_input_upload_multi(do_lang_tempcode('_ATTACHMENT'), do_lang_tempcode('EMAIL_ATTACHMENTS', escape_html(integer_format($size))), 'attachment', false));
         }
         if (!is_guest()) {
             if (ini_get('suhosin.mail.protect') != '2') {
@@ -272,7 +272,7 @@ class Module_contact_member
         }
         $size = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_max_email_attach_size_mb');
         if ($size_so_far > $size * 1024 * 1024) {
-            warn_exit(do_lang_tempcode('EXCEEDED_ATTACHMENT_SIZE', integer_format($size)));
+            warn_exit(do_lang_tempcode('EXCEEDED_ATTACHMENT_SIZE', escape_html(integer_format($size))));
         }
         mail_wrap(do_lang('EMAIL_MEMBER_SUBJECT', get_site_name(), post_param_string('subject'), null, get_lang($member_id)), post_param_string('message'), array($email_address), $to_name, $from_email, $from_name, 3, $attachments, false, get_member(), false, false, false, 'MAIL', count($attachments) != 0, $extra_cc_addresses, $extra_bcc_addresses, $join_time);
 

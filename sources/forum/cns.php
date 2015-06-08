@@ -421,13 +421,8 @@ class Forum_driver_cns extends Forum_driver_base
                 return; // Possible on an MSN, and there's an inconsistency (e.g. no points addon)
             }
         }
-        $field_type = $field_bits[0]['cf_type'];
         $field_id = $field_bits[0]['id'];
-        if ($field_type == 'integer') {
-            cns_set_custom_field($member, $field_id, intval($value));
-        } else {
-            cns_set_custom_field($member, $field_id, $value);
-        }
+        cns_set_custom_field($member, $field_id, $value);
     }
 
     /**
@@ -1610,7 +1605,7 @@ class Forum_driver_cns extends Forum_driver_base
                 }
                 require_lang('cns');
 
-                warn_exit(do_lang_tempcode('FLOOD_CONTROL_RESTRICT', integer_format($wait_time)));
+                warn_exit(do_lang_tempcode('FLOOD_CONTROL_RESTRICT', escape_html(integer_format($wait_time))));
             }
         } else {
             $restrict_answer = 0;

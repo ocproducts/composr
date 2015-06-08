@@ -69,14 +69,14 @@ class Hook_pointstore_gambling
 
         // Check points
         if (($points_left < $cost) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
         require_code('form_templates');
         $fields = new Tempcode();
-        $fields->attach(form_input_integer(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_GAMBLE_AMOUNT', integer_format($cost), integer_format($max)), 'amount', $cost, true));
+        $fields->attach(form_input_integer(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_GAMBLE_AMOUNT', escape_html(integer_format($cost)), escape_html(integer_format($max))), 'amount', $cost, true));
 
-        $text = do_lang_tempcode('GAMBLE_A', integer_format($cost), integer_format($max), integer_format($points_left));
+        $text = do_lang_tempcode('GAMBLE_A', escape_html(integer_format($cost)), escape_html(integer_format($max)), escape_html(integer_format($points_left)));
 
         return do_template('FORM_SCREEN', array('_GUID' => 'ae703225db618f2bc938290fbae4d6d8', 'TITLE' => $title, 'TEXT' => $text, 'URL' => $next_url, 'FIELDS' => $fields, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
     }
@@ -107,7 +107,7 @@ class Hook_pointstore_gambling
                 warn_exit(do_lang_tempcode('INVALID_GAMBLE_AMOUNT'));
             }
             if ($points_left < $amount) {
-                return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', integer_format($cost), integer_format($points_left)));
+                return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
             }
         }
 
@@ -139,9 +139,9 @@ class Hook_pointstore_gambling
 
         // Show message
         if ($winnings > $amount) {
-            $result = do_lang_tempcode('GAMBLE_CONGRATULATIONS', integer_format($winnings - $amount), integer_format($amount));
+            $result = do_lang_tempcode('GAMBLE_CONGRATULATIONS', escape_html(integer_format($winnings - $amount)), escape_html(integer_format($amount)));
         } else {
-            $result = do_lang_tempcode('GAMBLE_COMMISERATIONS', integer_format($amount - $winnings), integer_format($amount));
+            $result = do_lang_tempcode('GAMBLE_COMMISERATIONS', escape_html(integer_format($amount - $winnings)), escape_html(integer_format($amount)));
         }
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($title, $url, $result);

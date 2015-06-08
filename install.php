@@ -355,14 +355,14 @@ function step_1()
                 }
 
                 if (count($missing) > 4) {
-                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => '515c2f26a5415224f3c09b2429a78a5f', 'FILES' => $missing, 'MESSAGE' => do_lang_tempcode('_MISSING_INSTALLATION_FILE', integer_format(count($missing))))));
+                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => '515c2f26a5415224f3c09b2429a78a5f', 'FILES' => $missing, 'MESSAGE' => do_lang_tempcode('_MISSING_INSTALLATION_FILE', escape_html(integer_format(count($missing)))))));
                 } else {
                     foreach ($missing as $file) {
                         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('MISSING_INSTALLATION_FILE', $file))));
                     }
                 }
                 if (count($corrupt) > 4) {
-                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => 'f8958458d76bd4f6d146d3fe59132a02', 'FILES' => $corrupt, 'MESSAGE' => do_lang_tempcode('_CORRUPT_INSTALLATION_FILE', integer_format(count($corrupt))))));
+                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => 'f8958458d76bd4f6d146d3fe59132a02', 'FILES' => $corrupt, 'MESSAGE' => do_lang_tempcode('_CORRUPT_INSTALLATION_FILE', escape_html(integer_format(count($corrupt)))))));
                 } else {
                     foreach ($corrupt as $file) {
                         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('CORRUPT_INSTALLATION_FILE', $file))));

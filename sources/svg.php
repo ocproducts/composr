@@ -496,7 +496,7 @@ function create_pie_chart($data)
     }
     $max_degrees = round($_max_degrees);
     /*if (($max_degrees < 355.0) || ($max_degrees > 365.0)) {   Could be rounding error
-        fatal_exit(do_lang_tempcode('_BAD_INPUT', float_format($max_degrees)));
+        fatal_exit(do_lang_tempcode('_BAD_INPUT', escape_html(float_format($max_degrees))));
     }*/
 
     // Start of output

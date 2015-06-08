@@ -913,16 +913,6 @@ function intelligent_write_error_inline($path)
 }
 
 /**
- * Find whether a fractional edit is underway.
- *
- * @return boolean Whether a fractional edit is underway
- */
-function fractional_edit()
-{
-    return post_param_integer('fractional_edit', 0) == 1;
-}
-
-/**
  * Find whether we have no forum on this website.
  *
  * @return boolean Whether we have no forum on this website
@@ -2766,6 +2756,16 @@ function make_fractionable_editable($content_type, $id, $title)
         (array_key_exists('title_field_supports_comcode', $info) && $info['title_field_supports_comcode']) ? '1' : '0',
     );
     return directive_tempcode('FRACTIONAL_EDITABLE', is_object($title) ? $title : escape_html($title), $parameters);
+}
+
+/**
+ * Find whether a fractional edit is underway.
+ *
+ * @return boolean Whether a fractional edit is underway
+ */
+function fractional_edit()
+{
+    return post_param_integer('fractional_edit', 0) == 1;
 }
 
 /**

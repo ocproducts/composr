@@ -718,7 +718,7 @@ function buy($member_id, $item_name, $copy_owner)
     }
 
     if ($cost > available_points($member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($cost)), 'warn');
+        ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($cost))), 'warn');
     }
     if ($cost == 0) {
         ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
@@ -730,7 +730,7 @@ function buy($member_id, $item_name, $copy_owner)
 
         $price = $cost;
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', integer_format($price)), 'warn');
+            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
         charge_member($member_id, $price, do_lang('W_BOUGHT_OCWORLD', escape_html($item_name)));
 
@@ -739,7 +739,7 @@ function buy($member_id, $item_name, $copy_owner)
 
     basic_pickup($member_id, $item_name, $copy_owner);
 
-    ocw_refresh_with_message(do_lang_tempcode('W_BOUGHT', escape_html($item_name), integer_format($cost)));
+    ocw_refresh_with_message(do_lang_tempcode('W_BOUGHT', escape_html($item_name), escape_html(integer_format($cost))));
 }
 
 /**

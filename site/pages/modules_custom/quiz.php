@@ -17,7 +17,7 @@ function init__site__pages__modules_custom__quiz($in = null)
     $after = '$type = \'Test\'; require_code(\'points2\'); $cost = $quiz[\'q_points_for_passing\'] / 2; charge_member(get_member(), $cost, \'Entered a test\');';
     $in = str_replace($before, $after, $in);
 
-    $in = str_replace("function run()\n    {", "function run()\n    { i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);", $in);
+    $in = str_replace("function pre_run()\n    {", "function pre_run()\n    { i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);", $in);
 
     return $in;
 }

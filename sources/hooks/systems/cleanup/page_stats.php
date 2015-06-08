@@ -35,7 +35,7 @@ class Hook_cleanup_page_stats
         $info = array();
         $info['title'] = do_lang_tempcode('PAGE_STATS_DELETE');
         $num_records = $GLOBALS['SITE_DB']->query_select_value('stats', 'COUNT(*)');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_PAGE_STATS_DELETE', integer_format($num_records), integer_format(intval(get_option('stats_store_time'))));
+        $info['description'] = do_lang_tempcode('DESCRIPTION_PAGE_STATS_DELETE', escape_html(integer_format($num_records)), escape_html(integer_format(intval(get_option('stats_store_time')))));
         $info['type'] = 'optimise';
 
         return $info;

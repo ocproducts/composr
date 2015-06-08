@@ -1063,7 +1063,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         process_overridden_comment_forum('videos', strval($id), $cat, $old_cat)
     );
 
-    if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode())) {
+    if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode()) && ($url != STRING_MAGIC_NULL)) {
         require_code('gallery_syndication');
         if (function_exists('sync_video_syndication')) {
             $consider_deferring = (!url_is_local($url)) || (filesize(get_custom_file_base() . '/' . rawurldecode($url)) > 1024 * 1024 * 20);

@@ -692,7 +692,7 @@ class Module_downloads
         // Cost warning
         if (($myrow['download_cost'] != 0) && (addon_installed('points'))) {
             require_lang('points');
-            $warning_details->attach(do_template('WARNING_BOX', array('_GUID' => '05fc448bf79b373385723c5af5ec93af', 'WARNING' => do_lang_tempcode('WILL_COST', integer_format($myrow['download_cost'])))));
+            $warning_details->attach(do_template('WARNING_BOX', array('_GUID' => '05fc448bf79b373385723c5af5ec93af', 'WARNING' => do_lang_tempcode('WILL_COST', escape_html(integer_format($myrow['download_cost']))))));
         }
 
         // Management links

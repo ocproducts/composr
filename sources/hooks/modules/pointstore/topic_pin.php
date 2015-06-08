@@ -81,7 +81,7 @@ class Hook_pointstore_topic_pin
         $fields->attach(form_input_integer(do_lang_tempcode('TOPIC_PIN_NUMBER_DAYS'), do_lang_tempcode('TOPIC_PIN_NUMBER_DAYS_DESCRIPTION'), 'days', min(7, intval(get_option('topic_pin_max_days'))), true));
 
         $price = intval(get_option('topic_pin'));
-        $text = do_lang_tempcode('PIN_TOPIC_A', integer_format($price));
+        $text = do_lang_tempcode('PIN_TOPIC_A', escape_html(integer_format($price)));
 
         // Return template
         $post_url = build_url(array('page' => '_SELF', 'type' => '__topic_pin', 'id' => 'topic_pin'), '_SELF');
@@ -147,11 +147,11 @@ class Hook_pointstore_topic_pin
         }
 
         if (($points_left < $total) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', integer_format($days), integer_format($total), array(integer_format($points_left))));
+            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', escape_html(integer_format($days)), escape_html(integer_format($total)), array(integer_format($points_left))));
         }
 
         // The order screen...
-        $action = do_lang_tempcode('CONFIRM_TOPIC_PIN', integer_format($days));
+        $action = do_lang_tempcode('CONFIRM_TOPIC_PIN', escape_html(integer_format($days)));
         $keep = form_input_hidden('topic_id', strval($topic_id));
         $keep->attach(form_input_hidden('days', strval($days)));
         $proceed_url = build_url(array('page' => '_SELF', 'type' => '___topic_pin', 'id' => 'topic_pin'), '_SELF');
@@ -194,7 +194,7 @@ class Hook_pointstore_topic_pin
         $total = $day_price * $days;
 
         if (($points_left < $total) && (!has_privilege(get_member(), 'give_points_self'))) {
-            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', integer_format($days), integer_format($total), integer_format($points_left)));
+            return warn_screen($title, do_lang_tempcode('TOPIC_PIN_LACK_POINTS', escape_html(integer_format($days)), escape_html(integer_format($total)), escape_html(integer_format($points_left))));
         }
 
         if (get_forum_type() == 'cns') {
