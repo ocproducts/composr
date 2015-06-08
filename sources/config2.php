@@ -112,6 +112,7 @@ function get_default_option($name)
 
 /**
  * Set a configuration option with the specified values.
+ * Note that you may wish to also empty the template cache after running this function. Config options may have been set into template(s).
  *
  * @param  ID_TEXT $name The name of the value
  * @param  LONG_TEXT $value The value

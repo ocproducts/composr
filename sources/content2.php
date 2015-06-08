@@ -315,14 +315,14 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
                         if (_request_page($test_page, $test, null, get_site_default_lang(), true) !== false) {
                             $ok = false;
                         } else { // Deleted, so clean up
-                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', 'm_resource_page', $conflict_test_map);
+                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);
                         }
                     } else {
                         $test2 = content_get_details(convert_composr_type_codes('module', $test_page, 'content_type'), $test);
                         if ($test2[0] !== null) {
                             $ok = false;
                         } else { // Deleted, so clean up
-                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', 'm_resource_page', $conflict_test_map);
+                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);
                         }
                     }
                     if (!$ok) {

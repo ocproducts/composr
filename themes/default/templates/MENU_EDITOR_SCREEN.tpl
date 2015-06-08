@@ -98,6 +98,7 @@
 
 				<p class="proceed_button">
 					<input type="hidden" name="confirm" value="1" />
+					<input type="hidden" name="delete_confirm" value="1" />
 
 					<input class="menu___generic_admin__delete button_screen_item" type="submit" value="{!DELETE}" onclick="var form=this.form; window.fauxmodal_confirm('{!CONFIRM_DELETE;,{MENU_NAME*}}',function(answer) { if (answer) form.submit(); }); return false;" />
 				</p>

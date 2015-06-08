@@ -195,7 +195,7 @@ function get_web_notifications($max = null, $start = 0)
     $out = new Tempcode();
     foreach ($rows as $row) {
         $member_id = $row['d_from_member_id'];
-        if ($member_id < 0) {
+        if ($member_id <= 0) {
             $username = do_lang('SYSTEM');
             $from_url = '';
             $avatar_url = find_theme_image('cns_default_avatars/default');

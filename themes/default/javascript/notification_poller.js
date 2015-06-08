@@ -356,9 +356,11 @@ function _toggle_messaging_box(event,name,hide)
 			});
 		} else if (win.webkitNotifications) { /* FF with html5Notifications plugin installed */
 			notification = win.webkitNotifications.createNotification(options.icon, title, options.body);
+			notification.tag = options.tag || emptyString;
 			notification.show();
 		} else if (navigator.mozNotification) { /* Firefox Mobile */
 			notification = navigator.mozNotification.createNotification(title, options.body, options.icon);
+			notification.tag = options.tag || emptyString;
 			notification.show();
 		} else if (win.external && win.external.msIsSiteMode()) { /* IE9+ */
 			//Clear any previous notifications

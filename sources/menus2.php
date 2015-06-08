@@ -337,6 +337,20 @@ function delete_menu($menu_id)
         delete_lang($lang_code['i_caption_long']);
     }
 
+    if (get_option('header_menu_call_string') == $menu_id || get_option('header_menu_call_string') == '') {
+        // Reset option to default, for auto-managed menus
+        $GLOBALS['SITE_DB']->query_delete('config', array('c_name' => 'header_menu_call_string'), '', 1);
+
+        // Clear caches
+        if (function_exists('persistent_cache_delete')) {
+            persistent_cache_delete('OPTIONS');
+        }
+        Self_learning_cache::erase_smart_cache();
+        // Config option saves into templates
+        require_code('caches3');
+        erase_cached_templates();
+    }
+
     decache('menu');
     persistent_cache_delete(array('MENU', $menu_id));
 

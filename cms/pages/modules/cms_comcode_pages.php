@@ -819,10 +819,7 @@ class Module_cms_comcode_pages
             }
             $order++;
         }
-        $_pages = find_all_pages($zone, 'comcode/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-        $_pages += find_all_pages($zone, 'comcode_custom/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-        $_pages += find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-        $_pages += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
+        $_pages = find_all_pages_wrap($zone);
         ksort($_pages);
         $pages = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         foreach (array_keys($_pages) as $page) {

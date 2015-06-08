@@ -46,7 +46,7 @@ For example:
 }
 
 .menu_type__dropdown li.toplevel.menu_spacer {
-	height: 1.15em;
+	height: 2.5em;
 	width: 4em;
 	padding: 0.5em;
 	float: {!en_left};

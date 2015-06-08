@@ -47,7 +47,7 @@
 		font-size: 0.9em;
 	}
 
-	.cns_profile_column h2:first-child {
+	.cns_profile_column>h2:first-child {
 		margin-top: 0;
 	}
 	.cns_profile_column h2 {

@@ -219,8 +219,10 @@ class Module_admin_menus
             delete_menu($id);
             copy_from_sitemap_to_new_menu($id, $copy_from);
             if (post_param_integer('switch_over', 0) == 1) {
+                require_code('config2');
                 set_option('header_menu_call_string', $id);
 
+                // Config option saves into templates
                 require_code('caches3');
                 erase_cached_templates();
             }
@@ -413,54 +415,64 @@ class Module_admin_menus
 
         $menu_id = get_param_string('id');
 
-        // Find what we have on the menu first
-        $ids = array();
-        foreach ($_POST as $key => $val) {
-            if (is_string($val)) {
-                if (substr($key, 0, 7) == 'parent_') {
-                    $ids[intval(substr($key, 7))] = $val;
+        if (post_param_integer('delete_confirm', 0) == 1) {
+            delete_menu($menu_id);
+
+            log_it('DELETE_MENU', $menu_id);
+
+            // Go back to menu editor screen
+            $url = get_param_string('redirect', '!');
+            if ($url == '!') {
+                $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
+                $url = $_url->evaluate();
+            }
+        } else {
+            // Find what we have on the menu first
+            $ids = array();
+            foreach ($_POST as $key => $val) {
+                if (is_string($val)) {
+                    if (substr($key, 0, 7) == 'parent_') {
+                        $ids[intval(substr($key, 7))] = $val;
+                    }
                 }
             }
-        }
 
-        $orderings = array_keys($ids);
+            $orderings = array_keys($ids);
 
-        // Get language codes currently used
-        $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
+            // Get language codes currently used
+            $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
-        // Now, process everything on the root
-        $order = 0;
-        foreach ($orderings as $id) {
-            $parent = $ids[$id];
+            // Now, process everything on the root
+            $order = 0;
+            foreach ($orderings as $id) {
+                $parent = $ids[$id];
 
-            if ($parent == '') {
-                $this->add_menu_item($menu_id, $id, $ids, null, $old_menu_bits, $order);
-                $order++;
+                if ($parent == '') {
+                    $this->add_menu_item($menu_id, $id, $ids, null, $old_menu_bits, $order);
+                    $order++;
+                }
             }
-        }
 
-        // Erase old stuff
-        foreach ($old_menu_bits as $menu_item_id => $lang_code) {
-            $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $menu_item_id));
-            delete_lang($lang_code['i_caption']);
-            delete_lang($lang_code['i_caption_long']);
+            // Erase old stuff
+            foreach ($old_menu_bits as $menu_item_id => $lang_code) {
+                $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $menu_item_id));
+                delete_lang($lang_code['i_caption']);
+                delete_lang($lang_code['i_caption_long']);
+            }
+
+            log_it('EDIT_MENU', $menu_id);
+
+            // Go back to editing the menu
+            $url = get_param_string('redirect', '!');
+            if ($url == '!') {
+                $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id), '_SELF');
+                $url = $_url->evaluate();
+            }
         }
 
         decache('menu');
         persistent_cache_delete(array('MENU', $menu_id));
 
-        log_it((count($_POST) == 1) ? 'DELETE_MENU' : 'EDIT_MENU', $menu_id);
-
-        // Go back to editing the menu
-        $url = get_param_string('redirect', '!');
-        if ($url == '!') {
-            if (count($_POST) == 1) {
-                $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-            } else {
-                $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id), '_SELF');
-            }
-            $url = $_url->evaluate();
-        }
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 

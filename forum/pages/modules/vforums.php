@@ -258,7 +258,8 @@ class Module_vforums
      */
     public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null)
     {
-        $_breadcrumbs = cns_forum_breadcrumbs(db_get_first_id(), $title, get_param_integer('keep_forum_root', db_get_first_id()));
+        $_breadcrumbs = cns_forum_breadcrumbs(db_get_first_id(), null, get_param_integer('keep_forum_root', db_get_first_id()), false);
+        $_breadcrumbs[] = array('', $title);
         breadcrumb_set_parents($_breadcrumbs);
         $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
 
