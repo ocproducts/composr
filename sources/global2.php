@@ -1073,7 +1073,8 @@ function in_safe_mode()
 }
 
 /**
- * Find the URL to a certain external handler script (Composr allows these to be moved around between zones, to suit site .htaccess requirements).
+ * Find the URL to a certain entry point script, located in the root directory, top level of a zone directory, data directory, or data_custom directory.
+ * Why this function? Because Composr allows these to be moved around between zone directories, to suit site .htaccess requirements).
  *
  * @param  string $name The codename of the needed script
  * @param  boolean $append_keep Whether to append keep variables

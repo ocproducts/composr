@@ -184,7 +184,7 @@ class Module_downloads
             add_privilege('SEARCH', 'autocomplete_title_download', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->alter_table_field('download_downloads', 'comments', 'LONG_TRANS', 'additional_details');
 
             $GLOBALS['SITE_DB']->alter_table_field('download_logging', 'the_user', '*MEMBER', 'member_id');

@@ -204,6 +204,8 @@ class Module_admin
             array('required', 'optional'),
             array('export', 'download'),
             array('attachment', 'upload'),
+            array('tree', 'nest', 'hierarchy', 'node', 'child', 'recursive'),
+            array('pinned', 'sticky'),
             array('cpfs', 'cpf', 'fields'),
             array('counting_blocks', 'hit counter'),
             array('email', 'e-mail', 'cns_contact_member'),

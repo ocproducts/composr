@@ -332,7 +332,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_table('f_emoticons', array(
             'e_code' => '*ID_TEXT',
             'e_theme_img_code' => 'SHORT_TEXT',
-            'e_relevance_level' => 'INTEGER', // 0=core,1=supported,2=unsupported,3=crappy,4=unused
+            'e_relevance_level' => 'INTEGER', // 0=core,1=supported,2=unsupported,3=poor,4=unused
             'e_use_topics' => 'BINARY', // Whether to use it to show a topics emotion
             'e_is_special' => 'BINARY'
         ));
