@@ -197,7 +197,7 @@ function js_compile($j, $js_cache_path, $minify = true)
 function compress_cms_stub_file($stub_file)
 {
     if (function_exists('gzencode')) {
-        $myfile = @fopen($stub_file . '.gz', GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = @fopen($stub_file . '.gz', GOOGLE_APPENGINE ? 'wb' : 'ab');
         if ($myfile !== false) {
             $compressed = gzencode(file_get_contents($stub_file), 9);
 

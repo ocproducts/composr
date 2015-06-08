@@ -338,6 +338,8 @@ function find_available_addons($installed_too = true)
 
             if (!empty($info['copyright_attribution'])) {
                 $info['copyright_attribution'] = explode("\n", $info['copyright_attribution']);
+            } else {
+                $info['copyright_attribution'] = array ();
             }
             if (empty($info['licence'])) {
                 $info['category'] = '(Unstated)';
@@ -707,12 +709,12 @@ function uninstall_addon($addon)
 
                 $matches = array();
                 if (preg_match('#([^/]*)/?pages/modules(_custom)?/(.*)\.php#', $filename, $matches) != 0) {
-                    if ($matches[2] != '_custom' || !is_file(get_file_base() . '/' . $filename)) {
+                    if ($matches[2] != '_custom' || ($matches[2] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filename)))) {
                         uninstall_module($matches[1], $matches[3]);
                     }
                 }
                 if (preg_match('#sources(_custom)?/blocks/(.*)\.php#', $filename, $matches) != 0) {
-                    if ($matches[1] != '_custom' || !is_file(get_file_base() . '/' . $filename)) {
+                    if ($matches[1] != '_custom' || ($matches[1] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filename)))) {
                         uninstall_block($matches[2]);
                     }
                 }
