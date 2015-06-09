@@ -60,8 +60,12 @@ function download_gateway_script()
 
     attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url . '">');
 
+    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+
     if ($url != '') {
-        $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
+        require_lang('downloads');
+        $title = get_screen_title('DOWNLOAD_GATEWAY', true, array(escape_html($name)));
+        $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('TITLE' => $title, 'NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
         $tpl_wrapped = globalise($tpl, null, '', true);
         $tpl_wrapped->evaluate_echo();
     } else {

@@ -599,6 +599,10 @@ function count_download_category_children($category_id)
  */
 function generate_dload_url($id, $use_gateway)
 {
+    if (get_option('immediate_downloads') == '1') {
+        $use_gateway = false;
+    }
+
     $keep = symbol_tempcode('KEEP', array('0', '1'));
 
     if ($use_gateway) {

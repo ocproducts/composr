@@ -435,6 +435,7 @@ class Hook_addon_registry_downloads
     {
         return array(
             lorem_globalise(do_lorem_template('DOWNLOAD_GATEWAY_SCREEN', array(
+                'TITLE' => lorem_title(),
                 'NAME' => lorem_phrase(),
                 'DOWNLOAD_URL' => placeholder_url(),
                 'URL' => placeholder_url(),
