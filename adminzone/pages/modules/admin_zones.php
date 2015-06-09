@@ -561,9 +561,12 @@ class Module_admin_zones
         $javascript = "
             var zone=document.getElementById('new_zone');
             if (!zone) zone=document.getElementById('zone');
-            zone.onblur=function() {
-                var title=document.getElementById('title');
-                if (title.value=='') title.value=zone.value.substr(0,1).toUpperCase()+zone.value.substring(1,zone.value.length).replace(/\_/g,' ');
+            if (zone)
+            {
+                zone.onblur=function() {
+                    var title=document.getElementById('title');
+                    if (title.value=='') title.value=zone.value.substr(0,1).toUpperCase()+zone.value.substring(1,zone.value.length).replace(/\_/g,' ');
+                }
             }
         ";
 

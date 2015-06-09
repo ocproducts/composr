@@ -329,7 +329,7 @@ function build_search_submitter_clauses($member_field_name, $member_id, $author,
  */
 function exact_match_sql($field, $i, $type = 'short', $param = null)
 {
-    $table = ' JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
+    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if (is_null($param)) {
         $param = get_param_string('option_' . strval($field['id']), '');
@@ -357,7 +357,7 @@ function exact_match_sql($field, $i, $type = 'short', $param = null)
  */
 function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
 {
-    $table = ' JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
+    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if (is_null($param)) {
         $param = get_param_string('option_' . strval($field['id']), '');

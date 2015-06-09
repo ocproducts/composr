@@ -2137,7 +2137,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		ac.tooltip_on=true;
 		tooltip_element.style.display='block';
 		if (tooltip_element.style.width=='auto')
-			tooltip_element.style.width=find_width(tooltip_element)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+			tooltip_element.style.width=find_width(tooltip_element,true,true,true)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
 		if (!no_delay)
 		{
@@ -2822,7 +2822,7 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 	{
 		for (var i=0,j=xml_doc.childNodes.length;i<j;i++)
 		{
-			if ((xml_doc.childNodes[i].id!='_firebugConsole') && (xml_doc.childNodes[i].type!='application/x-googlegears'))
+			if (xml_doc.childNodes[i].id!='_firebugConsole')
 				inner_html_copy.call(window,dom_node,xml_doc.childNodes[i],level+1,script_tag_dependencies);
 		}
 	}
@@ -2837,17 +2837,11 @@ function set_outer_html(element,target_html)
 	set_inner_html(element,target_html,false,true);
 
 	var c=element.childNodes,ci;
-	for (var i=c.length-1;i>=0;i--)
+	while (c.length>0)
 	{
-		ci=c[i];
+		ci=c[0];
 		element.removeChild(ci);
-		if (element.nextSibling)
-		{
-			p.insertBefore(ci,element.nextSibling);
-		} else
-		{
-			p.appendChild(ci);
-		}
+		p.appendChild(ci);
 	}
 }
 
@@ -2860,7 +2854,6 @@ function set_inner_html(element,target_html,append,force_dom)
 
 	if (((typeof force_dom=='undefined') || (!force_dom)) && (document.write) && (typeof element.innerHTML!='undefined') && (!document.xmlVersion) && (target_html.toLowerCase().indexOf('<script src="')==-1) && (target_html.toLowerCase().indexOf('<link')==-1))
 	{
-		var clone=element.cloneNode(true);
 		try
 		{
 			var scripts_jump=0,already_offset=0;

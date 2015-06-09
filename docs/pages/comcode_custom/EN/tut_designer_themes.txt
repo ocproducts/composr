@@ -74,6 +74,8 @@ This section will step through how to build your design, in a number of steps an
 
 [title="3"]Images and CSS[/title]
 
+CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates_cached/EN[/tt] directory (i.e. where the compiled CSS files get placed). CSS always works like that, rather than loading relative to where the current page URL is. This is problematic and confusing, and best solved by not using relative URLs -- use the theme image system instead, as described below.
+
 [list="1"]
 [*]Take your theme images and copy them into a new [tt]themes/<yourthemename>/images_custom/<yoursitename>[/tt] directory. This will allow you to reference them in Composr as theme images.
 [*]Go to edit the CSS for your theme in Composr. Do this by going to the Admin Zone, selecting 'Themes' from the drop down, and choosing the 'Edit CSS' option next to your theme. Choose to edit the 'global' CSS file. Take your CSS and paste it on the top (don't remove the default CSS!). If you prefer, you can edit [tt]themes/<yourthemename>/css_custom/global.css[/tt] in your favourite text editor.

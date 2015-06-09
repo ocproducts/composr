@@ -732,7 +732,7 @@ function init_form_saving(form_id)
 				}
 			}
 
-			if ((fields_to_do_counter!=0) && (biggest_length_data!=''))
+			if ((fields_to_do_counter!=0) && (biggest_length_data.length>5))
 			{
 				_restore_form_autosave(form,fields_to_do,biggest_length_data);
 				return; // If we had it locally, we won't let it continue on to try via AJAX
@@ -785,7 +785,7 @@ function _retrieve_form_autosave(result,form)
 		}
 	}
 
-	if ((fields_to_do_counter!=0) && (biggest_length_data!=''))
+	if ((fields_to_do_counter!=0) && (biggest_length_data.length>5))
 	{
 		_restore_form_autosave(form,fields_to_do,biggest_length_data);
 	}
@@ -837,7 +837,8 @@ function _restore_form_autosave(form,fields_to_do,biggest_length_data)
 					}
 				}
 			}
-		}
+		},
+		'{!javascript:AUTO_SAVING;^}'
 	);
 }
 

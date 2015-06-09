@@ -98,6 +98,7 @@ abstract class FieldsSearchHook {
         if (count($fields) == 0) {
             return null;
         }
+
         $table = '';
         $trans_fields = array('!' => '!');
         $nontrans_fields = array();
@@ -121,7 +122,11 @@ abstract class FieldsSearchHook {
                     case 'short_trans':
                         $trans_fields['f' . strval($i) . '.cv_value'] = 'SHORT_TRANS__COMCODE';
                         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short_trans f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
-                        $search_field = 't' . strval(count($trans_fields) - 1) . '.text_original';
+                        if (multi_lang_content()) {
+                            $search_field = 't' . strval(count($trans_fields) - 1) . '.text_original';
+                        } else {
+                            $search_field = 'f' . strval($i) . '.cv_value';
+                        }
                         break;
                     case 'long':
                         $nontrans_fields[] = 'f' . strval($i) . '.cv_value';

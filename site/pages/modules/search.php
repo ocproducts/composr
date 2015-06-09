@@ -146,7 +146,7 @@ class Module_search
                     $this->title = get_screen_title('_SEARCH_TITLE', true, array($info['lang']));
                 }
 
-                breadcrumb_set_parents(array(array('_SELF:_SELF', do_lang_tempcode('SEARCH_FOR'))));
+                breadcrumb_set_parents(array(array('_SELF:_SELF', do_lang_tempcode('SEARCH'))));
                 breadcrumb_set_self($info['lang']);
 
                 $this->ob = $ob;
@@ -176,6 +176,8 @@ class Module_search
     {
         require_css('search');
         require_css('forms');
+
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         if (function_exists('set_time_limit')) {
             @set_time_limit(15); // We really don't want to let it thrash the DB too long
@@ -590,17 +592,20 @@ class Module_search
         $results = array();
         $_hooks = find_all_hooks('modules', 'search');
         foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
-            $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
-            if (is_null($ob)) {
-                continue;
-            }
-            $info = $ob->info();
-            if (is_null($info)) {
-                continue;
+            $test = get_param_integer('search_' . $hook, 0);
+
+            if ((($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook)) && (($id == '') || ($id == $hook))) {
+                require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
+                $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
+                if (is_null($ob)) {
+                    continue;
+                }
+                $info = $ob->info();
+                if (is_null($info)) {
+                    continue;
+                }
             }
 
-            $test = get_param_integer('search_' . $hook, 0);
             if ((($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && ($info['default'])) || ($id == $hook)) && (($id == '') || ($id == $hook))) {
                 // Category filter
                 if (($search_under != '!') && ($search_under != '-1') && (array_key_exists('category', $info))) {
@@ -652,7 +657,7 @@ class Module_search
         $out = build_search_results_interface($results, $start, $max, $direction, $id == '');
         if ($out->is_empty()) {
             if ((is_integer($cutoff)) && ($GLOBALS['TOTAL_SEARCH_RESULTS'] == 0)) {
-                $ret_maybe = $this->results($id, $author, $author_id, $cutoff, $sort, $direction, $only_titles, $search_under);
+                $ret_maybe = $this->results($id, $author, $author_id, null, $sort, $direction, $only_titles, $search_under);
                 if (!$ret_maybe[0]->is_empty()) {
                     attach_message(do_lang_tempcode('NO_RESULTS_DAYS', escape_html(integer_format(intval((time() - $cutoff) / 24.0 * 60.0 * 60.0)))), 'notice');
                     return $ret_maybe;

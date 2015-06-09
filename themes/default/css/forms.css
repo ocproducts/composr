@@ -278,7 +278,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 }
 
 .upload_field {
-	max-width: 30em; /* Upload field HTML is complex, we need to force size down so that the help icon can align correctly */
+	max-width: 31em; /* Upload field HTML is complex, we need to force size down so that the help icon can align correctly */
 }
 
 .upload_field input[type="button"] {
@@ -290,6 +290,12 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 		max-width: 240px;
 	}
 /*{+END}*/
+
+.upload_field_image_preview {
+	float: right;
+	max-width: 4em;
+	max-height: 4em;
+}
 
 .radio_description {
 	margin-top: -1.3em !important;

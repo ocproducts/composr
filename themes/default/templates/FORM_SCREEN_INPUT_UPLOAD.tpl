@@ -1,3 +1,7 @@
+{+START,IF,{$AND,{IS_IMAGE},{$IS_NON_EMPTY,{EXISTING_URL}}}}
+<img class="upload_field_image_preview" src="{EXISTING_URL;^*}" title="" alt="{!EXISTING;^}" />
+{+END}
+
 <div class="upload_field inline_block">
 	<div class="vertical_alignment inline_block">
 		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}" />
@@ -9,7 +13,7 @@
 						{!UNLINK_EXISTING_UPLOAD}
 					{+END}
 					{+START,IF,{$AND,{IS_IMAGE},{$IS_NON_EMPTY,{EXISTING_URL}}}}
-						{!UNLINK_EXISTING_UPLOAD_IMAGE,&lt;img src=&quot;{EXISTING_URL;^*}&quot; title=&quot;&quot; alt=&quot;{!EXISTING;^}&quot; /&gt;}
+						{!UNLINK_EXISTING_UPLOAD_IMAGE,{$GET*,image_preview}}
 					{+END}
 				</label>
 			</p>
