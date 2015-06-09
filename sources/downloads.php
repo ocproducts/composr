@@ -78,9 +78,9 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         if (!is_null($root)) {
             $map['keep_download_root'] = ($root == db_get_first_id()) ? null : $root;
         }
-        $download_url = build_url($map, $zone);
+        $view_url = build_url($map, $zone);
     } else {
-        $download_url = new Tempcode();
+        $view_url = new Tempcode();
     }
     $date = get_timezoned_date($row['add_date'], false);
     $date_raw = $row['add_date'];
@@ -109,7 +109,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 
     // Rating
     require_code('feedback');
-    $rating = ($row['allow_rating'] == 1 && array_key_exists('id', $row)) ? display_rating($download_url, is_string($row['name']) ? $row['name'] : get_translated_text($row['name']), 'downloads', strval($row['id']), 'RATING_INLINE_STATIC', $row['submitter']) : null;
+    $rating = ($row['allow_rating'] == 1 && array_key_exists('id', $row)) ? display_rating($view_url, is_string($row['name']) ? $row['name'] : get_translated_text($row['name']), 'downloads', strval($row['id']), 'RATING_INLINE_STATIC', $row['submitter']) : null;
     if (!is_null($rating)) {
         if (trim($rating->evaluate()) == '') {
             $rating = null;
@@ -134,6 +134,8 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 
     $may_download = has_privilege(get_member(), 'download', 'downloads', array(strval($row['category_id'])));
 
+    $download_url = generate_dload_url($row['id'], $row['url_redirect'] != '');
+    
     // Final template
     if (($full_img_url != '') && (url_is_local($full_img_url))) {
         $full_img_url = get_custom_base_url() . '/' . $full_img_url;
@@ -155,7 +157,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         'DATE' => $date,
         'EDIT_DATE_RAW' => is_null($row['edit_date']) ? '' : strval($row['edit_date']),
         'SIZE' => $filesize,
-        'URL' => $download_url,
+        'URL' => $view_url,
         'NAME' => is_string($row['name']) ? $row['name'] : get_translated_text($row['name']),
         'BREADCRUMBS' => $breadcrumbs,
         'IMG_URL' => $thumb_url,
@@ -165,6 +167,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         'LICENCE_TITLE' => $licence_title,
         'LICENCE_HYPERLINK' => $licence_hyperlink,
         'MAY_DOWNLOAD' => $may_download,
+        'DOWNLOAD_URL' => $download_url,
     ));
 }
 
@@ -585,4 +588,30 @@ function count_download_category_children($category_id)
     }
 
     return $out;
+}
+
+/**
+ * Generate a link to a Composr download.
+ *
+ * @param  AUTO_LINK $id The ID of the download to be downloaded
+ * @param  boolean $use_gateway Whether to use the gateway script
+ * @return URLPATH The URL
+ */
+function generate_dload_url($id, $use_gateway)
+{
+    $keep = symbol_tempcode('KEEP', array('0', '1'));
+
+    if ($use_gateway) {
+        $download_url = find_script('download_gateway');
+    } else {
+        $download_url = find_script('dload');
+    }
+
+    $download_url .= '?id=' . strval($id) . $keep->evaluate();
+
+    if (get_option('anti_leech') == '1') {
+        $download_url .= '&for_session=' . md5(strval(get_session_id()));
+    }
+
+    return $download_url;
 }

@@ -30,7 +30,7 @@
 					{+END}
 						<div class="download_now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
-								<p class="download_link associated_link suggested_link"><a{+START,IF,{$NOT,{$INLINE_STATS}}} onclick="return ga_track(this,'{!DOWNLOAD;*}','{ORIGINAL_FILENAME;*}');"{+END} rel="nofollow" href="{$FIND_SCRIPT*,download_gateway}?id={ID*}{$KEEP*,0,1}{+START,IF,{$EQ,{$CONFIG_OPTION,anti_leech},1}}&amp;for_session={$SESSION_HASHED*}{+END}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
+								<p class="download_link associated_link suggested_link"><a{+START,IF,{$NOT,{$INLINE_STATS}}} onclick="return ga_track(this,'{!DOWNLOAD;*}','{ORIGINAL_FILENAME;*}');"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
 							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
 								<p>{!NO_DOWNLOAD_ACCESS}</p>

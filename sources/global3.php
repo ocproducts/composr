@@ -436,7 +436,7 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
 
     restore_output_state(true); // Here we reset some Tempcode environmental stuff, because template compilation or preprocessing may have dirtied things
 
-    if (!running_script('dload') && !running_script('attachment') && !running_script('index') && !running_script('approve_ip')) {
+    if ((get_param_integer('show_border', 0) == 0) && !running_script('download_gateway') && !running_script('dload') && !running_script('attachment') && !running_script('index') && !running_script('approve_ip')) {
         $global = do_template('STANDALONE_HTML_WRAP', array(
             '_GUID' => 'fe818a6fb0870f0b211e8e52adb23f26',
             'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],

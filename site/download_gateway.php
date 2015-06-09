@@ -44,29 +44,5 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-$id = get_param_integer('id');
-$result = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'url_redirect'), array('id' => $id), '', 1);
-if (!isset($result[0])) {
-	warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-}
-$name = $result[0]['name'];
-$url = $result[0]['url_redirect'];
-$keep = symbol_tempcode('KEEP', array('0', '1'));
-$download_url = find_script('dload') . '?id=' . strval($id) . '&final_link=1' . $keep->evaluate();
-if (get_option('anti_leech') == 1) {
-	$download_url .= '&for_session=' . md5(strval(get_session_id()));
-}
-if (!looks_like_url($url)) {
-	list($zone,$attributes) = page_link_decode($url);
-	$url = find_script('iframe') . '?zone=' . urlencode($zone);
-	foreach ($attributes as $key => $val) {
-	 $url .= '&' . $key . '=' . urlencode($val);
-	}
-}
-attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url . '">');
-if (get_param_integer('final_link', 0) == 0 && $url != '') {
-     $tpl = do_template('DOWNLOAD_GATEWAY', array('NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
-     $tpl_wrapped = globalise($tpl, null, '', true);
-     $tpl_wrapped->evaluate_echo();
-     exit();
-}
+require_code('downloads2');
+download_gateway_script();

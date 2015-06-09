@@ -753,6 +753,8 @@ class Module_downloads
 
         $may_download = has_privilege(get_member(), 'download', 'downloads', array(strval($myrow['category_id'])));
 
+        $download_url = generate_dload_url($id, $myrow['url_redirect'] != '');
+
         // Render
         return do_template('DOWNLOAD_SCREEN', array(
             '_GUID' => 'a9af438f84783d0d38c20b5f9a62dbdb',
@@ -788,6 +790,7 @@ class Module_downloads
             'RATING_DETAILS' => $rating_details,
             'COMMENT_DETAILS' => $comment_details,
             'MAY_DOWNLOAD' => $may_download,
+            'DOWNLOAD_URL' => $download_url,
         ));
     }
 }

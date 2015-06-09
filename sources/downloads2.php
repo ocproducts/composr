@@ -32,6 +32,46 @@ function init__downloads2()
 /**
  * Farm out the files for downloads.
  */
+function download_gateway_script()
+{
+    require_code('downloads');
+
+    $id = get_param_integer('id');
+    $result = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'url_redirect'), array('id' => $id), '', 1);
+    if (!isset($result[0])) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+
+    $name = $result[0]['name'];
+
+    $url = $result[0]['url_redirect'];
+
+    $download_url = generate_dload_url($id, false);
+
+    if (!looks_like_url($url)) {
+        list($zone, $attributes) = page_link_decode($url);
+        $url = find_script('iframe') . '?zone=' . urlencode($zone);
+        foreach ($attributes as $key => $val) {
+            $url .= '&' . $key . '=' . urlencode($val);
+        }
+        $keep = symbol_tempcode('KEEP', array('0', '1'));
+        $url .= $keep->evaluate();
+    }
+
+    attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url . '">');
+
+    if ($url != '') {
+        $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
+        $tpl_wrapped = globalise($tpl, null, '', true);
+        $tpl_wrapped->evaluate_echo();
+    } else {
+        header('Location:' . $download_url);
+    }
+}
+
+/**
+ * Farm out the files for downloads.
+ */
 function dload_script()
 {
     // Closed site
