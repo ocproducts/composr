@@ -177,7 +177,7 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
 function hyperlink($url, $caption, $external, $escape, $title = '', $accesskey = null, $post_data = null, $rel = null, $overlay = null)
 {
     if (((is_object($caption)) && ($caption->is_empty())) || ((!is_object($caption)) && ($caption == ''))) {
-        $caption = do_lang('NA');
+        $caption = do_lang_tempcode('NA');
     }
 
     if ($post_data !== null) {

@@ -2242,7 +2242,7 @@ function deactivate_tooltip(ac,event)
 	}
 }
 
-/* Automatic resizing to make frames seamless */
+/* Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes! */
 function resize_frame(name,min_height)
 {
 	if (typeof min_height=='undefined') min_height=0;
