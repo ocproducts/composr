@@ -38,12 +38,12 @@ class Module_admin_custom_comcode extends Standard_crud_module
             var i=0,param;
             do
             {
-                    param=document.getElementById('parameters_'+i);
-                    if ((param) && (param.value!=''))
-                    {
-                            e.value+=' '+param.value.replace('=','=\"')+'\"';
-                    }
-                    i++;
+                param=document.getElementById('parameters_'+i);
+                if ((param) && (param.value!=''))
+                {
+                        e.value+=' '+param.value.replace('=','=\"')+'\"';
+                }
+                i++;
             }
             while (param!==null);
             e.value+='][/'+tag.value+']';
@@ -170,19 +170,18 @@ class Module_admin_custom_comcode extends Standard_crud_module
             $this->javascript .= "
                     var form=document.getElementById('main_form');
                     form.old_submit=form.onsubmit;
-                    form.onsubmit=function()
-                            {
-                                        document.getElementById('submit_button').disabled=true;
-                                        var url='" . addslashes($script) . "?snippet=exists_tag&name='+window.encodeURIComponent(form.elements['tag'].value);
-                                        if (!do_ajax_field_test(url))
-                                        {
-                                                        document.getElementById('submit_button').disabled=false;
-                                                        return false;
-                                        }
-                                        document.getElementById('submit_button').disabled=false;
-                                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                                        return true;
-                            };
+                    form.onsubmit=function() {
+                        document.getElementById('submit_button').disabled=true;
+                        var url='" . addslashes($script) . "?snippet=exists_tag&name='+window.encodeURIComponent(form.elements['tag'].value);
+                        if (!do_ajax_field_test(url))
+                        {
+                            document.getElementById('submit_button').disabled=false;
+                            return false;
+                        }
+                        document.getElementById('submit_button').disabled=false;
+                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                        return true;
+                    };
             ";
         }
 

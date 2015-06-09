@@ -122,19 +122,18 @@ class Module_cms_banners extends Standard_crud_module
         }
 
         $this->javascript = '
-            document.getElementById("importancemodulus").onkeyup=function()
-            {
-                    var _im_here=document.getElementById("im_here");
-                    if (_im_here)
-                    {
-                            var _im_total=document.getElementById("im_total");
-                            var im_here=window.parseInt(document.getElementById("importancemodulus").value);
-                            var im_total=window.parseInt(_im_total.className.replace("im_",""))+im_here;
-                            set_inner_html(_im_here,im_here);
-                            set_inner_html(document.getElementById("im_here_2"),im_here);
-                            set_inner_html(_im_total,im_total);
-                            set_inner_html(document.getElementById("im_total_2"),im_total);
-                    }
+            document.getElementById("importancemodulus").onkeyup=function() {
+                var _im_here=document.getElementById("im_here");
+                if (_im_here)
+                {
+                    var _im_total=document.getElementById("im_total");
+                    var im_here=window.parseInt(document.getElementById("importancemodulus").value);
+                    var im_total=window.parseInt(_im_total.className.replace("im_",""))+im_here;
+                    set_inner_html(_im_here,im_here);
+                    set_inner_html(document.getElementById("im_here_2"),im_here);
+                    set_inner_html(_im_total,im_total);
+                    set_inner_html(document.getElementById("im_total_2"),im_total);
+                }
             }
         ';
 
@@ -142,21 +141,20 @@ class Module_cms_banners extends Standard_crud_module
             require_javascript('ajax');
             $script = find_script('snippet');
             $this->javascript .= "
-                    var form=document.getElementById('main_form');
-                    form.old_submit=form.onsubmit;
-                    form.onsubmit=function()
-                            {
-                                        document.getElementById('submit_button').disabled=true;
-                                        var url='" . addslashes($script) . "?snippet=exists_banner&name='+window.encodeURIComponent(form.elements['name'].value);
-                                        if (!do_ajax_field_test(url))
-                                        {
-                                                        document.getElementById('submit_button').disabled=false;
-                                                        return false;
-                                        }
-                                        document.getElementById('submit_button').disabled=false;
-                                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                                        return true;
-                            };
+                var form=document.getElementById('main_form');
+                form.old_submit=form.onsubmit;
+                form.onsubmit=function() {
+                    document.getElementById('submit_button').disabled=true;
+                    var url='" . addslashes($script) . "?snippet=exists_banner&name='+window.encodeURIComponent(form.elements['name'].value);
+                    if (!do_ajax_field_test(url))
+                    {
+                        document.getElementById('submit_button').disabled=false;
+                        return false;
+                    }
+                    document.getElementById('submit_button').disabled=false;
+                    if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                    return true;
+                };
             ";
         }
 
@@ -164,21 +162,20 @@ class Module_cms_banners extends Standard_crud_module
             require_javascript('ajax');
             $script = find_script('snippet');
             $this->cat_crud_module->javascript = "
-                    var form=document.getElementById('main_form');
-                    form.old_submit=form.onsubmit;
-                    form.onsubmit=function()
-                            {
-                                        document.getElementById('submit_button').disabled=true;
-                                        var url='" . addslashes($script) . "?snippet=exists_banner_type&name='+window.encodeURIComponent(form.elements['new_id'].value);
-                                        if (!do_ajax_field_test(url))
-                                        {
-                                                        document.getElementById('submit_button').disabled=false;
-                                                        return false;
-                                        }
-                                        document.getElementById('submit_button').disabled=false;
-                                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                                        return true;
-                            };
+                var form=document.getElementById('main_form');
+                form.old_submit=form.onsubmit;
+                form.onsubmit=function() {
+                    document.getElementById('submit_button').disabled=true;
+                    var url='" . addslashes($script) . "?snippet=exists_banner_type&name='+window.encodeURIComponent(form.elements['new_id'].value);
+                    if (!do_ajax_field_test(url))
+                    {
+                        document.getElementById('submit_button').disabled=false;
+                        return false;
+                    }
+                    document.getElementById('submit_button').disabled=false;
+                    if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                    return true;
+                };
             ";
         }
 

@@ -112,19 +112,18 @@ class Module_admin_cns_groups extends Standard_crud_module
             $this->javascript .= "
                     var form=document.getElementById('main_form');
                     form.old_submit=form.onsubmit;
-                    form.onsubmit=function()
-                            {
-                                        document.getElementById('submit_button').disabled=true;
-                                        var url='" . addslashes($script) . "?snippet=exists_usergroup&name='+window.encodeURIComponent(form.elements['name'].value);
-                                        if (!do_ajax_field_test(url))
-                                        {
-                                                        document.getElementById('submit_button').disabled=false;
-                                                        return false;
-                                        }
-                                        document.getElementById('submit_button').disabled=false;
-                                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                                        return true;
-                            };
+                    form.onsubmit=function() {
+                        document.getElementById('submit_button').disabled=true;
+                        var url='" . addslashes($script) . "?snippet=exists_usergroup&name='+window.encodeURIComponent(form.elements['name'].value);
+                        if (!do_ajax_field_test(url))
+                        {
+                            document.getElementById('submit_button').disabled=false;
+                            return false;
+                        }
+                        document.getElementById('submit_button').disabled=false;
+                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                        return true;
+                    };
             ";
         }
 

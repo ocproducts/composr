@@ -2691,6 +2691,7 @@ function titleify($boring)
     $ret = str_replace('Captcha', 'CAPTCHA', $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
     $ret = str_replace('Cpfs', 'CPFs', $ret);
+    $ret = str_replace('CNS', 'Conversr', $ret);
 
     if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($boring)) {
         ocp_mark_as_escaped($ret);

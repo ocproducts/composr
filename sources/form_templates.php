@@ -1501,6 +1501,27 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
 }
 
 /**
+ * Get the tempcode for a combo-box (listbox with free text input). Works best if HTML5 is available.
+ *
+ * @param  mixed $pretty_name A human intelligible name for this input field
+ * @param  mixed $description A description for this input field
+ * @param  ID_TEXT $name The name which this input field is for
+ * @param  string $default Current selection
+ * @param  tempcode $options The list entries for our list
+ * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  boolean $required Whether this is required
+ * @return tempcode The input field
+ */
+function form_input_combo($pretty_name, $description, $name, $default, $options, $tabindex = null, $required = true)
+{
+    $tabindex = get_form_field_tabindex($tabindex);
+
+    $_required = ($required) ? '_required' : '';
+    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $options, 'DEFAULT' => $default));
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
+}
+
+/**
  * Get the tempcode for an AJAX-powered tree listbox.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field

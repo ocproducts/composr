@@ -240,13 +240,7 @@ class Hook_fields_list
                     $required = $field['cf_required'] == 1;
                     $name = 'field_' . strval($field['id']);
 
-                    $tabindex = get_form_field_tabindex(null);
-
-                    $_required = ($required) ? '_required' : '';
-
-                    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('_GUID' => '0736ea661a743a09354346e9534aa597', 'DEFAULT' => $custom_value ? $actual_value : '', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $list_tpl));
-
-                    return _form_input($name, $_cf_name, $_cf_description, $input, $required, false, $tabindex);
+                    return form_input_combo($_cf_name, $_cf_description, $name, $custom_value ? $actual_value : '', $list_tpl, $tabindex, $required);
                 } else {
                     $list_tpl = new Tempcode();
 

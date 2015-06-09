@@ -560,9 +560,10 @@ class Module_admin_zones
 
         $javascript = "
             var zone=document.getElementById('new_zone');
+            if (!zone) zone=document.getElementById('zone');
             zone.onblur=function() {
-                    var title=document.getElementById('title');
-                    if (title.value=='') title.value=zone.value.substr(0,1).toUpperCase()+zone.value.substring(1,zone.value.length).replace(/\_/g,' ');
+                var title=document.getElementById('title');
+                if (title.value=='') title.value=zone.value.substr(0,1).toUpperCase()+zone.value.substring(1,zone.value.length).replace(/\_/g,' ');
             }
         ";
 
@@ -689,19 +690,18 @@ class Module_admin_zones
         $javascript .= "
             var form=document.getElementById('main_form');
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            document.getElementById('submit_button').disabled=true;
-                            var url='" . addslashes($script) . "?snippet=exists_zone&name='+window.encodeURIComponent(form.elements['zone'].value);
-                            if (!do_ajax_field_test(url))
-                            {
-                                        document.getElementById('submit_button').disabled=false;
-                                        return false;
-                            }
-                            document.getElementById('submit_button').disabled=false;
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                document.getElementById('submit_button').disabled=true;
+                var url='" . addslashes($script) . "?snippet=exists_zone&name='+window.encodeURIComponent(form.elements['zone'].value);
+                if (!do_ajax_field_test(url))
+                {
+                    document.getElementById('submit_button').disabled=false;
+                    return false;
+                }
+                document.getElementById('submit_button').disabled=false;
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         return do_template('FORM_SCREEN', array('_GUID' => 'd8f08884cc370672c2e5604aefe78c6c', 'JAVASCRIPT' => $javascript, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUPPORT_AUTOSAVE' => true));

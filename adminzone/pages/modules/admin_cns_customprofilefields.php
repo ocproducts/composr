@@ -389,9 +389,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             var select_element_length=select_elements.length;
             for (var counter=0;counter<select_element_length;counter++)
             {
-                    select_elements[counter].onchange=function() {
-                            select_elements[0].form.submit();
-                    };
+                select_elements[counter].onchange=function() {
+                    select_elements[0].form.submit();
+                };
             }
             select_submit.style.display=\'none\';
         ';

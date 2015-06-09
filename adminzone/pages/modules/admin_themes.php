@@ -710,27 +710,26 @@ class Module_admin_themes
         $javascript = "
             var title=document.getElementById('title');
             title.onchange=function() {
-                    var codename=document.getElementById('theme');
-                    if (codename.value=='')
-                    {
-                            codename.value=title.value.replace(/[^a-zA-Z0-9]/g,'');
-                    }
+                var codename=document.getElementById('theme');
+                if (codename.value=='')
+                {
+                    codename.value=title.value.replace(/[^a-zA-Z0-9]/g,'');
+                }
             }
             var form=document.getElementById('main_form');
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            document.getElementById('submit_button').disabled=true;
-                            var url='" . addslashes($script) . "?snippet=exists_theme&name='+window.encodeURIComponent(form.elements['theme'].value);
-                            if (!do_ajax_field_test(url))
-                            {
-                                        document.getElementById('submit_button').disabled=false;
-                                        return false;
-                            }
-                            document.getElementById('submit_button').disabled=false;
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                document.getElementById('submit_button').disabled=true;
+                var url='" . addslashes($script) . "?snippet=exists_theme&name='+window.encodeURIComponent(form.elements['theme'].value);
+                if (!do_ajax_field_test(url))
+                {
+                    document.getElementById('submit_button').disabled=false;
+                    return false;
+                }
+                document.getElementById('submit_button').disabled=false;
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         return do_template('FORM_SCREEN', array('_GUID' => '08b45be04f4035c7595458a719260bd9', 'HIDDEN' => '', 'JAVASCRIPT' => $javascript, 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));

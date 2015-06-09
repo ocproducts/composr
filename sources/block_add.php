@@ -251,6 +251,13 @@ function block_helper_script()
             }
 
             foreach ($parameters as $parameter) {
+                // Work out and cleanup the title
+                $parameter_title = titleify($parameter);
+                $test = do_lang('BLOCK_' . $block . '_PARAM_' . $parameter . '_TITLE', null, null, null, null, false);
+                if (!is_null($test)) {
+                    $parameter_title = $test;
+                }
+
                 // Work out and cleanup the description
                 $matches = array();
                 switch ($parameter) {
@@ -313,21 +320,19 @@ function block_helper_script()
                     foreach ($options as $option) {
                         $list->attach(form_input_list_entry($option, $has_default && $option == $default));
                     }
-                    $fields->attach(form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false));
-                } /*elseif ($block.':'.$parameter=='menu:param') { // special case for menus     Disabled so Sitemap nodes may be entered
-                        $list=new Tempcode();
-                        $rows=$GLOBALS['SITE_DB']->query_select('menu_items',array('DISTINCT i_menu'),NULL,'ORDER BY i_menu');
-                        foreach ($rows as $row)
-                        {
-                            $list->attach(form_input_list_entry($row['i_menu'],$has_default && $row['i_menu']==$default));
-                        }
-                        $fields->attach(form_input_list(titleify($parameter),escape_html($description),$parameter,$list,NULL,false,false));
-                    }*/
-                elseif ($parameter == 'zone') { // zone list
+                    $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
+                }
+                elseif ($block . ':' . $parameter == 'menu:param') { // special case for menus
+                    $list = new Tempcode();
+                    $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
+                    foreach ($rows as $row)
+                        $list->attach(form_input_list_entry($row['i_menu'], $has_default && $row['i_menu'] == $default));
+                    $fields->attach(form_input_combo($parameter_title, escape_html($description), $parameter, $default, $list, null, false));
+                } elseif ($parameter == 'zone') { // zone list
                     $list = new Tempcode();
                     $list->attach(form_input_list_entry('_SEARCH', ($default == '')));
                     $list->attach(create_selection_list_zones(($default == '') ? null : $default));
-                    $fields->attach(form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false));
+                    $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                 } elseif ((($default == '') || (is_numeric(str_replace(',', '', $default)))) && ((($parameter == 'forum') || (($parameter == 'param') && (in_array($block, array('main_forum_topics'))))) && (get_forum_type() == 'cns'))) { // Conversr forum list
                     require_code('cns_forums');
                     require_code('cns_forums2');
@@ -335,7 +340,7 @@ function block_helper_script()
                         warn_exit(do_lang_tempcode('NO_FORUM_INSTALLED'));
                     }
                     $list = create_selection_list_forum_tree(null, null, explode(',', $default));
-                    $fields->attach(form_input_multi_list(titleify($parameter), escape_html($description), $parameter, $list));
+                    $fields->attach(form_input_multi_list($parameter_title, escape_html($description), $parameter, $list));
                 } elseif ($parameter == 'font') { // font choice
                     $fonts = array();
                     $dh = opendir(get_file_base() . '/data/fonts');
@@ -358,7 +363,7 @@ function block_helper_script()
                     foreach ($fonts as $font) {
                         $list->attach(form_input_list_entry($font, $font == $default));
                     }
-                    $fields->attach(form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false));
+                    $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                 } elseif (preg_match('#' . do_lang('BLOCK_IND_EITHER') . ' (.+)#i', $description, $matches) != 0) { // list
                     $description = preg_replace('# \(' . do_lang('BLOCK_IND_EITHER') . '.*\)#U', '', $description); // predefined selections
                     $description = preg_replace('# ' . do_lang('BLOCK_IND_EITHER') . '.*$#Ui', '', $description);
@@ -376,7 +381,7 @@ function block_helper_script()
                             $list->attach(form_input_list_entry($matches2[1][$i], $matches2[1][$i] == $default));
                         }
                     }
-                    $fields->attach(form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false));
+                    $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                 } elseif (preg_match('#\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', $description, $matches) != 0) { // hook list
                     $description = preg_replace('#\s*\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', '', $description);
 
@@ -390,16 +395,16 @@ function block_helper_script()
                         $list->attach(form_input_list_entry($hook, $hook == $default));
                     }
                     if ((($block == 'main_search') && ($parameter == 'limit_to')) || ($block == 'side_tag_cloud')) {
-                        $fields->attach(form_input_multi_list(titleify($parameter), escape_html($description), $parameter, $list, null, 0));
+                        $fields->attach(form_input_multi_list($parameter_title, escape_html($description), $parameter, $list, null, 0));
                     } else {
-                        $fields->attach(form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false));
+                        $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                     }
                 } elseif ((($default == '0') || ($default == '1') || (strpos($description, '\'0\'') !== false) || (strpos($description, '\'1\'') !== false)) && (do_lang('BLOCK_IND_WHETHER') != '') && (stripos($description, do_lang('BLOCK_IND_WHETHER')) !== false)) { // checkbox
-                    $fields->attach(form_input_tick(titleify($parameter), escape_html($description), $parameter, $default == '1'));
+                    $fields->attach(form_input_tick($parameter_title, escape_html($description), $parameter, $default == '1'));
                 } elseif ((do_lang('BLOCK_IND_NUMERIC') != '') && (strpos($description, do_lang('BLOCK_IND_NUMERIC')) !== false)) { // numeric
-                    $fields->attach(form_input_integer(titleify($parameter), escape_html($description), $parameter, ($default == '') ? null : intval($default), false));
+                    $fields->attach(form_input_integer($parameter_title, escape_html($description), $parameter, ($default == '') ? null : intval($default), false));
                 } else { // normal
-                    $fields->attach(form_input_line(titleify($parameter), escape_html($description), $parameter, $default, false));
+                    $fields->attach(form_input_line($parameter_title, escape_html($description), $parameter, $default, false));
                 }
             }
         }
@@ -459,7 +464,7 @@ function block_helper_script()
             $parameters = array_merge($_parameters, $parameters);
         }
         foreach ($parameters as $parameter) {
-            $value = post_param_string($parameter, null);
+            $value = post_param_string($parameter, post_param_string($parameter . '_fallback_list', null));
             if (is_null($value)) {
                 if (post_param_integer('tick_on_form__' . $parameter, null) === null) {
                     continue; // If not on form, continue, otherwise must be 0

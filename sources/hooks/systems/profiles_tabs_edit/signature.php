@@ -73,18 +73,17 @@ class Hook_profiles_tabs_edit_signature
         $javascript = "
             var form=document.getElementById('signature').form;
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            var post=form.elements['signature'];
-                            if ((!post.value) && (post[1])) post=post[1];
-                            if (post.value.length>" . strval($size) . ")
-                            {
-                                        window.fauxmodal_alert('" . php_addslashes(do_lang('SIGNATURE_TOO_BIG')) . "');
-                                        return false;
-                            }
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                var post=form.elements['signature'];
+                if ((!post.value) && (post[1])) post=post[1];
+                if (post.value.length>" . strval($size) . ")
+                {
+                            window.fauxmodal_alert('" . php_addslashes(do_lang('SIGNATURE_TOO_BIG')) . "');
+                            return false;
+                }
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         require_code('form_templates');

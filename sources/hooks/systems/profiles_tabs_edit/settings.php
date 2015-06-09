@@ -265,28 +265,27 @@ class Hook_profiles_tabs_edit_settings
         $javascript = "
             var form=document.getElementById('email_address').form;
             form.prior_profile_edit_submit=form.onsubmit;
-            form.onsubmit=function()
+            form.onsubmit=function() {
+                if (typeof form.elements['edit_password']!='undefined')
+                {
+                    if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value!=form.elements['edit_password'].value))
                     {
-                            if (typeof form.elements['edit_password']!='undefined')
-                            {
-                                        if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value!=form.elements['edit_password'].value))
-                                        {
-                                                        window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
-                                                        return false;
-                                        }
-                            }
-                            if (form.elements['edit_password'].value!='')
-                            {
-                                        var url='" . addslashes($script) . "?';
-                                        if (!do_ajax_field_test(url,'password='+window.encodeURIComponent(form.elements['edit_password'].value)))
-                                        {
-                                                        document.getElementById('submit_button').disabled=false;
-                                                        return false;
-                                        }
-                            }
-                            if (typeof form.prior_profile_edit_submit!='undefined' && form.prior_profile_edit_submit) return form.prior_profile_edit_submit();
-                            return true;
-                    };
+                        window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
+                        return false;
+                    }
+                }
+                if (form.elements['edit_password'].value!='')
+                {
+                    var url='" . addslashes($script) . "?';
+                    if (!do_ajax_field_test(url,'password='+window.encodeURIComponent(form.elements['edit_password'].value)))
+                    {
+                        document.getElementById('submit_button').disabled=false;
+                        return false;
+                    }
+                }
+                if (typeof form.prior_profile_edit_submit!='undefined' && form.prior_profile_edit_submit) return form.prior_profile_edit_submit();
+                return true;
+            };
         ";
 
         $text = '';

@@ -155,71 +155,129 @@ class Module_cms_calendar extends Standard_crud_module
         $this->javascript = "
             var form=document.getElementById('recurrence_pattern').form;
 
+            var start=document.getElementById('start');
             var start_day=document.getElementById('start_day');
             var start_month=document.getElementById('start_month');
             var start_year=document.getElementById('start_year');
+            var start_time=document.getElementById('start_time');
             var start_hour=document.getElementById('start_hour');
             var start_minute=document.getElementById('start_minute');
+            var end_time=document.getElementById('end_time');
+            var end_hour=document.getElementById('end_hour');
+            var end_minute=document.getElementById('end_minute');
             var do_timezone_conv=document.getElementById('do_timezone_conv');
             var all_day_event=document.getElementById('all_day_event');
 
             var crf=function(event) {
-                    var s=(form.elements['recurrence'][0].checked);
-                    if (form.elements['recurrence_pattern']) form.elements['recurrence_pattern'].disabled=s;
-                    if (form.elements['recurrences']) form.elements['recurrences'].disabled=s;
-                    if (form.elements['seg_recurrences']) form.elements['seg_recurrences'].disabled=s;
+                var s=(form.elements['recurrence'][0].checked);
+                if (form.elements['recurrence_pattern']) form.elements['recurrence_pattern'].disabled=s;
+                if (form.elements['recurrences']) form.elements['recurrences'].disabled=s;
+                if (form.elements['seg_recurrences']) form.elements['seg_recurrences'].disabled=s;
 
-                    if ((typeof event!='undefined') && (start_day.selectedIndex!=0) && (start_month.selectedIndex!=0) && (start_year.selectedIndex!=0)) // Something changed
+                var has_date_set=false;
+                if (start_day)
+                {
+                    has_date_set=(start_day.selectedIndex!=0) && (start_month.selectedIndex!=0) && (start_year.selectedIndex!=0);
+                } else
+                {
+                    has_date_set=(start.value!='');
+                }
+
+                if ((typeof event!='undefined') && (has_date_set)) // Something changed
+                {
+                    var url='calendar_recurrence_suggest';
+                    url+='&monthly_spec_type='+window.encodeURIComponent(radio_value(form.elements['monthly_spec_type']));
+                    if (start_day)
                     {
-                            var new_data=load_snippet('calendar_recurrence_suggest&monthly_spec_type='+window.encodeURIComponent(radio_value(form.elements['monthly_spec_type']))+'&day='+window.encodeURIComponent(start_day.options[start_day.selectedIndex].value)+'&month='+window.encodeURIComponent(start_month.options[start_month.selectedIndex].value)+'&year='+window.encodeURIComponent(start_year.options[start_year.selectedIndex].value)+'&hour='+window.encodeURIComponent(start_hour.options[start_hour.selectedIndex].value)+'&minute='+window.encodeURIComponent(start_minute.options[start_minute.selectedIndex].value)+'&do_timezone_conv='+(do_timezone_conv.checked?'1':'0')+'&all_day_event='+(all_day_event.checked?'1':'0'));
-                            var tr=form.elements['monthly_spec_type'][0];
-                            while (tr.nodeName.toLowerCase()!='tr')
-                            {
-                                        tr=tr.parentNode;
-                            }
-                            set_inner_html(tr,new_data.replace(/<tr [^>]*>/,'').replace(/<\/tr>/,''));
-                    }
-                    var monthly_recurrence=form.elements['recurrence'][3].checked;
-                    for (var i=0;i<form.elements['monthly_spec_type'].length;i++)
+                        url+='&date_day='+window.encodeURIComponent(start_day.options[start_day.selectedIndex].value);
+                        url+='&date_month='+window.encodeURIComponent(start_month.options[start_month.selectedIndex].value);
+                        url+='&date_year='+window.encodeURIComponent(start_year.options[start_year.selectedIndex].value);
+                    } else
                     {
-                            form.elements['monthly_spec_type'][i].disabled=!monthly_recurrence;
+                        url+='&date='+window.encodeURIComponent(start.value);
                     }
+                    if (start_hour)
+                    {
+                        url+='&date_time_hour='+window.encodeURIComponent(start_hour.options[start_hour.selectedIndex].value);
+                        url+='&date_time_minute='+window.encodeURIComponent(start_minute.options[start_minute.selectedIndex].value);
+                    } else
+                    {
+                        url+='&date_time='+window.encodeURIComponent(start_time.value);
+                    }
+                    url+='&do_timezone_conv='+(do_timezone_conv.checked?'1':'0');
+                    url+='&all_day_event='+(all_day_event.checked?'1':'0');
+                    var new_data=load_snippet(url);
+                    var tr=form.elements['monthly_spec_type'][0];
+                    while (tr.nodeName.toLowerCase()!='tr')
+                    {
+                        tr=tr.parentNode;
+                    }
+                    set_inner_html(tr,new_data.replace(/<tr [^>]*>/,'').replace(/<\/tr>/,''));
+                }
+                var monthly_recurrence=form.elements['recurrence'][3].checked;
+                for (var i=0;i<form.elements['monthly_spec_type'].length;i++)
+                {
+                    form.elements['monthly_spec_type'][i].disabled=!monthly_recurrence;
+                }
             };
             crf();
             for (var i=0;i<form.elements['recurrence'].length;i++) form.elements['recurrence'][i].onclick=crf;
-            start_day.onchange=crf;
-            start_month.onchange=crf;
-            start_year.onchange=crf;
-            start_hour.onchange=crf;
-            start_minute.onchange=crf;
+            if (start_day)
+            {
+                start_day.onchange=crf;
+                start_month.onchange=crf;
+                start_year.onchange=crf;
+            } else
+            {
+                start.onchange=crf;
+            }
+            if (start_hour)
+            {
+                start_hour.onchange=crf;
+                start_minute.onchange=crf;
+            } else
+            {
+                start_time.onchange=crf;
+            }
 
             var crf2=function() {
-                    var s=document.getElementById('all_day_event').checked;
-                    document.getElementById('start_hour').disabled=s;
-                    document.getElementById('start_minute').disabled=s;
-                    document.getElementById('end_hour').disabled=s;
-                    document.getElementById('end_minute').disabled=s;
+                var s=document.getElementById('all_day_event').checked;
+                if (start_hour)
+                {
+                    start_hour.disabled=s;
+                    start_minute.disabled=s;
+                } else
+                {
+                    start_time.disabled=s;
+                }
+                if (end_hour)
+                {
+                    end_hour.disabled=s;
+                    end_minute.disabled=s;
+                } else
+                {
+                    end_time.disabled=s;
+                }
             }
             crf2();
             document.getElementById('all_day_event').onclick=crf2;
 
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            if (form.elements['end_day'].selectedIndex!=0)
-                            {
-                                        var start=new Date(window.parseInt(form.elements['start_year'].value),window.parseInt(form.elements['start_month'].value)-1,window.parseInt(form.elements['start_day'].value),window.parseInt(form.elements['start_hour'].value),window.parseInt(form.elements['start_minute'].value));
-                                        var end=new Date(window.parseInt(form.elements['end_year'].value),window.parseInt(form.elements['end_month'].value)-1,window.parseInt(form.elements['end_day'].value),window.parseInt(form.elements['end_hour'].value),window.parseInt(form.elements['end_minute'].value));
+            form.onsubmit=function() {
+                if (form.elements['end_day'].selectedIndex!=0)
+                {
+                    var start=new Date(window.parseInt(form.elements['start_year'].value),window.parseInt(form.elements['start_month'].value)-1,window.parseInt(form.elements['start_day'].value),window.parseInt(form.elements['start_hour'].value),window.parseInt(form.elements['start_minute'].value));
+                    var end=new Date(window.parseInt(form.elements['end_year'].value),window.parseInt(form.elements['end_month'].value)-1,window.parseInt(form.elements['end_day'].value),window.parseInt(form.elements['end_hour'].value),window.parseInt(form.elements['end_minute'].value));
 
-                                        if (start>end)
-                                        {
-                                                        window.fauxmodal_alert('" . php_addslashes(do_lang('EVENT_CANNOT_AROUND')) . "');
-                                                        return false;
-                                        }
-                            }
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+                    if (start>end)
+                    {
+                        window.fauxmodal_alert('" . php_addslashes(do_lang('EVENT_CANNOT_AROUND')) . "');
+                        return false;
+                    }
+                }
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         $this->posting_form_title = do_lang_tempcode('EVENT_TEXT');
@@ -1103,7 +1161,7 @@ class Module_cms_calendar extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('event', strval($id));
 
         if (!fractional_edit()) {
-            $conflicts = detect_conflicts(get_member(), $id, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_CALENDAR_WIDE);
+            $conflicts = detect_conflicts(get_member(), $id, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
             $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUCCESS')) : $conflicts;
             /*
             if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))

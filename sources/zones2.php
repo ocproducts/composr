@@ -137,7 +137,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
             afm_make_directory($zone . '/pages/html_custom/' . $lang, true, true);
             afm_make_directory($zone . '/pages/html/' . $lang, false, true);
         }
-        afm_make_file($zone . '/index.php', file_get_contents(get_file_base() . '/site/index.php'), false);
+        afm_make_file($zone . '/index.php', file_get_contents(get_file_base() . '/adminzone/index.php'), false);
         if (file_exists(get_file_base() . '/pages' . DIRECTORY_SEPARATOR . '.htaccess')) {
             afm_make_file($zone . '/pages/.htaccess', file_get_contents(get_file_base() . '/pages' . DIRECTORY_SEPARATOR . '.htaccess'), false);
         }
@@ -217,12 +217,17 @@ function save_zone_base_url($zone, $base_url)
     $config_file_before = $config_file;
     $config_file = preg_replace('#\n?\$SITE_INFO[\'ZONE_MAPPING_' . preg_quote($zone, '#') . '\']=array\(\'[^\']+\',\'[^\']+\'\);\n?#', '', $config_file); // Strip any old entry
     if ($base_url != '') { // Add new entry, if appropriate
-        $parsed = @parse_url($base_url);
-        if ($parsed === false) {
-            warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
+        if (url_is_local($base_url)) {
+            $domain = cms_srv('HTTP_HOST');
+            $path = $base_url;
+        } else {
+            $parsed = @parse_url($base_url);
+            if ($parsed === false) {
+                warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
+            }
+            $domain = $parsed['host'];
+            $path = $parsed['path'];
         }
-        $domain = $parsed['host'];
-        $path = $parsed['path'];
         $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "']=array('" . addslashes($domain) . "','" . addslashes(trim($path, '/')) . "');\n";
     }
 

@@ -3079,36 +3079,35 @@ END;
         $javascript = "
             var form=document.getElementById('post').form;
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            var post=form.elements['post'];
-                            if ((!post.value) && (post[1])) post=post[1];
-                            if (post.value.length>" . strval($size) . ")
-                            {
-                                        window.fauxmodal_alert('" . php_addslashes(do_lang('_POST_TOO_LONG')) . "');
-                                        return false;
-                            }
+            form.onsubmit=function() {
+                var post=form.elements['post'];
+                if ((!post.value) && (post[1])) post=post[1];
+                if (post.value.length>" . strval($size) . ")
+                {
+                    window.fauxmodal_alert('" . php_addslashes(do_lang('_POST_TOO_LONG')) . "');
+                    return false;
+                }
         ";
 
         $stub = unixify_line_format(either_param_string('stub', ''));
         if ($stub != '') {
             $javascript .= "
-                            var df='" . str_replace("\n", '\n', addslashes($stub)) . "';
+                var df='" . str_replace("\n", '\n', addslashes($stub)) . "';
 
-                            var pv=post.value;
-                            if ((post) && (pv.substring(0,df.length)==df))
-                            {
-                                        pv=pv.substring(df.length,pv.length);
-                            }
-                            post.value=pv;
+                var pv=post.value;
+                if ((post) && (pv.substring(0,df.length)==df))
+                {
+                    pv=pv.substring(df.length,pv.length);
+                }
+                post.value=pv;
         ";
         }
 
         $javascript .= "
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
 
-                            return true;
-                    };
+                return true;
+            };
         ";
 
         return $javascript;

@@ -194,19 +194,18 @@ class Module_cms_catalogues extends Standard_crud_module
             $this->alt_crud_module->javascript .= "
                     var form=document.getElementById('new_field_0_name').form;
                     form.old_submit=form.onsubmit;
-                    form.onsubmit=function()
-                            {
-                                        document.getElementById('submit_button').disabled=true;
-                                        var url='" . addslashes($script) . "?snippet=exists_catalogue&name='+window.encodeURIComponent(form.elements['name'].value);
-                                        if (!do_ajax_field_test(url))
-                                        {
-                                                        document.getElementById('submit_button').disabled=false;
-                                                        return false;
-                                        }
-                                        document.getElementById('submit_button').disabled=false;
-                                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                                        return true;
-                            };
+                    form.onsubmit=function() {
+                        document.getElementById('submit_button').disabled=true;
+                        var url='" . addslashes($script) . "?snippet=exists_catalogue&name='+window.encodeURIComponent(form.elements['name'].value);
+                        if (!do_ajax_field_test(url))
+                        {
+                            document.getElementById('submit_button').disabled=false;
+                            return false;
+                        }
+                        document.getElementById('submit_button').disabled=false;
+                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                        return true;
+                    };
             ";
         }
 
@@ -992,15 +991,15 @@ class Module_cms_catalogues extends Standard_crud_module
         $javascript = '
             var key_field=document.getElementById(\'key_field\');
             var update_key_settings=function() {
-                    var has_key=(key_field.value!=\'\');
-                    key_field.form.elements[\'new_handling\'][0].disabled=!has_key;
-                    key_field.form.elements[\'new_handling\'][1].disabled=!has_key;
-                    key_field.form.elements[\'delete_handling\'][0].disabled=!has_key;
-                    key_field.form.elements[\'delete_handling\'][1].disabled=!has_key;
-                    key_field.form.elements[\'update_handling\'][0].disabled=!has_key;
-                    key_field.form.elements[\'update_handling\'][1].disabled=!has_key;
-                    key_field.form.elements[\'update_handling\'][2].disabled=!has_key;
-                    key_field.form.elements[\'update_handling\'][3].disabled=!has_key;
+                var has_key=(key_field.value!=\'\');
+                key_field.form.elements[\'new_handling\'][0].disabled=!has_key;
+                key_field.form.elements[\'new_handling\'][1].disabled=!has_key;
+                key_field.form.elements[\'delete_handling\'][0].disabled=!has_key;
+                key_field.form.elements[\'delete_handling\'][1].disabled=!has_key;
+                key_field.form.elements[\'update_handling\'][0].disabled=!has_key;
+                key_field.form.elements[\'update_handling\'][1].disabled=!has_key;
+                key_field.form.elements[\'update_handling\'][2].disabled=!has_key;
+                key_field.form.elements[\'update_handling\'][3].disabled=!has_key;
             }
             key_field.onchange=update_key_settings;
             update_key_settings();

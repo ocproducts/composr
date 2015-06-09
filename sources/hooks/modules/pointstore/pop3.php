@@ -172,16 +172,15 @@ class Hook_pointstore_pop3
         $javascript = "
             var form=document.getElementById('pass1').form;
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            if ((form.elements['pass1'].value!=form.elements['pass2'].value))
-                            {
-                                        window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
-                                        return false;
-                            }
-                            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                            return true;
-                    };
+            form.onsubmit=function() {
+                if ((form.elements['pass1'].value!=form.elements['pass2'].value))
+                {
+                    window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
+                    return false;
+                }
+                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                return true;
+            };
         ";
 
         // Return template

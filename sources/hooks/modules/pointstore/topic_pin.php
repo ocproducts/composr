@@ -88,27 +88,27 @@ class Hook_pointstore_topic_pin
         $javascript = "
             var form=document.getElementById('days').form;
             form.old_submit=form.onsubmit;
-            form.onsubmit=function()
-                    {
-                            var days=form.elements['days'].value;
-                            if (days>" . strval(intval(get_option('topic_pin_max_days'))) . ")
-                            {
-                                        window.fauxmodal_alert('" . php_addslashes(do_lang('TOPIC_PINNED_MAX_DAYS', integer_format(intval(get_option('topic_pin_max_days'))), 'xxx')) . "'.replace(/xxx/g,days));
-                                        return false;
-                            }
-                            return true;
-                    }
-            ;
+            form.onsubmit=function() {
+                var days=form.elements['days'].value;
+                if (days>" . strval(intval(get_option('topic_pin_max_days'))) . ")
+                {
+                    window.fauxmodal_alert('" . php_addslashes(do_lang('TOPIC_PINNED_MAX_DAYS', integer_format(intval(get_option('topic_pin_max_days'))), 'xxx')) . "'.replace(/xxx/g,days));
+                    return false;
+                }
+                return true;
+            };
         ";
-        return do_template('FORM_SCREEN', array('_GUID' => '318a1f335fd0d2d9380024eb5438d2d8', 'HIDDEN' => '',
-                                                'TITLE' => $title,
-                                                'ACTION' => do_lang_tempcode('TOPIC_PINNING'),
-                                                'TEXT' => $text,
-                                                'URL' => $post_url,
-                                                'SUBMIT_ICON' => 'buttons__proceed',
-                                                'SUBMIT_NAME' => do_lang_tempcode('PURCHASE'),
-                                                'FIELDS' => $fields,
-                                                'JAVASCRIPT' => $javascript,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '318a1f335fd0d2d9380024eb5438d2d8',
+            'HIDDEN' => '',
+            'TITLE' => $title,
+            'ACTION' => do_lang_tempcode('TOPIC_PINNING'),
+            'TEXT' => $text,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => do_lang_tempcode('PURCHASE'),
+            'FIELDS' => $fields,
+            'JAVASCRIPT' => $javascript,
         ));
     }
 

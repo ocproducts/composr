@@ -116,7 +116,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
         {
             var form=document.getElementById(\'campaignremaining\').form;
             var crf=function() {
-                    form.elements[\'campaignremaining\'].disabled=(!form.elements[\'the_type\'][1].checked);
+                form.elements[\'campaignremaining\'].disabled=(!form.elements[\'the_type\'][1].checked);
             };
             crf();
             form.elements[\'the_type\'][0].onclick=crf;
