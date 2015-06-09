@@ -810,9 +810,10 @@ function _is_valid_data_mash_char(&$ch)
  * @param  SHORT_TEXT $meta_keywords Meta keywords for this resource (blank: implicit)
  * @param  LONG_TEXT $meta_description Meta description for this resource (blank: implicit)
  * @param  integer $default_pic The ordered number of the gallery image to use as the download representative image
+ * @param  URLPATH $url_redirect The URL to redirect
  * @return AUTO_LINK The ID of the newly added download
  */
-function add_download($category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence = null, $add_date = null, $num_downloads = 0, $views = 0, $submitter = null, $edit_date = null, $id = null, $meta_keywords = '', $meta_description = '', $default_pic = 1)
+function add_download($category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence = null, $add_date = null, $num_downloads = 0, $views = 0, $submitter = null, $edit_date = null, $id = null, $meta_keywords = '', $meta_description = '', $default_pic = 1, $url_redirect = '')
 {
     require_code('global4');
     prevent_double_submit('ADD_DOWNLOAD', null, $name);
@@ -854,6 +855,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         'category_id' => $category_id,
         'url' => $url,
         'author' => $author,
+        'url_redirect' => $url_redirect,
         'validated' => $validated,
         'add_date' => $add_date,
         'file_size' => $file_size,
@@ -990,8 +992,9 @@ function set_download_gallery_permissions($id, $submitter = null)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  ?integer $num_downloads The number of downloads that this download has had (null: do not change)
  * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
+ * @param  URLPATH $url_redirect The URL to redirect
  */
-function edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $num_downloads = null, $null_is_literal = false)
+function edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $num_downloads = null, $null_is_literal = false, $url_redirect = '')
 {
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
@@ -1048,6 +1051,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         'category_id' => $category_id,
         'url' => $url,
         'author' => $author,
+        'url_redirect' => $url_redirect,
         'default_pic' => $default_pic,
         'out_mode_id' => $out_mode_id,
     );

@@ -329,9 +329,10 @@ class Module_cms_downloads extends Standard_crud_module
      * @param  ?SHORT_TEXT $original_filename The original file name for the file (we can't rely on the one on disk) (null: not added yet therefore unknown)
      * @param  ?AUTO_LINK $licence The licence to use (null: none)
      * @param  integer $default_pic Which image to use for the downloads representative image (counts from 1)
+     * @param  URLPATH $url_redirect The URL to redirect
      * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $name = '', $category_id = null, $url = '', $author = '', $description = '', $additional_details = '', $out_mode_id = null, $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $file_size = null, $cost = 0, $submitter_gets_points = 1, $original_filename = null, $licence = null, $default_pic = 1)
+    public function get_form_fields($id = null, $name = '', $category_id = null, $url = '', $author = '', $description = '', $additional_details = '', $out_mode_id = null, $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $file_size = null, $cost = 0, $submitter_gets_points = 1, $original_filename = null, $licence = null, $default_pic = 1, $url_redirect = '')
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -431,6 +432,7 @@ class Module_cms_downloads extends Standard_crud_module
         } else {
             $hidden->attach(form_input_hidden('cost', ''));
         }
+        $fields->attach(form_input_line(do_lang_tempcode('URL_REDIRECT'), do_lang_tempcode('DESCRIPTION_URL_REDIRECT'), 'url_redirect', $url_redirect, false));
         $licences = create_selection_list_download_licences($licence);
         if (!$licences->is_empty()) {
             $licences = create_selection_list_download_licences($licence, true);
@@ -513,7 +515,7 @@ class Module_cms_downloads extends Standard_crud_module
 
         $cat = $myrow['category_id'];
 
-        $ret = $this->get_form_fields($id, get_translated_text($myrow['name']), $cat, $myrow['url'], $myrow['author'], get_translated_text($myrow['description']), get_translated_text($myrow['additional_details']), $myrow['out_mode_id'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $myrow['file_size'], $myrow['download_cost'], $myrow['download_submitter_gets_points'], $myrow['original_filename'], $myrow['download_licence'], $myrow['default_pic']);
+        $ret = $this->get_form_fields($id, get_translated_text($myrow['name']), $cat, $myrow['url'], $myrow['author'], get_translated_text($myrow['description']), get_translated_text($myrow['additional_details']), $myrow['out_mode_id'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $myrow['file_size'], $myrow['download_cost'], $myrow['download_submitter_gets_points'], $myrow['original_filename'], $myrow['download_licence'], $myrow['default_pic'], $myrow['url_redirect']);
 
         if (has_delete_permission('mid', get_member(), $myrow['submitter'], 'cms_downloads', array('downloads', $cat))) {
             $radios = form_input_radio_entry('delete', '0', true, do_lang_tempcode('LEAVE'));
@@ -541,6 +543,7 @@ class Module_cms_downloads extends Standard_crud_module
         $name = post_param_string('name');
         $description = post_param_string('description');
         $author = post_param_string('author', get_site_name());
+        $url_redirect = post_param_string('url_redirect');
         $_out_mode_id = post_param_string('out_mode_id', '');
         $out_mode_id = ($_out_mode_id == '') ? -1 : intval($_out_mode_id);
         if ($out_mode_id == -1) {
@@ -572,7 +575,7 @@ class Module_cms_downloads extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('download', null);
         actual_meta_data_get_fields__special($meta_data, 'num_downloads', 0);
 
-        $id = add_download($category_id, $name, fixup_protocolless_urls($url), $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_data['add_time'],/*$meta_data['num_downloads']*/0, $meta_data['views'], $meta_data['submitter']);
+        $id = add_download($category_id, $name, fixup_protocolless_urls($url), $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_data['add_time'],/*$meta_data['num_downloads']*/0, $meta_data['views'], $meta_data['submitter'], null, null, '', '', 1, $url_redirect);
 
         set_url_moniker('download', strval($id));
 
@@ -658,6 +661,7 @@ class Module_cms_downloads extends Standard_crud_module
 
         $description = post_param_string('description', STRING_MAGIC_NULL);
         $author = post_param_string('author', STRING_MAGIC_NULL);
+        $url_redirect = post_param_string('url_redirect', STRING_MAGIC_NULL);
         $additional_details = post_param_string('additional_details', STRING_MAGIC_NULL);
         $default_pic = post_param_integer('default_pic', fractional_edit() ? INTEGER_MAGIC_NULL : 1);
         if (addon_installed('galleries')) {
@@ -707,7 +711,7 @@ class Module_cms_downloads extends Standard_crud_module
         $meta_data = actual_meta_data_get_fields('download', strval($id));
         actual_meta_data_get_fields__special($meta_data, 'num_downloads', INTEGER_MAGIC_NULL);
 
-        edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $meta_data['num_downloads'], true);
+        edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $meta_data['num_downloads'], true, $url_redirect);
 
         if ((addon_installed('galleries')) && (!fractional_edit())) {
             require_code('permissions2');
