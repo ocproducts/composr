@@ -135,7 +135,8 @@ class Module_downloads
                 'original_filename' => 'SHORT_TEXT',
                 'rep_image' => 'URLPATH',
                 'download_licence' => '?AUTO_LINK',
-                'download_data_mash' => 'LONG_TEXT'
+                'download_data_mash' => 'LONG_TEXT',
+                'url_redirect' => 'URLPATH'
             ));
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'download_views', array('download_views'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'category_list', array('category_id'));
@@ -185,6 +186,8 @@ class Module_downloads
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->add_table_field('download_downloads', 'url_redirect', 'URLPATH');
+
             $GLOBALS['SITE_DB']->alter_table_field('download_downloads', 'comments', 'LONG_TRANS', 'additional_details');
 
             $GLOBALS['SITE_DB']->alter_table_field('download_logging', 'the_user', '*MEMBER', 'member_id');

@@ -513,7 +513,7 @@ class Module_admin
                         $breadcrumbs = new Tempcode();
                         $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin', 'type' => $i[0]), 'adminzone'), do_lang_tempcode(strtoupper($i[0])), false, false));
                         $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                        $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'ec53a1d45fe6a80308bf509b896d2763', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
+               //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'ec53a1d45fe6a80308bf509b896d2763', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                     }
                 }
             }
@@ -597,14 +597,14 @@ class Module_admin
                                 $sup = $breadcrumbs->is_empty() ? null : do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                                 $sitemap_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'sitemap', 'id' => $zone . ':' . $page), 'adminzone');
                                 $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), 'adminzone');
-                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+                               /* $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
                                     '_GUID' => 'f656efd513099deac516d3273f9adfc4',
                                     'NAME' => $n,
                                     'URL' => $_url,
                                     'TITLE' => '',
                                     'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($sitemap_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())),
                                     'SUP' => $sup,
-                                )));
+                                )));*/
                             }
                         }
                     }
@@ -615,7 +615,7 @@ class Module_admin
                             $_url = build_url(array('page' => $page), $zone);
                             $site_tree_editor_url = build_url(array('page' => 'admin_sitetree', 'type' => 'site_tree', 'id' => $zone . ':' . $page), 'adminzone');
                             $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), 'adminzone');
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITE_TREE_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
+                   //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITE_TREE_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
                         }
                     }
                 }
@@ -634,7 +634,7 @@ class Module_admin
                     $info = $_hook->info();
                     $name = $info['product'];
                     $_url = build_url(array('page' => 'admin_import', 'type' => 'session', 'importer' => $hook), get_module_zone('admin_import'));
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'e0f1221d5cb9d7f34bd884d6d3e480dc', 'NAME' => $name, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'e0f1221d5cb9d7f34bd884d6d3e480dc', 'NAME' => $name, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
                 }
             }
         }
@@ -681,10 +681,10 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink($url, do_lang_tempcode($p['group']), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'f7271912ccbe0358fe263ed61f7ed427', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => protect_from_escaping($t), 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'f7271912ccbe0358fe263ed61f7ed427', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => protect_from_escaping($t), 'SUP' => $sup)));
 
                     if ($conf_found_count > 100) {
-                        $content[$current_results_type] = do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '360a5362435a57f9c1d6a7b18624f53b', 'NAME' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => ''));
+               //         $content[$current_results_type] = do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '360a5362435a57f9c1d6a7b18624f53b', 'NAME' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => ''));
                         break;
                     }
 
@@ -714,7 +714,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_config', 'type' => 'browse'), 'adminzone'), do_lang_tempcode('CONFIGURATION'), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'eec6e7cc57e660bdcbf123db8419e24e', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $description, 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'eec6e7cc57e660bdcbf123db8419e24e', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $description, 'SUP' => $sup)));
                 }
                 foreach (array_keys($groups) as $group) {
                     $n2 = do_lang($group, null, null, null, null, false);
@@ -765,7 +765,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_cns_groups', 'type' => 'edit'), 'adminzone'), do_lang_tempcode('EDIT_GROUP'), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '785e7208a7b10dfd095197754cedf505', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '785e7208a7b10dfd095197754cedf505', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                 }
             }
         }
@@ -784,7 +784,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'browse'), 'adminzone'), do_lang_tempcode('THEMES'), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '00bb6ce930058afc298ce206b703322b', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '00bb6ce930058afc298ce206b703322b', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
 
                     break;
                 }
@@ -811,7 +811,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_zones', 'type' => 'edit'), 'adminzone'), do_lang_tempcode('EDIT_ZONE'), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'd9e5c8d9ba1aedb920ac7c719d4ace69', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t), 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'd9e5c8d9ba1aedb920ac7c719d4ace69', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t), 'SUP' => $sup)));
                 }
             }
         }
@@ -827,7 +827,7 @@ class Module_admin
                 $t = do_lang('BLOCK_' . $p . '_DESCRIPTION');
                 if (($this->_keyword_match($p)) || ($this->_keyword_match($t))) {
                     $url = '';
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '1368be933d0ccbcd65939f29dd6d7003', 'NAME' => $p, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t))));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '1368be933d0ccbcd65939f29dd6d7003', 'NAME' => $p, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t))));
                 }
             }
         }
@@ -854,7 +854,7 @@ class Module_admin
                                 $description = isset($info['description']) ? $info['description'] : '';
                                 $_url = build_url(array('page' => 'admin_addons'), 'adminzone');
                                 $url = $_url->evaluate();
-                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
+                       //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
                             }
                         }
                     }
@@ -883,7 +883,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink($_url, do_lang_tempcode($p['p_section']), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '52a412bd158c7dd16f3f9d0e84ae1b0b', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '52a412bd158c7dd16f3f9d0e84ae1b0b', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                 }
                 $pt_sections[$p['p_section']] = 1;
             }
@@ -901,7 +901,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_permissions', 'type' => 'privileges'), 'adminzone'), do_lang_tempcode('PRIVILEGES'), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '43bfb229943e0bb1d2c2e4512e0e5ec9', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '43bfb229943e0bb1d2c2e4512e0e5ec9', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                 }
             }
         }
@@ -939,7 +939,7 @@ class Module_admin
                         $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                         $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_cns_groups', 'type' => 'browse'), 'adminzone'), do_lang_tempcode('USERGROUPS'), false, false));
                         $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                        $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'd0baedf2ee9cf0bdd00e604bd4c7f3b4', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $descrip, 'SUP' => $sup)));
+               //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'd0baedf2ee9cf0bdd00e604bd4c7f3b4', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $descrip, 'SUP' => $sup)));
                         continue 2;
                     }
                 }
@@ -965,7 +965,7 @@ class Module_admin
                         $descrip = array_key_exists(1, $array) ? do_lang_tempcode($array[1]) : new Tempcode();
                         $_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, false, 'tab__edit');
                         $url = $_url->evaluate();
-                        $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '4b2b7dd9c8c81f15583428fc2692bca5', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $descrip)));
+               //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '4b2b7dd9c8c81f15583428fc2692bca5', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $descrip)));
                         continue 2;
                     }
                 }
@@ -995,7 +995,7 @@ class Module_admin
                         $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                         $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_zones', 'type' => 'browse'), 'adminzone'), do_lang_tempcode('ZONES'), false, false));
                         $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                        $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '9c2cadfe9be9776c91c4d99050e0c187', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $descrip, 'SUP' => $sup)));
+               //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '9c2cadfe9be9776c91c4d99050e0c187', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $descrip, 'SUP' => $sup)));
                         continue 2;
                     }
                 }
@@ -1014,7 +1014,7 @@ class Module_admin
                     $n = stripslashes($matches[2][$i]);
                     if ($this->_keyword_match($n)) {
                         $url = get_base_url() . '/config_editor.php';
-                        $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'a7f235eb8348c285a40f30538b9d1d40', 'NAME' => stripslashes($matches[1][$i]), 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $n)));
+               //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'a7f235eb8348c285a40f30538b9d1d40', 'NAME' => stripslashes($matches[1][$i]), 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $n)));
                     }
                 }
             }
@@ -1032,7 +1032,7 @@ class Module_admin
                 if (($this->_keyword_match($n)) || ($this->_keyword_match($n_value))) {
                     $lang_found[$n] = $n_value;
                     if (count($lang_found) > 100) {
-                        $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'ec40bcba34ccbd6d3e31cbfd3a650241', 'NAME' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
+               //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'ec40bcba34ccbd6d3e31cbfd3a650241', 'NAME' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
                         $lang_found = array();
                         break;
                     }
@@ -1068,7 +1068,7 @@ class Module_admin
                 $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                 $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_lang', 'type' => 'browse', 'lang' => user_lang(), 'lang_file' => $lang_file), 'adminzone'), $lang_file, false, true));
                 $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'cafa14d50ce6ecc1db1486017b364ce5', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($n_value), 'SUP' => $sup)));
+       //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'cafa14d50ce6ecc1db1486017b364ce5', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($n_value), 'SUP' => $sup)));
             }
             $lang_file_contents = array();
         }
@@ -1094,7 +1094,7 @@ class Module_admin
                     $lang = $image['lang'];
                     $lang_map = better_parse_ini_file(file_exists(get_file_base() . '/lang_custom/langs.ini') ? (get_file_base() . '/lang_custom/langs.ini') : (get_file_base() . '/lang/langs.ini'));
                     $lang = array_key_exists($lang, $lang_map) ? $lang_map[$lang] : $lang;
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '68b418db6d3f7676cf1682a68f76f88a', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $lang, 'SUP' => $sup)));
+           //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '68b418db6d3f7676cf1682a68f76f88a', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => $lang, 'SUP' => $sup)));
                 }
             }
         }
@@ -1118,7 +1118,7 @@ class Module_admin
                             $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                             $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $default_theme), 'adminzone'), do_lang_tempcode('EDIT_TEMPLATES'), false, false));
                             $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '5cd222ad77fe4bfdf05b4856a5f7b8ac', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
+                   //         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '5cd222ad77fe4bfdf05b4856a5f7b8ac', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                             $tpl_found[$file] = 1;
                         }
                     }
