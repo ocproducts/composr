@@ -54,6 +54,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 /* Colours to mirror human understandings (i.e. non-thematic) */
 {$THEME_WIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
 {$THEME_WIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
+{$THEME_WIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
 {$THEME_WIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
 {$THEME_WIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
 {$THEME_WIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}

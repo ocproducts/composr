@@ -33,7 +33,7 @@
 	<td>
 		{VERSION*}
 	</td>
-	<td style="color: {COLOUR*}">
+	<td class="status_{COLOUR*}">
 		{STATUS*}
 	</td>
 	<td class="results_table_field addon_actions">

@@ -20,19 +20,15 @@
 {+END}
 
 <div class="float_surrounder">
-	<div class="right">
-		<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
-			{HIDDEN}
+	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+		{HIDDEN}
 
-			<div class="inline_block">
-				<p>
-					{+START,IF,{$JS_ON}}
-						<input class="buttons__back button_screen" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
-					{+END}
+		<p class="proceed_button">
+			{+START,IF,{$JS_ON}}
+				<input class="buttons__back button_screen" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+			{+END}
 
-					<input onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
-				</p>
-			</div>
-		</form>
-	</div>
+			<input onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
+		</p>
+	</form>
 </div>

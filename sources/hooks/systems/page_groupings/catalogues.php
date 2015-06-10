@@ -72,7 +72,7 @@ class Hook_page_groupings_catalogues
 
                         $page_grouping = 'rich_content';
                         if ($row['c_name'] == 'projects') {
-                            $page_grouping = (has_zone_access($member_id, 'collaboration') ? 'collaboration' : 'rich_content');
+                            $page_grouping = ((addon_installed('collaboration_zone') && has_zone_access($member_id, 'collaboration')) ? 'collaboration' : 'rich_content');
                         }
                         if ($row['c_name'] == 'classifieds') {
                             $page_grouping = 'social';
