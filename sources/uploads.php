@@ -227,7 +227,7 @@ function is_plupload($fake_prepopulation = false)
  *
  * @param  ID_TEXT $specify_name The name of the POST parameter storing the URL (if '', then no POST parameter). Parameter value may be blank.
  * @param  ID_TEXT $attach_name The name of the HTTP file parameter storing the upload (if '', then no HTTP file parameter). No file necessarily is uploaded under this.
- * @param  ID_TEXT $upload_folder The folder name in uploads/ where we will put this upload
+ * @param  ID_TEXT $upload_folder The folder name where we will put this upload
  * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well, 3=only obfuscate if we need to)
  * @set    0 1 2 3
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
@@ -258,7 +258,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     }
     $thumb_folder = preg_replace('#^(uploads/[^/]+)#', '${1}_thumbs', $upload_folder);
     if (is_null($thumb_folder_full)) {
-        $thumb_folder_full = get_custom_file_base() . '/uploads/' . $thumb_folder;
+        $thumb_folder_full = get_custom_file_base() . '/' . $thumb_folder;
     }
 
     $out = array();
@@ -580,7 +580,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
  *
  * @param  MEMBER $member_id Member ID to check permissions with.
  * @param  ID_TEXT $specify_name The name of the POST parameter storing the URL (if '', then no POST parameter). Parameter value may be blank.
- * @param  ID_TEXT $upload_folder The folder name in uploads/ where we will put this upload
+ * @param  ID_TEXT $upload_folder The folder name where we will put this upload
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return array A pair: the URL and the filename
@@ -754,7 +754,7 @@ function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_er
  *
  * @param  MEMBER $member_id Member ID to check permissions with.
  * @param  ID_TEXT $attach_name The name of the HTTP file parameter storing the upload (if '', then no HTTP file parameter). No file necessarily is uploaded under this.
- * @param  ID_TEXT $upload_folder The folder name in uploads/ where we will put this upload
+ * @param  ID_TEXT $upload_folder The folder name where we will put this upload
  * @param  PATH $upload_folder_full Full folder path
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
