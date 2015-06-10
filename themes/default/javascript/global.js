@@ -1936,7 +1936,7 @@ function convert_tooltip(element)
 		if (element.nodeName=='img' && element.alt=='') element.alt=element.title;
 		element.title='';
 
-		if ((element.childNodes.length==0) || ((!element.childNodes[0].onmouseover) && ((!element.childNodes[0].title) || (element.childNodes[0].title=='')))) // Only put on new tooltip if there's nothing with a tooltip inside the element
+		if ((!element.onmouseover) && ((element.childNodes.length==0) || ((!element.childNodes[0].onmouseover) && ((!element.childNodes[0].title) || (element.childNodes[0].title==''))))) // Only put on new tooltip if there's nothing with a tooltip inside the element
 		{
 			if (element.innerText)
 			{
