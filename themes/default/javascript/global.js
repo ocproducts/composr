@@ -162,6 +162,11 @@ function script_load_stuff()
 		});
 	}
 
+	// Tooltips close on browser resize
+	add_event_listener_abstract(window,'resize',function() {
+		clear_out_tooltips(null);
+	});
+
 	// Font size
 	var font_size=read_cookie('font_size');
 	if (font_size!='')
@@ -1648,12 +1653,13 @@ function change_class(box,theId,to,from)
 }
 
 /* Dimension functions */
-function register_mouse_listener()
+function register_mouse_listener(e)
 {
 	if (!window.mouse_listener_enabled)
 	{
 		window.mouse_listener_enabled=true;
 		add_event_listener_abstract(document.body,'mousemove',get_mouse_xy);
+		if (typeof e!='undefined') get_mouse_xy(e);
 	}
 }
 function get_mouse_xy(e,win)
@@ -1667,7 +1673,7 @@ function get_mouse_xy(e,win)
 	win.shift_pressed=e.shiftKey;
 	return true
 }
-function get_mouse_x(event,win)
+function get_mouse_x(event,win) // Usually use window.mouse_x after calling register_mouse_listener(), it's more accurate on Firefox
 {
 	if (typeof win=='undefined') win=window;
 	try
@@ -1683,7 +1689,7 @@ function get_mouse_x(event,win)
 	catch (err) {}
 	return 0;
 }
-function get_mouse_y(event,win)
+function get_mouse_y(event,win) // Usually use window.mouse_y after calling register_mouse_listener(), it's more accurate on Firefox
 {
 	if (typeof win=='undefined') win=window;
 	try
@@ -1982,7 +1988,10 @@ function clear_out_tooltips(tooltip_being_opened)
 	var existing_tooltips=get_elements_by_class_name(document.body,'tooltip');
 	for (var i=0;i<existing_tooltips.length;i++)
 	{
-		if (existing_tooltips[i].id!==tooltip_being_opened) existing_tooltips[i].parentNode.removeChild(existing_tooltips[i]);
+		if (existing_tooltips[i].id!==tooltip_being_opened)
+		{
+			deactivate_tooltip(existing_tooltips[i].ac);
+		}
 	}
 }
 
@@ -2009,6 +2018,8 @@ function activate_rich_semantic_tooltip(ob,event,have_links)
 //  no_delay is set to true if the tooltip should appear instantly
 //  lights_off is set to true if the image is to be dimmed
 //  force_width is set to true if you want width to not be a max width
+//  win is the window to open in
+//  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip
 function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,lights_off,force_width,win,have_links)
 {
 	if (window.is_doing_a_drag) return; // Don't want tooltips appearing when doing a drag and drop operation
@@ -2026,7 +2037,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	if (!page_loaded) return;
 	if ((typeof tooltip!='function') && (tooltip=='')) return;
 
-	register_mouse_listener();
+	register_mouse_listener(event);
 
 	clear_out_tooltips(ac.tooltip_id);
 
@@ -2047,6 +2058,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	ac.is_over=true;
 	ac.tooltip_on=false;
 	ac.initial_width=width;
+	ac.have_links=have_links;
 
 	var children=ac.getElementsByTagName('img');
 	for (var i=0;i<children.length;i++) children[i].setAttribute('title','');
@@ -2089,6 +2101,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		reposition_tooltip(ac,event,bottom,true,tooltip_element,force_width);
 		document.body.appendChild(tooltip_element);
 	}
+	tooltip_element.ac=ac;
 
 	if (pic)
 	{
@@ -2165,12 +2178,12 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 	if (tooltip_element)
 	{
 		var style__offset_x=9;
-		var style__offset_y=9;
+		var style__offset_y=(ac.have_links)?18:9;
 
 		// Find mouse position
 		var x,y;
-		x=get_mouse_x(event,win);
-		y=get_mouse_y(event,win);
+		x=window.mouse_x;
+		y=window.mouse_y;
 		x+=style__offset_x;
 		y+=style__offset_y;
 		try
@@ -2179,8 +2192,8 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 			{
 				if (event.type!='focus') ac.done_none_focus=true;
 				if ((event.type=='focus') && (ac.done_none_focus)) return;
-				x=(event.type=='focus')?(get_window_scroll_x(win)+get_window_width(win)/2):(get_mouse_x(event,win)+style__offset_x);
-				y=(event.type=='focus')?(get_window_scroll_y(win)+get_window_height(win)/2-40):(get_mouse_y(event,win)+style__offset_y);
+				x=(event.type=='focus')?(get_window_scroll_x(win)+get_window_width(win)/2):(window.mouse_x+style__offset_x);
+				y=(event.type=='focus')?(get_window_scroll_y(win)+get_window_height(win)/2-40):(window.mouse_y+style__offset_y);
 			}
 		}
 		catch(ignore) {}
@@ -2227,7 +2240,7 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 		tooltip_element.style.left=x+'px';
 	}
 }
-function deactivate_tooltip(ac,event)
+function deactivate_tooltip(ac)
 {
 	ac.is_over=false;
 
