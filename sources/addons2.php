@@ -698,6 +698,7 @@ function uninstall_addon($addon)
     // Remove addon info from database, modules, blocks, and files
     uninstall_addon_soft($addon);
     $last = array();
+    $zones_gone = array();
     foreach ($addon_info['files'] as $filename) {
         if (file_exists(get_file_base() . '/' . $filename)) {
             $test = $GLOBALS['SITE_DB']->query_select_value('addons_files', 'COUNT(*)', array('filename' => $filename));
@@ -719,7 +720,9 @@ function uninstall_addon($addon)
                     }
                 }
                 if (preg_match('#^([^/]*)/index\.php#', $filename, $matches) != 0) {
-                    actual_delete_zone_lite($matches[1]);
+                    $zone = $matches[1];
+                    actual_delete_zone_lite($zone);
+                    $zones_gone[] = $zone;
                 }
                 if (preg_match('#^sources(_custom)?/hooks/systems/config/([^/]*)\.php#', $filename, $matches) != 0) {
                     delete_config_option($matches[2]);
@@ -730,12 +733,22 @@ function uninstall_addon($addon)
             }
         }
     }
+    $dirs = array();
     foreach ($last as $filename) {
         afm_delete_file($filename);
-        if (dirname($filename) != '') {
-            if (array_diff(scandir(dirname($filename)), array('..', '.')) == array()) {
-                afm_delete_directory(dirname($filename));
-            }
+        $dirs[dirname($filename)] = true;
+    }
+
+    // Try and cleanup some empty/unneeded dirs
+    krsort($dirs);
+    foreach (array_keys($dirs) as $dir) {
+        if (array_diff(scandir($dir), array('..', '.')) == array()) {
+            afm_delete_directory($dir);
+        }
+    }
+    foreach ($zones_gone as $zone) {
+        if (file_exists(get_custom_file_base() . '/' . filter_naughty($zone))) {
+            afm_delete_directory(filter_naughty($zone), true);
         }
     }
 
