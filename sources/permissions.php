@@ -475,7 +475,7 @@ function has_category_access($member, $module, $category)
     $sql = 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $groups . ') ' . $where;
     $sql .= ' UNION ALL ';
     $sql .= 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
-    $rows = $db->query($sql, 1, null, false, true);
+    $rows = $db->query($sql, null, null, false, true);
 
     foreach ($rows as $row) {
         $CATEGORY_ACCESS_CACHE[$member][$row['module_the_name'] . '/' . $row['category_name']] = true;
