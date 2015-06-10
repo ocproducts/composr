@@ -759,6 +759,7 @@ function uninstall_addon($addon)
     erase_persistent_cache();
     erase_cached_templates();
     erase_cached_language();
+    erase_theme_images_cache();
     global $HOOKS_CACHE;
     $HOOKS_CACHE = array();
 
