@@ -732,6 +732,11 @@ function uninstall_addon($addon)
     }
     foreach ($last as $filename) {
         afm_delete_file($filename);
+        if (dirname($filename) != '') {
+            if (array_diff(scandir(dirname($filename)), array('..', '.')) == array()) {
+                afm_delete_directory(dirname($filename));
+            }
+        }
     }
 
     // Clear some cacheing

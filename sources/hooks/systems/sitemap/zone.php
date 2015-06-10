@@ -280,7 +280,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 list($page_grouping) = $link;
 
                 if (($page_grouping == '') || (in_array($page_grouping, $applicable_page_groupings))) {
-                    if (is_array($link)) {
+                    if ((is_array($link)) && (is_string($link[2][2]))) {
                         $pages_found[$link[2][2] . ':' . $link[2][0]] = true;
                     }
                 }

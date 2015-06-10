@@ -79,7 +79,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
             list($_page_grouping) = $link;
 
             if (($_page_grouping == '') || ($_page_grouping == $page_grouping)) {
-                if (is_array($link)) {
+                if ((is_array($link)) && (is_string($link[2][2]))) {
                     $pages_found[$link[2][2] . ':' . $link[2][0]] = true;
                 }
             }
@@ -240,6 +240,9 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
 
                     $page = $link[2][0];
                     $_zone = $link[2][2];
+                    if (!is_string($_zone)) {
+                        continue; // Gone missing somehow
+                    }
                     if ($zone != $_zone) { // Not doesn't match. If the page exists in our node's zone as a transparent redirect, override it as in here
                         require_code('site');
                         $details = _request_page($page, $zone, 'redirect');

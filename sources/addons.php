@@ -204,9 +204,9 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
  * Find the icon for an addon.
  *
  * @param  ID_TEXT $addon_name Addon name
- * @param  boolean $pick_default Whether to use a default icon
+ * @param  boolean $pick_default Whether to use a default icon if not found
  * @param  ?PATH $tar_path Path to tar file (null: don't look inside a TAR / it's installed already)
- * @return string Theme image URL (may be a "data:" URL rather than a normal URLPATH)
+ * @return ?string Theme image URL (may be a "data:" URL rather than a normal URLPATH) (null: not found)
  */
 function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
 {
@@ -235,7 +235,7 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
                         $file = $ob->get_default_icon();
                         $image_data = tar_get_file($tar_file, $file);
                         if ($image_data === null) {
-                            continue;
+                            return $pick_default ? find_theme_image('icons/48x48/menu/_generic_admin/component') : null;
                         }
                         return 'data:' . get_mime_type(get_file_extension($file), true) . ';base64,' . base64_encode($image_data['data']);
                     }
