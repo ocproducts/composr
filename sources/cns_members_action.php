@@ -127,8 +127,16 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     if (is_null($timezone)) {
         $timezone = get_site_timezone();
     }
+    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
+    if (!$doing_email_option) {
+        $allow_emails = 1;
+    }
     if (is_null($allow_emails)) {
         $allow_emails = 1;
+    }
+    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    if (!$doing_email_from_staff_option) {
+        $allow_emails_from_staff = 1;
     }
     if (is_null($allow_emails_from_staff)) {
         $allow_emails_from_staff = 1;

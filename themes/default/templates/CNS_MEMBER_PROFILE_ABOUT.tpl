@@ -22,14 +22,14 @@
 				{+START,LOOP,CUSTOM_FIELDS}
 					{$SET,is_messenger_field,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME},{!DEFAULT_CPF_im_jabber_NAME},{!DEFAULT_CPF_sn_twitter_NAME},{!DEFAULT_CPF_sn_facebook_NAME},{!DEFAULT_CPF_sn_google_NAME}}}
 					{+START,IF,{$GET,is_messenger_field}}
-						{+START,SET,messenger_fields}
+						{+START,SET,messenger_fields}{+START,IF_NON_EMPTY,{RAW_VALUE}}
 							{$GET,messenger_fields}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME}}}<li><a title="{!PHONE_THEM_UP} {!LINK_NEW_WINDOW}" href="skype:{RAW_VALUE*}?call">{!PHONE_THEM_UP}</a> (Skype)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_jabber_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="xmpp:{RAW_VALUE*}">{!MESSAGE_THEM}</a> (Jabber/XMPP)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_twitter_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW_VALUE*}" rel="me">@{RAW_VALUE*}</a> (Twitter)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_facebook_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Facebook</a></li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_google_NAME}}}<li><a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Google+</a></li>{+END}
-						{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/skype}" srcset="{$IMG*,icons/48x48/links/skype} 2x"/> <a title="{!PHONE_THEM_UP} {!LINK_NEW_WINDOW}" href="skype:{RAW_VALUE*}?call">{!PHONE_THEM_UP}</a> (Skype)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_jabber_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/xmpp}" srcset="{$IMG*,icons/48x48/links/xmpp} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="xmpp:{RAW_VALUE*}">{!MESSAGE_THEM}</a> (Jabber/XMPP)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_twitter_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/twitter}" srcset="{$IMG*,icons/48x48/links/twitter} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW_VALUE*}" rel="me">@{RAW_VALUE*}</a> (Twitter)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_facebook_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/facebook}" srcset="{$IMG*,icons/48x48/links/facebook} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Facebook</a></li>{+END}
+							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_google_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/google_plus}" srcset="{$IMG*,icons/48x48/links/google_plus} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Google+</a></li>{+END}
+						{+END}{+END}
 					{+END}
 				{+END}
 			{+END}

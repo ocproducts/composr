@@ -444,6 +444,16 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         }
     }
 
+    // Work out what options we need to present
+    $doing_international = (get_option('allow_international') == '1');
+    $_langs = find_all_langs();
+    $doing_langs = multi_lang();
+    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
+    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    $unspecced_theme_zone_exists = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'zones WHERE ' . db_string_equal_to('zone_theme', '') . ' OR ' . db_string_equal_to('zone_theme', '-1'));
+    $doing_theme_option = ($unspecced_theme_zone_exists != 0) && (!$mini_mode);
+    $doing_local_forum_options = (addon_installed('cns_forum')) && (!$mini_mode);
+
     // E-mail address
     if (cns_field_editable('email', $special_type)) {
         if ($email_address == '') {
@@ -466,6 +476,22 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         }
     }
 
+    // Email privacy
+    if ($doing_email_option) {
+        $field_title = do_lang_tempcode('ALLOW_EMAILS');
+        if (cns_field_editable('email', $special_type)) {
+            $field_title = do_lang_tempcode('RELATED_FIELD', $field_title);
+        }
+        $fields->attach(form_input_tick($field_title, do_lang_tempcode('DESCRIPTION_ALLOW_EMAILS'), 'allow_emails', $allow_emails == 1));
+    }
+    if ($doing_email_from_staff_option) {
+        $field_title = do_lang_tempcode('ALLOW_EMAILS_FROM_STAFF');
+        if (cns_field_editable('email', $special_type)) {
+            $field_title = do_lang_tempcode('RELATED_FIELD', $field_title);
+        }
+        $fields->attach(form_input_tick($field_title, do_lang_tempcode('DESCRIPTION_ALLOW_EMAILS_FROM_STAFF'), 'allow_emails_from_staff', $allow_emails_from_staff == 1));
+    }
+
     // DOB
     if (cns_field_editable('dob', $special_type)) {
         $default_time = is_null($dob_month) ? null : usertime_to_utctime(mktime(0, 0, 0, $dob_month, $dob_day, $dob_year));
@@ -477,16 +503,6 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
             }
         }
     }
-
-    // Work out what options we need to present
-    $doing_international = (get_option('allow_international') == '1');
-    $_langs = find_all_langs();
-    $doing_langs = multi_lang();
-    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('contact_member'));
-    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
-    $unspecced_theme_zone_exists = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'zones WHERE ' . db_string_equal_to('zone_theme', '') . ' OR ' . db_string_equal_to('zone_theme', '-1'));
-    $doing_theme_option = ($unspecced_theme_zone_exists != 0) && (!$mini_mode);
-    $doing_local_forum_options = (addon_installed('cns_forum')) && (!$mini_mode);
 
     /*
     if (!$mini_mode)
@@ -518,14 +534,6 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         }
         $lang_list->attach(create_selection_list_langs($language));
         $fields->attach(form_input_list(do_lang_tempcode('LANGUAGE'), '', 'language', $lang_list, null, false, !$allow_no_lang_set));
-    }
-
-    // Email privacy
-    if ($doing_email_option) {
-        $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_EMAILS'), do_lang_tempcode('DESCRIPTION_ALLOW_EMAILS'), 'allow_emails', $allow_emails == 1));
-    }
-    if ($doing_email_from_staff_option) {
-        $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_EMAILS_FROM_STAFF'), do_lang_tempcode('DESCRIPTION_ALLOW_EMAILS_FROM_STAFF'), 'allow_emails_from_staff', $allow_emails_from_staff == 1));
     }
 
     if (!$mini_mode) {
@@ -934,10 +942,12 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     if (!is_null($language)) {
         $update['m_language'] = $language;
     }
-    if (!is_null($allow_emails)) {
+    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
+    if ((!is_null($allow_emails)) && ($doing_email_option)) {
         $update['m_allow_emails'] = $allow_emails;
     }
-    if (!is_null($allow_emails_from_staff)) {
+    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    if ((!is_null($allow_emails_from_staff)) && ($doing_email_from_staff_option)) {
         $update['m_allow_emails_from_staff'] = $allow_emails_from_staff;
     }
     if (!is_null($pt_allow)) {
@@ -1429,6 +1439,9 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
                     break;
                 case 'float':
                     $change[$db_fieldname] = ($value == '') ? null : floatval($value);
+                    break;
+                default:
+                    $change[$db_fieldname] = $value;
                     break;
             }
         }
