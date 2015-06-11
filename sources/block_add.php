@@ -325,8 +325,9 @@ function block_helper_script()
                 elseif ($block . ':' . $parameter == 'menu:param') { // special case for menus
                     $list = new Tempcode();
                     $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
-                    foreach ($rows as $row)
+                    foreach ($rows as $row) {
                         $list->attach(form_input_list_entry($row['i_menu'], $has_default && $row['i_menu'] == $default));
+                    }
                     $fields->attach(form_input_combo($parameter_title, escape_html($description), $parameter, $default, $list, null, false));
                 } elseif ($parameter == 'zone') { // zone list
                     $list = new Tempcode();

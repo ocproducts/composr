@@ -26,7 +26,7 @@
  * @param  object $this_ref Link to the real forum driver
  * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
  * @param  ?MEMBER $userid The member ID (null: use member name)
- * @param  MD5 $password_hashed The md5-hashed password
+ * @param  SHORT_TEXT $password_hashed The md5-hashed password
  * @param  string $password_raw The raw password
  * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
  * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set

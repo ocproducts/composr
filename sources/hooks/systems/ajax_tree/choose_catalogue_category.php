@@ -51,7 +51,7 @@ class Hook_choose_catalogue_category
             $tree = get_catalogue_category_tree($catalogue_name, is_null($id) ? null : intval($id), '', null, 1, $addable_filter, $compound_list);
         }
 
-        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), true));
+        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         if (!has_actual_page_access(null, 'catalogues')) {

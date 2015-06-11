@@ -3260,6 +3260,19 @@ function str_replace($search, $replace, $subject)
 }
 
 /**
+ * Replace all occurrences of the search string with the replacement string (case insensitive).
+ *
+ * @param  mixed $search What's being replaced (string or array).
+ * @param  mixed $replace What's being replaced with (string or array).
+ * @param  mixed $subject Subject (string or array).
+ * @return mixed Result (string or array).
+ */
+function str_ireplace($search, $replace, $subject)
+{
+    return '';
+}
+
+/**
  * Binary safe string comparison.
  *
  * @param  string $str1 The first string.
@@ -3328,7 +3341,7 @@ function strlen($str)
     return 0;
 }
 
-// FUDGEFUDGE: strpos can give "Offset not contained in string" error. We'd ideally have it in our catch errors list (code_quality.php) but it's unrealistic to catch all strpos errors.
+// FUDGE: strpos can give "Offset not contained in string" error. We'd ideally have it in our catch errors list (code_quality.php) but it's unrealistic to catch all strpos errors.
 
 /**
  * Find position of first occurrence of a string.

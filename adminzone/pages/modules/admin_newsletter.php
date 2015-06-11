@@ -1089,7 +1089,7 @@ class Module_admin_newsletter extends Standard_crud_module
                                 'CONTENT' => $temp[0],
                                 'THUMBNAIL' => array_key_exists(2, $temp) ? $temp[2] : ''
                             ), null, false, null, '.txt', 'text');
-                            $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGEFUDGE*/
+                            $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
                             $i++;
                         }
 
@@ -1127,7 +1127,7 @@ class Module_admin_newsletter extends Standard_crud_module
                         'TITLE' => $temp[1],
                         'CONTENT' => $temp[0]
                     ), null, false, null, '.txt', 'text');
-                    $automatic[$find_id] = $tmp->evaluate($lang); /*FUDGEFUDGE*/
+                    $automatic[$find_id] = $tmp->evaluate($lang); /*FUDGE*/
                     $i++;
                 }
             } elseif ($filter != '') {
@@ -1142,7 +1142,7 @@ class Module_admin_newsletter extends Standard_crud_module
                         'TITLE' => $temp[1],
                         'CONTENT' => $temp[0]
                     ), null, false, null, '.txt', 'text');
-                    $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGEFUDGE*/
+                    $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
                     $i++;
                 }
             }
@@ -1506,7 +1506,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => (($periodic_action == 'make' || $periodic_action == 'replace') ? do_lang_tempcode('PERIODIC_NO_EDIT') : do_lang_tempcode('NEWSLETTER_SEND_TEXT')),
             'HIDDEN' => $hidden,
-            'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
+            'FIELDS' => $fields->evaluate()/*FUDGE*/,
             'SUBMIT_ICON' => 'tabs__preview',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,

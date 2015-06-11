@@ -1550,7 +1550,7 @@ class Module_admin_stats
                 if ($data !== false) {
                     $_data = explode(',', $data);
                     if (count($_data) == 3) {
-                        $to_insert['begin_num'][] = $_data[0]; // FUDGEFUDGE. Intentionally passes in as strings, to workaround problem in PHP integer sizes (can't store unsigned data type)
+                        $to_insert['begin_num'][] = $_data[0]; // FUDGE. Intentionally passes in as strings, to workaround problem in PHP integer sizes (can't store unsigned data type)
                         $to_insert['end_num'][] = $_data[1];
                         $to_insert['country'][] = substr($_data[2], 0, 2);
 

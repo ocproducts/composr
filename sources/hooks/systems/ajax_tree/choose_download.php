@@ -60,7 +60,7 @@ class Hook_choose_download
         $tar_filter = array_key_exists('tar_filter', $options) ? ($options['original_filename']) : false;
         $tree = get_downloads_tree($only_owned, is_null($id) ? null : intval($id), null, null, $shun, (get_param_integer('full_depth', 0) == 1) ? null : (is_null($id) ? 0 : 1), false, $editable_filter, $tar_filter);
 
-        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), true));
+        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         if (!has_actual_page_access(null, 'downloads')) {

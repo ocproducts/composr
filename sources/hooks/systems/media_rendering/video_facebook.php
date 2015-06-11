@@ -120,7 +120,7 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
             $url = $url->evaluate();
         }
 
-        $matches=array();
+        $matches = array();
         if (preg_match('#^https?://www\.facebook\.com/video/video\.php\?v=(\w+)#', $url, $matches) != 0) {
             $attributes['remote_id'] = $matches[1];
         }

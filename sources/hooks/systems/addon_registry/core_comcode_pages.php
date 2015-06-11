@@ -291,7 +291,7 @@ class Hook_addon_registry_core_comcode_pages
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    function tpl_preview__administrative__comcode_page_sitemap()
+    public function tpl_preview__administrative__comcode_page_sitemap()
     {
         $menu_paths = array();
         $menu_paths[] = array(
@@ -300,7 +300,8 @@ class Hook_addon_registry_core_comcode_pages
             'MENU_PATH_COMPONENTS' => array(lorem_phrase()),
         );
 
-        $page_structure[] = array(
+        $_page_structure = array();
+        $_page_structure[] = array(
             'EDIT_URL' => placeholder_url(),
             'ZONE_NAME' => lorem_phrase(),
             'PAGE_NAME' => lorem_phrase(),
@@ -312,7 +313,7 @@ class Hook_addon_registry_core_comcode_pages
         );
 
         $page_structure = do_lorem_template('GENERATE_PAGE_SITEMAP', array(
-            'PAGE_STRUCTURE' => $page_structure,
+            'PAGE_STRUCTURE' => $_page_structure,
         ));
 
         return array(

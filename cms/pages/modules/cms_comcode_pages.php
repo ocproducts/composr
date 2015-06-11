@@ -1054,7 +1054,7 @@ class Module_cms_comcode_pages
      *
      * @return tempcode The UI
      */
-    function generate_page_sitemap()
+    public function generate_page_sitemap()
     {
         $title = get_screen_title('GENERATE_PAGE_SITEMAP');
 
@@ -1144,7 +1144,7 @@ class Module_cms_comcode_pages
      * @param  array $menu_branches An array of menu links
      * @return tempcode The structure
      */
-    function organise_page_tree(&$pages, $under, &$menu_branches)
+    public function organise_page_tree(&$pages, $under, &$menu_branches)
     {
         $todo_checks = explode('|', cms_mb_strtolower(do_lang('UNDER_CONSTRUCTION_MARKERS')));
 

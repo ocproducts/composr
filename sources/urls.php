@@ -1071,7 +1071,7 @@ function load_moniker_hooks()
         $hooks = find_all_hooks('systems', 'content_meta_aware');
         foreach ($hooks as $hook => $sources_dir) {
             if ($hook == 'banner' || $hook == 'banner_type' || $hook == 'catalogue' || $hook == 'post') {
-                continue; // FUDGEFUDGE: Optimisation, not ideal!
+                continue; // FUDGE: Optimisation, not ideal!
             }
 
             $info_function = extract_module_functions(get_file_base() . '/' . $sources_dir . '/hooks/systems/content_meta_aware/' . $hook . '.php', array('info'), null, false, 'Hook_content_meta_aware_' . $hook);

@@ -38,7 +38,7 @@ function find_words($text)
 {
     $words = array();
 
-    $matches = array();
+    $_words = array();
     $num_matches = preg_match_all(WORD_REGEXP, $text, $_words);
 
     for ($i = 0; $i < $num_matches; $i++) {

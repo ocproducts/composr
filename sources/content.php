@@ -77,7 +77,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         }
     }
 
-    // FUDGEFUDGE: Extra check for private topics
+    // FUDGE: Extra check for private topics
     $topic_id = null;
     if (($content_type == 'post') && (get_forum_type() == 'ocf')) {
         $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_topic_id', 'p_intended_solely_for', 'p_poster'), array('id' => intval($content_id)), '', 1);

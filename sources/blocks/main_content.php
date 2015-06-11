@@ -260,7 +260,7 @@ class Block_main_content
             $content_id = extract_content_str_id_from_data($award_content_row, $info);
         } // Select mode
         else {
-            if ($content_type == 'comcode_page') { // FUDGEFUDGE
+            if ($content_type == 'comcode_page') { // FUDGE
                 // Try and force a parse of the page, so it's in the system
                 $bits = explode(':', $content_id);
                 push_output_state();

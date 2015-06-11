@@ -393,7 +393,7 @@ class Module_tickets
 
         $assigned = find_ticket_assigned_to($ticket_id);
 
-        if (function_exists('get_composr_support_timings_wrap')) { // FUDGEFUDGE. Extra code may be added in for compo.sr's ticket system
+        if (function_exists('get_composr_support_timings_wrap')) { // FUDGE. Extra code may be added in for compo.sr's ticket system
             $extra_details = get_composr_support_timings_wrap($topic['closed'] == 0, $topic['id'], $ticket_type_name);
         } else {
             $extra_details = new Tempcode();
@@ -709,7 +709,7 @@ class Module_tickets
             $assigned = find_ticket_assigned_to($id);
 
             $extra_details = new Tempcode();
-            if (function_exists('get_composr_support_timings_wrap')) { // FUDGEFUDGE. Extra code may be added in for compo.sr's ticket system
+            if (function_exists('get_composr_support_timings_wrap')) { // FUDGE. Extra code may be added in for compo.sr's ticket system
                 if (!$new) {
                     $last_poster_id = isset($our_topic['lastmemberid']) ? $our_topic['lastmemberid'] : $GLOBALS['FORUM_DRIVER']->get_member_from_username($our_topic['lastusername']);
                     $extra_details = get_composr_support_timings_wrap($our_topic['closed'] == 0, $our_topic['id'], $ticket_type_name, true);
@@ -1331,7 +1331,7 @@ class Module_tickets
             ),
             get_site_default_lang()
         );
-        $_GET['keep_debug_notifications'] = '1'; // HACKHACK: Force it to go out BEFORE we run disable_notifications
+        $_GET['keep_debug_notifications'] = '1'; // FUDGE: Force it to go out BEFORE we run disable_notifications
         dispatch_notification(
             'ticket_assigned_staff',
             $ticket_id,

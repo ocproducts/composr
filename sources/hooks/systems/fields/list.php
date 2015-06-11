@@ -240,7 +240,7 @@ class Hook_fields_list
                     $required = $field['cf_required'] == 1;
                     $name = 'field_' . strval($field['id']);
 
-                    return form_input_combo($_cf_name, $_cf_description, $name, $custom_value ? $actual_value : '', $list_tpl, $tabindex, $required);
+                    return form_input_combo($_cf_name, $_cf_description, $name, $custom_value ? $actual_value : '', $list_tpl, null, $required);
                 } else {
                     $list_tpl = new Tempcode();
 

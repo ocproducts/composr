@@ -1580,7 +1580,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
     $ARB_COUNTER++;
     $out = array();
     $_params = '';
-    $pre = substr($file, 5, strpos($file, "\nclass ") - 5); // FUDGEFUDGE. We assume any functions we need to pre-load precede any classes in the file
+    $pre = substr($file, 5, strpos($file, "\nclass ") - 5); // FUDGE. We assume any functions we need to pre-load precede any classes in the file
     $pre = preg_replace('#(^|\n)function (\w+)\(.*#s', 'if (!function_exists(\'${1}\')) { ${0} }', $pre); // In case we end up extracting from this file more than once across multiple calls to extract_module_functions
     if ($params !== null) {
         foreach ($params as $param) {

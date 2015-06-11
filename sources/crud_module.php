@@ -905,7 +905,7 @@ abstract class Standard_crud_module
             $fields_new = new Tempcode();
             for ($i = 0; $i < 10; $i++) { // Up to 10 new fields for catalogue, although this number is arbitrary
                 list($_fields_new, $_hidden_new) = $this->get_field_fields((($i == 0) && (substr(get_param_string('id', ''), 0, 1) != '_')), 10, 'new_field_' . strval($i) . '_', $i);
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '3eba3a73d1fbdf922707d63216e13e03' . get_class($this), 'VISIBLE' => ($i == 0) ? true : null, 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGEFUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '3eba3a73d1fbdf922707d63216e13e03' . get_class($this), 'VISIBLE' => ($i == 0) ? true : null, 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGE*/));
                 $fields_new->attach($temp);
                 $hidden->attach($_hidden_new);
             }
@@ -917,8 +917,8 @@ abstract class Standard_crud_module
                                                               'TITLE' => $this->title,
                                                               'TEXT' => $this->add_text,
                                                               'URL' => $post_url,
-                                                              'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
-                                                              'FIELDS_NEW' => $fields_new->evaluate()/*FUDGEFUDGE*/,
+                                                              'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                                                              'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
                                                               'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
                                                               'SUBMIT_NAME' => $submit_name,
                                                               'JAVASCRIPT' => $this->javascript,
@@ -931,7 +931,7 @@ abstract class Standard_crud_module
                                                      'PREVIEW' => $this->do_preview,
                                                      'SEPARATE_PREVIEW' => $this->second_stage_preview,
                                                      'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGEFUDGE*/,
+                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                                                      'JAVASCRIPT' => $this->javascript,
                                                      'SUPPORT_AUTOSAVE' => true,
                                                  ) + $extra_tpl_params);
@@ -946,7 +946,7 @@ abstract class Standard_crud_module
                                                   'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
                                                   'TEXT' => $this->add_text,
                                                   'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
+                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
                                                   'SUBMIT_ICON' => $submit_icon,
                                                   'SUBMIT_NAME' => $submit_name,
                                                   'JAVASCRIPT' => $this->javascript,
@@ -1258,7 +1258,7 @@ abstract class Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => $text,
             'URL' => $post_url,
-            'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
+            'FIELDS' => $fields->evaluate()/*FUDGE*/,
             'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
             'SUBMIT_NAME' => $submit_name,
             'SKIP_WEBSTANDARDS' => true,
@@ -1435,7 +1435,7 @@ abstract class Standard_crud_module
                     $_fields_existing->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c1959d74d4226cad31629b6f24a8e4b0', 'TITLE' => do_lang_tempcode('ACTIONS'))));
                     $_fields_existing->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), $prefix . 'delete', false));
                 }
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name, 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGEFUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name, 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGE*/));
                 $fields_existing->attach($temp);
                 $hidden->attach($_fields_hidden);
 
@@ -1446,7 +1446,7 @@ abstract class Standard_crud_module
             $fields_new = new Tempcode();
             for ($i = 0; $i < 5; $i++) {
                 list($_fields_new, $_fields_hidden) = $this->get_field_fields(false, count($rows) + 10, 'new_field_' . strval($i) . '_', $field_count);
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '8b9a632eafae003ccc6b007eefb0ce3d' . get_class($this), 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGEFUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '8b9a632eafae003ccc6b007eefb0ce3d' . get_class($this), 'NAME' => do_lang_tempcode('NEW_FIELD', strval($i + 1)), 'ID' => 'NEW_FIELD_' . strval($i + 1), 'FIELDS' => $_fields_new->evaluate()/*FUDGE*/));
                 $fields_new->attach($temp);
                 $hidden->attach($_fields_hidden);
 
@@ -1460,9 +1460,9 @@ abstract class Standard_crud_module
                                                                'TITLE' => $this->title,
                                                                'TEXT' => $this->add_text,
                                                                'URL' => $post_url,
-                                                               'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
-                                                               'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGEFUDGE*/,
-                                                               'FIELDS_NEW' => $fields_new->evaluate()/*FUDGEFUDGE*/,
+                                                               'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                                                               'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
+                                                               'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
                                                                'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
                                                                'SUBMIT_NAME' => $submit_name,
                                                                'JAVASCRIPT' => $this->javascript,
@@ -1483,7 +1483,7 @@ abstract class Standard_crud_module
                                                      'PING_URL' => $ping_url,
                                                      'WARNING_DETAILS' => $warning_details,
                                                      'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGEFUDGE*/,
+                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                                                      'JAVASCRIPT' => $this->javascript,
                                                      'SUPPORT_AUTOSAVE' => true,
                                                  ) + $extra_tpl_params);
@@ -1500,7 +1500,7 @@ abstract class Standard_crud_module
                                                   'HIDDEN' => $hidden,
                                                   'TEXT' => $this->edit_text,
                                                   'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGEFUDGE*/,
+                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
                                                   'SUBMIT_ICON' => $submit_icon,
                                                   'SUBMIT_NAME' => $submit_name,
                                                   'JAVASCRIPT' => $this->javascript,

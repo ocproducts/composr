@@ -44,7 +44,7 @@ class Hook_choose_filedump_file
             $fullpath .= '/' . $id;
         }
 
-        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), true));
+        $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         $images_only = array_key_exists('images_only', $options) ? ($options['images_only'] == '1') : false;
