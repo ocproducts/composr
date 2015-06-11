@@ -30,7 +30,7 @@ class calendar_event_type_test_set extends cms_test_case
 
     public function testEditCalendarEventType()
     {
-        edit_event_type($this->eventtype_id, "test_event_type1", 'calendar/testtype1', '');
+        edit_event_type($this->eventtype_id, 'test_event_type1', 'calendar/testtype1', '');
         $this->assertTrue('test_event_type1' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_types', 't_title', array('id' => $this->eventtype_id))));
     }
 

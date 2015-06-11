@@ -64,6 +64,7 @@ class Hook_addon_registry_core
             'tut_webapp',
             'tut_do',
             'tut_drinking',
+            'tut_metadata',
         );
     }
 
@@ -690,6 +691,8 @@ class Hook_addon_registry_core
         	'themes/default/images/jquery_ui/ui-bg_glass_75_dadada_1x400.png',
         	'themes/default/images/jquery_ui/ui-bg_glass_75_e6e6e6_1x400.png',
         	'themes/default/images/jquery_ui/ui-bg_glass_95_fef1ec_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_65_ffffff_1x400.png',
+            'themes/default/images/jquery_ui/ui-icons_222222_256x240.png',
         	'themes/default/images/jquery_ui/ui-bg_highlight-soft_75_cccccc_1x100.png',
         	'themes/default/images/jquery_ui/ui-icons_2e83ff_256x240.png',
         	'themes/default/images/jquery_ui/ui-icons_454545_256x240.png',

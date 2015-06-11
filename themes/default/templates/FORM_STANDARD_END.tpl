@@ -61,7 +61,7 @@
 		{+START,IF_PASSED_AND_TRUE,SUPPORT_AUTOSAVE}{+START,IF_PASSED,FORM_NAME}
 			{$REQUIRE_JAVASCRIPT,posting}
 
-			if (typeof init_form_saving!='undefined') init_form_saving('{FORM_NAME;}');
+			if (typeof init_form_saving!='undefined') init_form_saving('{FORM_NAME;/}');
 		{+END}{+END}
 	});
 //]]></script>

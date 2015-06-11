@@ -62,6 +62,7 @@ class Hook_addon_registry_core_fields
     {
         return array(
             'tut_catalogues',
+            'tut_fields',
         );
     }
 
@@ -112,6 +113,7 @@ class Hook_addon_registry_core_fields
             'sources/hooks/systems/fields/date.php',
             'sources/hooks/systems/fields/email.php',
             'sources/hooks/systems/fields/float.php',
+            'sources/hooks/systems/fields/guid.php',
             'sources/hooks/systems/fields/index.html',
             'sources/hooks/systems/fields/integer.php',
             'sources/hooks/systems/fields/isbn.php',
@@ -119,7 +121,6 @@ class Hook_addon_registry_core_fields
             'sources/hooks/systems/fields/long_text.php',
             'sources/hooks/systems/fields/long_trans.php',
             'sources/hooks/systems/fields/picture.php',
-            'sources/hooks/systems/fields/random.php',
             'sources/hooks/systems/fields/reference.php',
             'sources/hooks/systems/fields/short_text.php',
             'sources/hooks/systems/fields/short_trans.php',

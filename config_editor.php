@@ -208,7 +208,16 @@ function do_access($given_password)
         'no_email_output' => '<em>Development:</em> Whether emails should never be sent.',
         'email_to' => '<em>Development:</em> If you have set up a customised critical error screen, and a background e-mailing process, this defines where error e-mails will be sent.',
 
-        'failover_mode' => 'The failover mode. Either \'off\' or \'on\' or \'auto_off\' or \'auto_on\'. Usually it will be left to \'off\', meaning there is no active failover mode. The next most common setting will be \'auto_off\', which means the failover_script.php script is allowed to set it to \'auto_on\' if it detects the site is failing (and back to \'auto_off\' again when things are okay again). Setting it to \'on\' is manually declaring the site has failed and you want to keep it in failover mode.',
+        'failover_mode' => '<em>Failover:</em> The failover mode. Either \'off\' or \'on\' or \'auto_off\' or \'auto_on\'. Usually it will be left to \'off\', meaning there is no active failover mode. The next most common setting will be \'auto_off\', which means the failover_script.php script is allowed to set it to \'auto_on\' if it detects the site is failing (and back to \'auto_off\' again when things are okay again). Setting it to \'on\' is manually declaring the site has failed and you want to keep it in failover mode.',
+        'failover_apache_rewritemap_file' => '<em>Failover:</em> Set to \'1\' to maintain an Apache RewriteMap file that maps disk cache files to URLs directly. This is a very advanced option and needs server-level Apache configuration by a programmer. You can also set to \'-\' which is like \'1\' except mobile hits are not differentiated from desktop hits.',
+        'failover_cache_miss_message' => '<em>Failover:</em> Error message shown if failover mode misses a cache hit (i.e. cannot display a page from the cache).',
+        'failover_check_urls' => '<em>Failover:</em> Relative URL(s) separated by \';\' that failover mode should check when deciding to activate/deactivate.',
+        'failover_email_contact' => '<em>Failover:</em> E-mail address separated by \';\' that failover mode notifications are sent to.',
+        'failover_loadaverage_threshold' => '<em>Failover:</em> Minimum load average before failover mode activates.',
+        'failover_loadtime_threshold' => '<em>Failover:</em> Minimum page load time in seconds before failover mode activates.',
+        'failover_message' => '<em>Failover:</em> Message shown at top of the screen when failover mode is activated.',
+        'failover_message_place_after' => '<em>Failover:</em> failover_message will be placed after this HTML marker.',
+        'failover_message_place_before' => '<em>Failover:</em> failover_message will be placed before this HTML marker. May be specified in addition to failover_message_place_after, so that two messages show.',
 
         'gae_application' => '<em>Google App Engine:</em> Application name',
         'gae_bucket_name' => '<em>Google App Engine:</em> Cloud Storage bucket name',

@@ -63,6 +63,7 @@ class Hook_addon_registry_catalogues
         return array(
             'tut_catalogues',
             'tut_information',
+            'tut_fields',
         );
     }
 

@@ -1847,7 +1847,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             $required = array_key_exists('required', $field) ? intval($field['required']) : 0;
             $put_in_category = array_key_exists('put_in_category', $field) ? intval($field['put_in_category']) : 0;
             $put_in_search = array_key_exists('put_in_search', $field) ? intval($field['put_in_search']) : 0;
-            $options = $field['options'];
+            $options = array_key_exists('options', $field) ? $field['options'] : '';
             if ($field['name'] != '') {
                 actual_add_catalogue_field($name, $field['name'], $field['description'], $field['type'], $field['order'], $defines_order, $visible, $searchable, $field['default'], $required, $put_in_category, $put_in_search, $options);
             }

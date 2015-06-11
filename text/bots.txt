@@ -2,7 +2,6 @@ zyborg=Looksmart
 googlebot=Google
 teoma=Teoma
 jeeves=Ask Jeeves
-infoseek=Infoseek
 ultraseek=Infoseek
 ia_archiver=Alexa/Archive.org
 msnbot=Bing

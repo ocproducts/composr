@@ -98,8 +98,10 @@ class Hook_addon_registry_failover
         return array(
             'sources/hooks/systems/addon_registry/failover.php',
             'data/failover_script.php',
-            'data_custom/failover_rewritemap.txt',
-            'data_custom/failover_rewritemap__mobile.txt',
+
+            // These aren't bundled. Make empty files if you want them
+            //'data_custom/failover_rewritemap.txt',
+            //'data_custom/failover_rewritemap__mobile.txt',
         );
     }
 }

@@ -105,6 +105,7 @@ class html_safe_lang_test_set extends cms_test_case
                             'REDIRECT_PAGE_TO',
                             'WRITE_ERROR_CREATE',
                             'WRITE_ERROR',
+                            'DESCRIPTION_I_AGREE_RULES',
         );
 
         $result = array_keys(array_intersect_key($LANGUAGE_LITERAL, $LANGUAGE_HTML));

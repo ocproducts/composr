@@ -50,6 +50,14 @@ class tutorials_all_linked_test_set extends cms_test_case
     function testAddonLinkage()
     {
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
+            if (is_numeric($tutorial_name)) {
+                continue;
+            }
+
+            if (substr($tutorial_name, 0, 4) == 'sup_') {
+                continue;
+            }
+
             foreach ($tutorial['tags'] as $tag) {
                 if (strtolower($tag) == $tag) { // Addon tag
                     require_code('hooks/systems/addon_registry/' . $tag);

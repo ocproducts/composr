@@ -62,6 +62,7 @@ class addon_screenshots_test_set extends cms_test_case
                     'wiki_sync',
                     'multi_domain_login',
                     'composer',
+                    'less',
                 ))) {
                     continue;
                 }

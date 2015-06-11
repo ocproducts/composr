@@ -111,7 +111,9 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
      */
     public function get_applicable_tutorials()
     {
-        return array();
+        return array(
+            'tut_facebook',
+        );
     }
 
     /**

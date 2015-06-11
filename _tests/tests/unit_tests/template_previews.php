@@ -39,6 +39,7 @@ class template_previews_test_set extends cms_test_case
         $_GET['keep_has_js'] = '0';
         $_GET['keep_no_minify'] = '1'; // Disables resource merging, which messes with results
         $_GET['keep_fatalistic'] = '1';
+        $GLOBALS['OUTPUT_STREAMING'] = false;
 
         require_code('lorem');
     }

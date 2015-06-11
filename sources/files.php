@@ -252,6 +252,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'install.php' => '',
                                              '_config.php.template' => '',
                                              'data.cms' => '',
+                                             'cms.sql' => '', // Temporary backup
                                              'install.sql' => '',
                                              'install1.sql' => '',
                                              'install2.sql' => '',

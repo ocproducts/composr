@@ -172,6 +172,7 @@ class Hook_addon_registry_composr_homesite
             'uploads/website_specific/compo.sr/scripts/version.php',
             'uploads/website_specific/compo.sr/upgrades/make_upgrader.php',
             'uploads/website_specific/compo.sr/upgrades/tarring.log',
+            'cmscore.rdf',
         );
     }
 }

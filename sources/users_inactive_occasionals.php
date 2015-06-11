@@ -206,6 +206,9 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
         $test=false;
     } else {*/
     $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
+    if (is_null($test)) {
+        $test = false;
+    }
     //}
     $_COOKIE[get_session_cookie()] = $id; // So we remember for this page view
 

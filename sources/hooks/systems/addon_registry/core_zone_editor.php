@@ -62,6 +62,7 @@ class Hook_addon_registry_core_zone_editor
     {
         return array(
             'tut_structure',
+            'tut_adv_structure',
         );
     }
 

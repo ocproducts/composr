@@ -152,6 +152,13 @@ function uninstall_cns()
 
     delete_privilege('exceed_post_edit_time_limit');
     delete_privilege('exceed_post_delete_time_limit');
+
+    delete_privilege('bypass_required_cpfs');
+    delete_privilege('bypass_required_cpfs_if_already_empty');
+    delete_privilege('bypass_email_address');
+    delete_privilege('bypass_email_address_if_already_empty');
+    delete_privilege('bypass_dob');
+    delete_privilege('bypass_dob_if_already_empty');
 }
 
 /**

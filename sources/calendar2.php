@@ -537,7 +537,11 @@ function delete_event_type($id)
     }
     $GLOBALS['SITE_DB']->query_update('calendar_events', array('e_type' => $lowest), array('e_type' => $id));
 
+    require_code('files2');
+    delete_upload('themes/default/images_custom/calendar', 'calendar_types', 't_logo', 'id', $id);
+
     $GLOBALS['SITE_DB']->query_delete('calendar_types', array('id' => $id), '', 1);
+
     $GLOBALS['SITE_DB']->query_delete('calendar_interests', array('t_type' => $id));
 
     if (addon_installed('catalogues')) {
@@ -545,9 +549,6 @@ function delete_event_type($id)
     }
 
     delete_lang($myrow['t_title']);
-
-    require_code('files2');
-    delete_upload('themes/default/images_custom/calendar', 'calendar_types', 't_logo', 'id', $id);
 
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'calendar', 'category_name' => strval($id)));
 
