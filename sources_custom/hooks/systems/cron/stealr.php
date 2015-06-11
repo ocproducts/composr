@@ -94,8 +94,8 @@ class Hook_cron_stealr
                     $subject = do_lang('THIEF_PT_TOPIC', strval($stealr_points), $thief_displayname, array($target_displayname, $thief_username, $target_username));
                     $body = do_lang('THIEF_PT_TOPIC_POST', strval($stealr_points), $thief_displayname, array($target_displayname, $thief_username, $target_username));
 
-                    require_code('cns_topic_actions');
-                    require_code('cns_posts_actions');
+                    require_code('cns_topics_action');
+                    require_code('cns_posts_action');
 
                     $topic_id = cns_make_topic(null, $subject, '', 1, 1, 0, 0, 0, $member['id'], $give_to_member, false, 0, null, '');
 
