@@ -41,6 +41,11 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        if (!module_installed('tutorials')) {
+            require_code('zones2');
+            reinstall_module('docs', 'tutorials');
+        }
+
         require_code('tutorials');
         require_lang('tutorials');
 

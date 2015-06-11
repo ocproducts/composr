@@ -525,10 +525,14 @@ class Module_admin_cns_groups extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_group_leader']);
-        if (is_null($username)) {
+        if (is_null($myrow['g_group_leader'])) {
             $username = '';
-        }//do_lang('UNKNOWN');
+        } else {
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_group_leader']);
+            if (is_null($username)) {
+                $username = '';
+            }
+        }
 
         if ((intval($id) == db_get_first_id() + 8) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_presented_at_install' => '1')) == 0)) {
             $myrow['g_is_presented_at_install'] = 1;

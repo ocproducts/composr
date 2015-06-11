@@ -168,7 +168,7 @@ function import_tutorials_from_arvixe()
                     );
                     $id = $GLOBALS['SITE_DB']->query_insert('tutorials_external', $map, true);
 
-                    foreach ($tags as $tag) {
+                    foreach (array_unique($tags) as $tag) {
                         $GLOBALS['SITE_DB']->query_insert('tutorials_external_tags', array(
                             't_id' => $id,
                             't_tag' => $tag,

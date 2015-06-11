@@ -109,7 +109,7 @@ class Hook_sw_cns_forum
         require_lang('cns');
         if (!is_cns_satellite_site()) {
             if (post_param_integer('have_default_rank_set', 0) == 0) {
-                $group_rows = $GLOBALS['SITE_DB']->query_select('f_groups', 'id', array('id' => db_get_first_id() + 8));
+                $group_rows = $GLOBALS['SITE_DB']->query_select('f_groups', array('id'), array('id' => db_get_first_id() + 8));
                 if (array_key_exists(0, $group_rows)) {
                     $promotion_target = cns_get_group_property(db_get_first_id() + 8, 'promotion_target');
                     if (!is_null($promotion_target)) {
@@ -120,7 +120,7 @@ class Hook_sw_cns_forum
                             cns_delete_group($i);
                         }
                     }
-                    $GLOBALS['SITE_DB']->query_update('f_groups', lang_remap($group_rows[0], 'g_name', do_lang('MEMBER')), array('id' => db_get_first_id() + 8), '', 1);
+                    $GLOBALS['SITE_DB']->query_update('f_groups', lang_remap('g_name', $group_rows[0]['id'], do_lang('MEMBER')), array('id' => db_get_first_id() + 8), '', 1);
                 }
             }
             if (post_param_integer('have_default_full_emoticon_set', 0) == 0) {

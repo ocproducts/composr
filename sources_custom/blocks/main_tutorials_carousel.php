@@ -59,6 +59,11 @@ class Block_main_tutorials_carousel
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        if (!module_installed('tutorials')) {
+            require_code('zones2');
+            reinstall_module('docs', 'tutorials');
+        }
+
         $criteria = empty($map['param']) ? '' : $map['param'];
         if ($criteria == '') {
             $criteria = 'recent';

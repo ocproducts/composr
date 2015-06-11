@@ -1877,9 +1877,9 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
         $content->attach($_category);
     }
 
-    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => false, 'NAME' => $name, 'CODE' => is_null($selected_code) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content));
+    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => !$allow_none, 'NAME' => $name, 'CODE' => is_null($selected_code) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content));
 
-    return _form_input($GLOBALS['DOING_ALTERNATE_FIELDS_SET'] ? $name : '', $pretty_name, $description, $input, false);
+    return _form_input($GLOBALS['DOING_ALTERNATE_FIELDS_SET'] ? $name : '', $pretty_name, $description, $input, !$allow_none);
 }
 
 /**

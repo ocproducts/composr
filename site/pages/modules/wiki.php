@@ -396,7 +396,7 @@ class Module_wiki
         // Decide what to do
         if ($type == 'findpost') {
             $post_id = get_param_integer('id');
-            $page_id = $GLOBALS['SITE_DB']->query_select('wiki_posts', 'page_id', array('id' => $post_id));
+            $page_id = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'page_id', array('id' => $post_id));
             $redirect = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $page_id), '_SELF', null, false, false, false, 'post_' . strval($post_id));
             return redirect_screen(get_screen_title('WIKI'), $redirect);
         }
