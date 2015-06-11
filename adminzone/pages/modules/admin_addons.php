@@ -352,6 +352,10 @@ class Module_admin_addons
 
         // Show installed addons
         foreach ($addons_installed as $row) {
+            if (substr($row['name'], 0, 5) == 'core_' || $row['name'] == 'core') {
+                continue;
+            }
+
             $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '5a65c9aa87291ecfe46f75e9b2949246', 'GET' => true, 'NAME' => $row['name'], 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_uninstall', 'name' => $row['name']), '_SELF')));
             $updated = array_key_exists($row['name'], $updated_addons_arr);
             $status = do_lang_tempcode($updated ? 'STATUS_OUTOFDATE' : 'STATUS_INSTALLED');
