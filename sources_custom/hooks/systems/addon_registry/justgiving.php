@@ -86,11 +86,11 @@ class Hook_addon_registry_justgiving
     public function get_description()
     {
         return 'Display a current amount which has been collected and a link to donate via JustGiving.com. To use this addon you will need your eggid from your justgiving account page. To find this:
-1) Log into your account and click \"Your pages\"
+1) Log into your account and click "Your pages"
 2) Click the page you want to add the banner for
-3) Click use our widget, this will show you some code that looks like: [code]<object type=\"application/x-shockwave-flash\" allowScriptAccess=\"always\" height=\"230\" width=\"150\" align=\"middle\" data=\"http://www.justgiving.com/widgets/jgwidget.swf\" flashvars=\"EggId=2306991&IsMS=0\"><param name=\"movie\" value=\"http://www.justgiving.com/widgets/jgwidget.swf\" /><param name=\"allowScriptAccess\" value=\"always\" /><param name=\"allowNetworking\" value=\"all\" /><param name=\"quality\" value=\"high\" /><param name=\"wmode\" value=\"transparent\" /><param name=\"flashvars\" value=\"EggId=2306991&IsMS=0\" /></object>[/code]
-4) You need the text after where it says [tt]Eggid=[/tt] and before the [tt]\"[/tt], so in the example above the eggid code would be [tt]2306991&IsMS=0[/tt]
-5) Paste this into where the creation assistant asks for the code or use as the example below shows: [code=\"Comcode\"][block eggid=\"2306991&IsMS=0\"]side_justgiving_donate[/block][/code]';
+3) Click use our widget, this will show you some code that looks like: [code]<object type="application/x-shockwave-flash" allowScriptAccess="always" height="230" width="150" align="middle" data="http://www.justgiving.com/widgets/jgwidget.swf" flashvars="EggId=2306991&IsMS=0"><param name="movie" value="http://www.justgiving.com/widgets/jgwidget.swf" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="quality" value="high" /><param name="wmode" value="transparent" /><param name="flashvars" value="EggId=2306991&IsMS=0" /></object>[/code]
+4) You need the text after where it says [tt]Eggid=[/tt] and before the [tt]"[/tt], so in the example above the eggid code would be [tt]2306991&IsMS=0[/tt]
+5) Paste this into where the creation assistant asks for the code or use as the example below shows: [code="Comcode"][block eggid="2306991&IsMS=0"]side_justgiving_donate[/block][/code]';
     }
 
     /**

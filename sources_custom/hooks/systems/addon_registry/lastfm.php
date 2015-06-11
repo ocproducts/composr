@@ -87,10 +87,10 @@ class Hook_addon_registry_lastfm
     {
         return 'A top LastFM playlist on a panel. This displays top artists, top albums or top tracks. Block parameters are someone\'s LastFM username, top rank list period of time (3, 6 or 12 months), and what chart to be displayed (artists, albums or tracks chart).
 
-You will need your Username for Last FM, and you will need to decide how long you want the block to check back, \"3\", \"6\",\"12\" months. Also you will need to decide whether you want to show favourite \"artists\", \"albums\" or \"tracks\". The example code will look something like:
-[code=\"Comcode\"][block username=\"Sjarvis78\" period=\"12\" display=\"albums\" height=\"300px\"]side_last_fm[/block][/code]
+You will need your Username for Last FM, and you will need to decide how long you want the block to check back, "3", "6","12" months. Also you will need to decide whether you want to show favourite "artists", "albums" or "tracks". The example code will look something like:
+[code="Comcode"][block username="Sjarvis78" period="12" display="albums" height="300px"]side_last_fm[/block][/code]
 
-Period is just the number of the chosen months \"3\", \"6\" or \"12\" and the display is \"artists\", \"albums\" or \"tracks\". You can also specify the height and width as above.';
+Period is just the number of the chosen months "3", "6" or "12" and the display is "artists", "albums" or "tracks". You can also specify the height and width as above.';
     }
 
     /**

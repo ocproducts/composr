@@ -89,7 +89,7 @@ class Hook_addon_registry_composr_tutorials
 
 To view this documentation load up the [tt]docs:tutorials[/tt] page-link (i.e. [tt]/docs/index.php?page=tutorials[/tt]).
 
-You may also wish to edit the \'docs\' zone to change the \"Default page\" to [tt]tutorials[/tt].
+You may also wish to edit the \'docs\' zone to change the "Default page" to [tt]tutorials[/tt].
 
 You can also use the Debranding tool from the Admin Zone to make documentation point towards your own install, by setting your own site\'s base URL as the brand URL.
 

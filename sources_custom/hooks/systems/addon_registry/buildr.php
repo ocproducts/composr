@@ -89,7 +89,7 @@ class Hook_addon_registry_buildr
     {
         return 'Buildr -- A world of fun.
 
-A \"multi user dungeon\" (MUD) environment where members (players) may interact with each other and construct virtual worlds. The system includes an economy based on points.
+A "multi user dungeon" (MUD) environment where members (players) may interact with each other and construct virtual worlds. The system includes an economy based on points.
 
 There is a very carefully selected feature-set that allows interesting world interactions; quests, adventures, simulations, and other things may all be created by clever use of this feature-set.
 

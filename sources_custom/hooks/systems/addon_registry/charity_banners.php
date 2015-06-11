@@ -92,12 +92,12 @@ The auto-created bundled banners are for \'causes\' and are: Composr, Firefox, W
 To Use the Block go to where you would like the block to be placed (likely either a side panel or the front page) and use the add block button.
 
 You have 3 block parameters to fill in:
- - [tt]param[/tt] will be \"buttons\" as standard but you could create a different banner type and use that if you want.
- - You only need to put something in [tt]extra[/tt] if its a side panel in which case you put \"side\" in there.
+ - [tt]param[/tt] will be "buttons" as standard but you could create a different banner type and use that if you want.
+ - You only need to put something in [tt]extra[/tt] if its a side panel in which case you put "side" in there.
  - [tt]max[/tt] is the maximum number of banners you want to display.
 
 An example:
-[code=\"Comcode\"][block=\"buttons\" extra=\"side\" max=\"5\"]main_buttons[/block][/code]
+[code="Comcode"][block="buttons" extra="side" max="5"]main_buttons[/block][/code]
 If you want to delete some of the banners:
 1) Go to the Banners section under Content Management
 2) Click Edit Banner

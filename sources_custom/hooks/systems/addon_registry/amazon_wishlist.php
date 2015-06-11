@@ -96,10 +96,10 @@ For this addon you will need to login at Amazon web services (http://aws-portal.
 
 Once you have logged in and accepted the security message click on Security credentials on the left hand menu, click access keys and here you will find your access key and security key.
 
-When adding the addon you will be asked for four things: Access key, Security key, wishlist ID and domain. The Access and security keys you can find by following the process above, the wishlist ID is the string of numbers after the Amazon address usually something like \"2VAUC2FYIEUZ5\". Lastly the domain is either \"com\" or \"co.uk\" which will depend on the wishlist URL.
+When adding the addon you will be asked for four things: Access key, Security key, wishlist ID and domain. The Access and security keys you can find by following the process above, the wishlist ID is the string of numbers after the Amazon address usually something like "2VAUC2FYIEUZ5". Lastly the domain is either "com" or "co.uk" which will depend on the wishlist URL.
 
 An example of the code is:
-[code=\"Comcode\"][block access_key=\"AKIAJXSQP4CES2F37GWQ\" secret_key=\"xy9e5MHu4f9y7kjOjkysmjd58k2gjzN8YmC2/Ith\" wishlist_id=\"2VAUC2FYIEUZ5\" domain=\"com\"]side_amazon_wishlist[/block][/code]
+[code="Comcode"][block access_key="AKIAJXSQP4CES2F37GWQ" secret_key="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" wishlist_id="2VAUC2FYIEUZ5" domain="com"]side_amazon_wishlist[/block][/code]
 Note: Sometimes wishlists may be quite long, you can create a specific wish list on Amazon to display and use that wishlist ID if you need to limit the amount of items on the list.';
     }
 

@@ -87,7 +87,7 @@ class Hook_addon_registry_webdav
      */
     public function get_description()
     {
-        return 'Access your website repository as a folder on your computer. See the [page=\"docs:tut_repository\"]Repository Tutorial[/page] for more information.';
+        return 'Access your website repository as a folder on your computer. See the [page="docs:tut_repository"]Repository Tutorial[/page] for more information.';
     }
 
     /**

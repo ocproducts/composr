@@ -92,7 +92,7 @@ class Hook_addon_registry_unslider
 The addon contains a new block, main_unslider. The block is based on the Unslider jQuery plugin. It includes a number of slides and lets you move between them, either on a timer or manually. The contents of each slide is sourced from a specially-named Composr page.
 
 Here is an example of the block Comcode:
-[code][block pages=\"slide1,slide2,slide3,slide4,slide5,slide6\" width=\"100%\" height=\"350px\" buttons=\"1\" delay=\"3000\" speed=\"500\" keypresses=\"0\"]main_unslider[/block][/code]
+[code][block pages="slide1,slide2,slide3,slide4,slide5,slide6" width="100%" height="350px" buttons="1" delay="3000" speed="500" keypresses="0"]main_unslider[/block][/code]
 
 The [tt]pages[/tt] parameter refers to suffixes on a standard naming scheme. [tt]slide1[/tt] is the page [tt]_unslider_slide1[/tt].
 

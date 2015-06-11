@@ -90,7 +90,7 @@ class Hook_addon_registry_amazon_affiliates
 The block can be configured by the block parameters (associates id, product line, subject/keywords, and how many items to be displayed inside the block).
 
 This addon allows you to create a banner link to a number of banners from your Amazon affiliate account. You will need to know your Amazon affiliate ID as well as the Amazon category (Books, Music, Software etc) and the search term you want it to display banners from. An example of the block usage:
-[code=\"Comcode\"][block associates_id=\"prehistoricsi-20\" title=\"Amazon Affiliates\" product_line=\"books\" subject_keywords=\"lord of the rings\" items_number=\"1\"]side_amazon_affiliate_sales[/block][/code]';
+[code="Comcode"][block associates_id="prehistoricsi-20" title="Amazon Affiliates" product_line="books" subject_keywords="lord of the rings" items_number="1"]side_amazon_affiliate_sales[/block][/code]';
     }
 
     /**

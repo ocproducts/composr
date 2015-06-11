@@ -87,21 +87,21 @@ class Hook_addon_registry_activity_feed
      */
     public function get_description()
     {
-        return 'Displays a self-updating feed of logged site activity, with options to filter the contents. Also includes a block for entering new activities directly into the feed, allowing a \"status update\" functionality.
+        return 'Displays a self-updating feed of logged site activity, with options to filter the contents. Also includes a block for entering new activities directly into the feed, allowing a "status update" functionality.
 
 These blocks are put on the member profile tabs by default, but may also be called up on other areas of the site.
 
-If the chat addon is installed, \"status\" posts can be restricted to only show for buddies.
+If the chat addon is installed, "status" posts can be restricted to only show for buddies.
 
 If the Facebook of Twitter addons are installed then the system can syndicate out activities to the user\'s Twitter and Facebook followers.
 
 The blocks provided are [tt]main_activities[/tt] and the status entry box is called [tt]main_activities_state[/tt].
 
-[code=\"Comcode\"][block=\"Goings On\" max=\"20\" grow=\"0\" mode=\"all\"]main_activities[/block][/code]
-...will show a feed with a title \"Goings On\" containing the last 20 activities, old activities will \"fall off the bottom\" (grow=\"0\") as new ones are loaded via AJAX and there is no filtering on what is shown. (mode=\"all\").
+[code="Comcode"][block="Goings On" max="20" grow="0" mode="all"]main_activities[/block][/code]
+...will show a feed with a title "Goings On" containing the last 20 activities, old activities will "fall off the bottom" (grow="0") as new ones are loaded via AJAX and there is no filtering on what is shown. (mode="all").
 
-[code=\"Comcode\"][block=\"Say Something\"]main_activities_state[/block][/code]
-...will show a status update box with the title \"Say Something\".';
+[code="Comcode"][block="Say Something"]main_activities_state[/block][/code]
+...will show a status update box with the title "Say Something".';
     }
 
     /**

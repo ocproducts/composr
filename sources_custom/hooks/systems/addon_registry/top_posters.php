@@ -87,10 +87,10 @@ class Hook_addon_registry_top_posters
     {
         return 'A block to show the posters with the longest average post length and their total number of posts.
 
-You can configure the total amount of posters to be listed using the [tt]max=\"Number here\"[/tt] parameter.
+You can configure the total amount of posters to be listed using the [tt]max="Number here"[/tt] parameter.
 
 Example:
-[code=\"Comcode\"][block max=\"10\"]main_best_posters[/block][/code]';
+[code="Comcode"][block max="10"]main_best_posters[/block][/code]';
     }
 
     /**

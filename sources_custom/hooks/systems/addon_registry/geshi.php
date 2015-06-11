@@ -89,7 +89,7 @@ class Hook_addon_registry_geshi
     {
         return 'Apply syntax highlighting to a block of coding which is pasted inside the Comcode [tt]code[/tt] tag as follows:
 
-[code=\"Comcode\"][codebox=\"language\"]the code goes here[/codebox][/code]';
+[code="Comcode"][codebox="language"]the code goes here[/codebox][/code]';
     }
 
     /**
