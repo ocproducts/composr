@@ -249,6 +249,7 @@ class Module_admin_themewizard
         $dark = get_param_integer('dark', 0);
         $inherit_css = get_param_integer('inherit_css', 0);
         $themename = get_param_string('themename');
+        require_code('type_sanitisation');
         if ((!is_alphanumeric($themename, true)) || (strlen($themename) > 40)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }

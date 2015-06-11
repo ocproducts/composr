@@ -164,9 +164,6 @@ function find_theme_seed($theme, $no_easy_anchor = false)
         if (!is_file($css_path)) {
             $css_path = get_file_base() . '/themes/default/css/global.css';
         }
-        if (!is_file($css_path)) {
-            return '426aa9'; // Not ideal, but default theme is this
-        }
         $css_file_contents = file_get_contents($css_path);
         $matches = array();
         if (preg_match('#\{\$THEME\_WIZARD\_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
@@ -174,9 +171,12 @@ function find_theme_seed($theme, $no_easy_anchor = false)
         } else {
             /*if ($no_easy_anchor)
             {
-                    Ideally we would put some auto-detection code here
+                   We could put some auto-detection code here; possibly a future improvement but not needed currently.
             } else {*/
-            $THEME_SEED_CACHE[$theme] = '426aa9'; // Not ideal, but default theme is this
+            if ($theme == 'default') {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            $THEME_SEED_CACHE[$theme] = find_theme_seed('default');
             //}
         }
     } else {
@@ -820,8 +820,20 @@ function calculate_dynamic_css_colours($colours, $source_theme)
 
     require_lang('themes');
 
-    // First we build up our landscape
+    // Initialise landscape
     $landscape = array();
+    foreach ($colours as $key => $val) {
+        if (preg_match('#^[0-9a-f]{6}$#i', $val) != 0) {
+            $landscape[$key] = array(
+                $key, // Colour name
+                null, // Parsed expression
+                null, // Full match string
+                $val // Final colour
+            );
+        }
+    }
+
+    // First we build up our landscape
     while (($sheet = readdir($dh)) !== false) {
         if (substr($sheet, -4) == '.css') {
             $path = get_file_base() . '/themes/' . $theme . '/' . $css_dir . '/' . $sheet;
@@ -831,7 +843,7 @@ function calculate_dynamic_css_colours($colours, $source_theme)
             $num_matches = preg_match_all('#\{\$THEME_WIZARD_COLOR,(.*),(.*),(.*)\}#', $contents, $matches);
 
             for ($i = 0; $i < $num_matches; $i++) {
-                // Skip over our little stored hints (not intended for Composr)
+                // Skip over our little stored hints (not intended for calculation, comes with new seed)
                 if (in_array($matches[2][$i], array('seed', 'WB', 'BW'))) {
                     continue;
                 }
@@ -855,7 +867,9 @@ function calculate_dynamic_css_colours($colours, $source_theme)
     $safety_count = 0;
     while (count($landscape) != 0) {
         foreach ($landscape as $i => $peak) {
-            $peak[3] = execute_css_colour_expression($peak[1], $colours);
+            if (is_null($peak[3])) {
+                $peak[3] = execute_css_colour_expression($peak[1], $colours);
+            }
             if (!is_null($peak[3])) { // We were able to get a result
                 $resolved_landscaped[] = $peak;
                 unset($landscape[$i]);
@@ -1312,17 +1326,19 @@ function theme_wizard_colours_to_css($contents, $landscape, $source_theme, $algo
         return $contents;
     }
     foreach ($landscape as $peak) {
-        $from = $peak[2];
-        $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
-        $contents = str_replace($from, $to, $contents);
+        if (!is_null($peak[2])) {
+            $from = $peak[2];
+            $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
+            $contents = str_ireplace($from, $to, $contents);
+        } else {
+            $to = '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',' . $peak[0] . ',100% ' . $peak[3] . '}';
+            $contents = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},' . $peak[0] . ',100% [\da-fA-F]{6}\}#i', $to, $contents);
+        }
     }
 
-    // Some hints not calculates by equations need separate replacements
+    // Some hints not calculated by equations need separate replacements
     $contents = str_replace('/* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */' . "\n", '', $contents);
-    $contents = str_replace('{$THEME_WIZARD_COLOR,#94979d,seed,100% 94979D}' . "\n", '', $contents);
-    $contents = str_replace('{$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}' . "\n", '', $contents);
-    $contents = str_replace('{$THEME_WIZARD_COLOR,#000000,BW,100% 000000}' . "\n", '', $contents);
-    $contents = str_replace('/*Theme seed is: 94979D*/', '/*Theme seed is: ' . $seed . '*/', $contents);
+    $contents = str_ireplace('/*Theme seed is: ' . find_theme_seed('default') . '*/', '/*Theme seed is: ' . $seed . '*/', $contents);
 
     return $contents;
 }

@@ -897,6 +897,7 @@ class Module_admin_setupwizard
             $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'wt');
             fwrite($myfile, 'title=' . $name . "\n");
             fwrite($myfile, 'description=' . do_lang('NA') . "\n");
+            fwrite($myfile, 'seed=' . post_param_string('seed_hex') . "\n");
             if (fwrite($myfile, 'author=Composr' . "\n") == 0) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }

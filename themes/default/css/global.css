@@ -23,10 +23,10 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 */
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
-{$THEME_WIZARD_COLOR,#94979d,seed,100% 94979D}
+{$THEME_WIZARD_COLOR,#94979d,seed,100% 426aa9}
 {$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
-/*Theme seed is: 94979D*/
+/*Theme seed is: 426aa9*/
 
 /* The fundamental website */
 {$THEME_WIZARD_COLOR,#e3eaf6,fixed_width_background,11% (seed sat_to 100) + 89% WB}
@@ -4095,6 +4095,7 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	/*{+END}*/
 	font-size: 0.9em;
 	display: inline-block;
+	max-width: 100%;
 }
 figure {
 	margin: 1em 0;
@@ -4136,6 +4137,7 @@ a[rel="lightbox"] {
 
 .attachment img {
 	vertical-align: middle;
+	max-width: 100%;
 }
 
 .attachment figcaption {
