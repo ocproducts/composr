@@ -98,9 +98,6 @@ pages/comcode_custom/*/*.txt
 !pages/comcode_custom/EN/_unslider_slide4.txt
 !pages/comcode_custom/EN/_unslider_slide5.txt
 !pages/comcode_custom/EN/_unslider_slide6.txt
-!pages/comcode_custom/EN/keymap.txt
-!pages/comcode_custom/EN/panel_right.txt
-!pages/comcode_custom/EN/rules.txt
 !site/pages/comcode_custom/EN/topsites.txt
 pages/html_custom/*/*.htm
 */pages/html_custom/*/*.htm
