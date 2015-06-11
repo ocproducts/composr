@@ -32,6 +32,22 @@ class Module_cms_tutorials extends Standard_crud_module
     public $table = 'tutorials_external';
 
     /**
+     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     *
+     * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
+     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     */
+    public function pre_run($top_level = true, $type = null)
+    {
+        $type = get_param_string('type', 'browse');
+
+        require_lang('tutorials');
+
+        return parent::pre_run($top_level);
+    }
+
+    /**
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
@@ -41,13 +57,22 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        require_code('tutorials');
+
         if (!module_installed('tutorials')) {
             require_code('zones2');
+
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => 'docs'));
+            if (is_null($test)) {
+                actual_add_zone('docs', do_lang('TUTORIALS'), 'tutorials');
+            }
+
             reinstall_module('docs', 'tutorials');
         }
 
-        require_code('tutorials');
-        require_lang('tutorials');
+        if ($type == 'browse') {
+            return $this->browse();
+        }
 
         return new Tempcode();
     }
@@ -66,6 +91,24 @@ class Module_cms_tutorials extends Standard_crud_module
         return array(
                    'browse' => array('tutorials:TUTORIALS', 'menu/pages/help'),
                ) + parent::get_entry_points();
+    }
+
+    /**
+     * The do-next manager for before content management.
+     *
+     * @return tempcode The UI
+     */
+    public function browse()
+    {
+        require_code('templates_donext');
+        require_code('fields');
+        return do_next_manager(get_screen_title('TUTORIALS'), new Tempcode(),
+            array(
+                has_privilege(get_member(), 'submit_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_TUTORIAL')) : null,
+                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_TUTORIAL')) : null,
+            ),
+            do_lang('TUTORIALS')
+        );
     }
 
     /**

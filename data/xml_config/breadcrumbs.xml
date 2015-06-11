@@ -28,7 +28,7 @@
 		<link label="{!HOME}">:</link>
 	</substitution>
 	<substitution match_key="docs:_WILD_NOT_START">
-		<link label="{!HELP}">docs:</link>
+		<link label="{!HELP}">docs:tutorials</link>
 	</substitution>
 	<substitution match_key="docs:tutorials">
 		<link label="{!HOME}">:</link>

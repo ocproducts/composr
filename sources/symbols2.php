@@ -3319,6 +3319,7 @@ function ecv2_SET_TUTORIAL_LINK($lang, $escaped, $param)
     }
 
     if ((array_key_exists(1, $param)) && ($param[1] != '') && ($param[1][0] != '#')) {
+        require_code('comcode_renderer');
         set_tutorial_link($param[0], $param[1]);
     }
 

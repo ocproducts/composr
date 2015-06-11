@@ -1083,8 +1083,8 @@ class Module_admin_setupwizard
                 }
                 $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($fullpath);
                 if ($myfile !== false) {
-                    if ($zone_pages['start'] != '') {
-                        if (fwrite($myfile, $zone_pages['start']) == 0) {
+                    if (fwrite($myfile, $zone_pages['start']) == 0) {
+                        if ($zone_pages['start'] != '') {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
                     }
@@ -1100,8 +1100,8 @@ class Module_admin_setupwizard
                 }
                 $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
                 if ($myfile !== false) {
-                    if ($zone_pages['left'] != '') {
-                        if (fwrite($myfile, $zone_pages['left']) == 0) {
+                    if (fwrite($myfile, $zone_pages['left']) == 0) {
+                        if ($zone_pages['left'] != '') {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
                     }
@@ -1117,8 +1117,8 @@ class Module_admin_setupwizard
                 }
                 $myfile = fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
                 if ($myfile !== false) {
-                    if ($zone_pages['right'] != '') {
-                        if (fwrite($myfile, $zone_pages['right']) == 0) {
+                    if (fwrite($myfile, $zone_pages['right']) == 0) {
+                        if ($zone_pages['right'] != '') {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
                     }

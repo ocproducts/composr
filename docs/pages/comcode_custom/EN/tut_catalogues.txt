@@ -7,7 +7,7 @@ The pre-made catalogues are:
  - FAQs
  - Modifications
  - Hosted-sites
- - Developer-projects
+ - Super-members projects
  - Contacts
 All the pre-made catalogues may be removed in the Setup Wizard, so depending on what you chose in that wizard, they may or may not currently be on your site.
 
