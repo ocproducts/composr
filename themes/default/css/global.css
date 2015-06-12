@@ -4381,7 +4381,7 @@ a[rel="lightbox"] {
 /*{+START,IF,{$ADDON_INSTALLED,recommend}}*/
 	.print_icon {
 		background: url('{$IMG;,icons/24x24/links/print}') no-repeat left top !important;
-		padding: 0 0 5px 22px !important;
+		padding: 0 0 5px 32px !important;
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {

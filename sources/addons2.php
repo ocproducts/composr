@@ -806,6 +806,8 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
     $info = better_parse_ini_file(null, $info_file['data']);
     if (!empty($info['copyright_attribution'])) {
         $info['copyright_attribution'] = explode("\n", $info['copyright_attribution']);
+    } else  {
+        $info['copyright_attribution'] = array ();
     }
     $info += get_default_addon_details();
     $addon = $info['name'];
