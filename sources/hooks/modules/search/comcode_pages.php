@@ -292,10 +292,12 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         $summary = $_summary[1];
 
         if ($summary == '') {
-            $comcode_file = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . get_site_default_lang() . '/' . filter_naughty($page) . '.txt');
-            if (!file_exists($comcode_file)) {
-                $comcode_file = zone_black_magic_filterer(get_file_base() . '/' . filter_naughty($zone) . '/pages/comcode/' . get_site_default_lang() . '/' . filter_naughty($page) . '.txt');
+            $page_request = _request_page($page, $zone);
+            if (strpos($page_request[0], 'COMCODE') === false) {
+                return new Tempcode();
             }
+            $comcode_file = $page_request[count($page_request)-1];
+
             if (file_exists($comcode_file)) {
                 global $LAX_COMCODE;
                 $LAX_COMCODE = true;
@@ -338,7 +340,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         global $LAST_COMCODE_PARSED_TITLE;
 
         if ($LAST_COMCODE_PARSED_TITLE != '') {
-            $title = do_lang_tempcode('_SEARCH_RESULT_COMCODE_PAGE_NICE', $LAST_COMCODE_PARSED_TITLE);
+            $title = do_lang_tempcode('_SEARCH_RESULT_COMCODE_PAGE_NICE', escape_html($LAST_COMCODE_PARSED_TITLE));
         }
 
         $breadcrumbs = breadcrumb_segments_to_tempcode(comcode_breadcrumbs($page, $zone));

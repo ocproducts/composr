@@ -667,6 +667,13 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 .global_middle_outer {
 	margin-top: 0.8em;
+	overflow: visible !important;
+}
+/* We normally hide stuff with overflow:hidden, but some share buttons use absolute positioned layers that need to escape our box */
+.global_middle_outer:after {
+	content: "";
+	display: table;
+	clear: both;
 }
 /*{+START,IF,{$NOT,{$CONFIG_OPTION,collapse_user_zones}}}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
@@ -1912,10 +1919,10 @@ table.scrollable_inside {
 .results_table.columned_table>tbody>tr:first-child>*:last-child {
 	{$BETA_CSS_PROPERTY,border-top-right-radius: 0px;}
 }
-.results_table>tbody>tr:last-child>*:first-child {
+.results_table>tbody>tr:last-child>*:first-child, .results_table>tbody>tr.last>*:first-child {
 	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
 }
-.results_table>tbody>tr:last-child>*:last-child {
+.results_table>tbody>tr:last-child>*:last-child, .results_table>tbody>tr.last>*:last-child {
 	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
 }
 
@@ -1935,7 +1942,7 @@ table.scrollable_inside {
 .results_table>*>tr>td:first-child, .results_table>*>tr>th:first-child {
 	border-left: 1px solid {$GET,standard_border};
 }
-.results_table>tbody>tr:last-child>td, .results_table>tbody>tr:last-child>th {
+.results_table>tbody>tr:last-child>td, .results_table>tbody>tr.last>td, .results_table>tbody>tr:last-child>th {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 .results_table>tfoot>tr>td, .results_table>tfoot>tr>th {
@@ -4292,7 +4299,7 @@ a[rel="lightbox"] {
 		padding-right: 10px !important;
 	}
 
-	body a.link_exempt, body .link_exempt_wrap a, body a[href*=".php"].user_link { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
+	body a.link_exempt, body .link_exempt_wrap a, body a[href*=".php"].user_link, a[rel="lightbox"] { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
 		background-image: none !important;
 		padding: 0px !important;
 	}

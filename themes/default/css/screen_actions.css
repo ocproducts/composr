@@ -5,10 +5,21 @@
 
 .screen_actions_outer {
 	margin: 2em 0;
+	overflow: visible !important;
+
+	/* Needed so the :after clearfix works in a constrained context */
+	display: inline-block;
+	width: 100%;
 }
 
 .screen_actions {
-	overflow: hidden;
+}
+
+/* We normally hide stuff with overflow:hidden, but some share buttons use absolute positioned layers that need to escape our box */
+.screen_actions:after {
+	content: "";
+	display: table;
+	clear: both;
 }
 
 .screen_actions div {

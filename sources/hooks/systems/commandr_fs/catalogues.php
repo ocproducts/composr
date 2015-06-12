@@ -158,7 +158,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     {
         if (substr($category, 0, 10) != 'CATALOGUE-') { // Category
             return array(
-                       'description' => 'LONG_TRANS',
+                        'description' => 'LONG_TRANS',
                        'notes' => 'LONG_TEXT',
                        'rep_image' => 'URLPATH',
                        'move_days_lower' => '?INTEGER',
@@ -265,7 +265,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      *
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~array                   Properties (false: error)
+     * @return ~array Properties (false: error)
      */
     protected function __folder_read_in_properties_category($path, $properties)
     {
@@ -304,7 +304,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error)
+     * @return ~ID_TEXT The resource ID (false: error)
      */
     public function folder_add($filename, $path, $properties)
     {
@@ -371,7 +371,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function folder_load($filename, $path)
     {
@@ -389,17 +389,17 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             list($meta_keywords, $meta_description) = seo_meta_get_for('catalogue_category', strval($row['id']));
 
             return array(
-                       'label' => $row['cc_title'],
-                       'description' => $row['cc_description'],
-                       'notes' => $row['cc_notes'],
-                       'rep_image' => $row['rep_image'],
-                       'move_days_lower' => $row['cc_move_days_lower'],
-                       'move_days_higher' => $row['cc_move_days_higher'],
-                       'move_target' => $row['cc_move_target'],
-                       'meta_keywords' => $meta_keywords,
-                       'meta_description' => $meta_description,
-                       'add_date' => $row['cc_add_date'],
-                   ) + $this->_custom_fields_load('catalogue_category', strval($row['id']));
+                'label' => $row['cc_title'],
+                'description' => $row['cc_description'],
+                'notes' => $row['cc_notes'],
+                'rep_image' => $row['rep_image'],
+                'move_days_lower' => $row['cc_move_days_lower'],
+                'move_days_higher' => $row['cc_move_days_higher'],
+                'move_target' => $row['cc_move_target'],
+                'meta_keywords' => $meta_keywords,
+                'meta_description' => $meta_description,
+                'add_date' => $row['cc_add_date'],
+            ) + $this->_custom_fields_load('catalogue_category', strval($row['id']));
         }
 
         // Catalogue
@@ -451,7 +451,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_edit($filename, $path, $properties)
     {
@@ -714,7 +714,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_add($filename, $path, $properties)
     {
@@ -741,7 +741,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function file_load($filename, $path)
     {
@@ -807,7 +807,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_edit($filename, $path, $properties)
     {

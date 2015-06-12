@@ -29,7 +29,7 @@ class Hook_commandr_fs_raw
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~array                   The final directory listing (false: failure)
+     * @return ~array The final directory listing (false: failure)
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
@@ -145,7 +145,7 @@ class Hook_commandr_fs_raw
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  string $file_name The file name
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~string                  The file contents (false: failure)
+     * @return ~string The file contents (false: failure)
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {

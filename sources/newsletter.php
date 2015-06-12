@@ -173,7 +173,7 @@ function newsletter_who_send_to($send_details, $lang, $start, $max, $get_raw_row
         $this_level = array_key_exists(strval($newsletter['id']), $send_details) ? $send_details[strval($newsletter['id'])] : 0;
         if ($this_level != 0) {
             $where_lang = multi_lang() ? (db_string_equal_to('language', $lang) . ' AND ') : '';
-            $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']) . ' AND the_level>=' . strval($this_level);
+            $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']) . ' AND the_level>=' . strval($this_level) . 'ORDER BY n.id';
             $temp = $GLOBALS['SITE_DB']->query('SELECT n.id,n.email,the_password,n_forename,n_surname' . $query, $max, $start);
             if ($start == 0) {
                 $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE newsletter_id=' . strval($newsletter['id']) . ' AND the_level>=' . strval($this_level));
@@ -217,14 +217,14 @@ function newsletter_who_send_to($send_details, $lang, $start, $max, $get_raw_row
                 $id = intval(substr($_id, 1));
                 $query = 'SELECT xxxxx  FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON m.id=g.gm_member_id AND g.gm_validated=1 WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1 AND gm_group_id=' . strval($id);
                 if (get_option('allow_email_from_staff_disable') == '1') {
-                    $query .= ' AND m_allow_emails=1';
+                    $query .= ' AND m_allow_emails=1 ORDER BY m.id';
                 }
-                $query .= ' AND m_is_perm_banned=0';
+                $query .= ' AND m_is_perm_banned=0 ORDER BY m.id';
                 $query .= ' UNION SELECT xxxxx FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1 AND m_primary_group=' . strval($id);
                 if (get_option('allow_email_from_staff_disable') == '1') {
                     $query .= ' AND m_allow_emails=1';
                 }
-                $query .= ' AND m_is_perm_banned=0';
+                $query .= ' AND m_is_perm_banned=0 ORDER BY m.id';
                 $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', 'm.id,m.m_email_address,m.m_username', $query), $max, $start, false, true);
                 if ($start == 0) {
                     $total['g' . strval($id)] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT (' . str_replace(' UNION ', ') + (', str_replace('xxxxx', 'COUNT(*)', $query)) . ')', false, true);

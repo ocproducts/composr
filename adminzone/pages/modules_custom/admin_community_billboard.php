@@ -224,7 +224,7 @@ class Module_admin_community_billboard extends Standard_crud_module
      * @param  BINARY $validated Whether the message is for immediate use
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($message = '', $days = 1, $notes = '', $validated = 0)
+    public function get_form_fields($message = '', $days = 1, $notes = '', $validated = 1)
     {
         $fields = new Tempcode();
         require_code('form_templates');
@@ -233,7 +233,7 @@ class Module_admin_community_billboard extends Standard_crud_module
         if (get_option('enable_staff_notes') == '1') {
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
-        $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode('DESCRIPTION_IMMEDIATE_USE'), 'validated', $validated == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($message == '') ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $validated == 1));
 
         return array($fields, new Tempcode());
     }

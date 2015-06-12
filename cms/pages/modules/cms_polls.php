@@ -244,7 +244,7 @@ class Module_cms_polls extends Standard_crud_module
      * @param  LONG_TEXT $notes Notes for the poll
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($id = null, $question = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 = '', $a7 = '', $a8 = '', $a9 = '', $a10 = '', $current = false, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
+    public function get_form_fields($id = null, $question = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 = '', $a7 = '', $a8 = '', $a9 = '', $a10 = '', $current = true, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -268,7 +268,7 @@ class Module_cms_polls extends Standard_crud_module
                     $current = true;
                 }
             }
-            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode('DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
+            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($question == '') ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
         }
 
         // Meta data

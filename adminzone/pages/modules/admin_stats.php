@@ -1090,13 +1090,8 @@ class Module_admin_stats
      */
     public function overview()
     {
-        $page = 'pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
-        if (!file_exists(get_custom_file_base() . '/' . $page)) {
-            $page = 'pages/comcode/' . get_site_default_lang() . '/start.txt';
-        }
-        if (!file_exists(get_file_base() . '/' . $page)) {
-            $page = 'pages/comcode/' . fallback_lang() . '/start.txt';
-        }
+        $page_request = _request_page(get_zone_default_page(''), '');
+        $page = $page_request[count($page_request) - 1];
 
         list($graph_views_monthly, $list_views_monthly) = array_values($this->views_per_x($page, 'views_hourly', 'VIEWS_PER_MONTH', 'DESCRIPTION_VIEWS_PER_MONTH', 730, 8766));
 

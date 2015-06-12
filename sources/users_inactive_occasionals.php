@@ -168,7 +168,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         if (!is_null($test)) {
             require_code('temporal');
             require_code('tempcode');
-            if (date('d/m/Y', tz_time($test, get_site_timezone())) != date('d/M/Y', tz_time(time(), get_site_timezone()))) {
+            if (date('d/m/Y', tz_time($test, get_site_timezone())) != date('d/m/Y', tz_time(time(), get_site_timezone()))) {
                 require_code('points');
                 $_before = point_info($member);
                 if (array_key_exists('points_gained_visiting', $_before)) {

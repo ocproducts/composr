@@ -26,7 +26,7 @@
  * @param  PATH $file_path The path to the video file
  * @param  string $filename The original filename of the video file (so we can find the file type from the file extension)
  * @param  boolean $delay_errors Whether to skip over errored files instead of dying. We don't currently make use of this as our readers aren't sophisticard enough to properly spot erroneous situations.
- * @return ~array                       The triplet of width/height/length (possibly containing NULL's for when we can't detect properties) (false: error)
+ * @return ~array The triplet of width/height/length (possibly containing NULL's for when we can't detect properties) (false: error)
  */
 function get_video_details($file_path, $filename, $delay_errors = false)
 {

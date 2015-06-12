@@ -108,7 +108,7 @@ class Hook_rss_catalogues
                 $_title = $map['FIELD_0'];
                 $news_title = xmlentities(is_object($_title) ? $_title->evaluate() : escape_html($_title));
                 if (array_key_exists('FIELD_1', $map)) {
-                    $summary = xmlentities(is_object($map['FIELD_1']) ? $map['FIELD_1']->evaluate() : escape_html($map['FIELD_1']));
+                    $summary = xmlentities(is_object($map['FIELD_1']) ? $map['FIELD_1']->evaluate() : $map['FIELD_1']);
                 } else {
                     $summary = '';
                 }

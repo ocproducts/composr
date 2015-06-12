@@ -30,7 +30,14 @@
 			var func={
 				exec: function(e) {
 					fauxmodal_alert(window.lang_PREFER_CMS_ATTACHMENTS,function() {
-						editor.execCommand('image');
+						if (typeof window.lang_PREFER_CMS_ATTACHMENTS=='undefined') {
+							editor.execCommand('image');
+						} else
+						{
+							fauxmodal_alert(window.lang_PREFER_CMS_ATTACHMENTS,function() {
+								editor.execCommand('image');
+							});
+						}
 					});
 				}
 			};

@@ -89,7 +89,7 @@ class Hook_syndication_facebook
         $code = get_param_string('code', '', true);
 
         if ($code == '') {
-            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => array('publish_stream', 'offline_access')));
+            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => array('publish_actions')));
             require_code('site2');
             smart_redirect($oauth_redir_url);
         }
@@ -107,7 +107,7 @@ class Hook_syndication_facebook
         }
 
         if (is_null($member_id)) {
-            $FACEBOOK_CONNECT->setExtendedAccessToken();
+            /*$FACEBOOK_CONNECT->setExtendedAccessToken();
             $FACEBOOK_CONNECT->api('/oauth/access_token', 'POST',
                 array(
                     'grant_type' => 'fb_exchange_token',
@@ -115,7 +115,7 @@ class Hook_syndication_facebook
                     'client_secret' => get_option('facebook_secret_code'),
                     'fb_exchange_token' => $access_token
                 )
-            );
+            );*/
 
             if (get_option('facebook_uid') == '') {
                 require_code('config2');

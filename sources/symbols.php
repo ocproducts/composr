@@ -2183,9 +2183,6 @@ function ecv_BANNER($lang, $escaped, $param)
 function ecv_AVATAR($lang, $escaped, $param)
 {
     $value = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url(isset($param[0]) ? intval($param[0]) : get_member());
-    if ((url_is_local($value)) && ($value != '')) {
-        $value = get_base_url() . '/' . $value;
-    }
 
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -2530,9 +2527,6 @@ function ecv_PHOTO($lang, $escaped, $param)
 
     if (isset($param[0])) {
         $value = $GLOBALS['FORUM_DRIVER']->get_member_photo_url(intval($param[0]));
-        if ((url_is_local($value)) && ($value != '')) {
-            $value = get_base_url() . '/' . $value;
-        }
     }
 
     if ($escaped != array()) {

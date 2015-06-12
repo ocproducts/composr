@@ -93,6 +93,9 @@ function create_selection_list_timezone_list($timezone = null)
  */
 function approve_ip_script()
 {
+    require_code('site');
+    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+
     $keep = keep_symbol(array('1'));
 
     $code = either_param_string('code', '');

@@ -145,7 +145,7 @@ class Module_admin_phpinfo
             $dets = posix_getpwuid($user);
             $out .= '<p>Running as user: ' . escape_html($dets['name']) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
         } elseif (strpos(@ini_get('disable_functions'), 'shell_exec') === false) {
-            $test = shell_exec('whoami');
+            $test = @shell_exec('whoami');
             if (!empty($test)) {
                 if (function_exists('get_current_user') && strpos(@ini_get('disable_functions'), 'get_current_user') === false) {
                     $suexec = ($test == get_current_user());

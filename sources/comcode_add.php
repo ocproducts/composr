@@ -250,6 +250,7 @@ function _get_non_wysiwyg_tags()
         'surround',
         'tt',
         'no_parse',
+        'code',
         'overlay',
         'random',
         'pulse',
@@ -861,7 +862,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         }
     } elseif (($tag == 'sections') || ($tag == 'big_tabs') || ($tag == 'tabs') || ($tag == 'list')) {
         $fields->attach(form_input_text_multi(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_EMBED')), 'tag_contents', explode(',', $default_embed), 2));
-    } elseif ((array_key_exists($tag, $TEXTUAL_TAGS)) || ($tag == 'menu')) {
+    } elseif ((array_key_exists($tag, $TEXTUAL_TAGS)) || ($tag == 'menu') || ($tag == 'code')) {
         if (($tag == 'menu') && ($default_embed == '')) {
             $default_embed = '-contracted section
 +expanded section

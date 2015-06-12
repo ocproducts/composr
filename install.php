@@ -1090,7 +1090,22 @@ function step_5()
         }
     }
 
+    // Check table prefix
     $table_prefix = post_param_string('table_prefix');
+
+    // Test base URL isn't subject to redirects
+    $test_url = $base_url . '/installer_is_testing_base_urls.php';
+    require_code('files');
+    http_download_file($test_url, null, false);
+    global $HTTP_DOWNLOAD_URL;
+    if ($HTTP_DOWNLOAD_URL != $test_url) {
+        if (preg_replace('#www\.#', '', $HTTP_DOWNLOAD_URL) == $test_url) {
+            warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITH_WWW'));
+        }
+        elseif ($HTTP_DOWNLOAD_URL == preg_replace('#www\.#', '', $test_url)) {
+            warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITHOUT_WWW'));
+        }
+    }
 
     // Read in a temporary SITE_INFO, but only so this step has something to run with (the _config.php write doesn't use this data)
     global $SITE_INFO;
@@ -2362,7 +2377,7 @@ function object_factory($class)
  *
  * @param  string $var Config option.
  * @param  string $value New value of option.
- * @return ~string                      Old value of option (false: error).
+ * @return ~string Old value of option (false: error).
  */
 function safe_ini_set($var, $value)
 {
@@ -2825,6 +2840,9 @@ php_flag suhosin.sql.union off
 php_flag suhosin.sql.comment off
 php_flag suhosin.sql.multiselect off
 php_flag suhosin.upload.remove_binary off
+# Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)
+php_value auto_prepend_file none
+php_value auto_append_file none
 END;
     }
 

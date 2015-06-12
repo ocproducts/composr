@@ -512,7 +512,7 @@ function check_field_for_blankness(field,event)
 
 	var ee=document.getElementById('error_'+field.id);
 
-	if ((value.replace(/\s/g,'')=='') || (value=='****') || (value=='{!POST_WARNING;^}'))
+	if ((value.replace(/\s/g,'')=='') || (value=='****') || (value=='{!POST_WARNING;^}') || (value=='{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}'))
 	{
 		if (event)
 		{
@@ -2576,7 +2576,7 @@ function get_inner_html(element,outer_too)
 				// text node
 				out+= (src_dom_node.nodeValue?src_dom_node.nodeValue:'');
 			}
-			else if (src_dom_node.nodeType == 4) {
+			else if (src_dom_node.nodeType==4) {
 				// text node
 				out+=(src_dom_node.nodeValue?'<![CDATA['+src_dom_node.nodeValue+']]':'');
 			}

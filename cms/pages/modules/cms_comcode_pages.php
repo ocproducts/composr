@@ -598,20 +598,18 @@ class Module_cms_comcode_pages
      * @param  LANGUAGE_NAME $lang The language most preferable
      * @param  ID_TEXT $file The page name
      * @param  ID_TEXT $zone The zone
-     * @return PATH The path
+     * @return PATH The path (blank: not found)
      */
     public function find_comcode_page($lang, $file, $zone)
     {
         $restore_from = zone_black_magic_filterer(filter_naughty(get_param_string('restore_from', $zone . '/' . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt')), true);
-        if (((!file_exists(get_file_base() . '/' . $restore_from)) && (!file_exists(get_custom_file_base() . '/' . $restore_from))) || ((!is_null(get_param_string('restore_from', null))) && (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())))) {
-            $restore_from = zone_black_magic_filterer($zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt', true);
-        }
-        if ((!file_exists(get_file_base() . '/' . $restore_from)) && (!file_exists(get_custom_file_base() . '/' . $restore_from))) {
-            $restore_from = zone_black_magic_filterer($zone . '/' . 'pages/comcode_custom/' . fallback_lang() . '/' . $file . '.txt', true);
-        }
-        if ((!file_exists(get_file_base() . '/' . $restore_from)) && (!file_exists(get_custom_file_base() . '/' . $restore_from))) {
-            $restore_from = zone_black_magic_filterer($zone . '/' . 'pages/comcode/' . fallback_lang() . '/' . $file . '.txt', true);
-        }
+		if (((!is_file(get_file_base() . '/' . $restore_from)) && (!is_file(get_custom_file_base() . '/' . $restore_from))) || ((!is_null(get_param('restore_from', null))) && (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())))) {
+			$page_request = _request_page($file, $zone);
+			if (strpos($page_request[0], 'COMCODE') === false) {
+                return '';
+            }
+			$restore_from = $page_request[count($page_request) - 1];
+		}
 
         return $restore_from;
     }
@@ -678,10 +676,10 @@ class Module_cms_comcode_pages
         $parsed = null;
         if ($contents == '') {
             $file_base = strpos($restore_from, 'comcode_custom/') ? get_custom_file_base() : get_file_base();
-            if (!file_exists($file_base . '/' . $restore_from)) {
+            if (!is_file($file_base . '/' . $restore_from)) {
                 $file_base = get_file_base();
             }
-            if (file_exists($file_base . '/' . $restore_from)) {
+            if (is_file($file_base . '/' . $restore_from)) {
                 $tmp = fopen($file_base . '/' . $restore_from, 'rb');
                 @flock($tmp, LOCK_SH);
                 $contents = file_get_contents($file_base . '/' . $restore_from);
@@ -726,7 +724,7 @@ class Module_cms_comcode_pages
         $revision_history = new Tempcode();
         $max = intval(get_option('number_revisions_show'));
         $last_path = $file_base . '/' . $restore_from;
-        if (file_exists($last_path)) {
+        if (is_file($last_path)) {
             foreach ($filesarray as $iterator => $stuff) {
                 list($filepath, $time) = $stuff;
 
@@ -762,7 +760,7 @@ class Module_cms_comcode_pages
                     }
                 }
             }
-            if ((strpos($restore_from, '/comcode_custom/') !== false) && (zone_black_magic_filterer($zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt', true) != $restore_from) && (file_exists(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt')))) {
+            if ((strpos($restore_from, '/comcode_custom/') !== false) && (zone_black_magic_filterer($zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt', true) != $restore_from) && (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt')))) {
                 $url = get_base_url() . '/' . $zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt';
                 $size = filesize(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt'));
                 $restore_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $zone . ':' . $file, 'restore_from' => $zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $lang . '/' . $file . '.txt'), '_SELF');
@@ -1160,7 +1158,7 @@ class Module_cms_comcode_pages
                     $page_contents = cms_mb_strtolower(get_translated_text($page['string_index']));
                 } else {
                     $path = get_custom_file_base() . '/' . $page['the_zone'] . '/pages/comcode_custom/EN/' . $page['the_page'] . '.txt';
-                    $page_contents = file_exists($path) ? cms_mb_strtolower(file_get_contents($path)) : '';
+                    $page_contents = is_file($path) ? cms_mb_strtolower(file_get_contents($path)) : '';
                 }
                 if (!is_null($page_contents)) {
                     foreach ($todo_checks as $todo_check) {

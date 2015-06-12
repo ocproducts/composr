@@ -332,7 +332,7 @@ class Module_news
             if ($myrow['news_image'] != '') {
                 $img = $myrow['news_image'];
                 if ((url_is_local($img)) && ($img != '')) {
-                    $img = get_base_url() . '/' . $img;
+                    $img = get_custom_base_url() . '/' . $img;
                 }
             }
             $category = get_translated_text($news_cats[$myrow['news_category']]['nc_title']);

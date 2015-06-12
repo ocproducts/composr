@@ -100,7 +100,7 @@ function zip_error($errno, $mzip = false)
     );
     $errmsg = 'unknown';
     foreach ($zip_file_function_errors as $const_name => $error_message) {
-        if ((defined($const_name)) && (constant($const_name)) == $errno) {
+        if ((defined($const_name)) && (@constant($const_name)) == $errno) {
             $errmsg = $error_message;
         }
     }
@@ -1029,6 +1029,8 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (!running_script('cron_bridge')) &&
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
+        (strpos($text, 'Search: Operations error') === false) && // LDAP error, misconfiguration
+        (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free web hosts
         (strpos($text, 'data/commandr.php') === false) &&
         (strpos($text, '.less problem') === false) &&
         (strpos($text, '/mini') === false) &&
@@ -1041,13 +1043,17 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Unable to allocate memory for pool') === false) &&
         (strpos($text, 'Out of memory') === false) &&
         (strpos($text, 'Can\'t open file') === false) &&
+        (strpos($text, 'INSERT command denied to user') === false) && 
         (strpos($text, 'Disk is full writing') === false) &&
         (strpos($text, 'Disk quota exceeded') === false) &&
+        (strpos($text, 'No space left on device') === false) && 
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
         (strpos($text, 'Unable to save result set') === false) &&
-        (strpos($text, '.MYI') === false) &&
-        (strpos($text, '.MYD') === false) &&
+        (strpos($text, '.MAI') === false) && // MariaDB
+        (strpos($text, '.MAD') === false) && // MariaDB
+        (strpos($text, '.MYI') === false) && // MySQL
+        (strpos($text, '.MYD') === false) && // MySQL 
         (strpos($text, 'MySQL server has gone away') === false) &&
         (strpos($text, 'Incorrect key file') === false) &&
         (strpos($text, 'Too many connections') === false) &&

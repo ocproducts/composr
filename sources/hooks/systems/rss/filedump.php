@@ -67,7 +67,7 @@ class Hook_rss_filedump
                 break;
             }
 
-            if ($filters != array('')) {
+            if ($filters != array('*')) {
                 $ok = false;
                 foreach ($filters as $filter) {
                     if (substr($file, 0, strlen($filter)) == $filter) {

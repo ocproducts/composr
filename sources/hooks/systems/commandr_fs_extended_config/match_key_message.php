@@ -41,7 +41,7 @@ class Hook_commandr_fs_extended_config__match_key_message
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  string $file_name The file name
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~string                  The file contents (false: failure)
+     * @return ~string The file contents (false: failure)
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {

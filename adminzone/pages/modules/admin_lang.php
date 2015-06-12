@@ -381,6 +381,7 @@ class Module_admin_lang
         }
 
         $max = get_param_integer('max', 100);
+        $start = get_param_integer('start', 0);
 
         $lang = choose_language($this->title);
         if (is_object($lang)) {
@@ -398,11 +399,11 @@ class Module_admin_lang
                 $done_id_list .= strval($done_id);
             }
             $and_clause = ($done_id_list == '') ? '' : 'AND id NOT IN (' . $done_id_list . ')';
-            $query = 'FROM ' . get_table_prefix() . 'translate WHERE ' . db_string_not_equal_to('language', $lang) . ' ' . $and_clause . ' AND ' . db_string_not_equal_to('text_original', '') . ' ORDER BY importance_level';
+            $query = 'FROM ' . get_table_prefix() . 'translate WHERE ' . db_string_not_equal_to('language', $lang) . ' ' . $and_clause . ' AND ' . db_string_not_equal_to('text_original', '') . ' ORDER BY importance_level,id DESC';
             $to_translate = $GLOBALS['SITE_DB']->query('SELECT * ' . $query, $max/*reasonable limit*/);
         } else {
             $query = 'FROM ' . get_table_prefix() . 'translate a LEFT JOIN ' . get_table_prefix() . 'translate b ON a.id=b.id AND b.broken=0 AND ' . db_string_equal_to('b.language', $lang) . ' WHERE b.id IS NULL AND ' . db_string_not_equal_to('a.language', $lang) . ' AND ' . db_string_not_equal_to('a.text_original', '');
-            $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY a.importance_level', $max/*reasonable limit*/);
+            $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY a.importance_level,a.id DESC', $max/*reasonable limit*/, $start);
         }
         $total = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) ' . $query);
         if (count($to_translate) == 0) {
@@ -425,20 +426,28 @@ class Module_admin_lang
             $ids_to_lookup[] = $it['id'];
         }
         $names = find_lang_content_names($ids_to_lookup);
+        $_to_translate = array();
         foreach ($to_translate as $i => $it) {
             if ($it['importance_level'] == 0) {
                 continue; // Corrupt data
             }
 
             $id = $it['id'];
-            $old = $it['text_original'];
-            $current = $this->find_lang_matches($old, $lang);
-            $priority = ($last_level === $it['importance_level']) ? null : do_lang('PRIORITY_' . strval($it['importance_level']));
-
             $name = $names[$id];
             if (is_null($name)) {
                 continue; // Orphaned string
             }
+
+            $_to_translate[] = $it;
+        }
+        $to_translate = $_to_translate;
+        foreach ($to_translate as $i=>$it) {
+            $old = $it['text_original'];
+            $current = $this->find_lang_matches($old, $lang);
+            $priority = ($last_level === $it['importance_level']) ? null : do_lang('PRIORITY_' . strval($it['importance_level']));
+
+            $id = $it['id'];
+            $name = $names[$id];
 
             if ($google != '') {
                 $actions = do_template('TRANSLATE_ACTION', array('_GUID' => 'f625cf15c9db5e5af30fc772a7f0d5ff', 'LANG_FROM' => $it['language'], 'LANG_TO' => $lang, 'NAME' => 'trans_' . strval($id), 'OLD' => $old));
@@ -446,16 +455,19 @@ class Module_admin_lang
 
             check_suhosin_request_quantity(2, strlen('trans_' . $name));
 
-            $line = do_template('TRANSLATE_LINE_CONTENT', array('_GUID' => '87a0f5298ce9532839f3206cd0e06051', 'NAME' => $name, 'ID' => strval($id), 'OLD' => $old, 'CURRENT' => $current, 'ACTIONS' => $actions, 'PRIORITY' => $priority));
-
+            $line = do_template('TRANSLATE_LINE_CONTENT', array('_GUID' => '87a0f5298ce9532839f3206cd0e06051', 'NAME' => $name, 'ID' => strval($id), 'OLD' => $old, 'CURRENT' => $current, 'ACTIONS' => $actions, 'PRIORITY' => $priority, 'LAST' => !isset($to_translate[$i + 1])));
             $lines .= $line->evaluate(); /*XHTMLXHTML*/
 
             $last_level = $it['importance_level'];
         }
 
-        $url = build_url(array('page' => '_SELF', 'type' => '_content', 'lang' => $lang), '_SELF');
+        $url = build_url(array('page' => '_SELF', 'type' => '_content', 'lang' => $lang, 'start' => $start), '_SELF');
 
         require_code('lang2');
+
+        $_GET['lang'] = $lang;
+        require_code('templates_pagination');
+        $pagination = pagination(do_lang('TRANSLATE_CONTENT'), $start, 'start', $max, 'max', $total, true);
 
         return do_template('TRANSLATE_SCREEN_CONTENT_SCREEN', array(
             '_GUID' => 'af732c5e595816db1c6f025c4b8fa6a2',
@@ -470,6 +482,7 @@ class Module_admin_lang
             'LINES' => $lines,
             'TITLE' => $this->title,
             'URL' => $url,
+            'PAGINATION' => $pagination,
         ));
     }
 
@@ -521,7 +534,7 @@ class Module_admin_lang
         // Show it worked / Refresh
         $url = post_param_string('redirect', null);
         if (is_null($url)) {
-            $_url = build_url(array('page' => '_SELF', 'type' => 'content'), '_SELF');
+            $_url = build_url(array('page' => '_SELF', 'type' => 'content', 'lang' => $lang, 'start' => get_param_integer('start', null)), '_SELF');
             $url = $_url->evaluate();
         }
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

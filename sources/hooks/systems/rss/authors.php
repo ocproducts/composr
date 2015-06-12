@@ -54,7 +54,7 @@ class Hook_rss_authors
                 break;
             }
 
-            $id = strval($row['author']);
+            $id = $row['author'];
             $author = '';
 
             $news_date = '';

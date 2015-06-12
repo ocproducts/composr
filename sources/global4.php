@@ -365,15 +365,16 @@ function handle_has_checked_recently($id_code)
 /**
  * Convert a string to an array, with utf-8 awareness where possible/required.
  *
- * @param  string $str Input
- * @return array Output
+ * @param  string $str Input.
+ * @param  boolean $force Whether to force unicode as on.
+ * @return array Output.
  */
-function cms_mb_str_split($str)
+function cms_mb_str_split($str, $force = false)
 {
-    $len = cms_mb_strlen($str);
+    $len = cms_mb_strlen($str, $force);
     $array = array();
     for ($i = 0; $i < $len; $i++) {
-        $array[] = cms_mb_substr($str, $i, 1);
+        $array[] = cms_mb_substr($str, $i, 1, $force);
     }
     return $array;
 }
@@ -384,14 +385,15 @@ function cms_mb_str_split($str)
  * @param  string $str The input string.
  * @param  integer $len The maximum chunking length.
  * @param  string $glue Split character.
+ * @param  boolean $force Whether to force unicode as on.
  * @return string The chunked version of the input string.
  */
-function cms_mb_chunk_split($str, $len = 76, $glue = "\r\n")
+function cms_mb_chunk_split($str, $len = 76, $glue = "\r\n", $force = false)
 {
     if ($str == '') {
         return '';
     }
-    $array = cms_mb_str_split($str);
+    $array = cms_mb_str_split($str, $force);
     $n = -1;
     $new = '';
     foreach ($array as $char) {

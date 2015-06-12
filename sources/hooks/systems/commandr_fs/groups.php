@@ -89,32 +89,32 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     protected function _enumerate_folder_properties()
     {
         return array(
-                   'is_default' => 'BINARY',
-                   'is_super_admin' => 'BINARY',
-                   'is_super_moderator' => 'BINARY',
-                   'rank_title' => 'SHORT_TRANS',
-                   'rank_image' => 'URLPATH',
-                   'promotion_target' => '?group',
-                   'promotion_threshold' => '?INTEGER',
-                   'group_leader' => '?member',
-                   'flood_control_submit_secs' => 'INTEGER',
-                   'flood_control_access_secs' => 'INTEGER',
-                   'max_daily_upload_mb' => 'INTEGER',
-                   'max_attachments_per_post' => 'INTEGER',
-                   'max_avatar_width' => 'INTEGER',
-                   'max_avatar_height' => 'INTEGER',
-                   'max_post_length_comcode' => 'INTEGER',
-                   'max_sig_length_comcode' => 'INTEGER',
-                   'gift_points_base' => 'INTEGER',
-                   'gift_points_per_day' => 'INTEGER',
-                   'enquire_on_new_ips' => 'BINARY',
-                   'is_presented_at_install' => 'BINARY',
-                   'hidden' => 'BINARY',
-                   'order' => 'INTEGER',
-                   'rank_image_pri_only' => 'BINARY',
-                   'open_membership' => 'BINARY',
-                   'is_private_club' => 'BINARY',
-               ) + $this->_custom_fields_enumerate_properties('group');
+            'is_default' => 'BINARY',
+            'is_super_admin' => 'BINARY',
+            'is_super_moderator' => 'BINARY',
+            'rank_title' => 'SHORT_TRANS',
+            'rank_image' => 'URLPATH',
+            'promotion_target' => '?group',
+            'promotion_threshold' => '?INTEGER',
+            'group_leader' => '?member',
+            'flood_control_submit_secs' => 'INTEGER',
+            'flood_control_access_secs' => 'INTEGER',
+            'max_daily_upload_mb' => 'INTEGER',
+            'max_attachments_per_post' => 'INTEGER',
+            'max_avatar_width' => 'INTEGER',
+            'max_avatar_height' => 'INTEGER',
+            'max_post_length_comcode' => 'INTEGER',
+            'max_sig_length_comcode' => 'INTEGER',
+            'gift_points_base' => 'INTEGER',
+            'gift_points_per_day' => 'INTEGER',
+            'enquire_on_new_ips' => 'BINARY',
+            'is_presented_at_install' => 'BINARY',
+            'hidden' => 'BINARY',
+            'order' => 'INTEGER',
+            'rank_image_pri_only' => 'BINARY',
+            'open_membership' => 'BINARY',
+            'is_private_club' => 'BINARY',
+        ) + $this->_custom_fields_enumerate_properties('group');
     }
 
     /**
@@ -176,7 +176,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error)
+     * @return ~ID_TEXT The resource ID (false: error)
      */
     public function folder_add($filename, $path, $properties)
     {
@@ -202,7 +202,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function folder_load($filename, $path)
     {
@@ -215,33 +215,33 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $row = $rows[0];
 
         return array(
-                   'label' => $row['g_name'],
-                   'is_default' => $row['g_is_default'],
-                   'is_super_admin' => $row['g_is_super_admin'],
-                   'is_super_moderator' => $row['g_is_super_moderator'],
-                   'rank_title' => $row['g_title'],
-                   'rank_image' => $row['g_rank_image'],
-                   'promotion_target' => $row['g_promotion_target'],
-                   'promotion_threshold' => $row['g_promotion_threshold'],
-                   'group_leader' => $row['g_group_leader'],
-                   'flood_control_submit_secs' => $row['g_flood_control_submit_secs'],
-                   'flood_control_access_secs' => $row['g_flood_control_access_secs'],
-                   'max_daily_upload_mb' => $row['g_max_daily_upload_mb'],
-                   'max_attachments_per_post' => $row['g_max_attachments_per_post'],
-                   'max_avatar_width' => $row['g_max_avatar_width'],
-                   'max_avatar_height' => $row['g_max_avatar_height'],
-                   'max_post_length_comcode' => $row['g_max_post_length_comcode'],
-                   'max_sig_length_comcode' => $row['g_max_sig_length_comcode'],
-                   'gift_points_base' => $row['g_gift_points_base'],
-                   'gift_points_per_day' => $row['g_gift_points_per_day'],
-                   'enquire_on_new_ips' => $row['g_enquire_on_new_ips'],
-                   'is_presented_at_install' => $row['g_is_presented_at_install'],
-                   'hidden' => $row['g_hidden'],
-                   'order' => $row['g_order'],
-                   'rank_image_pri_only' => $row['g_rank_image_pri_only'],
-                   'open_membership' => $row['g_open_membership'],
-                   'is_private_club' => $row['g_is_private_club'],
-               ) + $this->_custom_fields_load('group', strval($row['id']));
+            'label' => $row['g_name'],
+            'is_default' => $row['g_is_default'],
+            'is_super_admin' => $row['g_is_super_admin'],
+            'is_super_moderator' => $row['g_is_super_moderator'],
+            'rank_title' => $row['g_title'],
+            'rank_image' => $row['g_rank_image'],
+            'promotion_target' => $row['g_promotion_target'],
+            'promotion_threshold' => $row['g_promotion_threshold'],
+            'group_leader' => $row['g_group_leader'],
+            'flood_control_submit_secs' => $row['g_flood_control_submit_secs'],
+            'flood_control_access_secs' => $row['g_flood_control_access_secs'],
+            'max_daily_upload_mb' => $row['g_max_daily_upload_mb'],
+            'max_attachments_per_post' => $row['g_max_attachments_per_post'],
+            'max_avatar_width' => $row['g_max_avatar_width'],
+            'max_avatar_height' => $row['g_max_avatar_height'],
+            'max_post_length_comcode' => $row['g_max_post_length_comcode'],
+            'max_sig_length_comcode' => $row['g_max_sig_length_comcode'],
+            'gift_points_base' => $row['g_gift_points_base'],
+            'gift_points_per_day' => $row['g_gift_points_per_day'],
+            'enquire_on_new_ips' => $row['g_enquire_on_new_ips'],
+            'is_presented_at_install' => $row['g_is_presented_at_install'],
+            'hidden' => $row['g_hidden'],
+            'order' => $row['g_order'],
+            'rank_image_pri_only' => $row['g_rank_image_pri_only'],
+            'open_membership' => $row['g_open_membership'],
+            'is_private_club' => $row['g_is_private_club'],
+        ) + $this->_custom_fields_load('group', strval($row['id']));
     }
 
     /**
@@ -250,7 +250,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_edit($filename, $path, $properties)
     {
@@ -467,7 +467,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_add($filename, $path, $properties)
     {
@@ -492,7 +492,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function file_load($filename, $path)
     {
@@ -567,7 +567,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_edit($filename, $path, $properties)
     {

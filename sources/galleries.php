@@ -801,7 +801,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
  * See whether the current member can submit to the named *member* gallery. Note - this function assumes that members have general submit permission, and does not check for gallery read access.
  *
  * @param  ID_TEXT $name The gallery name
- * @return ~integer                     The owner of the gallery (false: we aren't allowed to submit to it) (-2: not a member gallery)
+ * @return ~integer The owner of the gallery (false: we aren't allowed to submit to it) (-2: not a member gallery)
  */
 function can_submit_to_gallery($name)
 {

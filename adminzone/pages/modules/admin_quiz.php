@@ -368,7 +368,7 @@ class Module_admin_quiz
         }
 
         // Show the winners
-        return do_template('INDEX_SCREEN', array('_GUID' => 'd427ec7300a325ee4f00020ea59468e2', 'TITLE' => $this->title, 'CONTENT' => $_winners, 'PRE' => do_lang_tempcode('WINNERS_FOUND_AS_FOLLOWS'), 'POST' => ''));
+        return do_template('INDEX_SCREEN', array('_GUID' => 'd427ec7300a325ee4f00020ea59468e2', 'TITLE' => $this->title, 'CONTENT' => $_winners, 'PRE' => do_lang_tempcode('WINNERS_FOUND_AS_FOLLOWS'), 'POST' => do_lang_tempcode('WINNERS_HANDLING')));
     }
 
     /**

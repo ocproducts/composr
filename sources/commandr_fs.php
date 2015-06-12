@@ -117,7 +117,7 @@ class Commandr_fs
      *
      * @param  ?array $dir Directory (null: current directory is used)
      * @param  boolean $full_paths Whether to use full paths
-     * @return ~array                   Directory contents (false: failure)
+     * @return ~array Directory contents (false: failure)
      */
     protected function _get_current_dir_contents($dir = null, $full_paths = false)
     {
@@ -313,7 +313,7 @@ class Commandr_fs
      * @param  string $meta_root_node Meta root node result: returned by reference
      * @param  string $meta_root_node_type Meta root node type result: returned by reference
      * @param  ?array $target_dir Directory (null: current directory is used)
-     * @return ~array                   Current directory contents (false: error)
+     * @return ~array Current directory contents (false: error)
      */
     protected function _discern_meta_dir(&$meta_dir, &$meta_root_node, &$meta_root_node_type, $target_dir = null)
     {
@@ -739,7 +739,7 @@ class Commandr_fs
      * Read a file and return the contents.
      *
      * @param  array $to_read The file to read
-     * @return ~string                  The file contents (false: failure)
+     * @return ~string The file contents (false: failure)
      */
     public function read_file($to_read)
     {

@@ -397,8 +397,9 @@ function get_bound_content_entry($content_type, $id)
  * @param  tempcode $hidden Hidden Fields (passed by reference)
  * @param  ?array $field_filter Limit fields to a set (null: no limit)
  * @param  boolean $field_filter_whitelist Whether $field_filter is a whitelist (if false, it is a blacklist)
+ * @param  boolean $add_separate_header Whether to add a separate header above the fields, so long as not all the fields are already under some other header
  */
-function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $field_filter = null, $field_filter_whitelist = true)
+function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $field_filter = null, $field_filter_whitelist = true, $add_separate_header = false)
 {
     require_code('catalogues');
 
@@ -465,6 +466,10 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
         $field_groups_blank = $field_groups[''];
         unset($field_groups['']);
         $field_groups = array_merge(array($field_groups_blank), $field_groups);
+    }
+
+    if ($add_separate_header) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('MORE'))));
     }
     foreach ($field_groups as $field_group_title => $extra_fields) {
         if (is_integer($field_group_title)) {

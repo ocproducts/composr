@@ -36,6 +36,9 @@ php_flag suhosin.sql.union off
 php_flag suhosin.sql.comment off
 php_flag suhosin.sql.multiselect off
 php_flag suhosin.upload.remove_binary off
+# Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)
+php_value auto_prepend_file none
+php_value auto_append_file none
 </IfModule>
 
 # This unavoidably kills filedump folder creation, and stops us controlling our script execution time

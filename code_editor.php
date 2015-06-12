@@ -705,7 +705,7 @@ function ce_check_master_password($password_given)
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
  * @param  string $prefix The prefix of the temporary file name.
- * @return ~string                      The name of the temporary file (false: error).
+ * @return ~string The name of the temporary file (false: error).
  */
 function ce_cms_tempnam($prefix)
 {

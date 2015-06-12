@@ -126,12 +126,6 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
         dispatch_notification('receive_points_staff', null, do_lang('MEMBER_GIVEN_POINTS', integer_format($amount), null, null, get_site_default_lang()), $message_raw, null, $sender_id);
     }
 
-    if (get_forum_type() == 'cns') {
-        require_code('cns_posts_action');
-        require_code('cns_posts_action2');
-        cns_member_handle_promotion($recipient_id);
-    }
-
     global $TOTAL_POINTS_CACHE, $POINT_INFO_CACHE;
     if (array_key_exists($recipient_id, $TOTAL_POINTS_CACHE)) {
         $TOTAL_POINTS_CACHE[$recipient_id] += $amount;
@@ -141,6 +135,12 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
     }
     if ((array_key_exists($sender_id, $POINT_INFO_CACHE)) && (array_key_exists('gift_points_used', $POINT_INFO_CACHE[$sender_id]))) {
         $POINT_INFO_CACHE[$sender_id]['gift_points_used'] += $amount;
+    }
+
+    if (get_forum_type() == 'cns') {
+        require_code('cns_posts_action');
+        require_code('cns_posts_action2');
+        cns_member_handle_promotion($recipient_id);
     }
 
     if (!$anonymous) {

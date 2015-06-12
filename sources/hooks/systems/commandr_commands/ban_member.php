@@ -29,7 +29,7 @@ class Hook_commandr_command_ban_member
      * @param  array $options The options with which the command was called
      * @param  array $parameters The parameters with which the command was called
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~array                   Array of stdcommand, stdhtml, stdout, and stderr responses (false: error)
+     * @return ~array Array of stdcommand, stdhtml, stdout, and stderr responses (false: error)
      */
     public function run($options, $parameters, &$commandr_fs)
     {

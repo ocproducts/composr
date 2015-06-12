@@ -599,7 +599,14 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
         $missing_ok = false;
 
         // Its not in the upload folder, so maybe we aren't allowed to download it
-        if (((substr($url[0], 0, strlen($upload_folder) + 1) != $upload_folder . '/') && (substr($url[0], 0, strlen('data/images/') + 1) != 'data/images/')) || (strpos($url[0], '..') !== false)) {
+		if (
+			(
+				(substr($url[0], 0, strlen($upload_folder) + 1) != $upload_folder . '/') && 
+				(substr($url[0], 0, strlen('data/images/') + 1) != 'data/images/') && 
+				(preg_match('#^[^\?\.]*\.(m4v|mp4|flv|f4v|mpeg|mpg|webm|ogv|png|gif|jpg|jpeg|jpe)$#', $url[0]) == 0)/*Streaming/compression plugins can mess up our script detection so whitelist some formats*/
+			) ||
+			(strpos($url[0], '..') !== false)
+		) {
             $myfile = @fopen(get_custom_file_base() . '/' . rawurldecode($url[0]), 'rb');
             if ($myfile !== false) {
                 $shouldbe = fread($myfile, 8000);

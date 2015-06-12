@@ -127,6 +127,7 @@ class Self_learning_cache
     private $path = null;
     private $data = null; // null means "Nothing loaded"
     private $keys_inital = array();
+    private $pending_save = false;
 
     /**
      * Constructor. Initialise our cache.
@@ -231,7 +232,7 @@ class Self_learning_cache
         if (!isset($this->data[$key]) || $this->data[$key] !== $value) {
             $this->data[$key] = $value;
 
-            $this->save();
+            $this->save(false);
         }
     }
 
@@ -253,7 +254,7 @@ class Self_learning_cache
         if ((!isset($this->data[$key][$value])) && !array_key_exists($value, $this->data[$key]) || $this->data[$key][$value] !== $value_2) {
             $this->data[$key][$value] = $value_2;
 
-            $this->save();
+            $this->save(false);
 
             return true;
         }
@@ -263,11 +264,21 @@ class Self_learning_cache
 
     /**
      * Save the cache, after some change has happened.
+     *
+     * @param  boolean $do_immediately Immediately save the cache change (slow...)
      */
-    private function save()
+    private function save($do_immediately = false)
     {
         if (!$this->is_on()) {
             return;
+        }
+
+        if (!$do_immediately) {
+            if (!$this->pending_save) {
+                // Mark to save later
+                register_shutdown_function(array($this, '_page_cache_resave'));
+            }
+            $this->pending_save = true;
         }
 
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {

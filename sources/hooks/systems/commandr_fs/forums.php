@@ -307,7 +307,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $description_link = $this->_default_property_str($properties, 'description_link');
 
         return array(/*$description,*/
-                     $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link);
+ $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link);
     }
 
     /**
@@ -317,7 +317,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
      * @param  ?ID_TEXT $force_type Resource type to try to force (null: do not force)
-     * @return ~ID_TEXT                 The resource ID (false: error)
+     * @return ~ID_TEXT The resource ID (false: error)
      */
     public function folder_add($filename, $path, $properties, $force_type = null)
     {
@@ -386,7 +386,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function folder_load($filename, $path)
     {
@@ -469,7 +469,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_edit($filename, $path, $properties)
     {
@@ -585,7 +585,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_add($filename, $path, $properties)
     {
@@ -626,7 +626,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function file_load($filename, $path)
     {
@@ -661,7 +661,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_edit($filename, $path, $properties)
     {

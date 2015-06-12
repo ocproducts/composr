@@ -286,9 +286,11 @@ function _convert_url_to_path($url)
     if (strpos($url, '?') !== false) {
         return null;
     }
-    if ((strpos($url, '://') === false) || (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/')) {
-        if (strpos($url, '://') !== false) {
+    if ((strpos($url, '://') === false) || (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') || (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/')) {
+        if (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') {
             $file_path_stub = urldecode(substr($url, strlen(get_base_url()) + 1));
+        } elseif (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/') {
+            $file_path_stub = urldecode(substr($url, strlen(get_custom_base_url()) + 1));
         } else {
             $file_path_stub = urldecode($url);
         }
@@ -325,8 +327,8 @@ function _fixup_protocolless_urls($in)
 
     $in = remove_url_mistakes($in); // Chain in some other stuff
 
-    if (strpos($in, '://') !== false) {
-        return $in; // Absolute
+    if (strpos($in, ':') !== false) {
+        return $in; // Absolute (e.g. http:// or mailto:)
     }
 
     if (substr($in, 0, 1) == '#') {
@@ -485,6 +487,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         $page_link .= ':' . urldecode($attributes['id']);
     }
     foreach ($attributes as $key => $val) {
+        if (!is_string($val)) {
+            $val = strval($val);
+        }
+
         if (($key != 'page') && ($key != 'type') && ($key != 'id')) {
             $page_link .= ':' . $key . '=' . urldecode($val);
         }

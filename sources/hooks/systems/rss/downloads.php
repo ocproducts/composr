@@ -93,7 +93,7 @@ class Hook_rss_downloads
             }
 
             $keep = symbol_tempcode('KEEP');
-            $enclosure_url = find_script('dload') . '?id=' . strval($id) . $keep->evaluate();
+            $enclosure_url = find_script('dload') . '?id=' . strval($row['id']) . $keep->evaluate();
             $full_url = $row['url'];
             if (url_is_local($full_url)) {
                 $full_url = get_custom_base_url() . '/' . $full_url;

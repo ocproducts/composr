@@ -228,6 +228,7 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/CNS_MEMBER_PROFILE_ABOUT.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_EDIT.tpl',
             'themes/default/javascript/profile.js',
+            'themes/default/templates/CNS_MEMBER_BOX_CUSTOM_FIELD.tpl',
             'themes/default/templates/CNS_USER_MEMBER.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_SCREEN.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_MEMBER.tpl',

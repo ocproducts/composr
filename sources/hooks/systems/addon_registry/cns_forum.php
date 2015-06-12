@@ -213,7 +213,6 @@ class Hook_addon_registry_cns_forum
             'themes/default/templates/CNS_TOPIC_POLL_BUTTON.tpl',
             'themes/default/templates/CNS_TOPIC_POLL_VIEW_RESULTS.tpl',
             'themes/default/templates/CNS_TOPIC_POST.tpl',
-            'themes/default/templates/CNS_MEMBER_BOX_CUSTOM_FIELD.tpl',
             'themes/default/templates/CNS_FORUM_TOPIC_ROW_LINK.tpl',
             'themes/default/templates/CNS_FORUM_TOPIC_ROW_MODIFIER.tpl',
             'themes/default/templates/CNS_TOPIC_SCREEN.tpl',

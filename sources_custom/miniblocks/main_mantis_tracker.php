@@ -97,7 +97,7 @@ $select .= ',(SELECT COUNT(*) FROM mantis_bug_monitor_table y WHERE y.bug_id=a.i
 $select .= ',(SELECT SUM(amount) FROM mantis_sponsorship_table z WHERE z.bug_id=a.id) AS money_raised';
 $select .= ',CAST(c.value AS DECIMAL) as hours';
 $select .= ',CAST(c.value AS DECIMAL)*' . strval($multi_rate) . '*' . float_to_raw_string($s_credit_value) . ' AS currency_needed';
-$table = 'mantis_bug_table a JOIN mantis_bug_text_table b ON b.id=a.id JOIN mantis_custom_field_string_table c ON c.bug_id=a.id AND field_id=' . $cms_hours_field . ' JOIN mantis_category_table d ON d.id=a.category_id';
+$table = 'mantis_bug_table a JOIN mantis_bug_text_table b ON b.id=a.bug_text_id JOIN mantis_custom_field_string_table c ON c.bug_id=a.id AND field_id=' . $cms_hours_field . ' JOIN mantis_category_table d ON d.id=a.category_id';
 $query = 'SELECT ' . $select . ' FROM ' . $table . ' WHERE ' . $where . ' ORDER BY ' . $order;
 
 $issues = $db->query($query, $max, $start);

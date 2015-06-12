@@ -260,8 +260,8 @@ class Hook_task_import_member_csv
 
             $avatar_url = array_key_exists('Avatar', $line) ? $line['Avatar'] : null;
             if (!is_null($avatar_url)) {
-                if (substr($avatar_url, 0, strlen(get_base_url())) == get_base_url()) {
-                    $avatar_url = substr($avatar_url, strlen(get_base_url()));
+                if (substr($avatar_url, 0, strlen(get_custom_base_url())) == get_custom_base_url()) {
+                    $avatar_url = substr($avatar_url, strlen(get_custom_base_url()));
                 }
             }
             $signature = array_key_exists('Signature', $line) ? $line['Signature'] : '';
@@ -369,6 +369,8 @@ class Hook_task_import_member_csv
                 }
 
                 $linked_id = cns_make_member($username, $password, is_null($email_address) ? '' : $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, null, $primary_group, $validated, $join_time, null, '', $avatar_url, $signature, $is_perm_banned, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, null, '', false, $password_compatibility_scheme, $salt, 1, null, 0, '*', '');
+                $all_members[$linked_id] = $username;
+                $all_members_flipped[$username] = $linked_id;
                 $num_added++;
             } else {
                 $old_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($linked_id, 'm_username');

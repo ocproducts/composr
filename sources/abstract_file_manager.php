@@ -211,7 +211,7 @@ function get_afm_form_fields()
  * Return the FTP connection, from stored/posted details.
  *
  * @param  boolean $light_fail Whether to simply echo-out errors.
- * @return ~resource                    The FTP connection (false: not connecting via FTP).
+ * @return ~resource The FTP connection (false: not connecting via FTP).
  */
 function _ftp_info($light_fail = false)
 {

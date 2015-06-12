@@ -208,7 +208,11 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         }
         require_code('cns_posts_action');
         if ($from_cnt != $to_cnt) {
-            $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_poster'), array('p_topic_id' => $topic_id)));
+            $where = array('p_topic_id' => $topic_id);
+            if (addon_installed('unvalidated')) {
+                $where['p_validated'] = 1;
+            }
+            $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_poster'), $where));
             $member_post_counts = array_count_values($_member_post_counts);
 
             foreach ($member_post_counts as $member_id => $member_post_count) {
@@ -434,7 +438,11 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
         }
         require_code('cns_posts_action');
         if ($from_cnt != $to_cnt) {
-            $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query('SELECT p_poster FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list_2, null, null, false, true));
+            $sql = 'SELECT p_poster FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list_2 . ')';
+            if (addon_installed('unvalidated')) {
+                $sql .= ' AND p_validated=1';
+            }
+            $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
             $member_post_counts = array_count_values($_member_post_counts);
 
             foreach ($member_post_counts as $member_id => $member_post_count) {

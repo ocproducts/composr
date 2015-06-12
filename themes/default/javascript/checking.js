@@ -264,6 +264,12 @@ function disable_buttons_just_clicked(inputs,permanent)
 
 function do_form_preview(event,form,preview_url,has_separate_preview)
 {
+	if (!document.getElementById('preview_iframe'))
+	{
+		fauxmodal_alert('{!ADBLOCKER;}');
+		return false;
+	}
+
 	preview_url+=((typeof window.mobile_version_for_preview=='undefined')?'':('&keep_mobile='+(window.mobile_version_for_preview?'1':'0')));
 
 	var old_action=form.getAttribute('action');

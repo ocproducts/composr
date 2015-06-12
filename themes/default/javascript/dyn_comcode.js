@@ -57,31 +57,37 @@ function initialise_image_fader_html(data,v,k)
 
 function initialise_image_fader_image(data,v,k,mill,total)
 {
+	var period_in_msecs=50;
+	increment=3;
+	if (period_in_msecs*100/increment>mill)
+	{
+		period_in_msecs=mill*increment/100;
+		period_in_msecs*=0.9; // A little give
+	}
+
 	data['url'+k]=v;
 	new Image().src=data['url'+k]; // precache
 	window.setTimeout(function() {
-	   var func=function() {
-		  data.fp_animation_fader.src=data.fp_animation.src;
-		  set_opacity(data.fp_animation_fader,1.0);
-		  fade_transition(data.fp_animation_fader,0,50,-3);
-		  set_opacity(data.fp_animation,0.0);
-		  fade_transition(data.fp_animation,100,50,3);
-		  data.fp_animation.src=data['url'+k];
-		  window.setTimeout(function() {
-			 data.fp_animation_fader.style.left=((find_width(data.fp_animation_fader.parentNode)-find_width(data.fp_animation_fader))/2)+'px';
-			 data.fp_animation_fader.style.top=((find_height(data.fp_animation_fader.parentNode)-find_height(data.fp_animation_fader))/2)+'px';
-		  },0);
-		  if (data.tease_title)
-		  {
-			 set_inner_html(data.tease_title,data['title'+k]);
-		  }
-		  if (data.tease_scrolling_text)
-		  {
-			 set_inner_html(data.tease_scrolling_text,data['html'+k]);
-		  }
-	   };
-	   if (k!=0) func();
-	   window.setInterval(func,mill*total);
+		var func=function() {
+			data.fp_animation_fader.src=data.fp_animation.src;
+			set_opacity(data.fp_animation_fader,1.0);
+			fade_transition(data.fp_animation_fader,0,period_in_msecs,increment*-1);
+			set_opacity(data.fp_animation,0.0);
+			fade_transition(data.fp_animation,100,period_in_msecs,increment);
+			data.fp_animation.src=data['url'+k];
+			data.fp_animation_fader.style.left=((find_width(data.fp_animation_fader.parentNode)-find_width(data.fp_animation_fader))/2)+'px';
+			data.fp_animation_fader.style.top=((find_height(data.fp_animation_fader.parentNode)-find_height(data.fp_animation_fader))/2)+'px';
+			if (data.tease_title)
+			{
+				set_inner_html(data.tease_title,data['title'+k]);
+			}
+			if (data.tease_scrolling_text)
+			{
+				set_inner_html(data.tease_scrolling_text,data['html'+k]);
+			}
+		};
+		if (k!=0) func();
+		window.setInterval(func,mill*total);
 	},k*mill);
 }
 

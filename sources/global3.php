@@ -706,18 +706,19 @@ function fix_bad_unicode($input, $definitely_unicode = false)
  * Get string length, with utf-8 awareness where possible/required.
  *
  * @param  string $in The string to get the length of.
+ * @param  boolean $force Whether to force unicode as on.
  * @return integer The string length.
  */
-function cms_mb_strlen($in)
+function cms_mb_strlen($in, $force = false)
 {
-    if (strtolower(get_charset()) != 'utf-8') {
+    if (!$force && strtolower(get_charset()) != 'utf-8') {
         return strlen($in);
     }
     if (function_exists('mb_strlen')) {
-        return @mb_strlen($in); // @ is because there could be invalid unicode involved
+        return @mb_strlen($in, $force ? 'utf-8' : get_charset()); // @ is because there could be invalid unicode involved
     }
     if (function_exists('iconv_strlen')) {
-        return @iconv_strlen($in);
+        return @iconv_strlen($in, $force ? 'utf-8' : get_charset());
     }
     return strlen($in);
 }
@@ -729,12 +730,12 @@ function cms_mb_strlen($in)
  * @param  integer $from The start position.
  * @param  ?integer $amount The length to extract (null: all remaining).
  * @param  boolean $force Whether to force unicode as on.
- * @return ~string                      String part (false: $start was over the end of the string).
+ * @return ~string String part (false: $start was over the end of the string).
  */
 function cms_mb_substr($in, $from, $amount = null, $force = false)
 {
     if ($amount === null) {
-        $amount = cms_mb_strlen($in) - $from;
+        $amount = cms_mb_strlen($in, $force) - $from;
     }
 
     if ((!$force) && (strtolower(get_charset()) != 'utf-8')) {
@@ -742,10 +743,10 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
     }
 
     if (function_exists('iconv_substr')) {
-        return @iconv_substr($in, $from, $amount);
+        return @iconv_substr($in, $from, $amount, $force ? 'utf-8' : get_charset());
     }
     if (function_exists('mb_substr')) {
-        return @mb_substr($in, $from, $amount);
+        return @mb_substr($in, $from, $amount, $force ? 'utf-8' : get_charset());
     }
 
     $ret = substr($in, $from, $amount);
@@ -1252,7 +1253,7 @@ function cns_require_all_forum_stuff()
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
  * @param  string $prefix The prefix of the temporary file name.
- * @return ~string                      The name of the temporary file (false: error).
+ * @return ~string The name of the temporary file (false: error).
  */
 function cms_tempnam($prefix)
 {

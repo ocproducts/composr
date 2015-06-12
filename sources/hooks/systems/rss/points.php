@@ -69,7 +69,7 @@ class Hook_rss_points
                 $to = do_lang('UNKNOWN');
             }
             $news_title = xmlentities(do_lang('POINTS_RSS_LINE', $to, integer_format($row['amount'])));
-            $summary = get_translated_text($row['reason']);
+            $summary = xmlentities(get_translated_text($row['reason']));
             $news = '';
 
             $category = '';

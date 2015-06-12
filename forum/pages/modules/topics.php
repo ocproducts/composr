@@ -2033,6 +2033,10 @@ class Module_topics
      */
     public function report_post() // Type
     {
+        if (!cns_may_report_post()) {
+            access_denied('I_ERROR');
+        }
+
         $post_id = get_param_integer('id');
 
         $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
@@ -2251,6 +2255,10 @@ class Module_topics
                 $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), get_member(), $member_id, true, $meta_data['views']);
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } elseif ($forum_id == -2) { // New reported post topic
+                if (!cns_may_report_post()) {
+                    access_denied('I_ERROR');
+                }
+
                 $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
                 if (is_null($forum_id)) {
                     warn_exit(do_lang_tempcode('NO_REPORTED_POST_FORUM'));
@@ -3081,8 +3089,20 @@ END;
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {
                 var post=form.elements['post'];
-                if ((!post.value) && (post[1])) post=post[1];
-                if (post.value.length>" . strval($size) . ")
+                var text_value;
+                if (is_wysiwyg_field(post))
+                {
+                    try
+                    {
+                        text_value=window.CKEDITOR.instances['post'].getData();
+                    }
+                    catch (e) {};
+                } else
+                {
+                    if ((!post.value) && (post[1])) post=post[1];
+                    text_value=post.value;
+                }
+                if (text_value.length>" . strval($size) . ")
                 {
                     window.fauxmodal_alert('" . php_addslashes(do_lang('_POST_TOO_LONG')) . "');
                     return false;

@@ -58,7 +58,7 @@
 	4_ICON=menu/cms/catalogues/edit_this_catalogue
 {+END}
 
-{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}{+END}
+{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
 
 {$,Display top/recent entries. By default it is only shown on the A-Z screen, which has a blank ID}
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}{+START,IF,{$EQ,{ID},}}

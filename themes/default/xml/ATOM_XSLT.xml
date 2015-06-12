@@ -45,7 +45,7 @@
 		<h2>
 			<xsl:element name="a">
 				<xsl:attribute name="href"><xsl:value-of select="atom:link[@rel='alternate']/@href" /></xsl:attribute>
-				<span name="decodeable"><xsl:value-of select="atom:title" disable-output-escaping="yes" /></span>
+				<span name="decodeable"><xsl:value-of select="atom:title" /></span>
 			</xsl:element>
 		</h2>
 		<p><span name="decodeable"><xsl:value-of select="atom:summary" disable-output-escaping="yes" /></span></p>

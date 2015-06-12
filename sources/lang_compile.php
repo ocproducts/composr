@@ -49,6 +49,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
 
             // Cleanup language strings
             if (!$DECACHED_COMCODE_LANG_STRINGS) {
+                $DECACHED_COMCODE_LANG_STRINGS = true;
                 $comcode_lang_strings = $GLOBALS['SITE_DB']->query('SELECT string_index FROM ' . get_table_prefix() . 'cached_comcode_pages WHERE ' . db_string_equal_to('the_zone', '') . ' AND the_page LIKE \'' . db_encode_like($codename . ':') . '\'');
                 if (!is_null($comcode_lang_strings)) {
                     foreach ($comcode_lang_strings as $comcode_lang_string) {
@@ -56,7 +57,6 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
                         delete_lang($comcode_lang_string['string_index']);
                     }
                 }
-                $DECACHED_COMCODE_LANG_STRINGS = true;
             }
         }
 

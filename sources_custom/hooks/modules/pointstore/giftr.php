@@ -73,8 +73,8 @@ class Hook_pointstore_giftr
             $gift_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'giftr', 'gift' => $gift['id'], 'username' => $username), '_SEARCH');
 
             $image_url = '';
-            if (is_file(get_file_base() . '/' . rawurldecode($gift['image']))) {
-                $image_url = get_base_url() . '/' . $gift['image'];
+            if (is_file(get_custom_file_base() . '/' . rawurldecode($gift['image']))) {
+                $image_url = get_custom_base_url() . '/' . $gift['image'];
             }
 
             $gifts[] = array(
@@ -151,7 +151,7 @@ class Hook_pointstore_giftr
             if (array_key_exists(0, $gift_rows)) {
                 $gift_row = $gift_rows[0];
                 $gift_name = $gift_row['name'];
-                $gift_image_url = get_base_url() . '/' . $gift_row['image'];
+                $gift_image_url = get_custom_base_url() . '/' . $gift_row['image'];
 
                 // Check available points and charge
                 $available_points = available_points($from_member);

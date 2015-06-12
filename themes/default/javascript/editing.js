@@ -394,7 +394,8 @@ function wysiwyg_editor_init_for(element,id)
 			info.get('txtCellPad')['default']='0';
 		}
 	});
-	window.lang_PREFER_CMS_ATTACHMENTS='{!javascript:PREFER_CMS_ATTACHMENTS;}';
+	if (document.getElementById('attachment_store'))
+		window.lang_PREFER_CMS_ATTACHMENTS='{!javascript:PREFER_CMS_ATTACHMENTS;}';
 	window.lang_SPELLCHECKER_ENABLED='{!javascript:SPELLCHECKER_ENABLED;}';
 	window.lang_SPELLCHECKER_DISABLED='{!javascript:SPELLCHECKER_DISABLED;}';
 	window.lang_SPELLCHECKER_TOGGLE='{!javascript:SPELLCHECKER_TOGGLE;}';

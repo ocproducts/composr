@@ -778,6 +778,9 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
                     if ($val === null) {
                         continue;
                     }
+                    if (is_integer($key)) {
+                        $key = strval($key);
+                    }
                     if ($val === SELF_REDIRECT) {
                         $val = get_self_url(true, true);
                     }

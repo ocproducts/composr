@@ -218,7 +218,7 @@ class Forum_driver_base
         }
 
         $ret = $this->_get_username($id);
-        if ($ret == '') {
+        if ($ret === '') {
             if (get_forum_type() == 'cns') {
                 return uniqid('', false); // Let it get deleted at least
             }

@@ -375,7 +375,7 @@ function php_function_allowed($function)
  *
  * @param  string $var Config option.
  * @param  string $value New value of option.
- * @return ~string                      Old value of option (false: error).
+ * @return ~string Old value of option (false: error).
  */
 function safe_ini_set($var, $value)
 {

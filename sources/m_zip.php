@@ -168,7 +168,7 @@ function init__m_zip()
          * Reads the next entry in a zip file archive.
          *
          * @param  array $open_zip_file The zip file resource
-         * @return ~array                       A directory entry resource for later use with the m_zip_entry_...() functions (false: if there's no more entries to read).
+         * @return ~array A directory entry resource for later use with the m_zip_entry_...() functions (false: if there's no more entries to read).
          */
         function zip_read($open_zip_file)
         {
@@ -335,7 +335,7 @@ function init__m_zip()
          *
          * @param  array $zip_entry Directory entry resource returned by m_zip_read()
          * @param  integer $zip_entry_file_size The maximum returned data size
-         * @return ~string                      The data (false: failure)
+         * @return ~string The data (false: failure)
          */
         function zip_entry_read($zip_entry, $zip_entry_file_size = 1024)
         {

@@ -75,7 +75,14 @@
 
 				{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
 					<script>// <![CDATA[
-						if ((window.wysiwyg_on) && (wysiwyg_on())) document.getElementById('{NAME;/}').readOnly=true; /* Stop typing while it loads */
+						if ((window.wysiwyg_on) && (wysiwyg_on()))
+						{
+							document.getElementById('{NAME;*}').readOnly=true; // Stop typing while it loads
+							window.setTimeout(function() {
+								if (document.getElementById('{NAME;*}').value==document.getElementById('{NAME;*}').defaultValue)
+									document.getElementById('{NAME;*}').readOnly=false; // Too slow, maybe WYSIWYG failed due to some network issue
+							},3000);
+						}
 
 						{+START,IF_PASSED,WORD_COUNTER}
 							add_event_listener_abstract(window,'load',function() {

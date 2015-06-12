@@ -203,9 +203,6 @@ class Block_main_rss
                     if (is_null($img)) {
                         $img = '';
                     }
-                    if (($img != '') && (url_is_local($img))) {
-                        $img = get_base_url() . '/' . $img;
-                    }
                     $category = do_template('BLOCK_MAIN_RSS_CATEGORY', array('_GUID' => '9b70a0d7524b62ea74bdb8071f4e88b5', 'IMG' => $img, 'CATEGORY' => $item['category']));
                 } else {
                     $category = do_template('BLOCK_MAIN_RSS_CATEGORY_NO_IMG', array('_GUID' => '772e44215bd2682e51a96b7480753ded', 'CATEGORY' => $item['category']));

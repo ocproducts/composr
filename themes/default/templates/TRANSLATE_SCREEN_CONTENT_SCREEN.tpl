@@ -15,9 +15,11 @@
 		<thead>
 			<tr>
 				<th>
-					{!ORIGINAL}{+START,IF,{$NEQ,{LANG_ORIGINAL_NAME},{LANG}}} ({LANG_NICE_ORIGINAL_NAME*}?){+END}
+					{!CODENAME}
 				</th>
 				<th>
+					{!ORIGINAL}{+START,IF,{$NEQ,{LANG_ORIGINAL_NAME},{LANG}}} ({LANG_NICE_ORIGINAL_NAME*}?){+END}
+					&rarr;
 					{LANG_NICE_NAME*}
 				</th>
 				{+START,IF_NON_EMPTY,{GOOGLE}}
@@ -49,3 +51,4 @@
 	</div>
 </form>
 
+{PAGINATION}

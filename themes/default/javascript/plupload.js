@@ -13388,7 +13388,8 @@ function replace_file_input(page_type,name,_btn_submit_id,posting_field_name,fil
 	if (!_btn_submit_id)
 	{
 		_btn_submit_id='submit_button';
-		if (!document.getElementById(_btn_submit_id))
+		var test=document.getElementById(_btn_submit_id);
+		if ((!test) || (test.form!=rep.form))
 		{
 			_btn_submit_id=null;
 			var inputs=rep.form.elements;

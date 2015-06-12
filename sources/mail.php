@@ -926,13 +926,17 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
  * Filter out any CSS selector blocks from the given CSS if they definitely do not affect the given (X)HTML.
  * Whilst this is a clever algorithm, it isn't so clever as to actually try and match each selector against a DOM tree. If any segment of a compound selector matches, match is assumed.
  *
- * @param                                   ID_TEXT $c CSS file
- * @param                                   ID_TEXT $theme Theme
+ * @param  ID_TEXT $c CSS file
+ * @param  ?ID_TEXT $theme Theme (null: default)
  * @param  string $context (X) HTML context under which CSS is filtered
  * @return string Filtered CSS
  */
 function filter_css($c, $theme, $context)
 {
+    if (is_null($theme)) {
+        $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+    }
+
     // Reduce input parameters to critical components, and cache on - saves a lot of time if multiple emails sent by script
     static $cache = array();
     $simple_sig = preg_replace('#\s+(?!class)(?!id)[\w\-]+="[^"<>]*"#', '', preg_replace('#[^<>]*(<[^<>]+>)[^<>]*#s', '${1}', $context));

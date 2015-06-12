@@ -194,7 +194,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             */
 
             case 'ldap':
-                if ($password_hashed != $row['m_pass_hash_salted']) {
+                if ($password_hashed !== $row['m_pass_hash_salted']) {
                     $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                     return $out;
                 }

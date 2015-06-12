@@ -585,7 +585,15 @@ abstract class Standard_crud_module
     public function choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks)
     {
         if (is_null($allow_rating)) {
-            $val = $GLOBALS['SITE_DB']->query_select_value($this->table, 'AVG(allow_rating)');
+            $query = 'SELECT allow_comments,count(allow_comments) AS qty FROM ' . get_table_prefix() . $this->table;
+            if ($this->table == 'catalogue_entries') {
+                $catalogue_name = get_param_string('catalogue_name', null);
+                if (!is_null($catalogue_name)) {
+                    $query .= ' WHERE ' . db_string_equal_to('c_name', $catalogue_name);
+                }
+            }
+            $query .= ' GROUP BY allow_comments ORDER BY qty DESC';
+            $val = $GLOBALS['SITE_DB']->query_value_null_ok_full($query, 1); // We need the mode here, not the mean
             $allow_rating = is_null($val) ? 1 : intval(round($val));
         }
 

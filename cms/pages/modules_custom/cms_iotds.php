@@ -154,7 +154,7 @@ class Module_cms_iotds extends Standard_crud_module
      * @param  LONG_TEXT $notes Notes for the IOTD
      * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $url = '', $thumb_url = '', $title = '', $caption = '', $current = false, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
+    public function get_form_fields($id = null, $url = '', $thumb_url = '', $title = '', $caption = '', $current = true, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -181,7 +181,7 @@ class Module_cms_iotds extends Standard_crud_module
                     $current = true;
                 }
             }
-            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode('DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
+            $fields->attach(form_input_tick(do_lang_tempcode('IMMEDIATE_USE'), do_lang_tempcode(($message == '') ? 'DESCRIPTION_IMMEDIATE_USE_ADD' : 'DESCRIPTION_IMMEDIATE_USE'), 'validated', $current));
         }
 
         // Meta data

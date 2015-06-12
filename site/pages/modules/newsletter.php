@@ -157,6 +157,10 @@ class Module_newsletter
             $GLOBALS['SITE_DB']->rename_table('newsletter', 'newsletter_subscribers');
             $GLOBALS['SITE_DB']->alter_table_field('newsletter_subscribers', 'the_password', 'SHORT_TEXT');
         }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 11)) {
+            $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', 'd_to_email', array('d_to_email'));
+        }
     }
 
     /**

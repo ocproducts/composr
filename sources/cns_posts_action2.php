@@ -51,11 +51,11 @@ function cns_member_handle_promotion($member_id = null)
         }
         $or_list .= 'id=' . strval($id);
     }
-    $promotions = $GLOBALS['FORUM_DB']->query('SELECT id,g_promotion_target FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups WHERE (' . $or_list . ') AND g_promotion_target IS NOT NULL AND g_promotion_threshold<=' . strval($total_points));
+    $promotions = $GLOBALS['FORUM_DB']->query('SELECT id,g_promotion_target FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups WHERE (' . $or_list . ') AND g_promotion_target IS NOT NULL AND g_promotion_threshold<=' . strval($total_points) . ' ORDER BY g_promotion_threshold');
     $promotes_today = array();
     foreach ($promotions as $promotion) {
         $_p = $promotion['g_promotion_target'];
-        if ((!array_key_exists($_p, $groups)) && (!array_key_exists($_p, $promotes_today))) { // If we're not already in the
+        if ((!array_key_exists($_p, $groups)) && (!array_key_exists($_p, $promotes_today))) { // If we're not already in the group
             // If it is our primary
             if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group') == $promotion['id']) {
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_primary_group' => $_p), array('id' => $member_id), '', 1);
@@ -235,7 +235,7 @@ function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $las
             't_cache_last_post_id=' . (is_null($last_post_id) ? 'NULL' : strval($last_post_id)) . ',
         t_cache_last_title=\'' . db_escape_string($last_title) . '\',
         t_cache_last_time=' . (is_null($last_time) ? 'NULL' : strval($last_time)) . ',
-        t_cache_last_username=\'' . db_escape_string($last_username) . '\',
+        t_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
         t_cache_last_member_id=' . (is_null($last_member_id) ? 'NULL' : strval($last_member_id)) . ',';
     }
 
@@ -321,7 +321,7 @@ function cns_force_update_forum_cacheing($forum_id, $num_topics_increment = null
                                 'f_cache_last_topic_id=' . (!is_null($last_topic_id) ? strval($last_topic_id) : 'NULL') . ',
         f_cache_last_title=\'' . db_escape_string($last_title) . '\',
         f_cache_last_time=' . (!is_null($last_time) ? strval($last_time) : 'NULL') . ',
-        f_cache_last_username=\'' . db_escape_string($last_username) . '\',
+        f_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
         f_cache_last_member_id=' . (!is_null($last_member_id) ? strval($last_member_id) : 'NULL') . ',
         f_cache_last_forum_id=' . (!is_null($last_forum_id) ? strval($last_forum_id) : 'NULL') . '
             WHERE id=' . strval($forum_id), 1, null, false, true);

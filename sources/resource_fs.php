@@ -673,7 +673,7 @@ class Resource_fs_base
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
-     * @return ~string                  Resource data (false: error)
+     * @return ~string Resource data (false: error)
      */
     public function file_load__flat($filename, $path)
     {
@@ -688,7 +688,7 @@ class Resource_fs_base
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
-     * @return ~string                  Resource data (false: error)
+     * @return ~string Resource data (false: error)
      */
     public function folder_load__flat($filename, $path)
     {
@@ -707,7 +707,7 @@ class Resource_fs_base
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  string $data Resource data
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_save__flat($filename, $path, $data)
     {
@@ -739,7 +739,7 @@ class Resource_fs_base
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  string $data Resource data
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_save__flat($filename, $path, $data)
     {
@@ -1270,7 +1270,7 @@ class Resource_fs_base
      * @param  ?array $properties Properties (null: none)
      * @param  ?ID_TEXT $search_label_as Whether to look for existing records using $filename as a label and this resource type (null: $filename is a strict file name)
      * @param  ?ID_TEXT $search_path Search path (null: the same as the path saving at)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function resource_save($resource_type, $label, $path, $properties = null, $search_label_as = null, $search_path = null)
     {
@@ -1293,7 +1293,7 @@ class Resource_fs_base
      * @param  LONG_TEXT $label Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  ?array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields) (null: none)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function resource_add($resource_type, $label, $path, $properties = null)
     {
@@ -1317,7 +1317,7 @@ class Resource_fs_base
      * @param  ID_TEXT $resource_type Resource type
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
-     * @return ~array                   Details of the resource (false: error)
+     * @return ~array Details of the resource (false: error)
      */
     public function resource_load($resource_type, $filename, $path)
     {
@@ -1337,7 +1337,7 @@ class Resource_fs_base
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
      * @param  boolean $explicit_move Whether we are definitely moving (as opposed to possible having it in multiple positions)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function resource_edit($resource_type, $filename, $path, $properties, $explicit_move = false)
     {
@@ -1865,7 +1865,7 @@ class Resource_fs_base
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
-     * @return ~string                  Resource data (false: error)
+     * @return ~string Resource data (false: error)
      */
     public function file_load_xml($filename, $path)
     {
@@ -1881,7 +1881,7 @@ class Resource_fs_base
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
-     * @return ~string                  Resource data (false: error)
+     * @return ~string Resource data (false: error)
      */
     public function folder_load_xml($filename, $path)
     {
@@ -1898,7 +1898,7 @@ class Resource_fs_base
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  string $data Resource data
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_save_xml($filename, $path, $data)
     {
@@ -1917,7 +1917,7 @@ class Resource_fs_base
      * @param  array $properties Properties
      * @param  ?ID_TEXT $search_label_as Whether to look for existing records using $filename as a label and this resource type (null: $filename is a strict file name)
      * @param  ?ID_TEXT $search_path Search path (null: the same as the path saving at)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_save($filename, $path, $properties, $search_label_as = null, $search_path = null)
     {
@@ -1958,7 +1958,7 @@ class Resource_fs_base
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  string $data Resource data
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_save_xml($filename, $path, $data)
     {
@@ -1977,7 +1977,7 @@ class Resource_fs_base
      * @param  array $properties Properties
      * @param  ?ID_TEXT $search_label_as Whether to look for existing records using $filename as a label and this resource type (null: $filename is a strict file name)
      * @param  ?ID_TEXT $search_path Search path (null: the same as the path saving at)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function folder_save($filename, $path, $properties, $search_label_as = null, $search_path = null)
     {
@@ -2174,7 +2174,7 @@ class Resource_fs_base
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~array                   The final directory listing (false: failure)
+     * @return ~array The final directory listing (false: failure)
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
@@ -2395,7 +2395,7 @@ class Resource_fs_base
      * @param  string $meta_root_node The root node of the current meta-directory
      * @param  string $file_name The file name
      * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~string                  The file contents (false: failure)
+     * @return ~string The file contents (false: failure)
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {

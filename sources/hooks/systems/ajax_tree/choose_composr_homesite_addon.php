@@ -84,7 +84,7 @@ class Hook_choose_composr_homesite_addon
 
         $num_matches = preg_match_all('#<entry id="(\d+)"[^<>]* title="([^"]+)"#', $file, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $list->attach(form_input_list_entry('http://compo.sr/dload.php?id=' . $matches[1][$i], false, $prefix . $matches[2][$i]));
+            $list->attach(form_input_list_entry('http://compo.sr/site/dload.php?id=' . $matches[1][$i], false, $prefix . $matches[2][$i]));
         }
 
         $num_matches = preg_match_all('#<category id="(\d+)" title="([^"]+)"#', $file, $matches);

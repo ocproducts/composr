@@ -454,7 +454,7 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
             foreach ($THEME_WIZARD_IMAGES as $expression) {
                 if (substr($expression, -1) == '*') {
                     $expression = substr($expression, 0, strlen($expression) - 2); // remove "/*"
-                    $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/' . filter_naughty($source_theme) . '/default/images', $expression)));
+                    $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/themes/' . filter_naughty($source_theme) . '/images', $expression)));
                     $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/themes/' . filter_naughty($source_theme) . '/images/' . fallback_lang(), $expression)));
                 } else {
                     $full_img_set[] = $expression;

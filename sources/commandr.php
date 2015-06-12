@@ -202,7 +202,7 @@ class Virtual_shell
     /**
      * Returns the parse tree for the command just parsed.
      *
-     * @return ~array                   The parse tree (false: failure)
+     * @return ~array The parse tree (false: failure)
      */
     public function return_parse_tree()
     {
@@ -216,7 +216,7 @@ class Virtual_shell
     /**
      * Returns the output for the command just parsed.
      *
-     * @return ~array                   The output (false: failure)
+     * @return ~array The output (false: failure)
      */
     public function return_output()
     {
@@ -315,7 +315,7 @@ class Virtual_shell
      * Return the HTML rendering of the parsed command's output.
      *
      * @param  boolean $blank_ok Whether it is okay to have blank output
-     * @return ~tempcode                The HTML (false: error)
+     * @return ~tempcode The HTML (false: error)
      */
     public function output_html($blank_ok = false)
     {
@@ -1251,10 +1251,15 @@ class Virtual_shell
                 }
             }
 
-            cms_setcookie('commandr_state', base64_encode(serialize($commandr_state_diff)));
-            cms_setcookie('commandr_state_code', base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE']))));
-            cms_setcookie('commandr_state_lang', base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED']))));
-            // ^ We use base64 encoding to work around inane modsecurity restrictions. We can't always work around modsecurity (GET/POST encoding would be too messy), but for cookies it is an easy win
+			$cookie_size = strlen(serialize($_COOKIE));
+            if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
+                cms_setcookie('commandr_state', base64_encode(serialize($commandr_state_diff)));
+                cms_setcookie('commandr_state_code', base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE']))));
+                cms_setcookie('commandr_state_lang', base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED']))));
+                // ^ We use base64 encoding to work around inane modsecurity restrictions. We can't always work around modsecurity (GET/POST encoding would be too messy), but for cookies it is an easy win
+            } else {
+                cms_eatcookie('commandr_state');
+            }
         } else {
             // Fake the PHP evaluation, because it's prohibited by a shared install
             $this->output[STREAM_STDERR] = do_lang('SHARED_INSTALL_PROHIBIT');
@@ -1286,7 +1291,7 @@ class Virtual_shell
      *
      * @param  string $script_name Script name
      * @param  ?string $dir Directory (null: Commandr module data dir)
-     * @return ~string                  Path or failure (false: failure)
+     * @return ~string Path or failure (false: failure)
      */
     protected function _find_script_file($script_name, $dir = null)
     {

@@ -1186,7 +1186,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
- * @return ~array                       A list of details (false: page not found)
+ * @return ~array A list of details (false: page not found)
  */
 function _request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
@@ -1206,7 +1206,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
- * @return ~array                       A list of details (false: page not found)
+ * @return ~array A list of details (false: page not found)
  */
 function __request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
@@ -1422,7 +1422,7 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  boolean $wildcard_mode Whether to also search in wildcard mode
- * @return ~array                       A list of details (false: page not found)
+ * @return ~array A list of details (false: page not found)
  */
 function _request_page__redirects($codename, $zone, $wildcard_mode = false)
 {

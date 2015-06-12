@@ -17,8 +17,7 @@ function hex_to_dec(number)
 
 if (typeof window.names_to_numbers=='undefined')
 {
-	window.names_to_numbers={};
-	window.names_to_numbers.length=0;
+	window.names_to_numbers={length: 0};
 	window.last_cc={};
 	window.last_cc_i={};
 }

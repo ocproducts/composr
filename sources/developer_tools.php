@@ -115,7 +115,7 @@ function destrictify($change_content_type = true, $mysql_too = false)
         $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true);
     }
     global $PREVIOUS_XSS_STATE;
-    array_push($PREVIOUS_XSS_STATE, ini_get('ocproducts.xss_detect'));
+    @array_push($PREVIOUS_XSS_STATE, ini_get('ocproducts.xss_detect'));
     safe_ini_set('ocproducts.xss_detect', '0');
     $include_path = ini_get('include_path');
     $include_path .= PATH_SEPARATOR . './';
@@ -162,7 +162,7 @@ function restrictify()
         safe_ini_set('ocproducts.type_strictness', '1');
 
         global $PREVIOUS_XSS_STATE;
-        safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+        @safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
     }
     if (!GOOGLE_APPENGINE) {
         safe_ini_set('include_path', '');

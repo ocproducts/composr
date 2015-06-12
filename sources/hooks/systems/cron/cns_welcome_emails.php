@@ -93,11 +93,18 @@ class Hook_cron_cns_welcome_emails
             foreach ($members as $member) {
                 $subject = get_translated_text($mail['w_subject'], null, get_lang($member['id']));
                 $text = get_translated_text($mail['w_text'], null, get_lang($member['id']));
-                $_text = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '8ffc0470c6e457cee14c413c10f7a90f', 'CONTENT' => $text, 'LANG' => get_site_default_lang()), null, false, null, '.txt', 'text');
                 for ($i = 0; $i < 100; $i++) {
                     if (strpos($text, '{{' . strval($i) . '}}') !== false) {
                         $text = str_replace('{{' . strval($i) . '}}', get_timezoned_date($time_now + $i * 60 * 60 * 24), $text);
                     }
+                }
+                $_text = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '8ffc0470c6e457cee14c413c10f7a90f', 'CONTENT' => $text, 'LANG' => get_site_default_lang()), null, false, null, '.txt', 'text');
+                if (strpos($_text->evaluate(), '<html') !== false) {
+                    $is_html = true;
+                    $text_comcode = comcode_to_tempcode($text, null, true);
+                    $_text = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '8ffc0470c6e457cee14c413c10f7a90g', 'CONTENT' => $text_comcode, 'LANG' => get_lang($member['id'])));
+                } else {
+                    $is_html = false;
                 }
 
                 if ($member['m_email_address'] != '') {
@@ -131,6 +138,12 @@ class Hook_cron_cns_welcome_emails
                         $message = newsletter_variable_substitution($message, $subject, $forename, $surname, $name, $member['m_email_address'], $sendid, $hash);
                     }
 
+                    if ($is_html) {
+                        require_code('tempcode_compiler');
+                        $temp = template_to_tempcode($message);
+                        $message = $temp->evaluate(get_lang($member['id']));
+                    }
+
                     if (get_value('notification_safety_testing') === '1') {
                         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('logged_mail_messages', 'm_date_and_time', array('m_subject' => $subject, 'm_to_email' => serialize(array($member['m_email_address']))));
                         if (!is_null($test)) {
@@ -141,7 +154,7 @@ class Hook_cron_cns_welcome_emails
                         }
                     }
 
-                    mail_wrap($subject, $message, array($member['m_email_address']), $name, '', '', 3, null, false, null, true);
+                    mail_wrap($subject, $message, array($member['m_email_address']), $name, '', '', 3, null, false, null, true, $is_html);
                 }
             }
         }

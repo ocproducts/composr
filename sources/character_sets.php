@@ -155,7 +155,7 @@ function _convert_data_encodings($known_utf8 = false)
  * Convert a unicode character number to a unicode string. Callback for preg_replace.
  *
  * @param  array $matches Regular expression match array.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function unichrm_hex($matches)
 {
@@ -166,7 +166,7 @@ function unichrm_hex($matches)
  * Convert a unicode character number to a unicode string. Callback for preg_replace.
  *
  * @param  array $matches Regular expression match array.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function unichrm($matches)
 {
@@ -177,7 +177,7 @@ function unichrm($matches)
  * Convert a unicode character number to a HTML-entity enabled string, using lower ASCII characters where possible.
  *
  * @param  integer $c Character number.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function unichr($c)
 {
@@ -533,7 +533,7 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
  *
  * @param  string $data Data to convert.
  * @param  string $internal_charset Charset to convert to.
- * @return ~string                      Converted data (false: could not convert).
+ * @return ~string Converted data (false: could not convert).
  */
 function entity_utf8_decode($data, $internal_charset)
 {

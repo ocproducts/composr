@@ -193,7 +193,7 @@ abstract class Hook_sitemap_base
      *
      * @param  ID_TEXT $page The codename of the page to load
      * @param  ID_TEXT $zone The zone the page is being loaded in
-     * @return ~array                   A list of details (false: page not found)
+     * @return ~array A list of details (false: page not found)
      */
     protected function _request_page_details($page, $zone)
     {

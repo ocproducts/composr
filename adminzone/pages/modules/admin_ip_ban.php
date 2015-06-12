@@ -263,7 +263,7 @@ class Module_admin_ip_ban
             }
             preg_match('#^([^\s]+)(.*)$#', $ban, $matches);
             $ip = $matches[1];
-            if (preg_match('#^[a-f0-9\.]+$#U', $ip) == 0) {
+            if (preg_match('#^[a-f0-9\.\*:]+$#U', $ip) == 0) {
                 attach_message(do_lang_tempcode('IP_ADDRESS_NOT_VALID', $ip), 'warn');
             } else {
                 if (!in_array($ip, $old_bans)) {

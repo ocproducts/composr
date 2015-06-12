@@ -9,7 +9,7 @@
 
 			<p>{!facebook:LOGIN_USING_FACEBOOK}</p>
 
-			<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_stream,offline_access{+END}"></div>
+			<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div>
 		{+END}
 
 		<h2>{!facebook:LOGIN_NATIVE_HEADER,{$SITE_NAME*}}</h2>
