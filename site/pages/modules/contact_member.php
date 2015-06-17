@@ -144,8 +144,8 @@ class Module_contact_member
         if ($default_email == '') {
             $fields->attach($email_field);
         }
-        $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), '', 'subject', get_param_string('subject', ''), true));
-        $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), '', 'message', get_param_string('message', ''), true));
+        $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), '', 'subject', get_param_string('subject', '', true), true));
+        $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), '', 'message', get_param_string('message', '', true), true));
         if (addon_installed('captcha')) {
             require_code('captcha');
             if (use_captcha()) {
