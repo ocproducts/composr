@@ -288,7 +288,7 @@ function find_addon_effective_mtime($addon_name)
     $files_rows = array_unique(collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename'), array('addon_name' => $addon_name))));
     $mtime = mixed();
     foreach ($files_rows as $filename) {
-        if (file_exists(get_file_base() . '/' . $filename)) {
+        if (@file_exists(get_file_base() . '/' . $filename)) { //@d due to possible bad file paths
             $_mtime = filemtime(get_file_base() . '/' . $filename);
             $mtime = is_null($mtime) ? $_mtime : max($mtime, $_mtime);
         }

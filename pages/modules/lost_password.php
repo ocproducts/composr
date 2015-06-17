@@ -205,12 +205,12 @@ class Module_lost_password
             }
         }
 
-        log_it('LOST_PASSWORD', strval($member_id), $code);
-
         $email = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
         if ($email == '') {
             warn_exit(do_lang_tempcode('MEMBER_NO_EMAIL_ADDRESS_RESET_TO'));
         }
+
+        log_it('LOST_PASSWORD', strval($member_id), $code);
 
         $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
 

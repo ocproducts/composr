@@ -6,6 +6,10 @@ TODO
 
 TODO
 
+[title="2"]Tapatalk[/title]
+
+There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users.
+
 [concepts
  1_key="TODO"   1_value="TODO"
 ]Concepts[/concepts]

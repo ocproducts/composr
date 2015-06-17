@@ -2456,7 +2456,7 @@ END;
             foreach ($invited_members as $invited_member) {
                 enable_notifications('cns_topic', strval($topic_id), $invited_member);
 
-                cns_invite_to_pt(intval($invited_member), $topic_id);
+                cns_invite_to_pt($invited_member, $topic_id);
             }
         }
 

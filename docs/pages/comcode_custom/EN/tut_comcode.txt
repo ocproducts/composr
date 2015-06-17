@@ -34,7 +34,7 @@ Comcode is primarily written and laid out as plain-text. Special tags (and other
 [*] [concept]Wiki+[/concept] page-links can be placed by typing [tt][[pagename-goes-here]][/tt], or [tt][[pagename-goes-here#anchor]][/tt]
 [*] table syntax (described in separate section)
 [*] list syntax (described in separate section)
-[*] [concept]Tempcode[/concept] symbols and directives may be used, such as [tt]{$USERNAME}[/tt] to display the username of the current user (described in separate section)
+[*] [concept]Tempcode[/concept] symbols and directives may be used, such as [tt]{$USERNAME}[/tt] to display the username of the current user (described in the Tempcode Programming tutorial)
 [*] certain shortcuts may be used, such as [tt](c)[/tt] for (c) (described in separate section)
 [/list]
 

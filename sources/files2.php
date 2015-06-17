@@ -768,27 +768,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
 
     // Initialisation
-    global $DOWNLOAD_LEVEL;
+    global $DOWNLOAD_LEVEL, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_CHARSET, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_DOWNLOAD_MTIME, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME;
     $DOWNLOAD_LEVEL++;
-    global $HTTP_DOWNLOAD_MIME_TYPE;
     $HTTP_DOWNLOAD_MIME_TYPE = null;
-    global $HTTP_CHARSET;
     $HTTP_CHARSET = null;
-    global $HTTP_DOWNLOAD_SIZE;
     $HTTP_DOWNLOAD_SIZE = 0;
-    global $HTTP_DOWNLOAD_URL;
     $HTTP_DOWNLOAD_URL = $url;
-    global $HTTP_DOWNLOAD_MTIME;
     $HTTP_DOWNLOAD_MTIME = null;
-    global $HTTP_MESSAGE;
     $HTTP_MESSAGE = null;
-    global $HTTP_MESSAGE_B;
     $HTTP_MESSAGE_B = null;
-    global $HTTP_NEW_COOKIES;
     if ($DOWNLOAD_LEVEL == 0) {
         $HTTP_NEW_COOKIES = array();
     }
-    global $HTTP_FILENAME;
     $HTTP_FILENAME = null;
 
     // Prevent DOS loop attack

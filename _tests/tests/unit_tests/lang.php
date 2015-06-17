@@ -112,6 +112,9 @@ class lang_test_set extends cms_test_case
                     $this->assertTrue(false, 'The \'\n\' linebreak character was used in ' . $file . ' in the language string. This should be checked, to make sure it is really necessary.');
                 }
 
+                if (preg_match('#([^A-Za-z]+)Javascript([^A-Za-z]+)#', $string) != 0) {
+                    $this->assertTrue(false, 'The word \'Javascript\' was used in ' . $file . '. This should be changed to \'JavaScript\'.');
+                }
                 if (preg_match('#([^A-Za-z]+)tar([^A-Za-z]+)#', $string) != 0) {
                     $this->assertTrue(false, 'The filetype \'tar\' was used in ' . $file . '. This should be changed to \'TAR\'.');
                 }

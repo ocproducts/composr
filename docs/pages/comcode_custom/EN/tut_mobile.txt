@@ -74,6 +74,10 @@ Here are some things to bear in mind:
    - the page linked to via the top level of a drop-down node has navigation within that page (i.e. links). Therefore the drop-down options are no more than shortcuts for desktop users, not essential navigation
  - Don't design anything within a page to use scrollbars, as this is poorly supported on mobile (of course, scrolling on the main page is fine)
 
+[title="2"]Tapatalk[/title]
+
+There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users.
+
 [concepts
  1_key="Responsive design"   1_value="A powerful technique to allow web page layout to reflow for devices of different sizes."
 ]Concepts[/concepts]

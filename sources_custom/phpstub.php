@@ -2514,10 +2514,9 @@ function mkdir($path, $mode, $recursive = false, $context = null)
  * @param  ?integer $month The month (null: now).
  * @param  ?integer $day The day (null: now).
  * @param  ?integer $year The year (null: now).
- * @param  integer $is_dst Whether date is in DST (-1 meaning unknown/guess, 0 meaning no, 1 meaning yes).
  * @return TIME The timestamp.
  */
-function mktime($hour, $minute = null, $second = null, $month = null, $day = null, $year = null, $is_dst = -1)
+function mktime($hour, $minute = null, $second = null, $month = null, $day = null, $year = null)
 {
     return 0;
 }
@@ -4129,10 +4128,9 @@ function getrandmax()
  * @param  integer $month The month.
  * @param  integer $day The day.
  * @param  integer $year The year.
- * @param  integer $is_dst Whether date is in DST (-1 meaning unknown/guess, 0 meaning no, 1 meaning yes).
  * @return integer The timestamp.
  */
-function gmmktime($hour, $minute, $second, $month, $day, $year, $is_dst = -1)
+function gmmktime($hour, $minute, $second, $month, $day, $year)
 {
     return 0;
 }
