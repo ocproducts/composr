@@ -69,9 +69,9 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     // PT from
     $query .= 'SELECT t.*,l.*,p.*,p.id AS p_id,t.id as t_id';
     if (multi_lang_content()) {
-        $query .= ',t_cache_first_post AS p_post';
+        $query .= ',t_cache_first_post AS p_post_first';
     } else {
-        $query .= ',p2.p_post,p2.p_post__text_parsed,p2.p_post__source_user';
+        $query .= ',p2.p_post AS p_post_first,p2.p_post__text_parsed AS p_post_first__text_parsed,p2.p_post__source_user AS p_post_first__source_user';
     }
     $query .= ' FROM
     ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
@@ -90,9 +90,9 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     // PT to
     $query .= 'SELECT t.*,l.*,p.*,p.id AS p_id,t.id as t_id';
     if (multi_lang_content()) {
-        $query .= ',t_cache_first_post AS p_post';
+        $query .= ',t_cache_first_post AS p_post_first';
     } else {
-        $query .= ',p2.p_post,p2.p_post__text_parsed,p2.p_post__source_user';
+        $query .= ',p2.p_post AS p_post_first,p2.p_post__text_parsed AS p_post_first__text_parsed,p2.p_post__source_user AS p_post_first__source_user';
     }
     $query .= ' FROM
     ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
@@ -111,9 +111,9 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     // PT invited to
     $query .= 'SELECT t.*,l.*,p.*,p.id AS p_id,t.id as t_id';
     if (multi_lang_content()) {
-        $query .= ',t_cache_first_post AS p_post';
+        $query .= ',t_cache_first_post AS p_post_first';
     } else {
-        $query .= ',p2.p_post,p2.p_post__text_parsed,p2.p_post__source_user';
+        $query .= ',p2.p_post AS p_post_first,p2.p_post__text_parsed AS p_post_first__text_parsed,p2.p_post__source_user AS p_post_first__source_user';
     }
     $query .= ' FROM
     ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
@@ -134,9 +134,9 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
         // Inline personal post to
         $query .= 'SELECT t.*,l.*,p.*,p.id AS p_id,t.id as t_id';
         if (multi_lang_content()) {
-            $query .= ',t_cache_first_post AS p_post';
+            $query .= ',t_cache_first_post AS p_post_first';
         } else {
-            $query .= ',p2.p_post,p2.p_post__text_parsed,p2.p_post__source_user';
+            $query .= ',p2.p_post AS p_post_first,p2.p_post__text_parsed AS p_post_first__text_parsed,p2.p_post__source_user AS p_post_first__source_user';
         }
         $query .= ' FROM
         ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
@@ -176,10 +176,10 @@ function generate_notifications($member_id)
         return $notifications_cache[$cache_identifier];
     }
 
-    $do_cacheing = ((get_option('is_on_block_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1)) && ((get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0));
+    $do_caching = has_caching_for('block');
 
     $notifications = mixed();
-    if ($do_cacheing) {
+    if ($do_caching) {
         $_notifications = get_cache_entry('_new_pp', $cache_identifier, CACHE_AGAINST_MEMBER, 10000);
 
         if (!is_null($_notifications)) {
@@ -255,7 +255,7 @@ function generate_notifications($member_id)
             )));
         }
 
-        if ($do_cacheing) {
+        if ($do_caching) {
             require_code('caches2');
             put_into_cache('_new_pp', 60 * 60 * 24, $cache_identifier, null, get_member(), '', is_null(get_bot_type()) ? 0 : 1, get_users_timezone(get_member()), array($notifications->to_assembly(), $num_unread_pps));
         }

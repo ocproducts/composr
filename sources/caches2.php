@@ -21,7 +21,7 @@
 /**
  * Remove an item from the general cache (most commonly used for blocks).
  *
- * @param  mixed $cached_for The type of what we are cacheing (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
+ * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
  * @param  ?MEMBER $member Member to only decache for (null: no limit)
  */
@@ -85,7 +85,7 @@ function _decache($cached_for, $identifier = null, $member = null)
  * @param  ID_TEXT $codename The codename of the block
  * @param  ?array $map Parameters to call up block with if we have to defer caching (null: none)
  * @param  integer $special_cache_flags Flags representing how we should cache
- * @param  boolean $tempcode Whether we are cacheing Tempcode (needs special care)
+ * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  */
 function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
 {
@@ -112,7 +112,7 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
 /**
  * Put a result into the cache.
  *
- * @param  MINIID_TEXT $codename The codename to check for cacheing
+ * @param  MINIID_TEXT $codename The codename to check for caching
  * @param  integer $ttl The TTL of what is being cached in minutes
  * @param  LONG_TEXT $cache_identifier The requisite situational information (a serialized map) [-> further restraints when reading]
  * @param  ?BINARY $staff_status Staff status to limit to (null: Not limiting by this)
@@ -120,11 +120,11 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
  * @param  SHORT_TEXT $groups Sorted permissive usergroup list to limit to (blank: Not limiting by this)
  * @param  ?BINARY $is_bot Bot status to limit to (null: Not limiting by this)
  * @param  MINIID_TEXT $timezone Timezone to limit to (blank: Not limiting by this)
- * @param  mixed $cache The result we are cacheing
+ * @param  mixed $cache The result we are caching
  * @param  ?array $_langs_required A list of the language files that need loading to use tempcode embedded in the cache (null: none required)
  * @param  ?array $_javascripts_required A list of the javascript files that need loading to use tempcode embedded in the cache (null: none required)
  * @param  ?array $_csss_required A list of the css files that need loading to use tempcode embedded in the cache (null: none required)
- * @param  boolean $tempcode Whether we are cacheing Tempcode (needs special care)
+ * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  * @param  ?ID_TEXT $theme The theme this is being cached for (null: current theme)
  * @param  ?LANGUAGE_NAME $lang The language this is being cached for (null: current language)
  */

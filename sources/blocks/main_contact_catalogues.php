@@ -42,11 +42,11 @@ class Block_main_contact_catalogues
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '(post_param_string(\'subject\',\'\')!=\'\')?null:array(array_key_exists(\'param\',$map)?$map[\'param\']:\'\',array_key_exists(\'to\',$map)?$map[\'to\']:\'\',array_key_exists(\'redirect\',$map)?$map[\'redirect\']:\'\',array_key_exists(\'subject\',$map)?$map[\'subject\']:\'\',array_key_exists(\'body_prefix\',$map)?$map[\'body_prefix\']:\'\',array_key_exists(\'body_suffix\',$map)?$map[\'body_suffix\']:\'\',array_key_exists(\'subject_prefix\',$map)?$map[\'subject_prefix\']:\'\',array_key_exists(\'subject_suffix\',$map)?$map[\'subject_suffix\']:\'\')';

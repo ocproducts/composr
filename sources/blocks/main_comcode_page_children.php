@@ -42,11 +42,11 @@ class Block_main_comcode_page_children
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(((array_key_exists(\'param\',$map)) && ($map[\'param\']!=\'\'))?$map[\'param\']:get_page_name(),array_key_exists(\'zone\',$map)?$map[\'zone\']:post_param_string(\'zone\',get_comcode_zone(((array_key_exists(\'param\',$map)) && ($map[\'param\']!=\'\'))?$map[\'param\']:get_page_name(),false)))';

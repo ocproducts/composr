@@ -55,7 +55,7 @@ class Database_Static_mysqli extends Database_super_mysql
             critical_error('PASSON', $error);
         }
 
-        // Potential cacheing
+        // Potential caching
         $x = serialize(array($db_name, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             if ($this->last_select_db[1] != $db_name) {

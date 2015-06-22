@@ -186,7 +186,7 @@ function i_force_refresh()
  */
 function post_import_cleanup()
 {
-    // Quick and simple decacheing. No need to be smart about this.
+    // Quick and simple decaching. No need to be smart about this.
     delete_value('cns_member_count');
     delete_value('cns_topic_count');
     delete_value('cns_post_count');

@@ -500,7 +500,7 @@ We have the following which are either unlikely to be useful, or potentially uns
 'keep' parameters are placed inside URLs in order to give Composr some extra information when loading a page. Their URL-presence is automatically relayed/preserved in all Composr links within the page. To enable a 'keep' parameter, simply append [tt]&<name>=1[/tt] to the URL (replace '1' if appropriate, but usually we do use '1' to enable). If there are no parameters in the URL and short-URLs are not enabled, use a '?' instead of a '&'.
 
 The 'keep' parameters available are:
- - [tt]keep_cache[/tt] -- set to '1' to temporarily enable cacheing or '0' to temporarily disable. You can also use 'cache' so it works on a per-page basis, with the exception of this not affecting the template and language cacheing.
+ - [tt]keep_cache[/tt] -- set to '1' to temporarily enable caching or '0' to temporarily disable. You can also use 'cache' so it works on a per-page basis, with the exception of this not affecting the template and language caching.
  - [tt]keep_no_dev_mode[/tt] -- set to '1' to disable development mode (which only runs if you're working out of a subversion repository anyway)
  - [tt]keep_no_ext_check[/tt] -- set to '1' to force the webstandards checker to not check dependency files
  - [tt]keep_force_htaccess[/tt] -- set to '1' to force the Conversr login to go via htauth in precedence over other login methods (e.g. login cookies, sessions)

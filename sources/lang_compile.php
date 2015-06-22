@@ -34,7 +34,7 @@ function init__lang_compile()
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  ?string $type The language type (lang_custom, or custom) (null: normal priorities are used)
  * @set    lang_custom custom
- * @param  PATH $cache_path Where we are cacheing too
+ * @param  PATH $cache_path Where we are caching too
  * @param  boolean $ignore_errors Whether to just return if there was a loading error
  * @return boolean Whether we FAILED to load
  */
@@ -42,7 +42,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
 {
     global $LANGUAGE_STRINGS_CACHE, $REQUIRE_LANG_LOOP, $LANG_LOADED_LANG;
 
-    $desire_cache = (function_exists('get_option')) && ((get_option('is_on_lang_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1)) && (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0);
+    $desire_cache = (has_caching_for('lang'));
     if ($desire_cache) {
         if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
             global $DECACHED_COMCODE_LANG_STRINGS;

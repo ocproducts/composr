@@ -42,11 +42,11 @@ class Block_side_galleries
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'depth\',$map)?intval($map[\'depth\']):0,array_key_exists(\'param\',$map)?$map[\'param\']:\'root\',array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',array_key_exists(\'show_empty\',$map)?($map[\'show_empty\']==\'1\'):false)';

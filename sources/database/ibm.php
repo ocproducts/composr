@@ -269,7 +269,7 @@ class Database_Static_ibm
             fatal_exit(do_lang_tempcode('ONLY_LOCAL_HOST_FOR_TYPE'));
         }
 
-        // Potential cacheing
+        // Potential caching
         if (isset($this->cache_db[$db_name][$db_host])) {
             return $this->cache_db[$db_name][$db_host];
         }

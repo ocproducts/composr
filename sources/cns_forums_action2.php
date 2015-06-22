@@ -167,10 +167,10 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
         $num_topics_forum = $forum_info[0]['f_cache_num_topics']; // This is valid, because we move all this forums subforums too
         $num_posts_forum = $forum_info[0]['f_cache_num_posts'];
         if (!is_null($old_parent)) {
-            cns_force_update_forum_cacheing($old_parent, -$num_topics_forum, -$num_posts_forum);
+            cns_force_update_forum_caching($old_parent, -$num_topics_forum, -$num_posts_forum);
         }
         if (!is_null($new_parent)) {
-            cns_force_update_forum_cacheing($new_parent, $num_topics_forum, $num_posts_forum);
+            cns_force_update_forum_caching($new_parent, $num_topics_forum, $num_posts_forum);
         }
     }
 

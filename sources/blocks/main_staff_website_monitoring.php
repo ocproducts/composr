@@ -45,11 +45,11 @@ class Block_main_staff_website_monitoring
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '(count($_POST)>0)?null:array()'; // No cache on POST as this is when we save text data

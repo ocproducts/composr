@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    textbased_persistent_cacheing
+ * @package    textbased_persistent_caching
  */
 
 /**
  * Hook class.
  */
-class Hook_addon_registry_textbased_persistent_cacheing
+class Hook_addon_registry_textbased_persistent_caching
 {
     /**
      * Get a list of file permissions to set
@@ -97,7 +97,7 @@ class Hook_addon_registry_textbased_persistent_cacheing
     public function get_file_list()
     {
         return array(
-            'sources/hooks/systems/addon_registry/textbased_persistent_cacheing.php',
+            'sources/hooks/systems/addon_registry/textbased_persistent_caching.php',
             'caches/persistent/.htaccess',
             'caches/persistent/index.html',
         );

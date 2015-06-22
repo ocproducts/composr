@@ -21,7 +21,7 @@
 /**
  * Cache driver class.
  */
-class Persistent_cacheing_eacceleratorcache
+class Persistent_caching_eacceleratorcache
 {
     public $objects_list = null;
 

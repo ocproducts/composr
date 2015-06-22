@@ -32,7 +32,7 @@ class Block_main_sortable_table
         $info['hack_version'] = null;
         $info['version'] = 1;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid');
+        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid', 'transform');
         return $info;
     }
 
@@ -119,6 +119,8 @@ class Block_main_sortable_table
         $columns_display = empty($map['columns_display']) ? array() : array_map('intval', explode(',', $map['columns_display']));
         $columns_tooltip = empty($map['columns_tooltip']) ? array() : array_map('intval', explode(',', $map['columns_tooltip']));
 
+        $guid = empty($map['transform']) ? '' : $map['transform'];
+
         $guid = empty($map['guid']) ? '' : $map['guid'];
 
         // What will we be reading?
@@ -151,6 +153,10 @@ class Block_main_sortable_table
                     foreach ($row as $j => $val) {
                         $val = fix_bad_unicode($val);
                     }
+                }
+
+                if ($transform == 'ucwords') {
+                    $row = array_map('cms_mb_ucwords', $row);
                 }
 
                 if ($i != 0) {

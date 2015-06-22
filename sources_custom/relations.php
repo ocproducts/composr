@@ -192,7 +192,7 @@ function get_table_descriptions()
         'attachments' => 'attachments referenced by Comcode (images, downloads, videos, etc)',
         'autosave' => 'stores unsaved form data in case of browser crashes, called by AJAX',
         'blocks' => 'a registry of all installed blocks',
-        'cache' => 'data cacheing, especially block cacheing',
+        'cache' => 'data caching, especially block caching',
         'cache_on' => 'a registry of what cacheable things are cached by what parameters',
         'config' => 'all the configuration options and current settings',
         'edit_pings' => 'used to stop people editing the same thing at the same time (AJAX)',

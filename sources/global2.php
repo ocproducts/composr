@@ -226,7 +226,7 @@ function init__global2()
         require_code('static_cache');
         static_cache((($bot_type !== null) ? STATIC_CACHE__FAST_SPIDER : 0) | STATIC_CACHE__FAILOVER_MODE);
     }
-    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast cacheing for bots
+    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for bots
         if ((running_script('index')) && (count($_POST) == 0)) {
             $bot_type = get_bot_type();
             if (($bot_type !== null) && (!empty($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0')) {
@@ -269,7 +269,7 @@ function init__global2()
         $RELATIVE_PATH = '';
     }
     require_code('users'); // Users are important due to permissions
-    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast cacheing for Guests
+    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
         if ((running_script('index')) && (count($_POST) == 0)) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
@@ -277,7 +277,7 @@ function init__global2()
             }
         }
     }
-    $CACHE_TEMPLATES = ((get_option('is_on_template_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1)) && (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0);
+    $CACHE_TEMPLATES = has_caching_for('template');
     require_code('lang'); // So that we can do language stuff (e.g. errors). Note that even though we have included a lot so far, we can't really use any of it until lang is loaded. Lang isn't loaded earlier as it itself has a dependency on Tempcode.
     if (!$MICRO_AJAX_BOOTUP) {
         require_code('temporal'); // Date/time functions
@@ -368,9 +368,9 @@ function init__global2()
     }
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
-        // Clear cacheing if needed
+        // Clear caching if needed
         $changed_base_url = !array_key_exists('base_url', $SITE_INFO) && get_value('last_base_url', null, true) !== get_base_url(false);
-        if ((running_script('index')) && ((is_browser_decacheing()) || ($changed_base_url))) {
+        if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);
         }
@@ -393,7 +393,7 @@ function init__global2()
     print_r($func['user']);*/
 
     // Pre-load used blocks in bulk
-    preload_block_internal_cacheing();
+    preload_block_internal_caching();
 
     // Okay, we've loaded everything critical. Don't need to tell Composr to be paranoid now.
     $BOOTSTRAPPING = false;
@@ -753,7 +753,7 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
  *
  * @return boolean Whether the browser session is set to be doing a hard cache-empty refresh
  */
-function is_browser_decacheing()
+function is_browser_decaching()
 {
     global $BROWSER_DECACHEING_CACHE;
     if ($BROWSER_DECACHEING_CACHE !== null) {
@@ -1630,7 +1630,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (@(filesize($js_cache_path) != 0)) && (!is_browser_decacheing()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (@(filesize($js_cache_path) != 0)) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
@@ -1848,7 +1848,7 @@ function css_enforce($c, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decacheing()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }

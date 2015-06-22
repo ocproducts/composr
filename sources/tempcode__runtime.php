@@ -287,7 +287,7 @@ function directive_tempcode($directive, $content, $parameters = null)
 }
 
 /**
- * Simple function to evaluate some Tempcode. Very rarely to be used, only if you can't call a method (e.g. you are copying direct into an array, such as in block cacheing).
+ * Simple function to evaluate some Tempcode. Very rarely to be used, only if you can't call a method (e.g. you are copying direct into an array, such as in block caching).
  *
  * @param  tempcode $ob Tempcode object
  * @return string Evaluated string

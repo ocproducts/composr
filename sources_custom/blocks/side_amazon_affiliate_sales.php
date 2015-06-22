@@ -32,11 +32,11 @@ class Block_side_amazon_affiliate_sales
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'associates_id\',$map)?$map[\'associates_id\']:\'\',array_key_exists(\'product_line\',$map)?$map[\'product_line\']:\'\',array_key_exists(\'subject_keywords\',$map)?$map[\'subject_keywords\']:\'\',array_key_exists(\'items_number\',$map)?$map[\'items_number\']:\'\')';

@@ -19,7 +19,7 @@ If you have any questions or want to discuss solutions, we've created forums on 
 
 [media width="150" description="Use an environment you're comfortable in" float="left"]data_custom/images/docs/hardcore_windows.png[/media]
 [media width="150" description="To be able to search through files efficiently is essential" float="right"]data_custom/images/docs/hardcore_search.png[/media]
-Personally I develop Composr on my own computer under Windows. I have a PHP webserver setup and I manipulate files directly on my hard disk. I have cacheing disabled on my Composr install so that I don't have to mess around decacheing when I change files directly.
+Personally I develop Composr on my own computer under Windows. I have a PHP webserver setup and I manipulate files directly on my hard disk. I have caching disabled on my Composr install so that I don't have to mess around decaching when I change files directly.
 
 One of the most handy things about developing on the desktop is to be able to quickly run file contents searches in Windows to find out where stuff is done. Unfortunately though, by default Windows will not search inside most non-Microsoft file types unless you do some special set up. Here is a [url="guide to what to do"]http://www.howtogeek.com/99406/how-to-search-for-text-inside-of-any-file-using-windows-search/[/url] to fix this -- use the technique for the ".php", ".css" and ".tpl" file types.
 Once this is done you'll be able to quickly find things by opening up an explorer window and hitting F3.

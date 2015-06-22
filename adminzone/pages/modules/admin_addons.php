@@ -621,7 +621,7 @@ class Module_admin_addons
             }
         }
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
@@ -773,7 +773,7 @@ class Module_admin_addons
 
         uninstall_addon($name);
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();

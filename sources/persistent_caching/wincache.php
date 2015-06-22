@@ -18,12 +18,12 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: apc\_.+*/
+/*EXTRA FUNCTIONS: wincache\_.+*/
 
 /**
  * Cache driver class.
  */
-class Persistent_cacheing_apccache
+class Persistent_caching_wincache
 {
     public $objects_list = null;
 
@@ -35,8 +35,9 @@ class Persistent_cacheing_apccache
     public function load_objects_list()
     {
         if (is_null($this->objects_list)) {
-            $this->objects_list = apc_fetch(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
-            if ($this->objects_list === false) {
+            $success = false;
+            $this->objects_list = wincache_ucache_get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $success);
+            if ($this->objects_list === null || !$success) {
                 $this->objects_list = array();
             }
         }
@@ -52,11 +53,12 @@ class Persistent_cacheing_apccache
      */
     public function get($key, $min_cache_date = null)
     {
-        $data = apc_fetch($key);
-        if ($data === false) {
+        $success = false;
+        $data = wincache_ucache_get($key, $success);
+        if (!$success) {
             return null;
         }
-        if (($min_cache_date !== null) && ($data[0] < $min_cache_date)) {
+        if ((!is_null($min_cache_date)) && ($data[0] < $min_cache_date)) {
             return null;
         }
         return $data[1];
@@ -76,10 +78,13 @@ class Persistent_cacheing_apccache
         $objects_list = $this->load_objects_list();
         if (!array_key_exists($key, $objects_list)) {
             $objects_list[$key] = true;
-            @apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+            wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
         }
 
-        @apc_store($key, array(time(), $data), $expire_secs);
+        if ($expire_secs == -1) {
+            $expire_secs = 0;
+        }
+        wincache_ucache_set($key, array(time(), $data), $expire_secs);
     }
 
     /**
@@ -92,9 +97,9 @@ class Persistent_cacheing_apccache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        //@apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
+        //wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
 
-        apc_delete($key);
+        wincache_ucache_delete($key);
     }
 
     /**
@@ -104,8 +109,8 @@ class Persistent_cacheing_apccache
     {
         // Update list of persistent-objects
         $objects_list = array();
-        @apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
 
-        apc_clear_cache('user');
+        wincache_ucache_clear();
     }
 }

@@ -164,7 +164,7 @@ class Module_admin_xml_storage
             $ops_nice[] = array('OP' => $op[0], 'PARAM_A' => $op[1], 'PARAM_B' => array_key_exists(2, $op) ? $op[2] : '');
         }
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();

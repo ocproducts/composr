@@ -42,12 +42,12 @@ class Block_main_comments
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
     /*
-    function cacheing_environment() // We can't cache this block, because it needs to execute in order to allow commenting
+    function caching_environment() // We can't cache this block, because it needs to execute in order to allow commenting
     {
         $info['cache_on']='array(((array_key_exists(\'max\',$map)) && ($map[\'max\']!='-1'))?intval($map[\'max\']):NULL,((!array_key_exists(\'reviews\',$map)) || ($map[\'reviews\']==\'1\')),has_privilege(get_member(),\'comment\'),array_key_exists(\'extra_param_from\',$map)?$map[\'extra_param_from\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'forum\',$map)?$map[\'forum\']:NULL,((array_key_exists(\'invisible_if_no_comments\',$map)) && ($map[\'invisible_if_no_comments\']==\'1\')),((array_key_exists(\'reverse\',$map)) && ($map[\'reverse\']==\'1\')),array_key_exists(\'title\',$map)?$map[\'title\']:\'\',(array_key_exists(\'explicit_allow\', $map)) ? ($map[\'explicit_allow\'] == \'1\') : false)';
         $info['ttl']=60*5;

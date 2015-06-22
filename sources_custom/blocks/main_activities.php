@@ -92,11 +92,11 @@ class Block_main_activities
 
     // CACHE MESSES WITH POST REMOVAL
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    /*function cacheing_environment()
+    /*function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'grow\',$map)?($map['grow']==\'1\'):true,array_key_exists(\'max\',$map)?intval($map[\'max\']):10,array_key_exists(\'refresh_time\',$map)?intval($map[\'refresh_time\']):30,array_key_exists(\'param\',$map)?$map[\'param\']:do_lang(\'activities:ACTIVITIES_TITLE\'),array_key_exists(\'mode\',$map)?$map[\'mode\']:\'all\',get_member())';

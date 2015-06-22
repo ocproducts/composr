@@ -528,7 +528,7 @@ The internals of Tempcode are enormously complex.
 
 It has to achieve a number of key design goals (these are implemented in Composr's Tempcode engine -- you don't need to worry about them, and that's part of the magic of Tempcode -- for documentation see the [page="docs:tut_tempcode"]Composr Tempcode programming tutorial[/page]):
  - It has to be able to cache
- - When cached it must remain 'smart' -- it cannot cache statically, as things will be in cached Tempcode that need to change over time (for example the GLOBAL template might show the current server date and time -- cacheing must be smart so that when it comes out of the cache it still shows the correct date and time)
+ - When cached it must remain 'smart' -- it cannot cache statically, as things will be in cached Tempcode that need to change over time (for example the GLOBAL template might show the current server date and time -- caching must be smart so that when it comes out of the cache it still shows the correct date and time)
  - It must not use too much memory
  - It has to be very very fast
  - It has to be simple for a programmer to use (via the PHP API)

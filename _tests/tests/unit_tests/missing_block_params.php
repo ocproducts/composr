@@ -47,7 +47,7 @@ class missing_block_params_test_set extends cms_test_case
                     $need[] = 'BLOCK_' . basename($f, '.php') . '_PARAM_' . $matches[1][$i];
                     $need[] = 'BLOCK_TRANS_NAME_' . basename($f, '.php');
 
-                    // Check for cacheing
+                    // Check for caching
                     if ((strpos($contents, '$info[\'cache_on\']') !== false) && (strpos($contents, '$info[\'cache_on\'] = array(') === false) && (strpos($contents, '$info[\'cache_on\'] = \'(count($_POST)==0)?$map:null\';') === false) && (strpos($contents, '$info[\'cache_on\'] = \'$map\';') === false)) {
                         $pattern = '/\$info\[\'cache_on\'\]\s*=\s*\'[^;]*array\([^;]*\\\\\'' . preg_quote($matches[1][$i]) . '\\\\\'/';
                         if (preg_match($pattern, $contents) == 0) {

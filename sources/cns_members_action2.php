@@ -1882,14 +1882,14 @@ function cns_member_choose_photo_concrete($url, $thumb_url, $member_id = null)
 }
 
 /**
- * Update cacheing against a member's username. This doesn't change the username in the actual member record -- it is assumed that this will be done elsewhere.
+ * Update caching against a member's username. This doesn't change the username in the actual member record -- it is assumed that this will be done elsewhere.
  *
  * @param  MEMBER $member_id The member ID.
  * @param  ID_TEXT $username The new username that is being set for them.
  */
 function update_member_username_caching($member_id, $username)
 {
-    // Fix cacheing for usernames
+    // Fix caching for usernames
     $to_fix = array(
         'f_forums/f_cache_last_username/f_cache_last_member_id',
         'f_posts/p_poster_name_if_guest/p_poster',

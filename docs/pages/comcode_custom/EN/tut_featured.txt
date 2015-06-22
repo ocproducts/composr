@@ -119,7 +119,7 @@ If you do not wish to use both the IOTD and gallery systems on the same website 
 
 You will find that by default a selection of deep quotes are provided.
 
-If block cacheing is on, quotes will be rotated on a daily basis.
+If block caching is on, quotes will be rotated on a daily basis.
 
 [title="2"]Pulling out forum content[/title]
 

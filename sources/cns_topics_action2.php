@@ -126,7 +126,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     if ((!is_null($title)) && ($title != '')) {
         require_code('cns_posts_action2');
-        cns_force_update_forum_cacheing($forum_id, 0, 0);
+        cns_force_update_forum_caching($forum_id, 0, 0);
     }
     require_code('cns_general_action2');
     cns_mod_log_it('EDIT_TOPIC', strval($topic_id), $name, $reason);
@@ -230,10 +230,10 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
 
         require_code('cns_posts_action2');
 
-        cns_force_update_topic_cacheing($post_target_topic_id);
+        cns_force_update_topic_caching($post_target_topic_id);
 
         if (!is_null($forum_id)) {
-            cns_force_update_forum_cacheing($forum_id, $to, 1, $num_posts);
+            cns_force_update_forum_caching($forum_id, $to, 1, $num_posts);
         }
     } else {
         $_postdetails = array();
@@ -266,10 +266,10 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         }
     }
 
-    // Update forum view cacheing
+    // Update forum view caching
     if (!is_null($forum_id)) {
         require_code('cns_posts_action2');
-        cns_force_update_forum_cacheing($forum_id, ($validated == 0) ? 0 : -1, -$num_posts);
+        cns_force_update_forum_caching($forum_id, ($validated == 0) ? 0 : -1, -$num_posts);
     }
 
     if (addon_installed('catalogues')) {
@@ -420,11 +420,11 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
 
     // Update source forum cache view
     if (!is_null($from)) {
-        cns_force_update_forum_cacheing($from, -$topic_count, -$post_count);
+        cns_force_update_forum_caching($from, -$topic_count, -$post_count);
     }
 
     // Update dest forum cache view
-    cns_force_update_forum_cacheing($to, $topic_count, $post_count);
+    cns_force_update_forum_caching($to, $topic_count, $post_count);
 
     if (!is_null($from)) {
         // Update member post counts if we've switched between post-count countable forums

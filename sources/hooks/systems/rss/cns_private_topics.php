@@ -70,8 +70,8 @@ class Hook_rss_cns_private_topics
             }
 
             $news_title = xmlentities($row['t_cache_first_title']);
-            $post_row = db_map_restrict($row, array('p_post')) + array('id' => $row['t_cache_first_post_id']);
-            $_summary = get_translated_tempcode('f_posts', $post_row, 'p_post', $GLOBALS['FORUM_DB']);
+            $post_row = db_map_restrict($row, array('p_post_first')) + array('id' => $row['t_cache_first_post_id']);
+            $_summary = get_translated_tempcode('f_posts', $post_row, 'p_post_first', $GLOBALS['FORUM_DB']);
             $summary = xmlentities($_summary->evaluate());
             $news = '';
 

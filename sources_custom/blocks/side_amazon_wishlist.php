@@ -37,11 +37,11 @@ class Block_side_amazon_wishlist
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'wishlist_id\',$map)?$map[\'wishlist_id\']:\'\',array_key_exists(\'access_key\',$map)?$map[\'access_key\']:\'\',array_key_exists(\'secret_key\',$map)?$map[\'secret_key\']:\'\',array_key_exists(\'domain\',$map)?$map[\'domain\']:\'\',array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';

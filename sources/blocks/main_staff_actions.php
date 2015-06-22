@@ -42,11 +42,11 @@ class Block_main_staff_actions
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(get_param_integer(\'sa_start\',0),array_key_exists(\'max\',$map)?intval($map[\'max\']):get_param_integer(\'sa_max\',10),get_param_string(\'sa_sort\',\'date_and_time\'),get_param_string(\'sort_order\',\'DESC\'))';

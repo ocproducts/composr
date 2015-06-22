@@ -23,7 +23,7 @@
 /**
  * Cache driver class.
  */
-class Persistent_cacheing_memcache extends Memcache
+class Persistent_caching_memcache extends Memcache
 {
     /**
      * Constructor.

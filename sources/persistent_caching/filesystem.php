@@ -21,7 +21,7 @@
 /**
  * Cache driver class.
  */
-class Persistent_cacheing_filecache
+class Persistent_caching_filecache
 {
     /**
      * Constructor.

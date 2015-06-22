@@ -75,10 +75,10 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
     cns_send_topic_notification($url, $topic_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, !is_null($topic_info[0]['t_pt_from']));
 
     if (!is_null($forum_id)) {
-        cns_force_update_forum_cacheing($forum_id, 0, 1);
+        cns_force_update_forum_caching($forum_id, 0, 1);
     }
 
-    cns_force_update_topic_cacheing($topic_id, 1, true, true);
+    cns_force_update_topic_caching($topic_id, 1, true, true);
 
     return $topic_id; // Because we might want this
 }
@@ -191,7 +191,7 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
 
     $GLOBALS['FORUM_DB']->query_update('f_posts', $update_map, array('id' => $post_id), '', 1);
 
-    // Update topic cacheing
+    // Update topic caching
     $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_post_id', 't_cache_first_title'), array('id' => $topic_id), '', 1);
     if ((array_key_exists(0, $info)) && ($info[0]['t_cache_first_post_id'] == $post_id) && ($info[0]['t_cache_first_title'] != $title)) {
         require_code('urls2');
@@ -319,11 +319,11 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     } else {
         $ret = false;
 
-        // Update cacheing
-        cns_force_update_topic_cacheing($topic_id, -$num_posts_counted, true, true);
+        // Update caching
+        cns_force_update_topic_caching($topic_id, -$num_posts_counted, true, true);
     }
     if (!is_null($forum_id)) {
-        cns_force_update_forum_cacheing($forum_id, 0, -$num_posts_counted);
+        cns_force_update_forum_caching($forum_id, 0, -$num_posts_counted);
     }
 
     require_code('cns_general_action2');
@@ -450,16 +450,16 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
         }
     }
 
-    // Update cacheing
+    // Update caching
     $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_cache_forum_id=' . strval($to_forum_id) . ', p_topic_id=' . strval($to_topic_id) . ' WHERE ' . $or_list, null, null, false, true);
     require_code('cns_posts_action2');
-    cns_force_update_topic_cacheing($from_topic_id, -$num_posts_counted, true, true);
-    cns_force_update_topic_cacheing($to_topic_id, $num_posts_counted, true, true);
+    cns_force_update_topic_caching($from_topic_id, -$num_posts_counted, true, true);
+    cns_force_update_topic_caching($to_topic_id, $num_posts_counted, true, true);
     if ((!is_null($from_forum_id)) && (!is_null($to_topic_id)) && ($from_forum_id != $to_topic_id)) {
         if ($from_forum_id != $to_forum_id) {
             require_code('cns_forums_action2');
-            cns_force_update_forum_cacheing($from_forum_id, 0, -$num_posts_counted);
-            cns_force_update_forum_cacheing($to_forum_id, 0, $num_posts_counted);
+            cns_force_update_forum_caching($from_forum_id, 0, -$num_posts_counted);
+            cns_force_update_forum_caching($to_forum_id, 0, $num_posts_counted);
 
             // Update member post counts if we've switched between post-count countable forums
             $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($from_forum_id) . ' OR id=' . strval($to_forum_id), 2);

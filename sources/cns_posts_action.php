@@ -120,7 +120,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
  * @param  ?TIME $last_edit_time The last edit time of the post (null: never edited).
  * @param  ?MEMBER $last_edit_by The member that was last to edit the post (null: never edited).
  * @param  boolean $check_permissions Whether to check permissions for whether the post may be made as it is given.
- * @param  boolean $update_cacheing Whether to update the caches after making the post.
+ * @param  boolean $update_caching Whether to update the caches after making the post.
  * @param  ?AUTO_LINK $forum_id The forum the post will be in (null: find out from the DB).
  * @param  boolean $support_attachments Whether to allow attachments in this post.
  * @param  ?string $topic_title The title of the topic (null: find from the DB).
@@ -134,7 +134,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
  * @param  boolean $send_notification Whether to send out notifications
  * @return AUTO_LINK The ID of the new post.
  */
-function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = false, $validated = null, $is_emphasised = 0, $poster_name_if_guest = null, $ip_address = null, $time = null, $poster = null, $intended_solely_for = null, $last_edit_time = null, $last_edit_by = null, $check_permissions = true, $update_cacheing = true, $forum_id = null, $support_attachments = true, $topic_title = '', $sunk = 0, $id = null, $anonymous = false, $skip_post_checks = false, $is_pt = false, $insert_comcode_as_admin = false, $parent_id = null, $send_notification = true)
+function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = false, $validated = null, $is_emphasised = 0, $poster_name_if_guest = null, $ip_address = null, $time = null, $poster = null, $intended_solely_for = null, $last_edit_time = null, $last_edit_by = null, $check_permissions = true, $update_caching = true, $forum_id = null, $support_attachments = true, $topic_title = '', $sunk = 0, $id = null, $anonymous = false, $skip_post_checks = false, $is_pt = false, $insert_comcode_as_admin = false, $parent_id = null, $send_notification = true)
 {
     cms_profile_start_for('cns_make_post');
 
@@ -321,7 +321,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
     }
 
-    if ($update_cacheing) {
+    if ($update_caching) {
         if (function_exists('get_member')) {
             if (function_exists('cns_ping_topic_read')) {
                 cms_profile_start_for('cns_make_post:cns_ping_topic_read');
@@ -345,9 +345,9 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         if (is_null($intended_solely_for)) {
             if ($validated == 1) {
                 require_code('cns_posts_action2');
-                cms_profile_start_for('cns_make_post:cns_force_update_topic_cacheing');
-                cns_force_update_topic_cacheing($topic_id, 1, true, $is_starter, $post_id, $time, $title, $map['p_post'], $poster_name_if_guest, $poster);
-                cms_profile_end_for('cns_make_post:cns_force_update_topic_cacheing');
+                cms_profile_start_for('cns_make_post:cns_force_update_topic_caching');
+                cns_force_update_topic_caching($topic_id, 1, true, $is_starter, $post_id, $time, $title, $map['p_post'], $poster_name_if_guest, $poster);
+                cms_profile_end_for('cns_make_post:cns_force_update_topic_caching');
             }
             if ($validated == 1) {
                 if (!is_null($forum_id)) {
@@ -356,7 +356,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                     } else {*/
                     require_code('cns_posts_action2');
 
-                    // Find if the topic is validated. This can be approximate, if we don't get 1 then cns_force_update_forum_cacheing will do a search, making the code very slightly slower
+                    // Find if the topic is validated. This can be approximate, if we don't get 1 then cns_force_update_forum_caching will do a search, making the code very slightly slower
                     if ((!$check_permissions) || (is_null($forum_id))) {
                         $topic_validated = 1;
                     } else {
@@ -367,9 +367,9 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                         }
                     }
 
-                    cms_profile_start_for('cns_make_post:cns_force_update_forum_cacheing');
-                    cns_force_update_forum_cacheing($forum_id, ($is_starter) ? 1 : 0, 1, ($topic_validated == 0) ? null : $topic_id, ($topic_validated == 0) ? null : $topic_title, ($topic_validated == 0) ? null : $time, ($topic_validated == 0) ? null : $poster_name_if_guest, ($topic_validated == 0) ? null : $poster, ($topic_validated == 0) ? null : $forum_id);
-                    cms_profile_end_for('cns_make_post:cns_force_update_forum_cacheing');
+                    cms_profile_start_for('cns_make_post:cns_force_update_forum_caching');
+                    cns_force_update_forum_caching($forum_id, ($is_starter) ? 1 : 0, 1, ($topic_validated == 0) ? null : $topic_id, ($topic_validated == 0) ? null : $topic_title, ($topic_validated == 0) ? null : $time, ($topic_validated == 0) ? null : $poster_name_if_guest, ($topic_validated == 0) ? null : $poster, ($topic_validated == 0) ? null : $forum_id);
+                    cms_profile_end_for('cns_make_post:cns_force_update_forum_caching');
                     //}
                 }
             }
@@ -465,7 +465,7 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
  *
  * @param  AUTO_LINK $updated_forum_id The ID of the forum.
  * @param  ?string $forum_name The name of the forum (null: find it from the DB).
- * @param  ?MEMBER $member The member (null: do no member decacheing).
+ * @param  ?MEMBER $member The member (null: do no member decaching).
  */
 function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member = null)
 {

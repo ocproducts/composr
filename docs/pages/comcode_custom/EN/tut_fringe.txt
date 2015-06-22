@@ -146,6 +146,20 @@ This takes the same parameters, except 'img' is now 'img1', and there is also an
 
 You have probably spotted that all these examples are using a new block, 'main_custom_gfx'. The three cases above are what we have supplied 'out of the box', but programmers can write additional renderers in PHP code (hooks) to create configurable graphics of any complexity.
 
+[title="2"]Social media accounts[/title]
+
+You may wish to set up profiles on popular social media sites, such as:
+ - Facebook
+ - Twitter
+ - Google Plus
+ - Youtube
+ - Pinterest
+ - LinkedIn
+
+You may also wish to have a prescence on question and answer sites, such as:
+ - Quora
+ - Stack Overflow
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]

@@ -23,7 +23,7 @@
 /**
  * Cache driver class.
  */
-class Persistent_cacheing_xcache
+class Persistent_caching_xcache
 {
     public $objects_list = null;
 

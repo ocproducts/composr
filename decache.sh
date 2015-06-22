@@ -25,6 +25,6 @@ if [ -e "sites" ]; then
 fi
 
 if [ -e "../decache.php" ]; then
-    # Useful script, outside of web dir, for doing custom decacheing
+    # Useful script, outside of web dir, for doing custom decaching
 	php ../decache.php
 fi

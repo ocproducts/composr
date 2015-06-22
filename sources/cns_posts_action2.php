@@ -76,7 +76,7 @@ function cns_member_handle_promotion($member_id = null)
             require_code('notifications');
             dispatch_notification('cns_rank_promoted', null, $subject, $mail, array($member_id));
 
-            // Carefully update run-time cacheing
+            // Carefully update run-time caching
             global $USERS_GROUPS_CACHE;
             foreach (array(true, false) as $a) {
                 foreach (array(true, false) as $b) {
@@ -156,9 +156,9 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
 }
 
 /**
- * Update a topic's cacheing.
+ * Update a topic's caching.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic to update cacheing of.
+ * @param  AUTO_LINK $topic_id The ID of the topic to update caching of.
  * @param  ?integer $post_count_dif The post count difference we know the topic has undergone (null: we'll need to work out from scratch how many posts are in the topic)
  * @param  boolean $last Whether this is the latest post in the topic.
  * @param  boolean $first Whether this is the first post in the topic.
@@ -169,11 +169,11 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
  * @param  ?string $last_username The last username to post in the topic (null: unknown).
  * @param  ?MEMBER $last_member_id The ID of the last member to post in the topic (null: unknown).
  */
-function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $last = true, $first = false, $last_post_id = null, $last_time = null, $last_title = null, $last_post = null, $last_username = null, $last_member_id = null)
+function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last = true, $first = false, $last_post_id = null, $last_time = null, $last_title = null, $last_post = null, $last_username = null, $last_member_id = null)
 {
     $first_title = '';
     if (is_null($last_post_id)) {
-        if ($first) { // We're updating cacheing of the first
+        if ($first) { // We're updating caching of the first
             $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_topic_id' => $topic_id), 'ORDER BY p_time ASC,id ASC', 1);
             if (!array_key_exists(0, $posts)) {
                 $first_post_id = null;
@@ -191,7 +191,7 @@ function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $las
                 $first_member_id = $posts[0]['p_poster'];
             }
         }
-        if ($last) { // We're updating cacheing of the last
+        if ($last) { // We're updating caching of the last
             $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_intended_solely_for' => null, 'p_topic_id' => $topic_id), 'ORDER BY p_time DESC,id DESC', 1);
             if (!array_key_exists(0, $posts)) {
                 $last_post_id = null;
@@ -270,7 +270,7 @@ function cns_force_update_topic_cacheing($topic_id, $post_count_dif = null, $las
  * @param  ?MEMBER $last_member_id The last post member of the last topic (null: Unknown, it will have to be looked up).
  * @param  ?AUTO_LINK $last_forum_id The forum the last post was in (note this makes sense, because there may be subforums under this forum that we have to take into account). (null: Unknown, it will have to be looked up).
  */
-function cns_force_update_forum_cacheing($forum_id, $num_topics_increment = null, $num_posts_increment = null, $last_topic_id = null, $last_title = null, $last_time = null, $last_username = null, $last_member_id = null, $last_forum_id = null)
+function cns_force_update_forum_caching($forum_id, $num_topics_increment = null, $num_posts_increment = null, $last_topic_id = null, $last_title = null, $last_time = null, $last_username = null, $last_member_id = null, $last_forum_id = null)
 {
     if ((is_null($num_topics_increment)) && (!is_null($num_posts_increment))) {
         $num_topics_increment = 0;
@@ -330,7 +330,7 @@ function cns_force_update_forum_cacheing($forum_id, $num_topics_increment = null
     if (!is_null($forum_id)) {
         $parent_forum = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_parent_forum', array('id' => $forum_id));
         if ((!is_null($parent_forum)) && ($parent_forum != db_get_first_id())) {
-            cns_force_update_forum_cacheing($parent_forum, $num_topics_increment, $num_posts_increment);
+            cns_force_update_forum_caching($parent_forum, $num_topics_increment, $num_posts_increment);
         }
     }
 }

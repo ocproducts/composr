@@ -181,7 +181,7 @@ function load_zone_data()
         $ZONE = persistent_cache_get(array('ZONE', $real_zone));
 
         if ($ZONE === null) {
-            find_all_zones(); // Optimisation, this will load up our zone list which *usually* includes cacheing of current zone, as this likely is needed somewhere anyway
+            find_all_zones(); // Optimisation, this will load up our zone list which *usually* includes caching of current zone, as this likely is needed somewhere anyway
 
             global $ALL_ZONES_TITLED_CACHE;
             if (isset($ALL_ZONES_TITLED_CACHE[$real_zone][3])) {
@@ -1590,11 +1590,11 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         'p_order' => 0,
     );
 
-    if (((get_option('is_on_comcode_page_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1)) && (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0) && (get_param_integer('keep_print', 0) == 0)) {
+    if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0)) {
         global $SITE_INFO;
         $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
 
-        if (is_browser_decacheing()) {
+        if (is_browser_decaching()) {
             $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index', 'cc_page_title'), array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()), '', 1, 0, false, array());
             if (isset($comcode_page[0])) {
                 if ($comcode_page[0]['string_index'] !== null) {
@@ -1608,7 +1608,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
             if ($support_smart_decaching) {
                 $mtime = filemtime($file_base . '/' . $string);
                 if ($mtime > time()) {
-                    $mtime = time(); // Timezone error, we have to assume that cache is ok rather than letting us get in a loop decacheing the file. It'll get fixed automatically in a few hours when the hours of the timezone difference passes.
+                    $mtime = time(); // Timezone error, we have to assume that cache is ok rather than letting us get in a loop decaching the file. It'll get fixed automatically in a few hours when the hours of the timezone difference passes.
                 }
                 $pcache = persistent_cache_get(array('COMCODE_PAGE', $codename, $zone, $theme, user_lang()), $mtime);
             } else {
@@ -1623,7 +1623,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
                 if ($support_smart_decaching) {
                     $mtime = filemtime($file_base . '/' . $string);
                     if ($mtime > time()) {
-                        $mtime = time(); // Timezone error, we have to assume that cache is ok rather than letting us get in a loop decacheing the file. It'll get fixed automatically in a few hours when the hours of the timezone difference passes.
+                        $mtime = time(); // Timezone error, we have to assume that cache is ok rather than letting us get in a loop decaching the file. It'll get fixed automatically in a few hours when the hours of the timezone difference passes.
                     }
                 }
                 if ((!$support_smart_decaching) || ((($comcode_page_row['p_edit_date'] !== null) && ($comcode_page_row['p_edit_date'] >= $mtime)) || (($comcode_page_row['p_edit_date'] === null) && ($comcode_page_row['p_add_date'] !== null) && ($comcode_page_row['p_add_date'] >= $mtime)))) { // Make sure it has not been edited since last edited or created
@@ -1632,7 +1632,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
                 } else {
                     $mtime = filemtime($file_base . '/' . $string);
                     if ($mtime > time()) {
-                        $mtime = time(); // Timezone error, we have to assume that cache is ok rather than letting us get in a loop decacheing the file. It'll get fixed automatically in a few hours when the hours of the timezone difference passes.
+                        $mtime = time(); // Timezone error, we have to assume that cache is ok rather than letting us get in a loop decaching the file. It'll get fixed automatically in a few hours when the hours of the timezone difference passes.
                     }
                     $GLOBALS['SITE_DB']->query_update('comcode_pages', array('p_edit_date' => $mtime), array('the_page' => $codename, 'the_zone' => $zone), '', 1);
                     $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_zone' => $zone, 'the_page' => $codename));

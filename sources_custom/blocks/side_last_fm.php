@@ -32,11 +32,11 @@ class Block_side_last_fm
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'username\',$map)?$map[\'username\']:\'\', array_key_exists(\'display\',$map)?$map[\'display\']:\'\', array_key_exists(\'period\',$map)?$map[\'period\']:\'\', array_key_exists(\'title\',$map)?$map[\'title\']:\'\', array_key_exists(\'width\',$map)?$map[\'width\']:\'100%\', array_key_exists(\'height\',$map)?$map[\'height\']:\'100%\')';

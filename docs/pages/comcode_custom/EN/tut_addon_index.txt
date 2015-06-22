@@ -1091,13 +1091,13 @@ This tutorial features an index of the Composr addons, with links to tutorials t
 		</tr>
 	
 		<tr>
-			<td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Textbased Persistent Cacheing<br />(<kbd>textbased_persistent_cacheing</kbd>)</td>
+			<td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Textbased Persistent Cacheing<br />(<kbd>textbased_persistent_caching</kbd>)</td>
 			<td>A persistent data cache, using disk files for data storage.</td>
 			<!--<td>No</td>-->
 			<td><kbd></kbd></td>
 			<td><a href="http://compo.sr/docs10/tut_optimisation.htm">Optimising</a></td>
 			<td></td>
-			<td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=textbased_persistent_cacheing&amp;status_id=10">Link</a></td>
+			<td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=textbased_persistent_caching&amp;status_id=10">Link</a></td>
 		</tr>
 	
 		<tr>

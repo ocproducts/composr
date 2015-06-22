@@ -458,7 +458,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     $topic['first_member_id'] = $topic_row['t_cache_first_member_id'];
     if (is_null($topic['first_member_id'])) {
         require_code('cns_posts_action2');
-        cns_force_update_topic_cacheing($topic_row['id'], null, true, true);
+        cns_force_update_topic_caching($topic_row['id'], null, true, true);
     }
     if (!is_null($topic_row['t_cache_last_post_id'])) {
         $topic['last_post_id'] = $topic_row['t_cache_last_post_id'];

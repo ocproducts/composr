@@ -119,7 +119,7 @@ function init__tempcode()
 }
 
 /**
- * Simple function to evaluate some Tempcode. Very rarely to be used, only if you can't call a method (e.g. you are copying direct into an array, such as in block cacheing).
+ * Simple function to evaluate some Tempcode. Very rarely to be used, only if you can't call a method (e.g. you are copying direct into an array, such as in block caching).
  *
  * @param  tempcode $ob Tempcode object
  * @return string Evaluated string
@@ -1454,7 +1454,7 @@ class Tempcode
             $forced_reload_details[6] = '';
         }
         if ((count($this->code_to_preexecute) > 10) && ($GLOBALS['CACHE_TEMPLATES'])) {
-            // We don't actually use $code_to_preexecute, because it uses too much RAM and DB space throwing full templates into the cacheing. Instead we rewrite to custom load it whenever it's needed. This isn't inefficient due to normal opcode cacheing and optimizer opcode cacheing, and because we cache Tempcode object's evaluations at runtime so it can only happen once per screen view.
+            // We don't actually use $code_to_preexecute, because it uses too much RAM and DB space throwing full templates into the caching. Instead we rewrite to custom load it whenever it's needed. This isn't inefficient due to normal opcode caching and optimizer opcode caching, and because we cache Tempcode object's evaluations at runtime so it can only happen once per screen view.
             $_file = (strpos($file, '\'') === false) ? $file : php_addslashes($file);
             $this->code_to_preexecute[] = 'if (($result=tempcode_include(\'' . $_file . '\'))===false) { $tmp=do_template(\'' . php_addslashes($forced_reload_details[0]) . '\',NULL,\'' . ((strpos($forced_reload_details[2], '\'') === false) ? $forced_reload_details[2] : php_addslashes($forced_reload_details[2])) . '\',false,\'' . (($forced_reload_details[6] == '') ? '' : ((strpos($forced_reload_details[6], '\'') === false) ? $forced_reload_details[6] : php_addslashes($forced_reload_details[6]))) . '\',\'' . ($forced_reload_details[4]) . '\',\'' . ($forced_reload_details[5]) . '\'); clearstatcache(); $tmp2=$GLOBALS[\'CACHE_TEMPLATES\']; if (!@is_file(\'' . $_file . '\')) { $GLOBALS[\'CACHE_TEMPLATES\']=false; } /*$GLOBALS[\'DEV_MODE\']?debug_eval($tmp->code_to_preexecute):*/eval($tmp->code_to_preexecute); $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2; unset($tmp); }
             else { debug_eval($result[4]); unset($result); }';

@@ -290,7 +290,7 @@ class Database_Static_sqlserver
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
-        // Potential cacheing
+        // Potential caching
         if (isset($this->cache_db[$db_name][$db_host])) {
             return $this->cache_db[$db_name][$db_host];
         }

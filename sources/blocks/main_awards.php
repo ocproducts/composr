@@ -42,11 +42,11 @@ class Block_main_awards
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '(count($_POST)!=0 || get_param_integer(\'keep_non_rated\',0)==1)?null:array(array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',(array_key_exists(\'give_context\',$map)?$map[\'give_context\']:\'0\')==\'1\',(array_key_exists(\'include_breadcrumbs\',$map)?$map[\'include_breadcrumbs\']:\'0\')==\'1\',array_key_exists(\'param\',$map)?$map[\'param\']:strval(db_get_first_id()),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'_SEARCH\')';

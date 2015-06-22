@@ -450,7 +450,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
 
     // Try language cache
-    $desire_cache = (function_exists('get_option')) && ((get_option('is_on_lang_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1)) && (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0);
+    $desire_cache = (has_caching_for('lang'));
     if ($desire_cache) {
         $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
         $lang_file_default = $fb . '/lang/' . $lang . '/' . $codename . '.ini';
@@ -585,7 +585,7 @@ function require_all_open_lang_files($lang = null)
     foreach (array_keys($langs_requested_copy) as $toload) {
         require_lang($toload, $lang, null, true);
     }
-    // Block cacheing might have hidden that we loaded these
+    // Block caching might have hidden that we loaded these
     require_lang('global', $lang, null, true);
     require_lang('critical_error', $lang, null, true);
 }
@@ -985,7 +985,7 @@ function delete_lang($id, $connection = null)
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
- * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page cacheing)
+ * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
  * @return ?tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
@@ -1016,7 +1016,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $conne
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
- * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page cacheing)
+ * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
  * @return ?tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
@@ -1111,7 +1111,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         $result = $row[$field_name . '__text_parsed'];
     }
 
-    if (($result === null) || ($result == '') || (is_browser_decacheing())) { // Not cached
+    if (($result === null) || ($result == '') || (is_browser_decaching())) { // Not cached
         require_code('lang3');
         return parse_translated_text($table, $row, $field_name, $connection, $lang, $force, $as_admin);
     }
@@ -1209,7 +1209,7 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
 }
 
 /**
- * Convert a language string that is Comcode to tempcode, with potential cacheing in the db.
+ * Convert a language string that is Comcode to tempcode, with potential caching in the db.
  *
  * @param  ID_TEXT $lang_code The language string ID
  * @return tempcode The parsed Comcode

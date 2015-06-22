@@ -19,12 +19,12 @@
  */
 
 /**
- * Clear cacheing for a particular seo entry.
+ * Clear caching for a particular seo entry.
  *
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ID_TEXT $id The ID of the resource
  */
-function seo_meta_clear_cacheing($type, $id)
+function seo_meta_clear_caching($type, $id)
 {
     if (function_exists('decache')) {
         decache('side_tag_cloud');
@@ -57,7 +57,7 @@ function seo_meta_erase_storage($type, $id, $do_decache = true)
     $GLOBALS['SITE_DB']->query_delete('seo_meta_keywords', array('meta_for_type' => $type, 'meta_for_id' => $id));
 
     if ($do_decache) {
-        seo_meta_clear_cacheing($type, $id);
+        seo_meta_clear_caching($type, $id);
     }
 }
 
@@ -134,7 +134,7 @@ function seo_meta_set_for_explicit($type, $id, $keywords, $description)
         $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', $map);
     }
 
-    seo_meta_clear_cacheing($type, $id);
+    seo_meta_clear_caching($type, $id);
 }
 
 /**

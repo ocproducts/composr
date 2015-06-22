@@ -42,11 +42,11 @@ class Block_side_shoutbox
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '((get_value(\'no_frames\')===\'1\') && (count($_POST)!=0))?null:array(array_key_exists(\'max\',$map)?intval($map[\'max\']):5,array_key_exists(\'param\',$map)?intval($map[\'param\']):NULL)';

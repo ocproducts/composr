@@ -38,7 +38,7 @@ class Hook_task_cns_topics_recache
             $topics = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), null, '', 500, $start);
             foreach ($topics as $topic) {
                 require_code('cns_posts_action2');
-                cns_force_update_topic_cacheing($topic['id'], null, true, true);
+                cns_force_update_topic_caching($topic['id'], null, true, true);
 
                 // NB: p_cache_forum_id must not be intval'd as may be null
                 if (is_null($topic['t_forum_id'])) {

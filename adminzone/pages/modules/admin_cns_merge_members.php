@@ -244,18 +244,18 @@ class Module_admin_cns_merge_members
         require_code('cns_topics_action');
         $topics = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), array('t_cache_first_member_id' => $from_id));
         foreach ($topics as $topic) {
-            cns_force_update_topic_cacheing($topic['id'], null, true, true);
+            cns_force_update_topic_caching($topic['id'], null, true, true);
         }
         $topics = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), array('t_cache_last_member_id' => $from_id));
         foreach ($topics as $topic) {
-            cns_force_update_topic_cacheing($topic['id'], null, true, true);
+            cns_force_update_topic_caching($topic['id'], null, true, true);
         }
 
         // Forums
         require_code('cns_posts_action2');
         $forums = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_cache_last_member_id' => $from_id));
         foreach ($forums as $forum) {
-            cns_force_update_forum_cacheing($forum['id']);
+            cns_force_update_forum_caching($forum['id']);
         }
 
         // ---

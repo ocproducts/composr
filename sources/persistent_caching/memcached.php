@@ -18,13 +18,22 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: wincache\_.+*/
+/*EXTRA FUNCTIONS: Memcached*/
 
 /**
  * Cache driver class.
  */
-class Persistent_cacheing_wincache
+class Persistent_caching_memcached extends Memcached
 {
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->addServer('localhost', 11211);
+        parent::__construct();
+    }
+
     public $objects_list = null;
 
     /**
@@ -35,9 +44,8 @@ class Persistent_cacheing_wincache
     public function load_objects_list()
     {
         if (is_null($this->objects_list)) {
-            $success = false;
-            $this->objects_list = wincache_ucache_get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $success);
-            if ($this->objects_list === null || !$success) {
+            $this->objects_list = parent::get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
+            if ($this->objects_list === false) {
                 $this->objects_list = array();
             }
         }
@@ -53,9 +61,8 @@ class Persistent_cacheing_wincache
      */
     public function get($key, $min_cache_date = null)
     {
-        $success = false;
-        $data = wincache_ucache_get($key, $success);
-        if (!$success) {
+        $data = parent::get($key);
+        if ($data === false) {
             return null;
         }
         if ((!is_null($min_cache_date)) && ($data[0] < $min_cache_date)) {
@@ -78,13 +85,10 @@ class Persistent_cacheing_wincache
         $objects_list = $this->load_objects_list();
         if (!array_key_exists($key, $objects_list)) {
             $objects_list[$key] = true;
-            wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+            $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0);
         }
 
-        if ($expire_secs == -1) {
-            $expire_secs = 0;
-        }
-        wincache_ucache_set($key, array(time(), $data), $expire_secs);
+        parent::set($key, array(time(), $data), $expire_secs);
     }
 
     /**
@@ -97,9 +101,9 @@ class Persistent_cacheing_wincache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        //wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
+        //$this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0); Wasteful
 
-        wincache_ucache_delete($key);
+        parent::delete($key);
     }
 
     /**
@@ -109,8 +113,8 @@ class Persistent_cacheing_wincache
     {
         // Update list of persistent-objects
         $objects_list = array();
-        wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0);
 
-        wincache_ucache_clear();
+        parent::flush();
     }
 }

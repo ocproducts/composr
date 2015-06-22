@@ -1266,7 +1266,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
             }
         } elseif (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
-            $connect_to = gethostbyname($connect_to); // for DNS cacheing
+            $connect_to = gethostbyname($connect_to); // for DNS caching
         }
         $proxy = function_exists('get_option') ? get_option('proxy') : null;
         if ($proxy == '') {

@@ -55,6 +55,9 @@ class lang_test_set extends cms_test_case
                 if (stripos($string, 'preceeding') !== false) {
                     $this->assertTrue(false, 'The word \'preceeding\' was used in ' . $file . '. This should be changed to \'proceeding\'.');
                 }
+                if (stripos($string, 'cacheing') !== false) {
+                    $this->assertTrue(false, 'The word \'cacheing\' was used in ' . $file . '. This should be changed to \'caching\'.');
+                }
                 if (stripos($string, 'publically') !== false) {
                     $this->assertTrue(false, 'The word \'publically\' was used in ' . $file . '. This should be changed to \'publicly\'.');
                 }

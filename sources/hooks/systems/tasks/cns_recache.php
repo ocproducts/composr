@@ -38,7 +38,7 @@ class Hook_task_cns_recache
         do {
             $forums = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), null, '', 100, $start);
             foreach ($forums as $forum) {
-                cns_force_update_forum_cacheing($forum['id']);
+                cns_force_update_forum_caching($forum['id']);
             }
             $start += 100;
         } while ($forums != array());

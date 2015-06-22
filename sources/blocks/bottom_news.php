@@ -42,11 +42,11 @@ class Block_bottom_news
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select\',$map)?$map[\'select\']:get_param_string(\'news_select\',\'\'),array_key_exists(\'param\',$map)?intval($map[\'param\']):5,array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\')';

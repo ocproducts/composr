@@ -46,7 +46,7 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
-        // Potential cacheing
+        // Potential caching
         $x = serialize(array($db_name, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             if ($this->last_select_db != $db_name) {

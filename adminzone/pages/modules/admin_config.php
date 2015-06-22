@@ -735,7 +735,7 @@ class Module_admin_config
             }
         }
 
-        // Clear some cacheing
+        // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();

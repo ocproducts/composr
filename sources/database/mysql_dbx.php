@@ -54,7 +54,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             critical_error('PASSON', $error);
         }
 
-        // Potential cacheing
+        // Potential caching
         $x = serialize(array($db_name, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             return array($x, $db_name);

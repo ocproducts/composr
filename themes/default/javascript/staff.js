@@ -55,7 +55,7 @@ function script_load_stuff_staff()
 		}
 	}
 
-	// Local cacheing for improved perceived performance
+	// Local caching for improved perceived performance
 	var has_local_storage=false;
 	try
 	{

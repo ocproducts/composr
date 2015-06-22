@@ -148,7 +148,7 @@ function do_access($given_password)
         'admin_username' => 'The username used for the administrator when Composr is installed to not use a forum. On the vast majority of sites this setting does nothing.',
         'master_password' => 'If you wish the password to be changed, enter a new password here. Otherwise leave blank.',
 
-        'base_url' => 'A critical option, that defines the URL of the site (no trailing slash). If the URL changes, the base URL must be changed to reflect it. If you change this option you will need to empty your template and image caches (in the Cleanup Tools or Upgrader), else you may get strange error messages, broken images, and a Composr warning about an inconsistency.',
+        'base_url' => 'A critical option, that defines the URL of the site (no trailing slash). You can blank this out for auto-detection, but only do this during development -- if you do it live and somehow multiple domains can get to your site, random errors will occur due to caching problems.',
         'domain' => 'The domain that e-mail addresses are registered on. This applies only to the Point Store and may be ignored by most.',
         'default_lang' => 'The default language used on the site (language code form, of subdirectory under lang/).',
         'block_mod_rewrite' => 'Whether to block the short-URL (mod_rewrite) option. Set this to 1 if you turned on short-URLs and find your site no longer works.',
@@ -178,8 +178,8 @@ function do_access($given_password)
         'cookie_path' => '<em>Cookies:</em> The URL path the cookeis are tied to. Only URLs branching from this may access the cookies. Either set it to the path portion of the base-URL, or a shortened path if cookies need to work with something elsewhere on the domain, or leave blank for auto-detection. <strong>It\'s best not to change this setting once your community is active, as it can cause logging-out problems.</strong>',
         'cookie_days' => '<em>Cookies:</em> The number of days to store login cookies for.',
 
-        'use_persistent_cache' => '<em>Performance:</em> Whether persistent memory cacheing is to be used (caches data in memory between requests using whatever appropriate PHP extensions are available).',
-        'fast_spider_cache' => '<em>Performance:</em> The number of hours that the spider/bot cache lasts for (this sets both HTTP cacheing, and server retention of cached screens).',
+        'use_persistent_cache' => '<em>Performance:</em> Whether persistent memory caching is to be used (caches data in memory between requests using whatever appropriate PHP extensions are available).',
+        'fast_spider_cache' => '<em>Performance:</em> The number of hours that the spider/bot cache lasts for (this sets both HTTP caching, and server retention of cached screens).',
         'any_guest_cached_too' => '<em>Performance:</em> Whether Guests are cached with the spider cache time too.',
         'self_learning_cache' => '<em>Performance:</em> Whether to allow pages to learn what resources they need, for efficient bulk loading of essentials while avoiding loading full resource sets upfront. Stores copies of some resources within the self-learning cache itself. If you disable this you should also disable the Composr "Output streaming" config option.',
 

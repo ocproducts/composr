@@ -423,7 +423,7 @@ function _lang_remap($field_name, $id, $text, $connection = null, $comcode = fal
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
- * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page cacheing)
+ * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
  * @return ?tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
 function parse_translated_text($table, &$row, $field_name, $connection, $lang, $force, $as_admin)
@@ -526,7 +526,7 @@ function parse_translated_text($table, &$row, $field_name, $connection, $lang, $
 }
 
 /**
- * Convert a language string that is Comcode to tempcode, with potential cacheing in the db.
+ * Convert a language string that is Comcode to tempcode, with potential caching in the db.
  *
  * @param  ID_TEXT $lang_code The language string ID
  * @return tempcode The parsed Comcode
@@ -544,7 +544,7 @@ function _comcode_lang_string($lang_code)
 
     if (multi_lang_content()) {
         $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages p LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'translate t ON t.id=string_index AND ' . db_string_equal_to('t.language', user_lang()), array('string_index', 'text_parsed', 'source_user'), array('the_page' => $lang_code, 'the_zone' => '!'), '', 1);
-        if ((array_key_exists(0, $comcode_page)) && (!is_browser_decacheing())) {
+        if ((array_key_exists(0, $comcode_page)) && (!is_browser_decaching())) {
             $comcode_page_row_cached_only = array(
                 'the_zone' => '!',
                 'the_page' => $lang_code,
@@ -577,7 +577,7 @@ function _comcode_lang_string($lang_code)
         }
     } else {
         $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_page' => $lang_code, 'the_zone' => '!'), '', 1);
-        if ((array_key_exists(0, $comcode_page)) && (!is_browser_decacheing())) {
+        if ((array_key_exists(0, $comcode_page)) && (!is_browser_decaching())) {
             $ret = get_translated_tempcode('cached_comcode_pages', $comcode_page[0], 'string_index');
             $COMCODE_LANG_STRING_CACHE[$lang_code] = $ret;
             return $ret;

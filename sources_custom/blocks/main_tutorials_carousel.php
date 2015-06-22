@@ -37,11 +37,11 @@ class Block_main_tutorials_carousel
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    function cacheing_environment()
+    function caching_environment()
     {
         $info = array();
         $info['cache_on'] = '$map';

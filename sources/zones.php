@@ -119,10 +119,10 @@ function init__zones()
 /**
  * Pre-load used blocks in bulk.
  */
-function preload_block_internal_cacheing()
+function preload_block_internal_caching()
 {
     global $SMART_CACHE;
-    if (has_block_cacheing()) {
+    if (has_caching_for('block')) {
         $blocks_needed = $SMART_CACHE->get('blocks_needed');
         if ($blocks_needed !== null && $blocks_needed !== false) {
             $bulk = array();
@@ -994,21 +994,6 @@ function get_block_id($map)
 }
 
 /**
- * Find whether block cacheing is enabled.
- *
- * @return boolean Whether block cacheing is enabled
- */
-function has_block_cacheing()
-{
-    return
-        ((get_option('is_on_block_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('cache_blocks', 0) == 1)) &&
-        (strpos(get_param_string('special_page_type', ''), 't') === false) &&
-        (get_param_integer('keep_cache', null) !== 0) &&
-        (get_param_integer('cache_blocks', null) !== 0) &&
-        (get_param_integer('cache', null) !== 0);
-}
-
-/**
  * Get the processed tempcode for the specified block. Please note that you pass multiple parameters in as an array, but single parameters go in as a string or other flat variable.
  *
  * @param  ID_TEXT $codename The block name
@@ -1037,7 +1022,7 @@ function do_block($codename, $map = null, $ttl = null)
     $DO_NOT_CACHE_THIS = ($map['cache'] == '0');
 
     $object = mixed();
-    if (has_block_cacheing()) {
+    if (has_caching_for('block')) {
         // See if the block may be cached (else cannot, or is yet unknown)
         if ($map['cache'] == '0') {
             $row = null;
@@ -1163,8 +1148,8 @@ function do_block($codename, $map = null, $ttl = null)
     }
 
     // May it be added to cache_on?
-    if ((!$DO_NOT_CACHE_THIS) && (method_exists($object, 'cacheing_environment')) && (has_block_cacheing())) {
-        $info = $object->cacheing_environment($map);
+    if ((!$DO_NOT_CACHE_THIS) && (method_exists($object, 'caching_environment')) && (has_caching_for('block'))) {
+        $info = $object->caching_environment($map);
         if ($info !== null) {
             $cache_identifier = do_block_get_cache_identifier($info['cache_on'], $map);
             if ($cache_identifier !== null) {
@@ -1339,8 +1324,8 @@ function get_block_info_row($codename, $map)
     $row = find_cache_on($codename);
     if ($row === null) {
         list($object, $new_security_scope) = do_block_hunt_file($codename, $map);
-        if ((is_object($object)) && (method_exists($object, 'cacheing_environment'))) {
-            $info = $object->cacheing_environment($map);
+        if ((is_object($object)) && (method_exists($object, 'caching_environment'))) {
+            $info = $object->caching_environment($map);
             if ($info !== null) {
                 $row = array('cached_for' => $codename, 'cache_on' => $info['cache_on'], 'cache_ttl' => $info['ttl']);
 
@@ -1372,7 +1357,7 @@ function get_block_info_row($codename, $map)
  * Takes a string which is a PHP expression over $map (parameter map), and returns a derived identifier.
  * We see if we have something cached by looking for a matching identifier.
  *
- * @param  mixed $cache_on PHP expression over $map (the parameter map of the block) OR a call_user_func specifier that will return a result (which will be used if cacheing is really very important, even for Hip Hop PHP)
+ * @param  mixed $cache_on PHP expression over $map (the parameter map of the block) OR a call_user_func specifier that will return a result (which will be used if caching is really very important, even for Hip Hop PHP)
  * @param  ?array $map The block parameter map (null: no parameters)
  * @return ?LONG_TEXT The derived cache identifier (null: the identifier is CURRENTLY null meaning cannot be cached)
  */

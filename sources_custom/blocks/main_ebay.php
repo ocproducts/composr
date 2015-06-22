@@ -32,11 +32,11 @@ class Block_main_ebay
     }
 
     /**
-     * Find cacheing details for the block.
+     * Find caching details for the block.
      *
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
      */
-    public function cacheing_environment()
+    public function caching_environment()
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'type\',$map)?$map[\'type\']:\'\',array_key_exists(\'seller\',$map)?$map[\'seller\']:\'\',array_key_exists(\'query\',$map)?$map[\'query\']:\'\',array_key_exists(\'lang\',$map)?$map[\'lang\']:\'\')';

@@ -654,7 +654,7 @@ function install_addon($file, $files = null)
         upgrade_addon_soft($addon);
     }
 
-    // Clear some cacheing
+    // Clear some caching
     require_code('caches3');
     erase_comcode_page_cache();
     erase_block_cache();
@@ -752,7 +752,7 @@ function uninstall_addon($addon)
         }
     }
 
-    // Clear some cacheing
+    // Clear some caching
     require_code('caches3');
     erase_comcode_page_cache();
     erase_block_cache();

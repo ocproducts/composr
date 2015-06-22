@@ -64,7 +64,7 @@ SQL is beyond the scope of this tutorial, but basic queries fit one of the follo
 
 At the time of writing, Composr uses 176 tables when all addons are installed.
 
-For the technically inclined, the database table structure is mostly in 4NF form, with the main exception being fields that are for cacheing purposes (such as post count) and other fields that remove the need for complex and slow 'JOIN's or 'EXIST's clauses.
+For the technically inclined, the database table structure is mostly in 4NF form, with the main exception being fields that are for caching purposes (such as post count) and other fields that remove the need for complex and slow 'JOIN's or 'EXIST's clauses.
 
 Composr is designed to support content translatable into multiple languages, although this is off by default. If enabled, then text is located in the 'translate' table, and linked into other places by language ID. The 'translate' table is also used to store parsed Comcode, which works out as a very clean solution. If an entry in the 'translate' table is being edited by hand, and has Comcode, then setting the text_parsed field to blank will cause the Comcode to be re-parsed on demand.
 
