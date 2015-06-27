@@ -949,7 +949,7 @@ function addon_installed($addon, $non_bundled_too = false)
     }
 
     $addon = filter_naughty($addon);
-    $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/addon_registry/' . $addon . '.php');
+    $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
     if ((!$answer) && ($non_bundled_too) && (!running_script('install'))) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
         if ($test !== null) {
