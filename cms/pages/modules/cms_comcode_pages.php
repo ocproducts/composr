@@ -603,7 +603,7 @@ class Module_cms_comcode_pages
     public function find_comcode_page($lang, $file, $zone)
     {
         $restore_from = zone_black_magic_filterer(filter_naughty(get_param_string('restore_from', $zone . '/' . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt')), true);
-		if (((!is_file(get_file_base() . '/' . $restore_from)) && (!is_file(get_custom_file_base() . '/' . $restore_from))) || ((!is_null(get_param('restore_from', null))) && (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())))) {
+		if (((!is_file(get_file_base() . '/' . $restore_from)) && (!is_file(get_custom_file_base() . '/' . $restore_from))) || ((!is_null(get_param_string('restore_from', null))) && (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())))) {
 			$page_request = _request_page($file, $zone);
 			if (strpos($page_request[0], 'COMCODE') === false) {
                 return '';
