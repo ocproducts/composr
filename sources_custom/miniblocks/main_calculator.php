@@ -17,14 +17,14 @@ $equation = str_replace('math.', 'Math.', strtolower($equation)); // Name fields
 echo '<form onsubmit="event.returnValue=false; return false;" action="#" method="post">';
 foreach ($map as $key => $val) {
     $key = strtolower($key); // Firefox forces this, but we'll force it too just in case of browser inconsistency
-    if (($key != 'equation') && ($key != 'block') && ($key != 'message')) {
+    if (($key != 'equation') && ($key != 'block') && ($key != 'message') && ($key != 'cache')) {
         echo '<p>
             <input class="input_integer_required right" size="6" type="text" id="' . escape_html($key) . '" name="' . escape_html($key) . '" value="" />
             <label class="field_title" for="' . escape_html($key) . '">' . escape_html($val) . '</label>
         </p>';
     }
 }
-$uniqid = uniqid('', true);
+$uniqid = str_replace('.', '_', uniqid('', true));
 echo '
     <script>
         function calculate_sum_' . $uniqid . '(elements)
