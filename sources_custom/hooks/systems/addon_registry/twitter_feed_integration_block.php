@@ -122,7 +122,7 @@ class Hook_addon_registry_twitter_feed_integration_block
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images_custom/twitter_feed/twitter_feed_icon.png';
     }
 
     /**
@@ -150,6 +150,7 @@ class Hook_addon_registry_twitter_feed_integration_block
             'themes/default/images_custom/twitter_feed/favorite.png',
             'themes/default/images_custom/twitter_feed/favorite_hover.png',
             'themes/default/images_custom/twitter_feed/favorite_on.png',
+            'themes/default/images_custom/twitter_feed/twitter_feed_icon.png',
             'themes/default/images_custom/twitter_feed/index.html',
             'themes/default/images_custom/twitter_feed/reply.png',
             'themes/default/images_custom/twitter_feed/reply_hover.png',
@@ -158,7 +159,6 @@ class Hook_addon_registry_twitter_feed_integration_block
             'themes/default/images_custom/twitter_feed/retweet_on.png',
             'sources_custom/hooks/systems/config/twitterfeed_update_time.php',
             'sources_custom/hooks/systems/config/twitterfeed_use_twitter_support_config.php',
-            'sources_custom/hooks/systems/config/channel_update_time.php',
         );
     }
 }

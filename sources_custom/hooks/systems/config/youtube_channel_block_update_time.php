@@ -10,13 +10,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    twitter_feed_integration_block
+ * @package    youtube_channel_integration_block
  */
 
 /**
  * Hook class.
  */
-class Hook_config_channel_update_time
+class Hook_config_youtube_channel_block_update_time
 {
     /**
      * Gets the details relating to the config option.
@@ -26,16 +26,16 @@ class Hook_config_channel_update_time
     public function get_details()
     {
         return array(
-            'human_name' => 'UPDATE_TIME',
+            'human_name' => 'YOUTUBE_CHANNEL_BLOCK_UPDATE_TIME',
             'type' => 'integer',
             'category' => 'BLOCKS',
             'group' => 'YOUTUBE_CHANNEL_INTEGRATION',
-            'explanation' => 'CONFIG_OPTION_channel_update_time',
+            'explanation' => 'CONFIG_OPTION_youtube_channel_block_update_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
 
-            'addon' => 'twitter_feed_integration_block',
+            'addon' => 'youtube_channel_integration_block',
         );
     }
 
