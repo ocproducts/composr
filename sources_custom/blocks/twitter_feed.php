@@ -10,6 +10,10 @@
  * This addon pulls and displays a user Twitter feed using the Twitter Class provided by Tijs Verkoyen which is included with the
  * Composr Twitter Support non-bundled addon.  PHP5 and PHP CuRL Extension are required.
  */
+ 
+ /**
+ * Block class.
+ */
 class Block_twitter_feed
 {
     /**
@@ -66,7 +70,7 @@ class Block_twitter_feed
             $token_secret = get_value('twitter_oauth_token_secret', null, true);
         }
         $twitter_name = array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens';
-        $twitter_title = array_key_exists('title', $map) ? $map['title'] : '';
+        $twitter_title = array_key_exists('title', $map) ? $map['title'] : 'Twitter Feed';
         $twitter_tempmain = array_key_exists('template_main', $map) ? $map['template_main'] : '';
         if ($twitter_tempmain) {
             $twitter_tempmain = '_' . $twitter_tempmain;
@@ -125,9 +129,16 @@ class Block_twitter_feed
         $content = new Tempcode();
 
         // Check for Twitter Support addon dependency before we go any further
-        if (!addon_installed('Twitter Support', true)) {
-            $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.';
-            return do_template($twitter_templatemain, array('TWITTER_ERROR' => $twitter_error, 'CONTENT' => $content, 'STYLE' => strval($twitter_style), 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code, 'USER_SCREEN_NAME' => $twitter_name));
+        if (!addon_installed('twitter_support', true)) {
+            $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.<br />';
+            return do_template($twitter_templatemain, array(
+                'TWITTER_TITLE' => $twitter_title,
+                'TWITTER_ERROR' => $twitter_error,
+                'CONTENT' => $content,
+                'STYLE' => strval($twitter_style),
+                'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
+                'USER_SCREEN_NAME' => $twitter_name
+            ));
         }
 
         // Initiate Twitter connection
@@ -141,7 +152,15 @@ class Block_twitter_feed
             $twitter_statuses = $twitter->statusesUserTimeline(null, $twitter_name, null, null, $twitter_maxstatuses, null, false, true, true);
         } catch (TwitterException $e) {
             $twitter_error = $e->getMessage();
-            return do_template($twitter_templatemain, array('TWITTER_ERROR' => $twitter_error, 'CONTENT' => $content, 'STYLE' => strval($twitter_style), 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code, 'USER_SCREEN_NAME' => $twitter_name));
+            $twitter_error .= '<br />';
+            return do_template($twitter_templatemain, array(
+                'TWITTER_TITLE' => $twitter_title,
+                'TWITTER_ERROR' => $twitter_error,
+                'CONTENT' => $content,
+                'STYLE' => strval($twitter_style),
+                'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
+                'USER_SCREEN_NAME' => $twitter_name
+            ));
         }
 
         if (count($twitter_statuses) == 0) {
@@ -287,5 +306,18 @@ class Block_twitter_feed
  */
 function block_twitter_feed__cache_on($map)
 {
-    return array(array_key_exists('api_key', $map) ? $map['api_key'] : '', array_key_exists('api_secret', $map) ? $map['api_secret'] : '', array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2, array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1, array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10, array_key_exists('style', $map) ? intval($map['style']) : 1, array_key_exists('title', $map) ? $map['title'] : '', array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens', array_key_exists('template_main', $map) ? $map['template_main'] : '', array_key_exists('template_style', $map) ? $map['template_style'] : '', array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1', array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1');
+    return array(
+        array_key_exists('api_key', $map) ? $map['api_key'] : '',
+        array_key_exists('api_secret', $map) ? $map['api_secret'] : '',
+        array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2,
+        array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1,
+        array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10,
+        array_key_exists('style', $map) ? intval($map['style']) : 1,
+        array_key_exists('title', $map) ? $map['title'] : '',
+        array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens',
+        array_key_exists('template_main', $map) ? $map['template_main'] : '',
+        array_key_exists('template_style', $map) ? $map['template_style'] : '',
+        array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1',
+        array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1'
+    );
 }
