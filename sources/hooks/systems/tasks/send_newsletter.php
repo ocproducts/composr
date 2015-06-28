@@ -97,7 +97,7 @@ class Hook_task_send_newsletter
                 }
 
                 if (!is_null($last_cron)) {
-                    $test = $GLOBALS['SITE_DB']->query_value_null_ok('newsletter_drip_send', 'd_to_email', array('d_to_email' => $email_address, 'd_subject' => $subject));
+                    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_drip_send', 'd_to_email', array('d_to_email' => $email_address, 'd_subject' => $subject));
                     if (is_null($test)) {
                         $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', array(
                             'd_inject_time' => time(),
