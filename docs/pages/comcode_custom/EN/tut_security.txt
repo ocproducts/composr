@@ -431,6 +431,18 @@ However, be careful that once you have a cause identified, you do a full cleanup
 
 Most users never get hacked, so it's pretty bad luck if you have been (or, you've not updated scripts with important security updates in :S).
 
+[title="2"]General considerations[/title]
+
+This section contains some general things to bear in mind when considering your security.
+
+[title="3"]URL monikers[/title]
+
+The URL monikers feature puts content titles into URLs instead of IDs, and for SEO purposes Composr will enforce those URLs consistently. It does this when generating a page-link for inclusion from content (e.g. from a forum post), or if the numeric-ID URL is accessed (it redirects).
+
+This is a long way of saying that the URL moniker exposes content titles to users who may not have access to that content, which could be a concern in some cases.
+
+If you have sensitive material that might be in a URL moniker, you should either customise that moniker(s), or turn the feature off in the configuration.
+
 [concepts
  1_key="SSL"          1_value="Secure Socket Layer -- encryption over Internet connections so as to avoid interception of information"
  2_key="white-list"   2_value="White lists show what things are allowed, as opposed to what are not (black lists); they are theoretically better (but not always practical), as they guard against changes that could add insecurity (e.g. if a file type suddenly starts supporting dangerous macros and wasn't black-listed, it would spell trouble) or oversights"

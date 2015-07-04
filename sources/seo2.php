@@ -150,11 +150,11 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     require_code('textfiles');
     $word_chars = explode("\n", read_text_file('word_characters', '')); // We use this, as we have no easy multi-language way of detecting if something is a word character in non-latin alphabets (as they don't usually have upper/lower case which would be our detection technique)
     foreach ($word_chars as $i => $word_char) {
-        $word_chars[$i] = cms_mb_trim($word_char);
+        $word_chars[$i] = trim($word_char);
     }
     $common_words = explode("\n", read_text_file('too_common_words', ''));
     foreach ($common_words as $i => $common_word) {
-        $common_words[$i] = cms_mb_trim(cms_mb_strtolower($common_word));
+        $common_words[$i] = trim(cms_mb_strtolower($common_word));
     }
 
     $word_chars_flip = array_flip($word_chars);

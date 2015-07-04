@@ -300,7 +300,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         }
 
         $name = $rows[$i]['name'];
-        $shown_already[$name] = 1;
+        $shown_already[$name] = true;
 
         // Update the counts (ones done per-view)
         if ((get_db_type() != 'xml') && (get_value('no_banner_count_updates') !== '1')) {

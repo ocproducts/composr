@@ -313,6 +313,13 @@ function new_html__initialise(element)
 			/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
 				if (typeof element['original-title']=='undefined'/*check tipsy not used*/ && element.className.indexOf('no_tooltip')==-1) convert_tooltip(element);
 			/*{+END}*/
+
+			/*{+START,IF,{$VALUE_OPTION,js_keep_params}}*/
+				/* Keep parameters need propagating */
+				if (element.href && element.href.indexOf('{$BASE_URL;}/')==0)
+					element.href+=keep_stub(element.href.indexOf('?')==-1,true,element.href);
+			/*{+END}*/
+
 			break;
 
 		case 'form':
@@ -350,6 +357,12 @@ function new_html__initialise(element)
 						convert_tooltip(elements[j]);
 					}
 				}
+			/*{+END}*/
+
+			/*{+START,IF,{$VALUE_OPTION,js_keep_params}}*/
+				/* Keep parameters need propagating */
+				if (element.action && element.action.indexOf('{$BASE_URL;}/')==0)
+					element.action+=keep_stub(element.action.indexOf('?')==-1,true,element.action);
 			/*{+END}*/
 
 			break;

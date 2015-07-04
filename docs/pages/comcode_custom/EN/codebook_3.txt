@@ -490,6 +490,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]save_jpegs_as_png[/tt] -- set this to '1' to allow Composr to detect when JPEG files would be smaller, and save JPEG data into PNG file extensions. It is a bit of a hack, and goes against standards, but works well
   - [tt]maximum_result_count_point[/tt] -- the number of search results to count up to (defaults to '1000'); a higher figure means that for multi-condition searches extra computation will be required to see which result rows match the search conditions (single-condition search counting is usually fast because an index gives an instant answer)
   - [tt]search_days__<search-hook>[/tt] -- (see "Low-level tuning")
+  - [tt]js_keep_params[/tt] -- handle keep variable propagation via JavaScript. Used in conjunction with [tt]$SITE_INFO['no_keep_params']='1';[/tt]
  - Performance tuning (negative)
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs

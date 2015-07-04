@@ -821,21 +821,6 @@ function cms_mb_strtoupper($in)
 }
 
 /**
- * Trim white-space.
- *
- * @param  string $in Subject.
- * @return string Result.
- */
-function cms_mb_trim($in)
-{
-    if (strtoupper(get_charset()) != 'utf-8') {
-        return trim($in);
-    }
-
-    return preg_replace('/(^\s+)|(\s+$)/us', '', $in); // Based on comment in PHP manual
-}
-
-/**
  * Find if we a string is ASCII, and hence we can use non-UTF-safe functions on it.
  *
  * @param  string $x String to test
