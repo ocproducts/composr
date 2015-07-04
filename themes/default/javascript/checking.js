@@ -995,6 +995,47 @@ function toggle_subordinate_fields(pic,help_id)
 	trigger_resize();
 }
 
+function initialise_input_theme_image_entry(name,code)
+{
+	var stem=name+'_'+code;
+
+	var e=document.getElementById('w_'+stem);
+	var img=e.getElementsByTagName('img')[0];
+	var input=document.getElementById('j_'+stem);
+	var label=e.getElementsByTagName('label')[0];
+	var form=input.form;
+
+	e.onkeypress=function(event) {
+		if (!event) event=window.event;
+
+		if (entered_pressed(event))
+			return e.onclick.call([event]);
+		return null;
+	};
+
+	var click_func=function(event) {
+		if (!event) event=window.event;
+
+		choose_picture('j_'+stem,img,name,event);
+
+		if (typeof window.main_form_very_simple!='undefined') form.submit();
+
+		cancel_bubbling(event);
+	}
+	img.onkeypress=click_func;
+	img.onclick=click_func;
+	e.onclick=click_func;
+
+	label.className='js_widget';
+
+	input.onclick=function() {
+		if (this.disabled) return;
+		if (typeof window.deselect_alt_url!='undefined') deselect_alt_url(this.form);
+		if (typeof window.main_form_very_simple!='undefined') this.form.submit();
+		cancel_bubbling(event);
+	}
+}
+
 function choose_picture(id,ob,name,event)
 {
 	var r=document.getElementById(id);
@@ -1003,7 +1044,7 @@ function choose_picture(id,ob,name,event)
 	for (var i=0;i<e.length;i++)
 	{
 		if (e[i].disabled) continue;
-		var img=e[i].parentNode.parentNode.parentNode.getElementsByTagName('img')[0];
+		var img=e[i].parentNode.parentNode.getElementsByTagName('img')[0];
 		if ((img) && (img!=ob))
 		{
 			if (img.parentNode.className.indexOf(' selected')!=-1)

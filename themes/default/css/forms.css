@@ -383,12 +383,19 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	white-space: nowrap;
 	padding: 0.25em;
 	font-size: 0.8em;
-	min-height: 35px;
-	min-width: 35px;
 	cursor: pointer;
+
+	/* Numbers based around selecting emoticons, making that line up with the irregular emoticon sizes */
+	min-height: 60px;
+	min-width: 60px;
 }
+.radio_list_picture_na {
+	float: none;
+}
+
 .radio_list_picture label {
 	cursor: pointer;
+	display: block;
 }
 
 .radio_list_picture.linear {
@@ -399,6 +406,17 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 .radio_list_picture img {
 	max-width: 100px;
+}
+
+.radio_list_picture label.js_widget {
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+.page_running_admin_themes .radio_list_picture label.js_widget, .page_running_admin_zones .radio_list_picture label.js_widget {
+	visibility: visible;
+	width: auto;
+	height: auto;
 }
 
 .radio_list_picture {

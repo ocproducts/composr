@@ -1867,7 +1867,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $height = null;
             }
 
-            $temp = do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => '10005e2f08b44bfe17fce68685b4c884', 'LINEAR' => $linear, 'CHECKED' => $selected, 'PRETTY' => $pretty, 'NAME' => $name, 'CODE' => $id, 'URL' => $url, 'WIDTH' => strval($width), 'HEIGHT' => strval($height)));
+            $temp = do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => '10005e2f08b44bfe17fce68685b4c884', 'LINEAR' => $linear, 'CHECKED' => $selected, 'PRETTY' => $pretty, 'NAME' => $name, 'CODE' => $id, 'URL' => $url, 'WIDTH' => is_null($width) ? '' : strval($width), 'HEIGHT' => is_null($height) ? '' : strval($height)));
             $_category->attach($temp);
 
             $i++;
