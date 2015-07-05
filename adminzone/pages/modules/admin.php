@@ -183,11 +183,12 @@ class Module_admin
             array('banner', 'advert', 'advertising', 'advertise'),
             array('news', 'blogs', 'press release'),
             array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation'), // i.e. Composr validation
-            array('webstandards', 'check', 'conformance'), // i.e. webstandards
-            // sanitisation or check or well-formed (for input data, or transactions)
-            // integrity (for system data)
-            // approve (for IPs)
-            // confirm (for newsletter subscriptions)
+            array('webstandards', 'check', 'conformance'),
+            // We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
+            //  sanitisation or check or well-formed (for input data, or transactions)
+            //  integrity (for system data)
+            //  approve (for IPs)
+            //  confirm (for newsletter subscriptions)
             array('theme', 'skin', 'style'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
@@ -333,23 +334,29 @@ class Module_admin
                 if ($this->and_query) {
                     $regexp = '';
                 }
+                $there_somewhere=false;
                 foreach ($keyword_group as $keyword) {
                     if ($regexp != '') {
                         $regexp .= '|';
                     }
                     $regexp_for_keyword = '((^|\.|\#|\s|\/|\-|>|\)|\(|\})' . preg_quote($keyword, '#') . ')';
                     $regexp .= $regexp_for_keyword;
+
+                    if (!$there_somewhere) {
+                        $there_somewhere = (stripos($t, $keyword) !== false);
+                    }
                 }
-                if ($this->and_query) {
-                    if (preg_match('#' . $regexp . '#i', $t) == 0) {
+                if ($this->and_query) { // Running the regexps individually
+                    if ((!$there_somewhere/*optimisation*/) || (preg_match('#' . $regexp . '#i', $t) == 0)) {
                         return false;
                     }
                 }
             }
         }
-        if ($this->and_query) {
+        if ($this->and_query) { // Already done all the regexps individually
             return true;
         }
+        // Run the built up OR regexp
         return (preg_match('#' . $regexp . '#i', $t) != 0);
     }
 
@@ -397,6 +404,8 @@ class Module_admin
 
         // Mess around to find our search keywords (takes synonyms into account, and generally tidies up)
         $raw_search_string = get_param_string('content', false, true);
+
+        cms_profile_start_for('admin search:derive keywords');
 
         // Work out our keywords
         $keyword_string = $raw_search_string;
@@ -492,10 +501,13 @@ class Module_admin
 
         $this->keywords = $keywords;
 
+        cms_profile_end_for('admin search:derive keywords');
+
         $content = array();
 
         // Targetted tips
         $current_results_type = do_lang('TIPS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             $tips = array(
@@ -507,9 +519,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Admin/CMS menu icons
         $current_results_type = do_lang('ADMIN_MODULES');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             $hooks = find_all_hooks('systems', 'page_groupings');
@@ -536,9 +550,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Module entry points
         $current_results_type = do_lang('SCREENS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             foreach (find_all_zones(false, true) as $zone => $zone_details) {
@@ -633,16 +649,18 @@ class Module_admin
                             $_url = build_url(array('page' => $page), $zone);
                             $site_tree_editor_url = build_url(array('page' => 'admin_sitetree', 'type' => 'site_tree', 'id' => $zone . ':' . $page), 'adminzone');
                             $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), 'adminzone');
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITE_TREE_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
+                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
                         }
                     }
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Importers
         $current_results_type = do_lang('IMPORT');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_import'))) {
-            // Importers
             $content[$current_results_type] = new Tempcode();
             $hooks = find_all_hooks('modules', 'admin_import');
             foreach (array_keys($hooks) as $hook) {
@@ -656,10 +674,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Config options- names, descriptions, groups, categories
         $current_results_type = do_lang('CONFIGURATION');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if ((($this->_section_match($section_limitations, $current_results_type)) || ($this->_section_match($section_limitations, do_lang('OPTION_CATEGORIES'))) || ($this->_section_match($section_limitations, do_lang('OPTION_GROUPS')))) && (has_actual_page_access(get_member(), 'admin_config'))) {
-            // Config options- names, descriptions, groups, categories
             $content[$current_results_type] = new Tempcode();
             $map = array();
             $hooks = find_all_hooks('systems', 'config');
@@ -699,7 +719,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink($url, do_lang_tempcode($p['group']), false, false));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                    $_t = do_lang_tempcode($p['explanation']);
+                    $_t = ($t == '') ? new Tempcode() : do_lang_tempcode($p['explanation']);
                     $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'f7271912ccbe0358fe263ed61f7ed427', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $_t, 'SUP' => $sup)));
 
                     if ($conf_found_count > 100) {
@@ -765,10 +785,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Usergroups
         $current_results_type = do_lang('USERGROUPS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_cns_groups')) && (get_forum_type() == 'cns')) {
-            // Usergroups
             $content[$current_results_type] = new Tempcode();
             $map = array('g_is_private_club' => 0);
             $all_groups = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map);
@@ -788,10 +810,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Themes
         $current_results_type = do_lang('THEMES');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && has_actual_page_access(get_member(), 'admin_themes')) {
-            // Themes
             $content[$current_results_type] = new Tempcode();
             $map = array();
             foreach (array(do_lang('MOBILE_PAGES')) as $n) {
@@ -809,10 +833,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Zones
         $current_results_type = do_lang('ZONES');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && has_actual_page_access(get_member(), 'admin_zones')) {
-            // Zones
             $content[$current_results_type] = new Tempcode();
             $map = array();
             $all_groups = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_title', 'zone_header_text'), $map, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
@@ -834,25 +860,29 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Blocks
         $current_results_type = do_lang('_BLOCKS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             $map = array();
             require_code('zones2');
             $all_blocks = find_all_blocks();
             foreach (array_keys($all_blocks) as $p) {
-                $t = do_lang('BLOCK_' . $p . '_DESCRIPTION');
-                if (($this->_keyword_match($p)) || ($this->_keyword_match($t))) {
+                $t = do_lang('BLOCK_' . $p . '_DESCRIPTION', null, null, null, null, false);
+                if (($this->_keyword_match($p)) || ((!is_null($t)) && ($this->_keyword_match($t)))) {
                     $url = '';
                     $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '1368be933d0ccbcd65939f29dd6d7003', 'NAME' => $p, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t))));
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Non-installed addons
         $current_results_type = do_lang('ADDONS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
             $map = array();
@@ -881,10 +911,12 @@ class Module_admin
                 closedir($dh);
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Privileges- sections/names/descriptions
         $current_results_type = do_lang('PRIVILEGES');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_permissions'))) {
-            // Privileges- sections/names/descriptions
             $content[$current_results_type] = new Tempcode();
             $all_permissions = $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name', 'p_section'));
             $pt_sections = array();
@@ -924,10 +956,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Usergroup settings
         $current_results_type = do_lang('USERGROUP_SETTINGS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'admin_cns_groups', 'adminzone'))) {
-            // Usergroup settings
             $content[$current_results_type] = new Tempcode();
             $applicable_langstrings = array(
                 array('ENQUIRE_ON_NEW_IPS', 'DESCRIPTION_ENQUIRE_ON_NEW_IPS'),
@@ -964,10 +998,12 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
+        // Member settings
         $current_results_type = do_lang('MEMBER_SETTINGS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'members'))) {
-            // Member settings
             $content[$current_results_type] = new Tempcode();
             $applicable_langstrings = array(
                 array('REVEAL_AGE', 'DESCRIPTION_REVEAL_AGE'),
@@ -990,9 +1026,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Zone options
         $current_results_type = do_lang('ZONE_OPTIONS');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_zones', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $applicable_langstrings = array(
@@ -1020,9 +1058,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Install options
         $current_results_type = do_lang('BASE_CONFIGURATION');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
             $content[$current_results_type] = new Tempcode();
             if (file_exists(get_file_base() . '/config_editor.php')) {
@@ -1038,9 +1078,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Language string names and contents
         $current_results_type = do_lang('MODULE_TRANS_NAME_admin_lang');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_lang', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
 
@@ -1091,9 +1133,11 @@ class Module_admin
             }
             $lang_file_contents = array();
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Theme images
         $current_results_type = do_lang('EDIT_THEME_IMAGES');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'theme', 'lang'));
@@ -1117,9 +1161,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // Template names
         $current_results_type = do_lang('TEMPLATES');
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $tpl_found = array();
@@ -1144,9 +1190,11 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         // CSS file contents
         $current_results_type = 'CSS';
+        cms_profile_start_for('admin search: '.$current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
             $dh = opendir(get_file_base() . '/themes/default/css/');
@@ -1171,6 +1219,7 @@ class Module_admin
                 }
             }
         }
+        cms_profile_end_for('admin search: '.$current_results_type);
 
         //ksort($content);    Don't sort, we have an implicit good order in this code file
 

@@ -862,40 +862,47 @@ function do_site()
             // Remove any sessions etc
             $static_cache = preg_replace('#(&|&amp;|&amp;amp;|%3Aamp%3A|\?)?(keep_session|keep_devtest|keep_failover)(=|%3D)\d+#', '', $static_cache);
 
-            if (!is_file($fast_cache_path . '.htm') || filemtime($fast_cache_path . '.htm') < time() - 60 * 60 * 5) {
-                write_static_cache_file($fast_cache_path . '.htm', $static_cache, true);
-            }
+            // Add URL identifier
+            $static_cache .= "\n\n" . '<!-- Cached URL ' . htmlentities($url) . ' -->';
 
-            if ($supports_failover_mode) {
-                if (!is_file($fast_cache_path . '__failover_mode.htm') || filemtime($fast_cache_path . '__failover_mode.htm') < time() - 60 * 60 * 5) {
-                    // Add failover messages
-                    if (!empty($SITE_INFO['failover_message_place_after'])) {
-                        $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
-                    }
-                    if (!empty($SITE_INFO['failover_message_place_before'])) {
-                        $static_cache = str_replace($SITE_INFO['failover_message_place_before'], $SITE_INFO['failover_message'] . $SITE_INFO['failover_message_place_before'], $static_cache);
-                    }
-
-                    // Disable all form controls
-                    $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
-
-                    write_static_cache_file($fast_cache_path . '__failover_mode.htm', $static_cache, false);
+            // Cache, but only if we want to
+            //  If it's a noindex page we don't (to limit cache size). That is a deep page a bot took a look at, and we even told the bot it was not important.
+            if (strpos($static_cache, '<meta name="robots" content="noindex') === false) {
+                if (!is_file($fast_cache_path . '.htm') || filemtime($fast_cache_path . '.htm') < time() - 60 * 60 * 5) {
+                    write_static_cache_file($fast_cache_path . '.htm', $static_cache, true);
                 }
 
-                if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
-                    $url_stem = $url;
-                    $url_stem = str_replace(get_base_url(true) . '/', '', $url_stem);
-                    $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
-                    if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
-                        if (is_mobile()) {
-                            $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
-                        } else {
-                            $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap.txt';
+                if ($supports_failover_mode) {
+                    if (!is_file($fast_cache_path . '__failover_mode.htm') || filemtime($fast_cache_path . '__failover_mode.htm') < time() - 60 * 60 * 5) {
+                        // Add failover messages
+                        if (!empty($SITE_INFO['failover_message_place_after'])) {
+                            $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
                         }
-                        $rewritemap_file_contents = file_get_contents($rewritemap_file);
-                        if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
-                            $rewritemap_file_contents .= "\n" . $url_stem . ' ' . $fast_cache_path . '__failover_mode.htm';
-                            file_put_contents($rewritemap_file, $rewritemap_file_contents, LOCK_EX);
+                        if (!empty($SITE_INFO['failover_message_place_before'])) {
+                            $static_cache = str_replace($SITE_INFO['failover_message_place_before'], $SITE_INFO['failover_message'] . $SITE_INFO['failover_message_place_before'], $static_cache);
+                        }
+
+                        // Disable all form controls
+                        $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
+
+                        write_static_cache_file($fast_cache_path . '__failover_mode.htm', $static_cache, false);
+                    }
+
+                    if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
+                        $url_stem = $url;
+                        $url_stem = str_replace(get_base_url(true) . '/', '', $url_stem);
+                        $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
+                        if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
+                            if (is_mobile()) {
+                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
+                            } else {
+                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap.txt';
+                            }
+                            $rewritemap_file_contents = file_get_contents($rewritemap_file);
+                            if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
+                                $rewritemap_file_contents .= "\n" . $url_stem . ' ' . $fast_cache_path . '__failover_mode.htm';
+                                file_put_contents($rewritemap_file, $rewritemap_file_contents, LOCK_EX);
+                            }
                         }
                     }
                 }

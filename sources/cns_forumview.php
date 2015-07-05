@@ -310,10 +310,10 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         if ($type == 'pt') {
             //if ($of_member_id!==get_member())    Actually we'll leave the "send message" button in your inbox, as a way for being able to type in who to send it to
             {
-                $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__send');
+                $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__send');
             }
         } else {
-            $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__new_topic');
+            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons__new_topic');
         }
     }
     $buttons = cns_button_screen_wrap($button_array);

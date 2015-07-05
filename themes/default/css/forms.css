@@ -412,11 +412,13 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	visibility: hidden;
 	width: 0;
 	height: 0;
+	font-size: 0;
 }
 .page_running_admin_themes .radio_list_picture label.js_widget, .page_running_admin_zones .radio_list_picture label.js_widget {
 	visibility: visible;
 	width: auto;
 	height: auto;
+	font-size: inherit;
 }
 
 .radio_list_picture {

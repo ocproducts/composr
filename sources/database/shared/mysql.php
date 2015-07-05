@@ -99,6 +99,17 @@ class Database_super_mysql
      */
     public function db_full_text_assemble($content, $boolean)
     {
+        static $stopwords = null;
+        if (is_null($stopwords)) {
+            require_code('database_search');
+            $stopwords = get_stopwords_list();
+        }
+        if (isset($stopwords[trim(strtolower($content), '"')])) {
+            // This is an imperfect solution for searching for a stop-word
+            // It will not cover the case where the stop-word is within the wider text. But we can't handle that case efficiently anyway
+            return db_string_equal_to('?', trim($content, '"'));
+        }
+
         if (!$boolean) {
             $content = str_replace('"', '', $content);
             if ((strtoupper($content) == $content) && (!is_numeric($content))) {

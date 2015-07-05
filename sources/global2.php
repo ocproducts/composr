@@ -480,6 +480,23 @@ function init__global2()
             automate_upgrade__safe();
         }
     }
+
+    // For performance testing
+    if (get_value('monitor_slow_urls') === '1') {
+        register_shutdown_function('monitor_slow_urls');
+    }
+}
+
+/**
+ * Use with register_shutdown_function to log slow URLs.
+ */
+function monitor_slow_urls()
+{
+    $time = time() - $_SERVER['REQUEST_TIME'];
+    if ($time >= 5) {
+        require_code('urls');
+        file_put_contents(get_file_base() . '/data_custom/time_log.txt', get_self_url_easy() . "\t" . strval($time) . "\n", FILE_APPEND);
+    }
 }
 
 /**
@@ -1996,6 +2013,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
     } elseif (($c == 'no_cache') || ($inline)) {
         if (!$text_only) {
             if ($context !== null) {
+                require_code('mail');
                 $__css = filter_css($c, $theme, $context);
             } else {
                 $_css = do_template($c, null, user_lang(), false, null, '.css', 'css', $theme);

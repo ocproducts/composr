@@ -103,7 +103,8 @@ class Module_topics
             inform_non_canonical_parameter('intended_solely_for');
         }
 
-        if ($type == 'browse' || $type == 'whisper') {
+        if ($type == 'browse' || $type == 'whisper' || $type == 'report_post' || $type == 'delete_post' || $type == 'new_post' || $type == 'edit_post' || $type == 'validate_post' || $type == 'new_topic') {
+            // Bot (which runs as a dum guest) could conceivably try and index these things and we don't want that
             attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
         }
 

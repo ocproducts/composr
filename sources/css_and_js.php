@@ -238,9 +238,11 @@ function css_compile($active_theme, $theme, $c, $fullpath, $css_cache_path, $min
             $global_fullpath = get_file_base() . '/themes/' . $d_theme . $found[1] . 'global' . $found[2];
         }
 
-        require_code('tempcode_compiler');
-        $temp = template_to_tempcode(file_get_contents($global_fullpath), 0, false, $c, $active_theme, user_lang());
-        $temp->evaluate(); // We just need it to evaluate, not do anything with it
+		if (strpos(get_file_contents($global_fullpath), '{$THEME_WIZARD_COLOR,') !== false) {
+            require_code('tempcode_compiler');
+            $temp = template_to_tempcode(file_get_contents($global_fullpath), 0, false, $c, $active_theme, user_lang());
+            $temp->evaluate(); // We just need it to evaluate, not do anything with it
+        }
     }
 
     list($success_status, $out) = _css_compile($active_theme, $theme, $c, $fullpath, $minify);

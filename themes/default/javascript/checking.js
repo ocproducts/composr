@@ -1038,6 +1038,8 @@ function initialise_input_theme_image_entry(name,code)
 
 function choose_picture(id,ob,name,event)
 {
+	if (!ob) return;
+
 	var r=document.getElementById(id);
 	if (!r) return;
 	var e=r.form.elements[name];

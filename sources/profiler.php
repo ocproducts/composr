@@ -133,7 +133,7 @@ function _cms_profile_end_for($identifier, $specifics = null)
     $time_end = microtime(true);
     $at = array(
               'time_end' => $time_end,
-              'time_length' => intval(($time_start - $time_end) * 1000),
+              'time_length' => ($time_end - $time_start),
               'specifics' => $specifics,
           ) + $at;
 

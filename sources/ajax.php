@@ -650,17 +650,5 @@ function snippet_script()
         }
     }
 
-    // End early execution listening (this means register_shutdown_function will run after connection closed - faster)
-    if (function_exists('apache_setenv')) {
-        @apache_setenv('no-gzip', '1');
-    }
-    safe_ini_set('zlib.output_compression', 'Off');
-    $size = strlen($out);
-    header('Connection: close');
-    @ignore_user_abort(true);
-    header('Content-Encoding: none');
-    header('Content-Length: ' . strval($size));
     echo $out;
-    @ob_end_flush();
-    flush();
 }

@@ -2288,8 +2288,8 @@ function is_mobile($user_agent = null, $truth = false)
 
     if (((!isset($SITE_INFO['no_extra_mobiles'])) || ($SITE_INFO['no_extra_mobiles'] != '1')) && (is_file(get_file_base() . '/text_custom/mobile_devices.txt'))) {
         require_code('files');
-        $pdas = better_parse_ini_file((get_file_base() . '/text_custom/mobile_devices.txt'));
-        foreach ($pdas as $key => $val) {
+        $mobile_devices = better_parse_ini_file((get_file_base() . '/text_custom/mobile_devices.txt'));
+        foreach ($mobile_devices as $key => $val) {
             if ($val == 1) {
                 $browsers[] = $key;
             } else {
