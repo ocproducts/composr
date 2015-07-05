@@ -121,7 +121,7 @@ class Hook_addon_registry_youtube_channel_integration_block
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images_custom/youtube_channel_integration/youtube_channel_integration_icon.png';
     }
 
     /**
@@ -135,8 +135,28 @@ class Hook_addon_registry_youtube_channel_integration_block
             'sources_custom/hooks/systems/addon_registry/youtube_channel_integration_block.php',
             'lang_custom/EN/youtube_channel.ini',
             'sources_custom/blocks/youtube_channel.php',
+            'themes/default/images_custom/youtube_channel_integration/star_empty.gif',
+            'themes/default/images_custom/youtube_channel_integration/star_full.gif',
+            'themes/default/images_custom/youtube_channel_integration/star_half.gif',
+            'themes/default/images_custom/youtube_channel_integration/youtube_channel_integration_icon.png',
+            'themes/default/images_custom/youtube_channel_integration/index.html',
             'themes/default/templates_custom/BLOCK_YOUTUBE_CHANNEL.tpl',
             'themes/default/templates_custom/BLOCK_YOUTUBE_CHANNEL_STYLE.tpl',
+            'sources_custom/hooks/systems/config/youtube_channel_block_api_key.php',
+            'sources_custom/hooks/systems/config/youtube_channel_block_update_time.php',
         );
+    }
+
+    /**
+     * Install the addon.
+     *
+     * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
+     */
+    public function install($upgrade_from = null)
+    {
+        //if old config option exists from older version of addon, remove it
+        if (get_option('channel_update_time', true) != null) {
+            delete_config_option('channel_update_time');
+        }
     }
 }
