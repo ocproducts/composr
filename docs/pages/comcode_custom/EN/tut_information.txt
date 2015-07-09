@@ -272,6 +272,53 @@ Downloads may be used to release information indirectly, essentially via archive
 </table>
 [/html]
 
+[title="2"]Content type terminology[/title]
+
+We use 4 generic words in Composr for describing content:
+ - Content type (plural: content types)
+ - Resource (plural: resources)
+ - Category (plural: categories)
+ - Entry (plural: entries)
+
+None of these things have any specific implementation in Composr. For example, if you looked in the Composr code you wouldn't find an "entry" defined anywhere in it. They are just words we use consistently to describe how parts of the system behave and relate to each other.
+
+A content type is just as it sounds: a type of content. This could be a download, a gallery image, a banner, or an entry within an individual catalogue. Catalogues are essentially custom content types, i.e. they allow a site to create new content types without programming.
+Each content type in Composr runs from separate code, and separate database tables, in a separate addon, served from a separate module(s) -- except for catalogues, which all share those things.
+
+Resource can refer to any kind of "thing" in the system, including catalogues, categories, entries, members, usergroups, or just about anything else. We use the term quite loosely.
+
+Entries are organised within categories.
+
+[title="3"]Categories in more detail[/title]
+
+Categories are containers for entries. Most content types have categories, although they may be given different actual names in the system.
+
+A gallery is a kind of category. So images and videos are organised in gallery categories, aka galleries.
+
+A banner type is a kind of category. So banners are organised in banner type categories, aka banner types.
+
+Downloads are organised in download categories.
+
+Sometimes categories are hierarchical, e.g. they are for galleries and download categories, but are not for banner types. By hierarchical, I mean that categories can contain more categories ("subcategories"), forming a tree structure.
+
+Catalogues are like their own content types, and come with categories. Whether those categories are hierarchical or not is chosen as an option of the catalogue.
+
+So...
+
+A content type (e.g. galleries, banners, downloads, an individual catalogue) usually contains categories, which sometimes are hierarchical –- and categories contain entries.
+
+[title="2"]The narrow-in option[/title]
+
+Normally when browsing through categories you're opening up a category and seeing what's in it. If the "Narrow-in when browsing" config option is enabled then going deeper into categories works as a filter.
+
+E.g. if you have files X and Y categories as follows:
+root > a > File X
+root > a > b > File Y
+
+Without narrow-in, you see nothing under the root, file X under 'a', and file Y under 'b'.
+
+With narrow-in, you see everything under the root, everything under 'a', and just file Y under 'b'.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]

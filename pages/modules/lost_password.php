@@ -225,7 +225,7 @@ class Module_lost_password
             $url_simple = $_url_simple->evaluate();
             $message = do_lang($temporary_passwords ? 'LOST_PASSWORD_TEXT_TEMPORARY' : 'LOST_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array($url, comcode_escape($url_simple), strval($member_id), $code), get_lang($member_id));
             require_code('mail');
-            mail_wrap(do_lang('LOST_PASSWORD', null, null, null, get_lang($member_id)), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
+            mail_wrap(do_lang('LOST_PASSWORD_CONFIRM', null, null, null, get_lang($member_id)), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
         } else {
             $old_php_self = cms_srv('PHP_SELF');
             $old_server_name = cms_srv('SERVER_NAME');
@@ -342,7 +342,7 @@ class Module_lost_password
             $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
             $message = do_lang('MAIL_NEW_PASSWORD', comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate()));
             require_code('mail');
-            mail_wrap(do_lang('LOST_PASSWORD'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
+            mail_wrap(do_lang('LOST_PASSWORD_FINAL'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
         }
 
         if ((get_value('no_password_hashing') === '1') && (!$temporary_passwords)) {

@@ -251,8 +251,9 @@ function erase_cached_templates($preserve_some = false)
     $themes = find_all_themes();
     $langs = find_all_langs(true);
     foreach (array_keys($themes) as $theme) {
-        $using_less = (!addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
-                      (!is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') && !is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less'));
+        $using_less = (addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
+                      is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') || 
+                      is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less');
 
         foreach (array_keys($langs) as $lang) {
             $path = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang . '/';
@@ -282,7 +283,7 @@ function erase_cached_templates($preserve_some = false)
                         $i = 0;
                         while ((@unlink($path . $file) === false) && ($i < 5)) {
                             if (!file_exists($path . $file)) {
-                                break; // Race condition, gone already
+                                break; // Successful delete
                             }
                             sleep(1); // May be race condition, lock
                             $i++;
