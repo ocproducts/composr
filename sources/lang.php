@@ -450,7 +450,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
 
     // Try language cache
-    $desire_cache = (has_caching_for('lang'));
+    $desire_cache = (function_exists('has_caching_for') && has_caching_for('lang'));
     if ($desire_cache) {
         $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
         $lang_file_default = $fb . '/lang/' . $lang . '/' . $codename . '.ini';

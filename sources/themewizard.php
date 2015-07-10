@@ -788,7 +788,7 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
                         $img = generate_recoloured_image($path, '#12467A', $colours['a.hover'], '#0A223D', $colours['a.hover__dark']);
                     } elseif (in_array($show, array('cns_general/no_new_posts_redirect', 'cns_general/new_posts_redirect'))) {
                         $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#549B8C', $colours['cnsredirectindicator']);
-                    } elseif (in_array($show, array('cns_general/redirect', 'cns_general/redirect', 'cns_general/no_new_posts_redirect', 'cns_general/new_posts_redirect', 'cns_general/no_new_posts', 'cns_general/new_posts'))) {
+                    } elseif (in_array($show, array('cns_general/redirect', 'cns_general/redirect', 'cns_general/no_new_posts', 'cns_general/new_posts'))) {
                         $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#5A84C4', $colours['cnspostindicator']);
                     } else { // These are less special... we just change the hue
                         $img = re_hue_image($path, $seed, $source_theme);
@@ -1551,18 +1551,24 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         if (function_exists('imagecreatetruecolor')) {
             if (!imageistruecolor($_image)) {
                 $image = imagecreatetruecolor($width, $height);
+                imagealphablending($image, false);
+                imagesavealpha($image, true);
                 imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
             } else {
                 $image = $_image;
+                imagealphablending($image, false);
+                imagesavealpha($image, true);
             }
         } else {
             $image = $_image;
+            imagealphablending($image, false);
+            imagesavealpha($image, true);
         }
     } else {
         $image = $_image;
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
     }
-    imagealphablending($image, false);
-    imagesavealpha($image, true);
 
     if (is_null($colour_b2_new)) {
         $colour_b_orig_r = $colour_b1_orig_r;

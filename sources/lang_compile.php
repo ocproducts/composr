@@ -42,7 +42,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
 {
     global $LANGUAGE_STRINGS_CACHE, $REQUIRE_LANG_LOOP, $LANG_LOADED_LANG;
 
-    $desire_cache = (has_caching_for('lang'));
+    $desire_cache = (function_exists('has_caching_for') && has_caching_for('lang'));
     if ($desire_cache) {
         if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
             global $DECACHED_COMCODE_LANG_STRINGS;
