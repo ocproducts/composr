@@ -98,7 +98,7 @@ function open_link_as_overlay(ob,width,height,target)
 			<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
 				<span id="lightbox_description">'+description+'</span> \
 				'+((n===null)?'':('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">'+x+'</span> / <span id="lightbox_position_in_set_n">'+n+'</span></span>'))+' \
-				'+(is_video?'':('<span id="lightbox_full_link"><a href="'+escape_html(initial_img_url)+'" target="_blank" title="{$STRIP_TAGS;,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW}">{!SEE_FULL_IMAGE;}</a></span>'))+' \
+				'+(is_video?'':('<span id="lightbox_full_link"><a href="'+escape_html(initial_img_url)+'" target="_blank" title="{$STRIP_TAGS;,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;}">{!SEE_FULL_IMAGE;}</a></span>'))+' \
 			</p>';
 
 		// Show overlay

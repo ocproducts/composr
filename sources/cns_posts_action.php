@@ -214,10 +214,19 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 access_denied('I_ERROR');
             }
 
-            $last_member_id = $info[0]['t_cache_last_member_id'];
-            if ((!cns_may_post_in_topic($forum_id, $topic_id, $last_member_id, $info[0]['t_is_open'] == 0, $poster, !is_null($intended_solely_for))) && (!$is_starter)) {
+            $last_member_id = $is_starter ? null : $info[0]['t_cache_last_member_id'];
+            $closed = $is_starter ? false : ($info[0]['t_is_open'] == 0);
+            if ((!cns_may_post_in_topic($forum_id, $topic_id, $last_member_id, $closed, $poster, !is_null($intended_solely_for))) && (!$is_starter)) {
                 access_denied('I_ERROR');
             }
+        }
+    }
+
+    // Ensure parent post is from the same topic
+    if (!is_null($parent_id)) {
+        $test_topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $parent_id), ' AND ' . cns_get_topic_where($topic_id, $poster));
+        if (is_null($test_topic_id)) {
+            $parent_id = null;
         }
     }
 

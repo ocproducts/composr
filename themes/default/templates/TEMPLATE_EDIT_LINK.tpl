@@ -22,7 +22,7 @@
 
 	{+START,IF,{$GET,tpl_go_ahead}}
 		{$GET,tpl_marker_open}
-		{CONTENTS}
+		{CONTENTS`}
 		{$GET,tpl_marker_link}
 		{$GET,tpl_marker_close}
 
@@ -32,6 +32,6 @@
 	{+END}
 
 	{+START,IF,{$NOT,{$GET,tpl_go_ahead}}}
-		{CONTENTS}
+		{CONTENTS`}
 	{+END}
 {+END}

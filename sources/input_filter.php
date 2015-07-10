@@ -39,6 +39,10 @@ function init__input_filter()
  */
 function check_input_field_string($name, &$val, $posted = false)
 {
+    if (preg_match('#^\w*$#', $val) != 0) {
+        return;
+    }
+
     // Security for URL context (not only things that are specifically known URL parameters)
     if ((preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#i', $val) != 0) && ($name != 'value')/*Don't want autosave triggering this*/) {
         log_hack_attack_and_exit('SCRIPT_URL_HACK_2', $val);

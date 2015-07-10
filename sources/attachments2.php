@@ -218,7 +218,7 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
                         ), true);
                         $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
 
-                        $comcode = str_replace($comcode, $matches[0][$i], '[attachment framed="0" thumb="0"]' . strval($attachment_id) . '[/attachment]');
+                        $comcode = str_replace($matches[0][$i], '[attachment framed="0" thumb="0"]' . strval($attachment_id) . '[/attachment]', $comcode);
                     }
                 }
             }

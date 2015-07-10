@@ -71,18 +71,23 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
  * Get an SQL 'WHERE' clause for the posts in a topic.
  *
  * @param  AUTO_LINK $topic_id The ID of the topic we are getting details of.
+ * @param  ?MEMBER $member_id The member doing the lookup (null: current member).
  * @return string The WHERE clause.
  */
-function cns_get_topic_where($topic_id)
+function cns_get_topic_where($topic_id, $member_id = null)
 {
+    if (is_null($member_id)) {
+        $member_id = get_member();
+    }
+
     $where = 'p_topic_id=' . strval($topic_id);
     if (is_guest()) {
         $where .= ' AND p_intended_solely_for IS NULL';
-    } elseif (!has_privilege(get_member(), 'view_other_pt')) {
-        $where .= ' AND (p_intended_solely_for=' . strval(get_member()) . ' OR p_poster=' . strval(get_member()) . ' OR p_intended_solely_for IS NULL)';
+    } elseif (!has_privilege($member_id, 'view_other_pt')) {
+        $where .= ' AND (p_intended_solely_for=' . strval($member_id) . ' OR p_poster=' . strval($member_id) . ' OR p_intended_solely_for IS NULL)';
     }
-    if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
-        $where .= ' AND (p_validated=1 OR ((p_poster<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' OR ' . db_string_equal_to('p_ip_address', get_ip_address()) . ') AND p_poster=' . strval(get_member()) . '))';
+    if ((!has_privilege($member_id, 'see_unvalidated')) && (addon_installed('unvalidated'))) {
+        $where .= ' AND (p_validated=1 OR ((p_poster<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' OR ' . db_string_equal_to('p_ip_address', get_ip_address()) . ') AND p_poster=' . strval($member_id) . '))';
     }
     return $where;
 }

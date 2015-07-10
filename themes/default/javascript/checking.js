@@ -264,6 +264,8 @@ function disable_buttons_just_clicked(inputs,permanent)
 
 function do_form_preview(event,form,preview_url,has_separate_preview)
 {
+	if (typeof has_separate_preview=='undefined') has_separate_preview=false;
+
 	if (!document.getElementById('preview_iframe'))
 	{
 		fauxmodal_alert('{!ADBLOCKER;}');
@@ -285,7 +287,7 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 
 	if (form.onsubmit)
 	{
-		var test=form.onsubmit.call(form,event);
+		var test=form.onsubmit.call(form,event,true);
 		if (!test) return false;
 	} 
 

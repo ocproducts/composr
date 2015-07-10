@@ -827,9 +827,9 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     if ($special_treatment) {
         if ($KEEP_MARKERS) {
             $__data = new Tempcode();
-            $__data->attach('<!-- START-TEMPLATE=' . $codename . ' -->');
+            $__data->attach('<!-- START-TEMPLATE=' . escape_html($codename) . ' -->');
             $__data->attach($ret);
-            $__data->attach('<!-- END-TEMPLATE=' . $codename . ' -->');
+            $__data->attach('<!-- END-TEMPLATE=' . escape_html($codename) . ' -->');
             $ret = $__data;
         }
         if (($SHOW_EDIT_LINKS) && ($codename != 'PARAM_INFO')) {
