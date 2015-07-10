@@ -13,6 +13,8 @@
  * @package    purrrr
  */
 
+// Note to developers: this doesn't install at Composr installation due to install order. Who'd want it as a bundled addon though?
+
 /**
  * Hook class.
  */
