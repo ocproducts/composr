@@ -465,17 +465,14 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     // Handle if the page was renamed - move stuff over
     $renaming_page = ($new_file != $file);
     if ($renaming_page) {
-        if (addon_installed('catalogues')) {
-            update_catalogue_content_ref('comcode_page', $file, $new_file);
-        }
-
+        // Got to rename against multiple possible languages
         $langs = find_all_langs(true);
         $rename_map = array();
         foreach (array_keys($langs) as $lang) {
             $old_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt', true);
             if (file_exists(get_file_base() . '/' . $old_path)) {
                 $new_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/comcode_custom/' . $lang . '/' . $new_file . '.txt', true);
-                if (file_exists($new_path)) {
+                if ((file_exists($new_path)) && (fileinode($new_path) != fileinode($old_path)/*avoid issue on case insensitive file systems while changing case*/)) {
                     warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($zone . ':' . $new_file)));
                 }
                 $rename_map[$old_path] = $new_path;
@@ -484,9 +481,16 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
                 attach_message(do_lang_tempcode('ORIGINAL_PAGE_NO_RENAME'), 'warn');
             }
         }
-
         foreach ($rename_map as $path => $new_path) {
             rename(get_custom_file_base() . '/' . $path, get_custom_file_base() . '/' . $new_path);
+        }
+
+        // Got to rename various resources
+
+        $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_id' => $new_file), array('r_referer_id' => $file, 'r_referer_type' => 'comcode_page'));
+ 
+        if (addon_installed('catalogues')) {
+            update_catalogue_content_ref('comcode_page', $file, $new_file);
         }
 
         if (addon_installed('awards')) {
@@ -496,6 +500,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
             }
         }
 
+        // Main page record rename
         $GLOBALS['SITE_DB']->query_update('comcode_pages', array(
             'p_parent_page' => $new_file,
         ), array('the_zone' => $zone, 'p_parent_page' => $file));
@@ -569,7 +574,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
 
     // Empty caching
     erase_persistent_cache();
-    //persistent_cache_delete(array('PAGE_INFO'));
+    //persistent_cache_delete(array('PAGE_INFO')); Already erases above
     decache('main_comcode_page_children');
     decache('menu');
     $caches = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array('the_zone' => $zone, 'the_page' => $file));

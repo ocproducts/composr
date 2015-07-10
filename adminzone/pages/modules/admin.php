@@ -173,6 +173,7 @@ class Module_admin
             array('maximum', 'limit', 'total', 'max', 'increase', 'long'),
             array('characters', 'words', 'bytes'),
 
+            array('fault', 'error', 'bug', 'warning', 'notice', 'mistake', 'glitch', 'flaw', 'failure'),
             array('delineate', 'delimit', 'delimitate', 'demarcate'),
             array('order', 'sort'),
             array('sudo', 'masquerade'),

@@ -4069,6 +4069,17 @@ function fileatime($filename)
 }
 
 /**
+ * Gets last access time of file.
+ *
+ * @param  PATH $filename The filename.
+ * @return ~integer Inode number of the file (false: error).
+ */
+function fileinode($filename)
+{
+    return 0;
+}
+
+/**
  * Portable advisory file locking.
  *
  * @param  resource $handle File handle.

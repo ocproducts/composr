@@ -1988,7 +1988,7 @@ function convert_tooltip(element)
 				element,
 				'mouseout',
 				function(event) {
-					win.deactivate_tooltip(element,event);
+					win.deactivate_tooltip(element);
 				}
 			);
 		}

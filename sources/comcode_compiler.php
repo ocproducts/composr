@@ -162,6 +162,10 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
 {
     $params_comcode = '';
     foreach ($attributes as $key => $val) {
+        if (is_integer($key)) {
+            $key = strval($key);
+        }
+
         if (($key != 'param') || ($val != '')) {
             $params_comcode .= ' ' . $key . '="' . comcode_escape($val) . '"';
         }
@@ -198,7 +202,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $out .= '&#8203;';
             }
             $out .= '<comcode-' . escape_html($tag) . $params_html . '>';
-            $out .= $_embed;
+            $out .= $embed->evaluate();
             $out .= '</comcode-' . escape_html($tag) . '>';
             if ($method == WYSIWYG_COMCODE__XML_INLINE) {
                 $out .= '&#8203;';

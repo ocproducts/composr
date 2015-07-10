@@ -938,11 +938,6 @@ class Module_cms_comcode_pages
             $file = $new_file;
         }
 
-        require_code('type_sanitisation');
-        if (!is_alphanumeric($file, true)) {
-            warn_exit(do_lang_tempcode('BAD_CODENAME'));
-        }
-
         $validated = post_param_integer('validated', 0);
         if (!addon_installed('unvalidated')) {
             $validated = 1;
@@ -961,10 +956,7 @@ class Module_cms_comcode_pages
 
         // Handle attachments
         require_code('attachments2');
-        if ($new_file != $file) {
-            $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_id' => $new_file), array('r_referer_id' => $file, 'r_referer_type' => 'comcode_page'));
-        }
-        $_text = do_comcode_attachments($text_raw, 'comcode_page', $zone . ':' . $new_file);
+        $_text = do_comcode_attachments($text_raw, 'comcode_page', $zone . ':' . $file);
         $text = $_text['comcode'];
 
         // Some general CRUD maintenance that we don't do within the save_comcode_page function

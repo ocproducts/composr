@@ -419,13 +419,7 @@ function comcode_helper_script_step2()
             if (count($params) > 0) {
                 require_code('form_templates');
                 foreach ($params as $param) {
-                    $parameter_name = do_lang('COMCODE_TAG_' . $tag . '_NAME_OF_PARAM_' . $param, null, null, null, null, false);
-                    if (is_null($parameter_name)) {
-                        $parameter_name = titleify($param);
-                    }
-                    if ($GLOBALS['XSS_DETECT']) {
-                        ocp_mark_as_escaped($parameter_name);
-                    }
+                    $parameter_name = _get_comcode_tag_param_name($actual_tag, $param);
 
                     $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                     $supports_comcode = (strpos($descriptiont, do_lang('BLOCK_IND_SUPPORTS_COMCODE')) !== false);
@@ -532,22 +526,21 @@ function comcode_helper_script_step2()
             if (is_null($field_title)) {
                 $field_title = do_lang('TAG_CONTENTS');
             }
-
             if ($GLOBALS['XSS_DETECT']) {
                 ocp_mark_as_escaped($field_title);
             }
 
             if ($is_advanced) {
                 if ($supports_comcode) {
-                    $fields_advanced->attach(form_input_line_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields_advanced->attach(form_input_line_comcode(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 } else {
-                    $fields_advanced->attach(form_input_line(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields_advanced->attach(form_input_line(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 }
             } else {
                 if ($supports_comcode) {
-                    $fields->attach(form_input_line_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields->attach(form_input_line_comcode(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 } else {
-                    $fields->attach(form_input_line(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
+                    $fields->attach(form_input_line(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
                 }
             }
         }
@@ -671,37 +664,58 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
     } elseif ($tag == 'concepts') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-            $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 1));
+            $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 1));
         }
     } elseif ($tag == 'jumping') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-            $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+            $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
         }
     } elseif ($tag == 'shocker') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
             if ($param == 'left' || $param == 'right') {
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             } else {
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '');
-                $fields->attach(form_input_line(titleify($param), protect_from_escaping($description), $param, $default, false));
+                $fields->attach(form_input_line(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, $default, false));
             }
         }
     } elseif ($tag == 'random') {
         foreach ($params as $param) {
             $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-            $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), ($param != 'X') ? 2 : 0));
+
+            $_defaults = array();
+            if ($param == 'X') {
+                foreach ($defaults as $key => $val) {
+                    if (is_string($key)) {
+                        $_defaults[$key] = $val;
+                    }
+                }
+            } else {
+                foreach ($defaults as $key => $val) {
+                    if (is_integer($key)) {
+                        $_defaults[$key] = $val;
+                    }
+                }
+            }
+
+            $field = form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, $_defaults, ($param != 'X') ? 2 : 0, null, ($param == 'X') ? 'integer' : 'line');
+            if ($param == 'X') {
+                $fields_advanced->attach($field);
+            } else {
+                $fields->attach($field);
+            }
         }
     } elseif ($tag == 'sections') {
         foreach ($params as $param) {
             if ($param == 'default') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '1');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             } elseif ($param == 'name') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             }
         }
     } elseif ($tag == 'big_tabs') {
@@ -709,14 +723,14 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
             if ($param == 'default') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '1');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             } elseif ($param == 'name') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             } elseif ($param == 'switch_time') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '6000');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             }
         }
     } elseif ($tag == 'tabs') {
@@ -724,10 +738,10 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
             if ($param == 'default') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
                 $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '1');
-                $fields->attach(form_input_integer(titleify($param), protect_from_escaping($description), $param, intval($default), false));
+                $fields->attach(form_input_integer(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, intval($default), false));
             } elseif ($param == 'name') {
                 $description = do_lang('COMCODE_TAG_' . $tag . '_PARAM_' . $param);
-                $fields->attach(form_input_line_multi(titleify($param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
+                $fields->attach(form_input_line_multi(_get_comcode_tag_param_name($actual_tag, $param), protect_from_escaping($description), $param, get_defaults_multi($defaults, $param), 2));
             }
         }
     } else {
@@ -798,6 +812,22 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
 }
 
 /**
+ * Get the title for a Comcode tag parameter title.
+ *
+ * @param  ID_TEXT $actual_tag Actual tag being read.
+ * @param  ID_TEXT $param Parameter name.
+ * @return string Title.
+ */
+function _get_comcode_tag_param_name($actual_tag, $param)
+{
+    $parameter_name = do_lang('COMCODE_TAG_' . $actual_tag . '_NAME_OF_PARAM_' . $param, null, null, null, null, false);
+    if (is_null($parameter_name)) {
+        $parameter_name = titleify($param);
+    }
+    return $parameter_name;
+}
+
+/**
  * See if we have specialisation code for inserting an extra Comcode tag parameter input.
  *
  * @param  ID_TEXT $tag Tag being read.
@@ -834,7 +864,9 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
 {
     global $TEXTUAL_TAGS;
 
-    if (($tag == 'media') && (addon_installed('filedump'))) {
+    if ($tag == 'random') {
+        $fields_advanced->attach(form_input_integer(do_lang_tempcode('COMCODE_TAG_random_EMBED_FIELD_TITLE'), do_lang_tempcode('COMCODE_TAG_random_EMBED'), 'tag_contents', ($default_embed == '') ? null : intval($default_embed), false));
+    } elseif (($tag == 'media') && (addon_installed('filedump'))) {
         $set_name = 'file';
         $required = true;
         $set_title = do_lang_tempcode('FILE');
@@ -914,7 +946,7 @@ function comcode_helper_script_step3()
         'PREFIX' => ($prefix == '') ? null : $prefix,
         'TAG_CONTENTS' => post_param_string('tag_contents', ''),
         'SAVE_TO_ID' => get_param_string('save_to_id', ''),
-        'DELETE' => (post_param_integer('delete', 0) == 1),
+        'DELETE' => (post_param_integer('_delete', 0) == 1),
         'BLOCK' => $tag,
         'COMCODE' => $comcode,
         'COMCODE_SEMIHTML' => $comcode_semihtml,
@@ -1104,6 +1136,10 @@ function get_defaults_multi($defaults, $param)
 {
     $values = array();
     foreach ($defaults as $key => $val) {
+        if (is_integer($key)) {
+            $key = strval($key);
+        }
+
         if (substr($param, 0, 2) == 'x_') {
             if (preg_match('#^' . str_replace('x', '\d', preg_quote($param, '#')) . '$#', $key) != 0) {
                 $values[] = $val;
