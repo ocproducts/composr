@@ -141,10 +141,11 @@ class Hook_fields_float
             $actual_value = null;
         }
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         if ($_cf_name == do_lang('LONGITUDE_FIELD_NAME')) { // Assumes there is a Latitude field too, although not critical
             $pretty_name = $_cf_name;
             $description = $_cf_description;
-            $name = 'field_' . strval($field['id']);
             $required = $field['cf_required'] == 1;
 
             $latitude = '0';
@@ -165,13 +166,13 @@ class Hook_fields_float
                 $longitude = '0';
             }
 
-            $input = do_template('FORM_SCREEN_INPUT_MAP_POSITION', array('_GUID' => '86d69d152d7bfd125e6216c9ac936cfd', 'REQUIRED' => $required, 'NAME' => $name, 'LATITUDE' => $latitude, 'LONGITUDE' => $longitude));
+            $input = do_template('FORM_SCREEN_INPUT_MAP_POSITION', array('_GUID' => '86d69d152d7bfd125e6216c9ac936cfd', 'REQUIRED' => $required, 'NAME' => $input_name, 'LATITUDE' => $latitude, 'LONGITUDE' => $longitude));
             $lang_string = 'MAP_POSITION_FIELD_field_' . strval($field['id']);
             $test = do_lang($lang_string, null, null, null, null, false);
             if (is_null($test)) {
                 $lang_string = 'MAP_POSITION_FIELD';
             }
-            return _form_input($name, do_lang_tempcode($lang_string), '', $input, $required, false);
+            return _form_input($input_name, do_lang_tempcode($lang_string), '', $input, $required, false);
         }
 
         if ($_cf_name == do_lang('LATITUDE_FIELD_NAME')) { // Assumes there is a Longitude field too
@@ -180,7 +181,7 @@ class Hook_fields_float
             return new Tempcode();
         }
 
-        return form_input_float($_cf_name, $_cf_description, 'field_' . strval($field['id']), (is_null($actual_value) || ($actual_value === '')) ? null : floatval($actual_value), $field['cf_required'] == 1);
+        return form_input_float($_cf_name, $_cf_description, $input_name, (is_null($actual_value) || ($actual_value === '')) ? null : floatval($actual_value), $field['cf_required'] == 1);
     }
 
     /**

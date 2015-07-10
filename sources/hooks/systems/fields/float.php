@@ -138,7 +138,8 @@ class Hook_fields_float
             $actual_value = null;
         }
 
-        return form_input_float($_cf_name, $_cf_description, 'field_' . strval($field['id']), (is_null($actual_value) || ($actual_value === '')) ? null : floatval($actual_value), $field['cf_required'] == 1);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_float($_cf_name, $_cf_description, $input_name, (is_null($actual_value) || ($actual_value === '')) ? null : floatval($actual_value), $field['cf_required'] == 1);
     }
 
     /**

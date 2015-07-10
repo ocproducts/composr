@@ -175,7 +175,8 @@ class Hook_fields_just_time
 
             $time = array(intval($time_bits[1]), intval($time_bits[0]), intval(date('m')), intval(date('d')), intval(date('Y')));
         }
-        return form_input_date($_cf_name, $_cf_description, 'field_' . strval($field['id']), $field['cf_required'] == 1, ($field['cf_required'] == 0) && ($time === null), true, $time, 1, 1900, null, false, null, false);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_date($_cf_name, $_cf_description, $input_name, $field['cf_required'] == 1, ($field['cf_required'] == 0) && ($time === null), true, $time, 1, 1900, null, false, null, false);
     }
 
     /**

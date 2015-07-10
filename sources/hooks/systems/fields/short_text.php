@@ -133,7 +133,8 @@ class Hook_fields_short_text
         $_maxlength = option_value_from_field_array($field, 'maxlength', '');
         $maxlength = ($_maxlength == '') ? null : intval($_maxlength);
 
-        return form_input_line($_cf_name, $_cf_description, 'field_' . strval($field['id']), $actual_value, $field['cf_required'] == 1, null, $maxlength, $type);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_line($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1, null, $maxlength, $type);
     }
 
     /**

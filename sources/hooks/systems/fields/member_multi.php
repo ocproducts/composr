@@ -144,7 +144,8 @@ class Hook_fields_member_multi
         foreach (explode("\n", $actual_value) as $actual_value) {
             $usernames[] = $GLOBALS['FORUM_DRIVER']->get_username(intval($actual_value));
         }
-        return form_input_username_multi($_cf_name, $_cf_description, 'field_' . strval($field['id']), $usernames, ($field['cf_required'] == 1) ? 1 : 0, true);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_username_multi($_cf_name, $_cf_description, $input_name, $usernames, ($field['cf_required'] == 1) ? 1 : 0, true);
     }
 
     /**

@@ -23,7 +23,7 @@
  *
  * @param  tempcode $title Title to display on redirect page
  * @param  mixed $url Destination URL (may be Tempcode)
- * @param  ?mixed $text Message to show (may be Tempcode) (null: standard redirection message)
+ * @param  ?mixed $text Message (may be Tempcode) to show in the HTML of the redirect screen (which is usually never seen) and also after the redirect (null: standard redirection message which will only show in the HTML of the redirect screen and nothing after)
  * @param  boolean $intermediary_hop For intermediary hops, don't mark so as to read status messages - save them up for the next hop (which will not be intermediary)
  * @param  ID_TEXT $msg_type Code of message type to show
  * @set    warn inform fatal

@@ -210,6 +210,8 @@ class Hook_fields_list_multi
 
         $list = $this->get_input_list_map($field);
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
 
         $exploded_chosen = ($actual_value == $default) ? array() : explode("\n", $actual_value);
@@ -220,11 +222,11 @@ class Hook_fields_list_multi
         }
 
         $_list = array();
-        $custom_name = 'field_' . strval($field['id']) . '_other';
+        $custom_name = $input_name . '_other';
         $custom_value = mixed();
         $custom_value = array();
         foreach ($list as $i => $l) {
-            $_list[] = array($l, 'field_' . strval($field['id']) . '_' . strval($i), in_array($l, $exploded_chosen), '');
+            $_list[] = array($l, $input_name . '_' . strval($i), in_array($l, $exploded_chosen), '');
         }
         foreach ($exploded_chosen as $chosen) {
             if (!in_array($chosen, $list)) {
@@ -262,7 +264,7 @@ class Hook_fields_list_multi
                 foreach ($list as $l) {
                     $list_tpl->attach(form_input_list_entry($l, in_array($l, $exploded_chosen)));
                 }
-                return form_input_multi_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, null, $input_size, $field['cf_required'] == 1, $custom_name, $custom_value);
+                return form_input_multi_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, $input_size, $field['cf_required'] == 1, $custom_name, $custom_value);
         }
     }
 

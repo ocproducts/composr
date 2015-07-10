@@ -28,9 +28,12 @@
 {+END}{+END}{+END}
 
 <p class="proceed_button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
-	{+START,IF_PASSED_AND_TRUE,BACK}
-		{+START,IF,{$JS_ON}}
+	{+START,IF,{$JS_ON}}
+		{+START,IF_PASSED_AND_TRUE,BACK}
 			<input class="buttons__back button_screen" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+		{+END}
+		{+START,IF_PASSED,BACK_URL}
+			<input class="buttons__back button_screen" type="button" onclick="form.action='{BACK_URL;^*}'; form.submit(); return false;" value="{!GO_BACK}" />
 		{+END}
 	{+END}
 

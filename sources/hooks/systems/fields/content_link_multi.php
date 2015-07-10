@@ -156,9 +156,11 @@ class Hook_fields_content_link_multi
         $options = array();
         $type = substr($field['cf_type'], 3);
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         // Nice tree list selection
         if ((is_file(get_file_base() . '/sources/hooks/systems/ajax_tree/choose_' . $type . '.php')) || (is_file(get_file_base() . '/sources_custom/hooks/systems/ajax_tree/choose_' . $type . '.php'))) {
-            return form_input_tree_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), null, 'choose_' . $type, $options, $field['cf_required'] == 1, str_replace("\n", ',', $actual_value), false, null, true);
+            return form_input_tree_list($_cf_name, $_cf_description, $input_name, null, 'choose_' . $type, $options, $field['cf_required'] == 1, str_replace("\n", ',', $actual_value), false, null, true);
         }
 
         // Simple list selection
@@ -195,7 +197,7 @@ class Hook_fields_content_link_multi
             }
             $list->attach(form_input_list_entry($id, (is_null($actual_value) || $id == '') ? false : (strpos("\n" . $actual_value . "\n", $id) !== false), $text));
         }
-        return form_input_multi_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list, null, 5, $field['cf_required'] == 1);
+        return form_input_multi_list($_cf_name, $_cf_description, $input_name, $list, null, 5, $field['cf_required'] == 1);
     }
 
     /**

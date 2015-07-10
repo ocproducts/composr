@@ -219,9 +219,11 @@ function div($tempcode, $guid = '')
  * @param  tempcode $title The title of the info page
  * @param  mixed $text The text to put on the info page (string, or language-tempcode)
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
+ * @param  ?tempcode $back_url URL to have back button to (null: none)
+ * @param  ?tempcode $fields Fields to carry with on back button (null: none)
  * @return tempcode The info page
  */
-function inform_screen($title, $text, $support_match_key_messages = false)
+function inform_screen($title, $text, $support_match_key_messages = false, $back_url = null, $fields = null)
 {
     require_code('failure');
 
@@ -230,7 +232,7 @@ function inform_screen($title, $text, $support_match_key_messages = false)
         $text = $tmp;
     }
 
-    return do_template('INFORM_SCREEN', array('_GUID' => '6e0aec9eb8a1daca60f322f213ddd2ee', 'TITLE' => $title, 'TEXT' => $text));
+    return do_template('INFORM_SCREEN', array('_GUID' => '6e0aec9eb8a1daca60f322f213ddd2ee', 'TITLE' => $title, 'TEXT' => $text, 'BACK_URL' => $back_url, 'FIELDS' => $fields));
 }
 
 /**

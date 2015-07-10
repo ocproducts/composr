@@ -120,7 +120,8 @@ class Hook_fields_page_link
             $_actual_value[1] = $_actual_value[0];
         }
 
-        return form_input_page_link($_cf_name, $_cf_description, 'field_' . strval($field['id']), $_actual_value[0], $field['cf_required'] == 1, null, null, true);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_page_link($_cf_name, $_cf_description, $input_name, $_actual_value[0], $field['cf_required'] == 1, null, null, true);
     }
 
     /**

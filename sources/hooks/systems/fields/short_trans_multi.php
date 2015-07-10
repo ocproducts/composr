@@ -124,7 +124,8 @@ class Hook_fields_short_trans_multi
 
         $cms_type = option_value_from_field_array($field, 'cms_type', 'line');
 
-        return form_input_line_multi($_cf_name, $_cf_description, 'field_' . strval($field['id']), explode("\n", $actual_value), $num_required, null, $cms_type);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_line_multi($_cf_name, $_cf_description, $input_name, explode("\n", $actual_value), $num_required, null, $cms_type);
     }
 
     /**

@@ -172,6 +172,8 @@ class Hook_fields_list
 
         $list = $this->get_input_list_map($field);
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
         $selected = ($actual_value !== null && $actual_value !== '' && $actual_value !== $field['cf_default']);
         $custom_value = ($selected && !in_array($actual_value, $list));
@@ -196,7 +198,7 @@ class Hook_fields_list
             case 'radio':
                 $list_tpl = new Tempcode();
                 if (($field['cf_required'] == 0) || (!$selected) && (!in_array('', $list))) {
-                    $list_tpl->attach(form_input_radio_entry('field_' . strval($field['id']), '', !$selected, do_lang_tempcode('NA_EM')));
+                    $list_tpl->attach(form_input_radio_entry($input_name, '', !$selected, do_lang_tempcode('NA_EM')));
                 }
 
                 foreach ($list as $l) {
@@ -204,18 +206,18 @@ class Hook_fields_list
                     if (($is_locations) && (strlen($l) == 2)) {
                         $l_nice = find_country_name_from_iso($l);
                     }
-                    $list_tpl->attach(form_input_radio_entry('field_' . strval($field['id']), $l, $l === $actual_value, escape_html($l_nice)));
+                    $list_tpl->attach(form_input_radio_entry($input_name, $l, $l === $actual_value, escape_html($l_nice)));
                 }
 
                 if ($custom_values == 'on') {
                     $list_tpl->attach(do_template('FORM_SCREEN_INPUT_RADIO_LIST_COMBO_ENTRY', array(
                         'TABINDEX' => strval(get_form_field_tabindex()),
-                        'NAME' => 'field_' . strval($field['id']),
+                        'NAME' => $input_name,
                         'VALUE' => $custom_value ? $actual_value : '',
                     )));
                 }
 
-                return form_input_radio($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, $field['cf_required'] == 1);
+                return form_input_radio($_cf_name, $_cf_description, $input_name, $list_tpl, $field['cf_required'] == 1);
 
             case 'inline':
             case 'dropdown':
@@ -238,9 +240,8 @@ class Hook_fields_list
                     }
 
                     $required = $field['cf_required'] == 1;
-                    $name = 'field_' . strval($field['id']);
 
-                    return form_input_combo($_cf_name, $_cf_description, $name, $custom_value ? $actual_value : '', $list_tpl, null, $required);
+                    return form_input_combo($_cf_name, $_cf_description, $input_name, $custom_value ? $actual_value : '', $list_tpl, null, $required);
                 } else {
                     $list_tpl = new Tempcode();
 
@@ -258,10 +259,10 @@ class Hook_fields_list
                     }
 
                     if ($widget == 'dropdown_huge' || $widget == 'inline_huge') {
-                        return form_input_huge_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, null, ($widget == 'inline_huge'), $field['cf_required'] == 1, $input_size);
+                        return form_input_huge_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline_huge'), $field['cf_required'] == 1, $input_size);
                     }
 
-                    return form_input_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $list_tpl, null, ($widget == 'inline'), $field['cf_required'] == 1, null, $input_size);
+                    return form_input_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline'), $field['cf_required'] == 1, null, $input_size);
                 }
         }
     }

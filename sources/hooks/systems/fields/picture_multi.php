@@ -167,7 +167,8 @@ class Hook_fields_picture_multi
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
-        $ffield = form_input_upload_multi($_cf_name, $_cf_description, 'field_' . strval($field['id']), $say_required, null, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : (($actual_value == '') ? null : explode("\n", $actual_value)), true, str_replace(' ', '', get_option('valid_images')));
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        $ffield = form_input_upload_multi($_cf_name, $_cf_description, $input_name, $say_required, null, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : (($actual_value == '') ? null : explode("\n", $actual_value)), true, str_replace(' ', '', get_option('valid_images')));
 
         $hidden = new Tempcode();
         handle_max_file_size($hidden, 'image');

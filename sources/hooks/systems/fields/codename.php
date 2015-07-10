@@ -115,7 +115,8 @@ class Hook_fields_codename
         if (is_null($actual_value)) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
-        return form_input_codename($_cf_name, $_cf_description, 'field_' . strval($field['id']), $actual_value, $field['cf_required'] == 1);
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_codename($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1);
     }
 
     /**

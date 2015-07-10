@@ -749,7 +749,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
             }
             break;
         case 'EMAIL':
-            if ((!is_string($value)) || (!is_email_address($value))) {
+            if ((!is_string($value)) || ((!is_email_address($value)) && ($value != ''))) {
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
             break;

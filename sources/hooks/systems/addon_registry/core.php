@@ -1218,6 +1218,8 @@ class Hook_addon_registry_core
             'sources/hooks/systems/upon_query/.htaccess',
             'sources_custom/database/.htaccess',
             'sources_custom/database/index.html',
+            'sources/decision_tree.php',
+            'lang/EN/decision_tree.ini',
             'sources/rss.php',
             'lang/EN/rss.ini',
             'data/incoming_uploads.php',

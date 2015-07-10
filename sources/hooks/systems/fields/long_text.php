@@ -113,14 +113,16 @@ class Hook_fields_long_text
 
         $widget = option_value_from_field_array($field, 'widget', '');
 
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+
         if ($widget == 'huge') {
-            return form_input_huge($_cf_name, $_cf_description, 'field_' . strval($field['id']), $actual_value, $field['cf_required'] == 1, null, $input_size, '', !$wordwrap);
+            return form_input_huge($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1, null, $input_size, '', !$wordwrap);
         }
 
         $_maxlength = option_value_from_field_array($field, 'maxlength', '');
         $maxlength = ($_maxlength == '') ? null : intval($_maxlength);
 
-        return form_input_text($_cf_name, $_cf_description, 'field_' . strval($field['id']), $actual_value, $field['cf_required'] == 1, null , !$wordwrap, $maxlength, $input_size);
+        return form_input_text($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1, null , !$wordwrap, $maxlength, $input_size);
     }
 
     /**

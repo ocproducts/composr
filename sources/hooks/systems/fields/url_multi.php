@@ -134,7 +134,8 @@ class Hook_fields_url_multi
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
 
-        return form_input_line_multi($_cf_name, $_cf_description, 'field_' . strval($field['id']), ($actual_value == '') ? array() : explode("\n", $actual_value), ($field['cf_required'] == 1) ? 1 : 0, null, 'url');
+        $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        return form_input_line_multi($_cf_name, $_cf_description, $input_name, ($actual_value == '') ? array() : explode("\n", $actual_value), ($field['cf_required'] == 1) ? 1 : 0, null, 'url');
     }
 
     /**

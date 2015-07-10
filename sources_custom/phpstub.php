@@ -3121,7 +3121,7 @@ function set_exception_handler($exception_handler)
  * @param  ?string $path Path (null: current URL path).
  * @param  ?string $domain Domain (null: current URL domain).
  * @param  BINARY $secure Whether the cookie is only for HTTPS.
- * @return ?boolean Success status (fails if output already started) (NULL: failed also).
+ * @return ?boolean Success status (fails if output already started) (null: failed also).
  */
 function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = 0)
 {
