@@ -360,7 +360,7 @@ class Module_cms_comcode_pages
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         $start = get_param_integer('start', 0);
-        $max = get_param_integer('max', 50);
+        $max = get_param_integer('max', 25);
 
         $filesarray = $this->get_comcode_files_array($lang);
         if (count($filesarray) >= 300) { // Oh dear, limits reached, try another tact
@@ -456,7 +456,7 @@ class Module_cms_comcode_pages
             $row = mixed();
             if (!array_key_exists(2, $path_bits)) {
                 $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', array('c.*', 'cc_page_title'), array('c.the_zone' => $zone, 'c.the_page' => $page), '', 1);
-                if ((!array_key_exists(0, $rows)) && ($number_pages_parsed_for_titles < 15)) {
+                if ((!array_key_exists(0, $rows)) && ($number_pages_parsed_for_titles < 3/*Too intensive to do much at all*/) && (has_caching_for('comcode_page'))) {
                     $result = request_page($page, false, $zone, 'comcode_custom', true);
                     $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', array('c.*', 'cc_page_title'), array('c.the_zone' => $zone, 'c.the_page' => $page), '', 1);
                     $number_pages_parsed_for_titles++;

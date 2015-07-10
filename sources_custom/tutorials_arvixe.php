@@ -114,7 +114,7 @@ function import_tutorials_from_arvixe()
             $contents = http_download_file($url, null, false);
 
             $matches = array();
-            $regexp = '#<h2 class="entry-title"><a href="([^"]*)"[^<>]*>(.*)</a></h2>.*Written by ([\w ]+?).*<div class="post-date">([^<>]*)</div>.*<div class="entry-summary">\s*<p>([^<>]*).*<div class="entry-utility">(.*)</div>#Us';
+            $regexp = '#<h2 class="entry-title"><a href="([^"]*)"[^<>]*>(.*)</a></h2>.*Written by ([\w ]+?).*<div class="post-date">([^<>]*)</div>.*<div class="entry-summary">\s*<p>([^<>]*?).*<div class="entry-utility">(.*)</div>#Us';
             $num_matches = preg_match_all($regexp, $contents, $matches);
             $found_links = false;
             for ($j = 0; $j < $num_matches; $j++) {
@@ -143,10 +143,13 @@ function import_tutorials_from_arvixe()
                     if (isset($tag_remap[$tag])) {
                         $tag = $tag_remap[$tag];
                     }
+                    if (!in_array($tag, $all_tags)) {
+                        $tag = titleify($tag);
+                    }
                     if (in_array($tag, $all_tags)) {
                         $tags[] = $tag;
                     } else {
-                        $unknown_tags[] =$tag;
+                        $unknown_tags[] = $tag;
                     }
                 }
 

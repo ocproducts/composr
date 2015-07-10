@@ -28,7 +28,7 @@
 			function preview_generator_mouseout(event)
 			{
 				if (typeof event=='undefined') event=window.event;
-				if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,event);
+				if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this);
 			}
 
 			function load_previews()

@@ -460,19 +460,8 @@ function find_tags_in_editor(editor,element)
 		if (!comcodes[i].onmouseout)
 		{
 			comcodes[i].orig_title=comcodes[i].title;
-			comcodes[i].onmouseout=function(event) {
-				if (typeof event=='undefined') event=editor.window.$.event;
-
-				var eventCopy={};
-				if (event)
-				{
-					if (event.pageX) eventCopy.pageX=3000;
-					if (event.clientX) eventCopy.clientX=3000;
-					if (event.pageY) eventCopy.pageY=3000;
-					if (event.clientY) eventCopy.clientY=3000;
-
-					if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,eventCopy);
-				}
+			comcodes[i].onmouseout=function() {
+				if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this);
 			};
 			comcodes[i].onmousemove=function(event) {
 				if (typeof event=='undefined') event=editor.window.$.event;

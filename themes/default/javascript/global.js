@@ -2003,7 +2003,7 @@ function clear_out_tooltips(tooltip_being_opened)
 	{
 		if (existing_tooltips[i].id!==tooltip_being_opened)
 		{
-			deactivate_tooltip(existing_tooltips[i].ac);
+			deactivate_tooltip(existing_tooltips[i].ac,existing_tooltips[i]);
 		}
 	}
 }
@@ -2057,12 +2057,12 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	// Add in move/leave events if needed
 	if (!have_links)
 	{
-		if (!ac.onmouseout) ac.onmouseout=function(event) { if (!event) var event=window.event; win.deactivate_tooltip(ac,event); };
+		if (!ac.onmouseout) ac.onmouseout=function(event) { if (!event) var event=window.event; win.deactivate_tooltip(ac); };
 		if (!ac.onmousemove) ac.onmousemove=function(event) { if (!event) var event=window.event; win.reposition_tooltip(ac,event,false,false,null,false,win); };
 	} else
 	{
 		ac.old_onclick=ac.onclick;
-		ac.onclick=function(event) { if (!event) var event=window.event; win.deactivate_tooltip(ac,event); };
+		ac.onclick=function(event) { if (!event) var event=window.event; win.deactivate_tooltip(ac); };
 	}
 
 	if (typeof tooltip=='function') tooltip=tooltip();
@@ -2253,13 +2253,14 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 		tooltip_element.style.left=x+'px';
 	}
 }
-function deactivate_tooltip(ac)
+function deactivate_tooltip(ac,tooltip_element)
 {
 	ac.is_over=false;
 
 	if ((!page_loaded) || (!ac.tooltip_id)) return;
 
-	var tooltip_element=document.getElementById(ac.tooltip_id);
+	if (typeof tooltip_element=='undefined')
+		tooltip_element=document.getElementById(ac.tooltip_id);
 	if (tooltip_element) tooltip_element.style.display='none';
 
 	if (typeof ac.old_onclick!='undefined')

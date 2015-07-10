@@ -37,7 +37,7 @@ function load_template_previews(directory)
 		ob=elements[i];
 		if ((ob.value=='') || (ob.disabled)) continue;
 		ob.onmousemove=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') reposition_tooltip(this,event); };
-		ob.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,event); };
+		ob.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this); };
 		var op=ob.value;
 		ob.onmouseover=make_tooltip_func(op,directory);
 	}
@@ -58,7 +58,7 @@ function preview_generator_mousemove(event)
 function preview_generator_mouseout(event)
 {
 	if (typeof event=='undefined') event=window.event;
-	if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,event);
+	if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this);
 }
 
 function load_previews()
@@ -280,7 +280,7 @@ function set_up_parent_page_highlighting()
 		{
 			cssText=cssText.toLowerCase().replace(/; /,';<br />\n');
 		}
-		li.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this,event); };
+		li.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this); };
 		li.onmousemove=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') reposition_tooltip(this,event); };
 		li.onmouseover=function(cssText) { return function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,cssText,'auto'); } } (cssText);
 

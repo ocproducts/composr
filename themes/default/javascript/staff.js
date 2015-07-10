@@ -117,7 +117,7 @@ function script_load_stuff_staff()
 					{
 						add_event_listener_abstract(link,'mouseout',function(event) {
 							if (typeof event=='undefined') event=window.event;
-							if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link,event);
+							if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link);
 						});
 						add_event_listener_abstract(link,'mousemove',function(event) {
 							if (typeof event=='undefined') event=window.event;
