@@ -114,6 +114,11 @@ Often surveyors will want to create long multi-part questionnaires. You could li
 You can export quiz results to a CSV file which is very useful for data analysis purposes. In particular, if some test/competition questions need to be manually marked, doing so in spreadsheet software works well.
 Many marketing agencies prefer to pick competition winners from raw CSV data, as well as processing the data for further marketing purposes.
 
+[title="2"]Advanced quiz interfaces[/title]
+
+You may want quizzes that span multiple screens, or take the user in different directions as they answer questions.
+It's not really feasible for us to allow the quiz system to build arbitrarily complex quiz systems. There would be too many assumptions / deviations between different project requirements, and such a system would be too complex to configure. Generally these will therefore require a programmer to construct. We do have a "decision tree" framework in Composr that can aid in building complex multi-screen form systems. It takes out most of the work of building the screens, the forms, the state management, and the UI -- just leaving the programmer to declaratively specify the question structure and bind it to some actualiser code.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_featured"]Providing featured content[/page]

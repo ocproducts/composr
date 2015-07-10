@@ -31,7 +31,7 @@ Each screen details has:
  - notices (array of notices to give on this screen)
  - warnings (array of warnings to give on this screen)
  - questions (map between named question name [=parameter name] and question details)
- - next (array of tuples, each being parameter, value, and next screen to go OR string just the name of a screen)
+ - next (array of tuples, each being parameter, value, and next screen to go OR string just the name of a screen) OR Tempcode/string for the URL to go to
  - previous (where the back button goes, if there is one)
  - form_method (string = get|post). Default is post. Use get if you want screens to be bookmarkable
 
@@ -266,12 +266,16 @@ class DecisionTree
 
         $form_method = empty($details['form_method']) ? 'post' : strtolower($details['form_method']);
 
-        if (is_array($details['next'])) {
-            $next_tree_position = '_' . $tree_position; // Needs complex processing
+        if ((is_object($details['next'])) || ((is_string($details['next'])) && (looks_like_url($details['next'])))) {
+            $next_url = $details['next'];
         } else {
-            $next_tree_position = $details['next'];
+            if (is_array($details['next'])) {
+                $next_tree_position = '_' . $tree_position; // Needs complex processing
+            } else {
+                $next_tree_position = $details['next'];
+            }
+            $next_url = $this->build_url($next_tree_position);
         }
-        $url = $this->build_url($next_tree_position);
 
         return do_template('FORM_SCREEN', array(
             'SKIP_WEBSTANDARDS' => true,
@@ -279,7 +283,7 @@ class DecisionTree
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
             'GET' => ($form_method == 'get'),
-            'URL' => $url,
+            'URL' => $next_url,
             'SUBMIT_ICON' => 'buttons__next',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),
             'TEXT' => $text,
