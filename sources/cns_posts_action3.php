@@ -87,7 +87,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * Edit a post.
  *
  * @param  AUTO_LINK $post_id The ID of the post that we're editing.
- * @param  BINARY $validated Whether the post is validated.
+ * @param  BINARY $validated Whether the post is validated (null: decide based on permissions).
  * @param  SHORT_TEXT $title The title of the post (may be blank).
  * @param  LONG_TEXT $post The post.
  * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post.
@@ -295,6 +295,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
 
         foreach ($member_post_counts as $member_id => $member_post_count) {
             if (!is_null($forum_id)) {
+                require_code('cns_posts_action');
                 cns_force_update_member_post_count($member_id, -$member_post_count);
             }
         }
@@ -320,9 +321,11 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
         $ret = false;
 
         // Update caching
+        require_code('cns_posts_action2');
         cns_force_update_topic_caching($topic_id, -$num_posts_counted, true, true);
     }
     if (!is_null($forum_id)) {
+        require_code('cns_posts_action2');
         cns_force_update_forum_caching($forum_id, 0, -$num_posts_counted);
     }
 
@@ -358,7 +361,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
  * Move posts from one topic to another.
  *
  * @param  AUTO_LINK $from_topic_id The ID of the source topic.
- * @param  AUTO_LINK $to_topic_id The ID of the destination topic.
+ * @param  ?AUTO_LINK $to_topic_id The ID of the destination topic (null: move to new topic in $forum_id).
  * @param  array $posts A list of post IDs to move.
  * @param  LONG_TEXT $reason The reason for this action.
  * @param  ?AUTO_LINK $to_forum_id The forum the destination topic is in (null: find from DB).
@@ -510,6 +513,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
         }
         $me_link = '[page="' . get_module_zone('members') . ':members:view:' . strval(get_member()) . '"]' . $GLOBALS['CNS_DRIVER']->get_username(get_member(), true) . '[/page]';
         $lang = do_lang('INLINE_POSTS_MOVED_MESSAGE', $me_link, integer_format(count($posts)), array($to_link, get_timezoned_date(time())));
+        require_code('cns_posts_action');
         cns_make_post($from_topic_id, '', $lang, 0, false, 1, 1, null, null, $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_time', array('id' => $posts[0])) + 1, null, null, null, null, false);
 
         require_code('cns_general_action2');

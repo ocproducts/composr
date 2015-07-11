@@ -117,15 +117,9 @@ function cns_read_in_member_profile($member_id, $lite = true)
         }
 
         // Find title
-        if (addon_installed('cns_member_titles')) {
-            $title = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_title');
-            if ($title == '') {
-                $primary_group = cns_get_member_primary_group($member_id);
-                $title = cns_get_group_property($primary_group, $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'title'));
-            }
-            if ($title != '') {
-                $out['title'] = $title;
-            }
+        $title = get_member_title($member_id);
+        if ($title != '') {
+            $out['title'] = $title;
         }
 
         // Find photo
@@ -166,6 +160,26 @@ function cns_read_in_member_profile($member_id, $lite = true)
     }
 
     return $out;
+}
+
+/**
+ * Get a member title.
+ *
+ * @param  MEMBER $member_id Member ID.
+ * @return string Member title.
+ */
+function get_member_title($member_id)
+{
+    if (!addon_installed('cns_member_titles')) {
+        return '';
+    }
+
+    $title = addon_installed('ocf_member_titles') ? $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_title') : '';
+    $primary_group = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
+    if ($title == '') {
+        $title = get_translated_text(cns_get_group_property($primary_group, 'title'), $GLOBALS['FORUM_DB']);
+    }
+    return $title;
 }
 
 /**

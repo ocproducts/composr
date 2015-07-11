@@ -1,0 +1,30 @@
+a.mobile_banner_button:link   {text-decoration: none}
+a.mobile_banner_button:visited{text-decoration: none}
+a.mobile_banner_button:hover  {text-decoration: none}
+a.mobile_banner_button:active {text-decoration: none}
+a.mobile_banner_open:link   {color: #FFFFFF}
+a.mobile_banner_open:visited{color: #FFFFFF}
+a.mobile_banner_open:hover  {color: #FFFFFF}
+a.mobile_banner_open:active {color: #FFFFFF}
+
+.mobile_banner_tt
+{
+	position:fixed;	
+	margin:0;
+	padding:0;
+	top:0;
+	left:0;
+	right:0;
+	width:100%;
+	font-size:1em;
+	z-index:2147483647;
+	color:#000000;	
+	background-color: #f2f2f2;
+	text-align:left;
+}
+
+/* for vb mobile compatibility */
+.ui-mobile [data-role="page"], .ui-mobile [data-role="dialog"], .ui-page
+{
+    top:auto;
+}

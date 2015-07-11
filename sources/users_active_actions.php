@@ -323,6 +323,33 @@ function cms_eatcookie($name)
 }
 
 /**
+ * Set invisibility on the current user.
+ *
+ * @param  boolean $make_invisible Whether to make the current user invisible (true=make invisible, false=make visible)
+ */
+function set_invisibility($make_invisible = true)
+{
+    $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => $make_invisible ? 1 : 0), array('member_id' => get_member(), 'the_session' => get_session_id()), '', 1);
+    global $SESSION_CACHE;
+    if ($SESSION_CACHE[get_session_id()]['member_id'] == get_member()) // A little security
+    {
+        $SESSION_CACHE[get_session_id()]['session_invisible'] = $make_invisible ? 1 : 0;
+        if (get_value('session_prudence') !== '1') {
+            persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
+        }
+    }
+
+    decache('side_users_online');
+
+    // Store in cookie, if we have login cookies around
+    if (array_key_exists(get_member_cookie(), $_COOKIE)) {
+        require_code('users_active_actions');
+        cms_setcookie(get_member_cookie() . '_invisible', strval($make_invisible ? 1 : 0));
+        $_COOKIE[get_member_cookie() . '_invisible'] = strval($make_invisible ? 1 : 0);
+    }
+}
+
+/**
  * Create a cookie, inside Composr's cookie environment.
  *
  * @param  string $name The name of the cookie
@@ -334,7 +361,7 @@ function cms_eatcookie($name)
  */
 function cms_setcookie($name, $value, $session = false, $http_only = false, $days = null)
 {
-    /*if (($GLOBALS['DEV_MODE']) && (!running_script('commandr')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {    Annoying, and non-cookie support is very well tested by now
+    /*if (($GLOBALS['DEV_MODE']) && (running_script('index')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {    Annoying, and non-cookie support is very well tested by now
         return true;
     }*/
 

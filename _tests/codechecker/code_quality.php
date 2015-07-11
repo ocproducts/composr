@@ -1185,6 +1185,10 @@ function check_method($c, $c_pos, $function_guard = '')
 
 function actual_check_method($class, $method, $params, $c_pos, $function_guard = '')
 {
+    if ($class == 'tempcode') {
+        $class = 'Tempcode';
+    }
+
     // Special rule for $_->object_factory(...) and $_->controller(...) etc
     if (($method == 'object_factory') || ($method == 'controller') || ($method == 'sys_model')) {
         // $_->object_factory(...) and $_->class(...) are used to load and
@@ -1348,9 +1352,9 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
     if ((($function == 'sprintf') || ($function == 'printf')) && (@$c[2][0][0] == 'LITERAL')) {
         $matches = array();
-        $num_matches = preg_match_all('#\%\d*[bcdefuFodsxX]#', $c[2][0][1][1], $matches);
+        $num_matches = preg_match_all('#\%[+-]?.?-?\d*(\.\d+)?[%bcdefuFodsxX]#', $c[2][0][1][1], $matches);
         if ($num_matches + 1 != count($c[2])) {
-            log_warning('Looks like the wrong number of parameters were sent to this printf function', $c_pos);
+            log_warning('Looks like the wrong number of parameters were sent to this [s]printf function', $c_pos);
         }
     }
     if ((isset($GLOBALS['CHECKS'])) && ($function == 'tempname')) {
@@ -1385,14 +1389,20 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
     if (!$found) {
         if (isset($GLOBALS['API'])) {
-            if (((is_null($GLOBALS['OK_EXTRA_FUNCTIONS'])) || (preg_match('#^' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . '#', $function) == 0)) && (!in_array($function, array('critical_error', 'file_array_exists', 'file_array_get', 'file_array_count', 'file_array_get_at', 'master__sync_file', 'master__sync_file_move'))) && (strpos($function_guard, ',' . $function . ',') === false)) {
+            $class = preg_replace('#^object-#', '', $class);
+
+            if (((is_null($GLOBALS['OK_EXTRA_FUNCTIONS'])) || (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $function) == 0) && (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $class) == 0)) && (!in_array($class, array('mixed', '?mixed', 'object', '?object'))) && (!in_array($function, array('critical_error', 'file_array_exists', 'file_array_get', 'file_array_count', 'file_array_get_at', 'master__sync_file', 'master__sync_file_move')))) {
                 if ((is_null($class)) || ($class == '__global')) {
-                    if ($function != '' && $function != '__construct') {
+                    if ($function != '') {
                         log_warning('Could not find function \'' . $function . '\'', $c_pos);
                     }
                 } else {
-                    if ($class != 'mixed' && $function != '__construct') {
-                        log_warning('Could not find method \'' . $class . '->' . $function . '\'', $c_pos);
+                    if ($function != '__construct') {
+                        if (!isset($FUNCTION_SIGNATURES[$class])) {
+                            log_warning('Could not find class \'' . $class . '\'', $c_pos);
+                        } else {
+                            log_warning('Could not find method \'' . $class . '->' . $function . '\'', $c_pos);
+                        }
                     }
                 }
             }
@@ -1875,7 +1885,9 @@ function check_variable($variable, $reference = false)
         add_variable_reference($identifier, $variable[count($variable) - 1], ($reference) || (count($variable[2]) != 0));
     }
 
-    $type = get_variable_type($variable);
+    $variable_stem = $variable;
+    $variable_stem[2] = array();
+    $type = get_variable_type($variable_stem);
 
     $next = $variable[2];
     while ($next != array()) { // Complex: we must perform checks to make sure the base is of the correct type for the complexity to be valid. We must also note any deep variable references used in array index / string extract expressions
@@ -1900,6 +1912,21 @@ function check_variable($variable, $reference = false)
 
             $next = $next[2];
         } elseif ($next[0] == 'DEREFERENCE') {
+            // Special rule for 'this->connection'
+            if (($variable[1] == 'this') && ($variable[2][1][1] == 'connection')) {
+                $type='DatabaseConnector';
+            }
+
+            // Special rule for $GLOBALS['?_DB']
+            if (($variable[1] == 'GLOBALS') && ($variable[2][1][1][0] == 'STRING') && (substr($variable[2][1][1][1], -3) == '_DB')) {
+                $type='DatabaseConnector';
+            }
+
+            // Special rule for $GLOBALS['FORUM_DRIVER']
+            if (($variable[1] == 'GLOBALS') && ($variable[2][1][1][0] == 'STRING') && ($variable[2][1][1][1] == 'FORUM_DRIVER')) {
+                $type='Forum_driver_base';
+            }
+
             ensure_type(array('object', 'resource'), $type, $variable[3], 'Variable must be an object due to dereferencing');
             if (($next[2] != array()) && ($next[2][0] == 'CALL_METHOD')) {
                 $type = actual_check_method($type/*class*/, $next[1][1]/*method*/, $next[2][2]/*params*/, $next[3]/*line number*/);

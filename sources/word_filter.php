@@ -139,6 +139,11 @@ function warn_exit_wordfilter($name, $message)
         warn_exit($message);
     }
 
+    require_code('failure');
+    if (throwing_errors()) {
+        throw new CMSException($message);
+    }
+
     // Output our error / correction form
     @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
     $hidden = build_keep_post_fields(array($name));

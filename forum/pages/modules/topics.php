@@ -1512,7 +1512,7 @@ class Module_topics
 
         // Breadcrumbs etc
         if ($private_topic) {
-            check_privilege('use_pt');
+            cns_check_make_private_topic();
 
             breadcrumb_set_parents(array(array('_SEARCH:forumview:pt', do_lang_tempcode('PRIVATE_TOPICS'))));
 
@@ -1567,7 +1567,7 @@ class Module_topics
         if ($private_topic) {
             if ($member_id == get_member()) {
                 $specialisation->attach(form_input_username_multi(do_lang_tempcode('TO'), '', 'to_member_id_', array(), 1, true, 1));
-                check_privilege('use_pt');
+                cns_check_make_private_topic();
             } else {
                 $hidden_fields->attach(form_input_hidden('member_id', strval($member_id)));
             }
@@ -1744,7 +1744,7 @@ class Module_topics
 
         $member_id = get_param_integer('intended_solely_for', get_param_integer('id', get_member()));
 
-        check_privilege('use_pt');
+        cns_check_make_private_topic();
         require_code('cns_members2');
         if (!cns_may_whisper($member_id)) {
             warn_exit(do_lang_tempcode('NO_PT_FROM_ALLOW'));
@@ -2247,12 +2247,6 @@ class Module_topics
             $meta_data = actual_meta_data_get_fields('topic', null, array('submitter', 'add_time', 'edit_time'));
 
             if ($forum_id == -1) { // New Private Topic
-                require_code('cns_members2');
-                if (!cns_may_whisper($member_id)) {
-                    warn_exit(do_lang_tempcode('NO_PT_FROM_ALLOW'));
-                }
-                check_privilege('use_pt');
-
                 $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), get_member(), $member_id, true, $meta_data['views']);
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } elseif ($forum_id == -2) { // New reported post topic

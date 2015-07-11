@@ -121,8 +121,32 @@ function commandr_script()
             fclose($stderr);
             fclose($stdout);
         } else {
-            $temp = new Virtual_shell(trim($command));
-            $temp->output_xml();
+            require_code('failure');
+            set_throw_errors();
+            try {
+                $temp = new virtual_bash(trim($command));
+                $temp->output_xml();
+            } catch (Exception $e) {
+                header('HTTP/1.0 200 Ok');
+                header('Content-type: text/xml; charset=' . get_charset());
+                $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+                    <response>
+                    	<result>
+                    		<command>' . xmlentities(post_param_string('command', '')) . '</command>
+                    		<stdcommand></stdcommand>
+                    		<stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
+                    		<stdout>' . xmlentities($e->getMessage()) . '</stdout>
+                    		<stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
+                    		<stdnotifications><div xmlns="http://www.w3.org/1999/xhtml"></div></stdnotifications>
+                    	</result>
+                    </response>';
+
+                if ($GLOBALS['XSS_DETECT']) {
+                    ocp_mark_as_escaped($output);
+                }
+
+                exit($output);
+            }
         }
         if (get_option('commandr_chat_announce') == '1') {
             http_download_file('http://compo.sr/data_custom/commandr.php?title=' . urlencode(get_site_name()) . '&url=' . urlencode(get_custom_base_url()), null, false, true);
@@ -1251,7 +1275,7 @@ class Virtual_shell
                 }
             }
 
-			$cookie_size = strlen(serialize($_COOKIE));
+            $cookie_size = strlen(serialize($_COOKIE));
             if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
                 cms_setcookie('commandr_state', base64_encode(serialize($commandr_state_diff)));
                 cms_setcookie('commandr_state_code', base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE']))));

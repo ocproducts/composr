@@ -138,6 +138,9 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
 {
     cms_profile_start_for('cns_make_post');
 
+    require_code('cns_topics');
+    require_code('cns_posts');
+
     if (is_null($poster)) {
         $poster = get_member();
     }
@@ -210,10 +213,6 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         $validated = 1; // Personal posts always validated
     } else {
         if ($check_permissions) {
-            if (($info[0]['t_is_open'] == 0) && (!cns_may_moderate_forum($forum_id))) {
-                access_denied('I_ERROR');
-            }
-
             $last_member_id = $is_starter ? null : $info[0]['t_cache_last_member_id'];
             $closed = $is_starter ? false : ($info[0]['t_is_open'] == 0);
             if ((!cns_may_post_in_topic($forum_id, $topic_id, $last_member_id, $closed, $poster, !is_null($intended_solely_for))) && (!$is_starter)) {

@@ -900,7 +900,7 @@ class Module_topicview
 
         // Members viewing this topic
         if (!is_null($topic_info['forum_id'])) {
-            member_tracking_update('forumview', '', strval($topic_info['forum_id']));
+            member_tracking_update('forumview', '', strval($topic_info['forum_id'])); // If we are viewing topic say we are viewing the forum too
         }
         require_code('users2');
         if (is_null($id)) {
@@ -908,7 +908,7 @@ class Module_topicview
             $num_members = mixed();
             $members_viewing = new Tempcode();
         } else {
-            list($num_guests, $num_members, $members_viewing) = get_members_viewing_wrap('topicview', '', strval($id), true);
+            list($num_guests, $num_members, $members_viewing) = get_members_viewing_wrap('topicview', '', strval($id), true); // This does a member_tracking_update to the topic internally
         }
 
         if (($topic_info['validated'] == 0) && (addon_installed('unvalidated'))) {

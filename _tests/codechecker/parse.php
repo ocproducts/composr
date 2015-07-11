@@ -1026,6 +1026,9 @@ function _parse_expression_inner()
                 $expression = array('CALL_DIRECT', $next[1], $parameters, $suppress_error, $GLOBALS['I']);
                 //log_special('functions',$next[1].'/'.count($parameters));
             } else {
+                if (strtolower($next[1]) == $next[1]) {
+                    _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
+                }
                 $expression = array('CONSTANT', $next[1], $GLOBALS['I']);
             }
             break;
@@ -1298,6 +1301,9 @@ function _parse_literal()
 
         case 'IDENTIFIER':
             $_literal = pparse__parser_next(true);
+            if (strtolower($_literal[1]) == $_literal[1]) {
+                _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
+            }
             $literal = array('CONSTANT', $_literal[1], $GLOBALS['I']);
             break;
 

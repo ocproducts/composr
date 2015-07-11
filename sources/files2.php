@@ -304,7 +304,7 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
 function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null)
 {
     if ($headers) {
-        header('Content-type: text/csv; charset=' . get_charset());
+        header('Content-Type: text/csv; charset=' . get_charset());
         header('Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($filename))) . '"');
 
         if (cms_srv('REQUEST_METHOD') == 'HEAD') {
@@ -890,11 +890,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         if (is_null($files)) { // If no files, use simple application/x-www-form-urlencoded
             if (!$use_curl) {
                 if ($raw_post) {
-                    $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
+                    if (!isset($extra_headers['Content-Type'])) {
+                        $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
+                    }
                 } else {
-                    $raw_payload .= 'Content-type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
+                    $raw_payload .= 'Content-Type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
                 }
-                $raw_payload .= 'Content-length: ' . strval(strlen($_postdetails_params)) . "\r\n";
+                $raw_payload .= 'Content-Length: ' . strval(strlen($_postdetails_params)) . "\r\n";
                 $raw_payload .= "\r\n";
             } // curl sets the above itself
             $raw_payload .= $_postdetails_params;
@@ -917,12 +919,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $divider = uniqid('', true);
             $raw_payload2 = '';
             if (($put === null) || (count($post_params) != 0) || (count($files) != 1)) {
-                $raw_payload .= 'Content-type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset() . "\r\n";
+                $raw_payload .= 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset() . "\r\n";
             }
             foreach ($post_params as $key => $val) {
                 $raw_payload2 .= '----cms' . $divider . "\r\n";
                 if ($raw_post) {
-                    $raw_payload2 .= 'Content-Type: ' . $raw_content_type . "\r\n\r\n";
+                    if (!isset($extra_headers['Content-Type'])) {
+                        $raw_payload2 .= 'Content-Type: ' . $raw_content_type . "\r\n\r\n";
+                    }
                 } else {
                     $raw_payload2 .= 'Content-Disposition: form-data; name="' . urlencode($key) . '"' . "\r\n\r\n";
                 }
@@ -980,9 +984,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $raw_payload2 = '';
             }
             if ($put !== null) {
-                $raw_payload .= 'Content-length: ' . strval(filesize($put_path)) . "\r\n";
+                $raw_payload .= 'Content-Length: ' . strval(filesize($put_path)) . "\r\n";
             } else {
-                $raw_payload .= 'Content-length: ' . strval(strlen($raw_payload2)) . "\r\n";
+                $raw_payload .= 'Content-Length: ' . strval(strlen($raw_payload2)) . "\r\n";
             }
             $raw_payload .= "\r\n" . $raw_payload2;
             if ($use_curl) {
@@ -1066,7 +1070,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
                                             }
                                             if (($raw_post) && ((is_null($files)) || ($put !== null))) {
-                                                $curl_headers[] = 'Content-Type: ' . $raw_content_type;
+                                                if (!isset($extra_headers['Content-Type'])) {
+                                                    $curl_headers[] = 'Content-Type: ' . $raw_content_type;
+                                                }
                                             }
                                             if (!is_null($post_params)) {
                                                 $curl_headers[] = 'Expect:';
@@ -1080,7 +1086,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_POST, true);
                                                     curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload);
                                                     if (!is_null($files)) {
-                                                        $curl_headers[] = 'Content-type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
+                                                        $curl_headers[] = 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
                                                     }
                                                 }
                                             }

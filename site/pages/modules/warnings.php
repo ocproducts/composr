@@ -667,6 +667,9 @@ class Module_warnings extends Standard_crud_module
                 'module_the_name' => 'topics',
                 'category_name' => strval($silence_from_topic),
             ));
+
+            require_code('cns_general_action2');
+            cns_mod_log_it('SILENCE_FROM_TOPIC', strval($member_id), strval($silence_from_topic));
         } else {
             $_silence_from_topic = null;
         }
@@ -702,6 +705,9 @@ class Module_warnings extends Standard_crud_module
                 'category_name' => strval($silence_from_forum),
             ));
             $_silence_from_forum = get_input_date('silence_from_forum');
+
+            require_code('cns_general_action2');
+            cns_mod_log_it('SILENCE_FROM_FORUM', strval($member_id), strval($silence_from_forum));
         } else {
             $_silence_from_forum = null;
         }
@@ -738,6 +744,9 @@ class Module_warnings extends Standard_crud_module
                 }
                 $on_probation_until += $probation * 60 * 60 * 24;
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $on_probation_until), array('id' => $member_id), '', 1);
+
+                require_code('cns_general_action2');
+                cns_mod_log_it('PUT_ON_PROBATION', strval($member_id), $username);
             }
         }
 
@@ -746,6 +755,9 @@ class Module_warnings extends Standard_crud_module
             $banned_member = post_param_integer('banned_member', 0);
             if ($banned_member == 1) {
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_is_perm_banned' => 1), array('id' => $member_id), '', 1);
+
+                require_code('cns_general_action2');
+                cns_mod_log_it('BAN_MEMBER', strval($member_id), $username);
             }
         } else {
             $banned_member = 0;
@@ -769,7 +781,10 @@ class Module_warnings extends Standard_crud_module
         if ($stopforumspam == 1) {
             $banned_ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address');
             require_code('failure');
-            syndicate_spammer_report($banned_ip, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, true);
+            syndicate_spammer_report($banned_ip, $username, $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, true);
+
+            require_code('cns_general_action2');
+            cns_mod_log_it('MARK_AS_SPAMMER', strval($member_id), $username);
         }
 
         // Change group

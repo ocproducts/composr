@@ -108,7 +108,19 @@ function cns_may_make_private_topic($member_id = null)
         return false;
     }
 
-    return $member_id != $GLOBALS['CNS_DRIVER']->get_guest_id();
+    return !is_guest($member_id);
+}
+
+/**
+ * Check that a member may make a Private Topic.
+ */
+function ocf_check_make_private_topic()
+{
+    check_privilege('use_pt');
+
+    if (is_guest()) {
+        access_denied('NOT_AS_GUEST');
+    }
 }
 
 /**

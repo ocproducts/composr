@@ -229,6 +229,13 @@ function smart_redirect($url)
 function closed_site()
 {
     if ((get_page_name() != 'login') && (get_page_name() != 'join') && (get_page_name() != 'lost_password')) {
+        $closed_message = comcode_to_tempcode(get_option('closed'), null, true);
+
+        require_code('failure');
+        if (throwing_errors()) {
+            throw new CMSException($closed_message);
+        }
+
         if (!headers_sent()) {
             if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
                 header('HTTP/1.0 503 Service Temporarily Unavailable');

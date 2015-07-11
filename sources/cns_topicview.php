@@ -93,7 +93,7 @@ function find_first_unread_url($id)
         $before = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . cns_get_topic_where($id), false, true);
         $start = intval(floor(floatval($before) / floatval($max))) * $max;
         if ($start == $before) {
-            $start = $before - $max;
+            $start = max(0, $before - $max);
         }
     }
 

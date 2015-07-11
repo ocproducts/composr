@@ -94,7 +94,7 @@ class Module_login
     }
 
     public $title;
-    public $visible;
+    public $visible_now;
     public $username;
     public $feedback;
 
@@ -140,15 +140,16 @@ class Module_login
         }
 
         if ($type == 'invisible') {
+            // We are toggling, so work out current situation
             if (get_option('is_on_invisibility') == '1') {
-                $visible = (array_key_exists(get_session_id(), $GLOBALS['SESSION_CACHE'])) && ($GLOBALS['SESSION_CACHE'][get_session_id()]['session_invisible'] == 0);
+                $visible_now = (array_key_exists(get_session_id(), $GLOBALS['SESSION_CACHE'])) && ($GLOBALS['SESSION_CACHE'][get_session_id()]['session_invisible'] == 0);
             } else {
-                $visible = false; // Small fudge: always say thay are not visible now, so this will make them visible -- because they don't have permission to be invisible
+                $visible_now = false; // Small fudge: always say thay are not visible now, so this will make them visible -- because they don't have permission to be invisible
             }
 
-            $this->title = get_screen_title($visible ? 'INVISIBLE' : 'BE_VISIBLE');
+            $this->title = get_screen_title($visible_now ? 'INVISIBLE' : 'BE_VISIBLE');
 
-            $this->visible = $visible;
+            $this->visible_now = $visible_now;
         }
 
         return null;
@@ -353,25 +354,10 @@ class Module_login
      */
     public function invisible()
     {
-        $visible = $this->visible;
+        $visible_now = $this->visible_now;
 
-        $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => $visible ? 1 : 0), array('member_id' => get_member(), 'the_session' => get_session_id()), '', 1);
-        global $SESSION_CACHE;
-        if ($SESSION_CACHE[get_session_id()]['member_id'] == get_member()) { // A little security
-            $SESSION_CACHE[get_session_id()]['session_invisible'] = $visible ? 1 : 0;
-            if (get_option('session_prudence') == '0') {
-                persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
-            }
-        }
-
-        decache('side_users_online');
-
-        // Store in cookie, if we have login cookies around
-        if (array_key_exists(get_member_cookie(), $_COOKIE)) {
-            require_code('users_active_actions');
-            cms_setcookie(get_member_cookie() . '_invisible', strval($visible ? 1 : 0));
-            $_COOKIE[get_member_cookie() . '_invisible'] = strval($visible ? 1 : 0);
-        }
+        require_code('users_active_actions');
+        set_invisibility($visible_now);
 
         $url = get_param_string('redirect', null);
         if (is_null($url)) {

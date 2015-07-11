@@ -327,6 +327,11 @@ function try_httpauth_login()
         require_code('cns_members_action');
         require_code('cns_members_action2');
         if ((trim(post_param_string('email_address', '')) == '') && (get_option('finish_profile') == '1')) {
+            require_code('failure');
+            if (throwing_errors()) {
+                throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));
+            }
+
             @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
             $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_option('windows_auth_is_enabled') != '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
             $tpl = globalise($middle, null, '', true);

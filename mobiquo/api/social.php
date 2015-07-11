@@ -1,0 +1,313 @@
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts/Tapatalk, 2004-2015
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    cns_tapatalk
+ */
+
+/*EXTRA FUNCTIONS: classTTConnection|CMS.**/
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function thank_post_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_WRITE . '/social_write.php');
+
+    $post_id = intval($params[0]);
+
+    $social_write_object = new CMSSocialWrite();
+    $social_write_object->thank_post($post_id);
+
+    return mobiquo_response_true();
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function follow_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_WRITE . '/social_write.php');
+
+    $user_id = intval($params[0]);
+
+    $social_write_object = new CMSSocialWrite();
+    $social_write_object->follow($user_id);
+
+    return mobiquo_response_true();
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function unfollow_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_WRITE . '/social_write.php');
+
+    $user_id = intval($params[0]);
+
+    $social_write_object = new CMSSocialWrite();
+    $social_write_object->unfollow($user_id);
+
+    return mobiquo_response_true();
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function like_post_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_WRITE . '/social_write.php');
+
+    $post_id = intval($params[0]);
+
+    $social_write_object = new CMSSocialWrite();
+    $social_write_object->like_post($post_id);
+
+    return mobiquo_response_true();
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function unlike_post_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_WRITE . '/social_write.php');
+
+    $post_id = intval($params[0]);
+
+    $social_write_object = new CMSSocialWrite();
+    $social_write_object->unlike_post($post_id);
+
+    return mobiquo_response_true();
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ */
+function get_dashboard_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    warn_exit('Not for implementation');
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ */
+function get_feed_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    warn_exit('Not for implementation');
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function get_following_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_READ . '/social_read.php');
+
+    $social_write_object = new CMSSocialRead();
+    $_following = $social_write_object->get_following();
+    $following = array();
+    foreach ($_following as $f) {
+        $following[] = mobiquo_val(array(
+            'user_id' => mobiquo_val(strval($f['user_id']), 'string'),
+            'username' => mobiquo_val($f['username'], 'base64'),
+            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($f['user_id'], true), 'base64'),
+            'is_online' => mobiquo_val($f['is_online'], 'boolean'),
+        ), 'struct');
+    }
+
+    $response = mobiquo_val(array(
+        'total_count' => mobiquo_val(count($following), 'int'),
+        'list' => mobiquo_val($following, 'array'),
+    ), 'struct');
+    return mobiquo_response($response);
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function get_follower_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_READ . '/social_read.php');
+
+    $social_write_object = new CMSSocialRead();
+    $_followers = $social_write_object->get_followers();
+    $followers = array();
+    foreach ($_followers as $follower) {
+        $followers[] = mobiquo_val(array(
+            'user_id' => mobiquo_val(strval($follower['user_id']), 'string'),
+            'username' => mobiquo_val($follower['username'], 'base64'),
+            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($follower['user_id'], true), 'base64'),
+            'is_online' => mobiquo_val($follower['is_online'], 'boolean'),
+        ), 'struct');
+    }
+
+    $response = mobiquo_val(array(
+        'total_count' => mobiquo_val(count($followers), 'int'),
+        'list' => mobiquo_val($followers, 'array'),
+    ), 'struct');
+    return mobiquo_response($response);
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ */
+function set_reputation_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    warn_exit('Reputation feature not supported');
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function get_alert_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_READ . '/social_read.php');
+
+    list($start, $max) = get_pagination_positions__by_page($params, 0, 1, 20);
+
+    $social_write_object = new CMSSocialRead();
+    list($total, $_items) = $social_write_object->get_alerts($start, $max);
+
+    $items = array();
+    foreach ($_items as $item) {
+        $arr = array(
+            'user_id' => mobiquo_val(strval($item['user_id']), 'string'),
+            'username' => mobiquo_val($item['username'], 'base64'),
+            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true), 'base64'),
+            'icon_url' => mobiquo_val($item['icon_url'], 'string'),
+            'message' => mobiquo_val($item['message'], 'base64'),
+            'timestamp' => mobiquo_val($item['timestamp'], 'string'),
+            'content_type' => mobiquo_val($item['content_type'], 'string'),
+            'content_id' => mobiquo_val($item['content_id'], 'string'),
+            'unread' => mobiquo_val($item['unread'], 'boolean'),
+        );
+
+        if (isset($item['topic_id'])) {
+            $arr['topic_id'] = mobiquo_val(strval($item['topic_id']), 'string');
+        }
+
+        if (isset($item['position'])) {
+            $arr['position'] = mobiquo_val($item['position'], 'int');
+        }
+
+        $items[] = mobiquo_val($arr, 'struct');
+    }
+
+    $response = mobiquo_val(array(
+        'total' => mobiquo_val($total, 'int'),
+        'items' => mobiquo_val($items, 'array'),
+    ), 'struct');
+    return mobiquo_response($response);
+}
+
+/**
+ * Standard Tapatalk endpoint implementation.
+ * Sits in front of a more Composr-appropriate equivalent API method.
+ *
+ * @param  mixed $raw_params  Mobiquo parameters
+ * @return mixed Mobiquo result
+ */
+function get_activity_func($raw_params)
+{
+    $params = mobiquo_params_decode($raw_params);
+
+    require_once(COMMON_CLASS_PATH_READ . '/social_read.php');
+
+    list($start, $max) = get_pagination_positions__by_page($params, 0, 1, 20);
+
+    $social_write_object = new CMSSocialRead();
+    list($total, $_items) = $social_write_object->get_activity($start, $max);
+
+    $items = array();
+    foreach ($_items as $item) {
+        $items[] = mobiquo_val(array(
+            'user_id' => mobiquo_val(strval($item['user_id']), 'string'),
+            'username' => mobiquo_val($item['username'], 'base64'),
+            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true), 'base64'),
+            'icon_url' => mobiquo_val($item['icon_url'], 'string'),
+            'message' => mobiquo_val($item['message'], 'base64'),
+            'timestamp' => mobiquo_val($item['timestamp'], 'string'),
+            'content_type' => mobiquo_val($item['content_type'], 'string'),
+            'content_id' => mobiquo_val($item['content_id'], 'string'),
+        ), 'struct');
+    }
+
+    $response = mobiquo_val(array(
+        'total' => mobiquo_val($total, 'int'),
+        'items' => mobiquo_val($items, 'array'),
+    ), 'struct');
+    return mobiquo_response($response);
+}

@@ -316,6 +316,16 @@ function is_under_radar($test)
         return false;
     }
 
+    return ((strlen($test) < get_minimum_search_length()) && ($test != ''));
+}
+
+/**
+ * Get minimum search length for MySQL.
+ *
+ * @return integer	Search length
+ */
+function get_minimum_search_length()
+{
     static $min_word_length = null;
     if (is_null($min_word_length)) {
         $min_word_length = 4;
@@ -326,8 +336,7 @@ function is_under_radar($test)
             }
         }
     }
-
-    return ((strlen($test) < $min_word_length) && ($test != ''));
+    return $min_word_length;
 }
 
 /**

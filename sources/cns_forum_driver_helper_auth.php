@@ -88,6 +88,11 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             require_code('cns_members_action2');
             $completion_form_submitted = (trim(post_param_string('email_address', '')) != '');
             if ((!$completion_form_submitted) && (get_option('finish_profile') == '1')) { // UI
+                require_code('failure');
+                if (throwing_errors()) {
+                    throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));
+                }
+
                 @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
                 $middle = cns_member_external_linker_ask($username, 'ldap', cns_ldap_guess_email($username));
                 $tpl = globalise($middle, null, '', true);

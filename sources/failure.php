@@ -26,6 +26,9 @@ function init__failure()
     global $DONE_ONE_WEB_SERVICE;
     $DONE_ONE_WEB_SERVICE = false;
 
+    global $THROWING_ERRORS;
+    $THROWING_ERRORS = false;
+
     if (!defined('MAX_STACK_TRACE_VALUE_LENGTH')) {
         define('MAX_STACK_TRACE_VALUE_LENGTH', 300);
     }
@@ -249,6 +252,8 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
     if (!$GLOBALS['SUPPRESS_ERROR_DEATH']) { // Don't display - die as normal
         $error_str = 'PHP ' . strtoupper($type) . ' [' . strval($errno) . '] ' . $errstr . ' in ' . $errfile . ' on line ' . strval($errline);
 
+        if (throwing_errors()) throw new CMSException($error_str);
+
         if ($type == 'error') {
             critical_error('EMERGENCY', escape_html($error_str));
         }
@@ -315,6 +320,10 @@ function _sanitise_error_msg($text)
  */
 function _generic_exit($text, $template, $support_match_key_messages = false)
 {
+    if (throwing_errors()) {
+        throw new CMSException($text);
+    }
+
     @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
     if (is_object($text)) {
@@ -881,6 +890,10 @@ function _fatal_exit($text, $return = false)
         $text = _sanitise_error_msg($text);
     }
 
+    if (throwing_errors()) {
+        throw new CMSException($text);
+    }
+
     if (!headers_sent()) {
         require_code('firephp');
         if (function_exists('fb')) {
@@ -894,31 +907,6 @@ function _fatal_exit($text, $return = false)
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
         exit(is_object($text) ? strip_html($text->evaluate()) : $text);
-    }
-
-    if (running_script('commandr')) {
-        require_code('xml');
-
-        @header('Content-Type: text/xml');
-        @header('HTTP/1.0 200 Ok');
-
-        $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
-<response>
-    <result>
-        <command>' . xmlentities(post_param_string('command', '')) . '</command>
-        <stdcommand></stdcommand>
-        <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
-        <stdout>' . xmlentities(is_object($text) ? strip_html($text->evaluate()) : $text) . '</stdout>
-        <stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
-        <stdnotifications><div xmlns="http://www.w3.org/1999/xhtml"></div></stdnotifications>
-    </result>
-</response>';
-
-        if ($GLOBALS['XSS_DETECT']) {
-            ocp_mark_as_escaped($output);
-        }
-
-        exit($output);
     }
 
     set_http_status_code('500');
@@ -1043,17 +1031,17 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Unable to allocate memory for pool') === false) &&
         (strpos($text, 'Out of memory') === false) &&
         (strpos($text, 'Can\'t open file') === false) &&
-        (strpos($text, 'INSERT command denied to user') === false) && 
+        (strpos($text, 'INSERT command denied to user') === false) &&
         (strpos($text, 'Disk is full writing') === false) &&
         (strpos($text, 'Disk quota exceeded') === false) &&
-        (strpos($text, 'No space left on device') === false) && 
+        (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
         (strpos($text, 'Unable to save result set') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL
-        (strpos($text, '.MYD') === false) && // MySQL 
+        (strpos($text, '.MYD') === false) && // MySQL
         (strpos($text, 'MySQL server has gone away') === false) &&
         (strpos($text, 'Incorrect key file') === false) &&
         (strpos($text, 'Too many connections') === false) &&
@@ -1355,6 +1343,10 @@ function _access_denied($class, $param, $force_login)
         $ob->run($class, $param, $force_login);
     }
 
+    if (throwing_errors()) {
+        throw new CMSException($message);
+    }
+
     require_code('site');
     log_stats('/access_denied', 0);
 
@@ -1398,4 +1390,48 @@ function _access_denied($class, $param, $force_login)
     }
 
     warn_exit($message); // Or if no login screen, just show normal error screen
+}
+
+/**
+ * Specify if errors should be thrown, rather than resulting in HTML exit screens.
+ *
+ * @param  boolean        Whether we should throw errors
+ */
+function set_throw_errors($_throwing_errors = true)
+{
+    global $THROWING_ERRORS;
+    $THROWING_ERRORS = $_throwing_errors;
+}
+
+/**
+ * Find whether we should throw errors, rather than create HTML exit screens with the error messages / correction screens.
+ *
+ * @return boolean        Whether to are throwing errors
+ */
+function throwing_errors()
+{
+    global $THROWING_ERRORS;
+    return $THROWING_ERRORS;
+}
+
+/**
+ * A Composr  exception.
+ *
+ * @package        core
+ */
+class CMSException extends Exception
+{
+    /**
+     * Constructor.
+     *
+     * @param mixed        Error message (Tempcode containing HTML, or string containing non-HTML)
+     */
+    function __construct($msg)
+    {
+        if (is_object($msg)) {
+            $msg = strip_html($msg->evaluate());
+        }
+
+        parent::__construct($msg);
+    }
 }

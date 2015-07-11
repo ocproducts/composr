@@ -115,11 +115,7 @@ class Hook_preview_cns_post
         }
         require_code('cns_groups');
         require_code('cns_members');
-        $poster_title = addon_installed('cns_member_titles') ? $GLOBALS['FORUM_DRIVER']->get_member_row_field($post_owner, 'm_title') : '';
-        $primary_group = $GLOBALS['FORUM_DRIVER']->get_member_row_field($post_owner, 'm_primary_group');
-        if ($poster_title == '') {
-            $poster_title = get_translated_text(cns_get_group_property($primary_group, 'title'), $GLOBALS['FORUM_DB']);
-        }
+        $poster_title = get_member_title($post_owner);
 
         // Poster box
         if (!is_guest($post_owner)) {

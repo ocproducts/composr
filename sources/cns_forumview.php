@@ -643,6 +643,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         'DESCRIPTION' => $topic['description'],
         'URL' => $url,
         'TITLE' => $title,
+        '_POSTER' => is_null($topic['first_member_id']) ? '' : strval($topic['first_member_id']),
         'POSTER' => $poster,
         'NUM_POSTS' => integer_format($topic['num_posts']),
         'NUM_VIEWS' => integer_format($topic['num_views']),

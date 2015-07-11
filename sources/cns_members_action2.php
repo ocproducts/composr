@@ -1183,6 +1183,10 @@ function cns_delete_member($member_id)
  */
 function cns_ban_member($member_id)
 {
+    if ($GLOBALS['OCF_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 1) {
+        return;
+    }
+
     require_code('mail');
 
     $username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
@@ -1206,6 +1210,10 @@ function cns_ban_member($member_id)
  */
 function cns_unban_member($member_id)
 {
+    if ($GLOBALS['OCF_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 0) {
+        return;
+    }
+
     require_code('mail');
 
     $username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
@@ -1725,6 +1733,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             }
             imagedestroy($source);
 
+            require_code('ocf_groups');
             $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');
             $height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
             if (($sx > $width) || ($sy > $height)) {

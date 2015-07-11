@@ -20,6 +20,15 @@
  * @package    core
  */
 
+/*
+Some basic developer tools for ocPortal PHP development.
+
+Also see:
+ firephp
+ profiler
+ php
+*/
+
 /**
  * Standard code module initialisation function.
  */
@@ -64,12 +73,12 @@ function semi_dev_mode_startup()
 
             // Use the info from ocProduct's custom PHP version to make sure that all files that were created/modified got synched as they should have been.
             foreach ($_CREATED_FILES as $file) {
-                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (substr($file, -4) != '.tmp') && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
+                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (substr($file, -4) != '.tmp') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
                     @exit(escape_html('File not permission-synched: ' . $file));
                 }
             }
             foreach ($_MODIFIED_FILES as $file) {
-                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (substr($file, -4) != '.tmp') && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
+                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (substr($file, -4) != '.tmp') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
                     @exit(escape_html('File not change-synched: ' . $file));
                 }
             }
@@ -305,3 +314,51 @@ function show_memory_points()
     }
     return false;
 }*/
+
+/**
+ * Verify the parameters passed into the *calling* function match the phpdoc specification for that function.
+ * Useful when testing robustness of APIs where the CQC and ocProducts PHP are not suitable.
+ * For example, when web APIs are plumbed into ocPortal APIs and you need to ensure the types are coming in correctly.
+ *
+ * @param  boolean        Whether to only run the checks in dev-mode
+ */
+function cms_verify_parameters_phpdoc($dev_only = false)
+{
+    if ($dev_only) {
+        if (!$GLOBALS['DEV_MODE']) {
+            return;
+        }
+    }
+
+    if (!addon_installed('testing_platform')) {
+        return;
+    }
+
+    $trace = debug_backtrace();
+
+    $filename = $trace[1]['file'];
+    if (substr($filename, 0, strlen(get_file_base() . '/')) == get_file_base() . '/') {
+        $filename = substr($filename, strlen(get_file_base() . '/'));
+    }
+    $class = isset($trace[1]['class']) ? $trace[1]['class'] : '__global';
+    $function = $trace[1]['function'];
+
+    static $api = array();
+    if (!isset($api[$filename])) {
+        require_code('php');
+        $api[$filename] = get_php_file_api($filename, false);
+    }
+
+    if (isset($api[$filename][$class]['functions'][$function]['parameters'])) {
+        foreach ($api[$filename][$class]['functions'][$function]['parameters'] as $i => $param) {
+            $name = $param['name'];
+            $type_expected = $param['type'];
+
+            if (isset($trace[1]['args'][$i])) {
+                $value = $trace[1]['args'][$i];
+
+                test_fail_php_type_check($type_expected, (isset($trace[1]['class']) ? ($class . '::') : '') . $function, $name, $value);
+            }
+        }
+    }
+}

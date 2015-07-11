@@ -320,6 +320,11 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         $message = call_user_func_array('do_lang_tempcode', array_map('escape_html', $_message));
     }
 
+    require_code('failure');
+    if (throwing_errors()) {
+        throw new CMSException($message);
+    }
+
     $posted = false;
     foreach ($_POST + $_GET as $name => $val) {
         if (is_array($val)) {
