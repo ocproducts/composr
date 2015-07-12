@@ -317,7 +317,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         }
     }
 
-    if (count($filesarray) != 0) {
+    if (count($filearrays) != 0) {
         cms_profile_start_for('get_url');
     }
 
@@ -344,9 +344,9 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     } else {
         $max_size = get_max_image_size();
     }
-    if (($attach_name != '') && (array_key_exists($attach_name, $filesarray)) && ((is_uploaded_file($filesarray[$attach_name]['tmp_name'])) || ($plupload_uploaded))) { // If we uploaded
+    if (($attach_name != '') && (array_key_exists($attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$attach_name]['tmp_name'])) || ($plupload_uploaded))) { // If we uploaded
         if (!has_privilege($member_id, 'exceed_filesize_limit')) {
-            if ($filesarray[$attach_name]['size'] > $max_size) {
+            if ($filearrays[$attach_name]['size'] > $max_size) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))), 'warn');
                     return array('', '', '', '');
@@ -361,7 +361,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             return array('', '', '', '');
         }
 
-        $is_image = is_image($filesarray[$attach_name]['name'], true);
+        $is_image = is_image($filearrays[$attach_name]['name'], true);
     } elseif (post_param_string($specify_name, '') != '') { // If we specified
         $url = _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_type, $accept_errors);
         $is_image = is_image($url[0]);
@@ -464,26 +464,26 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             }
         }
     } else { // Uh oh
-        if ((array_key_exists($attach_name, $filesarray)) && (array_key_exists('error', $filesarray[$attach_name])) && (($filesarray[$attach_name]['error'] != 4) || ($should_get_something)) && ($filesarray[$attach_name]['error'] != 0)) { // If we uploaded
-            if ($filesarray[$attach_name]['error'] == 1) {
+        if ((array_key_exists($attach_name, $filearrays)) && (array_key_exists('error', $filearrays[$attach_name])) && (($filearrays[$attach_name]['error'] != 4) || ($should_get_something)) && ($filearrays[$attach_name]['error'] != 0)) { // If we uploaded
+            if ($filearrays[$attach_name]['error'] == 1) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))), 'warn');
                     return array('', '', '', '');
                 } else {
                     warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))));
                 }
-            } elseif ($filesarray[$attach_name]['error'] == 2) {
+            } elseif ($filearrays[$attach_name]['error'] == 2) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('FILE_TOO_BIG_QUOTA', escape_html(integer_format($max_size))), 'warn');
                     return array('', '', '', '');
                 } else {
                     warn_exit(do_lang_tempcode('FILE_TOO_BIG_QUOTA', escape_html(integer_format($max_size))));
                 }
-            } elseif (($filesarray[$attach_name]['error'] == 3) || ($filesarray[$attach_name]['error'] == 4) || ($filesarray[$attach_name]['error'] == 6) || ($filesarray[$attach_name]['error'] == 7)) {
-                attach_message(do_lang_tempcode('ERROR_UPLOADING_' . strval($filesarray[$attach_name]['error'])), 'warn');
+            } elseif (($filearrays[$attach_name]['error'] == 3) || ($filearrays[$attach_name]['error'] == 4) || ($filearrays[$attach_name]['error'] == 6) || ($filearrays[$attach_name]['error'] == 7)) {
+                attach_message(do_lang_tempcode('ERROR_UPLOADING_' . strval($filearrays[$attach_name]['error'])), 'warn');
                 return array('', '', '', '');
             } else {
-                warn_exit(do_lang_tempcode('ERROR_UPLOADING_' . strval($filesarray[$attach_name]['error'])));
+                warn_exit(do_lang_tempcode('ERROR_UPLOADING_' . strval($filearrays[$attach_name]['error'])));
             }
         }
 
@@ -497,8 +497,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
 
     // Generate thumbnail if needed
     if (($make_thumbnail) && ($url[0] != '') && ($is_image)) {
-        if ((array_key_exists($thumb_attach_name, $filesarray)) && ((is_uploaded_file($filesarray[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
-            if ($filesarray[$thumb_attach_name]['size'] > get_max_image_size()) {
+        if ((array_key_exists($thumb_attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
+            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size()) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
                     return array('', '', '', '');
@@ -545,8 +545,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
 
         $out[1] = $thumb;
     } elseif ($make_thumbnail) {
-        if ((array_key_exists($thumb_attach_name, $filesarray)) && ((is_uploaded_file($filesarray[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
-            if ($filesarray[$thumb_attach_name]['size'] > get_max_image_size()) {
+        if ((array_key_exists($thumb_attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
+            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size()) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
                     return array('', '', '', '');
@@ -576,7 +576,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         $_POST[$thumb_specify_name] = array_key_exists(1, $out) ? $out[1] : '';
     }
 
-    if (count($filesarray) != 0) {
+    if (count($filearrays) != 0) {
         cms_profile_end_for('get_url', $attach_name);
     }
 
@@ -783,7 +783,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     $filearrays = array();
     get_upload_filearray($attach_name, $filearrays);
 
-    $file = $filesarray[$attach_name]['name'];
+    $file = $filearrays[$attach_name]['name'];
     if (get_magic_quotes_gpc()) {
         $file = stripslashes($file);
     }
@@ -831,13 +831,13 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
         $place = $upload_folder_full . '/' . $filename;
     }
 
-    check_shared_space_usage($filesarray[$attach_name]['size']);
+    check_shared_space_usage($filearrays[$attach_name]['size']);
 
     // Copy there, and return our URL
-    if ($filesarray[$attach_name]['type'] != 'plupload') {
-        $test = @move_uploaded_file($filesarray[$attach_name]['tmp_name'], $place);
+    if ($filearrays[$attach_name]['type'] != 'plupload') {
+        $test = @move_uploaded_file($filearrays[$attach_name]['tmp_name'], $place);
     } else {
-        $test = @copy($filesarray[$attach_name]['tmp_name'], $place); // We could rename, but it would hurt integrity of refreshes
+        $test = @copy($filearrays[$attach_name]['tmp_name'], $place); // We could rename, but it would hurt integrity of refreshes
     }
     if ($test === false) {
         if ($accept_errors) {

@@ -411,7 +411,7 @@ class Module_cms_comcode_pages
                 // No additional filter; NB: this does assume no negative overrides are in place; if they are, an error will be shown when clicking through
             }
             $ttable = get_table_prefix() . 'comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone';
-            $page_rows = $GLOBALS['SITE_DB']->query('SELECT c.*,cc_page_title FROM ' . $ttable . ' WHERE ' . $where_map . $group_by . ' ORDER BY ' . $orderer, $max, $start, null, null, false, false, array('cc_page_title' => '?SHORT_TRANS'));
+            $page_rows = $GLOBALS['SITE_DB']->query('SELECT c.*,cc_page_title FROM ' . $ttable . ' WHERE ' . $where_map . $group_by . ' ORDER BY ' . $orderer, $max, $start, false, false, array('cc_page_title' => '?SHORT_TRANS'));
             $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(DISTINCT c.the_zone,c.the_page) FROM ' . $ttable . ' WHERE ' . $where_map);
 
             $filesarray = array();
@@ -707,8 +707,8 @@ class Module_cms_comcode_pages
             // Pre-process default pages with Tempcode, to make easier to understand
             if ((strpos($restore_from, '/comcode/') !== false) && (($file == 'start') || ($file == 'panel_left') || ($file == 'panel_right'))) {
                 require_code('tempcode_compiler');
-                $contents = template_to_tempcode($contents);
-                $contents = $contents->evaluate();
+                $_contents = template_to_tempcode($contents);
+                $contents = $_contents->evaluate();
             }
         } else {
             $new = false;

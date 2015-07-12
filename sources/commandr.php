@@ -124,7 +124,7 @@ function commandr_script()
             require_code('failure');
             set_throw_errors();
             try {
-                $temp = new virtual_bash(trim($command));
+                $temp = new Virtual_bash(trim($command));
                 $temp->output_xml();
             } catch (Exception $e) {
                 header('HTTP/1.0 200 Ok');
@@ -1006,7 +1006,7 @@ class Virtual_shell
             $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], null, null, false, true);
             $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
             if ((is_array($commandr_output)) && (count($commandr_output) > 100)) {
-                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, null, null, true, true);
+                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, null, true, true);
                 $commandr_output[] = array('...' => '...');
             }
 
@@ -1185,6 +1185,8 @@ class Virtual_shell
      */
     protected function _handle_php_command()
     {
+        $commandr_output = mixed();
+
         // NOTE: Variables throughout this function use the $commandr_ prefix to avoid conflicts with any created through executing PHP commands from the CL
         if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
             if (array_key_exists('commandr_state', $_COOKIE)) {

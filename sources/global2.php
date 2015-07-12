@@ -1187,7 +1187,7 @@ function get_base_url($https = null, $zone_for = null)
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
         $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
         $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
-        $php_self = dirname(ocp_srv('PHP_SELF'));
+        $php_self = dirname(cms_srv('PHP_SELF'));
         if (($GLOBALS['RELATIVE_PATH'] == '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
             $php_self = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $php_self);
         } else {
@@ -1196,7 +1196,7 @@ function get_base_url($https = null, $zone_for = null)
                 $php_self = dirname($php_self);
             }
         }
-        $SITE_INFO['base_url'] = 'http://' . $domain . $port . rawurlencode($php_self);
+        $SITE_INFO['base_url'] = 'http://' . $domain . $_SERVER['SERVER_PORT'] . rawurlencode($php_self);
     }
 
     // Lookup

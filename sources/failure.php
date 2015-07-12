@@ -696,7 +696,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
 
         if (($reason != 'CAPTCHAFAIL_HACK') && ($reason != 'LAME_SPAM_HACK')) {
             $subject = do_lang('HACK_ATTACK_SUBJECT', $ip, null, null, get_site_default_lang());
-            dispatch_notification('hack_attack', null, $subject, $message->evaluate(get_site_default_lang(), false), null, A_FROM_SYSTEM_PRIVILEGED);
+            dispatch_notification('hack_attack', null, $subject, $message->evaluate(get_site_default_lang()), null, A_FROM_SYSTEM_PRIVILEGED);
         }
 
         if (!is_null($ip_ban_todo)) {
@@ -1395,7 +1395,7 @@ function _access_denied($class, $param, $force_login)
 /**
  * Specify if errors should be thrown, rather than resulting in HTML exit screens.
  *
- * @param  boolean        Whether we should throw errors
+ * @param  boolean  $_throwing_errors Whether we should throw errors
  */
 function set_throw_errors($_throwing_errors = true)
 {
@@ -1424,9 +1424,9 @@ class CMSException extends Exception
     /**
      * Constructor.
      *
-     * @param mixed        Error message (Tempcode containing HTML, or string containing non-HTML)
+     * @param mixed $msg Error message (Tempcode containing HTML, or string containing non-HTML)
      */
-    function __construct($msg)
+    public function __construct($msg)
     {
         if (is_object($msg)) {
             $msg = strip_html($msg->evaluate());

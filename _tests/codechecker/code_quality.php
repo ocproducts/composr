@@ -844,7 +844,7 @@ function check_variable_list($LOCAL_VARIABLES, $offset = -1)
             if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
                 $t = 'string';
             }
-            if (in_array($t, array('tempcode'))) {
+            if (in_array($t, array('Tempcode'))) {
                 $t = 'object';
             }
             if (in_array($t, array('list', 'map'))) {
@@ -1160,8 +1160,8 @@ function check_method($c, $c_pos, $function_guard = '')
             $method = $c[1][2][1][1];
             add_variable_reference($object, $c_pos);
 
-            if (((count($LOCAL_VARIABLES[$object]['types']) == 1) && ($LOCAL_VARIABLES[$object]['types'][0] == 'tempcode')) || (isset($FUNCTION_SIGNATURES[$LOCAL_VARIABLES[$object]['object_type']]))) { // Construction
-                $class = ($LOCAL_VARIABLES[$object]['types'][0] == 'tempcode') ? 'Tempcode' : substr($LOCAL_VARIABLES[$object]['types'][0], 6);
+            if (((count($LOCAL_VARIABLES[$object]['types']) == 1) && ($LOCAL_VARIABLES[$object]['types'][0] == 'Tempcode')) || (isset($FUNCTION_SIGNATURES[$LOCAL_VARIABLES[$object]['object_type']]))) { // Construction
+                $class = (substr($LOCAL_VARIABLES[$object]['types'][0], 6);
                 return actual_check_method($class, $method, $params, $c_pos, $function_guard);
             } else {
                 // Parameters
@@ -1185,10 +1185,6 @@ function check_method($c, $c_pos, $function_guard = '')
 
 function actual_check_method($class, $method, $params, $c_pos, $function_guard = '')
 {
-    if ($class == 'tempcode') {
-        $class = 'Tempcode';
-    }
-
     // Special rule for $_->object_factory(...) and $_->controller(...) etc
     if (($method == 'object_factory') || ($method == 'controller') || ($method == 'sys_model')) {
         // $_->object_factory(...) and $_->class(...) are used to load and
@@ -1389,9 +1385,10 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
     if (!$found) {
         if (isset($GLOBALS['API'])) {
-            $class = preg_replace('#^object-#', '', $class);
+            $_class = $class;
+            $class = preg_replace('#^\?~?(object-)?#', '', $class);
 
-            if (((is_null($GLOBALS['OK_EXTRA_FUNCTIONS'])) || (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $function) == 0) && (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $class) == 0)) && (!in_array($class, array('mixed', '?mixed', 'object', '?object'))) && (!in_array($function, array('critical_error', 'file_array_exists', 'file_array_get', 'file_array_count', 'file_array_get_at', 'master__sync_file', 'master__sync_file_move')))) {
+            if (((is_null($GLOBALS['OK_EXTRA_FUNCTIONS'])) || (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $function) == 0) && (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $class) == 0)) && (!in_array($class, array('mixed', '?mixed', 'object', '?object'))) && (strpos($function_guard, ',' . $function . ',') === false) && (!in_array($function, array('critical_error', 'file_array_exists', 'file_array_get', 'file_array_count', 'file_array_get_at', 'master__sync_file', 'master__sync_file_move')))) {
                 if ((is_null($class)) || ($class == '__global')) {
                     if ($function != '') {
                         log_warning('Could not find function \'' . $function . '\'', $c_pos);
@@ -1844,9 +1841,6 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             if (count($inner[2]) != 0) {
                 check_call(array('CALL_METHOD', '__construct', $inner[2]), $c_pos, $inner[1], $function_guard);
             }
-            if ($inner[1] == 'Tempcode') {
-                return 'tempcode';
-            }
             return 'object-' . $inner[1];
         case 'CLONE_OBJECT':
             // $a=clone $b will make a shallow copy of the object $, so we just
@@ -2123,7 +2117,7 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
         if (in_array($type, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
             $allowed_types['string'] = 1;
         }
-        if (in_array($type, array('tempcode'))) {
+        if (in_array($type, array('Tempcode'))) {
             $allowed_types['object'] = 1;
         }
         if (in_array($type, array('list', 'map'))) {
@@ -2166,7 +2160,7 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
             return true;
         }
     }
-    if (in_array($actual_type, array('tempcode'))) {
+    if (in_array($actual_type, array('Tempcode'))) {
         if (isset($allowed_types['object'])) {
             return true;
         }

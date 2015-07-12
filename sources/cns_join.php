@@ -202,10 +202,10 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
  * @param  boolean $validate_if_enabled Whether to force email address validation (if enabled at all)
  * @param  boolean $coppa_if_enabled Whether to do COPPA checks (if enabled at all)
  * @param  boolean $instant_login Whether to instantly log the user in
- * @param  ?ID_TEXT $username Username (NULL: read from environment)
- * @param  ?EMAIL $email_address E-mail address (NULL: read from environment)
- * @param  ?string $password Password (NULL: read from environment)
- * @param  ?array $actual_custom_fields Custom fields to save (NULL: read from environment)
+ * @param  ?ID_TEXT $username Username (null: read from environment)
+ * @param  ?EMAIL $email_address E-mail address (null: read from environment)
+ * @param  ?string $password Password (null: read from environment)
+ * @param  ?array $actual_custom_fields Custom fields to save (null: read from environment)
  * @return array A tuple: Messages to show, member ID of new member
  */
 function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $one_per_email_address_if_enabled = true, $confirm_if_enabled = true, $validate_if_enabled = true, $coppa_if_enabled = true, $instant_login = true, $username = null, $email_address = null, $password = null, $actual_custom_fields = null)

@@ -320,7 +320,7 @@ function show_memory_points()
  * Useful when testing robustness of APIs where the CQC and ocProducts PHP are not suitable.
  * For example, when web APIs are plumbed into ocPortal APIs and you need to ensure the types are coming in correctly.
  *
- * @param  boolean        Whether to only run the checks in dev-mode
+ * @param  boolean $dev_only Whether to only run the checks in dev-mode
  */
 function cms_verify_parameters_phpdoc($dev_only = false)
 {
