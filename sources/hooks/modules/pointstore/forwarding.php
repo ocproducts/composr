@@ -77,7 +77,7 @@ class Hook_pointstore_forwarding
     /**
      * Get fields for adding/editing one of these.
      *
-     * @return tempcode The fields
+     * @return Tempcode The fields
      */
     public function get_fields()
     {
@@ -114,7 +114,7 @@ class Hook_pointstore_forwarding
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newforwarding()
     {
@@ -160,7 +160,7 @@ class Hook_pointstore_forwarding
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _newforwarding()
     {
@@ -228,7 +228,7 @@ class Hook_pointstore_forwarding
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __newforwarding()
     {
@@ -269,7 +269,7 @@ class Hook_pointstore_forwarding
         $message_raw = do_template('POINTSTORE_FORWARDER_MAIL', array('_GUID' => 'a09dba8b440baa5cd48d462ebfafd15f', 'ENCODED_REASON' => $encoded_reason, 'EMAIL' => $email, 'PREFIX' => $prefix, 'SUFFIX' => $_suffix, 'FORW_URL' => $forw_url, 'SUFFIX_PRICE' => integer_format($suffix_price)), null, false, null, '.txt', 'text');
 
         require_code('notifications');
-        dispatch_notification('pointstore_request_forwarding', 'forw_' . strval($sale_id), do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang(), false), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+        dispatch_notification('pointstore_request_forwarding', 'forw_' . strval($sale_id), do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
         $text = do_lang_tempcode('ORDER_FORWARDER_DONE', $email, escape_html($prefix . '@' . $_suffix));
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

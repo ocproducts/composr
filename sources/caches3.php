@@ -53,7 +53,7 @@ function auto_decache($changed_base_url)
  * Rebuild the specified caches.
  *
  * @param  ?array $caches The caches to rebuild (null: all)
- * @return tempcode Any messages returned
+ * @return Tempcode Any messages returned
  */
 function composr_cleanup($caches = null)
 {

@@ -89,7 +89,7 @@ class Module_admin_config
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -164,7 +164,7 @@ class Module_admin_config
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -225,7 +225,7 @@ class Module_admin_config
     /**
      * The UI to choose what configuration page to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function config_choose()
     {
@@ -233,7 +233,7 @@ class Module_admin_config
         if (count($_POST) == 0) {
             $proper_url = build_url(array('page' => ''), '');
             $_proper_url = $proper_url->evaluate();
-            $test_a = http_download_file($_proper_url, 0, false, true, 'ocPortal', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>','test_c' => '<script>console.log(document.cookie);</script>'));
+            $test_a = http_download_file($_proper_url, 0, false, true, 'ocPortal', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
             $message_a = $GLOBALS['HTTP_MESSAGE'];
             if ($message_a == '200')
             {
@@ -332,7 +332,7 @@ class Module_admin_config
     /**
      * The UI to edit a configuration page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function config_category()
     {
@@ -548,7 +548,7 @@ class Module_admin_config
                             require_code('cns_forums2');
                             $_list = new Tempcode();
                             if (!$required) {
-                                $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                                $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             }
                             $_list->attach(cns_create_selection_list_forum_groupings(null, $tmp_value));
                             $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
@@ -564,7 +564,7 @@ class Module_admin_config
                             require_code('cns_groups');
                             $_list = new Tempcode();
                             if (!$required) {
-                                $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                                $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             }
                             $_list->attach(cns_create_selection_list_usergroups($tmp_value));
                             $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
@@ -611,7 +611,7 @@ class Module_admin_config
     /**
      * The actualiser to edit a configuration page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function config_set()
     {
@@ -756,7 +756,7 @@ class Module_admin_config
     /**
      * Redirect to the config_editor script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function base()
     {
@@ -768,7 +768,7 @@ class Module_admin_config
     /**
      * Redirect to the upgrader script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function upgrader()
     {
@@ -780,7 +780,7 @@ class Module_admin_config
     /**
      * Redirect to the backend script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function backend()
     {
@@ -792,7 +792,7 @@ class Module_admin_config
     /**
      * Redirect to the code_editor script.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function code_editor()
     {
@@ -804,7 +804,7 @@ class Module_admin_config
     /**
      * The UI to edit the fields XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function xml_fields()
     {
@@ -821,7 +821,7 @@ class Module_admin_config
     /**
      * The UI actualiser edit the fields XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _xml_fields()
     {
@@ -855,7 +855,7 @@ class Module_admin_config
     /**
      * The UI to edit the breadcrumbs XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function xml_breadcrumbs()
     {
@@ -872,7 +872,7 @@ class Module_admin_config
     /**
      * The UI actualiser edit the breadcrumbs XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _xml_breadcrumbs()
     {

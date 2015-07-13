@@ -130,7 +130,7 @@ class Module_sites
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -156,7 +156,7 @@ class Module_sites
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -196,7 +196,7 @@ class Module_sites
     /**
      * The UI to choose a path.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function hostingcopy_step1()
     {
@@ -217,7 +217,7 @@ class Module_sites
      * @param  resource $conn_id The FTP connection
      * @param  PATH $directory The directory we are scanning
      * @param  integer $depth The depth of the current scan level
-     * @return tempcode The list of directories
+     * @return Tempcode The list of directories
      */
     public function _hostingcopy_do_dir($conn_id, $directory = '/', $depth = 0)
     {
@@ -295,7 +295,7 @@ class Module_sites
     /**
      * The UI to choose a path.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function hostingcopy_step2()
     {
@@ -331,7 +331,7 @@ class Module_sites
     /**
      * The actualiser.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function hostingcopy_step3()
     {
@@ -393,7 +393,7 @@ class Module_sites
     /**
      * Site setup wizard step.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function demonstratr()
     {
@@ -412,7 +412,7 @@ class Module_sites
     /**
      * Site setup wizard step.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function _demonstratr()
     {

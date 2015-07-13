@@ -488,7 +488,7 @@ function make_call($call, $params, $file = null)
                     <input class="buttons__proceed button_screen" type="submit" value="Action failed: Try manually" />
             </form>
         ';
-        $result='';
+        $result = '';
     }
     if ($result == 'Access Denied') {
         echo '<p>Access denied</p>';

@@ -228,10 +228,10 @@ function cns_find_birthdays($time = null)
 }
 
 /**
- * Turn a list of maps describing buttons, into a tempcode button panel.
+ * Turn a list of maps describing buttons, into a Tempcode button panel.
  *
  * @param  array $buttons List of maps (each map contains: url, img, title).
- * @return tempcode The button panel.
+ * @return Tempcode The button panel.
  */
 function cns_button_screen_wrap($buttons)
 {

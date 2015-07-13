@@ -89,12 +89,12 @@ function get_self_url_easy()
 /**
  * Get a well formed URL equivalent to the current URL.
  *
- * @param  boolean $evaluate Whether to evaluate the URL (so as we don't return tempcode)
+ * @param  boolean $evaluate Whether to evaluate the URL (so as we don't return Tempcode)
  * @param  boolean $root_if_posted Whether to direct to the default page if there was a POST request leading to where we are now (i.e. to avoid missing post fields when we go to this URL)
  * @param  ?array $extra_params A map of extra parameters for the URL (null: none)
  * @param  boolean $posted_too Whether to also keep POSTed data, in the GET request (useful if either_param_string is used to get the data instead of post_param_string - of course the POST data must be of the not--persistent-state-changing variety)
  * @param  boolean $avoid_remap Whether to avoid mod_rewrite (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
- * @return mixed The URL (tempcode or string)
+ * @return mixed The URL (Tempcode or string)
  */
 function get_self_url($evaluate = false, $root_if_posted = false, $extra_params = null, $posted_too = false, $avoid_remap = false)
 {
@@ -311,7 +311,7 @@ function can_try_mod_rewrite($avoid_remap = false)
  * @param  boolean $avoid_remap Whether to avoid mod_rewrite (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
- * @return tempcode The URL in tempcode format.
+ * @return Tempcode The URL in Tempcode format.
  */
 function build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
@@ -399,6 +399,10 @@ function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
                 $page_link .= ':' . (($id === null) ? '<null>' : urlencode($id));
             }
             unset($vars['id']);
+        }
+    } else {
+        if (false) {
+            $val = mixed();
         }
     }
 
@@ -868,7 +872,7 @@ function looks_like_url($value, $lax = false)
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
  * @param  ?array $exclude A list of parameters to exclude (null: don't exclude any)
- * @return tempcode The builtup hidden form fields
+ * @return Tempcode The builtup hidden form fields
  */
 function build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
 {
@@ -880,7 +884,7 @@ function build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
  * Relay all POST variables for this URL, to the URL embedded in the form.
  *
  * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
- * @return tempcode The builtup hidden form fields
+ * @return Tempcode The builtup hidden form fields
  */
 function build_keep_post_fields($exclude = null)
 {
@@ -982,8 +986,8 @@ function page_link_decode($page_link)
             $decoded = urldecode($_bit[1]);
             if (($decoded != '') && ($decoded[0] == '{') && (strlen($decoded) > 2) && (intval($decoded[1]) > 51)) { // If it is in template format (symbols)
                 require_code('tempcode_compiler');
-                $decoded = template_to_tempcode($decoded);
-                $decoded = $decoded->evaluate();
+                $_decoded = template_to_tempcode($decoded);
+                $decoded = $_decoded->evaluate();
             }
             if ($decoded == '<null>') {
                 $attributes[$_bit[0]] = null;

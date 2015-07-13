@@ -314,7 +314,7 @@ function get_ticket_posts($ticket_id, &$forum, &$topic_id, &$ticket_type, $start
         $forum = $ticket[0]['forum_id'];
         $topic_id = $ticket[0]['topic_id'];
         $count = 0;
-        return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $ticket_id), $count, $max, $start);
+        return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id), $count, $max, $start);
     }
 
     // It must be an old-style ticket, residing in the root ticket forum
@@ -322,7 +322,7 @@ function get_ticket_posts($ticket_id, &$forum, &$topic_id, &$ticket_type, $start
     $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $ticket_id);
     $ticket_type_id = null;
     $count = 0;
-    return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $ticket_id), $count);
+    return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id), $count);
 }
 
 /**

@@ -127,7 +127,7 @@ class Module_admin_import
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -168,7 +168,7 @@ class Module_admin_import
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -210,7 +210,7 @@ class Module_admin_import
     /**
      * The UI to choose an importer.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_importer()
     {
@@ -246,7 +246,7 @@ class Module_admin_import
     /**
      * The UI to choose an import session.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_session()
     {
@@ -298,7 +298,7 @@ class Module_admin_import
     /**
      * The UI to choose session details.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_session2()
     {
@@ -380,7 +380,7 @@ class Module_admin_import
      * The UI to choose what to import.
      *
      * @param  mixed $extra Output to show from last action (blank: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_actions($extra = '')
     {
@@ -526,7 +526,7 @@ class Module_admin_import
     /**
      * The actualiser to do an import.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_import()
     {
@@ -668,7 +668,7 @@ class Module_admin_import
     /**
      * Special import-esque function to aid switching to Conversr after importing forum previously served by a forum driver.
      *
-     * @return tempcode Information about progress
+     * @return Tempcode Information about progress
      */
     public function cns_switch()
     {

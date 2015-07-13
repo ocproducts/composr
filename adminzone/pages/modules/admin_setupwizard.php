@@ -61,7 +61,7 @@ class Module_admin_setupwizard
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -91,7 +91,7 @@ class Module_admin_setupwizard
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -141,7 +141,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (welcome).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step1()
     {
@@ -185,7 +185,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (information).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step2()
     {
@@ -201,7 +201,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (config).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step3()
     {
@@ -280,7 +280,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (addons).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step4()
     {
@@ -501,7 +501,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (the zone/feature configuration).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step5()
     {
@@ -575,7 +575,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (block choice).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step6()
     {
@@ -711,7 +711,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (rules).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step7()
     {
@@ -748,7 +748,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (theme).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step8()
     {
@@ -782,7 +782,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (close-status).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step9()
     {
@@ -815,7 +815,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (done).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step10()
     {
@@ -1147,7 +1147,7 @@ class Module_admin_setupwizard
     /**
      * UI for a setup wizard step (done, message after cache emptied - need lower memory usage to rebuild them).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step11()
     {

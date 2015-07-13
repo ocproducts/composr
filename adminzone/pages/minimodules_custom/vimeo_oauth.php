@@ -51,7 +51,7 @@ if ($oauth_token == '') {
 
 // Got a response back...
 
-$vimeo->setToken(get_value($service_name . '_access_token', true), get_value($service_name . '_access_token_secret', true));
+$vimeo->setToken(get_value($service_name . '_access_token', null, true), get_value($service_name . '_access_token_secret', null, true));
 $token = $vimeo->getAccessToken(get_param_string('oauth_verifier')); // Convert to long-term access tokens
 $vimeo->setToken($token['oauth_token'], $token['oauth_token_secret']);
 $ok = true;

@@ -277,7 +277,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
      * Run function for rendering a search result.
      *
      * @param  array $row The data row stored when we retrieved the result
-     * @return ?tempcode The output (null: compound output)
+     * @return ?Tempcode The output (null: compound output)
      */
     public function render($row)
     {

@@ -137,7 +137,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -154,7 +154,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -194,7 +194,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -259,7 +259,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a Custom Comcode tag adding/editing form.
+     * Get Tempcode for a Custom Comcode tag adding/editing form.
      *
      * @param  SHORT_TEXT $title The title (name) of the Custom Comcode tag
      * @param  LONG_TEXT $description The description of the tag

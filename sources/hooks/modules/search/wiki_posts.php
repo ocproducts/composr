@@ -173,7 +173,7 @@ class Hook_search_wiki_posts extends FieldsSearchHook
      * Run function for rendering a search result.
      *
      * @param  array $row The data row stored when we retrieved the result
-     * @return tempcode The output
+     * @return Tempcode The output
      */
     public function render($row)
     {

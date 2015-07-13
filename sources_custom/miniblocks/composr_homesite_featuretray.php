@@ -15,15 +15,11 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-$sites_url = build_url(array('page' => 'sites'), 'site');
-if (is_object($sites_url)) {
-    $sites_url = $sites_url->evaluate();
-}
+$_sites_url = build_url(array('page' => 'sites'), 'site');
+$sites_url = $_sites_url->evaluate();
 
-$importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
-if (is_object($importing_tutorial_url)) {
-    $importing_tutorial_url = $importing_tutorial_url->evaluate();
-}
+$_importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
+$importing_tutorial_url = $_importing_tutorial_url->evaluate();
 
 $featuretree = array(
     // Ways to help (using same code, bit of a hack)

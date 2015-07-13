@@ -86,7 +86,7 @@ class Module_cms_wiki
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -159,7 +159,7 @@ class Module_cms_wiki
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -199,7 +199,7 @@ class Module_cms_wiki
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -269,7 +269,7 @@ class Module_cms_wiki
     /**
      * The UI for adding a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function add_page()
     {
@@ -304,7 +304,7 @@ class Module_cms_wiki
     /**
      * The actualiser for adding a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _add_page()
     {
@@ -347,7 +347,7 @@ class Module_cms_wiki
     /**
      * The UI for choosing a Wiki+ page to edit (not normally used).
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function choose_page_to_edit()
     {
@@ -368,7 +368,7 @@ class Module_cms_wiki
     /**
      * The UI for editing a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function edit_page()
     {
@@ -467,7 +467,7 @@ class Module_cms_wiki
     /**
      * The actualiser for editing a Wiki+ page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _edit_page()
     {
@@ -525,7 +525,7 @@ class Module_cms_wiki
     /**
      * The UI for managing the Wiki+ children of a page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function edit_tree()
     {
@@ -575,7 +575,7 @@ class Module_cms_wiki
     /**
      * The actualiser for managing the Wiki+ children of a page.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _edit_tree()
     {

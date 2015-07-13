@@ -425,7 +425,7 @@ class Hook_addon_registry_calendar
      * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
      *
      * @param  string $view View type.
-     * @return tempcode Preview.
+     * @return Tempcode Preview.
      */
     public function calendar_main_screen($view)
     {

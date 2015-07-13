@@ -21,7 +21,7 @@
  * @param  boolean $include_manage_links Whether to include extra management links (e.g. editing, choosing, archive, etc)
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The rendered box
+ * @return Tempcode The rendered box
  */
 function render_iotd_box($myrow, $zone = '_SEARCH', $include_manage_links = false, $give_context = true, $guid = '')
 {

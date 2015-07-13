@@ -76,7 +76,7 @@ class Module_cms_booking extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -117,7 +117,7 @@ class Module_cms_booking extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -150,7 +150,7 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -207,7 +207,7 @@ class Module_cms_booking extends Standard_crud_module
             $fr[] = get_timezoned_date(mktime($row['active_from_month'], $row['active_from_day'], $row['active_from_year']), false, true, false, true);
             $fr[] = get_timezoned_date(mktime($row['active_to_month'], $row['active_to_day'], $row['active_to_year']), false, true, false, true);
             $fr[] = ($row['enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -387,10 +387,10 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -456,7 +456,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
             $fr = array();
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable_supplement', $row, 'title'));
             $fr[] = float_format($row['price']);
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -585,10 +585,10 @@ class Module_cms_booking_supplements extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -654,7 +654,7 @@ class Module_cms_booking_blacks extends Standard_crud_module
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_from_month'], $row['blacked_from_day'], $row['blacked_from_year']), false);
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_to_month'], $row['blacked_to_day'], $row['blacked_to_year']), false);
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable_blacked', $row, 'blacked_explanation'));
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -771,10 +771,10 @@ class Module_cms_booking_blacks extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -934,7 +934,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             }
             $fr[] = number_format($row['quantity']);
             $fr[] = get_timezoned_date($row['_rows'][0]['booked_at']);
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT')));
+            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -1167,10 +1167,10 @@ class Module_cms_booking_bookings extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {

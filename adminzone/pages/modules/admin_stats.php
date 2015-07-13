@@ -161,7 +161,7 @@ class Module_admin_stats
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -241,7 +241,7 @@ class Module_admin_stats
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -301,7 +301,7 @@ class Module_admin_stats
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -341,11 +341,11 @@ class Module_admin_stats
     /**
      * An interface for choosing between dates.
      *
-     * @param  tempcode $title The title to display.
+     * @param  Tempcode $title The title to display.
      * @param  boolean $stats_table Whether display is dependent on what we kept in our stats table.
-     * @param  ?tempcode $extra_fields Extra fields to request (null: none).
-     * @param  ?tempcode $message The message to show for date selection (null: default).
-     * @return tempcode The result of execution.
+     * @param  ?Tempcode $extra_fields Extra fields to request (null: none).
+     * @param  ?Tempcode $message The message to show for date selection (null: default).
+     * @return Tempcode The result of execution.
      */
     public function get_between($title, $stats_table = false, $extra_fields = null, $message = null)
     {
@@ -393,7 +393,7 @@ class Module_admin_stats
     /**
      * The UI to show user online statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function users_online()
     {
@@ -478,7 +478,7 @@ class Module_admin_stats
     /**
      * The UI to show submission rates.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function submission_rates()
     {
@@ -559,7 +559,7 @@ class Module_admin_stats
     /**
      * The UI to show page load times.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function load_times()
     {
@@ -674,7 +674,7 @@ class Module_admin_stats
     /**
      * The UI to show referrers.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function referrers()
     {
@@ -806,7 +806,7 @@ class Module_admin_stats
     /**
      * The UI to show top search keywords.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function keywords()
     {
@@ -948,7 +948,7 @@ class Module_admin_stats
     /**
      * The UI to show page view statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function page_stats()
     {
@@ -1086,7 +1086,7 @@ class Module_admin_stats
     /**
      * The UI to show page view statistics for the front page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function overview()
     {
@@ -1155,7 +1155,7 @@ class Module_admin_stats
     /**
      * The UI to show page view statistics for a single page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function show_page()
     {
@@ -1443,7 +1443,7 @@ class Module_admin_stats
     /**
      * The UI to clear statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function clear()
     {
@@ -1474,7 +1474,7 @@ class Module_admin_stats
     /**
      * The actualiser to clear statistics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _clear()
     {
@@ -1507,7 +1507,7 @@ class Module_admin_stats
     /**
      * Install geolocation data.
      *
-     * @return tempcode The UI, showing the result of the installation
+     * @return Tempcode The UI, showing the result of the installation
      */
     public function install_geolocation_data()
     {
@@ -1578,7 +1578,7 @@ class Module_admin_stats
     }
 
     /**
-     * Create a bar chart of the views the specified page has received in relation to the specified hours. The bar chart is stored in /data_custom/admin_stats/ as an SVG image, and the tempcode for display of the graph and results table is returned.
+     * Create a bar chart of the views the specified page has received in relation to the specified hours. The bar chart is stored in /data_custom/admin_stats/ as an SVG image, and the Tempcode for display of the graph and results table is returned.
      *
      * @param  PATH $page The page path
      * @param  string $type The statistic type (for use in sort parameters and such)
@@ -1586,7 +1586,7 @@ class Module_admin_stats
      * @param  string $graph_description Language identifier for the graph description
      * @param  integer $hours The steps of hours to use
      * @param  integer $total The total hours to plot
-     * @return array A linear array containing the graph and list tempcode objects, respectively
+     * @return array A linear array containing the graph and list Tempcode objects, respectively
      */
     public function views_per_x($page, $type, $graph_title, $graph_description, $hours = 1, $total = 24)
     {
@@ -1662,14 +1662,14 @@ class Module_admin_stats
     }
 
     /**
-     * Create a pie chart of the ratios of the specified statistic for the specified page. The chart is saved as an SVG image in /data_custom/admin_stats/, and the tempcode for display of the graph and results table is returned
+     * Create a pie chart of the ratios of the specified statistic for the specified page. The chart is saved as an SVG image in /data_custom/admin_stats/, and the Tempcode for display of the graph and results table is returned
      *
      * @param  PATH $page The page path
      * @param  string $type The statistic to use
      * @param  string $graph_title Language identifier for the graph title
      * @param  string $graph_description Language identifier for the graph description
      * @param  string $list_title Language identifier for the list title
-     * @return array A linear array containing the graph and list tempcode objects, respectively
+     * @return array A linear array containing the graph and list Tempcode objects, respectively
      */
     public function page_x_share($page, $type, $graph_title, $graph_description, $list_title)
     {

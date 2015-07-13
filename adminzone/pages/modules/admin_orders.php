@@ -72,7 +72,7 @@ class Module_admin_orders
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -157,7 +157,7 @@ class Module_admin_orders
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -212,7 +212,7 @@ class Module_admin_orders
     /**
      * The do-next manager for order module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -229,7 +229,7 @@ class Module_admin_orders
     /**
      * UI to show all orders.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function show_orders()
     {
@@ -377,7 +377,7 @@ class Module_admin_orders
     /**
      * UI to show details of an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function order_details()
     {
@@ -504,7 +504,7 @@ class Module_admin_orders
     /**
      * Method to dispatch an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function dispatch()
     {
@@ -524,7 +524,7 @@ class Module_admin_orders
     /**
      * UI to add note to an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function add_note()
     {
@@ -577,7 +577,7 @@ class Module_admin_orders
     /**
      * Actualiser to add a note to an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function _add_note()
     {
@@ -625,7 +625,7 @@ class Module_admin_orders
     /**
      * Method to delete order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function delete_order()
     {
@@ -642,7 +642,7 @@ class Module_admin_orders
     /**
      * Method to return order items.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function return_order()
     {
@@ -659,7 +659,7 @@ class Module_admin_orders
     /**
      * Method to hold an order.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function hold_order()
     {
@@ -676,7 +676,7 @@ class Module_admin_orders
     /**
      * Method to display export order list filters.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function order_export()
     {

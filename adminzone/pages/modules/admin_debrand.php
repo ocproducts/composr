@@ -61,7 +61,7 @@ class Module_admin_debrand
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -81,7 +81,7 @@ class Module_admin_debrand
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -105,7 +105,7 @@ class Module_admin_debrand
     /**
      * The UI for managing super debranding.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -161,7 +161,7 @@ class Module_admin_debrand
     /**
      * The actualiser for super debranding.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function actual()
     {

@@ -77,7 +77,7 @@ class Hook_html_site
     /**
      * Standard import function to get extra fields to ask for when starting the import.
      *
-     * @return tempcode Extra fields
+     * @return Tempcode Extra fields
      */
     public function get_extra_fields()
     {

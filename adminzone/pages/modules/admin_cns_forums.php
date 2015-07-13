@@ -84,7 +84,7 @@ class Module_admin_cns_forums extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -109,7 +109,7 @@ class Module_admin_cns_forums extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -146,7 +146,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -175,7 +175,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a forum adding/editing form.
+     * Get Tempcode for a forum adding/editing form.
      *
      * @param  ?AUTO_LINK $id The ID of the forum being edited (null: adding, not editing)
      * @param  SHORT_TEXT $name The name of the forum
@@ -258,7 +258,7 @@ class Module_admin_cns_forums extends Standard_crud_module
      * @param  ?BINARY $order_sub_alpha Whether to order own subcategories alphabetically (null: ask the DB)
      * @param  ?BINARY $parent_order_sub_alpha Whether to order subcategories alphabetically (null: ask the DB)
      * @param  boolean $huge Whether we are dealing with a huge forum structure
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function get_forum_tree($id, $forum, &$all_forums, $position = 0, $sub_num_in_parent_forum_grouping = 1, $order_sub_alpha = null, $parent_order_sub_alpha = null, $huge = false)
     {
@@ -386,7 +386,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     /**
      * The UI to choose a forum to edit (relies on get_forum_tree to do almost all the work).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -407,7 +407,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     /**
      * The actualiser to reorder forums.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function reorder()
     {

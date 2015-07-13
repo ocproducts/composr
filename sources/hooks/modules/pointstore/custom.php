@@ -41,7 +41,7 @@ class Hook_pointstore_custom
      * @param  BINARY $one_per_member Whether it is restricted to one per member
      * @param  SHORT_TEXT $mail_subject Confirmation mail subject
      * @param  LONG_TEXT $mail_body Confirmation mail body
-     * @return tempcode The fields
+     * @return Tempcode The fields
      */
     public function get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $cost = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
     {
@@ -179,7 +179,7 @@ class Hook_pointstore_custom
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -209,7 +209,7 @@ class Hook_pointstore_custom
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {

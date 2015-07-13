@@ -22,10 +22,10 @@
  * URL'ise specially encoded text-acceptance language strings.
  *
  * @param  string $string The language string
- * @param  mixed $url The URL (either tempcode or string)
+ * @param  mixed $url The URL (either Tempcode or string)
  * @param  string $title The title of the hyperlink
  * @param  boolean $new_window Whether to use a new window
- * @return tempcode The encoded version
+ * @return Tempcode The encoded version
  */
 function _urlise_lang($string, $url, $title, $new_window)
 {

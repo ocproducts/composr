@@ -22,7 +22,7 @@
  * Build up a preview based on what was submitted.
  *
  * @param  boolean $multi_return Whether to return additional data
- * @return mixed Either tempcode for the preview, or a tuple of details
+ * @return mixed Either Tempcode for the preview, or a tuple of details
  */
 function build_preview($multi_return = false)
 {

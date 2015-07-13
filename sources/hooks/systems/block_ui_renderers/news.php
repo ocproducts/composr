@@ -30,8 +30,8 @@ class Hook_block_ui_renderers_news
      * @param  ID_TEXT $parameter The parameter of the block
      * @param  boolean $has_default Whether there is a default value for the field, due to this being an edit
      * @param  string $default Default value for field
-     * @param  tempcode $description Field description
-     * @return ?tempcode Rendered field (null: not handled).
+     * @param  Tempcode $description Field description
+     * @return ?Tempcode Rendered field (null: not handled).
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {

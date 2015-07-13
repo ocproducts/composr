@@ -63,8 +63,8 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
             // Remove them from the group
 
             if (is_null($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)))) {
-                if ((get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
-                    $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $new_group);
+                if ((method_exists($GLOBALS['FORUM_DRIVER'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+                    $GLOBALS['FORUM_DRIVER']->remove_member_from_group($member_id, $new_group);
                 } else {
                     if ($myrow['s_uses_primary'] == 1) {
                         $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_update('f_members', array('m_primary_group' => get_first_default_group()), array('id' => $member_id), '', 1);
@@ -87,8 +87,8 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
         if (!$test) {
             // Add them to the group
 
-            if ((get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
-                $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $new_group);
+            if ((method_exists($GLOBALS['FORUM_DRIVER'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+                $GLOBALS['FORUM_DRIVER']->add_member_to_group($member_id, $new_group);
             } else {
                 if ($myrow['s_uses_primary'] == 1) {
                     $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_update('f_members', array('m_primary_group' => $new_group), array('id' => $member_id), '', 1);
@@ -142,7 +142,7 @@ class Hook_ecommerce_usergroup
      * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
      *
      * @param  ID_TEXT $type_code Product codename.
-     * @return ?tempcode Input field in standard Tempcode format for fields (null: no identifier).
+     * @return ?Tempcode Input field in standard Tempcode format for fields (null: no identifier).
      */
     public function get_identifier_manual_field_inputter($type_code)
     {
@@ -225,7 +225,7 @@ class Hook_ecommerce_usergroup
      * Get the message for use in the purchase wizard.
      *
      * @param  ID_TEXT $type_code The product in question.
-     * @return tempcode The message.
+     * @return Tempcode The message.
      */
     public function get_message($type_code)
     {

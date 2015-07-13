@@ -144,7 +144,7 @@ class Hook_ecommerce_permission
      * Get the message for use in the purchase wizard.
      *
      * @param  string $type_code The product in question.
-     * @return tempcode The message.
+     * @return Tempcode The message.
      */
     public function get_message($type_code)
     {

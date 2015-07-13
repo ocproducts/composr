@@ -225,7 +225,7 @@ function post_comment_script()
 }
 
 /**
- * Get tempcode for doing ratings (sits above get_rating_simple_array)
+ * Get Tempcode for doing ratings (sits above get_rating_simple_array)
  *
  * @param  mixed $content_url The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
  * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)
@@ -233,7 +233,7 @@ function post_comment_script()
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
  * @param  boolean $allow_rating Whether this resource allows rating (if not, this function does nothing - but it's nice to move out this common logic into the shared function)
  * @param  ?MEMBER $submitter Content owner (null: none)
- * @return tempcode Tempcode for complete rating box
+ * @return Tempcode Tempcode for complete rating box
  */
 function get_rating_box($content_url, $content_title, $content_type, $content_id, $allow_rating, $submitter = null)
 {
@@ -253,7 +253,7 @@ function get_rating_box($content_url, $content_title, $content_type, $content_id
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
  * @param  ID_TEXT $display_tpl The template to use to display the rating box
  * @param  ?MEMBER $submitter Content owner (null: none)
- * @return tempcode Tempcode for complete trackback box
+ * @return Tempcode Tempcode for complete trackback box
  */
 function display_rating($content_url, $content_title, $content_type, $content_id, $display_tpl = 'RATING_INLINE_STATIC', $submitter = null)
 {
@@ -275,7 +275,7 @@ function display_rating($content_url, $content_title, $content_type, $content_id
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
  * @param  ID_TEXT $form_tpl The template to use to display the rating box
  * @param  ?MEMBER $submitter Content owner (null: none)
- * @return ?array Current rating information (ready to be passed into a template). RATING is the rating (out of 10), NUM_RATINGS is the number of ratings so far, RATING_FORM is the tempcode of the rating box (null: rating disabled)
+ * @return ?array Current rating information (ready to be passed into a template). RATING is the rating (out of 10), NUM_RATINGS is the number of ratings so far, RATING_FORM is the Tempcode of the rating box (null: rating disabled)
  */
 function get_rating_simple_array($content_url, $content_title, $content_type, $content_id, $form_tpl = 'RATING_FORM', $submitter = null)
 {
@@ -511,8 +511,8 @@ function actualise_give_rating_points()
  * @param  ID_TEXT $content_type The type (download, etc) that this rating is for
  * @param  ID_TEXT $type The second level type (probably blank)
  * @param  ID_TEXT $content_id The ID of the type that this rating is for
- * @param  ?string $content_url The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know)
- * @param  mixed $content_title The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
+ * @param  mixed $content_url The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
+ * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know)
  */
 function actualise_specific_rating($rating, $page_name, $member_id, $content_type, $type, $content_id, $content_url, $content_title)
 {
@@ -634,7 +634,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 }
 
 /**
- * Get the tempcode containing all the comments posted, and the comments posting form for the specified resource.
+ * Get the Tempcode containing all the comments posted, and the comments posting form for the specified resource.
  *
  * @param  ID_TEXT $content_type The type (download, etc) that this commenting is for
  * @param  boolean $allow_comments Whether this resource allows comments (if not, this function does nothing - but it's nice to move out this common logic into the shared function)
@@ -648,7 +648,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
  * @param  ?MEMBER $highlight_by_user User to highlight the posts of (null: none)
  * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
  * @param  ?integer $num_to_show_limit Maximum to load (null: default)
- * @return tempcode The tempcode for the comment topic
+ * @return Tempcode The Tempcode for the comment topic
  */
 function get_comments($content_type, $allow_comments, $content_id, $invisible_if_no_comments = false, $forum = null, $post_warning = null, $_comments = null, $explicit_allow = false, $reverse = null, $highlight_by_user = null, $allow_reviews = false, $num_to_show_limit = null)
 {
@@ -965,7 +965,7 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
     $content_title = strip_comcode($content_title);
 
     if (is_null($post_id)) {
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_id, $content_type . '_' . $content_id);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id);
         if (is_null($topic_id)) {
             return;
         }
@@ -989,13 +989,13 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
 }
 
 /**
- * Get the tempcode containing all the trackbacks received, and the trackback posting form for the specified resource.
+ * Get the Tempcode containing all the trackbacks received, and the trackback posting form for the specified resource.
  *
  * @param  ID_TEXT $content_type The type (download, etc) that this trackback is for
  * @param  ID_TEXT $content_id The ID of the type that this trackback is for
  * @param  boolean $allow_trackback Whether this resource allows trackback (if not, this function does nothing - but it's nice to move out this common logic into the shared function)
  * @param  ID_TEXT $type The type of details being fetched (currently: blank or XML)
- * @return tempcode Tempcode for complete trackback box
+ * @return Tempcode Tempcode for complete trackback box
  */
 function get_trackbacks($content_type, $content_id, $allow_trackback, $type = '')
 {

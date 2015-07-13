@@ -43,7 +43,7 @@ function init__cns_groups()
  * @param  ID_TEXT $zone Zone to link through to
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The usergroup box
+ * @return Tempcode The usergroup box
  */
 function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -76,7 +76,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
  * Get a nice list for selection from the usergroups. Suitable for admin use only (does not check hidden status).
  *
  * @param  ?AUTO_LINK $it Usergroup selected by default (null: no specific default).
- * @return tempcode The list.
+ * @return Tempcode The list.
  */
 function cns_create_selection_list_usergroups($it = null)
 {
@@ -208,7 +208,7 @@ function cns_ensure_groups_cached($groups)
  *
  * @param  GROUP $id The ID of the group.
  * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group.
- * @return tempcode The link.
+ * @return Tempcode The link.
  */
 function cns_get_group_link($id, $hide_hidden = true)
 {

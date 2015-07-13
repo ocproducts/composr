@@ -36,7 +36,7 @@ function init__content2()
  * @param  boolean $allow_no_owner Whether to allow owner to be left blank (meaning no owner)
  * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
  * @param  integer $show_header Whether to show a header (a META_DATA_HEADER_* constant)
- * @return tempcode Form page tempcode fragment
+ * @return Tempcode Form page Tempcode fragment
  */
 function meta_data_get_fields($content_type, $content_id, $allow_no_owner = false, $fields_to_skip = null, $show_header = 1)
 {

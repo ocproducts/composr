@@ -245,7 +245,7 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
- * @return ?tempcode A full page (not complete XHTML) piece of tempcode to output (null: it worked so no tempcode message)
+ * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
  */
 function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
 {

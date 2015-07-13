@@ -38,7 +38,7 @@ function can_choose_workflow($member = null)
  *
  * @param  boolean $include_inherit Whether to include an option for inheriting
  * @param  boolean $include_current Whether to include an option for leaving it alone
- * @return tempcode The UI for choosing a workflow (if needed)
+ * @return Tempcode The UI for choosing a workflow (if needed)
  */
 function workflow_choose_ui($include_inherit = false, $include_current = false)
 {
@@ -157,10 +157,10 @@ function get_submitter_of_workflow_content($content_id)
 }
 
 /**
- * Get the tempcode for viewing/editing the workflow status of the given content
+ * Get the Tempcode for viewing/editing the workflow status of the given content
  *
  * @param  AUTO_LINK $workflow_content_id The ID of this content in the workflow_content table
- * @return tempcode The form for this content
+ * @return Tempcode The form for this content
  */
 function get_workflow_form($workflow_content_id)
 {
@@ -462,7 +462,7 @@ function get_workflow_form($workflow_content_id)
 /**
  * Handler for workflow form submission.
  *
- * @return tempcode Either an error page or a success message
+ * @return Tempcode Either an error page or a success message
  */
 function workflow_update_handler()
 {

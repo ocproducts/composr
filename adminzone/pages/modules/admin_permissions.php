@@ -183,7 +183,7 @@ class Module_admin_permissions
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -278,7 +278,7 @@ class Module_admin_permissions
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -327,7 +327,7 @@ class Module_admin_permissions
     /**
      * The UI to absorb usergroup permissions.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function absorb()
     {
@@ -373,7 +373,7 @@ class Module_admin_permissions
     /**
      * The actualiser to absorb usergroup permissions.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _absorb()
     {
@@ -395,7 +395,7 @@ class Module_admin_permissions
     /**
      * The UI to for the permissions-tree-editor (advanced substitute for the combination of the page permissions screen and various other structure/content-attached screens).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function tree_editor()
     {
@@ -447,7 +447,7 @@ class Module_admin_permissions
      *
      * @param  array $admin_groups List of admin usergroups
      * @param  array $groups Map of usergroups (id=>name)
-     * @return tempcode The header row
+     * @return Tempcode The header row
      */
     public function _access_header($admin_groups, $groups)
     {
@@ -483,8 +483,8 @@ class Module_admin_permissions
     /**
      * The UI to choose a zone to edit permissions for pages in.
      *
-     * @param  tempcode $title The title to use (output of get_screen_title)
-     * @return tempcode The UI
+     * @param  Tempcode $title The title to use (output of get_screen_title)
+     * @return Tempcode The UI
      */
     public function _choose_zone($title)
     {
@@ -504,7 +504,7 @@ class Module_admin_permissions
     /**
      * The UI to set match-keys access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_match_keys_access()
     {
@@ -576,7 +576,7 @@ class Module_admin_permissions
     /**
      * The actualiser to set match-key access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_match_keys_access()
     {
@@ -637,7 +637,7 @@ class Module_admin_permissions
     /**
      * The UI to set page access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_page_access()
     {
@@ -704,7 +704,7 @@ class Module_admin_permissions
     /**
      * The actualiser to set page access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_page_access()
     {
@@ -777,7 +777,7 @@ class Module_admin_permissions
     /**
      * The UI to set privileges.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_privileges()
     {
@@ -978,7 +978,7 @@ class Module_admin_permissions
     /**
      * The actualiser to set privileges.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_privileges()
     {

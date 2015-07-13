@@ -72,7 +72,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -104,7 +104,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -138,7 +138,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -153,7 +153,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for adding/editing form.
+     * Get Tempcode for adding/editing form.
      *
      * @param  SHORT_TEXT $name The name of the custom profile field
      * @param  LONG_TEXT $description The description of the field
@@ -172,7 +172,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list).
      * @param  BINARY $locked Whether the field is locked
      * @param  SHORT_TEXT $options Field options
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($name = '', $description = '', $default = '', $public_view = 1, $owner_view = 1, $owner_set = 1, $encrypted = 0, $type = 'long_text', $required = 0, $show_on_join_form = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $locked = 0, $options = '')
     {
@@ -449,7 +449,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * Standard crud_module edit form filler.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function fill_in_edit_form($id)
     {
@@ -554,7 +554,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     /**
      * Show value statistics for a custom profile field (choose).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function stats()
     {
@@ -599,7 +599,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     /**
      * Show value statistics for a custom profile field (show).
      *
-     * @return tempcode The statistics
+     * @return Tempcode The statistics
      */
     public function _stats()
     {

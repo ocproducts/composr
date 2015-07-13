@@ -21,10 +21,10 @@
 /**
  * UI to choose a language.
  *
- * @param  tempcode $title Title for the form
+ * @param  Tempcode $title Title for the form
  * @param  boolean $tip Whether to give a tip about edit order
  * @param  boolean $allow_all_selection Whether to add an 'all' entry to the list
- * @return mixed The UI (tempcode) or the language to use (string/LANGUAGE_NAME)
+ * @return mixed The UI (Tempcode) or the language to use (string/LANGUAGE_NAME)
  */
 function _choose_language($title, $tip = false, $allow_all_selection = false)
 {
@@ -166,7 +166,7 @@ function _find_all_langs($even_empty_langs = false)
  *
  * @param  ?LANGUAGE_NAME $select_lang The language to have selected by default (null: uses the current language)
  * @param  boolean $show_unset Whether to show languages that have no language details currently defined for them
- * @return tempcode The language selector
+ * @return Tempcode The language selector
  */
 function _create_selection_list_langs($select_lang = null, $show_unset = false)
 {
@@ -424,7 +424,7 @@ function _lang_remap($field_name, $id, $text, $connection = null, $comcode = fal
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
  * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
- * @return ?tempcode The parsed Comcode (null: the text couldn't be looked up)
+ * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
 function parse_translated_text($table, &$row, $field_name, $connection, $lang, $force, $as_admin)
 {
@@ -526,10 +526,10 @@ function parse_translated_text($table, &$row, $field_name, $connection, $lang, $
 }
 
 /**
- * Convert a language string that is Comcode to tempcode, with potential caching in the db.
+ * Convert a language string that is Comcode to Tempcode, with potential caching in the db.
  *
  * @param  ID_TEXT $lang_code The language string ID
- * @return tempcode The parsed Comcode
+ * @return Tempcode The parsed Comcode
  */
 function _comcode_lang_string($lang_code)
 {

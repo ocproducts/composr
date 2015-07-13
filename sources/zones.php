@@ -545,7 +545,7 @@ function get_page_zone($page_name, $error = true)
  *
  * @param  PATH $string The relative path to the module file
  * @param  ?object $out Semi-filled output template (null: definitely not doing output streaming)
- * @return tempcode The result of executing the module
+ * @return Tempcode The result of executing the module
  */
 function load_minimodule_page($string, &$out = null)
 {
@@ -566,7 +566,7 @@ function load_minimodule_page($string, &$out = null)
  *
  * @param  PATH $string The relative path to the code file
  * @param  ?array $map The block parameters (null: none)
- * @return tempcode The result of executing the code
+ * @return Tempcode The result of executing the code
  */
 function _load_mini_code($string, $map = null)
 {
@@ -632,7 +632,7 @@ function _load_mini_code($string, $map = null)
  * @param  PATH $string The relative path to the module file
  * @param  ID_TEXT $codename The page name to load
  * @param  ?object $out Semi-filled output template (null: definitely not doing output streaming)
- * @return tempcode The result of executing the module
+ * @return Tempcode The result of executing the module
  */
 function load_module_page($string, $codename, &$out = null)
 {
@@ -994,12 +994,12 @@ function get_block_id($map)
 }
 
 /**
- * Get the processed tempcode for the specified block. Please note that you pass multiple parameters in as an array, but single parameters go in as a string or other flat variable.
+ * Get the processed Tempcode for the specified block. Please note that you pass multiple parameters in as an array, but single parameters go in as a string or other flat variable.
  *
  * @param  ID_TEXT $codename The block name
  * @param  ?array $map The block parameter map (null: no parameters)
  * @param  ?integer $ttl The TTL to use in minutes (null: block default)
- * @return tempcode The generated tempcode
+ * @return Tempcode The generated Tempcode
  */
 function do_block($codename, $map = null, $ttl = null)
 {
@@ -1089,7 +1089,7 @@ function do_block($codename, $map = null, $ttl = null)
                             $cache = make_string_tempcode(preg_replace('#((\?)|(&(amp;)?))keep\_[^="]*=[^&"]*#', '\2', $cache->evaluate()));
                         }
                         require_code('temporal');
-                        $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? $GLOBALS['FORUM_DRIVER']->is_staff(get_member()) : null;
+                        $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
                         $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) != 0) ? get_member() : null;
                         $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) != 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
                         $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) != 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
@@ -1157,7 +1157,7 @@ function do_block($codename, $map = null, $ttl = null)
 
                 require_code('caches2');
                 require_code('temporal');
-                $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? $GLOBALS['FORUM_DRIVER']->is_staff(get_member()) : null;
+                $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
                 $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) != 0) ? get_member() : null;
                 $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) != 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
                 $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) != 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
@@ -1295,7 +1295,7 @@ function do_block_hunt_file($codename, $map = null)
             }
         } elseif (($map === null) || (!isset($map['failsafe'])) || ($map['failsafe'] != '1')) {
             $temp = do_template('WARNING_BOX', array('_GUID' => '09f1bd6e117693a85fb69bfb52ea1799', 'WARNING' => do_lang_tempcode('MISSING_BLOCK_FILE', escape_html($codename))));
-            return $temp->evaluate();
+            $object = $temp->evaluate();
         } else {
             $object = '';
         }

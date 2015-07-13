@@ -28,7 +28,7 @@ class calendar_event_test_set extends cms_test_case
         require_code('calendar2');
     }
 
-    function testAllDayInAheadTimeZone()
+    public function testAllDayInAheadTimeZone()
     {
         // Amsterdam-timezone event, which is *ahead* of UTC, so potentially could cause problems if we make a mistake (as it starts the previous day from the UTC perspective)
 

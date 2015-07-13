@@ -50,7 +50,7 @@ class Hook_pointstore_topic_pin
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _topic_pin()
     {
@@ -115,7 +115,7 @@ class Hook_pointstore_topic_pin
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __topic_pin()
     {
@@ -169,7 +169,7 @@ class Hook_pointstore_topic_pin
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function ___topic_pin()
     {

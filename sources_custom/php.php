@@ -108,7 +108,6 @@ function get_php_file_api($filename, $include_code = true)
             }
             $current_class = substr($ltrim2, $space_pos + 1, $space_pos_2 - $space_pos - 1);
             $current_class_level = strlen($line) - strlen($ltrim);
-
             $functions = array();
         } elseif (($current_class != '__global') && (substr($line, 0, $current_class_level + 1) == str_repeat(' ', $current_class_level) . '}')) {
             if (count($functions) != 0) {
@@ -585,7 +584,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
         'map',
         'boolean',
         'float',
-        'tempcode',
+        'Tempcode',
         'object',
         'resource',
         'mixed'
@@ -707,7 +706,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
             break;
-        case 'tempcode':
+        case 'Tempcode':
             if ((!is_object($value)) || (!is_a($value, 'Tempcode'))) {
                 _fail_php_type_check($type, $function_name, $name, $value, $echo);
             }
@@ -911,7 +910,7 @@ function render_php_function($function, $class, $show_filename = false)
  * Get a PHP function parameter line.
  *
  * @param  array $parameter A map containing: name, description, default, type, set, range
- * @return tempcode The line
+ * @return Tempcode The line
  */
 function render_php_function_do_bits($parameter)
 {
@@ -1034,7 +1033,7 @@ function cms_type_to_hhvm_type($t)
     if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
         $t = 'string';
     }
-    if (in_array($t, array('tempcode'))) {
+    if (in_array($t, array('Tempcode'))) {
         $t = 'Tempcode';
     }
     if (in_array($t, array('list', 'map'))) {

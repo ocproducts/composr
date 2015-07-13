@@ -46,7 +46,7 @@ function realms()
  * @param  MEMBER $member_id The member answering
  * @param  integer $dx The X-offset of where they WISH to travel to
  * @param  integer $dy The Y-offset of where they WISH to travel to
- * @return tempcode Interface
+ * @return Tempcode Interface
  */
 function output_question_screen($member_id, $dx, $dy)
 {
@@ -64,7 +64,7 @@ function output_question_screen($member_id, $dx, $dy)
  * Output an inventory screen.
  *
  * @param  MEMBER $member_id The member the inventory is of
- * @return tempcode Interface
+ * @return Tempcode Interface
  */
 function output_inventory_screen($member_id)
 {
@@ -135,7 +135,7 @@ function output_inventory_screen($member_id)
  * Output a room screen.
  *
  * @param  MEMBER $member_id The member who is in the room
- * @return tempcode Interface
+ * @return Tempcode Interface
  */
 function output_room_screen($member_id)
 {

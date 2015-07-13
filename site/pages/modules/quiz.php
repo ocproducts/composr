@@ -219,7 +219,7 @@ class Module_quiz
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -329,7 +329,7 @@ class Module_quiz
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -351,7 +351,7 @@ class Module_quiz
     /**
      * The UI to browse quizzes/surveys/tests.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function archive()
     {
@@ -439,7 +439,7 @@ class Module_quiz
     /**
      * The UI for doing a quiz.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function do_quiz()
     {
@@ -536,7 +536,7 @@ class Module_quiz
     /**
      * Actualiser: process quiz results.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _do_quiz()
     {

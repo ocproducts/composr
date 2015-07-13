@@ -94,7 +94,7 @@ class Module_admin_zones
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -173,7 +173,7 @@ class Module_admin_zones
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -218,7 +218,7 @@ class Module_admin_zones
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -235,7 +235,7 @@ class Module_admin_zones
     /**
      * The UI to choose a zone to edit using the zone editor.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function editor()
     {
@@ -245,7 +245,7 @@ class Module_admin_zones
     /**
      * The UI for the zone editor.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _editor()
     {
@@ -445,7 +445,7 @@ class Module_admin_zones
     /**
      * The actualiser to edit a zone (via zone editor).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __editor()
     {
@@ -543,7 +543,7 @@ class Module_admin_zones
     }
 
     /**
-     * Get tempcode for a zone adding/editing form.
+     * Get Tempcode for a zone adding/editing form.
      *
      * @param  boolean $in_zone_editor Whether the zone editor will be used
      * @param  SHORT_TEXT $title The zone title
@@ -552,7 +552,7 @@ class Module_admin_zones
      * @param  ?ID_TEXT $theme The theme (null: no override)
      * @param  BINARY $require_session Whether the zone requires a session for pages to be used
      * @param  ?ID_TEXT $zone Name of the zone (null: unknown)
-     * @return array A tuple: The tempcode for the fields, hidden fields, and extra JavaScript
+     * @return array A tuple: The Tempcode for the fields, hidden fields, and extra JavaScript
      */
     public function get_form_fields($in_zone_editor = false, $title = '', $default_page = 'start', $header_text = '', $theme = null, $require_session = 0, $zone = null)
     {
@@ -656,7 +656,7 @@ class Module_admin_zones
     /**
      * The UI to add a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_zone()
     {
@@ -713,7 +713,7 @@ class Module_admin_zones
     /**
      * The actualiser to add a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add_zone()
     {
@@ -752,8 +752,8 @@ class Module_admin_zones
      * The UI to choose a zone to edit.
      *
      * @param  string $type The follow-on type
-     * @param  ?tempcode $title The title to use (null: the EDIT_ZONE title)
-     * @return tempcode The UI
+     * @param  ?Tempcode $title The title to use (null: the EDIT_ZONE title)
+     * @return Tempcode The UI
      */
     public function edit_zone($type = '_edit', $title = null)
     {
@@ -820,7 +820,7 @@ class Module_admin_zones
     /**
      * The UI to edit a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_zone()
     {
@@ -874,7 +874,7 @@ class Module_admin_zones
     /**
      * The actualiser to edit a zone.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __edit_zone()
     {

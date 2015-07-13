@@ -71,7 +71,7 @@ function has_external_site_wide_syndication()
 /**
  * Get syndication field UI.
  *
- * @return tempcode Syndication fields (or empty)
+ * @return Tempcode Syndication fields (or empty)
  */
 function get_syndication_option_fields()
 {

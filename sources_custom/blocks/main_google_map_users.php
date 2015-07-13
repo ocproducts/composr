@@ -58,7 +58,7 @@ class Block_main_google_map_users
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {

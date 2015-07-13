@@ -681,7 +681,7 @@ class Module_admin_customers
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -699,7 +699,7 @@ class Module_admin_customers
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -721,7 +721,7 @@ class Module_admin_customers
     /**
      * The UI to charge a customer.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function charge()
     {
@@ -772,7 +772,7 @@ class Module_admin_customers
         foreach ($logs as $log) {
             $charging_username = $GLOBALS['FORUM_DRIVER']->get_username($log['charging_member_id']);
             if (is_null($charging_username)) {
-                $charging_username = do_lang_tempcode('DELETED');
+                $charging_username = do_lang('DELETED');
             }
             $_num_credits = integer_format($log['num_credits']);
             $date_and_time = get_timezoned_date($log['date_and_time']);
@@ -796,7 +796,7 @@ class Module_admin_customers
     /**
      * The actualiser to charge a customer.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _charge()
     {

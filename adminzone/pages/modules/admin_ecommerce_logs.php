@@ -77,7 +77,7 @@ class Module_admin_ecommerce_logs
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -146,7 +146,7 @@ class Module_admin_ecommerce_logs
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -195,7 +195,7 @@ class Module_admin_ecommerce_logs
     /**
      * The do-next manager for before audit management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -217,7 +217,7 @@ class Module_admin_ecommerce_logs
     /**
      * The UI to view all point transactions ordered by date.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function logs()
     {
@@ -320,7 +320,7 @@ class Module_admin_ecommerce_logs
     /**
      * The UI to take details on a manually triggered transaction.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function trigger()
     {
@@ -418,7 +418,7 @@ class Module_admin_ecommerce_logs
     /**
      * The actualiser for a manually triggered transaction.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _trigger()
     {
@@ -506,8 +506,8 @@ class Module_admin_ecommerce_logs
     /**
      * An interface for choosing between dates.
      *
-     * @param  tempcode $title The title to display.
-     * @return tempcode The result of execution.
+     * @param  Tempcode $title The title to display.
+     * @return Tempcode The result of execution.
      */
     public function _get_between($title)
     {
@@ -641,7 +641,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show a cash flow diagram.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function cash_flow()
     {
@@ -660,7 +660,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show a profit/loss account.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function profit_loss()
     {
@@ -680,7 +680,7 @@ class Module_admin_ecommerce_logs
     /* *
      * Show a balance sheet. NOT REALLY FEASIBLE: REQUIRES HUMAN INTERPRETATION OF ASSETS, and recording of liabilities
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     /*function balance_sheet()
     {
@@ -689,7 +689,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show manual subscriptions.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function view_manual_subscriptions()
     {
@@ -745,7 +745,7 @@ class Module_admin_ecommerce_logs
     /**
      * Cancel a manual subscription.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function cancel_subscription()
     {

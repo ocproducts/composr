@@ -93,7 +93,7 @@ class Block_main_members
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -102,6 +102,7 @@ class Block_main_members
         }
 
         require_code('cns_members');
+        require_code('cns_groups');
         require_code('cns_members2');
         require_code('selectcode');
 

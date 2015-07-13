@@ -34,7 +34,7 @@ function init__menus()
  * @param  ID_TEXT $type The type of the menu (determines which templates to use)
  * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
- * @return tempcode The generated tempcode of the menu
+ * @return Tempcode The generated Tempcode of the menu
  */
 function build_menu($type, $menu, $silent_failure = false)
 {
@@ -359,7 +359,7 @@ function _append_to_page_links(&$branches, $page_link_append)
  * @param  ?MEMBER $source_member The member the menu is being built as (null: current member)
  * @param  ID_TEXT $type The menu type (determines what templates get used)
  * @param  boolean $as_admin Whether to generate Comcode with admin privilege
- * @return tempcode The generated tempcode of the menu
+ * @return Tempcode The generated Tempcode of the menu
  */
 function _render_menu($menu, $source_member, $type, $as_admin = false)
 {
@@ -503,6 +503,9 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
         $current_zone = (($zone_name == $users_current_zone) || (($REDIRECTED_TO_CACHE !== null) && ($zone_name == $REDIRECTED_TO_CACHE['r_to_zone']) && (!$somewhere_definite))); // This code is a bit smart, as zone menus usually have a small number of zones on them - redirects will be counted into the zone redirected to, so long as there is no more suitable zone and so long as it is not a transparent redirect
         if (($zone_name == $users_current_zone) || (($REDIRECTED_TO_CACHE !== null) && ($zone_name == $REDIRECTED_TO_CACHE['r_to_zone']) && (isset($map['page'])) && ($map['page'] == $REDIRECTED_TO_CACHE['r_to_page']))) {
             $current_page = true;
+
+            $v = mixed();
+
             foreach ($map as $k => $v) {
                 if (is_integer($v)) {
                     $v = strval($v);

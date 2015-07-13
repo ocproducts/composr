@@ -73,7 +73,7 @@ class Hook_search_news extends FieldsSearchHook
      * Get a list of entries for the content covered by this search hook. In hierarchical list selection format.
      *
      * @param  string $_selected The default selected item
-     * @return tempcode Tree structure
+     * @return Tempcode Tree structure
      */
     public function get_tree($_selected)
     {
@@ -187,7 +187,7 @@ class Hook_search_news extends FieldsSearchHook
      * Run function for rendering a search result.
      *
      * @param  array $myrow The data row stored when we retrieved the result
-     * @return tempcode The output
+     * @return Tempcode The output
      */
     public function render($myrow)
     {

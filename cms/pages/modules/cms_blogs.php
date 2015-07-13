@@ -72,7 +72,7 @@ class Module_cms_blogs extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -105,7 +105,7 @@ class Module_cms_blogs extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -135,7 +135,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -219,7 +219,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -228,7 +228,7 @@ class Module_cms_blogs extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a news adding/editing form.
+     * Get Tempcode for a news adding/editing form.
      *
      * @param  ?AUTO_LINK $id The news ID (null: new)
      * @param  ?AUTO_LINK $main_news_category The primary category for the news (null: personal)
@@ -598,10 +598,10 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The do-next manager for after news content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id = null)
     {
@@ -629,7 +629,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The UI to import news
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_wordpress()
     {
@@ -695,7 +695,7 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * The actualiser to import a wordpress blog
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import_wordpress()
     {

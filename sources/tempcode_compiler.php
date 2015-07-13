@@ -827,7 +827,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
  * @param  LANGUAGE_NAME $lang The language the template is in the context of
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  ?ID_TEXT $theme_orig The theme to cache in (null: main theme)
- * @return tempcode The compiled tempcode
+ * @return Tempcode The compiled Tempcode
  */
 function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $theme_orig = null)
 {
@@ -959,7 +959,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
 }
 
 /**
- * Convert template text into tempcode format.
+ * Convert template text into Tempcode format.
  *
  * @param  string $text The template text
  * @param  integer $symbol_pos The position we are looking at in the text
@@ -968,7 +968,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
  * @param  ?ID_TEXT $theme The theme it is for (null: current theme)
  * @param  ?ID_TEXT $lang The language it is for (null: current language)
  * @param  boolean $tolerate_errors Whether to tolerate errors
- * @return mixed The converted/compiled template as tempcode, OR if a directive, encoded directive information
+ * @return mixed The converted/compiled template as Tempcode, OR if a directive, encoded directive information
  */
 function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false, $codename = '', $theme = null, $lang = null, $tolerate_errors = false)
 {

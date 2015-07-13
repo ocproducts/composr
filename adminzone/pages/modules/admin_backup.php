@@ -87,7 +87,7 @@ class Module_admin_backup
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -122,7 +122,7 @@ class Module_admin_backup
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -159,7 +159,7 @@ class Module_admin_backup
     /**
      * The UI to do a backup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function backup_interface()
     {
@@ -222,7 +222,7 @@ class Module_admin_backup
     /**
      * Helper function to find information about past backups.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function get_results()
     {
@@ -283,7 +283,7 @@ class Module_admin_backup
     /**
      * The actualiser to start a backup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function make_backup()
     {
@@ -324,7 +324,7 @@ class Module_admin_backup
     /**
      * The UI to confirm deletion of a backup file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function confirm_delete()
     {
@@ -341,7 +341,7 @@ class Module_admin_backup
     /**
      * The actualiser to delete a backup file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delete()
     {

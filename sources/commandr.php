@@ -124,7 +124,7 @@ function commandr_script()
             require_code('failure');
             set_throw_errors();
             try {
-                $temp = new Virtual_bash(trim($command));
+                $temp = new Virtual_shell(trim($command));
                 $temp->output_xml();
             } catch (Exception $e) {
                 header('HTTP/1.0 200 Ok');
@@ -339,7 +339,7 @@ class Virtual_shell
      * Return the HTML rendering of the parsed command's output.
      *
      * @param  boolean $blank_ok Whether it is okay to have blank output
-     * @return ~tempcode The HTML (false: error)
+     * @return ~Tempcode The HTML (false: error)
      */
     public function output_html($blank_ok = false)
     {
@@ -1081,7 +1081,7 @@ class Virtual_shell
      */
     protected function _combine_streams($stream1, $stream2)
     {
-        // Combine two streams, taking account of arrays, tempcode and other stuff
+        // Combine two streams, taking account of arrays, Tempcode and other stuff
         $stream_identifiers = array(STREAM_STDCOMMAND, STREAM_STDHTML, STREAM_STDOUT, STREAM_STDERR);
 
         foreach ($stream_identifiers as $identifier) {
@@ -1123,10 +1123,10 @@ class Virtual_shell
     }
 
     /**
-     * Convert an array to tempcode for display.
+     * Convert an array to Tempcode for display.
      *
      * @param  array $array Array to display
-     * @return tempcode Tempcode for array
+     * @return Tempcode Tempcode for array
      */
     protected function _array_to_html($array)
     {
@@ -1348,7 +1348,7 @@ class Virtual_shell
 /**
  * Returns a string containing the XML for any messages queued to be sent to the client.
  *
- * @param  boolean $xml Output as XML or tempcode?
+ * @param  boolean $xml Output as XML or Tempcode?
  * @return string The queued message XML
  */
 function get_queued_messages($xml = true)
@@ -1395,7 +1395,7 @@ function get_queued_messages($xml = true)
  * @param  string $command Command name
  * @param  array $options Options
  * @param  array $parameters Parameters (keys are the parameters, values are always set to true, i.e. it is an array of as many trues as there are parameters)
- * @return tempcode Help template
+ * @return Tempcode Help template
  */
 function do_command_help($command, $options, $parameters)
 {
@@ -1437,7 +1437,7 @@ function do_command_help($command, $options, $parameters)
  * Put something non-Commandr in a standard box so it looks OK.
  *
  * @param  mixed $html HTML (string or Tempcode)
- * @return tempcode Boxed HTML
+ * @return Tempcode Boxed HTML
  */
 function commandr_make_normal_html_visible($html)
 {

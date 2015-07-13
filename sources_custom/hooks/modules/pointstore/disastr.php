@@ -42,7 +42,7 @@ class Hook_pointstore_disastr
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -58,13 +58,11 @@ class Hook_pointstore_disastr
         $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null);
         $counter = 0;
         foreach ($rows as $disease) {
-            $cure_url = '';
-            $cure_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'cure' => 1), '_SEARCH');
-            $cure_url = $cure_url->evaluate();
+            $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'cure' => 1), '_SEARCH');
+            $cure_url = $_cure_url->evaluate();
 
-            $immunization_url = '';
-            $immunization_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'immunization' => 1), '_SEARCH');
-            $immunization_url = $immunization_url->evaluate();
+            $_immunization_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'immunization' => 1), '_SEARCH');
+            $immunization_url = $_immunization_url->evaluate();
 
             $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease['id']));
 
@@ -118,7 +116,7 @@ class Hook_pointstore_disastr
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {

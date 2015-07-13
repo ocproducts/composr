@@ -117,7 +117,7 @@ class Module_admin_redirects
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -133,7 +133,7 @@ class Module_admin_redirects
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -152,7 +152,7 @@ class Module_admin_redirects
     /**
      * The UI for managing redirects.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function gui()
     {
@@ -232,7 +232,7 @@ class Module_admin_redirects
     /**
      * The actualiser for managing redirects.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function actual()
     {

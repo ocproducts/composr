@@ -84,7 +84,7 @@ class Module_staff
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -109,7 +109,7 @@ class Module_staff
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -128,7 +128,7 @@ class Module_staff
     /**
      * The UI to view a staff list.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_all_staff()
     {
@@ -182,7 +182,7 @@ class Module_staff
     /**
      * The UI to view a staff member.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_staff_member()
     {

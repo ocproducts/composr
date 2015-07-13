@@ -45,7 +45,7 @@ function init__cns_forums()
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The forum box
+ * @return Tempcode The forum box
  */
 function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -296,7 +296,7 @@ function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
  * @param  ?AUTO_LINK $parent_forum The parent forum of the given forum (null: find it from the DB).
  * @param  boolean $start Whether this is being called as the recursion start of deriving the breadcrumbs (top level call).
  * @param  ?AUTO_LINK $root Virtual root (null: none).
- * @return tempcode The breadcrumbs.
+ * @return Tempcode The breadcrumbs.
  * @return array The breadcrumbs.
  */
 function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_forum = null, $start = true, $root = null)

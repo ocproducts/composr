@@ -657,12 +657,12 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
 }
 
 /**
- * Get tempcode for a radio list to choose an image from the image FILES in the theme.
+ * Get Tempcode for a radio list to choose an image from the image FILES in the theme.
  *
  * @param  string $selected_path The currently selected image path (blank for none)
  * @param  URLPATH $base_url The base-URL to where we are searching for images
  * @param  PATH $base_path The base-path to where we are searching for images
- * @return tempcode The generated tempcode
+ * @return Tempcode The generated Tempcode
  */
 function combo_get_image_paths($selected_path, $base_url, $base_path)
 {
@@ -761,13 +761,13 @@ function get_all_image_codes($base_path, $search_under, $recurse = true)
 }
 
 /**
- * Get tempcode for a dropdown to choose a theme from the themes present.
+ * Get Tempcode for a dropdown to choose a theme from the themes present.
  *
  * @param  ?ID_TEXT $it The currently selected image ID (null: none selected)
  * @param  ?string $filter An SQL where clause (including the WHERE), that filters the query somehow (null: none)
  * @param  boolean $do_id Whether to show IDs as the list entry captions, rather than paths
  * @param  boolean $include_all Whether to include images not yet used (i.e not in theme_images map yet)
- * @return tempcode Tempcode for a list selection of theme images
+ * @return Tempcode Tempcode for a list selection of theme images
  * @param  string $under Only include images under this path. Including a trailing slash unless you specifically want to filter allowing filename stubs as well as paths (blank: no limitation)
  */
 function create_selection_list_theme_images($it = null, $filter = null, $do_id = false, $include_all = false, $under = '')
@@ -809,7 +809,7 @@ function create_selection_list_theme_images($it = null, $filter = null, $do_id =
  * @param  boolean $no_rely Whether to skip the 'rely on forums' entry
  * @param  boolean $show_everything Whether to forget about permissions for this list
  * @param  ID_TEXT $default_message_string The language string to use for the default answer
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_themes($theme = null, $no_rely = false, $show_everything = false, $default_message_string = 'RELY_FORUMS')
 {

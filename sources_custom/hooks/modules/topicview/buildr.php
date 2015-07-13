@@ -22,7 +22,7 @@ class Hook_topicview_buildr
      * Execute the module.
      *
      * @param  MEMBER $member_id The ID of the member we are getting detail hooks for
-     * @return ?tempcode Results (null: no action)
+     * @return ?Tempcode Results (null: no action)
      */
     public function run($member_id)
     {

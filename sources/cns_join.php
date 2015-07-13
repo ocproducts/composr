@@ -44,7 +44,7 @@ function check_joining_allowed()
 /**
  * Get the join form.
  *
- * @param  tempcode $url URL to direct to
+ * @param  Tempcode $url URL to direct to
  * @param  boolean $captcha_if_enabled Whether to handle CAPTCHA (if enabled at all)
  * @param  boolean $intro_message_if_enabled Whether to ask for intro messages (if enabled at all)
  * @param  boolean $invites_if_enabled Whether to check for invites (if enabled at all)

@@ -68,7 +68,7 @@ class Module_admin_invoices
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -132,7 +132,7 @@ class Module_admin_invoices
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -167,7 +167,7 @@ class Module_admin_invoices
     /**
      * The do-next manager for before invoice management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -185,7 +185,7 @@ class Module_admin_invoices
     /**
      * UI to add an invoice.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function add()
     {
@@ -223,7 +223,7 @@ class Module_admin_invoices
     /**
      * Actualiser to add an invoice.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function _add()
     {
@@ -266,7 +266,7 @@ class Module_admin_invoices
     /**
      * Show outstanding invoices.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function outstanding()
     {
@@ -289,7 +289,7 @@ class Module_admin_invoices
     /**
      * Show undelivered invoices.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function undelivered()
     {
@@ -312,7 +312,7 @@ class Module_admin_invoices
     /**
      * Actualiser to delete an invoice.
      *
-     * @return tempcode The result.
+     * @return Tempcode The result.
      */
     public function delete()
     {
@@ -336,7 +336,7 @@ class Module_admin_invoices
     /**
      * Actualiser to deliver an invoice.
      *
-     * @return tempcode The result.
+     * @return Tempcode The result.
      */
     public function deliver()
     {

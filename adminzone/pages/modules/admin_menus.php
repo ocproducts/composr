@@ -61,7 +61,7 @@ class Module_admin_menus
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -96,7 +96,7 @@ class Module_admin_menus
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -126,7 +126,7 @@ class Module_admin_menus
     /**
      * The UI to choose a menu to edit / create a new menu.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_menu_name()
     {
@@ -184,7 +184,7 @@ class Module_admin_menus
     /**
      * The UI to edit a menu.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit_menu()
     {
@@ -349,7 +349,7 @@ class Module_admin_menus
      * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
      * @param  boolean $clickable_sections Whether childed branches themselves can have URLs (etc)
      * @param  array $menu_items All rows on the menu
-     * @return tempcode The part of the UI
+     * @return Tempcode The part of the UI
      */
     public function menu_branch($id, $branch, &$order, $clickable_sections, $menu_items)
     {
@@ -407,7 +407,7 @@ class Module_admin_menus
     /**
      * The actualiser to edit a menu.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_menu()
     {

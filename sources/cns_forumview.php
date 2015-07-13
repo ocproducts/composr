@@ -28,7 +28,7 @@
  * @param  integer $start Offset for result showing
  * @param  AUTO_LINK $root Virtual root
  * @param  ?MEMBER $of_member_id The member to show private topics of (null: not showing private topics)
- * @param  tempcode $breadcrumbs The breadcrumbs
+ * @param  Tempcode $breadcrumbs The breadcrumbs
  * @return mixed Either Tempcode (an interface that must be shown) or a pair: The main Tempcode, the forum name (string). For a PT view, it is always a tuple, never raw Tempcode (as it can go inside a tabset).
  */
 function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $root, $of_member_id, $breadcrumbs)
@@ -517,7 +517,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
  * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform).
  * @param  boolean $pt Whether the topic is a Private Topic.
  * @param  ?string $show_forum The forum name (null: do not show the forum name).
- * @return tempcode The topic row.
+ * @return Tempcode The topic row.
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {

@@ -79,7 +79,7 @@ class Module_vforums
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -113,7 +113,7 @@ class Module_vforums
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -147,7 +147,7 @@ class Module_vforums
     /**
      * The UI to show topics with new posts since last visit time.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function new_posts()
     {
@@ -183,7 +183,7 @@ class Module_vforums
     /**
      * The UI to show unanswered topics.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function unanswered_topics()
     {
@@ -197,7 +197,7 @@ class Module_vforums
     /**
      * The UI to show topics you're involved with.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function involved_topics()
     {
@@ -214,7 +214,7 @@ class Module_vforums
     /**
      * The UI to show topics with unread posts.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function unread_topics()
     {
@@ -231,7 +231,7 @@ class Module_vforums
     /**
      * The UI to show topics which have been recently read by the current member.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function recently_read()
     {
@@ -248,13 +248,13 @@ class Module_vforums
     /**
      * The UI to show a virtual forum.
      *
-     * @param  tempcode $title The title to show for the v-forum
+     * @param  Tempcode $title The title to show for the v-forum
      * @param  mixed $condition The condition (a fragment of an SQL query that gets embedded in the context of a topic selection query). May be string, or array of strings (separate queries to run and merge; done for performance reasons relating to DB indexing)
      * @param  string $order The ordering of the results
      * @param  boolean $no_pin Whether to not show pinning in a separate section
      * @param  ?array $extra_tpl_map Extra template parameters to pass through (null: none)
      * @param  ?string $initial_table The table to query (null: topic table)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null)
     {

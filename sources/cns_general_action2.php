@@ -214,7 +214,7 @@ function cns_delete_welcome_email($id)
  * Get a form field for editing a forum multi code, set up with a default of the given forum multi code.
  *
  * @param  SHORT_TEXT $forum_multi_code The multi code.
- * @return tempcode The form field.
+ * @return Tempcode The form field.
  */
 function cns_get_forum_multi_code_field($forum_multi_code)
 {

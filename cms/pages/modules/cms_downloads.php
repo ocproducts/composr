@@ -100,7 +100,7 @@ class Module_cms_downloads extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -151,7 +151,7 @@ class Module_cms_downloads extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -182,7 +182,7 @@ class Module_cms_downloads extends Standard_crud_module
     /**
      * The do-next manager for before download content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -206,7 +206,7 @@ class Module_cms_downloads extends Standard_crud_module
     /**
      * The UI for importing FTP downloads.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_interface()
     {
@@ -230,7 +230,7 @@ class Module_cms_downloads extends Standard_crud_module
     /**
      * The actualiser for importing FTP downloads.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import()
     {
@@ -250,7 +250,7 @@ class Module_cms_downloads extends Standard_crud_module
     /**
      * The UI for importing filesystem downloads.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_interface2()
     {
@@ -270,7 +270,7 @@ class Module_cms_downloads extends Standard_crud_module
     /**
      * The actualiser for importing filesystem downloads.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import2()
     {
@@ -291,7 +291,7 @@ class Module_cms_downloads extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return array A triple: The tree field (tempcode), Search URL, Archive URL
+     * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
     public function create_selection_list_ajax_tree()
     {
@@ -308,7 +308,7 @@ class Module_cms_downloads extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a download adding/editing form.
+     * Get Tempcode for a download adding/editing form.
      *
      * @param  ?AUTO_LINK $id The ID of the download (null: new)
      * @param  SHORT_TEXT $name The name of the download
@@ -330,7 +330,7 @@ class Module_cms_downloads extends Standard_crud_module
      * @param  ?AUTO_LINK $licence The licence to use (null: none)
      * @param  integer $default_pic Which image to use for the downloads representative image (counts from 1)
      * @param  URLPATH $url_redirect The URL to redirect
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($id = null, $name = '', $category_id = null, $url = '', $author = '', $description = '', $additional_details = '', $out_mode_id = null, $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $file_size = null, $cost = 0, $submitter_gets_points = 1, $original_filename = null, $licence = null, $default_pic = 1, $url_redirect = '')
     {
@@ -744,10 +744,10 @@ class Module_cms_downloads extends Standard_crud_module
     /**
      * The do-next manager for after download content management (events only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -771,7 +771,7 @@ class Module_cms_downloads_alt extends Standard_crud_module
     /**
      * Standard CRUD-module entry list fetcher.
      *
-     * @return tempcode The list
+     * @return Tempcode The list
      */
     public function create_selection_list_entries()
     {
@@ -779,7 +779,7 @@ class Module_cms_downloads_alt extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a download adding/editing form.
+     * Get Tempcode for a download adding/editing form.
      *
      * @param  ID_TEXT $title The title of the licence
      * @param  LONG_TEXT $text The text of the licence
@@ -853,10 +853,10 @@ class Module_cms_downloads_alt extends Standard_crud_module
     /**
      * The do-next manager for after download content management (events only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -882,7 +882,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return array A triple: The tree field (tempcode), Search URL, Archive URL
+     * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
     public function create_selection_list_ajax_tree()
     {
@@ -894,7 +894,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a download category adding/editing form.
+     * Get Tempcode for a download category adding/editing form.
      *
      * @param  ?AUTO_LINK $id The download ID (null: new)
      * @param  SHORT_TEXT $category The name of the download category
@@ -903,7 +903,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
      * @param  LONG_TEXT $notes Notes
      * @param  ?AUTO_LINK $category_id The ID of the download category (null: we're adding, not editing)
      * @param  URLPATH $rep_image The rep-image for the download category
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($id = null, $category = '', $parent_id = null, $description = '', $notes = '', $category_id = -1, $rep_image = '')
     {
@@ -1057,10 +1057,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -1070,12 +1070,12 @@ class Module_cms_downloads_cat extends Standard_crud_module
     /**
      * The do-next manager for after download content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: delete/NA)
      * @param  ?AUTO_LINK $category_id The category ID we were working in (null: deleted/NA)
      * @param  ?AUTO_LINK $download_licence_id The download licence ID we were working in (null: deleted/NA)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _do_next_manager($title, $description, $id = null, $category_id = null, $download_licence_id = null)
     {

@@ -66,7 +66,7 @@ class Module_admin_newsletter extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -126,7 +126,7 @@ class Module_admin_newsletter extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -216,7 +216,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -255,7 +255,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to import subscribers into the newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_subscribers()
     {
@@ -465,7 +465,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to select an IMAP server for bounce filtering.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function bounce_filter_a()
     {
@@ -495,7 +495,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to select an inbox for bounce filtering.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function bounce_filter_b()
     {
@@ -529,7 +529,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to confirm which subscribers to prune.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function bounce_filter_c()
     {
@@ -581,7 +581,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The actualiser to prune subscribers.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function bounce_filter_d()
     {
@@ -621,7 +621,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to view subscribers on the newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_subscribers()
     {
@@ -811,7 +811,7 @@ class Module_admin_newsletter extends Standard_crud_module
             if (strpos(get_db_type(), 'mysql') !== false) {
                 $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), null, 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
             } else {
-                $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email'), null, 500, $start);
+                $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email'), null, '', 500, $start);
             }
             foreach ($rows as $row) {
                 $email = $row['email'];
@@ -850,7 +850,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to create an automated what's new newsletter. Select cut-off time and other settings.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function whatsnew_1()
     {
@@ -920,7 +920,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to create an automated what's new newsletter. Select content categories.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function whatsnew_2()
     {
@@ -1000,7 +1000,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to create an automated what's new newsletter. Pipe through to the newsletter screen.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function whatsnew_3()
     {
@@ -1049,7 +1049,7 @@ class Module_admin_newsletter extends Standard_crud_module
      * @param  BINARY $in_full Whether to show artices in full (as opposed to summaries)
      * @param  LANGUAGE_NAME $lang Language to send in
      * @param  TIME $cutoff_time When to cut off content from
-     * @return tempcode The Comcode, in template form
+     * @return Tempcode The Comcode, in template form
      */
     public function _generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time)
     {
@@ -1156,14 +1156,14 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $completed = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => $completed, 'LANG' => $lang, 'SUBJECT' => ''));
 
-        return $completed->evaluate($lang);
+        return $completed;
     }
 
     /**
      * The UI to send a newsletter.
      *
      * @param  LONG_TEXT $_existing Default newsletter to put in
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function send_gui($_existing = '')
     {
@@ -1517,7 +1517,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to confirm sending of our newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function confirm_send()
     {
@@ -1624,7 +1624,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The actualiser to send a newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function send_message()
     {
@@ -1752,7 +1752,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to select to view a past newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function archive()
     {
@@ -1783,7 +1783,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * The UI to view a past newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view()
     {
@@ -1804,7 +1804,7 @@ class Module_admin_newsletter extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for adding/editing form.
+     * Get Tempcode for adding/editing form.
      *
      * @param  SHORT_TEXT $title The title
      * @param  LONG_TEXT $description The description
@@ -1865,7 +1865,7 @@ class Module_admin_newsletter extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {

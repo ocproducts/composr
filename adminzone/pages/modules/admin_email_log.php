@@ -61,7 +61,7 @@ class Module_admin_email_log
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -91,7 +91,7 @@ class Module_admin_email_log
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -119,7 +119,7 @@ class Module_admin_email_log
     /**
      * Get a list of all the e-mails sent/queued.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function show()
     {
@@ -217,7 +217,7 @@ class Module_admin_email_log
     /**
      * Get a form to edit/send/delete an email.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function edit()
     {
@@ -286,7 +286,7 @@ class Module_admin_email_log
     /**
      * Actualiser to edit/send/delete an email.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _edit()
     {
@@ -368,7 +368,7 @@ class Module_admin_email_log
     /**
      * Actualiser to do a mass send.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function mass_send()
     {
@@ -397,7 +397,7 @@ class Module_admin_email_log
     /**
      * Actualiser to do a mass send.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function mass_delete()
     {

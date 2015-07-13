@@ -187,7 +187,7 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
  * @param  integer $acceptable_media Bitmask of media that we will support
  * @param  ?ID_TEXT $limit_to Limit to a media rendering hook (null: no limit)
  * @param  ?URLPATH $url_to_scan_against The URL to do media detection against (null: use $url)
- * @return ?tempcode The rendered version (null: cannot render)
+ * @return ?Tempcode The rendered version (null: cannot render)
  */
 function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null)
 {
@@ -341,7 +341,7 @@ abstract class Media_renderer_with_fallback
      * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
      * @param  ?MEMBER $source_member Member to run as (null: current member)
      * @param  ?mixed $click_url URL to route clicks through to (null: no special URL)
-     * @return ?tempcode Rendered version (null: do not render)
+     * @return ?Tempcode Rendered version (null: do not render)
      */
     public function fallback_render($url, $url_safe, $attributes, $as_admin, $source_member, $click_url = null)
     {

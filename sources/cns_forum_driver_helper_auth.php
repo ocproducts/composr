@@ -165,7 +165,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             case 'temporary': // as above, but forced temporary password
                 if ($cookie_login) {
                     if ($password_hashed !== $row['m_pass_hash_salted']) {
-                        require_code('tempcode'); // This can be incidental even in fast AJAX scripts, if an old invalid cookie is present, so we need tempcode for do_lang_tempcode
+                        require_code('tempcode'); // This can be incidental even in fast AJAX scripts, if an old invalid cookie is present, so we need Tempcode for do_lang_tempcode
                         $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                         return $out;
                     }

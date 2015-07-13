@@ -271,7 +271,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
      * @param  array $attributes Attributes (e.g. width, height, length)
      * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
      * @param  ?MEMBER $source_member Member to run as (null: current member)
-     * @return tempcode Rendered version
+     * @return Tempcode Rendered version
      */
     public function render($url, $url_safe, $attributes, $as_admin = false, $source_member = null)
     {
@@ -358,7 +358,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
      * @param  array $attributes Attributes (e.g. width, height, length)
      * @param  ?MEMBER $source_member Member to run as (null: current member)
      * @param  string $link_captions_title Text to show the link with
-     * @return tempcode Rendered version
+     * @return Tempcode Rendered version
      */
     public function _fallback_render($url, $attributes, $source_member, $link_captions_title = '')
     {

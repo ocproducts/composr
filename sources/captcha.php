@@ -192,7 +192,7 @@ function captcha_script()
 /**
  * Get a captcha (aka security code) form field.
  *
- * @return tempcode The field
+ * @return Tempcode The field
  */
 function form_input_captcha()
 {

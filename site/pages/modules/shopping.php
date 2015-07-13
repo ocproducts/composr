@@ -211,7 +211,7 @@ class Module_shopping
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -261,7 +261,7 @@ class Module_shopping
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -315,7 +315,7 @@ class Module_shopping
     /**
      * The UI to show shopping cart
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_shopping_cart()
     {
@@ -452,7 +452,7 @@ class Module_shopping
     /**
      * Function to add item to cart.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_item_to_cart()
     {
@@ -475,7 +475,7 @@ class Module_shopping
     /**
      * Function to Update cart
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function update_cart()
     {
@@ -529,7 +529,7 @@ class Module_shopping
     /**
      * Function to empty shopping cart
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function empty_cart()
     {
@@ -545,11 +545,11 @@ class Module_shopping
     /**
      * Wrap-up so as to remove redundancy in templates.
      *
-     * @param  tempcode $content To wrap.
-     * @param  tempcode $title The title to use.
+     * @param  Tempcode $content To wrap.
+     * @param  Tempcode $title The title to use.
      * @param  ?mixed $url URL (null: no next URL).
      * @param  boolean $get Whether it is a GET form
-     * @return tempcode Wrapped.
+     * @return Tempcode Wrapped.
      */
     public function wrap($content, $title, $url, $get = false)
     {
@@ -564,7 +564,7 @@ class Module_shopping
     /**
      * Finish step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function finish()
     {
@@ -648,7 +648,7 @@ class Module_shopping
     /**
      * Show all my orders
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function my_orders()
     {
@@ -693,7 +693,7 @@ class Module_shopping
     /**
      * Show an order details
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function order_det()
     {

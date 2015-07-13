@@ -24,8 +24,8 @@
  * @param  ID_TEXT $type Action type
  * @param  string $a First parameter
  * @param  string $b Second parameter
- * @param  tempcode $_a First parameter (cropped)
- * @param  tempcode $_b Second parameter (cropped)
+ * @param  Tempcode $_a First parameter (cropped)
+ * @param  Tempcode $_b Second parameter (cropped)
  * @return ?array Pair: first parameter as possible link, second parameter as possible link (null: could not construct a nice link)
  */
 function actionlog_linkage($type, $a, $b, $_a, $_b)

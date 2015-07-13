@@ -57,7 +57,7 @@ class Hook_worldpay
     /**
      * Get the card/gateway logos and other gateway-required details.
      *
-     * @return tempcode The stuff.
+     * @return Tempcode The stuff.
      */
     public function get_logos()
     {
@@ -86,7 +86,7 @@ class Hook_worldpay
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  float $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
-     * @return tempcode The button.
+     * @return Tempcode The button.
      */
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
@@ -135,7 +135,7 @@ class Hook_worldpay
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
      * @param  ID_TEXT $currency The currency to use.
-     * @return tempcode The button.
+     * @return Tempcode The button.
      */
     public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
     {
@@ -198,7 +198,7 @@ class Hook_worldpay
      * Make a subscription cancellation button.
      *
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @return tempcode The button.
+     * @return Tempcode The button.
      */
     public function make_cancel_button($purchase_id)
     {

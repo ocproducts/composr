@@ -61,7 +61,7 @@ function bookmarks_script()
  * Get the form to add a bookmark / set breadcrumbs.
  *
  * @param  mixed $post_url Where the form should go to
- * @return tempcode The form
+ * @return Tempcode The form
  */
 function add_bookmark_form($post_url)
 {

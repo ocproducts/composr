@@ -102,7 +102,7 @@ function page_link_as_url($url)
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
  * @param  ?array $exclude A list of parameters to exclude (null: don't exclude any)
- * @return tempcode The builtup hidden form fields
+ * @return Tempcode The builtup hidden form fields
  */
 function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
 {
@@ -174,7 +174,7 @@ function _fixed_post_parser($key, $value)
  * Relay all POST variables for this URL, to the URL embedded in the form.
  *
  * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
- * @return tempcode The builtup hidden form fields
+ * @return Tempcode The builtup hidden form fields
  */
 function _build_keep_post_fields($exclude = null)
 {

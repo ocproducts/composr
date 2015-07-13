@@ -181,7 +181,7 @@ class Module_booking
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -213,7 +213,7 @@ class Module_booking
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -249,7 +249,7 @@ class Module_booking
     /**
      * Allow the user to choose what to book, on a high level - what bookables, what dates.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function choose_bookables_and_dates()
     {
@@ -462,7 +462,7 @@ class Module_booking
     /**
      * Flesh out the details of a booking.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function flesh_out()
     {
@@ -529,7 +529,7 @@ class Module_booking
     /**
      * Let the user login / do an inline join.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function join_or_login()
     {
@@ -567,7 +567,7 @@ class Module_booking
     /**
      * E-mails staff and receipt notice to user, and saves everything.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function thanks()
     {

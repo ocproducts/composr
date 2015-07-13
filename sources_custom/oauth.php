@@ -85,7 +85,7 @@ function refresh_oauth2_token($service_name, $url, $client_id, $client_secret, $
     $post_params = array(
         'client_id' => get_option($service_name . '_client_id'),
         'client_secret' => get_option($service_name . '_client_secret'),
-        'refresh_token' => get_value($service_name . '_refresh_token', true),
+        'refresh_token' => get_value($service_name . '_refresh_token', null, true),
         'grant_type' => 'refresh_token',
     );
 

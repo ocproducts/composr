@@ -268,7 +268,7 @@ class Module_chat
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -363,7 +363,7 @@ class Module_chat
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -436,7 +436,7 @@ class Module_chat
     /**
      * The UI to choose a chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_lobby()
     {
@@ -585,7 +585,7 @@ class Module_chat
     /**
      * The UI for a chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_room()
     {
@@ -703,7 +703,7 @@ class Module_chat
     /**
      * The UI to create a private chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_private()
     {
@@ -734,7 +734,7 @@ class Module_chat
     /**
      * The actualiser to add a chat room.
      *
-     * @return tempcode The UI to choose a chat room (probably what was just added, but...)
+     * @return Tempcode The UI to choose a chat room (probably what was just added, but...)
      */
     public function _chat_private()
     {
@@ -795,7 +795,7 @@ class Module_chat
     /**
      * The UI to manage who is blocked.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_interface()
     {
@@ -831,7 +831,7 @@ class Module_chat
     /**
      * Change blocking settings.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_set()
     {
@@ -868,7 +868,7 @@ class Module_chat
      *
      * @param  ID_TEXT $action The language code of our action
      * @param  string $param Parameter of action
-     * @return ?tempcode If a confirm page is being output, this is it (null: continue as before)
+     * @return ?Tempcode If a confirm page is being output, this is it (null: continue as before)
      */
     public function handle_repost($action, $param)
     {
@@ -897,7 +897,7 @@ class Module_chat
     /**
      * Change blocking settings (add one specific to block list, and then redirect).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_add()
     {
@@ -930,7 +930,7 @@ class Module_chat
     /**
      * Change blocking settings (remove one specific member from block list, and then redirect).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function blocking_remove()
     {
@@ -959,7 +959,7 @@ class Module_chat
     /**
      * Add a friend.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function friend_add()
     {
@@ -1004,7 +1004,7 @@ class Module_chat
     /**
      * Remove a friend.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function friend_remove()
     {
@@ -1053,7 +1053,7 @@ class Module_chat
     /**
      * Save the user's options into a cookie.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_save_options()
     {
@@ -1068,7 +1068,7 @@ class Module_chat
     /**
      * The UI to download chat logs.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_download_logs()
     {
@@ -1098,7 +1098,7 @@ class Module_chat
     /**
      * The actualiser to download chat logs.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _chat_download_logs()
     {
@@ -1117,7 +1117,7 @@ class Module_chat
     /**
      * The interface for setting sound effects.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_effects()
     {
@@ -1209,7 +1209,7 @@ class Module_chat
     /**
      * The actualiser to set sound effects.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _set_effects()
     {

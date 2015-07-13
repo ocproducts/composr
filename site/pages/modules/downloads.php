@@ -225,7 +225,7 @@ class Module_downloads
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -432,7 +432,7 @@ class Module_downloads
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -459,7 +459,7 @@ class Module_downloads
     /**
      * The UI to view a download category.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_category_screen()
     {
@@ -552,7 +552,7 @@ class Module_downloads
     /**
      * The UI to view a download index.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_atoz_screen()
     {
@@ -647,7 +647,7 @@ class Module_downloads
     /**
      * The UI to view a download.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_download_screen()
     {

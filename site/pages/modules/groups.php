@@ -69,7 +69,7 @@ class Module_groups
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -177,7 +177,7 @@ class Module_groups
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -224,7 +224,7 @@ class Module_groups
     /**
      * The UI to show the usergroup directory.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function directory()
     {
@@ -395,7 +395,7 @@ class Module_groups
     /**
      * The UI to show a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function usergroup()
     {
@@ -564,7 +564,7 @@ class Module_groups
      *
      * @param  boolean $special_permission Whether to skip checking permission for usergroup control
      * @param  ?string $username Username to add (null: read from environment)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_to($special_permission = false, $username = null)
     {
@@ -613,7 +613,7 @@ class Module_groups
     /**
      * The actualiser to remove a member from a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function remove_from()
     {
@@ -646,7 +646,7 @@ class Module_groups
     /**
      * The actualiser to apply to join a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function apply()
     {
@@ -703,7 +703,7 @@ class Module_groups
     /**
      * The actualiser to accept a member into a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function accept()
     {
@@ -730,7 +730,7 @@ class Module_groups
     /**
      * The actualiser to decline a members joining of a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function decline()
     {
@@ -765,7 +765,7 @@ class Module_groups
     /**
      * The actualiser to resign from a usergroup.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function resign()
     {

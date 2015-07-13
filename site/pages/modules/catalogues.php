@@ -479,7 +479,7 @@ class Module_catalogues
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -707,7 +707,7 @@ class Module_catalogues
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -739,7 +739,7 @@ class Module_catalogues
     /**
      * The UI to show a list of catalogues to choose from.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function list_catalogues()
     {
@@ -784,7 +784,7 @@ class Module_catalogues
     /**
      * The UI to show the index of a catalogue.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_catalogue_index()
     {
@@ -844,7 +844,7 @@ class Module_catalogues
     /**
      * The UI to show a catalogue A-Z screen.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_atoz()
     {
@@ -960,7 +960,7 @@ class Module_catalogues
     /**
      * The UI to show a catalogue category.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_catalogue_category()
     {
@@ -1072,7 +1072,7 @@ class Module_catalogues
     /**
      * The UI to show a catalogue entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_catalogue_entry()
     {

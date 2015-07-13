@@ -90,7 +90,7 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  * @param  ?array $extra_fields Map of extra fields to show (null: none)
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The member box
+ * @return Tempcode The member box
  */
 function render_member_box($poster_details, $preview = false, $hooks = null, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {

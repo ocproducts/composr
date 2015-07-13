@@ -21,7 +21,7 @@
 /**
  * Get information about new versions of Composr (or more accurately, what's wrong with this version).
  *
- * @return tempcode Information about the installed Composr version
+ * @return Tempcode Information about the installed Composr version
  */
 function get_future_version_information()
 {

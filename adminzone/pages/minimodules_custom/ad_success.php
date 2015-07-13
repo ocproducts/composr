@@ -56,7 +56,7 @@ foreach ($advertiser_sessions as $session) {
         }
     }
 
-    $ip = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('the_page' => 'site/pages/modules/join.php', 'member_id' => $member_id), '', 1);
+    $ip = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('the_page' => 'site/pages/modules/join.php', 'member_id' => $member_id));
     $member_id = is_null($ip) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'member_id', array('ip' => $ip));
     if (!is_null($member_id)) {
         $joining[$from]++;

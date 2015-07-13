@@ -109,7 +109,7 @@ function choose_community_billboard_message($id)
 /**
  * Get a list of community billboard messages to choose from.
  *
- * @return tempcode The list of community billboard messages
+ * @return Tempcode The list of community billboard messages
  */
 function create_selection_list_community_billboard_messages()
 {

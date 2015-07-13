@@ -187,7 +187,7 @@ class Module_newsletter
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -229,7 +229,7 @@ class Module_newsletter
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -257,7 +257,7 @@ class Module_newsletter
     /**
      * The UI to sign up to the newsletter (actually, generally manage subscription).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newsletter_form()
     {
@@ -358,7 +358,7 @@ class Module_newsletter
     /**
      * The actualiser for newsletter subscription maintenance (adding, updating, deleting).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newsletter_maintenance()
     {
@@ -470,7 +470,7 @@ class Module_newsletter
     /**
      * The actualiser for resetting newsletter password.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newsletter_password_reset()
     {
@@ -493,7 +493,7 @@ class Module_newsletter
     /**
      * The actualiser for unsubscribing from the newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newsletter_unsubscribe()
     {
@@ -544,7 +544,7 @@ class Module_newsletter
     /**
      * The UI for having confirmed an e-mail address onto the newsletter.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newsletter_confirm_joining()
     {

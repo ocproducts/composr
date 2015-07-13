@@ -143,7 +143,7 @@ function is_mail_bounced($email, $server = null, $port = null, $folder = null, $
 
     static $update_since = null;
     if (is_null($update_since)) {
-        $update_since = $GLOBALS['SITE_DB']->query_value_if_there('email_bounces', 'MAX(b_time)');
+        $update_since = $GLOBALS['SITE_DB']->query_select_value_if_there('email_bounces', 'MAX(b_time)');
     }
     update_bounce_storage($server, $port, $folder, $username, $password, $update_since);
 

@@ -64,7 +64,7 @@ class Module_admin_themewizard
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -126,7 +126,7 @@ class Module_admin_themewizard
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -164,7 +164,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (choose colour).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step1()
     {
@@ -239,7 +239,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (choose preview).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step2()
     {
@@ -283,7 +283,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (choose save).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step3()
     {
@@ -313,7 +313,7 @@ class Module_admin_themewizard
     /**
      * UI for a theme wizard step (actualisation).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step4()
     {
@@ -380,7 +380,7 @@ class Module_admin_themewizard
     /**
      * UI for a logo wizard step (ask for input).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function make_logo()
     {
@@ -469,7 +469,7 @@ class Module_admin_themewizard
     /**
      * UI for a logo wizard step (show preview).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _make_logo()
     {
@@ -482,7 +482,7 @@ class Module_admin_themewizard
     /**
      * UI for a logo wizard step (set).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __make_logo()
     {

@@ -57,7 +57,7 @@ class Hook_pointstore_highlight_name
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -87,7 +87,7 @@ class Hook_pointstore_highlight_name
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {

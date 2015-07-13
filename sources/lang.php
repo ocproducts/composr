@@ -101,12 +101,12 @@ function init__lang()
  * Further documentation: https://www.youtube.com/watch?v=rinz9Avvq6A
  *
  * @param  ID_TEXT $codename The language ID
- * @param  ?mixed $token1 The first token [string or tempcode] (replaces {1}) (null: none)
- * @param  ?mixed $token2 The second token [string or tempcode] (replaces {2}) (null: none)
+ * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
+ * @param  ?mixed $token2 The second token [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $token3 The third token (replaces {3}). May be an array of [of string], to allow any number of additional args (null: none)
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
- * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if tempcode parameters.
+ * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */
 function do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $lang = null, $require_result = true)
 {
@@ -594,10 +594,10 @@ function require_all_open_lang_files($lang = null)
  * URL'ise specially encoded text-acceptance language strings.
  *
  * @param  string $string The language string
- * @param  mixed $url The URL (either tempcode or string)
+ * @param  mixed $url The URL (either Tempcode or string)
  * @param  string $title The title of the hyperlink
  * @param  boolean $new_window Whether to use a new window
- * @return tempcode The encoded version
+ * @return Tempcode The encoded version
  */
 function urlise_lang($string, $url, $title = '', $new_window = false)
 {
@@ -609,7 +609,7 @@ function urlise_lang($string, $url, $title = '', $new_window = false)
  * Stop some text being escapable by the Tempcode layer.
  *
  * @param  mixed $in Text
- * @return tempcode Text that can't be escaped
+ * @return Tempcode Text that can't be escaped
  */
 function protect_from_escaping($in)
 {
@@ -620,12 +620,12 @@ function protect_from_escaping($in)
  * Get the human-readable form of a language ID, or a language entry from a language INI file.
  *
  * @param  ID_TEXT $codename The language ID
- * @param  ?mixed $token1 The first token [string or tempcode] (replaces {1}) (null: none)
- * @param  ?mixed $token2 The second token [string or tempcode] (replaces {2}) (null: none)
+ * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
+ * @param  ?mixed $token2 The second token [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $token3 The third token (replaces {3}). May be an array of [of string], to allow any number of additional args (null: none)
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
- * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if tempcode parameters.
+ * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */
 function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $lang = null, $require_result = true)
 {
@@ -859,7 +859,7 @@ function find_all_langs($even_empty_langs = false)
  *
  * @param  ?LANGUAGE_NAME $select_lang The language to have selected by default (null: uses the current language)
  * @param  boolean $show_unset Whether to show languages that have no language details currently defined for them
- * @return tempcode The language selector
+ * @return Tempcode The language selector
  */
 function create_selection_list_langs($select_lang = null, $show_unset = false)
 {
@@ -987,7 +987,7 @@ function delete_lang($id, $connection = null)
  * @param  boolean $force Whether to force it to the specified language
  * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
- * @return ?tempcode The parsed Comcode (null: the text couldn't be looked up)
+ * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
 function get_translated_tempcode__and_simplify($table, $row, $field_name, $connection = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false)
 {
@@ -1018,7 +1018,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $conne
  * @param  boolean $force Whether to force it to the specified language
  * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
- * @return ?tempcode The parsed Comcode (null: the text couldn't be looked up)
+ * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
 function get_translated_tempcode($table, $row, $field_name, $connection = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false)
 {
@@ -1209,10 +1209,10 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
 }
 
 /**
- * Convert a language string that is Comcode to tempcode, with potential caching in the db.
+ * Convert a language string that is Comcode to Tempcode, with potential caching in the db.
  *
  * @param  ID_TEXT $lang_code The language string ID
- * @return tempcode The parsed Comcode
+ * @return Tempcode The parsed Comcode
  */
 function comcode_lang_string($lang_code)
 {
@@ -1223,10 +1223,10 @@ function comcode_lang_string($lang_code)
 /**
  * UI to choose a language.
  *
- * @param  tempcode $title Title for the form
+ * @param  Tempcode $title Title for the form
  * @param  boolean $tip Whether to give a tip about edit order
  * @param  boolean $allow_all_selection Whether to add an 'all' entry to the list
- * @return mixed The UI (tempcode) or the language to use (string/LANGUAGE_NAME)
+ * @return mixed The UI (Tempcode) or the language to use (string/LANGUAGE_NAME)
  */
 function choose_language($title, $tip = false, $allow_all_selection = false)
 {

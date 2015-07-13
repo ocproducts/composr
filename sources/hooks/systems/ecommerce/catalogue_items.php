@@ -208,7 +208,7 @@ class Hook_ecommerce_catalogue_items
      * Get the message for use in the purchase wizard
      *
      * @param  ID_TEXT $type_code The product in question.
-     * @return tempcode The message.
+     * @return Tempcode The message.
      */
     public function get_message($type_code)
     {
@@ -406,9 +406,9 @@ class Hook_ecommerce_catalogue_items
     /**
      * Show shopping cart entries.
      *
-     * @param  tempcode $shopping_cart Tempcode object of shopping cart result table.
+     * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table.
      * @param  array $entry Details of new entry to the shopping cart.
-     * @return tempcode Tempcode object of shopping cart result table.
+     * @return Tempcode Tempcode object of shopping cart result table.
      */
     public function show_cart_entry(&$shopping_cart, $entry)
     {
@@ -665,7 +665,7 @@ class Hook_ecommerce_catalogue_items
      * Return product info details.
      *
      * @param  AUTO_LINK $id Product ID.
-     * @return tempcode Product information.
+     * @return Tempcode Product information.
      */
     public function product_info($id)
     {

@@ -111,7 +111,7 @@ class Hook_whatsnew_galleries
             } else {
                 $thumbnail = mixed();
             }
-            $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => 'dfe5850aa67c0cd00ff7d465248b87a5', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'THUMBNAIL' => $thumbnail, 'CONTENT_TYPE' => 'video', 'CONTENT_ID' => strval($id))), null, false, null, '.txt', 'text');
+            $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => 'dfe5850aa67c0cd00ff7d465248b87a5', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'THUMBNAIL' => $thumbnail, 'CONTENT_TYPE' => 'video', 'CONTENT_ID' => strval($id)), null, false, null, '.txt', 'text'));
 
             handle_has_checked_recently($url); // We know it works, so mark it valid so as to not waste CPU checking within the generated Comcode
         }

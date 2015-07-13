@@ -103,10 +103,10 @@ function _apply_emoticons($text)
 }
 
 /**
- * Turn a triple of emoticon parameters into some actual tempcode.
+ * Turn a triple of emoticon parameters into some actual Tempcode.
  *
  * @param  array $imgcode Parameter triple(template,src,code)
- * @return mixed Either a tempcode result, or a string result, depending on $evaluate
+ * @return mixed Either a Tempcode result, or a string result, depending on $evaluate
  */
 function do_emoticon($imgcode)
 {
@@ -247,7 +247,7 @@ function _custom_comcode_import($connection)
 }
 
 /**
- * Convert the specified Comcode (unknown format) into a tempcode tree. You shouldn't output the tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the tempcode object, to convert it into a string.
+ * Convert the specified Comcode (unknown format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string.
  *
  * @param  LONG_TEXT $comcode The Comcode to convert
  * @param  ?MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully (null: current member)
@@ -262,7 +262,7 @@ function _custom_comcode_import($connection)
  * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
- * @return tempcode The tempcode generated
+ * @return Tempcode The Tempcode generated
  */
 function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
 {
@@ -306,7 +306,7 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
  * @param  integer $pos The position during parsing that the error occurred at
  * @param  LONG_TEXT $comcode The Comcode the parser error occurred in
  * @param  boolean $check_only Whether to only check the Comcode.
- * @return tempcode An error message to put in the output stream (shown in certain situations, where in other situations we bomb out).
+ * @return Tempcode An error message to put in the output stream (shown in certain situations, where in other situations we bomb out).
  */
 function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_only = false)
 {
@@ -469,7 +469,7 @@ function absoluteise_and_test_comcode_url($given_url, $source_member, $as_admin,
  * @param  string $tag_type Comcode tag type, to which the URL is associated.
  * @param  string $given_url URL actually provided.
  * @param  MEMBER $source_member The member who is responsible for this Comcode
- * @return tempcode Error message, or blank if no error.
+ * @return Tempcode Error message, or blank if no error.
  */
 function test_url($url_full, $tag_type, $given_url, $source_member)
 {
@@ -513,13 +513,13 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
 }
 
 /**
- * Get tempcode for a Comcode tag. This function should always return (errors should be placed in the Comcode output stream), for stability reasons (i.e. if you're submitting something, you can't have the whole submit process die half way through in an unstructured fashion).
+ * Get Tempcode for a Comcode tag. This function should always return (errors should be placed in the Comcode output stream), for stability reasons (i.e. if you're submitting something, you can't have the whole submit process die half way through in an unstructured fashion).
  *
  * @param  string $tag The tag being converted
- * @param  array $attributes A map of the attributes (name=>val) for the tag. Val is usually a string, although in select places, the XML parser may pass tempcode.
+ * @param  array $attributes A map of the attributes (name=>val) for the tag. Val is usually a string, although in select places, the XML parser may pass Tempcode.
  * @param  mixed $embed Tempcode of the inside of the tag ([between]THIS[/between]); the XML parser may pass in special stuff here, which is interpreted only for select tags
  * @param  boolean $comcode_dangerous Whether we are allowed to proceed even if this tag is marked as 'dangerous'
- * @param  string $pass_id A special identifier to mark where the resultant tempcode is going to end up (e.g. the ID of a post)
+ * @param  string $pass_id A special identifier to mark where the resultant Tempcode is going to end up (e.g. the ID of a post)
  * @param  integer $marker The position this tag occurred at in the Comcode
  * @param  MEMBER $source_member The member who is responsible for this Comcode
  * @param  boolean $as_admin Whether to check as arbitrary admin
@@ -531,7 +531,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
- * @return tempcode The tempcode for the Comcode
+ * @return Tempcode The Tempcode for the Comcode
  */
 function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_id, $marker, $source_member, $as_admin, $connection, &$comcode, $structure_sweep, $semiparse_mode, $highlight_bits = null, $on_behalf_of_member = null, $in_semihtml = false, $is_all_semihtml = false)
 {
@@ -1603,11 +1603,11 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             // If we need to switch
             if ((!is_email_address($_embed)) && (is_email_address($attributes['param']))) {
-                $temp = $embed; // Is tempcode
+                $temp = $embed; // Is Tempcode
                 $_embed = $attributes['param'];
                 $attributes['param'] = $temp;
             } else {
-                $attributes['param'] = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member); // Becomes tempcode
+                $attributes['param'] = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member); // Becomes Tempcode
             }
             if ($attributes['param']->is_empty()) {
                 $attributes['param'] = obfuscate_email_address($_embed);
@@ -2207,11 +2207,11 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
  * Render a code box.
  *
  * @param  string $type The data type (e.g. file extension) we are rendering.
- * @param  tempcode $embed Contents (code) to render.
+ * @param  Tempcode $embed Contents (code) to render.
  * @param  boolean $numbers Whether to show line numbers.
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
- * @return array A pair: The tempcode for the code box, and the title of the box
+ * @return array A pair: The Tempcode for the code box, and the title of the box
  */
 function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_all_semihtml = false)
 {
@@ -2283,7 +2283,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
  * @param  array $list_types The list types to use for each level
  * @param  integer $base The level to start from
  * @param  integer $the_level The level we are at in the recursion
- * @return tempcode The TOC node.
+ * @return Tempcode The TOC node.
  */
 function _do_contents_level($tree_structure, $list_types, $base, $the_level = 0)
 {

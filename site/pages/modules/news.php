@@ -195,7 +195,7 @@ class Module_news
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -384,7 +384,7 @@ class Module_news
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -417,7 +417,7 @@ class Module_news
      * The UI to select a news category to view news within.
      *
      * @param  ?integer $blogs What to show (null: news and blogs, 0: news, 1: blogs)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function news_cat_select($blogs)
     {
@@ -434,7 +434,7 @@ class Module_news
             $max_rows = $GLOBALS['SITE_DB']->query_select_value('news_categories', 'COUNT(*)', $map);
         } elseif ($blogs == 1) {
             $categories = $GLOBALS['SITE_DB']->query('SELECT c.* FROM ' . get_table_prefix() . 'news_categories c WHERE nc_owner IS NOT NULL ORDER BY nc_owner DESC,' . $GLOBALS['SITE_DB']->translate_field_ref('nc_title'), $max, $start, false, false, array('nc_title' => 'SHORT_TRANS')); // Ordered to show newest blogs first
-            $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NOT NULL', null, null, false, false, array('nc_title' => 'SHORT_TRANS'));
+            $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NOT NULL', false, false, array('nc_title' => 'SHORT_TRANS'));
         } else {
             $map = array('nc_owner' => null);
             $categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), $map, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('nc_title'), $max, $start); // Ordered by title (can do efficiently as limited numbers of non-blogs)
@@ -490,7 +490,7 @@ class Module_news
     /**
      * The UI to view the news archive.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function news_archive()
     {
@@ -537,7 +537,7 @@ class Module_news
     /**
      * The UI to view a news entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_news()
     {

@@ -69,7 +69,7 @@ class Module_awards
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -116,7 +116,7 @@ class Module_awards
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -141,7 +141,7 @@ class Module_awards
     /**
      * The UI to choose an award type to view.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_award()
     {
@@ -175,7 +175,7 @@ class Module_awards
     /**
      * The UI to view the overview of all current award allocations.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function award_overview()
     {
@@ -237,7 +237,7 @@ class Module_awards
     /**
      * The UI to view the archive for an award type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function award()
     {

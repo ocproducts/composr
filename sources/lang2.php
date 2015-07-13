@@ -203,7 +203,7 @@ function find_lang_content_names($ids)
  * Get a nice formatted XHTML listed language file selector for the given language.
  *
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
- * @return tempcode The language file selector
+ * @return Tempcode The language file selector
  */
 function create_selection_list_lang_files($lang = null)
 {

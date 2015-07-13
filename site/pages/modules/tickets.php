@@ -154,7 +154,7 @@ class Module_tickets
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -227,7 +227,7 @@ class Module_tickets
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -285,7 +285,7 @@ class Module_tickets
     /**
      * The UI to show support tickets we may view.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_choose_ticket()
     {
@@ -428,7 +428,7 @@ class Module_tickets
     /**
      * The UI to either show an existing ticket and allow a reply, or to start a new ticket.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_ticket()
     {
@@ -761,7 +761,7 @@ class Module_tickets
     /**
      * Actualise to toggle the closed state of a ticket.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function toggle_ticket_closed()
     {
@@ -795,7 +795,7 @@ class Module_tickets
     /**
      * Actualise ticket creation/reply, then show the ticket again.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_update_ticket()
     {
@@ -892,10 +892,10 @@ class Module_tickets
     /**
      * Check for existing FAQs matching a ticket to be submitted, via searching.
      *
-     * @param  tempcode $title Page title
+     * @param  Tempcode $title Page title
      * @param  string $ticket_id Ticket ID we'd be creating
      * @param  string $content What is being searched for
-     * @return ?tempcode The search results (null: could not search)
+     * @return ?Tempcode The search results (null: could not search)
      */
     public function do_search($title, $ticket_id, $content)
     {
@@ -914,7 +914,7 @@ class Module_tickets
         }
 
         // Get the ID of the default FAQ catalogue
-        $catalogue_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => 'faqs'), '', 1);
+        $catalogue_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => 'faqs'), '');
         if (is_null($catalogue_id)) {
             return null;
         }
@@ -943,7 +943,7 @@ class Module_tickets
     /**
      * UI for setting ticket access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_ticket_extra_access()
     {
@@ -978,7 +978,7 @@ class Module_tickets
     /**
      * Actualiser for setting ticket access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _set_ticket_extra_access()
     {
@@ -1022,7 +1022,7 @@ class Module_tickets
     /**
      * UI for editing a ticket type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -1062,7 +1062,7 @@ class Module_tickets
     /**
      * Actualiser for setting ticket access.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit()
     {
@@ -1125,7 +1125,7 @@ class Module_tickets
     /**
      * UI for merging one ticket into another.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function merge()
     {
@@ -1150,7 +1150,7 @@ class Module_tickets
     /**
      * Actualiser for merging one ticket into another.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _merge()
     {
@@ -1230,7 +1230,7 @@ class Module_tickets
     /**
      * Assign a ticket.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function assign()
     {
@@ -1293,7 +1293,7 @@ class Module_tickets
     /**
      * Unassign a ticket.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function unassign()
     {

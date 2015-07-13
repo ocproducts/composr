@@ -145,7 +145,7 @@ class Module_pointstore
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -163,7 +163,7 @@ class Module_pointstore
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -203,7 +203,7 @@ class Module_pointstore
     /**
      * The UI to choose a section of the Point Store.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_pointstore()
     {

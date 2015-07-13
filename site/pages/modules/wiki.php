@@ -239,7 +239,7 @@ class Module_wiki
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -385,7 +385,7 @@ class Module_wiki
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -434,7 +434,7 @@ class Module_wiki
     /**
      * Redirect to a random page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function random()
     {
@@ -453,7 +453,7 @@ class Module_wiki
     /**
      * The UI to show a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function page()
     {
@@ -614,7 +614,7 @@ class Module_wiki
      * @param  AUTO_LINK $id The ID of the page we are showing the menu on
      * @param  boolean $include_expansion Whether to include the expansion/contraction button
      * @param  boolean $may_post Whether posting is generally allowed (may be passed false if too many posts)
-     * @return tempcode The button tempcode
+     * @return Tempcode The button Tempcode
      */
     public function _render_buttons($chain, $id, $include_expansion, $may_post = true)
     {
@@ -660,7 +660,7 @@ class Module_wiki
     /**
      * The UI to show changes.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function changes()
     {
@@ -738,7 +738,7 @@ class Module_wiki
     /**
      * The UI for merging Wiki+ posts.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_wiki_merge_interface()
     {
@@ -779,7 +779,7 @@ class Module_wiki
     /**
      * The actualiser for merging Wiki+ posts.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_wiki_merge()
     {
@@ -829,7 +829,7 @@ class Module_wiki
     /**
      * The UI for moving a Wiki+ post.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function move()
     {
@@ -871,7 +871,7 @@ class Module_wiki
     /**
      * The actualiser for moving a Wiki+ post.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _move()
     {
@@ -909,7 +909,7 @@ class Module_wiki
     /**
      * The UI for making a Wiki+ post.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function post()
     {
@@ -1056,7 +1056,7 @@ class Module_wiki
     /**
      * The actualiser for making a Wiki+ post.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _post()
     {

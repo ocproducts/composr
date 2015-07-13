@@ -52,7 +52,7 @@ function enter_chat_lobby()
  * @param  ?MEMBER $member_id The member ID (null: current user).
  * @param  boolean $simpler Whether to show a simpler, more compact, UI.
  * @param  ?integer $max Maximum to show (null: default).
- * @return tempcode The contact UI.
+ * @return Tempcode The contact UI.
  */
 function show_im_contacts($member_id = null, $simpler = false, $max = null)
 {

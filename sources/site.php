@@ -422,10 +422,10 @@ function get_logo_url($zone_name = null)
 }
 
 /**
- * Get the tempcode for the breadcrumbs.
+ * Get the Tempcode for the breadcrumbs.
  *
  * @param  boolean $show_self Whether to show a self segment
- * @return tempcode The breadcrumbs
+ * @return Tempcode The breadcrumbs
  */
 function breadcrumbs($show_self = true)
 {
@@ -462,10 +462,10 @@ function breadcrumbs($show_self = true)
 }
 
 /**
- * Get the tempcode for the default breadcrumbs stub. This isn't entirely a default, because it does work with breadcrumb_set_parents. We refer to it as a default as it is possible to override the whole breadcrumbs environment via the special BREADCRUMBS global variable.
+ * Get the Tempcode for the default breadcrumbs stub. This isn't entirely a default, because it does work with breadcrumb_set_parents. We refer to it as a default as it is possible to override the whole breadcrumbs environment via the special BREADCRUMBS global variable.
  *
  * @param  boolean $link_to_self_entrypoint Whether we'll be providing a link to where we are currently at
- * @return tempcode The default breadcrumb stub
+ * @return Tempcode The default breadcrumb stub
  */
 function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
 {
@@ -481,6 +481,7 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
         $label = ($BREADCRUMB_SET_SELF === null) ? $DISPLAYED_TITLE : $BREADCRUMB_SET_SELF;
         if ($label !== null) {
             $label_eval = is_object($label) ? $label->evaluate() : $label;
+            $last_breadcrumb_label_eval = mixed();
             $last_breadcrumb_label_eval = (count($BREADCRUMB_SET_PARENTS) == 0) ? '' : $BREADCRUMB_SET_PARENTS[count($BREADCRUMB_SET_PARENTS) - 1][1];
             if (is_object($last_breadcrumb_label_eval)) {
                 $last_breadcrumb_label_eval = $last_breadcrumb_label_eval->evaluate();
@@ -503,7 +504,7 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
  *
  * @param  array $segments The segments in array format
  * @param  ?mixed $link_to_self_entrypoint Whether we'll be providing a link to where we are currently at (by reference, gets set to false in some circumstances) (null: don't save by reference)
- * @return tempcode The segments in Tempcode0
+ * @return Tempcode The segments in Tempcode0
  */
 function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = null)
 {
@@ -579,7 +580,7 @@ function set_feed_url($url)
  *
  * @sets_output_state
  *
- * @param  tempcode $text The text
+ * @param  Tempcode $text The text
  * @param  boolean $append Whether to append
  * @param  boolean $put_in_box Whether to add a box around the parameter
  */
@@ -862,7 +863,7 @@ function do_site()
                 $fast_cache_path .= '__mobile';
             }
 
-            $out_evaluated = $out->evaluate(null, false);
+            $out_evaluated = $out->evaluate(null);
             $static_cache = $out_evaluated;
 
             // Remove any sessions etc
@@ -1039,7 +1040,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
  * @param  boolean $being_included Whether the page is being included from another
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @param  ?object $out Semi-filled output template (null: definitely not doing output streaming)
- * @return ?tempcode The page (null: no page)
+ * @return ?Tempcode The page (null: no page)
  */
 function request_page($codename, $required, $zone = null, $page_type = null, $being_included = false, $no_redirect_check = false, &$out = null)
 {
@@ -1535,7 +1536,7 @@ function _load_comcodes_page_from_cache($pages)
  * @param  ?PATH $file_base The file base to load from (null: standard)
  * @param  boolean $being_included Whether the page is being included from another
  * @param  ?object $out Semi-filled output template (null: definitely not doing output streaming)
- * @return tempcode The page
+ * @return Tempcode The page
  */
 function load_comcode_page($string, $zone, $codename, $file_base = null, $being_included = false, &$out = null)
 {

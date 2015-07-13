@@ -45,7 +45,7 @@ class Hook_cleanup_image_thumbs
     /**
      * Run the cleanup hook action.
      *
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run()
     {

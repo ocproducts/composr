@@ -127,7 +127,7 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
  * Exit with a message about word-filtering.
  *
  * @param  ?ID_TEXT $name The name of the parameter this is coming from. Certain parameters are not checked, for reasons of efficiency (avoiding loading whole word check list if not needed) (null: don't know param, do not check to avoid)
- * @param  tempcode $message Error message
+ * @param  Tempcode $message Error message
  * @return mixed Never returns (i.e. exits)
  */
 function warn_exit_wordfilter($name, $message)

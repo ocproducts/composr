@@ -18,7 +18,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class tempcode_test_set extends cms_test_case
+class Tempcode_test_set extends cms_test_case
 {
     public function testTempcode()
     {
@@ -376,7 +376,7 @@ class tempcode_test_set extends cms_test_case
 
 
 	<p>
-		IF_EMPTY false negative (tempcode) (good)
+		IF_EMPTY false negative (Tempcode) (good)
 	</p>
 
 

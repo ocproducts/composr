@@ -23,20 +23,20 @@ Viewing attachments (but not direct rendering - that is in media_rendering.php).
 */
 
 /**
- * Get tempcode for a Comcode rich-media attachment.
+ * Get Tempcode for a Comcode rich-media attachment.
  *
  * @param  ID_TEXT $tag The attachment tag
  * @set attachment attachment_safe
  * @param  array $attributes A map of the attributes (name=>val) for the tag
  * @param  array $attachment_row A map of the attachment properties (name=>val) for the attachment
- * @param  string $pass_id A special identifier to mark where the resultant tempcode is going to end up (e.g. the ID of a post)
+ * @param  string $pass_id A special identifier to mark where the resultant Tempcode is going to end up (e.g. the ID of a post)
  * @param  MEMBER $source_member The member who is responsible for this Comcode
  * @param  boolean $as_admin Whether to check as arbitrary admin
  * @param  object $connection The database connection to use
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @param  boolean $semiparse_mode Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).
- * @return tempcode The tempcode for the attachment
+ * @return Tempcode The Tempcode for the attachment
  */
 function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source_member, $as_admin, $connection, $highlight_bits = null, $on_behalf_of_member = null, $semiparse_mode = false)
 {

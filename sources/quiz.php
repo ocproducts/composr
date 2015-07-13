@@ -25,7 +25,7 @@
  * @param  string $zone The zone to show in
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The rendered quiz link
+ * @return Tempcode The rendered quiz link
  */
 function render_quiz_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -127,7 +127,7 @@ function get_quiz_data_for_csv($quiz_id)
  * Get quiz data for exporting it as CSV.
  *
  * @param   array $questions The quiz questions
- * @return  tempcode    The rendered quiz
+ * @return  Tempcode    The rendered quiz
  */
 function render_quiz($questions)
 {

@@ -79,7 +79,7 @@ class Hook_fields_upload
      * @param  ?ID_TEXT $id_field Name of the ID field in the table (null: N/A)
      * @param  ?ID_TEXT $field_id_field Name of the field ID field in the table (null: N/A)
      * @param  ?ID_TEXT $url_field Name of the URL field in the table (null: N/A)
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value(&$field, $ev, $i, $only_fields, $table = null, $id = null, $id_field = null, $field_id_field = null, $url_field = null)
     {

@@ -194,7 +194,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
      * Get an emoticon chooser template.
      *
      * @param  string $field_name The ID of the form field the emoticon chooser adds to
-     * @return tempcode The emoticon chooser template
+     * @return Tempcode The emoticon chooser template
      */
     public function get_emoticon_chooser($field_name = 'post')
     {

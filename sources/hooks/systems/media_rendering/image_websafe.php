@@ -84,7 +84,7 @@ class Hook_media_rendering_image_websafe
      * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
      * @param  ?MEMBER $source_member Member to run as (null: current member)
      * @param  ?URLPATH $url_direct_filesystem Direct URL (not via a script) (null: just use the normal URL)
-     * @return tempcode Rendered version
+     * @return Tempcode Rendered version
      */
     public function render($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $url_direct_filesystem = null)
     {

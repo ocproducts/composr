@@ -49,7 +49,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * Get a list of entries for the content covered by this search hook. In hierarchical list selection format.
      *
      * @param  string $selected The default selected item
-     * @return tempcode Tree structure
+     * @return Tempcode Tree structure
      */
     public function get_tree($selected)
     {
@@ -260,7 +260,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * Run function for rendering a search result.
      *
      * @param  array $row The data row stored when we retrieved the result
-     * @return tempcode The output
+     * @return Tempcode The output
      */
     public function render($row)
     {
@@ -274,7 +274,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * @param  ID_TEXT $zone The zone for the page
      * @param  ID_TEXT $page The page name
      * @param  string $limit_to What search hooks the search is being limited to (blank: not limited)
-     * @return tempcode The tempcode showing the Comcode page
+     * @return Tempcode The Tempcode showing the Comcode page
      */
     public function decide_template($zone, $page, $limit_to)
     {

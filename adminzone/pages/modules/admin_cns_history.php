@@ -65,7 +65,7 @@ class Module_admin_cns_history
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -108,7 +108,7 @@ class Module_admin_cns_history
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -140,7 +140,7 @@ class Module_admin_cns_history
     /**
      * The UI to show the edit/delete history of posts (exact history shown depending on GET parameters).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function gui()
     {
@@ -269,7 +269,7 @@ class Module_admin_cns_history
     /**
      * The actualiser to restore a deleted post.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function restore()
     {
@@ -296,7 +296,7 @@ class Module_admin_cns_history
     /**
      * The actualiser to revert an edited post.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function revert()
     {
@@ -325,7 +325,7 @@ class Module_admin_cns_history
     /**
      * The actualiser to delete some element from the post history.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delete()
     {

@@ -18,7 +18,7 @@
  */
 class input_filter_post_block_test_set extends cms_test_case
 {
-    function testQuickInstaller()
+    public function testQuickInstaller()
     {
         // Make sure #1817 cannot happen again (POST checks for non-POST situations)
 

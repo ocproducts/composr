@@ -109,8 +109,8 @@ function get_staff_actions_list()
  *
  * @param  ID_TEXT $zone The zone the page is being loaded from
  * @param  ID_TEXT $codename The codename of the page
- * @param  tempcode $edit_url The edit URL (blank if no edit access)
- * @return tempcode The warning
+ * @param  Tempcode $edit_url The edit URL (blank if no edit access)
+ * @return Tempcode The warning
  */
 function get_page_warning_details($zone, $codename, $edit_url)
 {
@@ -247,13 +247,11 @@ function closed_site()
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
         if (count($_POST) > 0) {
-            $redirect = build_url(array('page' => ''), '', array('keep_session' => 1));
+            $_redirect = build_url(array('page' => ''), '', array('keep_session' => 1));
         } else {
-            $redirect = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1), true);
+            $_redirect = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1), true);
         }
-        if (is_object($redirect)) {
-            $redirect = $redirect->evaluate();
-        }
+        $redirect = $_redirect->evaluate();
         $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
         $join_url = (get_forum_type() == 'none') ? '' : $GLOBALS['FORUM_DRIVER']->join_url();
         $middle = do_template('CLOSED_SITE', array('_GUID' => '4e753c50eca7c98344d2107fc18c4554', 'CLOSED' => comcode_to_tempcode(get_option('closed'), null, true), 'LOGIN_URL' => $login_url, 'JOIN_URL' => $join_url));
@@ -268,7 +266,7 @@ function closed_site()
  *
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
- * @return tempcode Message
+ * @return Tempcode Message
  */
 function page_not_found($codename, $zone)
 {

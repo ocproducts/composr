@@ -95,7 +95,7 @@ class Module_admin_cns_members
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -164,7 +164,7 @@ class Module_admin_cns_members
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -212,7 +212,7 @@ class Module_admin_cns_members
     /**
      * The do-next manager for choosing what to do
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -252,7 +252,7 @@ class Module_admin_cns_members
     /**
      * The UI for adding a member.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step1()
     {
@@ -278,7 +278,7 @@ class Module_admin_cns_members
     /**
      * The actualiser for adding a member.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step2()
     {
@@ -389,7 +389,7 @@ class Module_admin_cns_members
     /**
      * The UI for choosing delurk criteria.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delurk()
     {
@@ -524,7 +524,7 @@ class Module_admin_cns_members
     /**
      * The UI for confirming the deletion results of delurk criteria.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _delurk()
     {
@@ -568,7 +568,7 @@ class Module_admin_cns_members
     /**
      * The actualiser for deletion members according to delurk criteria.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __delurk()
     {
@@ -587,7 +587,7 @@ class Module_admin_cns_members
     /**
      * The actualiser to download a CSV of members.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function download_csv()
     {
@@ -598,7 +598,7 @@ class Module_admin_cns_members
     /**
      * The UI for importing a CSV file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_csv()
     {
@@ -624,7 +624,7 @@ class Module_admin_cns_members
     /**
      * The actualiser for importing a CSV file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import_csv()
     {

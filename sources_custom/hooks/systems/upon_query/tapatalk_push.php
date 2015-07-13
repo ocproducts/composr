@@ -16,9 +16,9 @@
 /**
  * Hook class.
  */
-class upon_query_tapatalk_push
+class Hook_upon_query_tapatalk_push
 {
-    function run($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
+    public function run($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
         if ((strpos($query, 'INTO ' . get_table_prefix() . 'f_posts ') !== false) && ($get_insert_id)) {
             require_once(get_file_base() . '/mobiquo/lib/TapatalkPush.php');

@@ -58,9 +58,9 @@ class Hook_config_currency
      *
      * @param  ID_TEXT $name The config option name
      * @param  array $myrow The config row
-     * @param  tempcode $human_name The field title
-     * @param  tempcode $explanation The field description
-     * @return tempcode The inputter
+     * @param  Tempcode $human_name The field title
+     * @param  Tempcode $explanation The field description
+     * @return Tempcode The inputter
      */
     public function field_inputter($name, $myrow, $human_name, $explanation)
     {

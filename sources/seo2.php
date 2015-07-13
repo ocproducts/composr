@@ -67,7 +67,7 @@ function seo_meta_erase_storage($type, $id, $do_decache = true)
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ?ID_TEXT $id The ID of the resource (null: adding)
  * @param  boolean $show_header Whether to show a header
- * @return tempcode Form page tempcode fragment
+ * @return Tempcode Form page Tempcode fragment
  */
 function seo_get_fields($type, $id = null, $show_header = true)
 {

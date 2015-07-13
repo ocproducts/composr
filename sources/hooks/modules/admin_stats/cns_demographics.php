@@ -47,7 +47,7 @@ class Hook_admin_stats_cns_demographics
      *
      * @param  object $ob The stats module object
      * @param  string $type The screen type
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function demographics($ob, $type)
     {

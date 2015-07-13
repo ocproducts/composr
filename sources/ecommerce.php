@@ -174,7 +174,7 @@ function get_transaction_fee($amount, $via)
  * @param  float $amount A transaction amount.
  * @param  ID_TEXT $currency The currency to use.
  * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
- * @return tempcode The button
+ * @return Tempcode The button
  */
 function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency, $via = null)
 {
@@ -198,7 +198,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $amount, 
  * @set    d w m y
  * @param  ID_TEXT $currency The currency to use.
  * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
- * @return tempcode The button
+ * @return Tempcode The button
  */
 function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency, $via = null)
 {
@@ -215,7 +215,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $amount,
  *
  * @param  AUTO_LINK $purchase_id The purchase ID.
  * @param  ID_TEXT $via The service the payment will go via via.
- * @return ?tempcode The button (null: no special cancellation -- just delete the subscription row to stop Composr regularly re-charging)
+ * @return ?Tempcode The button (null: no special cancellation -- just delete the subscription row to stop Composr regularly re-charging)
  */
 function make_cancel_button($purchase_id, $via)
 {
@@ -627,7 +627,7 @@ function fatal_ipn_exit($error, $dont_trigger = false)
  *
  * @param  AUTO_LINK $order_id Order ID
  * @param  ID_TEXT $currency The currency to use.
- * @return tempcode The button
+ * @return Tempcode The button
  */
 function make_cart_payment_button($order_id, $currency)
 {

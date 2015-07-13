@@ -410,14 +410,14 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
 }
 
 /**
- * Turn the tempcode lump into a standalone page.
+ * Turn the Tempcode lump into a standalone page.
  *
- * @param  ?tempcode $middle The tempcode to put into a nice frame (null: support output streaming mode)
+ * @param  ?Tempcode $middle The Tempcode to put into a nice frame (null: support output streaming mode)
  * @param  ?mixed $message 'Additional' message (null: none)
  * @param  string $type The type of special message
  * @set    inform warn ""
  * @param  boolean $include_header_and_footer Whether to include the header/footer/panels
- * @return tempcode Standalone page
+ * @return Tempcode Standalone page
  */
 function globalise($middle, $message = null, $type = '', $include_header_and_footer = false)
 {
@@ -890,7 +890,7 @@ function intelligent_write_error($path)
  * Discern the cause of a file-write error, and return an appropriate error message.
  *
  * @param  PATH $path File path that could not be written
- * @return tempcode Message
+ * @return Tempcode Message
  */
 function intelligent_write_error_inline($path)
 {
@@ -2550,7 +2550,7 @@ function seo_meta_load_for($type, $id, $title = null)
  *
  * @param  ?ID_TEXT $limit_to The search code for this tag content (e.g. downloads) (null: there is none)
  * @param  ?array $the_tags Explicitly pass a list of tags instead (null: use loaded ones)
- * @return tempcode Loaded tag output (or blank if there are none)
+ * @return Tempcode Loaded tag output (or blank if there are none)
  */
 function get_loaded_tags($limit_to = null, $the_tags = null)
 {
@@ -2728,7 +2728,7 @@ function propagate_filtercode_page_link()
  * @param  ID_TEXT $content_type Content type
  * @param  mixed $id Content ID
  * @param  mixed $title Content title (either unescaped string, or Compiled Comcode [i.e. Tempcode])
- * @return tempcode Inline editable HTML to put into output
+ * @return Tempcode Inline editable HTML to put into output
  */
 function make_fractionable_editable($content_type, $id, $title)
 {
@@ -2995,7 +2995,7 @@ function update_catalogue_content_ref($type, $from, $to)
     if (strpos(get_db_type(), 'mysql') !== false) {
         $GLOBALS['SITE_DB']->query_update('catalogue_fields f JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short v ON v.cf_id=f.id', array('cv_value' => $to), array('cv_value' => $from, 'cf_type' => $type));
     } else {
-        $fields = $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('id'), array('cf_type' => $type));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id'), array('cf_type' => $type));
         foreach ($fields as $field) {
             $GLOBALS['SITE_DB']->query_update('catalogue_efv_short', array('cv_value' => $to), array('cv_value' => $from, 'cf_id' => $field['id']));
         }

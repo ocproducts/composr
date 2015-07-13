@@ -114,7 +114,7 @@ function get_afm_form()
 /**
  * Get the fields that need to be filled in to know how to do an AFM connection.
  *
- * @return tempcode The form fields.
+ * @return Tempcode The form fields.
  */
 function get_afm_form_fields()
 {

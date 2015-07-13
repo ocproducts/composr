@@ -25,7 +25,7 @@
  * @param  SHORT_TEXT $menu An identifier for this menu (will be used as a unique ID by menu javascript code)
  * @param  MEMBER $source_member The member the menu is being built as
  * @param  ID_TEXT $type The menu type (determines what templates get used)
- * @return tempcode The generated tempcode of the menu
+ * @return Tempcode The generated Tempcode of the menu
  */
 function build_comcode_menu($comcode, $menu, $source_member, $type)
 {

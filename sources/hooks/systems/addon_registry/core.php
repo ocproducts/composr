@@ -1149,8 +1149,6 @@ class Hook_addon_registry_core
             'sources/tempcode.php',
             'sources/tempcode_compiler.php',
             'sources/tempcode_optimiser.php',
-            'sources/tempcode__runtime.php',
-            'sources/tempcode_compiler__runtime.php',
             'sources/templates.php',
             'sources/themes.php',
             'sources/type_sanitisation.php',

@@ -240,11 +240,11 @@ function actual_delete_zone_lite($zone)
 /**
  * The do-next manager for after content management.
  *
- * @param  tempcode $title The title (output of get_screen_title)
+ * @param  Tempcode $title The title (output of get_screen_title)
  * @param  ?ID_TEXT $page The name of the page just handled (null: none)
  * @param  ID_TEXT $zone The name of the zone just handled (blank: none/welcome-zone)
- * @param  tempcode $completion_text The text to show (blank: default)
- * @return tempcode The UI
+ * @param  Tempcode $completion_text The text to show (blank: default)
+ * @return Tempcode The UI
  */
 function sitemap_do_next_manager($title, $page, $zone, $completion_text)
 {
@@ -301,7 +301,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
  * @param  ?array $no_go A list of zone to not put into the list (null: none to skip)
  * @param  ?array $reorder A reordering (null: no reordering)
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_zones($sel = null, $no_go = null, $reorder = null, $updated_since = null)
 {
@@ -351,7 +351,7 @@ function create_selection_list_zones($sel = null, $no_go = null, $reorder = null
  * @param  boolean $inline Whether the zone chooser will be shown inline to something else (as opposed to providing it's own borderings)
  * @param  ?array $no_go A list of zone to not put into the list (null: none to skip)
  * @param  ?array $reorder A reordering (null: no reordering)
- * @return tempcode The zone chooser
+ * @return Tempcode The zone chooser
  */
 function get_zone_chooser($inline = false, $no_go = null, $reorder = null)
 {

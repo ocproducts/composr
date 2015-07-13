@@ -51,7 +51,7 @@ class Hook_pointstore_permission
      * @param  ID_TEXT $category Permission scope 'category'
      * @param  SHORT_TEXT $mail_subject Confirmation mail subject
      * @param  LONG_TEXT $mail_body Confirmation mail body
-     * @return tempcode The fields
+     * @return Tempcode The fields
      */
     public function get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $cost = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
     {
@@ -277,7 +277,7 @@ class Hook_pointstore_permission
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -307,7 +307,7 @@ class Hook_pointstore_permission
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {

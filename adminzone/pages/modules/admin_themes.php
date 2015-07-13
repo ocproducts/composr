@@ -129,7 +129,7 @@ class Module_admin_themes
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -348,7 +348,7 @@ class Module_admin_themes
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -428,7 +428,7 @@ class Module_admin_themes
     /**
      * The UI to manage themes.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function manage_themes()
     {
@@ -553,7 +553,7 @@ class Module_admin_themes
      * @param  string $mobile_pages Comma-separated list mobile-supporting pages (blank: all do)
      * @param  BINARY $supports_wide Whether the theme supports 'wide' screens
      * @param  boolean $use_on_all_zones Whether to use this theme on all zones
-     * @return tempcode The fields
+     * @return Tempcode The fields
      */
     public function get_theme_fields($name = '', $title = '', $description = '', $author = null, $mobile_pages = '', $supports_wide = 1, $use_on_all_zones = false)
     {
@@ -689,7 +689,7 @@ class Module_admin_themes
     /**
      * The UI to add a theme.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_theme()
     {
@@ -738,7 +738,7 @@ class Module_admin_themes
     /**
      * The actualiser to add a theme.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add_theme()
     {
@@ -758,7 +758,7 @@ class Module_admin_themes
     /**
      * The UI to edit/rename a theme.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit_theme()
     {
@@ -802,7 +802,7 @@ class Module_admin_themes
     /**
      * The actualiser to edit/rename a theme.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_theme()
     {
@@ -850,13 +850,13 @@ class Module_admin_themes
     /**
      * The do-next manager for after download content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ID_TEXT $theme The theme that was just handled
      * @param  ?LANGUAGE_NAME $lang The language we were working in (null: autodetect) (blank: autodetect)
      * @param  ID_TEXT $type Code to determine what kind of links to show
      * @param  ID_TEXT $file ID of file that an edit link should load (blank: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $theme, $lang, $type, $file)
     {
@@ -929,9 +929,9 @@ class Module_admin_themes
     /**
      * The UI to choose a theme to work with.
      *
-     * @param  tempcode $title The title to show when choosing a theme
+     * @param  Tempcode $title The title to show when choosing a theme
      * @param  boolean $lang_too Whether to also choose a language
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_theme($title, $lang_too = false)
     {
@@ -956,7 +956,7 @@ class Module_admin_themes
     /**
      * The UI to choose a CSS file to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_css()
     {
@@ -1016,7 +1016,7 @@ class Module_admin_themes
     /**
      * The UI to edit a CSS file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit_css()
     {
@@ -1174,7 +1174,7 @@ class Module_admin_themes
     /**
      * The actualiser to edit a CSS file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_css()
     {
@@ -1358,7 +1358,7 @@ class Module_admin_themes
     /**
      * The UI to choose a template to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit_templates()
     {
@@ -1462,7 +1462,7 @@ class Module_admin_themes
     /**
      * The UI to edit a template.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_templates()
     {
@@ -1852,12 +1852,12 @@ class Module_admin_themes
     }
 
     /**
-     * Helper function to get tempcode for insertion of symbols.
+     * Helper function to get Tempcode for insertion of symbols.
      *
      * @param  array $array A list of pairs (symbol name,arity)
      * @param  string $stub The "stub" that determines what language codes to lookup for the given symbols, and generally, the collective naming strategy
      * @param  string $id The ID of the actual template editor we are working with
-     * @return tempcode The tempcode
+     * @return Tempcode The Tempcode
      */
     public function generate_from($array, $stub, $id)
     {
@@ -1873,7 +1873,7 @@ class Module_admin_themes
     /**
      * The actualiser to edit a template. Always saves to the most overridden version.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __edit_templates()
     {
@@ -1982,13 +1982,13 @@ class Module_admin_themes
     }
 
     /**
-     * Get tempcode for a theme image adding/editing form.
+     * Get Tempcode for a theme image adding/editing form.
      *
      * @param  ID_TEXT $theme The theme the theme image is in
      * @param  LANGUAGE_NAME $lang The language the theme image is for
      * @param  SHORT_TEXT $id The theme image ID
      * @param  URLPATH $path The URL to the theme image
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_image_form_fields($theme, $lang, $id = '', $path = '')
     {
@@ -2026,7 +2026,7 @@ class Module_admin_themes
     /**
      * The UI to add a theme image.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_image()
     {
@@ -2057,7 +2057,7 @@ class Module_admin_themes
     /**
      * The actualiser to add a theme image.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add_image()
     {
@@ -2108,7 +2108,7 @@ class Module_admin_themes
     /**
      * The UI to select a theme image to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function manage_images()
     {
@@ -2167,7 +2167,7 @@ class Module_admin_themes
     /**
      * The UI to edit a theme image.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit_image()
     {
@@ -2236,7 +2236,7 @@ class Module_admin_themes
     /**
      * The actualiser to edit a theme image.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_image()
     {
@@ -2299,7 +2299,7 @@ class Module_admin_themes
     /**
      * Shows the list of templates
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function list_screen_previews()
     {
@@ -2401,7 +2401,7 @@ class Module_admin_themes
     /**
      * Shows the preview of a screen
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_screen_preview()
     {
@@ -2422,9 +2422,9 @@ class Module_admin_themes
     /**
      * The UI to run the Tempcode tester.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
-    public function tempcode_tester()
+    public function Tempcode_tester()
     {
         require_javascript('ajax');
 

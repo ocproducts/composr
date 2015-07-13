@@ -164,12 +164,12 @@ if ($type == 'auto_probe') {
         echo '
             <h2>Advice</h2>
         ';
-        foreach (
-            array(
-                'maybe_delete' => 'The following files might need deleting',
-                'css_diff' => 'The following CSS/tpl changes have happened (diff; may need applying to overridden templates)',
-                'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an adhoc upgrader'
-            ) as $d => $message) {
+        $advice_parts = array(
+            'maybe_delete' => 'The following files might need deleting',
+            'css_diff' => 'The following CSS/tpl changes have happened (diff; may need applying to overridden templates)',
+            'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an adhoc upgrader'
+        );
+        foreach ($advice_parts as $d => $message) {
             echo '
                     <p>
                             ' . $message . '&hellip;
@@ -196,7 +196,7 @@ if ($type == 'auto_probe') {
                             <p class="nothing_here">
                                         None
                             </p>
-                    ';
+                ';
             }
         }
 

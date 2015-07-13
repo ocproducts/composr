@@ -67,7 +67,7 @@ class Module_admin_points
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -107,7 +107,7 @@ class Module_admin_points
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -135,8 +135,8 @@ class Module_admin_points
     /**
      * An interface for choosing between dates.
      *
-     * @param  tempcode $title The title to display.
-     * @return tempcode The result of execution.
+     * @param  Tempcode $title The title to display.
+     * @return Tempcode The result of execution.
      */
     public function _get_between($title)
     {
@@ -163,7 +163,7 @@ class Module_admin_points
     /**
      * Export a CSV of point transactions.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function points_export()
     {
@@ -180,7 +180,7 @@ class Module_admin_points
     /**
      * The UI to view all point transactions ordered by date.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function points_log()
     {
@@ -245,7 +245,7 @@ class Module_admin_points
     /**
      * The actualiser to reverse a point gift transaction.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function reverse()
     {
@@ -294,7 +294,7 @@ class Module_admin_points
     /**
      * The actualiser to charge a member points.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function points_charge()
     {

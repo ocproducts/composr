@@ -25,7 +25,7 @@
  * @param  ID_TEXT $zone Zone to link through to
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The author box
+ * @return Tempcode The author box
  */
 function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {

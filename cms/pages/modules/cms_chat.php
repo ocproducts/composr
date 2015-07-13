@@ -74,7 +74,7 @@ class Module_cms_chat
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -180,7 +180,7 @@ class Module_cms_chat
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -224,7 +224,7 @@ class Module_cms_chat
     /**
      * The main user interface for choosing a chat room to moderate.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function chat_choose_room()
     {
@@ -306,7 +306,7 @@ class Module_cms_chat
     /**
      * The main user interface for moderating a chat room.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function moderate_chat_room()
     {
@@ -387,7 +387,7 @@ class Module_cms_chat
     /**
      * The actualiser for banning a chatter.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function chat_ban()
     {
@@ -438,7 +438,7 @@ class Module_cms_chat
     /**
      * The actualiser for unbanning a chatter.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function chat_unban()
     {
@@ -481,7 +481,7 @@ class Module_cms_chat
     /**
      * The UI for editing a message.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function chat_edit_message()
     {
@@ -521,7 +521,7 @@ class Module_cms_chat
     /**
      * The actualiser for editing a message.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _chat_edit_message()
     {
@@ -584,7 +584,7 @@ class Module_cms_chat
     /**
      * The actualiser for deleting a message.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _chat_delete_message()
     {
@@ -638,7 +638,7 @@ class Module_cms_chat
     /**
      * The UI for deleting all the messages in a room.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function chat_delete_all_messages()
     {
@@ -668,7 +668,7 @@ class Module_cms_chat
     /**
      * The actualiser for deleting all the messages in a room.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _chat_delete_all_messages()
     {
@@ -705,7 +705,7 @@ class Module_cms_chat
     /**
      * The actualiser for deleting all the ticked messages in a room.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _chat_delete_many_messages()
     {

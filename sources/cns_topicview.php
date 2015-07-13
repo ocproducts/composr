@@ -665,7 +665,7 @@ function cns_cache_member_details($members)
  * @param  array $_postdetails Map of post info.
  * @param  boolean $may_reply Whether the current member may reply to the topic
  * @param  ID_TEXT $rendering_context Rendering context
- * @return tempcode The buttons.
+ * @return Tempcode The buttons.
  */
 function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $rendering_context = 'cns')
 {
@@ -864,7 +864,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
  * Get post emphasis Tempcode.
  *
  * @param  array $_postdetails Map of post info.
- * @return tempcode The tempcode.
+ * @return Tempcode The Tempcode.
  */
 function cns_get_post_emphasis($_postdetails)
 {

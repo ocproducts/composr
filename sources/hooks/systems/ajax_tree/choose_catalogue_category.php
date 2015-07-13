@@ -101,7 +101,7 @@ class Hook_choose_catalogue_category
      * @param  ?ID_TEXT $id The ID to do under (null: root) - not always supported
      * @param  array $options Options being passed through
      * @param  ?ID_TEXT $it The ID to select by default (null: none)
-     * @return tempcode The nice list
+     * @return Tempcode The nice list
      */
     public function simple($id, $options, $it = null)
     {

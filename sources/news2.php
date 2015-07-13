@@ -677,7 +677,7 @@ function delete_news($id)
  * Get UI fields for starting news import.
  *
  * @param  boolean $import_to_blog Whether to import to blogs, by default
- * @return tempcode UI fields
+ * @return Tempcode UI fields
  */
 function import_rss_fields($import_to_blog)
 {

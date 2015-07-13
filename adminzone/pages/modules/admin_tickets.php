@@ -61,7 +61,7 @@ class Module_admin_tickets
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -101,7 +101,7 @@ class Module_admin_tickets
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -130,7 +130,7 @@ class Module_admin_tickets
     /**
      * The UI to choose a ticket type to edit, or to add a ticket.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function ticket_type_interface()
     {
@@ -176,7 +176,7 @@ class Module_admin_tickets
     /**
      * The actualiser to add a ticket type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_ticket_type()
     {
@@ -195,7 +195,7 @@ class Module_admin_tickets
     /**
      * The UI to edit a ticket.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit_ticket_type()
     {
@@ -224,7 +224,7 @@ class Module_admin_tickets
     /**
      * The actualiser to edit/delete a ticket type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_ticket_type()
     {

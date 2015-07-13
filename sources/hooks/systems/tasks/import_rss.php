@@ -207,7 +207,7 @@ class Hook_task_import_rss
                             $rep_image = 'uploads/repimages/' . $uniqid . '_' . basename($rep_image);
                         }
                         $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
-                        $result = http_download_file($item['rep_image'], null, false, false, 'Composr', null, null, null, null, null, $target_handle);
+                        http_download_file($item['rep_image'], null, false, false, 'Composr', null, null, null, null, null, $target_handle);
                         fclose($target_handle);
                         sync_file($target_path);
                         fix_permissions($target_path);

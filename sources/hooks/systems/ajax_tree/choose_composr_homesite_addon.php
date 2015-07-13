@@ -69,7 +69,7 @@ class Hook_choose_composr_homesite_addon
      * @param  array $options Options being passed through
      * @param  ?ID_TEXT $it The ID to select by default (null: none)
      * @param  string $prefix Prefix titles with this
-     * @return tempcode The nice list
+     * @return Tempcode The nice list
      */
     public function simple($id, $options, $it = null, $prefix = '')
     {

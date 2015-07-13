@@ -72,7 +72,7 @@ function suggest_fatalistic()
  *
  * @param  integer $errno The zip error number.
  * @param  boolean $mzip Whether mzip was used.
- * @return tempcode Error message.
+ * @return Tempcode Error message.
  */
 function zip_error($errno, $mzip = false)
 {
@@ -252,7 +252,9 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
     if (!$GLOBALS['SUPPRESS_ERROR_DEATH']) { // Don't display - die as normal
         $error_str = 'PHP ' . strtoupper($type) . ' [' . strval($errno) . '] ' . $errstr . ' in ' . $errfile . ' on line ' . strval($errline);
 
-        if (throwing_errors()) throw new CMSException($error_str);
+        if (throwing_errors()) {
+            throw new CMSException($error_str);
+        }
 
         if ($type == 'error') {
             critical_error('EMERGENCY', escape_html($error_str));
@@ -267,13 +269,13 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
 }
 
 /**
- * Get the tempcode for a warn page.
+ * Get the Tempcode for a warn page.
  *
- * @param  tempcode $title The title of the warn page
- * @param  mixed $text The text to put on the warn page (either tempcode or string)
+ * @param  Tempcode $title The title of the warn page
+ * @param  mixed $text The text to put on the warn page (either Tempcode or string)
  * @param  boolean $provide_back Whether to provide a back button
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
- * @return tempcode The warn page
+ * @return Tempcode The warn page
  */
 function _warn_screen($title, $text, $provide_back = true, $support_match_key_messages = false)
 {
@@ -313,7 +315,7 @@ function _sanitise_error_msg($text)
 /**
  * Do a terminal execution on a defined page type
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @param  ID_TEXT $template Name of the terminal page template
  * @param  boolean $support_match_key_messages ?Whether match key messages / redirects should be supported (null: detect)
  * @return mixed Never returns (i.e. exits)
@@ -797,7 +799,7 @@ function remove_ip_ban($ip)
 /**
  * Lookup error on compo.sr, to see if there is more information.
  *
- * @param  mixed $error_message The error message (string or tempcode)
+ * @param  mixed $error_message The error message (string or Tempcode)
  * @return ?string The result from the web service (null: no result)
  */
 function get_webservice_result($error_message)
@@ -876,7 +878,7 @@ function get_webservice_result($error_message)
  * Do a fatal exit, echo the header (if possible) and an error message, followed by a debugging back-trace.
  * It also adds an entry to the error log, for reference.
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @param  boolean $return Whether to return
  * @return mixed Never returns (i.e. exits)
  */
@@ -1186,7 +1188,7 @@ function put_value_in_stack_trace($value)
 /**
  * Return a debugging back-trace of the current execution stack. Use this for debugging purposes.
  *
- * @return tempcode Debugging backtrace
+ * @return Tempcode Debugging backtrace
  */
 function get_html_trace()
 {
@@ -1239,7 +1241,7 @@ function get_html_trace()
  * @param  string $natural_text Message screen text that is about to be displayed
  * @param  boolean $only_if_zone Only if it is a zone-level match-key
  * @param  boolean $only_text_match Whether to only consider text matches, not match-key matches
- * @return ?tempcode The message (null: no change)
+ * @return ?Tempcode The message (null: no change)
  */
 function _look_for_match_key_message($natural_text, $only_if_zone = false, $only_text_match = false)
 {

@@ -266,7 +266,7 @@ class Module_calendar
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -388,7 +388,7 @@ class Module_calendar
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -489,7 +489,7 @@ class Module_calendar
     /**
      * View the main calendar screen, with certain filter allowances.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar()
     {
@@ -773,7 +773,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_day($view_id, $day, $explode, $member_id, $filter)
     {
@@ -904,7 +904,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_week($view_id, $day, $explode, $member_id, $filter)
     {
@@ -1124,7 +1124,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_month($view_id, $day, $explode, $member_id, $filter)
     {
@@ -1254,7 +1254,7 @@ class Module_calendar
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
      * @param  ?array $filter The type filter (null: none)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_calendar_view_year($view_id, $day, $explode, $member_id, $filter)
     {
@@ -1427,7 +1427,7 @@ class Module_calendar
     /**
      * View an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_event()
     {
@@ -1597,7 +1597,7 @@ class Module_calendar
     /**
      * Interface to subscribe for reminders to an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function subscribe_event()
     {
@@ -1635,7 +1635,7 @@ class Module_calendar
     /**
      * Subscribe for reminders to an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _subscribe_event()
     {
@@ -1690,7 +1690,7 @@ class Module_calendar
     /**
      * Unsubscribe for reminders to an event.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function unsubscribe_event()
     {
@@ -1710,7 +1710,7 @@ class Module_calendar
     /**
      * Declare interests for event types.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interests()
     {
@@ -1732,7 +1732,7 @@ class Module_calendar
     /**
      * Declare interest to an event type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function declare_interest()
     {
@@ -1747,7 +1747,7 @@ class Module_calendar
     /**
      * Undeclare interest to an event type.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function undeclare_interest()
     {

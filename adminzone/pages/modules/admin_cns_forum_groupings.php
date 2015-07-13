@@ -71,7 +71,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -90,7 +90,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     /**
      * Standard crud_module run_start.
      *
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start()
     {
@@ -118,7 +118,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a forum grouping template adding/editing form.
+     * Get Tempcode for a forum grouping template adding/editing form.
      *
      * @param  SHORT_TEXT $title The title (name) of the forum grouping
      * @param  LONG_TEXT $description The description for the forum grouping
@@ -183,7 +183,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
      * Standard crud_module list function.
      *
      * @param  ?ID_TEXT $avoid The entry to not show (null: none to not show)
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries($avoid = null)
     {

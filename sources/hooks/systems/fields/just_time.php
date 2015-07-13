@@ -110,7 +110,7 @@ class Hook_fields_just_time
      *
      * @param  array $field The field details
      * @param  mixed $ev The raw value
-     * @return mixed Rendered field (tempcode or string)
+     * @return mixed Rendered field (Tempcode or string)
      */
     public function render_field_value($field, $ev)
     {
@@ -153,7 +153,7 @@ class Hook_fields_just_time
      * @param  array $field The field details
      * @param  ?string $actual_value The actual current value of the field (null: none)
      * @param  boolean $new Whether this is for a new entry
-     * @return ?tempcode The Tempcode for the input field (null: skip the field - it's not input)
+     * @return ?Tempcode The Tempcode for the input field (null: skip the field - it's not input)
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {

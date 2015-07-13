@@ -99,7 +99,7 @@ class Module_bookmarks
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -125,7 +125,7 @@ class Module_bookmarks
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -161,7 +161,7 @@ class Module_bookmarks
     /**
      * The UI to manage bookmarks.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function manage_bookmarks()
     {
@@ -207,7 +207,7 @@ class Module_bookmarks
     /**
      * The actualiser to manage bookmarks.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _manage_bookmarks()
     {
@@ -241,7 +241,7 @@ class Module_bookmarks
     /**
      * The UI to add a bookmark.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add()
     {
@@ -256,7 +256,7 @@ class Module_bookmarks
     /**
      * The actualiser to add a bookmark.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add()
     {
@@ -281,7 +281,7 @@ class Module_bookmarks
     /**
      * The actualiser to edit a bookmark.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit_bookmark()
     {

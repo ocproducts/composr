@@ -2493,23 +2493,41 @@ function maintain_theme_in_link(url)
 }
 
 /* Get URL stub to propagate keep_* parameters */
-function keep_stub(starting_query_string) // starting_query_string means "Put a '?' for the first parameter"
+function keep_stub(starting_query_string,skip_session,context) // starting_query_string means "Put a '?' for the first parameter"
 {
 	if (!window) return '';
 	if (typeof window.location=='undefined') return ''; // Can happen, in a document.write'd popup
 
+	if (typeof skip_session=='undefined') skip_session=false;
+
+	if (((typeof context=='undefined') || (context.indexOf('keep_')==-1)) && (skip_session))
+	{
+		if (starting_query_string)
+		{
+			if (typeof window.cache_keep_stub_starting_query_string!='undefined')
+				return window.cache_keep_stub_starting_query_string;
+		} else
+		{
+			if (typeof window.cache_keep_stub!='undefined')
+				return window.cache_keep_stub;
+		}
+	}
+
 	var to_add='',i;
 	var search=(window.location.search=='')?'?':window.location.search.substr(1);
 	var bits=search.split('&');
-	var done_session=false;
+	var done_session=skip_session;
 	var gap_symbol;
 	for (i=0;i<bits.length;i++)
 	{
 		if (bits[i].substr(0,5)=='keep_')
 		{
-			gap_symbol=(((to_add=='') && (starting_query_string))?'?':'&');
-			to_add=to_add+gap_symbol+bits[i];
-			if (bits[i].substr(0,13)=='keep_session=') done_session=true;
+			if ((typeof context=='undefined') || (context.indexOf('?'+bits[i])==-1 && context.indexOf('&'+bits[i])==-1))
+			{
+				gap_symbol=(((to_add=='') && (starting_query_string))?'?':'&');
+				to_add+=gap_symbol+bits[i];
+				if (bits[i].substr(0,13)=='keep_session=') done_session=true;
+			}
 		}
 	}
 	if (!done_session)
@@ -2518,6 +2536,18 @@ function keep_stub(starting_query_string) // starting_query_string means "Put a 
 		gap_symbol=(((to_add=='') && (starting_query_string))?'?':'&');
 		if (session) to_add=to_add+gap_symbol+'keep_session='+window.encodeURIComponent(session);
 	}
+
+	if (((typeof context=='undefined') || (context.indexOf('keep_')==-1)) && (skip_session))
+	{
+		if (starting_query_string)
+		{
+			window.cache_keep_stub_starting_query_string=to_add;
+		} else
+		{
+			window.cache_keep_stub=to_add;
+		}
+	}
+
 	return to_add;
 }
 

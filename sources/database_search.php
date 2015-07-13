@@ -1770,7 +1770,7 @@ function sort_search_results($hook_results, $results, $direction)
  * @param  string $direction Sort direction
  * @set    ASC DESC
  * @param  boolean $general_search Whether this is a general search, rather than a search for a specific result-type (such as all members)
- * @return tempcode Interface
+ * @return Tempcode Interface
  */
 function build_search_results_interface($results, $start, $max, $direction, $general_search = false)
 {

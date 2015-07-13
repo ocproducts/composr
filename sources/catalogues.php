@@ -74,7 +74,7 @@ function load_catalogue_row($catalogue_name, $fail_ok = false)
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The catalogue box
+ * @return Tempcode The catalogue box
  */
 function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -104,7 +104,7 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
 }
 
 /**
- * Get tempcode for a catalogue category 'feature box' for the given row
+ * Get Tempcode for a catalogue category 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -113,7 +113,7 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
@@ -189,7 +189,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
  * @param  ID_TEXT $zone Zone to link through to
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The catalogue box
+ * @return Tempcode The catalogue box
  */
 function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -287,7 +287,7 @@ function count_catalogue_category_children($category_id)
  * @param  ?ID_TEXT $_order_by Orderer (null: read from environment)
  * @param  ID_TEXT $ordering_param Environment param used for ordering
  * @param  ?MEMBER $viewing_member_id Viewing member ID (null: current user)
- * @return array An array containing our built up entries (renderable tempcode), our sorting interface, and our entries (entry records from database, with an additional 'map' field), and the max rows
+ * @return array An array containing our built up entries (renderable Tempcode), our sorting interface, and our entries (entry records from database, with an additional 'map' field), and the max rows
  */
 function get_catalogue_category_entry_buildup($category_id, $catalogue_name, $catalogue, $view_type, $tpl_set, $max, $start, $filter, $root, $display_type = null, $do_sorting = true, $entries = null, $_filtercode = '', $_order_by = null, $ordering_param = 'sort', $viewing_member_id = null)
 {
@@ -859,7 +859,7 @@ function catalogue_entries_manual_sort($fields, &$entries, $order_by, $direction
  * @param  boolean $breadcrumbs_details Whether to grab the breadcrumbs details
  * @param  ?integer $order_by Field index to order by (null: none)
  * @param  ?array $_breadcrumbs Write breadcrumbs into here (null: don't bother)
- * @return array A map of information relating to the entry. The map contains 'FIELDS' (tempcode for all accumulated fields), 'FIELD_x' (for each field x applying to the entry), STAFF_DETAILS, COMMENT_DETAILS, RATING_DETAILS, VIEW_URL, BREADCRUMBS
+ * @return array A map of information relating to the entry. The map contains 'FIELDS' (Tempcode for all accumulated fields), 'FIELD_x' (for each field x applying to the entry), STAFF_DETAILS, COMMENT_DETAILS, RATING_DETAILS, VIEW_URL, BREADCRUMBS
  */
 function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root = null, $fields = null, $only_fields = null, $feedback_details = false, $breadcrumbs_details = false, $order_by = null, &$_breadcrumbs = null)
 {
@@ -1300,7 +1300,7 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
  * @param  boolean $prefer_ones_with_entries If there are too many to list prefer to get ones with entries rather than just the newest
  * @param  boolean $only_submittable Whether to only show catalogues that can be submitted to
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode Catalogue selection list
+ * @return Tempcode Catalogue selection list
  */
 function create_selection_list_catalogues($it = null, $prefer_ones_with_entries = false, $only_submittable = false, $updated_since = null)
 {
@@ -1355,7 +1355,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
  * @param  ?AUTO_LINK $it The currently selected entry (null: none)
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
  * @param  boolean $use_compound_list Whether to make the list elements store comma-separated child lists instead of IDs
- * @return tempcode The list of categories
+ * @return Tempcode The list of categories
  */
 function create_selection_list_catalogue_category_tree($catalogue_name, $it = null, $addable_filter = false, $use_compound_list = false)
 {
@@ -1493,7 +1493,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
  * @param  ?AUTO_LINK $it The currently selected entry (null: none selected)
  * @param  ?AUTO_LINK $submitter Only show entries submitted by this member (null: no filter)
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @return tempcode The list of entries
+ * @return Tempcode The list of entries
  */
 function create_selection_list_catalogue_entries_tree($catalogue_name, $it = null, $submitter = null, $editable_filter = false)
 {
@@ -1536,7 +1536,7 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
     }
 
     if ($category_id === null) {
-        $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $catalogue_name), '', 1);
+        $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
         if ($is_tree === null) {
             return array();
         }
@@ -1735,7 +1735,7 @@ function is_ecommerce_catalogue_entry($entry_id)
  * @param  AUTO_LINK $id Entry ID
  * @param  boolean $no_title Whether to skip rendering a title
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
- * @return tempcode Tempcode interface to display an entry
+ * @return Tempcode Tempcode interface to display an entry
  */
 function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_filter = true)
 {

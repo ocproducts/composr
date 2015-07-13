@@ -26,7 +26,7 @@ class Hook_snippet_exists_banner_type
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *
-     * @return tempcode The snippet
+     * @return Tempcode The snippet
      */
     public function run()
     {

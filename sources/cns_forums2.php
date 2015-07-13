@@ -23,7 +23,7 @@
  *
  * @param  ?AUTO_LINK $avoid Category to avoid putting in the list (null: don't avoid any).
  * @param  ?AUTO_LINK $it Category selected by default (null: no specific default).
- * @return tempcode The list.
+ * @return Tempcode The list.
  */
 function cns_create_selection_list_forum_groupings($avoid = null, $it = null)
 {
@@ -42,7 +42,7 @@ function cns_create_selection_list_forum_groupings($avoid = null, $it = null)
  * Get a nice, formatted XHTML list of topics, in forum tree structure
  *
  * @param  ?AUTO_LINK $it The currently selected topic (null: none selected)
- * @return tempcode The list of topics
+ * @return Tempcode The list of topics
  */
 function cns_create_selection_list_topic_tree($it = null)
 {
@@ -131,7 +131,7 @@ function cns_get_topic_tree($forum_id = null, $breadcrumbs = null, $title = null
 }
 
 /**
- * Generate a tempcode tree based selection list for choosing a forum. Also capable of getting comma-separated ancester forum lists.
+ * Generate a Tempcode tree based selection list for choosing a forum. Also capable of getting comma-separated ancester forum lists.
  *
  * @param  ?MEMBER $member_id The member that the view privileges are done for (null: current member).
  * @param  ?AUTO_LINK $base_forum The forum we are starting from (null: capture the whole tree).
@@ -139,7 +139,7 @@ function cns_get_topic_tree($forum_id = null, $breadcrumbs = null, $title = null
  * @param  boolean $use_compound_list Whether to generate a compound list (a list of all the ancesters, for each point in the forum tree) as well as the tree.
  * @param  ?integer $levels The number of recursive levels to search (null: all)
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode Forum selection list.
+ * @return Tempcode Forum selection list.
  */
 function create_selection_list_forum_tree($member_id = null, $base_forum = null, $selected_forum = null, $use_compound_list = false, $levels = null, $updated_since = null)
 {
@@ -199,7 +199,7 @@ function create_selection_list_forum_tree($member_id = null, $base_forum = null,
  * @param  ?integer $levels The number of recursive levels to search (null: all)
  * @param  boolean $do_stats Whether to generate tree statistics.
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return array A list of maps, OR (if $use_compound_list) a pair of the tempcode and the compound list.
+ * @return array A list of maps, OR (if $use_compound_list) a pair of the Tempcode and the compound list.
  */
 function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs = '', $skip = null, $forum_details = null, $use_compound_list = false, $levels = null, $do_stats = false, $updated_since = null)
 {

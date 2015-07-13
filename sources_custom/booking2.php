@@ -20,7 +20,7 @@ This file deals specifically with maintaining the bookables, not specific bookin
 /**
  * Get a do-next manager for bookings.
  *
- * @return tempcode Booking do-next manager.
+ * @return Tempcode Booking do-next manager.
  */
 function booking_do_next()
 {

@@ -52,7 +52,7 @@ class Block_twitter_feed
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -122,7 +122,7 @@ class Block_twitter_feed
         } else {
             $twitter_size = '16';
         }
-        //twitter_logo_img_code is set with the code needed for the $IMG tempcode
+        //twitter_logo_img_code is set with the code needed for the $IMG Tempcode
         $twitter_logo_img_code = 'twitter_feed/bird_' . $twitter_color . '_' . $twitter_size;
 
         // Create template object

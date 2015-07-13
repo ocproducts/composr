@@ -19,7 +19,7 @@
  */
 
 /**
- * Get the tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
+ * Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
  *
  * @param  boolean $simplified Whether to simplify the banner interface (for the Point Store buy process)
  * @param  ID_TEXT $name The name of the banner
@@ -39,7 +39,7 @@
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
- * @return array A pair: The input field tempcode, JavaScript code
+ * @return array A pair: The input field Tempcode, JavaScript code
  */
 function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $title_text = '')
 {

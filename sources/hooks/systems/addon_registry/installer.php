@@ -364,11 +364,11 @@ class Hook_addon_registry_installer
     /**
      * Make the UI for an installer tick option.
      *
-     * @param  tempcode $nice_name The human readable name for the option
-     * @param  tempcode $description A description of the option
+     * @param  Tempcode $nice_name The human readable name for the option
+     * @param  Tempcode $description A description of the option
      * @param  ID_TEXT $name The name of the option
      * @param  BINARY $value The default/current value of the option
-     * @return tempcode The list of usergroups
+     * @return Tempcode The list of usergroups
      */
     public function make_tick($nice_name, $description, $name, $value)
     {
@@ -388,13 +388,13 @@ class Hook_addon_registry_installer
     /**
      * Make the UI for an installer textual option.
      *
-     * @param  tempcode $nice_name The human readable name for the option
-     * @param  tempcode $description A description of the option
+     * @param  Tempcode $nice_name The human readable name for the option
+     * @param  Tempcode $description A description of the option
      * @param  ID_TEXT $name The name of the option
      * @param  string $value The default/current value of the option
      * @param  boolean $hidden Whether the options value should be kept star'red out (e.g. it is a password)
      * @param  boolean $required Whether the option is required
-     * @return tempcode The option
+     * @return Tempcode The option
      */
     public function make_option($nice_name, $description, $name, $value, $hidden = false, $required = false)
     {

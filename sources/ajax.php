@@ -499,9 +499,6 @@ function comcode_convert_script()
         safe_ini_set('ocproducts.xss_detect', '0');
 
         $box_title = get_param_string('box_title', '');
-        if (is_object($out)) {
-            $out = $out->evaluate();
-        }
         if (($box_title != '') && ($out != '')) {
             $out = static_evaluate_tempcode(put_in_standard_box(make_string_tempcode($out), $box_title));
         }

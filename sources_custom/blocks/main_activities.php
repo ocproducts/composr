@@ -90,7 +90,7 @@ class Block_main_activities
         }
     }
 
-    // CACHE MESSES WITH POST REMOVAL
+    // CACHE MESSES WITH POST REMOVAL AND PAGINATION LINKS
     /**
      * Find caching details for the block.
      *
@@ -108,7 +108,7 @@ class Block_main_activities
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {

@@ -30,7 +30,7 @@ class Hook_cron_mail_queue
     {
         if (get_option('mail_queue_debug') == '0') {
             // Implement basic locking
-            if (get_value('mailer_currently_dripping', time() - 60 * 5, true) === '1') {
+            if (get_value_newer_than('mailer_currently_dripping', time() - 60 * 5, true) === '1') {
                 return;
             }
             set_value('mailer_currently_dripping', '1', true);

@@ -44,7 +44,7 @@ class Hook_pointstore_community_billboard
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function community_billboard()
     {
@@ -67,7 +67,7 @@ class Hook_pointstore_community_billboard
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _community_billboard()
     {
@@ -94,7 +94,7 @@ class Hook_pointstore_community_billboard
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __community_billboard()
     {
@@ -146,7 +146,7 @@ class Hook_pointstore_community_billboard
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function ___community_billboard()
     {

@@ -23,7 +23,7 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
 */
 
 /**
- * Get tempcode for a Wiki+ post 'feature box' for the given row
+ * Get Tempcode for a Wiki+ post 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -31,7 +31,7 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -67,7 +67,7 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
 }
 
 /**
- * Get tempcode for a Wiki+ post 'feature box' for the given row
+ * Get Tempcode for a Wiki+ post 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -75,7 +75,7 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -662,9 +662,9 @@ function wiki_derive_chain($id, $root = null)
  * @param  ?AUTO_LINK $id The Wiki+ page to look beneath (null: the root)
  * @param  string $breadcrumbs Breadcrumbs built up so far, in recursion (blank: starting recursion)
  * @param  boolean $include_orphans Whether to include orphaned pages in the breadcrumbs
- * @param  boolean $use_compound_list Whether to create a compound list (gets pairs: tempcode, and comma-separated list of children)
+ * @param  boolean $use_compound_list Whether to create a compound list (gets pairs: Tempcode, and comma-separated list of children)
  * @param  boolean $ins_format Whether to use titles in IDs after a ! (used on tree edit page)
- * @return mixed Tempcode for the list / pair of tempcode and compound
+ * @return mixed Tempcode for the list / pair of Tempcode and compound
  */
 function create_selection_list_wiki_page_tree($select = null, $id = null, $breadcrumbs = '', $include_orphans = true, $use_compound_list = false, $ins_format = false)
 {
@@ -725,9 +725,9 @@ function create_selection_list_wiki_page_tree($select = null, $id = null, $bread
  * @param  AUTO_LINK $id The Wiki+ page to look beneath
  * @param  string $breadcrumbs Breadcrumbs built up so far, in recursion (blank: starting recursion)
  * @param  SHORT_TEXT $title The title of the Wiki+ page to look beneath
- * @param  boolean $use_compound_list Whether to create a compound list (gets pairs: tempcode, and comma-separated list of children)
+ * @param  boolean $use_compound_list Whether to create a compound list (gets pairs: Tempcode, and comma-separated list of children)
  * @param  boolean $ins_format Whether to use titles in IDs after a ! (used on tree edit page)
- * @return mixed Tempcode for the list / pair of tempcode and compound
+ * @return mixed Tempcode for the list / pair of Tempcode and compound
  */
 function _create_selection_list_wiki_page_tree(&$wiki_seen, $select, $id, $breadcrumbs, $title, $use_compound_list = false, $ins_format = false)
 {

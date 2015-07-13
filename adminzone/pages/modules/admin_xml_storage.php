@@ -61,7 +61,7 @@ class Module_admin_xml_storage
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -94,7 +94,7 @@ class Module_admin_xml_storage
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -121,7 +121,7 @@ class Module_admin_xml_storage
     /**
      * Interface to import/export.
      *
-     * @return tempcode The interface.
+     * @return Tempcode The interface.
      */
     public function ui()
     {
@@ -151,7 +151,7 @@ class Module_admin_xml_storage
     /**
      * Actualiser to do an import.
      *
-     * @return tempcode The results.
+     * @return Tempcode The results.
      */
     public function _import()
     {
@@ -176,7 +176,7 @@ class Module_admin_xml_storage
     /**
      * Actualiser to do an export.
      *
-     * @return tempcode The results.
+     * @return Tempcode The results.
      */
     public function _export()
     {

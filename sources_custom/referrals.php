@@ -98,8 +98,7 @@ function _assign_referral_awards(
     $referrer, $referrer_username, $referrer_displayname, $referrer_email,
 
     $num_total_qualified_by_referrer, $num_total_by_referrer
-)
-{
+) {
     $scheme_title = isset($scheme['title']) ? $scheme['title'] : $scheme_name;
 
     $report_url = find_script('referrer_report') . '?scheme=' . urlencode($scheme_name) . '&csv=1';

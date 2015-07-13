@@ -45,7 +45,7 @@ class Block_main_custom_gfx
      * Execute the block.
      *
      * @param                           array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -70,7 +70,7 @@ class Block_main_custom_gfx
      * @param  ID_TEXT $cache_id ID.
      * @param  array $map A map of parameters.
      * @param  URLPATH $img_path The image path.
-     * @return mixed URL of completed image OR tempcode error.
+     * @return mixed URL of completed image OR Tempcode error.
      */
     public function _do_image($cache_id, &$map, $img_path)
     {

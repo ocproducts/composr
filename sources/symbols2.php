@@ -2251,6 +2251,8 @@ function ecv2_NUM_NEW_TOPICS($lang, $escaped, $param)
  */
 function ecv2_RATING($lang, $escaped, $param)
 {
+    $value = mixed();
+
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);

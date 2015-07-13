@@ -50,7 +50,7 @@ $root = retrieve_sitemap_node(
     /*$child_cutoff=*/null,
     /*$max_recurse_depth=*/null,
     /*$options=*/SITEMAP_GEN_NONE,
-    /*$zone=*/'_SEARCH', true
+    /*$zone=*/'_SEARCH'
 );
 
 if (isset($root['children'])) {

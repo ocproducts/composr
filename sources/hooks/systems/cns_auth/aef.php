@@ -32,7 +32,7 @@ class Hook_cns_auth_aef
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login
      * @param  array $row Row of Conversr account
-     * @return ?tempcode Error message (null: none)
+     * @return ?Tempcode Error message (null: none)
      */
     public function auth($username, $userid, $password_hashed, $password_raw, $cookie_login, $row)
     {

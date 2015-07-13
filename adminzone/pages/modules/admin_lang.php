@@ -82,7 +82,7 @@ class Module_admin_lang
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -133,7 +133,7 @@ class Module_admin_lang
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -171,13 +171,13 @@ class Module_admin_lang
     /**
      * The UI to choose a language.
      *
-     * @param  tempcode $title The title to show when choosing a language
+     * @param  Tempcode $title The title to show when choosing a language
      * @param  boolean $choose_lang_file Whether to also choose a language file
      * @param  boolean $add_lang Whether the user may add a language
      * @param  mixed $text Text message to show (Tempcode or string)
      * @param  boolean $provide_na Whether to provide an N/A choice
      * @param  ID_TEXT $param_name The name of the parameter for specifying language
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_lang($title, $choose_lang_file = false, $add_lang = false, $text = '', $provide_na = true, $param_name = 'lang')
     {
@@ -274,7 +274,7 @@ class Module_admin_lang
     /**
      * The UI to criticise a language pack.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function criticise()
     {
@@ -368,7 +368,7 @@ class Module_admin_lang
     /**
      * The UI to translate content.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_content()
     {
@@ -489,7 +489,7 @@ class Module_admin_lang
     /**
      * The actualiser to translate content.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_lang_content()
     {
@@ -543,7 +543,7 @@ class Module_admin_lang
     /**
      * The UI to translate code.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_code()
     {
@@ -736,7 +736,7 @@ class Module_admin_lang
     /**
      * The actualiser to translate code (called from this module).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_lang_code()
     {
@@ -814,7 +814,7 @@ class Module_admin_lang
     /**
      * The actualiser to translate code (called externally, and may operate on many lang files).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_lang_code_2()
     {

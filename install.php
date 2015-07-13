@@ -278,7 +278,7 @@ if (@is_resource($DATADOTCMS_FILE)) {
 /**
  * First installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_1()
 {
@@ -470,7 +470,7 @@ function step_1()
 /**
  * Second installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_2()
 {
@@ -502,7 +502,7 @@ function step_2()
 /**
  * Third installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_3()
 {
@@ -672,7 +672,7 @@ function step_3()
 /**
  * Fourth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_4()
 {
@@ -1018,7 +1018,7 @@ function step_4()
 /**
  * Fifth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5()
 {
@@ -1527,7 +1527,7 @@ function step_5_ftp()
 /**
  * Fifth installation step: sanity checks.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_checks()
 {
@@ -1568,7 +1568,7 @@ function step_5_checks()
 /**
  * Fifth installation step: writing of configuration.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_write_config()
 {
@@ -1774,7 +1774,7 @@ if (appengine_is_live()) {
 /**
  * Fifth installation step: uninstallation of old install.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_uninstall()
 {
@@ -1802,7 +1802,7 @@ function step_5_uninstall()
 /**
  * Fifth installation step: core tables.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_core()
 {
@@ -1904,7 +1904,7 @@ function step_5_core()
 /**
  * Fifth installation step: more core tables.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_5_core_2()
 {
@@ -2026,7 +2026,7 @@ function step_5_core_2()
 /**
  * Sixth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_6()
 {
@@ -2101,7 +2101,7 @@ function big_installation_common()
 /**
  * Seventh installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_7()
 {
@@ -2151,7 +2151,7 @@ function step_7()
 /**
  * Eighth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_8()
 {
@@ -2177,7 +2177,7 @@ function step_8()
 /**
  * Ninth installation step.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_9()
 {
@@ -2217,7 +2217,7 @@ function step_9()
 /**
  * Tenth installation step: wrapper and special interface.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_10()
 {
@@ -2252,7 +2252,7 @@ function step_10()
 /**
  * Tenth installation step: main.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_10_populate_database()
 {
@@ -2281,7 +2281,7 @@ function step_10_populate_database()
 /**
  * Tenth installation step: forum part.
  *
- * @return tempcode Progress report / UI
+ * @return Tempcode Progress report / UI
  */
 function step_10_forum_stuff()
 {
@@ -2573,13 +2573,13 @@ function handle_self_referencing_embedment()
 /**
  * Make the UI for an installer textual option.
  *
- * @param  tempcode $nice_name The human readable name for the option
- * @param  tempcode $description A description of the option
+ * @param  Tempcode $nice_name The human readable name for the option
+ * @param  Tempcode $description A description of the option
  * @param  ID_TEXT $name The name of the option
  * @param  string $value The default/current value of the option
  * @param  boolean $hidden Whether the options value should be kept star'red out (e.g. it is a password)
  * @param  boolean $required Whether the option is required
- * @return tempcode The option
+ * @return Tempcode The option
  */
 function make_option($nice_name, $description, $name, $value, $hidden = false, $required = false)
 {
@@ -2607,11 +2607,11 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
 /**
  * Make the UI for an installer tick option.
  *
- * @param  tempcode $nice_name The human readable name for the option
- * @param  tempcode $description A description of the option
+ * @param  Tempcode $nice_name The human readable name for the option
+ * @param  Tempcode $description A description of the option
  * @param  ID_TEXT $name The name of the option
  * @param  BINARY $value The default/current value of the option
- * @return tempcode The list of usergroups
+ * @return Tempcode The list of usergroups
  */
 function make_tick($nice_name, $description, $name, $value)
 {
@@ -2624,7 +2624,7 @@ function make_tick($nice_name, $description, $name, $value)
  *
  * @param  string $example The name of the example text language string (blank: none)
  * @param  string $description The name of the example description language string (blank: none)
- * @return tempcode The text
+ * @return Tempcode The text
  */
 function example($example, $description = '')
 {

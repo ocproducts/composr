@@ -137,7 +137,7 @@ function trackback_script()
 }
 
 /**
- * Get the tempcode for the manipulation of the feedback fields for some content, if they are enabled in the Admin Zone.
+ * Get the Tempcode for the manipulation of the feedback fields for some content, if they are enabled in the Admin Zone.
  *
  * @param  boolean $allow_rating Whether rating is currently/by-default allowed for this resource
  * @param  boolean $allow_comments Whether comments are currently/by-default allowed for this resource
@@ -149,7 +149,7 @@ function trackback_script()
  * @param  boolean $has_notes If there's to be a notes field
  * @param  boolean $show_header Whether to show a header
  * @param  string $field_name_prefix Field name prefix
- * @return tempcode The feedback editing fields
+ * @return Tempcode The feedback editing fields
  */
 function feedback_fields($allow_rating, $allow_comments, $allow_trackbacks, $send_trackbacks, $notes, $allow_reviews = null, $default_off = false, $has_notes = true, $show_header = true, $field_name_prefix = '')
 {

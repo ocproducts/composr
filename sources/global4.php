@@ -30,7 +30,7 @@ function init__global4()
 /**
  * Attach a message mentioning how the site is closed.
  *
- * @param  tempcode $messages_bottom Where to place the message.
+ * @param  Tempcode $messages_bottom Where to place the message.
  */
 function attach_message_site_closed(&$messages_bottom)
 {
@@ -46,7 +46,7 @@ function attach_message_site_closed(&$messages_bottom)
 /**
  * Attach a message mentioning SU is active.
  *
- * @param  tempcode $messages_bottom Where to place the message.
+ * @param  Tempcode $messages_bottom Where to place the message.
  */
 function attach_message_su(&$messages_bottom)
 {

@@ -1,6 +1,6 @@
 <?php
 
-/*EXTRA FUNCTIONS: shell_exec|gethostname|escapeshellarg|escapeshellcmd*/
+/*EXTRA FUNCTIONS: shell_exec|gethostname|escapeshellarg|escapeshellcmd|transcode|tr_get_mime_type*/
 
 if (function_exists('set_time_limit')) {
     @set_time_limit(0);

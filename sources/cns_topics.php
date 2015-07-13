@@ -27,7 +27,7 @@
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The topic box
+ * @return Tempcode The topic box
  */
 function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -114,7 +114,7 @@ function cns_may_make_private_topic($member_id = null)
 /**
  * Check that a member may make a Private Topic.
  */
-function ocf_check_make_private_topic()
+function cns_check_make_private_topic()
 {
     check_privilege('use_pt');
 

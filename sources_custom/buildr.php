@@ -42,7 +42,7 @@ function grab_new_owner($param_name)
 /**
  * Show the current user a message. Function does not return.
  *
- * @param  tempcode $message The message to show
+ * @param  Tempcode $message The message to show
  * @param  ID_TEXT $msg_type Code of message type to show
  * @set    warn inform fatal
  */
@@ -255,7 +255,7 @@ function room_exists($x, $y, $realm)
  * @param  integer $dx X distance
  * @param  integer $dy Y distance
  * @param  string $given_password The access password they have given
- * @return ?tempcode Error message (null: no error)
+ * @return ?Tempcode Error message (null: no error)
  */
 function try_to_enter_room($member_id, $dx, $dy, $given_password)
 {

@@ -99,7 +99,7 @@ function init__comcode_compiler()
  *
  * @param  string $tag The Comcode tag
  * @param  ?array $attributes The parameters (null: don't consider)
- * @param  ?tempcode $embed The contents of the tag (null: don't consider)
+ * @param  ?Tempcode $embed The contents of the tag (null: don't consider)
  * @return integer The Comcode integration style
  */
 function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
@@ -153,7 +153,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
  *
  * @param  string $tag The Comcode tag
  * @param  array $attributes The parameters
- * @param  tempcode $embed The contents of the tag
+ * @param  Tempcode $embed The contents of the tag
  * @param  boolean $semihtml Whether we are in semihtml mode
  * @param  ?integer $method Display method (null: auto-detect)
  * @return ?string The HTML (null: render as native HTML)
@@ -228,7 +228,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
 }
 
 /**
- * Convert the specified Comcode (text format) into a tempcode tree. You shouldn't output the tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the tempcode object, to convert it into a string.
+ * Convert the specified Comcode (text format) into a Tempcode tree. You shouldn't output the Tempcode tree to the browser, as it looks really horrible. If you are in a rare case where you need to output directly (not through templates), you should call the evaluate method on the Tempcode object, to convert it into a string.
  *
  * @param  LONG_TEXT $comcode The Comcode to convert
  * @param  MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully
@@ -243,7 +243,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
- * @return tempcode The tempcode generated
+ * @return Tempcode The Tempcode generated
  */
 function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null)
 {

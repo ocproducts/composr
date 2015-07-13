@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: memory_get_peak_usage*/
+/*EXTRA FUNCTIONS: memory_get_peak_usage|error_get_last*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -257,7 +257,7 @@ function init__global2()
     if (!$MICRO_AJAX_BOOTUP) {
         require_code('themes'); // Output needs to know about themes
         require_code('templates'); // So that we can do error templates
-        require_code('tempcode'); // Output is done with tempcode
+        require_code('tempcode'); // Output is done with Tempcode
         if (!$MICRO_BOOTUP) {
             require_code('comcode'); // Much output goes through comcode
         }
@@ -849,7 +849,7 @@ function running_script($is_this_running)
 /**
  * This is a intended to output an informational exit at the same time as terminating execution
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @param  ?boolean $support_match_key_messages Whether match key messages / redirects should be supported (null: detect)
  * @return mixed Never returns (i.e. exits)
  */
@@ -862,7 +862,7 @@ function inform_exit($text, $support_match_key_messages = null)
 /**
  * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
  * @return mixed Never returns (i.e. exits)
  */
@@ -880,7 +880,7 @@ function warn_exit($text, $support_match_key_messages = false)
  * Do a fatal exit, echo the header (if possible) and an error message, followed by a debugging back-trace.
  * It also adds an entry to the error log, for reference.
  *
- * @param  mixed $text The error message (string or tempcode)
+ * @param  mixed $text The error message (string or Tempcode)
  * @return mixed Never returns (i.e. exits)
  */
 function fatal_exit($text)
@@ -1688,11 +1688,11 @@ function javascript_enforce($j, $theme = null, $minify = null)
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) all the JavaScript files that have been required.
+ * Get Tempcode to tie in (to the HTML, in <head>) all the JavaScript files that have been required.
  *
  * @param  ?string $position Position to get JavaScript for (null: all positions)
  * @set NULL header footer
- * @return tempcode The tempcode to tie in the JavaScript files
+ * @return Tempcode The Tempcode to tie in the JavaScript files
  */
 function javascript_tempcode($position = null)
 {
@@ -1750,10 +1750,10 @@ function javascript_tempcode($position = null)
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
+ * Get Tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
  *
  * @param  ID_TEXT $j The javascript file required
- * @param  tempcode $js Tempcode object (will be written into if appropriate)
+ * @param  Tempcode $js Tempcode object (will be written into if appropriate)
  * @param  ?boolean $_minify Whether minifying (null: from what is cached)
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
@@ -1911,13 +1911,13 @@ function css_enforce($c, $theme = null, $minify = null)
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) all the CSS files that have been required.
+ * Get Tempcode to tie in (to the HTML, in <head>) all the CSS files that have been required.
  *
  * @param  boolean $inline Force inline CSS
  * @param  boolean $only_global Only do global CSS
  * @param  ?string $context HTML context for which we filter (minimise) any CSS we spit out as inline (null: none)
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme)
- * @return tempcode The tempcode to tie in the CSS files
+ * @return Tempcode The Tempcode to tie in the CSS files
  */
 function css_tempcode($inline = false, $only_global = false, $context = null, $theme = null)
 {
@@ -1967,11 +1967,11 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
 }
 
 /**
- * Get tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
+ * Get Tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
  *
  * @param  ID_TEXT $c The CSS file required
- * @param  tempcode $css Main tempcode object (will be written into if appropriate)
- * @param  tempcode $css_need_inline Inline tempcode object (will be written into if appropriate)
+ * @param  Tempcode $css Main Tempcode object (will be written into if appropriate)
+ * @param  Tempcode $css_need_inline Inline Tempcode object (will be written into if appropriate)
  * @param  boolean $inline Only do global CSS
  * @param  ?string $context HTML context for which we filter (minimise) any CSS we spit out as inline (null: none)
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme) (null: from what is cached)

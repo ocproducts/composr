@@ -21,8 +21,8 @@
 /**
  * Function that tucks-under-the-carpet lumps of XHTML that knowingly won't conform to XHTML5.
  *
- * @param  tempcode $html What to hide away
- * @return tempcode Hidden away version
+ * @param  Tempcode $html What to hide away
+ * @return Tempcode Hidden away version
  */
 function hide_the_evidence($html)
 {

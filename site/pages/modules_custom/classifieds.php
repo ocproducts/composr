@@ -108,7 +108,7 @@ class Module_classifieds
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -127,7 +127,7 @@ class Module_classifieds
     /**
      * Standard module run function.
      *
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run()
     {
@@ -143,7 +143,7 @@ class Module_classifieds
     /**
      * View an overview of the members adverts on the system.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function adverts()
     {

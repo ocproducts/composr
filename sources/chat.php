@@ -37,13 +37,13 @@ function init__chat()
 }
 
 /**
- * Get tempcode for a chat room 'feature box' for the given row
+ * Get Tempcode for a chat room 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -418,8 +418,8 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
         if ($room_id == -1) {
             $GLOBALS['SITE_DB']->query_update('chat_active', array('date_and_time' => time()), array('member_id' => get_member()));
         } else {
-            $GLOBALS['SITE_DB']->query_delete('chat_active', array('member_id' => get_member(), 'room_id' => $room_id));
-            $GLOBALS['SITE_DB']->query_insert('chat_active', array('member_id' => get_member(), 'date_and_time' => time(), 'room_id' => $room_id), '', 1);
+            $GLOBALS['SITE_DB']->query_delete('chat_active', array('member_id' => get_member(), 'room_id' => $room_id), '', 1);
+            $GLOBALS['SITE_DB']->query_insert('chat_active', array('member_id' => get_member(), 'date_and_time' => time(), 'room_id' => $room_id));
         }
         chat_room_prune(-1);
     }
@@ -836,7 +836,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
 }
 
 /**
- * Enter a message into the database for the specified room, and with the specified parameters. The message is filtered for banned words, and is compressed into a tempcode storage format.
+ * Enter a message into the database for the specified room, and with the specified parameters. The message is filtered for banned words, and is compressed into a Tempcode storage format.
  *
  * @param  AUTO_LINK $room_id The room ID for the message to be posted in
  * @param  LONG_TEXT $message The message body
@@ -881,7 +881,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
             $text_colour = '#' . substr($text_colour, 2, strlen($text_colour) - 2);
         }
 
-        // Store as assembled tempcode
+        // Store as assembled Tempcode
         $map = array(
             'system_message' => 0,
             'ip_address' => get_ip_address(),
@@ -1019,7 +1019,7 @@ function get_chatters_in_room($room_id)
  * Get some template code showing the number of chatters in a room.
  *
  * @param   array $users A mapping (user=>username) of the chatters in the room
- * @return  tempcode       The Tempcode
+ * @return  Tempcode       The Tempcode
  */
 function get_chatters_in_room_tpl($users)
 {
@@ -1245,7 +1245,7 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
             $pm_message_deleted = false;
         }
 
-        // Right... let's scan for chat tags in our tempcode, such as [private="Philip"]text[/private]
+        // Right... let's scan for chat tags in our Tempcode, such as [private="Philip"]text[/private]
         $chatcode_tags = array('private', 'invite', 'newroom');
         $text = $message->evaluate();
         if (!$pm_message_deleted) {
@@ -1610,7 +1610,7 @@ function check_chatroom_access($room, $ret = false, $member_id = null, $must_be_
 /**
  * Get a template that will set up the chat sound effects as for what this member needs.
  *
- * @return tempcode Template to set up chat sound effects.
+ * @return Tempcode Template to set up chat sound effects.
  */
 function get_chat_sound_tpl()
 {

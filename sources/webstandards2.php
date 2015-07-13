@@ -284,7 +284,7 @@ function init__webstandards2()
         'clear' => '(both|left|right|none)',
         'clip' => 'auto|(rect\(' . $enforce_potential_4d_length . '\))',
         'color' => $enforce_css_color,
-        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help' . ((!$is_ie) ? '|progress' : '') . ')', // hand is actually IE specific version of pointer; we'll use tempcode so as to only show that when really needed
+        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help' . ((!$is_ie) ? '|progress' : '') . ')', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in' . ((!$is_ie) ? '|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption' : '') . ')',
         'float' => '(left|right|none)',

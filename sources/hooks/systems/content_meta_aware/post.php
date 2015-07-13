@@ -107,7 +107,7 @@ class Hook_content_meta_aware_post
      * @param  ?ID_TEXT $root Virtual root to use (null: none)
      * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
      * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {

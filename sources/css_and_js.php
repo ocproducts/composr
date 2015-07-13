@@ -373,12 +373,12 @@ function js_minify($js)
 
     require_code('jsmin');
 
-    if (!class_exists('JSMin')) {
-        return $js;
+    if (class_exists('JSMin')) {
+        $jsmin = new JSMin($js);
+        $js = $jsmin->min();
     }
 
-    $jsmin = new JSMin($js);
-    return $jsmin->min();
+    return $js;
 }
 
 /**

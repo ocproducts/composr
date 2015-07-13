@@ -62,7 +62,7 @@ class Block_main_content
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {

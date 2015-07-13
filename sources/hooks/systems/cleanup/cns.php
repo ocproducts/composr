@@ -49,7 +49,7 @@ class Hook_cleanup_cns
     /**
      * Run the cleanup hook action.
      *
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run()
     {

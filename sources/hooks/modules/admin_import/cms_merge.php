@@ -149,7 +149,7 @@ class Hook_cms_merge
      * @param  object $db The DB connection to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
-     * @return ?tempcode Error/warning UI (null: no error/warning)
+     * @return ?Tempcode Error/warning UI (null: no error/warning)
      */
     public function pre_import_tests($db, $table_prefix, $file_base)
     {
@@ -3038,10 +3038,10 @@ class Hook_cms_merge
         require_code('cns_forums_action2');
 
         $comments_forum = get_option('comments_forum_name');
-        if (!is_integer($comments_forum)) {
+        if (!is_numeric($comments_forum)) {
             $comments_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($comments_forum);
         } else {
-            $comments_forum_id = $comments_forum;
+            $comments_forum_id = intval($comments_forum);
             $comments_forum = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $comments_forum_id));
         }
 

@@ -155,7 +155,7 @@ class Module_admin_giftr extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -179,7 +179,7 @@ class Module_admin_giftr extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -205,7 +205,7 @@ class Module_admin_giftr extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -223,7 +223,7 @@ class Module_admin_giftr extends Standard_crud_module
     /**
      * The UI to view details of a gift.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view()
     {
@@ -275,7 +275,7 @@ class Module_admin_giftr extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -339,7 +339,7 @@ class Module_admin_giftr extends Standard_crud_module
      * Standard crud_module edit actualiser.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return ?tempcode Confirm message (null: continue)
+     * @return ?Tempcode Confirm message (null: continue)
      */
     public function edit_actualisation($id)
     {

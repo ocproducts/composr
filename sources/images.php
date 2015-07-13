@@ -98,7 +98,7 @@ function _symbol_thumbnail($param)
     // where: If padding or cropping, specifies where to crop or pad. One of "start", "end", "both", "start_if_vertical", "end_if_vertical", "start_if_horizontal", or "end_if_vhorizontal"
     // option: An extra option if desired. If type is "pad" then this can be a hex colour for the padding
     // only_make_smaller: Whether to avoid growing small images to fit (smaller images are better for the Web). One of 0 (false) or 1 (true)
-    if (($param[0] != '')) {
+	if (!empty($param[0])) {
         $only_make_smaller = isset($param[8]) ? ($param[8] == '1') : false;
         $orig_url = $param[0]; // Source for thumbnail generation
         if (url_is_local($orig_url)) {
@@ -296,7 +296,7 @@ function get_max_image_size()
 }
 
 /**
- * Get the tempcode for an image thumbnail.
+ * Get the Tempcode for an image thumbnail.
  *
  * @param  URLPATH $url The URL to the image thumbnail
  * @param  mixed $caption The caption for the thumbnail (string or Tempcode)
@@ -305,7 +305,7 @@ function get_max_image_size()
  * @param  ?integer $width Thumbnail width to use (null: default)
  * @param  ?integer $height Thumbnail height to use (null: default)
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
- * @return tempcode The thumbnail
+ * @return Tempcode The thumbnail
  */
 function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_already = true, $width = null, $height = null, $only_make_smaller = false)
 {

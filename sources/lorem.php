@@ -61,7 +61,7 @@ function lorem_phrase()
 /**
  * Get suitable placeholder text: title.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function lorem_title()
 {
@@ -111,7 +111,7 @@ function lorem_chunk()
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function lorem_word_html()
 {
@@ -125,7 +125,7 @@ function lorem_word_html()
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function lorem_word_2_html()
 {
@@ -139,7 +139,7 @@ function lorem_word_2_html()
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function lorem_phrase_html()
 {
@@ -153,7 +153,7 @@ function lorem_phrase_html()
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function lorem_sentence_html()
 {
@@ -167,7 +167,7 @@ function lorem_sentence_html()
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function lorem_paragraph_html()
 {
@@ -181,7 +181,7 @@ function lorem_paragraph_html()
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function lorem_chunk_html()
 {
@@ -195,7 +195,7 @@ function lorem_chunk_html()
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function placeholder_form()
 {
@@ -211,7 +211,7 @@ function placeholder_form()
 /**
  * Get fields
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function placeholder_fields()
 {
@@ -227,7 +227,7 @@ function placeholder_fields()
 /**
  * Get fields, but composed of divs (used by forum)
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function placeholder_fields_as_divs()
 {
@@ -244,7 +244,7 @@ function placeholder_fields_as_divs()
  * Get form with a field
  *
  * @param  ID_TEXT $field_name The field name wanted.
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function placeholder_form_with_field($field_name)
 {
@@ -265,7 +265,7 @@ function placeholder_form_with_field($field_name)
 /**
  * Get suitable placeholder text.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function placeholder_table()
 {
@@ -279,7 +279,7 @@ function placeholder_table()
 /**
  * Get suitable placeholder URL.
  *
- * @return tempcode Place holder URL.
+ * @return Tempcode Place holder URL.
  */
 function placeholder_url()
 {
@@ -293,7 +293,7 @@ function placeholder_url()
 /**
  * Get suitable placeholder link.
  *
- * @return tempcode Place holder link.
+ * @return Tempcode Place holder link.
  */
 function placeholder_link()
 {
@@ -333,7 +333,7 @@ function placeholder_random_id()
 /**
  * Get a button
  *
- * @return tempcode Button
+ * @return Tempcode Button
  */
 function placeholder_button()
 {
@@ -398,7 +398,7 @@ function placeholder_types()
 /**
  * Get an image
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function placeholder_image()
 {
@@ -503,7 +503,7 @@ function placeholder_blank()
 /**
  * Get suitable placeholder breadcrumbs.
  *
- * @return tempcode Place holder text.
+ * @return Tempcode Place holder text.
  */
 function placeholder_breadcrumbs()
 {
@@ -525,7 +525,7 @@ function placeholder_breadcrumbs()
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  string $directory Subdirectory type to look in
  * @set    templates css javascript xml text
- * @return tempcode The tempcode for this template
+ * @return Tempcode The Tempcode for this template
  */
 function do_lorem_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates')
 {
@@ -535,12 +535,12 @@ function do_lorem_template($codename, $parameters = null, $lang = null, $light_e
 /**
  * Lorem version of globalise. It will wrap the input into something that is "stable XHTML" and thus can work inside an XHTML editor.
  *
- * @param  tempcode $middle The tempcode to put into a nice frame
+ * @param  Tempcode $middle The Tempcode to put into a nice frame
  * @param  ?mixed $message 'Additional' message (null: none)
  * @param  string $type The type of special message
  * @set    inform warn ""
  * @param  boolean $include_header_and_footer Whether to include the header/footer/panels
- * @return tempcode Standalone page
+ * @return Tempcode Standalone page
  */
 function lorem_globalise($middle, $message = null, $type = '', $include_header_and_footer = false)
 {
@@ -602,7 +602,7 @@ function placeholder_avatar()
 /**
  * Get a table of emoticons.
  *
- * @return tempcode Emoticons
+ * @return Tempcode Emoticons
  */
 function placeholder_emoticon_chooser()
 {
@@ -650,7 +650,7 @@ function placeholder_img_code($type = '')
 /**
  * Get pagination.
  *
- * @return tempcode Pagination.
+ * @return Tempcode Pagination.
  */
 function placeholder_pagination()
 {
@@ -833,7 +833,7 @@ function find_all_previews__by_screen()
  * @param  ID_TEXT $template The template to be previewed (e.g. templates/DOWNLOAD_BOX.tpl)
  * @param  ?ID_TEXT $hook The hook the preview is in (null: search)
  * @param  ID_TEXT $function The name of the screen preview
- * @return tempcode The previewed screen
+ * @return Tempcode The previewed screen
  */
 function render_screen_preview($template, $hook, $function)
 {
@@ -957,7 +957,7 @@ function is_plain_text_template($temp_name)
  * Checks if the template is a full screen template
  *
  * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)
- * @param  ?tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)
+ * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)
  * @return boolean Whether it is
  */
 function is_full_screen_template($temp_name = null, $tempcode = null)

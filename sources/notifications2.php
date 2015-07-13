@@ -48,7 +48,7 @@ function _get_available_notification_types($member_id_of = null)
  * Put out a user interface for managing notifications overall.
  *
  * @param  MEMBER $member_id_of Member this is for
- * @return tempcode UI
+ * @return Tempcode UI
  */
 function notifications_ui($member_id_of)
 {
@@ -225,9 +225,9 @@ function notifications_ui($member_id_of)
  * Put out a user interface for managing notifications for a notification-category supporting content type. Also toggle notifications if an ID is passed.
  *
  * @param  ID_TEXT $notification_code The notification code to work with
- * @param  ?tempcode $enable_message Special message to output if we have toggled to enable (null: use standard)
- * @param  ?tempcode $disable_message Special message to output if we have toggled to disable (null: use standard)
- * @return tempcode UI
+ * @param  ?Tempcode $enable_message Special message to output if we have toggled to enable (null: use standard)
+ * @param  ?Tempcode $disable_message Special message to output if we have toggled to disable (null: use standard)
+ * @return Tempcode UI
  */
 function notifications_ui_advanced($notification_code, $enable_message = null, $disable_message = null)
 {
@@ -371,7 +371,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
  * @param  integer $depth Recursion depth
  * @param  ?boolean $force_change_children_to Value to change setting to (null: do not change)
  * @param  boolean $done_get_change Whether we have made a change to the settings
- * @return tempcode UI
+ * @return Tempcode UI
  */
 function _notifications_build_category_tree($_notification_types, $notification_code, $ob, $id, $depth, $force_change_children_to, &$done_get_change)
 {

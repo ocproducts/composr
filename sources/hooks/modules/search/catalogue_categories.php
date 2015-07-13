@@ -148,7 +148,7 @@ class Hook_search_catalogue_categories
      * Run function for rendering a search result.
      *
      * @param  array $row The data row stored when we retrieved the result
-     * @return tempcode The output
+     * @return Tempcode The output
      */
     public function render($row)
     {

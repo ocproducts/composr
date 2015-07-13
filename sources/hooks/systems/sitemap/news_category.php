@@ -160,7 +160,8 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
                 }
             }
             if (($options & SITEMAP_GEN_CONSIDER_SECONDARY_CATEGORIES) != 0) {
-                $child_hook_ob = 'news';
+                require_code('hooks/systems/sitemap/news');
+                $child_hook_ob = object_factory('Hook_sitemap_news');
 
                 $skip_children = false;
                 if ($child_cutoff !== null) {

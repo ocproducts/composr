@@ -101,7 +101,7 @@ class Module_login
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -158,7 +158,7 @@ class Module_login
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -186,7 +186,7 @@ class Module_login
     /**
      * The UI for logging in.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function login_before()
     {
@@ -252,7 +252,7 @@ class Module_login
     /**
      * The actualiser for logging in.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function login_after()
     {
@@ -309,7 +309,7 @@ class Module_login
     /**
      * The actualiser for logging out.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function logout()
     {
@@ -326,7 +326,7 @@ class Module_login
     /**
      * The actualiser for entering conceded mode.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function concede()
     {
@@ -350,7 +350,7 @@ class Module_login
     /**
      * The actualiser for toggling invisible mode.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function invisible()
     {

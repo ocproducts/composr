@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: error_get_last*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -112,7 +114,7 @@ function sync_file($filename)
 /**
  * Return a debugging back-trace of the current execution stack. Use this for debugging purposes.
  *
- * @return tempcode Debugging backtrace
+ * @return Tempcode Debugging backtrace
  */
 function get_html_trace()
 {
@@ -382,13 +384,10 @@ function get_charset()
 /**
  * Echo an error message, and a debug back-trace of the current execution stack. Use this for debugging purposes.
  *
- * @param  mixed $message An error message
+ * @param  string $message An error message
  */
 function die_html_trace($message)
 {
-    if (is_object($message)) {
-        $message = $message->evaluate();
-    }
     critical_error('PASSON', $message);
 }
 

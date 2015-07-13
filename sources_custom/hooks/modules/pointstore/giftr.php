@@ -42,7 +42,7 @@ class Hook_pointstore_giftr
     /**
      * Standard interface stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action()
     {
@@ -97,7 +97,7 @@ class Hook_pointstore_giftr
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done()
     {
@@ -125,7 +125,7 @@ class Hook_pointstore_giftr
     /**
      * Standard actualisation stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function action_done2()
     {

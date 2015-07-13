@@ -40,7 +40,7 @@ class Block_main_sortable_table
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -119,7 +119,7 @@ class Block_main_sortable_table
         $columns_display = empty($map['columns_display']) ? array() : array_map('intval', explode(',', $map['columns_display']));
         $columns_tooltip = empty($map['columns_tooltip']) ? array() : array_map('intval', explode(',', $map['columns_tooltip']));
 
-        $guid = empty($map['transform']) ? '' : $map['transform'];
+        $transform = empty($map['transform']) ? '' : $map['transform'];
 
         $guid = empty($map['guid']) ? '' : $map['guid'];
 

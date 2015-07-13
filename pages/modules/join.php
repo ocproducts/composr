@@ -68,7 +68,7 @@ class Module_join
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -103,7 +103,7 @@ class Module_join
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -133,7 +133,7 @@ class Module_join
     /**
      * The UI to accept the rules of joining.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step1()
     {
@@ -173,7 +173,7 @@ class Module_join
     /**
      * The UI to enter profile details.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step2()
     {
@@ -200,7 +200,7 @@ class Module_join
     /**
      * The actualiser for adding a member.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step3()
     {
@@ -234,7 +234,7 @@ class Module_join
     /**
      * The actualiser for setting up account confirmation.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function step4()
     {

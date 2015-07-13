@@ -55,7 +55,7 @@ class Hook_pointstore_banners
     /**
      * Standard pointstore introspection.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function bannerinfo()
     {
@@ -97,7 +97,7 @@ class Hook_pointstore_banners
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function newbanner()
     {
@@ -124,7 +124,7 @@ class Hook_pointstore_banners
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _newbanner()
     {
@@ -191,7 +191,7 @@ class Hook_pointstore_banners
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __newbanner()
     {
@@ -269,7 +269,7 @@ class Hook_pointstore_banners
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function upgradebanner()
     {
@@ -296,7 +296,7 @@ class Hook_pointstore_banners
     /**
      * Standard stage of pointstore item purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _upgradebanner()
     {

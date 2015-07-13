@@ -1130,7 +1130,7 @@ function get_root_comcode_pages($zone)
  * @param  ?MEMBER $only_owned The member we are only finding owned content of (null: no such limit); nodes leading up to owned content will be shown, but not as selectable
  * @param  boolean $use_compound_list Whether to produce selection IDs as a comma-separated list of all selectable sub-nodes.
  * @param  ?mixed $filter_func Filter function for limiting what rows will be included (null: none).
- * @return tempcode List.
+ * @return Tempcode List.
  */
 function create_selection_list($root_page_link, $under_only = false, $default = null, $valid_node_types = null, $valid_selectable_content_types = null, $check_permissions_against = 0, $check_permissions_for = null, $consider_validation = false, $only_owned = null, $use_compound_list = false, $filter_func = null)
 {
@@ -1162,7 +1162,7 @@ function create_selection_list($root_page_link, $under_only = false, $default = 
 /**
  * Recurse function for create_selection_list.
  *
- * @param  tempcode $out Output Tempcode.
+ * @param  Tempcode $out Output Tempcode.
  * @param  array $node Node being recursed.
  * @param  ?ID_TEXT $default Default selection (null: none).
  * @param  ?array $valid_selectable_content_types List of node types we will allow to be selectable (null: no limit)

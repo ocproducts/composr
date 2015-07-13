@@ -35,7 +35,7 @@ function init__zones2()
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?ID_TEXT $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode Rendered box
+ * @return Tempcode Rendered box
  */
 function render_comcode_page_box($row, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {

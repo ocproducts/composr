@@ -39,7 +39,7 @@ function init__calendar()
  * @param  ID_TEXT $zone Zone to link through to
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The event box
+ * @return Tempcode The event box
  */
 function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -60,13 +60,13 @@ function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid =
 }
 
 /**
- * Get tempcode for a calendar type 'feature box' for the given row
+ * Get Tempcode for a calendar type 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_calendar_type_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
@@ -155,8 +155,8 @@ function date_from_week_of_year($year, $week)
  * @param  integer $start_day The day the event starts at
  * @param  ID_TEXT $start_monthly_spec_type In-month specification type for start date
  * @set day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards
- * @param  integer $start_hour The hour the event starts at
- * @param  integer $start_minute The minute the event starts at
+ * @param  ?integer $start_hour The hour the event starts at (null: full day event)
+ * @param  ?integer $start_minute The minute the event starts at (null: full day event)
  * @param  ?integer $end_year The year the event ends at (null: not a multi day event)
  * @param  ?integer $end_month The month the event ends at (null: not a multi day event)
  * @param  ?integer $end_day The day the event ends at (null: not a multi day event)
@@ -455,7 +455,7 @@ function get_days_between($initial_start_month, $initial_start_day, $initial_sta
  *
  * @param  ?AUTO_LINK $it The event type to select by default (null: none)
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_event_types($it = null, $updated_since = null)
 {
@@ -842,7 +842,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
  * @param  ?MEMBER $only_owned Only show events owned by this member (null: no such limitation)
  * @param  ?AUTO_LINK $it Event to select by default (null: no specific default)
  * @param  boolean $edit_viewable_events Whether owned public events should be shown
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_events($only_owned, $it, $edit_viewable_events = true)
 {
@@ -891,7 +891,7 @@ function create_selection_list_events($only_owned, $it, $edit_viewable_events = 
  * @param  AUTO_LINK $type The event type
  * @param  ?MEMBER $member_calendar The member calendar (null: none)
  * @param  integer $scope_type The scope type, DETECT_CONFLICT_SCOPE_*
- * @return ?tempcode Information about conflicts (null: none)
+ * @return ?Tempcode Information about conflicts (null: none)
  */
 function detect_conflicts($member_id, $skip_id, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, $scope_type)
 {
@@ -1451,7 +1451,7 @@ function find_abstract_day($year, $month, $day_of_month, $monthly_spec_type)
  * @param  integer $year The concrete year
  * @param  ID_TEXT $default_monthly_spec_type Current in-month specification type
  * @set day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards
- * @return tempcode Chooser
+ * @return Tempcode Chooser
  */
 function monthly_spec_type_chooser($day_of_month, $month, $year, $default_monthly_spec_type = 'day_of_month')
 {

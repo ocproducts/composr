@@ -242,7 +242,7 @@ class Hook_addon_registry_shopping
      * Function to display custom result tables
      *
      * @param   ID_TEXT $tplset Tpl set name
-     * @return tempcode Tempcode
+     * @return Tempcode Tempcode
      */
     public function show_custom_tables($tplset)
     {

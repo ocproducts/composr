@@ -31,7 +31,7 @@ class Mx_chat extends Module_chat
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -116,7 +116,7 @@ class Mx_chat extends Module_chat
     /**
      * The UI to choose a chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_lobby()
     {
@@ -166,7 +166,7 @@ class Mx_chat extends Module_chat
     /**
      * The UI for a chat room.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_room()
     {
@@ -184,8 +184,8 @@ class Mx_chat extends Module_chat
 
         $debug = (get_param_integer('debug', 0) == 1) ? 'block' : 'none';
 
-        $seteffectslink = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*,'redirect'=>get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true);
-        $logslink = hyperlink(get_base_url() . '/data_custom/jabber-logs/' . strtolower($room_id) . '@conference.' . get_domain(), 'Chat logs', true);
+        $seteffectslink = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*,'redirect'=>get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
+        $logslink = hyperlink(get_base_url() . '/data_custom/jabber-logs/' . strtolower($room_id) . '@conference.' . get_domain(), 'Chat logs', true, true);
 
         $links = array(
             $seteffectslink,
@@ -214,7 +214,7 @@ class Mx_chat extends Module_chat
     /**
      * Save the user's options into a cookie.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function chat_options()
     {

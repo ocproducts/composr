@@ -66,7 +66,7 @@ function send_content_validated_notification($content_type, $content_id)
  * @param  ?ID_TEXT $table The table saved into (null: unknown)
  * @param  boolean $non_integer_id Whether the ID field is not an integer
  * @param  ID_TEXT $id The validation request will say this ID has been submitted
- * @param  tempcode $url The validation request will link to this URL
+ * @param  Tempcode $url The validation request will link to this URL
  * @param  ?MEMBER $member_id Member doing the submitting (null: current member)
  */
 function send_validation_request($type, $table, $non_integer_id, $id, $url, $member_id = null)

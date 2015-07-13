@@ -71,7 +71,7 @@ function member_get_csv_headings()
  * Get a list of timezones.
  *
  * @param  ?string $timezone Current timezone to select (null: server default)
- * @return tempcode List of timezones
+ * @return Tempcode List of timezones
  */
 function create_selection_list_timezone_list($timezone = null)
 {
@@ -160,7 +160,7 @@ function get_username_from_human_name($username)
  * @param  ?integer $dob_year Auto-detected DOB year (null: unknown)
  * @param  ?ID_TEXT $timezone Auto-detected Timezone (null: unknown)
  * @param  ?ID_TEXT $language Auto-detected Language (null: unknown)
- * @return tempcode The form.
+ * @return Tempcode The form.
  */
 function cns_member_external_linker_ask($username, $type, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null)
 {
@@ -723,7 +723,9 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
                 $custom_field['cf_required'] = 0;
             }
         }
-        $result = new Tempcode();
+
+        $result = mixed();
+
         $_description = escape_html(get_translated_text($custom_field['cf_description'], $GLOBALS['FORUM_DB']));
         $field_cat = '';
         $matches = array();
@@ -1477,7 +1479,7 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
  * @param  ?MEMBER $member_id The member (null: member not actually added yet; this ID is only given for the duplication check, to make sure it doesn't think we are duplicating with ourself).
  * @param  ?SHORT_TEXT $password The password (null: nothing to check).
  * @param  boolean $return_errors Whether to return errors instead of dieing on them.
- * @return ?tempcode Error (null: none).
+ * @return ?Tempcode Error (null: none).
  */
 function cns_check_name_valid(&$username, $member_id = null, $password = null, $return_errors = false)
 {

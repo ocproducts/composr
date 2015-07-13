@@ -45,7 +45,7 @@ function download_licence_script()
 }
 
 /**
- * Get tempcode for a download 'feature box' for the sgiven row
+ * Get Tempcode for a download 'feature box' for the sgiven row
  *
  * @param  array $row The database field row of this download
  * @param  boolean $pic Whether to show a picture
@@ -55,7 +55,7 @@ function download_licence_script()
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ?AUTO_LINK $root The virtual root (null: read from environment)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for this download, linking to the full download page
+ * @return Tempcode A box for this download, linking to the full download page
  */
 function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zone = null, $text_summary = null, $give_context = true, $root = null, $guid = '')
 {
@@ -172,7 +172,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 }
 
 /**
- * Get tempcode for a download category 'feature box' for the given row
+ * Get Tempcode for a download category 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -181,7 +181,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_download_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
@@ -235,7 +235,7 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
  * @param  ?AUTO_LINK $shun Download we do not want to show (null: none to not show)
  * @param  boolean $use_compound_list Whether to get a list of child categories (not just direct ones, recursively), instead of just IDs
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @return tempcode The list of entries
+ * @return Tempcode The list of entries
  */
 function create_selection_list_downloads_tree($it = null, $submitter = null, $shun = null, $use_compound_list = false, $editable_filter = false)
 {
@@ -362,7 +362,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
  * @param  boolean $use_compound_list Whether to make the list elements store comma-separated child lists instead of IDs
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The list of categories
+ * @return Tempcode The list of categories
  */
 function create_selection_list_download_category_tree($it = null, $use_compound_list = false, $addable_filter = false, $updated_since = null)
 {
@@ -481,7 +481,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
  *
  * @param  ?AUTO_LINK $it The currently selected licence (null: none selected)
  * @param  boolean $allow_na Whether to allow an N/A selection
- * @return tempcode The list of categories
+ * @return Tempcode The list of categories
  */
 function create_selection_list_download_licences($it = null, $allow_na = false)
 {
@@ -504,7 +504,7 @@ function create_selection_list_download_licences($it = null, $allow_na = false)
  * @param  boolean $no_link_for_me_sir Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)
  * @param  ?ID_TEXT $zone The zone the download module we're using is in (null: find it)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
- * @return tempcode The breadcrumbs
+ * @return Tempcode The breadcrumbs
  * @return array The breadcrumb segments
  */
 function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = true, $zone = null, $attach_to_url_filter = false)

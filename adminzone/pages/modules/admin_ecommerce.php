@@ -101,7 +101,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -131,7 +131,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -160,7 +160,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     /**
      * The do-next manager for before setup management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -175,7 +175,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for adding/editing form.
+     * Get Tempcode for adding/editing form.
      *
      * @param  SHORT_TEXT $title The title
      * @param  LONG_TEXT $description The description
@@ -348,7 +348,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {

@@ -42,7 +42,7 @@ function init__galleries()
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?ID_TEXT $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The rendered box
+ * @return Tempcode The rendered box
  */
 function render_image_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -113,7 +113,7 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?ID_TEXT $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The rendered box
+ * @return Tempcode The rendered box
  */
 function render_video_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -191,7 +191,7 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The preview
+ * @return Tempcode The preview
  */
 function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_appropriate = false, $zone = '_SEARCH', $quit_if_empty = true, $preview = false, $give_context = true, $include_breadcrumbs = true, $attach_to_url_filter = false, $guid = '')
 {
@@ -419,7 +419,7 @@ function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_pe
  * Get preview detailing for a video.
  *
  * @param  array $myrow The database row of the video
- * @return tempcode The preview
+ * @return Tempcode The preview
  */
 function show_video_details($myrow)
 {
@@ -536,7 +536,7 @@ function only_member_galleries_of_id($cat, $member_id, $child_count)
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The tree list
+ * @return Tempcode The tree list
  */
 function create_selection_list_gallery_tree($it = null, $filter = null, $must_accept_images = false, $must_accept_videos = false, $purity = false, $use_compound_list = false, $member_id = null, $addable_filter = false, $editable_filter = false, $updated_since = null)
 {
@@ -915,7 +915,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
  * @param  ?AUTO_LINK $submitter Only show images/videos submitted by this member (null: no filter)
  * @param  boolean $use_compound_list Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @return tempcode The list of entries
+ * @return Tempcode The list of entries
  */
 function create_selection_list_gallery_content_tree($table, $it = null, $submitter = null, $use_compound_list = false, $editable_filter = false)
 {
@@ -1038,7 +1038,7 @@ function get_gallery_content_tree($table, $submitter = null, $gallery = null, $b
  * @param  integer $height Height
  * @param  integer $length Length
  * @param  MEMBER $submitter The entry submitter
- * @return tempcode Displayed media
+ * @return Tempcode Displayed media
  */
 function show_gallery_video_media($url, $thumb_url, $width, $height, $length, $submitter)
 {

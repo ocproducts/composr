@@ -120,7 +120,7 @@ class Module_admin_addons
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -251,7 +251,7 @@ class Module_admin_addons
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -326,7 +326,7 @@ class Module_admin_addons
     /**
      * The main UI.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function gui()
     {
@@ -436,7 +436,7 @@ class Module_admin_addons
     /**
      * The UI to get an addon from some source.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_import()
     {
@@ -481,7 +481,7 @@ class Module_admin_addons
     /**
      * The UI to retrieve a specified addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_import()
     {
@@ -517,7 +517,7 @@ class Module_admin_addons
     /**
      * The UI to confirm a combined action on addons.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function multi_action()
     {
@@ -568,7 +568,7 @@ class Module_admin_addons
     /**
      * The actualiser to perform a combined action on addons.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _multi_action()
     {
@@ -637,7 +637,7 @@ class Module_admin_addons
     /**
      * The UI to confirm the install of an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_install()
     {
@@ -674,7 +674,7 @@ class Module_admin_addons
     /**
      * The actualiser to install an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_install()
     {
@@ -714,7 +714,7 @@ class Module_admin_addons
     /**
      * The UI to uninstall an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_uninstall()
     {
@@ -732,7 +732,7 @@ class Module_admin_addons
     /**
      * The UI to uninstall an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_uninstall()
     {
@@ -789,7 +789,7 @@ class Module_admin_addons
     /**
      * The UI to export an addon (1).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function addon_export()
     {
@@ -902,7 +902,7 @@ class Module_admin_addons
     /**
      * The UI to export an addon (2).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _addon_export()
     {
@@ -1045,7 +1045,7 @@ class Module_admin_addons
     /**
      * The actualiser to export an addon.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __addon_export()
     {
@@ -1097,7 +1097,7 @@ class Module_admin_addons
     /**
      * The UI to choose a zone (or blocks) to manage.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function modules_interface()
     {
@@ -1117,7 +1117,7 @@ class Module_admin_addons
     /**
      * The UI to manage the modules (or blocks).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function modules_view()
     {
@@ -1217,7 +1217,7 @@ class Module_admin_addons
     /**
      * The actualiser to upgrade a module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function upgrade_module()
     {
@@ -1240,7 +1240,7 @@ class Module_admin_addons
     /**
      * The actualiser to uninstall a module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function uninstall_module()
     {
@@ -1263,7 +1263,7 @@ class Module_admin_addons
     /**
      * The actualiser to reinstall a module.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function reinstall_module()
     {

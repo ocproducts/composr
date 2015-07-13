@@ -96,7 +96,7 @@ class CMS_Topic
      * @param  ?MEMBER $highlight_by_member Member to highlight the posts of (null: none)
      * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
      * @param  ?integer $num_to_show_limit Maximum to load (null: default)
-     * @return tempcode The tempcode for the comment topic
+     * @return Tempcode The Tempcode for the comment topic
      */
     public function render_as_comment_topic($content_type, $content_id, $allow_comments, $invisible_if_no_comments, $forum_name, $post_warning, $preloaded_comments, $explicit_allow, $reverse, $highlight_by_member, $allow_reviews, $num_to_show_limit)
     {
@@ -242,7 +242,7 @@ class CMS_Topic
      * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
      * @param  array $posts List of post IDs to load
      * @param  AUTO_LINK $parent_id Parent node being loaded to
-     * @return tempcode The tempcode for the comment topic
+     * @return Tempcode The Tempcode for the comment topic
      */
     public function render_posts_from_topic($topic_id, $num_to_show_limit, $allow_comments, $invisible_if_no_comments, $forum_name, $preloaded_comments, $reverse, $may_reply, $highlight_by_member, $allow_reviews, $posts, $parent_id)
     {
@@ -722,7 +722,7 @@ class CMS_Topic
      * @param  AUTO_LINK $forum_id ID of forum this topic in in
      * @param  ?array $topic_info The topic row (null: not running Conversr).
      * @param  integer $depth The recursion depth
-     * @return tempcode Rendered tree structure
+     * @return Tempcode Rendered tree structure
      */
     protected function _render_post_tree($num_to_show_limit, $tree, $may_reply, $highlight_by_member, $all_individual_review_ratings, $forum_id, $topic_info, $depth = 0)
     {
@@ -974,9 +974,9 @@ class CMS_Topic
      * @param  ID_TEXT $type The content type of what this posting will be for
      * @param  ID_TEXT $id The content ID of what this posting will be for
      * @param  boolean $allow_reviews Whether to accept reviews
-     * @param  tempcode $post_url URL where form submit will go
+     * @param  Tempcode $post_url URL where form submit will go
      * @param  ?string $post_warning The default post to use (null: standard courtesy warning)
-     * @return tempcode Posting form
+     * @return Tempcode Posting form
      */
     public function get_posting_form($type, $id, $allow_reviews, $post_url, $post_warning)
     {

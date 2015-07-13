@@ -98,7 +98,7 @@ class Module_admin_wordfilter
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -126,7 +126,7 @@ class Module_admin_wordfilter
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -148,7 +148,7 @@ class Module_admin_wordfilter
     /**
      * The UI to choose a filtered-word to edit, or to add a filtered-word.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function word_filter_interface()
     {
@@ -187,7 +187,7 @@ class Module_admin_wordfilter
     /**
      * The actualiser to add a filtered-word.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add_word()
     {
@@ -221,7 +221,7 @@ class Module_admin_wordfilter
     /**
      * The actualiser to delete a filtered-word.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function remove_word()
     {

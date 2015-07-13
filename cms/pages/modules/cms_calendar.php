@@ -112,7 +112,7 @@ class Module_cms_calendar extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -148,7 +148,7 @@ class Module_cms_calendar extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -316,7 +316,7 @@ class Module_cms_calendar extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -404,7 +404,7 @@ class Module_cms_calendar extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -1033,7 +1033,7 @@ class Module_cms_calendar extends Standard_crud_module
      * Standard crud_module edit actualiser.
      *
      * @param  ID_TEXT $_id The entry being edited
-     * @return tempcode Description shown after editing
+     * @return Tempcode Description shown after editing
      */
     public function edit_actualisation($_id)
     {
@@ -1225,10 +1225,10 @@ class Module_cms_calendar extends Standard_crud_module
     /**
      * The do-next manager for after calendar content management (events only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -1238,7 +1238,7 @@ class Module_cms_calendar extends Standard_crud_module
     /**
      * The UI to import ical for calendar
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import_ical()
     {
@@ -1267,7 +1267,7 @@ class Module_cms_calendar extends Standard_crud_module
     /**
      * The actualiser to import ical for calendar
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import_ical()
     {
@@ -1296,7 +1296,7 @@ class Module_cms_calendar extends Standard_crud_module
     /**
      * UI to display export screen fields
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function export_ical()
     {
@@ -1342,7 +1342,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
     public $menu_label = 'CALENDAR';
 
     /**
-     * Get tempcode for a post template adding/editing form.
+     * Get Tempcode for a post template adding/editing form.
      *
      * @param  ?AUTO_LINK $id ID of category (null: new category)
      * @param  SHORT_TEXT $title The title
@@ -1515,10 +1515,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
     /**
      * The do-next manager for after calendar content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -1528,12 +1528,12 @@ class Module_cms_calendar_cat extends Standard_crud_module
     /**
      * The do-next manager for after calendar content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
      * @param  ?AUTO_LINK $type The category ID we were working in (null: N/A)
      * @param  string $date The Y-m-d of the added/edited event (first occurence) (blank: whatever)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _do_next_manager($title, $description, $id, $type, $date)
     {

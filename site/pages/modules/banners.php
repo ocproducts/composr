@@ -246,7 +246,7 @@ class Module_banners
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -294,7 +294,7 @@ class Module_banners
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -320,7 +320,7 @@ class Module_banners
     /**
      * The UI to choose a banner to view.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_banner()
     {
@@ -421,7 +421,7 @@ class Module_banners
     /**
      * The UI to view a banner.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function view_banner()
     {

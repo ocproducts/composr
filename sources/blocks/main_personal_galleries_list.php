@@ -49,7 +49,7 @@ class Block_main_personal_galleries_list
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -133,7 +133,7 @@ class Block_main_personal_galleries_list
      * Show subgalleries belonging to member.
      *
      * @param  ID_TEXT $gallery_name Gallery name
-     * @param  tempcode $galleries The output goes in here (passed by reference)
+     * @param  Tempcode $galleries The output goes in here (passed by reference)
      * @param  MEMBER $member_id The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
      */

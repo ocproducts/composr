@@ -23,7 +23,7 @@ Adding attachments.
 */
 
 /**
- * Get an array containing new Comcode, and tempcode. The function wraps the normal comcode_to_tempcode function. The function will do attachment management, including deleting of attachments that have become unused due to editing of some Comcode and removing of the reference.
+ * Get an array containing new Comcode, and Tempcode. The function wraps the normal comcode_to_tempcode function. The function will do attachment management, including deleting of attachments that have become unused due to editing of some Comcode and removing of the reference.
  *
  * @param  LONG_TEXT $comcode The unparsed Comcode that references the attachments
  * @param  ID_TEXT $type The type the attachment will be used for (e.g. download)

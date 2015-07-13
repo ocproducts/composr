@@ -141,7 +141,7 @@ class Module_purchase
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -164,7 +164,7 @@ class Module_purchase
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -216,11 +216,11 @@ class Module_purchase
     /**
      * Wrap-up so as to remove redundancy in templates.
      *
-     * @param  tempcode $content To wrap.
-     * @param  tempcode $title The title to use.
+     * @param  Tempcode $content To wrap.
+     * @param  Tempcode $title The title to use.
      * @param  ?mixed $url URL (null: no next URL).
      * @param  boolean $get Whether it is a GET form
-     * @return tempcode Wrapped.
+     * @return Tempcode Wrapped.
      */
     public function _wrap($content, $title, $url, $get = false)
     {
@@ -234,7 +234,7 @@ class Module_purchase
     /**
      * Choose product step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function choose()
     {
@@ -291,7 +291,7 @@ class Module_purchase
     /**
      * Message about product step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function message()
     {
@@ -334,7 +334,7 @@ class Module_purchase
     /**
      * Terms and conditions step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function terms()
     {
@@ -365,7 +365,7 @@ class Module_purchase
     /**
      * Details about purchase step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function details()
     {
@@ -394,7 +394,7 @@ class Module_purchase
     /**
      * Payment step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function pay()
     {
@@ -521,7 +521,7 @@ class Module_purchase
     /**
      * Finish step.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function finish()
     {
@@ -597,7 +597,7 @@ class Module_purchase
      * Check to see if a product is available to the current user.
      *
      * @param  ID_TEXT $type_code The product code.
-     * @return ?tempcode Error screen (null: no error).
+     * @return ?Tempcode Error screen (null: no error).
      */
     public function _check_availability($type_code)
     {

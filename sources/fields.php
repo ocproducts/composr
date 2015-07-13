@@ -393,8 +393,8 @@ function get_bound_content_entry($content_type, $id)
  *
  * @param  ID_TEXT $content_type Content type hook codename
  * @param  ?ID_TEXT $id Content entry ID (null: new entry)
- * @param  tempcode $fields Fields (passed by reference)
- * @param  tempcode $hidden Hidden Fields (passed by reference)
+ * @param  Tempcode $fields Fields (passed by reference)
+ * @param  Tempcode $hidden Hidden Fields (passed by reference)
  * @param  ?array $field_filter Limit fields to a set (null: no limit)
  * @param  boolean $field_filter_whitelist Whether $field_filter is a whitelist (if false, it is a blacklist)
  * @param  boolean $add_separate_header Whether to add a separate header above the fields, so long as not all the fields are already under some other header
@@ -567,7 +567,7 @@ function delete_form_custom_fields($content_type, $id)
  *
  * @param  ID_TEXT $type Field type to select
  * @param  boolean $limit_to_storage_set Whether to only show options in the same storage set as $type
- * @return tempcode List of field types
+ * @return Tempcode List of field types
  */
 function create_selection_list_field_type($type = '', $limit_to_storage_set = false)
 {

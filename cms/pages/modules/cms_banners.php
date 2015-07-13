@@ -76,7 +76,7 @@ class Module_cms_banners extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -108,7 +108,7 @@ class Module_cms_banners extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -185,7 +185,7 @@ class Module_cms_banners extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -306,7 +306,7 @@ class Module_cms_banners extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -315,7 +315,7 @@ class Module_cms_banners extends Standard_crud_module
     }
 
     /**
-     * Get the tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
+     * Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
      *
      * @param  ID_TEXT $name The name of the banner (blank: new)
      * @param  URLPATH $image_url The URL to the banner image
@@ -502,10 +502,10 @@ class Module_cms_banners extends Standard_crud_module
     /**
      * The do-next manager for after banner content management (banners only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -586,7 +586,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a post template adding/editing form.
+     * Get Tempcode for a post template adding/editing form.
      *
      * @param  ID_TEXT $id The ID of the banner type (blank: new)
      * @param  BINARY $is_textual Whether this is a textual banner
@@ -594,7 +594,7 @@ class Module_cms_banners_cat extends Standard_crud_module
      * @param  integer $image_height The image height (ignored for textual banners)
      * @param  integer $max_file_size The maximum file size for the banners (this is a string length for textual banners)
      * @param  BINARY $comcode_inline Whether the banner will be automatically shown via Comcode hot-text (this can only happen if banners of the title are given title-text)
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($id = '', $is_textual = 0, $image_width = 160, $image_height = 600, $max_file_size = 250, $comcode_inline = 0)
     {
@@ -624,7 +624,7 @@ class Module_cms_banners_cat extends Standard_crud_module
      * Standard crud_module edit form filler.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function fill_in_edit_form($id)
     {
@@ -670,7 +670,7 @@ class Module_cms_banners_cat extends Standard_crud_module
      * Standard crud_module edit actualiser.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return tempcode Description about usage
+     * @return Tempcode Description about usage
      */
     public function edit_actualisation($id)
     {
@@ -708,10 +708,10 @@ class Module_cms_banners_cat extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -721,11 +721,11 @@ class Module_cms_banners_cat extends Standard_crud_module
     /**
      * The do-next manager for after banner content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
      * @param  ID_TEXT $type The type ID we were working in (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _do_next_manager($title, $description, $id, $type)
     {

@@ -307,7 +307,7 @@ function comcode_helper_script()
 /**
  * Render a step of the Comcode tag helper dialog.
  *
- * @return tempcode The step UI.
+ * @return Tempcode The step UI.
  */
 function comcode_helper_script_step1()
 {
@@ -362,7 +362,7 @@ function comcode_helper_script_step1()
 /**
  * Render a step of the Comcode tag helper dialog.
  *
- * @return tempcode The step UI.
+ * @return Tempcode The step UI.
  */
 function comcode_helper_script_step2()
 {
@@ -625,9 +625,9 @@ function _find_comcode_tag_embed_required($tag)
  *
  * @param  ID_TEXT $tag Tag being read.
  * @param  ID_TEXT $actual_tag Actual tag being read.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  boolean $done_tag_contents Whether the tag contents input has also been handled here.
  * @param  array $defaults Default parameter values.
  * @param  array $params List of tag parameters.
@@ -759,9 +759,9 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
  * @param  ID_TEXT $param The parameter.
  * @param  string $parameter_name Default human-readable name of the parameter.
  * @param  string $descriptiont Default description of the parameter.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  string $default Default parameter value.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
  */
@@ -832,9 +832,9 @@ function _get_comcode_tag_param_name($actual_tag, $param)
  *
  * @param  ID_TEXT $tag Tag being read.
  * @param  ID_TEXT $actual_tag Actual tag being read.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  array $defaults Default parameter values.
  */
 function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, $defaults)
@@ -852,9 +852,9 @@ function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields
  *
  * @param  ID_TEXT $tag Tag being read.
  * @param  ID_TEXT $actual_tag Actual tag being read.
- * @param  tempcode $fields UI fields.
- * @param  tempcode $fields_advanced Advanced UI fields.
- * @param  tempcode $hidden Hidden fields.
+ * @param  Tempcode $fields UI fields.
+ * @param  Tempcode $fields_advanced Advanced UI fields.
+ * @param  Tempcode $hidden Hidden fields.
  * @param  string $default_embed Default embed contents.
  * @param  string $javascript JavaScript to deploy.
  * @param  boolean $preview Whether previewing will be allowed.
@@ -917,7 +917,7 @@ page=URL';
 /**
  * Render a step of the Comcode tag helper dialog.
  *
- * @return tempcode The step UI.
+ * @return Tempcode The step UI.
  */
 function comcode_helper_script_step3()
 {

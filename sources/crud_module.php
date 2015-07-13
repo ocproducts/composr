@@ -167,7 +167,7 @@ abstract class Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -390,7 +390,7 @@ abstract class Standard_crud_module
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -614,10 +614,10 @@ abstract class Standard_crud_module
      * Standard CRUD-module permission chooser.
      *
      * @param  ?ID_TEXT $category_id The category ID the permissions are being chosen for (null: new category)
-     * @param  ?tempcode $help Extra help to show in interface (null: none)
+     * @param  ?Tempcode $help Extra help to show in interface (null: none)
      * @param  boolean $new_category Whether this is a new category (don't load permissions, default to on)
-     * @param  ?tempcode $pinterface_view Label for view permissions (null: default)
-     * @return tempcode The permission fields
+     * @param  ?Tempcode $pinterface_view Label for view permissions (null: default)
+     * @return Tempcode The permission fields
      */
     public function get_permission_fields($category_id, $help = null, $new_category = false, $pinterface_view = null)
     {
@@ -637,10 +637,10 @@ abstract class Standard_crud_module
     /**
      * The do-next manager for after content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?ID_TEXT $id The ID of whatever we are working with (null: deleted)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -687,8 +687,8 @@ abstract class Standard_crud_module
     /**
      * If a confirmation is needed, and not been given, ask for one.
      *
-     * @param  tempcode $title The page title for what's being done
-     * @return ?tempcode The confirmation UI (null: all is clear - no confirmation needed)
+     * @param  Tempcode $title The page title for what's being done
+     * @return ?Tempcode The confirmation UI (null: all is clear - no confirmation needed)
      */
     public function handle_confirmations($title)
     {
@@ -710,8 +710,8 @@ abstract class Standard_crud_module
     /**
      * Get some XHTML for a form to choose a catalogue out of all the available ones.
      *
-     * @param  tempcode $title The get_screen_title converted title for this page
-     * @return ?tempcode The tempcode for the catalogue chooser (null: already chosen)
+     * @param  Tempcode $title The get_screen_title converted title for this page
+     * @return ?Tempcode The Tempcode for the catalogue chooser (null: already chosen)
      */
     public function choose_catalogue($title)
     {
@@ -752,8 +752,8 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI for a separate preview.
      *
-     * @param  tempcode $title The page title
-     * @return tempcode The UI
+     * @param  Tempcode $title The page title
+     * @return Tempcode The UI
      */
     public function preview_intercept($title)
     {
@@ -784,7 +784,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI to add an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function add()
     {
@@ -966,7 +966,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI/actualiser to add an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add()
     {
@@ -1125,7 +1125,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module entry list fetcher.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -1142,7 +1142,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI to choose an entry to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -1278,7 +1278,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI to edit an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit()
     {
@@ -1520,7 +1520,7 @@ abstract class Standard_crud_module
     /**
      * Standard CRUD-module UI/actualiser to edit an entry.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __edit()
     {
@@ -1669,7 +1669,7 @@ abstract class Standard_crud_module
      * Mass delete some entries/categories.
      *
      * @param  boolean $top_level Whether this is a top level mass delete op (i.e. not a recursion)
-     * @return ?tempcode The UI (null: not top level)
+     * @return ?Tempcode The UI (null: not top level)
      */
     public function mass_delete($top_level = true)
     {

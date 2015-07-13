@@ -121,7 +121,7 @@ function init__tempcode()
 /**
  * Simple function to evaluate some Tempcode. Very rarely to be used, only if you can't call a method (e.g. you are copying direct into an array, such as in block caching).
  *
- * @param  tempcode $ob Tempcode object
+ * @param  Tempcode $ob Tempcode object
  * @return string Evaluated string
  */
 function static_evaluate_tempcode($ob)
@@ -209,7 +209,7 @@ function missing_template_parameter($origin)
  * @param  ID_TEXT $name The name of the symbol
  * @param  ?array $parameters Parameters to the symbol (null: none). In same format as expected by ecv.
  * @param  ?array $escaping Escaping for the symbol (null: none)
- * @return tempcode Tempcode object.
+ * @return Tempcode Tempcode object.
  */
 function build_closure_tempcode($type, $name, $parameters, $escaping = null)
 {
@@ -291,7 +291,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
  * @param  ID_TEXT $symbol The ID of the symbol to use
  * @param  ?array $parameters Symbol parameters (null: none)
  * @param  ?array $escape Escaping (null: none)
- * @return tempcode A symbol Tempcode object
+ * @return Tempcode A symbol Tempcode object
  */
 function symbol_tempcode($symbol, $parameters = null, $escape = null)
 {
@@ -308,7 +308,7 @@ function symbol_tempcode($symbol, $parameters = null, $escape = null)
  * @param  ID_TEXT $directive The ID of the directive to use
  * @param  mixed $content The contents (Tempcode or string)
  * @param  ?array $parameters Directive parameters (null: none)
- * @return tempcode A directive Tempcode object
+ * @return Tempcode A directive Tempcode object
  */
 function directive_tempcode($directive, $content, $parameters = null)
 {
@@ -461,7 +461,7 @@ function closure_loop($param, $args, $main_function)
  * Convert a string to Tempcode.
  *
  * @param  string $string String
- * @return tempcode Tempcode
+ * @return Tempcode Tempcode
  */
 function make_string_tempcode($string)
 {
@@ -600,7 +600,7 @@ function apply_tempcode_escaping_inline($escaped, $value)
  * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $token2 The second token [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $token3 The third token (replaces {3}). May be an array of [of string], to allow any number of additional args (null: none)
- * @return tempcode A language Tempcode object
+ * @return Tempcode A language Tempcode object
  */
 function do_lang_tempcode($lang_string, $token1 = null, $token2 = null, $token3 = null)
 {
@@ -666,7 +666,7 @@ function kid_gloves_html_escaping_singular(&$param)
  * @param  string $directory Subdirectory type to look in
  * @set    templates javascript xml text css
  * @param  ?ID_TEXT $theme Theme to use (null: current theme)
- * @return tempcode The Tempcode for this template
+ * @return Tempcode The Tempcode for this template
  */
 function do_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates', $theme = null)
 {
@@ -711,6 +711,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     } else {
         $loaded_this_once = true;
     }
+    $_data = mixed();
     $_data = false;
     if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/
             ($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))
@@ -1439,7 +1440,7 @@ class Tempcode
             $this->children = array();
         }
 
-        $result = tempcode_include($file); // We don't eval on this because we want it to potentially be op-code cached by e.g. Zend Accelerator
+        $result = Tempcode_include($file); // We don't eval on this because we want it to potentially be op-code cached by e.g. Zend Accelerator
         if (!is_array($result)) {
             return false; // May never get here, as PHP fatal errors can't be suppressed or skipped over
         }
@@ -1565,7 +1566,7 @@ class Tempcode
      *
      * @param  array $parameters Map of parameters to bind parameter bits to
      * @param  ID_TEXT $codename The codename of the template this Tempcode is from
-     * @return tempcode The new bound Tempcode object
+     * @return Tempcode The new bound Tempcode object
      */
     public function bind(&$parameters, $codename)
     {
@@ -1641,7 +1642,7 @@ class Tempcode
      * Replace the named parameter with a specific value. Hardly used, but still important. Note that this will bind to all kinds of things that might not normally take named parameters, like symbols; this should not cause problems though.
      *
      * @param  string $parameter Named parameter
-     * @param  tempcode $value Specific value
+     * @param  Tempcode $value Specific value
      */
     public function singular_bind($parameter, $value)
     {
@@ -2016,7 +2017,7 @@ function recall_named_function($id, $parameters, $code)
  * @param  PATH $filepath The filename of the file to include.
  * @return mixed Success status or returned value.
  */
-function tempcode_include($filepath)
+function Tempcode_include($filepath)
 {
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);

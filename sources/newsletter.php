@@ -125,7 +125,7 @@ function basic_newsletter_join($email, $interest_level = 4, $lang = null, $get_c
  * @range  1 5
  * @param  string $csv_data CSV data of extra subscribers (blank: none). This is in the same Composr newsletter CSV format that we export elsewhere.
  * @param  ID_TEXT $mail_template The template used to show the email
- * @return tempcode UI
+ * @return Tempcode UI
  */
 function actual_send_newsletter($message, $subject, $lang, $send_details, $html_only = 0, $from_email = '', $from_name = '', $priority = 3, $csv_data = '', $mail_template = 'MAIL')
 {

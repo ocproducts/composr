@@ -62,7 +62,7 @@ class Module_admin_cleanup
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -85,7 +85,7 @@ class Module_admin_cleanup
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -107,7 +107,7 @@ class Module_admin_cleanup
     /**
      * The UI for choosing caches to empty.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose_cache_type()
     {
@@ -148,7 +148,7 @@ class Module_admin_cleanup
     /**
      * The actualiser for emptying caches.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_rebuild()
     {

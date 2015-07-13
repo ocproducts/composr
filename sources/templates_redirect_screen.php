@@ -21,13 +21,13 @@
 /**
  * Redirect the user - transparently, storing a message that will be shown on their destination page.
  *
- * @param  tempcode $title Title to display on redirect page
+ * @param  Tempcode $title Title to display on redirect page
  * @param  mixed $url Destination URL (may be Tempcode)
  * @param  ?mixed $text Message (may be Tempcode) to show in the HTML of the redirect screen (which is usually never seen) and also after the redirect (null: standard redirection message which will only show in the HTML of the redirect screen and nothing after)
  * @param  boolean $intermediary_hop For intermediary hops, don't mark so as to read status messages - save them up for the next hop (which will not be intermediary)
  * @param  ID_TEXT $msg_type Code of message type to show
  * @set    warn inform fatal
- * @return tempcode Redirection message (likely to not actually be seen due to instant redirection)
+ * @return Tempcode Redirection message (likely to not actually be seen due to instant redirection)
  */
 function _redirect_screen($title, $url, $text = null, $intermediary_hop = false, $msg_type = 'inform')
 {

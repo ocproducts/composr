@@ -90,7 +90,7 @@ class Module_admin_cmsusers
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -108,7 +108,7 @@ class Module_admin_cmsusers
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -125,7 +125,7 @@ class Module_admin_cmsusers
     /**
      * List of sites that have installed Composr.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function users()
     {

@@ -76,7 +76,7 @@ class Module_cms_comcode_pages
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -143,7 +143,7 @@ class Module_cms_comcode_pages
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -169,11 +169,11 @@ class Module_cms_comcode_pages
     /**
      * The do-next manager for after content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $title The title (output of get_screen_title)
      * @param  ?ID_TEXT $page The name of the page just handled (null: none)
      * @param  ID_TEXT $zone The name of the zone just handled (blank: none/welcome-zone)
-     * @param  tempcode $completion_text The text to show (blank: default)
-     * @return tempcode The UI
+     * @param  Tempcode $completion_text The text to show (blank: default)
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $page, $zone, $completion_text)
     {
@@ -272,7 +272,7 @@ class Module_cms_comcode_pages
     /**
      * The UI to choose a page to edit.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -617,7 +617,7 @@ class Module_cms_comcode_pages
     /**
      * The UI to edit a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _edit()
     {
@@ -921,7 +921,7 @@ class Module_cms_comcode_pages
     /**
      * The actualiser to edit a Comcode page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __edit()
     {
@@ -1042,7 +1042,7 @@ class Module_cms_comcode_pages
     /**
      * Generate page sitemap.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function generate_page_sitemap()
     {
@@ -1132,7 +1132,7 @@ class Module_cms_comcode_pages
      * @param  array $pages An array of pages
      * @param  ID_TEXT $under The page we are looking under
      * @param  array $menu_branches An array of menu links
-     * @return tempcode The structure
+     * @return Tempcode The structure
      */
     public function organise_page_tree(&$pages, $under, &$menu_branches)
     {

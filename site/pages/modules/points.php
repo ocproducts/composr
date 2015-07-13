@@ -145,7 +145,7 @@ class Module_points
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -197,7 +197,7 @@ class Module_points
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -226,7 +226,7 @@ class Module_points
     /**
      * The UI to search for a member (with regard to viewing their point profile).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function points_search_form()
     {
@@ -249,7 +249,7 @@ class Module_points
     /**
      * The actualiser for a points profile search.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function points_search_results()
     {
@@ -285,7 +285,7 @@ class Module_points
     /**
      * The UI for a points profile.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function points_profile()
     {
@@ -308,7 +308,7 @@ class Module_points
     /**
      * The actualiser for a gift point transaction.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_give()
     {

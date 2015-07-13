@@ -31,7 +31,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         parent::setUp();
     }
 
-    function testHaveFullMetaData()
+    public function testHaveFullMetaData()
     {
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
             if (is_numeric($tutorial_name)) {
@@ -47,7 +47,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         }
     }
 
-    function testAddonLinkage()
+    public function testAddonLinkage()
     {
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
             if (is_numeric($tutorial_name)) {
@@ -80,7 +80,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         }
     }
 
-    function testIconLinkage()
+    public function testIconLinkage()
     {
         $icons_used = array();
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
@@ -107,7 +107,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         closedir($dh);
     }
 
-    function testHasStandardParts()
+    public function testHasStandardParts()
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
@@ -128,7 +128,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         closedir($dh);
     }
 
-    function testHasSomePinned()
+    public function testHasSomePinned()
     {
         $count = 0;
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
@@ -141,7 +141,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         $this->assertTrue($count == $desired, 'You should pin exactly ' . integer_format($desired) . ' tutorials, you have pinned ' . integer_format($count));
     }
 
-    function testTagSet()
+    public function testTagSet()
     {
         $tags = list_tutorial_tags(true);
         foreach ($tags as $tag) {

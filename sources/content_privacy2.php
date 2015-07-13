@@ -25,7 +25,7 @@
  * @param  ?ID_TEXT $content_id The content ID (null: adding)
  * @param  boolean $show_header Whether to show a header to separate the settings out
  * @param  string $prefix Prefix for field naming
- * @return tempcode The form fields
+ * @return Tempcode The form fields
  */
 function get_privacy_form_fields($content_type, $content_id = null, $show_header = true, $prefix = '')
 {

@@ -48,7 +48,7 @@ function init__symbols()
 }
 
 /**
- * Evaluate a conventional tempcode variable, handling escaping
+ * Evaluate a conventional Tempcode variable, handling escaping
  *
  * @param  string $lang The language to evaluate this symbol in (some symbols refer to language elements).
  * @param  array $escaped Array of escaping operations.
@@ -56,7 +56,7 @@ function init__symbols()
  * @set    0 2
  * @param  ID_TEXT $name The name of the symbol
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return mixed The result. Either tempcode, or a string.
+ * @return mixed The result. Either Tempcode, or a string.
  */
 function ecv($lang, $escaped, $type, $name, $param)
 {
@@ -2816,7 +2816,7 @@ function ecv_BLOCK($lang, $escaped, $param)
             }
         }
 
-        if ((count($param) == 1) && (strpos($param[0], ',') !== false)) { // NB: This code is also in tempcode.php
+        if ((count($param) == 1) && (strpos($param[0], ',') !== false)) { // NB: This code is also in Tempcode.php
             $param_2 = block_params_str_to_arr($param[0], true);
         } else {
             $param_2 = $param;

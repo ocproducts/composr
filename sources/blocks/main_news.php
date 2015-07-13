@@ -62,7 +62,7 @@ class Block_main_news
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -172,7 +172,7 @@ class Block_main_news
             }
             $start = 0;
             do {
-                $_rows = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS p_id' . $extra_select_sql . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON r.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : '') . (can_arbitrary_groupby() ? ' GROUP BY r.id' : '') . ' ORDER BY r.date_and_time DESC', 200, $start, null, false, true);
+                $_rows = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS p_id' . $extra_select_sql . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON r.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : '') . (can_arbitrary_groupby() ? ' GROUP BY r.id' : '') . ' ORDER BY r.date_and_time DESC', 200, $start, false, true);
                 $rows = array();
                 $rows2 = array();
                 foreach ($_rows as $row) {

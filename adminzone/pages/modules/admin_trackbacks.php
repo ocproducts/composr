@@ -65,7 +65,7 @@ class Module_admin_trackbacks
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -89,7 +89,7 @@ class Module_admin_trackbacks
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -108,7 +108,7 @@ class Module_admin_trackbacks
     /**
      * The UI to delete trackbacks.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function choose()
     {
@@ -134,7 +134,7 @@ class Module_admin_trackbacks
     /**
      * The actualiser to delete trackbacks.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delete_trackbacks()
     {

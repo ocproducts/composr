@@ -27,7 +27,7 @@
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The isolated post.
+ * @return Tempcode The isolated post.
  */
 function render_post_box($row, $use_post_title = false, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
@@ -234,9 +234,9 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
             }
         }
         if ($topic_row['t_cache_first_title'] == '') {
-            $topic_row['t_cache_first_title'] = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_title', array('p_topic_id' => $row['p_topic_id']), 'ORDER BY p_time ASC', 1);
+            $topic_row['t_cache_first_title'] = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_title', array('p_topic_id' => $row['p_topic_id']), 'ORDER BY p_time ASC');
         }
-        $link = hyperlink($GLOBALS['FORUM_DRIVER']->topic_url($row['p_topic_id'], true), $topic_row['t_cache_first_title'], false, true);
+        $link = hyperlink($GLOBALS['FORUM_DRIVER']->topic_url($row['p_topic_id'], '', true), $topic_row['t_cache_first_title'], false, true);
         $title = do_lang_tempcode('FORUM_POST_ISOLATED_RESULT', escape_html(strval($row['id'])), $poster, array(escape_html($date), $link));
 
         return do_template('SIMPLE_PREVIEW_BOX', array(

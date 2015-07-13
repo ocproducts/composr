@@ -269,7 +269,7 @@ function special_demonstratr_dir()
 /**
  * Get a list of categories that sites may be in.
  *
- * @return tempcode The result of execution.
+ * @return Tempcode The result of execution.
  */
 function get_site_categories()
 {
@@ -282,7 +282,7 @@ function get_site_categories()
  * Get a form field list of site categories.
  *
  * @param  string $cat The default selected item
- * @return tempcode List
+ * @return Tempcode List
  */
 function create_selection_list_site_categories($cat)
 {
@@ -298,7 +298,7 @@ function create_selection_list_site_categories($cat)
  * Get a form field list of servers.
  *
  * @param  string $server The default selected item
- * @return tempcode List
+ * @return Tempcode List
  */
 function create_selection_list_servers($server)
 {

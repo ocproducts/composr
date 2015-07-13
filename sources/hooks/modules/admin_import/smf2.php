@@ -768,7 +768,7 @@ class Hook_smf2
             $title = $row['name'];
             $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
 
-            $test = $GLOBALS['FORUM_DB']->query_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
+            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
             if (!is_null($test)) {
                 import_id_remap_put('category', strval($row['id_cat']), $test);
                 continue;

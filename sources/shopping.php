@@ -162,7 +162,7 @@ function delete_incomplete_orders()
 /**
  * Show cart link
  *
- * @return tempcode
+ * @return Tempcode
  */
 function show_cart_link()
 {
@@ -306,7 +306,7 @@ function delete_pending_orders_for_current_user()
 /**
  * Payment step.
  *
- * @return tempcode The result of execution.
+ * @return Tempcode The result of execution.
  */
 function payment_form()
 {
@@ -488,7 +488,7 @@ function get_current_order_id()
 /**
  * Return list entry of common order statuses of orders
  *
- * @return  tempcode    Order status list entries
+ * @return  Tempcode    Order status list entries
  */
 function get_order_status_list()
 {

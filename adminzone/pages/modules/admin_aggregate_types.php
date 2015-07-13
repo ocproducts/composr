@@ -109,7 +109,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -143,7 +143,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -176,7 +176,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     /**
      * The do-next manager for before setup management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -193,7 +193,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a forum grouping template adding/editing form.
+     * Get Tempcode for a forum grouping template adding/editing form.
      *
      * @param  ID_TEXT $aggregate_type The aggregate type (blank: ask first)
      * @param  SHORT_TEXT $aggregate_label The label for the instance
@@ -374,7 +374,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     /**
      * The UI to edit the aggregate_types XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function xml()
     {
@@ -391,7 +391,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     /**
      * The UI actualiser edit the aggregate_types XML file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _xml()
     {
@@ -422,7 +422,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     /**
      * The UI to start a synchronisation of aggregate content type instances.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function sync()
     {
@@ -457,7 +457,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     /**
      * The actualiser to start a synchronisation of aggregate content type instances.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _sync()
     {

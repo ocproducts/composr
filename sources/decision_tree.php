@@ -57,7 +57,7 @@ Each question details has:
  */
 class DecisionTree
 {
-	private $decision_tree;
+    private $decision_tree;
     private $default_screen;
 
     /**
@@ -66,11 +66,11 @@ class DecisionTree
      * @param  array $decision_tree Decision tree structure to work from
      * @param  ID_TEXT $default_screen Name of the default screen to start from
      */
-	public function __construct($decision_tree, $default_screen = 'start')
-	{
-		$this->decision_tree = $decision_tree;
+    public function __construct($decision_tree, $default_screen = 'start')
+    {
+        $this->decision_tree = $decision_tree;
 
-		$this->default_screen = $default_screen;
+        $this->default_screen = $default_screen;
 
         // Verify the tree contains a valid structure. Either explicit errors, or implicit errors generated trying to process the data structure.
         foreach ($decision_tree as $screen_name => $screen) {
@@ -109,18 +109,18 @@ class DecisionTree
                 }
             }
         }
-	}
+    }
 
     /**
      * Start the decision tree process, returning Tempcode for the screen currently on.
      *
-     * @return tempcode Screen output
+     * @return Tempcode Screen output
      */
-	public function run()
-	{
+    public function run()
+    {
         $GLOBALS['OUTPUT_STREAMING'] = false; // Too complex to do a pre_run for this properly
 
-		$tree_position = get_param_string('type', 'browse');
+        $tree_position = get_param_string('type', 'browse');
         if ($tree_position[0] == '_') {
             $tree_position = substr($tree_position, 1);
             $submit = true;
@@ -154,13 +154,13 @@ class DecisionTree
 
         // Do this screen
         return $this->render($tree_position);
-	}
+    }
 
     /**
      * Build out a URL to a particular decision tree screen.
      *
      * @param  ID_TEXT $target_position Tree position to go to
-     * @return tempcode URL
+     * @return Tempcode URL
      */
     private function build_url($target_position)
     {
@@ -173,8 +173,8 @@ class DecisionTree
      * @param  ID_TEXT $tree_position Tree position coming from
      * @return ID_TEXT Tree position going to
      */
-	private function process_input($tree_position)
-	{
+    private function process_input($tree_position)
+    {
         $details = $this->decision_tree[$tree_position];
 
         foreach ($details['next'] as $next) {
@@ -185,7 +185,7 @@ class DecisionTree
         }
 
         fatal_exit('Internal error - not sure where to go');
-	}
+    }
 
     /**
      * Render out decision tree screen.
@@ -193,8 +193,8 @@ class DecisionTree
      * @param  ID_TEXT $tree_position Tree position at
      * @return Tempcode Screen output
      */
-	private function render($tree_position)
-	{
+    private function render($tree_position)
+    {
         $details = $this->decision_tree[$tree_position];
 
         $title = get_screen_title($details['title'], false);
@@ -291,5 +291,5 @@ class DecisionTree
             'SUPPORT_AUTOSAVE' => false,
             'TARGET' => '_self',
         ));
-	}
+    }
 }

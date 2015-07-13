@@ -26,7 +26,7 @@
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  boolean $brief Whether to use the brief styling
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode The box
+ * @return Tempcode The box
  */
 function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief = false, $guid = '')
 {
@@ -113,7 +113,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
 }
 
 /**
- * Get tempcode for a news category 'feature box' for the given row
+ * Get Tempcode for a news category 'feature box' for the given row
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -121,7 +121,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
  * @param  ?integer $blogs What to show (null: news and blogs, 0: news, 1: blogs)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return tempcode A box for it, linking to the full page
+ * @return Tempcode A box for it, linking to the full page
  */
 function render_news_category_box($row, $zone = '_SEARCH', $give_context = true, $attach_to_url_filter = false, $blogs = null, $guid = '')
 {
@@ -191,7 +191,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
  * @param  ?boolean $only_blogs Whether to limit to only show blog categories (null: don't care, true: blogs only, false: no blogs)
  * @param  boolean $prefer_not_blog_selected Whether to prefer to choose a non-blog category as the default
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
- * @return tempcode The tempcode for the news category select list
+ * @return Tempcode The Tempcode for the news category select list
  */
 function create_selection_list_news_categories($it = null, $show_all_personal_categories = false, $addable_filter = false, $only_existing = false, $only_blogs = null, $prefer_not_blog_selected = false, $updated_since = null)
 {
@@ -279,7 +279,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
  * @param  ?MEMBER $only_owned Limit news to those submitted by this member (null: show all)
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
  * @param  boolean $only_in_blog Whether to only show blog posts
- * @return tempcode The list
+ * @return Tempcode The list
  */
 function create_selection_list_news($it, $only_owned = null, $editable_filter = false, $only_in_blog = false)
 {

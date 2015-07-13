@@ -91,7 +91,7 @@ class Module_admin_messaging
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -121,7 +121,7 @@ class Module_admin_messaging
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -147,7 +147,7 @@ class Module_admin_messaging
     /**
      * Choose a message.
      *
-     * @return tempcode The message choose screen.
+     * @return Tempcode The message choose screen.
      */
     public function choose_message()
     {
@@ -193,7 +193,7 @@ class Module_admin_messaging
     /**
      * View a message.
      *
-     * @return tempcode The message view screen.
+     * @return Tempcode The message view screen.
      */
     public function view_message()
     {
@@ -274,7 +274,7 @@ class Module_admin_messaging
     /**
      * Take responsibility for handling a message.
      *
-     * @return tempcode Success message.
+     * @return Tempcode Success message.
      */
     public function take_responsibility()
     {

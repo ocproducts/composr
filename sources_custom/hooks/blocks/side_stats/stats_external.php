@@ -16,7 +16,7 @@ class Hook_stats_external
     /**
      * Show a stats section.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -31,7 +31,9 @@ class Hook_stats_external
         if ($rank != '') {
             $map['Alexa rank'] = $rank;
         }
-        $map['Back links'] = protect_from_escaping('<a title="Show back links" href="http://www.google.co.uk/search?as_lq=' . urlencode($url) . '">' . $links . '</a>');
+        if ($links != '') {
+            $map['Back links'] = protect_from_escaping('<a title="Show back links" href="http://www.google.co.uk/search?as_lq=' . urlencode($url) . '">' . $links . '</a>');
+        }
         if ($speed != '') {
             $map['Speed'] = $speed;
         }
@@ -62,12 +64,12 @@ function getAlexaRank($url)
     if (preg_match('#<LINKSIN [^<>]*NUM="([0-9]+){1,}"#si', $result, $p) != 0) {
         $links = integer_format(intval($p[1]));
     } else {
-        $links = '0';
+        $links = '';
     }
     if (preg_match('#<SPEED [^<>]*PCT="([0-9]+){1,}"#si', $result, $p) != 0) {
         $speed = 'Top ' . integer_format(100 - intval($p[1])) . '%';
     } else {
-        $speed = '?';
+        $speed = '';
     }
 
     // we would like, but cannot get (without an API key)...

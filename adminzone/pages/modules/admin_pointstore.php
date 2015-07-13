@@ -67,7 +67,7 @@ class Module_admin_pointstore
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -101,7 +101,7 @@ class Module_admin_pointstore
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -129,7 +129,7 @@ class Module_admin_pointstore
     /**
      * The UI to view Point Store logs.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function pointstore_log_interface()
     {
@@ -207,7 +207,7 @@ class Module_admin_pointstore
     /**
      * The actualiser to delete a purchase.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delete_log_entry()
     {
@@ -232,7 +232,7 @@ class Module_admin_pointstore
     /**
      * The UI to set Point Store prices.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function interface_set_prices()
     {
@@ -312,7 +312,7 @@ class Module_admin_pointstore
     /**
      * The actualiser to set Point Store prices.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_prices()
     {

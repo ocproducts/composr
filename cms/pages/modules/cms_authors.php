@@ -82,7 +82,7 @@ class Module_cms_authors
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -133,7 +133,7 @@ class Module_cms_authors
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -164,7 +164,7 @@ class Module_cms_authors
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -183,7 +183,7 @@ class Module_cms_authors
     /**
      * The UI to add an author.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _add()
     {
@@ -214,9 +214,11 @@ class Module_cms_authors
                 require_lang('cns');
                 $info = cns_get_all_custom_fields_match_member(get_member());
                 if (array_key_exists(do_lang('DEFAULT_CPF_SELF_DESCRIPTION_NAME'), $info)) {
-                    $description = $info[do_lang('DEFAULT_CPF_SELF_DESCRIPTION_NAME')]['RENDERED'];
-                    if (is_object($description)) {
-                        $description = $description->evaluate();
+                    $_description = $info[do_lang('DEFAULT_CPF_SELF_DESCRIPTION_NAME')]['RENDERED'];
+                    if (is_object($_description)) {
+                        $description = $_description->evaluate();
+                    } else {
+                        $description = $_description;
                     }
                 }
             }
@@ -285,7 +287,7 @@ class Module_cms_authors
     /**
      * The actualiser to add an author.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __ad()
     {
@@ -358,10 +360,10 @@ class Module_cms_authors
     /**
      * The do-next manager for after author content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?SHORT_TEXT $author The author we were working with (null: not working with one)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $author = null)
     {
@@ -390,7 +392,7 @@ class Module_cms_authors
     /**
      * The UI to edit an author (effectively deleting and re-adding them).
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -422,7 +424,7 @@ class Module_cms_authors
     /**
      * The actualiser to merge two authors.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _merge()
     {
@@ -440,7 +442,7 @@ class Module_cms_authors
      * Get a list of authors.
      *
      * @param  ?ID_TEXT $it The author to select by default (null: no specific default)
-     * @return tempcode The list
+     * @return Tempcode The list
      */
     public function create_selection_list_authors($it = null)
     {

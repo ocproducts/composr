@@ -24,7 +24,7 @@
  * @param  ID_TEXT $content_type The content type
  * @param  ?ID_TEXT $content_id The content ID (null: not added yet)
  * @param  ?ID_TEXT $catalogue_name The catalogue name where to grab default settings from (null: content type has no bound catalogue / try and auto-detect)
- * @return tempcode The fields
+ * @return Tempcode The fields
  */
 function content_review_get_fields($content_type, $content_id = null, $catalogue_name = null)
 {

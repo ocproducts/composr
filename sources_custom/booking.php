@@ -55,7 +55,7 @@ function booking_price_ajax_script()
  *
  * @param  array $request Booking details structure to check, passed by reference as statuses get added.
  * @param  array $ignore_bookings Existing bookings to ignore (presumably the booking we're trying to make - if this is an edit).
- * @return ?tempcode Error message (null: no issue).
+ * @return ?Tempcode Error message (null: no issue).
  */
 function check_booking_dates_available(&$request, $ignore_bookings)
 {
@@ -399,7 +399,7 @@ function days_in_range($start_day, $start_month, $start_year, $end_day, $end_mon
  * @param  integer $year Year.
  * @param  integer $quantity Quantity needed.
  * @param  array $ignore_bookings Existing bookings to ignore (presumably the booking we're trying to make - if this is an edit).
- * @return ?tempcode Error message (null: no issue).
+ * @return ?Tempcode Error message (null: no issue).
  */
 function booking_date_available($bookable_id, $day, $month, $year, $quantity, $ignore_bookings)
 {

@@ -21,11 +21,11 @@
 /**
  * Render a member profile.
  *
- * @param  tempcode $title Screen title
+ * @param  Tempcode $title Screen title
  * @param  MEMBER $member_id_of The ID of the member who is being viewed
  * @param  ?MEMBER $member_id_viewing The ID of the member who is doing the viewing (null: current member)
  * @param  ?ID_TEXT $username The username of the member who is being viewed (null: work out from member_id_of)
- * @return tempcode The rendered profile
+ * @return Tempcode The rendered profile
  */
 function render_profile_tabset($title, $member_id_of, $member_id_viewing = null, $username = null)
 {

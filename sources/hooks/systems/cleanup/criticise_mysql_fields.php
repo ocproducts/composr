@@ -74,7 +74,7 @@ class Hook_cleanup_criticise_mysql_fields
     /**
      * Run the cleanup hook action.
      *
-     * @return tempcode Results
+     * @return Tempcode Results
      */
     public function run()
     {

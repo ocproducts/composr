@@ -28,7 +28,7 @@ function init__content3()
     $CAPI_CATALOGUE_OPTIONS = array();
 }
 
-abstract class capi_object
+abstract class CmsApi_object
 {
     public $entity_id = null;
     public $properties = null;
@@ -133,7 +133,7 @@ function catalogue_query_select_count($catalogue_name, $where = null, $filters =
     return $GLOBALS['SITE_DB']->query_value_if_there($query);
 }
 
-abstract class capi_catalogue_object extends capi_object
+abstract class CmsApi_catalogue_object extends CmsApi_object
 {
     public $field_refs = array();
 
@@ -217,7 +217,7 @@ abstract class capi_catalogue_object extends capi_object
     }
 }
 
-abstract class capi_database_object extends capi_object
+abstract class CmsApi_database_object extends CmsApi_object
 {
     public $table = null;
 

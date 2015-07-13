@@ -13,7 +13,7 @@
  */
 
 /**
- * Get the tempcode for a checkbox input.
+ * Get the Tempcode for a checkbox input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -22,7 +22,7 @@
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ID_TEXT $value The value the checkbox passes when ticked
  * @param  ?boolean $disabled Whether this box should be disabled (default: false)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1', $disabled = false)
 {
@@ -35,7 +35,7 @@ function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex =
 }
 
 /**
- * Get the tempcode for a bank of tick boxes.
+ * Get the Tempcode for a bank of tick boxes.
  *
  * @param  array $options A list of tuples: (prettyname, name, value, description)
  * @param  mixed $description A description for this input field
@@ -44,7 +44,7 @@ function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex =
  * @param  boolean $simple_style Whether to place each tick on a new line
  * @param  ?ID_TEXT $custom_name Name for custom value to be entered to (null: no custom value allowed)
  * @param  ?string $custom_value Value for custom value (null: no custom value known)
- * @return tempcode The input field
+ * @return Tempcode The input field
  */
 function form_input_various_ticks($options, $description, $_tabindex = null, $_pretty_name = '', $simple_style = false, $custom_name = null, $custom_value = null)
 {

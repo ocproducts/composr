@@ -35,8 +35,8 @@ class Hook_video_syndication_vimeo
         $this->_vimeo_ob = new phpVimeo(
             get_option($service_name . '_client_id'),
             get_option($service_name . '_client_secret'),
-            get_value($service_name . '_access_token', true),
-            get_value($service_name . '_access_token_secret', true)
+            get_value($service_name . '_access_token', null, true),
+            get_value($service_name . '_access_token_secret', null, true)
         );
     }
 

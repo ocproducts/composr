@@ -67,7 +67,7 @@ class Hook_activities_activities
     /**
      * Get syndication field UI.
      *
-     * @return tempcode Syndication fields (or empty)
+     * @return Tempcode Syndication fields (or empty)
      */
     public function get_syndication_option_fields()
     {

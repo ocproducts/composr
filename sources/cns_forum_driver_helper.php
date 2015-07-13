@@ -547,7 +547,7 @@ function _helper_get_post_remaining_details($this_ref, $topic_id, $post_ids)
  *
  * @param  object $this_ref Link to the real forum driver
  * @param  string $field_name The ID of the form field the emoticon chooser adds to
- * @return tempcode The emoticon chooser template
+ * @return Tempcode The emoticon chooser template
  */
 function _helper_get_emoticon_chooser($this_ref, $field_name)
 {

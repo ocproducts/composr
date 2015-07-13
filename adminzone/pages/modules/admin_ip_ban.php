@@ -99,7 +99,7 @@ class Module_admin_ip_ban
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -177,7 +177,7 @@ class Module_admin_ip_ban
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -214,7 +214,7 @@ class Module_admin_ip_ban
     /**
      * The UI for managing banned IPs.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function gui()
     {
@@ -241,7 +241,7 @@ class Module_admin_ip_ban
     /**
      * The actualiser for managing banned IPs.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function actual()
     {
@@ -287,7 +287,7 @@ class Module_admin_ip_ban
     /**
      * The actualiser to toggle a member ban. Only works with Conversr.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function toggle_member_ban()
     {
@@ -334,7 +334,7 @@ class Module_admin_ip_ban
     /**
      * The actualiser to toggle a submitter ban.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function toggle_submitter_ban()
     {
@@ -383,7 +383,7 @@ class Module_admin_ip_ban
     /**
      * The actualiser to syndicate an IP ban.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function syndicate_ip_ban()
     {
@@ -412,7 +412,7 @@ class Module_admin_ip_ban
     /**
      * The actualiser to toggle an IP ban.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function toggle_ip_ban()
     {
@@ -459,7 +459,7 @@ class Module_admin_ip_ban
     /**
      * The actualiser to toggle a combined IP/member ban.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function multi_ban()
     {

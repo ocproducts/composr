@@ -65,7 +65,7 @@ class Module_admin_quiz
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -138,7 +138,7 @@ class Module_admin_quiz
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -180,7 +180,7 @@ class Module_admin_quiz
     /**
      * The do-next manager for before setup management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -200,7 +200,7 @@ class Module_admin_quiz
     /**
      * Standard crud_module list function.
      *
-     * @return tempcode The selection list
+     * @return Tempcode The selection list
      */
     public function create_selection_list_entries()
     {
@@ -218,7 +218,7 @@ class Module_admin_quiz
     /**
      * Standard crud_module delete actualiser.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function export_quiz()
     {
@@ -247,7 +247,7 @@ class Module_admin_quiz
     /**
      * UI: find quiz winner.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function find_winner()
     {
@@ -275,7 +275,7 @@ class Module_admin_quiz
     /**
      * Actualiser: find quiz winner.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _find_winner()
     {
@@ -374,7 +374,7 @@ class Module_admin_quiz
     /**
      * Choose quiz to view results of.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function quiz_results()
     {
@@ -407,7 +407,7 @@ class Module_admin_quiz
     /**
      * View quiz results.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function _quiz_results()
     {
@@ -522,7 +522,7 @@ class Module_admin_quiz
     /**
      * View a single filled-in quiz.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function __quiz_results()
     {
@@ -541,6 +541,7 @@ class Module_admin_quiz
         if (is_null($username)) {
             $username = do_lang('UNKNOWN');
         }
+        $member_url = mixed();
         $member_url = get_base_url();
         if (!is_guest($member_id)) {
             $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
@@ -594,7 +595,7 @@ class Module_admin_quiz
     /**
      * Delete some quiz results.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function delete_quiz_results()
     {

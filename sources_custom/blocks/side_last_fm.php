@@ -48,7 +48,7 @@ class Block_side_last_fm
      * Execute the block.
      *
      * @param  array $map A map of parameters.
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run($map)
     {
@@ -58,7 +58,7 @@ class Block_side_last_fm
         require_code('files');
 
         $display = (!empty($map['display'])) ? $map['display'] : 'artists';
-        $period = (!empty($map['period'])) ? intval($map['period']) : 12;
+        $period = (!empty($map['period'])) ? $map['period'] : '12';
         $username = array_key_exists('username', $map) ? $map['username'] : '';
         $width = (!empty($map['width'])) ? $map['width'] : '100%';//default: 100%
         $height = (!empty($map['height'])) ? $map['height'] : '100%';//default: 100%
@@ -96,11 +96,11 @@ class Block_side_last_fm
             }
         }
 
-        if ($period == 3) {
+        if ($period == '3') {
             $rss_url .= '?period=3month';
-        } elseif ($period == 6) {
+        } elseif ($period == '6') {
             $rss_url .= '?period=6month';
-        } elseif ($period == 12) {
+        } elseif ($period == '12') {
             $rss_url .= '?period=12month';
         } elseif ($period == 'overall' || $period == '' || !isset($period)) {
             $rss_url .= '?period=overall';

@@ -267,7 +267,7 @@ class Module_galleries
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -493,7 +493,7 @@ class Module_galleries
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -519,7 +519,7 @@ class Module_galleries
     /**
      * The UI to show a gallery.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_gallery()
     {
@@ -648,24 +648,24 @@ class Module_galleries
     /**
      * The UI for a "flow mode" gallery.
      *
-     * @param  tempcode $rating_details Rating area
-     * @param  tempcode $comment_details Commenting area
+     * @param  Tempcode $rating_details Rating area
+     * @param  Tempcode $comment_details Commenting area
      * @param  ID_TEXT $cat Our gallery ID
      * @param  ID_TEXT $root Virtual root gallery
-     * @param  tempcode $description The description of the gallery
-     * @param  tempcode $children The tempcode for our visible child galleries
+     * @param  Tempcode $description The description of the gallery
+     * @param  Tempcode $children The Tempcode for our visible child galleries
      * @param  boolean $may_download Whether may "download this gallery"
-     * @param  tempcode $edit_url The URL to "edit this gallery"
-     * @param  tempcode $add_gallery_url The URL to "add a gallery"
-     * @param  tempcode $submit_image_url The URL to "submit an image to this gallery"
-     * @param  tempcode $submit_video_url The URL to "submit a video to this gallery"
-     * @param  tempcode $title The title of the page (our of get_screen_title)
+     * @param  Tempcode $edit_url The URL to "edit this gallery"
+     * @param  Tempcode $add_gallery_url The URL to "add a gallery"
+     * @param  Tempcode $submit_image_url The URL to "submit an image to this gallery"
+     * @param  Tempcode $submit_video_url The URL to "submit a video to this gallery"
+     * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  URLPATH $rep_image The representative image for the gallery
      * @param  integer $start The start position we are in browsing through child galleries
      * @param  integer $max The maximum number of child galleries we can display per page
      * @param  string $fullname The gallery title
-     * @param  tempcode $sorting Sorting UI
-     * @return tempcode The UI
+     * @param  Tempcode $sorting Sorting UI
+     * @return Tempcode The UI
      */
     public function do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $rep_image, $start, $max, $fullname, $sorting)
     {
@@ -1016,21 +1016,21 @@ class Module_galleries
     /**
      * The UI for an "regular mode" gallery.
      *
-     * @param  tempcode $rating_details Rating area
-     * @param  tempcode $comment_details Commenting area
+     * @param  Tempcode $rating_details Rating area
+     * @param  Tempcode $comment_details Commenting area
      * @param  ID_TEXT $cat Our gallery ID
      * @param  ID_TEXT $root Virtual root gallery
-     * @param  tempcode $description The description of the gallery
-     * @param  tempcode $children The tempcode for our visible child galleries
+     * @param  Tempcode $description The description of the gallery
+     * @param  Tempcode $children The Tempcode for our visible child galleries
      * @param  boolean $may_download Whether may "download this gallery"
-     * @param  tempcode $edit_url The URL to "edit this gallery"
-     * @param  tempcode $add_gallery_url The URL to "add a gallery"
-     * @param  tempcode $submit_image_url The URL to "submit an image to this gallery"
-     * @param  tempcode $submit_video_url The URL to "submit a video to this gallery"
-     * @param  tempcode $title The title of the page (our of get_screen_title)
+     * @param  Tempcode $edit_url The URL to "edit this gallery"
+     * @param  Tempcode $add_gallery_url The URL to "add a gallery"
+     * @param  Tempcode $submit_image_url The URL to "submit an image to this gallery"
+     * @param  Tempcode $submit_video_url The URL to "submit a video to this gallery"
+     * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  string $fullname The gallery title
-     * @param  tempcode $sorting Sorting UI
-     * @return tempcode The UI
+     * @param  Tempcode $sorting Sorting UI
+     * @return Tempcode The UI
      */
     public function do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $sorting)
     {
@@ -1082,8 +1082,8 @@ class Module_galleries
      * The UI to show an image.
      *
      * @param  ?string $category_name Alternate category name to use (null: use standard one). This is useful if you are overriding this code to show images in virtual galleries.
-     * @param  ?tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
-     * @return tempcode The UI
+     * @param  ?Tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
+     * @return Tempcode The UI
      */
     public function show_image($category_name = null, $breadcrumbs = null)
     {
@@ -1200,8 +1200,8 @@ class Module_galleries
      * The UI to show a video.
      *
      * @param  ?string $category_name Alternate category name to use (null: use standard one). This is useful if you are overriding this code to show images in virtual galleries.
-     * @param  ?tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
-     * @return tempcode The UI
+     * @param  ?Tempcode $breadcrumbs Breadcrumbs (null: derive in this function).
+     * @return Tempcode The UI
      */
     public function show_video($category_name = null, $breadcrumbs = null)
     {
@@ -1326,7 +1326,7 @@ class Module_galleries
      *
      * @param  string $where Where clause for doing set query
      * @param  string $join Join clause for doing set query
-     * @param  tempcode $category_name The actual title for the gallery we are using
+     * @param  Tempcode $category_name The actual title for the gallery we are using
      * @param  ?AUTO_LINK $current_id The ID of the current entry of the type we are browsing in the gallery we are using (null: assume first)
      * @param  ID_TEXT $root The root gallery (the gallery we are considering as an adhoc root, to allow gallery splitting-up)
      * @param  ?ID_TEXT $current_type The current type being browsed (null: assume first)
@@ -1440,7 +1440,7 @@ class Module_galleries
     /**
      * Show gallery navigation bits used when viewing images/videos.
      *
-     * @param  tempcode $category_name The actual title for the gallery we are using
+     * @param  Tempcode $category_name The actual title for the gallery we are using
      * @param  string $where Where clause for doing set query
      * @param  string $join Join clause for doing set query
      * @param  AUTO_LINK $current_id The ID of the current entry of the type we are browsing in the gallery we are using
@@ -1469,7 +1469,7 @@ class Module_galleries
      * @param  string $sql_suffix_videos Select clause query suffix for videos
      * @param  string $image_select Selectcode for limiting images displayed
      * @param  string $video_select Selectcode for limiting videos displayed
-     * @return tempcode The navigation bits
+     * @return Tempcode The navigation bits
      */
     public function show_nav($category_name, $where, $join, $current_id, $first_id, $back_id, $next_id, $root, $x, $n, $current_type, $first_type, $back_type, $next_type, $slideshow, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select)
     {

@@ -115,7 +115,7 @@ class Module_filedump
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -209,7 +209,7 @@ class Module_filedump
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -248,7 +248,7 @@ class Module_filedump
     /**
      * The main user interface for the file dump.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_gui()
     {
@@ -761,7 +761,7 @@ class Module_filedump
     /**
      * The main user interface for the file dump.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_embed()
     {
@@ -961,7 +961,7 @@ class Module_filedump
     /**
      * The actualiser for handling mass actions.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_mass()
     {
@@ -1186,7 +1186,7 @@ class Module_filedump
     /**
      * The actualiser for adding a folder.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_add_folder()
     {
@@ -1231,7 +1231,7 @@ class Module_filedump
     /**
      * The actualiser for uploading a file.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function do_upload()
     {
@@ -1340,7 +1340,7 @@ class Module_filedump
     /**
      * Find URLs referenced that are broken.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function broken()
     {
@@ -1388,7 +1388,7 @@ class Module_filedump
     /**
      * Fix URLs referenced that are broken.
      *
-     * @return tempcode The UI.
+     * @return Tempcode The UI.
      */
     public function _broken()
     {

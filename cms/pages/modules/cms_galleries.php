@@ -95,7 +95,7 @@ class Module_cms_galleries extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -163,7 +163,7 @@ class Module_cms_galleries extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -243,7 +243,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -269,7 +269,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The UI to choose a gallery to import into.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function import()
     {
@@ -300,7 +300,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The UI to import into a gallery.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _import()
     {
@@ -421,7 +421,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The actualiser to import a zip/tar into a gallery.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __import()
     {
@@ -619,7 +619,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The actualiser to simple add/delete orphaned files in a gallery.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function orphaned()
     {
@@ -763,7 +763,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The actualiser to simple add an orphan file to a gallery.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function orphan_add()
     {
@@ -938,7 +938,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The actualiser to simple delete an orphan file.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function orphan_delete()
     {
@@ -1021,7 +1021,7 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return array A triple: The tree field (tempcode), Search URL, Archive URL
+     * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
     public function create_selection_list_ajax_tree()
     {
@@ -1038,7 +1038,7 @@ class Module_cms_galleries extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for an image adding/editing form.
+     * Get Tempcode for an image adding/editing form.
      *
      * @param  ?AUTO_LINK $id The ID of the image (null: new)
      * @param  SHORT_TEXT $title The title
@@ -1052,7 +1052,7 @@ class Module_cms_galleries extends Standard_crud_module
      * @param  ?BINARY $allow_trackbacks Whether trackbacks are allowed (null: decide statistically, based on existing choices)
      * @param  LONG_TEXT $notes Notes for the image
      * @param  boolean $adding Whether this form will be used for adding a new image
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $adding = true)
     {
@@ -1419,10 +1419,10 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * The do-next manager for after content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -1581,7 +1581,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return array A triple: The tree field (tempcode), Search URL, Archive URL
+     * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
     public function create_selection_list_ajax_tree()
     {
@@ -1598,7 +1598,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a video adding/editing form.
+     * Get Tempcode for a video adding/editing form.
      *
      * @param  ?AUTO_LINK $id The ID of the video (null: new)
      * @param  SHORT_TEXT $title The title
@@ -1614,7 +1614,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
      * @param  ?integer $video_length The length of the video (null: not yet added, so not yet known)
      * @param  ?integer $video_width The width of the video (null: not yet added, so not yet known)
      * @param  ?integer $video_height The height of the video (null: not yet added, so not yet known)
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $video_length = null, $video_width = null, $video_height = null)
     {
@@ -2018,10 +2018,10 @@ class Module_cms_galleries_alt extends Standard_crud_module
     /**
      * The do-next manager for after content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -2049,7 +2049,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
     /**
      * Standard crud_module list function.
      *
-     * @return array A triple: The tree field (tempcode), Search URL, Archive URL
+     * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
     public function create_selection_list_ajax_tree()
     {
@@ -2064,7 +2064,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for a gallery adding/editing form.
+     * Get Tempcode for a gallery adding/editing form.
      *
      * @param  ID_TEXT $name The gallery codename (blank: new)
      * @param  SHORT_TEXT $fullname The full human-readeable name of the gallery
@@ -2082,7 +2082,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
      * @param  ?URLPATH $watermark_bottom_right Watermark (null: none)
      * @param  ?BINARY $allow_rating Whether rating is allowed (null: decide statistically, based on existing choices)
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($name = '', $fullname = '', $description = '', $notes = '', $parent_id = '', $accept_images = null, $accept_videos = null, $is_member_synched = 0, $flow_mode_interface = null, $rep_image = null, $watermark_top_left = null, $watermark_top_right = null, $watermark_bottom_left = null, $watermark_bottom_right = null, $allow_rating = null, $allow_comments = null)
     {
@@ -2218,7 +2218,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
      * Standard crud_module edit form filler.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function fill_in_edit_form($id)
     {
@@ -2387,10 +2387,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
     /**
      * The do-next manager for after download content management (event types only).
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?ID_TEXT $id The ID of whatever was just handled (null: N/A)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $description, $id)
     {
@@ -2400,12 +2400,12 @@ class Module_cms_galleries_cat extends Standard_crud_module
     /**
      * The do-next manager for after image/video content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
-     * @param  tempcode $description Some description to show, saying what happened
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?ID_TEXT $cat The gallery we were working in (null: deleted)
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
      * @param  boolean $video Whether we were working with a video
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _do_next_manager($title, $description, $cat = null, $id = null, $video = false)
     {

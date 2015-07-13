@@ -70,7 +70,7 @@ class Module_admin_sitemap
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
      *
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
@@ -138,7 +138,7 @@ class Module_admin_sitemap
     /**
      * Execute the module.
      *
-     * @return tempcode The result of execution.
+     * @return Tempcode The result of execution.
      */
     public function run()
     {
@@ -175,7 +175,7 @@ class Module_admin_sitemap
     /**
      * The do-next manager for before content management. This is intended for exceptional users who cannot use the sitemap editor
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -193,11 +193,11 @@ class Module_admin_sitemap
     /**
      * The do-next manager for after content management.
      *
-     * @param  tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $title The title (output of get_screen_title)
      * @param  ?ID_TEXT $page The name of the page just handled (null: none)
      * @param  ID_TEXT $zone The name of the zone just handled (blank: none/welcome-zone)
-     * @param  tempcode $completion_text The text to show (blank: default)
-     * @return tempcode The UI
+     * @param  Tempcode $completion_text The text to show (blank: default)
+     * @return Tempcode The UI
      */
     public function do_next_manager($title, $page, $zone, $completion_text)
     {
@@ -209,7 +209,7 @@ class Module_admin_sitemap
     /**
      * The UI for the sitemap editor.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function sitemap()
     {
@@ -235,9 +235,9 @@ class Module_admin_sitemap
     /**
      * The UI to choose a zone.
      *
-     * @param  tempcode $title The title for the "choose a zone" page
+     * @param  Tempcode $title The title for the "choose a zone" page
      * @param  ?string $no_go Zone to not allow the selection of (null: none to filter out)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _choose_zone($title, $no_go = null)
     {
@@ -257,7 +257,7 @@ class Module_admin_sitemap
     /**
      * The UI to delete a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function delete()
     {
@@ -310,7 +310,7 @@ class Module_admin_sitemap
     /**
      * The UI to confirm deletion of a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _delete()
     {
@@ -356,7 +356,7 @@ class Module_admin_sitemap
     /**
      * The actualiser to delete a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function __delete()
     {
@@ -408,7 +408,7 @@ class Module_admin_sitemap
     /**
      * The UI to move a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function move()
     {
@@ -459,7 +459,7 @@ class Module_admin_sitemap
     /**
      * The actualiser to move a page.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _move()
     {

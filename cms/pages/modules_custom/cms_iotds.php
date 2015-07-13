@@ -38,7 +38,7 @@ class Module_cms_iotds extends Standard_crud_module
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
      * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
-     * @return ?tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -69,7 +69,7 @@ class Module_cms_iotds extends Standard_crud_module
      * Standard crud_module run_start.
      *
      * @param  ID_TEXT $type The type of module execution
-     * @return tempcode The output of the run
+     * @return Tempcode The output of the run
      */
     public function run_start($type)
     {
@@ -125,7 +125,7 @@ class Module_cms_iotds extends Standard_crud_module
     /**
      * The do-next manager for before content management.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function browse()
     {
@@ -140,7 +140,7 @@ class Module_cms_iotds extends Standard_crud_module
     }
 
     /**
-     * Get tempcode for an IOTD adding/editing form.
+     * Get Tempcode for an IOTD adding/editing form.
      *
      * @param  ?AUTO_LINK $id The IOTD ID (null: new)
      * @param  URLPATH $url The URL to the image
@@ -152,7 +152,7 @@ class Module_cms_iotds extends Standard_crud_module
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
      * @param  ?BINARY $allow_trackbacks Whether trackbacks are allowed (null: decide statistically, based on existing choices)
      * @param  LONG_TEXT $notes Notes for the IOTD
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($id = null, $url = '', $thumb_url = '', $title = '', $caption = '', $current = true, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '')
     {
@@ -200,7 +200,7 @@ class Module_cms_iotds extends Standard_crud_module
     /**
      * The UI to manage the IOTD.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function edit()
     {
@@ -234,7 +234,7 @@ class Module_cms_iotds extends Standard_crud_module
      * @param  BINARY $used Whether to show used IOTDs
      * @param  BINARY $current Whether to show the current IOTD
      * @param  ?MEMBER $submitter The member to only show iotds submitted-by (null: do not filter)
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function _get_iotd_boxes($used = 0, $current = 0, $submitter = null)
     {
@@ -277,7 +277,7 @@ class Module_cms_iotds extends Standard_crud_module
      * Standard crud_module edit form filler.
      *
      * @param  ID_TEXT $id The entry being edited
-     * @return array A pair: the tempcode for the visible fields, and the tempcode for the hidden fields
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function fill_in_edit_form($id)
     {
@@ -406,7 +406,7 @@ class Module_cms_iotds extends Standard_crud_module
     /**
      * The actualiser to set the IOTD.
      *
-     * @return tempcode The UI
+     * @return Tempcode The UI
      */
     public function set_iotd()
     {

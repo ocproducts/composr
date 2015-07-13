@@ -109,7 +109,7 @@ class Forum_driver_base
      * @param  boolean $definitely_profile Whether to be insistent that we go to the profile, rather than possibly starting an IM which can link to the profile
      * @param  string $_username The username (blank: look it up)
      * @param  boolean $use_displayname Whether to use the displayname rather than the username (if we have them)
-     * @return tempcode The hyperlink
+     * @return Tempcode The hyperlink
      */
     public function member_profile_hyperlink($id, $definitely_profile = false, $_username = '', $use_displayname = true)
     {
