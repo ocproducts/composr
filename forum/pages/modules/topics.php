@@ -1505,7 +1505,7 @@ class Module_topics
         if (!$private_topic) {
             $forum_id = get_param_integer('id');
 
-    		require_code('ocf_topics');
+    		require_code('cns_topics');
             if (!cns_may_post_topic($forum_id, get_member())) {
                 access_denied('I_ERROR');
             }

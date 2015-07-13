@@ -108,6 +108,7 @@ if (is_file(TAPATALK_LOG)) {
     {
         $log_file = fopen(TAPATALK_LOG, 'at');
         fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *RESPONSE*:\n");
+        fwrite($log_file, 'HEADERS: ' . serialize(headers_list()) . "\n");
         fwrite($log_file, ob_get_contents() . "\n");
         fwrite($log_file, "\n\n");
         fclose($log_file);

@@ -74,7 +74,7 @@ class Hook_addon_registry_staff_messaging
     public function get_dependencies()
     {
         return array(
-            'requires' => array('ocf_forum'),
+            'requires' => array('cns_forum'),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

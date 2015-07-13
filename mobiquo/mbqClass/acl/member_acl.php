@@ -53,11 +53,15 @@ class CMSMemberACL
 
         cms_setcookie(get_member_cookie(), strval($id));
 
+        $password_compat_scheme = $GLOBALS['FORUM_DRIVER']->get_member_row_field($id, 'm_password_compat_scheme');
         $password_hashed_salted = $GLOBALS['FORUM_DRIVER']->get_member_row_field($id, 'm_pass_hash_salted');
-        cms_setcookie(get_pass_cookie(), $password_hashed_salted);
+        if ($password_compat_scheme == 'plain') {
+            cms_setcookie(get_pass_cookie(), md5($password_hashed_salted), false, true);
+        } else {
+            cms_setcookie(get_pass_cookie(), $password_hashed_salted, false, true);
+        }
 
         if ($invisible) {
-            require_code('users_active_actions');
             set_invisibility();
         }
 

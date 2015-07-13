@@ -50,7 +50,8 @@ $SERVER_DEFINE = array(
         'function' => 'login_func',
         'signature' => array(array($xmlrpcStruct, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcBoolean, $xmlrpcString), // 4th parameter is unused but passed by client
                              array($xmlrpcStruct, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcBoolean),
-                             array($xmlrpcStruct, $xmlrpcBase64, $xmlrpcBase64)),
+                             array($xmlrpcStruct, $xmlrpcBase64, $xmlrpcBase64),
+                             array($xmlrpcStruct, $xmlrpcBase64)),
     ),
 
     'sign_in' => array(

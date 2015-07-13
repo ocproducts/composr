@@ -295,7 +295,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              // LEGACY: Old files
                                              'info.php' => '', // Pre-v10 equivalent to _config.php
                                              'persistant_cache' => '', // Old misspelling
-                                             'docs4' => '',
                                              'mods' => 'imports|exports',
     );
 
@@ -331,9 +330,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 // IDE projects
                                 'clpprj' => '', // Code Lobster
                                 'tmproj' => '', // TextMate
-
-                                // CGI files
-                                'fcgi' => '',
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive

@@ -174,7 +174,7 @@ function get_member_title($member_id)
         return '';
     }
 
-    $title = addon_installed('ocf_member_titles') ? $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_title') : '';
+    $title = addon_installed('cns_member_titles') ? $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_title') : '';
     $primary_group = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
     if ($title == '') {
         $title = get_translated_text(cns_get_group_property($primary_group, 'title'), $GLOBALS['FORUM_DB']);

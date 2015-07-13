@@ -940,7 +940,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 if (($put === null) || (count($post_params) != 0) || (count($files) != 1)) {
                     $raw_payload2 .= '----cms' . $divider . "\r\n";
                     if (strpos($upload_field, '/') === false) {
-                        $raw_payload2 .= 'Content-Disposition: form-data; name="' . urlencode($upload_field) . '"; filename="' . urlencode(basename($file_path)) . '"' . "\r\n";
+                        $raw_payload2 .= 'Content-Disposition: form-data; name="' . str_replace('"', '\"', $upload_field) . '"; filename="' . urlencode(basename($file_path)) . '"' . "\r\n";
                         $raw_payload2 .= 'Content-Type: application/octet-stream' . "\r\n\r\n";
                     } else {
                         $raw_payload2 .= 'Content-Type: ' . $upload_field . "\r\n\r\n";

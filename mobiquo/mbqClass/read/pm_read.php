@@ -147,7 +147,7 @@ class CMSPmRead
                     'username' => $username,
                 );
 
-                $msg_state = $this->_get_message_state($post, $topic, $member_id, $i, $_posts, $topic_read_time);
+                $msg_state = $this->get_message_state($post, $topic, $member_id, $i, $_posts, $topic_read_time);
                 if ($msg_state == self::UNREAD) {
                     $total_unread_count++;
                 }
@@ -197,7 +197,7 @@ class CMSPmRead
      * @param  ?TIME $topic_read_time When the topic was last read by the current member (null: not)
      * @return integer Read status (special Tapatalk code)
      */
-    public function _get_message_state($post_details, $topic_details, $member_id, $pos, $posts, $topic_read_time)
+    private function get_message_state($post_details, $topic_details, $member_id, $pos, $posts, $topic_read_time)
     {
         cms_verify_parameters_phpdoc();
 

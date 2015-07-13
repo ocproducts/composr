@@ -284,8 +284,8 @@ class CMSUserRead
             'u_follow_me' => u_follow_me($user_id),
 
             'accept_follow' => true,
-            'following_count' => $this->_get_member_follow_count($user_id, false),
-            'follower' => $this->_get_member_follow_count($user_id, true),
+            'following_count' => $this->get_member_follow_count($user_id, false),
+            'follower' => $this->get_member_follow_count($user_id, true),
 
             'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($user_id),
             'can_ban' => can_ban_member($user_id),
@@ -390,7 +390,7 @@ class CMSUserRead
      * @param  boolean $i_follow Whether it is friends that member has (otherwise it is people who have friended that member).
      * @return integer Total
      */
-    public function _get_member_follow_count($user_id, $i_follow = true)
+    private function get_member_follow_count($user_id, $i_follow = true)
     {
         if ($i_follow) {
             return $GLOBALS['FORUM_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_likes' => $user_id));

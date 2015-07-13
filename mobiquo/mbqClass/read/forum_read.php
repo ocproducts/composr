@@ -44,7 +44,7 @@ class CMSForumRead
         if (($forum_id == db_get_first_id()) && (!$full_tree)) {
             $_children = array(); // Announcements virtual forum
         } else {
-            $_children = $this->_get_forum($forum_id, $order_sub_alpha);
+            $_children = $this->get_forum($forum_id, $order_sub_alpha);
         }
 
         $_forums_with_groupings = array();
@@ -170,7 +170,7 @@ class CMSForumRead
      * @param  boolean $order_sub_alpha Whether to order alphabetically
      * @return array List of forum rows
      */
-    public function _get_forum($forum_id, $order_sub_alpha)
+    private function get_forum($forum_id, $order_sub_alpha)
     {
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
 

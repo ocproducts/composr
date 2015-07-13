@@ -118,7 +118,7 @@ class CMSAccountWrite
                 );
             } else {
                 // Register (which may pass or fail)
-                return $this->_join($username, $email, $password, $custom_fields, false);
+                return $this->join($username, $email, $password, $custom_fields, false);
             }
         }
 
@@ -146,7 +146,7 @@ class CMSAccountWrite
     {
         cms_verify_parameters_phpdoc();
 
-        $result = $this->_join($username, $email, $password, $custom_fields, true);
+        $result = $this->join($username, $email, $password, $custom_fields, true);
 
         if (is_null($result['member_id'])) {
             warn_exit($result['result_text']);
@@ -167,7 +167,7 @@ class CMSAccountWrite
      * @param  boolean $confirm_if_enabled Whether we need to do an email confirm
      * @return array Details of join status, containing status/member_id/data
      */
-    public function _join($username, $email, $password, $custom_fields, $confirm_if_enabled)
+    private function join($username, $email, $password, $custom_fields, $confirm_if_enabled)
     {
         cms_verify_parameters_phpdoc();
 
@@ -265,7 +265,7 @@ class CMSAccountWrite
         if (!is_null($member_id)) {
             // Has to go through full process...
 
-            $result = $this->_lost_password($member_id);
+            $result = $this->lost_password($member_id);
 
             if (!$result['status']) {
                 return array(
@@ -295,7 +295,7 @@ class CMSAccountWrite
      * @param  MEMBER $member Member
      * @return array Details of result status, containing status/data
      */
-    public function _lost_password($member)
+    private function lost_password($member)
     {
         cms_verify_parameters_phpdoc();
 
@@ -383,7 +383,7 @@ class CMSAccountWrite
             warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
         }
 
-        $this->_update_member_password($member_id, $new_password);
+        $this->update_member_password($member_id, $new_password);
     }
 
     /**
@@ -408,7 +408,7 @@ class CMSAccountWrite
                 warn_exit(do_lang_tempcode('USER_NO_EXIST'));
             }
 
-            $this->_update_member_password($member_id, $new_password);
+            $this->update_member_password($member_id, $new_password);
         } else {
             warn_exit('Could not verify request with Tapatalk');
         }
@@ -420,7 +420,7 @@ class CMSAccountWrite
      * @param  MEMBER $member_id Member ID
      * @param  string $password Password
      */
-    public function _update_member_password($member_id, $password)
+    private function update_member_password($member_id, $password)
     {
         $ip_address = get_ip_address();
         $salt = '';

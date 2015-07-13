@@ -303,7 +303,7 @@ function _convert_url_to_path($url)
             $_file_path_stub = get_file_base() . '/' . $file_path_stub;
         }
 
-        if (!is_file($file_path_stub)) {
+        if (!is_file($_file_path_stub)) {
             return null;
         }
 

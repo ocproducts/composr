@@ -1735,7 +1735,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             }
             imagedestroy($source);
 
-            require_code('ocf_groups');
+            require_code('cns_groups');
             $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');
             $height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
             if (($sx > $width) || ($sy > $height)) {

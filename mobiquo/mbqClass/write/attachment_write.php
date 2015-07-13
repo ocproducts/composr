@@ -36,7 +36,10 @@ class CMSAttachmentWrite
         require_code('uploads');
 
         $_f = array_keys($_FILES);
-        $filekey = array_shift($_f) . '1';
+        $filekey = array_shift($_f);
+        if (is_array($_FILES[$filekey]['name'])) {
+            $filekey .= '1';
+        }
 
         $urls = get_url('', $filekey, 'uploads/attachments', 2, CMS_UPLOAD_ANYTHING, false, '', '', false, true);
         if ($urls[0] == '') {
@@ -86,7 +89,10 @@ class CMSAttachmentWrite
         require_code('uploads');
 
         $_f = array_keys($_FILES);
-        $filekey = array_shift($_f) . '1';
+        $filekey = array_shift($_f);
+        if (is_array($_FILES[$filekey]['name'])) {
+            $filekey .= '1';
+        }
 
         $urls = get_url('', $filekey, file_exists(get_custom_file_base() . '/uploads/avatars') ? 'uploads/avatars' : 'uploads/cns_avatars', 0, CMS_UPLOAD_IMAGE, false, '', '', false, true);
         if ($urls[0] == '') {

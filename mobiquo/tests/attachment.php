@@ -26,7 +26,7 @@ function upload_attach_test()
             'method_name' => 'upload_attach',
         ),
         'admin',
-        array('content' => get_file_base() . '/themes/default/images/cns_default_avatars/default_set/cartoons/crazy.jpg')
+        array('content[]' => get_file_base() . '/themes/default/images/cns_default_avatars/default_set/cartoons/crazy.jpg')
     );
     print_mobiquo_result($result);
 }
@@ -44,7 +44,7 @@ function upload_avatar_test()
             'method_name' => 'upload_avatar',
         ),
         'admin',
-        array('content' => get_file_base() . '/themes/default/images/cns_default_avatars/default_set/cartoons/crazy.jpg')
+        array('content[]' => get_file_base() . '/themes/default/images/cns_default_avatars/default_set/cartoons/crazy.jpg')
     );
     print_mobiquo_result($result);
 }

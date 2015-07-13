@@ -97,7 +97,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         if (!array_key_exists(0, $topic_rows)) {
             return false;
         }
-        require_code('ocf_topics');
+        require_code('cns_topics');
         if ($topic_rows[0]['t_forum_id'] === null && ($topic_rows[0]['t_pt_from'] != $member_id && $topic_rows[0]['t_pt_to'] != $member_id && !cns_has_special_pt_access($topic_id, $member_id) || is_guest($member_id))) {
             return false;
         }

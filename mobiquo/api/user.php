@@ -29,7 +29,7 @@ function login_func($raw_params)
     require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
 
     $username = $params[0];
-    $password = $params[1];
+    $password = empty($params[1]) ? '' : $params[1];
     $invisible = isset($params[2]) && $params[2];
 
     $user_object = new CMSMemberACL();

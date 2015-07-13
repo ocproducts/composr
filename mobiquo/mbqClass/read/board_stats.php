@@ -28,12 +28,12 @@ class CMSBoardStats
         cms_verify_parameters_phpdoc();
 
         return array(
-            'total_threads' => $this->_get_topics_count(),
-            'total_posts' => $this->_get_posts_count(),
-            'total_members' => $this->_get_members_count(),
-            'active_members' => $this->_get_active_members_count(),
-            'total_online' => $this->_get_online_users_count(),
-            'guest_online' => $this->_get_online_guests_count(),
+            'total_threads' => $this->get_topics_count(),
+            'total_posts' => $this->get_posts_count(),
+            'total_members' => $this->get_members_count(),
+            'active_members' => $this->get_active_members_count(),
+            'total_online' => $this->get_online_users_count(),
+            'guest_online' => $this->get_online_guests_count(),
         );
     }
 
@@ -42,7 +42,7 @@ class CMSBoardStats
      *
      * @return integer Total
      */
-    public function _get_topics_count()
+    private function get_topics_count()
     {
         $where = array();
         if (addon_installed('unvalidated')) {
@@ -56,7 +56,7 @@ class CMSBoardStats
      *
      * @return integer Total
      */
-    public function _get_posts_count()
+    private function get_posts_count()
     {
         $where = array();
         if (addon_installed('unvalidated')) {
@@ -70,7 +70,7 @@ class CMSBoardStats
      *
      * @return integer Total
      */
-    public function _get_members_count()
+    private function get_members_count()
     {
         $where = array('m_validated_email_confirm_code' => '');
         if (addon_installed('unvalidated')) {
@@ -84,7 +84,7 @@ class CMSBoardStats
      *
      * @return integer Total
      */
-    public function _get_active_members_count()
+    private function get_active_members_count()
     {
         $where = array('m_validated_email_confirm_code' => '');
         if (addon_installed('unvalidated')) {
@@ -98,7 +98,7 @@ class CMSBoardStats
      *
      * @return integer Number of online users.
      */
-    public function _get_online_users_count()
+    private function get_online_users_count()
     {
         $users_online_time_seconds = intval(get_option('users_online_time')) * 60;
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval(time() - $users_online_time_seconds);
@@ -110,7 +110,7 @@ class CMSBoardStats
      *
      * @return integer Number of online guests.
      */
-    public function _get_online_guests_count()
+    private function get_online_guests_count()
     {
         $users_online_time_seconds = intval(get_option('users_online_time')) * 60;
         $guest_user_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
