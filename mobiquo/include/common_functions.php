@@ -47,6 +47,11 @@ function initialise_composr()
     $FILE_BASE = dirname(dirname(dirname(__FILE__)));
     $RELATIVE_PATH = 'data_custom';
 
+    global $FORCE_INVISIBLE_GUEST;
+    $FORCE_INVISIBLE_GUEST = false;
+    global $EXTERNAL_CALL;
+    $EXTERNAL_CALL = true;
+
     if (!is_file($FILE_BASE . '/sources/global.php')) {
         exit(json_encode(array('status' => 'Required system file is missing')));
     }

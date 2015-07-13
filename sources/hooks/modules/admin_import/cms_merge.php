@@ -2804,7 +2804,7 @@ class Hook_cms_merge
                     continue;
                 }
 
-                $id_new = $GLOBALS['OCF_DRIVER']->get_member_from_username($row['m_username']);
+                $id_new = $GLOBALS['CNS_DRIVER']->get_member_from_username($row['m_username']);
                 if (is_null($id_new)) {
                     $primary_group = import_id_remap_get('group', strval($row['m_primary_group']));
 

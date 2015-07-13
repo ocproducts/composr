@@ -128,7 +128,7 @@ function m_rename_topic_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '3',
+            '1',
             '%title',
             '',
         )
@@ -271,7 +271,7 @@ function m_ban_user_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             '%test',
-            3,
+            2,
             '%reason of banning',
         )
     );

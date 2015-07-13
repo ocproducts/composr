@@ -2,6 +2,7 @@
 *.bak
 ._*
 test_a
+/mobiquo/include/request_helper.dat
 /safe_mode_temp/*.dat
 /safe_mode_temp/subs.inc
 /sources_custom/user_sync__customise.php
@@ -21,6 +22,7 @@ test_a
 /imports/*/*.tar
 /data_custom/modules/chat/*.dat
 /data_custom/modules/admin_stats/*.xml
+/data_custom/modules/web_notifications/latest.dat
 /cms_sitemap.xml
 /*.clpprj
 /*.tmproj

@@ -1237,8 +1237,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $headers .= 'Authorization: Basic ' . base64_encode(implode(':', $auth)) . "==\r\n";
     }
     if (!is_null($extra_headers)) {
-        foreach ($extra_headers as $h) {
-            $headers .= $h . "\r\n";
+        foreach ($extra_headers as $key => $val) {
+            $headers .= $key . ': ' . rawurlencode($val) . "\r\n";
         }
     }
     if (!is_null($accept)) {
@@ -1523,6 +1523,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     }
                                 }
                                 return null;
+                            case '400':
                             case '500':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));

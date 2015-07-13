@@ -1111,7 +1111,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members';
         if ($friends) {
-            $sql .= ' JOIN ' . $this->connection->get_table_prefix() . 'chat_buddies ON member_liked=id AND member_likes=' . strval(get_member());
+            $sql .= ' JOIN ' . $this->connection->get_table_prefix() . 'chat_friends ON member_liked=id AND member_likes=' . strval(get_member());
         }
         $sql .= ' WHERE ' . $like . 'id<>' . strval($this->get_guest_id());
         $sql .= ' ORDER BY m_last_submit_time DESC';

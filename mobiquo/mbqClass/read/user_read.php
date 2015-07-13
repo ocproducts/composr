@@ -188,13 +188,13 @@ class CMSUserRead
         cms_verify_parameters_phpdoc();
 
         if (is_null($id)) {
-            $sessions = $GLOBALS['SITE_DB']->query_select('sessions', array('DISTINCT the_user'), array('session_invisible' => 0), ' AND the_user>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()), $max, $start);
+            $sessions = $GLOBALS['SITE_DB']->query_select('sessions', array('DISTINCT member_id'), array('session_invisible' => 0), ' AND member_id>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()), $max, $start);
 
-            $member_count = $GLOBALS['SITE_DB']->query_select_value('sessions', 'COUNT(DISTINCT the_user)', array('session_invisible' => 0), ' AND the_user>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()));
+            $member_count = $GLOBALS['SITE_DB']->query_select_value('sessions', 'COUNT(DISTINCT member_id)', array('session_invisible' => 0), ' AND member_id>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()));
 
             $list = array();
             foreach ($sessions as $session) {
-                $member_id = $session['the_user'];
+                $member_id = $session['member_id'];
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                 if (is_null($username)) {
@@ -207,7 +207,7 @@ class CMSUserRead
                 );
             }
 
-            $guest_count = $GLOBALS['FORUM_DB']->query_select_value('sessions', 'COUNT(*)', array('the_user' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
+            $guest_count = $GLOBALS['FORUM_DB']->query_select_value('sessions', 'COUNT(*)', array('member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
         } else {
             switch ($area) {
                 case 'forum':
@@ -292,7 +292,7 @@ class CMSUserRead
             'is_ban' => $GLOBALS['FORUM_DRIVER']->is_banned($user_id),
         );
 
-        $at_title = $GLOBALS['SITE_DB']->query_select_value_if_there('sessions', 'the_title', array('the_user' => $user_id), 'ORDER BY last_activity DESC');
+        $at_title = $GLOBALS['SITE_DB']->query_select_value_if_there('sessions', 'the_title', array('member_id' => $user_id), 'ORDER BY last_activity DESC');
         if (!is_null($at_title)) {
             $user_info['current_action'] = $at_title;
         }
@@ -344,7 +344,7 @@ class CMSUserRead
             }
 
             if ((has_privilege(get_member(), 'show_user_browsing')) && (addon_installed('stats'))) {
-                $last_stats = $GLOBALS['SITE_DB']->query_select('stats', array('browser', 'operating_system'), array('the_user' => $user_id), 'ORDER BY date_and_time DESC', 1);
+                $last_stats = $GLOBALS['SITE_DB']->query_select('stats', array('browser', 'operating_system'), array('member_id' => $user_id), 'ORDER BY date_and_time DESC', 1);
                 if (array_key_exists(0, $last_stats)) {
                     $custom_fields_list[do_lang('USER_AGENT')] = $last_stats[0]['browser'];
                     $custom_fields_list[do_lang('USER_OS')] = $last_stats[0]['operating_system'];
@@ -393,9 +393,9 @@ class CMSUserRead
     public function _get_member_follow_count($user_id, $i_follow = true)
     {
         if ($i_follow) {
-            return $GLOBALS['FORUM_DB']->query_select_value('chat_buddies', 'COUNT(*)', array('member_likes' => $user_id));
+            return $GLOBALS['FORUM_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_likes' => $user_id));
         }
-        return $GLOBALS['FORUM_DB']->query_select_value('chat_buddies', 'COUNT(*)', array('member_liked' => $user_id));
+        return $GLOBALS['FORUM_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_liked' => $user_id));
     }
 
     /**

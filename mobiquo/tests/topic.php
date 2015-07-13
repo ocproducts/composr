@@ -23,7 +23,7 @@ function mark_topic_read_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            array('32'),
+            array('1'),
         )
     );
     print_mobiquo_result($result);

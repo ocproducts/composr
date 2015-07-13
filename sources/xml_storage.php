@@ -284,14 +284,14 @@ function _export_xml_row($table, $row, $db_fields, $seo_type_code, $permissions_
             }
             $xml_data .= _tab(_export_xml_row('group_category_access', $export_row, $db_fields, null, null, null));
         }
-        $rows = $GLOBALS['SITE_DB']->query_select('gsp', array('*'), array('module_the_name' => $permissions_type_code, 'category_name' => is_integer($row[$id_field]) ? strval($row[$id_field]) : $row[$id_field]));
+        $rows = $GLOBALS['SITE_DB']->query_select('group_privileges', array('*'), array('module_the_name' => $permissions_type_code, 'category_name' => is_integer($row[$id_field]) ? strval($row[$id_field]) : $row[$id_field]));
         foreach ($rows as $_row) {
             if (is_integer($_row['category_name'])) {
                 $export_row = array('category_name' => 'LAST_INSERT_ID_' . $table) + $_row;
             } else {
                 $export_row = $_row;
             }
-            $xml_data .= _tab(_export_xml_row('gsp', $export_row, $db_fields, null, null, null));
+            $xml_data .= _tab(_export_xml_row('group_privileges', $export_row, $db_fields, null, null, null));
         }
     }
 

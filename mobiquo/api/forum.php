@@ -29,7 +29,7 @@ function get_config_func($raw_params)
     require_code('database_search');
 
     $banners_disabled = array();
-    $_banners_disabled = $GLOBALS['SITE_DB']->query_select('gsp', array('group_id'), array('the_page' => '', 'privilege' => 'banner_free'));
+    $_banners_disabled = $GLOBALS['SITE_DB']->query_select('group_privileges', array('group_id'), array('the_page' => '', 'privilege' => 'banner_free'));
     foreach ($_banners_disabled as $b) {
         $banners_disabled[] = strval($b['group_id']);
     }

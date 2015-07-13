@@ -43,7 +43,7 @@ function reply_conversation_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '11',
+            '2',
             '%test_text_body',
             '%test subject',
             array(''),
@@ -64,7 +64,7 @@ function invite_participant_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             array('%test'),
-            '11',
+            '2',
             '%invite_reason',
         )
     );
@@ -98,7 +98,7 @@ function get_conversation_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '10',
+            '2',
             0,
             5,
             true,
@@ -118,7 +118,7 @@ function get_quote_conversation_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             '2',
-            '7',
+            '2',
         )
     );
     print_mobiquo_result($result);
@@ -134,7 +134,7 @@ function delete_conversation_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '6',
+            '2',
             2,
         )
     );

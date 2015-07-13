@@ -382,7 +382,7 @@ function search_user_func($raw_params)
         $users[] = mobiquo_val(array(
             'user_id' => mobiquo_val(strval($user['id']), 'string'),
             'username' => mobiquo_val($user['m_username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($user['user_id'], true), 'base64'),
+            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($user['id'], true), 'base64'),
             'icon_url' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($user['id']), 'string'),
         ), 'struct');
     }

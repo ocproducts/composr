@@ -432,6 +432,7 @@ class CMSAccountWrite
         }
 
         if (($salt == '') && ($password_compatibility_scheme == '')) {
+            require_code('crypt');
             $salt = produce_salt();
             $password_salted = ratchet_hash($password, $salt);
         } else {

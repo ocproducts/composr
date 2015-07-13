@@ -1185,7 +1185,7 @@ function cns_delete_member($member_id)
  */
 function cns_ban_member($member_id)
 {
-    if ($GLOBALS['OCF_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 1) {
+    if ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 1) {
         return;
     }
 
@@ -1212,7 +1212,7 @@ function cns_ban_member($member_id)
  */
 function cns_unban_member($member_id)
 {
-    if ($GLOBALS['OCF_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 0) {
+    if ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 0) {
         return;
     }
 

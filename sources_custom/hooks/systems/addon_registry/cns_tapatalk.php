@@ -247,38 +247,6 @@ For live debugging you may wish to consider using [url="Charles Proxy"]http://ww
     }
 
     /**
-     * Uninstall the addon
-     */
-    public function uninstall()
-    {
-        delete_config_option('mark_as_edited');
-        delete_config_option('points_for_thanking');
-        delete_config_option('after_edit_mark_unread');
-        delete_config_option('enable_guest_access');
-        delete_config_option('rules_topic_id');
-        delete_config_option('tapatalk_joining');
-        delete_config_option('tapatalk_api_key');
-        delete_config_option('tapatalk_promote_from_website');
-        delete_config_option('tapatalk_enable_sync_user');
-    }
-
-    /**
-     * Install the addon
-     */
-    public function install()
-    {
-        add_config_option('TAPATALK_API_KEY', 'tapatalk_api_key', 'line', 'return \'\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_MARK_AS_EDITED', 'mark_as_edited', 'tick', 'return \'1\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_POINTS_FOR_THANKING', 'points_for_thanking', 'integer', 'return \'10\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_AFTER_EDIT_MARK_UNREAD', 'after_edit_mark_unread', 'tick', 'return \'0\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_ENABLE_GUEST_ACCESS', 'enable_guest_access', 'tick', 'return \'0\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_RULES_TOPIC_ID', 'rules_topic_id', 'integer', 'return \'\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_JOINING', 'tapatalk_joining', 'tick', 'return \'1\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_PROMOTE_FROM_WEBSITE', 'tapatalk_promote_from_website', 'tick', 'return \'0\';', 'COMPOSR_APIS', 'TAPATALK');
-        add_config_option('TAPATALK_ENABLE_SYNC_USER', 'tapatalk_enable_sync_user', 'tick', 'return \'0\';', 'COMPOSR_APIS', 'TAPATALK');
-    }
-
-    /**
      * Get a list of files that belong to this addon
      *
      * @return array List of files

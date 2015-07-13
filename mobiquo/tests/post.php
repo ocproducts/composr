@@ -59,7 +59,7 @@ function get_quote_post_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '4',
+            '1',
         )
     );
     print_mobiquo_result($result);
@@ -75,7 +75,7 @@ function get_raw_post_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '7',
+            '1',
         )
     );
     print_mobiquo_result($result);
@@ -91,7 +91,7 @@ function save_raw_post_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '6',
+            '1',
             '%TestPostTitle',
             '%TestPostContent',
         )
@@ -109,7 +109,7 @@ function get_thread_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '47',
+            '1',
             0,
             20,
             true,
@@ -128,7 +128,7 @@ function get_thread_by_unread_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '3',
+            '1',
             1,
             true,
         )
@@ -146,7 +146,7 @@ function get_thread_by_post_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '76',
+            '1',
             20,
             true,
         )

@@ -1196,7 +1196,7 @@ function get_base_url($https = null, $zone_for = null)
                 $php_self = dirname($php_self);
             }
         }
-        $SITE_INFO['base_url'] = 'http://' . $domain . $_SERVER['SERVER_PORT'] . rawurlencode($php_self);
+        $SITE_INFO['base_url'] = 'http://' . $domain . str_replace('%2F', '/', rawurlencode($php_self));
     }
 
     // Lookup

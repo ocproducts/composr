@@ -60,7 +60,7 @@ function get_topic_status_func($raw_params)
             'can_subscribe' => mobiquo_val($topic['can_subscribe'], 'boolean'),
             'is_closed' => mobiquo_val($topic['is_closed'], 'boolean'),
             'last_reply_time' => mobiquo_val($topic['last_reply_time'], 'dateTime.iso8601'),
-            'timestamp' => mobiquo_val(strval($topic['timestamp']), 'string'),
+            'timestamp' => mobiquo_val(strval($topic['last_reply_time']), 'string'),
             'new_post' => mobiquo_val($topic['new_post'], 'boolean'),
             'reply_number' => mobiquo_val($topic['reply_number'], 'int'),
             'view_number' => mobiquo_val($topic['view_number'], 'int'),

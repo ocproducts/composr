@@ -37,7 +37,7 @@ function subscribe_forum_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '20',
+            '1',
             0,
         )
     );
@@ -121,7 +121,7 @@ function user_subscription_test()
 {
     $result = mobiquo_post_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
-        array('code' => '123'),
+        array('code' => '123', 'uid' => 2),
         'admin' // Log in as admin. Only works with a backdoored IP
     );
     print_mobiquo_result($result);

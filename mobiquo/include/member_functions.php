@@ -31,7 +31,7 @@ function is_member_online($member_id)
     }
 
     $users_online_time_seconds = intval(get_option('users_online_time')) * 60;
-    $sql = 'SELECT last_activity FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval(time() - $users_online_time_seconds) . ' AND the_user=' . strval($member_id);
+    $sql = 'SELECT last_activity FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval(time() - $users_online_time_seconds) . ' AND member_id=' . strval($member_id);
     $result = $GLOBALS['SITE_DB']->query_value_if_there($sql);
     $ret = !is_null($result);
 

@@ -23,7 +23,7 @@ function thank_post_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '6',
+            '1',
         ),
         'admin' // Log in as admin. Only works with a backdoored IP
     );
@@ -74,7 +74,7 @@ function like_post_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '5',
+            '1',
         ),
         'admin' // Log in as admin. Only works with a backdoored IP
     );
