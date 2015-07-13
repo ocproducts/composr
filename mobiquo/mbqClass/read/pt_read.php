@@ -12,18 +12,22 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: CMS.**/
 
+/**
+ * Composr API helper class.
+ */
 class CMSPtRead
 {
     /**
      * Get the current member's private topics.
      *
-     * @param  integer        Start position for topics
-     * @param  integer        Maximum topics to show
+     * @param  integer $start Start position for topics
+     * @param  integer $max Maximum topics to show
      * @return array Tuple of details
      */
-    function get_private_topics($start, $max)
+    public function get_private_topics($start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -40,12 +44,12 @@ class CMSPtRead
         $sql .= ' ORDER BY t_cache_last_time DESC,t.id DESC';
 
         $_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id' . $sql, $max, $start);
-        $topics_count = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*)' . $sql);
+        $topics_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*)' . $sql);
 
         $topics = array();
         foreach ($_topics as $topic) {
             $extra = ' AND p_time>COALESCE((SELECT l_time FROM ' . $table_prefix . 'f_read_logs l WHERE l_topic_id=p.p_topic_id AND l_member_id=' . strval(get_member()) . '),0) AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days')));
-            $unread_num = $GLOBALS['FORUM_DB']->query_value('f_posts p', 'COUNT(*)', array('p.p_topic_id' => $topic['topic_id']), $extra);
+            $unread_num = $GLOBALS['FORUM_DB']->query_select_value('f_posts p', 'COUNT(*)', array('p.p_topic_id' => $topic['topic_id']), $extra);
 
             $participants = get_topic_participants($topic['topic_id'], null, $topic);
 
@@ -85,13 +89,13 @@ class CMSPtRead
     /**
      * Get a private topic (details of it, and posts).
      *
-     * @param  AUTO_LINK        Topic ID
-     * @param  integer        Start position for posts
-     * @param  integer        Maximum posts to show
-     * @param  boolean        Return HTML
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  integer $start Start position for posts
+     * @param  integer $max Maximum posts to show
+     * @param  boolean $return_html Return HTML
      * @return array Tuple of details
      */
-    function get_private_topic($topic_id, $start, $max, $return_html)
+    public function get_private_topic($topic_id, $start, $max, $return_html)
     {
         cms_verify_parameters_phpdoc();
 
@@ -114,12 +118,12 @@ class CMSPtRead
         $sql .= ' WHERE ' . tapatalk_get_topic_where($topic_id);
         $sql .= ' ORDER BY p_time,p.id';
         $_posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS post_id,t.id AS topic_id' . $sql, $max, $start);
-        $total_post_count = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*)' . $sql);
+        $total_post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*)' . $sql);
 
         $extra = ' AND p_time>GREATEST(' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ',COALESCE(0,(SELECT l_time FROM ' . $table_prefix . 'f_read_logs l WHERE l_topic_id=p.p_topic_id AND l_member_id=' . strval(get_member()) . ')))';
-        $unread_num = $GLOBALS['FORUM_DB']->query_value('f_posts p', 'COUNT(*)', array('p.p_topic_id' => $topic_id), $extra);
+        $unread_num = $GLOBALS['FORUM_DB']->query_select_value('f_posts p', 'COUNT(*)', array('p.p_topic_id' => $topic_id), $extra);
 
-        $topic_read_time = $GLOBALS['FORUM_DB']->query_value_null_ok('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $topic_id));
+        $topic_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $topic_id));
 
         $posts = array();
         foreach ($_posts as $post) {
@@ -172,10 +176,10 @@ class CMSPtRead
     /**
      * Get Comcode for quoting a post within a private topic.
      *
-     * @param  AUTO_LINK        Post ID
+     * @param  AUTO_LINK $post_id Post ID
      * @return string Body for new quoted post
      */
-    function get_quote_for_private_topic($post_id)
+    public function get_quote_for_private_topic($post_id)
     {
         cms_verify_parameters_phpdoc();
 

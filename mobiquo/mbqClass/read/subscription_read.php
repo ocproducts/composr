@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSSubscriptionRead
 {
     /**
@@ -19,7 +23,7 @@ class CMSSubscriptionRead
      *
      * @return array List of forums
      */
-    function get_subscribed_forums()
+    public function get_subscribed_forums()
     {
         cms_verify_parameters_phpdoc();
 
@@ -56,11 +60,11 @@ class CMSSubscriptionRead
     /**
      * Get subscribed (monitored for notifications) topics.
      *
-     * @param  integer      Start position
-     * @param  integer      Total results
+     * @param  integer $start Start position
+     * @param  integer $max Total results
      * @return array A pair: total topics, topics
      */
-    function get_subscribed_topics($start, $max)
+    public function get_subscribed_topics($start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -102,7 +106,7 @@ class CMSSubscriptionRead
             $sql .= 'ORDER BY t_cache_first_time';
             $_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id,f.id AS forum_id ' . $sql);
 
-            $total = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*) ' . $sql);
+            $total = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $sql);
         } else {
             $_topics = array();
 
@@ -120,10 +124,10 @@ class CMSSubscriptionRead
     /**
      * Find all forums the current member is monitoring.
      *
-     * @param  ?MEMBER      Member ID (null: current member)
+     * @param  ?MEMBER $member_id Member ID (null: current member)
      * @return array List of forums
      */
-    function get_member_forum_monitoring($member_id = null)
+    public function get_member_forum_monitoring($member_id = null)
     {
         if (is_null($member_id)) {
             $member_id = get_member();
@@ -142,10 +146,10 @@ class CMSSubscriptionRead
     /**
      * Find all topics the current member is monitoring.
      *
-     * @param  ?MEMBER      Member ID (null: current member)
+     * @param  ?MEMBER $member_id Member ID (null: current member)
      * @return array List of topics
      */
-    function get_member_topic_monitoring($member_id = null)
+    public function get_member_topic_monitoring($member_id = null)
     {
         if (is_null($member_id)) {
             $member_id = get_member();

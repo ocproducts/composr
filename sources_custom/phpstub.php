@@ -165,10 +165,13 @@ function array_pop(&$array)
  * Push one or more elements onto the end of array.
  *
  * @param  array $array The array.
- * @param  mixed $var The value.
+ * @param  mixed $var1 Element to append.
+ * @param  ?mixed $var2 Element to append (null: no more - actually pass nothing for this).
+ * @param  ?mixed $var3 Element to append (null: no more - actually pass nothing for this).
+ * @param  ?mixed $var4 Element to append (null: no more - actually pass nothing for this).
  * @return integer The new number of elements in the array.
  */
-function array_push(&$array, $var)
+function array_push(&$array, $var1, $var2 = null, $var3 = null, $var4 = null)
 {
     return 0;
 }
@@ -3863,10 +3866,15 @@ function array_rand($input, $num_req = 1)
  * Prepend one or more elements to the beginning of array.
  *
  * @param  array $array Array to prepend to.
- * @param  mixed $var Element to prepend.
+ * @param  mixed $var1 Element to prepend.
+ * @param  ?mixed $var2 Element to prepend (null: no more - actually pass nothing for this).
+ * @param  ?mixed $var3 Element to prepend (null: no more - actually pass nothing for this).
+ * @param  ?mixed $var4 Element to prepend (null: no more - actually pass nothing for this).
+ * @return integer The new number of elements in the array.
  */
-function array_unshift(&$array, $var)
+function array_unshift(&$array, $var1, $var2 = null, $var3 = null, $var4 = null)
 {
+    return 0;
 }
 
 /**
@@ -5631,7 +5639,7 @@ function gzfile($filename)
  * @param  integer $length Maximum length to read in.
  * @return string Inflated (uncompressed) data.
  */
-function gzinflate($data, $length)
+function gzinflate($data, $length = 0)
 {
     return '';
 }
@@ -5643,7 +5651,7 @@ function gzinflate($data, $length)
  * @param  integer $length Maximum length to read in.
  * @return string Uncompressed data.
  */
-function gzuncompress($data, $length)
+function gzuncompress($data, $length = 0)
 {
     return '';
 }

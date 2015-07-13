@@ -12,24 +12,28 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSSearchRead
 {
     /**
      * Search topics.
      *
-     * @param  string         Keywords
-     * @param  integer      Start position
-     * @param  integer      Max position
-     * @param  ?MEMBER      Member ID (null: no filter)
-     * @param  ?string      Username (null: no filter)
-     * @param  ?AUTO_LINK   Forum ID (null: no filter)
-     * @param  ?boolean      Title only (null: no filter)
-     * @param  ?TIME         Time since (null: no filter)
-     * @param  ?array         Only in these forums (null: no filter)
-     * @param  ?array         Not in these forums (null: no filter)
+     * @param  string $keywords Keywords
+     * @param  integer $start Start position
+     * @param  integer $max Max position
+     * @param  ?MEMBER $userid Member ID (null: no filter)
+     * @param  ?string $searchuser Username (null: no filter)
+     * @param  ?AUTO_LINK $forumid Forum ID (null: no filter)
+     * @param  ?boolean $titleonly Title only (null: no filter)
+     * @param  ?TIME $searchtime Time since (null: no filter)
+     * @param  ?array $only_in Only in these forums (null: no filter)
+     * @param  ?array $not_in Not in these forums (null: no filter)
      * @return array A pair: total topics, topics
      */
-    function search_topics($keywords, $start, $max, $userid = null, $searchuser = null, $forumid = null, $titleonly = false, $searchtime = null, $only_in = null, $not_in = null)
+    public function search_topics($keywords, $start, $max, $userid = null, $searchuser = null, $forumid = null, $titleonly = false, $searchtime = null, $only_in = null, $not_in = null)
     {
         cms_verify_parameters_phpdoc();
 
@@ -42,14 +46,16 @@ class CMSSearchRead
         $sql .= 't_forum_id IN (' . get_allowed_forum_sql() . ')';
 
         if ($keywords != '') {
+            list($search_where) = build_content_where($keywords, false, $boolean_operator);
+
             $sql1 = '';
             if (!$titleonly) {
-                $sql1 .= preg_replace('#\?#', 'p_title', build_content_where($keywords, false, $boolean_operator));
+                $sql1 .= preg_replace('#\?#', 'p_title', $search_where);
                 if ($sql1 != '') {
                     $sql1 .= ' OR ';
                 }
             }
-            $sql1 .= preg_replace('#\?#', 't_description', build_content_where($keywords, false, $boolean_operator));
+            $sql1 .= preg_replace('#\?#', 't_description', $search_where);
             if ($sql1 != '') {
                 $sql .= ' AND (' . $sql1 . ')';
             }
@@ -99,7 +105,7 @@ class CMSSearchRead
 
         $full_sql = 'SELECT *,f.id as forum_id,t.id AS topic_id,p.id AS post_id' . $sql;
         $topics = (get_allowed_forum_sql() == '') ? array() : $GLOBALS['FORUM_DB']->query($full_sql, $max, $start);
-        $total_topic_num = (get_allowed_forum_sql() == '') ? 0 : $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*)' . $sql);
+        $total_topic_num = (get_allowed_forum_sql() == '') ? 0 : $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*)' . $sql);
 
         return array($total_topic_num, $topics);
     }
@@ -107,19 +113,19 @@ class CMSSearchRead
     /**
      * Search posts.
      *
-     * @param  string         Keywords
-     * @param  integer      Start position
-     * @param  integer      Max position
-     * @param  ?MEMBER      Member ID (null: no filter)
-     * @param  ?string      Username (null: no filter)
-     * @param  ?AUTO_LINK   Forum ID (null: no filter)
-     * @param  ?AUTO_LINK   Topic ID (null: no filter)
-     * @param  ?TIME         Time since (null: no filter)
-     * @param  ?array         Only in these forums (null: no filter)
-     * @param  ?array         Not in these forums (null: no filter)
+     * @param  string $keywords Keywords
+     * @param  integer $start Start position
+     * @param  integer $max Max position
+     * @param  ?MEMBER $userid Member ID (null: no filter)
+     * @param  ?string $searchuser Username (null: no filter)
+     * @param  ?AUTO_LINK $forumid Forum ID (null: no filter)
+     * @param  ?AUTO_LINK $topicid Topic ID (null: no filter)
+     * @param  ?TIME $searchtime Time since (null: no filter)
+     * @param  ?array $only_in Only in these forums (null: no filter)
+     * @param  ?array $not_in Not in these forums (null: no filter)
      * @return array A pair: total topics, topics
      */
-    function search_posts($keywords, $start, $max, $userid = null, $searchuser = null, $forumid = null, $topicid = null, $searchtime = null, $only_in = null, $not_in = null)
+    public function search_posts($keywords, $start, $max, $userid = null, $searchuser = null, $forumid = null, $topicid = null, $searchtime = null, $only_in = null, $not_in = null)
     {
         cms_verify_parameters_phpdoc();
 
@@ -127,8 +133,9 @@ class CMSSearchRead
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
         $boolean_operator = 'AND';
 
+        list($search_where) = build_content_where($keywords, false, $boolean_operator);
         if (multi_lang_content()) {
-            $search_sql = preg_replace('#\?#', 'trans.text_original', build_content_where($keywords, false, $boolean_operator));
+            $search_sql = preg_replace('#\?#', 'trans.text_original', $search_where);
             if ($search_sql == '') {
                 $search_sql = '1=1';
             }
@@ -139,7 +146,7 @@ class CMSSearchRead
 				JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
 				WHERE ' . $search_sql;
         } else {
-            $search_sql = preg_replace('#\?#', 'p_post', build_content_where($keywords, false, $boolean_operator));
+            $search_sql = preg_replace('#\?#', 'p_post', $search_where);
             if ($search_sql == '') {
                 $search_sql = '1=1';
             }
@@ -205,7 +212,7 @@ class CMSSearchRead
 
         $full_sql = 'SELECT *,t.id AS topic_id,p.id AS post_id,t.t_cache_first_title,f.id AS forum_id,f.f_name' . $sql;
         $posts = (get_allowed_forum_sql() == '') ? array() : $GLOBALS['FORUM_DB']->query($full_sql, $max, $start);
-        $total_post_num = (get_allowed_forum_sql() == '') ? 0 : $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*)' . $sql);
+        $total_post_num = (get_allowed_forum_sql() == '') ? 0 : $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*)' . $sql);
 
         return array($total_post_num, $posts);
     }

@@ -71,9 +71,9 @@ foreach ($files as $filename) {
 
     foreach ($result as $i => $r) {
         if ($r['name'] == '__global') {
-            if (($_filename != 'sources' . DIRECTORY_SEPARATOR . 'global.php') && ($_filename != 'phpstub.php') && ($_filename != 'tempcode_compiler')) {
+            if (($_filename != 'sources' . DIRECTORY_SEPARATOR . 'global.php') && ($_filename != 'phpstub.php')) {
                 foreach (array_keys($r['functions']) as $f) {
-                    if ((isset($global[$f])) && (!in_array($f, array('file_get_contents', 'ftp_chmod', 'html_entity_decode', 'str_ireplace', 'str_word_count', 'do_lang', 'mixed', 'qualify_url', 'http_download_file', 'get_forum_type', 'cms_srv', 'mailto_obfuscated', 'get_custom_file_base')))) {
+                    if ((isset($global[$f])) && (!in_array($f, array('do_lang', 'mixed', 'qualify_url', 'http_download_file', 'get_forum_type', 'cms_srv', 'mailto_obfuscated', 'get_custom_file_base')))) {
                         echo 'DUPLICATE-FUNCTION ' . $f . ' (in ' . $filename . ')' . cnl();
                     }
                 }

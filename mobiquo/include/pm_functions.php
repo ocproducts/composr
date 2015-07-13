@@ -46,6 +46,6 @@ function get_num_unread_private_topics($box_type = null)
     $sql .= ' AND (l_time IS NULL OR l_time<t_cache_last_time)'; // Cannot get join match OR gets one and it is behind of last post
     $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))); // Within tracking range
 
-    return $GLOBALS['FORUM_DB']->query_value_null_ok_full($sql);
+    return $GLOBALS['FORUM_DB']->query_value_if_there($sql);
 }
 

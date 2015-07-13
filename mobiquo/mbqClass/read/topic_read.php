@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSTopicRead
 {
     const GET_TOPICS_ALL = 0;
@@ -21,10 +25,10 @@ class CMSTopicRead
     /**
      * Get basic details of some topics.
      *
-     * @param  array            List of topic IDs
+     * @param  array $topic_ids List of topic IDs
      * @return array Details
      */
-    function get_topic_statuses($topic_ids)
+    public function get_topic_statuses($topic_ids)
     {
         cms_verify_parameters_phpdoc();
 
@@ -68,14 +72,14 @@ class CMSTopicRead
     /**
      * Get some topics from a forum.
      *
-     * @param  string            Mode
+     * @param  string $mode Mode
      * @set TOP ANN ALL
-     * @param  AUTO_LINK        Forum ID
-     * @param  integer        Start position
-     * @param  integer        Maximum results
+     * @param  AUTO_LINK $forum_id Forum ID
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
      * @return array A tuple of details: total topics, topics, forum name, unread sticky count, unread announce count, action assessment
      */
-    function get_topics($mode, $forum_id, $start, $max)
+    public function get_topics($mode, $forum_id, $start, $max)
     {
         if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
             access_denied('I_ERROR');
@@ -124,11 +128,11 @@ class CMSTopicRead
         }
         $forum_name = $forum_details['f_name'];
 
-        $total_topic_num = $GLOBALS['FORUM_DB']->query_value('f_topics', 'COUNT(*)', $where, ' AND t_cache_first_member_id IS NOT NULL');
+        $total_topic_num = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)', $where, ' AND t_cache_first_member_id IS NOT NULL');
 
         $extra = ' AND (SELECT l_time FROM ' . $table_prefix . 'f_read_logs l WHERE l_topic_id=t.id AND l_member_id=' . strval(get_member()) . ')<t.t_cache_last_time';
-        $unread_sticky_count = $GLOBALS['FORUM_DB']->query_value('f_topics t', 'COUNT(*)', array('t_pinned' => 1, 't_cascading' => 0) + $where_basic, $extra);
-        $unread_announce_count = $GLOBALS['FORUM_DB']->query_value('f_topics t', 'COUNT(*)', array('t_cascading' => 1) + $where_basic, $extra);
+        $unread_sticky_count = $GLOBALS['FORUM_DB']->query_select_value('f_topics t', 'COUNT(*)', array('t_pinned' => 1, 't_cascading' => 0) + $where_basic, $extra);
+        $unread_announce_count = $GLOBALS['FORUM_DB']->query_select_value('f_topics t', 'COUNT(*)', array('t_cascading' => 1) + $where_basic, $extra);
 
         $action_details = action_assessment_forum($forum_details, get_member());
 
@@ -145,14 +149,14 @@ class CMSTopicRead
     /**
      * Get some topics matching some filters.
      *
-     * @param  integer        Start position
-     * @param  integer        Maximum results
-     * @param  array            List of filter maps (supports only_in, not_in, excuded_topics)
-     * @param  integer        Method (a GET_TOPICS_* constant)
-     * @param  ?mixed            Data for search method (null: N/A)
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
+     * @param  array $filters List of filter maps (supports only_in, not_in, excuded_topics)
+     * @param  integer $method Method (a GET_TOPICS_* constant)
+     * @param  ?mixed $method_data Data for search method (null: N/A)
      * @return array A pair: total topics, topics
      */
-    function get_topics_advanced($start, $max, $filters, $method = 0, $method_data = null)
+    public function get_topics_advanced($start, $max, $filters, $method = 0, $method_data = null)
     {
         cms_verify_parameters_phpdoc();
 
@@ -257,7 +261,7 @@ class CMSTopicRead
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
         $sql = $table_prefix . 'f_topics t JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY t_cache_last_time DESC,t.id DESC';
         $forum_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id,f.id AS forum_id FROM ' . $sql, $max, $start);
-        $total_forum_topics = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*) FROM ' . $sql);
+        $total_forum_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $sql);
 
         return array($total_forum_topics, $forum_topics);
     }

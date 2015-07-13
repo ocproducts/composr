@@ -20,7 +20,7 @@ function init__facebook_connect()
     // Initialise Facebook Connect
     require_code('facebook/facebook');
 
-    class CmsFacebook extends BaseFacebook // We don't want any persistence - we store in normal Composr sessions/member rows
+    class CMSFacebook extends BaseFacebook // We don't want any persistence - we store in normal Composr sessions/member rows
     {
         protected function setPersistentData($key, $value)
         {
@@ -47,7 +47,7 @@ function init__facebook_connect()
     $FACEBOOK_CONNECT = mixed();
     $appid = get_option('facebook_appid');
     $appsecret = get_option('facebook_secret_code');
-    $FACEBOOK_CONNECT = new CmsFacebook(array('appId' => $appid, 'secret' => $appsecret));
+    $FACEBOOK_CONNECT = new CMSFacebook(array('appId' => $appid, 'secret' => $appsecret));
 
     if (running_script('index')) {
         require_javascript('facebook');

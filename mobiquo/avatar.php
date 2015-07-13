@@ -52,6 +52,6 @@ if (substr($url, 0, strlen($stem)) == $stem) {
 
 require_code('mime_types');
 require_code('files');
-header('Content-Type: ' . get_mime_type(get_file_extension($url)));
+header('Content-Type: ' . get_mime_type(get_file_extension($url), false));
 ini_set('allow_url_fopen', '1');
 readfile($url);

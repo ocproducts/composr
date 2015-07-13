@@ -12,17 +12,21 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: json_encode|json_decode|var_export*/
 
+/**
+ * Mobiquo server implementation.
+ */
 class MobiquoServerJSON extends MobiquoServer
 {
     /**
      * Decode parameters we were called with.
      *
-     * @param  mixed            Raw params
+     * @param  mixed $raw_params Raw params
      * @return array Params as an array
      */
-    function params_decode($raw_params)
+    public function params_decode($raw_params)
     {
         return $raw_params; // We decoded in dispatch_request(), as data is merged from $_GET and JSON
     }
@@ -32,7 +36,7 @@ class MobiquoServerJSON extends MobiquoServer
      *
      * @return string Method name
      */
-    function get_method_name()
+    public function get_method_name()
     {
         if (isset($_GET['method_name'])) {
             return $_GET['method_name'];
@@ -48,7 +52,7 @@ class MobiquoServerJSON extends MobiquoServer
     /**
      * Dispatch a server request.
      */
-    function dispatch_request()
+    public function dispatch_request()
     {
         header('Content-Type: application/json');
 
@@ -109,12 +113,12 @@ class MobiquoServerJSON extends MobiquoServer
     /**
      * Wrap a value for the particular MobiquoServer server implementation.
      *
-     * @param  mixed            Data
-     * @param  ?string        Type (null: autodetect)
+     * @param  mixed $data Data
+     * @param  ?string $type Type (null: autodetect)
      * @set string boolean base64 int dateTime.iso8601 array struct
      * @return mixed Mobiquo result
      */
-    function val($data, $type)
+    public function val($data, $type)
     {
         if ($type === 'dateTime.iso8601') {
             $data = $this->date_encode($data);
@@ -130,8 +134,8 @@ class MobiquoServerJSON extends MobiquoServer
     /**
      * Generate a standard Mobiquo date.
      *
-     * @param  integer        Timestamp
-     * @param  integer        Timezone hour offset
+     * @param  integer $timet Timestamp
+     * @param  integer $timezone Timezone hour offset
      * @return string iso8601 date
      */
     private function date_encode($timet, $timezone = 0)
@@ -142,10 +146,10 @@ class MobiquoServerJSON extends MobiquoServer
     /**
      * Wrap a result for the particular MobiquoServer server implementation.
      *
-     * @param  mixed            Data
+     * @param  mixed $data Data
      * @return mixed Mobiquo response
      */
-    function response($data)
+    public function response($data)
     {
         return json_encode($data);
     }

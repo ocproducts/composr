@@ -12,17 +12,21 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: TT_Cipher*/
 
+/**
+ * Composr API helper class.
+ */
 class CMSUserRead
 {
     /**
      * Get details of a member who is logged in.
      *
-     * @param  MEMBER            Member ID
+     * @param  MEMBER $user_id Member ID
      * @return array Details
      */
-    function get_user_details($user_id)
+    public function get_user_details($user_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -81,12 +85,12 @@ class CMSUserRead
     /**
      * Read in a setting for a member's posting abilities.
      *
-     * @param  MEMBER            Member ID
-     * @param  string            Setting key
+     * @param  MEMBER $user_id Member ID
+     * @param  string $type Setting key
      * @set can_pm can_send_pm can_moderate can_search can_profile can_upload_avatar max_avatar_width max_avatar_height max_attachment allowed_extensions max_attachment_size max_png_size max_jpg_size post_countdown
      * @return mixed Setting value
      */
-    function get_posting_setting($user_id, $type)
+    public function get_posting_setting($user_id, $type)
     {
         switch ($type) {
             case 'can_pm':
@@ -124,10 +128,10 @@ class CMSUserRead
     /**
      * Find which members are ignored.
      *
-     * @param  MEMBER            Member ID
+     * @param  MEMBER $user_id Member ID
      * @return array List of member IDs
      */
-    function get_ignored_user_ids($user_id)
+    public function get_ignored_user_ids($user_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -151,7 +155,7 @@ class CMSUserRead
      *
      * @return array Basic stats
      */
-    function get_inbox_stats()
+    public function get_inbox_stats()
     {
         cms_verify_parameters_phpdoc();
 
@@ -172,21 +176,21 @@ class CMSUserRead
     /**
      * Get list of online members.
      *
-     * @param  integer        Start position
-     * @param  integer        Maximum results
-     * @param  ?string        Resource ID (null: site-wide)
-     * @param  ?string        Resource type (null: site-wide)
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
+     * @param  ?string $id Resource ID (null: site-wide)
+     * @param  ?string $area Resource type (null: site-wide)
      * @set forum topic
      * @return array List of online members.
      */
-    function get_online_users($start, $max, $id, $area)
+    public function get_online_users($start, $max, $id, $area)
     {
         cms_verify_parameters_phpdoc();
 
         if (is_null($id)) {
             $sessions = $GLOBALS['SITE_DB']->query_select('sessions', array('DISTINCT the_user'), array('session_invisible' => 0), ' AND the_user>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()), $max, $start);
 
-            $member_count = $GLOBALS['SITE_DB']->query_value('sessions', 'COUNT(DISTINCT the_user)', array('session_invisible' => 0), ' AND the_user>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()));
+            $member_count = $GLOBALS['SITE_DB']->query_select_value('sessions', 'COUNT(DISTINCT the_user)', array('session_invisible' => 0), ' AND the_user>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()));
 
             $list = array();
             foreach ($sessions as $session) {
@@ -203,7 +207,7 @@ class CMSUserRead
                 );
             }
 
-            $guest_count = $GLOBALS['FORUM_DB']->query_value('sessions', 'COUNT(*)', array('the_user' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
+            $guest_count = $GLOBALS['FORUM_DB']->query_select_value('sessions', 'COUNT(*)', array('the_user' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
         } else {
             switch ($area) {
                 case 'forum':
@@ -222,7 +226,7 @@ class CMSUserRead
 
             $where = array('mt_page' => $cms_page, 'mt_id' => $id);
             $members_viewing = $GLOBALS['FORUM_DB']->query_select('member_tracking', array('mt_member_id'), $where, ' AND mt_member_id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()), $max, $start);
-            $member_count = $GLOBALS['FORUM_DB']->query_value('member_tracking', 'COUNT(*)', $where, ' AND mt_member_id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()));
+            $member_count = $GLOBALS['FORUM_DB']->query_select_value('member_tracking', 'COUNT(*)', $where, ' AND mt_member_id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()));
 
             $list = array();
             foreach ($members_viewing as $member_viewing) {
@@ -239,7 +243,7 @@ class CMSUserRead
                 );
             }
 
-            $guest_count = $GLOBALS['FORUM_DB']->query_value('member_tracking', 'COUNT(*)', array('mt_page' => $cms_page, 'mt_id' => strval($id), 'mt_member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
+            $guest_count = $GLOBALS['FORUM_DB']->query_select_value('member_tracking', 'COUNT(*)', array('mt_page' => $cms_page, 'mt_id' => strval($id), 'mt_member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
         }
 
         return array(
@@ -252,10 +256,10 @@ class CMSUserRead
     /**
      * Get details of a member.
      *
-     * @param  MEMBER            Member ID
+     * @param  MEMBER $user_id Member ID
      * @return array Details
      */
-    function get_user_info($user_id)
+    public function get_user_info($user_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -288,7 +292,7 @@ class CMSUserRead
             'is_ban' => $GLOBALS['FORUM_DRIVER']->is_banned($user_id),
         );
 
-        $at_title = $GLOBALS['SITE_DB']->query_value_null_ok('sessions', 'the_title', array('the_user' => $user_id), 'ORDER BY last_activity DESC');
+        $at_title = $GLOBALS['SITE_DB']->query_select_value_if_there('sessions', 'the_title', array('the_user' => $user_id), 'ORDER BY last_activity DESC');
         if (!is_null($at_title)) {
             $user_info['current_action'] = $at_title;
         }
@@ -382,26 +386,26 @@ class CMSUserRead
     /**
      * Find friend count.
      *
-     * @param  MEMBER            Member involved
-     * @param  boolean        Whether it is friends that member has (otherwise it is people who have friended that member).
+     * @param  MEMBER $user_id Member involved
+     * @param  boolean $i_follow Whether it is friends that member has (otherwise it is people who have friended that member).
      * @return integer Total
      */
-    function _get_member_follow_count($user_id, $i_follow = true)
+    public function _get_member_follow_count($user_id, $i_follow = true)
     {
         if ($i_follow) {
-            return $GLOBALS['FORUM_DB']->query_value('chat_buddies', 'COUNT(*)', array('member_likes' => $user_id));
+            return $GLOBALS['FORUM_DB']->query_select_value('chat_buddies', 'COUNT(*)', array('member_likes' => $user_id));
         }
-        return $GLOBALS['FORUM_DB']->query_value('chat_buddies', 'COUNT(*)', array('member_liked' => $user_id));
+        return $GLOBALS['FORUM_DB']->query_select_value('chat_buddies', 'COUNT(*)', array('member_liked' => $user_id));
     }
 
     /**
      * Get a member's topics.
      *
-     * @param  MEMBER            Member ID
-     * @param  integer        Maximum results
+     * @param  MEMBER $user_id Member ID
+     * @param  integer $max Maximum results
      * @return array Topics
      */
-    function get_user_topics($user_id, $max)
+    public function get_user_topics($user_id, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -429,11 +433,11 @@ class CMSUserRead
     /**
      * Get a member's posts.
      *
-     * @param  MEMBER            Member ID
-     * @param  integer        Maximum results
+     * @param  MEMBER $user_id Member ID
+     * @param  integer $max Maximum results
      * @return array Posts
      */
-    function get_user_reply_posts($user_id, $max)
+    public function get_user_reply_posts($user_id, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -461,11 +465,11 @@ class CMSUserRead
     /**
      * Get recommended members to contact (in our case, friends).
      *
-     * @param  integer        Start position
-     * @param  integer        Maximum results
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
      * @return array A pair: total, members
      */
-    function get_recommended_users($start, $max)
+    public function get_recommended_users($start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -474,19 +478,19 @@ class CMSUserRead
         }
 
         $users = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()), 'ORDER BY date_and_time DESC', $max, $start);
-        $total = $GLOBALS['SITE_DB']->query_value('chat_friends', 'COUNT(*)', array('member_likes' => get_member()));
+        $total = $GLOBALS['SITE_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_likes' => get_member()));
         return array($total, $users);
     }
 
     /**
      * Do a member search.
      *
-     * @param  string            Search keywords
-     * @param  integer        Start position
-     * @param  integer        Maximum results
+     * @param  string $keywords Search keywords
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
      * @return array A pair: total members, members
      */
-    function get_search_users($keywords, $start, $max)
+    public function get_search_users($keywords, $start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -498,17 +502,17 @@ class CMSUserRead
         }
         $sql .= ' ORDER BY m_username';
         $users = $GLOBALS['FORUM_DB']->query('SELECT id,m_username ' . $sql, $max, $start);
-        $total = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*) ' . $sql);
+        $total = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $sql);
         return array($total, $users);
     }
 
     /**
      * Retrieve some contacts (in our case a member).
      *
-     * @param  array            Member IDs
+     * @param  array $user_ids Member IDs
      * @return array List of contact details
      */
-    function get_contact($user_ids)
+    public function get_contact($user_ids)
     {
         cms_verify_parameters_phpdoc();
 

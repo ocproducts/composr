@@ -12,25 +12,29 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSForumRead
 {
     /**
      * Load the details/status of the forum structure at a particular level of children.
      *
-     * @param  AUTO_LINK      Forum ID we are collating children for
-     * @param  boolean        Recurse the full tree (rather than just one level)
-     * @param  boolean        Include forum descriptions
-     * @param  ?boolean       Whether to order alphabetically (null: lookup)
-     * @param  ?array         Forum groupings map (all of them) (null: lookup)
-     * @param  integer        Recursion depth
+     * @param  AUTO_LINK $forum_id Forum ID we are collating children for
+     * @param  boolean $full_tree Recurse the full tree (rather than just one level)
+     * @param  boolean $return_description Include forum descriptions
+     * @param  ?boolean $order_sub_alpha Whether to order alphabetically (null: lookup)
+     * @param  ?array $all_groupings Forum groupings map (all of them) (null: lookup)
+     * @param  integer $recursion_depth Recursion depth
      * @return object Forum details/status; recursive Mobiquo structure
      */
-    function forum_recursive_load($forum_id, $full_tree, $return_description, $order_sub_alpha = null, $all_groupings = null, $recursion_depth = 0)
+    public function forum_recursive_load($forum_id, $full_tree, $return_description, $order_sub_alpha = null, $all_groupings = null, $recursion_depth = 0)
     {
         cms_verify_parameters_phpdoc();
 
         if (is_null($order_sub_alpha)) {
-            $order_sub_alpha = ($GLOBALS['FORUM_DB']->query_value('f_forums', 'f_order_sub_alpha', array('id' => $forum_id)) == 1);
+            $order_sub_alpha = ($GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_order_sub_alpha', array('id' => $forum_id)) == 1);
         }
 
         if (is_null($all_groupings)) {
@@ -67,7 +71,7 @@ class CMSForumRead
             $forums = array();
 
             // Do we need a virtual forum for the root forum? As we don't show an actual root forum in Tapatalk
-            if (($forum_id == db_get_first_id()) && (count($forums_with_groupings) == 0) && ($GLOBALS['FORUM_DB']->query_value('f_topics', 'COUNT(*)', array('t_forum_id' => $forum_id)) > 1)) {
+            if (($forum_id == db_get_first_id()) && (count($forums_with_groupings) == 0) && ($GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)', array('t_forum_id' => $forum_id)) > 1)) {
                 $unread_count = get_num_unread_topics(db_get_first_id());
                 $new_post = ($unread_count > 0);
 
@@ -162,11 +166,11 @@ class CMSForumRead
     /**
      * Find child forums of a particular forum.
      *
-     * @param  AUTO_LINK      Forum ID
-     * @param  boolean      Whether to order alphabetically
+     * @param  AUTO_LINK $forum_id Forum ID
+     * @param  boolean $order_sub_alpha Whether to order alphabetically
      * @return array List of forum rows
      */
-    function _get_forum($forum_id, $order_sub_alpha)
+    public function _get_forum($forum_id, $order_sub_alpha)
     {
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
 
@@ -195,7 +199,7 @@ class CMSForumRead
      *
      * @return array A pair: Number of forums participated in, Details of forums
      */
-    function get_participated_forums()
+    public function get_participated_forums()
     {
         cms_verify_parameters_phpdoc();
 
@@ -231,10 +235,10 @@ class CMSForumRead
     /**
      * Get basic details/status of a set of forums.
      *
-     * @param  array         List of forum IDs
+     * @param  array $forum_ids List of forum IDs
      * @return array Details of forums
      */
-    function get_forum_status($forum_ids)
+    public function get_forum_status($forum_ids)
     {
         cms_verify_parameters_phpdoc();
 
@@ -263,7 +267,7 @@ class CMSForumRead
      *
      * @return array List of emoticon categories and emoticon details within
      */
-    function get_smilies()
+    public function get_smilies()
     {
         cms_verify_parameters_phpdoc();
 

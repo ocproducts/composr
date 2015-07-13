@@ -12,8 +12,12 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: render_activity*/
 
+/**
+ * Composr API helper class.
+ */
 class CMSSocialRead
 {
     /**
@@ -21,7 +25,7 @@ class CMSSocialRead
      *
      * @return array Details of members
      */
-    function get_following()
+    public function get_following()
     {
         cms_verify_parameters_phpdoc();
 
@@ -52,7 +56,7 @@ class CMSSocialRead
      *
      * @return array Details of members
      */
-    function get_followers()
+    public function get_followers()
     {
         cms_verify_parameters_phpdoc();
 
@@ -81,11 +85,11 @@ class CMSSocialRead
     /**
      * Get details of notifications.
      *
-     * @param  integer        Start position
-     * @param  integer        Maximum results
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
      * @return array A pair: total notifications, notifications
      */
-    function get_alerts($start, $max)
+    public function get_alerts($start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -98,7 +102,7 @@ class CMSSocialRead
             'd_to_member_id' => get_member(),
         );
         $rows = $GLOBALS['SITE_DB']->query_select('digestives_tin', array('*'), $where, '', $max, $start);
-        $total = $GLOBALS['SITE_DB']->query_value('digestives_tin', 'COUNT(*)', $where);
+        $total = $GLOBALS['SITE_DB']->query_select_value('digestives_tin', 'COUNT(*)', $where);
 
         $items = array();
         foreach ($rows as $row) {
@@ -129,7 +133,7 @@ class CMSSocialRead
                 $test = get_id_by_url($matches[1][$i]);
                 if (!is_null($test)) {
                     $arr['topic_id'] = strval($test['topic_id']);
-                    $arr['position'] = $GLOBALS['FORUM_DB']->query_value('f_posts', 'COUNT(*)', null, ' WHERE id<=' . strval($test['post_id']));
+                    $arr['position'] = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', null, ' WHERE id<=' . strval($test['post_id']));
                     break;
                 }
             }
@@ -143,11 +147,11 @@ class CMSSocialRead
     /**
      * Get details of activity.
      *
-     * @param  integer        Start position
-     * @param  integer        Maximum results
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
      * @return array A pair: total activity, activities
      */
-    function get_activity($start, $max)
+    public function get_activity($start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -157,7 +161,7 @@ class CMSSocialRead
 
         $where_str = 'WHERE a_language_string_code IN (\'cns:ACTIVITY_ADD_TOPIC\',\'cns:ACTIVITY_ADD_POST_IN\')'; // ,\'ACTIVITY_LIKES\'
 
-        $total = $GLOBALS['SITE_DB']->query_value('activities', 'COUNT(*)', null, $where_str);
+        $total = $GLOBALS['SITE_DB']->query_select_value('activities', 'COUNT(*)', null, $where_str);
         $rows = $GLOBALS['SITE_DB']->query_select('activities', array('*'), null, $where_str . ' ORDER BY a_time DESC', $max, $start);
 
         $items = array();

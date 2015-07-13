@@ -12,14 +12,18 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSSocialWrite
 {
     /**
      * Place a thank (points) on a post.
      *
-     * @param  AUTO_LINK        Post ID
+     * @param  AUTO_LINK $post_id Post ID
      */
-    function thank_post($post_id)
+    public function thank_post($post_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -49,9 +53,9 @@ class CMSSocialWrite
     /**
      * Set a friendship.
      *
-     * @param  MEMBER            Member to set on.
+     * @param  MEMBER $user_id Member to set on.
      */
-    function follow($user_id)
+    public function follow($user_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -66,9 +70,9 @@ class CMSSocialWrite
     /**
      * Remove a friendship.
      *
-     * @param  MEMBER            Member to remove on.
+     * @param  MEMBER $user_id Member to remove on.
      */
-    function unfollow($user_id)
+    public function unfollow($user_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -83,9 +87,9 @@ class CMSSocialWrite
     /**
      * Like a post.
      *
-     * @param  AUTO_LINK        Post ID
+     * @param  AUTO_LINK $post_id Post ID
      */
-    function like_post($post_id)
+    public function like_post($post_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -114,9 +118,9 @@ class CMSSocialWrite
     /**
      * Unlike a post.
      *
-     * @param  AUTO_LINK        Post ID
+     * @param  AUTO_LINK $post_id Post ID
      */
-    function unlike_post($post_id)
+    public function unlike_post($post_id)
     {
         cms_verify_parameters_phpdoc();
 

@@ -12,8 +12,12 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: CMS.**/
 
+/**
+ * Composr API helper class.
+ */
 class CMSAttachmentWrite
 {
     /**
@@ -21,7 +25,7 @@ class CMSAttachmentWrite
      *
      * @return array Details of the upload, with the 'result' key marking success status
      */
-    function handle_upload_attach()
+    public function handle_upload_attach()
     {
         $member_id = get_member();
 
@@ -71,7 +75,7 @@ class CMSAttachmentWrite
      *
      * @return array Details of the upload, with the 'result' key marking success status
      */
-    function handle_upload_avatar()
+    public function handle_upload_avatar()
     {
         $member_id = get_member();
 
@@ -111,11 +115,11 @@ class CMSAttachmentWrite
     /**
      * Remove an attachment.
      *
-     * @param  AUTO_LINK      Attachment ID
-     * @param  ?AUTO_LINK   Forum ID (null: private topic)
-     * @param  ?AUTO_LINK   Post ID (null: no specific post)
+     * @param  AUTO_LINK $attachment_id Attachment ID
+     * @param  ?AUTO_LINK $forum_id Forum ID (null: private topic)
+     * @param  ?AUTO_LINK $post_id Post ID (null: no specific post)
      */
-    function remove_attachment($attachment_id, $forum_id, $post_id)
+    public function remove_attachment($attachment_id, $forum_id, $post_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -126,7 +130,7 @@ class CMSAttachmentWrite
         $type = 'cns_post';
 
         if (is_null($post_id)) {
-            $_post_id = $GLOBALS['FORUM_DB']->query_value_null_ok('attachment_refs', 'r_referer_id', array('r_referer_type' => $type, 'a_id' => $attachment_id));
+            $_post_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('attachment_refs', 'r_referer_id', array('r_referer_type' => $type, 'a_id' => $attachment_id));
             if (!is_null($_post_id)) {
                 $post_id = intval($_post_id);
             }
@@ -140,7 +144,7 @@ class CMSAttachmentWrite
             }
         }
 
-        $_post_comcode = $GLOBALS['FORUM_DB']->query_value_null_ok('f_posts', 'p_post', array('id' => $post_id));
+        $_post_comcode = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_post', array('id' => $post_id));
         if (is_null($_post_comcode)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -162,7 +166,7 @@ class CMSAttachmentWrite
         $GLOBALS['SITE_DB']->query_delete('attachment_refs', $ref_where);
 
         // Was that the last reference to this attachment? (if so -- delete attachment)
-        $test = $GLOBALS['SITE_DB']->query_value_null_ok('attachment_refs', 'id', array('a_id' => $attachment_id));
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $attachment_id));
         if (is_null($test)) {
             _delete_attachment($attachment_id, $GLOBALS['FORUM_DB']);
         }

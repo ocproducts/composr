@@ -12,16 +12,20 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: .*xmlrpc.*|var_export*/
 
+/**
+ * Mobiquo server implementation.
+ */
 class MobiquoServerXMLRPC extends MobiquoServer
 {
-    var $rpc_server;
+    private $rpc_server;
 
     /**
      * Construct object.
      */
-    function __construct()
+    public function __construct()
     {
         require_once(dirname(__FILE__) . '/xmlrpc.php');
         require_once(dirname(__FILE__) . '/xmlrpcs.php');
@@ -36,10 +40,10 @@ class MobiquoServerXMLRPC extends MobiquoServer
     /**
      * Decode parameters we were called with.
      *
-     * @param  mixed            Raw params
+     * @param  mixed $raw_params Raw params
      * @return array Params as an array
      */
-    function params_decode($raw_params)
+    public function params_decode($raw_params)
     {
         return php_xmlrpc_decode($raw_params);
     }
@@ -49,7 +53,7 @@ class MobiquoServerXMLRPC extends MobiquoServer
      *
      * @return string Method name
      */
-    function get_method_name()
+    public function get_method_name()
     {
         if (isset($_POST['method_name'])) {
             return $_POST['method_name'];
@@ -68,7 +72,7 @@ class MobiquoServerXMLRPC extends MobiquoServer
     /**
      * Dispatch a server request.
      */
-    function dispatch_request()
+    public function dispatch_request()
     {
         ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
@@ -108,12 +112,12 @@ class MobiquoServerXMLRPC extends MobiquoServer
     /**
      * Wrap a value for the particular MobiquoServer server implementation.
      *
-     * @param  mixed            Data
-     * @param  ?string        Type (null: autodetect)
+     * @param  mixed $data Data
+     * @param  ?string $type Type (null: autodetect)
      * @set string boolean base64 int dateTime.iso8601 array struct
      * @return mixed Mobiquo result
      */
-    function val($data, $type)
+    public function val($data, $type)
     {
         ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
@@ -135,8 +139,8 @@ class MobiquoServerXMLRPC extends MobiquoServer
     /**
      * Generate a standard Mobiquo date.
      *
-     * @param  integer        Timestamp
-     * @param  integer        Timezone hour offset
+     * @param  integer $timet Timestamp
+     * @param  integer $timezone Timezone hour offset
      * @return string iso8601 date
      */
     private function iso8601_encode($timet, $timezone = 0)
@@ -147,10 +151,10 @@ class MobiquoServerXMLRPC extends MobiquoServer
     /**
      * Wrap a result for the particular MobiquoServer server implementation.
      *
-     * @param  mixed            Data
+     * @param  mixed $data Data
      * @return mixed Mobiquo response
      */
-    function response($data)
+    public function response($data)
     {
         ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
@@ -160,9 +164,9 @@ class MobiquoServerXMLRPC extends MobiquoServer
     /**
      * Output a response.
      *
-     * @param  mixed            Response
+     * @param  mixed $response Response
      */
-    function output_response($response)
+    public function output_response($response)
     {
         ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 

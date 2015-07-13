@@ -39,7 +39,7 @@ class TapatalkPush extends TapatalkBasePush
 
     public function get_push_slug()
     {
-        $tapatalk_push_slug = get_long_value('tapatalk_push_slug');
+        $tapatalk_push_slug = get_value('tapatalk_push_slug', null, true);
         if (is_null($tapatalk_push_slug)) {
             $tapatalk_push_slug = '';
         }
@@ -48,7 +48,7 @@ class TapatalkPush extends TapatalkBasePush
 
     public function set_push_slug($slug)
     {
-        set_long_value('tapatalk_push_slug', $slug);
+        set_value('tapatalk_push_slug', $slug, true);
         return true;
     }
 

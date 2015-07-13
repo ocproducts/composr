@@ -281,7 +281,7 @@ function can_edit($type, $id, $member_id = null, $details = null)
 
         case 'post':
             if (is_null($details)) {
-                $_post_details = $GLOBALS['FORUM_DB']->query_select('f_posts ', array('*', 'p.id AS post_id'), array('p.id' => $id), '', 1);
+                $_post_details = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('*', 'p.id AS post_id'), array('p.id' => $id), '', 1);
                 if (!isset($_post_details[0])) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }
@@ -289,7 +289,7 @@ function can_edit($type, $id, $member_id = null, $details = null)
             } else {
                 $post_details = $details;
             }
-            return cns_may_edit_post_by($post_details['p_poster'], $post_details['p_cache_forum_id'], $member_id);
+            return cns_may_edit_post_by($id, $post_details['p_time'], $post_details['p_poster'], $post_details['p_cache_forum_id'], $member_id, $post_details['t_is_open'] == 0);
     }
 
     return false;
@@ -322,7 +322,7 @@ function can_delete($type, $id, $member_id = null, $details = null)
 
         case 'post':
             if (is_null($details)) {
-                $_post_details = $GLOBALS['FORUM_DB']->query_select('f_posts p', array('*', 'p.id AS post_id'), array('p.id' => $id), '', 1);
+                $_post_details = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('*', 'p.id AS post_id'), array('p.id' => $id), '', 1);
                 if (!isset($_post_details[0])) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }
@@ -330,7 +330,7 @@ function can_delete($type, $id, $member_id = null, $details = null)
             } else {
                 $post_details = $details;
             }
-            return cns_may_delete_post_by($post_details['p_poster'], $post_details['p_cache_forum_id']);
+            return cns_may_delete_post_by($id, $post_details['p_time'], $post_details['p_poster'], $post_details['p_cache_forum_id'], $member_id, $post_details['t_is_open'] == 0);
     }
 
     return false;

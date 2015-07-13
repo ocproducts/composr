@@ -77,10 +77,10 @@ function get_num_unread_topics($forum_id, $subscribed_only = false, $member_id =
     }
 
     if ($only_read_one) {
-        $test = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT t.id ' . $sql);
+        $test = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT t.id ' . $sql);
         $ret = is_null($test) ? 0 : 1;
     } else {
-        $ret = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*) ' . $sql);
+        $ret = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $sql);
     }
     return $ret;
 }
@@ -115,13 +115,13 @@ function is_approved($type, $id, $details = null)
         if (!is_null($details)) {
             $result = $details['t_validated'];
         } else {
-            $result = $GLOBALS['FORUM_DB']->query_value('f_topics', 't_validated', array('id' => $id));
+            $result = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $id));
         }
     } else {
         if (!is_null($details)) {
             $result = $details['p_validated'];
         } else {
-            $result = $GLOBALS['FORUM_DB']->query_value('f_posts', 'p_validated', array('id' => $id));
+            $result = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_validated', array('id' => $id));
         }
     }
     return ($result == 1);
@@ -139,7 +139,7 @@ function is_sticky_topic($id, $topic_details = null)
     if (!is_null($topic_details)) {
         $pinned = $topic_details['t_pinned'];
     } else {
-        $pinned = $GLOBALS['FORUM_DB']->query_value('f_topics', 't_pinned', array('id' => $id));
+        $pinned = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_pinned', array('id' => $id));
     }
     return ($pinned == 1);
 }
@@ -302,7 +302,7 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         $sql .= ' WHERE ' . tapatalk_get_topic_where($topic_id, $member_id);
         $sql .= ' ORDER BY p_time,p.id';
         $_posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS post_id,t.id AS topic_id,f.id AS forum_id' . $sql, $max, $start);
-        $total_post_count = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*) ' . $sql);
+        $total_post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $sql);
 
         $posts = array();
         foreach ($_posts as $post) {
@@ -508,7 +508,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
             $table = 'gifts';
             $where['reason'] = do_lang('TAPATALK_THANK_POST', strval($post_id));
         }
-        $thank_count = $GLOBALS['FORUM_DB']->query_value($table, 'COUNT(*)', $where);
+        $thank_count = $GLOBALS['FORUM_DB']->query_select_value($table, 'COUNT(*)', $where);
         $arr['thank_count'] = mobiquo_val($thank_count, 'int');
     } else {
         $arr['thank_count'] = mobiquo_val(0, 'int');
@@ -566,7 +566,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
 
             $edit_reason = '';
             if (has_actual_page_access($member_id, 'admin_actionlog')) {
-                $_edit_reason = $GLOBALS['FORUM_DB']->query_value_null_ok('f_moderator_logs', 'l_reason', array('l_the_type' => 'EDIT_POST', 'l_param_a' => strval($post_id)));
+                $_edit_reason = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_moderator_logs', 'l_reason', array('l_the_type' => 'EDIT_POST', 'l_param_a' => strval($post_id)));
                 if (!is_null($_edit_reason)) {
                     $edit_reason = $_edit_reason;
                 }
@@ -841,7 +841,7 @@ function report_post($post_id, $reason = '')
     $title = do_lang('REPORTED_POST_TITLE', $report_title);
 
     // See if post already reported...
-    $topic_id = $GLOBALS['FORUM_DB']->query_value_null_ok('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=t.t_cache_first_post_id', 't.id', array('p.p_title' => $title, 't.t_forum_id' => $forum_id));
+    $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=t.t_cache_first_post_id', 't.id', array('p.p_title' => $title, 't.t_forum_id' => $forum_id));
     if (!is_null($topic_id)) {
         // Already a topic
         $first_post = false;
@@ -877,7 +877,7 @@ function report_post($post_id, $reason = '')
  */
 function get_id_by_url($url)
 {
-    $pagelink = url_to_pagelink($url);
+    $pagelink = url_to_page_link($url);
     if ($pagelink == '') {
         return null;
     }
@@ -899,7 +899,7 @@ function get_id_by_url($url)
         }
     } // A topic?
     elseif (isset($parts['page']) && $parts['page'] == 'topicview' && isset($parts['id'])) {
-        $test = is_numeric($parts['id']) ? $parts['id'] : $GLOBALS['SITE_DB']->query_value_null_ok('url_id_monikers', 'm_resource_id', array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_moniker' => $parts['id']));
+        $test = is_numeric($parts['id']) ? $parts['id'] : $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_moniker' => $parts['id']));
         if (!is_null($test)) {
             $result = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_post_id', 't_forum_id'), array('id' => $test), '', 1);
             if (isset($result[0])) {

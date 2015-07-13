@@ -12,8 +12,12 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: json_encode|var_export*/
 
+/**
+ * Mobiquo server implementation.
+ */
 class MobiquoServerPOST extends MobiquoServer
 {
     private $output_server;
@@ -21,10 +25,10 @@ class MobiquoServerPOST extends MobiquoServer
     /**
      * Decode parameters we were called with.
      *
-     * @param  mixed            Raw params
+     * @param  mixed $raw_params Raw params
      * @return array Params as an array
      */
-    function params_decode($raw_params)
+    public function params_decode($raw_params)
     {
         return $raw_params; // No decoding needed
     }
@@ -34,7 +38,7 @@ class MobiquoServerPOST extends MobiquoServer
      *
      * @return string Method name
      */
-    function get_method_name()
+    public function get_method_name()
     {
         if (isset($_POST['method_name'])) {
             return $_POST['method_name'];
@@ -47,7 +51,7 @@ class MobiquoServerPOST extends MobiquoServer
     /**
      * Dispatch a server request.
      */
-    function dispatch_request()
+    public function dispatch_request()
     {
         $this->output_server = $this->get_output_server();
 
@@ -90,12 +94,9 @@ class MobiquoServerPOST extends MobiquoServer
     }
 
     /**
-     * Wrap a value for the particular MobiquoServer server implementation.
+     * Get output server object for this request.
      *
-     * @param  mixed            Data
-     * @param  string            Type
-     * @set string boolean base64 int dateTime.iso8601 array struct
-     * @return object Find the output Moquiquo server
+     * @return ?object The output Moquiquo server (null: none)
      */
     private function get_output_server()
     {
@@ -122,12 +123,12 @@ class MobiquoServerPOST extends MobiquoServer
     /**
      * Wrap a value for the particular MobiquoServer server implementation.
      *
-     * @param  mixed            Data
-     * @param  ?string        Type (null: autodetect)
+     * @param  mixed $data Data
+     * @param  ?string $type Type (null: autodetect)
      * @set string boolean base64 int dateTime.iso8601 array struct
      * @return mixed Mobiquo result
      */
-    function val($data, $type)
+    public function val($data, $type)
     {
         if (is_null($this->output_server)) {
             if (is_string($data)) {
@@ -147,8 +148,8 @@ class MobiquoServerPOST extends MobiquoServer
     /**
      * Generate a standard Mobiquo date.
      *
-     * @param  integer        Timestamp
-     * @param  integer        Timezone hour offset
+     * @param  integer $timet Timestamp
+     * @param  integer $timezone Timezone hour offset
      * @return string iso8601 date
      */
     private function date_encode($timet, $timezone = 0)
@@ -159,10 +160,10 @@ class MobiquoServerPOST extends MobiquoServer
     /**
      * Wrap a result for the particular MobiquoServer server implementation.
      *
-     * @param  mixed            Data
+     * @param  mixed $data Data
      * @return mixed Mobiquo response
      */
-    function response($data)
+    public function response($data)
     {
         if (is_null($this->output_server)) {
             return serialize($data);
@@ -174,9 +175,9 @@ class MobiquoServerPOST extends MobiquoServer
     /**
      * Output a response.
      *
-     * @param  mixed            Response
+     * @param  mixed $response Response
      */
-    function output_response($response)
+    public function output_response($response)
     {
         if (is_null($this->output_server)) {
             parent::output_response($response);

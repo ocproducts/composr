@@ -12,15 +12,19 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSPostWrite
 {
     /**
      * Report a post.
      *
-     * @param  AUTO_LINK        Post ID
-     * @param  string            Reason for action
+     * @param  AUTO_LINK $post_id Post ID
+     * @param  string $reason Reason for action
      */
-    function report_post($post_id, $reason = '')
+    public function report_post($post_id, $reason = '')
     {
         cms_verify_parameters_phpdoc();
 
@@ -30,15 +34,15 @@ class CMSPostWrite
     /**
      * Reply to a post.
      *
-     * @param  AUTO_LINK        Forum ID
-     * @param  AUTO_LINK        Topic ID
-     * @param  string            Title
-     * @param  string            Post body
-     * @param  array            List of attachment IDs
-     * @param  boolean        Whether to return HTML for posts rather than plain text
+     * @param  AUTO_LINK $forum_id Forum ID
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  string $title Title
+     * @param  string $post Post body
+     * @param  array $attachment_ids List of attachment IDs
+     * @param  boolean $return_html Whether to return HTML for posts rather than plain text
      * @return mixed Mobiquo structure of post
      */
-    function reply_post($forum_id, $topic_id, $title, $post, $attachment_ids, $return_html)
+    public function reply_post($forum_id, $topic_id, $title, $post, $attachment_ids, $return_html)
     {
         cms_verify_parameters_phpdoc();
 
@@ -56,15 +60,15 @@ class CMSPostWrite
     /**
      * Edit a post.
      *
-     * @param  AUTO_LINK        Post ID ID
-     * @param  string            Title
-     * @param  string            Post body
-     * @param  array            List of attachment IDs
-     * @param  boolean        Whether to return HTML for posts rather than plain text
-     * @param  string            Reason for action
+     * @param  AUTO_LINK $post_id Post ID
+     * @param  string $title Title
+     * @param  string $post Post body
+     * @param  array $attachment_ids List of attachment IDs
+     * @param  boolean $return_html Whether to return HTML for posts rather than plain text
+     * @param  string $reason Reason for action
      * @return mixed Mobiquo structure of post
      */
-    function edit_post($post_id, $title, $post, $attachment_ids, $return_html, $reason = '')
+    public function edit_post($post_id, $title, $post, $attachment_ids, $return_html, $reason = '')
     {
         cms_verify_parameters_phpdoc();
 
@@ -84,7 +88,7 @@ class CMSPostWrite
             $post = semihtml_to_comcode(nl2br($post));
         }
 
-        $validated = $GLOBALS['FORUM_DB']->query_value('f_posts', 'p_validated', array('id' => $post_id));
+        $validated = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_validated', array('id' => $post_id));
         cns_edit_post($post_id, $validated, $title, $post, 0, 0, null, $mark_as_edited, $mark_unread, $reason); // NB: Checks perms implicitly
 
         return render_post_to_tapatalk($post_id, $return_html, null, RENDER_POST_RESULT_TRUE);

@@ -12,18 +12,22 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSTopicWrite
 {
     /**
      * Create a new topic.
      *
-     * @param  AUTO_LINK        Forum ID
-     * @param  string            Title
-     * @param  string            Post body
-     * @param  array            List of attachment IDs to include with the post
+     * @param  AUTO_LINK $forum_id Forum ID
+     * @param  string $title Title
+     * @param  string $post Post body
+     * @param  array $attachment_ids List of attachment IDs to include with the post
      * @return array A pair: new topic ID, validated status (binary)
      */
-    function new_topic($forum_id, $title, $post, $attachment_ids)
+    public function new_topic($forum_id, $title, $post, $attachment_ids)
     {
         cms_verify_parameters_phpdoc();
 
@@ -35,7 +39,7 @@ class CMSTopicWrite
         require_code('cns_posts_action');
         $new_post_id = cns_make_post($new_topic_id, $title, $post, 0, true, null, 0, null, null, null, null, null, null, null, true, true, $forum_id); // NB: Checks perms implicitly
 
-        $validated = $GLOBALS['FORUM_DB']->query_value('f_topics', 't_validated', array('id' => $new_topic_id));
+        $validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $new_topic_id));
 
         return array($new_topic_id, $validated);
     }

@@ -12,14 +12,18 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSSubscriptionWrite
 {
     /**
      * Set up notifications on a forum.
      *
-     * @param  AUTO_LINK        Forum ID
+     * @param  AUTO_LINK $forum_id Forum ID
      */
-    function subscribe_forum($forum_id)
+    public function subscribe_forum($forum_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -38,9 +42,9 @@ class CMSSubscriptionWrite
     /**
      * Remove notifications on a forum.
      *
-     * @param  ?AUTO_LINK    Forum ID (null: all)
+     * @param  ?AUTO_LINK $forum_id Forum ID (null: all)
      */
-    function unsubscribe_forum($forum_id)
+    public function unsubscribe_forum($forum_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -66,9 +70,9 @@ class CMSSubscriptionWrite
     /**
      * Set up notifications on a topic.
      *
-     * @param  AUTO_LINK        Topic ID
+     * @param  AUTO_LINK $topic_id Topic ID
      */
-    function subscribe_topic($topic_id)
+    public function subscribe_topic($topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -87,9 +91,9 @@ class CMSSubscriptionWrite
     /**
      * Remove notifications on a topic.
      *
-     * @param  ?AUTO_LINK    Topic ID (null: all)
+     * @param  ?AUTO_LINK $topic_id Topic ID (null: all)
      */
-    function unsubscribe_topic($topic_id)
+    public function unsubscribe_topic($topic_id)
     {
         cms_verify_parameters_phpdoc();
 

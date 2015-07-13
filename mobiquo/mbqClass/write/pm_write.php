@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSPmWrite
 {
     const TAPATALK_MESSAGE_NEW = 0;
@@ -21,10 +25,10 @@ class CMSPmWrite
     /**
      * Report a private message.
      *
-     * @param  AUTO_LINK        Message ID
-     * @param  string            Reason for action
+     * @param  AUTO_LINK $msg_id Message ID
+     * @param  string $reason Reason for action
      */
-    function report_pm($msg_id, $reason = '')
+    public function report_pm($msg_id, $reason = '')
     {
         cms_verify_parameters_phpdoc();
 
@@ -38,14 +42,14 @@ class CMSPmWrite
     /**
      * Create a private message.
      *
-     * @param  array            List of usernames
-     * @param  string            Post subject
-     * @param  string            Post body
-     * @param  integer        Action
-     * @param  ?AUTO_LINK    Post ID to reply to or forward (null: new message so N/A)
+     * @param  array $user_name_list List of usernames
+     * @param  string $subject Post subject
+     * @param  string $message Post body
+     * @param  integer $action Action
+     * @param  ?AUTO_LINK $post_id Post ID to reply to or forward (null: new message so N/A)
      * @return AUTO_LINK New post ID
      */
-    function create_message($user_name_list, $subject, $message, $action, $post_id)
+    public function create_message($user_name_list, $subject, $message, $action, $post_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -106,7 +110,7 @@ class CMSPmWrite
                 }
 
                 foreach ($member_ids as $to_member) {
-                    $topic_id = $GLOBALS['FORUM_DB']->query_value('f_posts', 'p_topic_id', array('id' => $post_id));
+                    $topic_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => $post_id));
                     $new_post_id = cns_make_post($topic_id, $subject, $message);
                     if ($first_new_post_id === null) {
                         $first_new_post_id = $new_post_id;
@@ -160,9 +164,9 @@ class CMSPmWrite
     /**
      * Delete a private message.
      *
-     * @param  AUTO_LINK        Post ID
+     * @param  AUTO_LINK $post_id Post ID
      */
-    function delete_message($post_id)
+    public function delete_message($post_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -172,7 +176,7 @@ class CMSPmWrite
 
         require_code('cns_posts_action3');
 
-        $topic_id = $GLOBALS['FORUM_DB']->query_value_null_ok('f_posts', 'p_topic_id', array('id' => $post_id));
+        $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
         if (is_null($topic_id)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -183,9 +187,9 @@ class CMSPmWrite
     /**
      * Mark a private message unread.
      *
-     * @param  ?array            List of message IDs (null: all)
+     * @param  ?array $message_ids List of message IDs (null: all)
      */
-    function mark_pm_unread($message_ids = null)
+    public function mark_pm_unread($message_ids = null)
     {
         cms_verify_parameters_phpdoc();
 
@@ -205,7 +209,7 @@ class CMSPmWrite
             }
         } else {
             foreach ($message_ids as $message_id) {
-                $topic_id = $GLOBALS['FORUM_DB']->query_value('f_posts', 'p_topic_id', array('id' => $message_id));
+                $topic_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => $message_id));
                 $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => get_member(), 'l_topic_id' => $topic_id), '', 1);
             }
         }
@@ -214,9 +218,9 @@ class CMSPmWrite
     /**
      * Mark a private message read.
      *
-     * @param  ?array            List of message IDs (null: all)
+     * @param  ?array $message_ids List of message IDs (null: all)
      */
-    function mark_pm_read($message_ids = null)
+    public function mark_pm_read($message_ids = null)
     {
         cms_verify_parameters_phpdoc();
 
@@ -236,7 +240,7 @@ class CMSPmWrite
             }
         } else {
             foreach ($message_ids as $message_id) {
-                $topic_id = $GLOBALS['FORUM_DB']->query_value('f_posts', 'p_topic_id', array('id' => $message_id));
+                $topic_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => $message_id));
                 cns_ping_topic_read($topic_id);
             }
         }

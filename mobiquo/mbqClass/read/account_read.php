@@ -12,18 +12,22 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: TT_Cipher*/
 
+/**
+ * Composr API helper class.
+ */
 class CMSAccountRead
 {
     /**
      * Find all members for syncing.
      *
-     * @param  integer        Start position
-     * @param  integer        Maximum results
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
      * @return array List of members
      */
-    function sync_members($start, $max)
+    public function sync_members($start, $max)
     {
         $api_key = get_option('tapatalk_api_key');
 
@@ -51,10 +55,10 @@ class CMSAccountRead
     /**
      * Get basic details of a member, by e-mail address.
      *
-     * @param  EMAIL            E-mail address
+     * @param  EMAIL $email E-mail address
      * @return ?array Map of details (null: not found)
      */
-    function prefetch_account($email)
+    public function prefetch_account($email)
     {
         $user_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email);
         if (is_null($user_id)) {
@@ -66,7 +70,7 @@ class CMSAccountRead
         return array(
             'user_id' => $user_id,
             'login_name' => $username,
-            'display_name' => $GLOBALS['FORUM_DRIVER']->get_username($user_id, true)
+            'display_name' => $GLOBALS['FORUM_DRIVER']->get_username($user_id, true),
             'avatar_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($user_id),
         );
     }
@@ -76,7 +80,7 @@ class CMSAccountRead
      *
      * @return array List of custom fields
      */
-    function get_custom_register_fields()
+    public function get_custom_register_fields()
     {
         $custom_register_fields = array();
         $_custom_register_fields = $GLOBALS['FORUM_DB']->query_select(

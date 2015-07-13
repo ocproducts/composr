@@ -191,7 +191,7 @@ function get_thread_by_unread_func($raw_params)
     $max = isset($params[1]) ? $params[1] : 20;
     $return_html = isset($params[2]) && $params[2];
 
-    $last_read_time = $GLOBALS['FORUM_DB']->query_value_null_ok('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $topic_id));
+    $last_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $topic_id));
     if (is_null($last_read_time)) {
         // Assumes that everything made in the last two weeks has not been read
         $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' ORDER BY id', 1);
@@ -201,14 +201,14 @@ function get_thread_by_unread_func($raw_params)
             $last_read_time = 0;
         }
     }
-    $first_unread_id = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval($last_read_time) . ' ORDER BY id');
+    $first_unread_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval($last_read_time) . ' ORDER BY id');
     if (!is_null($first_unread_id)) {
         // What page is it on?
-        $before = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE id<' . strval($first_unread_id) . ' AND ' . tapatalk_get_topic_where($topic_id));
+        $before = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE id<' . strval($first_unread_id) . ' AND ' . tapatalk_get_topic_where($topic_id));
         $start = intval(floor(floatval($before) / floatval($max))) * $max;
     } else {
         // What page is it on?
-        $before = $GLOBALS['FORUM_DB']->query_value_null_ok_full('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . tapatalk_get_topic_where($topic_id));
+        $before = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . tapatalk_get_topic_where($topic_id));
         $start = intval(floor(floatval($before) / floatval($max))) * $max;
         if ($start == $before) {
             $start = max(0, $before - $max);
@@ -239,14 +239,14 @@ function get_thread_by_post_func($raw_params)
     $max = isset($params[1]) ? $params[1] : 20;
     $return_html = isset($params[2]) && $params[2];
 
-    $topic_id = $GLOBALS['FORUM_DB']->query_value_null_ok('f_posts', 'p_topic_id', array('id' => $post_id));
+    $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
     if (is_null($topic_id)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 
     // What page is it on?
     $sql = 'SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE id<' . strval($post_id) . ' AND ' . tapatalk_get_topic_where($topic_id);
-    $before = $GLOBALS['FORUM_DB']->query_value_null_ok_full($sql);
+    $before = $GLOBALS['FORUM_DB']->query_value_if_there($sql);
     $start = intval(floor(floatval($before) / floatval($max))) * $max;
 
     member_tracking_update('topicview', '', strval($topic_id));

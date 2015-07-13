@@ -12,15 +12,19 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSUserWrite
 {
     /**
      * Update current member's signature.
      *
-     * @param  string            New signature
+     * @param  string $signature New signature
      * @return string New signature, after any filtering
      */
-    function update_signature($signature)
+    public function update_signature($signature)
     {
         cms_verify_parameters_phpdoc();
 
@@ -38,10 +42,10 @@ class CMSUserWrite
     /**
      * Make current member ignore another member
      *
-     * @param  MEMBER            Member to ignore
-     * @param  boolean        If the block is being added
+     * @param  MEMBER $user_id Member to ignore
+     * @param  boolean $adding If the block is being added
      */
-    function ignore_user($user_id, $adding)
+    public function ignore_user($user_id, $adding)
     {
         cms_verify_parameters_phpdoc();
 

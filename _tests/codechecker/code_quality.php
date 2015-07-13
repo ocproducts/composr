@@ -1326,7 +1326,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                 $t = check_expression($c[2][$i], false, false, $function_guard);
                 $passes = ensure_type(array($param['type']), $t, $c_pos, 'Parameter type error for ' . $function . '/' . ($i + 1) . ' (should be ' . $param['type'] . ' not ' . $t . ')');
                 if (($t === 'float') && ($function === 'strval')) {
-                    log_warning('Floats cannot be used with strval', $c_pos);
+                    log_warning('Floats should not be used with strval, use float_to_raw_string or float_format', $c_pos);
                 }
                 if ($passes) {
                     infer_expression_type_to_variable_type($param['type'], $c[2][$i]);

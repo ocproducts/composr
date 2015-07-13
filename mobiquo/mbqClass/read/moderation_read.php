@@ -12,16 +12,20 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSModerationRead
 {
     /**
      * Load up some topics needing moderation.
      *
-     * @param  integer        Start
-     * @param  integer        Max
+     * @param  integer $start Start
+     * @param  integer $max Max
      * @return ~array A pair: total topics, topics (false: error)
      */
-    function get_topics_needing_moderation($start, $max)
+    public function get_topics_needing_moderation($start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -37,7 +41,7 @@ class CMSModerationRead
 
         $where = array('t_validated' => 0);
 
-        $total_topic_num = $GLOBALS['FORUM_DB']->query_value('f_topics t JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id', 'COUNT(*)', $where);
+        $total_topic_num = $GLOBALS['FORUM_DB']->query_select_value('f_topics t JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id', 'COUNT(*)', $where);
 
         $_topics = $GLOBALS['FORUM_DB']->query_select(
             'f_topics t JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id',
@@ -58,11 +62,11 @@ class CMSModerationRead
     /**
      * Load up some posts needing moderation.
      *
-     * @param  integer        Start
-     * @param  integer        Max
+     * @param  integer $start Start
+     * @param  integer $max Max
      * @return ~array A pair: total posts, posts (false: error)
      */
-    function get_posts_needing_moderation($start, $max)
+    public function get_posts_needing_moderation($start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -76,7 +80,7 @@ class CMSModerationRead
 
         $where = array('p_validated' => 0);
 
-        $total_post_num = $GLOBALS['FORUM_DB']->query_value('f_posts', 'COUNT(*)', $where);
+        $total_post_num = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $where);
 
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
         $table = 'f_posts p JOIN ' . $table_prefix . 'f_topics t ON t.id=p.p_topic_id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id';

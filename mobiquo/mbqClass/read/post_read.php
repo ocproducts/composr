@@ -12,15 +12,19 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSPostRead
 {
     /**
      * Get Comcode for quoting a post.
      *
-     * @param  array            Post IDs
+     * @param  array $post_ids Post IDs
      * @return array Tuple of result details
      */
-    function get_quote_post($post_ids)
+    public function get_quote_post($post_ids)
     {
         cms_verify_parameters_phpdoc();
 
@@ -60,10 +64,10 @@ class CMSPostRead
     /**
      * Load up basic details of a post.
      *
-     * @param  AUTO_LINK        Post ID
+     * @param  AUTO_LINK $post_id Post ID
      * @return array Post
      */
-    function get_raw_post($post_id)
+    public function get_raw_post($post_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -81,7 +85,7 @@ class CMSPostRead
 
         $edit_reason = '';
         if (has_actual_page_access(get_member(), 'admin_actionlog')) {
-            $_edit_reason = $GLOBALS['FORUM_DB']->query_value_null_ok('f_moderator_logs', 'l_reason', array('l_the_type' => 'EDIT_POST', 'l_param_a' => strval($post_id)));
+            $_edit_reason = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_moderator_logs', 'l_reason', array('l_the_type' => 'EDIT_POST', 'l_param_a' => strval($post_id)));
             if (!is_null($_edit_reason)) {
                 $edit_reason = $_edit_reason;
             }
@@ -102,13 +106,13 @@ class CMSPostRead
     /**
      * Render a topic.
      *
-     * @param  AUTO_LINK        Topic ID
-     * @param  ?integer        Start position for topic post retrieval (null: return no posts)
-     * @param  ?integer        Maximum topic posts retrieved (null: return no posts)
-     * @param  boolean        Whether to return HTML for post data
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  ?integer $start Start position for topic post retrieval (null: return no posts)
+     * @param  ?integer $max Maximum topic posts retrieved (null: return no posts)
+     * @param  boolean $return_html Whether to return HTML for post data
      * @return object Mobiquo array
      */
-    function get_topic($topic_id, $start, $max, $return_html)
+    public function get_topic($topic_id, $start, $max, $return_html)
     {
         cms_verify_parameters_phpdoc();
 

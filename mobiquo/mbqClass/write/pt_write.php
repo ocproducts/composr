@@ -12,18 +12,22 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSPtWrite
 {
     /**
      * Create a new private topic.
      *
-     * @param  array         List of usernames to open with
-     * @param  string         Subject
-     * @param  string         Body
-     * @param  array         List of attachment IDs
+     * @param  array $user_name_list List of usernames to open with
+     * @param  string $subject Subject
+     * @param  string $body Body
+     * @param  array $attachment_ids List of attachment IDs
      * @return AUTO_LINK Topic ID of new topic
      */
-    function new_private_topic($user_name_list, $subject, $body, $attachment_ids)
+    public function new_private_topic($user_name_list, $subject, $body, $attachment_ids)
     {
         cms_verify_parameters_phpdoc();
 
@@ -76,13 +80,13 @@ class CMSPtWrite
     /**
      * Add a reply to a private topic.
      *
-     * @param  AUTO_LINK      Topic ID
-     * @param  string         Subject
-     * @param  string         Body
-     * @param  array         List of attachment IDs
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  string $subject Subject
+     * @param  string $body Body
+     * @param  array $attachment_ids List of attachment IDs
      * @return AUTO_LINK Post ID of new reply
      */
-    function reply_private_topic($topic_id, $subject, $body, $attachment_ids)
+    public function reply_private_topic($topic_id, $subject, $body, $attachment_ids)
     {
         cms_verify_parameters_phpdoc();
 
@@ -102,11 +106,11 @@ class CMSPtWrite
     /**
      * Invite participants to a private topic.
      *
-     * @param  array         List of usernames to invite
-     * @param  AUTO_LINK      Topic ID
-     * @param  string         Reason (may be blank)
+     * @param  array $user_name_list List of usernames to invite
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  string $reason Reason (may be blank)
      */
-    function invite_participants($user_name_list, $topic_id, $reason)
+    public function invite_participants($user_name_list, $topic_id, $reason)
     {
         cms_verify_parameters_phpdoc();
 
@@ -139,9 +143,9 @@ class CMSPtWrite
     /**
      * Delete a private topic.
      *
-     * @param  AUTO_LINK      Topic ID
+     * @param  AUTO_LINK $topic_id Topic ID
      */
-    function delete_private_topic($topic_id)
+    public function delete_private_topic($topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -178,9 +182,9 @@ class CMSPtWrite
     /**
      * Mark a private topic unread.
      *
-     * @param  AUTO_LINK      Topic ID
+     * @param  AUTO_LINK $topic_id Topic ID
      */
-    function mark_private_topic_unread($topic_id)
+    public function mark_private_topic_unread($topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -194,9 +198,9 @@ class CMSPtWrite
     /**
      * Mark a private topic read.
      *
-     * @param  ?AUTO_LINK   Topic ID (null: all private topics)
+     * @param  ?AUTO_LINK $topic_id Topic ID (null: all private topics)
      */
-    function mark_private_topic_read($topic_id = null)
+    public function mark_private_topic_read($topic_id = null)
     {
         cms_verify_parameters_phpdoc();
 

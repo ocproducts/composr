@@ -32,7 +32,7 @@ function is_member_online($member_id)
 
     $users_online_time_seconds = intval(get_option('users_online_time')) * 60;
     $sql = 'SELECT last_activity FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval(time() - $users_online_time_seconds) . ' AND the_user=' . strval($member_id);
-    $result = $GLOBALS['SITE_DB']->query_value_null_ok_full($sql);
+    $result = $GLOBALS['SITE_DB']->query_value_if_there($sql);
     $ret = !is_null($result);
 
     $cache[$member_id] = $ret;
@@ -53,7 +53,7 @@ function i_follow_u($user_id)
         return false;
     }
 
-    $result = $GLOBALS['FORUM_DB']->query_value_null_ok('chat_friends', 'member_likes', array('member_likes' => $logged_in_user_id, 'member_liked' => $user_id));
+    $result = $GLOBALS['FORUM_DB']->query_select_value_if_there('chat_friends', 'member_likes', array('member_likes' => $logged_in_user_id, 'member_liked' => $user_id));
     return !is_null($result);
 }
 
@@ -70,7 +70,7 @@ function u_follow_me($user_id)
         return false;
     }
 
-    $result = $GLOBALS['FORUM_DB']->query_value_null_ok('chat_friends', 'member_liked', array('member_liked' => $logged_in_user_id, 'member_likes' => $user_id));
+    $result = $GLOBALS['FORUM_DB']->query_select_value_if_there('chat_friends', 'member_liked', array('member_liked' => $logged_in_user_id, 'member_likes' => $user_id));
     return !is_null($result);
 }
 

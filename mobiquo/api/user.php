@@ -32,7 +32,7 @@ function login_func($raw_params)
     $password = $params[1];
     $invisible = isset($params[2]) && $params[2];
 
-    $user_object = new member_acl();
+    $user_object = new CMSMemberACL();
     $user_id = $user_object->authenticate_credentials_and_set_auth($username, $password, $invisible);
 
     if (is_null($user_id)) {
@@ -127,7 +127,7 @@ function logout_user_func($raw_params)
 
     require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
 
-    $user_object = new member_acl();
+    $user_object = new CMSMemberACL();
     $user_object->logout_user();
 
     return mobiquo_response_true();
@@ -149,7 +149,7 @@ function get_online_users_func($raw_params)
     list($start, $max) = get_pagination_positions__by_page($params, 0, 1, 20);
 
     if (isset($params[2])) {
-        $id = intval($params[2]);
+        $id = $params[2];
         $area = (!isset($params[3])) ? 'forum' : $params[3];
     } else {
         $id = null;

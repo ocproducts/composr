@@ -12,14 +12,18 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSForumWrite
 {
     /**
      * Mark a forum as read.
      *
-     * @param  AUTO_LINK        Forum ID
+     * @param  AUTO_LINK $forum_id Forum ID
      */
-    function mark_forum_as_read($forum_id)
+    public function mark_forum_as_read($forum_id)
     {
         cms_verify_parameters_phpdoc();
 

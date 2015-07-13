@@ -12,15 +12,19 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
+/**
+ * Composr API helper class.
+ */
 class CMSModerationWrite
 {
     /**
      * Pin a topic.
      *
-     * @param  AUTO_LINK        Topic ID
+     * @param  AUTO_LINK $topic_id Topic ID
      * @return boolean Success status (failure always due to access denied)
      */
-    function stick_topic($topic_id)
+    public function stick_topic($topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -36,10 +40,10 @@ class CMSModerationWrite
     /**
      * Unpin a topic.
      *
-     * @param  AUTO_LINK        Topic ID
+     * @param  AUTO_LINK $topic_id Topic ID
      * @return boolean Success status (failure always due to access denied)
      */
-    function unstick_topic($topic_id)
+    public function unstick_topic($topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -55,10 +59,10 @@ class CMSModerationWrite
     /**
      * Close a topic.
      *
-     * @param  AUTO_LINK        Topic ID
+     * @param  AUTO_LINK $topic_id Topic ID
      * @return boolean Success status (failure always due to access denied)
      */
-    function close_topic($topic_id)
+    public function close_topic($topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -74,10 +78,10 @@ class CMSModerationWrite
     /**
      * Open a topic.
      *
-     * @param  AUTO_LINK        Topic ID
+     * @param  AUTO_LINK $topic_id Topic ID
      * @return boolean Success status (failure always due to access denied)
      */
-    function open_topic($topic_id)
+    public function open_topic($topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -93,11 +97,11 @@ class CMSModerationWrite
     /**
      * Delete a topic.
      *
-     * @param  AUTO_LINK        Topic ID
-     * @param  string            Reason for action
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  string $reason Reason for action
      * @return boolean Success status (failure always due to access denied)
      */
-    function delete_topic($topic_id, $reason = '')
+    public function delete_topic($topic_id, $reason = '')
     {
         cms_verify_parameters_phpdoc();
 
@@ -113,11 +117,11 @@ class CMSModerationWrite
     /**
      * Delete a post.
      *
-     * @param  AUTO_LINK        Post ID
-     * @param  string            Reason for action
+     * @param  AUTO_LINK $post_id Post ID
+     * @param  string $reason Reason for action
      * @return boolean Success status (failure always due to access denied)
      */
-    function delete_post($post_id, $reason = '')
+    public function delete_post($post_id, $reason = '')
     {
         cms_verify_parameters_phpdoc();
 
@@ -126,7 +130,7 @@ class CMSModerationWrite
         }
 
         require_code('cns_posts_action3');
-        $topic_id = $GLOBALS['FORUM_DB']->query_value_null_ok('f_posts', 'p_topic_id', array('id' => $post_id));
+        $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
         if (is_null($topic_id)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -137,11 +141,11 @@ class CMSModerationWrite
     /**
      * Move a topic to another forum.
      *
-     * @param  AUTO_LINK        Topic ID
-     * @param  AUTO_LINK        Forum ID
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  AUTO_LINK $to_forum_id Forum ID
      * @return boolean Success status (failure always due to access denied)
      */
-    function move_topic($topic_id, $to_forum_id)
+    public function move_topic($topic_id, $to_forum_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -150,7 +154,7 @@ class CMSModerationWrite
         }
 
         require_code('cns_topics_action2');
-        $from_forum_id = $GLOBALS['FORUM_DB']->query_value('f_topics', 't_forum_id', array('id' => $topic_id));
+        $from_forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
         cns_move_topics($from_forum_id, $to_forum_id, array($topic_id)); // NB: Checks perms implicitly
         return true;
     }
@@ -158,11 +162,11 @@ class CMSModerationWrite
     /**
      * Rename a topic.
      *
-     * @param  AUTO_LINK        Topic ID
-     * @param  string            New title
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  string $new_title New title
      * @return boolean Success status (failure always due to access denied)
      */
-    function rename_topic($topic_id, $new_title)
+    public function rename_topic($topic_id, $new_title)
     {
         cms_verify_parameters_phpdoc();
 
@@ -178,13 +182,13 @@ class CMSModerationWrite
     /**
      * Move posts.
      *
-     * @param  array            List of post IDs
-     * @param  ?AUTO_LINK    Topic ID (null: moving to new topic)
-     * @param  ?string        New title (null: moving to existing topic)
-     * @param  ?AUTO_LINK    Forum ID (null: moving to existing topic)
+     * @param  array $posts List of post IDs
+     * @param  ?AUTO_LINK $to_topic_id Topic ID (null: moving to new topic)
+     * @param  ?string $new_topic_title New title (null: moving to existing topic)
+     * @param  ?AUTO_LINK $forum_id Forum ID (null: moving to existing topic)
      * @return ~AUTO_LINK ID of topic the posts have gone to (false: failure due to access denied)
      */
-    function move_posts($posts, $to_topic_id, $new_topic_title, $forum_id)
+    public function move_posts($posts, $to_topic_id, $new_topic_title, $forum_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -195,7 +199,7 @@ class CMSModerationWrite
         // Group the posts up by topic
         $topics = array();
         foreach ($posts as $post_id) {
-            $topic_id = $GLOBALS['FORUM_DB']->query_value_null_ok('f_posts', 'p_topic_id', array('id' => $post_id));
+            $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
             if ($topic_id !== null) {
                 if (!isset($topics[$topic_id])) {
                     $topics[$topic_id] = array();
@@ -210,7 +214,7 @@ class CMSModerationWrite
             cns_move_posts($from_topic_id, $to_topic_id, $post_ids, do_lang('REASON_TAPATALK_MOVING_POSTS'), $forum_id, true, $new_topic_title); // NB: Checks perms implicitly
 
             if ($to_topic_id === null) {
-                $to_topic_id = $GLOBALS['FORUM_DB']->query_value('f_posts', 'p_topic_id', array('id' => $post_ids[0]));
+                $to_topic_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => $post_ids[0]));
             }
         }
 
@@ -220,11 +224,11 @@ class CMSModerationWrite
     /**
      * Merge two topics.
      *
-     * @param  AUTO_LINK        First topic
-     * @param  AUTO_LINK        Second topic
+     * @param  AUTO_LINK $from_topic_id First topic
+     * @param  AUTO_LINK $to_topic_id Second topic
      * @return boolean Success status (failure always due to access denied)
      */
-    function merge_topics($from_topic_id, $to_topic_id)
+    public function merge_topics($from_topic_id, $to_topic_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -248,11 +252,11 @@ class CMSModerationWrite
     /**
      * Merge posts into one particular post (not another topic).
      *
-     * @param  array            List of post IDs to merge
-     * @param  AUTO_LINK        Target post IDs
+     * @param  array $source_post_ids List of post IDs to merge
+     * @param  AUTO_LINK $target_post_id Target post IDs
      * @return boolean Success status (failure always due to access denied)
      */
-    function merge_posts($source_post_ids, $target_post_id)
+    public function merge_posts($source_post_ids, $target_post_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -302,11 +306,11 @@ class CMSModerationWrite
     /**
      * Approve/unapprove a topic.
      *
-     * @param  AUTO_LINK        Topic ID
-     * @param  boolean        True=Approve, False=Unapprove
+     * @param  AUTO_LINK $topic_id Topic ID
+     * @param  boolean $approve True=Approve, False=Unapprove
      * @return boolean Success status (failure always due to access denied)
      */
-    function approve_topic($topic_id, $approve)
+    public function approve_topic($topic_id, $approve)
     {
         cms_verify_parameters_phpdoc();
 
@@ -329,11 +333,11 @@ class CMSModerationWrite
     /**
      * Approve/unapprove a post.
      *
-     * @param  AUTO_LINK        Post ID
-     * @param  boolean        True=Approve, False=Unapprove
+     * @param  AUTO_LINK $post_id Post ID
+     * @param  boolean $approve True=Approve, False=Unapprove
      * @return boolean Success status (failure always due to access denied)
      */
-    function approve_post($post_id, $approve)
+    public function approve_post($post_id, $approve)
     {
         cms_verify_parameters_phpdoc();
 
@@ -341,7 +345,7 @@ class CMSModerationWrite
             return false;
         }
 
-        $forum_id = $GLOBALS['FORUM_DB']->query_value('f_posts', 'p_cache_forum_id', array('id' => $post_id));
+        $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_cache_forum_id', array('id' => $post_id));
 
         if (!cns_may_moderate_forum($forum_id)) {
             access_denied('I_ERROR');
@@ -367,13 +371,13 @@ class CMSModerationWrite
     /**
      * Ban a user.
      *
-     * @param  ID_TEXT        Username to ban
-     * @param  boolean        Whether to delete all posts also
-     * @param  string            Reason for action
-     * @param  ?integer        When probation should expire in days from now (null: permanent ban, not probation)
+     * @param  ID_TEXT $username Username to ban
+     * @param  boolean $delete_all_posts Whether to delete all posts also
+     * @param  string $reason Reason for action
+     * @param  ?integer $expires When probation should expire in days from now (null: permanent ban, not probation)
      * @return boolean Success status (failure always due to access denied)
      */
-    function ban_user($username, $delete_all_posts = false, $reason = '', $expires = null)
+    public function ban_user($username, $delete_all_posts = false, $reason = '', $expires = null)
     {
         cms_verify_parameters_phpdoc();
 
@@ -399,7 +403,7 @@ class CMSModerationWrite
             // Group the posts up by topic
             $topics = array();
             foreach ($posts as $post_id) {
-                $topic_id = $GLOBALS['FORUM_DB']->query_value_null_ok('f_posts', 'p_topic_id', array('id' => $post_id));
+                $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
                 if ($topic_id !== null) {
                     if (!isset($topics[$topic_id])) {
                         $topics[$topic_id] = array();
@@ -430,10 +434,10 @@ class CMSModerationWrite
     /**
      * Unban a user.
      *
-     * @param  MEMBER            Member to unban
+     * @param  MEMBER $user_id Member to unban
      * @return boolean Success status (failure always due to access denied)
      */
-    function unban_user($user_id)
+    public function unban_user($user_id)
     {
         cms_verify_parameters_phpdoc();
 
@@ -469,10 +473,10 @@ class CMSModerationWrite
     /**
      * Mark a member as a spammer.
      *
-     * @param  MEMBER            Member to mark as a spammer
+     * @param  MEMBER $user_id Member to mark as a spammer
      * @return boolean Success status (failure always due to access denied)
      */
-    function mark_as_spam($user_id)
+    public function mark_as_spam($user_id)
     {
         cms_verify_parameters_phpdoc();
 

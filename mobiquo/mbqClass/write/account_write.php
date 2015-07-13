@@ -12,8 +12,12 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: json_decode|classTTConnection|member_acl*/
 
+/**
+ * Composr API helper class.
+ */
 class CMSAccountWrite
 {
     const SIGN_IN_OKAY_TOKEN = null;
@@ -32,15 +36,15 @@ class CMSAccountWrite
     /**
      * Log in via Tapatalk SSO / Join.
      *
-     * @param  string            Token to use for session
-     * @param  string            Code to use for session
-     * @param  EMAIL            E-mail address
-     * @param  string            Username
-     * @param  string            Password
-     * @param  array            Map of custom fields
+     * @param  string $token Token to use for session
+     * @param  string $code Code to use for session
+     * @param  EMAIL $email E-mail address
+     * @param  string $username Username
+     * @param  string $password Password
+     * @param  array $custom_fields Map of custom fields
      * @return array Details of login status, containing status/tapatalk_status/member_id/register[/result_text]
      */
-    function sign_in($token, $code, $email, $username, $password, $custom_fields)
+    public function sign_in($token, $code, $email, $username, $password, $custom_fields)
     {
         cms_verify_parameters_phpdoc();
 
@@ -103,7 +107,7 @@ class CMSAccountWrite
             // SSO passed
             if ($exists) {
                 require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
-                $acl_object = new member_acl();
+                $acl_object = new CMSMemberACL();
                 $acl_object->set_auth($member_id);
 
                 return array(
@@ -130,15 +134,15 @@ class CMSAccountWrite
     /**
      * Join (old method, superseded by sign_in).
      *
-     * @param  string            Token to use for session
-     * @param  string            Code to use for session
-     * @param  EMAIL            E-mail address
-     * @param  string            Username
-     * @param  string            Password
-     * @param  array            Map of custom fields
+     * @param  string $username Username
+     * @param  string $password Password
+     * @param  EMAIL $email E-mail address
+     * @param  string $token Token to use for session
+     * @param  string $code Code to use for session
+     * @param  array $custom_fields Map of custom fields
      * @return array Details of join status, containing result[/result_text]
      */
-    function register($username, $password, $email, $token, $code, $custom_fields)
+    public function register($username, $password, $email, $token, $code, $custom_fields)
     {
         cms_verify_parameters_phpdoc();
 
@@ -156,14 +160,14 @@ class CMSAccountWrite
     /**
      * Join.
      *
-     * @param  ID_TEXT            Username
-     * @param  EMAIL            E-mail address
-     * @param  string            Password
-     * @param  array            Map of custom fields
-     * @param  boolean            Whether we need to do an email confirm
+     * @param  ID_TEXT $username  Username
+     * @param  EMAIL $email E-mail address
+     * @param  string $password Password
+     * @param  array $custom_fields Map of custom fields
+     * @param  boolean $confirm_if_enabled Whether we need to do an email confirm
      * @return array Details of join status, containing status/member_id/data
      */
-    function _join($username, $email, $password, $custom_fields, $confirm_if_enabled)
+    public function _join($username, $email, $password, $custom_fields, $confirm_if_enabled)
     {
         cms_verify_parameters_phpdoc();
 
@@ -177,7 +181,7 @@ class CMSAccountWrite
             );
         }
 
-        if (!is_null($GLOBALS['FORUM_DB']->query_value_null_ok('f_members', 'id', array('m_username' => $username)))) {
+        if (!is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username)))) {
             return array(
                 'status' => self::SIGN_IN_REGISTER_USERNAME_OCCUPIED,
                 'register' => false,
@@ -212,7 +216,7 @@ class CMSAccountWrite
         $preview_topic_id = get_option('rules_topic_id');
 
         require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
-        $acl_object = new member_acl();
+        $acl_object = new CMSMemberACL();
         $acl_object->set_auth($member_id);
 
         return array(
@@ -227,12 +231,12 @@ class CMSAccountWrite
     /**
      * Initiate lost password process.
      *
-     * @param  string            Username
-     * @param  string            Session token
-     * @param  string            Session code
+     * @param  string $username Username
+     * @param  string $token Session token
+     * @param  string $code Session code
      * @return array Details of result status, containing result/verified[/result_text]
      */
-    function forget_password($username, $token, $code)
+    public function forget_password($username, $token, $code)
     {
         cms_verify_parameters_phpdoc();
 
@@ -288,10 +292,10 @@ class CMSAccountWrite
     /**
      * Initiate lost password process (helper method).
      *
-     * @param  MEMBER            Member
+     * @param  MEMBER $member Member
      * @return array Details of result status, containing status/data
      */
-    function _lost_password($member)
+    public function _lost_password($member)
     {
         cms_verify_parameters_phpdoc();
 
@@ -358,10 +362,10 @@ class CMSAccountWrite
     /**
      * Update member password.
      *
-     * @param  string            Old password
-     * @param  string            New password
+     * @param  string $old_password Old password
+     * @param  string $new_password New password
      */
-    function update_password__old_to_new($old_password, $new_password)
+    public function update_password__old_to_new($old_password, $new_password)
     {
         cms_verify_parameters_phpdoc();
 
@@ -373,7 +377,7 @@ class CMSAccountWrite
 
         // Check old password
         require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
-        $acl_object = new member_acl();
+        $acl_object = new CMSMemberACL();
         $member_id = $acl_object->authenticate_credentials_and_set_auth($username, $old_password);
         if (is_null($member_id)) {
             warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
@@ -385,11 +389,11 @@ class CMSAccountWrite
     /**
      * Update member password.
      *
-     * @param  string            New password
-     * @param  string            Session token
-     * @param  string            Session code
+     * @param  string $new_password New password
+     * @param  string $token Session token
+     * @param  string $code Session code
      */
-    function update_password__for_session($new_password, $token, $code)
+    public function update_password__for_session($new_password, $token, $code)
     {
         cms_verify_parameters_phpdoc();
 
@@ -413,10 +417,10 @@ class CMSAccountWrite
     /**
      * Update member password (helper method).
      *
-     * @param  MEMBER            Member ID
-     * @param  string            Password
+     * @param  MEMBER $member_id Member ID
+     * @param  string $password Password
      */
-    function _update_member_password($member_id, $password)
+    public function _update_member_password($member_id, $password)
     {
         $ip_address = get_ip_address();
         $salt = '';
@@ -445,10 +449,10 @@ class CMSAccountWrite
     /**
      * Update e-mail address.
      *
-     * @param  string            Password
-     * @param  EMAIL            E-mail address
+     * @param  string $password Password
+     * @param  EMAIL $new_email E-mail address
      */
-    function update_email($password, $new_email)
+    public function update_email($password, $new_email)
     {
         cms_verify_parameters_phpdoc();
 
@@ -460,7 +464,7 @@ class CMSAccountWrite
 
         // Check old password
         require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
-        $acl_object = new member_acl();
+        $acl_object = new CMSMemberACL();
         $member_id = $acl_object->authenticate_credentials_and_set_auth($username, $password);
         if (is_null($member_id)) {
             warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));

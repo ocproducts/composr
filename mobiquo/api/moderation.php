@@ -32,7 +32,7 @@ function login_mod_func($raw_params)
     $password = $params[1];
 
     require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
-    $acl_object = new member_acl();
+    $acl_object = new CMSMemberACL();
     $result = $acl_object->authenticate_credentials_and_set_auth($username, $password);
 
     if ($result <= 0) {
@@ -184,7 +184,7 @@ function m_delete_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed            Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function m_undelete_topic_func($raw_params)
 {
@@ -197,7 +197,7 @@ function m_undelete_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed            Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function m_undelete_post_func($raw_params)
 {
@@ -210,7 +210,7 @@ function m_undelete_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_move_topic_func($raw_params)
@@ -243,7 +243,7 @@ function m_move_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_rename_topic_func($raw_params)
@@ -276,7 +276,7 @@ function m_rename_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_move_post_func($raw_params)
@@ -320,7 +320,7 @@ function m_move_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_merge_topic_func($raw_params)
@@ -353,7 +353,7 @@ function m_merge_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_merge_post_func($raw_params)
@@ -387,7 +387,7 @@ function m_merge_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_get_moderate_topic_func($raw_params)
@@ -417,7 +417,7 @@ function m_get_moderate_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_get_moderate_post_func($raw_params)
@@ -447,7 +447,7 @@ function m_get_moderate_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_approve_topic_func($raw_params)
@@ -480,7 +480,7 @@ function m_approve_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_approve_post_func($raw_params)
@@ -513,7 +513,7 @@ function m_approve_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_ban_user_func($raw_params)
@@ -548,7 +548,7 @@ function m_ban_user_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_unban_user_func($raw_params)
@@ -580,7 +580,7 @@ function m_unban_user_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed            Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function m_get_delete_topic_func($raw_params)
 {
@@ -593,7 +593,7 @@ function m_get_delete_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed            Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function m_get_delete_post_func($raw_params)
 {
@@ -606,7 +606,7 @@ function m_get_delete_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed            Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function m_get_report_post_func($raw_params)
 {
@@ -619,7 +619,7 @@ function m_get_report_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function m_mark_as_spam_func($raw_params)
@@ -651,7 +651,7 @@ function m_mark_as_spam_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed            Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function m_close_report_func($raw_params)
 {

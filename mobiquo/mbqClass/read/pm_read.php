@@ -12,8 +12,12 @@
  * @copyright  ocProducts Ltd
  * @package    cns_tapatalk
  */
+
 /*EXTRA FUNCTIONS: CMS.**/
 
+/**
+ * Composr API helper class.
+ */
 class CMSPmRead
 {
     const UNREAD = 1;
@@ -25,7 +29,7 @@ class CMSPmRead
      *
      * @return array Tuple of details
      */
-    function get_box_info()
+    public function get_box_info()
     {
         cms_verify_parameters_phpdoc();
 
@@ -39,7 +43,7 @@ class CMSPmRead
         if (addon_installed('unvalidated')) {
             $where['t_validated'] = 1;
         }
-        $inbox_total = $GLOBALS['FORUM_DB']->query_value('f_topics', 'COUNT(*)', $where);
+        $inbox_total = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)', $where);
 
         $inbox_unread_total = get_num_unread_private_topics(TAPATALK_MESSAGE_BOX_INBOX);
 
@@ -47,7 +51,7 @@ class CMSPmRead
         if (addon_installed('unvalidated')) {
             $where['t_validated'] = 1;
         }
-        $sent_total = $GLOBALS['FORUM_DB']->query_value('f_topics', 'COUNT(*)', $where);
+        $sent_total = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)', $where);
 
         $sent_unread_total = get_num_unread_private_topics(TAPATALK_MESSAGE_BOX_SENT);
 
@@ -62,12 +66,12 @@ class CMSPmRead
     /**
      * Get a private message message box (virtual inbox, constructed from private topics).
      *
-     * @param  integer        Box ID (a TAPATALK_MESSAGE_BOX_* constant)
-     * @param  integer        Start position
-     * @param  integer        Maximum results
+     * @param  integer $box_id Box ID (a TAPATALK_MESSAGE_BOX_* constant)
+     * @param  integer $start Start position
+     * @param  integer $max Maximum results
      * @return array Tuple of details
      */
-    function get_box($box_id, $start, $max)
+    public function get_box($box_id, $start, $max)
     {
         cms_verify_parameters_phpdoc();
 
@@ -110,7 +114,7 @@ class CMSPmRead
 
         $posts = array();
         foreach ($all_topics as $topic) {
-            $topic_read_time = $GLOBALS['FORUM_DB']->query_value_null_ok('f_read_logs', 'l_time', array('l_member_id' => $member_id, 'l_topic_id' => $topic['topic_id']));
+            $topic_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => $member_id, 'l_topic_id' => $topic['topic_id']));
 
             $table = 'f_posts p JOIN ' . $table_prefix . 'f_topics t ON t.id=p.p_topic_id';
 
@@ -185,15 +189,15 @@ class CMSPmRead
     /**
      * Get the read status of a private topic post.
      *
-     * @param  array            Post details
-     * @param  array            Topic details
-     * @param  MEMBER            Member ID
-     * @param  integer        Position (of viewable posts) in topic so far
-     * @param  array            All viewable posts in topic
-     * @param  ?TIME            When the topic was last read by the current member (null: not)
+     * @param  array $post_details Post details
+     * @param  array $topic_details Topic details
+     * @param  MEMBER $member_id Member ID
+     * @param  integer $pos Position (of viewable posts) in topic so far
+     * @param  array $posts All viewable posts in topic
+     * @param  ?TIME $topic_read_time When the topic was last read by the current member (null: not)
      * @return integer Read status (special Tapatalk code)
      */
-    function _get_message_state($post_details, $topic_details, $member_id, $pos, $posts, $topic_read_time)
+    public function _get_message_state($post_details, $topic_details, $member_id, $pos, $posts, $topic_read_time)
     {
         cms_verify_parameters_phpdoc();
 
@@ -222,11 +226,11 @@ class CMSPmRead
     /**
      * Get a private message.
      *
-     * @param  AUTO_LINK        Post ID
-     * @param  boolean        Return HTML
+     * @param  AUTO_LINK $message_id Post ID
+     * @param  boolean $return_html Return HTML
      * @return array Map of post details
      */
-    function get_message($message_id, $return_html)
+    public function get_message($message_id, $return_html)
     {
         cms_verify_parameters_phpdoc();
 
@@ -291,10 +295,10 @@ class CMSPmRead
     /**
      * Quote a private message.
      *
-     * @param  AUTO_LINK        Post ID
+     * @param  AUTO_LINK $post_id Post ID
      * @return array A pair: quote title, quote content
      */
-    function get_quote_pm($post_id)
+    public function get_quote_pm($post_id)
     {
         cms_verify_parameters_phpdoc();
 
