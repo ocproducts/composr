@@ -62,6 +62,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Comcode tabs can take a page-link rather than normal Comcode contents, for the tab to open up via AJAX (don't use this on the default tab though, as that won't work).
  - If you make very heavy use of large and complex tooltips then you may want to consider loading these via AJAX. This will require some fairly advanced coding skills, but it may be worth doing. Look at the [tt]COMCODE_MEMBER[/tt] template for an example of AJAX tooltip code.
  - Disabling URL monikers can help with performance; however this will also impact SEO if you think your URL paths are key to that.
+ - Block unwanted bots you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there
 
 [title="2"]Persistent cache[/title]
 

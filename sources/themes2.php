@@ -537,6 +537,8 @@ function find_images_do_dir($theme, $subdir, $langs)
  */
 function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = null)
 {
+    global $THEME_IMAGES_CACHE;
+
     if (is_null($db)) {
         $db = $GLOBALS['SITE_DB'];
     }
@@ -573,7 +575,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     }
 
     if (!$dirs_only) {
-        $query = 'SELECT DISTINCT id,path FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
+        $query = 'SELECT DISTINCT id,path,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
         if (!$db_only) {
             $query .= 'path NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('path', 'themes/default/images/blank.gif') . ' AND ';
         }
@@ -594,6 +596,13 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
                 continue;
             }
             if ($row['path'] != 'themes/default/images/blank.gif') { // We sometimes associate to blank.gif to essentially delete images so they can never be found again
+                // Optimisation to avoid having to build the full theme image table for a new theme in one step (huge numbers of queries)
+                if (!multi_lang()) {
+                    if (($theme == $row['theme']) || (($row['theme'] == 'default') && (!isset($THEME_IMAGES_CACHE['site'][$row['id']])))) {
+                        $THEME_IMAGES_CACHE['site'][$row['id']] = $row['path'];
+                    }
+                }
+
                 $ids[] = $row['id'];
             } else {
                 $key = array_search($row['id'], $ids);
