@@ -819,8 +819,6 @@ class Hook_addon_registry_core
             'caches/lang/EN/index.html',
             'caches/guest_pages/.htaccess',
             'caches/guest_pages/index.html',
-            'caches/guest_pages/EN/.htaccess',
-            'caches/guest_pages/EN/index.html',
             'caches/self_learning/.htaccess',
             'caches/self_learning/index.html',
             'lang_custom/.htaccess',

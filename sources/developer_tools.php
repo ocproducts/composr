@@ -149,7 +149,7 @@ function destrictify($change_content_type = true, $mysql_too = false)
  */
 function restrictify()
 {
-    global $_CREATED_FILES, $_MODIFIED_FILES;
+    global $_CREATED_FILES, $_MODIFIED_FILES, $SITE_INFO;
 
     // Reset functions
     if (isset($_CREATED_FILES)) {
@@ -162,7 +162,7 @@ function restrictify()
     // Put back strictness
     error_reporting(E_ALL);
     if (function_exists('set_time_limit')) {
-        @set_time_limit(25);
+        @set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if (get_forum_type() == 'cns') {
         $GLOBALS['SITE_DB']->query('SET sql_mode=STRICT_ALL_TABLES', null, null, true);

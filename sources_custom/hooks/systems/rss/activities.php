@@ -34,7 +34,7 @@ class Hook_rss_activities
         require_lang('activities');
         require_code('activities');
 
-        list(, $where_clause) = get_activity_querying_sql(get_member(), ($_filters == '*') ? 'all' : 'some_members', ($_filters == '') ? null : array_map('intval', explode(',', $_filters)));
+        list(, $where_clause) = get_activity_querying_sql(get_member(), ($_filters == '') ? 'all' : 'some_members', array_map('intval', explode(',', $_filters)));
 
         $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'activities WHERE (' . $where_clause . ') AND a_time>' . strval($cutoff) . ' ORDER BY a_time DESC', $max, 0);
 

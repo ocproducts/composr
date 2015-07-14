@@ -259,7 +259,7 @@ class Module_admin
             array('analytics', 'statistics', 'hits', 'stats'),
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
             array('description', 'caption', 'summary'),
-            array('choose', 'set'),
+            array('choose', 'set', 'specify'),
             array('add', 'submit', 'create', 'make'),
             array('edit', 'modify', 'manage', 'change', 'control', 'moderate', 'update'),
             array('delete', 'erase', 'remove', 'discard'),

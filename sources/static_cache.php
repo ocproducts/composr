@@ -101,6 +101,13 @@ function static_cache($mode)
 {
     global $SITE_INFO;
 
+    $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
+    if (basename($script_name) == 'backend.php') {
+        $file_extension = '.xml';
+    } else {
+        $file_extension = '.htm';
+    }
+
     if (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) {
         if (!can_static_cache()) {
             return;
@@ -182,7 +189,7 @@ function static_cache($mode)
         if ($param['failover_mode']) {
             $fast_cache_path .= '__failover_mode';
         }
-        $fast_cache_path .= '.htm';
+        $fast_cache_path .= $file_extension;
         if (is_file($fast_cache_path)) {
             break;
         }
@@ -190,6 +197,12 @@ function static_cache($mode)
 
     // Is cached
     if (is_file($fast_cache_path)) {
+        if ($file_extension == '.htm') {
+            header('Content-type: text/html');
+        } else {
+            header('Content-type: text/xml');
+        }
+
         $expires = intval(60.0 * 60.0 * floatval($SITE_INFO['fast_spider_cache']));
         $mtime = filemtime($fast_cache_path);
         if (($mtime > time() - $expires) || (($mode & STATIC_CACHE__FAILOVER_MODE) != 0)) {

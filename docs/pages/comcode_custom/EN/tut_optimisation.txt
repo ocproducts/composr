@@ -63,6 +63,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - If you make very heavy use of large and complex tooltips then you may want to consider loading these via AJAX. This will require some fairly advanced coding skills, but it may be worth doing. Look at the [tt]COMCODE_MEMBER[/tt] template for an example of AJAX tooltip code.
  - Disabling URL monikers can help with performance; however this will also impact SEO if you think your URL paths are key to that.
  - Block unwanted bots you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there
+ - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]search tutorial[/page])
 
 [title="2"]Persistent cache[/title]
 
@@ -125,6 +126,17 @@ $SITE_INFO['assume_full_mobile_support']='1'; // Don't check the theme supports 
 $SITE_INFO['no_extra_mobiles']='1'; // Don't read in extra mobile device signatures from disk
 [/codebox]
 They all have effects, so be careful! There are reasons these settings aren't the defaults.
+
+[title="2"]PHP time limit[/title]
+
+If you are really constrained for resources, and worry some requests may take too long in some cases, you can lower the PHP time limit from Composr's default 60 seconds.
+Note that Composr does raise the limit on its own when really needed.
+
+[code]
+$SITE_INFO['max_execution_time']='10'; // Ten second maximum execution time
+[/code]
+
+Note that PHP's time limit does not count time taken doing database queries and other external tasks.
 
 [title="2"]Templates[/title]
 

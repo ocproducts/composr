@@ -11,6 +11,8 @@ test_a
 *.tcp
 *.tcd
 *.gcd
+/caches/*/*.htm
+/caches/*/*.xml
 /themes/*/templates_cached/*/*.js
 /themes/*/templates_cached/*/*.css
 /themes/*/templates_cached/*/*.tcp
