@@ -147,6 +147,9 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         decache('_new_pp', null, $info[0]['t_pt_to']);
         decache('_get_pts', null, $info[0]['t_pt_to']);
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
 }
 
 /**
@@ -295,6 +298,9 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         require_code('resource_fs');
         expunge_resourcefs_moniker('topic', strval($topic_id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:topicview:id=' . strval($topic_id));
 
     return $forum_id;
 }

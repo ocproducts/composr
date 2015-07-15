@@ -1100,6 +1100,9 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
 
     decache('main_members');
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:members:view:' . strval($member_id), true);
 }
 
 /**
@@ -1176,6 +1179,9 @@ function cns_delete_member($member_id)
     }
 
     decache('main_members');
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:members:view:' . strval($member_id));
 }
 
 /**

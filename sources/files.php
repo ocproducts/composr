@@ -356,8 +356,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             '_config.php' => '',
             'map.ini' => 'themes',
             'functions.dat' => 'data_custom',
-            'cms_sitemap.xml' => '',
-            'cms_news_sitemap.xml' => '',
             'errorlog.php' => 'data_custom',
             'execute_temp.php' => 'data_custom',
         );

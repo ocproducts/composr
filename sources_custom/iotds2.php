@@ -71,6 +71,9 @@ function add_iotd($url, $title, $caption, $thumb_url, $current, $allow_rating, $
         generate_resourcefs_moniker('iotd', strval($id), null, null, true);
     }
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:iotds:view:' . strval($id), null, $edit_date, SITEMAP_IMPORTANCE_LOW, 'never', false);
+
     return $id;
 }
 
@@ -154,6 +157,9 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
         require_code('resource_fs');
         generate_resourcefs_moniker('iotd', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:iotds:view:' . strval($id), false);
 }
 
 /**
@@ -188,6 +194,9 @@ function delete_iotd($id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('iotd', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:iotds:view:' . strval($id));
 }
 
 /**

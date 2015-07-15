@@ -30,7 +30,7 @@ if (!function_exists('apache_request_headers')) {
         $headers = array();
         foreach ($_SERVER as $h => $v) {
             $matches = array();
-			if (preg_match('#^HTTP\_(.+)$#',$h,$matches)!=0) {
+			if (preg_match('#^HTTP\_(.+)$#', $h, $matches) != 0) {
                 $headers[$matches[1]] = $v;
             }
         }

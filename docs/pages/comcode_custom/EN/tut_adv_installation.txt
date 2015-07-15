@@ -84,6 +84,7 @@ Set the following to [b]777[/b]: (full directory permissions)
  - data_custom/modules/web_notifications
  - data_custom/modules/admin_stats
  - data_custom/modules/admin_backup
+ - data_custom/sitemaps
  - data_custom/spelling
  - data_custom/spelling/personal_dicts
  - data_custom/xml_config
@@ -152,8 +153,6 @@ Set the following to [b]666[/b]: (full read/write permissions)
  - data_custom/modules/chat/chat_last_event.dat
  - data_custom/permissioncheckslog.php (if it exists)
  - _config.php
- - cms_sitemap.xml
- - cms_news_sitemap.xml
 
 Remember -- if you chose the quick install option, it's likely that none of these permission settings are required.
 

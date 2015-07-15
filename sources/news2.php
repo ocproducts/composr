@@ -60,6 +60,9 @@ function add_news_category($title, $img, $notes, $owner = null, $id = null)
     require_code('member_mentions');
     dispatch_member_mention_notifications('news_category', strval($id));
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:news:browse:' . strval($id), null, null, SITEMAP_IMPORTANCE_HIGH, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
+
     return $id;
 }
 
@@ -131,6 +134,9 @@ function edit_news_category($id, $title, $img, $notes, $owner)
     decache('side_news_archive');
     decache('bottom_news');
     decache('side_news_categories');
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:news:browse:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
 }
 
 /**
@@ -192,6 +198,9 @@ function delete_news_category($id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('news_category', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:news:browse:' . strval($id));
 }
 
 /**
@@ -413,6 +422,9 @@ END;
     require_code('member_mentions');
     dispatch_member_mention_notifications('news_category', strval($id));
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:news:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category_id)));
+
     return $id;
 }
 
@@ -580,6 +592,9 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
         $title,
         process_overridden_comment_forum('news', strval($id), strval($main_news_category), strval($rows[0]['news_category']))
     );
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:news:view:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category)));
 }
 
 /**
@@ -670,6 +685,9 @@ function delete_news($id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('news', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:news:view:' . strval($id));
 }
 
 /**

@@ -159,6 +159,9 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
         generate_resourcefs_moniker('poll', strval($id), null, null, true);
     }
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:polls:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', true);
+
     return $id;
 }
 
@@ -263,6 +266,9 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
         $question,
         find_overridden_comment_forum('polls')
     );
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:polls:view:' . strval($id), true);
 }
 
 /**
@@ -300,6 +306,9 @@ function delete_poll($id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('poll', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:polls:view:' . strval($id));
 }
 
 /**

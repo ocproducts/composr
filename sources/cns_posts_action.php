@@ -421,6 +421,11 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     dispatch_member_mention_notifications('post', strval($post_id), $anonymous ? db_get_first_id() : $poster);
     cms_profile_end_for('cns_make_post:dispatch_member_mention_notifications');
 
+    if (($is_starter) && (!$is_pt)) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('SEARCH:topicview:id=' . strval($topic_id), $time, $last_edit_time, SITEMAP_IMPORTANCE_LOW, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+    }
+
     cms_profile_end_for('cns_make_post', '#' . strval($post_id));
 
     return $post_id;

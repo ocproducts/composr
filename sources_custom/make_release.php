@@ -456,10 +456,6 @@ function populate_build_files_array($dir = '', $pretend_dir = '')
                 $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = 'default=default' . "\n";
             } elseif ($pretend_dir . $file == 'data_custom/functions.dat') {
                 $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = '';
-            } elseif ($pretend_dir . $file == 'cms_sitemap.xml') {
-                $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = '';
-            } elseif ($pretend_dir . $file == 'cms_news_sitemap.xml') {
-                $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = '';
             } elseif ($pretend_dir . $file == 'data_custom/errorlog.php') {
                 $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = "<?php return; ?" . ">\n";
             } elseif ($pretend_dir . $file == 'data_custom/execute_temp.php') { // So that code can't be executed

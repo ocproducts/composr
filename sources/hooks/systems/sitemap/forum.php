@@ -125,6 +125,8 @@ class Hook_sitemap_forum extends Hook_sitemap_content
         }
         list($content_id, $row, $partial_struct) = $_;
 
+        $partial_struct['page_link'] = str_replace(':browse:', ':id=', $partial_struct['page_link']);
+
         // level 0 = root
         // level 1 = zone
         if ($content_id == strval(db_get_first_id())) {

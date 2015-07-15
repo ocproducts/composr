@@ -534,13 +534,8 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter32" description="Sets the ACL on the right file" defaultValue="{Application Path}/cms_sitemap.xml" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/cms_sitemap.xml" />
-  </parameter> 
-
-  <parameter
-    name="SetAclParameter132" description="Sets the ACL on the right file" defaultValue="{Application Path}/cms_news_sitemap.xml" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/cms_news_sitemap.xml" />
+    name="SetAclParameter32" description="Sets the ACL on the right file" defaultValue="{Application Path}/data_custom/sitemap" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/data_custom/sitemap" />
   </parameter> 
 
   <parameter

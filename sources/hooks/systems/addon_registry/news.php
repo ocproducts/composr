@@ -175,7 +175,6 @@ class Hook_addon_registry_news
             'themes/default/templates/BLOCK_MAIN_IMAGE_FADER_NEWS.tpl',
             'sources/blocks/main_image_fader_news.php',
             'sources/news_sitemap.php',
-            'cms_news_sitemap.xml',
             'sources/hooks/systems/tasks/import_rss.php',
             'sources/hooks/systems/tasks/import_wordpress.php',
         );

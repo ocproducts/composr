@@ -42,7 +42,7 @@
 {$,Meta data for the page: standard meta data, Dublin Core meta data, Facebook Open Graph, and Composr meta data extensions [CMSCORE]}
 {+START,IF,{$NEQ,{$PAGE},404}}<link rel="canonical" href="{$CANONICAL_URL*}" />{+END}
 <link rel="baseurl" href="{$BASE_URL*}" />
-<link rel="sitemap" href="{$BASE_URL*}/cms_sitemap.xml" />
+<link rel="sitemap" href="{$BASE_URL*}/data_custom/sitemaps/index.xml" />
 <meta name="description" content="{+START,IF,{$NEQ,{$META_DATA,meta_description},{!NA},???}}{$META_DATA*,meta_description}{+END}" />
 <meta name="keywords" content="{$META_DATA*,keywords}" />
 {+START,COMMENT,Commented out by default to save bandwidth}

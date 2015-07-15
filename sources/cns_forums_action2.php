@@ -180,6 +180,9 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
         require_code('resource_fs');
         generate_resourcefs_moniker('forum', strval($forum_id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:forumview:id=' . strval($forum_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
 }
 
 /**
@@ -237,6 +240,9 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
         require_code('resource_fs');
         expunge_resourcefs_moniker('forum', strval($forum_id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:forumview:id=' . strval($forum_id));
 }
 
 /**

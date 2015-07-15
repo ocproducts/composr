@@ -31,10 +31,6 @@ class modularisation_test_set extends cms_test_case
     {
         global $GFILE_ARRAY;
 
-        // Volatile files not in git that are referenced by addons that could have possibly gone missing
-        @touch(get_custom_file_base() . '/cms_sitemap.xml');
-        @touch(get_custom_file_base() . '/cms_news_sitemap.xml');
-
         $addon_data = array();
         $dh = opendir(get_file_base() . '/sources/hooks/systems/addon_registry');
         while (($file = readdir($dh)) !== false) {

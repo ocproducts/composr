@@ -306,8 +306,8 @@ if (get_param_integer('save__warnings', 1) == 1) {
 }
 
 // Sitemap, if it has been built
-if (file_exists(get_custom_file_base() . '/cms_sitemap.xml')) {
-    tar_add_file($STATIC_EXPORT_TAR, 'cms_sitemap.xml', get_custom_file_base() . '/cms_sitemap.xml', 0644, time(), true);
+if (file_exists(get_custom_file_base() . '/data_custom/sitemaps/index.xml')) {
+    tar_add_folder($STATIC_EXPORT_TAR, null, 'data_custom/sitemaps');
 }
 
 tar_close($STATIC_EXPORT_TAR);

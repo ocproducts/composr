@@ -486,6 +486,9 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
     require_code('member_mentions');
     dispatch_member_mention_notifications('image', strval($id), $submitter);
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:galleries:image:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
+
     return $id;
 }
 
@@ -606,6 +609,9 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         do_lang('VIEW_IMAGE', '', '', '', get_site_default_lang()),
         process_overridden_comment_forum('images', strval($id), $cat, $old_cat)
     );
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:galleries:image:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 }
 
 /**
@@ -660,6 +666,9 @@ function delete_image($id, $delete_full = true)
         require_code('resource_fs');
         expunge_resourcefs_moniker('image', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:galleries:image:' . strval($id));
 }
 
 /**
@@ -935,6 +944,9 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
     require_code('member_mentions');
     dispatch_member_mention_notifications('video', strval($id), $submitter);
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:galleries:video:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'yearly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
+
     return $id;
 }
 
@@ -1070,6 +1082,9 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
             sync_video_syndication($id, false, $orig_url != $url, $orig_url != $url && $consider_deferring);
         }
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:galleries:video:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 }
 
 /**
@@ -1125,6 +1140,9 @@ function delete_video($id, $delete_full = true)
         require_code('resource_fs');
         expunge_resourcefs_moniker('video', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:galleries:video:' . strval($id));
 }
 
 /**
@@ -1343,6 +1361,9 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
     require_code('member_mentions');
     dispatch_member_mention_notifications('gallery', $name, $g_owner);
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:galleries:browse:' . $name, $add_date, null, SITEMAP_IMPORTANCE_MEDIUM, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
+
     return $name;
 }
 
@@ -1506,6 +1527,9 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         process_overridden_comment_forum('galleries', $name, $name, $old_name)
     );
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:galleries:browse:' . $name, has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
+
     return $name;
 }
 
@@ -1578,6 +1602,9 @@ function delete_gallery($name)
         require_code('resource_fs');
         expunge_resourcefs_moniker('gallery', $name);
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:galleries:browse:' . $name);
 }
 
 /**

@@ -594,7 +594,7 @@ abstract class Standard_crud_module
             }
             $query .= ' GROUP BY allow_comments ORDER BY qty DESC';
             $val = $GLOBALS['SITE_DB']->query_value_if_there($query); // We need the mode here, not the mean
-            $allow_rating = is_null($val) ? 1 : intval(round($val));
+            $allow_rating = is_null($val) ? 1 : $val;
         }
 
         if (is_null($allow_comments)) {

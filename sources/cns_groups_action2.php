@@ -180,6 +180,9 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
     persistent_cache_delete('SUPER_ADMIN_GROUPS');
     persistent_cache_delete('SUPER_MODERATOR_GROUPS');
     persistent_cache_delete('OPEN_GROUPS');
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:groups:view:' . strval($group_id), true);
 }
 
 /**
@@ -248,6 +251,9 @@ function cns_delete_group($group_id, $target_group = null)
     persistent_cache_delete('SUPER_ADMIN_GROUPS');
     persistent_cache_delete('SUPER_MODERATOR_GROUPS');
     persistent_cache_delete('OPEN_GROUPS');
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:groups:view:' . strval($group_id));
 }
 
 /**

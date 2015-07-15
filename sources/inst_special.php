@@ -67,7 +67,7 @@ function get_chmod_array($lang)
             'data_custom/modules/chat/chat_last_msg.dat', 'data_custom/modules/chat/chat_last_event.dat', 'data_custom/modules/web_notifications/latest.dat',
             'caches/persistent', 'caches/lang', 'caches/lang/' . $lang, 'caches/self_learning', 'caches/self_learning/' . $lang, 'caches/guest_pages', 'caches/guest_pages/' . $lang,
             'lang_custom', 'lang_custom/' . $lang,
-            'data_custom/errorlog.php', 'cms_sitemap.xml', 'cms_news_sitemap.xml', 'data_custom/permissioncheckslog.php',
+            'data_custom/errorlog.php', 'data_custom/sitemaps', 'data_custom/permissioncheckslog.php',
             'pages/html_custom', 'site/pages/html_custom', 'docs/pages/html_custom', 'adminzone/pages/html_custom', 'forum/pages/html_custom', 'cms/pages/html_custom',
             'pages/html_custom/' . $lang, 'site/pages/html_custom/' . $lang, 'docs/pages/html_custom/' . $lang, 'adminzone/pages/html_custom/' . $lang, 'forum/pages/html_custom/' . $lang, 'cms/pages/html_custom/' . $lang,
             'pages/comcode_custom', 'site/pages/comcode_custom', 'docs/pages/comcode_custom', 'adminzone/pages/comcode_custom', 'forum/pages/comcode_custom', 'cms/pages/comcode_custom',

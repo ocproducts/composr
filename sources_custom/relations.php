@@ -221,6 +221,7 @@ function get_table_descriptions()
         'seo_meta' => 'stores meta descriptions for all kinds of content',
         'seo_meta_keywords' => 'stores meta keywords for all kinds of content',
         'sessions' => 'stores user sessions, for guests and members (session ID\'s are treated with high security)',
+        'sitemap_cache' => 'a cache of all addressable sitemap nodes for building out the full XML sitemaps across multiple files iteratively, which is extremely intensive on large sites',
         'sms_log' => 'logs what SMS messages were sent out on behalf of what users and when',
         'privilege_list' => 'a list of all the privileges available (aka privileges)',
         'staff_tips_dismissed' => 'stores what webmaster tips (Admin Zone front page) have been read so far',

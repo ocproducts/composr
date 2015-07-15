@@ -84,6 +84,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('comcode_pages');
         $GLOBALS['SITE_DB']->drop_table_if_exists('cached_comcode_pages');
         $GLOBALS['SITE_DB']->drop_table_if_exists('email_bounces');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('sitemap_cache');
 
         /*$zones=find_all_zones(true);    We don't want to get rid of on-disk data when reinstalling
         require_code('files');
@@ -853,6 +854,23 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_index('cached_comcode_pages', '#page_search__combined', array('cc_page_title', 'string_index'));
+
+            $GLOBALS['SITE_DB']->create_table('sitemap_cache', array(
+                'page_link' => '*SHORT_TEXT',
+                'set_number' => 'INTEGER',
+                'add_date' => '?TIME',
+                'edit_date' => '?TIME',
+                'last_updated' => 'TIME',
+                'is_deleted' => 'BINARY',
+                'priority' => 'REAL',
+                'refreshfreq' => 'ID_TEXT',
+                'guest_access' => 'BINARY',
+            ));
+            $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'set_number', array('set_number', 'last_updated'));
+            $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'last_updated', array('last_updated'));
+            $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'is_deleted', array('is_deleted'));
+            require_code('sitemap_xml');
+            build_sitemap_cache_table();
         }
     }
 

@@ -343,6 +343,11 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
 
     decache('side_shoutbox');
 
+    if ($is_im == 0) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('SEARCH:chat:room:' . strval($id), time(), null, SITEMAP_IMPORTANCE_MEDIUM, 'never', ($allow2 == '') && ($allow2_groups == ''));
+    }
+
     return $id;
 }
 
@@ -386,6 +391,9 @@ function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_
         require_code('resource_fs');
         generate_resourcefs_moniker('chat', strval($id));
     }
+
+    require_code('xml_sitemap');
+    notify_sitemap_node_edit('SEARCH:chat:room:' . strval($id), ($allow2 == '') && ($allow2_groups == ''));
 }
 
 /**
@@ -420,6 +428,9 @@ function delete_chatroom($id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('chat', strval($id));
     }
+
+    require_code('xml_sitemap');
+    notify_sitemap_node_delete('SEARCH:chat:room:' . strval($id));
 }
 
 /**

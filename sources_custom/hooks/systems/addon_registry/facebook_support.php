@@ -149,6 +149,7 @@ Please be aware that this addon overrides some common templates to add Facebook 
             'themes/default/images_custom/icons/48x48/menu/facebook.png',
             'sources_custom/hooks/systems/addon_registry/facebook_support.php',
             'sources_custom/hooks/systems/login_providers/.htaccess',
+            'sources_custom/hooks/systems/startup/facebook.php',
             'sources_custom/facebook/index.html',
             'sources_custom/facebook/jsonwrapper/JSON/index.html',
             'sources_custom/facebook/jsonwrapper/index.html',

@@ -356,6 +356,9 @@ function add_download_category($category, $parent_id, $description, $notes, $rep
     require_code('member_mentions');
     dispatch_member_mention_notifications('download_category', strval($id));
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:downloads:browse:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($id)));
+
     return $id;
 }
 
@@ -421,6 +424,9 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
         require_code('resource_fs');
         generate_resourcefs_moniker('download_category', strval($category_id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:downloads:browse:' . strval($category_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($category_id)));
 }
 
 /**
@@ -468,6 +474,9 @@ function delete_download_category($category_id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('download_category', strval($category_id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:downloads:browse:' . strval($category_id));
 }
 
 /**
@@ -969,6 +978,9 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     require_code('member_mentions');
     dispatch_member_mention_notifications('download', strval($id), $submitter);
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:downloads:entry:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($category_id)));
+
     return $id;
 }
 
@@ -1162,6 +1174,9 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         $name,
         process_overridden_comment_forum('downloads', strval($id), strval($category_id), strval($myrow['category_id']))
     );
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:downloads:entry:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($category_id)));
 }
 
 /**
@@ -1220,6 +1235,9 @@ function delete_download($id, $leave = false)
         require_code('resource_fs');
         expunge_resourcefs_moniker('download', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:downloads:entry:' . strval($id));
 }
 
 /**

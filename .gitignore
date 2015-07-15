@@ -23,6 +23,9 @@ test_a
 /imports/*/*.tar
 /mobiquo/logging.dat
 /mobiquo/include/request_helper.dat
+/data_custom/ckeditor
+/data_custom/sitemaps/*.xml
+/data_custom/sitemaps/*.gz
 /data_custom/modules/chat/*.dat
 /data_custom/modules/admin_stats/*.xml
 /data_custom/modules/web_notifications/latest.dat

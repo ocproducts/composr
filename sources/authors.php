@@ -156,6 +156,9 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
         require_code('resource_fs');
         generate_resourcefs_moniker('author', $author, null, null, true);
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:authors:browse:' . $author, null, null, SITEMAP_IMPORTANCE_LOW, 'yearly', false);
 }
 
 /**
@@ -184,6 +187,9 @@ function delete_author($author)
         require_code('resource_fs');
         expunge_resourcefs_moniker('author', $author);
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:authors:browse:' . $author);
 }
 
 /**

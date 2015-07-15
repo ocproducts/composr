@@ -591,6 +591,17 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         generate_resourcefs_moniker('comcode_page', $zone . ':' . $new_file);
     }
 
+    $zone_default_page = get_zone_default_page($zone);
+    require_code('sitemap_xml');
+    notify_sitemap_node_add(
+        $zone . ':' . $new_file,
+        $add_time,
+        $edit_time,
+        ($zone_default_page == $new_file) ? SITEMAP_IMPORTANCE_ULTRA : SITEMAP_IMPORTANCE_HIGH,
+        ($zone_default_page == $new_file) ? 'daily' : 'weekly',
+        true
+    );
+
     return $fullpath;
 }
 
@@ -678,4 +689,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
     }
 
     log_it('DELETE_PAGES', $page);
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete($zone . ':' . $page);
 }

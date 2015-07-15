@@ -48,14 +48,6 @@ function init__facebook_connect()
     $appid = get_option('facebook_appid');
     $appsecret = get_option('facebook_secret_code');
     $FACEBOOK_CONNECT = new CMSFacebook(array('appId' => $appid, 'secret' => $appsecret));
-
-    if (running_script('index')) {
-        require_javascript('facebook');
-        require_code('site');
-
-        $tpl = do_template('FACEBOOK_FOOTER', null, null, true, null, '.tpl', 'templates', 'default');
-        attach_to_screen_footer($tpl);
-    }
 }
 
 // This is only called if we know we have a user logged into Facebook, who has authorised to our app

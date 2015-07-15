@@ -393,6 +393,9 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
         generate_resourcefs_moniker('wiki_page', strval($id), null, null, true);
     }
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:wiki:browse:' . strval($id), null, $edit_date, ($id == db_get_first_id()) ? SITEMAP_IMPORTANCE_HIGH : SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($id)));
+
     return $id;
 }
 
@@ -465,6 +468,9 @@ function wiki_edit_page($id, $title, $description, $notes, $hide_posts, $meta_ke
         require_code('resource_fs');
         generate_resourcefs_moniker('wiki_page', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:wiki:browse:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($id)));
 }
 
 /**
@@ -508,6 +514,9 @@ function wiki_delete_page($id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('wiki_page', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:wiki:browse:' . strval($id));
 }
 
 /**

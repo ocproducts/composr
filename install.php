@@ -309,12 +309,6 @@ function step_1()
                     if ($file == 'data_custom/execute_temp.php') {
                         continue;
                     }
-                    if ($file == 'cms_sitemap.xml') {
-                        continue;
-                    }
-                    if ($file == 'cms_news_sitemap.xml') {
-                        continue;
-                    }
                     if ($file == '_config.php') {
                         continue;
                     }

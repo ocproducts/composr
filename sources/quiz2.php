@@ -390,6 +390,9 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
         generate_resourcefs_moniker('quiz', strval($id), null, null, true);
     }
 
+    require_code('sitemap_xml');
+    notify_sitemap_node_add('SEARCH:quiz:do:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'quiz', strval($id)));
+
     return $id;
 }
 
@@ -490,6 +493,9 @@ function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail,
         require_code('resource_fs');
         generate_resourcefs_moniker('quiz', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('SEARCH:quiz:do:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'quiz', strval($id)));
 }
 
 /**
@@ -545,4 +551,7 @@ function delete_quiz($id)
         require_code('resource_fs');
         expunge_resourcefs_moniker('quiz', strval($id));
     }
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_delete('SEARCH:quiz:do:' . strval($id));
 }
