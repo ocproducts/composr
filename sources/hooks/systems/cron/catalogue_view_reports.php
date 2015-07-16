@@ -36,7 +36,7 @@ class Hook_cron_catalogue_view_reports
 
         $done_reports = array('daily' => false, 'weekly' => false, 'monthly' => false, 'quarterly' => false);
 
-        $catalogues = $GLOBALS['SITE_DB']->query('SELECT c_title,c_name,c_send_view_reports FROM ' . get_table_prefix() . 'catalogues WHERE ' . db_string_not_equal_to('c_send_view_reports', '') . ' AND ' . db_string_not_equal_to('c_send_view_reports', ''));
+        $catalogues = $GLOBALS['SITE_DB']->query('SELECT c_title,c_name,c_send_view_reports FROM ' . get_table_prefix() . 'catalogues WHERE ' . db_string_not_equal_to('c_send_view_reports', '') . ' AND ' . db_string_not_equal_to('c_send_view_reports', 'never'));
         $doing = array();
         foreach ($catalogues as $catalogue) {
             switch ($catalogue['c_send_view_reports']) {

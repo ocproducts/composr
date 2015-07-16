@@ -62,12 +62,19 @@ Chatroom users may set sound effects for different chat actions (from the link p
 [title="3"]Creating a private room[/title]
 [surround]
 [media width="150" description="The private room creation interface" float="left"]data_custom/images/docs/chat_Create-private-room.png[/media]
-Private chatrooms are the chat equivalent of an [concept]Conversr[/concept] Private Topic. Anybody can create them, but only certain specified people can view them and use them. If a private chatroom is unvisited and unused for (by default) more than 24 hours, it will be automatically deleted.
+Private chatrooms are the chat equivalent of an [concept]Conversr[/concept] Private Topic. Anybody can create them, but only certain specified people can view them and use them. If a private chatroom is unvisited and unused for (by default) more than 24 hours, it will be automatically deleted ("pruned").
 
 When creating a private chatroom, bear in mind what sort of purpose you're creating the room to fulfil, and try to outline this in the room entry message. Make sure you add some members or usergroups to the allow/disallow lists as well, or the room you create won't be private at all (unless you define access, access is public)!
 
 Once created, the private chatroom will be visible in the chatrooms list for all eligible members.
 [/surround]
+
+[title="4"]Room pruning in more detail[/title]
+
+Rooms are only pruned if they are inactive longer than the "Private room deletion time" option and have an owner or a private list of allowed usernames (i.e. are a private room). Rooms created through the Admin Zone do by default not have those properties (i.e. are not private rooms), while rooms created through the public site do (i.e. are private rooms).
+
+Set the "Private room deletion time" option to "0" if you wish to disable room pruning entirely.
+
 [title="2"]Moderation[/title]
 
 The moderation interface for the chat system (in the [tt]cms_chat[/tt] module) allows the editing/deletion of chat messages.

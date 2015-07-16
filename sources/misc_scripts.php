@@ -256,6 +256,12 @@ function cron_bridge_script($caller)
 
     $limit_hook = get_param_string('limit_hook', '');
 
+    $_log_file = get_custom_file_base() . '/data_custom/cron_log.txt';
+    $log_file = mixed();
+    if (is_file($_log_file)) {
+        $log_file = fopen($_log_file, 'at');
+    }
+
     // Call the hooks which do the real work
     set_value('last_cron', strval(time()));
     $cron_hooks = find_all_hooks('systems', 'cron');
@@ -269,7 +275,20 @@ function cron_bridge_script($caller)
         if (is_null($object)) {
             continue;
         }
+
+        if (!is_null($log_file)) {
+            fwrite($log_file, date('Y-m-d H:i:s') . '  STARTING ' . $hook . "\n");
+        }
+
         $object->run();
+
+        if (!is_null($log_file)) {
+            fwrite($log_file, date('Y-m-d H:i:s') . '  FINISHED ' . $hook . "\n");
+        }
+    }
+
+    if (!is_null($log_file)) {
+        fclose($log_file);
     }
 
     if (!headers_sent()) {

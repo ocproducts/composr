@@ -331,6 +331,10 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
             continue;
         }
 
+        if (is_integer($name)) {
+            $name = strval($name);
+        }
+
         if ((post_param_string($name, '') == $comcode) || (substr($name, -7) == '_parsed')) {
             $posted = true;
         }

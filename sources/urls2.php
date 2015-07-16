@@ -36,6 +36,10 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
     $old_current_script = current_script();
 
     foreach ($_GET as $key => $val) {
+		if (is_integer($key)) {
+            $key = strval($key);
+        }
+
         if ((substr($key, 0, 5) != 'keep_') || ($erase_keep_also)) {
             unset($_GET[$key]);
         }
@@ -121,6 +125,10 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
                 continue;
             }
 
+    		if (is_integer($key)) {
+                $key = strval($key);
+            }
+
             if (get_magic_quotes_gpc()) {
                 $val = stripslashes($val);
             }
@@ -180,6 +188,10 @@ function _build_keep_post_fields($exclude = null)
 {
     $out = '';
     foreach ($_POST as $key => $val) {
+		if (is_integer($key)) {
+            $key = strval($key);
+        }
+
         if (((!is_null($exclude)) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/)) {
             continue;
         }

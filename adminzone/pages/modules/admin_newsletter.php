@@ -874,6 +874,8 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $hidden = new Tempcode();
 
+        $text = new Tempcode();
+
         if (cron_installed()) {
             $periodic_options = new Tempcode();
 
@@ -902,6 +904,10 @@ class Module_admin_newsletter extends Standard_crud_module
             )));
 
             $fields->attach(form_input_list($periodic_choice_name, $periodic_choice_help, 'periodic_choice', $periodic_options, null, false, false));
+
+            if (count($current_periodic_newsletters) > 0) {
+                $text = do_lang_tempcode('PERIODIC_NEWSLETTER_AMEND');
+            }
         }
 
         return do_template('FORM_SCREEN', array(
@@ -909,7 +915,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
-            'TEXT' => '',
+            'TEXT' => $text,
             'FIELDS' => $fields,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),
@@ -985,11 +991,13 @@ class Module_admin_newsletter extends Standard_crud_module
         $hidden = new Tempcode();
         $hidden->attach(build_keep_post_fields());
 
+        $text = do_lang_tempcode('SELECT_CATEGORIES_WANTED');
+
         return do_template('FORM_SCREEN', array(
             'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
-            'TEXT' => do_lang_tempcode('SELECT_CATEGORIES_WANTED'),
+            'TEXT' => $text,
             'FIELDS' => $fields,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),

@@ -1572,6 +1572,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
         @fclose($mysock);
         if (!$data_started) {
+            if ($byte_limit === 0) {
+                return '';
+            }
+
             if ($trigger_error) {
                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url)));
             } else {

@@ -28,7 +28,7 @@ class Hook_cron_cns_birthdays
      */
     public function run()
     {
-        $this_birthday_day = date('d/m/Y');
+        $this_birthday_day = date('d/m/Y', tz_time(time(), get_site_timezone()));
         if (get_value('last_birthday_day', null, true) !== $this_birthday_day) {
             set_value('last_birthday_day', $this_birthday_day, true);
 

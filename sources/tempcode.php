@@ -716,31 +716,30 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/
             ($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))
     ) {
-        if ($loaded_this_once) {
-            if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
-                $_data = $LOADED_TPL_CACHE[$codename][$theme];
-            } else {
-                $tcp_path = $prefix . $theme . '/templates_cached/' . $lang . '/' . $codename . $suffix . '.tcp';
-                $_data = new Tempcode();
-                $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
-                if (!$test) {
-                    $_data = false; // failed
-                }
-            }
+        if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
+            $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
+            $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
         } else {
-            global $SITE_INFO;
-            $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
-            if ($support_smart_decaching) {
-                if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
-                    $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
-                    $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
+            $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
+        }
+
+        if ($found !== null) {
+            $tcp_path = $prefix . $theme . '/templates_cached/' . $lang . '/' . $codename . $found[2] . '.tcp';
+
+            if ($loaded_this_once) {
+                if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
+                    $_data = $LOADED_TPL_CACHE[$codename][$theme];
                 } else {
-                    $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
+                    $_data = new Tempcode();
+                    $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
+                    if (!$test) {
+                        $_data = false; // failed
+                    }
                 }
-
-                if ($found !== null) {
-                    $tcp_path = $prefix . $theme . '/templates_cached/' . $lang . '/' . $codename . $found[2] . '.tcp';
-
+            } else {
+                global $SITE_INFO;
+                $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+                if ($support_smart_decaching) {
                     if (get_custom_file_base() != get_file_base()) {
                         $file_path = get_custom_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
                         if (!is_file($file_path)) {
@@ -756,19 +755,19 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
                     if (GOOGLE_APPENGINE) {
                         gae_optimistic_cache(false);
                     }
-                } else {
-                    $tcp_time = false;
                 }
-            }
-            if ((!$support_smart_decaching) || (($tcp_time !== false) && (is_file($file_path)))/*if in install can be found yet no file at path due to running from data.cms*/ && ($found !== null)) {
-                if ((!$support_smart_decaching) || ((filemtime($file_path) < $tcp_time) && ((empty($SITE_INFO['dependency__' . $file_path])) || (dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $file_path]), $tcp_time))))) {
-                    $_data = new Tempcode();
-                    $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
-                    if (!$test) {
-                        $_data = false; // failed
+                if ((!$support_smart_decaching) || (($tcp_time !== false) && (is_file($file_path)))/*if in install can be found yet no file at path due to running from data.cms*/ && ($found !== null)) {
+                    if ((!$support_smart_decaching) || ((filemtime($file_path) < $tcp_time) && ((empty($SITE_INFO['dependency__' . $file_path])) || (dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $file_path]), $tcp_time))))) {
+                        $_data = new Tempcode();
+                        $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
+                        if (!$test) {
+                            $_data = false; // failed
+                        }
                     }
                 }
             }
+        } else {
+            $_data = false;
         }
     }
     if ($_data === false) { // No, it's not

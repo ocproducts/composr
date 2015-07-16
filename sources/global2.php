@@ -495,7 +495,7 @@ function monitor_slow_urls()
     $time = time() - $_SERVER['REQUEST_TIME'];
     if ($time >= 5) {
         require_code('urls');
-        file_put_contents(get_file_base() . '/data_custom/time_log.txt', get_self_url_easy() . "\t" . strval($time) . "\n", FILE_APPEND);
+        file_put_contents(get_file_base() . '/data_custom/time_log.txt', get_self_url_easy() . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()) . "\n", FILE_APPEND);
     }
 }
 

@@ -2449,6 +2449,27 @@ END;
             }
         }
 
+        $text = ($validated == 1) ? do_lang_tempcode('SUCCESS') : do_lang_tempcode('SUBMIT_UNVALIDATED_FORUM_POSTS');
+
+		if ($forum_id >= 0) {
+			$topic_validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $topic_id));
+			if (($topic_validated == 0) && (!has_privilege(get_member(), 'jump_to_unvalidated'))) {
+				$map = array('page' => 'forumview', 'id' => $forum_id);
+                $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
+                if (($test != -1) && ($test != 0)) {
+                    $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
+                }
+                $test = get_param_integer('threaded', -1);
+                if ($test != -1) {
+                    $map['threaded'] = $test;
+                }
+				$_url = build_url($map, get_module_zone('forumview'));
+				$url = $_url->evaluate();
+
+                $text = do_lang_tempcode('SUBMIT_UNVALIDATED_FORUM_TOPICS');
+			}
+		}
+
         if (($new_topic) && ($forum_id == -1)) {
             require_code('notifications');
 
@@ -2487,8 +2508,6 @@ END;
         if ((!$new_topic) && ($forum_id != -1) && ($member_id == -1)) {
             handle_topic_ticket_reply($forum_id, $topic_id, $topic_title, $post);
         }
-
-        $text = ($validated == 1) ? do_lang_tempcode('SUCCESS') : do_lang_tempcode('SUBMIT_UNVALIDATED');
 
         // Show it worked / Refresh
         $url = get_param_string('redirect', $url);
