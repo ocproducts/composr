@@ -910,6 +910,8 @@ function report_post($post_id, $reason = '')
 
     require_code('cns_posts_action');
     cns_make_post($topic_id, $title, $post->evaluate(), 0, $first_post, 1, 0, null, null, null, null, null, null, null, false, true, null, true, $topic_title, 0, null, is_invisible(), true, false, false, null);
+
+	decache('main_staff_checklist');
 }
 
 /**

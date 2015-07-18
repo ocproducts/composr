@@ -2275,6 +2275,8 @@ class Module_topics
 
                 $_title = get_screen_title('REPORT_POST');
                 $check_permissions = false;
+
+				decache('main_staff_checklist');
             } else { // New topic
                 $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $meta_data['views']);
                 $_title = get_screen_title('ADD_TOPIC');

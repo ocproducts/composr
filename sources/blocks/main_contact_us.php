@@ -107,6 +107,8 @@ class Block_main_contact_us
                 require_code('site2');
                 assign_refresh($redirect, 0.0);
             }
+
+    		decache('main_staff_checklist');
         } else {
             $message = new Tempcode();
         }
