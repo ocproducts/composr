@@ -122,7 +122,18 @@ class CMSTopicRead
         } else {
             $_forum_details = $GLOBALS['FORUM_DB']->query_select('f_forums f', array('*', 'f.id AS forum_id'), array('f.id' => $forum_id), '', 1);
             if (!isset($_forum_details[0])) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                // Ideally we'd do a normal MISSING_RESOURCE, but tapatalk is sending some spurious requests to a forum '0' after doing moderation actions on iOS
+                return array(
+                    0,
+                    array(),
+                    do_lang('MISSING_RESOURCE'),
+                    0,
+                    0,
+                    array(
+                        'can_post' => false,
+                        'can_upload' => false,
+                    ),
+                );
             }
             $forum_details = $_forum_details[0];
         }

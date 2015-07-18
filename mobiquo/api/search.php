@@ -39,7 +39,7 @@ function search_topic_func($raw_params)
 
     $topics = array();
     foreach ($_topics as $topic) {
-        $topics[] = render_topic_to_tapatalk($topic['topic_id'], false, $start, $max, $topic, RENDER_TOPIC_POST_KEY_NAME);
+        $topics[] = render_topic_to_tapatalk($topic['topic_id'], false, $start, $max, $topic, RENDER_TOPIC_POST_KEY_NAME | RENDER_TOPIC_SEARCH);
     }
 
     $response = mobiquo_val(array(
@@ -74,7 +74,7 @@ function search_post_func($raw_params)
 
     $posts = array();
     foreach ($_posts as $post) {
-        $posts[] = render_post_to_tapatalk($post['post_id'], false, $post, RENDER_POST_SHORT_CONTENT | RENDER_POST_FORUM_DETAILS | RENDER_POST_TOPIC_DETAILS);
+        $posts[] = render_post_to_tapatalk($post['post_id'], false, $post, RENDER_POST_SHORT_CONTENT | RENDER_POST_FORUM_DETAILS | RENDER_POST_TOPIC_DETAILS | RENDER_POST_SEARCH);
     }
 
     $response = mobiquo_val(array(
@@ -124,7 +124,7 @@ function search_func($raw_params)
 
         $topics = array();
         foreach ($_topics as $topic) {
-            $topics[] = render_topic_to_tapatalk($topic['topic_id'], false, $start, $max, $topic, RENDER_TOPIC_POST_KEY_NAME);
+            $topics[] = render_topic_to_tapatalk($topic['topic_id'], false, $start, $max, $topic, RENDER_TOPIC_POST_KEY_NAME | RENDER_TOPIC_SEARCH);
         }
 
         $response = mobiquo_val(array(
@@ -137,7 +137,7 @@ function search_func($raw_params)
 
         $posts = array();
         foreach ($_posts as $post) {
-            $posts[] = render_post_to_tapatalk($post['post_id'], false, $post, RENDER_POST_SHORT_CONTENT | RENDER_POST_FORUM_DETAILS | RENDER_POST_TOPIC_DETAILS);
+            $posts[] = render_post_to_tapatalk($post['post_id'], false, $post, RENDER_POST_SHORT_CONTENT | RENDER_POST_FORUM_DETAILS | RENDER_POST_TOPIC_DETAILS | RENDER_POST_SEARCH);
         }
 
         $response = mobiquo_val(array(

@@ -116,13 +116,19 @@ function get_conversations_func($raw_params)
     foreach ($result['topics'] as $topic) {
         $participants = array();
         foreach ($topic['participants'] as $participant) {
-            $participants[$participant['user_id']] = mobiquo_val(array(
+            $arr = array(
                 'user_id' => mobiquo_val(strval($participant['user_id']), 'string'),
                 'username' => mobiquo_val($participant['username'], 'base64'),
-                'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($participant['user_id'], true), 'base64'),
                 'icon_url' => mobiquo_val($participant['icon_url'], 'string'),
                 'is_online' => mobiquo_val($participant['is_online'], 'boolean'),
-            ), 'struct');
+            );
+            $display_text = $GLOBALS['FORUM_DRIVER']->get_username($participant['user_id'], true);
+            if ($display_text != $participant['username']) {
+                $arr += array(
+                    'display_text' => mobiquo_val($display_text, 'base64'),
+                );
+            }
+            $participants[$participant['user_id']] = mobiquo_val($arr, 'struct');
         }
 
         $topics[] = mobiquo_val(array(
@@ -180,13 +186,19 @@ function get_conversation_func($raw_params)
 
     $participants = array();
     foreach ($result['participants'] as $participant) {
-        $participants[$participant['user_id']] = mobiquo_val(array(
+        $arr = array(
             'user_id' => mobiquo_val(strval($participant['user_id']), 'string'),
             'username' => mobiquo_val($participant['username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($participant['user_id'], true), 'base64'),
             'icon_url' => mobiquo_val($participant['icon_url'], 'string'),
             'is_online' => mobiquo_val($participant['is_online'], 'boolean'),
-        ), 'struct');
+        );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($participant['user_id'], true);
+        if ($display_text != $participant['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+        $participants[$participant['user_id']] = mobiquo_val($arr, 'struct');
     }
 
     $posts = array();

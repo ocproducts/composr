@@ -309,13 +309,19 @@ function get_topic_participants_func($raw_params)
 
     $users = array();
     foreach ($_users as $user) {
-        $users[] = mobiquo_val(array(
+        $arr = array(
             'user_id' => mobiquo_val(strval($user['user_id']), 'string'),
             'username' => mobiquo_val($user['username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($user['user_id'], true), 'base64'),
             'icon_url' => mobiquo_val($user['icon_url'], 'string'),
             'is_online' => mobiquo_val($user['is_online'], 'boolean'),
-        ), 'struct');
+        );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($user['user_id'], true);
+        if ($display_text != $user['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+        $users[] = mobiquo_val($arr, 'struct');
     }
 
     $response = mobiquo_val(array(

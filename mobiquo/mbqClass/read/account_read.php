@@ -37,17 +37,23 @@ class CMSAccountRead
 
         $users = array();
         foreach ($_users as $user) {
-            $users[] = mobiquo_val(array(
+            $arr = array(
                 'uid' => mobiquo_val(strval($user['id']), 'string'),
                 'username' => mobiquo_val($user['m_username'], 'base64'),
-                'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($user['id'], true), 'base64'),
                 'encrypt_email' => base64_encode($tt_cipher->encrypt($user['enc_email'], $api_key)),
                 'allow_email' => mobiquo_val($user['m_allow_emails'], 'boolean'),
                 'language' => mobiquo_val($user['m_language'], 'string'),
                 'reg_date' => mobiquo_val($user['m_join_time'], 'dateTime.iso8601'),
                 'post_num' => mobiquo_val($user['m_cache_num_posts'], 'int'),
                 'last_active' => mobiquo_val($user['m_last_submit_time'], 'dateTime.iso8601'),
-            ), 'struct');
+            );
+            $display_text = $GLOBALS['FORUM_DRIVER']->get_username($user['id'], true);
+            if ($display_text != $user['m_username']) {
+                $arr += array(
+                    'display_text' => mobiquo_val($display_text, 'base64'),
+                );
+            }
+            $users[] = mobiquo_val($arr, 'struct');
         }
         return $users;
     }

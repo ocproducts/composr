@@ -29,6 +29,9 @@ initialise_mobiquo();
  */
 class TapatalkPush extends TapatalkBasePush
 {
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         parent::__construct($this);
@@ -37,6 +40,11 @@ class TapatalkPush extends TapatalkBasePush
     // Slugs (state storage from server)
     // =================================
 
+    /**
+     * Get current push slug state.
+     *
+     * @return string Push slug
+     */
     public function get_push_slug()
     {
         $tapatalk_push_slug = get_value('tapatalk_push_slug', null, true);
@@ -46,6 +54,12 @@ class TapatalkPush extends TapatalkBasePush
         return $tapatalk_push_slug;
     }
 
+    /**
+     * Set push slug.
+     *
+     * @param  string $slug Push slug
+     * @return boolean Success status
+     */
     public function set_push_slug($slug)
     {
         set_value('tapatalk_push_slug', $slug, true);
@@ -55,11 +69,23 @@ class TapatalkPush extends TapatalkBasePush
     // Tapatalk members (only these members have notifications relayed through)
     // ========================================================================
 
+    /**
+     * Set if a member is a tapatalk member.
+     *
+     * @param  array $member_id Member ID
+     * @param  boolean $is Whether they are
+     */
     public function set_is_tapatalk_member($member_id, $is = true)
     {
         set_value('is_tapatalk_member__' . strval($member_id), $is ? '1' : '0', true);
     }
 
+    /**
+     * Get if a member is a tapatalk member.
+     *
+     * @param  array $member_id Member ID
+     * @return boolean Whether they are
+     */
     public function get_is_tapatalk_member($member_id)
     {
         $is = get_value('is_tapatalk_member__' . strval($member_id), null, true);
@@ -69,6 +95,11 @@ class TapatalkPush extends TapatalkBasePush
     // Push code
     // =========
 
+    /**
+     * Do a push for a post.
+     *
+     * @param  AUTO_LINK $post_id Post ID
+     */
     public function do_push($post_id)
     {
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
@@ -80,7 +111,7 @@ class TapatalkPush extends TapatalkBasePush
             1
         );
         if (!isset($post_rows[0])) {
-            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            return;
         }
         $post_row = $post_rows[0];
 
@@ -92,37 +123,71 @@ class TapatalkPush extends TapatalkBasePush
         } else {
             $is_new_topic = ($post_row['t_cache_first_post_id'] == $post_row['post_id']);
             $this->do_push_post($post_row, $is_new_topic);
-        }
 
-        // Send mentions
-        $just_post_row = db_map_restrict($post_row, array('id', 'p_post'));
-        get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']); // Just so that the mentions are found
-        global $MEMBER_MENTIONS_IN_COMCODE;
-        if (isset($MEMBER_MENTIONS_IN_COMCODE)) {
-            $this->do_push_mention($post_row, array_unique($MEMBER_MENTIONS_IN_COMCODE));
-        }
-
-        // Send quotes
-        $comcode = get_translated_text($post_row['p_post']);
-        $matches = array();
-        $num_matches = preg_match_all('#\[quote( param)?="([^"]+)"\]#', $comcode, $matches);
-        $quoted_members = array();
-        for ($i = 0; $i < $num_matches; $i++) {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($matches[2][$i]);
-            if (!is_null($member_id)) {
-                $quoted_members[] = $member_id;
+            // Send mentions
+            comcode_to_tempcode(get_translated_text($post_row['p_post'])); // Just so that the mentions are found
+            global $MEMBER_MENTIONS_IN_COMCODE;
+            if (isset($MEMBER_MENTIONS_IN_COMCODE)) {
+                $this->do_push_mention($post_row, array_unique($MEMBER_MENTIONS_IN_COMCODE));
             }
+
+            // Send quotes
+            $comcode = get_translated_text($post_row['p_post']);
+            $matches = array();
+            $num_matches = preg_match_all('#\[quote( param)?="([^"]+)"\]#', $comcode, $matches);
+            $quoted_members = array();
+            for ($i = 0; $i < $num_matches; $i++) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($matches[2][$i]);
+                if (!is_null($member_id)) {
+                    $quoted_members[] = $member_id;
+                }
+            }
+            $this->do_push_quote($post_row, array_unique($quoted_members));
         }
-        $this->do_push_quote($post_row, array_unique($quoted_members));
     }
 
+    /**
+     * Do a push for a like.
+     *
+     * @param  AUTO_LINK $post_id Post ID
+     */
+    public function do_like_push($post_id)
+    {
+        $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
+        $post_rows = $GLOBALS['FORUM_DB']->query_select(
+            'f_posts p JOIN ' . $table_prefix . 'f_topics t ON t.id=p.p_topic_id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id',
+            array('*', 'p.id AS post_id', 't.id AS topic_id', 'f.id AS forum_id'),
+            array('p.id' => $post_id),
+            '',
+            1
+        );
+        if (!isset($post_rows[0])) {
+            return;
+        }
+        $post_row = $post_rows[0];
+
+        ini_set('ocproducts.type_strictness', '0');
+
+        $member_ids = array($post_row['p_poster']);
+
+        $data = $this->build_data('like', $post_row, $member_ids);
+        if (!is_null($data)) {
+            self::do_push_request($data);
+        }
+    }
+
+    /**
+     * Helper: Do a push for a conversation.
+     *
+     * @param  array $post_row Post row
+     */
     private function do_push_conversation($post_row)
     {
         $member_ids = array();
 
-        $_member_ids = array();
-        $_member_ids[] = $post_row['t_pt_to'];
-        $_member_ids[] = $post_row['t_pt_from'];
+        $member_ids[] = $post_row['t_pt_to'];
+        $member_ids[] = $post_row['t_pt_from'];
+
         $access = $GLOBALS['FORUM_DB']->query_select('f_special_pt_access', array('s_member_id'), array('s_topic_id' => $post_row['topic_id']));
         $member_ids = array_merge($member_ids, collapse_1d_complexity('s_member_id', $access));
         $member_ids = array_unique($member_ids);
@@ -133,6 +198,12 @@ class TapatalkPush extends TapatalkBasePush
         }
     }
 
+    /**
+     * Helper: Do a push for a post.
+     *
+     * @param  array $post_row Post row
+     * @param  boolean $is_new_topic Whether it is a new topic
+     */
     private function do_push_post($post_row, $is_new_topic)
     {
         require_code('notifications');
@@ -145,7 +216,7 @@ class TapatalkPush extends TapatalkBasePush
 
             $type = ($is_new_topic ? 'newtopic' : 'sub');
 
-            $data = $this->build_data($type, $post_row, $followers);
+            $data = $this->build_data($type, $post_row, array_keys($followers));
             if (!is_null($data)) {
                 self::do_push_request($data);
             }
@@ -158,9 +229,15 @@ class TapatalkPush extends TapatalkBasePush
         } while (count($followers) > 0);
     }
 
+    /**
+     * Helper: Do a push for a mention.
+     *
+     * @param  array $post_row Post row
+     * @param  array $mentioned_members List of mentioned members
+     */
     private function do_push_mention($post_row, $mentioned_members)
     {
-        $type = 'mention';
+        $type = 'tag';
 
         $data = $this->build_data($type, $post_row, $mentioned_members);
         if (!is_null($data)) {
@@ -168,6 +245,12 @@ class TapatalkPush extends TapatalkBasePush
         }
     }
 
+    /**
+     * Helper: Do a push for a quote.
+     *
+     * @param  array $post_row Post row
+     * @param  array $quoted_members List of mentioned members
+     */
     private function do_push_quote($post_row, $quoted_members)
     {
         $type = 'quote';
@@ -178,6 +261,15 @@ class TapatalkPush extends TapatalkBasePush
         }
     }
 
+    /**
+     * Build push structure, for sending.
+     *
+     * @param  string $type Push type
+     * @param  array $post_row Post row
+     * @param  array $_member_ids Member IDs
+     * @param  boolean $is_pt Is private topic
+     * @return ?array Push structure (null: could not build / none to do)
+     */
     private function build_data($type, $post_row, $_member_ids, $is_pt = false)
     {
         $member_ids = array();
@@ -250,6 +342,12 @@ class TapatalkPush extends TapatalkBasePush
         return $arr;
     }
 
+    /**
+     * Find member type.
+     *
+     * @param  MEMBER $member Member ID
+     * @return string User type
+     */
     private function check_return_user_type($member)
     {
         if ($GLOBALS['FORUM_DRIVER']->is_banned($member)) {

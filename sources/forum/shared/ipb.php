@@ -97,7 +97,7 @@ class Forum_driver_ipb_shared extends Forum_driver_base
     /**
      * preg callback.
      *
-     * @param  array $matches Matches 
+     * @param  array $matches Matches
      * @return string Replacement
      */
     public function unentity_1($matches)
@@ -112,7 +112,7 @@ class Forum_driver_ipb_shared extends Forum_driver_base
     /**
      * preg callback.
      *
-     * @param  array $matches Matches 
+     * @param  array $matches Matches
      * @return string Replacement
      */
     public function unentity_2($matches)

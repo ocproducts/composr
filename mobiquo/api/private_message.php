@@ -145,11 +145,17 @@ function get_box_func($raw_params)
 
     $msg_to = array();
     foreach ($box['msg_to'] as $msg) {
-        $msg_to[] = mobiquo_val(array(
+        $arr = array(
             'user_id' => mobiquo_val(strval($msg['user_id']), 'string'),
             'username' => mobiquo_val($msg['username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($msg['user_id'], true), 'base64'),
-        ), 'struct');
+        );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($msg['user_id'], true);
+        if ($display_text != $msg['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+        $msg_to[] = mobiquo_val($arr, 'struct');
     }
 
     $response = mobiquo_val(array(
@@ -183,11 +189,17 @@ function get_message_func($raw_params)
 
     $msg_to = array();
     foreach ($details['msg_to'] as $_msg_to) {
-        $msg_to[] = mobiquo_val(array(
+        $arr = array(
             'user_id' => mobiquo_val(strval($_msg_to['user_id']), 'string'),
             'username' => mobiquo_val($_msg_to['username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($_msg_to['user_id'], true), 'base64'),
-        ), 'struct');
+        );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($_msg_to['user_id'], true);
+        if ($display_text != $_msg_to['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+        $msg_to[] = mobiquo_val($arr, 'struct');
     }
 
     $response = mobiquo_val(array(

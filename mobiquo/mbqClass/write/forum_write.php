@@ -32,6 +32,9 @@ class CMSForumWrite
         }
 
         require_code('cns_forums_action2');
+        $_max_forum_detail = get_value('max_forum_detail');
+        set_value('max_forum_detail', '10000');
         cns_ping_forum_read_all($forum_id);
+        set_value('max_forum_detail', $_max_forum_detail);
     }
 }

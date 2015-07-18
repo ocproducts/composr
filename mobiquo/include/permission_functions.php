@@ -122,6 +122,7 @@ function has_topic_access($topic_id, $member_id = null, $topic_details = null)
     }
 
     if (is_null($topic_details['t_forum_id'])) {
+        require_code('cns_topics');
         if ((!has_privilege($member_id, 'view_other_pt')) && (!cns_has_special_pt_access($topic_id, $member_id))) {
             if (($topic_details['t_pt_from'] != $member_id) && ($topic_details['t_pt_to'] != $member_id)) {
                 return false;

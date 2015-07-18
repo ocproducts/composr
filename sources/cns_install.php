@@ -685,6 +685,10 @@ function install_cns($upgrade_from = null)
             't_cache_last_member_id' => '?MEMBER',
             't_cache_num_posts' => 'INTEGER',
         ));
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_first_member_id', array('t_cache_first_member_id'));
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_last_member_id', array('t_cache_last_member_id'));
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_first_post_id', array('t_cache_first_post_id'));
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_last_post_id', array('t_cache_last_post_id'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_num_views', array('t_num_views'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_pt_to', array('t_pt_to'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_pt_from', array('t_pt_from'));

@@ -21,12 +21,14 @@ define('TAPATALK_POST_NEEDS_VALIDATION', 1);
 define('RENDER_TOPIC_POST_KEY_NAME', 1);
 define('RENDER_TOPIC_MODERATED_BY', 2);
 define('RENDER_TOPIC_DEEP_PERMISSIONS', 4);
+define('RENDER_TOPIC_SEARCH', 8);
 
 define('RENDER_POST_SHORT_CONTENT', 1);
 define('RENDER_POST_FORUM_DETAILS', 2);
 define('RENDER_POST_TOPIC_DETAILS', 4);
 define('RENDER_POST_MODERATED_BY', 8);
 define('RENDER_POST_RESULT_TRUE', 16);
+define('RENDER_POST_SEARCH', 32);
 
 /**
  * Find whether a topic has unread posts.
@@ -203,6 +205,9 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
             '',
             1
         );
+        if (!isset($_details[0])) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
         $details = $_details[0];
     }
 
@@ -259,7 +264,6 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         'is_closed' => mobiquo_val($details['t_is_open'] == 0, 'boolean'),
         'can_report' => mobiquo_val(true, 'boolean'),
         'can_reply' => mobiquo_val(can_reply_to_topic($topic_id, $member_id, $details), 'boolean'),
-        'breadcrumb' => mobiquo_val(build_forum_breadcrumbs($forum_id), 'array'),
         'can_merge' => mobiquo_val($moderation_details['can_merge'], 'boolean'),
         'can_merge_post' => mobiquo_val($moderation_details['can_merge_post'], 'boolean'),
         'can_rename' => mobiquo_val($moderation_details['can_rename'], 'boolean'),
@@ -287,6 +291,10 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         'real_topic_id'=>,*/
         'can_upload' => mobiquo_val(true, 'boolean'),
     );
+
+    if (($behaviour_modifiers & RENDER_TOPIC_SEARCH) == 0) {
+        $arr['breadcrumb'] = mobiquo_val(build_forum_breadcrumbs($forum_id), 'array');
+    }
 
     $arr['can_thank'] = mobiquo_val(addon_installed('points'), 'boolean');
 
@@ -437,7 +445,11 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
 
     $moderation_details = moderation_assessment_post($post_row, $member_id, $behaviour_modifiers);
 
-    $attachments = get_post_attachments($post_id);
+    if ($return_html) {
+        $attachments = get_post_attachments($post_id);
+    } else {
+        $attachments = get_post_attachments($post_id, null, true);
+    }
 
     $post_author_id = $post_row['p_poster'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($post_author_id);
@@ -451,16 +463,22 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
     if (get_option('is_on_rating') == '1') {
         $likes = $GLOBALS['FORUM_DB']->query_select('rating', array('rating_member'), array('rating' => 10, 'rating_for_type' => 'post', 'rating_for_id' => strval($post_id)), '', 100);
         foreach ($likes as $like) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($like['rating_member']);
+            $lusername = $GLOBALS['FORUM_DRIVER']->get_username($like['rating_member']);
             if (is_null($username)) {
-                $username = do_lang('UNKNOWN');
+                $lusername = do_lang('UNKNOWN');
             }
 
-            $likes_info[] = mobiquo_val(array(
+            $_arr = array(
                 'userid' => mobiquo_val($like['rating_member'], 'string'),
-                'username' => mobiquo_val($username, 'base64'),
-                'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($like['rating_member'], true), 'base64'),
-            ), 'struct');
+                'username' => mobiquo_val($lusername, 'base64'),
+            );
+            $display_text = $GLOBALS['FORUM_DRIVER']->get_username($like['rating_member'], true);
+            if ($display_text != $lusername) {
+                $_arr += array(
+                    'display_text' => mobiquo_val($display_text, 'base64'),
+                );
+            }
+            $likes_info[] = mobiquo_val($_arr, 'struct');
 
             if ($like['rating_member'] == $member_id) {
                 $is_liked = true;
@@ -479,8 +497,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         'post_time' => mobiquo_val($post_row['p_time'], 'dateTime.iso8601'),
         'timestamp' => mobiquo_val(strval($post_row['p_time']), 'string'),
         'allow_smilies' => mobiquo_val(true, 'boolean'),
-        'attachments' => mobiquo_val(render_tapatalk_attachments($attachments), 'array'),
-        'likes_info' => mobiquo_val($likes_info, 'array'),
         'like_count' => mobiquo_val(count($likes_info), 'int'),
         'can_like' => mobiquo_val($can_like, 'boolean'),
         'is_liked' => mobiquo_val($is_liked, 'boolean'),
@@ -492,6 +508,13 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         'is_ban' => mobiquo_val($moderation_details['is_ban'], 'boolean'),
         'can_move' => mobiquo_val($moderation_details['can_move'], 'boolean'),
     );
+
+    if (($behaviour_modifiers & RENDER_POST_SEARCH) == 0) {
+        $arr += array(
+            'attachments' => mobiquo_val(render_tapatalk_attachments($attachments), 'array'),
+            'likes_info' => mobiquo_val($likes_info, 'array'),
+        );
+    }
 
     $validated = $post_row['p_validated'];
     $arr['state'] = mobiquo_val(($validated == 1) ? TAPATALK_POST_LIVE : TAPATALK_POST_NEEDS_VALIDATION, 'int');
@@ -621,9 +644,18 @@ function prepare_post_for_tapatalk($post, $return_html = false)
     }
 
     if ($return_html) {
-        $content = strip_attachments_from_comcode($content);
+        $content = strip_attachments_from_comcode($content, true);
+
+        // We need to simplify messy HTML as much as possible
+        require_code('comcode_from_html');
+        $content = semihtml_to_comcode($content, true);
+
+        $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
+        $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = array(); // HACKHACK: Disable emoticons. Tapatalk will sub in those that it supports. If we don't do this it replaces them all with the normal smile emoticon using a dum replacer for any inline images
 
         $post_tempcode = comcode_to_tempcode($content, $post['p_poster'], false, 60, null, $GLOBALS['FORUM_DB']);
+
+        $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = $bak;
 
         /*	Probably not needed, if Tapatalk is currently displaying edit by to normal users
         $last_edited=do_template('CNS_TOPIC_POST_LAST_EDITED',array(
@@ -637,6 +669,10 @@ function prepare_post_for_tapatalk($post, $return_html = false)
 
         $content = $post_tempcode->evaluate();
         $content = trim(preg_replace('#[ \t]+#u', ' ', preg_replace('#[ \t]*\n+#u', ' ', $content))); // Strip line-breaks, as "quasi-HTML" may be used
+
+        // No inline images allowed (Tapatalk turns them into emoticons)
+        $content = preg_replace('#<img[^>]* alt="([^">]+)" src="([^">]*)"[^>]+>#', '<a href="$2">$1</a>', $content);
+        $content = preg_replace('#<img[^>]* src="([^">]*)"[^>]+>#', '<a href="$1">' . do_lang('IMAGE') . '</a>', $content);
     } else {
         $content = tapatalk_strip_comcode($content);
         /*	Probably not needed, if Tapatalk is currently displaying edit by to normal users
@@ -652,9 +688,10 @@ function prepare_post_for_tapatalk($post, $return_html = false)
  *
  * @param  ?AUTO_LINK $post_id Post ID (null: Use attachment ID)
  * @param  ?AUTO_LINK $attachment_id Attachment ID (null: Use post ID)
+ * @param  boolean $non_image_only Only do non-image attachments (because image ones are shown as [img] tags separately). Can only be used if $attachment_id is null.
  * @return array List of attachment details
  */
-function get_post_attachments($post_id, $attachment_id = null)
+function get_post_attachments($post_id, $attachment_id = null, $non_image_only = false)
 {
     require_code('files');
     require_code('images');
@@ -666,6 +703,12 @@ function get_post_attachments($post_id, $attachment_id = null)
             $attachment_row = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => $att['a_id']), '', 1);
             if (!isset($attachment_row[0])) {
                 continue;
+            }
+
+            if ($non_image_only) {
+                if (is_image($attachment_row[0]['a_original_filename'])) {
+                    continue;
+                } // Already as [img] tag
             }
 
             if (!is_image($attachment_row[0]['a_thumb_url'])) {

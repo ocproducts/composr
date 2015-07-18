@@ -163,12 +163,19 @@ function get_following_func($raw_params)
     $_following = $social_write_object->get_following();
     $following = array();
     foreach ($_following as $f) {
-        $following[] = mobiquo_val(array(
+        $arr = array(
             'user_id' => mobiquo_val(strval($f['user_id']), 'string'),
             'username' => mobiquo_val($f['username'], 'base64'),
             'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($f['user_id'], true), 'base64'),
             'is_online' => mobiquo_val($f['is_online'], 'boolean'),
-        ), 'struct');
+        );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($f['user_id'], true);
+        if ($display_text != $f['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+        $following[] = mobiquo_val($arr, 'struct');
     }
 
     $response = mobiquo_val(array(
@@ -194,13 +201,19 @@ function get_follower_func($raw_params)
     $social_write_object = new CMSSocialRead();
     $_followers = $social_write_object->get_followers();
     $followers = array();
-    foreach ($_followers as $follower) {
-        $followers[] = mobiquo_val(array(
-            'user_id' => mobiquo_val(strval($follower['user_id']), 'string'),
-            'username' => mobiquo_val($follower['username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($follower['user_id'], true), 'base64'),
-            'is_online' => mobiquo_val($follower['is_online'], 'boolean'),
-        ), 'struct');
+    foreach ($_followers as $f) {
+        $arr = array(
+            'user_id' => mobiquo_val(strval($f['user_id']), 'string'),
+            'username' => mobiquo_val($f['username'], 'base64'),
+            'is_online' => mobiquo_val($f['is_online'], 'boolean'),
+        );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($f['user_id'], true);
+        if ($display_text != $f['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+        $followers[] = mobiquo_val($arr, 'struct');
     }
 
     $response = mobiquo_val(array(
@@ -246,7 +259,6 @@ function get_alert_func($raw_params)
         $arr = array(
             'user_id' => mobiquo_val(strval($item['user_id']), 'string'),
             'username' => mobiquo_val($item['username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true), 'base64'),
             'icon_url' => mobiquo_val($item['icon_url'], 'string'),
             'message' => mobiquo_val($item['message'], 'base64'),
             'timestamp' => mobiquo_val($item['timestamp'], 'string'),
@@ -254,6 +266,12 @@ function get_alert_func($raw_params)
             'content_id' => mobiquo_val($item['content_id'], 'string'),
             'unread' => mobiquo_val($item['unread'], 'boolean'),
         );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true);
+        if ($display_text != $item['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
 
         if (isset($item['topic_id'])) {
             $arr['topic_id'] = mobiquo_val(strval($item['topic_id']), 'string');
@@ -293,16 +311,22 @@ function get_activity_func($raw_params)
 
     $items = array();
     foreach ($_items as $item) {
-        $items[] = mobiquo_val(array(
+        $arr = array(
             'user_id' => mobiquo_val(strval($item['user_id']), 'string'),
             'username' => mobiquo_val($item['username'], 'base64'),
-            'display_text' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true), 'base64'),
             'icon_url' => mobiquo_val($item['icon_url'], 'string'),
             'message' => mobiquo_val($item['message'], 'base64'),
             'timestamp' => mobiquo_val($item['timestamp'], 'string'),
             'content_type' => mobiquo_val($item['content_type'], 'string'),
             'content_id' => mobiquo_val($item['content_id'], 'string'),
-        ), 'struct');
+        );
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true);
+        if ($display_text != $item['username']) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+        $items[] = mobiquo_val($arr, 'struct');
     }
 
     $response = mobiquo_val(array(

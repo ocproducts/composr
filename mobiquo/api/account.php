@@ -77,7 +77,6 @@ function sign_in_func($raw_params)
         'user_id' => mobiquo_val($results['member_id'], 'string'),
         'login_name' => mobiquo_val($user_details['login_name'], 'base64'),
         'username' => mobiquo_val($user_details['username'], 'base64'),
-        'display_text' => mobiquo_val($user_details['display_text'], 'base64'),
         'usergroup_id' => mobiquo_val($user_group, 'array'),
         'email' => mobiquo_val($user_details['email'], 'base64'),
         'icon_url' => mobiquo_val($user_details['icon_url'], 'string'),
@@ -97,6 +96,11 @@ function sign_in_func($raw_params)
         'max_jpg_size' => mobiquo_val($user_details['max_jpg_size'], 'int'),
         'post_countdown' => mobiquo_val($user_details['post_countdown'], 'int'),
     );
+    if ($user_details['display_text'] != $user_details['username']) {
+        $arr += array(
+            'display_text' => mobiquo_val($user_details['display_text'], 'base64'),
+        );
+    }
     if (isset($results['preview_topic_id'])) {
         $arr['preview_topic_id'] = mobiquo_val(strval($results['preview_topic_id']), 'string');
     }

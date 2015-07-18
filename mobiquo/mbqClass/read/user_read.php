@@ -48,11 +48,10 @@ class CMSUserRead
 
         $ignored_uids = implode(',', array_map('strval', $this->get_ignored_user_ids($user_id)));
 
-        return array(
+        $arr = array(
             'user_id' => $user_id,
             'login_name' => $username,
             'username' => $username,
-            'display_text' => $GLOBALS['FORUM_DRIVER']->get_username($user_id, true),
             'usergroup_id' => $GLOBALS['FORUM_DRIVER']->get_members_groups($user_id),
             'email' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_email_address'),
             'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($user_id),
@@ -80,6 +79,15 @@ class CMSUserRead
 
             'ignored_uids' => $ignored_uids,
         );
+
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($user_id, true);
+        if ($display_text != $username) {
+            $arr += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
+
+        return $arr;
     }
 
     /**
@@ -273,7 +281,6 @@ class CMSUserRead
         $user_info = array(
             'user_id' => $user_id,
             'username' => $username,
-            'display_text' => $GLOBALS['FORUM_DRIVER']->get_username($user_id, true),
             'post_count' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_cache_num_posts'),
             'reg_time' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_join_time'),
             'last_activity_time' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_last_visit_time'),
@@ -291,6 +298,13 @@ class CMSUserRead
             'can_ban' => can_ban_member($user_id),
             'is_ban' => $GLOBALS['FORUM_DRIVER']->is_banned($user_id),
         );
+
+        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($user_id, true);
+        if ($display_text != $username) {
+            $user_info += array(
+                'display_text' => mobiquo_val($display_text, 'base64'),
+            );
+        }
 
         $at_title = $GLOBALS['SITE_DB']->query_select_value_if_there('sessions', 'the_title', array('member_id' => $user_id), 'ORDER BY last_activity DESC');
         if (!is_null($at_title)) {

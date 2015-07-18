@@ -41,12 +41,21 @@ class CMSSocialRead
                 continue;
             }
 
-            $followers[] = array(
+            $arr = array(
                 'user_id' => $row['member_liked'],
                 'username' => $username,
                 'display_text' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked'], true),
                 'is_online' => is_member_online($row['member_liked']),
             );
+
+            $display_text = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked'], true);
+            if ($display_text != $username) {
+                $arr += array(
+                    'display_text' => mobiquo_val($display_text, 'base64'),
+                );
+            }
+
+            $followers[] = $arr;
         }
         return $followers;
     }
@@ -72,12 +81,21 @@ class CMSSocialRead
                 continue;
             }
 
-            $followers[] = array(
+            $arr = array(
                 'user_id' => $row['member_likes'],
                 'username' => $username,
                 'display_text' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes'], true),
                 'is_online' => is_member_online($row['member_likes']),
             );
+
+            $display_text = $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes'], true);
+            if ($display_text != $username) {
+                $arr += array(
+                    'display_text' => mobiquo_val($display_text, 'base64'),
+                );
+            }
+
+            $followers[] = $arr;
         }
         return $followers;
     }
