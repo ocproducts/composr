@@ -94,7 +94,12 @@ class Forum_driver_ipb_shared extends Forum_driver_base
         return $val;
     }
 
-    // for compatibility
+    /**
+     * preg callback.
+     *
+     * @param  array $matches Matches 
+     * @return string Replacement
+     */
     public function unentity_1($matches)
     {
         $x = hexdec($matches[1]);
@@ -104,6 +109,12 @@ class Forum_driver_ipb_shared extends Forum_driver_base
         return chr($x);
     }
 
+    /**
+     * preg callback.
+     *
+     * @param  array $matches Matches 
+     * @return string Replacement
+     */
     public function unentity_2($matches)
     {
         $x = intval($matches[1]);
@@ -113,6 +124,12 @@ class Forum_driver_ipb_shared extends Forum_driver_base
         return chr($x);
     }
 
+    /**
+     * Unescape from IPB escaping.
+     *
+     * @param  string $val The value to unescape
+     * @return string The unescaped value
+     */
     public function ipb_unescape($val)
     {
         $val = @html_entity_decode($val, ENT_QUOTES, get_charset());

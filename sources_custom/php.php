@@ -354,7 +354,7 @@ function get_php_file_api($filename, $include_code = true)
     // See if there are any functions with blank lines above them
     for ($i = 0; array_key_exists($i, $lines); $i++) {
         $line = ltrim($lines[$i]);
-        if ((substr($line, 0, 9) == 'function ') && ((trim($lines[$i - 1]) == '') || (trim($lines[$i - 1]) == '{'))) {
+        if ((preg_match('#^((public|private|protected|static|abstract) )*function (.*)#', $line) != 0) && ((trim($lines[$i - 1]) == '') || (trim($lines[$i - 1]) == '{'))) {
             // Infer some parameters from the function line, given we have no phpdoc
             if (substr($lines[$i], 0, 9) == 'function ') { // Only if not class level (i.e. global)
                 $function_name = preg_replace('#function\s+(\w+)\s*\(.*#s', '${1}', $line);
