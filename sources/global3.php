@@ -542,6 +542,9 @@ function set_http_status_code($code)
             case '404':
                 header('HTTP/1.0 404 Not Found');
                 break;
+            case '429':
+                header('HTTP/1.0 429 Too Many Requests');
+                break;
             case '500':
                 header('HTTP/1.0 500 Internal server error');
                 break;

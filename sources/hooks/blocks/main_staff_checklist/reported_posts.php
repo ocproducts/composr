@@ -43,8 +43,8 @@ class Hook_checklist_reported_posts
         if (is_null($forum_id)) {
             return array();
         }
-        $where = 't_forum_id=' . strval($forum_id);
-        $query = 'SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics ttop LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ttop.id=l.l_topic_id AND l.l_member_id=' . strval(get_member()) . ' WHERE ' . $where;
+        $where = 't_forum_id=' . strval($forum_id) . ' AND t_is_open=1';
+        $query = 'SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $where;
         $outstanding = $GLOBALS['FORUM_DB']->query_value_if_there($query);
 
         if ($outstanding > 0) {

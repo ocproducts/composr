@@ -17,6 +17,7 @@ test_a
 /themes/*/templates_cached/*/*.css
 /themes/*/templates_cached/*/*.tcp
 /themes/*/templates_cached/*/*.gz
+/data_custom/rate_limiter.php
 /data_custom/*log.php
 /exports/*/*.tar
 /exports/builds/*/*

@@ -157,6 +157,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
     require_code('member_mentions');
     dispatch_member_mention_notifications('forum', strval($forum_id));
 
+    require_code('sitemap_xml');
     if ($forum_id == db_get_first_id()) {
         $sitemap_priority = SITEMAP_IMPORTANCE_ULTRA;
     } else {
@@ -166,7 +167,6 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
             $sitemap_priority = SITEMAP_IMPORTANCE_MEDIUM;
         }
     }
-    require_code('sitemap_xml');
     notify_sitemap_node_add('SEARCH:forumview:id=' . strval($forum_id), null, null, $sitemap_priority, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
 
     return $forum_id;

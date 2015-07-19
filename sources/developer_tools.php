@@ -78,7 +78,7 @@ function semi_dev_mode_startup()
                 }
             }
             foreach ($_MODIFIED_FILES as $file) {
-                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (substr($file, -4) != '.tmp') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
+                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (substr($file, -4) != '.tmp') && (basename($file) != 'rate_limiter.php') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
                     @exit(escape_html('File not change-synched: ' . $file));
                 }
             }

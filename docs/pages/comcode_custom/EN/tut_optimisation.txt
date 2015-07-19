@@ -127,6 +127,33 @@ $SITE_INFO['no_extra_mobiles']='1'; // Don't read in extra mobile device signatu
 [/codebox]
 They all have effects, so be careful! There are reasons these settings aren't the defaults.
 
+[title="2"]Rate limiting[/title]
+
+A site can be impacted by a flood of requests from a machine, and it is wise to block this.
+
+If you're on a shared host, requests floods can even get you suspended, or your whole site automatically rate limited.
+
+To enable add this to [tt]_config.php[/tt]:
+[codebox]
+$SITE_INFO['rate_limiting']='1';
+$SITE_INFO['rate_limit_time_window']='10';
+$SITE_INFO['rate_limit_hits_per_window']='5';
+[/codebox]
+
+This produces soft errors with the correct HTTP header. The errors happen early, before Composr boots up.
+
+[title="3"]CloudLinux[/title]
+
+CloudLinux is popular with web hosts. It is a modified version of Red Hat Linux that can limit the performance of individual accounts, based on the [tt]lve[/tt] tools.
+
+CloudLinux tracks maximum average CPU, calculated for the worst 5 second time period your site performance has in any particular hour (by default). This is calculated across all CPU cores, so it tends to trip on request floods (rather than any single slow request), with the request processing spanning multiple cores.
+
+CloudLinux also tracks average CPU, but this is less of an issue because the average tends to be much less than the maximum, but it is the maximum that hosts will typically look at.
+
+Web hosts may automatically produce warnings based on the CloudLinux maximums getting hit, or even automatic suspensions. At best, sites will automatically have their CPU kept to the configured maximum.
+
+cPanel users will find a resource usage graph is made available. Note that the 100% line on this graph represents 100% of the configured limit, not 100% of a CPU core or of combined CPU. The average and maximum lines are scaled proportional to this configured limit also. This will confuse you if you aren't aware of it, because everywhere else lve is configured and monitored in terms of percentage of total capacity.
+
 [title="2"]PHP time limit[/title]
 
 If you are really constrained for resources, and worry some requests may take too long in some cases, you can lower the PHP time limit from Composr's default 60 seconds.

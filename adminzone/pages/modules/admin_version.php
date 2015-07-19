@@ -869,8 +869,6 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'set_number', array('set_number', 'last_updated'));
             $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'last_updated', array('last_updated'));
             $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'is_deleted', array('is_deleted'));
-            require_code('sitemap_xml');
-            build_sitemap_cache_table();
         }
     }
 

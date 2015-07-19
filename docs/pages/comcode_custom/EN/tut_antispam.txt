@@ -28,6 +28,8 @@ We have an audio option for the CAPTCHA which is important for users with visual
 Remote Block Lists (RBLs) are a technique whereby Composr checks third-party lists of known spammers, via special RBL-protocols, based on DNS. You don't need to know the technical details other than that Composr can be configured to use an RBL service.
 We have picked defaults options within Composr to help you get started with the best service(s).
 
+Update: Actually the default list is now empty, as we learnt that there currently aren't any very reliable services for this. Common ones may block too widely, for example blocking computers that were at any point in the last year infected with a virus.
+
 [title="2"]Stop Forum Spam[/title]
 
 We use the popular [url="Stop Forum Spam system"]http://www.stopforumspam.com/[/url] system to look for known spammers based upon IP address, username, and e-mail address. We also report who you identify as spammers, back to Stop Forum Spam.

@@ -50,6 +50,6 @@ class Hook_config_captcha_on_feedback
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

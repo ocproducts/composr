@@ -1,5 +1,5 @@
-/*{$,Parser hint: .innerHTML okay}*/
-/*{$,Parser hint: pure}*/
+{$,Parser hint: .innerHTML okay}*/
+{$,Parser hint: pure}*/
 
 /** @license
  *
@@ -346,6 +346,8 @@ function SoundManager(smURL, smID) {
     // special case 1: "Late setup". SM2 loaded normally, but user didn't assign flash URL eg., setup({url:...}) before SM2 init. Treat as delayed init.
 
     if (options) {
+
+      if (typeof options.html5Only !== 'undefined') this.html5Only = options.html5Only;
 
       if (noURL && didDCLoaded && options.url !== _undefined) {
         sm2.beginDelayedInit();
@@ -3459,6 +3461,7 @@ function SoundManager(smURL, smID) {
   // additional soundManager properties that soundManager.setup() will accept
 
   extraOptions = {
+    'html5Only' : 1,
     'onready': 1,
     'ontimeout': 1,
     'defaultOptions': 1,

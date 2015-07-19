@@ -583,6 +583,53 @@ if (count($SITE_INFO) == 0) {
     critical_error('INFO.PHP_CORRUPTED');
 }
 
+// Rate limiter, to stop aggressive bots
+global $SITE_INFO;
+$rate_limiting = empty($SITE_INFO['rate_limiting']) ? false : ($SITE_INFO['rate_limiting'] == '1');
+if ($rate_limiting) {
+    if ((!empty($_SERVER['REMOTE_ADDR'])) && (basename($_SERVER['SCRIPT_NAME']) == 'index.php')) {
+        // Basic context
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $time = time();
+
+        // Read in state
+        $rate_limiter_path = dirname(dirname(__FILE__)) . '/data_custom/rate_limiter.php';
+        if (is_file($rate_limiter_path)) {
+            global $RATE_LIMITING_DATA;
+            $RATE_LIMITING_DATA = array();
+            include($rate_limiter_path);
+        }
+
+        // Filter to just times within our window
+        $pertinent = array();
+        $rate_limit_time_window = empty($SITE_INFO['rate_limit_time_window']) ? 10 : intval($SITE_INFO['rate_limit_time_window']);
+        if (isset($RATE_LIMITING_DATA[$ip])) {
+            foreach ($RATE_LIMITING_DATA[$ip] as $i => $old_time) {
+                if ($old_time >= $time - $rate_limit_time_window) {
+                    $pertinent[] = $old_time;
+                }
+            }
+        }
+
+        // Do we have to block?
+        $rate_limit_hits_per_window = empty($SITE_INFO['rate_limit_hits_per_window']) ? 5 : intval($SITE_INFO['rate_limit_hits_per_window']);
+        if (count($pertinent) >= $rate_limit_hits_per_window) {
+            header('HTTP/1.0 429 Too Many Requests');
+            header('Content-Type: text/plain');
+            exit('We only allow ' . strval($rate_limit_hits_per_window) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
+        }
+
+        // Write out new state
+        $RATE_LIMITING_DATA[$ip] = $pertinent;
+        $RATE_LIMITING_DATA[$ip][] = $time;
+        file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';', LOCK_EX);
+        //sync_file($rate_limiter_path); Not done. Each server should rate limit separately. Synching this data across servers would be too slow and not scalable
+
+        // Save some memory
+        unset($RATE_LIMITING_DATA);
+    }
+}
+
 get_custom_file_base(); // Make sure $CURRENT_SHARE_USER is set if it is a shared site, so we can use CURRENT_SHARE_USER as an indicator of it being one.
 
 // Pass on to next bootstrap level
