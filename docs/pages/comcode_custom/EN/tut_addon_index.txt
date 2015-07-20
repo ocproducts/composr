@@ -575,7 +575,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
 			<td>A script to compile Composr to run on Facebook HipHop PHP (not Roadsend PHP anymore - we have removed that support).</td>
 			<!--<td>No</td>-->
 			<td><kbd></kbd></td>
-			<td><a href="http://compo.sr/docs10/tut_optimisation.htm">Optimising</a></td>
+			<td><a href="http://compo.sr/docs10/tut_optimisation.htm">Optimising Performance</a></td>
 			<td></td>
 			<td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=hphp_buildkit&amp;status_id=10">Link</a></td>
 		</tr>
@@ -1095,7 +1095,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
 			<td>A persistent data cache, using disk files for data storage.</td>
 			<!--<td>No</td>-->
 			<td><kbd></kbd></td>
-			<td><a href="http://compo.sr/docs10/tut_optimisation.htm">Optimising</a></td>
+			<td><a href="http://compo.sr/docs10/tut_optimisation.htm">Optimising Performance</a></td>
 			<td></td>
 			<td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=textbased_persistent_caching&amp;status_id=10">Link</a></td>
 		</tr>

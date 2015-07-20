@@ -84,12 +84,6 @@ function init__lang()
 
     global $SEARCH__CONTENT_BITS;
     $SEARCH__CONTENT_BITS = null;
-
-    if (strtolower(get_charset()) == 'utf-8') {
-        global $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2;
-        $HTML_ESCAPE_1_STRREP = array('&'/*,'ì','î'*/, '"', '\'', '<', '>'/*,'£'*/);
-        $HTML_ESCAPE_2 = array('&amp;'/*,'&quot;','&quot;'*/, '&quot;', '&#039;', '&lt;', '&gt;'/*,'&pound;'*/);
-    }
 }
 
 // ====

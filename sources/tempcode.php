@@ -495,14 +495,14 @@ function apply_tempcode_escaping($escaped, &$value)
         return $value;
     }
 
-    global $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $ESCAPE_HTML_OUTPUT;
+    global $ESCAPE_HTML_OUTPUT;
     foreach ($escaped as $escape) {
         if ($escape == ENTITY_ESCAPED) {
             if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
-                $value = str_replace($HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $value);
+                $value = htmlspecialchars($value, ENT_QUOTES, get_charset());
             }
         } elseif ($escape == FORCIBLY_ENTITY_ESCAPED) {
-            $value = str_replace($HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $value);
+            $value = htmlspecialchars($value, ENT_QUOTES, get_charset());
         } elseif ($escape == SQ_ESCAPED) {
             $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
         } elseif ($escape == DQ_ESCAPED) {
@@ -552,14 +552,14 @@ function apply_tempcode_escaping_inline($escaped, $value)
         return $value;
     }
 
-    global $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $ESCAPE_HTML_OUTPUT;
+    global $ESCAPE_HTML_OUTPUT;
     foreach ($escaped as $escape) {
         if ($escape == ENTITY_ESCAPED) {
             if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
-                $value = str_replace($HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $value);
+                $value = htmlspecialchars($value, ENT_QUOTES, get_charset());
             }
         } elseif ($escape == FORCIBLY_ENTITY_ESCAPED) {
-            $value = str_replace($HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $value);
+            $value = htmlspecialchars($value, ENT_QUOTES, get_charset());
         } elseif ($escape == SQ_ESCAPED) {
             $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
         } elseif ($escape == DQ_ESCAPED) {

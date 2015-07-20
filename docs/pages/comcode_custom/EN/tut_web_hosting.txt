@@ -25,7 +25,7 @@ The vast majority of users will choose traditional shared web hosting, or tradit
 
 Users with high requirements for CPU, memory, security, privacy, autonomy or disk space, may opt to get a [concept]dedicated server[/concept]. This is more expensive, and usually requires additional maintenance by the user, but for some users, is highly advisable.
 
-Programmers will often prefer IaaS and PaaS hosting in order to get scalability. However scalability is not automatic with any system, so programmers need to put serious consideration into infrastructure. This is discussed more in the [page="_SEARCH:tut_optimisation"]Optimising[/page] tutorial.
+Programmers will often prefer IaaS and PaaS hosting in order to get scalability. However scalability is not automatic with any system, so programmers need to put serious consideration into infrastructure. This is discussed more in the [page="_SEARCH:tut_optimisation"]Optimising Performance[/page] tutorial.
 
 Regardless of your choice, you'll always be running the same underlying software (PHP etc). For the purpose of this tutorial the differences don't really matter, except where we provide specific advice on configuring platforms.
 We have various different installation tutorials that go into details on how to install on the different hosting options.

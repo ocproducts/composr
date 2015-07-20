@@ -252,9 +252,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         $LAX_COMCODE = (get_option('lax_comcode') == '1');
     }
 
-    global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE, $HTML_ESCAPE_1_STRREP;
+    global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE;
 
-    $html_escape_1_strrep_inv = array_flip($HTML_ESCAPE_1_STRREP);
+    $html_escape_1_strrep_inv = array('&' => true, '"' => true, '\'' => true, '<' => true, '>' => true);
 
     $print_mode = get_param_integer('wide_print', 0) == 1;
 

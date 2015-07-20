@@ -597,7 +597,11 @@ if ($rate_limiting) {
         if (is_file($rate_limiter_path)) {
             global $RATE_LIMITING_DATA;
             $RATE_LIMITING_DATA = array();
+
+            $fp = fopen($rate_limiter_path, 'r');
+            flock($fp, LOCK_SH);
             include($rate_limiter_path);
+            fclose($fp);
         }
 
         // Filter to just times within our window

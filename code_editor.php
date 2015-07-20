@@ -36,10 +36,6 @@ if (get_magic_quotes_gpc()) {
     }
 }
 
-global $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2;
-$HTML_ESCAPE_1_STRREP = array('&'/*,'�','�'*/, '"', '\'', '<', '>'/*,'�'*/);
-$HTML_ESCAPE_2 = array('&amp;'/*,'&quot;','&quot;'*/, '&quot;', '&#039;', '&lt;', '&gt;'/*,'&pound;'*/);
-
 /**
  * Escape HTML text. Heavily optimised! Ended up with preg_replace after trying lots of things.
  *
@@ -52,7 +48,7 @@ function code_editor_escape_html($string)
         return ''; // Optimisation
     }
 
-    return str_replace($GLOBALS['HTML_ESCAPE_1_STRREP'], $GLOBALS['HTML_ESCAPE_2'], $string);
+    return htmlspecialchars($string, ENT_QUOTES);
 }
 
 require_once($FILE_BASE . '/_config.php');

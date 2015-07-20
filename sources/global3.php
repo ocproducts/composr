@@ -36,10 +36,6 @@ function init__global3()
     $IS_MOBILE_TRUTH_CACHE = null;
 
     // Heavily optimised string escaping data
-    global $HTML_ESCAPE_1, $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2;
-    $HTML_ESCAPE_1 = array('/&/', '/"/', '/\'/', '/</', '/>/');
-    $HTML_ESCAPE_1_STRREP = array('&', '"', '\'', '<', '>');
-    $HTML_ESCAPE_2 = array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;');
     global $PHP_REP_FROM, $PHP_REP_TO, $PHP_REP_TO_TWICE;
     $PHP_REP_FROM = array('\\', "\n", '$', '"', "\0");
     $PHP_REP_TO = array('\\\\', '\n', '\$', '\\"', '\0');
@@ -2100,9 +2096,9 @@ function escape_html($string)
         }
     }*/
 
-    global $HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
+    global $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
 
-    $ret = str_replace($HTML_ESCAPE_1_STRREP, $HTML_ESCAPE_2, $string);
+    $ret = htmlspecialchars($string, ENT_QUOTES, get_charset());
 
     if (!$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;

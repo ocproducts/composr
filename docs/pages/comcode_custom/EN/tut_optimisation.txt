@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Optimising[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Optimising Performance[/title]
 
 Composr is very heavily optimised so that pages load as quickly as possible. This tutorial will provide information on techniques and issues for increasing throughput, so that your site may support more visitors. Some of these techniques are programmer-level in complexity.
 
@@ -141,6 +141,8 @@ $SITE_INFO['rate_limit_hits_per_window']='5';
 [/codebox]
 
 This produces soft errors with the correct HTTP header. The errors happen early, before Composr boots up.
+
+Note that anyone behind a shared proxy server will share an IP address. If this is common you'll need to raise limits to compensate, or not enable this feature.
 
 [title="3"]CloudLinux[/title]
 
