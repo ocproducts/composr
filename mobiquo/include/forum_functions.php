@@ -654,8 +654,14 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         require_code('comcode_from_html');
         $content = semihtml_to_comcode($content, true);
 
+        // HACKHACK: Disable emoticons. Tapatalk will sub in those that it supports. If we don't do this it replaces them all with the normal smile emoticon using a dum replacer for any inline images
+        $emoticon_map = get_tapatalk_to_composr_emoticon_map('perfect_matches');
         $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
-        $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = array(); // HACKHACK: Disable emoticons. Tapatalk will sub in those that it supports. If we don't do this it replaces them all with the normal smile emoticon using a dum replacer for any inline images
+        foreach ($emoticon_map as $tapatalk_code => $composr_code) {
+            unset($GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE[$composr_code]);
+        }
+        $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
+        $content = str_replace(array_values($emoticon_map), array_keys($emoticon_map), $content); // Map Composr ones back to Tapatalk ones
 
         $post_tempcode = comcode_to_tempcode($content, $post['p_poster'], false, 60, null, $GLOBALS['FORUM_DB']);
 

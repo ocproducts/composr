@@ -85,6 +85,8 @@ class CMSPmWrite
 
         $first_new_post_id = mixed();
 
+        $message = add_attachments_from_comcode($message, array());
+
         switch ($action) {
             case self::TAPATALK_MESSAGE_NEW:
                 if ($subject == '') {

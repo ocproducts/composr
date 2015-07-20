@@ -175,6 +175,11 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,U]
 
 6) If things go wrong, you can disable short URLs via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
 
+[title="2"]Enabling a URL scheme retroactively[/title]
+
+Enabling a URL scheme on an existing site will not break old URLs, those URLs will just redirect, and the canonical URL will be specified in the HTML header under a meta tag regardless.
+So don't think that changing the URL scheme is disasterous for your SEO.
+
 [concepts
  1_key="Short URL"      1_value="A URL that points to content in a simpler, shorter, form. Also called a Quick URL' or an 'SEO URL'"
 ]Concepts[/concepts]

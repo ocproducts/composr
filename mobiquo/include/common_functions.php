@@ -124,6 +124,52 @@ function get_pagination_positions__by_page($params, $page_param_num, $max_param_
 }
 
 /**
+ * Get a mapping of emoticons, so we can do code conversion.
+ *
+ * @param  string Which ones of the mapping to get
+ * @set missing_from_composr perfect_matches all
+ * @return array Emoticons mapping
+ */
+function get_tapatalk_to_composr_emoticon_map($set)
+{
+    $GLOBALS['FORUM_DRIVER']->find_emoticons(); // Fill cache
+
+    $ret = array();
+
+    if ($set != 'perfect_matches') {
+        $ret += array(
+            ':eek:' => 'O_o',
+            ':confused:' => ':|',
+            ':thumbup:' => ':thumbs:',
+            ':thumbdown:' => ':shake:',
+            ':mad:' => ':@',
+            ':p' => ':P',
+        );
+    }
+
+    if ($set != 'missing_from_composr') {
+        $ret += array(
+            ':D' => ':D',
+            ':(' => ':(',
+            ':)' => ':)',
+            ';)' => ';)',
+            ':cool:' => ':cool:',
+            ':o' => ':o',
+            ':rolleyes:' => ':rolleyes:',
+        );
+    }
+
+    // Check really are in our code (as this is user-editable)
+    foreach ($ret as $tapatalk_code => $composr_code) {
+        if (!isset($GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE[$composr_code])) {
+            unset($ret[$tapatalk_code]);
+        }
+    }
+
+    return $ret;
+}
+
+/**
  * Add attachments to some Comcode.
  *
  * @param  string $comcode Comcode
@@ -132,6 +178,10 @@ function get_pagination_positions__by_page($params, $page_param_num, $max_param_
  */
 function add_attachments_from_comcode($comcode, $attachment_ids)
 {
+    // Map emoticons
+    $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
+    $comcode = str_replace(array_keys($emoticon_map), array_values($emoticon_map), $comcode);
+
     foreach ($attachment_ids as $attachment_id) {
         $comcode .= "\n\n" . '[attachment]' . strval($attachment_id) . '[/attachment]';
     }
@@ -192,24 +242,74 @@ function tapatalk_strip_comcode($data)
     require_code('comcode_from_html');
     $data = semihtml_to_comcode($data, true);
 
+    // Remove non-image attachment code (will be separately delivered)
+    $data = strip_attachments_from_comcode($data, true);
+
+    // Shortcuts
     $data = html_entity_decode($data, ENT_QUOTES, get_charset());
     $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '--' => '&ndash;', '...' => '&hellip;', '-->' => '&rarr;', '<--' => '&larr;');
     $data = strtr($data, array_flip($shortcuts));
 
-    $data = strip_attachments_from_comcode($data, true);
+    // Emoticons
+    // HACKHACK: Disable emoticons Tapatalk actually has inbuilt. Tapatalk will sub in those that it supports
+    $emoticon_map = get_tapatalk_to_composr_emoticon_map('perfect_matches');
+    $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
+    foreach ($emoticon_map as $tapatalk_code => $composr_code) {
+        unset($GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE[$composr_code]);
+    }
+    // Map Composr ones back to Tapatalk ones
+    $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
+    $data = str_replace(array_values($emoticon_map), array_keys($emoticon_map), $data);
+    // Apply remaining ones in Composr as BBCode img tags
+    $_smilies = $GLOBALS['FORUM_DRIVER']->find_emoticons(); // Sorted in descending length order
+    // Pre-check, optimisation
+    $smilies = array();
+    foreach ($_smilies as $code => $imgcode) {
+        if (strpos($data, $code) !== false) {
+            $smilies[$code] = $imgcode;
+        }
+    }
+    if (count($smilies) != 0) {
+        $len = strlen($data);
+        for ($i = 0; $i < $len; ++$i) // Has to go through in byte order so double application cannot happen (i.e. smiley contains [all or portion of] smiley code somehow)
+        {
+            $char = $data[$i];
 
+            if ($char == '"') // This can cause severe HTML corruption so is a disallowed character
+            {
+                $i++;
+                continue;
+            }
+            foreach ($smilies as $code => $imgcode) {
+                $code_len = strlen($code);
+                if (($char == $code[0]) && (substr($data, $i, $code_len) == $code)) {
+                    $eval = '[img]' . find_theme_image($imgcode[1]) . '[/img]';
+                    $before = substr($data, 0, $i);
+                    $after = substr($data, $i + $code_len);
+                    $data = $before . $eval . $after;
+                    $len = strlen($data);
+                    $i += strlen($eval) - 1;
+                    break;
+                }
+            }
+        }
+    }
+    $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = $bak;
+
+    // Fix up bad BBCode, to BBCode Tapatalk may support
     do {
         $old_data = $data;
         $data = preg_replace_callback('#\[([A-Z]+)([^\]]*)\](.*)\[/\1\]#Us', '_tag_case_fix', $data);
     } while ($data != $old_data);
     $data = preg_replace('#(\[\w+=)([^" ]*)(\])#Us', '$1"$2"$3', $data);
 
-    $data = preg_replace('#\[url(\s[^\[\]*]|=[^\[\]*])?\]\s*(\[img(\s[^\[\]*])?\].*\[/img\])\s*\[/url\]#Us', '$2', $data); // No clickable images allowed, Tapatalk will make simple image tag expandable
+    // No clickable images allowed, Tapatalk will make simple image tag expandable
+    $data = preg_replace('#\[url(\s[^\[\]*]|=[^\[\]*])?\]\s*(\[img(\s[^\[\]*])?\].*\[/img\])\s*\[/url\]#Us', '$2', $data);
 
     // Take out any filename alt-text
     $data = preg_replace('#\[img( param)?="(C:\\\\fakepath\\\\|IMG|PC|DCP|SBCS|DSC|PIC)[^"]*"\](.*)\[/img\]#Us', '[img]$3[/img]', $data);
 
-    // Rewrite certain tags to Tapatalk style
+    // Rewrite certain Comcode tags to Tapatalk style BBCode
     $data = preg_replace('#\[hide( param)?="([^"]*)"\](.*)\[/hide\]#Us', '$2:' . "\n" . '[spoiler]$3[/spoiler]', $data);
     $data = preg_replace('#\[hide](.*)\[/hide\]#Us', '[spoiler]$1[/spoiler]', $data);
     $data = preg_replace('#\[quote( param)?="([^"]*)"\](.*)\[/quote\]#Us', '[quote name="$2"]$3[/quote]', $data);
@@ -229,6 +329,7 @@ function tapatalk_strip_comcode($data)
         $data = preg_replace('#(\[)(/)?(' . $tag . ')([\s=][^\[\]]*)?(\])#Us', '#@#$2$3$4#@#', $data);
     }
 
+    // Strip remaining Comcode
     $data = strip_comcode($data);
 
     // Put protected tags back
@@ -240,6 +341,7 @@ function tapatalk_strip_comcode($data)
     $data = preg_replace('#([^"\]]|^)(https?://.*)( |\n|\[|\)|"|>|<|\.\n|,|$)#U', '$1[url]$2[/url]$3', $data);
     $data = preg_replace('#keep_session=\w*#', 'filtered=1', $data);
 
+    // Trim
     $data = trim($data);
 
     return $data;

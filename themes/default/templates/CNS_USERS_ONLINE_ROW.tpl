@@ -41,7 +41,7 @@
 	{+START,IF,{$ADDON_INSTALLED,securitylogging}}
 		{+START,IF,{$HAS_PRIVILEGE,see_ip}}
 			<td>
-				<a href="{$PAGE_LINK*,adminzone:admin_lookup:browse:{IP}}">{IP*}</a>
+				<a href="{$PAGE_LINK*,adminzone:admin_lookup:browse:{IP&}}">{IP*}</a>
 			</td>
 		{+END}
 	{+END}

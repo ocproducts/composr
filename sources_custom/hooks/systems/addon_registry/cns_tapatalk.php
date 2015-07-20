@@ -155,12 +155,11 @@ Tapatalk does not support the following ocPortal forum features:
  - Not all custom field input types are supported, and only required ones will show on the join form
  - Full account editing
  - Special rendering for comment topics or support tickets
- - Our own emoticons (it only supports their own)
 
 We support almost everything in Tapatalk, but there are just a few exceptions:
  - Per-forum icons (we don\'t have this in ocPortal)
  - Topic prefixes (we achieve these via multi-moderations in ocPortal, but those are not supported)
- - Naming emoticons (we don\'t have this in ocPortal and feel this is bloat) - although actually the Tapatalk client does not currently use our emoticons at all, even though their API does support that and is correctly implemented
+ - Naming emoticons (we don\'t have this in ocPortal and feel this is bloat)
  - Stubs for deleted and moved topics (we don\'t have this in ocPortal and feel these are messy -- we send out notifications to users instead)
  - Soft deletion of posts and topics (we achieve these via multi-moderations/post-history in ocPortal, but those are not supported) -- manually move to Trash instead
  - Ignoring users within topics (it\'s probably a bad idea because topics would get very confusing)
