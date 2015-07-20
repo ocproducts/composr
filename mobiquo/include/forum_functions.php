@@ -445,11 +445,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
 
     $moderation_details = moderation_assessment_post($post_row, $member_id, $behaviour_modifiers);
 
-    if ($return_html) {
-        $attachments = get_post_attachments($post_id);
-    } else {
-        $attachments = get_post_attachments($post_id, null, true);
-    }
+    $attachments = get_post_attachments($post_id, null, true);
 
     $post_author_id = $post_row['p_poster'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($post_author_id);
@@ -643,6 +639,14 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         $content .= "\n\n" . do_lang('TAPATALK_HAS_POLL');
     }
 
+    if (!is_null($post['p_intended_solely_for'])) {
+        $whisper_username = $GLOBALS['FORUM_DRIVER']->get_username($post['p_intended_solely_for']);
+        if (is_null($whisper_username)) {
+            $whisper_username = do_lang('UNKNOWN');
+        }
+        $content = do_lang('TAPATALK_INTENDED_SOLELY_FOR', $whisper_username) . "\n\n" . $content;
+    }
+
     if ($return_html) {
         $content = strip_attachments_from_comcode($content, true);
 
@@ -668,11 +672,18 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         */
 
         $content = $post_tempcode->evaluate();
-        $content = trim(preg_replace('#[ \t]+#u', ' ', preg_replace('#[ \t]*\n+#u', ' ', $content))); // Strip line-breaks, as "quasi-HTML" may be used
+        $content = trim(preg_replace('#[ \t]+#', ' ', preg_replace('#[ \t]*\n+#', ' ', $content))); // Strip line-breaks, as "quasi-HTML" may be used
 
-        // No inline images allowed (Tapatalk turns them into emoticons)
-        $content = preg_replace('#<img[^>]* alt="([^">]+)" src="([^">]*)"[^>]+>#', '<a href="$2">$1</a>', $content);
-        $content = preg_replace('#<img[^>]* src="([^">]*)"[^>]+>#', '<a href="$1">' . do_lang('IMAGE') . '</a>', $content);
+        // No inline images allowed unless they are [img] tags (Tapatalk turns them into emoticons)
+        $content = preg_replace('#<img[^>]* src="([^">]*)"[^>]+ alt="([^">]+)"[^>]+>#', '[img="$2"]$1[/img]', $content);
+        $content = preg_replace('#<img[^>]* alt="([^">]+)"[^>]+ src="([^">]*)"[^>]+>#', '[img="$1"]$2[/img]', $content);
+        $content = preg_replace('#<img[^>]* src="([^">]*)"[^>]+>#', '[img]$1[/img]', $content);
+
+        // Take out any filename alt-text
+        $content = preg_replace('#\[img( param)?="(C:\\\\fakepath\\\\|IMG|PC|DCP|SBCS|DSC|PIC)[^"]*"\](.*)\[/img\]#Us', '[img]$3[/img]', $content);
+
+        // We don't want to have hidden text, must be made visible
+        $content = preg_replace('#\[img( param)?="([^"]+)"\](.*)\[/img\]#Us', '$2:' . "\n" . '[img]$3[/img]', $content);
     } else {
         $content = tapatalk_strip_comcode($content);
         /*	Probably not needed, if Tapatalk is currently displaying edit by to normal users
@@ -911,7 +922,7 @@ function report_post($post_id, $reason = '')
     require_code('cns_posts_action');
     cns_make_post($topic_id, $title, $post->evaluate(), 0, $first_post, 1, 0, null, null, null, null, null, null, null, false, true, null, true, $topic_title, 0, null, is_invisible(), true, false, false, null);
 
-	decache('main_staff_checklist');
+    decache('main_staff_checklist');
 }
 
 /**

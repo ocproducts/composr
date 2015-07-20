@@ -241,7 +241,7 @@ class Hook_syndication_facebook
         try {
             $ret = $fb->api('/' . $post_to_uid . '/feed', 'POST', $attachment);
         } catch (Exception $e) {
-            if ((!is_null($member_id)) && (count($_POST) == 0)) {
+            if ((!is_null($member_id)) && (count($_POST) == 0) && (running_script('index')) && (!headers_sent())) {
                 $this->auth_set($member_id, get_self_url());
             }
 

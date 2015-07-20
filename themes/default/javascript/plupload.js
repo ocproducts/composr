@@ -13801,7 +13801,7 @@ function html5_upload(event,field_name,files)
 		hidfilename.type='hidden';
 		hidfilename.name='txtFileName_file'+window.extra_attachment_base;
 		hidfilename.id=hidfilename.name;
-		hidfilename.value=file.name;
+		hidfilename.value=file.name.replace('C:\\fakepath\\','');
 		hidfilename.className='upload_response_field';
 		document.getElementById('container_for_'+field_name).appendChild(hidfilename);
 

@@ -623,6 +623,20 @@ if ($rate_limiting) {
             exit('We only allow ' . strval($rate_limit_hits_per_window) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
         }
 
+        // Remove any old hits from other IPs
+        foreach ($RATE_LIMITING_DATA as $_ip => $times) {
+            if ($_ip != $ip) {
+                foreach ($times as $i => $old_time) {
+                    if ($old_time < $time - $rate_limit_time_window) {
+                        unset($RATE_LIMITING_DATA[$_ip][$i]);
+                    }
+                }
+                if (count($RATE_LIMITING_DATA[$_ip]) == 0) {
+                    unset($RATE_LIMITING_DATA[$_ip]);
+                }
+            }
+        }
+
         // Write out new state
         $RATE_LIMITING_DATA[$ip] = $pertinent;
         $RATE_LIMITING_DATA[$ip][] = $time;

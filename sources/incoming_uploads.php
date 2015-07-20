@@ -50,6 +50,8 @@ function incoming_uploads_script()
 
         $name = $_FILES['file']['name'];
 
+        $name = str_replace('C:\\fakepath\\', '', $name);
+
         if ($is_uploaded) { // && (file_exists($_FILES['file']['tmp_name']))) // file_exists check after is_uploaded_file to avoid race conditions. >>> Actually, open_basedir might block it
             @move_uploaded_file($_FILES['file']['tmp_name'], get_custom_file_base() . '/' . $savename) or intelligent_write_error(get_custom_file_base() . '/' . $savename);
         }

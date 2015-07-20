@@ -488,13 +488,6 @@ function make_string_tempcode($string)
  */
 function apply_tempcode_escaping($escaped, &$value)
 {
-    if (isset($escaped[0]) && $escaped[0] == ENTITY_ESCAPED && strpos($value, '&') === false && strpos($value, '"') === false && strpos($value, '\'') === false && strpos($value, '<') === false && strpos($value, '>') === false) {
-        if ($GLOBALS['XSS_DETECT']) {
-            ocp_mark_as_escaped($value);
-        }
-        return $value;
-    }
-
     global $ESCAPE_HTML_OUTPUT;
     foreach ($escaped as $escape) {
         if ($escape == ENTITY_ESCAPED) {
@@ -545,13 +538,6 @@ function apply_tempcode_escaping($escaped, &$value)
  */
 function apply_tempcode_escaping_inline($escaped, $value)
 {
-    if (isset($escaped[0]) && $escaped[0] == ENTITY_ESCAPED && strpos($value, '&') === false && strpos($value, '"') === false && strpos($value, '\'') === false && strpos($value, '<') === false && strpos($value, '>') === false) {
-        if ($GLOBALS['XSS_DETECT']) {
-            ocp_mark_as_escaped($value);
-        }
-        return $value;
-    }
-
     global $ESCAPE_HTML_OUTPUT;
     foreach ($escaped as $escape) {
         if ($escape == ENTITY_ESCAPED) {

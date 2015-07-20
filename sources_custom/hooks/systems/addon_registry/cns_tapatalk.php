@@ -136,7 +136,7 @@ Tapatalk does not support the following ocPortal forum features:
  - Having both photos or avatars (precedence is on avatars)
  - Normal signatures (there is Tapatalk signature support, but it works via cut-down signatures saved into posts via the Tapatalk app – normal ocPortal signatures won\'t display [except in cut-down form when viewing users directly], and shouldn\'t due to space considerations)
  - Forced rule acceptance when creating private topics with another member (the recipients rules)
- - Complex HTML posts (posts are simplified down)
+ - Complex HTML posts (posts are simplified down); for example, image-links are specifically prohibited, and no HTML requiring CSS or JavaScript will function
  - Post templates
  - Polls (we will say when there is a poll, but won\'t show the results and can\'t allow voting)
  - Rank images
@@ -146,7 +146,7 @@ Tapatalk does not support the following ocPortal forum features:
  - Threaded topics (but we will show post quoting instead)
  - Topics cannot exist in the root forum (there is no root forum in Tapatalk; so if there are any topics in there then a new virtual forum will be shown to encapsulate them)
  - Marking posts as emphasised
- - Creating inline private posts ("whispers") and having them display with special markings (they will show, but not marked any differently to other posts in the topic)
+ - Creating inline private posts ("whispers")
  - CAPTCHA for guests while joining or making topics/posts (we therefore have a separate Tapatalk option to disable guest access, to avoid potential spam)
  - COPPA
  - Inline creation of introduction message while joining the site
@@ -155,6 +155,7 @@ Tapatalk does not support the following ocPortal forum features:
  - Not all custom field input types are supported, and only required ones will show on the join form
  - Full account editing
  - Special rendering for comment topics or support tickets
+ - Our own emoticons (it only supports their own)
 
 We support almost everything in Tapatalk, but there are just a few exceptions:
  - Per-forum icons (we don\'t have this in ocPortal)
@@ -203,9 +204,19 @@ Tapatalk uses XML-RPC for communication. A simple test harness and testing frame
 
 ocPortal has been configured to generate any errors in Tapatalk\'s XML-RPC format, via the enabling and catching/handling of Exceptions.
 
-If a [tt]mobiquo/logging.dat[/tt] file exists and is writable then full logging will be written to it. Never use this on a live site as it is not secure.
+If a [tt]mobiquo/logging.dat[/tt] file exists and is writable then full logging will be written to it.
+Never use this on a live site as it is not secure, unless you limit access via an [tt]data_custom/.htaccess[/tt] file:
+[code]
+<Files logging.dat>
+Order Allow,Deny
+Deny from all
+</Files>
+[/code]
+(don\'t blindingly trust this, test you cannot download the file by URL)
 
 For live debugging you may wish to consider using [url="Charles Proxy"]http://www.charlesproxy.com/download/[/url]. Charles Proxy lets you log and filter all requests coming from a mobile device. You do need to make sure the mobile device is on the same wi-fi network as your development machine, and configure the mobile device to use your development machine in its proxy settings.
+
+At the time of writing Tapatalk cannot produce web-links to Composr posts/topics/forums, as this is hard-coded into the Tapatalk client for all forum software they support, rather than coded up via API implementations like we have made.
 ';
     }
 
