@@ -33,6 +33,11 @@ function _symbol_image_dims($param)
     }
 
     $value = array('', '');
+
+    if (running_script('install')) {
+        return $value;
+    }
+
     if (isset($param[0])) {
         $path = $param[0];
         $cacheable = (isset($param[1]) && $param[1] == '1');
@@ -45,6 +50,7 @@ function _symbol_image_dims($param)
         }
 
         $base_url = get_custom_base_url();
+
         if ((function_exists('getimagesize')) && (strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url) && (is_image($path))) {
             $details = @getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
             if ($details !== false) {
