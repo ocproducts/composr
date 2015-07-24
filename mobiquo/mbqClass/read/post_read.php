@@ -62,7 +62,7 @@ class CMSPostRead
     }
 
     /**
-     * Load up basic details of a post.
+     * Load up basic details of a post, for editing purposes.
      *
      * @param  AUTO_LINK $post_id Post ID
      * @return array Post
@@ -91,7 +91,7 @@ class CMSPostRead
             }
         }
 
-        $content = prepare_post_for_tapatalk($post);
+        $content = strip_attachments_from_comcode(get_translated_text($post['p_post'], $GLOBALS['FORUM_DB']));
 
         return array(
             'post_id' => $post_id,
@@ -110,9 +110,11 @@ class CMSPostRead
      * @param  ?integer $start Start position for topic post retrieval (null: return no posts)
      * @param  ?integer $max Maximum topic posts retrieved (null: return no posts)
      * @param  boolean $return_html Whether to return HTML for post data
+     * @param  ?AUTO_LINK $position Post position to scroll to (null: N/A)
+     *
      * @return object Mobiquo array
      */
-    public function get_topic($topic_id, $start, $max, $return_html)
+    public function get_topic($topic_id, $start, $max, $return_html, $position = null)
     {
         cms_verify_parameters_phpdoc();
 
@@ -122,6 +124,6 @@ class CMSPostRead
 
         cns_ping_topic_read($topic_id);
 
-        return render_topic_to_tapatalk($topic_id, $return_html, $start, $max);
+        return render_topic_to_tapatalk($topic_id, $return_html, $start, $max, null, 0, $position);
     }
 }

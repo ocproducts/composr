@@ -293,7 +293,7 @@ class TapatalkPush extends TapatalkBasePush
             'type' => $type,
 
             'title' => $post_row['t_cache_first_title'],
-            'content' => tapatalk_strip_comcode($content),
+            'content' => trim(strip_comcode($content)),
             'author' => $post_row['p_poster_name_if_guest'],
             'authorid' => strval($post_row['p_poster']),
             'author_type' => self::check_return_user_type($post_row['p_poster']),
@@ -330,7 +330,7 @@ class TapatalkPush extends TapatalkBasePush
             return null;
         }
 
-        if (is_file(TAPATALK_LOG)) {
+        if ((is_file(TAPATALK_LOG)) && (is_writable_wrap(TAPATALK_LOG))) {
             // Request
             $log_file = fopen(TAPATALK_LOG, 'at');
             fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *PUSH*:\n");

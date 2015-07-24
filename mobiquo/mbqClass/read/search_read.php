@@ -41,8 +41,16 @@ class CMSSearchRead
         $table_prefix = get_table_prefix();
         $boolean_operator = 'AND';
 
-        $sql1 = ' FROM ' . $table_prefix . 'f_posts p FORCE INDEX (p_title) JOIN ' . $table_prefix . 'f_topics t ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
-        $sql2 = ' FROM ' . $table_prefix . 'f_topics t FORCE INDEX (t_description) JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
+        $sql1 = ' FROM ' . $table_prefix . 'f_posts p';
+        if ($keywords != '') {
+            $sql1 .= ' FORCE INDEX (p_title)';
+        }
+        $sql1 .= ' JOIN ' . $table_prefix . 'f_topics t ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
+        $sql2 = ' FROM ' . $table_prefix . 'f_topics t';
+        if ($keywords != '') {
+            $sql2 .= ' FORCE INDEX (t_description)';
+        }
+        $sql2 .= ' JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
 
         $where = '';
 
@@ -62,9 +70,7 @@ class CMSSearchRead
 
         if (!is_null($userid)) {
             $where .= ' AND t_cache_first_member_id=' . strval($userid);
-        }
-
-        if (!is_null($searchuser)) {
+        } elseif (!is_null($searchuser)) {
             $_userid = $GLOBALS['FORUM_DRIVER']->get_member_from_username($searchuser);
             if (is_null($_userid)) {
                 warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($searchuser)));
@@ -99,24 +105,37 @@ class CMSSearchRead
         $select = '*,f.id as forum_id,t.id AS topic_id,p.id AS post_id';
 
         $full_sql1 = 'SELECT ' . $select . $sql1 . $where;
+        if ($keywords == '') {
+            $full_sql1 .= ' ORDER BY t_cache_first_time DESC,t.id DESC';
+        }
         if (($keywords != '') && (!$titleonly)) {
             $full_sql1 .= ' LIMIT ' . strval($max + $start);
         } else {
             $full_sql1 .= ' LIMIT ' . strval($start) . ',' . strval($max);
         }
 
-        $count_sql1 = '(SELECT COUNT(*) FROM (';
-        $count_sql1 .= 'SELECT 1' . $sql1 . $where;
-        $count_sql1 .= ' LIMIT 1000) counter)';
+        if ($keywords != '') {
+            $count_sql1 = '(SELECT COUNT(*) FROM (';
+            $count_sql1 .= 'SELECT 1' . $sql1 . $where;
+            $count_sql1 .= ' LIMIT 1000) counter)';
+        } else {
+            $count_sql1 = 'SELECT COUNT(*)' . $sql1 . $where;
+        }
 
         if (($keywords != '') && (!$titleonly)) {
-            $full_sql2 = 'SELECT ' . $select . $sql2 . $where . ' LIMIT ' . strval($max + $start);
+            $full_sql2 = 'SELECT ' . $select . $sql2 . $where;
+            $full_sql2 .= ' ORDER BY t_cache_first_time DESC,t.id DESC';
+            $full_sql2 .= ' LIMIT ' . strval($max + $start);
 
             $full_sql = $full_sql1 . ' UNION ' . $full_sql2;
 
-            $count_sql2 = '(SELECT COUNT(*) FROM (';
-            $count_sql2 .= 'SELECT 1' . $sql2 . $where;
-            $count_sql2 .= ' LIMIT 1000) counter)';
+            if ($keywords != '') {
+                $count_sql2 = '(SELECT COUNT(*) FROM (';
+                $count_sql2 .= 'SELECT 1' . $sql2 . $where;
+                $count_sql2 .= ' LIMIT 1000) counter)';
+            } else {
+                $count_sql1 = 'SELECT COUNT(*)' . $sql2 . $where;
+            }
 
             $count_sql = 'SELECT (' . $count_sql1 . ') + (' . $count_sql2 . ') AS cnt';
         } else {
@@ -165,7 +184,7 @@ class CMSSearchRead
                 $search_sql = '1=1';
             }
             $sql = '
-				FROM ' . $table_prefix . 'f_posts p FORCE INDEX (p_post)
+				FROM ' . $table_prefix . 'f_posts p' . (($keywords == '') ? '' : ' FORCE INDEX (p_post)') . '
 				JOIN ' . $table_prefix . 'translate trans ON trans.id=p.p_post
 				JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
 				JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
@@ -176,7 +195,7 @@ class CMSSearchRead
                 $search_sql = '1=1';
             }
             $sql = '
-				FROM ' . $table_prefix . 'f_posts p FORCE INDEX (p_post)
+				FROM ' . $table_prefix . 'f_posts p' . (($keywords == '') ? '' : ' FORCE INDEX (p_post)') . '
 				JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
 				JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
 				WHERE ' . $search_sql;
@@ -191,9 +210,7 @@ class CMSSearchRead
 
         if (!is_null($userid)) {
             $sql .= ' AND p_poster=' . strval($userid);
-        }
-
-        if (!is_null($searchuser)) {
+        } elseif (!is_null($searchuser)) {
             $_userid = $GLOBALS['FORUM_DRIVER']->get_member_from_username($searchuser);
             if (is_null($_userid)) {
                 warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($searchuser)));
@@ -234,10 +251,17 @@ class CMSSearchRead
         }
 
         $full_sql = 'SELECT *,t.id AS topic_id,p.id AS post_id,t.t_cache_first_title,f.id AS forum_id,f.f_name' . $sql;
+        if ($keywords == '') {
+            $full_sql .= ' ORDER BY p_time DESC,p.id DESC';
+        }
         $posts = (get_allowed_forum_sql() == '') ? array() : $GLOBALS['FORUM_DB']->query($full_sql, $max, $start);
-        $count_sql = '(SELECT COUNT(*) FROM (';
-        $count_sql .= 'SELECT 1' . $sql;
-        $count_sql .= ' LIMIT 100) counter)';
+        if ($keywords != '') {
+            $count_sql = '(SELECT COUNT(*) FROM (';
+            $count_sql .= 'SELECT 1' . $sql;
+            $count_sql .= ' LIMIT 100) counter)';
+        } else {
+            $count_sql = 'SELECT COUNT(*)' . $sql;
+        }
         $total_post_num = (get_allowed_forum_sql() == '') ? 0 : $GLOBALS['FORUM_DB']->query_value_if_there($count_sql);
 
         return array($total_post_num, $posts);

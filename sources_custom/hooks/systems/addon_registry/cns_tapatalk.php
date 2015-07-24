@@ -216,6 +216,12 @@ Deny from all
 For live debugging you may wish to consider using [url="Charles Proxy"]http://www.charlesproxy.com/download/[/url]. Charles Proxy lets you log and filter all requests coming from a mobile device. You do need to make sure the mobile device is on the same wi-fi network as your development machine, and configure the mobile device to use your development machine in its proxy settings.
 
 At the time of writing Tapatalk cannot produce web-links to Composr posts/topics/forums, as this is hard-coded into the Tapatalk client for all forum software they support, rather than coded up via API implementations like we have made.
+
+[title="2"]Push notifications[/title]
+
+Notifications are sent out to Tapatalk users based on various actions within Composr. Quotes, mentions, new private topics, and private topic replies, result in notifications to the members involved. New topics result in Tapatalk notifications for any members who have set any kind of Composr notification on the associated forum. Topic replies are the same, but recognise when Composr notifications were set on the associated topic too.
+
+Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows which Composr member IDs are associated with which device IDs. We only relay out notifications for members who have signed into Tapatalk at least once.
 ';
     }
 
@@ -376,6 +382,7 @@ At the time of writing Tapatalk cannot produce web-links to Composr posts/topics
             'mobiquo/smartbanner/images/wp-v-bg.jpg',
             'mobiquo/smartbanner/images/wrt-h-bg.jpg',
             'mobiquo/smartbanner/images/wrt-v-bg.jpg',
+            'themes/default/text_custom/TAPATALK_POST_WRAPPER.tpl',
         );
     }
 }

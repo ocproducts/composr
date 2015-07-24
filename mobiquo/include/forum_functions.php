@@ -66,7 +66,7 @@ function get_num_unread_topics($forum_id, $subscribed_only = false, $member_id =
     if (is_null($forum_id)) {
         $sql .= ' t.t_forum_id IS NOT NULL';
     } else {
-        $sql .= ' t.t_forum_id=' . strval($forum_id);
+        $sql .= ' ' . cns_get_all_subordinate_forums($forum_id, 't.t_forum_id');
     }
     $sql .= ' AND (l_time IS NULL OR l_time<t_cache_last_time)'; // Cannot get join match OR gets one and it is behind of last post
     $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))); // Within tracking range
@@ -189,9 +189,10 @@ function get_topic_subscription_status($topic_id, $member_id = null)
  * @param  ?integer $max Maximum topic posts retrieved (null: return no posts)
  * @param  ?array $details Topic details (null: lookup)
  * @param  integer $behaviour_modifiers A bitmask of RENDER_TOPIC_* settings
+ * @param  ?AUTO_LINK $position Post position to scroll to (only used if $start is not null) (null: N/A)
  * @return object Mobiquo array
  */
-function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $details = null, $behaviour_modifiers = 0)
+function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $details = null, $behaviour_modifiers = 0, $position = null)
 {
     $member_id = get_member();
 
@@ -277,7 +278,7 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         'can_move' => mobiquo_val($moderation_details['can_move'], 'boolean'),
         'is_ban' => mobiquo_val($moderation_details['is_ban'], 'boolean'),
         'can_ban' => mobiquo_val($moderation_details['can_ban'], 'boolean'),
-        'can_mark_spam' => mobiquo_val($moderation_details['can_ban'], 'boolean'),
+        'can_mark_spam' => mobiquo_val($moderation_details['can_ban'], 'boolean'), // will be overridden later, if we have a jump position set
         'position' => mobiquo_val($start + 1, 'int'),
         'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']),
         'last_reply_time' => mobiquo_val($details['t_cache_last_time'], 'dateTime.iso8601'),
@@ -318,6 +319,9 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         }
         $arr['posts'] = mobiquo_val($posts, 'array');
         $arr['total_post_num'] = mobiquo_val($total_post_count, 'int');
+        if (!is_null($position)) {
+            $arr['position'] = mobiquo_val(min($total_post_count, $position), 'int');
+        }
     }
 
     return mobiquo_val($arr, 'struct');
@@ -619,7 +623,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
     $content = '';
 
     if (!is_null($post['p_parent_id'])) {
-        $post_details = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN f_topics t ON t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post['p_parent_id']), '', 1);
+        $post_details = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post['p_parent_id']), '', 1);
         if (isset($post_details[0])) {
             $poster = $post_details[0]['p_poster_name_if_guest'];
             if ($poster == '') {
@@ -635,24 +639,33 @@ function prepare_post_for_tapatalk($post, $return_html = false)
 
     $content .= get_translated_text($post['p_post'], $GLOBALS['FORUM_DB']);
 
+    $has_poll = false;
     if ((!is_null($post['t_poll_id'])) && ($post['post_id'] == $post['t_cache_first_post_id'])) {
-        $content .= "\n\n" . do_lang('TAPATALK_HAS_POLL');
+        $has_poll = true;
     }
 
+    $whisper_username = mixed();
     if (!is_null($post['p_intended_solely_for'])) {
         $whisper_username = $GLOBALS['FORUM_DRIVER']->get_username($post['p_intended_solely_for']);
         if (is_null($whisper_username)) {
             $whisper_username = do_lang('UNKNOWN');
         }
-        $content = do_lang('TAPATALK_INTENDED_SOLELY_FOR', $whisper_username) . "\n\n" . $content;
     }
+
+    $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array(
+        'CONTENT' => $content,
+        'WHISPER_USERNAME' => $whisper_username,
+        'HAS_POLL' => $has_poll,
+        'POST_ID' => strval($post['id']),
+        'POST_URL' => find_script('pagelink_redirect') . '?id=' . get_page_zone('topicview') . ':topicview:findpost:' . strval($post['post_id']), // Redirect needed so not detected as a local URL
+    ), null, false, null, '.txt', 'text'));
 
     if ($return_html) {
         $content = strip_attachments_from_comcode($content, true);
 
         // We need to simplify messy HTML as much as possible
         require_code('comcode_from_html');
-        $content = semihtml_to_comcode($content, true);
+        $content = force_clean_comcode($content);
 
         // HACKHACK: Disable emoticons. Tapatalk will sub in those that it supports. If we don't do this it replaces them all with the normal smile emoticon using a dum replacer for any inline images
         $emoticon_map = get_tapatalk_to_composr_emoticon_map('perfect_matches');
@@ -836,9 +849,9 @@ function generate_shortened_post($post_row, $topic_description = false)
     }
 
     $short_content = xhtml_substr($short_content, 0, 200, false, true);
-    $short_content = semihtml_to_comcode($short_content, true);
+    $short_content = semihtml_to_comcode('[html]' . $short_content . '[/html]', true);
     $short_content = trim(preg_replace('#\s+#u', ' ', $short_content));
-    $short_content = tapatalk_strip_comcode($short_content);
+    $short_content = trim(strip_comcode($short_content));
 
     return $short_content;
 }

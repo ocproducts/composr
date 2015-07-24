@@ -84,7 +84,7 @@ if (!empty($request_method_name) && isset($SERVER_DEFINE[$request_method_name]))
     require_once(dirname(__FILE__) . '/api/' . $filename . '.php');
 }
 
-if (is_file(TAPATALK_LOG)) {
+if ((is_file(TAPATALK_LOG)) && (is_writable_wrap(TAPATALK_LOG))) {
     // Request
     $log_file = fopen(TAPATALK_LOG, 'at');
     fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *REQUEST*:\n");

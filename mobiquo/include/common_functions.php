@@ -126,7 +126,7 @@ function get_pagination_positions__by_page($params, $page_param_num, $max_param_
 /**
  * Get a mapping of emoticons, so we can do code conversion.
  *
- * @param  string Which ones of the mapping to get
+ * @param  string $set Which ones of the mapping to get
  * @set missing_from_composr perfect_matches all
  * @return array Emoticons mapping
  */
@@ -170,7 +170,7 @@ function get_tapatalk_to_composr_emoticon_map($set)
 }
 
 /**
- * Add attachments to some Comcode.
+ * Add attachments to some Comcode. Also handle emoticon mapping. Also handle wordfilter.
  *
  * @param  string $comcode Comcode
  * @param  array $attachment_ids Attachment IDs
@@ -182,9 +182,15 @@ function add_attachments_from_comcode($comcode, $attachment_ids)
     $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
     $comcode = str_replace(array_keys($emoticon_map), array_values($emoticon_map), $comcode);
 
+    // Wordfilter
+    require_code('word_filter');
+    $comcode=check_word_filter($comcode);
+
+    // Add attachments
     foreach ($attachment_ids as $attachment_id) {
         $comcode .= "\n\n" . '[attachment]' . strval($attachment_id) . '[/attachment]';
     }
+
     return $comcode;
 }
 
@@ -240,7 +246,7 @@ function tapatalk_strip_comcode($data)
 {
     // We need to simplify messy HTML as much as possible
     require_code('comcode_from_html');
-    $data = semihtml_to_comcode($data, true);
+    $data = force_clean_comcode($data);
 
     // Remove non-image attachment code (will be separately delivered)
     $data = strip_attachments_from_comcode($data, true);
@@ -256,6 +262,7 @@ function tapatalk_strip_comcode($data)
     $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
     foreach ($emoticon_map as $tapatalk_code => $composr_code) {
         unset($GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE[$composr_code]);
+        // Actually, Tapatalk emoticon rendering seems erratic in text mode (iOS), but it's best we TRY, because the centered on-own-line image emoticons look very poor
     }
     // Map Composr ones back to Tapatalk ones
     $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');

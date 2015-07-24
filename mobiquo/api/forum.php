@@ -70,7 +70,7 @@ function get_config_func($raw_params)
         'default_smilies' => '1',
         'can_unread' => '1',
         'announcement' => '1',
-        'emoji_support' => '0',
+        'emoji_support' => (get_charset() == 'utf-8') ? '1' : '0',
         'support_md5' => '0',
         'support_sha1' => '0',
         'conversation' => '1',
@@ -90,7 +90,7 @@ function get_config_func($raw_params)
         'first_unread' => '1',
         'alert' => '1',
         'get_activity' => addon_installed('activity_feed', true) ? '1' : '0',
-        'direct_unsubscribe' => '0',
+        'direct_unsubscribe' => '0', // '0' means we work with subscribing/unsubscribing from forum IDs, not any special subscription IDs
         'prefix_edit' => '0',
         'ban_delete_type' => 'soft_delete',
         'anonymous_login' => '1',

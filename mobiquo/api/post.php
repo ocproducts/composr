@@ -118,7 +118,7 @@ function get_raw_post_func($raw_params)
         'post_title' => mobiquo_val($post_details['post_title'], 'base64'),
         'post_content' => mobiquo_val($post_details['post_content'], 'base64'),
         'show_reason' => mobiquo_val(true, 'boolean'),
-        'edit_reason' => mobiquo_val($post_details['post_content'], 'string'),
+        'edit_reason' => mobiquo_val($post_details['post_content'], 'base64'),
         'attachments' => mobiquo_val(render_tapatalk_attachments($post_details['attachments']), 'array'),
     ), 'struct');
     return mobiquo_response($response);
@@ -214,11 +214,12 @@ function get_thread_by_unread_func($raw_params)
             $start = max(0, $before - $max);
         }
     }
+    $position = $before + 1;
 
     member_tracking_update('topicview', '', strval($topic_id));
 
     $post_object = new CMSPostRead();
-    $response = $post_object->get_topic($topic_id, $start, $max, $return_html);
+    $response = $post_object->get_topic($topic_id, $start, $max, $return_html, $position);
     return mobiquo_response($response);
 }
 
@@ -248,10 +249,11 @@ function get_thread_by_post_func($raw_params)
     $sql = 'SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE id<' . strval($post_id) . ' AND ' . tapatalk_get_topic_where($topic_id);
     $before = $GLOBALS['FORUM_DB']->query_value_if_there($sql);
     $start = intval(floor(floatval($before) / floatval($max))) * $max;
+    $position = $before + 1;
 
     member_tracking_update('topicview', '', strval($topic_id));
 
     $post_object = new CMSPostRead();
-    $response = $post_object->get_topic($topic_id, $start, $max, $return_html);
+    $response = $post_object->get_topic($topic_id, $start, $max, $return_html, $position);
     return mobiquo_response($response);
 }
