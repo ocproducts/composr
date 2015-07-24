@@ -153,6 +153,10 @@ function get_allowed_partner_sites()
             $allowed_partners[] = $_val[0];
         }
     }
+    $allowed_partners[] = parse_url(get_base_url(), PHP_URL_HOST);
+    if (get_custom_base_url() != get_base_url()) {
+        $allowed_partners[] = parse_url(get_custom_base_url(), PHP_URL_HOST);
+    }
     return $allowed_partners;
 }
 

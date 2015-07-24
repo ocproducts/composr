@@ -212,6 +212,18 @@ Bear in mind that the primary defence to something suddenly going wrong with you
 
 &raquo; Also see the [page="_SEARCH:tut_disaster"]Disaster recovery[/page] tutorial.
 
+[title="3"]JavaScript problems[/title]
+
+If you are finding background requests for pages are not getting called (AJAX), or in some cases frames (e.g. overlays), it may be a JavaScript problem. Additionally you could be getting explicit JavaScript errors popping up, or generally interactive in-page features might not work.
+
+To report such issues it is best to take a screenshot of your JavaScript console. All modern browsers have this as a part of the developer tools, and it basically shows a log of all JavaScript errors that have happened since the page loaded.
+
+[title="4"]Cross-domain problems[/title]
+
+Issues with AJAX and frames specifically can be caused by JavaScript security relating to access across domains. If JavaScript is asked to call one domain, from a different one, it won't allow it, to preserve the general security of the web.
+
+In Composr it can happen if the base URL has changed. One possibility is if it is blank in the [tt]_config.php[/tt] file. If it was never set, and sometimes Composr is getting called by different variants of the base URL (typically with and without 'www.') then the cache can get a mixture, and it triggers such cross-domain errors.
+
 [title="2"]Providing feedback, or making feature requests[/title]
 
 [media width="150" float="right"]data_custom/images/docs/482033_challenge.jpg[/media]

@@ -25,6 +25,12 @@ If you put the mouse over the Comcode you will see a tooltip showing how it look
 
 Do not worry if this yellow background spreads around (this can happen if you type in certain places) -- it will be stripped when you save.
 
+[title="2"]Staff editor[/title]
+
+By default, certain WYSIWYG features will only be given to staff users. This is because we generally want to show a simpler editor to regular users.
+
+If you want to change it you can customise the [tt]WYSIWYG_SETTINGS[/tt] template. For example, changing the second line of that template to var [tt]precision_editing=true;[/tt] would force the full editor to be available for everybody.
+
 [title="2"]The clipboard (copy & paste)[/title]
 
 Operating systems (such as Windows) hold different kinds of data in the clipboard. Often when you copy something it will be held in multiple formats.
