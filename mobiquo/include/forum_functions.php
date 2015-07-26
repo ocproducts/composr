@@ -657,10 +657,18 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         'WHISPER_USERNAME' => $whisper_username,
         'HAS_POLL' => $has_poll,
         'POST_ID' => strval($post['id']),
+        'POST_TITLE' => $post['p_title'],
         'POST_URL' => find_script('pagelink_redirect') . '?id=' . get_page_zone('topicview') . ':topicview:findpost:' . strval($post['post_id']), // Redirect needed so not detected as a local URL
+        'POSTER_ID' => strval($post['p_poster']),
+        'LAST_EDIT_TIME' => is_null($post['p_last_edit_time']) ? null : strval($post['p_last_edit_time']),
+        'LAST_EDIT_BY' => is_null($post['p_last_edit_by']) ? null : strval($post['p_last_edit_by']),
+        'IS_EMPHASISED' => ($post['p_is_emphasised'] == 1),
     ), null, false, null, '.txt', 'text'));
 
     if ($return_html) {
+        /*	The below works okay for Android. Unfortunately the Windows Mobile build has a very poor HTML rendered that can only do a handful of tags and entities.
+        So instead we render as text and convert that to 'HTML'.
+
         $content = strip_attachments_from_comcode($content, true);
 
         // We need to simplify messy HTML as much as possible
@@ -680,16 +688,6 @@ function prepare_post_for_tapatalk($post, $return_html = false)
 
         $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = $bak;
 
-        /*	Probably not needed, if Tapatalk is currently displaying edit by to normal users
-        $last_edited=do_template('CNS_TOPIC_POST_LAST_EDITED',array(
-            'LAST_EDIT_DATE_RAW'=>is_null($post['p_last_edit_time'])?'':strval($post['p_last_edit_time']),
-            'LAST_EDIT_DATE'=>get_timezoned_date($post['p_last_edit_time']),
-            'LAST_EDIT_PROFILE_URL'=>$GLOBALS['FORUM_DRIVER']->member_profile_url($post['p_last_edit_by'],false,true),
-            'LAST_EDIT_USERNAME'=>$GLOBALS['FORUM_DRIVER']->get_username($post['p_last_edit_by']),
-        ));
-        $post_tempcode->attach($last_edited);
-        */
-
         $content = $post_tempcode->evaluate();
         $content = trim(preg_replace('#[ \t]+#', ' ', preg_replace('#[ \t]*\n+#', ' ', $content))); // Strip line-breaks, as "quasi-HTML" may be used
 
@@ -703,11 +701,12 @@ function prepare_post_for_tapatalk($post, $return_html = false)
 
         // We don't want to have hidden text, must be made visible
         $content = preg_replace('#\[img( param)?="([^"]+)"\](.*)\[/img\]#Us', '$2:' . "\n" . '[img]$3[/img]', $content);
+        */
+
+        $content = tapatalk_strip_comcode($content);
+        $content = nl2br(htmlspecialchars($content, ENT_NOQUOTES, get_charset()));
     } else {
         $content = tapatalk_strip_comcode($content);
-        /*	Probably not needed, if Tapatalk is currently displaying edit by to normal users
-        $content.=do_lang('TAPATALK_LAST_EDIT_BY',get_timezoned_date($post['p_last_edit_time']),$GLOBALS['FORUM_DRIVER']->get_username($post['p_last_edit_by']));
-        */
     }
 
     return $content;

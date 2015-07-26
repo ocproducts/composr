@@ -106,7 +106,7 @@ class CMSSearchRead
 
         $full_sql1 = 'SELECT ' . $select . $sql1 . $where;
         if ($keywords == '') {
-            $full_sql1 .= ' ORDER BY t_cache_first_time DESC,t.id DESC';
+            $full_sql1 .= ' ORDER BY t_cache_first_time DESC,topic_id DESC';
         }
         if (($keywords != '') && (!$titleonly)) {
             $full_sql1 .= ' LIMIT ' . strval($max + $start);
@@ -124,7 +124,7 @@ class CMSSearchRead
 
         if (($keywords != '') && (!$titleonly)) {
             $full_sql2 = 'SELECT ' . $select . $sql2 . $where;
-            $full_sql2 .= ' ORDER BY t_cache_first_time DESC,t.id DESC';
+            $full_sql2 .= ' ORDER BY t_cache_first_time DESC,topic_id DESC';
             $full_sql2 .= ' LIMIT ' . strval($max + $start);
 
             $full_sql = $full_sql1 . ' UNION ' . $full_sql2;

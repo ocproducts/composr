@@ -1246,6 +1246,19 @@ function htmlentities($string, $quote_style = ENT_COMPAT, $charset = '')
 }
 
 /**
+ * Convert all basic HTML encoding characters to HTML entities.
+ *
+ * @param  string $string The string to encode.
+ * @param  integer $quote_style The quote style (ENT_COMPAT, ENT_QUOTES, ENT_NOQUOTES).
+ * @param  string $charset The character set to use.
+ * @return string The encoded string.
+ */
+function htmlspecialchars($string, $quote_style = ENT_COMPAT, $charset = '')
+{
+    return '';
+}
+
+/**
  * Set the blending mode for an image.
  *
  * @param  resource $image The image handle.

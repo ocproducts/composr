@@ -184,7 +184,7 @@ function add_attachments_from_comcode($comcode, $attachment_ids)
 
     // Wordfilter
     require_code('word_filter');
-    $comcode=check_word_filter($comcode);
+    $comcode = check_word_filter($comcode);
 
     // Add attachments
     foreach ($attachment_ids as $attachment_id) {
@@ -264,6 +264,7 @@ function tapatalk_strip_comcode($data)
         unset($GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE[$composr_code]);
         // Actually, Tapatalk emoticon rendering seems erratic in text mode (iOS), but it's best we TRY, because the centered on-own-line image emoticons look very poor
     }
+    $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = array(); // DISABLE ALL EMOTICON TO IMAGE RENDERING FOR NOW ACTUALLY, LOOKS AWFUL ON WINDOWS MOBILE VERSION
     // Map Composr ones back to Tapatalk ones
     $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
     $data = str_replace(array_values($emoticon_map), array_keys($emoticon_map), $data);
@@ -324,25 +325,19 @@ function tapatalk_strip_comcode($data)
     $data = preg_replace('#\[img[^\]]*\](.*)\[/img\]#Us', '[img]$1[/img]', $data);
     $data = preg_replace('#\[url="([^"]*)"\](https?://.*)\[/url\]#Us', '[url="$2"]$1[/url]', $data);
 
-    // Certain tags are allowed, so rewrite them to not be stripped
+    // // Strip most Comcode
     $protected_tags = array(
         'url',
         'img',
         'quote',
         'spoiler',
         'code',
+        'u',
+        'b',
+        'i',
     );
-    foreach ($protected_tags as $tag) {
-        $data = preg_replace('#(\[)(/)?(' . $tag . ')([\s=][^\[\]]*)?(\])#Us', '#@#$2$3$4#@#', $data);
-    }
-
-    // Strip remaining Comcode
-    $data = strip_comcode($data);
-
-    // Put protected tags back
-    foreach ($protected_tags as $tag) {
-        $data = preg_replace('#(\#@\#)(/)?(' . $tag . ')([\s=][^\[\]]*)?(\#@\#)#Us', '[$2$3$4]', $data);
-    }
+    require_code('mail');
+    $data = strip_comcode($data, false, $protected_tags);
 
     // Parse URLs
     $data = preg_replace('#([^"\]]|^)(https?://.*)( |\n|\[|\)|"|>|<|\.\n|,|$)#U', '$1[url]$2[/url]$3', $data);

@@ -124,6 +124,7 @@ function get_config_func($raw_params)
         'system' => $brand_name,
         'charset' => 'UTF-8', // Keep it simple and compatible with different clients. Will always convert to UTF-8
         'timezone' => get_site_timezone(),
+        'disable_bbcode' => '0',
 
         //'json_support'=>'1',	Enable once JSON is tested. Test it if Tapatalk has stopped supporting XML-RPC.
 

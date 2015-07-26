@@ -5,4 +5,4 @@
 {!TAPATALK_HAS_POLL}
 {+END}
 
-([url="{POST_URL}"]View in mobile browser[/url])
+([url="{POST_URL}"]{!VIEW_IN_MOBILE_BROWSER}[/url])
