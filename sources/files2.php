@@ -1319,9 +1319,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $out = ((is_null($post_params)) ? (($byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . str_replace("\r", '', str_replace("\n", '', $url2)) . " HTTP/1.1\r\n";
         }
         $out .= 'Host: ' . $url_parts['host'] . "\r\n";
-        $out .= 'Connection: Close' . "\r\n";
         $out .= $headers;
         $out .= $raw_payload;
+        $out .= '\r\nConnection: Close' . "\r\n"; // Not a standard header, comes in a separate header set
         @fwrite($mysock, $out);
         if ($put !== null) {
             rewind($put);

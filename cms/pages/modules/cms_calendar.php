@@ -1152,7 +1152,7 @@ class Module_cms_calendar extends Standard_crud_module
                         $date_range = do_lang('DOES_RECUR', $date_range);
                     }
 
-                    $submitter = $GLOBALS['SITE_DB']->query_select_value('calendar_events', 'submitter', array('id' => $id));
+                    $submitter = $GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_submitter', array('id' => $id));
 
                     require_code('activities');
                     syndicate_described_activity(($submitter != get_member()) ? 'calendar:ACTIVITY_VALIDATE_CALENDAR_EVENT' : 'calendar:ACTIVITY_CALENDAR_EVENT', $title, $date_range, '', '_SEARCH:calendar:view:' . strval($id), '', '', 'calendar', 1, null/*$submitter*/, true);

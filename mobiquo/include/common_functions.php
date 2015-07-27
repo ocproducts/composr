@@ -186,6 +186,10 @@ function add_attachments_from_comcode($comcode, $attachment_ids)
     require_code('word_filter');
     $comcode = check_word_filter($comcode);
 
+    // Map BBCode that we do not support, to Comcode
+    $comcode = str_ireplace(array('[spoiler', '[/spoiler'), array('[hide', '[/hide'), $comcode);
+    $comcode = preg_replace('#(\[\w+=)([^"\[\]]*)(\])#', '\1"\2"]', $comcode); // So comcode_to_clean_text works better
+
     // Add attachments
     foreach ($attachment_ids as $attachment_id) {
         $comcode .= "\n\n" . '[attachment]' . strval($attachment_id) . '[/attachment]';
@@ -264,10 +268,10 @@ function tapatalk_strip_comcode($data)
         unset($GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE[$composr_code]);
         // Actually, Tapatalk emoticon rendering seems erratic in text mode (iOS), but it's best we TRY, because the centered on-own-line image emoticons look very poor
     }
-    $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = array(); // DISABLE ALL EMOTICON TO IMAGE RENDERING FOR NOW ACTUALLY, LOOKS AWFUL ON WINDOWS MOBILE VERSION
     // Map Composr ones back to Tapatalk ones
     $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
     $data = str_replace(array_values($emoticon_map), array_keys($emoticon_map), $data);
+    $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = array(); // DISABLE ALL EMOTICON TO IMAGE RENDERING FOR NOW ACTUALLY, LOOKS AWFUL ON WINDOWS MOBILE VERSION
     // Apply remaining ones in Composr as BBCode img tags
     $_smilies = $GLOBALS['FORUM_DRIVER']->find_emoticons(); // Sorted in descending length order
     // Pre-check, optimisation
@@ -335,6 +339,7 @@ function tapatalk_strip_comcode($data)
         'u',
         'b',
         'i',
+        'color', // Not officially supported in text mode, but hopefully clients will strip it. We substitute to HTML for HTML mode
     );
     require_code('mail');
     $data = strip_comcode($data, false, $protected_tags);

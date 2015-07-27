@@ -341,7 +341,7 @@ function delete_ticket_by_topic_id($topic_id)
  *
  * @param  AUTO_LINK $member The member ID
  * @param  string $ticket_id The ticket ID (doesn't have to exist)
- * @param  AUTO_LINK $ticket_type_id The ticket type
+ * @param  integer $ticket_type_id The ticket type (-1 reply to ticket)
  * @param  LONG_TEXT $title The post title
  * @param  LONG_TEXT $post The post content in Comcode format
  * @param  string $ticket_url The home URL
@@ -353,7 +353,7 @@ function ticket_add_post($member, $ticket_id, $ticket_type_id, $title, $post, $t
     // Get the forum ID first
     $fid = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'forum_id', array('ticket_id' => $ticket_id));
     if (is_null($fid)) {
-        $fid = get_ticket_forum_id($member, $ticket_type_id);
+        $fid = get_ticket_forum_id($member, ($ticket_type == -1) ? null : $ticket_type_id);
     }
 
     $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(

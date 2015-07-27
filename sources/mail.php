@@ -183,13 +183,13 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     // If it is just HTML encapsulated in Comcode, force our best HTML to text conversion first
     $match = array();
     if ((substr($message_plain, 0, 10) == '[semihtml]') && (substr(trim($message_plain), -11) == '[/semihtml]')) {
-        if (preg_match("#\[semihtml\](.*)\[\/semihtml\]#Us", $message_plain, $match) != 0) {
+        if (preg_match("#\[semihtml\](.*)\[\/semihtml\]#Usi", $message_plain, $match) != 0) {
             require_code('comcode_from_html');
             $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
         }
     }
     if ((substr($message_plain, 0, 6) == '[html]') && (substr(trim($message_plain), -7) == '[/html]')) {
-        if (preg_match("#\[html\](.*)\[\/html\]#Us", $message_plain, $match) != 0) {
+        if (preg_match("#\[html\](.*)\[\/html\]#Usi", $message_plain, $match) != 0) {
             require_code('comcode_from_html');
             $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
         }
@@ -218,13 +218,13 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
 
     $match = array();
     if (!in_array('semihtml', $tags_to_preserve)) {
-        if (preg_match("#\[semihtml\](.*)\[\/semihtml\]#Us", $message_plain, $match) != 0) {
+        if (preg_match("#\[semihtml\](.*)\[\/semihtml\]#Usi", $message_plain, $match) != 0) {
             require_code('comcode_from_html');
             $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
         }
     }
     if (!in_array('html', $tags_to_preserve)) {
-        if (preg_match("#\[html\](.*)\[\/html\]#Us", $message_plain, $match) != 0) {
+        if (preg_match("#\[html\](.*)\[\/html\]#Usi", $message_plain, $match) != 0) {
             require_code('comcode_from_html');
             $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
         }
@@ -232,29 +232,29 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
 
     // Convert certain tags to 'url' tags. These may then be converted to text entirely, depending on if 'url' is being preserved
     if (!in_array('page', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback("#\[page=\"([^\"]*)\"[^\[\]]*\](.*)\[/page\]#Us", '_page_callback', $message_plain);
+        $message_plain = preg_replace_callback("#\[page=\"([^\"]*)\"[^\[\]]*\](.*)\[/page\]#Usi", '_page_callback', $message_plain);
     }
     if (!in_array('flash', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[flash=\"([^\"]*)\"[^\[\]]*\](.*)\[/flash\]#Us", '[url="\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[flash[^\[\]]*\](.*)\[/flash\]#Us", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[flash=\"([^\"]*)\"[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\2"]\1[/url]', $message_plain);
+        $message_plain = preg_replace("#\[flash[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
     }
     if (!in_array('attachment', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[attachment[^\[\]]* description=\"([^\"]*)\"[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Us", '[url="' . find_script('attachment') . '?id=\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Us", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[attachment[^\[\]]* description=\"([^\"]*)\"[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\2"]\1[/url]', $message_plain);
+        $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\#Usis", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
     }
     if (!in_array('media', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[media=\"([^\"]*)\"[^\[\]]*\](.*)\[/media\]#Us", '[url="\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[media[^\[\]]*\](.*)\[/media\]#Us", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[media=\"([^\"]*)\"[^\[\]]*\](.*)\[/media\]#Usi", '[url="\2"]\1[/url]', $message_plain);
+        $message_plain = preg_replace("#\[media[^\[\]]*\](.*)\[/media\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
     }
     if (!in_array('thumb', $tags_to_preserve)) {
         $message_plain = str_replace('[/thumb', '[/img', str_replace('[thumb', '[img', $message_plain));
     }
     if (!in_array('img', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Us", '[url="\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Us", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url]', $message_plain);
+        $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
     }
     if (!in_array('email', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[email[^\[\]]*\](.*)\[/email\]#Us", '[url="mailto:\1"]\1[/url]', $message_plain);
+        $message_plain = preg_replace("#\[email[^\[\]]*\](.*)\[/email\]#Usi", '[url="mailto:\1"]\1[/url]', $message_plain);
     }
 
     if (!in_array('url', $tags_to_preserve)) {
@@ -270,47 +270,47 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
 
     if (!in_array('random', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[random(( [^=]*="([^"]*)")*)\].*\[/random\]#Us', '_random_callback', $message_plain);
+        $message_plain = preg_replace_callback('#\[random(( [^=]*="([^"]*)")*)\].*\[/random\]#Usi', '_random_callback', $message_plain);
     }
 
     if (!in_array('shocker', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[shocker(( [^=]*="([^"]*)")*)\].*\[/shocker\]#Us', '_shocker_callback', $message_plain);
+        $message_plain = preg_replace_callback('#\[shocker(( [^=]*="([^"]*)")*)\].*\[/shocker\]#Usi', '_shocker_callback', $message_plain);
     }
 
     if (!in_array('jumping', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[jumping(( [^=]*="([^"]*)")*)\].*\[/jumping\]#Us', '_shocker_callback', $message_plain);
+        $message_plain = preg_replace_callback('#\[jumping(( [^=]*="([^"]*)")*)\].*\[/jumping\]#Usi', '_shocker_callback', $message_plain);
     }
 
     if (!in_array('abbr', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[abbr="([^"]*)"[^\]]*\](.*)\[/abbr\]#Us', '\2 (\1)', $message_plain);
+        $message_plain = preg_replace('#\[abbr="([^"]*)"[^\]]*\](.*)\[/abbr\]#Usi', '\2 (\1)', $message_plain);
     }
     if (!in_array('acronym', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[acronym="([^"]*)"[^\]]*\](.*)\[/acronym\]#Us', '\2 (\1)', $message_plain);
+        $message_plain = preg_replace('#\[acronym="([^"]*)"[^\]]*\](.*)\[/acronym\]#Usi', '\2 (\1)', $message_plain);
     }
     if (!in_array('tooltip', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[tooltip="([^"]*)"[^\]]*\](.*)\[/tooltip\]#Us', '\2 (\1)', $message_plain);
+        $message_plain = preg_replace('#\[tooltip="([^"]*)"[^\]]*\](.*)\[/tooltip\]#Usi', '\2 (\1)', $message_plain);
     }
 
     if (!in_array('currency', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[currency\](.*)\[/currency\]#Us', get_option('currency') . ' \1', $message_plain);
-        $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Us', '\1 \2', $message_plain);
+        $message_plain = preg_replace('#\[currency\](.*)\[/currency\#Usis', get_option('currency') . ' \1', $message_plain);
+        $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
     }
 
     if (!in_array('hide', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[hide\](.*)\[/hide\]#Us', do_lang('comcode:SPOILER_WARNING') . ':' . "\n" . '\1', $message_plain);
-        $message_plain = preg_replace('#\[hide="([^"]*)"[^\]]*\](.*)\[/hide\]#Us', '\1:' . "\n" . '\2', $message_plain);
+        $message_plain = preg_replace('#\[hide\](.*)\[/hide\]#Usi', do_lang('comcode:SPOILER_WARNING') . ':' . "\n" . '\1', $message_plain);
+        $message_plain = preg_replace('#\[hide="([^"]*)"[^\]]*\](.*)\[/hide\]#Usi', '\1:' . "\n" . '\2', $message_plain);
     }
 
     if (!in_array('indent', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[indent[^\]]*\](.*)\[/indent\]#Us', '_indent_callback', $message_plain);
+        $message_plain = preg_replace_callback('#\[indent[^\]]*\](.*)\[/indent\]#Usi', '_indent_callback', $message_plain);
     }
 
     if (!in_array('title', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\s*\[title([^\]])*\](.*)\[/title\]#Us', '_title_callback', $message_plain);
+        $message_plain = preg_replace_callback('#\s*\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
     }
 
     if (!in_array('box', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[box="([^"]*)"[^\]]*\](.*)\[/box\]#Us', '_box_callback', $message_plain);
+        $message_plain = preg_replace_callback('#\[box="([^"]*)"[^\]]*\](.*)\[/box\]#Usi', '_box_callback', $message_plain);
     }
 
     $tags_to_strip_entirely = array_diff(array(
@@ -332,15 +332,15 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         'attachment_safe',
     ), $tags_to_preserve);
     foreach ($tags_to_strip_entirely as $s) {
-        $message_plain = preg_replace('#\[' . $s . '[^\]]*\].*\[/' . $s . '\]#Us', '', $message_plain);
+        $message_plain = preg_replace('#\[' . $s . '[^\]]*\].*\[/' . $s . '\]#Usi', '', $message_plain);
     }
 
     if (!in_array('surround', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[surround="accessibility_hidden"\].*\[/surround\]#Us', '', $message_plain);
+        $message_plain = preg_replace('#\[surround="accessibility_hidden"\].*\[/surround\]#Usi', '', $message_plain);
     }
 
     if (!in_array('if_in_group', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#(\[if_in_group="[^"]*"\])(.*)(\[/if_in_group\])#Us', '_comcode_callback', $message_plain);
+        $message_plain = preg_replace_callback('#(\[if_in_group="[^"]*"\])(.*)(\[/if_in_group\])#Usi', '_comcode_callback', $message_plain);
     }
 
     $tags_to_strip_just_tags = array_diff(array(

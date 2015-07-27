@@ -605,6 +605,9 @@ function enable_notifications($notification_code, $notification_category, $membe
 
     if (is_null($setting)) {
         $ob = _get_notification_ob_for_code($notification_code);
+        if (is_null($ob)) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
         $setting = $ob->get_default_auto_setting($notification_code, $notification_category);
         if (!_notification_setting_available($setting, $member_id)) {
             $setting = _find_member_statistical_notification_type($member_id);

@@ -200,6 +200,8 @@ class Block_main_multi_content
             $submit_url = '';
         }
 
+        $first_id_field = is_array($info['id_field']) ? $info['id_field'][0] : $info['id_field'];
+
         // Get entries
 
         if (is_array($info['category_field'])) {
@@ -281,7 +283,7 @@ class Block_main_multi_content
             $x1 = $this->build_select($select, $info, $category_field_select);
             $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : $info['table'];
             if (($parent_spec__table_name !== null) && ($parent_spec__table_name != $info['table'])) {
-                $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . $info['id_field'];
+                $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . $first_id_field;
             }
         }
         if (($select_b != '') && ($category_field_access !== null)) {
@@ -360,8 +362,6 @@ class Block_main_multi_content
             $lang_fields['r.' . $lang_field] = $lang_field_type;
         }
 
-        $first_id_field = is_array($info['id_field']) ? $info['id_field'][0] : $info['id_field'];
-
         // Find what kind of query to run and run it
         if ($select != '-1') {
             if (substr($query, -strlen(' WHERE 1=1 AND (0=1)')) == ' WHERE 1=1 AND (0=1)') {
@@ -402,7 +402,7 @@ class Block_main_multi_content
                                 } else {
                                     $order_by .= 'IFNULL((SELECT MIN(';
                                 }
-                                $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $info['id_field'] . '=x.' . $other_category_field;
+                                $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
                                 $order_by .= '),' . (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/) . ')';
                             }
                             $order_by .= ')';

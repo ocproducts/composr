@@ -230,7 +230,7 @@ function actual_add_catalogue_field($c_name, $name, $description, $type, $order,
             } elseif ($_type == 'integer') {
                 $map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : intval($default);
             } else {
-                $map['cv_value'] = is_null($default) ? '' : $default;
+                $map['cv_value'] = ((is_null($default)) || ($type == 'list')) ? '' : $default;
             }
             $GLOBALS['SITE_DB']->query_insert('catalogue_efv_' . $_type, $map);
         }

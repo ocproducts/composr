@@ -201,9 +201,9 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
             }
 
             if ($tag == 'i') {
-                $text = preg_replace('#\[/?' . $tag . '\]#', '', $text);
+                $text = preg_replace('#\[/?' . $tag . '\]#i', '', $text);
             } else {
-                $text = preg_replace('#\[/?' . $tag . '[^\]]*\]#', '', $text);
+                $text = preg_replace('#\[/?' . $tag . '([ =][^\]]*)?\]#i', '', $text);
             }
         }
     }

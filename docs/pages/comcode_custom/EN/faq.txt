@@ -491,6 +491,17 @@ If you [i]don't[/i] have the WYSIWYG editor enabled:
 If you have the WYSIWYG editor enabled:
 [indent]There is a button on the editor's toolbar to toggle HTML source viewing mode. When inside the HTML source viewing mode you can paste in your HTML directly.[/indent]
 
+[title="3"]How can I automatically install hotfixes?[/title]
+
+Hotfixes are not supposed to be installed unless you really need them.
+
+Some rough figures:
+We perhaps change 200 things with each patch release, and perhaps make 30 hotfixes, and expect individual users may need to install perhaps 2 of those hotfixes.
+
+On the tracker issues it says "These hotfixes are not necessarily reliable or well supported", which is the truth. We don't necessarily spend more than 2 minutes testing out a hotfix. We don't go testing out how different combinations of them might interact. We don't know how they might interact with different combinations of addons people may have installed. We don't run through our test suite. And, we don't particularly want to be trying to debug issues for non-versioned versions of Composr. They are just there as a band-aid for people with immediate issues.
+
+So, please don't go installing all of them, it'll hurt you more than it will help you, and it's not expected. Just install a hotfix if you are being affected by a specific issue and keep up with the official patch releases.
+
 [title="3"]Why are 'em' units used rather than 'pt' units?[/title]
 
 'em' are relatively sized units. So '1em' does nothing, while '2em' would double the font size.
