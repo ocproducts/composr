@@ -432,7 +432,7 @@ function load_up_all_module_category_permissions($member, $module = null)
  */
 function has_category_access($member, $module, $category)
 {
-    if (running_script('upgrader')) {
+    if (running_script('upgrader') || running_script('install')) {
         return true;
     }
 
@@ -457,9 +457,13 @@ function has_category_access($member, $module, $category)
     global $SMART_CACHE;
     $where = ' AND (1=0';
     if (($module != 'forums') || (!is_on_multi_site_network())) {
-        $SMART_CACHE->append('category_access_needed', $module . '/' . $category, true);
-        $test = $SMART_CACHE->get('category_access_needed');
-        if ($test === null) {
+        if (isset($SMART_CACHE)) {
+            $SMART_CACHE->append('category_access_needed', $module . '/' . $category, true);
+            $test = $SMART_CACHE->get('category_access_needed');
+            if ($test === null) {
+                $test = array();
+            }
+        } else {
             $test = array();
         }
     } else {

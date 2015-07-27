@@ -64,6 +64,7 @@ class Block_main_comcode_page_children
     public function run($map)
     {
         $page = ((array_key_exists('param', $map)) && ($map['param'] != '')) ? $map['param'] : get_page_name();
+
         $zone = array_key_exists('zone', $map) ? $map['zone'] : post_param_string('zone', get_comcode_zone($page, false));
         if ($zone == '_SEARCH') {
             $zone = null;
@@ -92,11 +93,27 @@ class Block_main_comcode_page_children
                 $title = '';
 
                 if (get_option('is_on_comcode_page_cache') == '1') { // Try and force a parse of the page
+                    // Virtualised state, so that any nested main_comcode_page_children blocks execute correctly
+                    require_code('urls2');
+                    list($old_get, $old_zone, $old_current_script) = set_execution_context(
+                        array('page' => $child['the_page']),
+                        $child['the_zone']
+                    );
+
+                    // Execute child page and get its title
                     request_page($child['the_page'], false, $child['the_zone'], null, true);
                     $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $child['the_page'], 'the_zone' => $child['the_zone']));
                     if (!is_null($_title)) {
                         $title = get_translated_text($_title);
                     }
+
+                    // Get things back to prior state
+                    set_execution_context(
+                        $old_get,
+                        $old_zone,
+                        $old_current_script,
+                        false
+                    );
                 }
             }
 

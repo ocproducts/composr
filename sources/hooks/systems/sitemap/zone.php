@@ -100,6 +100,9 @@ class Hook_sitemap_zone extends Hook_sitemap_base
 
         if (!isset($row)) {
             $rows = $GLOBALS['SITE_DB']->query_select('zones', array('zone_title', 'zone_default_page'), array('zone_name' => $zone), '', 1);
+            if (!isset($rows[0])) {
+                return null;
+            }
             $row = array($zone, get_translated_text($rows[0]['zone_title']), $rows[0]['zone_default_page']);
         }
         $title = $row[1];
@@ -193,7 +196,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
         if ($page_details !== false) {
             $page_type = $page_details[0];
 
-            if (strpos($page_type, 'comcode') !== false) {
+            if (strpos($page_type, 'COMCODE') !== false) {
                 $child_node = $comcode_page_sitemap_ob->get_node($page_link . $zone_default_page, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
             } else {
                 $child_node = $page_sitemap_ob->get_node($page_link . $zone_default_page, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
@@ -209,8 +212,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     }
                 }
                 $struct['permissions'] = array_merge($struct['permissions'], $child_node['permissions']);
-                if ($struct['children'] !== null) {
-                    $children = array_merge($children, $struct['children']);
+                if ($child_node['children'] !== null) {
+                    $children = array_merge($children, $child_node['children']);
                 }
             }
         }

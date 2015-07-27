@@ -486,7 +486,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_table('digestives_tin', array( // Notifications queued up ready for the regular digest email
                                                                        'id' => '*AUTO',
                                                                        'd_subject' => 'LONG_TEXT',
-                                                                       'd_message' => 'LONG_TRANS',
+                                                                       'd_message' => 'LONG_TRANS__COMCODE',
                                                                        'd_from_member_id' => '?MEMBER',
                                                                        'd_to_member_id' => 'MEMBER',
                                                                        'd_priority' => 'SHORT_INTEGER',

@@ -9,7 +9,7 @@
 		<h2>{!PAGES}</h2>
 		{+START,LOOP,CHILDREN}
 			<div class="box"><div class="box_inner">
-				{$SET,PAGE,{$PREG_REPLACE,<h1[^<>]*>.*</h1>,,{$PREG_REPLACE,<figure[^<>]*>.*</figure>,,{$PREG_REPLACE,<div class="box staff_actions">.*</div>,,{$PREG_REPLACE,Comments.*,,{$LOAD_PAGE,{PAGE},{ZONE},1}},Us},Us},Us}}
+				{$SET,PAGE,{$PREG_REPLACE,<h1[^<>]*>.*</h1>,,{$PREG_REPLACE,<figure[^<>]*>.*</figure>,,{$PREG_REPLACE,<div class="box staff_actions">.*</div>,,{$PREG_REPLACE,Comments.*,,{$LOAD_PAGE,{PAGE},{ZONE},1,1}},Us},Us},Us}}
 				{$SET,IMAGE,{$?,{$IN_STR,{$GET,PAGE},<img},{$PREG_REPLACE,^.*(<img[^>]*>).*$,\1,{$GET,PAGE},sU},}}
 
 				<h3>{TITLE}</h3>

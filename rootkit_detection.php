@@ -308,6 +308,11 @@ function rk_check_master_password($password_given)
     if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
         $actual_password_hashed = substr($actual_password_hashed, 1);
         $salt = 'cms';
+
+        // LEGACY
+        if ($actual_password_hashed != md5($password_given . $salt)) {
+            $salt = 'ocp';
+        }
     }
     return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
 }

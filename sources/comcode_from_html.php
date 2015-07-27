@@ -308,8 +308,8 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     // Our wrapper tags
     require_code('comcode_renderer');
     _custom_comcode_import($GLOBALS['SITE_DB']);
-    global $TEXTUAL_TAGS;
-    foreach (array_keys($TEXTUAL_TAGS) as $tag) {
+    global $VALID_COMCODE_TAGS;
+    foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
         $semihtml = preg_replace_callback('#<comcode-(' . preg_quote($tag, '#') . ')( [^<>]*)?' . '>#', 'detagonise', $semihtml);
         $semihtml = preg_replace('#</\s*comcode-' . preg_quote($tag, '#') . '\s*>#', '[/' . $tag . ']', $semihtml);
     }

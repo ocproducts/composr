@@ -12,7 +12,8 @@
 
 <div class="ticker_wrap" role="marquee" id="ticktickticker_news{$GET%,bottom_news_id}"></div>
 <script>// <![CDATA[
-	(function() {
+	var tick_pos=[];
+	add_event_listener_abstract(window,'load',function() {
 		var ticktickticker=document.getElementById('ticktickticker_news{$GET%,bottom_news_id}');
 		if (typeof document.createElement('marquee').scrolldelay=='undefined') // Slower, but chrome does not support marquee's
 		{
@@ -27,7 +28,7 @@
 		{
 			set_inner_html(ticktickticker,'<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" onmouseout="this.setAttribute(\'scrolldelay\',50);" scrollamount="2" scrolldelay="'+(50)+'" width="400">{$GET;~/,news_ticker_text}<\/marquee>');
 		}
-	}) ();
+	});
 //]]></script>
 <noscript>
 	{$GET,news_ticker_text}

@@ -192,6 +192,10 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
         case WYSIWYG_COMCODE__XML_INLINE:
             $params_html = '';
             foreach ($attributes as $key => $val) {
+                if (is_integer($key)) {
+                    $key = strval($key);
+                }
+
                 if (($key != 'param') || ($val != '')) {
                     $params_html .= ' ' . escape_html($key) . '="' . escape_html($val) . '"';
                 }

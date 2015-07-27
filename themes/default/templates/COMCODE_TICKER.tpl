@@ -5,6 +5,7 @@
 <div class="ticker_wrap" role="marquee" id="ticktickticker{$GET,RAND_ID_TICKER}"></div>
 
 <script>// <![CDATA[
+	var tick_pos=[];
 	add_event_listener_abstract(window,'load',function() {
 		var ticktickticker=document.getElementById('ticktickticker{$GET,RAND_ID_TICKER}');
 		if (typeof document.createElement('marquee').scrolldelay=='undefined') // Slower, but chrome does not support marquee's

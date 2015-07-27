@@ -305,7 +305,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
                     $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $parent_field_name, $db);
                 }
             }
-            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
+            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, true, $matches[2] != '>');
 
             foreach ($subtree as $subtree_i) {
                 foreach ($ids_and_parents as $id => $parent_id) {
@@ -502,7 +502,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
                     $out_or = '1=0';
                 }
             } else {
-                $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
+                $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, true, $matches[2] != '>');
                 foreach ($subtree as $ii) {
                     if ($out_or != '') {
                         $out_or .= ' OR ';

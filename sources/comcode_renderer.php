@@ -561,7 +561,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         return do_template('WARNING_BOX', array('_GUID' => 'faea04a9d6f1e409d99b8485d28b2225', 'WARNING' => do_lang_tempcode('comcode:NO_ACCESS_FOR_TAG', escape_html($tag), escape_html($username))));
     } // These are just for convenience.. we will remap to more formalised Comcode
     elseif ($tag == 'codebox') {
-        $attributes['scroll'] = 1;
+        $attributes['scroll'] = '1';
         $tag = 'code';
     } elseif ($tag == 'left') {
         $attributes['param'] = 'left';
@@ -610,9 +610,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'code':
-            list($_embed, $title) = do_code_box($attributes['param'], $embed, (array_key_exists('numbers', $attributes)) && ($attributes['numbers'] == 1), $in_semihtml, $is_all_semihtml);
+            list($_embed, $title) = do_code_box($attributes['param'], $embed, (array_key_exists('numbers', $attributes)) && ($attributes['numbers'] == '1'), $in_semihtml, $is_all_semihtml);
             if (!is_null($_embed)) {
-                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == 1)) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
+                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == '1')) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
                 if (($tpl == 'COMCODE_CODE_SCROLL') && (substr_count($_embed, "\n") < 10)) {
                     $style = 'height: auto';
                 } else {
@@ -632,9 +632,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = $embed->evaluate();
 
                 if ((!array_key_exists('scroll', $attributes)) && (strlen($_embed) > 1000)) {
-                    $attributes['scroll'] = 1;
+                    $attributes['scroll'] = '1';
                 }
-                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == 1)) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
+                $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == '1')) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
                 if (($tpl == 'COMCODE_CODE_SCROLL') && (substr_count($_embed, "\n") < 10)) {
                     $style = 'height: auto';
                 } else {
@@ -2090,6 +2090,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                             } else {
                                 $ext = '.' . get_file_extension($original_filename);
                             }
+                            $md5 = md5(substr($original_filename, 0, 30));
                             $attributes['thumb_url'] = 'uploads/attachments_thumbs/' . $md5 . $ext;
                             convert_image(get_custom_base_url() . '/' . $url, get_custom_file_base() . '/' . $attributes['thumb_url'], -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 

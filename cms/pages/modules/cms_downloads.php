@@ -986,9 +986,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('download_category', null);
 
-        $category_id = add_download_category($category, $parent_id, $description, $notes, $rep_image, $meta_data['add_time']);
-
-        set_url_moniker('download_category', strval($category_id));
+        $category_id = add_download_category($category, $parent_id, $description, $notes, $rep_image, null, $meta_data['add_time']);
 
         set_url_moniker('download_category', strval($category_id));
 

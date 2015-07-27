@@ -605,7 +605,7 @@ class Module_cms_comcode_pages
         $restore_from = zone_black_magic_filterer(filter_naughty(get_param_string('restore_from', $zone . '/' . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt')), true);
 		if (((!is_file(get_file_base() . '/' . $restore_from)) && (!is_file(get_custom_file_base() . '/' . $restore_from))) || ((!is_null(get_param_string('restore_from', null))) && (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())))) {
 			$page_request = _request_page($file, $zone);
-			if (strpos($page_request[0], 'COMCODE') === false) {
+			if ($page_request === false || strpos($page_request[0], 'COMCODE') === false) {
                 return '';
             }
 			$restore_from = $page_request[count($page_request) - 1];
@@ -701,7 +701,7 @@ class Module_cms_comcode_pages
             }
 
             if (($new) && (get_option('is_on_comcode_page_children') == '1') && (has_privilege(get_member(), 'comcode_dangerous'))) {
-                $contents .= "\n\n" . '[block]main_comcode_page_children[/block]';
+                $contents .= "[title]" . $file . "[/title]\n\n\n\n" . '[block]main_comcode_page_children[/block]';
             }
 
             // Pre-process default pages with Tempcode, to make easier to understand

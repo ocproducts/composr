@@ -1164,11 +1164,38 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 }
 
                 $being_included = (!array_key_exists(2, $param)) || ($param[2] == '1');
+                $virtual_state = (array_key_exists(3, $param)) && ($param[3] == '1');
 
                 if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                     $before = memory_get_usage();
                 }
-                $tp_value = request_page($param[0], false, array_key_exists(1, $param) ? $param[1] : get_comcode_zone($param[0], false), null, $being_included);
+
+                $page = $param[0];
+                $zone = array_key_exists(1, $param) ? $param[1] : get_comcode_zone($param[0], false);
+
+                if ($virtual_state) {
+                    // Virtualised state, so that any nested main_comcode_page_children blocks execute correctly
+                    require_code('urls2');
+                    list($old_get, $old_zone, $old_current_script) = set_execution_context(
+                        array('page' => $page),
+                        $zone
+                    );
+                }
+
+                $tp_value = request_page($page, false, $zone, null, $being_included);
+
+                if ($virtual_state) {
+                    $tp_value = make_string_tempcode($tp_value->evaluate());
+
+                    // Get things back to prior state
+                    set_execution_context(
+                        $old_get,
+                        $old_zone,
+                        $old_current_script,
+                        false
+                    );
+                }
+
                 if ((function_exists('memory_get_usage')) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                     require_code('files');
                     @ob_end_flush();

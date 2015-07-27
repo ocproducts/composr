@@ -1884,7 +1884,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
     // Our point in the chain
     $segments = array();
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, $title);
+        $segments[] = array($page_link, $title, ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
     } else {
         if (!(((is_string($title)) && ($title == '')) || ((is_object($title)) && ($title->is_empty())))) {
             $segments[] = array('', $title);
