@@ -426,6 +426,7 @@ function do_environment_utf8_conversion($from_charset)
 
 /**
  * Guard for entity_utf8_decode. Checks that the data can be stripped so there is no unicode left. Either the htmlentities function must convert mechanically to entity-characters or all higher ascii character codes (which are actually unicode control codes in a unicode interpretation) that are used happen to be linked to named entities.
+ * PHP's utf-8 support may not be great. For example, we have seen emoji characters not converting.
  *
  * @param  string $data Data to check.
  * @return boolean Whether we are good to execute entity_utf8_decode.

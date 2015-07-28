@@ -239,6 +239,10 @@ function do_access($given_password)
     foreach ($settings as $key => $notes) {
         $val = array_key_exists($key, $SITE_INFO) ? $SITE_INFO[$key] : '';
 
+        if (($key == 'master_password') || ($key == 'confirm_master_password')) {
+            $val = '';
+        }
+
         if (is_array($val)) {
             foreach ($val as $val2) {
                 echo '<input type="hidden" name="' . htmlentities($key) . '[]" value="' . htmlentities($val2) . '" />';
@@ -326,7 +330,7 @@ function do_set()
                     $val = $given_password;
                 }
                 if (function_exists('password_hash')) { // PHP5.5+
-                    $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
+                    $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
                 } else {
                     $val = '!' . md5($val . 'cms');
                 }

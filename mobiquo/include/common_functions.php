@@ -67,6 +67,7 @@ function initialise_composr()
     require_code('developer_tools');
 
     require_code('character_sets');
+    convert_data_encodings(true);
 
     $GLOBALS['LAX_COMCODE'] = true;
 }

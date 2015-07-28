@@ -100,7 +100,7 @@ class Module_chat
             ));
 
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'room_name', array('room_name'));
-            $GLOBALS['SITE_DB']->create_index('chat_rooms', 'is_im', array('is_im', 'room_name'));
+            $GLOBALS['SITE_DB']->create_index('chat_rooms', 'is_im', array('is_im'/*, 'room_name' makes key too long*/));
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'first_public', array('is_im', 'id'));
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'allow_list', array('allow_list(30)'));
 

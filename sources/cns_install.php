@@ -747,7 +747,7 @@ function install_cns($upgrade_from = null)
             's_title' => '*SHORT_TEXT',
             's_explanation' => 'LONG_TEXT',
             's_message' => 'LONG_TEXT',
-        ));
+        ), false, false, true);
 
         $GLOBALS['FORUM_DB']->create_table('f_post_history', array(
             'id' => '*AUTO',

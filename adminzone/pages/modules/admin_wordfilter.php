@@ -35,7 +35,7 @@ class Module_admin_wordfilter
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 3;
+        $info['version'] = 4;
         $info['locked'] = true;
         $info['update_require_upgrade'] = 1;
         return $info;
@@ -59,7 +59,8 @@ class Module_admin_wordfilter
     {
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('wordfilter', array(
-                'word' => '*SHORT_TEXT',
+                'id' => '*AUTO',
+                'word' => 'SHORT_TEXT',
                 'w_replacement' => 'SHORT_TEXT',
                 'w_substr' => '*BINARY'
             ));
@@ -74,6 +75,10 @@ class Module_admin_wordfilter
             foreach ($naughties as $word) {
                 $GLOBALS['SITE_DB']->query_insert('wordfilter', array('word' => $word, 'w_replacement' => '', 'w_substr' => 0));
             }
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+            $GLOBALS['SITE_DB']->add_table_field('wordfilter', 'id', '*AUTO');
         }
     }
 

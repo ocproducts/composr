@@ -48,11 +48,12 @@ function init__database_helper()
  * @param  ID_TEXT $id_name The name of what we are checking (only used to generate clear error messages)
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
+ * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
  */
-function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false, $skip_null_check = false)
+function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
 {
     // Check constraints
-    $take_unicode_into_account = 3;
+    $take_unicode_into_account = $save_bytes ? 3 : 4;
     $data_sizes = array(  // The maximum size fields could be from a database-neutral perspective
                           'AUTO' => 4,
                           'AUTO_LINK' => 4,
@@ -159,8 +160,9 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
  * @param  array $fields The fields
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
+ * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
  */
-function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check = false, $skip_null_check = false)
+function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
 {
     require_code('database_action');
 
@@ -169,7 +171,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
     }
 
     if (!$skip_size_check) {
-        _check_sizes(true, $fields, $table_name, false, false);
+        _check_sizes(true, $fields, $table_name, false, false, $save_bytes);
     }
 
     // Note that interbase has a 31000byte limit on LONG_TEXT/LONG_TRANS, because we can't use blobs on it (those have too many restraints)
@@ -195,7 +197,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
     }
-    $this_ref->static_ob->db_create_table($this_ref->table_prefix . $table_name, $fields, $this_ref->connection_write, $table_name);
+    $this_ref->static_ob->db_create_table($this_ref->table_prefix . $table_name, $fields, $this_ref->connection_write, $table_name, $save_bytes);
 
     // Considering tabes in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
     if (isset($GLOBALS['SITE_DB'])) {
@@ -249,7 +251,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             }
             $fields_full[$field] = $db_type;
         }
-        _check_sizes(false, $fields_full, $index_name, false, true);
+        _check_sizes(false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
     }
     //}
 

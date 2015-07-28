@@ -592,11 +592,12 @@ class DatabaseConnector
      * @param  array $fields The fields
      * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
      * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
-    public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false)
+    public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
     {
         require_code('database_helper');
-        _helper_create_table($this, $table_name, $fields, $skip_size_check, $skip_null_check);
+        _helper_create_table($this, $table_name, $fields, $skip_size_check, $skip_null_check, $save_bytes);
     }
 
     /**

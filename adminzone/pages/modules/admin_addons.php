@@ -92,7 +92,7 @@ class Module_admin_addons
                 'addon_licence' => 'SHORT_TEXT',
                 'addon_description' => 'LONG_TEXT',
                 'addon_install_time' => 'TIME'
-            ));
+            ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('addons_files', array(
                 'id' => '*AUTO', // Because two SHORT_TEXT's as keys exceeds the 500 mysql key limit

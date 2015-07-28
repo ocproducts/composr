@@ -71,12 +71,12 @@ class Module_tickets
             $GLOBALS['SITE_DB']->create_table('ticket_known_emailers', array(
                 'email_address' => '*SHORT_TEXT',
                 'member_id' => 'MEMBER',
-            ));
+            ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('ticket_extra_access', array(
                 'ticket_id' => '*SHORT_TEXT',
                 'member_id' => '*MEMBER',
-            ));
+            ), false, false, true);
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
@@ -96,7 +96,7 @@ class Module_tickets
                 'topic_id' => 'AUTO_LINK',
                 'forum_id' => 'AUTO_LINK',
                 'ticket_type' => 'AUTO_LINK',
-            ));
+            ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('ticket_types', array(
                 'id' => '*AUTO',

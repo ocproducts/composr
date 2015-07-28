@@ -74,7 +74,7 @@ class Module_admin_themes
                 'theme' => '*MINIID_TEXT',
                 'path' => 'URLPATH',
                 'lang' => '*LANGUAGE_NAME'
-            ));
+            ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('theme_images', 'theme', array('theme', 'lang'));
         }
 

@@ -179,7 +179,7 @@ class Module_admin_version
 
             $GLOBALS['SITE_DB']->create_table('webstandards_checked_once', array(
                 'hash' => '*SHORT_TEXT'
-            ));
+            ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('edit_pings', array(
                 'id' => '*AUTO',
@@ -221,7 +221,7 @@ class Module_admin_version
                 'category_name' => '*ID_TEXT',
                 'the_value' => 'BINARY',
                 'active_until' => '?TIME',
-            ));
+            ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_name', array('privilege', 'the_page', 'module_the_name', 'category_name'));
             $GLOBALS['SITE_DB']->create_index('member_privileges', 'member_privileges_member', array('member_id'));
 
@@ -865,7 +865,7 @@ class Module_admin_version
                 'priority' => 'REAL',
                 'refreshfreq' => 'ID_TEXT',
                 'guest_access' => 'BINARY',
-            ));
+            ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'set_number', array('set_number', 'last_updated'));
             $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'last_updated', array('last_updated'));
             $GLOBALS['SITE_DB']->create_index('sitemap_cache', 'is_deleted', array('is_deleted'));

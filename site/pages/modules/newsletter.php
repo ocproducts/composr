@@ -110,7 +110,7 @@ class Module_newsletter
                 'newsletter_id' => '*AUTO_LINK',
                 'the_level' => 'SHORT_INTEGER',
                 'email' => '*SHORT_TEXT',
-            ));
+            ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('newsletter_subscribe', 'peopletosendto', array('the_level'));
 
             $GLOBALS['SITE_DB']->create_table('newsletter_drip_send', array(

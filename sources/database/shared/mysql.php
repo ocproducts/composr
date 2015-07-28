@@ -181,8 +181,9 @@ class Database_super_mysql
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  array $db The DB connection to make on
      * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
-    public function db_create_table($table_name, $fields, $db, $raw_table_name)
+    public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->db_get_type_remap();
 
@@ -227,7 +228,16 @@ class Database_super_mysql
             PRIMARY KEY (' . $keys . ')
         )';
 
-        $query .= ' CHARACTER SET=utf8';
+        global $SITE_INFO;
+        if (!array_key_exists('database_charset', $SITE_INFO)) {
+            $SITE_INFO['database_charset'] = (strtolower(get_charset()) == 'utf-8') ? 'utf8mb4' : 'latin1';
+        }
+        $charset = $SITE_INFO['database_charset'];
+        if ($charset == 'utf8mb4' && $save_bytes) {
+            $charset = 'utf8';
+        }
+
+        $query .= ' CHARACTER SET='.preg_replace('#\_.*$#','',$charset);
 
         $query .= ' ' . $type_key . '=' . $table_type . ';';
         $this->db_query($query, $db, null, null);

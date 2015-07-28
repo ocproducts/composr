@@ -1119,7 +1119,7 @@ function step_5()
         }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
-                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
+                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
             } else {
                 $val = '!' . md5($val . 'cms');
             }
@@ -1643,7 +1643,7 @@ if (!function_exists(\'git_repos\')) {
         }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
-                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
+                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
             } else {
                 $val = '!' . md5($val . 'cms');
             }
@@ -1858,7 +1858,7 @@ function step_5_core()
         'module_the_name' => '*ID_TEXT',
         'category_name' => '*ID_TEXT',
         'the_value' => 'BINARY'
-    ));
+    ), false, false, true);
     $GLOBALS['SITE_DB']->create_index('group_privileges', 'group_id', array('group_id'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('privilege_list');
