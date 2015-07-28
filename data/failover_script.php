@@ -93,34 +93,64 @@ function handle_failover_auto_switching($iteration = 0)
         ));
         $urls = explode(';', $SITE_INFO['failover_check_urls']);
         foreach ($urls as $url) {
+            $done_retries = 0;
+            $max_retries = 1;
+            $time_between_retries = 5;
+
             $full_url = $SITE_INFO['base_url'] . '/' . $url;
             $full_url .= ((strpos($full_url, '?') === false) ? '?' : '&') . 'keep_failover=0';
 
-            $time_before = microtime(true);
-            $data = @file_get_contents($full_url, false, $context);
-            $time_after = microtime(true);
-            $time = $time_after - $time_before;
+            do {
+                $time_before = microtime(true);
+                $data = @file_get_contents($full_url, false, $context);
+                $time_after = microtime(true);
+                $time = $time_after - $time_before;
 
-            // Misc failure
-            if ($data === false) {
-                is_failing($full_url . ' (failed load / slow load)');
-            }
+                // Misc failure
+                if ($data === false) {
+                    if ($done_retries >= $max_retries) {
+                        is_failing($full_url . ' (failed load / slow load)');
+                    } else {
+                        $done_retries++;
+                        sleep($time_between_retries);
+                        continue;
+                    }
+                }
 
-            // Bad HTTP status
-            if (strpos($http_response_header[0], '200') === false) {
-                is_failing($full_url . ' (bad HTTP code; ' . $http_response_header[0] . ')');
-            }
+                // Bad HTTP status
+                if (strpos($http_response_header[0], '200') === false) {
+                    if ($done_retries >= $max_retries) {
+                        is_failing($full_url . ' (bad HTTP code; ' . $http_response_header[0] . ')');
+                    } else {
+                        $done_retries++;
+                        sleep($time_between_retries);
+                        continue;
+                    }
+                }
 
-            // Parse error or fatal error, with display errors on in php.ini (without display errors, PHP uses the correct HTTP status)
-            $matches = array();
-            if ((strlen($data) < 500) && (preg_match('#<b>(\w+ error)</b>#', $data, $matches) != 0)) {
-                is_failing($full_url . ' (' . $matches[1] . ')');
-            }
+                // Parse error or fatal error, with display errors on in php.ini (without display errors, PHP uses the correct HTTP status)
+                $matches = array();
+                if ((strlen($data) < 500) && (preg_match('#<b>(\w+ error)</b>#', $data, $matches) != 0)) {
+                    if ($done_retries >= $max_retries) {
+                        is_failing($full_url . ' (' . $matches[1] . ')');
+                    } else {
+                        $done_retries++;
+                        sleep($time_between_retries);
+                        continue;
+                    }
+                }
 
-            // Slowness
-            if ((!empty($SITE_INFO['failover_loadtime_threshold'])) && ($time >= floatval($SITE_INFO['failover_loadtime_threshold']))) {
-                is_failing($full_url . ' (slow load; ' . number_format($time, 2) . ' seconds)');
-            }
+                // Slowness
+                if ((!empty($SITE_INFO['failover_loadtime_threshold'])) && ($time >= floatval($SITE_INFO['failover_loadtime_threshold']))) {
+                    if ($done_retries >= $max_retries) {
+                        is_failing($full_url . ' (slow load; ' . number_format($time, 2) . ' seconds)');
+                    } else {
+                        $done_retries++;
+                        sleep($time_between_retries);
+                        continue;
+                    }
+                }
+            } while (false);
         }
     }
 

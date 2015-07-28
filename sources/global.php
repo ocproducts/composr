@@ -592,59 +592,61 @@ if ($rate_limiting) {
         $ip = $_SERVER['REMOTE_ADDR'];
         $time = time();
 
-        // Read in state
-        $rate_limiter_path = dirname(dirname(__FILE__)) . '/data_custom/rate_limiter.php';
-        if (is_file($rate_limiter_path)) {
-            global $RATE_LIMITING_DATA;
-            $RATE_LIMITING_DATA = array();
+        if (!(((!empty($_SERVER['SERVER_ADDR'])) && ($ip == $_SERVER['SERVER_ADDR'])) || ((!empty($_SERVER['LOCAL_ADDR'])) && ($ip == $_SERVER['LOCAL_ADDR'])))) {
+            // Read in state
+            $rate_limiter_path = dirname(dirname(__FILE__)) . '/data_custom/rate_limiter.php';
+            if (is_file($rate_limiter_path)) {
+                global $RATE_LIMITING_DATA;
+                $RATE_LIMITING_DATA = array();
 
-            $fp = fopen($rate_limiter_path, 'r');
-            flock($fp, LOCK_SH);
-            include($rate_limiter_path);
-            fclose($fp);
-        }
-
-        // Filter to just times within our window
-        $pertinent = array();
-        $rate_limit_time_window = empty($SITE_INFO['rate_limit_time_window']) ? 10 : intval($SITE_INFO['rate_limit_time_window']);
-        if (isset($RATE_LIMITING_DATA[$ip])) {
-            foreach ($RATE_LIMITING_DATA[$ip] as $i => $old_time) {
-                if ($old_time >= $time - $rate_limit_time_window) {
-                    $pertinent[] = $old_time;
-                }
+                $fp = fopen($rate_limiter_path, 'r');
+                flock($fp, LOCK_SH);
+                include($rate_limiter_path);
+                fclose($fp);
             }
-        }
 
-        // Do we have to block?
-        $rate_limit_hits_per_window = empty($SITE_INFO['rate_limit_hits_per_window']) ? 5 : intval($SITE_INFO['rate_limit_hits_per_window']);
-        if (count($pertinent) >= $rate_limit_hits_per_window) {
-            header('HTTP/1.0 429 Too Many Requests');
-            header('Content-Type: text/plain');
-            exit('We only allow ' . strval($rate_limit_hits_per_window) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
-        }
-
-        // Remove any old hits from other IPs
-        foreach ($RATE_LIMITING_DATA as $_ip => $times) {
-            if ($_ip != $ip) {
-                foreach ($times as $i => $old_time) {
-                    if ($old_time < $time - $rate_limit_time_window) {
-                        unset($RATE_LIMITING_DATA[$_ip][$i]);
+            // Filter to just times within our window
+            $pertinent = array();
+            $rate_limit_time_window = empty($SITE_INFO['rate_limit_time_window']) ? 10 : intval($SITE_INFO['rate_limit_time_window']);
+            if (isset($RATE_LIMITING_DATA[$ip])) {
+                foreach ($RATE_LIMITING_DATA[$ip] as $i => $old_time) {
+                    if ($old_time >= $time - $rate_limit_time_window) {
+                        $pertinent[] = $old_time;
                     }
                 }
-                if (count($RATE_LIMITING_DATA[$_ip]) == 0) {
-                    unset($RATE_LIMITING_DATA[$_ip]);
+            }
+
+            // Do we have to block?
+            $rate_limit_hits_per_window = empty($SITE_INFO['rate_limit_hits_per_window']) ? 5 : intval($SITE_INFO['rate_limit_hits_per_window']);
+            if (count($pertinent) >= $rate_limit_hits_per_window) {
+                header('HTTP/1.0 429 Too Many Requests');
+                header('Content-Type: text/plain');
+                exit('We only allow ' . strval($rate_limit_hits_per_window) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
+            }
+
+            // Remove any old hits from other IPs
+            foreach ($RATE_LIMITING_DATA as $_ip => $times) {
+                if ($_ip != $ip) {
+                    foreach ($times as $i => $old_time) {
+                        if ($old_time < $time - $rate_limit_time_window) {
+                            unset($RATE_LIMITING_DATA[$_ip][$i]);
+                        }
+                    }
+                    if (count($RATE_LIMITING_DATA[$_ip]) == 0) {
+                        unset($RATE_LIMITING_DATA[$_ip]);
+                    }
                 }
             }
+
+            // Write out new state
+            $RATE_LIMITING_DATA[$ip] = $pertinent;
+            $RATE_LIMITING_DATA[$ip][] = $time;
+            file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';', LOCK_EX);
+            //sync_file($rate_limiter_path); Not done. Each server should rate limit separately. Synching this data across servers would be too slow and not scalable
+
+            // Save some memory
+            unset($RATE_LIMITING_DATA);
         }
-
-        // Write out new state
-        $RATE_LIMITING_DATA[$ip] = $pertinent;
-        $RATE_LIMITING_DATA[$ip][] = $time;
-        file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';', LOCK_EX);
-        //sync_file($rate_limiter_path); Not done. Each server should rate limit separately. Synching this data across servers would be too slow and not scalable
-
-        // Save some memory
-        unset($RATE_LIMITING_DATA);
     }
 }
 
