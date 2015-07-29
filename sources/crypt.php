@@ -44,7 +44,7 @@ function init__crypt()
          * @param  string $password The password to hash
          * @param  integer $algo The algorithm to use (Defined by PASSWORD_* constants)
          * @param  array $options The options for the algorithm to use
-         * @return ~string              The hashed password (false: error)
+         * @return ~string The hashed password (false: error)
          */
         function password_hash($password, $algo, $options)
         {
@@ -220,6 +220,7 @@ function init__crypt()
 function ratchet_hash($password, $salt, $legacy_style = 0)
 {
     if (function_exists('password_hash')) {
+        // NB: We don't pass the salt separately, we let password_hash generate its own internal salt also (that builds into the hash). So it is double salted.
         return password_hash($salt . md5($password), PASSWORD_BCRYPT, array('cost' => intval(get_option('crypt_ratchet'))));
     }
 

@@ -1666,7 +1666,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $_read_file = @fopen($url, 'rb', false, $context);
                 if ($_read_file !== false) {
                     $read_file = '';
-                    while ((!feof($_read_file)) && (strlen($read_file) < $byte_limit)) {
+                    while ((!feof($_read_file)) && ((is_null($byte_limit)) || (strlen($read_file) < $byte_limit))) {
                         $read_file .= fread($_read_file, 1024);
                         if (!is_null($write_to_file)) {
                             fwrite($write_to_file, $read_file);

@@ -218,7 +218,6 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         $password_compatibility_scheme = 'plain';
         $salt = '';
     }
-
     if (($salt == '') && (($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary'))) {
         require_code('crypt');
         $salt = produce_salt();

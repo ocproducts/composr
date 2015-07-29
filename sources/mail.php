@@ -482,7 +482,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         return null;
     }
 
-    if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {_s
+    if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {
         return null;
     }
 
