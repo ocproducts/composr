@@ -1976,10 +1976,10 @@ function step_5_core_2()
         'the_type' => 'ID_TEXT',
         'the_id' => 'ID_TEXT',
         'the_title' => 'SHORT_TEXT'
-    ), false, false, true);
+    ));
     $GLOBALS['SITE_DB']->create_index('sessions', 'delete_old', array('last_activity'));
     $GLOBALS['SITE_DB']->create_index('sessions', 'member_id', array('member_id'));
-    $GLOBALS['SITE_DB']->create_index('sessions', 'userat', array('the_zone', 'the_page', 'the_type', 'the_id'));
+    $GLOBALS['SITE_DB']->create_index('sessions', 'userat', array('the_zone', 'the_page', 'the_id'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('https_pages');
     $GLOBALS['SITE_DB']->create_table('https_pages', array(
