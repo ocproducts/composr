@@ -28,7 +28,7 @@ class Hook_config_tapatalk_api_key
         return array(
             'human_name' => 'TAPATALK_TAPATALK_API_KEY',
             'type' => 'line',
-            'category' => 'COMPOSR_APIS',
+            'category' => 'FORUMS',
             'group' => 'TAPATALK',
             'explanation' => 'CONFIG_OPTION_tapatalk_api_key',
             'shared_hosting_restricted' => '0',

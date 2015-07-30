@@ -825,7 +825,7 @@ function ModalWindow()
 			this.add_event(this.box_wrapper.childNodes[0],'click',function(e) {
 				try { _this.top_window.cancel_bubbling(e); } catch (e) {}
 				/*{+START,IF,{$MOBILE}}*/
-					if (_this.type=='lightbox') // TODO: Swipe detect would be better, but JS does not have this natively yet
+					if (_this.type=='lightbox') // IDEA: Swipe detect would be better, but JS does not have this natively yet
 					{
 						_this.option('right');
 					}

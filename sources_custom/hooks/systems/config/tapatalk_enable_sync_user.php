@@ -28,7 +28,7 @@ class Hook_config_tapatalk_enable_sync_user
         return array(
             'human_name' => 'TAPATALK_ENABLE_SYNC_USER',
             'type' => 'tick',
-            'category' => 'COMPOSR_APIS',
+            'category' => 'FORUMS',
             'group' => 'TAPATALK',
             'explanation' => 'CONFIG_OPTION_tapatalk_enable_sync_user',
             'shared_hosting_restricted' => '0',

@@ -28,7 +28,7 @@ class Hook_config_tapatalk_promote_from_website
         return array(
             'human_name' => 'TAPATALK_TAPATALK_PROMOTE_FROM_WEBSITE',
             'type' => 'tick',
-            'category' => 'COMPOSR_APIS',
+            'category' => 'FORUMS',
             'group' => 'TAPATALK',
             'explanation' => 'CONFIG_OPTION_after_edit_mark_unread',
             'shared_hosting_restricted' => '0',
