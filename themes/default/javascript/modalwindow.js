@@ -157,7 +157,10 @@ function open_link_as_overlay(ob,width,height,target)
 				img.className='lightbox_image';
 				img.id='lightbox_image';
 				img.onload=function() { _resize_lightbox_dimensions_img(modal,img,true,is_video); };
-				img.src=imgs[position][0];
+				img.src='{$IMG_INLINE;,loading}';
+				window.setTimeout(function() { // Defer execution until after loading is set
+					img.src=imgs[position][0];
+				},0);
 			}
 
 			var lightbox_description=modal.top_window.document.getElementById('lightbox_description');

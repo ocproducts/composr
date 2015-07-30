@@ -1242,6 +1242,7 @@ class Module_admin_themes
             sync_file($custom_path . '.editfrom');
         }
 
+        require_code('caches3');
         erase_cached_templates();
 
         log_it('EDIT_CSS', $theme, $file);
@@ -2099,6 +2100,7 @@ class Module_admin_themes
             actual_add_theme_image($theme, $lang, $id, $path[0]);
         }
 
+        require_code('caches3');
         Self_learning_cache::erase_smart_cache();
         erase_cached_templates();
 
@@ -2289,6 +2291,7 @@ class Module_admin_themes
             actual_edit_theme_image($old_id, $theme, $lang, $id, $path[0]);
         }
 
+        require_code('caches3');
         Self_learning_cache::erase_smart_cache();
         erase_cached_templates();
         persistent_cache_delete('IMAGE_DIMS');
