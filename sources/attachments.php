@@ -70,7 +70,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         $url = new Tempcode();
 
         $url->attach(find_script('attachment') . '?id=' . urlencode(strval($attachment_row['id'])));
-        if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_forum_db($connection)) {
             $url->attach('&forum_db=1');
             $attributes['num_downloads'] = symbol_tempcode('ATTACHMENT_DOWNLOADS', array(strval($attachment_row['id']), '1'));
         } else {

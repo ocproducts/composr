@@ -233,7 +233,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 {
     require_code('database_action');
 
-    //if ($GLOBALS['DEV_MODE']) {  Actually, no we want to run in installer, which would not be in debug mode
+    //if ($GLOBALS['DEV_MODE']) {  Actually, no we want to run in installer, which would not be in dev mode
     if ($table_name != 'db_meta') {
         $fields_full = array();
         foreach ($fields as $field) {

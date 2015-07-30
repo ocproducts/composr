@@ -1034,7 +1034,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         global $RECORD_LANG_STRINGS_CONTENT;
         if ($RECORD_LANG_STRINGS_CONTENT) {
             global $RECORDED_LANG_STRINGS_CONTENT;
-            $RECORDED_LANG_STRINGS_CONTENT[$entry] = ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write);
+            $RECORDED_LANG_STRINGS_CONTENT[$entry] = is_forum_db($connection);
         }
 
         if ($lang == 'xxx') {
@@ -1155,7 +1155,7 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
     global $RECORD_LANG_STRINGS_CONTENT;
     if ($RECORD_LANG_STRINGS_CONTENT) {
         global $RECORDED_LANG_STRINGS_CONTENT;
-        $RECORDED_LANG_STRINGS_CONTENT[$entry] = ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write);
+        $RECORDED_LANG_STRINGS_CONTENT[$entry] = is_forum_db($connection);
     }
 
     if ($lang === null) {

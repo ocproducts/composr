@@ -559,7 +559,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
 
     $ids = array();
 
-    if ((!$db_only) && (($db->connection_write == $GLOBALS['SITE_DB']->connection_write) || ($dirs_only) || (!is_on_multi_site_network()))) {
+    if ((!$db_only) && ((!is_forum_db($db)) || ($dirs_only) || (!is_on_multi_site_network()))) {
         _get_all_image_ids_type($ids, get_file_base() . '/themes/default/images/' . (($type == '') ? '' : ($type . '/')), $type, $recurse, $dirs_only, $skip);
         _get_all_image_ids_type($ids, get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/' . (($type == '') ? '' : ($type . '/')), $type, $recurse, $dirs_only, $skip);
         if ($theme != 'default') {

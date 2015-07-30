@@ -170,7 +170,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
      */
     public function import()
     {
-        if ($GLOBALS['SITE_DB']->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_on_multi_site_network()) {
             attach_message(do_lang_tempcode('EDITING_ON_WRONG_MSN'), 'warn');
         }
 
@@ -358,7 +358,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
      */
     public function get_form_fields($code = ':-]', $theme_img_code = '', $relevance_level = 1, $use_topics = 1, $is_special = 0)
     {
-        if ($GLOBALS['SITE_DB']->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_on_multi_site_network()) {
             attach_message(do_lang_tempcode('EDITING_ON_WRONG_MSN'), 'warn');
         }
 

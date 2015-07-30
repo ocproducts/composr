@@ -470,9 +470,25 @@ function get_db_forums_password()
 function is_on_multi_site_network($db = null)
 {
     if ($db !== null) {
-        return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write != $GLOBALS['FORUM_DB']->connection_write));
+        return !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
     }
     return ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+}
+
+/**
+ * Find whether a database connection is to the forum database.
+ *
+ * @param  object $db The DB connection to check against
+ * @return boolean Whether we are
+ */
+function is_forum_db($db)
+{
+    if (!is_on_multi_site_network()) {
+        // Not on a multi-site-network
+        return false;
+    }
+
+    return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write));
 }
 
 /**
@@ -1081,7 +1097,7 @@ class DatabaseConnector
                     fatal_exit('Assumption of multi-lang-content being on, and it\'s not');
                 }
 
-                if ((get_forum_type() != 'none') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && ($this->connection_write === $GLOBALS['SITE_DB']->connection_write) && (is_cns_satellite_site())) {
+                if ((get_forum_type() != 'none') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && (!is_forum_db($this)) && (is_cns_satellite_site())) {
                     fatal_exit('Using Conversr queries on the wrong driver');
                 }
             }

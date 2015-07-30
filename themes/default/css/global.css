@@ -4427,8 +4427,14 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 
 .overlay_close_button {
 	position: absolute;
-	top: -16px;
-	right: -16px;
+	/*{+START,IF,{$MOBILE}}*/
+		top: 0;
+		right: 0;
+	/*{+END}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		top: -16px;
+		right: -16px;
+	/*{+END}*/
 	cursor: pointer;
 }
 

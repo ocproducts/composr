@@ -362,7 +362,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                         $thumb_url = 'uploads/attachments_thumbs/' . $_file_thumb;
                         convert_image(get_custom_base_url() . '/uploads/attachments/' . $_file, $place_thumb, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
-                        if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                        if (is_forum_db($connection)) {
                             $thumb_url = get_custom_base_url() . '/' . $thumb_url;
                         }
                     } else {

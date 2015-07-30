@@ -189,7 +189,7 @@ class Module_admin_cns_groups extends Standard_crud_module
      */
     public function get_form_fields($id = null, $name = '', $is_default = 0, $is_super_admin = 0, $is_super_moderator = 0, $group_leader = '', $title = '', $rank_image = '', $promotion_target = null, $promotion_threshold = null, $flood_control_submit_secs = null, $flood_control_access_secs = null, $gift_points_base = null, $gift_points_per_day = 1, $max_daily_upload_mb = null, $max_attachments_per_post = null, $max_avatar_width = null, $max_avatar_height = null, $max_post_length_comcode = null, $max_sig_length_comcode = null, $enquire_on_new_ips = 0, $is_presented_at_install = 0, $group_is_hidden = 0, $order = null, $rank_image_pri_only = 1, $open_membership = 0, $is_private_club = 0)
     {
-        if ($GLOBALS['SITE_DB']->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_on_multi_site_network()) {
             attach_message(do_lang_tempcode('EDITING_ON_WRONG_MSN'), 'warn');
         }
 

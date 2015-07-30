@@ -29,17 +29,19 @@
 	<section class="box box___preview_script global_middle_faux"><div class="box_inner">
 		<h2>{!PREVIEW}</h2>
 
-		<div class="preview_box">
+		<div class="preview_box{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}}{+END}">
 			<div id="preview_box_inner" class="preview_box_inner">
 				{$TRIM,{OUTPUT}}
 			</div>
 		</div>
 
-		{+START,IF,{$MOBILE}}
-			<script>// <![CDATA[
-				var inner=document.getElementById('preview_box_inner');
-				add_event_listener_abstract(inner,browser_matches('gecko')?'DOMMouseScroll':'mousewheel',function(event) { inner.scrollTop-=event.wheelDelta?event.wheelDelta:event.detail; cancel_bubbling(event); if (typeof event.preventDefault!='undefined') event.preventDefault(); return false; });
-			//]]></script>
+		{+START,IF,{$NOT,{$MOBILE,1}}}
+			{+START,IF,{$MOBILE}}
+				<script>// <![CDATA[
+					var inner=document.getElementById('preview_box_inner');
+					add_event_listener_abstract(inner,browser_matches('gecko')?'DOMMouseScroll':'mousewheel',function(event) { inner.scrollTop-=event.wheelDelta?event.wheelDelta:event.detail; cancel_bubbling(event); if (typeof event.preventDefault!='undefined') event.preventDefault(); return false; });
+				//]]></script>
+			{+END}
 		{+END}
 
 		{+START,IF,{$JS_ON}}
@@ -50,13 +52,15 @@
 
 				{HIDDEN}
 
-				{+START,IF,{$CONFIG_OPTION,mobile_support}}
-					<p>
-						<label for="mobile_version">{!MOBILE_VERSION}: <input{+START,IF,{$MOBILE}} checked="checked"{+END} onclick="return preview_mobile_button(this);" type="checkbox" id="mobile_version" name="_mobile_version" /></label>
-						{+START,IF,{$MOBILE}}
-							&ndash; <em>{!USE_MOUSE_WHEEL_SCROLL}</em>
-						{+END}
-					</p>
+				{+START,IF,{$NOT,{$MOBILE,1}}}
+					{+START,IF,{$CONFIG_OPTION,mobile_support}}
+						<p>
+							<label for="mobile_version">{!MOBILE_VERSION}: <input{+START,IF,{$MOBILE}} checked="checked"{+END} onclick="return preview_mobile_button(this);" type="checkbox" id="mobile_version" name="_mobile_version" /></label>
+							{+START,IF,{$MOBILE}}
+								&ndash; <em>{!USE_MOUSE_WHEEL_SCROLL}</em>
+							{+END}
+						</p>
+					{+END}
 				{+END}
 			</form>
 		{+END}

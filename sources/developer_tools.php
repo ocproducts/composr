@@ -65,7 +65,7 @@ function semi_dev_mode_startup()
     global $_CREATED_FILES;
     if (isset($_CREATED_FILES)) { // Comes from ocProducts custom PHP version
         /**
-         * Run after-tests for debug mode, to make sure coding standards are met.
+         * Run after-tests for dev mode, to make sure coding standards are met.
          */
         function dev_mode_aftertests()
         {

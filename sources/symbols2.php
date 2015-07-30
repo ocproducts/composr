@@ -311,7 +311,7 @@ function ecv2_CUSTOM_BASE_URL($lang, $escaped, $param)
  */
 function ecv2_BASE_URL_NOHTTP($lang, $escaped, $param)
 {
-    if ($GLOBALS['DEV_MODE']) {// Debug mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in debug mode).
+    if ($GLOBALS['DEV_MODE']) {// Dev mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in dev mode).
         return ecv2_BASE_URL($lang, $escaped, $param);
     }
 
@@ -336,7 +336,7 @@ function ecv2_BASE_URL_NOHTTP($lang, $escaped, $param)
  */
 function ecv2_CUSTOM_BASE_URL_NOHTTP($lang, $escaped, $param)
 {
-    if ($GLOBALS['DEV_MODE']) {// Debug mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in debug mode).
+    if ($GLOBALS['DEV_MODE']) {// Dev mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in dev mode).
         return ecv2_BASE_URL($lang, $escaped, $param);
     }
 

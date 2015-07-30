@@ -2926,7 +2926,7 @@ function ecv_HIDE_HELP_PANEL($lang, $escaped, $param)
  */
 function ecv_FIND_SCRIPT_NOHTTP($lang, $escaped, $param)
 {
-    if ($GLOBALS['DEV_MODE']) {// Debug mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in debug mode).
+    if ($GLOBALS['DEV_MODE']) {// Dev mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in dev mode).
         return ecv_FIND_SCRIPT($lang, $escaped, $param);
     }
 

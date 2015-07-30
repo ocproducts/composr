@@ -202,7 +202,7 @@ function _custom_comcode_import($connection)
             if (($GLOBALS['FORUM_DB'] != $connection) && (!is_null($GLOBALS['FORUM_DB'])) && (get_forum_type() == 'cns')) {
                 $tags = array_merge($tags, $GLOBALS['FORUM_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
             }
-            if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+            if (is_forum_db($connection)) {
                 $tags = array_merge($tags, $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
             }
             $tags = array_merge($tags, $connection->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
@@ -1986,7 +1986,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 sync_file($path);
                 $_size = strlen($file);
                 $url = 'uploads/attachments/' . $new_filename;
-                if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                if (is_forum_db($connection)) {
                     $url = get_custom_base_url() . '/' . $url;
                 }
             } // New attachments: uploads
@@ -2095,7 +2095,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                             $attributes['thumb_url'] = 'uploads/attachments_thumbs/' . $md5 . $ext;
                             convert_image(get_custom_base_url() . '/' . $url, get_custom_file_base() . '/' . $attributes['thumb_url'], -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
-                            if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                            if (is_forum_db($connection)) {
                                 $attributes['thumb_url'] = get_custom_base_url() . '/' . $attributes['thumb_url'];
                             }
                         } else {
@@ -2123,7 +2123,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
 
                 // Set URL correctly, if on an M.S.N.
-                if ($connection->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+                if (is_forum_db($connection)) {
                     if (url_is_local($url)) {
                         $url = get_custom_base_url() . '/' . $url;
                     }

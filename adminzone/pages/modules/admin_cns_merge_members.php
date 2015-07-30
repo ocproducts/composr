@@ -139,7 +139,7 @@ class Module_admin_cns_merge_members
         $fields->attach(form_input_username(do_lang_tempcode('FROM'), do_lang_tempcode('DESCRIPTION_MEMBER_FROM'), 'from', $from, true));
         $fields->attach(form_input_username(do_lang_tempcode('TO'), do_lang_tempcode('DESCRIPTION_MEMBER_TO'), 'to', $to, true));
 
-        if ($GLOBALS['SITE_DB']->connection_write != $GLOBALS['SITE_DB']->connection_write) {
+        if (is_on_multi_site_network()) {
             $fields->attach(form_input_tick(do_lang_tempcode('MERGING_ON_MSN'), do_lang_tempcode('DESCRIPTION_MERGING_ON_MSN'), 'keep', true));
         }
 

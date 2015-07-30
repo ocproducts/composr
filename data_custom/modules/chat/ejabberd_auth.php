@@ -43,7 +43,7 @@ class JabberAuth
     public $dbpass; /* MySQL password */
     public $dbbase; /* MySQL database where users are stored */
 
-    public $debug = true;                      /* Debug mode */
+    public $debug = true;                      /* Dev mode */
     public $debugfile = "../../errorlog.php";  /* Debug output */
     /*
      * For both debug and logging, ejabberd have to be able to write.

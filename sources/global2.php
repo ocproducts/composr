@@ -645,7 +645,7 @@ function load_user_stuff()
          * @global object $FORUM_DRIVER
          */
         $FORUM_DRIVER = object_factory($class);
-        if (($SITE_INFO['forum_type'] == 'cns') && (!is_on_multi_site_network()) && (!$GLOBALS['DEV_MODE'])) { // NB: In debug mode needs separating so we can properly test our boundaries
+        if (($SITE_INFO['forum_type'] == 'cns') && (!is_on_multi_site_network()) && (!$GLOBALS['DEV_MODE'])) { // NB: In dev mode needs separating so we can properly test our boundaries
             $FORUM_DRIVER->connection = &$SITE_DB;
         } elseif ($SITE_INFO['forum_type'] != 'none') {
             $FORUM_DRIVER->connection = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $FORUM_DRIVER->get_drivered_table_prefix());

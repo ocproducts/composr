@@ -162,8 +162,8 @@ function open_link_as_overlay(ob,width,height,target)
 
 			var lightbox_description=modal.top_window.document.getElementById('lightbox_description');
 			var lightbox_position_in_set_x=modal.top_window.document.getElementById('lightbox_position_in_set_x');
-			set_inner_html(lightbox_description,imgs[position][1]);
-			set_inner_html(lightbox_position_in_set_x,position+1);
+			if (lightbox_description) set_inner_html(lightbox_description,imgs[position][1]);
+			if (lightbox_position_in_set_x) set_inner_html(lightbox_position_in_set_x,position+1);
 		},0);
 	}
 
@@ -819,7 +819,15 @@ function ModalWindow()
 				}
 			};
 
-			this.add_event(this.box_wrapper.childNodes[0],'click',function(e) { try { _this.top_window.cancel_bubbling(e); } catch (e) {} });
+			this.add_event(this.box_wrapper.childNodes[0],'click',function(e) {
+				try { _this.top_window.cancel_bubbling(e); } catch (e) {}
+				/*{+START,IF,{$MOBILE}}*/
+					if (_this.type=='lightbox') // TODO: Swipe detect would be better, but JS does not have this natively yet
+					{
+						_this.option('right');
+					}
+				/*{+END}*/
+			});
 
 			switch (this.type)
 			{
