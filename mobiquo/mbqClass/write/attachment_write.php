@@ -37,23 +37,23 @@ class CMSAttachmentWrite
 
         $_f = array_keys($_FILES);
         $filekey = array_shift($_f);
+        $filekey_orig = $filekey;
         if (is_array($_FILES[$filekey]['name'])) {
             $filekey .= '1';
         }
 
-        $urls = get_url('', $filekey, 'uploads/attachments', 2, CMS_UPLOAD_ANYTHING, false, '', '', false, true);
-        if ($urls[0] == '') {
-            warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
-        }
+        if (url_is_local($urls[0])) {
+            $filepath = get_file_base() . '/' . rawurldecode($urls[0]);
+            $filesize = filesize($filepath);
 
-        $filepath = get_file_base() . '/' . rawurldecode($urls[0]);
-        $filesize = filesize($filepath);
-
-        require_once(COMMON_CLASS_PATH_READ . '/user_read.php');
-        $user_read_object = new CMSUserRead();
-        if ($filesize > $user_read_object->get_posting_setting(get_member(), 'max_attachment_size')) {
-            unlink($filepath);
-            warn_exit(do_lang_tempcode('ERROR_UPLOADING_1'));
+            require_once(COMMON_CLASS_PATH_READ . '/user_read.php');
+            $user_read_object = new CMSUserRead();
+            if ($filesize > $user_read_object->get_posting_setting(get_member(), 'max_attachment_size')) {
+                unlink($filepath);
+                warn_exit(do_lang_tempcode('ERROR_UPLOADING_1'));
+            }
+        } else {
+            $filesize = $_FILES[$filekey_orig]['size'];
         }
 
         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
@@ -90,6 +90,7 @@ class CMSAttachmentWrite
 
         $_f = array_keys($_FILES);
         $filekey = array_shift($_f);
+        $filekey_orig = $filekey;
         if (is_array($_FILES[$filekey]['name'])) {
             $filekey .= '1';
         }
@@ -99,14 +100,18 @@ class CMSAttachmentWrite
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
 
-        $filepath = get_file_base() . '/' . rawurldecode($urls[0]);
-        $filesize = filesize($filepath);
+        if (url_is_local($urls[0])) {
+            $filepath = get_file_base() . '/' . rawurldecode($urls[0]);
+            $filesize = filesize($filepath);
 
-        require_once(COMMON_CLASS_PATH_READ . '/user_read.php');
-        $user_read_object = new CMSUserRead();
-        if ($filesize > $user_read_object->get_posting_setting(get_member(), 'max_attachment_size')) {
-            unlink($filepath);
-            warn_exit(do_lang_tempcode('ERROR_UPLOADING_1'));
+            require_once(COMMON_CLASS_PATH_READ . '/user_read.php');
+            $user_read_object = new CMSUserRead();
+            if ($filesize > $user_read_object->get_posting_setting(get_member(), 'max_attachment_size')) {
+                unlink($filepath);
+                warn_exit(do_lang_tempcode('ERROR_UPLOADING_1'));
+            }
+        } else {
+            $filesize = $_FILES[$filekey_orig]['size'];
         }
 
         require_code('cns_members_action');

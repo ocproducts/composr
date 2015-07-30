@@ -831,6 +831,22 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
         $place = $upload_folder_full . '/' . $filename;
     }
 
+    // Is a CDN transfer hook going to kick in?
+    $hooks = find_all_hooks('systems', 'cdn_transfer');
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/cdn_transfer/' . filter_naughty_harsh($hook));
+        $object = object_factory('Hook_cdn_transfer_' . filter_naughty_harsh($hook), true);
+        if ((!is_null($object)) && ($object->is_enabled())) {
+            $test = $object->transfer_upload($attach_name, $upload_folder, basename($place), $obfuscate, $accept_errors);
+            if ($test !== null) {
+                $url = array();
+                $url[0] = $test;
+                $url[1] = $file;
+                return $url;
+            }
+        }
+    }
+
     check_shared_space_usage($filearrays[$attach_name]['size']);
 
     // Copy there, and return our URL

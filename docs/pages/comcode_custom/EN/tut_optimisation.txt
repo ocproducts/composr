@@ -373,11 +373,15 @@ Some people with very ambitious goals want to have multiple servers dotted aroun
 
 [title="3"]Content Delivery Networks[/title]
 
+There are a number of approaches you can take if you want to serve media from third party servers. Doing this reduces latency, and your own hosting costs, as well as some other potential side benefits such as automatic transcoding.
+
+[title="4"]Theme files[/title]
+
 You can have randomised content delivery networks used for your theme images and CSS files.
 
-To activate you would type a command like this into Commandr:
+Change the Content Delivery Network option to something like:
 [code]
-:set_value('cdn','example1.example.com,example2.example.com');
+example1.example.com,example2.example.com
 [/code]
 
 As you can see, it is a comma-separated list of domain names. These domain names must be serving your files from a directory structure that mirrors that of your normal domain precisely.
@@ -385,7 +389,41 @@ As you can see, it is a comma-separated list of domain names. These domain names
 Composr will randomise what CDN's it uses, so parallelisation can work more efficiently (this is the only reason for the comma-separation). Web browsers have a limit on how many parallel web requests may come from a single server, and this works around that.
 DNS may be used to route the CDN servers based on geographic location.
 
-There are many commercial CDN services available that can be configured in via this option.
+There are many commercial CDN services available that can be configured in via this option. Many of them automatically will transfer over any file you reference on their service (via URL equivalencies) so that you don't need to worry about copying files over yourself.
+
+If you use a service like CloudFlare it can automatically provide CDN functionality similar to the above, although from a single server only. CloudFlare works a little differently as it automatically rewrites your pages as they route through its systems. The CDN options above directly affect Composr's output.
+
+[title="4"]Upload syndication[/title]
+
+[i]This section is mainly applicable to programmers, although specific service implementations may be available within addons[/i]
+
+Composr contains 2 kinds of hooks for sending off uploads to third-party servers:
+ - [tt]upload_syndication[/tt] -- transfers attachments and gallery files to other services, useful both for syndication and remote hosting; supports a basic UI for determining whether syndication happens
+ - [tt]cdn_transfer[/tt] -- transparently transfers uploads directly to other services at an early stage; has no UI
+
+[title="4"]S3 storage[/title]
+
+If you receive more uploads than you can handle through normal disk space, you could use S3 storage. This will also give your users a marginal improvement in download speeds and provide better value storage (on cloud hosting traditional disk space may be more limited).
+
+Composr has no direct inbuilt S3 support, but this is intentional, because you do not need it. Assuming you have a Linux dedicated server or cloud instance, you may use the 'FUSE' system to make Composr upload directory/directories use S3.
+
+First you need to mount S3 storage to a directory, such as [tt]uploads/attachments[tt], using a filesystem driver:
+http://tecadmin.net/mount-s3-bucket-centosrhel-ubuntu-using-s3fs/
+You'll want to mount a subdirectory of your S3 storage rather than a root. I recommend you mirror the same basic filesystem structure as Composr, so that you are mapping subdirectories with equivalence.
+You'll need to rename [tt]uploads/attachments[/tt] to something else to do this, and then move the old contents of that directory back into the S3 version of it.
+
+Now immediately you are using S3 for storage, however URLs are still coming through your own server, which will work, but not efficiently.
+Let's say we want normal image attachments to route through S3. We would edit the [tt]MEDIA_IMAGE_WEBSAFE[/tt] template, changing:
+[code]
+{URL*}
+[/code]
+to:
+[code]
+{$PREG_REPLACE,^{$CUSTOM_BASE_URL}/uploads/attachments/,http://whateverYourAmazonBaseURLIS/uploads/attachments/,{URL}}
+[/code]
+You'll need to disable the Composr "Reveal usage figures" option, as the usage figures can't be maintained with requests not routing through Composr.
+
+Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess[/tt], but this would add additional latency.
 
 [title="2"]Facebook's HHVM[/title]
 
@@ -463,30 +501,6 @@ It's quite a simplistic model, as things often burst, which means things queue u
 If you are planning on using Amazon instances, you can resize them after-the-fact, but it's rather complex:
 http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-resize.html
 You effectively have to take it down, then get Amazon to shift over your hard disk image to where they need to put it for a larger instance.
-
-[title="2"]S3 storage[/title]
-
-If you receive more uploads than you can handle through normal disk space, you could use S3 storage. This will also give your users a marginal improvement in download speeds and provide better value storage (on cloud hosting traditional disk space may be more limited).
-
-Composr has no direct inbuilt S3 support, but this is intentional, because you do not need it. Assuming you have a Linux dedicated server or cloud instance, you may use the 'FUSE' system to make Composr upload directory/directories use S3.
-
-First you need to mount S3 storage to a directory, such as [tt]uploads/attachments[tt], using a filesystem driver:
-http://tecadmin.net/mount-s3-bucket-centosrhel-ubuntu-using-s3fs/
-You'll want to mount a subdirectory of your S3 storage rather than a root. I recommend you mirror the same basic filesystem structure as Composr, so that you are mapping subdirectories with equivalence.
-You'll need to rename [tt]uploads/attachments[/tt] to something else to do this, and then move the old contents of that directory back into the S3 version of it.
-
-Now immediately you are using S3 for storage, however URLs are still coming through your own server, which will work, but not efficiently.
-Let's say we want normal image attachments to route through S3. We would edit the [tt]MEDIA_IMAGE_WEBSAFE[/tt] template, changing:
-[code]
-{URL*}
-[/code]
-to:
-[code]
-{$PREG_REPLACE,^{$CUSTOM_BASE_URL}/uploads/attachments/,http://whateverYourAmazonBaseURLIS/uploads/attachments/,{URL}}
-[/code]
-You'll need to disable the Composr "Reveal usage figures" option, as the usage figures can't be maintained with requests not routing through Composr.
-
-Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess[/tt], but this would add additional latency.
 
 [title="2"]See also[/title]
 
