@@ -158,7 +158,7 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
     } else {
         $mime_type = $meta_details['t_mime_type'];
     }
-    if ($meta_details['t_mime_type'] != '') {
+    if ($mime_type != '') {
         foreach ($hooks as $hook) {
             if ((method_exists($obs[$hook], 'recognises_mime_type')) && (($acceptable_media & $obs[$hook]->get_media_type()) != 0)) {
                 $result = $obs[$hook]->recognises_mime_type($mime_type, $meta_details);

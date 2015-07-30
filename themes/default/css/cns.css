@@ -167,9 +167,15 @@ div.cns_table_footer>div>div {
 }
 
 .cns_buttons_screen {
-	float: {!en_right};
 	white-space: nowrap;
-	margin: 1.5em 0 1.5em 1em !important;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		float: {!en_right};
+		margin: 1.5em 0 1.5em 1em !important;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		text-align: center;
+		margin: 1.5em 0 1.5em 0 !important;
+	/*{+END}*/
 }
 
 /*

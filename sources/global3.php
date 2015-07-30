@@ -2272,6 +2272,7 @@ function is_mobile($user_agent = null, $truth = false)
 
         // Well known/important browsers/brands
         'Mobile Safari', // Usually Android
+        'Android',
         'iPhone',
         'iPod',
         'Opera Mobi',

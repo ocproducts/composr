@@ -294,6 +294,7 @@ function set_failover_mode($new_mode)
 
                     // Well known/important browsers/brands
                     'Mobile Safari', // Usually Android
+                    'Android',
                     'iPhone',
                     'iPod',
                     'Opera Mobi',

@@ -2040,8 +2040,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if ($attributes['thumb_url'] == '') {
                     $attributes['thumb_url'] = array_key_exists(1, $urls) ? $urls[1] : '';
                 }
-                // Existing attachments
             } else {
+                // Existing attachments
+
                 $__id = intval($id);
 
                 // Load attachment

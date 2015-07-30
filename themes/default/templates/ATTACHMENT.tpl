@@ -1,20 +1,24 @@
 <div class="wide_table_wrap"><table class="map_table form_table wide_table">
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<colgroup>
-			<col class="attachments_field_name_column" />
+			{+START,IF,{$NOT,{$MOBILE}}}
+				<col class="attachments_field_name_column" />
+			{+END}
 			<col class="attachments_field_input_column" />
 		</colgroup>
 	{+END}
 
 	<tbody>
 		<tr>
-			<th class="form_table_field_name vertical_alignment">
-				{!ATTACHMENT,{I*}}
+			{+START,IF,{$NOT,{$MOBILE}}}
+				<th class="form_table_field_name vertical_alignment">
+					{!ATTACHMENT,{I*}}
 
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
-				{+END}
-			</th>
+					{+START,IF,{$NOT,{$MOBILE}}}
+						<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+					{+END}
+				</th>
+			{+END}
 			<td class="form_table_field_input">
 				<div class="upload_field">
 					<div class="accessibility_hidden"><label for="file{I*}">{!UPLOAD}</label></div>
@@ -25,7 +29,7 @@
 							document.getElementById('file{I;/}').setAttribute('unselectable','on');
 						//]]></script>
 
-						{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="buttons__clear button_micro" type="button" id="clear_button_file{I*}" value="{!CLEAR}" onclick="var new_contents=get_textbox(form.elements['post']).replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_{I;*}\\[/(attachment|attachment_safe)\\]'),''); set_textbox(form.elements['post'],new_contents,new_contents); document.getElementById('file{I;/}').value=''; return false;" title="{!CLEAR}: {!ATTACHMENT,{I*}}" />{+END}
+						{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="buttons__clear button_micro" type="button" id="clear_button_file{I*}" value="{!CLEAR}" onclick="return clear_attachment({I%},form.elements['post']);" title="{!CLEAR}: {!ATTACHMENT,{I*}}" />{+END}
 					</span>
 
 					{+START,IF_PASSED,SYNDICATION_JSON}

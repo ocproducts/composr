@@ -1409,7 +1409,8 @@ class Module_calendar
             }
 
             $month = do_template('CALENDAR_YEAR_MONTH', array('_GUID' => '58c9f4cc04186dce6e7ea3dd8ec9269b', 'ENTRIES' => $_entries));
-            $months .= $month->evaluate()/*FUDGE*/;
+            $months .= $month->evaluate()/*FUDGE*/
+            ;
         }
 
         $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => 'month', 'id' => $explode[0] . '-' . strval($i - 3)));
@@ -1512,7 +1513,7 @@ class Module_calendar
         // Work out all our various dates
         $day = get_param_string('day', '');
         if ($day != '') {
-            $event = adjust_event_dates_for_a_recurrence($day, $event);
+            $event = adjust_event_dates_for_a_recurrence($day, $event, get_users_timezone());
         }
         list($time_raw, $from) = find_event_start_timestamp($event);
         $day_formatted = locale_filter(date(do_lang('calendar_date'), $from));

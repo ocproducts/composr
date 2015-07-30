@@ -492,7 +492,10 @@ function placeholder_blur(ob,def)
 	{
 		ob.value=def;
 	}
-	ob.className=ob.className.replace('field_input_filled','field_input_non_filled');
+	if (ob.value==def)
+	{
+		ob.className=ob.className.replace('field_input_filled','field_input_non_filled');
+	}
 }
 
 function set_font_size(size)

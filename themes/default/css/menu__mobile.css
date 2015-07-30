@@ -5,7 +5,7 @@
 
 .mobile_menu_button {
 	text-decoration: none;
-	color: {$GET,WB};
+	color: {$GET,WB} !important;
 	position: absolute;
 	padding: 0.75em;
 }

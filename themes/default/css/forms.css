@@ -5,6 +5,12 @@
 
 /* General form-related styles */
 
+/*{+START,IF,{$MOBILE}}*/
+	label {
+		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when touching inputs}
+	}
+/*{+END}*/
+
 .required_field_warning {
 	border: 1px solid {$GET,standard_border};
 	overflow: hidden;
@@ -19,11 +25,13 @@
 		width: 11em;
 	/*{+END}*/
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching on mobile form filling in}
 }
 
 .required_star {
 	{$BETA_CSS_PROPERTY,opacity: 0.4;}
 	color: {$GET,red_highlight_text};
+	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when touching inputs}
 }
 
 .comcode_supported {

@@ -114,6 +114,7 @@ class Hook_preview_cns_post
             $post_avatar = new Tempcode();
         }
         require_code('cns_groups');
+        require_code('cns_general');
         require_code('cns_members');
         $poster_title = get_member_title($post_owner);
 

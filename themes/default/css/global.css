@@ -159,6 +159,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 
 html, body {
 	border: 0;
+	{$BETA_CSS_PROPERTY,text-size-adjust: none;}
 }
 
 body, .email_body, textarea, input, td, th {
@@ -425,7 +426,7 @@ body#main_website {
 	margin: 0;
 
 	/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
-	/*/*{+START,IF,{$NOT,{$MOBILE}}}*/*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		min-width: 1000px;
 	/*{+END}*/
 }
@@ -715,6 +716,10 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 	.overlay h1 {
 		display: none;
+	}
+
+	.overlay.alert .box_inner div, .overlay.confirm .box_inner div {
+		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when dismissing}
 	}
 /*{+END}*/
 
@@ -3156,6 +3161,7 @@ input.magic_image_edit_link {
 	text-shadow: 2px 1px 2px {$GET,dark_shadow};
 	background-color: {$GET,lgrad};
 	background-repeat: no-repeat;
+	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-image: url('{$IMG_INLINE;,gradient}');
 	/*{$BETA_CSS_PROPERTY,background: linear-gradient(to bottom, {$GET,lgrad} 0%,{$GET,dgrad} 100%);} If you want a CSS gradient instead of the above image, do something like this*/
@@ -3182,10 +3188,11 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 }
 .buttons__previous.button_screen, .buttons__previous_none.button_screen {
 	padding: 6px 7px 7px 39px !important;
-	background-position: left 7px top 3px !important;
+	background-position: 7px 3px !important;
 }
 .button_screen_item {
 	padding: 3px 30px 4px 5px;
+	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-size: 18px 18px;
 	font-size: 13px;

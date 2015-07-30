@@ -233,13 +233,13 @@ class Module_admin_config
         if (count($_POST) == 0) {
             $proper_url = build_url(array('page' => ''), '');
             $_proper_url = $proper_url->evaluate();
-            $test_a = http_download_file($_proper_url, 0, false, true, 'ocPortal', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
+            $test_a = http_download_file($_proper_url, 0, false, true);
             $message_a = $GLOBALS['HTTP_MESSAGE'];
             if ($message_a == '200')
             {
-                $test_b = http_download_file($_proper_url, 0, false, true);
+                $test_b = http_download_file($_proper_url, 0, false, true, 'ocPortal', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
                 $message_b = $GLOBALS['HTTP_MESSAGE'];
-                if (($message_b != '200') && ($message_a != $message_b))
+                if ($message_b != '200')
                 {
                     attach_message(do_lang_tempcode('MOD_SECURITY', escape_html($message_b)), 'warn');
                 }

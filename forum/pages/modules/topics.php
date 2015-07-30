@@ -1542,6 +1542,7 @@ class Module_topics
 
         $hidden_fields = new Tempcode();
         $specialisation = new Tempcode();
+        $specialisation2 = new Tempcode();
 
         // Where to post to
         $map = array('page' => '_SELF', 'type' => '_add_reply');
@@ -1588,7 +1589,12 @@ class Module_topics
 
         // Description
         if ((get_option('is_on_topic_descriptions') == '1') && (!$threaded)) {
-            $specialisation->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), '', 'description', $existing_description, false, 2));
+            $field = form_input_line(do_lang_tempcode('DESCRIPTION'), '', 'description', $existing_description, false, 2);
+            if (is_mobile()) {
+                $specialisation2->attach($field);
+            } else {
+                $specialisation->attach($field);
+            }
         }
 
         // Set up some post details
@@ -1605,7 +1611,12 @@ class Module_topics
             $specialisation->attach($post_templates);
         }
         if (get_option('is_on_topic_emoticons') == '1') {
-            $specialisation->attach($this->choose_topic_emoticon($img_path));
+            $field = $this->choose_topic_emoticon($img_path);
+            if (is_mobile()) {
+                $specialisation2->attach($field);
+            } else {
+                $specialisation->attach($field);
+            }
         }
 
         if (is_guest()) {
@@ -1613,7 +1624,6 @@ class Module_topics
         }
 
         // Various kinds of tick options
-        $specialisation2 = new Tempcode();
         if ((!$private_topic) && (cns_may_moderate_forum($forum_id, get_member()))) {
             $moderation_options = array(
                 array(do_lang_tempcode('OPEN'), 'open', true, do_lang_tempcode('DESCRIPTION_OPEN')),
@@ -1711,7 +1721,7 @@ class Module_topics
         }
 
         // Render form
-        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $this->_post_javascript() . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''));
+        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $this->_post_javascript() . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''), null, true, true, false, true, is_mobile());
 
         url_default_parameters__disable();
 

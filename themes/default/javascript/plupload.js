@@ -13517,24 +13517,21 @@ function replace_file_input(page_type,name,_btn_submit_id,posting_field_name,fil
 	// Rearrange clear buttons
 	var clear_button=document.getElementById('clear_button_'+name);
 	if (clear_button) clear_button.style.display='none';
-	var newClearBtn=document.createElement('input');
-	newClearBtn.id='fsClear_'+name;
-	//newClearBtn.type='image';
-	newClearBtn.type='button';
-	newClearBtn.className='buttons__clear '+button_type+' clear_button';
-	newClearBtn.alt='{!CLEAR;^}';
-	newClearBtn.value='{!CLEAR;^}';
-	subdiv.appendChild(newClearBtn);
+	var new_clear_btn=document.createElement('input');
+	new_clear_btn.id='fsClear_'+name;
+	//new_clear_btn.type='image';
+	new_clear_btn.type='button';
+	new_clear_btn.className='buttons__clear '+button_type+' clear_button';
+	new_clear_btn.alt='{!CLEAR;^}';
+	new_clear_btn.value='{!CLEAR;^}';
+	subdiv.appendChild(new_clear_btn);
 
-	newClearBtn.onclick=function() {
+	new_clear_btn.onclick=function() {
 		var txtFileName=document.getElementById('txtFileName_'+name);
 		txtFileName.value='';
 		if ((typeof rep.form.elements[posting_field_name]!='undefined') && (name.indexOf('file')!=-1))
 		{
-			var new_contents=get_textbox(rep.form.elements[posting_field_name]);
-			new_contents=new_contents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_'+name.replace(/^file/,'')+'\\[/(attachment|attachment_safe)\\]'),'');
-			new_contents=new_contents.replace(new RegExp('<input[^<>]* class="cms_keep_ui_controlled"[^<>]* title="[^<>]*" value="[^"]+"[^<>]* />'),''); // Shell of the above
-			set_textbox(rep.form.elements[posting_field_name],new_contents,new_contents);
+			clear_attachment(name.replace(/^file/,''),rep.form.elements[posting_field_name]);
 		}
 		fireFakeChangeFor(name,'');
 		document.getElementById(ob.settings.txtFileDbID).value='-1';

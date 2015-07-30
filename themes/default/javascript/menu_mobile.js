@@ -1,6 +1,8 @@
 function mobile_menu_button(id)
 {
-	var ob=document.getElementById('r_'+id+'_d').parentNode;
+	var branch=document.getElementById('r_'+id+'_d');
+	if (!branch) return true;
+	var ob=branch.parentNode;
 	if (ob.style.display=='none')
 	{
 		ob.style.display='block';

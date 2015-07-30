@@ -66,6 +66,7 @@ class calendar_event_test_set extends cms_test_case
     public function testApiShiftRecurrence()
     {
         // Given an event shifted to a different recurrence, ensure the dates do shift correctly...
+
         $event = array(
             'e_start_day' => 8,
             'e_start_month' => 10,
@@ -84,9 +85,32 @@ class calendar_event_test_set extends cms_test_case
             'e_recurrence' => 'monthly',
             'e_recurrences' => null,
         );
-        $event = adjust_event_dates_for_a_recurrence('2012-11-8', $event);
+        $event = adjust_event_dates_for_a_recurrence('2012-11-9', $event, 'Europe/London');
         $this->assertTrue($event['e_start_month'] == 11);
         $this->assertTrue($event['e_end_month'] == 11);
+
+        // And now check timezones are respected for a negative timezone case viewed from the same timezone it was added in...
+
+        $event = array(
+            'e_start_day' => 30, // 29th local time
+            'e_start_month' => 7,
+            'e_start_year' => 2015,
+            'e_start_monthly_spec_type' => 'day_of_month',
+            'e_start_hour' => 1, // 21 local time
+            'e_start_minute' => 00,
+            'e_end_day' => null,
+            'e_end_month' => null,
+            'e_end_year' => null,
+            'e_end_monthly_spec_type' => null,
+            'e_end_hour' => null,
+            'e_end_minute' => null,
+            'e_timezone' => 'America/Guyana',
+            'e_do_timezone_conv' => 1,
+            'e_recurrence' => '',
+            'e_recurrences' => null,
+        );
+        $event = adjust_event_dates_for_a_recurrence('2015-07-29', $event, 'America/Guyana');
+        $this->assertTrue($event['e_start_day'] == 30);
 
         // More complex case...
 
@@ -108,7 +132,7 @@ class calendar_event_test_set extends cms_test_case
             'e_recurrence' => 'monthly',
             'e_recurrences' => null,
         );
-        $event = adjust_event_dates_for_a_recurrence('2012-12-4', $event); // 1st Tuesday of December 2012
+        $event = adjust_event_dates_for_a_recurrence('2012-12-4', $event, 'Europe/London'); // 1st Tuesday of December 2012
         $this->assertTrue($event['e_start_day'] == 4); // 1st Tuesday of December = 4th
         $this->assertTrue($event['e_start_month'] == 12);
         $this->assertTrue($event['e_start_monthly_spec_type'] == 'day_of_month');

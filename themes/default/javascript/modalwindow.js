@@ -657,12 +657,14 @@ function ModalWindow()
 				this.box_wrapper.style.position='absolute';
 				this.box_wrapper.style.height=((dim.page_height>(detected_box_height+bottom_gap+_box_pos_left))?dim.page_height:(detected_box_height+bottom_gap+_box_pos_left))+'px';
 				this.top_window.document.body.style.overflow='';
-				if (!browser_matches('ios') && !browser_matches('android'))
-				{
+				{+START,IF,{$NOT,{$MOBILE}}}
 					this.box_wrapper.childNodes[0].style.position='absolute';
 					box_pos_top={$?,{$MOBILE},0,this.WINDOW_TOP_GAP}+'px';
 					this.box_wrapper.childNodes[0].style.top=box_pos_top;
-				} // iOS/Android uses static anyway
+				{+END}
+				{+START,IF,{$MOBILE}}
+					{$,iOS/Android uses static anyway}
+				{+END}
 
 				if ((init) || (was_fixed)) do_scroll=true;
 				try
@@ -700,7 +702,7 @@ function ModalWindow()
 					'background': 'rgba(0,0,0,0.7)',
 					'zIndex': this.top_window.overlay_zIndex++,
 					'overflow': 'hidden',
-					'position': (browser_matches('android') || browser_matches('ios'))?'absolute':'fixed',
+					'position': '{$?,{$MOBILE},absolute,fixed}',
 					'left': '0',
 					'top': '0',
 					'width': '100%',
@@ -713,7 +715,7 @@ function ModalWindow()
 				'role': 'dialog',
 				'styles': {
 					// This will be updated immediately in reset_dimensions
-					'position': (browser_matches('android') || browser_matches('ios'))?'static':'fixed',
+					'position': '{$?,{$MOBILE},static,fixed}',
 					'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
 				}
 			}));

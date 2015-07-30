@@ -850,6 +850,7 @@ function field_supports_autosave(element)
 		element=element[0];
 	}
 
+	if (typeof element.name=='undefined') return false;
 	var name=element.name;
 	if (name=='') return false;
 	if (name.substr(-2)=='[]') return false;
