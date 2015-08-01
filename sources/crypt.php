@@ -34,7 +34,7 @@ function init__crypt()
      * @copyright 2012 The Authors
      */
 
-    if ((!defined('PASSWORD_DEFAULT')) && (function_exists('crypt'))) {
+    if ((!defined('PASSWORD_DEFAULT')) && (function_exists('crypt')) && (version_compare(PHP_VERSION, '5.3.7') >= 0)) { // http://compo.sr/tracker/view.php?id=2011
         define('PASSWORD_BCRYPT', 1);
         define('PASSWORD_DEFAULT', PASSWORD_BCRYPT);
 
@@ -54,7 +54,7 @@ function init__crypt()
             }
             $result_length = 0;
             switch ($algo) {
-                case PASSWORD_BCRYPT:
+                case PASSWORD_BCRYPT: // Blowfish
                     // Note that this is a C constant, but not exposed to PHP, so we don't define it here.
                     $cost = 10;
                     if (isset($options['cost'])) {
@@ -68,11 +68,7 @@ function init__crypt()
                     $raw_salt_len = 16;
                     // The length required in the final serialization
                     $required_salt_len = 22;
-                    if (version_compare(PHP_VERSION, '5.3.7') >= 0) {
-                        $hash_format = sprintf("$2y$%02d$", $cost);
-                    } else {
-                        $hash_format = sprintf("$2a$%02d$", $cost);
-                    }
+                    $hash_format = sprintf("$2y$%02d$", $cost);
                     // The expected length of the final crypt() output
                     $result_length = 60;
                     break;
@@ -143,7 +139,7 @@ function init__crypt()
 
             $ret = crypt($password, $hash);
 
-            if (!is_string($ret) || _crypt_strlen($ret) == 0/* || _crypt_strlen($ret)!=$result_length  causes problem on mac with old PHP version*/) {
+            if (!is_string($ret) || _crypt_strlen($ret) == 0 || _crypt_strlen($ret)!=$result_length) {
                 return false;
             }
 

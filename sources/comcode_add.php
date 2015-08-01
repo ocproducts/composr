@@ -462,7 +462,7 @@ function comcode_helper_script_step2()
                                 }
                             }
                             $field = form_input_list($parameter_name, '', $param, $list, null, false, false);
-                        } elseif (($param == 'width' || $param == 'height') && ((is_null($default)) || (is_numeric($default)))) {
+                        } elseif (($param == 'width' || $param == 'height') && ((empty($default)) || (is_numeric($default)))) {
                             if ($param == 'width') {
                                 $default_width = array_key_exists('width', $defaults) ? $defaults['width'] : get_param_string('default_width', '');
                                 $default_height = array_key_exists('height', $defaults) ? $defaults['height'] : get_param_string('default_height', '');
@@ -881,7 +881,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
     } elseif ($tag == 'attachment') {
         if (get_option('eager_wysiwyg') == '0') {
             if ((!isset($_COOKIE['use_wysiwyg'])) || ($_COOKIE['use_wysiwyg'] != '0')) {
-                $javascript .= "document.getElementById('framed').onchange=function() { if (!this.checked && document.getElementById('_safe')) document.getElementById('_safe').checked=false; };";
+                $javascript .= "document.getElementById('framed').onchange=function() { if (this.checked && document.getElementById('_safe')) document.getElementById('_safe').checked=false; };";
             }
         }
 

@@ -192,9 +192,11 @@ function add_attachments_from_comcode($comcode, $attachment_ids)
     $comcode = preg_replace('#(\[\w+=)([^"\[\]]*)(\])#', '\1"\2"]', $comcode); // So comcode_to_clean_text works better
 
     // Add attachments
+    $comcode .= "\n\n[media_set]";
     foreach ($attachment_ids as $attachment_id) {
-        $comcode .= "\n\n" . '[attachment]' . strval($attachment_id) . '[/attachment]';
+        $comcode .= "\n\n" . '[attachment type="inline"]' . strval($attachment_id) . '[/attachment]';
     }
+    $comcode .= "\n\n[/media_set]";
 
     return $comcode;
 }
@@ -330,7 +332,16 @@ function tapatalk_strip_comcode($data)
     $data = preg_replace('#\[img[^\]]*\](.*)\[/img\]#Us', '[img]$1[/img]', $data);
     $data = preg_replace('#\[url="([^"]*)"\](https?://.*)\[/url\]#Us', '[url="$2"]$1[/url]', $data);
 
-    // // Strip most Comcode
+    // Nested quotes not allowed
+    $quote_open = '\[quote[^\]]*\]';
+    $quote_close = '\[/quote\]';
+    $no_quote_seq = '((?!' . $quote_open . ').)*';
+    do {
+        $old_data = $data;
+        $data = preg_replace('#' . '(' . $quote_open . $no_quote_seq . ')' . $quote_open . $no_quote_seq . $quote_close . '(' . $no_quote_seq . $quote_close . ')' . '#Us', '$1$4', $data);
+    } while ($data != $old_data);
+
+    // Strip most Comcode
     $protected_tags = array(
         'url',
         'img',

@@ -74,6 +74,7 @@ class Hook_cdn_transfer_cloudinary
         $options = array(
             'resource_type' => 'auto',
             'tags' => $tags,
+            'angle' => 'exif',
         );
 
         if ($obfuscate != 0) {

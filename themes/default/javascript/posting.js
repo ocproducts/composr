@@ -126,7 +126,7 @@ function set_attachment(field_name,number,filename,multi)
 		url+='&type=step2';
 		url+='&tag='+(is_image?'attachment_safe':'attachment');
 		url+='&default=new_'+number;
-		if (multi) url+='&default_framed=0';
+		if (multi || is_image) url+='&default_framed=0';
 		url+='&is_image='+(is_image?'1':'0');
 		url+='&is_archive='+(is_archive?'1':'0');
 		url+='&multi='+(multi?'1':'0');

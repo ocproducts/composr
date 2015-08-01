@@ -576,8 +576,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
     if ($semiparse_mode) { // We have got to this point because we want to provide a special 'button' editing representation for these tags
         if (wysiwyg_comcode_markup_style($tag, $attributes, $embed) != WYSIWYG_COMCODE__HTML) {
-            $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml)));
-            if ($temp_tpl !== null) {
+            $_temp_tpl = add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml));
+            if ($_temp_tpl !== null) {
+                $temp_tpl = make_string_tempcode($_temp_tpl);
                 return $temp_tpl;
             }
         }
