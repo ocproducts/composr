@@ -185,7 +185,7 @@ class Module_admin
             array('news', 'blogs', 'press release'),
             array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation'), // i.e. Composr validation
             array('webstandards', 'check', 'conformance'),
-            // We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
+            // ^ We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
             //  sanitisation or check or well-formed (for input data, or transactions)
             //  integrity (for system data)
             //  approve (for IPs)
@@ -193,6 +193,7 @@ class Module_admin
             array('theme', 'skin', 'style'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
+            array('pm', 'pt'),
             array('filedump', 'library', 'file manager'),
             array('word-filter', 'wordfilter', 'swear', 'curse'),
             array('colour', 'color', 'css', 'font', 'background'),

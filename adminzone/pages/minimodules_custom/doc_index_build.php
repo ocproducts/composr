@@ -23,7 +23,7 @@ foreach ($_addons as $addon => $place) {
         $tutorials = $ob->get_applicable_tutorials();
         $all_tutorials_referenced = array_merge($all_tutorials_referenced, $tutorials);
         if (count($tutorials) == 0) {
-            warn_exit('Missing tutorial for: ' . $addon);
+            warn_exit('No tutorial defined for addon: ' . $addon);
         }
 
         $dependencies = $ob->get_dependencies();
@@ -155,5 +155,5 @@ function get_tutorial_title($tutorial)
     $contents = file_get_contents(get_custom_file_base() . '/docs/pages/comcode_custom/EN/' . $tutorial . '.txt');
     $matches = array();
     preg_match('#\[title[^\[\]]*\](?-U)(Composr (Tutorial|Supplementary): )?(?U)(.*)\[/title\]#Us', $contents, $matches);
-    return $matches[2];
+    return $matches[3];
 }

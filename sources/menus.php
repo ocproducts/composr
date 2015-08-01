@@ -171,6 +171,12 @@ function _build_sitemap_menu($menu)
                             }
                             break;
 
+                        case 'collapse_zones':
+                            if ($setting == '1') {
+                                $options |= SITEMAP_GEN_COLLAPSE_ZONES;
+                            }
+                            break;
+
                         case 'include':
                             $include = $setting;
                             break;

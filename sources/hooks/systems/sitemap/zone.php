@@ -270,7 +270,10 @@ class Hook_sitemap_zone extends Hook_sitemap_base
 
         // Categories done after node callback, to ensure sensible ordering
         if (($max_recurse_depth === null) || ($recurse_level < $max_recurse_depth)) {
-            $root_comcode_pages = get_root_comcode_pages($zone);
+            $root_comcode_pages = get_root_comcode_pages($zone, true);
+            if (($zone == 'site') && (($options & SITEMAP_GEN_COLLAPSE_ZONES) != 0)) {
+                $root_comcode_pages += get_root_comcode_pages('', true);
+            }
 
             // Locate all page groupings and pages in them
             $page_groupings = array();
@@ -295,24 +298,27 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             }
 
             // Any left-behind pages?
+            // NB: Code largely repeated in page_grouping.php
             $orphaned_pages = array();
-            $pages = $no_self_pages ? array() : find_all_pages_wrap($zone, false, /*$consider_redirects=*/true);
-            foreach ($pages as $page => $page_type) {
-                if (is_integer($page)) {
-                    $page = strval($page);
-                }
-
-                if (preg_match('#^redirect:#', $page_type) != 0) {
-                    $details = $this->_request_page_details($page, $zone);
-                    $page_type = strtolower($details[0]);
-                    $pages[$page] = $page_type;
-                }
-
-                if ((!isset($pages_found[$zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages[$page])))) {
-                    if ($this->_is_page_omitted_from_sitemap($zone, $page)) {
-                        continue;
+            foreach ((($zone == 'site') && (($options & SITEMAP_GEN_COLLAPSE_ZONES) != 0)) ? array('site', '') : array($zone) as $_zone) {
+                $pages = $no_self_pages ? array() : find_all_pages_wrap($_zone, false, /*$consider_redirects=*/true, /*$show_method = */0, /*$page_type = */($zone != $_zone) ? 'comcode' : null);
+                foreach ($pages as $page => $page_type) {
+                    if (is_integer($page)) {
+                        $page = strval($page);
                     }
-                    $orphaned_pages[$page] = $page_type;
+
+                    if (preg_match('#^redirect:#', $page_type) != 0) {
+                        $details = $this->_request_page_details($page, $_zone);
+                        $page_type = strtolower($details[0]);
+                        $pages[$page] = $page_type;
+                    }
+
+                    if ((!isset($pages_found[$_zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages[$_zone . ':' . $page])))) {
+                        if ($this->_is_page_omitted_from_sitemap($_zone, $page)) {
+                            continue;
+                        }
+                        $orphaned_pages[$_zone . ':' . $page] = $page_type;
+                    }
                 }
             }
 
@@ -366,7 +372,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                                 continue;
                             }
 
-                            if (($consider_validation) && (isset($root_comcode_pages[$page])) && ($root_comcode_pages[$page] == 0)) {
+                            if (($consider_validation) && (isset($root_comcode_pages[$child_page_link])) && ($root_comcode_pages[$child_page_link] == 0)) {
                                 continue;
                             }
 
@@ -457,7 +463,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                                 continue;
                             }
 
-                            if (($consider_validation) && (isset($root_comcode_pages[$page])) && ($root_comcode_pages[$page] == 0)) {
+                            if (($consider_validation) && (isset($root_comcode_pages[$zone . ':' . $page])) && ($root_comcode_pages[$zone . ':' . $page] == 0)) {
                                 continue;
                             }
 

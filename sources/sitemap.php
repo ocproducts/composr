@@ -88,6 +88,7 @@ function init__sitemap()
     define('SITEMAP_GEN_LABEL_CONTENT_TYPES', 16); // Whether to change title labels to show what nodes and what kinds of content (i.e. more technical).
     define('SITEMAP_GEN_NO_EMPTY_PAGE_LINKS', 32); // When iteratively expanding we need to make sure this is set, otherwise we won't be able to expand everything. But when generating menus we do not want it set.
     define('SITEMAP_GEN_KEEP_FULL_STRUCTURE', 64); // Avoid merging structure together to avoid page-link duplication.
+    define('SITEMAP_GEN_COLLAPSE_ZONES', 128); // Simulate zone collapse in the Sitemap.
 
     // Defining how the content-selection list should be put together
     define('CSL_PERMISSION_VIEW', 0);
@@ -1092,9 +1093,10 @@ function get_page_grouping_links()
  * Get Comcode pages from a zone, that sit in the root of that zone.
  *
  * @param  ID_TEXT $zone The zone to get for.
+ * @param  boolean $include_zone Use page-links in the mapping rather than just page names.
  * @return array Root Comcode pages, mapping page name to validation status.
  */
-function get_root_comcode_pages($zone)
+function get_root_comcode_pages($zone, $include_zone = false)
 {
     /*$rows=$GLOBALS['SITE_DB']->query_select('comcode_pages',array('the_page','p_validated'),array('the_zone'=>$zone,'p_parent_page'=>''));
     return collapse_2d_complexity('the_page','p_validated',$rows);*/
@@ -1106,11 +1108,19 @@ function get_root_comcode_pages($zone)
     $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,p_validated FROM ' . get_table_prefix() . 'comcode_pages WHERE ' . db_string_equal_to('the_zone', $zone) . ' AND ' . db_string_not_equal_to('p_parent_page', ''));
     $non_root = collapse_2d_complexity('the_page', 'p_validated', $rows);
 
-    $pages = find_all_pages_wrap($zone, false, /*$consider_redirects=*/true);
+    $pages = find_all_pages_wrap($zone, false, /*$consider_redirects=*/true, /*$show_method = */0, /*$page_type = */'comcode');
     foreach ($pages as $page => $page_type) {
         if (isset($non_root[$page])) {
             unset($pages[$page]);
         }
+    }
+
+    if ($include_zone) {
+        $page_links = array();
+        foreach ($pages as $page => $page_type) {
+            $page_links[$zone . ':' . $page] = $page_type;
+        }
+        return $page_links;
     }
 
     return $pages;

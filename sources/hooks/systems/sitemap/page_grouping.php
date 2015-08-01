@@ -191,7 +191,10 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
         if (($max_recurse_depth === null) || ($recurse_level < $max_recurse_depth)) {
             $children = array();
 
-            $root_comcode_pages_validation = get_root_comcode_pages($zone);
+            $root_comcode_pages_validation = get_root_comcode_pages($zone, true);
+            if (($zone == 'site') && (($options & SITEMAP_GEN_COLLAPSE_ZONES) != 0)) {
+                $root_comcode_pages_validation += get_root_comcode_pages('', true);
+            }
 
             $page_sitemap_ob = $this->_get_sitemap_object('page');
             $entry_point_sitemap_ob = $this->_get_sitemap_object('entry_point');
@@ -283,25 +286,28 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
             if ($page_grouping == 'pages' || $page_grouping == 'tools' || $page_grouping == 'cms') {
                 if ($orphaned_pages === null) {
                     // Any left-behind pages
+                    // NB: Code largely repeated in zone.php
                     $orphaned_pages = array();
-                    $pages = find_all_pages_wrap($zone, false, /*$consider_redirects=*/true);
-                    foreach ($pages as $page => $page_type) {
-                        if (is_integer($page)) {
-                            $page = strval($page);
-                        }
-
-                        if (preg_match('#^redirect:#', $page_type) != 0) {
-                            $details = $this->_request_page_details($page, $zone);
-                            $page_type = strtolower($details[0]);
-                            $pages[$page] = $page_type;
-                        }
-
-                        if ((!isset($pages_found[$zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages_validation[$page])))) {
-                            if ($this->_is_page_omitted_from_sitemap($zone, $page)) {
-                                continue;
+                    foreach ((($zone == 'site') && (($options & SITEMAP_GEN_COLLAPSE_ZONES) != 0)) ? array('site', '') : array($zone) as $_zone) {
+                        $pages = find_all_pages_wrap($_zone, false, /*$consider_redirects=*/true, /*$show_method = */0, /*$page_type = */($zone != $_zone) ? 'comcode' : null);
+                        foreach ($pages as $page => $page_type) {
+                            if (is_integer($page)) {
+                                $page = strval($page);
                             }
 
-                            $orphaned_pages[$page] = $page_type;
+                            if (preg_match('#^redirect:#', $page_type) != 0) {
+                                $details = $this->_request_page_details($page, $_zone);
+                                $page_type = strtolower($details[0]);
+                                $pages[$page] = $page_type;
+                            }
+
+                            if ((!isset($pages_found[$_zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages_validation[$_zone . ':' . $page])))) {
+                                if ($this->_is_page_omitted_from_sitemap($_zone, $page)) {
+                                    continue;
+                                }
+
+                                $orphaned_pages[$_zone . ':' . $page] = $page_type;
+                            }
                         }
                     }
                 }
@@ -311,11 +317,17 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                         $page = strval($page);
                     }
 
-                    if ($page == get_zone_default_page($zone)) {
+                    if (strpos($page, ':') !== false) {
+                        list($_zone, $page) = explode(':', $page, 2);
+                    } else {
+                        $_zone = $zone;
+                    }
+
+                    if ($page == get_zone_default_page($_zone)) {
                         continue;
                     }
 
-                    $child_page_link = $zone . ':' . $page;
+                    $child_page_link = $_zone . ':' . $page;
 
                     $child_links[] = array(titleify($page), $child_page_link, null, $page_type, null);
                 }
@@ -342,7 +354,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                         continue;
                     }
 
-                    if (($consider_validation) && (isset($root_comcode_pages_validation[$page])) && ($root_comcode_pages_validation[$page] == 0)) {
+                    if (($consider_validation) && (isset($root_comcode_pages_validation[$zone . ':' . $page])) && ($root_comcode_pages_validation[$page] == 0)) {
                         continue;
                     }
 
