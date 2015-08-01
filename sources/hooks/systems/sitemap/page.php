@@ -74,6 +74,9 @@ class Hook_sitemap_page extends Hook_sitemap_base
         $zone_default_page = get_zone_default_page($zone);
 
         $details = $this->_request_page_details($page, $zone);
+        if ($details === false) {
+            return null;
+        }
 
         $path = end($details);
         $row = $this->_load_row_from_page_groupings($row, $zone, $page);

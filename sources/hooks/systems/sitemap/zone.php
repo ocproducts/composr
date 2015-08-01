@@ -212,6 +212,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     }
                 }
                 $struct['permissions'] = array_merge($struct['permissions'], $child_node['permissions']);
+
                 if ($child_node['children'] !== null) {
                     $children = array_merge($children, $child_node['children']);
                 }
@@ -365,7 +366,13 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                             continue;
                         }
 
-                        $child_page_link = $zone . ':' . $page;
+                        if (strpos($page, ':') !== false) {
+                            list($_zone, $page) = explode(':', $page, 2);
+                        } else {
+                            $_zone = $zone;
+                        }
+
+                        $child_page_link = $_zone . ':' . $page;
 
                         if (strpos($page_type, 'comcode') !== false) {
                             if (($valid_node_types !== null) && (!in_array('comcode_page', $valid_node_types))) {
@@ -376,13 +383,13 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                                 continue;
                             }
 
-                            $child_node = $comcode_page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                            $child_node = $comcode_page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $_zone, $meta_gather);
                         } else {
                             if (($valid_node_types !== null) && (!in_array('page', $valid_node_types))) {
                                 continue;
                             }
 
-                            $child_node = $page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                            $child_node = $page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $_zone, $meta_gather);
                         }
 
                         if ($child_node !== null) {
@@ -393,7 +400,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                                 }
                             }
 
-                            if ($zone == 'site' || $zone == 'adminzone') {
+                            if ($_zone == 'site' || $_zone == 'adminzone') {
                                 $child_node['is_unexpected_orphan'] = true; // This should never be set, it indicates a page not in a page grouping
                             }
 
@@ -443,7 +450,13 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                             $page = strval($page);
                         }
 
-                        $child_page_link = $zone . ':' . $page;
+                        if (strpos($page, ':') !== false) {
+                            list($_zone, $page) = explode(':', $page, 2);
+                        } else {
+                            $_zone = $zone;
+                        }
+
+                        $child_page_link = $_zone . ':' . $page;
 
                         $child_links[] = array(titleify($page), $child_page_link, null, $page_type, null);
                     }
