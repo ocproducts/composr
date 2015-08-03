@@ -171,18 +171,18 @@ class Block_twitter_feed
         foreach ($twitter_statuses as $status) {
             // Process $tweet_text to convert twitter screen names, hashtags, emails and urls into clickable links
             $tweet_text = ' ' . htmlentities($status['text'], ENT_NOQUOTES, 'UTF-8');
-            $tweet_text = preg_replace("#@(\w+)#ise", "'<a href=\"http://www.twitter.com/\\1\" target=\"_blank\" rel=\"nofollow\">@\\1</a>'", $tweet_text);
-            $tweet_text = preg_replace("#\#(\w+)#ise", "'<a href=\"https://twitter.com/#!/search?q=%23\\1\" target=\"_blank\" rel=\"nofollow\">#\\1</a>'", $tweet_text);
-            $tweet_text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#ise", "'\\1<a href=\"\\2\" target=\"_blank\" >\\2</a>'", $tweet_text);
-            $tweet_text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#ise", "'\\1<a href=\"http://\\2\" target=\"_blank\" >\\2</a>'", $tweet_text);
+            $tweet_text = preg_replace_callback("#@(\w+)#is", array($this, '_convert_name_callback'), $tweet_text);
+            $tweet_text = preg_replace_callback("#\#(\w+)#is", array($this, '_convert_hashtag_callback'), $tweet_text);
+            $tweet_text = preg_replace_callback("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#is", array($this, '_convert_url_callback'), $tweet_text);
+            $tweet_text = preg_replace_callback("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#is", array($this, '_convert_website_callback'), $tweet_text);
             $tweet_text = preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $tweet_text);
 
             // Process $twitter_userdescription to convert twitter screen names, hashtags, emails and urls into clickable links
             $twitter_userdescription = ' ' . htmlentities($status['user']['description'], ENT_NOQUOTES, 'UTF-8');
-            $twitter_userdescription = preg_replace("#@(\w+)#ise", "'<a href=\"http://www.twitter.com/\\1\" target=\"_blank\" rel=\"nofollow\">@\\1</a>'", $twitter_userdescription);
-            $twitter_userdescription = preg_replace("#\#(\w+)#ise", "'<a href=\"https://twitter.com/#!/search?q=%23\\1\" target=\"_blank\" rel=\"nofollow\">#\\1</a>'", $twitter_userdescription);
-            $twitter_userdescription = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#ise", "'\\1<a href=\"\\2\" target=\"_blank\" >\\2</a>'", $twitter_userdescription);
-            $twitter_userdescription = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#ise", "'\\1<a href=\"http://\\2\" target=\"_blank\" >\\2</a>'", $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#@(\w+)#is", array($this, '_convert_name_callback'), $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#\#(\w+)#is", array($this, '_convert_hashtag_callback'), $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#is", array($this, '_convert_url_callback'), $twitter_userdescription);
+            $twitter_userdescription = preg_replace_callback("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#is", array($this, '_convert_website_callback'), $twitter_userdescription);
             $twitter_userdescription = preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $twitter_userdescription);
 
             // Generate retweet, favorite, reply, and user page URLs
@@ -295,6 +295,50 @@ class Block_twitter_feed
             'USER_VERIFIED' => $status['user']['verified'],
             'USER_PROFILE_IMG_URL' => $status['user']['profile_image_url'],
         ));
+    }
+
+    /**
+     * Used to convert a twitter @name to a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_name_callback($matches)
+    {
+        return '<a href="http://www.twitter.com/' . $matches[1] . '" target="_blank" rel="nofollow">@' . $matches[1] . '</a>';
+    }
+
+    /**
+     * Used to convert a twitter #hashtag to a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_hashtag_callback($matches)
+    {
+        return '<a href="https://twitter.com/#!/search?q=%23' . $matches[1] . '" target="_blank" rel="nofollow">#' . $matches[1] . '</a>';
+    }
+
+    /**
+     * Used to convert a full url (i.e. http://www.twitter.com/) into a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_url_callback($matches)
+    {
+        return $matches[1] . '<a href="' . $matches[2] . '" target="_blank" >' . $matches[2] . '</a>';
+    }
+
+    /**
+     * Used to convert a website (i.e. www.twitter.com) into a clickable link. preg_replace_callback callback
+     *
+     * @param  array $matches Array of matches
+     * @return string Substituted text
+     */
+    public function _convert_website_callback($matches)
+    {
+        return $matches[1] . '<a href="http://' . $matches[2] . '" target="_blank" >' . $matches[2] . '</a>';
     }
 }
 
