@@ -127,6 +127,7 @@ class MobiquoServerXMLRPC extends MobiquoServer
 
         if (is_string($data)) {
             $data = convert_to_internal_encoding($data, get_charset(), 'UTF-8');
+            $data = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
         }
 
         if (is_null($type)) {

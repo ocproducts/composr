@@ -133,6 +133,7 @@ class MobiquoServerPOST extends MobiquoServer
         if (is_null($this->output_server)) {
             if (is_string($data)) {
                 $data = convert_to_internal_encoding($data, get_charset(), 'utf-8');
+                $data = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
             }
 
             if ($type === 'dateTime.iso8601') {

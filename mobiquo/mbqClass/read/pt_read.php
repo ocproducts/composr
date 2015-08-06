@@ -129,7 +129,7 @@ class CMSPtRead
         foreach ($_posts as $post) {
             $content = prepare_post_for_tapatalk($post, $return_html);
 
-            $attachments = get_post_attachments($post['post_id']);
+            $attachments = get_post_attachments($post['post_id'], null, true, $content);
 
             $is_unread = (is_null($topic_read_time)) || ($post['p_time'] > $topic_read_time);
 

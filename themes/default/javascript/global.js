@@ -125,6 +125,8 @@ function script_load_stuff()
 				var footer_height=find_height(document.getElementsByTagName('footer')[0]);
 				var panel_bottom=document.getElementById('panel_bottom');
 				if (panel_bottom) footer_height+=find_height(panel_bottom);
+				panel_bottom=document.getElementById('global_messages_2');
+				if (panel_bottom) footer_height+=find_height(panel_bottom);
 				if (stuck_nav_height<get_window_height()-footer_height) // If there's space in the window to make it "float" between header/footer
 				{
 					var extra_height=(get_window_scroll_y()-pos_y);

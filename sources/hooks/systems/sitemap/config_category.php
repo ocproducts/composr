@@ -165,6 +165,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             ),
             'permissions' => array(),
             'has_possible_children' => false,
+            'children' => null,
 
             // These are likely to be changed in individual hooks
             'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,

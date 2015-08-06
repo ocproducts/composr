@@ -449,8 +449,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
 
     $moderation_details = moderation_assessment_post($post_row, $member_id, $behaviour_modifiers);
 
-    $attachments = get_post_attachments($post_id, null, true);
-
     $post_author_id = $post_row['p_poster'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($post_author_id);
     if (is_null($username)) {
@@ -509,13 +507,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         'can_move' => mobiquo_val($moderation_details['can_move'], 'boolean'),
     );
 
-    if (($behaviour_modifiers & RENDER_POST_SEARCH) == 0) {
-        $arr += array(
-            'attachments' => mobiquo_val(render_tapatalk_attachments($attachments), 'array'),
-            'likes_info' => mobiquo_val($likes_info, 'array'),
-        );
-    }
-
     $validated = $post_row['p_validated'];
     $arr['state'] = mobiquo_val(($validated == 1) ? TAPATALK_POST_LIVE : TAPATALK_POST_NEEDS_VALIDATION, 'int');
 
@@ -542,6 +533,16 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
     } else {
         $content = prepare_post_for_tapatalk($post_row, $return_html);
     }
+
+    $attachments = get_post_attachments($post_id, null, true, $contentorum);
+
+    if (($behaviour_modifiers & RENDER_POST_SEARCH) == 0) {
+        $arr += array(
+            'attachments' => mobiquo_val(render_tapatalk_attachments($attachments), 'array'),
+            'likes_info' => mobiquo_val($likes_info, 'array'),
+        );
+    }
+
     if (($behaviour_modifiers & RENDER_POST_SHORT_CONTENT) != 0) {
         $arr['short_content'] = mobiquo_val($content, 'base64');
     } else {
@@ -719,9 +720,10 @@ function prepare_post_for_tapatalk($post, $return_html = false)
  * @param  ?AUTO_LINK $post_id Post ID (null: Use attachment ID)
  * @param  ?AUTO_LINK $attachment_id Attachment ID (null: Use post ID)
  * @param  boolean $non_image_only Only do non-image attachments (because image ones are shown as [img] tags separately). Can only be used if $attachment_id is null.
+ * @param  string $content Write content changes here (null: Don't)
  * @return array List of attachment details
  */
-function get_post_attachments($post_id, $attachment_id = null, $non_image_only = false)
+function get_post_attachments($post_id, $attachment_id = null, $non_image_only = false, &$content = null)
 {
     require_code('files');
     require_code('images');
@@ -736,9 +738,15 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
             }
 
             if ($non_image_only) {
-                if (is_image($attachment_row[0]['a_original_filename'])) {
+                if (is_image($attachment_row[0]['a_original_filename'])) // Already as [img] tag
+                {
+                    if (!url_is_local($attachment_row[0]['a_url'])) {
+                        if (!is_null($content)) {
+                            $content = preg_replace('#\[img\][^\[\]]*' . preg_quote(find_script('attachment'), '#') . '\?id=' . strval($att['a_id']) . '[^\[\]]*\[\/img\]#U', '[img]' . $attachment_row[0]['a_url'] . '[/img]', $content);
+                        }
+                    }
                     continue;
-                } // Already as [img] tag
+                }
             }
 
             if (!is_image($attachment_row[0]['a_thumb_url'])) {

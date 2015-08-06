@@ -282,6 +282,7 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
             'sources_custom/hooks/systems/config/tapatalk_enable_sync_user.php',
             'sources_custom/hooks/systems/startup/tapatalk.php',
             'sources_custom/hooks/systems/upon_query/tapatalk_push.php',
+            'sources_custom/hooks/systems/comcode_preparse/tapatalk.php',
             'lang_custom/EN/tapatalk.ini',
             'mobiquo/license_agreement.txt',
             'mobiquo/mobiquo.php',

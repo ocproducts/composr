@@ -53,6 +53,7 @@ function init__cns_install()
         'use_quick_reply',
         'view_profiles',
         'own_avatars',
+        'double_post',
     );
     $CNS_FALSE_PERMISSIONS = array(
         'rename_self',
@@ -61,7 +62,6 @@ function init__cns_install()
         'disable_lost_passwords',
         'close_own_topics',
         'edit_own_polls',
-        'double_post',
         'see_warnings',
         'see_ip',
         'may_choose_custom_title',

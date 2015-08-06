@@ -1505,7 +1505,7 @@ class Module_topics
         if (!$private_topic) {
             $forum_id = get_param_integer('id');
 
-    		require_code('cns_topics');
+            require_code('cns_topics');
             if (!cns_may_post_topic($forum_id, get_member())) {
                 access_denied('I_ERROR');
             }
@@ -2215,17 +2215,20 @@ class Module_topics
             $poster_name_if_guest = null;
         }
         if (!is_null($poster_name_if_guest)) {
+            $poster_name_if_guest = trim($poster_name_if_guest);
             $restricted_usernames = explode(',', get_option('restricted_usernames'));
-            $restricted_usernames[] = do_lang('GUEST');
             $restricted_usernames[] = do_lang('UNKNOWN');
             $restricted_usernames[] = do_lang('SYSTEM');
+            if (!is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($poster_name_if_guest))) {
+                $restricted_usernames[] = $poster_name_if_guest;
+            }
             foreach ($restricted_usernames as $_restricted_username) {
                 $restricted_username = trim($_restricted_username);
                 if ($restricted_username == '') {
                     continue;
                 }
-                if (strpos($poster_name_if_guest, $restricted_username) !== false) {
-                    $poster_name_if_guest = null;
+                if ($poster_name_if_guest == $restricted_username) {
+                    $poster_name_if_guest = $poster_name_if_guest . ' (' . do_lang('GUEST') . ')';
                     break;
                 }
             }
@@ -2286,7 +2289,7 @@ class Module_topics
                 $_title = get_screen_title('REPORT_POST');
                 $check_permissions = false;
 
-				decache('main_staff_checklist');
+                decache('main_staff_checklist');
             } else { // New topic
                 $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $meta_data['views']);
                 $_title = get_screen_title('ADD_TOPIC');
@@ -2463,10 +2466,10 @@ END;
 
         $text = ($validated == 1) ? do_lang_tempcode('SUCCESS') : do_lang_tempcode('SUBMIT_UNVALIDATED_FORUM_POSTS');
 
-		if ($forum_id >= 0) {
-			$topic_validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $topic_id));
-			if (($topic_validated == 0) && (!has_privilege(get_member(), 'jump_to_unvalidated'))) {
-				$map = array('page' => 'forumview', 'id' => $forum_id);
+        if ($forum_id >= 0) {
+            $topic_validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $topic_id));
+            if (($topic_validated == 0) && (!has_privilege(get_member(), 'jump_to_unvalidated'))) {
+                $map = array('page' => 'forumview', 'id' => $forum_id);
                 $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
                 if (($test != -1) && ($test != 0)) {
                     $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
@@ -2475,12 +2478,12 @@ END;
                 if ($test != -1) {
                     $map['threaded'] = $test;
                 }
-				$_url = build_url($map, get_module_zone('forumview'));
-				$url = $_url->evaluate();
+                $_url = build_url($map, get_module_zone('forumview'));
+                $url = $_url->evaluate();
 
                 $text = do_lang_tempcode('SUBMIT_UNVALIDATED_FORUM_TOPICS');
-			}
-		}
+            }
+        }
 
         if (($new_topic) && ($forum_id == -1)) {
             require_code('notifications');

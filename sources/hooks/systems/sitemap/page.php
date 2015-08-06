@@ -352,7 +352,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     $child_node['extra_meta']['image_2x'] = $struct['extra_meta']['image_2x'];
                                 }
                                 $struct = $child_node;
-                                if ($struct['children'] !== null) {
+                                if (!empty($struct['children'])) {
                                     $children = array_merge($children, $struct['children']);
                                 }
                                 $struct['children'] = null;

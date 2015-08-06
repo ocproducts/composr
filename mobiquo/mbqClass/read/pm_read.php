@@ -1,4 +1,4 @@
-<?php /*
+ptrad<?php /*
 
  Composr
  Copyright (c) ocProducts, 2004-2015
@@ -272,13 +272,13 @@ class CMSPmRead
             $username = do_lang('UNKNOWN');
         }
 
-        $attachment_details = get_post_attachments($post_row['post_id']);
-
         $icon_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($post_row['p_poster']);
 
         cns_ping_topic_read($post_row['p_topic_id']);
 
         $content = prepare_post_for_tapatalk($post_row, $return_html);
+
+        $attachment_details = get_post_attachments($post_row['post_id'], null, true, $content);
 
         return array(
             'msg_from_id' => $post_row['t_pt_from'],

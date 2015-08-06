@@ -254,7 +254,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
 
     require_code('templates_donext');
     $special = array(
-        array('menu/_generic_admin/add_one', array('cms_comcode_pages', array('type' => 'edit'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
+        array('menu/_generic_admin/add_one', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
         array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang_tempcode('COMCODE_PAGE_EDIT')),
     );
     if (!is_null($page)) {
