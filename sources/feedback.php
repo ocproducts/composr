@@ -778,7 +778,12 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     list(, $submitter, , $safe_content_url, $cma_info) = get_details_behind_feedback_code($content_type, $content_id);
 
-    $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
+    if (get_forum_type() == 'cns') {
+        require_code('cns_posts_action2');
+        $poster_name_if_guest = cns_get_safe_specified_poster_name(false);
+    } else {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
+    }
     list($topic_id, $is_hidden) = $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
     // Define scope
         $forum,

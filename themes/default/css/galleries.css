@@ -216,6 +216,10 @@
 	margin-top: 0;
 }
 
+.media_box embed, .media_box object {
+	max-width: 100%;
+}
+
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
 	.media_box .gallery_entry_details {
 		margin-left: 1em;

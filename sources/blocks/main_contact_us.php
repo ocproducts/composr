@@ -37,7 +37,7 @@ class Block_main_contact_us
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'title', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect');
+        $info['parameters'] = array('param', 'title', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect', 'guid');
         return $info;
     }
 
@@ -147,8 +147,10 @@ class Block_main_contact_us
                 $hidden = new Tempcode();
                 $hidden->attach(form_input_hidden('_block_id', $block_id));
 
+                $guid = isset($map['guid']) ? $map['guid'] : '31fe96c5ec3b609fbf19595a1de3886f';
+
                 $comment_details = do_template('COMMENTS_POSTING_FORM', array(
-                    '_GUID' => '31fe96c5ec3b609fbf19595a1de3886f',
+                    '_GUID' => $guid,
                     'DEFAULT_TEXT' => $default_text,
                     'JOIN_BITS' => '',
                     'FIRST_POST_URL' => '',
@@ -174,7 +176,7 @@ class Block_main_contact_us
                 }
 
                 $out = do_template('BLOCK_MAIN_CONTACT_US', array(
-                    '_GUID' => 'fd269dce5ff984ee558e9052fa0150b0',
+                    '_GUID' => $guid,
                     'COMMENT_DETAILS' => $comment_details,
                     'MESSAGE' => $message,
                     'NOTIFICATIONS_ENABLED' => $notifications_enabled,

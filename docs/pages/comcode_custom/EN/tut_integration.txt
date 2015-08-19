@@ -341,6 +341,29 @@ These are all very technical tasks, so we do not expect that many users will hav
  1_key="iframe"   1_value="A portion of the main web page that encloses another web page (with its own URL)"
 ]Concepts[/concepts]
 
+[title="3"]Directing external systems to log in a user to a Composr site[/title]
+
+Composr handles log in anywhere as a part of the framework (i.e. any request Composr is handling).
+It triggers if these post parameters are present:
+ - [tt]login_username[/tt] (required)
+ - [tt]password[/tt] (required)
+ - [tt]remember[/tt] (optional, set to '1' if cookies should be saved)
+ - [tt]login_invisible[/tt] (optional, set to '1' if the login should be invisible)
+
+(the [tt]login[/tt] page in Composr is mostly a front end, and doesn't handle log in itself)
+
+If posting from a different domain name then 'Form-posting partner sites' must be set to include the domain name you're using.
+
+For completeness, this is what the [tt]login[/tt] page [i]does[/i] do:
+ - Shows error messages if a log in fails
+ - Performs after-login redirects
+ - Handles log outs
+ - Performs after-logout redirects
+ - Handles Conceded mode
+ - Handles "Become invisible" toggle
+
+If coding a system to create an Composr login automatically (i.e. without needing to direct the user to a POST request) you'd need to set the session cookie to a random number, and then insert a row into the Composr [tt]sessions[/tt] table to match against it.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_nuances"]Nuances of the forum driver system[/page]

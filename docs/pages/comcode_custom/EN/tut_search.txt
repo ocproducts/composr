@@ -113,7 +113,7 @@ This is a serious problem on large databases, but not noticed by most users.
 
 Fortunately we have 3 workarounds.
 
-[title="3"]Workaround 1: Auto-kill slow searches[/title]
+[title="3"]Workaround 1: Auto-kill slow searches via MySQL scheduler[/title]
 
 A workaround is to auto-kill searches that take too long (over 5-10 seconds). It requires server-level MySQL access. That is only a proportion of searches (typically ones with a lot of results, yet none matching the other constraints you are searching against).
 
@@ -157,9 +157,34 @@ DO
         END|
 [/code]
 
----
+[title="3"]Workaround 2: Auto-kill slow searches via CRON[/title]
 
-[title="3"]Workaround 2: Auto-kill slow searches[/title]
+Create a CRON script like:
+[code]
+#!/bin/sh
+
+# Credentials for a MySQL user with PROCESS, SUPER permissions
+USERNAME=FILLME
+PASSWORD=FILLME
+
+for i in `seq 1 6`;
+do
+  	mysql -u $USERNAME --password=$PASSWORD -e 'show processlist\G' |\
+        egrep -b5 'Time: [0-9]{2,2}' |\
+        grep 'Id:' |\
+        cut -d':' -f2 |\
+        sed 's/^ //' |\
+        while read id
+        do
+          	mysql -u $USERNAME --password=$PASSWORD -e "kill $id;"
+        done
+	sleep 10
+done
+[/code]
+
+This kills any MySQL connections running for more than 2 digits of seconds, including sleeping ones.
+
+[title="3"]Workaround 3: Auto-kill slow searches via MySQL setting[/title]
 
 An alternate workaround is possible in MySQL 5.7+, as MySQL have introduced a query timeout setting.
 Set it in MySQL like:
@@ -168,7 +193,7 @@ SET GLOBAL MAX_STATEMENT_TIME=10000;
 [/code]
 (this is for 10 seconds, i.e. 10,000 milliseconds)
 
-[title="3"]Workaround 3: Auto-kill slow searches[/title]
+[title="3"]Workaround 4: Auto-kill slow searches[/title]
 
 Another possible workaround might be to switch to InnoDB tables in MySQL 5.6+/MariaDB. However this is untested, and won't stop slow queries (it'll just stop them locking the whole table and slowing other users down).
 

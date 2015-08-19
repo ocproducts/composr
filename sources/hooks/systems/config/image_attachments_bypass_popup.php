@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    captcha
+ * @package    core_configuration
  */
 
 /**
  * Hook class.
  */
-class Hook_config_captcha_single_guess
+class Hook_config_image_attachments_bypass_popup
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,15 @@ class Hook_config_captcha_single_guess
     public function get_details()
     {
         return array(
-            'human_name' => 'CAPTCHA_SINGLE_GUESS',
+            'human_name' => 'IMAGE_ATTACHMENTS_BYPASS_POPUP',
             'type' => 'tick',
-            'category' => 'SECURITY',
-            'group' => 'CAPTCHA',
-            'explanation' => 'CONFIG_OPTION_captcha_single_guess',
+            'category' => 'FEATURE',
+            'group' => '_COMCODE',
+            'explanation' => 'CONFIG_OPTION_image_attachments_bypass_popup',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
 
-            'addon' => 'captcha',
+            'addon' => 'core_rich_media',
         );
     }
 
@@ -51,6 +50,6 @@ class Hook_config_captcha_single_guess
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

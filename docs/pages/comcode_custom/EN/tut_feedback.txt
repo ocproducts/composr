@@ -40,9 +40,90 @@ There is a Composr block named 'main_comments' that allows any Comcode page to b
 By default, all comment topics all placed in the configured website comment topics forum.
 However, you can use the Commandr [tt]set_comment_forum[/tt] command to set it so resources under specific content-types and categories have their comments into forums of your choice.
 
-[title="2"]The contact block[/title]
+[title="2"]The contact blocks[/title]
 
 Composr also includes a contact block, 'main_contact_us', that allows you to have users leave messages that other users can't see. It works via posts in a private staff forum, and is very useful as a way for staff to get private feedback without resorting to support tickets or e-mail.
+
+There is also [tt]main_contact_simple[/tt] (which relays direct to e-mail) and [tt]main_contact_catalogues[/tt] (which shows a form of custom fields coded into a catalogue).
+
+[title="3"]Custom commenting forms (advanced)[/title]
+
+You can use the [tt]data/form_to_email.php[/tt] script to relay custom POST data sent to it, to the staff e-mail address.
+
+The clear advantages of this over the Composr contact blocks are:
+1) If you don't want to wrestle with the default Composr template's HTML/CSS ([tt]COMMENTS_POSTING_FORM.tpl[/tt])
+2) If you want to set up multiple contact forms with very different HTML/CSS and are not comfortable using advanced Tempcode to make [tt]COMMENTS_POSTING_FORM.tpl[/tt] contextual
+3) If you already have some HTML/CSS to use and just want to keep things very straight-forward, not having to think too much about integration and 'jumping through Composr hoops'
+
+The following special POST fields are supported:
+ - [tt]subject[/tt]: Subject line (default is site name)
+ - [tt]email[/tt]: E-mail address of sender (default is the e-mail address of the current user or staff address if there is none)
+ - [tt]name[/tt]: Name of sender (default is the username of the current user)
+ - [tt]to_members_email[/tt]: Member to e-mail. This is not available by default. See the Code Book for the [tt]allow_member_mail_relay[/tt] option if you need the form to work for e-mailing regular members.
+ - [tt]redirect[/tt]: URL to redirect to after the relay is done (if non-set then it will show a success message)
+
+Any other fields (except certain special reserved names) you pass will become part of the post body. Pass [tt]label_for__<field_name>[/tt] to label the fields for a neater e-mail (optional).
+
+Here is an example blob of HTML+Tempcode to demonstrate the functionality:
+[code]
+<form action="{$BASE_URL*}/data/form_to_email.php" method="post">
+    <p>
+        <label for="subject">Subject:</label>
+        <input type="text" name="subject" value="" />
+    </p>
+
+    <p>
+        <label for="name">Your Name:</label>
+        <input type="text" name="name" value="" />
+    </p>
+
+    <p>
+        <label for="age">Your Age:</label>
+        <input type="text" name="age" value="" />
+        <input type="hidden" name="label_for__age" value="Your Age" />
+    </p>
+
+    <p>
+        <label for="location">Your Location:</label>
+        <input type="text" name="location" value="" />
+        <input type="hidden" name="label_for__location" value="Your Location" />
+    </p>
+
+    <p>
+        <label for="email">Your e-mail address:</label>
+        <input type="text" name="email" value="" />
+    </p>
+
+    <input type="hidden" name="redirect" value="{$PAGE_LINK*,:thanks}" />
+
+    <input type="submit" value="Send message" />
+
+    {$INSERT_SPAMMER_BLACKHOLE}
+</form>
+[/code]
+
+If you want to use this outside Composr:
+The Tempcode is just to make it easily portable between sites, no Tempcode is required. You would replace [tt]{$BASE_URL*}[/tt] with your known base URL, replace [tt]{$PAGE_LINK*,:thanks}[/tt] with a static URL, and either remove [tt]{$INSERT_SPAMMER_BLACKHOLE}[/tt] or replace it with whatever Composr outputs for this symbol (as it produces static code based on your website name).
+
+If you want this within a Comcode page:
+Just put it inside 'semihtml' Comcode tags, or paste into the source view of the WYSIWYG editor.
+
+This will produce an e-mail like:
+[code]
+Your Age: the age input
+
+Your Location: the location input
+[/code]
+with the e-mail Subject and From lines set appropriately.
+
+[title="4"]Anti-spam security[/title]
+
+We don't use CAPTCHA here to keep things simple. But you can see we did include the spammer blackhole (enabled by default, "Blackhole detection" option), which will typically trick bots into getting themselves blocked.
+CAPTCHA can be supported. To do so you have to:
+1) pass a hidden '_security' field with value '1'
+2) copy and paste the CAPTCHA code from [tt]COMMENTS_POSTING_FORM.tpl[/tt]
+3) ideally, configure your web server to block requests to the [tt]data/form_to_email.php[/tt] script if '_security' is not set. Otherwise CAPTCHA won't be enforced and someone could (if they had the will...) write a smart bot that strips the '_security' field from the requests.
+As you can see, that's complex, so unless you have a spam problem here that your spam filters can't tackle for you, and that the blackhole doesn't deal with, it probably is not worth bothering.
 
 [title="2"]The shout-box block[/title]
 

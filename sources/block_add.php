@@ -220,6 +220,7 @@ function block_helper_script()
         $parameters[] = 'quick_cache';
         $parameters[] = 'defer';
         $parameters[] = 'block_id';
+        // NB: Also update sources/hooks/systems/preview/block_comcode.php
         if (!isset($defaults['cache'])) {
             $defaults['cache'] = block_cache_default($block);
         }
@@ -321,8 +322,7 @@ function block_helper_script()
                         $list->attach(form_input_list_entry($option, $has_default && $option == $default));
                     }
                     $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
-                }
-                elseif ($block . ':' . $parameter == 'menu:param') { // special case for menus
+                } elseif ($block . ':' . $parameter == 'menu:param') { // special case for menus
                     $list = new Tempcode();
                     $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
                     foreach ($rows as $row) {

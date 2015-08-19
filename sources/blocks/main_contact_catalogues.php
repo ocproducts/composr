@@ -37,7 +37,7 @@ class Block_main_contact_catalogues
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('to', 'param', 'subject', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect');
+        $info['parameters'] = array('to', 'param', 'subject', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect', 'guid');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_contact_catalogues
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '(post_param_string(\'subject\',\'\')!=\'\')?null:array(array_key_exists(\'param\',$map)?$map[\'param\']:\'\',array_key_exists(\'to\',$map)?$map[\'to\']:\'\',array_key_exists(\'redirect\',$map)?$map[\'redirect\']:\'\',array_key_exists(\'subject\',$map)?$map[\'subject\']:\'\',array_key_exists(\'body_prefix\',$map)?$map[\'body_prefix\']:\'\',array_key_exists(\'body_suffix\',$map)?$map[\'body_suffix\']:\'\',array_key_exists(\'subject_prefix\',$map)?$map[\'subject_prefix\']:\'\',array_key_exists(\'subject_suffix\',$map)?$map[\'subject_suffix\']:\'\')';
+        $info['cache_on'] = '(post_param_string(\'subject\',\'\')!=\'\')?null:array(array_key_exists(\'param\',$map)?$map[\'param\']:\'\',array_key_exists(\'to\',$map)?$map[\'to\']:\'\',array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',array_key_exists(\'redirect\',$map)?$map[\'redirect\']:\'\',array_key_exists(\'subject\',$map)?$map[\'subject\']:\'\',array_key_exists(\'body_prefix\',$map)?$map[\'body_prefix\']:\'\',array_key_exists(\'body_suffix\',$map)?$map[\'body_suffix\']:\'\',array_key_exists(\'subject_prefix\',$map)?$map[\'subject_prefix\']:\'\',array_key_exists(\'subject_suffix\',$map)?$map[\'subject_suffix\']:\'\')';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24 * 7;
         return $info;
     }
@@ -207,6 +207,17 @@ class Block_main_contact_catalogues
 
         $url = get_self_url();
 
-        return do_template('FORM', array('_GUID' => '7dc3957edf3b47399b688d72fae54128', 'FIELDS' => $fields, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'buttons__send', 'SUBMIT_NAME' => do_lang_tempcode('SEND'), 'URL' => $url, 'TEXT' => $text, 'SECONDARY_FORM' => true));
+        $guid = isset($map['guid']) ? $map['guid'] : '7dc3957edf3b47399b688d72fae54128';
+
+        return do_template('FORM', array(
+            '_GUID' => $guid,
+            'FIELDS' => $fields,
+            'HIDDEN' => $hidden,
+            'SUBMIT_ICON' => 'buttons__send',
+            'SUBMIT_NAME' => do_lang_tempcode('SEND'),
+            'URL' => $url,
+            'TEXT' => $text,
+            'SECONDARY_FORM' => true,
+        ));
     }
 }

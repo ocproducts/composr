@@ -145,6 +145,31 @@ function set_attachment(field_name,number,filename,multi)
 		url+=keep_stub();
 
 		window.setTimeout(function() {
+			/*{+START,IF,{$CONFIG_OPTION,image_attachments_bypass_popup}}*/
+			if (is_image)
+			{
+				var split_filename=document.getElementById('txtFileName_file'+window.num_attachments).value.split(/:/);
+				for (var i=0;i<split_filename.length;i++)
+				{
+					insert_textbox(post,'[attachment_safe framed="0" thumb="1"]new_'+(i+1)+'[/attachment_safe]');
+					if (i!=0) window.num_attachments++;
+				}
+
+				// Add field for next one
+				var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
+				if (add_another_field)
+				{
+					add_attachment(window.num_attachments+1,field_name);
+				}
+
+				// Do insta-preview
+				if (is_wysiwyg_field(post))
+				{
+					generate_background_preview(post);
+				}
+			} else
+			/*{+END}*/
+
 			window.faux_showModalDialog(
 				maintain_theme_in_link(url),
 				'',

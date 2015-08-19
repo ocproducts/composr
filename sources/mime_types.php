@@ -105,7 +105,7 @@ function get_mime_type($extension, $as_admin)
         'webm' => 'video/webm',
 
         // Proprietary movie formats
-        'mov' => 'video/quicktime',
+        'mov' => 'video/mp4',//in the past may have been 'video/quicktime',
         'qt' => 'video/quicktime',
         'wmv' => 'video/x-ms-wmv',
         'ram' => 'audio/x-pn-realaudio',

@@ -50,6 +50,6 @@ class Hook_config_restricted_usernames
      */
     public function get_default()
     {
-        return do_lang('GUEST') . ', ' . do_lang('STAFF') . ', ' . do_lang('ADMIN') . ', ' . do_lang('MODERATOR') . ', googlebot';
+        return do_lang('GUEST') . ', ' . do_lang('SYSTEM') . ', ' . do_lang('UNKNOWN') . ', ' . do_lang('STAFF') . ', ' . do_lang('ADMIN') . ', ' . do_lang('MODERATOR') . ', googlebot';
     }
 }

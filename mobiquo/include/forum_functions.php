@@ -707,6 +707,18 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         $content = tapatalk_strip_comcode($content);
         $content = nl2br(htmlspecialchars($content, ENT_NOQUOTES, get_charset()));
         $content = preg_replace('#\[color="[^"\[\]]"\](.*)\[/color\]#is', '<font color="\1">\2</font>', $content);
+
+        $comcode_remap = array(
+            '#\[b\]#' => '<b>',
+            '#\[/b\]#' => '</b>',
+            '#\[i\]#' => '<i>',
+            '#\[/i\]#' => '</i>',
+            '#\[u\]#' => '<u>',
+            '#\[/u\]#' => '</u>',
+            '#\[color="?([^\[\]]*)"?\]#' => '<font color="\1">',
+            '#\[/color\]#' => '</font>',
+        );
+        $content = preg_replace(array_keys($comcode_remap), array_values($comcode_remap), $content);
     } else {
         $content = tapatalk_strip_comcode($content);
     }

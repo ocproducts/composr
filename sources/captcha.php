@@ -268,9 +268,6 @@ function check_captcha($code_entered, $regenerate_on_error = true)
 {
     if (use_captcha()) {
         $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
-        if (get_option('captcha_single_guess') == '1') {
-            $GLOBALS['SITE_DB']->query_delete('captchas', array('si_session_id' => get_session_id())); // Only allowed to check once
-        }
         if (is_null($code_needed)) {
             if (get_option('captcha_single_guess') == '1') {
                 generate_captcha();
@@ -281,7 +278,9 @@ function check_captcha($code_entered, $regenerate_on_error = true)
         $passes = (strtolower($code_needed) == strtolower($code_entered));
         if ($regenerate_on_error) {
             if (get_option('captcha_single_guess') == '1') {
-                if (!$passes) {
+                if ($passes) {
+                    register_shutdown_function('_cleanout_captcha');
+                } else {
                     generate_captcha();
                 }
             }
@@ -300,6 +299,17 @@ function check_captcha($code_entered, $regenerate_on_error = true)
         return $passes;
     }
     return true;
+}
+
+/**
+ * Delete current CAPTCHA.
+ */
+function _cleanout_captcha()
+{
+	if (!running_script('snippet'))
+	{
+        $GLOBALS['SITE_DB']->query_delete('captchas', array('si_session_id' => get_session_id())); // Only allowed to check once
+    }
 }
 
 /**

@@ -1513,6 +1513,8 @@ class Module_topics
             $forum_id = null;
         }
 
+        $javascript = '';
+
         $staff_help_url = null;
 
         // Breadcrumbs etc
@@ -1620,7 +1622,7 @@ class Module_topics
         }
 
         if (is_guest()) {
-            $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), new Tempcode(), 'poster_name_if_guest', do_lang('GUEST'), true));
+            $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), new Tempcode(), 'poster_name_if_guest', (get_value('force_guest_names') === '1') ? '' : do_lang('GUEST'), true));
         }
 
         // Various kinds of tick options
@@ -1939,7 +1941,7 @@ class Module_topics
         }
 
         if (is_guest()) {
-            $specialisation->attach(form_input_line(do_lang_tempcode('_DESCRIPTION_NAME'), '', 'poster_name_if_guest', do_lang('GUEST'), true));
+            $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), '', 'poster_name_if_guest', (get_value('force_guest_names') === '1') ? '' : do_lang('GUEST'), true));
         }
 
         require_code('fields');
@@ -2210,29 +2212,8 @@ class Module_topics
         }
 
         $anonymous = post_param_integer('anonymous', 0);
-        $poster_name_if_guest = post_param_string('poster_name_if_guest', null);
-        if ($poster_name_if_guest == '') {
-            $poster_name_if_guest = null;
-        }
-        if (!is_null($poster_name_if_guest)) {
-            $poster_name_if_guest = trim($poster_name_if_guest);
-            $restricted_usernames = explode(',', get_option('restricted_usernames'));
-            $restricted_usernames[] = do_lang('UNKNOWN');
-            $restricted_usernames[] = do_lang('SYSTEM');
-            if (!is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($poster_name_if_guest))) {
-                $restricted_usernames[] = $poster_name_if_guest;
-            }
-            foreach ($restricted_usernames as $_restricted_username) {
-                $restricted_username = trim($_restricted_username);
-                if ($restricted_username == '') {
-                    continue;
-                }
-                if ($poster_name_if_guest == $restricted_username) {
-                    $poster_name_if_guest = $poster_name_if_guest . ' (' . do_lang('GUEST') . ')';
-                    break;
-                }
-            }
-        }
+
+        $poster_name_if_guest = cns_get_safe_specified_poster_name();
 
         $new_topic = ($topic_id == -1);
 
@@ -3119,7 +3100,22 @@ END;
     {
         $size = cns_get_member_best_group_property(get_member(), 'max_post_length_comcode');
 
-        $javascript = "
+        $javascript = '';
+
+        if (get_value('force_guest_names') === '1') {
+            $javascript .= '
+                var poster_name_if_guest=document.getElementById(\'poster_name_if_guest\');
+                var crf=function() {
+                    if (poster_name_if_guest.value==\'' . php_addslashes(do_lang('GUEST')) . '\') {
+                        poster_name_if_guest.value=\'\';
+                    }
+                };
+                crf();
+                poster_name_if_guest.onblur=crf;
+            ';
+        }
+
+        $javascript .= "
             var form=document.getElementById('post').form;
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {

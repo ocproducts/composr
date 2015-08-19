@@ -111,8 +111,8 @@ function check_posted_field($name, $val)
     if (strtolower(cms_srv('REQUEST_METHOD')) == 'post') {
         // Check referer
         $true_referer = (substr(cms_srv('HTTP_REFERER'), 0, 7) == 'http://') || (substr(cms_srv('HTTP_REFERER'), 0, 8) == 'https://');
-        $canonical_referer = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', str_replace(':80', '', str_replace('https://', 'http://', str_replace('www.', '', cms_srv('HTTP_REFERER'))))); // Just the domain
-        $canonical_baseurl = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', str_replace(':80', '', str_replace('https://', 'http://', str_replace('www.', '', get_base_url())))); // Just the domain
+        $canonical_referer = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', preg_replace('#:\d+#', '', str_replace('https://', 'http://', str_replace('www.', '', cms_srv('HTTP_REFERER'))))); // Just the domain
+        $canonical_baseurl = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', preg_replace('#:\d+#', '', str_replace('https://', 'http://', str_replace('www.', '', get_base_url())))); // Just the domain
         if (($true_referer) && (substr(strtolower($canonical_referer), 0, strlen($canonical_baseurl)) != strtolower($canonical_baseurl)) && (!is_guest())) {
             if (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible'))) {
                 $allowed_partners = get_allowed_partner_sites();

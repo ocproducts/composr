@@ -163,7 +163,7 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
     $reason = null;
 
     if (is_null($post_time)) {
-        $posts = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p_time', 'p_poster', 'p_cache_forum_id', 't_is_open'), array('id' => $post_id), '', 1);
+        $posts = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p_time', 'p_poster', 'p_cache_forum_id', 't_is_open'), array('p.id' => $post_id), '', 1);
         if (!array_key_exists(0, $posts)) {
             $reason = do_lang('INTERNAL_ERROR');
             return false;

@@ -19,6 +19,55 @@
  */
 
 /**
+ * Get the poster name a Guest may have specified, after sanitising it.
+ *
+ * @param  boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it).
+ * @return string Poster name.
+ */
+function cns_get_safe_specified_poster_name($is_required_field = null)
+{
+    if ($is_required_field === null) {
+        $is_required_field = (get_value('force_guest_names') === '1');
+    }
+
+    if (get_value('force_guest_names') === '1') {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest');
+    } else {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest', null);
+    }
+    if ($poster_name_if_guest == '') {
+        $poster_name_if_guest = null;
+    }
+    if (!is_null($poster_name_if_guest)) {
+        $poster_name_if_guest = trim($poster_name_if_guest);
+
+        if ($is_required_field) {
+            if ($poster_name_if_guest == do_lang('GUEST')) {
+                warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html(post_param_string('label_for__poster_name_if_guest', 'poster_name_if_guest'))));
+            }
+        }
+
+        $restricted_usernames = explode(',', get_option('restricted_usernames'));
+        $restricted_usernames[] = do_lang('UNKNOWN');
+        $restricted_usernames[] = do_lang('SYSTEM');
+        if (!is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($poster_name_if_guest))) {
+            $restricted_usernames[] = $poster_name_if_guest;
+        }
+        foreach ($restricted_usernames as $_restricted_username) {
+            $restricted_username = trim($_restricted_username);
+            if ($restricted_username == '') {
+                continue;
+            }
+            if ($poster_name_if_guest == $restricted_username) {
+                $poster_name_if_guest = $poster_name_if_guest . ' (' . do_lang('GUEST') . ')';
+                break;
+            }
+        }
+    }
+    return $poster_name_if_guest;
+}
+
+/**
  * Check to see if a member deserves promotion, and handle it.
  *
  * @param  ?MEMBER $member_id The member (null: current member).

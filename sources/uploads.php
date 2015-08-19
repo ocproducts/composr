@@ -805,7 +805,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
 
     if (is_null($filename)) {
         // If we are not obfuscating then we will need to search for an available filename
-        if (($obfuscate == 0) || ($obfuscate == 3)) {
+        if (($obfuscate == 0) || ($obfuscate == 3) || (strlen($file) > 150)) {
             $filename = preg_replace('#\..*\.#', '.', $file);
             $place = $upload_folder_full . '/' . $filename;
             $i = 2;

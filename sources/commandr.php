@@ -1279,9 +1279,18 @@ class Virtual_shell
 
             $cookie_size = strlen(serialize($_COOKIE));
             if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
-                cms_setcookie('commandr_state', base64_encode(serialize($commandr_state_diff)));
-                cms_setcookie('commandr_state_code', base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE']))));
-                cms_setcookie('commandr_state_lang', base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED']))));
+                $data = base64_encode(serialize($commandr_state_diff));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state', $data);
+                }
+                $data = base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE'])));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state_code', $data);
+                }
+                $data = base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED'])));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state_lang', $data);
+                }
                 // ^ We use base64 encoding to work around inane modsecurity restrictions. We can't always work around modsecurity (GET/POST encoding would be too messy), but for cookies it is an easy win
             } else {
                 cms_eatcookie('commandr_state');
