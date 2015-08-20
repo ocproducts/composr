@@ -574,11 +574,6 @@ class Module_tickets
             // Posting form
             if (($poster == '') || ($GLOBALS['FORUM_DRIVER']->get_guest_id() != intval($poster))) { // We can post a new ticket reply to an existing ticket that isn't from a guest
                 $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
-                require_javascript('editing');
-                require_javascript('checking');
-                require_javascript('posting');
-                require_javascript('plupload');
-                require_css('widget_plupload');
                 require_code('form_templates');
                 list($attachments, $attach_size_field) = (get_forum_type() == 'cns') ? get_attachments('post') : array(null, null);
                 if (addon_installed('captcha')) {

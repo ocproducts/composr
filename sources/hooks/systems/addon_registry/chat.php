@@ -413,6 +413,7 @@ class Hook_addon_registry_chat
                 'MESSAGES' => $tpl,
                 'URL' => placeholder_url(),
                 'BLOCK_PARAMS' => '',
+                'LAST_MESSAGE_ID' => '',
             )), null, '', true)
         );
     }

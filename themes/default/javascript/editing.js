@@ -686,6 +686,9 @@ html: HTML to insert (if not passed then 'text' will be escaped)
 */
 function insert_textbox(element,text,sel,plain_insert,html)
 {
+	if (typeof plain_insert=='undefined') plain_insert=false;
+	if (typeof html=='undefined') html=null;
+
 	if (is_wysiwyg_field(element))
 	{
 		var editor=window.wysiwyg_editors[element.id];

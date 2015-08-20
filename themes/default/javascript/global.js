@@ -3151,6 +3151,7 @@ function click_link(link)
 	}
 	else if (typeof link.fireEvent!='undefined')
 	{
+		// IE8
 		cancelled=!link.fireEvent('onclick');
 	}
 	link.onclick=backup;

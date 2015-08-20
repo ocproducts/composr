@@ -409,6 +409,10 @@ body.website_body.frame {
 			border: 0;
 			{$BETA_CSS_PROPERTY,box-shadow: none;}
 		}
+
+		.global_banner {
+			top: 0 !important;
+		}
 	}
 /*{+END}*/
 /*{+END}*/
@@ -502,6 +506,7 @@ header h1 {
 .global_navigation {
 	border-top: 1px solid {$GET,standard_border};
 	border-bottom: 1px solid {$GET,standard_border};
+	background-color: {$GET,lgrad};
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad}) !important;}
 	color: {$GET,WB};
 	/*{+START,IF,{$MOBILE}}*/
@@ -1589,7 +1594,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .toggleable_tray_button img {
 	float: {!en_right};
-	padding: 0 0.3em !important;
+	margin: 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
 	margin-top: -2px;
@@ -2642,18 +2647,22 @@ div .post_buttons>*, div .buttons_group_faded>* {
 		text-align: center;
 	/*{+END}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin: 0 0 1em 0;
+		margin: 0 0 1em 13.5em;
 	/*{+END}*/
 }
 
-.comments_posting_form_end .proceed_button {
-	margin-top: 1em;
-	text-align: center !important;
+.comments_posting_form_end input {
+	float: left;
+	margin-right: 0.5em !important;
+}
+
+.comments_posting_form_end #submit_button {
+	float: right;
+	margin-right: 1em !important;
 }
 
 .comments_captcha {
-	width: 200px;
-	margin: 1em auto 0 auto;
+	width: 210px;
 	font-size: 0.85em;
 	text-align: center;
 }
@@ -2662,12 +2671,6 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	margin: 0 5px 2px 5px;
 	vertical-align: middle;
 }
-
-/*{+START,IF,{$MOBILE}}*/
-	.comments_posting_form_end .proceed_button button {
-		float: none;
-	}
-/*{+END}*/
 
 /*
 =========================

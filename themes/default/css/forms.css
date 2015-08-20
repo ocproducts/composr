@@ -562,6 +562,12 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	padding: 4px;
 }
 
+@media screen and (max-width:500px) {
+	.post_options_wrap {
+		display: none;
+	}
+}
+
 .posting_form_main_comcode_button {
 	float: {!en_right};
 	margin-top: 1em;

@@ -211,8 +211,12 @@ function get_attachments($posting_field_name)
     $image_types = str_replace(',', ', ', get_option('valid_images'));
 
     require_lang('javascript');
+    require_lang('comcode');
     require_javascript('plupload');
     require_css('widget_plupload');
+    require_javascript('editing');
+    require_javascript('checking');
+    require_javascript('posting');
 
     require_code('upload_syndication');
     list($syndication_json, $filter) = get_upload_syndication_json(CMS_UPLOAD_ANYTHING);
@@ -270,6 +274,7 @@ function get_attachments($posting_field_name)
         'ATTACHMENTS' => $attachments,
         'MAX_ATTACHMENTS' => strval($max_attachments),
         'NUM_ATTACHMENTS' => strval($num_attachments),
+        'FILTER' => $filter,
     ));
 
     return array($attachments, $attach_size_field);
@@ -410,7 +415,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
     if (has_zone_access(get_member(), 'adminzone')) {
         $_buttons[] = 'page';
     }
-    //if (!$cut_down) $_buttons[]='email';   Not enough space any more
+    //if (!$cut_down) $_buttons[]='email';   Not enough space anymore
 
     // Wrappers
     $_buttons[] = 'quote';
@@ -428,7 +433,13 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
         if (($button == 'url') || ($button == 'quote') || ($i == 0)) {
             $divider = true;
         }
-        $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => 'e4fe3bc16cec070e06532fedc598d075', 'DIVIDER' => $divider, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+        $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array(
+            '_GUID' => 'e4fe3bc16cec070e06532fedc598d075',
+            'DIVIDER' => $divider,
+            'FIELD_NAME' => $field_name,
+            'TITLE' => ($button == 'thumb' && browser_matches('simplified_attachments_ui')) ? do_lang_tempcode('INPUT_COMCODE_attachment') : do_lang_tempcode('INPUT_COMCODE_' . $button),
+            'B' => $button,
+        )));
     }
 
     $micro_buttons = new Tempcode();
@@ -438,10 +449,20 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
             array('t' => 'i'),
         );
         foreach ($_micro_buttons as $button) {
-            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array('_GUID' => 'dbab001b3fa5480bb590ffed3ca81eaf', 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button['t']), 'B' => $button['t'])));
+            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array(
+                '_GUID' => 'dbab001b3fa5480bb590ffed3ca81eaf',
+                'FIELD_NAME' => $field_name,
+                'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button['t']),
+                'B' => $button['t'],
+            )));
         }
     }
-    return do_template('COMCODE_EDITOR', array('_GUID' => 'ebff3145776a0441d115f2e4e13617d6', 'POSTING_FIELD' => $field_name, 'BUTTONS' => $buttons, 'MICRO_BUTTONS' => $micro_buttons));
+    return do_template('COMCODE_EDITOR', array(
+        '_GUID' => 'ebff3145776a0441d115f2e4e13617d6',
+        'POSTING_FIELD' => $field_name,
+        'BUTTONS' => $buttons,
+        'MICRO_BUTTONS' => $micro_buttons,
+    ));
 }
 
 /**
@@ -1235,7 +1256,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
 
             $value = (filter_form_field_default($name, $value ? '1' : '0') == '1');
 
-            $out[] = array('CHECKED' => $value, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'PRETTY_NAME' => $pretty_name, 'DESCRIPTION' => $_description);
+            $out[] = array('DISABLED' => false, 'CHECKED' => $value, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'PRETTY_NAME' => $pretty_name, 'DESCRIPTION' => $_description);
         }
 
         if ($custom_value === array()) {

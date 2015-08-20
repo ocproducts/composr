@@ -754,10 +754,15 @@ class Module_topicview
                 $post_warning = do_lang('THREADED_REPLY_NOTICE', $post_warning);
             }
 
+            require_code('form_templates');
+            list($attachments, $attach_size_field) = get_attachments('post');
+
             $quick_reply = do_template('COMMENTS_POSTING_FORM', array(
                 '_GUID' => '4c532620f3eb68d9cc820b18265792d7',
                 'JOIN_BITS' => '',
                 'USE_CAPTCHA' => $use_captcha,
+                'ATTACHMENTS' => $attachments,
+                'ATTACH_SIZE_FIELD' => $attach_size_field,
                 'GET_EMAIL' => false,
                 'EMAIL_OPTIONAL' => true,
                 'GET_TITLE' => false,

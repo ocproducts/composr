@@ -268,7 +268,7 @@ class Hook_addon_registry_core_rich_media
             'sources/hooks/systems/preview/comcode_tag.php',
             'sources/hooks/systems/config/attachment_default_height.php',
             'sources/hooks/systems/config/attachment_default_width.php',
-            'sources/hooks/systems/config/image_attachments_bypass_popup.php',
+            'sources/hooks/systems/config/simplified_attachments_ui.php',
             'sources/hooks/systems/config/oembed_html_whitelist.php',
             'sources/hooks/systems/config/oembed_manual_patterns.php',
             'sources/hooks/systems/config/oembed_max_size.php',

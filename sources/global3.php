@@ -2115,7 +2115,7 @@ function escape_html($string)
  * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (except for IE users, who are 6+)
  *
  * @param  string $code The property code
- * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot
+ * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot simplified_attachments_ui itunes
  * @return boolean Whether there is a match
  */
 function browser_matches($code)
@@ -2137,6 +2137,9 @@ function browser_matches($code)
     $is_ie9_plus = $is_ie && !$is_ie8;
 
     switch ($code) {
+        case 'simplified_attachments_ui':
+            $BROWSER_MATCHES_CACHE[$code] = !$is_ie8 && !$is_ie9 && get_option('simplified_attachments_ui') == '1' && get_option('complex_uploader') == '1' && has_js();
+            return $BROWSER_MATCHES_CACHE[$code];
         case 'itunes':
             $BROWSER_MATCHES_CACHE[$code] = (get_param_integer('itunes', 0) == 1) || (strpos($browser, 'itunes') !== false);
             return $BROWSER_MATCHES_CACHE[$code];

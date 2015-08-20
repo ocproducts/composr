@@ -94,12 +94,15 @@ function open_link_as_overlay(ob,width,height,target)
 
 		// Set up overlay for Lightbox
 		var lightbox_code=' \
-			<p class="ajax_loading" id="lightbox_image"><img src="'+'{$IMG*;,loading}'.replace(/^https?:/,window.location.protocol)+'" /></p> \
-			<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
-				<span id="lightbox_description">'+description+'</span> \
-				'+((n===null)?'':('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">'+x+'</span> / <span id="lightbox_position_in_set_n">'+n+'</span></span>'))+' \
-				'+(is_video?'':('<span id="lightbox_full_link"><a href="'+escape_html(initial_img_url)+'" target="_blank" title="{$STRIP_TAGS;,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;}">{!SEE_FULL_IMAGE;}</a></span>'))+' \
-			</p>';
+			<div style="text-align: center"> \
+				<p class="ajax_loading" id="lightbox_image"><img src="'+'{$IMG*;,loading}'.replace(/^https?:/,window.location.protocol)+'" /></p> \
+				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
+					<span id="lightbox_description">'+description+'</span> \
+					'+((n===null)?'':('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">'+x+'</span> / <span id="lightbox_position_in_set_n">'+n+'</span></span>'))+' \
+					'+(is_video?'':('<span id="lightbox_full_link"><a href="'+escape_html(initial_img_url)+'" target="_blank" title="{$STRIP_TAGS;,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;}">{!SEE_FULL_IMAGE;}</a></span>'))+' \
+				</p> \
+			</div> \
+		';
 
 		// Show overlay
 		var my_lightbox={
@@ -156,9 +159,9 @@ function open_link_as_overlay(ob,width,height,target)
 				var img=modal.top_window.document.createElement('img');
 				img.className='lightbox_image';
 				img.id='lightbox_image';
-				img.onload=function() { _resize_lightbox_dimensions_img(modal,img,true,is_video); };
 				img.src='{$IMG_INLINE;,loading}';
 				window.setTimeout(function() { // Defer execution until after loading is set
+					img.onload=function() { _resize_lightbox_dimensions_img(modal,img,true,is_video); };
 					img.src=imgs[position][0];
 				},0);
 			}

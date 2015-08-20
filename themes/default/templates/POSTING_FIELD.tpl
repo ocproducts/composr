@@ -52,17 +52,15 @@
 		{+END}
 
 		<div class="float_surrounder">
-			{+START,IF,{$NOT,{$MOBILE}}}
-				{+START,IF,{$JS_ON}}
-					<div class="float_surrounder" role="toolbar">
-						<div id="post_special_options2" style="display: none">
-							{COMCODE_EDITOR_SMALL}
-						</div>
-						<div id="post_special_options">
-							{COMCODE_EDITOR}
-						</div>
+			{+START,IF,{$JS_ON}}
+				<div class="float_surrounder" role="toolbar" class="post_options_wrap">
+					<div id="post_special_options2" style="display: none">
+						{COMCODE_EDITOR_SMALL}
 					</div>
-				{+END}
+					<div id="post_special_options">
+						{COMCODE_EDITOR}
+					</div>
+				</div>
 			{+END}
 
 			<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
@@ -116,10 +114,22 @@
 			manage_scroll_height(document.getElementById('{NAME;/}'));
 			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}{+END}
 		//]]></script>
+
+		{+START,IF,{$AND,{$BROWSER_MATCHES,simplified_attachments_ui},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
+			{ATTACHMENTS}
+
+			<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+
+			<script>// <![CDATA[
+				add_event_listener_abstract(window,'load',function() {
+					initialise_html5_dragdrop_upload('container_for_{NAME;/}','{NAME;/}');
+				});
+			//]]></script>
+		{+END}
 	</td>
 </tr>
 
-{+START,IF_NON_EMPTY,{ATTACHMENTS}}
+{+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	<tr class="form_table_field_spacer">
 		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			{+START,IF,{$JS_ON}}

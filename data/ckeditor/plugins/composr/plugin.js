@@ -29,16 +29,22 @@
 
 			var func={
 				exec: function(e) {
-					fauxmodal_alert(window.lang_PREFER_CMS_ATTACHMENTS,function() {
-						if (typeof window.lang_PREFER_CMS_ATTACHMENTS=='undefined') {
+					var has_selection=(e.getSelection().getSelectedElement()!=null);
+
+					if (typeof window.start_simplified_upload!='undefined' && !has_selection)
+					{
+						var test=start_simplified_upload(editor.element.$.id);
+						if (test) return;
+					}
+
+					if (typeof window.lang_PREFER_CMS_ATTACHMENTS=='undefined' || has_selection) {
+						editor.execCommand('image');
+					} else
+					{
+						fauxmodal_alert(window.lang_PREFER_CMS_ATTACHMENTS,function() {
 							editor.execCommand('image');
-						} else
-						{
-							fauxmodal_alert(window.lang_PREFER_CMS_ATTACHMENTS,function() {
-								editor.execCommand('image');
-							});
-						}
-					});
+						});
+					}
 				}
 			};
 			editor.addCommand('composr_image',func);

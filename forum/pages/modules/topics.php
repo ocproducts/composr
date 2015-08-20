@@ -1796,7 +1796,7 @@ class Module_topics
             breadcrumb_set_parents(array(array('_SEARCH:forumview:pt', do_lang_tempcode('PRIVATE_TOPICS')), array('_SEARCH:topicview:' . strval($topic_id), $topic_title)));
         } else {
             $breadcrumbs = cns_forum_breadcrumbs($forum_id, null, null, false);
-            $breadcrumbs[] = array('_SEARCH:topicview:' . strval($topic_id), $topic_title);
+            $breadcrumbs[] = array('_SEARCH:topicview:misc:' . strval($topic_id), $topic_title);
             $breadcrumbs[] = array('', $doing);
             breadcrumb_set_parents($breadcrumbs);
         }
@@ -3105,13 +3105,16 @@ END;
         if (get_value('force_guest_names') === '1') {
             $javascript .= '
                 var poster_name_if_guest=document.getElementById(\'poster_name_if_guest\');
-                var crf=function() {
-                    if (poster_name_if_guest.value==\'' . php_addslashes(do_lang('GUEST')) . '\') {
-                        poster_name_if_guest.value=\'\';
-                    }
-                };
-                crf();
-                poster_name_if_guest.onblur=crf;
+                if (poster_name_if_guest)
+                {
+                    var crf=function() {
+                        if (poster_name_if_guest.value==\'' . php_addslashes(do_lang('GUEST')) . '\') {
+                            poster_name_if_guest.value=\'\';
+                        }
+                    };
+                    crf();
+                    poster_name_if_guest.onblur=crf;
+                }
             ';
         }
 

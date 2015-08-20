@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_image_attachments_bypass_popup
+class Hook_config_simplified_attachments_ui
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_image_attachments_bypass_popup
     public function get_details()
     {
         return array(
-            'human_name' => 'IMAGE_ATTACHMENTS_BYPASS_POPUP',
+            'human_name' => 'SIMPLIFIED_ATTACHMENTS_UI',
             'type' => 'tick',
             'category' => 'FEATURE',
             'group' => '_COMCODE',
-            'explanation' => 'CONFIG_OPTION_image_attachments_bypass_popup',
+            'explanation' => 'CONFIG_OPTION_simplified_attachments_ui',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
@@ -50,6 +50,10 @@ class Hook_config_image_attachments_bypass_popup
      */
     public function get_default()
     {
+        if (get_option('complex_uploader')=='0') {
+            return null;
+        }
+
         return '1';
     }
 }

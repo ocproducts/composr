@@ -148,6 +148,7 @@ class Block_side_shoutbox
 
         return do_template('BLOCK_SIDE_SHOUTBOX', array(
             '_GUID' => 'dd737145479155961a1252162a43d4ef',
+            'LAST_MESSAGE_ID' => strval($last_message_id),
             'MESSAGES' => $tpl,
             'URL' => $url,
             'CHATROOM_ID' => strval($room_id),

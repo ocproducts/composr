@@ -20,7 +20,8 @@ function add_attachment(start_num,posting_field_name)
 	var new_div=document.createElement('div');
 	set_inner_html(new_div,window.attachment_template.replace(/\_\_num_attachments\_\_/g,window.num_attachments));
 	add_to.appendChild(new_div);
-	document.getElementById('file'+window.num_attachments).setAttribute('unselectable','on');
+	var element=document.getElementById('file'+window.num_attachments);
+	if (element) element.setAttribute('unselectable','on');
 
 	if (window.num_attachments==window.max_attachments)
 	{
@@ -36,7 +37,7 @@ function attachment_present(post_value,number)
 	return !(post_value.indexOf('[attachment]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe]new_'+number+'[/attachment_safe]')==-1) && (post_value.indexOf('[attachment thumb="1"]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe thumb="1"]new_'+number+'[/attachment_safe]')==-1) && (post_value.indexOf('[attachment thumb="0"]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe thumb="0"]new_'+number+'[/attachment_safe]')==-1);
 }
 
-function set_attachment(field_name,number,filename,multi)
+function set_attachment(field_name,number,filename,multi,uploader_settings)
 {
 	if (typeof multi=='undefined') multi=false;
 
@@ -73,6 +74,15 @@ function set_attachment(field_name,number,filename,multi)
 		var is_audio=(',{$CONFIG_OPTION;,valid_audios},'.indexOf(','+ext+',')!=-1);
 		var is_archive=(ext=='tar') || (ext=='zip');
 
+		var prefix='',suffix='';
+		if (multi && is_image)
+		{
+			prefix='[media_set]\n';
+			suffix='[/media_set]';
+		}
+
+		var tag='attachment';
+
 		var show_overlay,defaults={};
 		if (filepath.indexOf('fakepath')==-1) // iPhone gives c:\fakepath\image.jpg, so don't use that
 			defaults.description=filepath; // Default caption to local file path
@@ -80,23 +90,22 @@ function set_attachment(field_name,number,filename,multi)
 
 		if (!show_overlay)
 		{
-			var comcode='[attachment';
+			var comcode='['+tag;
 			for (var key in defaults)
 			{
 				comcode+=' '+key+'="'+(defaults[key].replace(/"/g,'\\"'))+'"';
 			}
-			comcode+=']new_'+number+'[/attachment]';
+			comcode+=']new_'+number+'[/'+tag+']';
+			if (prefix!='') insert_textbox(post,prefix);
 			if (multi)
 			{
 				var split_filename=document.getElementById('txtFileName_file'+window.num_attachments).value.split(/:/);
-				for (var i=1;i<split_filename.length;i++)
+				for (var i=0;i<split_filename.length;i++)
 				{
-					window.num_attachments++;
-					//insert_textbox(post,"\n\n",null,true,"<br /><br />"); // Not sure why but one break gets stripped
+					if (i!=0) window.num_attachments++;
 					insert_textbox(
 						post,
-						comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'['),
-						document.selection?document.selection:null
+						comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'[')
 					);
 				}
 				number=''+(window.parseInt(number)+split_filename.length-1);
@@ -115,6 +124,19 @@ function set_attachment(field_name,number,filename,multi)
 					add_attachment(window.num_attachments+1,field_name);
 				}
 			}
+			if (suffix!='') insert_textbox(post,suffix);
+
+			if (typeof uploader_settings!='undefined')
+			{
+				uploader_settings.callbacks.push(function() {
+					// Do insta-preview
+					if (is_wysiwyg_field(post))
+					{
+						generate_background_preview(post);
+					}
+				});
+			}
+
 			return;
 		}
 
@@ -124,18 +146,11 @@ function set_attachment(field_name,number,filename,multi)
 		var url='{$FIND_SCRIPT;,comcode_helper}';
 		url+='?field_name='+field_name;
 		url+='&type=step2';
-		url+='&tag='+(is_image?'attachment_safe':'attachment');
+		url+='&tag='+tag;
 		url+='&default=new_'+number;
-		if (multi || is_image) url+='&default_framed=0';
 		url+='&is_image='+(is_image?'1':'0');
 		url+='&is_archive='+(is_archive?'1':'0');
 		url+='&multi='+(multi?'1':'0');
-		var prefix='',suffix='';
-		if (multi && is_image)
-		{
-			prefix='[media_set]\n';
-			suffix='[/media_set]';
-		}
 		url+='&prefix='+prefix;
 		if (wysiwyg) url+='&in_wysiwyg=1';
 		for (var key in defaults)
@@ -145,31 +160,6 @@ function set_attachment(field_name,number,filename,multi)
 		url+=keep_stub();
 
 		window.setTimeout(function() {
-			/*{+START,IF,{$CONFIG_OPTION,image_attachments_bypass_popup}}*/
-			if (is_image)
-			{
-				var split_filename=document.getElementById('txtFileName_file'+window.num_attachments).value.split(/:/);
-				for (var i=0;i<split_filename.length;i++)
-				{
-					insert_textbox(post,'[attachment_safe framed="0" thumb="1"]new_'+(i+1)+'[/attachment_safe]');
-					if (i!=0) window.num_attachments++;
-				}
-
-				// Add field for next one
-				var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
-				if (add_another_field)
-				{
-					add_attachment(window.num_attachments+1,field_name);
-				}
-
-				// Do insta-preview
-				if (is_wysiwyg_field(post))
-				{
-					generate_background_preview(post);
-				}
-			} else
-			/*{+END}*/
-
 			window.faux_showModalDialog(
 				maintain_theme_in_link(url),
 				'',
@@ -186,7 +176,6 @@ function set_attachment(field_name,number,filename,multi)
 							for (var i=1;i<split_filename.length;i++)
 							{
 								window.num_attachments++;
-								//insert_textbox(post,"\n\n",null,true,"<br /><br />"); // Not sure why but one break gets stripped	 Don't want this on new UI
 								var tmp=window.insert_comcode_tag(']new_'+number+'[',']new_'+window.num_attachments+'[',true);
 								comcode_semihtml+=tmp[0];
 								comcode+=tmp[1];
@@ -224,7 +213,7 @@ function set_attachment(field_name,number,filename,multi)
 					}
 				}
 			);
-		},800 ); // In a timeout to disassociate possible 'enter' keypress which could have led to this function being called [enter on the file selection dialogue] and could propagate through (on Google Chrome anyways, maybe a browser bug)
+		},800); // In a timeout to disassociate possible 'enter' keypress which could have led to this function being called [enter on the file selection dialogue] and could propagate through (on Google Chrome anyways, maybe a browser bug)
 	} else
 	{
 		// Add field for next one
@@ -432,6 +421,12 @@ function do_input_hide(field_name)
 function do_input_thumb(field_name,va)
 {
 	if (typeof window.insert_textbox=='undefined') return;
+
+	if (typeof window.start_simplified_upload!='undefined')
+	{
+		var test=start_simplified_upload(field_name);
+		if (test) return;
+	}
 
 	window.fauxmodal_prompt(
 		'{!ENTER_URL;^}',

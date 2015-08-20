@@ -63,6 +63,8 @@ function cns_get_safe_specified_poster_name($is_required_field = null)
                 break;
             }
         }
+    } else {
+        $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
     }
     return $poster_name_if_guest;
 }

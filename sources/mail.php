@@ -1379,7 +1379,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     $from_name = post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
 
     $to_name = mixed();
-    if (is_null($to_email)) && (!is_null(get_value('allow_member_mail_relay')))) {
+    if ((is_null($to_email)) && (!is_null(get_value('allow_member_mail_relay')))) {
         $to = post_param_integer('to_members_email', null);
         if (!is_null($to)) {
             $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($to);

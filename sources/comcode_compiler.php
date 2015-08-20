@@ -106,18 +106,21 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
 {
     global $BUTTON_EDITED_TAGS, $TEXTUAL_TAGS_WYSIWYG, $BLOCK_TAGS, $REVERSIBLE_TAGS;
 
-    if ((isset($REVERSIBLE_TAGS[$tag])) && (is_bool($REVERSIBLE_TAGS[$tag]))) {
-        return WYSIWYG_COMCODE__HTML;
-    }
-
-    if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (($attributes === null) || (array_diff(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
-        return WYSIWYG_COMCODE__HTML;
-    }
-
     $_button_edited_tags = $BUTTON_EDITED_TAGS;
+
     if (($tag == 'attachment_safe') && ($embed !== null) && (preg_match('#^new\_\d+$#', $embed->evaluate()) != 0)) {
         $_button_edited_tags['attachment_safe'] = true;
-    } elseif ($tag == 'media' || $tag == 'flash' || $tag == 'attachment' || $tag == 'attachment_safe') {
+    } else {
+        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_bool($REVERSIBLE_TAGS[$tag]))) {
+            return WYSIWYG_COMCODE__HTML;
+        }
+
+        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (($attributes === null) || (array_diff(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
+            return WYSIWYG_COMCODE__HTML;
+        }
+    }
+
+    if ($tag == 'media' || $tag == 'flash' || $tag == 'attachment' || $tag == 'attachment_safe') {
         if (($attributes !== null) && ((!array_key_exists('wysiwyg_editable', $attributes)) || ($attributes['wysiwyg_editable'] == '0'))) {
             $_button_edited_tags[$tag] = true;
         } else {

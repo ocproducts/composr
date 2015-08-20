@@ -94,11 +94,10 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
         if ((($may_have_one) && (is_plupload()) || (is_uploaded_file($file['tmp_name']))) && (preg_match('#file(\d+)#', $key, $matches) != 0)) {
             $has_one = true;
 
-            // Handle attachment extraction
             $matches_extract = array();
-            if (preg_match('#\[attachment( [^\]]*)type="extract"( [^\]]*)?\]new_' . $matches[1] . '\[/attachment\]#', $comcode, $matches_extract) != 0) {
+            if (preg_match('#\[attachment( [^\]]*)type="extract"( [^\]]*)?\]new_' . $matches[1] . '\[/attachment\]#', $comcode, $matches_extract) != 0) { // Handle attachment extraction
                 _handle_attachment_extraction($comcode, $key, $type, $id, $matches_extract, $connection); // Handle missing attachment markup for uploaded attachments
-            } elseif ((strpos($comcode, ']new_' . $matches[1] . '[/attachment]') === false) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment_safe]') === false)) {
+            } elseif ((!browser_matches('simplified_attachments_ui')) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment]') === false) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment_safe]') === false)) {
                 if (preg_match('#\]\d+\[/attachment\]#', $comcode) == 0) { // Attachment could have already been put through (e.g. during a preview). If we have actual ID's referenced, it's almost certainly the case.
                     $comcode .= "\n\n" . '[attachment]new_' . $matches[1] . '[/attachment]';
                 }
