@@ -332,5 +332,6 @@ This is known to happen with Russian characters. The solution is to upload [tt]C
 
  - [page="_SEARCH:tut_intl_users"]Changing the site language[/page]
  - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
+ - [page="_SEARCH:tut_intl_code_philosophy"]Translations code philosophy[/page]
 
 {$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to translate Composr into different languages, and how to configure your date/time settings.}[block]main_tutorial_rating[/block]

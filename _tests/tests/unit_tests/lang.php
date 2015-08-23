@@ -30,7 +30,6 @@ class lang_test_set extends cms_test_case
         $verbose = false;
 
         $dh = opendir(get_file_base() . '/lang/EN/');
-
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) != '.ini') {
                 continue;
@@ -142,6 +141,7 @@ class lang_test_set extends cms_test_case
                 }
             }
         }
+        closedir($dh);
     }
 
     public function tearDown()

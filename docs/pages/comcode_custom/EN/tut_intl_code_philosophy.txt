@@ -1,0 +1,45 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Translations code philosophy[/title]
+
+This tutorial discusses some technical matters relating to how Composr's translation system is defined. It is designed to be read by translators wanting to know why things are as they are, and by programmers trying to uphold standards.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Grammar in different languages[/title]
+
+There are many possible pitfalls we try and avoid, including:
+1) Often languages will use one word in different contexts, while others will not. For example "Download" may be a verb or a noun. Or worse, "Book" may refer to 'make a booking' or 'paper book'. We therefore need to try and avoid re-using language strings inappropriately, and commenting the true meaning of strings wherever they may be ambiguous.
+2) The way we compose strings from different parts may make assumptions about tense or gender (for example) that do not hold in some translations. We therefore have to try avoid situations where we are inserting a diverse possibility of different words inside stock sentences. The only viable solutions are either to just to have many very similar long language strings, or to embed the inserted word within quotes to 'firewall' it from surrounding words (clunky/imperfect, but often necessary).
+
+[title="2"]Avoiding duplication[/title]
+
+Approximately 6% of the language strings contain the same text as other language strings.
+
+However, that's not an accurate reflection of the situation, as some of those actually are different (see "Grammar in different languages" above).
+So, maybe it's more like 5% duplication in practice.
+
+The remaining duplicated ones are for pragmatic reasons, such as:
+1) Often language string names are determined automatically. For example, [tt]BLOCK_main_content_PARAM_param_TITLE[/tt] has to exist so that the block assistant can create an input field for the param field of the [tt]main_content[/tt] block. It may have the actual same content as some other string. We could try and create some kind of cross-linking system, but situations like this are always a trade-off between competing priorities -- adding extra processing over-head, and extra-code, and extra complexity in the language string encoding scheme for everyone to both apply and understand, could well make the situation worse overall.
+2) If we have the same non-core phrase in two different optional addons -- we can't absorb too much into core, so it is possible in a situation like this that both addons would define their own version of it.
+3) Human error. Reusing language strings [i]is[/i] one of the items on our standards checklist, but programmers are taxed with maintaining many standards so mistakes can happen. In fact there's a serious lack of skilled programmers who understand any of these kinds of peripheral issues so mistakes are very likely, and picking them all up in advance is very unlikely.
+
+Fortunately Transifex does [url="show suggestions"]http://docs.transifex.com/features/tm/[/url] as you go through translating. So if you've translated one, and another is the same, it should show that as a translation suggestion. Therefore Transifex largely mitigates these issues.
+
+[title="2"]Reporting issues[/title]
+
+The developers gladly accept pointed feedback on anything that makes translation harder that it needs to be (the above constraints notwithstanding).
+
+Here are some specific cases of translation issues that could be reported as bugs:
+1) if strings are repeated for no good reason (good reasons defined in "Avoiding duplication" above)
+2) if assumptions that hold in English, but not other languages, are being made (see "Grammar in different languages" above)
+3) spelling/grammar mistakes in the source English
+4) source English that is not easy enough to understand
+
+File a bug report in the normal way. Make sure you are specific though -- don't talk of classes of issue, reference the specific strings involved.
+
+If you can think of a better approach to what we take, bearing in mind the various trade-offs we have to try and make, please make a feature suggestion to the tracker.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
+
+{$SET,tutorial_tags,Internationalisation,expert}{$SET,tutorial_add_date,Aug 2015}{$SET,tutorial_summary,Some technical matters relating to how Composr's translation system is defined.}[block]main_tutorial_rating[/block]

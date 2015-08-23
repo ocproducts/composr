@@ -26,7 +26,7 @@ class Hook_config_tapatalk_joining
     public function get_details()
     {
         return array(
-            'human_name' => 'TAPATALK_TAPATALK_JOINING',
+            'human_name' => 'TAPATALK_JOINING',
             'type' => 'tick',
             'category' => 'FORUMS',
             'group' => 'TAPATALK',

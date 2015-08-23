@@ -26,7 +26,7 @@ class Hook_config_tapatalk_api_key
     public function get_details()
     {
         return array(
-            'human_name' => 'TAPATALK_TAPATALK_API_KEY',
+            'human_name' => 'TAPATALK_API_KEY',
             'type' => 'line',
             'category' => 'FORUMS',
             'group' => 'TAPATALK',

@@ -144,6 +144,7 @@ class html_safe_lang_test_set extends cms_test_case
                     }
                 }
             }
+            closedir($dh);
         }
     }
 

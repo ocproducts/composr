@@ -26,7 +26,7 @@ class Hook_config_tapatalk_promote_from_website
     public function get_details()
     {
         return array(
-            'human_name' => 'TAPATALK_TAPATALK_PROMOTE_FROM_WEBSITE',
+            'human_name' => 'TAPATALK_PROMOTE_FROM_WEBSITE',
             'type' => 'tick',
             'category' => 'FORUMS',
             'group' => 'TAPATALK',

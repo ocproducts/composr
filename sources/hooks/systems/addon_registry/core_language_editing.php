@@ -63,6 +63,8 @@ class Hook_addon_registry_core_language_editing
         return array(
             'tut_intl',
             'tut_intl_users',
+            'tut_intl_content',
+            'tut_intl_code_philosophy',
         );
     }
 

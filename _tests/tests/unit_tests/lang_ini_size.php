@@ -28,5 +28,6 @@ class lang_ini_size_test_set extends cms_test_case
                 $this->assertTrue(substr_count($contents, "\n") < 980, $f . ' is too big'); // default max_input_vars=1000
             }
         }
+        closedir($dh);
     }
 }
