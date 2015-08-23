@@ -562,7 +562,6 @@ header h1 {
 	margin-bottom: 0.8em;
 	min-width: 300px;
 	padding-bottom: 6px; /* For better alignment with breadcrumbs to the right */
-	display: inline-block; /* This will force it to prefer to avoid wrapping by going onto its own line if competing for space with the breadcrumbs to the right */
 }
 .screen_title li span {
 	display: block;
