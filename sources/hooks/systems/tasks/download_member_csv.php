@@ -26,9 +26,10 @@ class Hook_task_download_member_csv
     /**
      * Run the task hook.
      *
+     * @param  boolean $filter_by_allow Only provide members that have "Receive newsletters and other site updates" set.
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run()
+    public function run($filter_by_allow)
     {
         $filename = 'members-' . date('Y-m-d') . '.csv';
 
@@ -103,11 +104,17 @@ class Hook_task_download_member_csv
         }
         fwrite($outfile, "\n");
 
+        // Filter
+        $where = array();
+        if ($filter_by_allow) {
+            $where['m_allow_emails_from_staff'] = 1;
+        }
+
         // Output records
         $at = mixed();
         $start = 0;
         do {
-            $members = $GLOBALS['FORUM_DB']->query_select('f_members', $fields, null, '', 200, $start);
+            $members = $GLOBALS['FORUM_DB']->query_select('f_members', $fields, $where, '', 200, $start);
 
             if ($member_count >= 700) {
                 $or_list = '';

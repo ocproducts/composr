@@ -105,6 +105,12 @@ class Hook_cdn_transfer_cloudinary
         } else {
             $url = $result['secure_url'];
         }
+
+		if (is_image($filename)) {
+			// 1024 version
+			$url = preg_replace('#^(.*/image/upload/)(.*)$#', '$1c_limit,w_1024/$2', $url);
+		}
+  
         return $url;
     }
 

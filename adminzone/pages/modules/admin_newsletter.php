@@ -92,7 +92,11 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         if ($type == 'import_subscribers') {
-            $this->title = get_screen_title('IMPORT_NEWSLETTER_SUBSCRIBERS');
+            if (either_param_integer('level', null) === 0) {
+                $this->title = get_screen_title('SOMETHING_NEWSLETTER_SUBSCRIBERS'); // Don't say import, so as to not confuse people given a pre-set link to unsubscribe people from
+            } else {
+                $this->title = get_screen_title('IMPORT_NEWSLETTER_SUBSCRIBERS');
+            }
         }
 
         if ($type == 'bounce_filter_a' || $type == 'bounce_filter_v' || $type == 'bounce_filter_c' || $type == 'bounce_filter_d') {
@@ -271,6 +275,9 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Select newsletter and attach CSV
         if (is_null($newsletter_id)) {
+            $default_newsletter_id = get_param_integer('id', null);
+            $default_level = get_param_integer('level', 4);
+
             $fields = new Tempcode();
             $hidden = new Tempcode();
             require_code('form_templates');
@@ -279,30 +286,37 @@ class Module_admin_newsletter extends Standard_crud_module
             $newsletters = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('id', 'title'));
             foreach ($rows as $newsletter) {
-                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), false, get_translated_text($newsletter['title'])));
+                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), $newsletter['id'] === $default_newsletter_id, get_translated_text($newsletter['title'])));
+            }
+            if (get_forum_type() == 'cns') {
+                $newsletters->attach(form_input_list_entry('-1', -1 === $default_newsletter_id, do_lang_tempcode('NEWSLETTER_CNS')));
             }
             if ($newsletters->is_empty()) {
                 inform_exit(do_lang_tempcode('NO_CATEGORIES'));
             }
-            $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+            if (count($rows) == 0) {
+                $hidden->attach(form_input_hidden('id', '-1'));
+            } else {
+                $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+            }
             $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_CSV_2'), 'file', true, null, null, true, 'csv,txt'));
             // Choose level
             if (get_option('interest_levels') == '0') {
                 $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', false, do_lang_tempcode('NEWSLETTER_0')));
-                $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NEWSLETTER_IMPORT')));
-                $fields->attach(form_input_list(do_lang_tempcode('SETTINGS'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_3'), 'level', $l));
+                $l->attach(form_input_list_entry('0', 0 == $default_level, do_lang_tempcode('NEWSLETTER_0')));
+                $l->attach(form_input_list_entry('4', 4 == $default_level, do_lang_tempcode('NEWSLETTER_IMPORT')));
+                $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_STATUS'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_3'), 'level', $l));
             } else {
                 $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', false, do_lang_tempcode('NEWSLETTER_0')));
-                $l->attach(form_input_list_entry('1', $level == 1, do_lang_tempcode('NEWSLETTER_1')));
-                $l->attach(form_input_list_entry('2', $level == 2, do_lang_tempcode('NEWSLETTER_2')));
-                $l->attach(form_input_list_entry('3', $level == 3, do_lang_tempcode('NEWSLETTER_3')));
-                $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NEWSLETTER_4')));
+                $l->attach(form_input_list_entry('0', 0 == $default_level, do_lang_tempcode('NEWSLETTER_0')));
+                $l->attach(form_input_list_entry('1', 1 == $default_level, do_lang_tempcode('NEWSLETTER_1')));
+                $l->attach(form_input_list_entry('2', 2 == $default_level, do_lang_tempcode('NEWSLETTER_2')));
+                $l->attach(form_input_list_entry('3', 3 == $default_level, do_lang_tempcode('NEWSLETTER_3')));
+                $l->attach(form_input_list_entry('4', 4 == $default_level, do_lang_tempcode('NEWSLETTER_4')));
                 $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_LEVEL'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_2'), 'level', $l));
             }
 
-            $submit_name = do_lang_tempcode('IMPORT_NEWSLETTER_SUBSCRIBERS');
+            $submit_name = do_lang_tempcode('PROCEED');
             $post_url = get_self_url();
 
             $hidden->attach(form_input_hidden('lang', $_lang));
@@ -313,6 +327,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Read data
         $ok = false;
+        $done_special_notice = false;
         require_code('uploads');
         if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
             if (filesize($_FILES['file']['tmp_name']) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
@@ -415,40 +430,65 @@ class Module_admin_newsletter extends Standard_crud_module
                             $jointime = time();
                         }
 
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'id', array('email' => $email));
-                        if (is_null($test)) {
-                            $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array(
-                                'email' => $email,
-                                'join_time' => $jointime,
-                                'code_confirm' => $code_confirm,
-                                'the_password' => $hash,
-                                'pass_salt' => $salt,
-                                'language' => $lang,
-                                'n_forename' => $forename,
-                                'n_surname' => $surname,
-                            ));
-                            $count++;
+                        if ($newsletter_id == '-1') {
+                            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email));
+                            if (is_null($test)) {
+                                if ($level != 0) {
+                                    if (!$done_special_notice) {
+                                        attach_message(do_lang_tempcode('NEWSLETTER_WONT_IMPORT_MEMBERS'), 'notice');
+                                        $done_special_notice = true;
+                                    }
+                                }
+                            } else {
+                                if ($level == 0) {
+                                    $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 0), array('m_email_address' => $email), '', 1);
+                                    $count++;
+                                } else {
+                                    $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 1), array('m_email_address' => $email), '', 1);
+                                }
+                            }
                         } else {
-                            $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array(
-                                'n_forename' => $forename,
-                                'n_surname' => $surname,
-                            ), array(
+                            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'id', array('email' => $email));
+                            if (is_null($test)) {
+                                $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array(
+                                    'email' => $email,
+                                    'join_time' => $jointime,
+                                    'code_confirm' => $code_confirm,
+                                    'the_password' => $hash,
+                                    'pass_salt' => $salt,
+                                    'language' => $lang,
+                                    'n_forename' => $forename,
+                                    'n_surname' => $surname,
+                                ));
+                                if ($level != 0) {
+                                    $count++;
+                                }
+                            } else {
+                                $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array(
+                                    'n_forename' => $forename,
+                                    'n_surname' => $surname,
+                                ), array(
+                                    'email' => $email,
+                                ), '', 1);
+                                if ($level == 0) {
+                                    $count++;
+                                }
+                            }
+
+                            // In case $email is already a subscriber, we delete first
+                            $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array(
+                                'newsletter_id' => $newsletter_id,
                                 'email' => $email,
                             ), '', 1);
+                            if ($level != 0) { // Allow deletion CSV via setting subscription level to 0. So we only reinsert if NOT deletion.
+                                $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array(
+                                    'newsletter_id' => $newsletter_id,
+                                    'the_level' => $level,
+                                    'email' => $email,
+                                ));
+                            }
                         }
 
-                        // In case $email is already a subscriber, we delete first
-                        $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array(
-                            'newsletter_id' => $newsletter_id,
-                            'email' => $email,
-                        ), '', 1);
-                        if ($level != 0) { // Allow deletion CSV via setting subscription level to 0. So we only reinsert if NOT deletion.
-                            $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array(
-                                'newsletter_id' => $newsletter_id,
-                                'the_level' => $level,
-                                'email' => $email,
-                            ));
-                        }
                         $count2++;
                     }
                 }
@@ -459,7 +499,13 @@ class Module_admin_newsletter extends Standard_crud_module
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
 
-        return inform_screen($this->title, do_lang_tempcode('NEWSLETTER_IMPORTED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2))));
+        if ($level == 0) {
+            $message = do_lang_tempcode('NEWSLETTER_REMOVED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2)));
+        } else {
+            $message = do_lang_tempcode('NEWSLETTER_IMPORTED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2)));
+        }
+
+        return inform_screen($this->title, $message);
     }
 
     /**

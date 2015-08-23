@@ -152,7 +152,7 @@ class Module_admin_cns_members
             $this->title = get_screen_title('IMPORT_MEMBER_CSV');
         }
 
-        if ($type == 'download_csv') {
+        if ($type == 'download_csv' || $type == '_download_csv') {
             $this->title = get_screen_title('DOWNLOAD_MEMBER_CSV');
 
             $GLOBALS['OUTPUT_STREAMING'] = false; // Too complex to do a pre_run for this properly
@@ -198,6 +198,9 @@ class Module_admin_cns_members
         }
         if ($type == 'download_csv') {
             return $this->download_csv();
+        }
+        if ($type == '_download_csv') {
+            return $this->_download_csv();
         }
         if ($type == 'import_csv') {
             return $this->import_csv();
@@ -585,14 +588,38 @@ class Module_admin_cns_members
     }
 
     /**
-     * The actualiser to download a CSV of members.
+     * The UI to download a CSV file of members.
      *
      * @return Tempcode The UI
      */
     public function download_csv()
     {
+        require_code('form_templates');
+
+        require_lang('cns');
+
+        $hidden = new Tempcode();
+
+        $fields = new Tempcode();
+        handle_max_file_size($hidden);
+        $fields->attach(form_input_tick(do_lang_tempcode('FILTER_BY_ALLOW'), do_lang_tempcode('DESCRIPTION_FILTER_BY_ALLOW'), 'filter_by_allow', get_param_integer('filter_by_allow', 0) == 1));
+
+        $submit_name = do_lang_tempcode('DOWNLOAD_MEMBER_CSV');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_download_csv'), '_SELF');
+        $text = '';
+
+        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name));
+    }
+
+    /**
+     * The actualiser to download a CSV of members.
+     *
+     * @return Tempcode The UI
+     */
+    public function _download_csv()
+    {
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'download_member_csv');
+        return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'download_member_csv', array(post_param_integer('filter_by_allow', 0) == 1));
     }
 
     /**
