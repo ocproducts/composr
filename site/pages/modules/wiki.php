@@ -441,11 +441,15 @@ class Module_wiki
         attach_message(do_lang_tempcode('TAKEN_RANDOM_WIKI_PAGE'), 'inform');
 
         $num_pages = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'MAX(id)');
-        $pages = array();
-        do { // Loop. picking random pages between 0 and max-id till we find one that exists
-            $id = mt_rand(db_get_first_id(), $num_pages);
-            $pages = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => $id), '', 1);
-        } while (!array_key_exists(0, $pages));
+        if ($num_pages <= db_get_first_id()) {
+            $id = $num_pages;
+        } else {
+            $pages = array();
+            do { // Loop. picking random pages between 0 and max-id till we find one that exists
+                $id = mt_rand(db_get_first_id(), $num_pages);
+                $pages = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => $id), '', 1);
+            } while (!array_key_exists(0, $pages));
+        }
         $redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $id), '_SELF');
         return redirect_screen(get_screen_title('RANDOM_PAGE'), $redir_url, '');
     }

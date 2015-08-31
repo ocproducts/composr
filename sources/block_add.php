@@ -496,7 +496,7 @@ function block_helper_script()
             'FIELD_NAME' => $field_name,
             'TAG_CONTENTS' => '',
             'SAVE_TO_ID' => get_param_string('save_to_id', ''),
-            'DELETE' => (post_param_integer('delete', 0) == 1),
+            'DELETE' => (post_param_integer('_delete', 0) == 1),
             'BLOCK' => $block,
             'COMCODE' => $comcode,
             'COMCODE_SEMIHTML' => $comcode_semihtml,

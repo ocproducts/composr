@@ -254,7 +254,7 @@
 						{+END}
 
 						{+START,IF,{$BROWSER_MATCHES,simplified_attachments_ui}}
-							<input tabindex="7" onclick="start_simplified_upload('post');" class="buttons__thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!comcode:ADD_IMAGES}" />
+							<input tabindex="7" id="attachment_upload_button" class="buttons__thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!comcode:ADD_IMAGES}" />
 						{+END}
 
 						{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}

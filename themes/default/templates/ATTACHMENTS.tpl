@@ -3,7 +3,6 @@
 {+START,IF,{$BROWSER_MATCHES,simplified_attachments_ui}}
 	<div id="attachment_store" class="accessibility_hidden">
 		{$,plupload will attach upload code to here}
-		<input id="attachment_upload_button" name="attachment_upload_button" value="{!UPLOAD}" type="button" />
 	</div>
 
 	<div id="attachment_progress_bars">
@@ -16,18 +15,21 @@
 		var max_attachments={MAX_ATTACHMENTS%};
 		var num_attachments=1;
 
-		function start_simplified_upload(posting_field_name)
+		function rebuild_attachment_button_for_next(posting_field_name,attachment_upload_button)
 		{
 			if (posting_field_name!='{POSTING_FIELD_NAME;/}') return false;
 
-			prepare_simplified_file_input('attachment_multi','file'+window.num_attachments,null,'{POSTING_FIELD_NAME;/}'{+START,IF_PASSED,FILTER},'{FILTER;/}'{+END});
+			if (typeof attachment_upload_button=='undefined') attachment_upload_button=window.attachment_upload_button; {$,Use what was used last time}
+			window.attachment_upload_button=attachment_upload_button;
 
-			window.setTimeout(function() {
-				var btn=document.getElementById('attachment_upload_button');
-				btn.click();
-			},200 /* Longer delay than 0 needed for Firefox */);
+			prepare_simplified_file_input('attachment_multi','file'+window.num_attachments,null,'{POSTING_FIELD_NAME;/}',{+START,IF_PASSED,FILTER}'{FILTER;/}'{+END}{+START,IF_NON_PASSED,FILTER}null{+END},window.attachment_upload_button);
 
-			return true;
+			if (document.getElementById('attachment_upload_button'))
+			{
+				add_event_listener_abstract(window,'load',function () {
+					rebuild_attachment_button_for_next('{POSTING_FIELD_NAME;/}','attachment_upload_button');
+				} );
+			}
 		}
 	//]]></script>
 {+END}

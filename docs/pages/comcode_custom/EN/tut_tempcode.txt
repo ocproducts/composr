@@ -671,6 +671,10 @@ Tempcode does not have explicit data-types, everything is text. However we may i
 		<td>Find the URL to a named Composr entry script (e.g. 'dload'), but as a relative URL to domain name root</td>
 	</tr>
 	<tr style="background: #DDFFDD">
+		<td>{$MAKE_URL_ABSOLUTE}</td>
+		<td>Take what may be a relative URL (relative to site base URL), and make sure it is an absolute URL</td>
+	</tr>
+	<tr style="background: #DDFFDD">
 		<td>{$IMG,bottom}</td>
 		<td>Find a named theme image code's URL (takes the theme image code). Note that this gets the image URL, it does not write the HTML out for an image element based upon it (you need to do that yourself).</td>
 	</tr>

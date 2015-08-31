@@ -8,23 +8,41 @@ For an overview of the Composr permission system, see the 'Advanced configuratio
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Access control[/title]
+[title="2"]Brief overview of what can be set[/title]
+
+You can set:
+ - Access (view) permissions for zones, pages, and categories.
+ - Global privileges.
+ - Overridden privileges for particular content-types, by overriding them on the module (page) controlling that content-type.
+ - Overridden privileges for particular categories.
+ - Adhoc access control on particular match-keys.
+
+You cannot set:
+ - Permissions on the entry-level (e.g. for a specific news article). You need to use categorisation to group entries that would have the same access level.
+ - Write privileges on individual Comcode Pages. It is possible to set them on a per-zone basis though. You can also allow one particular user to have control over a particular page if they are the owner of that page (i.e. the submitter), and they have been granted permission to edit their own content.
+ - Permissions on the member-level. You need to use usergroups to assign permissions. You can put members in multiple usergroups to achieve complex permission schemes. Technically Composr does support per-member permissions, but we don't have a user interface to set it because we wanted to keep the system concepts as streamlined and simple as possible: usergroups always provide a way to achieve what is needed.
+ - Inheritable permissions from parent to child categories. You can quickly copy permissions to subcategories in the Permissions Tree Editor instead, or assign them at the module level and leave the categories as non-overridden (so inheriting from module to all categories within that module). We made this decision for simplicity and performance reasons.
+ - Per-field (i.e. sub-entry) edit permissions.
+
+[title="2"]Access (view) control[/title]
 
 [media width="150" description="The Permissions Tree Editor" float="right"]data_custom/images/docs/permissions_tree_editor.png[/media]
 To edit permissions in Composr you can either use:
- - The permissions tree editor
+ - The Permissions Tree Editor
  - Manual configuration
 
 {!permissions:DOC_PERMISSIONS_TREE}
 
-The remainder of this section is concerned with manual permission setting.
+The remainder details the separate permission setting interfaces in different parts of Composr. The concepts from below are relevant to using the Permissions Tree Editor, as they detail what controls are embedded at different points within the tree. We do recommend using the Permissions Tree Editor directly though, unless you happen to be working directly with the zone/category/page at the time of setting permissions for it.
 
 [title="3"]Editing zone permissions[/title]
 
-[i]This section describes editing from outside the Permissions Tree Editor. It is perhaps easier to centralise control from the Permissions Tree Editor. All the settings described here are also present in the Permissions Tree Editor.[/i]
+[i]This section describes editing from outside the Permissions Tree Editor. It is easier to centralise control from the Permissions Tree Editor where all the settings here may be accessed.[/i]
 
 [media width="150" description="Setting zone permissions" float="left"]data_custom/images/docs/permissions_Edit-zone-permissions.png[/media]
 You can edit zone permissions by editing the zone for which you want to change the permissions.
+
+For each zone you can set which usergroups can access (view) it.
 
 Go the Admin Zone, then the 'Structure' section, then the 'Zones' icon. Choose a zone to edit (bear in mind that you can't change permissions for the Welcome Zone, as everybody is allowed to access it), and continue.
 [surround]
@@ -33,9 +51,12 @@ You will be presented with the zone editing form. Near the bottom are the option
 [/surround]
 [title="3"]Editing page permissions[/title]
 
-[i]This section describes editing from outside the Permissions Tree Editor. It is perhaps easier to centralise control from the Permissions Tree Editor. All the settings described here are also present in the Permissions Tree Editor.[/i]
+[i]This section describes editing from outside the Permissions Tree Editor. It is easier to centralise control from the Permissions Tree Editor where all the settings here may be accessed. In fact, we do not link the Page Permissions interface into the default admin menu structure unless JavaScript is not enabled. There is a similar interface when editing a Comcode Page, however.[/i]
+
 [surround]
 [media width="150" description="Editing page permissions" float="right"]data_custom/images/docs/permissions_Page-permissions-grid.png[/media]
+For each page you can set which usergroups can access (view) it. For modules you can also often override certain privileges for the content handled within those modules.
+
 Go to the Admin Zone, then the 'Structure' section, then the 'Permissions' icon. Choose 'Page permissions'. To edit a page's permissions manually, you need to go to the page permissions page. Once more, choose a zone to edit, and submit the form. You will be presented with a checkbox-grid of the permissions for every page in your selected zone. Along the top are the names of all the usergroups on your site, and down the side are the names of all the pages in your selected zone. In the middle is a checkbox-grid for the permissions, and down the right is a column of buttons for inverting a whole row of checkboxes at once ([url="image" rel="lightbox"]data_custom/images/docs/permissions_Mass-checkbox-change.gif[/url]).
 
 Once all the access permissions are set as appropriate, submit the form.
@@ -50,7 +71,10 @@ The best example of this would be when viewing someone's member profile. The mem
 
 [i]This section describes editing from outside the Permissions Tree Editor. It is perhaps easier to centralise control from the Permissions Tree Editor. All the settings described here are also present in the Permissions Tree Editor.[/i]
 
+[surround]
 [media width="150" description="Editing category permissions" float="left"]data_custom/images/docs/permissions_Edit-category-permissions.png[/media]
+For each category you can set which usergroups can access (view) it, and often also override certain privileges for that category.
+
 Usergroup access permissions exist for just about any type of category Composr provides: from calendar entry types to news categories, you can easily set the usergroup access permissions through the category edit page. In this example, we'll change the usergroup access permissions for a news category.
 
 Go to the Content Management Zone. Choose the icon for the content type you want to edit. Click the 'Edit one category' icon. Select the category to edit, and submit the form.
@@ -59,15 +83,18 @@ Then, set the permissions as necessary, and submit the form once more.
 [media width="150" description="Choosing a category to edit" float="right"]data_custom/images/docs/permissions_Choose-category-edit.png[/media]
 
 The process is the same for editing the permissions of any type of category.
+[/surround]
 
 [title="2"]Privileges[/title]
 
+[surround]
 [media width="150" description="Choosing a privilege section to edit permissions within" float="right"]data_custom/images/docs/permissions_Choose-specific-access.png[/media]
 {!permissions:DOC_PRIVILEGES}
 
 The privileges are accessed through the "privileges" page. On this page is a list of permission sections; all the privileges are grouped into related sections for ease-of-configuration. Choose a section, and submit the form to see and change the related privileges. The page shows a checkbox-grid of the usergroups and the privileges in your selected section. Set up the privileges as appropriate, and submit the form to change them.
 
 For a good real-world example of how to set up privileges, see the 'Setting bypass-validation access' section of the [page="_SEARCH:tut_forums"]organising discussion forums[/page] tutorial.
+[/surround]
 
 [title="2"]Adding, Editing and Deleting content[/title]
 
@@ -131,7 +158,7 @@ Fortunately Composr has a special feature for this situation: go to Admin Zone >
  1_key="access permission"     1_value="Whether members of a certain usergroup have permission to access somewhere (a zone, page, or category, for example); a member does not need all their usergroups to have access, only one"
  2_key="privilege"   2_value="Whether a certain usergroup has permission to do specific things (such as using high-level Comcode, or bypass the word-filter)"
  3_key="su"                    3_value="Named after the Unix command 'su' ('superuser'), which when used at the command line allows somebody to temporarily log in as a different user"
- 4_key="permissions tree editor"  4_value="This editor is a user friendly interface for editing all permissions (except privileges) on a Composr website"
+ 4_key="Permissions Tree Editor"  4_value="This editor is a user friendly interface for editing all permissions (except privileges) on a Composr website"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

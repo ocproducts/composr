@@ -33,6 +33,10 @@ class CMSForumRead
     {
         cms_verify_parameters_phpdoc();
 
+        if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
+            access_denied('I_ERROR');
+        }
+
         if (is_null($order_sub_alpha)) {
             $order_sub_alpha = ($GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_order_sub_alpha', array('id' => $forum_id)) == 1);
         }

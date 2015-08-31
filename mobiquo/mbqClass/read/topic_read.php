@@ -81,7 +81,7 @@ class CMSTopicRead
      */
     public function get_topics($mode, $forum_id, $start, $max)
     {
-        if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
+        if (!has_category_access(get_member(), 'forums', strval(($forum_id == 0) ? db_get_first_id() : $forum_id))) {
             access_denied('I_ERROR');
         }
 

@@ -17,17 +17,23 @@ function add_attachment(start_num,posting_field_name)
 
 	window.num_attachments++;
 
-	var new_div=document.createElement('div');
-	set_inner_html(new_div,window.attachment_template.replace(/\_\_num_attachments\_\_/g,window.num_attachments));
-	add_to.appendChild(new_div);
+	// Add new file input, if we are using naked file inputs
+	if (window.attachment_template.replace(/\s/,'')!='')
+	{
+		var new_div=document.createElement('div');
+		set_inner_html(new_div,window.attachment_template.replace(/\_\_num_attachments\_\_/g,window.num_attachments));
+		add_to.appendChild(new_div);
+	}
+
+	// Rebuild uploader button, if we have a singular button
+	if (typeof window.rebuild_attachment_button_for_next!='undefined')
+	{
+		rebuild_attachment_button_for_next(posting_field_name);
+	}
+
+	// Previous file input cannot be used anymore, if it exists
 	var element=document.getElementById('file'+window.num_attachments);
 	if (element) element.setAttribute('unselectable','on');
-
-	if (window.num_attachments==window.max_attachments)
-	{
-		var btn=document.getElementById('add_another_button');
-		if (btn) btn.disabled=true;
-	}
 
 	if (typeof window.trigger_resize!='undefined') trigger_resize();
 }

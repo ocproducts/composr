@@ -3,10 +3,10 @@
 # Create a MySQL database specified in _config.php
 # Primarily designed for synching databases within the context of a revision control system
 
-DB_HOST=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site_host']='\(.*\)';/\1/p")
-DB_USER=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site_user']='\(.*\)';/\1/p")
-DB_PASS=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site_password']='\(.*\)';/\1/p")
-DB_NAME=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site']='\(.*\)';/\1/p")
+DB_HOST=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site_host'] = '\(.*\)';/\1/p")
+DB_USER=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site_user'] = '\(.*\)';/\1/p")
+DB_PASS=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site_password'] = '\(.*\)';/\1/p")
+DB_NAME=$(cat _config.php|sed -n "s/\$SITE_INFO\['db_site'] = '\(.*\)';/\1/p")
 
 if [ -z "${DB_NAME}" ];
 then

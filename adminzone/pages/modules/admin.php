@@ -244,6 +244,7 @@ class Module_admin
             array('accessibility', 'a11y'),
             array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation'),
             array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant'),
+            array('access', 'view'),
             array('overlay', 'popup', 'dialog', 'window'),
             array('option', 'setting', 'value'),
             array('configure', 'configuration', 'setup', 'install', 'core_configuration'),

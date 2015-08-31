@@ -559,6 +559,8 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     // Mark that this was e-mailed in
     $body .= "\n\n" . do_lang('TICKET_EMAILED_IN');
 
+    $GLOBALS['LAX_COMCODE'] = true;
+
     // Post
     if (is_null($existing_ticket)) {
         $new_ticket_id = strval($member_id) . '_' . uniqid('', false);

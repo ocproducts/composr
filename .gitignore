@@ -1,5 +1,7 @@
 ; Similar to stuff defined in sources/files.php, but defined in terms of what we want never to be in git
+/cgi-bin
 *.bak
+*.old
 ._*
 test_a
 /safe_mode_temp/*.dat
@@ -7,6 +9,8 @@ test_a
 /sources_custom/user_sync__customise.php
 /www.pid
 .DS_Store
+/.ftaccess
+/.ftpquota
 *.lcd
 *.tcp
 *.tcd
@@ -32,7 +36,6 @@ test_a
 /data_custom/modules/web_notifications/latest.dat
 /cms_sitemap.xml
 /*.clpprj
-/*.tmproj
 /.project
 /data_custom/latest_activity.txt
 /hphp-static-cache

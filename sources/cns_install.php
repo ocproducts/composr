@@ -54,6 +54,7 @@ function init__cns_install()
         'view_profiles',
         'own_avatars',
         'double_post',
+        'delete_account',
     );
     $CNS_FALSE_PERMISSIONS = array(
         'rename_self',
@@ -65,7 +66,6 @@ function init__cns_install()
         'see_warnings',
         'see_ip',
         'may_choose_custom_title',
-        'delete_account',
         'view_other_pt',
         'view_poll_results_before_voting',
         'moderate_private_topic',

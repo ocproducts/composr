@@ -167,7 +167,16 @@ class Module_cms_catalogues extends Standard_crud_module
                 break;
         }
 
-        return parent::pre_run($top_level, $type);
+        $ret = parent::pre_run($top_level, $type);
+
+        if ($type == 'add_other' || $type == '_add_other') {
+            $content_type = $this->alt_crud_module->tied_to_content_type(get_param_string('id', null));
+            if ($content_type !== null) {
+                $this->alt_crud_module->title = get_screen_title('ADD_CATALOGUE_FOR_CONTENT_TYPE', true, array(escape_html($content_type)));
+            }
+        }
+
+        return $ret;
     }
 
     /**
@@ -1551,6 +1560,26 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     }
 
     /**
+     * Find what content type this is for.
+     *
+     * @param  ?ID_TEXT $name The catalogue name (null: n/a)
+     * @return ?ID_TEXT The content type (null: none)
+     */
+    function tied_to_content_type($name)
+    {
+        if (is_null($name)) {
+            return null;
+        }
+
+        $rem_name = substr($name, 1);
+        $tied_to_content_type = (substr($name, 0, 1) == '_') && ((file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . $rem_name . '.php')) || (file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . $rem_name . '.php')));
+        if ($tied_to_content_type) {
+            return $rem_name;
+        }
+        return null;
+    }
+
+    /**
      * Get Tempcode for a catalogue adding/editing form.
      *
      * @param  ID_TEXT $name The name of the catalogue
@@ -1575,10 +1604,8 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         if ($name == '') {
             $name = get_param_string('id', '');
         }
-        $tied_to_content_type = (substr($name, 0, 1) == '_') && ((file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . substr($name, 1) . '.php')) || (file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . substr($name, 1) . '.php')));
-        if ($tied_to_content_type) {
-            $content_type = substr($name, 1);
-
+        $content_type = $this->tied_to_content_type($name);
+        if ($content_type !== null) {
             require_code('content');
             $ob = get_content_object($content_type);
             $info = $ob->info();

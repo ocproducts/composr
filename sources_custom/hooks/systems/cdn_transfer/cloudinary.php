@@ -22,7 +22,11 @@ class Hook_cdn_transfer_cloudinary
             return false;
         }
 
-        if ((get_option('cloudinary_test_mode') == '1') && (get_param_integer('keep_cloudinary', 0) == 0)) {
+        if (($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) && (get_param_integer('keep_cloudinary', null) === 0)) {
+            return false;
+        }
+
+        if ((get_option('cloudinary_test_mode') == '1') && (get_param_integer('keep_cloudinary', 0) != 1)) {
             return false;
         }
 
@@ -106,11 +110,11 @@ class Hook_cdn_transfer_cloudinary
             $url = $result['secure_url'];
         }
 
-		if (is_image($filename)) {
-			// 1024 version
-			$url = preg_replace('#^(.*/image/upload/)(.*)$#', '$1c_limit,w_1024/$2', $url);
-		}
-  
+        if (is_image($filename)) {
+            // 1024 version
+            $url = preg_replace('#^(.*/image/upload/)(.*)$#', '$1c_limit,w_1024/$2', $url);
+        }
+
         return $url;
     }
 

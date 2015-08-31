@@ -6134,7 +6134,7 @@ define("moxie/runtime/html5/Runtime", [
 					return I.can('slice_blob') && I.can('send_multipart');
 				},
 				summon_file_dialog: Test(function() { // yeah... some dirty sniffing here...
-					// ChrisG. Changed this after testing. Safari and Chrome are safe now. IE9 is not.
+					// ChrisG. Changed this after testing. Safari and Chrome are "safe" now (actually not consistently, second clicks can fail, and FB button presence can make it fail - security). IE9 is not.
 					return (Env.browser !== 'IE' || Env.version >= 10);
 				}()),
 				upload_filesize: True
@@ -13131,7 +13131,8 @@ function begin_form_uploading(e,ob,recurse)
 		ob.start();
 		smooth_scroll(find_pos_y(filename_field,true));
 
-		window.fauxmodal_alert('{!PLEASE_WAIT_WHILE_UPLOADING;}');
+		if (find_height(btn_submit.form)>get_window_height()) // If possibly cannot see upload progress bars
+			window.fauxmodal_alert('{!PLEASE_WAIT_WHILE_UPLOADING;}');
 	} else
 	{
 		window.form_submitting=btn_submit.form; // For IE
@@ -13234,10 +13235,12 @@ function upload_dialog_completed(ob,files)
 {
 	document.getElementById(ob.settings.btn_submit_id).disabled=false;
 
-	set_inner_html(document.getElementById(ob.settings.progress_target),''); // Remove old progress indicators
+	var filename_field=document.getElementById(ob.settings.txtFileName);
+
+	if (file_id_field.value!='-1')
+		set_inner_html(document.getElementById(ob.settings.progress_target),''); // Remove old progress indicators
 
 	var name,file;
-	var filename_field=document.getElementById(ob.settings.txtFileName);
 	var file_id_field=document.getElementById(ob.settings.hidFileID);
 	file_id_field.value='-1';
 	filename_field.value='';
@@ -13506,7 +13509,7 @@ function replace_file_input(page_type,name,_btn_submit_id,posting_field_name,fil
 	};
 }
 
-function prepare_simplified_file_input(page_type,name,_btn_submit_id,posting_field_name,filter)
+function prepare_simplified_file_input(page_type,name,_btn_submit_id,posting_field_name,filter,attachment_upload_button)
 {
 	if (!filter) filter='{$CONFIG_OPTION#,valid_types}';
 	filter+=','+filter.toUpperCase();
@@ -13517,33 +13520,48 @@ function prepare_simplified_file_input(page_type,name,_btn_submit_id,posting_fie
 
 	var main_div=document.getElementById('attachment_store');
 
-	var filename_field=document.createElement('input');
-	filename_field.id='txtFileName_'+name;
-	filename_field.name='txtFileName_'+name;
-	filename_field.type='hidden';
-	filename_field.value='';
-	main_div.appendChild(filename_field);
+	var filename_field=document.getElementById('txtFileName_'+name);
+	if (!filename_field)
+	{
+		filename_field=document.createElement('input');
+		filename_field.id='txtFileName_'+name;
+		filename_field.name='txtFileName_'+name;
+		filename_field.type='hidden';
+		filename_field.value='';
+		main_div.appendChild(filename_field);
+	}
 
-	var file_id_field=document.createElement('input');
-	file_id_field.id='hidFileID_'+name;
-	file_id_field.name=file_id_field.id;
-	file_id_field.type='hidden';
-	file_id_field.value='-1';
-	main_div.appendChild(file_id_field);
+	var file_id_field=document.getElementById('hidFileID_'+name);
+	if (!file_id_field)
+	{
+		file_id_field=document.createElement('input');
+		file_id_field.id='hidFileID_'+name;
+		file_id_field.name=file_id_field.id;
+		file_id_field.type='hidden';
+		file_id_field.value='-1';
+		main_div.appendChild(file_id_field);
+	}
 
 	var mfs=form.elements['MAX_FILE_SIZE'];
 	if ((typeof mfs!='undefined') && (typeof mfs.value=='undefined')) mfs=mfs[0];
 
 	// We need to clear out events on the upload button, attaching a new event for this upload
-	var button=document.getElementById('attachment_upload_button');
-	var new_button=button.cloneNode();
+	var button=document.getElementById(attachment_upload_button);
+	var new_button=button.cloneNode(true);
 	var button_parent=button.parentNode;
 	button_parent.removeChild(button);
 	button_parent.appendChild(new_button);
 	button=new_button;
 
+	// Remove shiv code from old instances too
+	var shivs=get_elements_by_class_name(main_div,'moxie-shim-html5');
+	for (var i=0;i<shivs.length;i++)
+	{
+		shivs[i].parentNode.removeChild(shivs[i]);
+	}
+
 	var settings=get_uploader_settings(name,page_type,_btn_submit_id,posting_field_name,filter);
-	settings.browse_button='attachment_upload_button';
+	settings.browse_button=attachment_upload_button;
 	settings.container=main_div.id;
 	settings.runtimes='html5';
 

@@ -20,6 +20,8 @@ You can receive notifications through a number of means:
  - SMS (if configured, requires payment for each text message sent)
  - As web notifications
 
+Note that private topic receipt is disabled for topic-derived notifications, in order to stop massive growth in database size.
+
 [title="3"]Web notifications[/title]
 
 Web notifications are particularly cool. If you have the website open (or pinned open, which some browsers support), then visitors will be notified directly through the Composr user interface within a matter of seconds. From the list of recent/unread notifications, you can view an overlay with the full notification details, or a full page detailing all enabled web notifications from the last period of days.

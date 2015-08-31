@@ -673,14 +673,10 @@ function ModalWindow()
 				{+END}
 
 				if ((init) || (was_fixed)) do_scroll=true;
-				try
+				if (/*maybe a navigation has happened and we need to scroll back up*/(typeof iframe[0]!='undefined') && (typeof iframe[0].contentWindow.scrolled_up_for=='undefined'))
 				{
-					if (/*maybe a navigation has happened and we need to scroll back up*/(typeof iframe[0]!='undefined') && (typeof iframe[0].contentWindow.scrolled_up_for=='undefined'))
-					{
-						do_scroll=true;
-					}
+					do_scroll=true;
 				}
-				catch (e) {}
 			} else // Fixed positioning, with scrolling turned off until the overlay is closed
 			{
 				this.box_wrapper.style.position='fixed';

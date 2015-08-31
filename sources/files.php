@@ -223,6 +223,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              // Web server extensions / leave-behinds
                                              'web-inf' => '.*',
                                              'www.pid' => '',
+                                             '.ftaccess' => '',
+                                             '.ftpquota' => '',
+                                             'cgi-bin' => '',
 
                                              // Specially-recognised naming conventions
                                              '_old' => '.*',
@@ -323,13 +326,13 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 'inc' => 'safe_mode_temp',
                                 'dat' => 'safe_mode_temp',
                                 'bak' => '.*',
+                                'old' => '.*',
 
                                 // HHVM Hack converted files (built on-the-fly)
                                 'hh' => '.*',
 
                                 // IDE projects
                                 'clpprj' => '', // Code Lobster
-                                'tmproj' => '', // TextMate
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
