@@ -243,7 +243,7 @@ function tapatalkDetect(afterLoad)
         
     //init css style
     link = document.createElement( "link" );
-    link.href = './' + tapatalk_dir_name + '/smartbanner/appbanner.css';
+    link.href = app_board_url + '/' + tapatalk_dir_name + '/smartbanner/appbanner.css';
     link.type = "text/css";
     link.rel = "stylesheet";
     document.getElementsByTagName( "head" )[0].appendChild( link );
@@ -308,7 +308,7 @@ function tapatalkDetect(afterLoad)
 	              '<div onclick="closeBanner()" id="mobile_banner_close" style="cursor:pointer;text-align:right;margin:0;padding:0;overflow:hidden;color:rgb(121,121,121);"><img style="width:2.0em;opacity:0.5;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAx0lEQVR4AdXXMQqDQBCGUSvvkjQ5iOBFhYCQy1mZLRZsBh/8zSbCV8nsa0TH6aeu1/Mxt7bW0prCln7GXN2vBubW3jpbh/Ab9Ohn7BV+h57AifZKHKhxozUOVLjRGr/gDQPCV6K9bk0YBJ7Nrh3OD0jRC07xAC1g4MyoYOMxath4iho2HqCGjRv9S9hoiI9/uHI0w3M0xIe+Mod/JFI0n+UiYDTBN6w+QIl79TFu1HhHtd4aNe71tsA/Ro17oa/xN1Di/oUZ0BcewHSWZrEeJgAAAABJRU5ErkJggg==" /></div></td>' + 
               '<td style="padding:0;margin:0;width:1.0em; border:0px none;vertical-align: middle;line-height:normal;"></td>' + 
               '<td style="padding:0;margin:0;min-width:8.0em;border:0px none;vertical-align: middle;line-height:normal;">' + 
-              	'<div id="mobile_banner_logo" style="text-align:left"><img style="max-height:'+ tapatalk_logo_height + 'px" id="mobile_banner_logo_img" src="./' + tapatalk_dir_name + '/smartbanner/images/tapatalk-banner-logo.png' + '"></div>' + 
+              	'<div id="mobile_banner_logo" style="text-align:left"><img style="max-height:'+ tapatalk_logo_height + 'px" id="mobile_banner_logo_img" src="' + app_board_url + '/' + tapatalk_dir_name + '/smartbanner/images/tapatalk-banner-logo.png' + '"></div>' + 
               '</td>' +
               '<td style="padding:0;margin:0;width:1.0em;border:0px none;vertical-align: middle;line-height:normal;"></td>' + 
               '<td style="padding:0;margin:0;min-width:22em;border:0px none;vertical-align: middle;line-height:normal;">' + 
@@ -320,7 +320,7 @@ function tapatalkDetect(afterLoad)
               		'</tr>' + 
               		'<tr style="padding:0;margin:0;border:0px none;">'+
               			'<td style="padding:0;margin:0;border:0px none;vertical-align: middle;line-height:normal;">' + 
-              				'<div><img style="width:7.9em;max-height:1.4em" src="./' + tapatalk_dir_name + '/smartbanner/images/star.png' + '"></div>'+
+              				'<div><img style="width:7.9em;max-height:1.4em" src="' + app_board_url + '/' + tapatalk_dir_name + '/smartbanner/images/star.png' + '"></div>'+
               			'</td>'+
               		'</tr>' + 
               		'<tr style="padding:0;margin:0;border:0px none;">'+
@@ -352,7 +352,7 @@ function tapatalkDetect(afterLoad)
 	              '<div onclick="closeBanner()" id="mobile_banner_close" style="cursor:pointer;text-align:right;margin:0;padding:0;overflow:hidden;color:rgb(121,121,121);"><img style="width:0.8em;opacity:0.5;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAx0lEQVR4AdXXMQqDQBCGUSvvkjQ5iOBFhYCQy1mZLRZsBh/8zSbCV8nsa0TH6aeu1/Mxt7bW0prCln7GXN2vBubW3jpbh/Ab9Ohn7BV+h57AifZKHKhxozUOVLjRGr/gDQPCV6K9bk0YBJ7Nrh3OD0jRC07xAC1g4MyoYOMxath4iho2HqCGjRv9S9hoiI9/uHI0w3M0xIe+Mod/JFI0n+UiYDTBN6w+QIl79TFu1HhHtd4aNe71tsA/Ro17oa/xN1Di/oUZ0BcewHSWZrEeJgAAAABJRU5ErkJggg==" /></div></td>' + 
               '<td style="padding:0;margin:0;width:0.5em; border:0px none;vertical-align: middle;line-height:normal;"></td>' + 
               '<td style="padding:0;margin:0;min-width:4.0em;border:0px none;vertical-align: middle;line-height:normal;">' + 
-              	'<div id="mobile_banner_logo" style="text-align:left"><img style="max-height:'+ tapatalk_logo_height + 'px" id="mobile_banner_logo_img" src="./' + tapatalk_dir_name + '/smartbanner/images/tapatalk-banner-logo.png' + '"></div>' + 
+              	'<div id="mobile_banner_logo" style="text-align:left"><img style="max-height:'+ tapatalk_logo_height + 'px" id="mobile_banner_logo_img" src="' + app_board_url + '/' + tapatalk_dir_name + '/smartbanner/images/tapatalk-banner-logo.png' + '"></div>' + 
               '</td>' +
               '<td style="padding:0;margin:0;width:1.0em;border:0px none;vertical-align: middle;line-height:normal;"></td>' + 
               '<td style="padding:0;margin:0;min-width:11em;border:0px none;vertical-align: middle;line-height:normal;">' + 
@@ -364,7 +364,7 @@ function tapatalkDetect(afterLoad)
               		'</tr>' + 
               		'<tr style="padding:0;margin:0;border:0px none;">'+
               			'<td style="padding:0;margin:0;border:0px none;vertical-align: middle;line-height:normal;">' + 
-              				'<div><img style="max-width:5.0em;max-height:1em" src="./' + tapatalk_dir_name + '/smartbanner/images/star.png' + '"></div>'+
+              				'<div><img style="max-width:5.0em;max-height:1em" src="' + app_board_url + '/' + tapatalk_dir_name + '/smartbanner/images/star.png' + '"></div>'+
               			'</td>'+
               		'</tr>' + 
               		'<tr style="padding:0;margin:0;border:0px none;">'+

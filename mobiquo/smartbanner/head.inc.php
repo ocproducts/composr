@@ -60,7 +60,7 @@ if (in_array($page_type, array('topic', 'post', 'home')) && $host_path && !$is_b
     <link href="android-app://com.quoord.tapatalkpro.activity/tapatalk/'.tt_html_escape($host_path).'" rel="alternate" />
     <link href="ios-app://307880732/tapatalk/'.tt_html_escape($host_path).'" rel="alternate" />
     ';
-    
+
     if ($twitterfacebook_card_enabled)
     {
         // display facebook deeping link
@@ -72,7 +72,7 @@ if (in_array($page_type, array('topic', 'post', 'home')) && $host_path && !$is_b
         <meta property="al:ios:app_store_id" content="'.tt_html_escape($app_ios_id_default).'" />
         <meta property="al:ios:app_name" content="Tapatalk" />
         ';
-        
+
         // display twitter card
         $app_head_include .= '
         <!-- twitter app card start-->
@@ -82,7 +82,7 @@ if (in_array($page_type, array('topic', 'post', 'home')) && $host_path && !$is_b
         <meta name="twitter:title" content="'.tt_html_escape($twc_title,true).'" />
         <meta name="twitter:description" content="'.tt_html_escape($twc_description,true).'" />
         ';
-        
+
         if ($twc_image)
             $app_head_include .= '<meta name="twitter:image" content="'.tt_html_escape($twc_image,true).'" />';
 
@@ -109,7 +109,7 @@ if (preg_match('/googlebot|twitterbot/i', $useragent))
 
 // display smart banner and welcome page
 $app_banner_head = '';
-$tapatalk_dir_name = basename(dirname(dirname(__FILE__)));
+$tapatalk_dir_name = isset($tapatalk_dir_name) ? $tapatalk_dir_name : basename(dirname(dirname(__FILE__)));
 if (file_exists(dirname(__FILE__) . '/appbanner.js') &&
     file_exists(dirname(__FILE__) . '/app.php') &&
     file_exists(dirname(__FILE__) . '/appbanner.css'))
@@ -124,13 +124,13 @@ if (file_exists(dirname(__FILE__) . '/appbanner.js') &&
         $app_banner_css_link = 'https://welcome-screen.tapatalk-cdn.com/appbanner.min.css';
         $app_banner_js_link = 'https://welcome-screen.tapatalk-cdn.com/appbanner.min.js';
     }
-    
+
     if (isset($_GET['display_banner']) && $_GET['display_banner'])
     {
         $app_banner_enable = 1;
         $app_ads_enable = 0;
     }
-    
+
     $app_banner_head = '
         <!-- Tapatalk Banner&Welcome head start -->
         ' . ($is_byo ? '<link href="'.tt_html_escape($app_banner_css_link).'" rel="stylesheet" type="text/css" media="screen" />' : '') . '
@@ -146,7 +146,7 @@ if (file_exists(dirname(__FILE__) . '/appbanner.js') &&
             var app_board_url      = "'.tt_html_escape($board_url,true).'";
             var mobiquo_extension  = "'.tt_html_escape($mobiquo_extension,true).'";
             var functionCallAfterWindowLoad = '.$functionCallAfterWindowLoad.';
-            
+
             var app_api_key        = "'.(trim($api_key) ? md5(trim($api_key)) : '').'";
             var app_referer        = "'.tt_html_escape($app_referer,true).'";
             var tapatalk_dir_name  = "'.tt_html_escape($tapatalk_dir_name,true).'";
@@ -188,6 +188,6 @@ function tt_html_escape($str, $special = false)
     if($special)
     {
         $str = str_replace('&amp;', '&', $str);
-    } 
+    }
     return $str;
 }
