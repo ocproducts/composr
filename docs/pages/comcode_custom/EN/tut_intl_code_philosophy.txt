@@ -39,6 +39,10 @@ File a bug report in the normal way. Make sure you are specific though -- don't 
 
 If you can think of a better approach to what we take, bearing in mind the various trade-offs we have to try and make, please make a feature suggestion to the tracker.
 
+[title="2"]Non-ISO languages[/title]
+
+By default Composr supplies language codes and their names, based on the ISO 639 standards. You can add new codes by overriding the [tt]lang/langs.ini[/tt] file to [tt]lang_custom/langs.ini[/tt] if you like. When you add a new language pack in Composr you are limited to either choosing an existing code or typing a new one of 1-4 characters -- the 1-4 character code would be mapped to a nice name via [tt]langs.ini[/tt], or if no mapping exists, it would be shown as-is.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]

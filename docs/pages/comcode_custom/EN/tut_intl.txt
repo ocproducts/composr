@@ -106,7 +106,7 @@ Usually the naming follows the pattern of [tt]X[/tt] for the config option name 
 
 You may see the phrase "The software" come up a lot. We use this phase because of how we support debranding in Composr. A web design studio may have renamed the product to some other name to increase their own brand-strength. We therefore try and make the language strings generic where possible.
 
-[title="3"]Code within strings[/title]
+[title="4"]Code within strings[/title]
 
 In many cases there will be some coding symbols embedded within a specific language string. These coding symbols will be written in English (like almost all programming languages are), but shouldn't themselves be translated.
 
@@ -130,26 +130,6 @@ Here's how the above sample cases would be translated:
 7) Again this one contains HTML entities. Translation in French may look like [tt]{1} dirige le &lsquo;{2}&rsquo; groupe d'utilisateurs[/tt].
 8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the '[tt]{$SITE_NAME}[/tt]' intact. Translation in French may look like [tt]WelBienvenue à {$SITE_NAME}[/tt].
 
-[title="3"]The language editor (i.e. how to change strings locally)[/title]
-
-[media width="150" description="Using the language editor to translate language strings" float="right"]data_custom/images/docs/intl_trans_screen.png[/media]
-[media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/intl_trans_choose.png[/media]
-{!lang:DOC_TRANSLATE}
-
-You can reach the language editor from Admin Zone > Style > Translate/re-phrase the software.
-
-[b]We recommend doing translations via Transifex instead[/b]. See the "Collaborative translations on Transifex" section.
-
-[title="4"]Contextual translation[/title]
-
-Many users like to translate stuff just on the public part of their own website. There is an option to change the language strings that you see on a page from the page footer which really helps you speed translation up. Specifically:
-1) In the footer there is a drop down menu which is only visible to Admins. This is titled "Select page rendering tool" as standard, although it may not be visible on custom themes or could have been translated. If you are not using the default Composr theme then you can enable the default theme temporarily by adding [tt]&keep_theme=default[/tt] to the end of the website address (actually it's [tt]?keep_theme=default[/tt] if there's no [tt]?[/tt] already in the URL you're at).
-2) Choose "Translate/Re-Phrase the software" from this menu and the language you want to translate to.
-
-This will take you to the page which displays the language strings which are used on the current page.
-
-Note that some of the strings will be re-used across different pages. Changing them on one page will affect any other page that uses them, so some care is needed. For example the word "Members" may appear on several pages. The up-side is that once it has been translated once it should not need translating on further pages.
-
 [title="3"]Character sets[/title]
 
 There are three systems that are in common usage to allow diverse characters to be displayed in a document:
@@ -168,6 +148,30 @@ To understand character sets, you need to understand how strings (or text files)
 A file that uses 'high' characters will look different when viewed in editors set to different character sets. In order to put in text in the appropriate character set, and to view it, your editor must be set to it; this is to be expected to be by default if you are translating to your native language.
 
 utf-8 works on the principle that characters may use more than one byte. The ASCII characters all fit within one byte, but extended characters use 2 or more bytes. Normal ASCII text is therefore the same in both Unicode and a character set, but extended characters are represented very differently.
+
+[title="3"]The language editor (i.e. how to change strings locally)[/title]
+
+[media width="150" description="Using the language editor to translate language strings" float="right"]data_custom/images/docs/intl_trans_screen.png[/media]
+[media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/intl_trans_choose.png[/media]
+{!lang:DOC_TRANSLATE}
+
+You can reach the language editor from Admin Zone > Style > Translate/re-phrase the software.
+
+[b]We recommend doing translations via Transifex instead[/b]. See the "Collaborative translations on Transifex" section.
+
+[title="3"]Contextual translation[/title]
+
+Many users like to translate stuff just on the public part of their own website. There is an option to change the language strings that you see on a page from the page footer which really helps you speed translation up. Specifically:
+1) In the footer there is a drop down menu which is only visible to Admins. This is titled "Select page rendering tool" as standard, although it may not be visible on custom themes or could have been translated. If you are not using the default Composr theme then you can enable the default theme temporarily by adding [tt]&keep_theme=default[/tt] to the end of the website address (actually it's [tt]?keep_theme=default[/tt] if there's no [tt]?[/tt] already in the URL you're at).
+2) Choose "Translate/Re-Phrase the software" from this menu and the language you want to translate to.
+
+This will take you to the page which displays the language strings which are used on the current page.
+
+Note that some of the strings will be re-used across different pages. Changing them on one page will affect any other page that uses them, so some care is needed. For example the word "Members" may appear on several pages. The up-side is that once it has been translated once it should not need translating on further pages.
+
+[title="3"]Searching for language strings[/title]
+
+If you want to find where a language string is defined then you can put it into the Admin Zone search between quotes.
 
 [title="3"]Collaborative translations on Transifex[/title]
 
@@ -199,7 +203,7 @@ Transifex is not being used for things other than language strings (within langu
 
 [title="3"]Speeding up translation[/title]
 
-There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which strings are only used on administrative screens (i.e. skippable) and which aren't. It's not perfect, however, and it may be quicker to just churn through the translations intuitively, skipping ones that look like obvious admin strings.
+There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which strings are only used on administrative screens (i.e. skippable if only doing a public translation) and which aren't. It's not perfect, however, and it may be quicker to just churn through the translations intuitively, skipping ones that look like obvious admin strings.
 
 [title="3"]Downloading translations from Transifex[/title]
 
@@ -215,10 +219,6 @@ There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which 
 {!lang:DOC_CRITICISE_LANGUAGE_PACK}
 
 It is generally better to look at outstanding translation tasks via Transifex. We update the source strings on there with each Composr patch release.
-
-[title="3"]Non-ISO languages[/title]
-
-By default Composr supplies language codes and their names, based on the ISO 639 standards. You can add new codes by overriding the [tt]lang/langs.ini[/tt] file to [tt]lang_custom/langs.ini[/tt] if you like. When you add a new language pack in Composr you are limited to either choosing an existing code or typing a new one of 1-4 characters -- the 1-4 character code would be mapped to a nice name via [tt]langs.ini[/tt], or if no mapping exists, it would be shown as-is.
 
 [title="3"]Right-to-left languages[/title]
 
