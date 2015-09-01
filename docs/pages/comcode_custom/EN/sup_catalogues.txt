@@ -156,7 +156,7 @@ Clear the contents of  CATALOGUE_cars_FIELDMAP_ENTRY_WRAP.tpl file again, so we 
 </div>
 [/code]
 
-You may wonder why some parameters are given a '*' on the end. This is because these parameters aren't yet formatted for HTML, they're plain text. The '*' tells Composr to format them for HTML, which means replacing “&” with “&amp;”, “>” with “&gt;” and other such things. It is important for security. The [tt]{FIELD_<number>}[/tt] parameters are already formatted for HTML, as these hold already-rendered field values, not raw plain text values (e.g. [tt]{FIELD_3}[/tt] holds the HTML to show the picture, not the raw picture URL).
+You may wonder why some parameters are given a '*' on the end. This is because these parameters aren't yet formatted for HTML, they're plain text. The '*' tells Composr to format them for HTML, which means replacing “&” with “&amp;”, “>” with “&gt;” and other such things. It is important for security. The [tt]{FIELD_<number>}[/tt] parameters are already formatted for HTML, as these hold already-displayed field values, not raw plain text values (e.g. [tt]{FIELD_3}[/tt] holds the HTML to show the picture, not the raw picture URL).
 
 [b]Step5:[/b]
 Pick the appropriate instructions below, depending on your scenario:

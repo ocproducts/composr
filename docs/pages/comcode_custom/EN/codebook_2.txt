@@ -340,7 +340,7 @@ Composr uses boxes to show featured areas, including featured content and catego
 
 The rest of this section will focus on how the content API uses boxes...
 
-Almost every kind of content (and category) has an content type hook defined. That content type hook will specify how a box of that content (or category) will be rendered. The convention is that the content type hooks glue themselves to the [tt]render_<content-type>_box[/tt] functions, which glue themselves to particular templates.
+Almost every kind of content (and category) has an content type hook defined. That content type hook will specify how a box of that content (or category) will be displayed. The convention is that the content type hooks glue themselves to the [tt]render_<content-type>_box[/tt] functions, which glue themselves to particular templates.
 
 So, how do the templates work? Any content type will probably have two main templates used to display it:
  - A box template ([tt]<content_type>_BOX.tpl[/tt]) [what we are discussing here]
@@ -367,7 +367,7 @@ By gluing listings to a block, pagination can work via AJAX because a block is d
 However, things aren't always so simple. There are some exceptions because some content listings are not as simple as querying a category/Selectcode-string and displaying the contents. Here are the main cases:
  - the news system allows some quite complex rules about what to display, and uses multiple display types simultaneously. Therefore we have a custom [tt]main_news[/tt] and a [tt]main_news[/tt] block (and also a [tt]side_news_categories[/tt] for organising by date).
  - the gallery system has to aggregate both images and videos. Therefore we have a custom [tt]main_gallery_embed[/tt] block.
- - the calendar system renders based on organising by date. Therefore we have a custom [tt]side_calendar[/tt] block.
+ - the calendar system display is organised by date. Therefore we have a custom [tt]side_calendar[/tt] block.
  - the catalogue system comes with a range of available display types, not just boxes. This is because we need to give catalogue authors a wide-palette due to lack of ability to code in any assumptions. Therefore we have a custom [tt]main_cc_embed[/tt] block.
  - the Personal Galleries feature may mean that empty galleries may be left around, and also download galleries need to be skipped.
  - the gallery provides a flow-mode display type which is inherently module-based.

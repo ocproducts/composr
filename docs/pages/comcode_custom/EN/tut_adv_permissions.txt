@@ -41,7 +41,7 @@ If you put in a URL instead of a match-key, it will automatically convert to a m
 
 If you put in some text between quote marks, matching will be done on the basis of matching this to success/notice/warning/error messages (which is broader than match-keys, as Composr is programmed to mostly only consider whether these match when showing access-denied screens). You can even combine quoted strings and match-keys, for a double condition, e.g.: [tt]site:downloads "There are no entries at this time"[/tt] could be given a message of [tt]Nobody has added a download yet[/tt]. As you can see, this has nothing really to do with permissions: we can use this system much more broadly, to do some quite detailed specification of how Composr should message the user.
 
-[title="2"]Controlling page rendering in detail[/title]
+[title="2"]Controlling page display in detail[/title]
 
 You may wish to only show certain parts of screens to particular usergroups. For example, you may want to 'tease' content to non-paying users.
 To implement this, you need to switch to a template editing mind-set, rather than a permissions mind-set. Use normal Tempcode techniques to fence off or change the output of templates, either:

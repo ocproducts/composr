@@ -9,7 +9,7 @@
 [media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/calendar_add_event.png[/media]
 Each entry in the calendar is called an 'event'. It is important to understand that an event is not a single point in time, or even a range in time, but rather something that may happen regularly. This is achieved through 'recurrence', which has a particularly powerful implementation in Composr.
 
-For this tutorial I have just added a single recurring event into the system for clarity: you will see how this single event is shown on the various calendar views, and get an impression on how the system works. In reality, the calendar may be used by any number of members, with any number of events. Composr will actually recognise conflicting events, and render conflicting events in parallel activity streams on the day view interface.
+For this tutorial I have just added a single recurring event into the system for clarity: you will see how this single event is shown on the various calendar views, and get an impression on how the system works. In reality, the calendar may be used by any number of members, with any number of events. Composr will actually recognise conflicting events, and display conflicting events in parallel activity streams on the day view interface.
 
 Event types are used to categorise events. There is a good selection of default event types which have their own icons:
  - Anniversary

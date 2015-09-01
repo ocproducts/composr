@@ -198,7 +198,7 @@ Anyway: some XHTML elements.
 		</td>
 		<td>
 			<p>The meta-data section of the document. Contains
-			information about the document which isn&rsquo;t rendered, but
+			information about the document which isn&rsquo;t displayed, but
 			used by the browser in other ways. <strong>Required</strong>.</p>
 		</td>
 	</tr>

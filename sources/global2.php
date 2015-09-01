@@ -339,9 +339,6 @@ function init__global2()
     }
 
     // Our logging
-    if (get_option('log_php_errors') == '0') {
-        safe_ini_set('log_errors', '0');
-    }
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP) && ((get_option('display_php_errors') == '1') || (running_script('upgrader')) || (has_privilege(get_member(), 'see_php_errors')))) {
         safe_ini_set('display_errors', '1');
     } elseif (!$DEV_MODE) {
@@ -349,7 +346,9 @@ function init__global2()
     }
 
     // G-zip?
-    safe_ini_set('zlib.output_compression', (get_option('gzip_output') == '1') ? '2048' : 'Off'); // 2KB buffer is based on capturing repetition while not breaking output streaming
+    if (!in_safe_mode() && get_param_string('page', '') != 'admin_config') {
+        safe_ini_set('zlib.output_compression', (get_option('gzip_output') == '1') ? '2048' : 'Off'); // 2KB buffer is based on capturing repetition while not breaking output streaming
+    }
     safe_ini_set('zlib.output_compression_level', '2'); // Compression doesn't get much better after this, but performance drop
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {

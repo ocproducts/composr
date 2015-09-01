@@ -38,7 +38,7 @@ The main ramification of this is that if posts are deleted, the point count goes
 
 [box="Important note" width="25em" float="right"]Gift points are not exactly like payment, because it doesn't detract from your own point count to give points, it detracts from your gift point count. Members have a quota of gift points, to allocate as they see fit: if they run out, it simply means that they can't give any more for a while.[/box]
 [concept]Gift points[/concept] allow members to reward each other. Like money can be used to pay someone, so can gift points, based on whatever they value. This economical situation is very important, and essentially capitalism is embodied, such that people go hunting for work that is valued most highly in order to get high returns of points. Reasons for giving gift points include:
- - Pseudo-payment for a service rendered
+ - Pseudo-payment for a service provided
  - A prize for winning a competition
  - A sign of appreciation for produce a high quality product that benefits the community
 [surround]

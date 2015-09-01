@@ -511,7 +511,7 @@ The [tt]WYSIWYG_SETTINGS.tpl[/tt] template lists the font sizes in the WYSIWYG f
 
 [title="3"]How can I add a block / How can I change how a block looks / How can I add a box?[/title]
 
-There is often confusion about the difference between a block and a box. A block is an embeddable dynamic unit, and whilst most blocks are rendered in boxes, this is not necessarily the case. It also certainly isn't the case that all boxes are around blocks. Boxes can be placed around anything, and are used in many places.
+There is often confusion about the difference between a block and a box. A block is an embeddable dynamic unit, and whilst most blocks are displayed in boxes, this is not necessarily the case. It also certainly isn't the case that all boxes are around blocks. Boxes can be placed around anything, and are used in many places.
 The box type a block uses is changeable by editing the template of that block; this is often useful if you want to place a [tt]main[/tt] block on a panel where a [tt]side[/tt] block would usually go.
 If you want to make your own box in Comcode, just use the 'box' Comcode tag around some existing Comcode.
 If you want to place a block, use the 'Add block' button you see whilst editing Comcode pages.

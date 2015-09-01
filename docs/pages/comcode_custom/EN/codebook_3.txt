@@ -22,9 +22,9 @@ Output:
  - Find character set (fast default case: hard-coded character set optimisation)
  - CSS and JavaScript inclusion/merging
  - Breadcrumbs (disableable)
- - Comcode-page rendering (fast default case: Comcode cache)
- - Date/time rendering
- - Time period rendering
+ - Comcode-page display (fast default case: Comcode cache)
+ - Date/time display
+ - Time period display
  - Output framing
  - Tempcode assembly
  - Tempcode rendering
@@ -32,7 +32,7 @@ Output:
  - Tempcode output escaping
  - Theme images (fast default case: persistent cache)
  - Output state management
- - Primitive types rendering
+ - Primitive type displaying
  - Locales
  - Basic template bindings
 Internal dispatch:
@@ -222,7 +222,7 @@ inspect($a,$b,$c);
 [/code]
 and Composr will output the contents of these variables very neatly for you, and give a stack trace.
 
-If output has already started then Composr will give you your details in an info box at the bottom of the rendered screen; otherwise you'll get a text dump.
+If output has already started then Composr will give you your details in an info box at the bottom of the displayed screen; otherwise you'll get a text dump.
 
 This is very useful when stepping through code. Often bugs are because you are using the wrong data types (e.g. Tempcode objects being treated as strings). Temporarily placing inspect calls in your code and moving them along as you analyse exactly what is happening is a good way to test exactly what is happening for the occasions when the automatic stack dumps are not available or do not reveal the real cause of the problem.
 
@@ -459,7 +459,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]cc_sort_date__<catalogue-name>[/tt] -- set this to '1' if you want catalogue category children to be sorted by date rather than title
   - [tt]resize_rep_images[/tt] -- set this to '0' if you do not want uploaded rep-images to be sized down automatically to the standard thumbnail size
   - [tt]default_event_type[/tt] -- set this to the ID of the default event type to select for new events
-  - [tt]edit_with_my_comcode_perms[/tt] -- set this to '1' if content you edit should render with your Comcode permissions. Only enable this if you trust yourself to spot XSS attacks.
+  - [tt]edit_with_my_comcode_perms[/tt] -- set this to '1' if content you edit should display with your Comcode permissions. Only enable this if you trust yourself to spot XSS attacks.
   - [tt]site_location[/tt] -- an address for where your website is, sometimes used in meta-data.
   - [tt]google_news_urls[/tt] -- set this to '1' if news URLs should contain a Google-News-friendly entry ID.
   - [tt]enable_delayed_inserts[/tt] -- set this to '1' to enable MySQL delayed inserts. Delayed inserts can cause a very small performance improvement if log calculations happen quite regularly; however they only work on MyISAM tables and are deprecated as of MySQL 5.6
@@ -566,7 +566,7 @@ The following 'keep' parameters have interface triggers, but are also handy for 
  - [tt]keep_theme_dark[/tt] -- used in conjunction with keep_theme_seed; set to '1' if it is a dark seed
  - [tt]keep_theme_source[/tt] -- used in conjunction with keep_theme_seed; set to the name of the theme being used as the source
  - [tt]keep_theme_algorithm[/tt] -- used in conjunction with keep_theme_seed; set this to 'equations' or 'hsv' to set the theme algoritm
- - [tt]keep_print[/tt] -- set this to '1' to render a 'printer friendly' version of the page
+ - [tt]keep_print[/tt] -- set this to '1' to display a 'printer friendly' version of the page
  - [tt]keep_lang[/tt] -- set to a two-letter ISO language code to tell Composr which language to use
  - [tt]keep_session[/tt] -- this isn't useful for manual editing, but it is used to note session-IDs when [session-]cookies are not working
  - [tt]keep_timezone[/tt] -- this is the timezone code (tz style) to view in

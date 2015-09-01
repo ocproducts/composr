@@ -38,7 +38,9 @@ On the other hand, if the translation was substantially completed already it mig
 
 Not all language files need to be translated, and language files do not have to be complete, as if a string cannot be found and the fall-back language (English) isn't being used, Composr will look in the English language pack using the fall-back mechanism. This may hurt your sense for 'completeness', but practically speaking most sites don't expose most strings, and some are only ever seen in rare circumstances or by website staff.
 
-[title="3"]Language file format (technical overview)[/title]
+[title="3"]Language files[/title]
+
+[title="4"]Language file format (technical overview)[/title]
 
 This section will describe the format used to store [concept]language string[/concept]s in Composr. In theory, learning this is not necessary, as an interface in the Admin Zone is provided that works with this behind-the-scenes; however it is useful to know, especially if you are wishing to work through the language files in a text editor.
 
@@ -50,7 +52,7 @@ The [tt].ini[/tt] files for any translation are stored together in a directory t
 
 All bundled languages packs are located in the 'lang' directory of Composr. There is also a 'lang_custom' directory which contains files from custom language packs, or language files that 'override' those available in the 'lang' directory. Whenever language files are edited in the Admin Zone, changes to the original file are automatically overridden to a 'lang_custom' one.
 
-[title="3"]Special strings[/title]
+[title="4"]Special strings[/title]
 
 Language string codes that are in lower-case are special strings, that should not be translated directly. These strings contain encoded information relating to the language pack.
 
@@ -90,6 +92,19 @@ Language string codes that are in lower-case are special strings, that should no
    </tr>
 </table>
 [/html]
+
+[title="4"]Config options[/title]
+
+Config options are defined in Composr by a config option name and a config option description. For example:
+[code]
+UNZIP_CMD=Unzip command
+CONFIG_OPTION_unzip_cmd=The command executed in order to unzip files. This depends on InfoZip being on your system; you may require a full path to the unzip command here.
+[/code]
+Usually the naming follows the pattern of [tt]X[/tt] for the config option name and [tt]CONFIG_OPTION_x[/tt] for the config option description. It only deviates from this pattern when we are reusing some pre-existing language string for the config option name.
+
+[title="4"]"The software"[/title]
+
+You may see the phrase "The software" come up a lot. We use this phase because of how we support debranding in Composr. A web design studio may have renamed the product to some other name to increase their own brand-strength. We therefore try and make the language strings generic where possible.
 
 [title="3"]Code within strings[/title]
 

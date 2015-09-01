@@ -200,7 +200,6 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/is_on_preview_webstandards.php',
             'sources/hooks/systems/config/is_on_strong_forum_tie.php',
             'sources/hooks/systems/config/keywords.php',
-            'sources/hooks/systems/config/log_php_errors.php',
             'sources/hooks/systems/config/low_space_check.php',
             'sources/hooks/systems/config/main_forum_name.php',
             'sources/hooks/systems/config/max_download_size.php',

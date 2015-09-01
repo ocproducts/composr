@@ -25,7 +25,7 @@ Composr's file system is basically split up into:
 [*]HTML (.htm files)[/list]
 [*]'sources' which contain code to be included
 [*]'sources/hooks' which contain hooks that tie addons together so they can interoperate
-[*]'sources/blocks' and 'sources/miniblocks' which contain block files. Blocks are plugable units that are can be included within Comcode pages and templates. They are usually rendered as a box, e.g. a menu, or a list of recent forum discussions.
+[*]'sources/blocks' and 'sources/miniblocks' which contain block files. Blocks are plugable units that are can be included within Comcode pages and templates. They are usually displayed as a box, e.g. a menu, or a list of recent forum discussions.
 [*]'themes' which contain images, CSS and templates.
 [*]'lang' which contains language strings.
 [/list]

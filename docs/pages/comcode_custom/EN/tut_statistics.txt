@@ -70,14 +70,14 @@ There are two methods for revealing download trends to your visitors:
 [media width="150" description="The most popular downloads block" float="left"]data_custom/images/docs/statistics_Top-downloads-block.png[/media]
 The most popular downloads block obviously displays the most popular (i.e. most frequently downloaded) downloads. It can be added using the Block assistant, available via the 'Add block' icon when editing Comcode pages.
 
-When rendered, these blocks also show how many downloads each listed download has received, and when they were added.
+When displayed, these blocks also show how many downloads each listed download has received, and when they were added.
 [/surround]
 [title="3"]Most recently-added downloads[/title]
 [surround]
 [media width="150" description="The most recently-added downloads block" float="left"]data_custom/images/docs/statistics_Recently-added-downloads-block.png[/media]
 The most-recently added downloads block does indeed display the most recently-added downloads. It can be added using the Block assistant, available via the 'Add block' icon when editing Comcode pages.
 
-When rendered, this block also shows when each listed download was added, and how many downloads it has received.
+When displayed, this block also shows when each listed download was added, and how many downloads it has received.
 [/surround]
 [title="2"]Other statistics[/title]
 [surround]

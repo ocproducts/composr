@@ -198,9 +198,9 @@ You can see how you can reference individual fields in the template like [samp]{
 For a full table of fields you can use, put [samp]{+START,PARAM_INFO}{+END}[/samp] temporarily into the template, and it will show you everything defined in a neat table.
 
 Field values are available in three forms:
-1) Standard (e.g. [tt]{FIELD_0}[/tt]) --  Parsed for Comcode (if applicable), and rendered
-2) Plain (e.g. [tt]{FIELD_0_PLAIN}[/tt]) -- Parsed for Comcode (if applicable), and not rendered
-3) Pure (e.g. [tt]{FIELD_0_PURE}[/tt]) -- Not parsed for Comcode, and not rendered
+1) Standard (e.g. [tt]{FIELD_0}[/tt]) --  Parsed for Comcode (if applicable), and displayed
+2) Plain (e.g. [tt]{FIELD_0_PLAIN}[/tt]) -- Parsed for Comcode (if applicable), and not displayed
+3) Pure (e.g. [tt]{FIELD_0_PURE}[/tt]) -- Not parsed for Comcode, and not displayed
 They are also provided in sequence order (e.g. [tt]{FIELD_0}[/tt]) and by field ID (e.g. [tt]{_FIELD_44}[/tt]). Field ID is more robust, should you reorder fields later it won't affect the naming.
 
 [title="3"]Custom template sets[/title]

@@ -135,7 +135,7 @@ Note that encrypted CPFs are not supported for any kind of CPF value that is not
 
 [title="3"]Categorisation of CPFs[/title]
 
-If you prefix CPF names like "Example: Field A" and "Example: Field B", Composr will be smart enough to treat this as a categorisation and render the join/edit-profile forms in a more appropriate way.
+If you prefix CPF names like "Example: Field A" and "Example: Field B", Composr will be smart enough to treat this as a categorisation and display the join/edit-profile forms in a more appropriate way.
 
 [title="3"]Special CPFs[/title]
 
