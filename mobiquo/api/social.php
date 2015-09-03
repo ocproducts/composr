@@ -19,7 +19,7 @@
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function thank_post_func($raw_params)
@@ -40,7 +40,7 @@ function thank_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function follow_func($raw_params)
@@ -61,7 +61,7 @@ function follow_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function unfollow_func($raw_params)
@@ -82,7 +82,7 @@ function unfollow_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function like_post_func($raw_params)
@@ -103,7 +103,7 @@ function like_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function unlike_post_func($raw_params)
@@ -124,7 +124,7 @@ function unlike_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function get_dashboard_func($raw_params)
 {
@@ -137,7 +137,7 @@ function get_dashboard_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function get_feed_func($raw_params)
 {
@@ -150,7 +150,7 @@ function get_feed_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_following_func($raw_params)
@@ -159,8 +159,8 @@ function get_following_func($raw_params)
 
     require_once(COMMON_CLASS_PATH_READ . '/social_read.php');
 
-    $social_write_object = new CMSSocialRead();
-    $_following = $social_write_object->get_following();
+    $social_read_object = new CMSSocialRead();
+    $_following = $social_read_object->get_following();
     $following = array();
     foreach ($_following as $f) {
         $arr = array(
@@ -189,7 +189,7 @@ function get_following_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_follower_func($raw_params)
@@ -198,8 +198,8 @@ function get_follower_func($raw_params)
 
     require_once(COMMON_CLASS_PATH_READ . '/social_read.php');
 
-    $social_write_object = new CMSSocialRead();
-    $_followers = $social_write_object->get_followers();
+    $social_read_object = new CMSSocialRead();
+    $_followers = $social_read_object->get_followers();
     $followers = array();
     foreach ($_followers as $f) {
         $arr = array(
@@ -227,7 +227,7 @@ function get_follower_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function set_reputation_func($raw_params)
 {
@@ -240,7 +240,7 @@ function set_reputation_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_alert_func($raw_params)
@@ -251,8 +251,8 @@ function get_alert_func($raw_params)
 
     list($start, $max) = get_pagination_positions__by_page($params, 0, 1, 20);
 
-    $social_write_object = new CMSSocialRead();
-    list($total, $_items) = $social_write_object->get_alerts($start, $max);
+    $social_read_object = new CMSSocialRead();
+    list($total, $_items) = $social_read_object->get_alerts($start, $max);
 
     $items = array();
     foreach ($_items as $item) {
@@ -295,7 +295,7 @@ function get_alert_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_activity_func($raw_params)
@@ -306,8 +306,8 @@ function get_activity_func($raw_params)
 
     list($start, $max) = get_pagination_positions__by_page($params, 0, 1, 20);
 
-    $social_write_object = new CMSSocialRead();
-    list($total, $_items) = $social_write_object->get_activity($start, $max);
+    $social_read_object = new CMSSocialRead();
+    list($total, $_items) = $social_read_object->get_activity($start, $max);
 
     $items = array();
     foreach ($_items as $item) {

@@ -22,6 +22,7 @@ define('RENDER_TOPIC_POST_KEY_NAME', 1);
 define('RENDER_TOPIC_MODERATED_BY', 2);
 define('RENDER_TOPIC_DEEP_PERMISSIONS', 4);
 define('RENDER_TOPIC_SEARCH', 8);
+define('RENDER_TOPIC_LAST_POSTER', 16);
 
 define('RENDER_POST_SHORT_CONTENT', 1);
 define('RENDER_POST_FORUM_DETAILS', 2);
@@ -229,11 +230,19 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
             'topic_author_name' => mobiquo_val(strval($details['t_cache_first_username']), 'base64'),
         );
     } else {
-        $arr += array(
-            'post_author_id' => mobiquo_val(strval($details['t_cache_first_member_id']), 'string'),
-            'post_author_name' => mobiquo_val(strval($details['t_cache_first_username']), 'base64'),
-            'post_id' => mobiquo_val(strval($details['t_cache_first_post_id']), 'string'),
-        );
+        if (($behaviour_modifiers & RENDER_TOPIC_LAST_POSTER) == 0) {
+            $arr += array(
+                'post_author_id' => mobiquo_val(strval($details['t_cache_first_member_id']), 'string'),
+                'post_author_name' => mobiquo_val(strval($details['t_cache_first_username']), 'base64'),
+                'post_id' => mobiquo_val(strval($details['t_cache_first_post_id']), 'string'),
+            );
+        } else {
+            $arr += array(
+                'post_author_id' => mobiquo_val(strval($details['t_cache_last_member_id']), 'string'),
+                'post_author_name' => mobiquo_val(strval($details['t_cache_last_username']), 'base64'),
+                'post_id' => mobiquo_val(strval($details['t_cache_last_post_id']), 'string'),
+            );
+        }
     }
 
     if (($behaviour_modifiers & RENDER_TOPIC_MODERATED_BY) != 0) {
@@ -253,10 +262,28 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         }
     }
 
+    if (($behaviour_modifiers & RENDER_TOPIC_LAST_POSTER) == 0) {
+        $arr += array(
+            'post_time' => mobiquo_val($details['t_cache_first_time'], 'dateTime.iso8601'),
+            'topic_author_avatar' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']), 'string'),
+            'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']),
+        );
+    } else {
+        $arr += array(
+            'post_time' => mobiquo_val($details['t_cache_last_time'], 'dateTime.iso8601'),
+            'topic_author_avatar' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_last_member_id']), 'string'),
+            'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_last_member_id']),
+        );
+    }
+
     $arr += array(
-        'post_time' => mobiquo_val($details['t_cache_first_time'], 'dateTime.iso8601'),
         'timestamp' => mobiquo_val(strval($details['t_cache_last_time']), 'string'),
-        'topic_author_avatar' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']), 'string'),
+        'last_reply_time' => mobiquo_val($details['t_cache_last_time'], 'dateTime.iso8601'),
+        'last_reply_author_name' => mobiquo_val($details['t_cache_last_username'], 'base64'),
+        'last_reply_author_id' => mobiquo_val($details['t_cache_last_member_id'], 'string'),
+    );
+
+    $arr += array(
         'view_number' => mobiquo_val($details['t_num_views'], 'int'),
         'prefix' => mobiquo_val('', 'base64'),
         'is_subscribed' => mobiquo_val(get_topic_subscription_status($topic_id), 'boolean'),
@@ -280,10 +307,6 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         'can_ban' => mobiquo_val($moderation_details['can_ban'], 'boolean'),
         'can_mark_spam' => mobiquo_val($moderation_details['can_ban'], 'boolean'), // will be overridden later, if we have a jump position set
         'position' => mobiquo_val($start + 1, 'int'),
-        'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']),
-        'last_reply_time' => mobiquo_val($details['t_cache_last_time'], 'dateTime.iso8601'),
-        'last_reply_author_name' => mobiquo_val($details['t_cache_last_username'], 'base64'),
-        'last_reply_author_id' => mobiquo_val($details['t_cache_last_member_id'], 'string'),
         'reply_number' => mobiquo_val($details['t_cache_num_posts'] - 1, 'int'),
         'new_post' => mobiquo_val(is_topic_unread($topic_id, $member_id, $details), 'boolean'),
         'short_content' => mobiquo_val(generate_shortened_post($details, true), 'base64'),

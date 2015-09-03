@@ -406,6 +406,10 @@ class CMSUserRead
      */
     private function get_member_follow_count($user_id, $i_follow = true)
     {
+        if (!addon_installed('chat')) {
+            return 0;
+        }
+
         if ($i_follow) {
             return $GLOBALS['FORUM_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_likes' => $user_id));
         }
@@ -488,6 +492,10 @@ class CMSUserRead
         cms_verify_parameters_phpdoc();
 
         if (is_guest()) {
+            return array(0, array());
+        }
+
+        if (!addon_installed('chat')) {
             return array(0, array());
         }
 

@@ -19,7 +19,7 @@
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function mark_topic_read_func($raw_params)
@@ -38,7 +38,7 @@ function mark_topic_read_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_topic_status_func($raw_params)
@@ -78,7 +78,7 @@ function get_topic_status_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function new_topic_func($raw_params)
@@ -107,7 +107,7 @@ function new_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_topic_func($raw_params) // Get topics in a forum
@@ -158,7 +158,7 @@ function get_topic_func($raw_params) // Get topics in a forum
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_unread_topic_func($raw_params)
@@ -180,7 +180,7 @@ function get_unread_topic_func($raw_params)
 
     $topics = array();
     foreach ($_topics as $topic) {
-        $topics[] = render_topic_to_tapatalk($topic['topic_id'], false, null, null, $topic, RENDER_TOPIC_POST_KEY_NAME);
+        $topics[] = render_topic_to_tapatalk($topic['topic_id'], false, null, null, $topic, RENDER_TOPIC_POST_KEY_NAME | RENDER_TOPIC_LAST_POSTER);
     }
 
     $response = mobiquo_val(array(
@@ -195,7 +195,7 @@ function get_unread_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_participated_topic_func($raw_params)
@@ -244,7 +244,7 @@ function get_participated_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_latest_topic_func($raw_params)
@@ -291,7 +291,7 @@ function get_latest_topic_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_topic_participants_func($raw_params)

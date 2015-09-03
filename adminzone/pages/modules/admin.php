@@ -193,7 +193,7 @@ class Module_admin
             array('theme', 'skin', 'style'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
-            array('pm', 'pt'),
+            array('pm', 'pt', 'dm', 'private message', 'private topic'),
             array('filedump', 'library', 'file manager'),
             array('word-filter', 'wordfilter', 'swear', 'curse'),
             array('colour', 'color', 'css', 'font', 'background'),

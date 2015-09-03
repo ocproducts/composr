@@ -1398,5 +1398,5 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
         }
     }
 
-    mail_wrap($subject, $message_raw, array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
+    mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
 }

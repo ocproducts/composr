@@ -33,6 +33,10 @@ class CMSSocialRead
             return array();
         }
 
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         $rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
         $followers = array();
         foreach ($rows as $row) {
@@ -70,6 +74,10 @@ class CMSSocialRead
         cms_verify_parameters_phpdoc();
 
         if (is_guest()) {
+            return array();
+        }
+
+        if (!addon_installed('chat')) {
             return array();
         }
 
@@ -112,7 +120,7 @@ class CMSSocialRead
         cms_verify_parameters_phpdoc();
 
         if (is_guest()) {
-            return array();
+            return array(0, array());
         }
 
         $where = array(

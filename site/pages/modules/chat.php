@@ -625,9 +625,11 @@ class Module_chat
         if (!is_guest()) {
             $_buttons = array(
                 'private_message',
-                'invite',
-                'new_room'
+                'invite'
             );
+            if (has_privilege(get_member(),'create_private_room')) {
+                $_buttons[] = 'new_room';
+            }
             foreach ($_buttons as $button) {
                 $buttons->attach(do_template('CHATCODE_EDITOR_BUTTON', array('_GUID' => 'f1c3ccc2b6f0b68d71b7d256b3817cf3', 'TITLE' => do_lang_tempcode('INPUT_CHATCODE_' . $button), 'B' => $button)));
             }
