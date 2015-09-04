@@ -468,7 +468,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/downloads_edit_file.png',
             'data_custom/images/docs/downloads_in_subcat.png',
             'data_custom/images/docs/downloads_subcat.png',
-            'data_custom/images/docs/downloads_tree.png',
             'data_custom/images/docs/downloads_view.png',
             'data_custom/images/docs/ecommerce_invoice.png',
             'data_custom/images/docs/ecommerce_layer.png',

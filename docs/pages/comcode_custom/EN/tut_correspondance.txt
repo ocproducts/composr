@@ -31,7 +31,7 @@ Starting a Private Topic is rather easy. There are 3 ways to do it:
 
 All 3 methods take you to a standard "new topic" page. Fill out all the fields, and hit "Add topic" to create the Private Topic with your chosen conversant ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_create-PT-page.png[/url] and [url="image" rel="lightbox"]correspondance_create-PT-page1.png[/url]). Once your input has been processed, you will be redirected to the newly-created Private Topic ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_new-PT.png[/url])
 
-The new Private Topic will have also appeared in your Private Topics list, so you can easily access it. To get to your Private Topics list, just click on the "Private Topics" link in either the top bar, or the side menu in Conversr ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_hovering-over-PT-link.png[/url]). The page lists all the Private Topics you have ever started, or been a participant in, in much the same way as a normal forum ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_PT-page.png[/url]).
+The new Private Topic will have also appeared in your Private Topics list, so you can easily access it. To get to your Private Topics list, click on the "Private Topics" button in the top bar and click "Inbox" ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_hovering-over-PT-link.png[/url]). The page lists all the Private Topics you have ever started, or been a participant in, in much the same way as a normal forum ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_PT-page.png[/url]).
 
 [surround]
 [media width="150" description="The Private Topics link" float="left"]data_custom/images/docs/correspondance_hovering-over-PT-link.png[/media]
@@ -43,7 +43,7 @@ The new Private Topic will have also appeared in your Private Topics list, so yo
 
 [media width="150" description="An e-mail notification of a new Private Topic" float="left"]data_custom/images/docs/correspondance_Thunderbird-notification-e-mail.png[/media]
 [media width="150" description="Notification of a new personal message" float="right"]data_custom/images/docs/correspondance_forum-notification-message.png[/media]
-When a new post is added by another conversant in a Private Topic that you are part of, you will be notified by the system of its presence. If your options allow it, you will be e-mailed about the new post ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_Thunderbird-notification-e-mail.png[/url]), and you will always be notified by a little message at the top of the forums ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_forum-notification-message.png[/url]). The notification message at the top of the forums will disappear once you've viewed the Private Topic, or replied to it.
+When a new post is added by another conversant in a Private Topic that you are part of, you will be notified by the system of its presence. If your notification settings allow it, you will be e-mailed about the new post ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_Thunderbird-notification-e-mail.png[/url]), and you will always be notified by a little message at the top of the site ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_forum-notification-message.png[/url]). The notification message at the top of the forums will disappear once you've viewed the Private Topic, or replied to it.
 
 [title="3"]Replying to a Private Topic[/title]
 

@@ -393,15 +393,17 @@ function pt_to_xml($row)
     $just_post_row = db_map_restrict($row, array('id', 'p_post'));
     $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['SITE_DB']);
 
-    $rendered = do_template('NOTIFICATION_PT_DESKTOP', array('_GUID' => '624df70cf0cbb796c5d5ce1d18ae39f7', 'ID' => strval($row['p_id']),
-                                                             'SUBJECT' => $row['t_cache_first_title'],
-                                                             'MESSAGE' => $_message,
-                                                             'FROM_USERNAME' => $username,
-                                                             'FROM_MEMBER_ID' => strval($member_id),
-                                                             'URL' => $url,
-                                                             'FROM_AVATAR_URL' => $avatar_url,
-                                                             'DATE_TIMESTAMP' => strval($row['p_time']),
-                                                             'DATE_WRITTEN_TIME' => get_timezoned_time($row['p_time']),
+    $rendered = do_template('NOTIFICATION_PT_DESKTOP', array(
+        '_GUID' => '624df70cf0cbb796c5d5ce1d18ae39f7',
+        'ID' => strval($row['p_id']),
+        'SUBJECT' => $row['t_cache_first_title'],
+        'MESSAGE' => $_message,
+        'FROM_USERNAME' => $username,
+        'FROM_MEMBER_ID' => strval($member_id),
+        'URL' => $url,
+        'FROM_AVATAR_URL' => $avatar_url,
+        'DATE_TIMESTAMP' => strval($row['p_time']),
+        'DATE_WRITTEN_TIME' => get_timezoned_time($row['p_time']),
     ));
 
     return '

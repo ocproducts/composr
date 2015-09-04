@@ -29,7 +29,9 @@ function open_link_as_overlay(ob,width,height,target)
 		var url=(typeof ob.href=='undefined')?ob.action:ob.href;
 		if (/:\/\/(.[^/]+)/.exec(url)[1]!=window.location.hostname) return true; // Cannot overlay, different domain
 		if ((typeof target=='undefined') || (!target)) var target='_top';
-		faux_open(url+((url.indexOf('?')==-1)?'?':'&')+'wide_high=1',null,'width='+width+';height='+height,target);
+		var url_stripped=url.replace(/#.*/,'');
+		var new_url=url_stripped+((url_stripped.indexOf('?')==-1)?'?':'&')+'wide_high=1'+url.replace(/^[^\#]+/,'');
+		faux_open(new_url,null,'width='+width+';height='+height,target);
 		return false;
 	/*{+END}*/
 

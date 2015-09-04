@@ -31,7 +31,7 @@ function _decache($cached_for, $identifier = null, $member = null)
         $cached_for = array($cached_for);
     }
 
-    $cached_for_sz = serialize($cached_for);
+    $cached_for_sz = serialize(array($cached_for, $identifier, $member));
 
     static $done_already = array();
     if ($identifier === null) {
@@ -72,7 +72,9 @@ function _decache($cached_for, $identifier = null, $member = null)
         }
     }
 
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'cache WHERE ' . $where, null, null, false, true);
+    $sql = 'DELETE FROM ' . get_table_prefix() . 'cache WHERE ' . $where;
+
+    $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
 
     if ($identifier === null) {
         $done_already[$cached_for_sz] = true;

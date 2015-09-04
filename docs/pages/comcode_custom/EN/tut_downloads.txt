@@ -7,7 +7,6 @@
 [title="2"]Setting up categories[/title]
 
 [media width="150" description="Adding a download category" float="left"]data_custom/images/docs/downloads_add_category.png[/media]
-[media width="150" description="The download tree after adding our category" float="right"]data_custom/images/docs/downloads_tree.png[/media]
 In the download system, downloads are placed in categories, and categories together make up a tree (hierarchical) structure. When Composr is first installed there is just a single download category: the 'Home' category, which will be the 'parent' to the first new category ('child') you make. When you make a new category, you can choose a 'parent' of any existing category; by this structure, the tree is formed (by choosing a parent, you are essentially saying that your new category exists underneath it in the structure).
 
 This tree principle applies to many areas of Composr: we strive to standardise things across our product to make things as consistent (hence, easy) as possible.

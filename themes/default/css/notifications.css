@@ -67,6 +67,7 @@
 .notification_meta, .topic_list_meta {
 	margin-top: 0.8em !important;
 	width: auto !important;
+	font-size: 0.9em;
 }
 
 .notification_meta {
