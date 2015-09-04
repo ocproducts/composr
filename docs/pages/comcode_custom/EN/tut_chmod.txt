@@ -38,7 +38,6 @@ The process of setting file permissions is often referred to as 'chmodding', as 
 
 [title="2"]PHP Web applications[/title]
 
-[media width="150" description="A typical error that is due to bad file permissions (on the 'FR' directory in this case)" float="right"]data_custom/images/docs/chmod_error.png[/media]
 Most web servers run PHP scripts with the credentials of a user named 'nobody'. Therefore the user 'nobody' needs to be able to do everything Composr needs to do. Unfortunately the main problem with permissions that make them so tricky with PHP web applications is that the user used to upload files is not 'nobody', and 'nobody' is not in the same primary group as the FTP user either. There is usually no convenient way to change ownership of a file so as to assign them to 'nobody', and if it was done, it would be a security problem anyway (as the entire installation directory would be writeable to by [b]any[/b] PHP script on the server). Therefore, if Composr is to write to any uploaded file, it must be possible for any user to do so -- and hence permissions must be set as such.
 
 Consider these situations:
