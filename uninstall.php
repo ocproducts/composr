@@ -46,7 +46,7 @@ require($FILE_BASE . '/sources/global.php');
 
 appengine_general_guard();
 
-if (uninstall_check_master_password(post_param_string('given_password', ''))) {
+if (uninstall_check_master_password(post_param_string('given_password', null))) {
     $uninstalled = do_template('BASIC_HTML_WRAP', array('_GUID' => '5614c65c4f388fd47aabb24b9624ce65', 'TITLE' => do_lang_tempcode('UNINSTALL'), 'CONTENT' => do_lang_tempcode('UNINSTALLED')));
 
     $tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table')));
@@ -65,11 +65,15 @@ if (uninstall_check_master_password(post_param_string('given_password', ''))) {
 /**
  * Check the given master password is valid.
  *
- * @param  SHORT_TEXT $password_given Given master password
+ * @param  ?SHORT_TEXT $password_given Given master password (null: none)
  * @return boolean Whether it is valid
  */
 function uninstall_check_master_password($password_given)
 {
+    if (is_null($password_given)) {
+        return false;
+    }
+
     global $SITE_INFO;
     if (!array_key_exists('master_password', $SITE_INFO)) {
         exit('No master password defined in _config.php currently so cannot authenticate');
