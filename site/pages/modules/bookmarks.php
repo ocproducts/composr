@@ -80,15 +80,8 @@ class Module_bookmarks
             return array();
         }
 
-        $cnt = $GLOBALS['SITE_DB']->query_select_value('bookmarks', 'COUNT(*)', array('b_owner' => is_null($member_id) ? get_member() : $member_id));
-
-        $ret = array();
-        if ($cnt != 0) {
-            $ret += array(
-                'browse' => array('MANAGE_BOOKMARKS', 'menu/site_meta/bookmarks'),
-            );
-        }
-        $ret += array(
+        $ret = array(
+            'browse' => array('MANAGE_BOOKMARKS', 'menu/site_meta/bookmarks'), // Even if we have none we need this link, as sitemap will put add link underneath it
             'add' => array('ADD_BOOKMARK', 'menu/_generic_admin/add_one'),
         );
         return $ret;

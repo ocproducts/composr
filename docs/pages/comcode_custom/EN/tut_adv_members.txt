@@ -186,6 +186,16 @@ The privilege on existing accounts is a weaker privilege that cover scenarios 2 
 
 Note that there is an option "Take date of births". If that is disabled then date of birth fields will be completely disabled, and hence the above date of birth privileges won't have any effect. We allow date of birth to be either enabled or disabled because on some sites it would not be an appropriate thing to ask about. If date of birth is enabled but not required then the field will be titled as "Birthday" to indicate the lowered formality.
 
+[title="2"]Bookmarks[/title]
+
+[media width="150" description="The bookmarks popup" float="right"]data_custom/images/docs/members_bookmarks.png[/media]
+[media width="150" description="Managing bookmarks" float="right"]data_custom/images/docs/members_bookmarks_manage.png[/media]
+If members are logged in then they may bookmark pages of your website within the site itself. The icon to do this is at the bottom of every Composr page unless the 'bookmarks' addon has been installed, or it has been removed from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
+
+The bookmark feature is particularly useful for:
+ - members who want to keep bookmarks for different websites separate
+ - members who move between computers
+
 [title="2"]Welcome E-mails[/title]
 [surround]
 [media width="150" description="Creating a welcome e-mail" float="right"]data_custom/images/docs/adv_members_welcome_email.png[/media]

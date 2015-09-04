@@ -1876,6 +1876,8 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
         $_breadcrumbs[] = array('_SELF:_SELF:browse' . ($ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'));
         $breadcrumbs = $_breadcrumbs;
     }
+    $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], ($root === null) ? get_param_integer('keep_catalogue_' . $catalogue['c_name'] . '_root', null) : $root, false);
+    $breadcrumbs = array_merge($breadcrumbs, $_breadcrumbs);
     $breadcrumbs[] = array('', $title_to_use);
     breadcrumb_set_parents($_breadcrumbs);
 

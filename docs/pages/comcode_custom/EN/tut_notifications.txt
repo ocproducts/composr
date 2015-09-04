@@ -6,6 +6,7 @@ Composr includes a highly-configurable notification system for members to be ale
 
 [title="2"]Choosing notifications[/title]
 
+[media width="150" description="Setting notifications" float="right"]data_custom/images/docs/notifications.png[/media]
 There are a wide number of notification types that members can receive.
 Some are set to be enabled by default, and some are only available based on privileges.
 
@@ -93,5 +94,6 @@ However, you may come into a situation where you do want some granularity. A nic
  - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
+ - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
 
 {$SET,tutorial_tags,Members,Administration,sms,core_notifications,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,How different kinds of notifications may be set up in Composr.}[block]main_tutorial_rating[/block]

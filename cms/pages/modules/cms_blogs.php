@@ -59,7 +59,7 @@ class Module_cms_blogs extends Standard_crud_module
             'browse' => array('MANAGE_BLOGS', 'tabs/member_account/blog'),
         );
         $ret += parent::get_entry_points();
-        $ret = array(
+        $ret += array(
             'import_wordpress' => array('IMPORT_WORDPRESS', 'menu/_generic_admin/import'),
         );
         return $ret;

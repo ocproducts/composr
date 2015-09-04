@@ -235,7 +235,7 @@ class Module_admin
             array('download', 'file', 'document'),
             array('page', 'article', 'comcode'),
             array('entry', 'item', 'content', 'resource', 'submission'),
-            array('category', 'node', 'section', 'repository'),
+            array('category', 'node', 'section', 'repository', 'collection'),
             array('catalogue', 'database', 'classified', 'catalog', 'directory', 'schema', 'field'),
             array('speed', 'slow', 'fast', 'optimisation', 'performance', 'efficiency'),
             array('panel', 'sidebar', 'frame', 'bar'),

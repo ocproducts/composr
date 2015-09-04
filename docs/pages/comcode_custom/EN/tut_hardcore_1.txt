@@ -27,7 +27,7 @@ Alternatively, you can use an alternate search tool such as [url="Agent Ransack"
 
 Composr might seem a bit daunting with its (approximately) 4,000 files, but remember they are just files, and you don't need to understand everything to make changes -- you only need an understanding of the core stuff, and the stuff your changes interact with. If you take backups of a file, you can restore that file to a prior state just by restoring your backup. If you add a file and it breaks things, you can delete it if you really need to.
 
-[media width="150" description="A good editor is essential" float="left"]data_custom/images/docs/hardcore_context.png[/media]
+[media width="150" description="A good editor is essential" float="left"]data_custom/images/docs/hardcore_editor.png[/media]
 [media width="150" description="Firefox is probably the best browser to develop in, thanks to the great selection of powerful extensions" float="right"]data_custom/images/docs/hardcore_browser.png[/media]
 
 [title="2"]Making a counter block[/title]

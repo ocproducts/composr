@@ -132,7 +132,8 @@ class Hook_addon_registry_cns_reported_posts
         return array(
             lorem_globalise(do_lorem_template('CNS_REPORTED_POST_FCOMCODE', array(
                 'POST_ID' => placeholder_id(),
-                'MEMBER' => lorem_phrase(),
+                'MEMBER_ID' => placeholder_id(),
+                'NAME' => lorem_phrase(),
                 'POST' => lorem_phrase(),
                 'POSTER' => lorem_phrase(),
                 'TOPIC_TITLE' => lorem_phrase(),

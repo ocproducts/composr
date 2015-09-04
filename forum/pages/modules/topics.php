@@ -1936,7 +1936,11 @@ class Module_topics
         }
         if (cns_may_make_private_topic()) {
             if ((($_intended_solely_for != '') || (get_option('inline_pp_advertise') == '1')) && (!is_null($forum_id))) {
+                url_default_parameters__disable();
+
                 $specialisation->attach(form_input_username(do_lang_tempcode('WHISPER'), do_lang_tempcode('DESCRIPTION_WHISPER'), 'intended_solely_for', $_intended_solely_for, false));
+
+                url_default_parameters__enable();
             }
         }
 
@@ -2074,15 +2078,24 @@ class Module_topics
 
         $poster = $post_info[0]['p_poster_name_if_guest'];
 
-        $member = $poster;
+        $member_id = $post_info[0]['p_poster'];
+        $name = $poster;
         if (!is_guest($post_info[0]['p_poster'])) {
-            $member = '{{' . strval($post_info[0]['p_poster']) . '"}}';
+            $name = $GLOBALS['FORUM_DRIVER']->get_username($post_info[0]['p_poster'], true);
         }
 
         $_postdetails = post_param_string('post', null);
         if (is_null($_postdetails)) {
             $__post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info[0]['p_post'], $GLOBALS['FORUM_DB']));
-            $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('_GUID' => 'e0f65423f3cb7698d5f04431dbe52ddb', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_TITLE' => $topic_info[0]['t_cache_first_title'], 'POST' => $__post, 'POSTER' => $poster), null, false, null, '.txt', 'text');
+            $post = do_template('CNS_REPORTED_POST_FCOMCODE', array(
+                '_GUID' => 'e0f65423f3cb7698d5f04431dbe52ddb',
+                'POST_ID' => strval($post_id),
+                'MEMBER_ID' => strval($member_id),
+                'NAME' => $name,
+                'TOPIC_TITLE' => $topic_info[0]['t_cache_first_title'],
+                'POST' => $__post,
+                'POSTER' => $poster,
+            ), null, false, null, '.txt', 'text');
         } else {
             $post = make_string_tempcode($_postdetails);
         }
@@ -2211,6 +2224,8 @@ class Module_topics
             $topic_validated = 1 - $add_poll; // If a topic is gonna have a poll added, it starts unvalidated. Adding the poll will validate it.
         }
 
+        $is_reported_post = false;
+
         $anonymous = post_param_integer('anonymous', 0);
 
         $poster_name_if_guest = cns_get_safe_specified_poster_name();
@@ -2271,6 +2286,8 @@ class Module_topics
                 $check_permissions = false;
 
                 decache('main_staff_checklist');
+
+                $is_reported_post = true;
             } else { // New topic
                 $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $meta_data['views']);
                 $_title = get_screen_title('ADD_TOPIC');
@@ -2445,7 +2462,11 @@ END;
             }
         }
 
-        $text = ($validated == 1) ? do_lang_tempcode('SUCCESS') : do_lang_tempcode('SUBMIT_UNVALIDATED_FORUM_POSTS');
+        if ($is_reported_post) {
+            $text = do_lang_tempcode('POST_REPORTED');
+        } else {
+            $text = ($validated == 1) ? do_lang_tempcode('SUCCESS') : do_lang_tempcode('SUBMIT_UNVALIDATED_FORUM_POSTS');
+        }
 
         if ($forum_id >= 0) {
             $topic_validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $topic_id));

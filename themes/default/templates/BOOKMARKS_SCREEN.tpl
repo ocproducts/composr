@@ -70,3 +70,11 @@
 	</div>
 {+END}
 
+{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
+{+START,INCLUDE,STAFF_ACTIONS}
+	1_URL={$PAGE_LINK*,_SELF:_SELF:add}
+	1_TITLE={!ADD_BOOKMARK}
+	1_REL=add
+	1_NOREDIRECT=1
+	1_ICON=menu/_generic_admin/add_one
+{+END}

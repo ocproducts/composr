@@ -48,6 +48,7 @@ This function is not available for individual topics, as to reach the button, yo
 [title="2"]Notifications[/title]
 [surround]
 [media width="150" description="The button to get notifications for a forum" float="left"]data_custom/images/docs/forum_tracking_Track-forum-link.png[/media]
+[media width="150" description="The button sets a notification on a forum/topic" float="right"]data_custom/images/docs/forum_tracking_Tracking2.png[/media]
 [media width="150" description="Options for getting notifications for a topic in your member profile" float="right"]data_custom/images/docs/forum_tracking_Tracking-options.png[/media]
 Notifications (previously called 'tracking' -- note that the screenshots in this tutorial are out-dated) allows you to mark topics for notification; when a new reply is posted, you will be notified of its presence (e.g. by e-mail). Also a notification can be sent if a topic is moved (as long as there is activity within the last two weeks). There is an automatic notifications option that each member may set in his/her profile (options for automatically enabling topics the member posts in for notifications).
 
@@ -75,5 +76,6 @@ After enabling notifications topics and forums, you can easily disable it again,
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
+ - [page="_SEARCH:tut_notifications"]Notifications[/page]
 
 {$SET,tutorial_tags,Forum,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,It can get hard to keep up with all the discussions if you've got an active community. See how Conversr can help.}[block]main_tutorial_rating[/block]

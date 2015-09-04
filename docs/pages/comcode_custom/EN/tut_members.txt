@@ -249,16 +249,6 @@ Privacy allows you to specify what custom profile fields will be visible to whom
 
 Note that you cannot delete certain default usergroups that are used for system functions or as fail-safes.
 
-[title="2"]Bookmarks[/title]
-
-[media width="150" description="The bookmarks popup" float="right"]data_custom/images/docs/members_bookmarks.png[/media]
-[media width="150" description="Managing bookmarks" float="right"]data_custom/images/docs/members_bookmarks_manage.png[/media]
-If members are logged in then they may bookmark pages of your website within the site itself. The icon to do this is at the bottom of every Composr page unless the 'bookmarks' addon has been installed, or it has been removed from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
-
-The bookmark feature is particularly useful for:
- - members who want to keep bookmarks for different websites separate
- - members who move between computers
-
 [title="2"]Last visit dates[/title]
 
 The forum shows the viewing user's last visit and the number of topics/posts since that last visit. Logging in/out triggers a new visit to count (also reopening the browser would).

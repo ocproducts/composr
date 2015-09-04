@@ -27,7 +27,7 @@ Composr has a rich, multi-layered, permission system. In creation of this system
  - ease-of-use
  - quickness of configuration
 
-[media width="150" description="Privileges are set like this" float="right"]data_custom/images/docs/adv_config_specific.png[/media]
+[media width="150" description="Privileges are set like this" float="right"]data_custom/images/docs/adv_config_privileges.png[/media]
 Composr has two main types of permission:
 1) privileges
 2) access permissions (for defining what may be viewed)

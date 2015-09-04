@@ -2860,7 +2860,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	width: auto;
 	font-size: 1em;
 }
-.staff_actions a {
+.global_middle .staff_actions li {
 	white-space: nowrap !important;
 }
 

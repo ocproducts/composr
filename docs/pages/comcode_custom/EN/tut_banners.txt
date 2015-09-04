@@ -51,7 +51,6 @@ Linking to non-image URLs instead of images is handy in a number of situations, 
 
 [title="3"]Using a banner network's HTML[/title]
 [surround]
-[media width="150" description="Configuring the HTML to an external banner/rotation" float="left"]data_custom/images/docs/banners_config.png[/media]
 In order to use banners from an existing banner network, you often are asked to incorporate a chunk of HTML into your site. Composr makes this easy for you, as you can add banners consisting of raw HTML (or even PHP code).
 
 If you are using Google Adsense and don't see any banners, [url="http://yurko.net/blog/2010/03/website-related/white-space-instead-adsense-ads.html"]consider whether your account is set up correctly[/url].
@@ -65,6 +64,7 @@ This code is given out when you add a banner. The 'source' comes from the name o
 
 [title="3"]Who may view what[/title]
 
+[media width="150" description="Configuring the HTML to an external banner/rotation" float="left"]data_custom/images/docs/banners_config.png[/media]
 If you turn on the "Permissions" option (Admin Zone > Setup > Configuration > Feature options, Banners option group), you'll be able to configure which usergroups may view which individual banners. This is useful for banner targeting -- and the flip side of that is you can avoid showing inappropriate banners, e.g. adults banners to minors.
 
 [title="3"]Who may avoid banners[/title]

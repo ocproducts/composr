@@ -359,9 +359,9 @@ class Module_calendar
             $first_date = date('Y-m-d', $_first_date);
             $date = get_param_string('date', $first_date); // It's year 10,000 compliant when it comes to year display ;).
             $back_type = get_param_string('back', 'day');
-            $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => $back_type, 'id' => $date));
-            $back_url = build_url($map, '_SELF');
-            breadcrumb_set_parents(array(array($back_url, do_lang_tempcode('CALENDAR'))));
+            $back_map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => $back_type, 'id' => $date));
+            $back_url = build_url($back_map, '_SELF');
+            breadcrumb_set_parents(array(array(build_page_link($back_map, '_SELF'), do_lang_tempcode('CALENDAR'))));
 
             seo_meta_load_for('event', strval($id), $title_to_use_2);
 

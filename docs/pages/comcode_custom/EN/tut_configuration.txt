@@ -144,11 +144,11 @@ Your choice of image file formats:
 
 [title="2"]Editing menus[/title]
 
+[surround]
 [media width="150" description="The left hand panel" float="left"]data_custom/images/docs/configuration_left.png[/media]
 [media width="150" description="The menu editor" float="right"]data_custom/images/docs/configuration_menu_editor.png[/media]
-In Composr, menus are placed on panels via a Composr feature called a 'block'; the panel consist of Comcode that can display blocks (those blocks are given parameters within that Comcode), of which one type is the menu-block.
-
 You may wish to remove some of the links from the default menus on your installation. To do this, log in as an administrator and click the 'Edit menu' link. Using the menu editor is beyond the scope of this tutorial.
+[/surround]
 
 [title="2"]Default banners[/title]
 

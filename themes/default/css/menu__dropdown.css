@@ -147,7 +147,7 @@ For example:
 .menu_type__dropdown .nlevel .current a {
 	background: transparent url('{$IMG;,1x/menus/menu_bullet_current}') no-repeat 5px 6px !important;
 }
-.menu_type__dropdown .nlevel .has_img>a, .menu_type__dropdown .nlevel.current.has_img>a {
+body .menu_type__dropdown .nlevel .has_img>a, body .menu_type__dropdown .nlevel.current.has_img>a {
 	background: none !important;
 }
 

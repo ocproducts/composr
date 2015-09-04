@@ -1269,6 +1269,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $attributes['param'] = $attributes['author']; // Compatibility with SMF
             }
 
+            if (is_numeric($attributes['param'])) {
+                $attributes['param'] = $GLOBALS['FORUM_DRIVER']->get_username(intval($attributes['param']), true);
+            }
+
             if ($attributes['param'] != '') {
                 $attributes['param'] = protect_from_escaping(comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member));
                 $temp_tpl->attach(do_template('COMCODE_QUOTE_BY', array('_GUID' => '18f55a548892ad08b0b50b3b586b5b95', 'CITE' => $cite, 'CONTENT' => $embed, 'BY' => $attributes['param'], 'SAIDLESS' => array_key_exists('saidless', $attributes) ? $attributes['saidless'] : '0')));

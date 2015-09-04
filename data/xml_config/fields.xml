@@ -33,17 +33,17 @@
 </fieldRestrictions>
 
 <!--
-
 More possibilities:
-		<sentenceCase />
-		<titleCase />
-		<filter notstaff="1" groups="1,4,5,6,7,8,9">
-			<prepend>(THIS POST HAS NOT YET BEEN CHECKED BY STAFF. WE DO NOT CONDONE IT'S CONTENT)\n\n</prepend>
-			<append>\n\n(THIS POST HAS NOT YET BEEN CHECKED BY STAFF. WE DO NOT CONDONE IT'S CONTENT)</append>
-		</filter>
-		<possibilitySet error="That is not an allowed answer" secretive="1">1,2,4,8,16</possibilitySet>
 
-		<qualify pages="join" types="step2" fields="email_address">
-			<replace>you@example.com</replace>
-		</qualify>
+	<sentenceCase />
+	<titleCase />
+	<filter notstaff="1" groups="1,4,5,6,7,8,9">
+		<prepend>(THIS POST HAS NOT YET BEEN CHECKED BY STAFF. WE DO NOT CONDONE IT'S CONTENT)\n\n</prepend>
+		<append>\n\n(THIS POST HAS NOT YET BEEN CHECKED BY STAFF. WE DO NOT CONDONE IT'S CONTENT)</append>
+	</filter>
+	<possibilitySet error="That is not an allowed answer" secretive="1">1,2,4,8,16</possibilitySet>
+
+	<qualify pages="join" types="step2" fields="email_address">
+		<replace>you@example.com</replace>
+	</qualify>
 -->

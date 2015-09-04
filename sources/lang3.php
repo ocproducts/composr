@@ -185,12 +185,14 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
 
     if ($show_unset) {
         global $LANGS_MAP_CACHE;
-        asort($LANGS_MAP_CACHE);
-        foreach ($LANGS_MAP_CACHE as $lang => $full) {
-            if (!array_key_exists($lang, $_langs)) {
-                $_full = make_string_tempcode($full);
-                $_full->attach(do_lang_tempcode('_UNSET'));
-                $langs->attach(form_input_list_entry($lang, false, protect_from_escaping($_full)));
+        if (!is_null($LANGS_MAP_CACHE)) {
+            asort($LANGS_MAP_CACHE);
+            foreach ($LANGS_MAP_CACHE as $lang => $full) {
+                if (!array_key_exists($lang, $_langs)) {
+                    $_full = make_string_tempcode($full);
+                    $_full->attach(do_lang_tempcode('_UNSET'));
+                    $langs->attach(form_input_list_entry($lang, false, protect_from_escaping($_full)));
+                }
             }
         }
     }

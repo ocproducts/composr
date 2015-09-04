@@ -119,6 +119,9 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         $this->_make_zone_concrete($zone, $page_link);
 
         $details = $this->_request_page_details($page, $zone);
+        if ($details === false) {
+            return null;
+        }
 
         $path = end($details);
 

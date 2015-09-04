@@ -13237,7 +13237,7 @@ function upload_dialog_completed(ob,files)
 
 	var filename_field=document.getElementById(ob.settings.txtFileName);
 
-	if (file_id_field.value!='-1')
+	if (filename_field.value!='-1')
 		set_inner_html(document.getElementById(ob.settings.progress_target),''); // Remove old progress indicators
 
 	var name,file;
