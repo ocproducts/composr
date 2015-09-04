@@ -27,6 +27,7 @@ You need to go into your server properties and turn the security to "SQL Server 
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__database__sqlserver()
 {

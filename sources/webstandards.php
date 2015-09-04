@@ -28,6 +28,7 @@ We continue to prohibit much of what was deprecated in XHTML but brought back in
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__webstandards()
 {

@@ -30,6 +30,7 @@
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__minikernel()
 {

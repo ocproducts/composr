@@ -22,6 +22,7 @@ require_code('forum/shared/ipb');
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__forum__ipb1()
 {

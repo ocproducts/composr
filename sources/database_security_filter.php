@@ -24,6 +24,7 @@ This file provides some detection of possible security vulnerabilities at develo
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__database_security_filter()
 {

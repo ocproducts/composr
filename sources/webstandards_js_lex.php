@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__webstandards_js_lex()
 {

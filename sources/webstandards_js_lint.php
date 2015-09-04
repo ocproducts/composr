@@ -35,6 +35,7 @@ Some checks are commented out, as practical JavaScript does not tend to be at al
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__webstandards_js_lint()
 {

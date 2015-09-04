@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__cns_posts_action()
 {

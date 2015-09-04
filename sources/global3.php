@@ -24,6 +24,7 @@ global3.php contains further support functions, which are shared between the ins
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__global3()
 {

@@ -24,6 +24,7 @@ The abstract file manager allows easy and transparent file system maintenance, e
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__abstract_file_manager()
 {

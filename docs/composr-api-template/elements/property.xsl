@@ -3,13 +3,17 @@
 
     <!-- Property display name -->
     <xsl:template match="property/name">
-        <xsl:value-of select="../docblock/description" />
-        <xsl:if test="not(../docblock/description) or ../docblock/description = ''">
-            <xsl:value-of select="../docblock/tag[@name='var']/@description" />
-            <xsl:if test="not(../docblock/tag[@name='var']/@description) or ../docblock/tag[@name='var']/@description = ''">
-                <xsl:value-of select="." />
-            </xsl:if>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="../docblock/description[.!='']">
+                <p><xsl:value-of select="../docblock/description" /></p>
+            </xsl:when>
+            <xsl:when test="../docblock/tag[@name='var']/@description[.!='']">
+                <xsl:value-of select="../docblock/tag[@name='var']/@description" disable-output-escaping="yes"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <p><xsl:value-of select="." /></p>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="property/name" mode="signature">
@@ -23,6 +27,19 @@
                 <xsl:with-param name="exclude-link" select="$exclude-link"/>
             </xsl:apply-templates>
         </pre>
+        
+        <div class="row collapse">
+            <div class="detail-description">
+                <h3>Default</h3>
+                <div class="subelement argument">
+                    <xsl:if test="../default[.!='']">
+                        <code>
+                            <xsl:value-of select="../default" disable-output-escaping="yes"/>
+                        </code>
+                    </xsl:if>
+                </div>
+            </div>
+        </div>
     </xsl:template>
 
 </xsl:stylesheet>

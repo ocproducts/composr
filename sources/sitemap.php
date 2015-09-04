@@ -39,6 +39,7 @@ Node structure includes the following special data for menu rendering:
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__sitemap()
 {

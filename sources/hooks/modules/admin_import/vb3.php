@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__hooks__modules__admin_import__vb3()
 {

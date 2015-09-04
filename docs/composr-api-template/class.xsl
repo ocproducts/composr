@@ -11,7 +11,7 @@
     <xsl:template match="/project" mode="contents">
         <xsl:variable
             name="element"
-            select="/project/file/class[full_name=$full_name]|/project/file/interface[full_name=$full_name]"
+            select="/project/file/class[full_name=$full_name]|/project/file/interface[full_name=$full_name]|/project/file/trait[full_name=$full_name]"
         />
 
         <div class="row">

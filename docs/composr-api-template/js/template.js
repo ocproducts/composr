@@ -9,15 +9,15 @@ function initializeContents()
     // hide all more buttons because they are not needed with JS
     $(".element a.more").hide();
 
-    $(".clickable.class,.clickable.interface").click(function() {
-        document.location = $(this).attr('href');
+    $(".clickable.class,.clickable.interface,.clickable.trait").click(function() {
+        document.location = $("a.more", this).attr('href');
     });
 
     // change the cursor to a pointer to make it more explicit that this it clickable
     // do a background color change on hover to emphasize the clickability eveb more
     // we do not use CSS for this because when JS is disabled this behaviour does not
     // apply and we do not want the hover
-    $(".element.method,.element.function,.element.class.clickable,.element.interface.clickable")
+    $(".element.method,.element.function,.element.class.clickable,.element.interface.clickable,.element.trait.clickable,.element.property.clickable")
         .css("cursor", "pointer")
         .hover(function() {
             $(this).css('backgroundColor', '#F8FDF6')
@@ -25,50 +25,103 @@ function initializeContents()
             $(this).css('backgroundColor', 'white')}
         );
 
+    $("ul.side-nav.nav.nav-list li.nav-header").contents()
+        .filter(function(){return this.nodeType == 3 && $.trim($(this).text()).length > 0})
+        .wrap('<span class="side-nav-header" />');
+
+    $("ul.side-nav.nav.nav-list li.nav-header span.side-nav-header")
+        .css("cursor", "pointer");
+
     // do not show tooltips on iPad; it will cause the user having to click twice
     if (!$.browser.ipad) {
-        $('.btn-group.visibility,.btn-group.view,.btn-group.type-filter')
+        $('.btn-group.visibility,.btn-group.view,.btn-group.type-filter,.icon-custom')
             .tooltip({'placement':'bottom'});
+        $('.element').tooltip({'placement':'left'});
     }
 
     $('.btn-group.visibility,.btn-group.view,.btn-group.type-filter')
         .show()
+        .css('display', 'inline-block')
         .find('button')
         .find('i').click(function(){ $(this).parent().click(); });
 
     // set the events for the visibility buttons and enable by default.
-    $('.visibility button.public').click(function(){
-        $('.element.public,.side-nav li.public').toggle($(this).hasClass('active'));
-    }).click();
-    $('.visibility button.protected').click(function(){
-        $('.element.protected,.side-nav li.protected').toggle($(this).hasClass('active'));
-    }).click();
-    $('.visibility button.private').click(function(){
-        $('.element.private,.side-nav li.private').toggle($(this).hasClass('active'));
-    }).click();
-    $('.visibility button.inherited').click(function(){
-        $('.element.inherited,.side-nav li.inherited').toggle($(this).hasClass('active'));
-    }).click();
+    function toggleVisibility(event)
+    {
+        // because the active class is toggled _after_ this event we toggle it for the duration of this event. This
+        // will make the next piece of code generic
+        if (event) {
+            $(this).toggleClass('active');
+        }
 
-    $('.type-filter button.critical').click(function(){
+        $('.element.public,.side-nav li.public').toggle($('.visibility button.public').hasClass('active'));
+        $('.element.protected,.side-nav li.protected').toggle($('.visibility button.protected').hasClass('active'));
+        $('.element.private,.side-nav li.private').toggle($('.visibility button.private').hasClass('active'));
+        $('.element.public.inherited,.side-nav li.public.inherited').toggle(
+            $('.visibility button.public').hasClass('active') && $('.visibility button.inherited').hasClass('active')
+        );
+        $('.element.protected.inherited,.side-nav li.protected.inherited').toggle(
+            $('.visibility button.protected').hasClass('active') && $('.visibility button.inherited').hasClass('active')
+        );
+        $('.element.private.inherited,.side-nav li.private.inherited').toggle(
+            $('.visibility button.private').hasClass('active') && $('.visibility button.inherited').hasClass('active')
+        );
+
+        // and untoggle the active class again so that bootstrap's default handling keeps working
+        if (event) {
+            $(this).toggleClass('active');
+        }
+    }
+    $('.visibility button.public').on("click", toggleVisibility);
+    $('.visibility button.protected').on("click", toggleVisibility);
+    $('.visibility button.private').on("click", toggleVisibility);
+    $('.visibility button.inherited').on("click", toggleVisibility);
+    toggleVisibility();
+
+    $('.type-filter button.critical').click(function() {
+        packageContentDivs = $('.package-contents');
+        packageContentDivs.show();
         $('tr.critical').toggle($(this).hasClass('active'));
+        packageContentDivs.each(function() {
+            var rowCount = $(this).find('tbody tr:visible').length;
+
+            $(this).find('.badge-info').html(rowCount);
+            $(this).toggle(rowCount > 0);
+        });
     });
     $('.type-filter button.error').click(function(){
+        packageContentDivs = $('.package-contents');
+        packageContentDivs.show();
         $('tr.error').toggle($(this).hasClass('active'));
+        packageContentDivs.each(function() {
+            var rowCount = $(this).find('tbody tr:visible').length;
+
+            $(this).find('.badge-info').html(rowCount);
+            $(this).toggle(rowCount > 0);
+        });
     });
     $('.type-filter button.notice').click(function(){
+        packageContentDivs = $('.package-contents');
+        packageContentDivs.show();
         $('tr.notice').toggle($(this).hasClass('active'));
+        packageContentDivs.each(function() {
+            var rowCount = $(this).find('tbody tr:visible').length;
+
+            $(this).find('.badge-info').html(rowCount);
+            $(this).toggle(rowCount > 0);
+        });
     });
 
     $('.view button.details').click(function(){
         $('.side-nav li.view-simple').removeClass('view-simple');
     }).button('toggle').click();
 
-    $('.view button.details').click(function(){
-        $('.side-nav li.view-simple').removeClass('view-simple');
-    }).button('toggle').click();
     $('.view button.simple').click(function(){
         $('.side-nav li').addClass('view-simple');
+    });
+    
+    $('ul.side-nav.nav.nav-list li.nav-header span.side-nav-header').click(function(){
+        $(this).siblings('ul').collapse('toggle');
     });
 
 // sorting example
@@ -140,7 +193,10 @@ $(document).ready(function() {
             var thisPath = filterPath(this.pathname) || locationPath;
             if (locationPath == thisPath && (location.hostname == this.hostname || !this.hostname) && this.hash.replace(/#/, ''))
             {
-                var $target = $(this.hash), target = this.hash;
+                var target = decodeURIComponent(this.hash.replace(/#/,''));
+                // note: I'm using attribute selector, because id selector can't match elements with '$' 
+                var $target = $('[id="'+target+'"]');
+
                 if ($target.length > 0)
                 {
                     $(this).click(function (event)
@@ -182,4 +238,11 @@ $(document).ready(function() {
         }
         return [];
     }
+
+    // Hide API Documentation menu if it's empty
+    $('.nav .dropdown a[href=#api]').next().filter(function(el) {
+        if ($(el).children().length == 0) {
+            return true;
+        }
+    }).parent().hide();
 });

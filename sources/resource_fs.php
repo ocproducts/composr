@@ -29,6 +29,7 @@ The user knows all of Commandr-fs as "The Composr Repository".
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__resource_fs()
 {

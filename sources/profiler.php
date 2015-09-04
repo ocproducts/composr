@@ -34,6 +34,7 @@ data_custom/profiling--<memberID>.<timestamp>.<uniqid>--<requestTimeInSeconds>.l
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__profiler()
 {

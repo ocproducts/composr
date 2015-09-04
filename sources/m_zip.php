@@ -24,6 +24,7 @@
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__m_zip()
 {

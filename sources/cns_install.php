@@ -39,6 +39,7 @@ The Conversr functions should always call up the attachment and language systems
 
 /**
  * Standard code module initialisation function.
+ * @ignore
  */
 function init__cns_install()
 {
