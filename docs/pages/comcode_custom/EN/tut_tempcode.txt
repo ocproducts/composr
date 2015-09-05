@@ -699,6 +699,10 @@ Tempcode does not have explicit data-types, everything is text. However we may i
 		<td>Stuff to append to a Composr URL for 'keep parameter' passing (Composr passes any parameters between screens if their names start 'keep_', and this symbol enables that). The first parameter should be '1' if you need to place this directly on the front of a URL. The second parameter should '1' if you need to always attach a session ID (i.e. if you are creating a link that might be used somewhere outside the current cookie context, e.g. to feed into a download manager)</td>
 	</tr>
 	<tr style="background: #DDFFDD">
+		<td>{$EXTEND_URL,http://example.com/index.php?foo=a,bar=b}</td>
+		<td>Add parameter(s) onto a URL. Starts by appending ? or &amp; by analysis of existing URL structure. Does not handle URL encoding of the appended parameter, which you should do first if applicable.</td>
+	</tr>
+	<tr style="background: #DDFFDD">
 		<td>{$BLOCK,block=main_search,zone=site}</td>
 		<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name 'block'. For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
 	</tr>

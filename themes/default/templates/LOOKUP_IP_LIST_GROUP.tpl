@@ -1,9 +1,5 @@
 <li>
 	<div>
-		<p>
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" title="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" src="{$IMG*,{$?,{OPEN_DEFAULT},contract,expand}}" /></a>
-		</p>
-
 		<label for="banned_{UNIQID*}">
 			<kbd>{MASK*}</kbd>
 			{+START,IF,{$ADDON_INSTALLED,securitylogging}}

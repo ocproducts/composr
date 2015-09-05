@@ -1796,7 +1796,7 @@ class Module_topics
             breadcrumb_set_parents(array(array('_SEARCH:forumview:pt', do_lang_tempcode('PRIVATE_TOPICS')), array('_SEARCH:topicview:' . strval($topic_id), $topic_title)));
         } else {
             $breadcrumbs = cns_forum_breadcrumbs($forum_id, null, null, false);
-            $breadcrumbs[] = array('_SEARCH:topicview:misc:' . strval($topic_id), $topic_title);
+            $breadcrumbs[] = array('_SEARCH:topicview:browse:' . strval($topic_id), $topic_title);
             $breadcrumbs[] = array('', $doing);
             breadcrumb_set_parents($breadcrumbs);
         }

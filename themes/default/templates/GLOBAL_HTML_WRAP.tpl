@@ -182,7 +182,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 							<div class="inline">
 								<p class="accessibility_hidden"><label for="special_page_type">{!SCREEN_DEV_TOOLS}</label></p>
-								<select id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select><input class="buttons__proceed button_micro" type="submit" value="{!PROCEED_SHORT}" />
+								<select onchange="staff_actions_change(this);" id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select><input class="buttons__proceed button_micro" type="submit" value="{!PROCEED_SHORT}" />
 							</div>
 						</form>
 					{+END}{+END}{+END}
@@ -228,7 +228,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						</ul>
 
 						{+START,IF,{$AND,{$NOT,{$_GET,keep_has_js}},{$JS_ON}}}
-							<noscript><a href="{$SELF_URL*,1,0,1}&amp;keep_has_js=0">{!MARK_JAVASCRIPT_DISABLED}</a></noscript>
+							<noscript><a href="{$EXTEND_URL*,{$SELF_URL,1,0,1},keep_has_js=0}">{!MARK_JAVASCRIPT_DISABLED}</a></noscript>
 						{+END}
 					</nav>
 

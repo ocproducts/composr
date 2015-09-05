@@ -546,10 +546,6 @@ function _comcode_lang_string($lang_code)
         return $COMCODE_LANG_STRING_CACHE[$lang_code];
     }
 
-    if ((substr($lang_code, 0, 4) == 'DOC_') && (is_wide() == 1)) {
-        return new Tempcode(); // Not needed if wide, and we might be going wide to reduce chance of errors occuring
-    }
-
     if (multi_lang_content()) {
         $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages p LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'translate t ON t.id=string_index AND ' . db_string_equal_to('t.language', user_lang()), array('string_index', 'text_parsed', 'source_user'), array('the_page' => $lang_code, 'the_zone' => '!'), '', 1);
         if ((array_key_exists(0, $comcode_page)) && (!is_browser_decaching())) {

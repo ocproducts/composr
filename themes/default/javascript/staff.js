@@ -217,7 +217,7 @@ function contextual_css_edit()
 			css_option.value=sheet+'.css';
 			css_option.id='opt_for_sheet_'+sheet;
 			if (find_active_selectors(sheet,window).length!=0)
-				spt.options[2].parentNode.insertBefore(css_option,spt.options[2]);
+				spt.options[spt.options.length-1].parentNode.insertBefore(css_option,spt.options[spt.options.length-1]);
 		}
 	}
 }
@@ -497,6 +497,22 @@ function staff_actions_select(ob)
 		if (test) form.setAttribute('target',test.name);
 		if (!is_form_submit)
 			form.submit();
+	}
+}
+
+function staff_actions_change(ob)
+{
+	var value=ob.options[ob.selectedIndex].value;
+	if (value=='templates' || value=='tree')
+	{
+		/*
+		This is not actually needed, see code in PHP has_caching_for function
+		var hidden=document.createElement('input');
+		hidden.type='hidden';
+		hidden.name='cache_templates';
+		hidden.value='0';
+		ob.form.appendChild(hidden);
+		*/
 	}
 }
 

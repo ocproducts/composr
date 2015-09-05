@@ -1014,7 +1014,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $zone = get_module_zone('catalogues');
 
     // Feedback
-    $c_value = array_key_exists('FIELD_0_PLAIN_PURE', $map) ? $map['FIELD_0_PLAIN_PURE'] : $map['FIELD_0_PLAIN'];
+    $c_value = isset($map['FIELD_0_PLAIN_PURE']) ? $map['FIELD_0_PLAIN_PURE'] : (isset($map['FIELD_0_PLAIN']) ? $map['FIELD_0_PLAIN'] : do_lang('UNKNOWN'));
     if (is_object($c_value)) {
         $c_value = $c_value->evaluate();
     }

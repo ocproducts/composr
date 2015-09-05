@@ -895,9 +895,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     return;
                 }
                 if ($url_parts['id'] === null) {
-                    $url_parts['id'] = /*get_param_string('id',*/
-                        strval(db_get_first_id())/*)*/
-                    ;
+                    $url_parts['id'] = strval(db_get_first_id());
                 }
 
                 // Does this URL arrangement support monikers?
@@ -918,18 +916,28 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
         case 'INCLUDE':
             if ($GLOBALS['RECORD_TEMPLATES_USED'] || $GLOBALS['RECORD_TEMPLATES_TREE']) {
+                $param = $seq_part[3];
+
                 if (!isset($param[1])) {
                     $param[1] = make_string_tempcode('.tpl');
                 }
                 if (!isset($param[2])) {
                     $param[2] = make_string_tempcode('templates');
                 }
+
+                $tpl_path_descrip = (is_object($param[2]) ? $param[2]->evaluate() : $param[2]) . '/' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]) . (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
+
                 if ($GLOBALS['RECORD_TEMPLATES_USED']) {
-                    $GLOBALS['RECORDED_TEMPLATES_USED'][] = $param[2]->evaluate() . '/' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]) . $param[1]->evaluate();
+                    $GLOBALS['RECORDED_TEMPLATES_USED'][] = $tpl_path_descrip;
                 }
+
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                     $param = $seq_part[3];
-                    $children[] = array($param[2]->evaluate() . '/' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]) . $param[1]->evaluate(), isset($param[1]->children) ? $param[1]->children : array(), isset($param[1]->fresh) ? $param[1]->fresh : false);
+                    $children[] = array(
+                        $tpl_path_descrip,
+                        isset($param[1]->children) ? $param[1]->children : array(),
+                        isset($param[1]->fresh) ? $param[1]->fresh : false
+                    );
                 }
             }
             break;

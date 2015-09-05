@@ -1,4 +1,4 @@
-<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{EDIT_URL}}" method="get">
+<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{EDIT_URL}}" method="get" target="_blank">
 	{$HIDDENS_FOR_GET_FORM,{EDIT_URL}}
 
 	<div>

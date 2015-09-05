@@ -159,12 +159,6 @@ function assign_refresh($url, $multiplier = 0.0)
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
 
-    // No redirects for view-modes
-    $special_page_type = get_param_string('special_page_type', 'view');
-    if ($special_page_type != 'view') {
-        return;
-    }
-
     $must_show_message = ($multiplier != 0.0);
 
     // Fudge so that redirects can't count as flooding

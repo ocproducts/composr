@@ -137,6 +137,33 @@
 	height: 2em;
 }
 
+/* Template edit links */
+
+.template_edit_link_wrap {
+	margin: 1px;
+	padding: 1px;
+	display: inline-block;
+	{$BETA_CSS_PROPERTY,border-radius: 5px 5px 5px 5px;}
+	border: 1px solid;
+}
+
+.template_edit_link {
+	display: block;
+}
+
+.template_edit_link span {
+	text-decoration: underline;
+	cursor: pointer;
+	background: rgba(255,255,255,0.8);
+	display: inline-block;
+	border: 1px dotted black;
+	margin: 3px;
+}
+
+.template_edit_link span kbd {
+	color: black;
+}
+
 /*
 =========================
 =========Buttons=========

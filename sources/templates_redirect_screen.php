@@ -69,7 +69,8 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
             } else {
                 $hash_bit = '';
             }
-            $url .= ((strpos($url, '?') === false) ? '?' : '&') . 'redirected=1' . $hash_bit;
+            extend_url($url, 'redirected=1');
+            $url .= $hash_bit;
         }
     }
 

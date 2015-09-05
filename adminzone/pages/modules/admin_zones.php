@@ -122,7 +122,7 @@ class Module_admin_zones
 
             $nice_zone_name = ($id == '') ? do_lang('_WELCOME') : $id;
 
-            breadcrumb_set_parents(array(array('_SELF:_SELF:misc', do_lang_tempcode('ZONES')), array('_SELF:_SELF:editor', do_lang_tempcode('ZONE'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ZONES')), array('_SELF:_SELF:editor', do_lang_tempcode('ZONE'))));
             breadcrumb_set_self($nice_zone_name);
 
             $this->title = get_screen_title('_ZONE_EDITOR', true, array(escape_html($nice_zone_name)));

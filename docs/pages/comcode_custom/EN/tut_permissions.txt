@@ -89,7 +89,7 @@ The process is the same for editing the permissions of any type of category.
 [title="2"]Privileges[/title]
 
 [surround]
-[media width="150" description="Choosing a privilege section to edit permissions within" float="right"]data_custom/images/docs/permissions_Choose-specific-access.png[/media]
+[media width="150" description="Choosing a privilege section to edit permissions within" float="right"]data_custom/images/docs/permissions_Choose-privileges.png[/media]
 {!permissions:DOC_PRIVILEGES}
 
 The privileges are accessed through the "privileges" page. On this page is a list of permission sections; all the privileges are grouped into related sections for ease-of-configuration. Choose a section, and submit the form to see and change the related privileges. The page shows a checkbox-grid of the usergroups and the privileges in your selected section. Set up the privileges as appropriate, and submit the form to change them.
@@ -99,6 +99,7 @@ For a good real-world example of how to set up privileges, see the 'Setting bypa
 
 [title="2"]Adding, Editing and Deleting content[/title]
 
+[media width="150" description="An example of overriding privileges. Changing bypass-validation permissions for galleries using the Permissions Tree Editor" float="right"]data_custom/images/docs/gallery_validation_permissions.png[/media]
 To submit/edit/delete you need the correct privileges. You also need view permission all the way to the page that does it, in the CMS zone.
 
 Here is a worked example of how to set view and privilege permissions to submit to a links catalogue category.

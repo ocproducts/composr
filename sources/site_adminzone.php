@@ -40,7 +40,7 @@ function adminzone_special_cases($codename)
         set_helper_panel_text(comcode_lang_string('menus:DOC_NETLINK'));
         set_helper_panel_tutorial('tut_msn');
     }
-*/
+    */
 
     if ($codename == 'start') {
         // Various checks

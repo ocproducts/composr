@@ -272,7 +272,7 @@ class Module_downloads
             // Breadcrumbs
             $breadcrumbs = download_breadcrumbs($category_id, $root, true, get_zone_name(), true);
             if ((has_privilege(get_member(), 'open_virtual_roots')) && ($category_id != $root)) {
-                $page_link = build_page_link(array('page' => '_SELF', 'type' => 'misc', 'id' => $category_id, 'keep_download_root' => $category_id), '_SELF');
+                $page_link = build_page_link(array('page' => '_SELF', 'type' => 'browse', 'id' => $category_id, 'keep_download_root' => $category_id), '_SELF');
                 $breadcrumbs[] = array($page_link, $title_to_use, do_lang_tempcode('VIRTUAL_ROOT'));
             } else {
                 $breadcrumbs[] = array('', $title_to_use);

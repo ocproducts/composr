@@ -106,12 +106,7 @@ class Block_main_awards
             $submit_url = '';
         }
         if ($submit_url != '') {
-            if (strpos($submit_url, '?') === false) {
-                $submit_url .= '?';
-            } else {
-                $submit_url .= '&';
-            }
-            $submit_url .= 'award=' . strval($award);
+            extend_url($submit_url, 'award=' . strval($award));
         }
 
         require_code('content');

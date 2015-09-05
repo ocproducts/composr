@@ -64,13 +64,6 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         $db = $GLOBALS['SITE_DB'];
     }
 
-    if ($RECORD_THEME_IMAGES_CACHE) {
-        global $RECORDED_THEME_IMAGES;
-        if (is_on_multi_site_network()) {
-            $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = 1;
-        }
-    }
-
     $true_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
     if ($theme === null) {
         $theme = $true_theme;
@@ -257,6 +250,14 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
     if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
         $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $ret);
     }
+
+    if ($RECORD_THEME_IMAGES_CACHE) {
+        global $RECORDED_THEME_IMAGES;
+        if (!is_on_multi_site_network()) {
+            $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = true;
+        }
+    }
+
     return $ret;
 }
 

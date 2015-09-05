@@ -38,7 +38,6 @@ Composr zones are sub-directories of your site, that operate with different sett
  - CMS ([tt]/cms[/tt])
  - Forum ([tt]/forum[/tt]) -- For Conversr users only
 [surround]
-[media width="150" description="Viewing our zone (in its custom theme)" float="left"]data_custom/images/docs/subcom_church_santa.png[/media]
 You may add new zones, edit zones, delete zones, and move pages between zones from the Admin Zone (Structure section). When performing an action that will add, rename or delete a zone, you will need to provide details that tell Composr how it can do this; this is because on the majority of web hosting configurations, PHP does not have full access to files on the hosting account. These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
 [media width="150" description="To finalise the zone, FTP details will be needed so Composr can create the directory structure properly" float="right"]data_custom/images/docs/subcom_zone_afm.png[/media]
 

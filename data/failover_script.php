@@ -98,7 +98,7 @@ function handle_failover_auto_switching($iteration = 0)
             $time_between_retries = 5;
 
             $full_url = $SITE_INFO['base_url'] . '/' . $url;
-            $full_url .= ((strpos($full_url, '?') === false) ? '?' : '&') . 'keep_failover=0';
+            extend_url($full_url, 'keep_failover=0');
 
             do {
                 $time_before = microtime(true);

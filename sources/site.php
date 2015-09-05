@@ -791,6 +791,9 @@ function do_site()
      * @global ?array $SHOW_EDIT_LINKS
      */
     $SHOW_EDIT_LINKS = ($show_edit_links == 1) || ($special_page_type == 'show_edit_links');
+    if ($SHOW_EDIT_LINKS) {
+        require_css('themes_editor');
+    }
     if (($special_page_type != 'view') && ($special_page_type != 'show_markers')) {
         require_code('view_modes');
         initialise_special_page_types($special_page_type);

@@ -158,7 +158,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 					{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
 						<form onsubmit="return staff_actions_select(this);" title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank">
-							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_no_xhtml=1,special_page_type=<null>,keep_cache=<null>}}
+							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_no_xhtml=1,wide_high=1,special_page_type=<null>,keep_cache=<null>}}
 
 							<div class="inline">
 								<p class="accessibility_hidden"><label for="special_page_type">{!SCREEN_DEV_TOOLS}</label></p>
@@ -213,7 +213,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						</ul>
 
 						{+START,IF,{$AND,{$NOT,{$_GET,keep_has_js}},{$JS_ON}}}
-							<noscript><a href="{$SELF_URL*,1,0,1}&amp;keep_has_js=0">{!MARK_JAVASCRIPT_DISABLED}</a></noscript>
+							<noscript><a href="{$EXTEND_URL*,{$SELF_URL,1,0,1},keep_has_js=0}">{!MARK_JAVASCRIPT_DISABLED}</a></noscript>
 						{+END}
 					</nav>
 				</div>

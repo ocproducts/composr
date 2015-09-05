@@ -202,11 +202,11 @@ class CMSSocialRead
             switch ($row['a_language_string_code']) {
                 case 'cns:ACTIVITY_ADD_TOPIC':
                     $content_type = 'thread';
-                    $content_id = preg_replace('#^.*:topicview:misc:(\d+).*$#', '$1', $row['a_pagelink_1']);
+                    $content_id = preg_replace('#^.*:topicview:browse:(\d+).*$#', '$1', $row['a_pagelink_1']);
                     break;
                 case 'cns:ACTIVITY_ADD_POST_IN':
                     $content_type = 'post';
-                    $content_id = preg_replace('#^.*:topicview:misc:(\d+)\#post_(\d+).*$#', '$2', $row['a_pagelink_1']);
+                    $content_id = preg_replace('#^.*:topicview:browse:(\d+)\#post_(\d+).*$#', '$2', $row['a_pagelink_1']);
                     break;
                 /*case 'ACTIVITY_LIKES':	No likes actually
                     $content_type='like';

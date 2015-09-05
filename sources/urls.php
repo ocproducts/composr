@@ -1282,3 +1282,16 @@ function find_id_moniker($url_parts, $zone)
 
     return null;
 }
+
+/**
+ * Extend a URL with additional parameter(s). Does not handle URL encoding of the appended parameter, which you should do first if applicable.
+ *
+ * @param  string $url The URL to append to (returned by reference).
+ * @param  string $append URL parameter(s) to append, with no leading or trailing ? or & characters.
+ */
+function extend_url(&$url, $append)
+{
+    if ($append != '') {
+        $url .= ((strpos($url, '?') === false) ? '?' : '&') . $append;
+    }
+}
