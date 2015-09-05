@@ -72,8 +72,10 @@ There are two options to set how a catalogue may display:
 Note that if you set all fields of your catalogue to "Display in category-views" and disable comments and ratings and trackbacks, there will be no links to the entry view screen. This is due to there being little purpose in this screen because everything already displays on categories.
 
 [surround]
-[media width="150" description="A catalogue with 'own pages' enabled" float="left"]data_custom/images/docs/catalogues_own_pages.png[/media]
-[media width="150" description="A catalogue without 'own pages' enabled" float="left"]data_custom/images/docs/catalogues_not_own_pages.png[/media]
+[media width="150" description="A catalogue with a display type of Title lists -- entries link onto their own pages" float="left"]data_custom/images/docs/catalogues_display_type_title_lists.png[/media]
+[media width="150" description="A catalogue with a display type of Field-maps" float="left"]data_custom/images/docs/catalogues_display_type_field_maps.png[/media]
+[media width="150" description="A catalogue with a display type of Tabular listings" float="left"]data_custom/images/docs/catalogues_display_type_tabular_listings.png[/media]
+[media width="150" description="A catalogue with a display type of Grid of images (not a good example, because to show it properly we should have an image field, and lots of entries)" float="left"]data_custom/images/docs/catalogues_display_type_grid_images.png[/media]
 [media width="150" description="Viewing a catalogue entry" float="right"]data_custom/images/docs/catalogues_view_entry.png[/media]
 [/surround]
 

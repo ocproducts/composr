@@ -103,9 +103,11 @@ class Module_admin_cns_ldap
         require_code('cns_groups_action2');
 
         global $LDAP_CONNECTION;
-        if (is_null($LDAP_CONNECTION)) {
+        if (is_null($LDAP_CONNECTION) && !$GLOBALS['DEV_MODE']) {
             warn_exit(do_lang_tempcode('LDAP_DISABLED'));
         }
+
+        require_code('cns_ldap');
 
         // Decide what we're doing
         $type = get_param_string('type', 'browse');
@@ -131,6 +133,9 @@ class Module_admin_cns_ldap
         $members_delete = new Tempcode();
 
         $all_ldap_groups = cns_get_all_ldap_groups();
+        if ($GLOBALS['DEV_MODE'] && count($all_ldap_groups) == 0) {
+            $all_ldap_groups[] = 'Example LDAP group';
+        }
         foreach ($all_ldap_groups as $group) {
             if (is_null(cns_group_ldapcn_to_cnsid($group))) {
                 $_group = str_replace(' ', '_space_', $group);

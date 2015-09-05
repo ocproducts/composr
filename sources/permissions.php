@@ -503,6 +503,7 @@ function has_category_access($member, $module, $category)
  * @param  MEMBER $member The member who's usergroups will be OR'd
  * @param  boolean $consider_clubs Whether to consider clubs (pass this false if considering page permissions, which work via explicit-denys across all groups, which could not happen for clubs as those denys could not have been set in the UI)
  * @return ?string The SQL query fragment (null: admin, so permission regardless)
+ * @ignore
  */
 function _get_where_clause_groups($member, $consider_clubs = true)
 {

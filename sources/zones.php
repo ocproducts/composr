@@ -160,6 +160,7 @@ function i_solemnly_declare($declarations)
 
 /**
  * Enter a new security scope (i.e. a custom block or module).
+ * @ignore
  */
 function _solemnly_enter()
 {
@@ -181,6 +182,7 @@ function _solemnly_enter()
  * Leave the most recent security scope (i.e. a custom block or module).
  *
  * @param  ?string $out Output to filter, if I_UNDERSTAND_XSS is not set (null: nothing to filter).
+ * @ignore
  */
 function _solemnly_leave(&$out = null)
 {
@@ -568,6 +570,7 @@ function load_minimodule_page($string, &$out = null)
  * @param  PATH $string The relative path to the code file
  * @param  ?array $map The block parameters (null: none)
  * @return Tempcode The result of executing the code
+ * @ignore
  */
 function _load_mini_code($string, $map = null)
 {
@@ -883,6 +886,7 @@ function module_installed($module)
  * @param  ID_TEXT $zone The zone name
  * @param  ID_TEXT $module The module name
  * @return PATH The module path
+ * @ignore
  */
 function _get_module_path($zone, $module)
 {
@@ -1402,6 +1406,7 @@ function do_block_get_cache_identifier($cache_on, $map)
  *
  * @param  ID_TEXT $block The name of the block
  * @return PATH The path to the block
+ * @ignore
  */
 function _get_block_path($block)
 {

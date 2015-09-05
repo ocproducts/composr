@@ -54,10 +54,10 @@ class Module_topics
         if (get_forum_type() != 'cns') {
             return null;
         }
-
         if ($check_perms && is_guest($member_id)) {
             return array();
         }
+
         return array(
             'new_pt' => array('ADD_PRIVATE_TOPIC', 'buttons/new_topic'),
         );

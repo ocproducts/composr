@@ -28,6 +28,7 @@
  * @param  ID_TEXT $msg_type Code of message type to show
  * @set    warn inform fatal
  * @return Tempcode Redirection message (likely to not actually be seen due to instant redirection)
+ * @ignore
  */
 function _redirect_screen($title, $url, $text = null, $intermediary_hop = false, $msg_type = 'inform')
 {

@@ -28,7 +28,7 @@ class Hook_config_facebook_auto_syndicate
         return array(
             'human_name' => 'FACEBOOK_AUTO_SYNDICATE',
             'type' => 'tick',
-            'category' => 'USERS',
+            'category' => 'COMPOSR_APIS',
             'group' => 'FACEBOOK_SYNDICATION',
             'explanation' => 'CONFIG_OPTION_facebook_auto_syndicate',
             'shared_hosting_restricted' => '0',

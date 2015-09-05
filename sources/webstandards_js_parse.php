@@ -48,6 +48,7 @@ function webstandards_js_parse()
  * Return parse info for parse type.
  *
  * @return ?map Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_js()
 {
@@ -97,6 +98,7 @@ function _webstandards_js_parse_js()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_command()
 {
@@ -149,6 +151,7 @@ function _webstandards_js_parse_command()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_command_actual()
 {
@@ -456,6 +459,7 @@ function _webstandards_js_parse_command_actual()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_if_rest()
 {
@@ -483,6 +487,7 @@ function _webstandards_js_parse_if_rest()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_cases()
 {
@@ -548,6 +553,7 @@ function _webstandards_js_parse_cases()
  *
  * @param  boolean $anonymous Whether this is an anonymous function
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_function_dec($anonymous = false)
 {
@@ -584,6 +590,7 @@ function _webstandards_js_parse_function_dec($anonymous = false)
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_expression()
 {
@@ -680,6 +687,7 @@ function precedence_sort($op_list)
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_expression_inner()
 {
@@ -890,6 +898,7 @@ function _webstandards_js_parse_expression_inner()
  *
  * @param  list $variable The variable
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_identify_chain($variable)
 {
@@ -963,6 +972,7 @@ function _webstandards_js_parse_identify_chain($variable)
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_variable()
 {
@@ -986,6 +996,7 @@ function _webstandards_js_parse_variable()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_variable_actual()
 {
@@ -1054,6 +1065,7 @@ function _webstandards_js_parse_variable_actual()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_assignment_operator()
 {
@@ -1071,6 +1083,7 @@ function _webstandards_js_parse_assignment_operator()
  * Return parse info for parse type.
  *
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_literal()
 {
@@ -1139,6 +1152,7 @@ function _webstandards_js_parse_literal()
  *
  * @param  boolean $allow_blanks Whether to allow blanks in the list
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_comma_expressions($allow_blanks = false)
 {
@@ -1178,6 +1192,7 @@ function _webstandards_js_parse_comma_expressions($allow_blanks = false)
  *
  * @param  boolean $allow_blanks Whether to allow blanks in the list
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_comma_variables($allow_blanks = false)
 {
@@ -1226,6 +1241,7 @@ function _webstandards_js_parse_comma_variables($allow_blanks = false)
  * @param  boolean $allow_expressions Whether to allow expressions in this
  * @param  string $separator The token that sits as the 'separator' between name and value
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_comma_parameters($allow_expressions = true, $separator = 'EQUAL')
 {
@@ -1261,6 +1277,7 @@ function _webstandards_js_parse_comma_parameters($allow_expressions = true, $sep
  * @param  boolean $allow_expressions Whether to allow expressions in this
  * @param  string $separator The token that sits as the 'separator' between name and value
  * @return ?list Parse info (null: error)
+ * @ignore
  */
 function _webstandards_js_parse_parameter($allow_expressions = true, $separator = 'EQUAL')
 {

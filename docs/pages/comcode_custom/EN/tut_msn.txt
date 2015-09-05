@@ -6,7 +6,7 @@
 
 [title="2"]Shared forum and members[/title]
 
-[media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL" float="right"]data_custom/images/docs/msn_cns_local.png[/media]
+[media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL (optional only shows if applicable to your site)" float="right"]data_custom/images/docs/msn_cns_local.png[/media]
 All that needs to be done to create an M.S.N. is to install each Composr such that they all share a common forum driver and forum database. At its heart, this is all a M.S.N. is: Composr provides special features that allow this to work comfortably, but there is no specific 'M.S.N.' feature or setting in Composr, nor does Composr need such.
 
 If you are using a third-party forum, unless the forum itself is modified to work from different URLs, the forums interface will not be integrated into each site. However, all Composr functions that work through the forum driver (e.g. comment topics, or support tickets) may be completely customised for the individual websites.

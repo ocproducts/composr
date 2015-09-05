@@ -8,7 +8,6 @@ A Super-Member is a member who is not staff, but is granted additional access ba
 
 [title="2"]Virtues of on-line collaboration[/title]
 
-[media width="150" description="The Collaboration Zone menu" float="right"]data_custom/images/docs/collaboration_menu.png[/media]
 The Internet, combined with Composr, is a powerful tool for online-collaboration. It provides the ability for people across the world to work together; but even when used by people working in the same building it can still be a great aid in the sharing and organising of information.
 
 Composr can be used to organise shared documents, provide a forum for discussion, make announcements, structure information, chat from across the world, and a lot more.

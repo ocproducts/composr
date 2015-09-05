@@ -35,7 +35,8 @@ At the time of writing, all importers work by interface to the database of the p
 The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and 'ID remap table' from each import separate. The 'choose your session' interface exists so that if your Composr session is lost, you can still resume a previous import.
 
 [media width="150" description="Choosing an importer session" float="left"]data_custom/images/docs/importer_session.png[/media]
-[media width="150" description="Import options" float="right"]data_custom/images/docs/importer_options.png[/media]
+[media width="150" description="Import setup" float="right"]data_custom/images/docs/importer_options.png[/media]
+[media width="150" description="Import choice of import actions" float="right"]data_custom/images/docs/importer_options2.png[/media]
 Importers define a list of features they can import, along with a dependency system to ensure that a feature can only be imported once any features that it is dependent upon have already been imported (for example, forum posts are always dependent on forum topics, and forum topics are always dependent on forums).
 
 The importer system is designed to be robust, and is programmed as 're-entrant' code; this means that if installation is halted, via failure, timeout, or cancellation, it can continue from where it left off. This is of particular use if there is an incompatibility between your data and the importer, which is not very unlikely due to the wide variation in data for any single product across different versions and usage patterns.

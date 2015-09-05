@@ -51,9 +51,12 @@ class Module_awards
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ($GLOBALS['SITE_DB']->query_select_value('award_types', 'COUNT(*)') == 0) {
-            return array();
+        if ($check_perms) {
+            if ($GLOBALS['SITE_DB']->query_select_value('award_types', 'COUNT(*)') == 0) {
+                return array();
+            }
         }
+
         return array(
             'browse' => array('AWARDS', 'menu/adminzone/setup/awards'),
             'overview' => array('AWARD_OVERVIEW', 'menu/_generic_admin/view_archive'),

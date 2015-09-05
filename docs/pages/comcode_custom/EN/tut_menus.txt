@@ -45,7 +45,7 @@ The menus themselves aren't saved against how the data is to be used, but for us
 
 [title="2"]Panel pages[/title]
 
-[media width="150" description="Links to edit a panel page and to edit managed menus" float="right"]data_custom/images/docs/menus_edit_links.png[/media]
+[media width="150" description="Links to edit a panel page (via the Zone Editor) and to edit managed menus" float="right"]data_custom/images/docs/menus_edit_links.png[/media]
 Please see the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial for more information on panel pages. This section is only intended to provide a brief orientation to help further clarify the menu relationship. Basically panel pages are pages beginning with the name 'panel_' in the zone of the page being viewed.
 
 Your panel pages by default are just Comcode pages that use the block tag for arrangement of blocks, such as the managed menu block, 'menu'. Blocks are described in the 'Using Blocks' tutorial, but basically, you can use any of the blocks that begin with the name 'side_' on your panel pages to add dynamic elements, as well as any Comcode (Comcode menus are actually created using the Comcode 'menu' tag). To edit a panel page, make sure you are logged in as a staff member and click the 'edit page' link underneath the pages as they are seen.

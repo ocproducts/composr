@@ -49,8 +49,8 @@ The index screens are generally useful for two reasons:
 [title="2"]Feeds[/title]
 
 [surround]
-[media width="150" description="Syndication links are displayed in the news block" float="right"]data_custom/images/docs/adv_news_rss_1.png[/media]
-Composr supports the two main formats for syndication of news (and most other kinds of content) in clean XML format: 'Atom' and 'RSS'. These formats are simple representations of news that may be viewed using an external program such as 'FeedReader', or incorporated onto another website. Composr itself provides two blocks that allow display of RSS and atom feeds in a news-like fashion (including feeds from other Composr sites, or any other site that provides them).
+[media width="150" description="Syndication links are displayed in the news block if the 'Visible RSS/Atom links' option is enabled" float="right"]data_custom/images/docs/adv_news_rss_1.png[/media]
+Composr supports the two main formats for syndication of news (and most other kinds of content) in clean XML format: 'Atom' and 'RSS'. These formats are simple representations of news that may be viewed using an external program such as 'Vienna' or 'Sputnik' or 'Feedly' (there are many programs), or incorporated onto another website. Composr itself provides two blocks that allow display of RSS and atom feeds in a news-like fashion (including feeds from other Composr sites, or any other site that provides them).
 [/surround]
 
 [surround]
@@ -64,7 +64,7 @@ The [page="_SEARCH:tut_comcode"]Comcode[/page] syntax you should use to place th
 You may also use the compressed version intended for the sides of pages:
 [code][block="http://example.com/feed.xml"]side_rss[/block][/code]
 
-[media width="150" description="FeedReader is a good free program for viewing feeds" float="right"]data_custom/images/docs/adv_news_feedreader.png[/media]
+[media width="150" description="Vienna is a good free program for viewing feeds on the Mac" float="right"]data_custom/images/docs/adv_news_feedreader.png[/media]
 Please note that you should trust a feed before you consider placing it on your site, as it is possible for them to contain JavaScript that could intercept your password cookies, and perform other malicious actions.
 
 Before RSS and Atom became popular, there was a type of feed called a 'JavaScript feed', and also feeds that work via 'iframes'. Composr supports use of these feeds simply by putting the HTML that the feed maintainers ask you to use in your website, inside a Comcode HTML tag. The nature of these feeds are such that they embed portions of HTML into your own site, either via JavaScript adding it directly on the client-side (users computers), or via a frame: they provide a simple bridge, rather than a clean feed.
@@ -90,6 +90,8 @@ Trackbacks work as follows:
 4) The original article then can display a list of articles that lead on from it, along with other features such as comments.
 
 Composr can send trackbacks for news and receive them for almost any kind of content.
+
+By default trackbacks are not enabled in the configuration. To use them you need to enable the "Trackbacks" option, and enable them on individual content items.
 
 [title="2"]Avatars in news posts[/title]
 
@@ -119,6 +121,6 @@ The default news archive screen shows just the news headlines. By adding [tt]:in
 
  - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
- - [url="FeedReader"]http://www.feedreader.com/[/url]
+ - [url="Feedly"]http://feedly.com/[/url]
 
 {$SET,tutorial_tags,News,syndication_blocks,syndication,news_shared,news,core_feedback_features,Content,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details on some of the more complex features available for news, including blogging and syndication.}[block]main_tutorial_rating[/block]

@@ -308,7 +308,7 @@ This section details some techniques to increase the security of your site. Most
 [title="3"]Guest access[/title]
 
 [media width="150" description="Securing the member joining process" float="right"]data_custom/images/docs/security_cns_members.png[/media]
-In order to reduce the risk of hackers gaining unauthorised access to areas of your website, you could close down access to all possible areas except to vetted members. By default, Composr is set up to deny guest access to almost all of the site; however, security can be improved further by only allowing members to become fully joined after a manual vetting process.
+In order to reduce the risk of hackers gaining unauthorised access to areas of your website, you could close down access to all possible areas except to vetted members. These options are located in Admin Zone > Setup > Configuration > User/usergroup options. By default, Composr is set up to deny guest access to almost all of the site; however, security can be improved further by only allowing members to become fully joined after a manual vetting process.
 To force members to be vetted, you need to enable the 'Require member validation' option, as shown in the screen-shot.
 
 [title="3"]SSL[/title]

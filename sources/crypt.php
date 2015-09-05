@@ -177,6 +177,7 @@ function init__crypt()
          *
          * @param  string $binary_string The input string
          * @return integer The number of bytes
+         * @ignore
          */
         function _crypt_strlen($binary_string)
         {
@@ -195,6 +196,7 @@ function init__crypt()
          * @param integer $start Start
          * @param integer $length Length
          * @return string The substring
+         * @ignore
          */
         function _crypt_substr($binary_string, $start, $length)
         {

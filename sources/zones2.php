@@ -661,6 +661,7 @@ function extract_module_info($path)
  * @set 0 1 2
  * @param  ?ID_TEXT $page_type Page type to show (null: all)
  * @return array A map of page name to type (modules_custom, etc)
+ * @ignore
  */
 function _find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects = false, $show_method = 0, $page_type = null)
 {
@@ -722,6 +723,7 @@ function _find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects =
  * @set 0 1 2
  * @param  ?boolean $custom Whether to search under the custom-file-base (null: auto-decide)
  * @return array A map of page name to type (modules_custom, etc)
+ * @ignore
  */
 function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cutoff_time = null, $show_method = 0, $custom = null)
 {
@@ -821,6 +823,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
  *
  * @param  ID_TEXT $zone The zone name
  * @return array A map of page name to type (modules_custom, etc)
+ * @ignore
  */
 function _find_all_modules($zone)
 {

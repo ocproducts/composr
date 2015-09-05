@@ -382,6 +382,7 @@ function chat_room_prune($room_id)
  * @param  ?AUTO_LINK $message_id Latest received message ID (null: we're not getting latest messages)
  * @param  ?AUTO_LINK $event_id Latest event ID (null: we're not getting events, but we do request a null event so we can use that as a future reference point)
  * @param  string $events_output Events output to append
+ * @ignore
  */
 function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = null, $event_id = null, $events_output = '')
 {
@@ -667,6 +668,7 @@ function is_chat_moderator($member_id, $room_id, $room_owner)
  * @param  string $font Font name
  * @param  string $colour Font colour
  * @param  BINARY $first_message Whether this is the first message sent out to this room, since some change
+ * @ignore
  */
 function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_message)
 {
@@ -1293,6 +1295,7 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
  * @param  AUTO_LINK $room_id The room ID the message is in
  * @param  BINARY $system_message Whether this is within a system message
  * @return array A pair: whether the message was deleted, and the new text of the message
+ * @ignore
  */
 function _deal_with_chatcode_tags($text, $tag, $pm_user, $pm_message, $username, $cutoff, $zone, $room_id, $system_message)
 {
@@ -1317,6 +1320,7 @@ function _deal_with_chatcode_tags($text, $tag, $pm_user, $pm_message, $username,
  * @param  AUTO_LINK $room_id The room ID the message is in
  * @param  BINARY $system_message Whether this is within a system message
  * @return array A pair: whether the message was deleted, and the new text of the message
+ * @ignore
  */
 function _deal_with_chatcode_private($pm_user, $pm_message, $username, $text, $room_id, $system_message)
 {
@@ -1375,6 +1379,7 @@ function _deal_with_chatcode_private($pm_user, $pm_message, $username, $text, $r
  * @param  string $text The text we are using
  * @param  ID_TEXT $zone The zone the chat module is in
  * @return array A pair: whether the message was deleted, and the new text of the message
+ * @ignore
  */
 function _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zone)
 {
@@ -1418,6 +1423,7 @@ function _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zo
  * @param  string $text The text we are using
  * @param  ?integer $cutoff The maximum number of messages to be returned (null: no maximum)
  * @return array A pair: whether the message was deleted, and the new text of the message
+ * @ignore
  */
 function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $cutoff)
 {
@@ -1472,6 +1478,7 @@ function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $c
  * @param  array $messages Original list of messages
  * @param  array $message_ids List of message IDs to keep
  * @return array A new list of messages
+ * @ignore
  */
 function _remove_empty_messages($messages, $message_ids)
 {

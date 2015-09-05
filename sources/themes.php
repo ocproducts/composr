@@ -353,6 +353,7 @@ function cdn_filter($path)
  * @param  ID_TEXT $id The theme image ID
  * @param  ID_TEXT $dir Directory to search
  * @return ?string The path to the image (null: was not found)
+ * @ignore
  */
 function _search_img_file($theme, $lang, $id, $dir = 'images')
 {

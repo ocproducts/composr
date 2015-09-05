@@ -17,7 +17,7 @@
 	{+END}
 
 	{+START,LOOP,FILES}
-		<li class="commandr_file" onclick="/*Access-note: code has other activation*/ var c=document.getElementById('commandr_command'); c.value='cat &quot;{FILENAME;*}&quot;'; click_link(c.nextSibling);">
+		<li class="commandr_file" onclick="/*Access-note: code has other activation*/ var c=document.getElementById('commandr_command'); if (c.value!='') { c.value=c.value.replace(/\s*$/,'')+' &quot;{FILENAME;*}&quot;'; c.focus(); } else { c.value='cat &quot;{FILENAME;*}&quot;'; click_link(c.nextSibling); }">
 			{FILENAME*}
 
 			{+START,IF_NON_EMPTY,{FILESIZE}}

@@ -1455,6 +1455,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
 
 /**
  * Move/delete certain selected things, in follow up to an integrity scan.
+ * @ignore
  */
 function _integrity_scan()
 {

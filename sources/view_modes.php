@@ -582,6 +582,11 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
                 $escaped_code = do_template('WEBSTANDARDS_LINE_END');
                 $escaped_code->evaluate_echo();
             }
+            if (preg_match('#^\s*\n#', substr($out, $i + 1)) != 0) {
+                // Do not show blank lines
+                ++$number;
+                continue;
+            }
             if (isset($error_lines[$number])) {
                 $markers = new Tempcode();
                 foreach ($error['errors'] as $j => $_error) {
@@ -695,6 +700,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
     $echo->evaluate_echo();
     if (!$ret) {
         $echo = globalise(make_string_tempcode(ob_get_contents()), null, '', true);
+        ob_end_clean();
         $echo->evaluate_echo();
         exit();
     }

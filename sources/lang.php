@@ -621,6 +621,7 @@ function protect_from_escaping($in)
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
+ * @ignore
  */
 function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $lang = null, $require_result = true)
 {

@@ -156,6 +156,7 @@ function read_network_endian_int($buffer)
  *
  * @param  resource $file The file handle
  * @return array The triplet (possibly containing NULL's for when we can't detect properties)
+ * @ignore
  */
 function _get_wmv_details($file)
 {
@@ -170,6 +171,7 @@ function _get_wmv_details($file)
  * @param  resource $file The file handle
  * @param  ?integer $chunk_length The length of the current chunk list (null: covers full file)
  * @return ?array The quartet (possibly containing NULL's for when we can't detect properties) (null: error)
+ * @ignore
  */
 function _get_wmv_details_do_chunk_list($file, $chunk_length = null)
 {
@@ -240,6 +242,7 @@ function _get_wmv_details_do_chunk_list($file, $chunk_length = null)
  *
  * @param  resource $file The file handle
  * @return array The triplet (possibly containing NULL's for when we can't detect properties)
+ * @ignore
  */
 function _get_avi_details($file)
 {
@@ -259,6 +262,7 @@ function _get_avi_details($file)
  *
  * @param  resource $file The file handle
  * @return ?array The triplet (possibly containing NULL's for when we can't detect properties) (null: error)
+ * @ignore
  */
 function _get_ram_details($file) // + rm
 {
@@ -291,6 +295,7 @@ function _get_ram_details($file) // + rm
  *
  * @param  resource $file The file handle
  * @return ?array The triplet (possibly containing NULL's for when we can't detect properties) (null: error)
+ * @ignore
  */
 function _get_mov_details($file)
 {
@@ -309,6 +314,7 @@ function _get_mov_details($file)
  * @param  resource $file The file handle
  * @param  ?integer $atom_size The length of the current atom list (null: covers full file)
  * @return array The quartet (possibly containing NULL's for when we can't detect properties)
+ * @ignore
  */
 function _get_mov_details_do_atom_list($file, $atom_size = null)
 {
@@ -1220,6 +1226,7 @@ function watermark_gallery_image($gallery, $file_path, $filename)
  * @param  URLPATH $watermark_url The (local) URL to the watermark file
  * @param  BINARY $x Whether a right hand side corner is being watermarked
  * @param  BINARY $y Whether a bottom edge corner is being watermarked
+ * @ignore
  */
 function _watermark_corner($source, $watermark_url, $x, $y)
 {

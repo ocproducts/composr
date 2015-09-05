@@ -493,8 +493,8 @@ class Module_admin_permissions
         require_lang('zones');
 
         require_code('zones3');
-        $zones = create_selection_list_zones();
-        $fields->attach(form_input_list(do_lang_tempcode('ZONE'), '', 'zone', $zones, null, true));
+        $zones = create_selection_list_zones(null, null, array('', 'site'));
+        $fields->attach(form_input_huge_list(do_lang_tempcode('ZONE'), '', 'zone', $zones, null, true));
 
         $post_url = get_self_url(false, false, null, false, true);
 

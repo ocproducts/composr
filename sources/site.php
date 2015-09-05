@@ -821,6 +821,14 @@ function do_site()
         }
     }
 
+    // Web Standards mode?
+    $no_webstandards_check = get_param_integer('keep_no_webstandards_check', get_param_integer('no_webstandards_check', 0));
+    $show_edit_links = get_param_integer('show_edit_links', 0);
+    $webstandards_mode = ((($GLOBALS['IS_ACTUALLY_ADMIN']) || ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()))) && (($special_page_type == 'code') || (($no_webstandards_check == 0) && (get_option('webstandards') == '1'))) && ($GLOBALS['REFRESH_URL'][0] == '') && ($show_edit_links == 0)); // Not a permission - a matter of performance
+    if ($webstandards_mode) {
+        $GLOBALS['OUTPUT_STREAMING'] = false;
+    }
+
     // Output streaming?
     $out = globalise(null, null, '', true);
 
@@ -835,10 +843,8 @@ function do_site()
     }
     $out->singular_bind('MIDDLE', $middle);
 
-    // Validation
-    $no_webstandards_check = get_param_integer('keep_no_webstandards_check', get_param_integer('no_webstandards_check', 0));
-    $show_edit_links = get_param_integer('show_edit_links', 0);
-    if ((($GLOBALS['IS_ACTUALLY_ADMIN']) || ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()))) && (($special_page_type == 'code') || (($no_webstandards_check == 0) && (get_option('webstandards') == '1'))) && ($GLOBALS['REFRESH_URL'][0] == '') && ($show_edit_links == 0)) { // Not a permission - a matter of performance
+    // Web Standards mode
+    if ($webstandards_mode) {
         require_code('view_modes');
         $out_evaluated = $out->evaluate(null);
         check_xhtml_webstandards($out_evaluated, ($special_page_type == 'code' && (get_param_integer('preview_mode', null) === null)), get_param_integer('preview_mode', 0));
@@ -1223,6 +1229,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
+ * @ignore
  */
 function _request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
@@ -1243,6 +1250,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
+ * @ignore
  */
 function __request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
@@ -1459,6 +1467,7 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  boolean $wildcard_mode Whether to also search in wildcard mode
  * @return ~array A list of details (false: page not found)
+ * @ignore
  */
 function _request_page__redirects($codename, $zone, $wildcard_mode = false)
 {
@@ -1513,6 +1522,7 @@ function load_comcode_page_from_cache($codename, $zone, $theme)
  *
  * @param  array $pages Details of pages to load
  * @return array Database rows
+ * @ignore
  */
 function _load_comcodes_page_from_cache($pages)
 {

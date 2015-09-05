@@ -248,6 +248,7 @@ function http_download_file($url, $byte_limit = null, $trigger_error = true, $no
  *
  * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
  * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state.
+ * @ignore
  */
 function _load_blank_output_state($just_tempcode = false, $true_blank = false)
 {
@@ -1046,6 +1047,7 @@ function sort_maps_by__strlen($rows, $sort_key)
  * @param  string $a The first string to compare
  * @param  string $b The second string to compare
  * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
  */
 function _strlen_sort($a, $b)
 {
@@ -1165,6 +1167,7 @@ function merge_sort(&$array, $cmp_function = 'strcmp')
  * @param  array $a The first to compare
  * @param  array $b The second to compare
  * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
  */
 function _multi_sort($a, $b)
 {

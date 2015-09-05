@@ -143,6 +143,7 @@ function png_compress($path, $lossy = false)
  *
  * @param  resource $img GD image.
  * @param  boolean $lossy Whether to do a lossy convert.
+ * @ignore
  */
 function _png_compress(&$img, $lossy = false)
 {

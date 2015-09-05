@@ -208,6 +208,7 @@ function get_lang_file_map($lang, $file, $non_custom = false)
  * @param  array $entries The currently loaded language map
  * @param  ?boolean $descriptions Whether to get descriptions rather than strings (null: no, but we might pick up some descriptions accidently)
  * @param  boolean $given_whole_file Whether $b is infact not a path, but the actual file contents
+ * @ignore
  */
 function _get_lang_file_map($b, &$entries, $descriptions = null, $given_whole_file = false)
 {

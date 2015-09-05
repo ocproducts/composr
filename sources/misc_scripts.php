@@ -20,6 +20,7 @@
 
 /**
  * Script to make a nice textual image, vertical writing.
+ * @ignore
  */
 function gd_text_script()
 {
@@ -179,6 +180,7 @@ function gd_text_script()
 
 /**
  * Script to track clicks to external sites.
+ * @ignore
  */
 function simple_tracker_script()
 {
@@ -199,6 +201,7 @@ function simple_tracker_script()
 
 /**
  * Script to show previews of content being added/edited.
+ * @ignore
  */
 function preview_script()
 {
@@ -222,6 +225,7 @@ function preview_script()
  * Script to perform Composr CRON jobs called by the real CRON.
  *
  * @param  PATH $caller File path of the cron_bridge.php script
+ * @ignore
  */
 function cron_bridge_script($caller)
 {
@@ -300,6 +304,7 @@ function cron_bridge_script($caller)
 
 /**
  * Script to handle iframe.
+ * @ignore
  */
 function iframe_script()
 {
@@ -363,6 +368,7 @@ function iframe_script()
 
 /**
  * Redirect the browser to where a page_link specifies.
+ * @ignore
  */
 function page_link_redirect_script()
 {
@@ -380,6 +386,7 @@ function page_link_redirect_script()
 
 /**
  * Outputs the page-link chooser popup.
+ * @ignore
  */
 function page_link_chooser_script()
 {
@@ -405,6 +412,7 @@ function page_link_chooser_script()
 
 /**
  * Shows an HTML page of all emoticons clickably.
+ * @ignore
  */
 function emoticons_script()
 {
@@ -465,6 +473,7 @@ function emoticons_script()
 
 /**
  * Allows conversion of a URL to a thumbnail via a simple script.
+ * @ignore
  */
 function thumb_script()
 {
@@ -500,6 +509,7 @@ function thumb_script()
 
 /**
  * Outputs a modal question dialog.
+ * @ignore
  */
 function question_ui_script()
 {

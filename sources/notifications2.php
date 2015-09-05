@@ -23,6 +23,7 @@
  *
  * @param  ?MEMBER $member_id_of Member this is for (null: just check globally)
  * @return array Map of notification types (integer code to language string code)
+ * @ignore
  */
 function _get_available_notification_types($member_id_of = null)
 {
@@ -372,6 +373,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
  * @param  ?boolean $force_change_children_to Value to change setting to (null: do not change)
  * @param  boolean $done_get_change Whether we have made a change to the settings
  * @return Tempcode UI
+ * @ignore
  */
 function _notifications_build_category_tree($_notification_types, $notification_code, $ob, $id, $depth, $force_change_children_to, &$done_get_change)
 {

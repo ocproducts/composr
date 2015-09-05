@@ -143,7 +143,7 @@ class Block_side_stats
         }
         foreach (array_keys($_hooks) as $hook) {
             require_code('hooks/blocks/side_stats/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_stats_' . filter_naughty_harsh($hook), true);
+            $object = object_factory('Hook_' . filter_naughty_harsh($hook), true);
             if (is_null($object)) {
                 continue;
             }

@@ -157,7 +157,7 @@ class Module_admin_import
 
         if ($type == 'import') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('IMPORT')), array('_SELF:_SELF:session', do_lang_tempcode('IMPORT_SESSION')), array('_SELF:_SELF:hook:importer=session2:session=' . get_param_string('session'), do_lang_tempcode('IMPORT'))));
-            breadcrumb_set_self(do_lang_tempcode('START'));
+            breadcrumb_set_self(do_lang_tempcode('ACTIONS'));
         }
 
         $this->title = get_screen_title('IMPORT');
@@ -466,7 +466,7 @@ class Module_admin_import
                 continue;
             }
 
-            $text = do_lang((strtolower($lang_array[$import]) != $lang_array[$import]) ? $lang_array[$import] : strtoupper($lang_array[$import]));
+            $text = do_lang_tempcode((strtolower($lang_array[$import]) != $lang_array[$import]) ? $lang_array[$import] : strtoupper($lang_array[$import]));
             $_import_list_2[$import] = $text;
         }
         if ((array_key_exists('cns_members', $_import_list_2)) && (get_forum_type() == $importer) && ($db_name == get_db_forums()) && ($db_table_prefix == $GLOBALS['FORUM_DB']->get_table_prefix())) {

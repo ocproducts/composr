@@ -703,7 +703,7 @@ class Block_main_multi_content
     public function build_select($select, $info, $category_field_select)
     {
         $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : $info['table'];
-        $parent_field_name = $category_field_select;//array_key_exists('parent_field_name',$info)?$info['parent_field_name']:NULL;
+        $parent_field_name = $info['is_category'] ? $info['id_field'] : $category_field_select;
         if ($parent_field_name === null) {
             $parent_spec__table_name = null;
         }
@@ -711,7 +711,9 @@ class Block_main_multi_content
         $parent_spec__field_name = array_key_exists('parent_spec__field_name', $info) ? $info['parent_spec__field_name'] : null;
         $id_field_numeric = ((!array_key_exists('id_field_numeric', $info)) || ($info['id_field_numeric']));
         $category_is_string = ((array_key_exists('category_is_string', $info)) && (is_array($info['category_is_string']) ? $info['category_is_string'][1] : $info['category_is_string']));
+
         require_code('selectcode');
+
         $sql = selectcode_to_sqlfragment($select, 'r.' . $info['id_field'], $parent_spec__table_name, $parent_spec__parent_name, 'r.' . $parent_field_name, $parent_spec__field_name, $id_field_numeric, !$category_is_string);
         return $sql;
     }

@@ -35,6 +35,7 @@
  * @param  BINARY $encrypted Whether the field is encrypted
  * @param  ?string $default Default field value (null: standard for field type)
  * @return boolean Whether the custom field was created successfully
+ * @ignore
  */
 function _helper_install_create_custom_field($this_ref, $name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null)
 {
@@ -61,6 +62,7 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
  * - title, a textual title of the attribute
  *
  * @return array The attributes for the forum
+ * @ignore
  */
 function _helper_install_specifics()
 {
@@ -92,6 +94,7 @@ function _helper_install_specifics()
  *
  * @param  PATH $path The path in which to search
  * @return boolean Whether the forum auto-config could be found
+ * @ignore
  */
 function _helper_install_test_load_from($path)
 {

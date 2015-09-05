@@ -662,6 +662,7 @@ function load_user_stuff()
 
 /**
  * Composr error catcher for fatal versions. This is hooked in only on PHP5.2 as error_get_last() only works on these versions.
+ * @ignore
  */
 function catch_fatal_errors()
 {
@@ -703,6 +704,7 @@ function catch_fatal_errors()
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
  * @return boolean Always false
+ * @ignore
  */
 function composr_error_handler($errno, $errstr, $errfile, $errline)
 {
@@ -1425,6 +1427,7 @@ function get_param_string($name, $default = false, $no_security = false)
  * @param  boolean $integer Whether the parameter has to be an integer
  * @param  ?boolean $posted Whether the parameter is a POST parameter (null: undetermined)
  * @return string The value of the parameter
+ * @ignore
  */
 function __param($array, $name, $default, $integer = false, $posted = false)
 {
@@ -1762,6 +1765,7 @@ function javascript_tempcode($position = null)
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
  * @param  ?boolean $do_enforce Whether to generate the cached file if not already cached (null: from what is cached)
+ * @ignore
  */
 function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobile = null, $do_enforce = true)
 {
@@ -1985,6 +1989,7 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
  * @param  boolean $do_enforce Whether to generate the cached file if not already cached
+ * @ignore
  */
 function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context = null, $theme = null, $_seed = null, $_text_only = null, $_minify = null, $_https = null, $_mobile = null, $do_enforce = true)
 {
@@ -2099,6 +2104,7 @@ function require_css($css)
  * @param  boolean $https If we are using HTTPs
  * @param  boolean $mobile If we are using mobile
  * @return ?ID_TEXT Resource name for merged file, which we assume is compiled (as this function makes it) (null: we don't know what is required / race condition)
+ * @ignore
  */
 function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
 {
@@ -2253,7 +2259,7 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
 }
 
 /**
- * Provides a hook for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
+ * Provides an override point for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
  *
  * @param  PATH $filename File/directory name to sync on (full path)
  */
@@ -2273,7 +2279,7 @@ function sync_file($filename)
 }
 
 /**
- * Provides a hook for file-move synchronisation between mirrored servers. Called after any rename or move action.
+ * Provides an override point for file-move synchronisation between mirrored servers. Called after any rename or move action.
  *
  * @param  PATH $old File/directory name to move from (may be full or relative path)
  * @param  PATH $new File/directory name to move to (may be full or relative path)

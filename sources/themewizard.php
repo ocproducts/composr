@@ -923,6 +923,7 @@ function parse_css_colour_expression($textual)
  *
  * @param  array $tokens Tokens.
  * @return ?array Expression tree (null: error).
+ * @ignore
  */
 function _parse_css_colour_expression($tokens)
 {

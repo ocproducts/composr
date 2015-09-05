@@ -626,6 +626,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
  * @param  boolean $recurse Whether to search recursively; i.e. in subdirectories of the type subdirectory
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  array $skip The list of files/directories to skip
+ * @ignore
  */
 function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip)
 {

@@ -736,6 +736,7 @@ DIRECT WORDPRESS DATABASE IMPORT (imports more than RSS import can)
  * Get data from the Wordpress DB
  *
  * @return array Result structure
+ * @ignore
  */
 function _get_wordpress_db_data()
 {
@@ -837,6 +838,7 @@ function import_foreign_news_html($html, $force_linebreaks = false)
  * @param  boolean $download_images Whether to download images to local
  * @param  string $data HTML (passed by reference)
  * @param  array $imported_news Imported items, in Composr's RSS-parsed format [list of maps containing full_url and import_id] (used to fix links)
+ * @ignore
  */
 function _news_import_grab_images_and_fix_links($download_images, &$data, $imported_news)
 {
@@ -877,6 +879,7 @@ function _news_import_grab_images_and_fix_links($download_images, &$data, $impor
  *
  * @param  string $data HTML (passed by reference)
  * @param  URLPATH $url URL
+ * @ignore
  */
 function _news_import_grab_image(&$data, $url)
 {

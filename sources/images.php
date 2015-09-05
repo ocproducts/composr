@@ -25,6 +25,7 @@
  *
  * @param  array $param Symbol parameters
  * @return array A pair: Image dimensions
+ * @ignore
  */
 function _symbol_image_dims($param)
 {
@@ -87,6 +88,7 @@ function _symbol_image_dims($param)
  *
  * @param  array $param Symbol parameters
  * @return string Rendered symbol
+ * @ignore
  */
 function _symbol_thumbnail($param)
 {
@@ -565,6 +567,7 @@ function convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_er
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
  * @return boolean Success
+ * @ignore
  */
 function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {

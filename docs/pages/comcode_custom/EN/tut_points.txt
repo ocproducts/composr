@@ -89,12 +89,12 @@ The queue is accessed via the Staff Checklist on the Admin Zone front page. Note
 
 Messages may be manually added in the Admin Zone, but regular users will be adding them via the Point Store. When that happens, you are notified of the new message have been added.
 
-([i]Formerly known as &ldquo;flagrant text messages&rdquo;[/i])
+For the community billboard to display, you must place the symbol code, [tt]{$COMMUNITY_BILLBOARD}[/tt] into a template or page. Commonly this would be into [tt]GLOBAL_HTML_WRAP.tpl[/tt] so that it can show somewhere in the page footer.
 
 [media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/points_community_billboard_manage.png[/media]
 [media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/points_community_billboard_add.png[/media]
 [media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/points_default_community_billboard.png[/media]
-[media width="150" description="The community billboard message is shown in this space" float="left"]data_custom/images/docs/points_community_billboard_actual.png[/media]
+[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/points_community_billboard_actual.png[/media]
 [/surround]
 [title="3"]E-mail accounts and the Point Store[/title]
 

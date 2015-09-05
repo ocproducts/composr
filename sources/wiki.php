@@ -737,6 +737,7 @@ function create_selection_list_wiki_page_tree($select = null, $id = null, $bread
  * @param  boolean $use_compound_list Whether to create a compound list (gets pairs: Tempcode, and comma-separated list of children)
  * @param  boolean $ins_format Whether to use titles in IDs after a ! (used on tree edit page)
  * @return mixed Tempcode for the list / pair of Tempcode and compound
+ * @ignore
  */
 function _create_selection_list_wiki_page_tree(&$wiki_seen, $select, $id, $breadcrumbs, $title, $use_compound_list = false, $ins_format = false)
 {

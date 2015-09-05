@@ -107,6 +107,7 @@ function page_link_as_url($url)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
  * @param  ?array $exclude A list of parameters to exclude (null: don't exclude any)
  * @return Tempcode The builtup hidden form fields
+ * @ignore
  */
 function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
 {
@@ -150,6 +151,7 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
  * @param  ID_TEXT $key Key name to put value under
  * @param  mixed $value Value (string or array)
  * @return string The builtup hidden form fields
+ * @ignore
  */
 function _fixed_post_parser($key, $value)
 {
@@ -183,6 +185,7 @@ function _fixed_post_parser($key, $value)
  *
  * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
  * @return Tempcode The builtup hidden form fields
+ * @ignore
  */
 function _build_keep_post_fields($exclude = null)
 {
@@ -215,6 +218,7 @@ function _build_keep_post_fields($exclude = null)
  *
  * @param  URLPATH $url_full The URL to convert to an encoded filename
  * @return string A usable filename based on the URL
+ * @ignore
  */
 function _url_to_filename($url_full)
 {
@@ -245,6 +249,7 @@ function _url_to_filename($url_full)
  * @param  URLPATH $url The URL to fully qualified
  * @param  URLPATH $url_base The base-URL
  * @return URLPATH Fully qualified URL
+ * @ignore
  */
 function _qualify_url($url, $url_base)
 {
@@ -292,6 +297,7 @@ function _qualify_url($url, $url_base)
  *
  * @param  URLPATH $url The value to convert
  * @return ?PATH File path (null: is not local)
+ * @ignore
  */
 function _convert_url_to_path($url)
 {
@@ -330,6 +336,7 @@ function _convert_url_to_path($url)
  *
  * @param  URLPATH $in The URL to fix
  * @return URLPATH The fixed URL (or original one if no fix was needed)
+ * @ignore
  */
 function _fixup_protocolless_urls($in)
 {
@@ -372,6 +379,7 @@ function _fixup_protocolless_urls($in)
  * @param  boolean $abs_only Whether to only convert absolute URLs. Turn this on if you're not sure what you're passing is a URL not and you want to be extra safe.
  * @param  boolean $perfect_only Whether to only allow perfect conversions.
  * @return string The page-link (blank: could not convert).
+ * @ignore
  */
 function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 {
@@ -521,6 +529,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
  *
  * @param  string $page The path.
  * @return string The page-link (blank: could not convert).
+ * @ignore
  */
 function _page_path_to_page_link($page)
 {
@@ -692,6 +701,7 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
  * @param  ?string $no_exists_check_for Whether to skip the exists check for a certain moniker (will be used to pass "existing self" for edits) (null: nothing existing to check against).
  * @param  ?string $scope_context Where the moniker will be placed in the moniker URL tree (null: unknown, so make so no duplicates anywhere).
  * @return string Chosen moniker.
+ * @ignore
  */
 function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for = null, $scope_context = null)
 {
@@ -742,6 +752,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
  *
  * @param  string $moniker_src Raw string.
  * @return ID_TEXT Moniker.
+ * @ignore
  */
 function _generate_moniker($moniker_src)
 {
@@ -777,6 +788,7 @@ function _generate_moniker($moniker_src)
  * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
  * @param  string $main Pathless moniker.
  * @return string The fully qualified moniker.
+ * @ignore
  */
 function _give_moniker_scope($page, $type, $id, $zone, $main)
 {

@@ -51,8 +51,10 @@ class Module_admin_trackbacks
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ((get_option('is_on_trackbacks') == '0') || ($GLOBALS['SITE_DB']->query_select_value_if_there('trackbacks', 'COUNT(*)', null, '', true) == 0)) {
-            return null;
+        if ($check_perms) {
+            if ((get_option('is_on_trackbacks') == '0') || ($GLOBALS['SITE_DB']->query_select_value_if_there('trackbacks', 'COUNT(*)', null, '', true) == 0)) {
+                return null;
+            }
         }
 
         return array(

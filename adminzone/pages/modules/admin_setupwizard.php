@@ -449,7 +449,7 @@ class Module_admin_setupwizard
                     $id = $remote_addons[$_mentioned_addon];
                     require_code('uploads');
                     $_POST['url'] = 'http://compo.sr/site/dload.php?id=' . strval($id);
-                    get_url('url', 'file', 'imports/addons', 0, 0, false, '', '', true); // Download it
+                    get_url('url', 'file', 'imports/addons', 0, ADDON_NOT_TAR, false, '', '', true); // Download it
                 }
             }
         }

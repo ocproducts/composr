@@ -183,7 +183,7 @@ class Module_admin
             array('xml_fields', 'filtering'),
             array('banner', 'advert', 'advertising', 'advertise'),
             array('news', 'blogs', 'press release'),
-            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation'), // i.e. Composr validation
+            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible'), // i.e. Composr validation
             array('webstandards', 'check', 'conformance'),
             // ^ We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
             //  sanitisation or check or well-formed (for input data, or transactions)

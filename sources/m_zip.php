@@ -253,6 +253,7 @@ function init__m_zip()
          * @param  PATH $base_path The base path (path to make relative to)
          * @param  PATH $path The path to make relative
          * @return PATH The relative path
+         * @ignore
          */
         function _m_zip_RelPath($base_path, $path)
         {

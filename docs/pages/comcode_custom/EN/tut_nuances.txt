@@ -52,7 +52,7 @@ The forum base URL should not include a script name -- it should be a URL-prefix
 
 [title="2"]Show forum within website[/title]
 
-[media width="150" description="Configuring Composr to generate in-line forum links" float="left"]data_custom/images/docs/nuances_3.png[/media]
+[media width="150" description="Configuring Composr to generate in-line forum links from Admin Zone > Setup > Configuration > Site options > Advanced" float="left"]data_custom/images/docs/nuances_3.png[/media]
 [media width="150" description="The default forum link before you fix it..." float="right"]data_custom/images/docs/nuances_forum_menu_1.png[/media]
 Composr supports integration of your forum into the portal, so that it fits between your menus, and your header and footer. For this to work, Composr loads up the forum on-server, and integrates its XHTML code and CSS into the XHTML code and CSS of Composr; it also relays cookies, to give the illusion that you are interacting directly with the forum code.
 

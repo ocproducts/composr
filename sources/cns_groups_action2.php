@@ -485,6 +485,7 @@ function cns_group_absorb_privileges_of($to, $from)
  * @param  ID_TEXT $table The table holding the permissions.
  * @param  ID_TEXT $id The name of the field in the table that holds the ID.
  * @param  boolean $cns Whether the operation is being carried out over the Conversr driver.
+ * @ignore
  */
 function _cns_group_absorb_privileges_of($to, $from, $table, $id = 'group_id', $cns = false)
 {

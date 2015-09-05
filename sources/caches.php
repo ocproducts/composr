@@ -574,6 +574,7 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
  *
  * @param  array $dets An array of tuples of parameters (as per get_cache_entry, almost)
  * @return array Array of results
+ * @ignore
  */
 function _get_cache_entries($dets)
 {

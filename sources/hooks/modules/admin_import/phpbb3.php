@@ -776,7 +776,7 @@ class Hook_phpbb3
                 }
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']));
 
-                $id_new = cns_make_topic($forum_id, '', $this->convert_topic_emoticon($row['icon_id']), $row['topic_approved'], ($row['topic_status'] == 1) ? 0 : 1, ($row['topic_type'] > 0) ? 1 : 0, ($row['topic_type'] > 2) ? 1 : 0, 0, null, null, false, $row['topic_views']);
+                $id_new = cns_make_topic($forum_id, '', $this->convert_topic_emoticon($row['icon_id']), $row['topic_visibility'], ($row['topic_status'] == 1) ? 0 : 1, ($row['topic_type'] > 0) ? 1 : 0, ($row['topic_type'] > 2) ? 1 : 0, 0, null, null, false, $row['topic_views']);
 
                 import_id_remap_put('topic', strval($row['topic_id']), $id_new);
             }
@@ -848,7 +848,7 @@ class Hook_phpbb3
                     $row['post_username'] = $GLOBALS['CNS_DRIVER']->get_username($member_id);
                 }
 
-                $id_new = cns_make_post($topic_id, $title, $post, 0, $first_post, $row['post_approved'], 0, $row['post_username'], $this->_un_phpbb_ip($row['poster_ip']), $row['post_time'], $member_id, null, $last_edit_time, $last_edit_by, false, false, $forum_id, false);
+                $id_new = cns_make_post($topic_id, $title, $post, 0, $first_post, $row['post_visibility'], 0, $row['post_username'], $this->_un_phpbb_ip($row['poster_ip']), $row['post_time'], $member_id, null, $last_edit_time, $last_edit_by, false, false, $forum_id, false);
 
                 foreach ($attach_id as $i => $_attach_id) {
                     if (!is_null($_attach_id)) {

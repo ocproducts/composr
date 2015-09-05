@@ -165,6 +165,8 @@ function get_username_from_human_name($username)
  */
 function cns_member_external_linker_ask($username, $type, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null)
 {
+    require_lang('cns');
+
     // If somehow, we're not fully started up, or in a messy state
     require_code('urls');
 

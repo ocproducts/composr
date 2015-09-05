@@ -61,6 +61,7 @@ function init__notifications()
  *
  * @param  ID_TEXT $notification_code The notification code to use
  * @return ?object Notification object (null: could not find)
+ * @ignore
  */
 function _get_notification_ob_for_code($notification_code)
 {
@@ -289,6 +290,7 @@ class Notification_dispatcher
  * @param  integer $setting The notification setting
  * @param  ?MEMBER $member_id Member to check for (null: just check globally)
  * @return boolean Whether it is available
+ * @ignore
  */
 function _notification_setting_available($setting, $member_id = null)
 {
@@ -353,6 +355,7 @@ function _notification_setting_available($setting, $member_id = null)
  *
  * @param  MEMBER $to_member_id Member to send to
  * @return integer Normal setting
+ * @ignore
  */
 function _find_member_statistical_notification_type($to_member_id)
 {
@@ -408,6 +411,7 @@ function _find_member_statistical_notification_type($to_member_id)
  * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
  * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
  * @return boolean New $no_cc setting
+ * @ignore
  */
 function _dispatch_notification_to_member($to_member_id, $setting, $notification_code, $code_category, $subject, $message, $from_member_id, $priority, $no_cc, $attachments, $use_real_from)
 {

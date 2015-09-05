@@ -213,6 +213,7 @@ function get_afm_form_fields()
  *
  * @param  boolean $light_fail Whether to simply echo-out errors.
  * @return ~resource The FTP connection (false: not connecting via FTP).
+ * @ignore
  */
 function _ftp_info($light_fail = false)
 {
@@ -325,6 +326,7 @@ function _ftp_info($light_fail = false)
  *
  * @param  boolean $world_access Whether world directory access is required.
  * @return integer The absolute permission.
+ * @ignore
  */
 function _translate_dir_access($world_access)
 {
@@ -345,6 +347,7 @@ function _translate_dir_access($world_access)
  * @param  boolean $world_access Whether world file access is required.
  * @param  ID_TEXT $file_type The file type (blank: don't care).
  * @return integer The absolute permission.
+ * @ignore
  */
 function _translate_file_access($world_access, $file_type = '')
 {
@@ -379,6 +382,7 @@ function _translate_file_access($world_access, $file_type = '')
  *
  * @param  integer $access_int The integer permission.
  * @return string The string version.
+ * @ignore
  */
 function _access_string($access_int)
 {
@@ -390,6 +394,7 @@ function _access_string($access_int)
  *
  * @param  PATH $path Original path.
  * @return PATH Rescoped path.
+ * @ignore
  */
 function _rescope_path($path)
 {
@@ -477,6 +482,7 @@ function afm_make_directory($basic_path, $world_access, $recursive = false)
  * @param  PATH $base The base directory for the search.
  * @param  PATH $at The directory where we are searching under.
  * @return array An array of directories found under this recursive level.
+ * @ignore
  */
 function _get_dir_tree($base, $at = '')
 {

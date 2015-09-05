@@ -174,8 +174,10 @@ class Module_newsletter
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ($GLOBALS['SITE_DB']->query_select_value('newsletters', 'COUNT(*)') == 0) {
-            return array();
+        if ($check_perms) {
+            if ($GLOBALS['SITE_DB']->query_select_value('newsletters', 'COUNT(*)') == 0) {
+                return array();
+            }
         }
         return array(
             'browse' => array('NEWSLETTER_JOIN', 'menu/site_meta/newsletters'),

@@ -90,7 +90,7 @@ if (get_param_integer('save__pages', 1) == 1) {
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
         /*$max_recurse_depth=*/null,
-        /*$options=*/SITEMAP_GEN_NONE,
+        /*$options=*/SITEMAP_GEN_CHECK_PERMS,
         /*$zone=*/'_SEARCH',
         $meta_gather
     );

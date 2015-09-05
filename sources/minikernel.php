@@ -637,6 +637,7 @@ function get_param_string($name, $default = null)
  * @param  boolean $must_integer Whether the parameter has to be an integer
  * @param  boolean $is_post Whether the parameter is a POST parameter
  * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @ignore
  */
 function __param($array, $name, $default, $must_integer = false, $is_post = false)
 {

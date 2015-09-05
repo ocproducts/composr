@@ -252,7 +252,7 @@ function build_sitemap_cache_table()
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
         /*$max_recurse_depth=*/null,
-        /*$options=*/SITEMAP_GEN_NONE,
+        /*$options=*/SITEMAP_GEN_CHECK_PERMS,
         /*$zone=*/'_SEARCH',
         $meta_gather
     );
@@ -263,6 +263,7 @@ function build_sitemap_cache_table()
  * Callback for reference a Sitemap node in the cache.
  *
  * @param  array $node The Sitemap node
+ * @ignore
  */
 function _sitemap_cache_node($node)
 {

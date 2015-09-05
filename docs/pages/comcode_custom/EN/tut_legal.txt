@@ -13,13 +13,6 @@ It is inevitable that some members will break the rules, maliciously or accident
 
 Composr provides a number of default rules pages that can be chosen using the Setup Wizard. The rules page is linked into your menus, and is displayed for enforced agreement when a member joins the site. This page can be edited like any Composr Comcode page.
 
-[title="2"]Legal[/title]
-
-[media width="150" description="The default Composr 'legal' Comcode page" float="right"]data_custom/images/docs/legal_page.png[/media]
-Please note that legislature varies globally, so the information here may not all be applicable; it is biased towards UK law (where ocProducts is based and registered). In addition, ocProducts does not accept any responsibility for you or your site's compliance (or non-compliance!) with any laws: the information here is just an aid, and you may wish to consult a legal representative if you feel there may be complicated legal issues associated with your website.
-
-The sub-sections of this section briefly cover the main legal issues you are likely to need to consider.
-
 [title="3"]Privacy[/title]
 
 If you are a commercial entity, or if you hold sensitive personal data, you are more likely to be affected by privacy laws than others.

@@ -208,6 +208,7 @@ function inspect_plain()
  *
  * @param  array $args Arguments to output
  * @param  boolean $force_plain Whether to force text output
+ * @ignore
  */
 function _inspect($args, $force_plain = false)
 {

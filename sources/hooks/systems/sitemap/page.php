@@ -213,6 +213,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
         $has_entry_points = true;
 
         $require_permission_support = (($options & SITEMAP_GEN_REQUIRE_PERMISSION_SUPPORT) != 0);
+        $check_perms = (($options & SITEMAP_GEN_CHECK_PERMS) != 0);
 
         if (($max_recurse_depth === null) || ($recurse_level < $max_recurse_depth) || (!isset($row[1]))) {
             // Look for entry points to put under this
@@ -222,7 +223,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                 $use_page_groupings = (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0);
 
                 $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
-                    true, // $check_perms
+                    $check_perms, // $check_perms
                     null, // $member_id
                     true, // $support_crosslinks
                     $simplified || $use_page_groupings // $be_deferential

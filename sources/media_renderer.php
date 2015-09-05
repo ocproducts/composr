@@ -223,6 +223,7 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
  * @param  ?MEMBER $source_member Member to run as (null: current member)
  * @return array Template-ready parameters
+ * @ignore
  */
 function _create_media_template_parameters($url, $attributes, $as_admin = false, $source_member = null)
 {

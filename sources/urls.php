@@ -472,6 +472,7 @@ function url_monikers_enabled()
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none).
  * @return string The URL in string format.
+ * @ignore
  */
 function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
@@ -644,6 +645,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
  * @param  ID_TEXT $key Primary field name
  * @param  array $val Array
  * @param  array $vars Flat array to write into
+ * @ignore
  */
 function _handle_array_var_append($key, $val, &$vars)
 {
@@ -672,6 +674,7 @@ function _handle_array_var_append($key, $val, &$vars)
  * @param  array $vars A map of variables to include in our URL
  * @param  boolean $force_index_php Force inclusion of the index.php name into a short URL, so something may tack on extra parameters to the result here
  * @return ?URLPATH The improved URL (null: couldn't do anything)
+ * @ignore
  */
 function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
 {

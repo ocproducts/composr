@@ -238,6 +238,7 @@ function enable_content_translation()
  * Change content translation setting in th config file.
  *
  * @param  boolean $new_setting New setting value (i.e. on or off)
+ * @ignore
  */
 function _update_base_config_for_content_translation($new_setting)
 {

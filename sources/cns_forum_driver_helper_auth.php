@@ -30,6 +30,7 @@
  * @param  string $password_raw The raw password
  * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
  * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+ * @ignore
  */
 function _forum_authorise_login($this_ref, $username, $userid, $password_hashed, $password_raw, $cookie_login = false)
 {

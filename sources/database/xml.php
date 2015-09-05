@@ -100,6 +100,7 @@ function init__database__xml()
  * Get a list of all SQL keywords
  *
  * @return array List of keywords
+ * @ignore
  */
 function _get_sql_keywords()
 {

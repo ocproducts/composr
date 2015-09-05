@@ -253,6 +253,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @return Tempcode The Tempcode generated
+ * @ignore
  */
 function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null)
 {
@@ -1875,6 +1876,7 @@ function in_tag_stack($tag_stack, $tags)
  * @param  integer $len The length of the Comcode
  * @param  LONG_TEXT $comcode The Comcode being parsed
  * @return array A tuple of new parser settings.
+ * @ignore
  */
 function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $pos, $comcode_dangerous, $comcode_dangerous_html, $in_separate_parse_section, $in_html, $in_semihtml, $close, &$len, &$comcode)
 {
@@ -1976,6 +1978,7 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
  * @param  string $list_type List-type code
  * @set    ul a 1
  * @return array The output needed to close the lists, and the new list indentation (always zero). Done like this so we can use 'list' to set both at once in the main parser.
+ * @ignore
  */
 function _close_open_lists($list_indent, $list_type)
 {

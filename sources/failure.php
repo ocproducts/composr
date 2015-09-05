@@ -118,6 +118,7 @@ function zip_error($errno, $mzip = false)
  * @param  ?string $ret The value of the parameter deemed invalid (null: we known we can't recover)
  * @param  boolean $posted Whether the parameter is a POST parameter
  * @return string Fixed parameter (usually the function won't return [instead will give an error], but in special cases, it can filter an invalid return)
+ * @ignore
  */
 function _param_invalid($name, $ret, $posted)
 {
@@ -210,6 +211,7 @@ function improperly_filled_in_post($name)
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
  * @param  integer $syslog_type The syslog type (used by GAE logging)
+ * @ignore
  */
 function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type)
 {
@@ -277,6 +279,7 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
  * @param  boolean $provide_back Whether to provide a back button
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
  * @return Tempcode The warn page
+ * @ignore
  */
 function _warn_screen($title, $text, $provide_back = true, $support_match_key_messages = false)
 {
@@ -306,6 +309,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
  *
  * @param  string $text The error message
  * @return string Sanitised error message
+ * @ignore
  */
 function _sanitise_error_msg($text)
 {
@@ -320,6 +324,7 @@ function _sanitise_error_msg($text)
  * @param  ID_TEXT $template Name of the terminal page template
  * @param  boolean $support_match_key_messages ?Whether match key messages / redirects should be supported (null: detect)
  * @return mixed Never returns (i.e. exits)
+ * @ignore
  */
 function _generic_exit($text, $template, $support_match_key_messages = false)
 {
@@ -434,6 +439,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
  *
  * @param  IP $ip IP address
  * @return IP Normalised address
+ * @ignore
  */
 function _inet_pton($ip)
 {
@@ -503,6 +509,7 @@ function ip_cidr_check($ip, $cidr)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting
  * @param  boolean $instant_ban Whether a ban should be immediate
  * @return mixed Never returns (i.e. exits)
+ * @ignore
  */
 function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b = '', $silent = false, $instant_ban = false)
 {
@@ -882,6 +889,7 @@ function get_webservice_result($error_message)
  * @param  mixed $text The error message (string or Tempcode)
  * @param  boolean $return Whether to return
  * @return mixed Never returns (i.e. exits)
+ * @ignore
  */
 function _fatal_exit($text, $return = false)
 {
@@ -1244,6 +1252,7 @@ function get_html_trace()
  * @param  boolean $only_if_zone Only if it is a zone-level match-key
  * @param  boolean $only_text_match Whether to only consider text matches, not match-key matches
  * @return ?Tempcode The message (null: no change)
+ * @ignore
  */
 function _look_for_match_key_message($natural_text, $only_if_zone = false, $only_text_match = false)
 {
@@ -1314,6 +1323,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
  * @param  ID_TEXT $class The class of error (e.g. PRIVILEGE)
  * @param  string $param The parameter given to the error message
  * @param  boolean $force_login Force the user to login (even if perhaps they are logged in already)
+ * @ignore
  */
 function _access_denied($class, $param, $force_login)
 {

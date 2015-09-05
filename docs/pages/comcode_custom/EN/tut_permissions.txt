@@ -33,6 +33,7 @@ To edit permissions in Composr you can either use:
 
 {!permissions:DOC_PERMISSIONS_TREE}
 
+[media width="150" description="Making mass changes in the Permissions Tree Editor" float="right"]data_custom/images/docs/permissions_Mass-checkbox-change.gif[/media]
 The remainder details the separate permission setting interfaces in different parts of Composr. The concepts from below are relevant to using the Permissions Tree Editor, as they detail what controls are embedded at different points within the tree. We do recommend using the Permissions Tree Editor directly though, unless you happen to be working directly with the zone/category/page at the time of setting permissions for it.
 
 [title="3"]Editing zone permissions[/title]
@@ -57,7 +58,7 @@ You will be presented with the zone editing form. Near the bottom are the option
 [media width="150" description="Editing page permissions" float="right"]data_custom/images/docs/permissions_Page-permissions-grid.png[/media]
 For each page you can set which usergroups can access (view) it. For modules you can also often override certain privileges for the content handled within those modules.
 
-Go to the Admin Zone, then the 'Structure' section, then the 'Permissions' icon. Choose 'Page permissions'. To edit a page's permissions manually, you need to go to the page permissions page. Once more, choose a zone to edit, and submit the form. You will be presented with a checkbox-grid of the permissions for every page in your selected zone. Along the top are the names of all the usergroups on your site, and down the side are the names of all the pages in your selected zone. In the middle is a checkbox-grid for the permissions, and down the right is a column of buttons for inverting a whole row of checkboxes at once ([url="image" rel="lightbox"]data_custom/images/docs/permissions_Mass-checkbox-change.gif[/url]).
+Go to the Admin Zone, then the 'Structure' section, then the 'Permissions' icon. Choose 'Page permissions'. To edit a page's permissions manually, you need to go to the page permissions page. Once more, choose a zone to edit, and submit the form. You will be presented with a checkbox-grid of the permissions for every page in your selected zone. Along the top are the names of all the usergroups on your site, and down the side are the names of all the pages in your selected zone. In the middle is a checkbox-grid for the permissions, and down the right is a column of buttons for inverting a whole row of checkboxes at once ([url="image" rel="lightbox"]data_custom/images/docs/permissions_Mass-checkbox-change2.gif[/url]).
 
 Once all the access permissions are set as appropriate, submit the form.
 [/surround]

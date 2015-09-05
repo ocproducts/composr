@@ -26,6 +26,7 @@
  * @param  string $title The title of the hyperlink
  * @param  boolean $new_window Whether to use a new window
  * @return Tempcode The encoded version
+ * @ignore
  */
 function _urlise_lang($string, $url, $title, $new_window)
 {
@@ -37,6 +38,10 @@ function _urlise_lang($string, $url, $title, $new_window)
     $section = substr($string, $a + 2, $b - $a - 2);
     $prior = substr($string, 0, $a);
     $after = substr($string, $b + 2);
+    if ($after === false) {
+        $after = '';
+    }
+
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($section);
         ocp_mark_as_escaped($prior);

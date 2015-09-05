@@ -305,6 +305,7 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
  * @param  array $list A list of items (each item is a pair or a triple: <option,url[,field name=do_lang(option)]> ; url is a pair or a triple or a quarto also: <page,map[,zone[,warning]]>)
  * @param  Tempcode $title The title for the section
  * @return Tempcode The do next manager section
+ * @ignore
  */
 function _do_next_section($list, $title)
 {

@@ -595,6 +595,7 @@ function get_catalogue_category_entry_buildup($category_id, $catalogue_name, $ca
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
@@ -1143,6 +1144,7 @@ function get_catalogue_entry_field_values($catalogue_name, $entry_id, $only_fiel
  * @param  mixed $entry_id The ID of the entry we are getting OR the row
  * @param  ?array $only_field_ids A list of field IDs that we are limiting ourselves to (null: get ALL fields)
  * @param  array $target Save the result into here
+ * @ignore
  */
 function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$target)
 {
@@ -1215,6 +1217,7 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
  * @set    short long
  * @param  ?array $only_field_ids A list of field IDs that we are limiting ourselves to (null: get ALL fields)
  * @return ?array The row (null: not found)
+ * @ignore
  */
 function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only_field_ids = null)
 {

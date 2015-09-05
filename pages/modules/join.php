@@ -54,7 +54,7 @@ class Module_join
         if (get_forum_type() != 'cns') {
             return null;
         }
-        if (!is_guest()) {
+        if ($check_perms && !is_guest($member_id)) {
             return null;
         }
 

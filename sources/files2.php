@@ -114,6 +114,7 @@ function make_missing_directory($dir)
  * Discern the cause of a file-write error, and show an appropriate error message.
  *
  * @param PATH $path File path that could not be written (full path, not relative)
+ * @ignore
  */
 function _intelligent_write_error($path)
 {
@@ -134,6 +135,7 @@ function _intelligent_write_error($path)
  *
  * @param  PATH $path File path that could not be written
  * @return Tempcode Message
+ * @ignore
  */
 function _intelligent_write_error_inline($path)
 {
@@ -168,6 +170,7 @@ function cms_get_temp_dir()
  *
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
+ * @ignore
  */
 function _cms_tempnam($prefix)
 {
@@ -193,6 +196,7 @@ function _cms_tempnam($prefix)
  * Provides a hook for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
  *
  * @param  PATH $filename File/directory name to sync on (full path)
+ * @ignore
  */
 function _sync_file($filename)
 {
@@ -231,6 +235,7 @@ function _sync_file($filename)
  *
  * @param  PATH $old File/directory name to move from (may be full or relative path)
  * @param  PATH $new File/directory name to move to (may be full or relative path)
+ * @ignore
  */
 function _sync_file_move($old, $new)
 {
@@ -255,6 +260,7 @@ function _sync_file_move($old, $new)
  * @param  PATH $dir The pathname to the directory to delete
  * @param  boolean $default_preserve Whether to preserve files there by default
  * @param  boolean $just_files Whether to just delete files
+ * @ignore
  */
 function _deldir_contents($dir, $default_preserve = false, $just_files = false)
 {
@@ -755,6 +761,7 @@ function check_shared_space_usage($extra)
  * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
  * @param  string $raw_content_type The content type to use if a raw HTTP post
  * @return ?string The data downloaded (null: error)
+ * @ignore
  */
 function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
 {
@@ -1722,6 +1729,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
  * Read in any HTTP headers from an HTTP line, that we probe for.
  *
  * @param  string $line The line
+ * @ignore
  */
 function _read_in_headers($line)
 {
@@ -1886,6 +1894,7 @@ function get_webpage_meta_details($url)
  *
  * @param  string $out The HTTP stream we will look through
  * @return string Same as $out
+ * @ignore
  */
 function _detect_character_encoding($out)
 {

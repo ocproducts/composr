@@ -74,6 +74,7 @@ function export_to_xml($tables = null)
  * @param  string $in XML in
  * @param  integer $depth The tab depth
  * @return string XML out
+ * @ignore
  */
 function _tab($in, $depth = 1)
 {
@@ -87,6 +88,7 @@ function _tab($in, $depth = 1)
  *
  * @param  ID_TEXT $table Table to export
  * @return string Exported data in XML format
+ * @ignore
  */
 function _export_table_to_xml($table)
 {
@@ -143,6 +145,7 @@ function _export_table_to_xml($table)
  * @param  ID_TEXT $id_field ID field name
  * @param  ID_TEXT $parent_field Parent ID field name
  * @return string Exported data in XML format
+ * @ignore
  */
 function _export_recurse_for_children($table, $row, $db_fields, $seo_type_code, $permissions_type_code, $id_field, $parent_field)
 {
@@ -169,6 +172,7 @@ function _export_recurse_for_children($table, $row, $db_fields, $seo_type_code, 
  * @param  ?ID_TEXT $id_field ID field name (null: N/A)
  * @param  boolean $include_end Whether to include the end tag for the row
  * @return string Exported data in XML format
+ * @ignore
  */
 function _export_xml_row($table, $row, $db_fields, $seo_type_code, $permissions_type_code, $id_field, $include_end = true)
 {
@@ -409,6 +413,7 @@ function import_from_xml($xml_data, $delete_missing_rows = false)
  * @param  array $insert_ids The insert IDs thus far
  * @param  ?AUTO_LINK $last_parent_id The ID of the auto-inserted parent to this row (null: N/A)
  * @return array List of operations performed
+ * @ignore
  */
 function _import_xml_row($parsed, &$all_existing_data, $all_fields, $all_id_fields, $table, &$insert_ids, $last_parent_id = null)
 {

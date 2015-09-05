@@ -220,17 +220,19 @@ class Module_banners
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ($check_perms && is_guest($member_id)) {
-            return array();
-        }
+        if ($check_perms) {
+            if (is_guest($member_id)) {
+                return array();
+            }
 
-        if (is_null($member_id)) {
-            $member_id = get_member();
-        }
-        if (!has_zone_access($member_id, 'adminzone')) {
-            $num_banners_owned = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('submitter' => $member_id));
-            if ($num_banners_owned == 0) {
-                return null;
+            if (is_null($member_id)) {
+                $member_id = get_member();
+            }
+            if (!has_zone_access($member_id, 'adminzone')) {
+                $num_banners_owned = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('submitter' => $member_id));
+                if ($num_banners_owned == 0) {
+                    return null;
+                }
             }
         }
 

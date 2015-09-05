@@ -1495,6 +1495,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
  *
  * @param  string $search_filter The search string
  * @return array Words to search under the boolean operator, words that must be included, words that must not be included.
+ * @ignore
  */
 function _boolean_search_prepare($search_filter)
 {

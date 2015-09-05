@@ -316,6 +316,7 @@ function is_non_human_email($subject, $body, $full_header)
  *
  * @param  array $matches preg Matches
  * @return string The result
+ * @ignore
  */
 function _convert_text_quote_to_comcode($matches)
 {
@@ -327,6 +328,7 @@ function _convert_text_quote_to_comcode($matches)
  *
  * @param  object $structure Structure
  * @return string Mime type
+ * @ignore
  */
 function _imap_get_mime_type($structure)
 {
@@ -349,6 +351,7 @@ function _imap_get_mime_type($structure)
  * @param  ?object $structure IMAP message structure (null: look up)
  * @param  string $part_number Message part number (blank: root)
  * @return ?string The message part (null: could not find one)
+ * @ignore
  */
 function _imap_get_part($stream, $msg_number, $mime_type, &$attachments, &$attachment_size_total, $structure = null, $part_number = '')
 {

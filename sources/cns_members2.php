@@ -31,6 +31,7 @@
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select, $filter_key, $field_val, $db_fields, $table_join_code)
 {

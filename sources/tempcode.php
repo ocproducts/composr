@@ -1453,7 +1453,7 @@ class Tempcode
             $this->children = array();
         }
 
-        $result = Tempcode_include($file); // We don't eval on this because we want it to potentially be op-code cached by e.g. Zend Accelerator
+        $result = tempcode_include($file); // We don't eval on this because we want it to potentially be op-code cached by e.g. Zend Accelerator
         if (!is_array($result)) {
             return false; // May never get here, as PHP fatal errors can't be suppressed or skipped over
         }
@@ -2014,6 +2014,7 @@ class Tempcode
  * @param  string $parameters Parameters
  * @param  string $code Function code
  * @return string The function reference
+ * @ignore
  */
 function recall_named_function($id, $parameters, $code)
 {
@@ -2029,8 +2030,9 @@ function recall_named_function($id, $parameters, $code)
  *
  * @param  PATH $filepath The filename of the file to include.
  * @return mixed Success status or returned value.
+ * @ignore
  */
-function Tempcode_include($filepath)
+function tempcode_include($filepath)
 {
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
@@ -2052,6 +2054,7 @@ function Tempcode_include($filepath)
  * @param  ?array $parameters Evaluation parameters (null: N/A)
  * @param  ?ID_TEXT $cl Language (null: N/A)
  * @return string Result
+ * @ignore
  */
 function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
 {
@@ -2083,6 +2086,7 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
  * @param  ?mixed $b Second parameter (null: null/none)
  * @param  ?mixed $c Third parameter (null: null/none)
  * @return string Result
+ * @ignore
  */
 function debug_call_user_func($function, $a, $b = null, $c = null)
 {

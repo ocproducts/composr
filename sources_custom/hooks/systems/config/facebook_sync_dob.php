@@ -28,7 +28,7 @@ class Hook_config_facebook_sync_dob
         return array(
             'human_name' => 'FACEBOOK_SYNC_DOB',
             'type' => 'tick',
-            'category' => 'USERS',
+            'category' => 'COMPOSR_APIS',
             'group' => 'FACEBOOK_SYNDICATION',
             'explanation' => 'CONFIG_OPTION_facebook_sync_dob',
             'shared_hosting_restricted' => '0',

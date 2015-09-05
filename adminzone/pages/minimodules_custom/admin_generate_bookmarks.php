@@ -49,7 +49,7 @@ $root = retrieve_sitemap_node(
     /*$valid_node_types=*/array('root', 'zone', 'page_grouping', 'page', 'comcode_page'),
     /*$child_cutoff=*/null,
     /*$max_recurse_depth=*/null,
-    /*$options=*/SITEMAP_GEN_NONE,
+    /*$options=*/SITEMAP_GEN_CHECK_PERMS,
     /*$zone=*/'_SEARCH'
 );
 

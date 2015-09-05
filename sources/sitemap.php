@@ -90,6 +90,7 @@ function init__sitemap()
     define('SITEMAP_GEN_NO_EMPTY_PAGE_LINKS', 32); // When iteratively expanding we need to make sure this is set, otherwise we won't be able to expand everything. But when generating menus we do not want it set.
     define('SITEMAP_GEN_KEEP_FULL_STRUCTURE', 64); // Avoid merging structure together to avoid page-link duplication.
     define('SITEMAP_GEN_COLLAPSE_ZONES', 128); // Simulate zone collapse in the Sitemap.
+    define('SITEMAP_GEN_CHECK_PERMS', 256); // Check permissions when building up nodes.
 
     // Defining how the content-selection list should be put together
     define('CSL_PERMISSION_VIEW', 0);
@@ -1150,6 +1151,7 @@ function create_selection_list($root_page_link, $under_only = false, $default = 
     }
 
     $options = SITEMAP_GEN_NONE;
+    $options |= SITEMAP_GEN_CHECK_PERMS;
     if ($consider_validation) {
         $options |= SITEMAP_GEN_CONSIDER_VALIDATION;
     }
@@ -1184,6 +1186,7 @@ function create_selection_list($root_page_link, $under_only = false, $default = 
  * @param  ?mixed $filter_func Filter function for limiting what rows will be included (null: none).
  * @param  integer $depth Recursion depth.
  * @return string Compound list.
+ * @ignore
  */
 function _create_selection_list(&$out, $node, $default, $valid_selectable_content_types, $check_permissions_against, $check_permissions_for, $only_owned, $use_compound_list, $filter_func, $depth = 0)
 {

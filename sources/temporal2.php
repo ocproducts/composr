@@ -37,6 +37,7 @@ function make_nice_timezone_name($in)
  * Get a list of timezones.
  *
  * @return array Timezone (map between boring-style and human-readable name). Sorted in offset order then likelihood orde.
+ * @ignore
  */
 function _get_timezone_list()
 {
@@ -385,6 +386,7 @@ function get_input_date_components($stub, $year = null, $month = null, $day = nu
  * @param  boolean $get_also Whether to allow over get parameters also
  * @param  boolean $do_timezone_conversion Whether to do timezone conversion
  * @return ?TIME The timestamp of the date (null: no input date was chosen)
+ * @ignore
  */
 function _get_input_date($stub, $get_also = false, $do_timezone_conversion = true)
 {

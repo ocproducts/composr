@@ -77,6 +77,8 @@ function sitemap_script_loading()
     $options = SITEMAP_GEN_NO_EMPTY_PAGE_LINKS;
     if ($permissions_needed) {
         $options |= SITEMAP_GEN_REQUIRE_PERMISSION_SUPPORT;
+    } else {
+        $options |= SITEMAP_GEN_CHECK_PERMS;
     }
     if (get_param_integer('label_content_types', 0) == 1) {
         $options |= SITEMAP_GEN_LABEL_CONTENT_TYPES;
@@ -86,7 +88,8 @@ function sitemap_script_loading()
     }
 
     $max_recurse_depth = get_param_integer('max_recurse_depth', $requesting_root ? 1 : 2/*need children of requested level*/) + 1 /*So we know whether to show expansion option*/;
-    $node = retrieve_sitemap_node($page_link,
+    $node = retrieve_sitemap_node(
+        $page_link,
         /*$callback=*/null,
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
@@ -107,11 +110,11 @@ function sitemap_script_loading()
     }
 
     // Mark parent nodes for pre-expansion (we guess a bit about what there may be, it doesn't matter if we guess some wrong ones)
+    echo "\n" . '<expand></expand>';
+    echo "\n" . '<expand>:</expand>';
     if ((!is_null($default)) && ($default != '') && (strpos($default, ':') !== false)) {
         $parts = explode(':', $default);
         $buildup = '';
-        echo "\n" . '<expand></expand>';
-        echo "\n" . '<expand>:</expand>';
         foreach ($parts as $part) {
             if ($buildup != '') {
                 $buildup .= ':';
@@ -133,6 +136,7 @@ function sitemap_script_loading()
  * @param  array $node The Sitemap node.
  * @param  boolean $permissions_needed Whether we need selectable nodes to support some selectable permissions.
  * @param  integer $recurse_level How deep in recursion we are.
+ * @ignore
  */
 function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed, $recurse_level = 0)
 {
@@ -266,6 +270,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
  * @param  array $groups Global map of usergroups (ID => name).
  * @param  array $node The sitemap node.
  * @return ?array A map of set access (group => N/A) (null: no view permissions for this node).
+ * @ignore
  */
 function _get_view_access_for_node($admin_groups, $groups, $node)
 {
@@ -311,6 +316,7 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
  * @param  array $groups Global map of usergroups (ID => name).
  * @param  array $node The sitemap node.
  * @return ?array A map of set privileges (group => (privileges => value)) (null: no view permissions for this node).
+ * @ignore
  */
 function _get_privileges_for_node($admin_groups, $groups, $node)
 {
@@ -361,6 +367,7 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
  * @param  array $groups Global map of usergroups (ID => name).
  * @param  array $_privilege_access Privilege database rows
  * @return array A map of set privileges (group => (privileges => value)).
+ * @ignore
  */
 function _organise_loaded_privileges($admin_groups, $groups, $_privilege_access)
 {
@@ -379,6 +386,7 @@ function _organise_loaded_privileges($admin_groups, $groups, $_privilege_access)
  *
  * @param  ?ID_TEXT $privilege_page The privilege page (null: interesting ones we want to allow specification on the root sitemap node).
  * @return array A map of privileges that are overridable; privilege to 0 or 1. 0 means "not category overridable". 1 means "category overridable".
+ * @ignore
  */
 function _get_overridable_privileges_for_privilege_page($privilege_page)
 {

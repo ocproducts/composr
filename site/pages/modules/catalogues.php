@@ -242,7 +242,7 @@ class Module_catalogues
             $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
 
             // Projects
-            actual_add_catalogue('projects', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), C_DT_FIELDMAPS, 0, '', 30);
+            actual_add_catalogue('projects', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), '', C_DT_FIELDMAPS, 0, '', 30);
             $fields = array(
                 array('NAME', 'DESCRIPTION_NAME', 'short_trans', 1, 1, ''),
                 array('MAINTAINER', 'DESCRIPTION_MAINTAINER', 'member', 0, 1, '!'),
@@ -276,7 +276,7 @@ class Module_catalogues
             }
 
             // FAQs
-            actual_add_catalogue('faqs', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_FAQS_DESCRIPTION', true, 3), C_DT_FIELDMAPS, 0, '', 0);
+            actual_add_catalogue('faqs', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), '', C_DT_FIELDMAPS, 0, '', 0);
             $fields = array(
                 array('QUESTION', 'DESCRIPTON_QUESTION', 'short_trans', 0, 1, 1, ''),
                 array('ANSWER', '_DESCRIPTION_ANSWER', 'long_trans', 0, 1, 1, ''),
@@ -292,7 +292,7 @@ class Module_catalogues
             }
 
             // Contacts
-            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_CONTACTS_DESCRIPTION', true, 3), C_DT_FIELDMAPS, 0, '', 30);
+            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), '', C_DT_FIELDMAPS, 0, '', 30);
             $fields = array(
                 array('CONTACT_FIRST_NAME', '', 'short_text', 0, 1),
                 array('CONTACT_LAST_NAME', '', 'short_text', 1, 1),
@@ -313,9 +313,9 @@ class Module_catalogues
             }
             actual_add_catalogue_category('contacts', lang_code_to_default_content('cc_title', 'CONTACTS', false, 2), '', '', null, '');
 
+            // Products
             actual_add_catalogue('products', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PRODUCTS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PRODUCTS_DESCRIPTION', false, 2), C_DT_GRID, 1, '', 0, 1);
             $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'products'));
-
             $fields = array(
                 //     Name  Description  Type  Defines order  Required  Visible  Searchable
                 array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1),
@@ -329,7 +329,6 @@ class Module_catalogues
                 array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0),
                 array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1)
             );
-
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field('products', // $c_name
                     lang_code_to_default_content('cf_name', $field[0], false, 3), // $name
@@ -345,7 +344,6 @@ class Module_catalogues
                     array_key_exists(5, $field) ? $field[5] : 0 // $put_in_search
                 );
             }
-
             foreach (array_keys($groups) as $group_id) {
                 $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($cat_id), 'group_id' => $group_id));
                 $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'products', 'group_id' => $group_id));

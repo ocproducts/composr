@@ -464,6 +464,7 @@ function unparse_filtercode($parsed)
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _fields_api_filtercode_named($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
@@ -511,6 +512,7 @@ function _fields_api_filtercode_named($db, $info, $catalogue_name, &$extra_join,
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _fields_api_filtercode($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
@@ -581,6 +583,7 @@ function generate_filtercode_join_key_from_string($str)
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {

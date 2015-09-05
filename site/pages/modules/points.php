@@ -170,6 +170,8 @@ class Module_points
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MEMBER_POINT_FIND'))));
 
             $this->title = get_screen_title('MEMBER_POINT_FIND');
+
+            breadcrumb_set_self(do_lang_tempcode('RESULTS'));
         }
 
         if ($type == 'give') {

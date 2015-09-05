@@ -194,7 +194,7 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
 }
 
 /**
- * Delete a zones database stuff.
+ * Delete a zone's database stuff.
  *
  * @param  ID_TEXT $zone The name of the zone
  */

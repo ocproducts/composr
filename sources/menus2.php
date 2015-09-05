@@ -383,6 +383,7 @@ function copy_from_sitemap_to_new_menu($target_menu, $source)
  * @param  array $node Sitemap node, containing children.
  * @param  integer $order Sequence order to save with.
  * @param  ?AUTO_LINK $parent Menu parent ID (null: root).
+ * @ignore
  */
 function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = null)
 {

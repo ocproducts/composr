@@ -173,6 +173,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
  * @param  ID_TEXT $type The type the attachment will be used for (e.g. download)
  * @param  ID_TEXT $id The ID the attachment will be used for
  * @param  object $connection The database connection to use
+ * @ignore
  */
 function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
 {
@@ -234,6 +235,7 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
  * @param  ID_TEXT $id The ID the attachment will be used for
  * @param  array $matches_extract Reg-exp grabbed parameters from the extract marker attachment (we will re-use them for each individual attachment)
  * @param  object $connection The database connection to use
+ * @ignore
  */
 function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_extract, $connection)
 {
@@ -408,6 +410,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
 
 /**
  * Check that not too many attachments have been uploaded for the member submitting.
+ * @ignore
  */
 function _check_attachment_count()
 {

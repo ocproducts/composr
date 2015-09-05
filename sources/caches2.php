@@ -24,6 +24,7 @@
  * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
  * @param  ?MEMBER $member Member to only decache for (null: no limit)
+ * @ignore
  */
 function _decache($cached_for, $identifier = null, $member = null)
 {
