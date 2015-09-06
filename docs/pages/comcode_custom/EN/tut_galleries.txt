@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Providing galleries[/title]
 
+[media width="150" description="An image in a gallery" float="right"]data_custom/images/docs/gallery_view_image.png[/media]
 {!galleries:DOC_GALLERIES} This tutorial describes the basic gallery features, and how to use them.
 
 [contents]decimal,lower-alpha[/contents]

@@ -313,7 +313,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 // Cache files
                                 'lcd' => '(caches|lang_cached)/.*', // LEGACY
                                 'gcd' => '(caches|persistent_cache|persistant_cache)/.*', // LEGACY
-                                'htm' => 'caches/guest_pages/.*',
+                                'htm' => 'caches/guest_pages',
+                                'xml' => 'caches/guest_pages',
                                 'tcp' => 'themes/[^/]*/templates_cached/.*',
                                 'tcd' => 'themes/[^/]*/templates_cached/.*',
                                 'css' => 'themes/[^/]*/templates_cached/.*',

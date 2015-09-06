@@ -216,6 +216,7 @@ There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which 
 [title="3"]Criticising language packs[/title]
 
 [media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/intl_crit_choose.png[/media]
+[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/intl_crit_screen.png[/media]
 {!lang:DOC_CRITICISE_LANGUAGE_PACK}
 
 It is generally better to look at outstanding translation tasks via Transifex. We update the source strings on there with each Composr patch release.
@@ -333,6 +334,13 @@ If you find that the vertical text shown on permission editing interfaces is inc
 This is known to happen with Russian characters. The solution is to upload [tt]Courier New Bold Italic.ttf[/tt] from your own computer to [tt]data_custom/fonts/Courier New Bold Italic.ttf[/tt]. We would distribute this file with Composr, except we don't have a license to; however if you have a copy of Windows or Mac OS you should have your own licensed copy of this file.
 
 [i]This issue is less relevant as it once was, as modern web browsers can render vertical text directly.[/i]
+
+[title="2"]Exporting language packs[/title]
+
+[surround]
+[media width="150" description="Exporting an addon" float="right"]data_custom/images/docs/intl_pack.png[/media]
+If you wish to directly distribute your translation as an addon, you can export it as such. Most translators will not want to bother to do this, as having users actively using Transifex directly will have the side-effect of encouraging collaboration. However for languages that have very high-quality release-ready translations an addon is a good thing to provide users.
+[/surround]
 
 [concepts
  1_key="language string"   1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"

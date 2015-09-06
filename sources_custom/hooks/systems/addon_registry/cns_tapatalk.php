@@ -383,7 +383,7 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
             'mobiquo/smartbanner/images/wp-v-bg.jpg',
             'mobiquo/smartbanner/images/wrt-h-bg.jpg',
             'mobiquo/smartbanner/images/wrt-v-bg.jpg',
-            'themes/default/text_custom/TAPATALK_POST_WRAPPER.tpl',
+            'themes/default/text_custom/TAPATALK_POST_WRAPPER.txt',
         );
     }
 }

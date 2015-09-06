@@ -9,6 +9,7 @@ rm -f themes/*/templates_cached/*/*.gz
 rm -f safe_mode_temp/*.dat
 rm -f caches/lang/*/*.lcd
 find caches -name "*.gcd" -exec rm -f {} \;
+find caches -name "*.xml" -exec rm -f {} \;
 find caches -name "*.htm" -exec rm -f {} \;
 if [ -e "data_custom/failover_rewritemap.txt" ]; then
 	echo > data_custom/failover_rewritemap.txt
@@ -17,11 +18,16 @@ fi
 echo $'\n\ndefine(\'DO_PLANNED_DECACHE\', true);' >> _config.php
 
 if [ -e "sites" ]; then
-   find . -name "*.tcd" -exec rm -f {} \;
-   find . -name "*.tcp" -exec rm -f {} \;
-   find . -name "*.lcd" -exec rm -f {} \;
-   find sites -name "*.js" -exec rm -f {} \;
-   find sites -name "*.css" -exec rm -f {} \;
+   find sites -name "*.tcd" -exec rm -f {} \;
+   find sites -name "*.tcp" -exec rm -f {} \;
+   find sites -name "*.cache" -exec rm -f {} \;
+   find sites -name "*.js" -path "*cache*" -exec rm -f {} \;
+   find sites -name "*.css" -path "*cache*" -exec rm -f {} \;
+   find sites -name "*.gz" -path "*cache*" -exec rm -f {} \;
+   find sites -name "*.lcd" -exec rm -f {} \;
+   find sites -name "*.gcd" -exec rm -f {} \;
+   find sites -name "*.xml" -path "*cache*" -exec rm -f {} \;
+   find sites -name "*.htm" -path "*cache*" -exec rm -f {} \;
 fi
 
 if [ -e "../decache.php" ]; then

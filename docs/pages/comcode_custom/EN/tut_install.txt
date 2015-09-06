@@ -71,7 +71,7 @@ After it downloads, you'll need to extract the files. The exact methods for doin
 
 [i]An alternative to uploading via SFTP/FTP is using the File Manager within the web hosting control panel. However it is worth trying to get it working using SFTP/FTP, as it is a valuable basic tool.[/i]
 
-[media width="150" description="File upload demonstration" float="right"]data_custom/images/docs/install_upload_ftp.gif[/media]
+[media width="150" description="File upload demonstration" float="right" thumb_url="data_custom/images/docs/install_upload_ftp_thumb.png"]data_custom/images/docs/install_upload_ftp.gif[/media]
 [media width="150" description="Internet Explorer FTP login" float="right"]data_custom/images/docs/install_login_ftp.png[/media]
 The next step is to upload the files to your web server. To do this you'll need an SFTP/FTP client (such as [url="FileZilla"]https://filezilla-project.org/[/url], or use the one that comes with Windows). The exact steps to upload the files depend slightly depending on which SFTP/FTP client you choose.
 

@@ -405,6 +405,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/addon_screenshots.php',
             '_tests/tests/unit_tests/missing_block_params.php',
             '_tests/tests/unit_tests/missing_colour_equations.php',
+            '_tests/tests/unit_tests/tutorial_image_consistency.php',
             '_tests/tests/unit_tests/moderation.php',
             '_tests/tests/unit_tests/modularisation.php',
             '_tests/tests/unit_tests/news.php',

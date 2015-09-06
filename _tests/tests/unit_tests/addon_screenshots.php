@@ -37,16 +37,6 @@ class addon_screenshots_test_set extends cms_test_case
             if ($place == 'sources_custom') {
                 require_code('hooks/systems/addon_registry/' . $hook);
                 $ob = object_factory('Hook_addon_registry_' . $hook);
-                if ($ob->get_category() == 'Development') {
-                    continue;
-                }
-
-                // These are defined as exceptions where we won't enforce our screenshot rule
-                if (in_array($hook, array(
-                    'multi_domain_login',
-                ))) {
-                    continue;
-                }
 
                 $exists = false;
                 foreach (array('png', 'gif', 'jpg', 'jpeg') as $ext) {
@@ -54,7 +44,25 @@ class addon_screenshots_test_set extends cms_test_case
                         $exists = true;
                     }
                 }
-                $this->assertTrue($exists, 'Missing addon screenshot: ' . $hook);
+
+                if ($ob->get_category() == 'Development') { // Do not want dev screenshots
+                    // These are defined as exceptions where we won't enforce our screenshot rule
+                    if (in_array($hook, array(
+                        'composer',
+                    ))) {
+                        continue;
+                    }
+
+                    $this->assertTrue(!$exists, 'Unnecessary addon screenshot: ' . $hook);
+                } else { // Do want screenshots
+                    // These are defined as exceptions where we won't enforce our screenshot rule
+                    if (in_array($hook, array(
+                    ))) {
+                        continue;
+                    }
+
+                    $this->assertTrue($exists, 'Missing addon screenshot: ' . $hook);
+                }
             }
         }
     }

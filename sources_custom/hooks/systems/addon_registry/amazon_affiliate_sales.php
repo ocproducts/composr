@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_addon_registry_amazon_affiliates
+class Hook_addon_registry_amazon_affiliate_sales
 {
     /**
      * Get a list of file permissions to set
