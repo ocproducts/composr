@@ -1259,7 +1259,6 @@ class DatabaseConnector
 
         // Run hooks, if any exist
         if ($UPON_QUERY_HOOKS_CACHE === null) {
-            $UPON_QUERY_HOOKS_CACHE = array();
             if ((!running_script('restore')) && (function_exists('find_all_hooks')) && (!isset($GLOBALS['DOING_USERS_INIT'])/*can't check for safe mode meaning can't get a full hook list yet*/)) {
                 $UPON_QUERY_HOOKS_CACHE = array();
                 $hooks = find_all_hooks('systems', 'upon_query');

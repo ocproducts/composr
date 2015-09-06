@@ -47,7 +47,7 @@ function grab_new_owner($param_name)
  * @param  ID_TEXT $msg_type Code of message type to show
  * @set    warn inform fatal
  */
-function ocw_refresh_with_message($message, $msg_type = 'inform')
+function buildr_refresh_with_message($message, $msg_type = 'inform')
 {
     $url = build_url(array('page' => 'buildr'), '_SELF');
 
@@ -126,7 +126,7 @@ function merge_items($from, $to)
         }
     }
 
-    ocw_refresh_with_message(do_lang_tempcode('W_MERGED', escape_html($from), escape_html($to)));
+    buildr_refresh_with_message(do_lang_tempcode('W_MERGED', escape_html($from), escape_html($to)));
 }
 
 /**
@@ -172,7 +172,7 @@ function portal($member_id, $dest_realm)
     list($realm, $x, $y) = get_loc_details($member_id);
     $portals = $GLOBALS['SITE_DB']->query_select('w_portals', array('*'), array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $dest_realm));
     if (!array_key_exists(0, $portals)) {
-        ocw_refresh_with_message(do_lang_tempcode('INTERNAL_ERROR'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('INTERNAL_ERROR'), 'warn');
     }
     $text = comcode_to_tempcode($portals[0]['p_text'], $portals[0]['owner']);
     $dest_x = $portals[0]['end_location_x'];
@@ -181,14 +181,14 @@ function portal($member_id, $dest_realm)
     // Check $end_location_realm exists
     $name = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_x' => $dest_x, 'location_y' => $dest_y, 'location_realm' => $dest_realm));
     if (is_null($name)) {
-        ocw_refresh_with_message(do_lang_tempcode('INTERNAL_ERROR'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('INTERNAL_ERROR'), 'warn');
     }
 
     // Move member there
     $GLOBALS['SITE_DB']->query_update('w_members', array('location_x' => $dest_x, 'location_y' => $dest_y, 'location_realm' => $dest_realm), array('id' => $member_id), '', 1);
 
     // Show move message
-    ocw_refresh_with_message($text);
+    buildr_refresh_with_message($text);
 }
 
 /**
@@ -219,7 +219,7 @@ function take_items($member_id)
 function message($member_id, $message, $destination)
 {
     if ($message == '') {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_MESSAGE_GIVEN'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_MESSAGE_GIVEN'), 'warn');
     }
 
     list($realm, $x, $y) = get_loc_details($member_id);
@@ -262,7 +262,7 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
 {
     // Validate that we aren't cheating
     if (($dx > 1) || ($dx < -1) || ($dy > 1) || ($dy < -1)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Get current position of member
@@ -281,12 +281,12 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
         $locked = $GLOBALS['SITE_DB']->query_select_value('w_rooms', 'locked_up', array('location_realm' => $realm, 'location_x' => $x, 'location_y' => $y));
     }
     if ($locked == 1) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Does the room exist?
     if (!room_exists($_x, $_y, $realm)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_ROOM_NO_EXIST'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_ROOM_NO_EXIST'), 'warn');
     }
 
     $rooms = $GLOBALS['SITE_DB']->query_select('w_rooms', array('*'), array('location_realm' => $realm, 'location_x' => $_x, 'location_y' => $_y), '', 1);
@@ -314,7 +314,7 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
                     'realm' => $realm,
                 ));
             }
-            ocw_refresh_with_message($room['password_fail_message'], 'warn');
+            buildr_refresh_with_message($room['password_fail_message'], 'warn');
         }
     }
 
@@ -327,7 +327,7 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
             // Check we have one
             $item_name = $GLOBALS['SITE_DB']->query_select_value_if_there('w_inventory LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_itemdef on item_name=name', 'item_name', array('bribable' => 1, 'item_owner' => $member_id));
             if (is_null($item_name)) {
-                ocw_refresh_with_message(do_lang_tempcode('W_NO_BRIBE'), 'warn');
+                buildr_refresh_with_message(do_lang_tempcode('W_NO_BRIBE'), 'warn');
             }
 
             // Transfer it to the troll
@@ -344,7 +344,7 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
                     if ($fail == '') {
                         $fail = do_lang_tempcode('W_MISSING_REQ_ITEM', escape_html($required_item));
                     }
-                    ocw_refresh_with_message($fail, 'warn');
+                    buildr_refresh_with_message($fail, 'warn');
                 } else {
                     $owner_cheat = true;
                 }
@@ -388,7 +388,7 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
     }
 
     if ($owner_cheat) {
-        ocw_refresh_with_message(do_lang_tempcode('W_ENTER_CHEAT'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_ENTER_CHEAT'), 'warn');
     }
     return null;
 }
@@ -441,18 +441,18 @@ function check_coexist($member_id, $dest_member_id)
 function pickpocket($member_id, $dest_member_id)
 {
     if ($member_id == $dest_member_id) {
-        ocw_refresh_with_message(do_lang_tempcode('W_TOUCHY'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_TOUCHY'), 'warn');
     }
 
     // Check they are not already in prison. Although it would be very amusing for jailbreakers to have they're stuff pickpocketed and left behind locked up, it would ruin the dynamic
     list(, $x, $y) = get_loc_details($member_id);
     if (($x == 0) && (($y == 1) || ($y == 2))) {
-        ocw_refresh_with_message(do_lang_tempcode('W_POCKET_PRISON'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_POCKET_PRISON'), 'warn');
     }
 
     // Check members are in same room/realm
     if (!check_coexist($member_id, $dest_member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NOT_SAME_REALM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NOT_SAME_REALM'), 'warn');
     }
 
     // Were they lucky or unlucky?
@@ -465,11 +465,11 @@ function pickpocket($member_id, $dest_member_id)
 
     if ($lucky) {
         $item_name = steal($member_id, $dest_member_id);
-        ocw_refresh_with_message(do_lang_tempcode('W_STOLEN', escape_html($item_name)), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_STOLEN', escape_html($item_name)), 'warn');
     } else {
         // Send them to jail
         imprison($member_id);
-        ocw_refresh_with_message(do_lang_tempcode('W_JAILED'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_JAILED'), 'warn');
     }
 }
 
@@ -511,7 +511,7 @@ function findperson($dest_member_name)
     if (is_null($dest_member_id)) {
         $dest_member_id = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_realms WHERE troll_name LIKE \'' . db_encode_like($dest_member_name) . '\'');
         if (is_null($dest_member_id)) {
-            ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
         }
         $dest_member_id = -$dest_member_id - 1;
     }
@@ -519,7 +519,7 @@ function findperson($dest_member_name)
     // Get coordinates
     $location_x = $GLOBALS['SITE_DB']->query_select_value_if_there('w_members', 'location_x', array('id' => $dest_member_id));
     if (is_null($location_x)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NOT_PLAYING'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NOT_PLAYING'), 'warn');
     }
     list($location_realm, $location_x, $location_y) = get_loc_details($dest_member_id);
 
@@ -528,7 +528,7 @@ function findperson($dest_member_name)
     $realm_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'name', array('id' => $location_realm));
 
     // Now give them a screen with the info
-    ocw_refresh_with_message(do_lang_tempcode('W_FOUND_PERSON', escape_html($dest_member_name), strval($location_realm), array(strval($location_x), strval($location_y), escape_html($realm_name), escape_html($room_name))));
+    buildr_refresh_with_message(do_lang_tempcode('W_FOUND_PERSON', escape_html($dest_member_name), strval($location_realm), array(strval($location_x), strval($location_y), escape_html($realm_name), escape_html($room_name))));
 }
 
 /**
@@ -543,7 +543,7 @@ function steal($member_id, $target)
     // Check they have at least one item
     $count = $GLOBALS['SITE_DB']->query_select_value('w_inventory', 'COUNT(*)', array('item_owner' => $target));
     if (!($count >= 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NOTHING_STEAL'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NOTHING_STEAL'), 'warn');
     }
 
     // Pick one item name from their inventory at random
@@ -566,7 +566,7 @@ function steal($member_id, $target)
 function ban_member($member_id)
 {
     $GLOBALS['SITE_DB']->query_update('w_members', array('banned' => 1), array('id' => $member_id), '', 1);
-    ocw_refresh_with_message(do_lang_tempcode('W_BANNED', strval($member_id)));
+    buildr_refresh_with_message(do_lang_tempcode('W_BANNED', strval($member_id)));
 }
 
 /**
@@ -577,7 +577,7 @@ function ban_member($member_id)
 function unban_member($member_id)
 {
     $GLOBALS['SITE_DB']->query_update('w_members', array('banned' => 0), array('id' => $member_id), '', 1);
-    ocw_refresh_with_message(do_lang_tempcode('W_UNBANNED', strval($member_id)));
+    buildr_refresh_with_message(do_lang_tempcode('W_UNBANNED', strval($member_id)));
 }
 
 /**
@@ -590,17 +590,17 @@ function useitem($member_id, $item_name)
 {
     // Is the item held by the user
     if (!item_held($member_id, $item_name)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Is it a healthy item?
     $healthy = $GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'healthy', array('name' => $item_name));
     if ($healthy == 0) {
-        ocw_refresh_with_message(do_lang_tempcode('W_USELESS'));
+        buildr_refresh_with_message(do_lang_tempcode('W_USELESS'));
     } else {
         dehurt($member_id);
         remove_item_person($member_id, $item_name);
-        ocw_refresh_with_message(do_lang_tempcode('W_HEALTHED', escape_html($item_name)));
+        buildr_refresh_with_message(do_lang_tempcode('W_HEALTHED', escape_html($item_name)));
     }
 }
 
@@ -616,7 +616,7 @@ function basic_enter_room($member_id, $realm, $x, $y)
 {
     // Does the room exist?
     if (!room_exists($x, $y, $realm)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_NO_ROOM'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_NO_ROOM'), 'warn');
     }
 
     // Move them in
@@ -652,14 +652,14 @@ function give($member_id, $dest_member_id, $item_name)
 {
     // Is the item held by the user
     if (!item_held($member_id, $item_name)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Check members are in same $realm, $x and $y (admins can give to anyone, anywhere)
     if ((!has_privilege($member_id, 'administer_buildr')) && (!has_privilege($dest_member_id, 'administer_buildr'))) {
         // Check members are in same room/realm
         if (!check_coexist($member_id, $dest_member_id)) {
-            ocw_refresh_with_message(do_lang_tempcode('W_NOT_SAME_REALM'), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_NOT_SAME_REALM'), 'warn');
         }
     }
 
@@ -667,7 +667,7 @@ function give($member_id, $dest_member_id, $item_name)
     remove_item_person($member_id, $item_name);
     add_item_person($dest_member_id, $item_name);
 
-    ocw_refresh_with_message(do_lang_tempcode('W_GIVEN', escape_html($item_name)));
+    buildr_refresh_with_message(do_lang_tempcode('W_GIVEN', escape_html($item_name)));
 }
 
 /**
@@ -679,7 +679,7 @@ function give($member_id, $dest_member_id, $item_name)
 function drop_wrap($member_id, $item)
 {
     drop($member_id, $item);
-    ocw_refresh_with_message(do_lang_tempcode('W_DROPPED', escape_html($item)));
+    buildr_refresh_with_message(do_lang_tempcode('W_DROPPED', escape_html($item)));
 }
 
 /**
@@ -692,7 +692,7 @@ function drop($member_id, $item_name)
 {
     // Is the item held by the user
     if (!item_held($member_id, $item_name)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Load $realm, $x and $y for $member_id
@@ -715,14 +715,14 @@ function buy($member_id, $item_name, $copy_owner)
     list($realm, $x, $y) = get_loc_details($member_id);
     $cost = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'cost', array('name' => $item_name, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'copy_owner' => $copy_owner));
     if (is_null($cost)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if ($cost > available_points($member_id)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($cost))), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($cost))), 'warn');
     }
     if ($cost == 0) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     // Charge them
@@ -731,16 +731,16 @@ function buy($member_id, $item_name, $copy_owner)
 
         $price = $cost;
         if (available_points($member_id) < $price) {
-            ocw_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
+            buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
-        charge_member($member_id, $price, do_lang('W_BOUGHT_OCWORLD', escape_html($item_name)));
+        charge_member($member_id, $price, do_lang('W_BOUGHT_BUILDR', escape_html($item_name)));
 
-        charge_member($copy_owner, -$price * 0.7, do_lang('W_SOLD_OCWORLD', escape_html($item_name)));
+        charge_member($copy_owner, -$price * 0.7, do_lang('W_SOLD_BUILDR', escape_html($item_name)));
     }
 
     basic_pickup($member_id, $item_name, $copy_owner);
 
-    ocw_refresh_with_message(do_lang_tempcode('W_BOUGHT', escape_html($item_name), escape_html(integer_format($cost))));
+    buildr_refresh_with_message(do_lang_tempcode('W_BOUGHT', escape_html($item_name), escape_html(integer_format($cost))));
 }
 
 /**
@@ -756,22 +756,22 @@ function take($member_id, $item_name, $copy_owner)
     list($realm, $x, $y) = get_loc_details($member_id);
     $cost = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'cost', array('name' => $item_name, 'copy_owner' => $copy_owner, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
     if (is_null($cost)) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     if ($cost != 0) {
-        ocw_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
     $max_per_player = $GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'max_per_player', array('name' => $item_name));
     $count = $GLOBALS['SITE_DB']->query_select_value_if_there('w_inventory', 'item_count', array('item_name' => $item_name, 'item_owner' => $member_id));
     if (($count >= $max_per_player) && ($count >= 1)) {
-        ocw_refresh_with_message(do_lang_tempcode('W_EXCESS'), 'warn');
+        buildr_refresh_with_message(do_lang_tempcode('W_EXCESS'), 'warn');
     }
 
     basic_pickup($member_id, $item_name, $copy_owner);
 
-    ocw_refresh_with_message(do_lang_tempcode('W_TOOK', escape_html($item_name)));
+    buildr_refresh_with_message(do_lang_tempcode('W_TOOK', escape_html($item_name)));
 }
 
 /**

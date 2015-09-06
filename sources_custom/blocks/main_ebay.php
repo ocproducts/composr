@@ -27,7 +27,7 @@ class Block_main_ebay
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('type', 'seller', 'query', 'domain', 'lang');
+        $info['parameters'] = array('seller', 'query', 'max_entries', 'image_size', 'domain');
         return $info;
     }
 
@@ -39,7 +39,7 @@ class Block_main_ebay
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'type\',$map)?$map[\'type\']:\'\',array_key_exists(\'seller\',$map)?$map[\'seller\']:\'\',array_key_exists(\'query\',$map)?$map[\'query\']:\'\',array_key_exists(\'lang\',$map)?$map[\'lang\']:\'\')';
+        $info['cache_on'] = '$map';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 15;
         return $info;
     }
@@ -60,26 +60,21 @@ class Block_main_ebay
             return do_lang_tempcode('NO_PARAMETER_SENT', 'seller');
         }
 
-        $height = (isset($map['height']) && intval($map['height']) > 0) ? $map['height'] : '350';
-        $width = (isset($map['width']) && intval($map['width']) > 0) ? $map['width'] : '350';
-        $domain = (isset($map['domain']) && $map['domain'] != '') ? $map['domain'] : 'com';
         $title = (isset($map['title']) && $map['title'] != '') ? $map['title'] : do_lang_tempcode('BLOCK_EBAY_TITLE');
-        $lang = (isset($map['lang']) && $map['lang'] != '') ? ('&lang=' . $map['lang']) : '';
+        $max_entries = (isset($map['max_entries']) && $map['max_entries'] != '') ? intval($map['max_entries']) : 4;
+        $image_size = (isset($map['image_size']) && $map['image_size'] != '') ? intval($map['image_size']) : 80;
+        $domain = (isset($map['domain']) && $map['domain'] != '') ? intval(preg_replace('#=.*$#', '', $map['domain'])) : 0;
+        $seller = $map['seller'];
+        $query = (isset($map['query']) && strlen($map['query']) > 0) ? preg_replace('#\s#', '+', $map['query']) : ''; // e.g. Gadgets
 
-        $type = (isset($map['type']) && strlen($map['type']) > 0) ? $map['type'] : 'store';
-        $seller = $map['seller'];//'yourrightchoice';//ecomelectronics
-        $query = (isset($map['query']) && strlen($map['query']) > 0) ? preg_replace('#\s#', '+', $map['query']) : ''; //i.e. Gadgets
-
-        $out = '';
-
-        if ($type == 'seller') {
-            //ebay seller: yourrightchoice
-            $out .= '<object width="' . $width . '" height="' . $height . '"><param name="movie" value="http://togo.ebay.' . $domain . '/togo/seller.swf" /><param name="flashvars" value="base=http://togo.ebay.' . $domain . '/togo/' . $lang . '&seller=' . $seller . '" /><embed src="http://togo.ebay.' . $domain . '/togo/seller.swf" type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" flashvars="base=http://togo.ebay.' . $domain . '/togo/' . $lang . '&seller=' . $seller . '"></embed></object>';
-        } else {
-            //e-bay store code using i.e. seller id=ecomelectronics :
-            $out .= '<object width="' . $width . '" height="' . $height . '"><param name="movie" value="http://togo.ebay.' . $domain . '/togo/store.swf" /><param name="flashvars" value="base=http://togo.ebay.' . $domain . '/togo/' . $lang . '&seller=' . $seller . '&query=' . $query . '" /><embed src="http://togo.ebay.' . $domain . '/togo/store.swf" type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" flashvars="base=http://togo.ebay.' . $domain . '/togo/' . $lang . '&seller=' . $seller . '&query=' . $query . '"></embed></object>';
-        }
-
-        return do_template('BLOCK_MAIN_EBAY', array('_GUID' => 'ffda4477bf08164f80dd45ef2985dfe9', 'TITLE' => $title, 'CONTENT' => ($out)));
+        return do_template('BLOCK_MAIN_EBAY', array(
+            '_GUID' => 'ffda4477bf08164f80dd45ef2985dfe9',
+            'TITLE' => $title,
+            'MAX_ENTRIES' => strval($max_entries),
+            'IMAGE_SIZE' => strval($image_size),
+            'DOMAIN' => strval($domain),
+            'SELLER' => $seller,
+            'QUERY' => $query,
+        ));
     }
 }

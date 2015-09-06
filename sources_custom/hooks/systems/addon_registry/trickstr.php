@@ -85,7 +85,7 @@ class Hook_addon_registry_trickstr
      */
     public function get_description()
     {
-        return 'A chat bot for your chat room named ocTavius who will interact with your members. Simply install the addon and chat away to ocTavius. Note that ocTavius is only active if there are no more than 2 members in a chat room.';
+        return 'A chat bot for your chat room named Trickstr who will interact with your members. Simply install the addon and chat away to Trickstr. Note that Trickstr is only active if there are no more than 2 members in a chat room.';
     }
 
     /**
@@ -110,7 +110,6 @@ class Hook_addon_registry_trickstr
                 'chat',
             ),
             'recommends' => array(
-                'xmpp_chat',
             ),
             'conflicts_with' => array()
         );

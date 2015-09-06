@@ -20,7 +20,7 @@ class addon_screenshots_test_set extends cms_test_case
 {
     public function testNoUnmatchedScreenshots()
     {
-        $dh = opendir(get_file_base() . '/data_custom/addon_screenshots');
+        $dh = opendir(get_file_base() . '/data_custom/images/addon_screenshots');
         while (($f = readdir($dh)) !== false) {
             if ((substr($f, -5) != '.html') && ($f[0] != '.')) {
                 $hook = preg_replace('#\..*$#', '', $f);
@@ -43,33 +43,14 @@ class addon_screenshots_test_set extends cms_test_case
 
                 // These are defined as exceptions where we won't enforce our screenshot rule
                 if (in_array($hook, array(
-                    'ad_success',
-                    'better_mail',
-                    'calendar_from_6am',
-                    'content_read_tracking',
-                    'directory_protect',
-                    'downloads_followup_email',
-                    'extended_media_rendering',
-                    'gallery_syndication',
-                    'group_points',
-                    'image_syndication',
-                    'pointstore_to_main',
-                    'psds',
-                    'simplified_emails',
-                    'twitter_support',
-                    'usergroup_field_match',
-                    'newsletter_no_members',
-                    'wiki_sync',
                     'multi_domain_login',
-                    'composer',
-                    'less',
                 ))) {
                     continue;
                 }
 
                 $exists = false;
                 foreach (array('png', 'gif', 'jpg', 'jpeg') as $ext) {
-                    if (is_file(get_file_base() . '/data_custom/addon_screenshots/' . $hook . '.' . $ext)) {
+                    if (is_file(get_file_base() . '/data_custom/images/addon_screenshots/' . $hook . '.' . $ext)) {
                         $exists = true;
                     }
                 }

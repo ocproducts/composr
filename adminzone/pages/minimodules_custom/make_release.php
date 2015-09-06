@@ -300,7 +300,7 @@ function phase_2()
             <li><strong>Addons</strong>:<ul>
                     <li>Generate the new addon set (<a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=build_addons&amp;keep_devtest=1">build_addons minimodule</a>)</li>
                     <li>Upload the generated <kbd>exports/addons/*.tar</kbd> files to the same directory on the server</li>
-                    <li>Upload <kbd>data_custom/addon_screenshots/*.png</kbd> (do not delete old files, as these files are directly referenced by old addons still in the database)</li>
+                    <li>Upload <kbd>data_custom/images/addon_screenshots/*.png</kbd> (do not delete old files, as these files are directly referenced by old addons still in the database)</li>
                     <li>Add them (<a target="_blank" href="http://compo.sr/adminzone/index.php?page=publish_addons_as_downloads&amp;cat=Version%20&amp;' . escape_html(urlencode($version_pretty)) . '&amp;version_branch=' . escape_html(urlencode($version_branch)) . '">publish_addons_as_downloads</a> minimodule on compo.sr server)</li>
                     <li>Update the <kbd>community page</kbd> to point to the new addon locations</li>
                     <li>Update the secondary level navigation to link to the new addon locations</li>

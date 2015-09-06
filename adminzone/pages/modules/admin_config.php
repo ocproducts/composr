@@ -558,6 +558,7 @@ class Module_admin_config
                         break;
 
                     case 'usergroup':
+                    case 'usergroup_not_guest':
                         if (get_forum_type() == 'cns') {
                             $tmp_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => get_option($name)));
 
@@ -566,7 +567,7 @@ class Module_admin_config
                             if (!$required) {
                                 $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             }
-                            $_list->attach(cns_create_selection_list_usergroups($tmp_value));
+                            $_list->attach(cns_create_selection_list_usergroups($tmp_value, $myrow['type'] == 'usergroup'));
                             $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
@@ -712,7 +713,7 @@ class Module_admin_config
                 if (is_null($value)) {
                     $value = '';
                 }
-            } elseif (($myrow['type'] == 'usergroup') && (get_forum_type() == 'cns')) {
+            } elseif ((($myrow['type'] == 'usergroup') || ($myrow['type'] == 'usergroup_not_guest')) && (get_forum_type() == 'cns')) {
                 $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
                 if (is_null($_value)) {
                     $value = '';

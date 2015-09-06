@@ -12,13 +12,13 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 require_css('crossword');
 require_code('php-crossword/php_crossword.class');
 
-$id = $map['param'];
+$id = isset($map['param']) ? $map['param'] : '';
 $cols = array_key_exists('cols', $map) ? intval($map['cols']) : 15;
 $rows = array_key_exists('rows', $map) ? intval($map['rows']) : 15;
 $max_words = array_key_exists('max_words', $map) ? intval($map['max_words']) : 15;
 
 $cache_id = $id . '_' . strval($cols) . '_' . strval($rows) . '_' . strval($max_words);
-$cached = get_cache_entry('main_crossword', $cache_id, CACHE_AGAINST_NOTHING_SPECIAL);
+$cached = (isset($map['cache']) && $map['cache'] == '0') ? null : get_cache_entry('main_crossword', $cache_id, CACHE_AGAINST_NOTHING_SPECIAL);
 if (is_null($cached)) {
     $pc = new PHP_Crossword($rows, $cols);
 

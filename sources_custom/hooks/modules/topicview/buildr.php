@@ -26,12 +26,12 @@ class Hook_topicview_buildr
      */
     public function run($member_id)
     {
-        global $OCWORLD_MEMBER_CACHE;
-        if (!isset($OCWORLD_MEMBER_CACHE)) {
-            $OCWORLD_MEMBER_CACHE = array();
+        global $BUILDR_MEMBER_CACHE;
+        if (!isset($BUILDR_MEMBER_CACHE)) {
+            $BUILDR_MEMBER_CACHE = array();
         }
-        if (array_key_exists($member_id, $OCWORLD_MEMBER_CACHE)) {
-            return $OCWORLD_MEMBER_CACHE[$member_id];
+        if (array_key_exists($member_id, $BUILDR_MEMBER_CACHE)) {
+            return $BUILDR_MEMBER_CACHE[$member_id];
         }
 
         $zone = get_page_zone('buildr', false);
@@ -55,7 +55,7 @@ class Hook_topicview_buildr
             $b = do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => '72c62771f7796d69d1f1a616c2591206', 'NAME' => do_lang_tempcode('_W_REALM'), 'VALUE' => $row['name']));
             $a->attach($b);
 
-            $OCWORLD_MEMBER_CACHE[$member_id] = $a;
+            $BUILDR_MEMBER_CACHE[$member_id] = $a;
 
             return $a;
         }

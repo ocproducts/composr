@@ -79,12 +79,16 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
  * @param  ?AUTO_LINK $it Usergroup selected by default (null: no specific default).
  * @return Tempcode The list.
  */
-function cns_create_selection_list_usergroups($it = null)
+function cns_create_selection_list_usergroups($it = null, $allow_guest_group = true)
 {
     $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
     $_m = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), ($group_count > 200) ? array('g_is_private_club' => 0) : null, 'ORDER BY g_order');
     $entries = new Tempcode();
     foreach ($_m as $m) {
+        if (!$allow_guest_group && $m['id'] == db_get_first_id()) {
+            continue;
+        }
+
         $entries->attach(form_input_list_entry(strval($m['id']), $it === $m['id'], get_translated_text($m['g_name'], $GLOBALS['FORUM_DB'])));
     }
 

@@ -534,7 +534,7 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 		$children = $xmlnode["children"];
 
 		for ($randomc=0;$randomc<sizeof($children);$randomc++){
-			if (strtoupper($children[$randomc]["tag"]) == "LI"){
+			if (is_array($children[$randomc]) && strtoupper($children[$randomc]["tag"]) == "LI"){
 				$liarray[]=$randomc;
 			}
 		}

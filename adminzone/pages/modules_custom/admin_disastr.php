@@ -260,7 +260,7 @@ class Module_admin_disastr extends Standard_crud_module
     {
         $fields = new Tempcode();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null);
+        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null, 'ORDER BY name');
 
         foreach ($rows as $row) {
             $fields->attach(form_input_list_entry(strval($row['id']), false, $row['name']));

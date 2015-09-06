@@ -84,25 +84,25 @@ class Block_main_buttons
         require_code('banners3');
 
         //create default banners, if they don't exist
-        add_banner_quiet('composr', 'data_custom/causes/composr.gif', brand_name(), brand_name(), 0, get_brand_base_url() . '/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('firefox', 'data_custom/causes/firefox.gif', 'Firefox', 'Firefox', 0, 'http://www.mozilla.com/firefox/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('w3cxhtml', 'data_custom/causes/w3c-xhtml.gif', 'W3C XHTML', 'W3C XHTML', 0, 'http://www.w3.org/MarkUp/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('w3ccss', 'data_custom/causes/w3c-css.gif', 'W3C CSS', 'W3C CSS', 0, 'http://www.w3.org/Style/CSS/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        //add_banner_quiet('w3cwcag','data_custom/causes/w3c-wcag.gif','W3C WCAG','W3C WCAG',0,'http://www.w3.org/TR/WCAG10/',3,'',0,NULL,$submitter,1,'buttons',NULL,0,0,0,0,NULL);   //no banner image
-        add_banner_quiet('cancerresearch', 'data_custom/causes/cancerresearch.gif', 'Cancer Research', 'Cancer Research', 0, 'http://www.cancerresearchuk.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('rspca', 'data_custom/causes/rspca.gif', 'RSPCA', 'RSPCA', 0, 'http://www.rspca.org.uk/home', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('peta', 'data_custom/causes/peta.gif', 'PETA', 'PETA', 0, 'http://www.peta.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('Unicef', 'data_custom/causes/unicef.gif', 'Unicef', 'Unicef', 0, 'http://www.unicef.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('wwf', 'data_custom/causes/wwf.gif', 'WWF', 'WWF', 0, 'http://www.wwf.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('greenpeace', 'data_custom/causes/greenpeace.gif', 'Greenpeace', 'Greenpeace', 0, 'http://www.greenpeace.com', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('helptheaged', 'data_custom/causes/helptheaged.gif', 'HelpTheAged', 'HelpTheAged', 0, 'http://www.helptheaged.org.uk/en-gb', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('nspcc', 'data_custom/causes/nspcc.gif', 'NSPCC', 'NSPCC', 0, 'http://www.nspcc.org.uk/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('oxfam', 'data_custom/causes/oxfam.gif', 'Oxfam', 'Oxfam', 0, 'http://www.oxfam.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('bringdownie6', 'data_custom/causes/bringdownie6.gif', 'BringDownIE6', 'BringDownIE6', 0, 'http://www.bringdownie6.com', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('cnd', 'data_custom/causes/cnd.gif', 'CND', 'CND', 0, 'http://www.cnduk.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('amnestyinternational', 'data_custom/causes/amnestyinternational.gif', 'Amnesty International', 'Amnesty International', 0, 'http://www.amnesty.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('bhf', 'data_custom/causes/bhf.gif', 'British Heart Foundation', 'British Heart Foundation', 0, 'http://www.bhf.org.uk/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('gnu', 'data_custom/causes/gnu.gif', 'GNU', 'GNU', 0, 'http://www.gnu.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('composr', 'data_custom/images/causes/composr.gif', brand_name(), brand_name(), 0, get_brand_base_url() . '/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('firefox', 'data_custom/images/causes/firefox.gif', 'Firefox', 'Firefox', 0, 'http://www.mozilla.com/firefox/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('w3cxhtml', 'data_custom/images/causes/w3c-xhtml.gif', 'W3C XHTML', 'W3C XHTML', 0, 'http://www.w3.org/MarkUp/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('w3ccss', 'data_custom/images/causes/w3c-css.gif', 'W3C CSS', 'W3C CSS', 0, 'http://www.w3.org/Style/CSS/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        //add_banner_quiet('w3cwcag','data_custom/images/causes/w3c-wcag.gif','W3C WCAG','W3C WCAG',0,'http://www.w3.org/TR/WCAG10/',3,'',0,NULL,$submitter,1,'buttons',NULL,0,0,0,0,NULL);   //no banner image
+        add_banner_quiet('cancerresearch', 'data_custom/images/causes/cancerresearch.gif', 'Cancer Research', 'Cancer Research', 0, 'http://www.cancerresearchuk.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('rspca', 'data_custom/images/causes/rspca.gif', 'RSPCA', 'RSPCA', 0, 'http://www.rspca.org.uk/home', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('peta', 'data_custom/images/causes/peta.gif', 'PETA', 'PETA', 0, 'http://www.peta.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('Unicef', 'data_custom/images/causes/unicef.gif', 'Unicef', 'Unicef', 0, 'http://www.unicef.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('wwf', 'data_custom/images/causes/wwf.gif', 'WWF', 'WWF', 0, 'http://www.wwf.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('greenpeace', 'data_custom/images/causes/greenpeace.gif', 'Greenpeace', 'Greenpeace', 0, 'http://www.greenpeace.com', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('helptheaged', 'data_custom/images/causes/helptheaged.gif', 'HelpTheAged', 'HelpTheAged', 0, 'http://www.helptheaged.org.uk/en-gb', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('nspcc', 'data_custom/images/causes/nspcc.gif', 'NSPCC', 'NSPCC', 0, 'http://www.nspcc.org.uk/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('oxfam', 'data_custom/images/causes/oxfam.gif', 'Oxfam', 'Oxfam', 0, 'http://www.oxfam.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('bringdownie6', 'data_custom/images/causes/bringdownie6.gif', 'BringDownIE6', 'BringDownIE6', 0, 'http://www.bringdownie6.com', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('cnd', 'data_custom/images/causes/cnd.gif', 'CND', 'CND', 0, 'http://www.cnduk.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('amnestyinternational', 'data_custom/images/causes/amnestyinternational.gif', 'Amnesty International', 'Amnesty International', 0, 'http://www.amnesty.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('bhf', 'data_custom/images/causes/bhf.gif', 'British Heart Foundation', 'British Heart Foundation', 0, 'http://www.bhf.org.uk/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
+        add_banner_quiet('gnu', 'data_custom/images/causes/gnu.gif', 'GNU', 'GNU', 0, 'http://www.gnu.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
     }
 
     /**

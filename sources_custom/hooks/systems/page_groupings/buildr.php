@@ -28,7 +28,7 @@ class Hook_page_groupings_buildr
         }
 
         return array(
-            array('rich_content', 'menu/buildr', array('buildr', array(), $zone), do_lang_tempcode('buildr:OCWORLD')),
+            array('rich_content', 'menu/buildr', array('buildr', array(), $zone), do_lang_tempcode('buildr:BUILDR')),
         );
     }
 }

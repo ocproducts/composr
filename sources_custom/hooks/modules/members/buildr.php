@@ -41,7 +41,7 @@ class Hook_members_buildr
         $id = $GLOBALS['SITE_DB']->query_select_value_if_there('w_members', 'id', array('id' => $member_id), '', true);
         if (!is_null($id)) {
             require_lang('buildr');
-            return array(array('audit', do_lang_tempcode('OCWORLD'), build_url(array('page' => 'buildr', 'type' => 'inventory', 'member' => $member_id), get_page_zone('buildr')), 'menu/buildr'));
+            return array(array('audit', do_lang_tempcode('BUILDR'), build_url(array('page' => 'buildr', 'type' => 'inventory', 'member' => $member_id), get_page_zone('buildr')), 'menu/buildr'));
         }
         return array();
     }

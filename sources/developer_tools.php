@@ -117,7 +117,7 @@ function destrictify($change_content_type = true, $mysql_too = false)
     }
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
     $GLOBALS['TITLE_CALLED'] = true;
-    error_reporting(E_ALL ^ E_NOTICE);
+    error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);
     if (function_exists('set_time_limit')) {
         @set_time_limit(200);
     }

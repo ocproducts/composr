@@ -428,6 +428,9 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
 
     if (is_null($room_check)) {
         $room_check = $GLOBALS['SITE_DB']->query('SELECT id,is_im,c_welcome,allow_list_groups,disallow_list_groups,allow_list,disallow_list,room_owner FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval(get_member()) . '%') . '\'');
+        if (!isset($room_check[0])) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
         $room_row = $room_check[0];
     }
 

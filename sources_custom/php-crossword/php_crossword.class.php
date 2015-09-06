@@ -210,7 +210,7 @@ class PHP_Crossword
 	 */
 	function getQuestion($word)
 	{
-		return str_shuffle($word);
+		return $word;
 	}
 
 	/**
@@ -436,6 +436,21 @@ class PHP_Crossword
 		return strlen($str);
 	}
 
+	function __callback1($matches)
+	{
+		return '^.{0,'.strlen('\\0').'}';
+	}
+
+	function __callback2($matches)
+	{
+		return '.{0,'.strlen('\\0').'}$';
+	}
+
+	function __callback3($matches)
+	{
+		return '.{'.strlen('\\0').'}';
+	}
+
 	/**
 	 * Get REGEXP for the match string
 	 * @private
@@ -444,11 +459,9 @@ class PHP_Crossword
 	 */
 	function __getMatchRegexp($str)
 	{
-		safe_ini_set('suhosin.executor.disable_emodifier','0');
-		$str = preg_replace("/^_*/e", "'^.{0,'.strlen('\\0').'}'", $str, 1);
-		$str = preg_replace("/_*$/e", "'.{0,'.strlen('\\0').'}$'", $str, 1);
-		$str = preg_replace("/_+/e", "'.{'.strlen('\\0').'}'", $str);
-		safe_ini_set('suhosin.executor.disable_emodifier','1');
+		$str = preg_replace_callback('#^_*#', array($this, '__callback1'), $str, 1);
+		$str = preg_replace_callback('#_*$#', array($this, '__callback2'), $str, 1);
+		$str = preg_replace_callback('#_+#', array($this, '__callback3'), $str);
 		return $str;
 	}
 

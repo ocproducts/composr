@@ -1236,7 +1236,7 @@ abstract class Standard_crud_module
             if ($entries->is_empty()) {
                 inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
             }
-            $fields = form_input_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
+            $fields = form_input_huge_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
         }
 
         $post_url = build_url($map, '_SELF', null, false, true);

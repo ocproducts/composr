@@ -26,10 +26,10 @@ class Hook_config_stealr_type
     public function get_details()
     {
         return array(
-            'human_name' => 'OCTHIEF_TYPE',
+            'human_name' => 'STEALR_TYPE',
             'type' => 'list',
             'category' => 'POINTSTORE',
-            'group' => 'OCTHIEF_TITLE',
+            'group' => 'STEALR_TITLE',
             'explanation' => 'CONFIG_OPTION_stealr_type',
             'shared_hosting_restricted' => '0',
             'list_options' => 'Members that are inactive, but has lots points|Members that are rich|Members that are random|Members that are in a certain usergroup',

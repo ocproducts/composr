@@ -168,7 +168,7 @@ if (get_param_integer('import_addons', 1) == 1) {
                 }
                 $download_id = add_download($cid, $name, $addon_url, $description, $author, '', null, 1, 1, 2, 1, '', $addon . '.tar', $fsize, 0, 0, null, null, 0, 0, $download_owner);
 
-                $screenshot_url = 'data_custom/addon_screenshots/' . $addon . '.png';
+                $screenshot_url = 'data_custom/images/addon_screenshots/' . $addon . '.png';
                 if (file_exists(get_custom_file_base() . '/' . $screenshot_url)) {
                     add_image('', 'download_' . strval($download_id), '', $screenshot_url, '', 1, 0, 0, 0, '', null, null, null, 0);
                 }
@@ -221,7 +221,7 @@ if (get_param_integer('import_themes', 1) == 1) {
                 }
                 $download_id = add_download($cid, $name, $addon_url, $description, $author, '', null, 1, 1, 2, 1, '', $new_file, $fsize, 0, 0, null, null, 0, 0, $download_owner);
 
-                $screenshot_url = 'data_custom/addon_screenshots/' . urlencode(preg_replace('#^theme-#', 'theme__', preg_replace('#\d+$#', '', basename($file, '.tar'))) . '.png');
+                $screenshot_url = 'data_custom/images/addon_screenshots/' . urlencode(preg_replace('#^theme-#', 'theme__', preg_replace('#\d+$#', '', basename($file, '.tar'))) . '.png');
                 if (file_exists(get_custom_file_base() . '/' . $screenshot_url)) {
                     add_image('', 'download_' . strval($download_id), '', $screenshot_url, '', 1, 0, 0, 0, '', null, null, null, 0);
                 }

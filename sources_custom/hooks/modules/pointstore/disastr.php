@@ -46,16 +46,16 @@ class Hook_pointstore_disastr
      */
     public function action()
     {
-        require_code('database_action');
+        require_code('form_templates');
+
         $class = str_replace('hook_pointstore_', '', strtolower(get_class($this)));
 
         $title = get_screen_title('DISEASES_CURES_IMMUNIZATIONS_TITLE');
 
-        require_code('form_templates');
         $fields = '<table style="width: 100%" cellspacing="0" cellpadding="0" border="1"><tr style="border: 1px solid #ccc; background-color: #E3EAF6;"><th colspan="2">Disease</th><th width="33%">Cure</th><th width="33%">Immunisation</th></tr>';
 
         $member_id = get_member();
-        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null);
+        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null, 'ORDER BY name');
         $counter = 0;
         foreach ($rows as $disease) {
             $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'cure' => 1), '_SEARCH');
@@ -70,16 +70,19 @@ class Hook_pointstore_disastr
             $get_immunization = true;
 
             if (isset($member_rows[0]['sick']) && $member_rows[0]['sick'] == 1 && $member_rows[0]['cure'] == 0) {
+                //member already infected
                 $get_cure = true;
                 $get_immunization = false;
             } elseif (isset($member_rows[0]['sick']) && $member_rows[0]['sick'] == 0 && $member_rows[0]['immunisation'] == 0) {
+                //member listed but not infected and not immunised
                 $get_cure = false;
                 $get_immunization = true;
             } elseif (!isset($member_rows[0])) {
+                //member not listed (so not infected and not immunised)
                 $get_cure = false;
                 $get_immunization = true;
             } elseif (isset($member_rows[0]['sick']) && ($member_rows[0]['cure'] == 1 || $member_rows[0]['immunisation'] == 1)) {
-                //skip this disease - because user has been immunizated or has been cured
+                //skip this disease - because user has been immunised or has been cured
                 $get_cure = false;
                 $get_immunization = false;
             }
@@ -87,18 +90,18 @@ class Hook_pointstore_disastr
             if ($get_immunization || $get_cure) {
                 if (is_file(get_custom_file_base() . '/' . $disease['image'])) {
                     if ($get_cure) {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td width="45"><img width="45" src="' . escape_html(get_custom_base_url() . '/' . $disease['image']) . '" /></td><td>' . escape_html($disease['name']) . '</td><td width="33%">' . escape_html($disease['cure']) . ' costs ' . escape_html(integer_format($disease['cure_price'])) . ' points<br /><a href="' . escape_html($cure_url) . '">' . do_lang('PROCEED') . '</a></td><td width="33%">-</td></tr>';
+                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td width="45"><img width="45" src="' . escape_html(get_custom_base_url() . '/' . $disease['image']) . '" /></td><td>' . escape_html($disease['name']) . '</td><td width="33%"><a href="' . escape_html($cure_url) . '">' . escape_html($disease['cure']) . '</a> costs ' . escape_html(integer_format($disease['cure_price'])) . ' points</td><td width="33%">-</td></tr>';
                         $counter++;
                     } else {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td width="45"><img width="45" src="' . escape_html(get_custom_base_url() . '/' . $disease['image']) . '" /></td><td>' . escape_html($disease['name']) . '</td><td width="33%">-</td><td width="33%">' . escape_html($disease['immunisation']) . ' costs ' . escape_html(integer_format($disease['immunisation_price'])) . ' points<br /><a href="' . escape_html($immunization_url) . '">' . do_lang('PROCEED') . '</a></td></tr>';
+                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td width="45"><img width="45" src="' . escape_html(get_custom_base_url() . '/' . $disease['image']) . '" /></td><td>' . escape_html($disease['name']) . '</td><td width="33%">-</td><td width="33%"><a href="' . escape_html($immunization_url) . '">' . escape_html($disease['immunisation']) . '</a> costs ' . escape_html(integer_format($disease['immunisation_price'])) . ' points</td></tr>';
                         $counter++;
                     }
                 } else {
                     if ($get_cure) {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td colspan="2">' . escape_html($disease['name']) . '</td><td width="33%">' . escape_html($disease['cure']) . ' costs ' . escape_html(integer_format($disease['cure_price'])) . ' points<br /><a href="' . escape_html($cure_url) . '">' . do_lang('PROCEED') . '</a></td><td width="33%">-</td></tr>';
+                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td colspan="2">' . escape_html($disease['name']) . '</td><td width="33%"><a href="' . escape_html($cure_url) . '">' . escape_html($disease['cure']) . '</a> costs ' . escape_html(integer_format($disease['cure_price'])) . ' points</td><td width="33%">-</td></tr>';
                         $counter++;
                     } else {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td colspan="2">' . escape_html($disease['name']) . '</td><td width="33%">-</td><td width="33%">' . escape_html($disease['immunisation']) . ' costs ' . escape_html(integer_format($disease['immunisation_price'])) . ' points<br /><a href="' . escape_html($immunization_url) . '">' . do_lang('PROCEED') . '</a></td></tr>';
+                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td colspan="2">' . escape_html($disease['name']) . '</td><td width="33%">-</td><td width="33%"><a href="' . escape_html($immunization_url) . '">' . escape_html($disease['immunisation']) . '</a> costs ' . escape_html(integer_format($disease['immunisation_price'])) . ' points</td></tr>';
                         $counter++;
                     }
                 }

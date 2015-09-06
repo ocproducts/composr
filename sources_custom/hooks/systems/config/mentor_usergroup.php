@@ -27,7 +27,7 @@ class Hook_config_mentor_usergroup
     {
         return array(
             'human_name' => 'MENTOR_USERGROUP',
-            'type' => 'usergroup',
+            'type' => 'usergroup_not_guest',
             'category' => 'USERS',
             'group' => 'JOINING',
             'explanation' => 'CONFIG_OPTION_mentor_usergroup',

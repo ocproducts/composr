@@ -454,7 +454,8 @@ function cleanup_block_name($block)
     }
 
     $block = str_replace('_cns_', '_', $block);
-    return titleify(str_replace('block_bottom_', 'Bottom: ', str_replace('block_side_', 'Side: ', str_replace('block_main_', 'Main: ', $block))));
+    $block = preg_replace('#^(main|side|top|bottom)_#', '', $block);
+    return titleify($block);
 }
 
 /**
@@ -468,7 +469,16 @@ function get_block_parameters($block)
     $block_path = _get_block_path($block);
     $info = extract_module_info($block_path);
     if (is_null($info)) {
-        return array();
+        $params = array();
+
+        $contents = file_get_contents($block_path);
+        $matches = array();
+        $num_matches = preg_match_all('#\$map\[\'(\w+)\'\]#', $contents, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $params[$matches[1][$i]] = true;
+        }
+
+        return array_diff(array_keys($params), array('cache'));
     }
 
     $ret = array_key_exists('parameters', $info) ? $info['parameters'] : array();

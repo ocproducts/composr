@@ -100,16 +100,16 @@ class Hook_chat_bot_trickstr
                     @set_time_limit(600);
                 }
 
-                $GLOBALS['SITE_DB']->query("DROP TABLE bot", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE bots", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE conversationlog", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE dstore", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE gmcache", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE gossip", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE patterns", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE templates", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE thatindex", null, null, true);
-                $GLOBALS['SITE_DB']->query("DROP TABLE thatstack", null, null, true);
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS bot");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS bots");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS conversationlog");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS dstore");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS gmcache");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS gossip");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS patterns");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS templates");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS thatindex");
+                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS thatstack");
 
                 $GLOBALS['SITE_DB']->query("CREATE TABLE bot (
 				  id int(11) NOT NULL auto_increment,
@@ -118,32 +118,32 @@ class Hook_chat_bot_trickstr
 				  value text NOT NULL,
 				  PRIMARY KEY  (id),
 				  KEY botname (bot,name)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE bots (
 				  id tinyint(3) unsigned NOT NULL auto_increment,
 				  botname varchar(255) NOT NULL default '',
 				  PRIMARY KEY  (botname),
 				  KEY id (id)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE conversationlog (
 				  bot tinyint(3) unsigned NOT NULL default '0',
 				  id int(11) NOT NULL auto_increment,
 				  input text,
 				  response text,
 				  uid varchar(255) default NULL,
-				  enteredtime timestamp(14) NOT NULL,
+				  enteredtime timestamp(6) NOT NULL,
 				  PRIMARY KEY  (id),
 				  KEY botid (bot)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE dstore (
 				  uid varchar(255) default NULL,
 				  name text,
 				  value text,
-				  enteredtime timestamp(14) NOT NULL,
+				  enteredtime timestamp(6) NOT NULL,
 				  id int(11) NOT NULL auto_increment,
 				  PRIMARY KEY  (id),
 				  KEY nameidx (name(40))
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE gmcache (
 				  id int(11) NOT NULL auto_increment,
 				  bot tinyint(3) unsigned NOT NULL default '0',
@@ -156,14 +156,14 @@ class Hook_chat_bot_trickstr
 				  combined text NOT NULL,
 				  PRIMARY KEY  (id),
 				  KEY combined (bot,combined(255))
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE gossip (
 				  bot tinyint(3) unsigned NOT NULL default '0',
 				  gossip text,
 				  id int(11) NOT NULL auto_increment,
 				  PRIMARY KEY  (id),
 				  KEY botidx (bot)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE patterns (
 				  bot tinyint(3) unsigned NOT NULL default '0',
 				  id int(11) NOT NULL auto_increment,
@@ -174,7 +174,7 @@ class Hook_chat_bot_trickstr
 				  PRIMARY KEY  (id),
 				  KEY wordparent (parent,word),
 				  KEY botid (bot)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE templates (
 				  bot tinyint(3) unsigned NOT NULL default '0',
 				  id int(11) NOT NULL default '0',
@@ -184,20 +184,20 @@ class Hook_chat_bot_trickstr
 				  topic varchar(255) default NULL,
 				  PRIMARY KEY  (id),
 				  KEY bot (id)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE thatindex (
 				  uid varchar(255) default NULL,
-				  enteredtime timestamp(14) NOT NULL,
+				  enteredtime timestamp(6) NOT NULL,
 				  id int(11) NOT NULL auto_increment,
 				  PRIMARY KEY  (id)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE thatstack (
 				  thatid int(11) NOT NULL default '0',
 				  id int(11) NOT NULL auto_increment,
 				  value varchar(255) default NULL,
-				  enteredtime timestamp(14) NOT NULL,
+				  enteredtime timestamp(6) NOT NULL,
 				  PRIMARY KEY  (id)
-				) TYPE=MyISAM", null, null, true);
+				) ENGINE=MyISAM");
 
                 $fp = "";
 

@@ -484,7 +484,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     }
 
     if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0) {
-        if (preg_match('#^data_custom/addon_screenshots(/|$)#', strtolower($filepath)) != 0) {
+        if (preg_match('#^data_custom/images/addon_screenshots(/|$)#', strtolower($filepath)) != 0) {
             return true; // Relating to addon build, but not defined in addons
         }
         if (preg_match('#^exports/static(/|$)#', strtolower($filepath)) != 0) {

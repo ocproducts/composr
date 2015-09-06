@@ -131,9 +131,9 @@ class Hook_addon_registry_psds
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/psds.php',
-            'data_custom/psds/blank_emoticon.png',
-            'data_custom/psds/chatcode.psd',
-            'data_custom/psds/comcode.psd',
+            'data_custom/images/psds/blank_emoticon.png',
+            'data_custom/images/psds/chatcode.psd',
+            'data_custom/images/psds/comcode.psd',
         );
     }
 }

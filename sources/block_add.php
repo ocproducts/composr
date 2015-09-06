@@ -119,6 +119,7 @@ function block_helper_script()
         }
         $block_types = array();
         $block_types_icon = array();
+        $block_meta = array();
         $keep = symbol_tempcode('KEEP');
         foreach (array_keys($blocks) as $block) {
             if (array_key_exists($block, $addons_blocks)) {
@@ -129,6 +130,7 @@ function block_helper_script()
                 $addon_name = null;
                 $addon_icon = null;
             }
+
             $this_block_type = (is_null($addon_name) || (strpos($addon_name, 'block') !== false) || ($addon_name == 'core')) ? substr($block, 0, (strpos($block, '_') === false) ? strlen($block) : strpos($block, '_')) : $addon_name;
             if (!array_key_exists($this_block_type, $block_types)) {
                 $block_types[$this_block_type] = new Tempcode();
@@ -155,18 +157,33 @@ function block_helper_script()
             if (get_param_string('save_to_id', '') != '') {
                 $url .= '&save_to_id=' . urlencode(get_param_string('save_to_id'));
             }
-            $link_caption = do_lang_tempcode('NICE_BLOCK_NAME', escape_html(cleanup_block_name($block)), escape_html($block));
+
+            $block_title = cleanup_block_name($block);
+            $link_caption = do_lang_tempcode('NICE_BLOCK_NAME', escape_html($block_title), escape_html($block));
+
             $usage = array_key_exists($block, $block_usage) ? $block_usage[$block] : array();
 
-            $block_types[$this_block_type]->attach(do_template('BLOCK_HELPER_BLOCK_CHOICE', array('_GUID' => '079e9b37fc142d292d4a64940243178a', 'USAGE' => $usage, 'DESCRIPTION' => $descriptiont, 'URL' => $url, 'LINK_CAPTION' => $link_caption)));
+            $block_meta[$block_title] = array(
+                $this_block_type,
+                $usage,
+                $descriptiont,
+                $url,
+                $link_caption,
+            );
         }
-        /*if (array_key_exists($type_wanted,$block_types)) We don't do this now, as we structure by addon name
-        {
-            $x=$block_types[$type_wanted];
-            unset($block_types[$type_wanted]);
-            $block_types=array_merge(array($type_wanted=>$x),$block_types);
-        }*/
-        ksort($block_types); // We sort now instead
+        ksort($block_meta);
+        foreach ($block_meta as $bits) {
+            list($this_block_type, $usage, $descriptiont, $url, $link_caption) = $bits;
+
+            $block_types[$this_block_type]->attach(do_template('BLOCK_HELPER_BLOCK_CHOICE', array(
+                '_GUID' => '079e9b37fc142d292d4a64940243178a',
+                'USAGE' => $usage,
+                'DESCRIPTION' => $descriptiont,
+                'URL' => $url,
+                'LINK_CAPTION' => $link_caption,
+            )));
+        }
+        ksort($block_types);
         $move_after = $block_types['adminzone_dashboard'];
         unset($block_types['adminzone_dashboard']);
         $block_types['adminzone_dashboard'] = $move_after;
