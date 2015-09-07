@@ -53,7 +53,7 @@
 
 		<div class="float_surrounder">
 			{+START,IF,{$JS_ON}}
-				<div class="float_surrounder" role="toolbar" class="post_options_wrap">
+				<div role="toolbar" class="float_surrounder post_options_wrap">
 					<div id="post_special_options2" style="display: none">
 						{COMCODE_EDITOR_SMALL}
 					</div>

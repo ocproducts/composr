@@ -316,35 +316,35 @@ You need to create [tt]php.ini[/tt] files that override your web-server's defaul
 This is what your [tt]php.ini[/tt] file should look like, assuming you do not need to add any extra lines (see "2" above).
 [codebox]
 ; Composr needs uploads; many hosts leave these low
-post_max_size="16M"
-upload_max_filesize="16M"
+post_max_size=16M
+upload_max_filesize=16M
 
 ; Turn insecure things off
-allow_url_fopen="off"
-register_globals="off"
+allow_url_fopen=off
+register_globals=off
 
 ; Put some limits up. Composr is stable enough not to cause problems- it'll only use higher limits when it really needs them
-memory_limit="128M"
-max_input_time="60"
-max_input_vars="2000"
+memory_limit=128M
+max_input_time=60
+max_input_vars=2000
 
 ; This unavoidably kills filedump folder creation, and stops us controlling our script execution time
-safe_mode="off"
+safe_mode=off
 
 ; This causes unstability (and is known/documented to) but some hosts turn it on
-mbstring.func_overload="0"
+mbstring.func_overload=0
 
 ; Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
-suhosin.post.max_vars="2000"
-suhosin.request.max_vars="2000"
-suhosin.cookie.max_vars="400"
-suhosin.cookie.max_name_length="150"
-suhosin.cookie.encrypt="off"
-suhosin.post.max_value_length="100000000"
-suhosin.request.max_value_length="100000000"
-suhosin.post.max_totalname_length="10000"
-suhosin.request.max_totalname_length="10000"
-suhosin.cookie.encrypt="off"
+suhosin.post.max_vars=2000
+suhosin.request.max_vars=2000
+suhosin.cookie.max_vars=400
+suhosin.cookie.max_name_length=150
+suhosin.cookie.encrypt=off
+suhosin.post.max_value_length=100000000
+suhosin.request.max_value_length=100000000
+suhosin.post.max_totalname_length=10000
+suhosin.request.max_totalname_length=10000
+suhosin.cookie.encrypt=off
 suhosin.sql.union=off
 suhosin.sql.comment=off
 suhosin.sql.multiselect=off
@@ -352,7 +352,7 @@ suhosin.upload.remove_binary=off
 
 
 ; Sandbox Composr to it's own directory
-; open_basedir="/tmp:/home/blah/public_html/composr/"		Customise this line for your server, or leave it commented out
+; open_basedir=/tmp:/home/blah/public_html/composr/		Customise this line for your server, or leave it commented out
 [/codebox]
 
 Theoretically the file should be placed in any directory from which a PHP file might be called up by URL. Practically though you can just put it in the base directory, [tt]adminzone[/tt], [tt]cms[/tt], [tt]collaboration[/tt], [tt]data[/tt], [tt]data_custom[/tt], [tt]forum[/tt] and [tt]site[/tt] directories.
