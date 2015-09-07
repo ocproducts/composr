@@ -151,8 +151,8 @@ utf-8 works on the principle that characters may use more than one byte. The ASC
 
 [title="3"]The language editor (i.e. how to change strings locally)[/title]
 
-[media width="150" description="Using the language editor to translate language strings" float="right"]data_custom/images/docs/intl_trans_screen.png[/media]
-[media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/intl_trans_choose.png[/media]
+[media width="150" description="Using the language editor to translate language strings" float="right"]data_custom/images/docs/tut_intl/intl_trans_screen.png[/media]
+[media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/tut_intl/intl_trans_choose.png[/media]
 {!lang:DOC_TRANSLATE}
 
 You can reach the language editor from Admin Zone > Style > Translate/re-phrase the software.
@@ -215,8 +215,8 @@ There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which 
 
 [title="3"]Criticising language packs[/title]
 
-[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/intl_crit_choose.png[/media]
-[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/intl_crit_screen.png[/media]
+[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/tut_intl/intl_crit_choose.png[/media]
+[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/tut_intl/intl_crit_screen.png[/media]
 {!lang:DOC_CRITICISE_LANGUAGE_PACK}
 
 It is generally better to look at outstanding translation tasks via Transifex. We update the source strings on there with each Composr patch release.
@@ -318,7 +318,7 @@ This generally does not matter a lot (because anything that you ask to store wil
 
 Composr 10+ uses utf-8 tables by default and utf-8 internally, so none of this is an issue. It should work automatically, but you should still have a basic understanding of how collations work.
 
-[media width="150" description="phpMyAdmin exports" float="right"]data_custom/images/docs/intl_phpmyadmin_settings.png[/media]
+[media width="150" description="phpMyAdmin exports" float="right"]data_custom/images/docs/tut_intl/intl_phpmyadmin_settings.png[/media]
 When Composr 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-1) by default, because this is what the default English language pack uses. MySQL doesn't make it easy to convert the character set of the database, so the best way to do it is to export to an SQL dump, edit the dump in a text editor, and reimport into a new database:
  - Use phpMyAdmin to export all the tables to a [tt].sql[/tt] file on your computer; if it asks what character set to make the file, choose UTF-8
   - Make sure to not include multiple rows in each [tt]INSERT[/tt] statement, as MySQL may not be able to reimport it on some servers (see the screenshot to the right for how to set this on phpMyAdmin, although it may vary from one version to another)
@@ -338,7 +338,7 @@ This is known to happen with Russian characters. The solution is to upload [tt]C
 [title="2"]Exporting language packs[/title]
 
 [surround]
-[media width="150" description="Exporting an addon" float="right"]data_custom/images/docs/intl_pack.png[/media]
+[media width="150" description="Exporting an addon" float="right"]data_custom/images/docs/tut_intl/intl_pack.png[/media]
 If you wish to directly distribute your translation as an addon, you can export it as such. Most translators will not want to bother to do this, as having users actively using Transifex directly will have the side-effect of encouraging collaboration. However for languages that have very high-quality release-ready translations an addon is a good thing to provide users.
 [/surround]
 

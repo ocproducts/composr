@@ -72,7 +72,7 @@ or in reduced form,
 
 [title="3"]List syntax[/title]
 [surround]
-[media width="150" description="The example in action" float="right"]data_custom/images/docs/comcode_list.png[/media]
+[media width="150" description="The example in action" float="right"]data_custom/images/docs/tut_comcode/comcode_list.png[/media]
 To create a list, you just need to start typing elements of the list using the list syntax. A line that is in the first level of a list is identified by the line starting with ' - '. Subsequent lines that have the same prefix are shown as subsequent items in the same list. If you wish to extend the list to a second level, just add the first line of the second level with two spaces before the hyphen, so that the line starts with '  - '; of course, you should start a second level of a list somewhere within the first level. Your list may have as many levels as you like, just by adding extra spaces in the lines at a certain depth. Be careful to not jump from, for instance, a depth of 1 straight to a depth of 3, as this will result in a Comcode error. This all sounds more complex than it is, so I will give an example to show how in fact, it is really very easy to do:
 [/surround]
 [code]
@@ -184,8 +184,8 @@ Comcode has excellent support for semantics, but there is just one small area wh
 
 [title="2"]Attachments[/title]
 
-[media width="150" description="Adding an attachment" float="left"]data_custom/images/docs/comcode_attachment_add.png[/media]
-[media width="150" description="Editing an attachment" float="right"]data_custom/images/docs/comcode_attachment_edit.png[/media]
+[media width="150" description="Adding an attachment" float="left"]data_custom/images/docs/tut_comcode/comcode_attachment_add.png[/media]
+[media width="150" description="Editing an attachment" float="right"]data_custom/images/docs/tut_comcode/comcode_attachment_edit.png[/media]
 Composr has a powerful attachment system that is integrated into Comcode, with a number of content types support attachments, such as news articles and Conversr forum posts.
 Using them couldn't be easier: you just choose a file (or many files) from your computer, and Composr will automatically add an 'attachment' tag into the Comcode you are writing. You may then move that tag to any location you want, for placement of the actual attachment when the content is viewed. There is special built in support for in-line display of various media forms, and support of download of other types of file; any file can be added so long as the file type is in the allowed list of file types defined in the Admin Zone (see the security tutorial for a discussion on  this).
 

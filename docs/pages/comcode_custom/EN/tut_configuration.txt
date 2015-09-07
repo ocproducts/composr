@@ -35,15 +35,15 @@ In particular you'll probably want to know about content needing validation, var
 
 [title="2"]Editing basic site configuration[/title]
 
-[media width="150" description="The list of configuration sections" float="left"]data_custom/images/docs/configuration.png[/media]
-[media width="150" description="The most important area of the configuration" float="right"]data_custom/images/docs/configuration_actual.png[/media]
+[media width="150" description="The list of configuration sections" float="left"]data_custom/images/docs/tut_configuration/configuration.png[/media]
+[media width="150" description="The most important area of the configuration" float="right"]data_custom/images/docs/tut_configuration/configuration_actual.png[/media]
 If you didn't use the Setup Wizard you will probably have noticed by now that many options are initially set to derivatives of 'Composr-?', but all these can all be changed to suit the content and theme of your website (Composr can be entirely debranded, nobody needs to know what software you are running for your site). When you visit the full configuration page to fine tune your configuration, you will see that configuration options are split into a number of subsections. Scroll down your browser window until you find the section entitled, 'General'. From this, you may specify the most important details. Once done, scroll to the bottom of the page and click the obvious button.
 
 There are many more options in the main configuration, and the actual options available depend on which modules are installed.
 
 [title="2"]Editing zones for header text[/title]
 
-[media width="150" description="Editing a zone" float="right"]data_custom/images/docs/configuration_zone.png[/media]
+[media width="150" description="Editing a zone" float="right"]data_custom/images/docs/tut_configuration/configuration_zone.png[/media]
 If you chose not to use the Setup Wizard, you will see that 'Welcome to Composr-?' is still written in the title-bar of most user viewable pages. To change this, you need to edit your website's zones so as to give them new 'header text'. A zone is simply a collection of pages, accessible from a common 'URL sub-directory' (such as [tt]http://example.com/zone[/tt]). The 'Admin Zone' is an example of a zone, as it consists of many different pages related to the administration of your site, all underneath 'adminzone' in the URL. The very base of your site, where sub-directories branch off from, is called the 'Welcome Zone' (this is equivalent to the [tt]base_url[/tt] in the installation options).
 
 The two zones you need to edit to specify your own header text are:
@@ -54,10 +54,10 @@ Editing zones may be carried out from the Admin Zone, as indicated in the screen
 
 [title="2"]Editing default Comcode pages[/title]
 
-[media width="150" description="The list of Comcode pages to be edited/deleted" float="left"]data_custom/images/docs/configuration_comcode_pages.png[/media]
+[media width="150" description="The list of Comcode pages to be edited/deleted" float="left"]data_custom/images/docs/tut_configuration/configuration_comcode_pages.png[/media]
 A Comcode page is a page in the system that you can edit either via a [concept]WYSIWYG[/concept] editor, or a very simple [concept]mark-up language[/concept] called Comcode. If you want to write a page without any special formatting, you can just type it out in plain-text, and this will usually be valid Comcode and display as you would expect it to; you can also add 'tags' to identify things such as titles and links.
 
-[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/configuration_page.png[/media]
+[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/tut_configuration/configuration_page.png[/media]
 
 Comcode pages may be selected for editing from the Comcode pages editor in the Admin Zone. The list to choose from has them listed in 'zone:page-name' format, which is a very common naming convention in Composr that is a bit like an 'Composr URL' (it's called a 'page-link'). The default Comcode pages are:
 
@@ -126,7 +126,7 @@ The templates are designed to help you in the following ways:
 
 [title="2"]Editing logo theme images[/title]
 
-[media width="150" description="Choosing theme images to edit" float="left"]data_custom/images/docs/configuration_logo_1.png[/media]
+[media width="150" description="Choosing theme images to edit" float="left"]data_custom/images/docs/tut_configuration/configuration_logo_1.png[/media]
 You will want to change your logo to give your site an individual identity. You may either do this manually, or by using the Logo Wizard; the rest of this section will assume that you are doing it manually.
 
 When you change images, styling, or low-level HTML structure (defined in templates), you are editing the theme of the site. Therefore to do it, you should go to Admin Zone > Style > Themes.
@@ -134,7 +134,7 @@ When you choose to manage images in the default theme, you will be warned agains
 
 Choose 'logo/-logo' (the logo for the Welcome Zone, and the logo for any zone that does not have its own) from the drop-down list presented. After clicking the button you will see the current image; all you need to do is create your own replacement on your computer (as a .jpeg/.jpg, .png, .gif or .png file) and choose to browse for it to upload. You do not need to erase the current URL, as your upload will replace it, and you definitely should leave the 'Name' field unchanged.
 
-[media width="150" description="Editing a logo theme image" float="right"]data_custom/images/docs/configuration_logo_2.png[/media]
+[media width="150" description="Editing a logo theme image" float="right"]data_custom/images/docs/tut_configuration/configuration_logo_2.png[/media]
 
 Your choice of image file formats:
  - Do not ever try and use '.bmp' files with Composr, as they do not have proper compression, and are designed for Windows only.
@@ -145,8 +145,8 @@ Your choice of image file formats:
 [title="2"]Editing menus[/title]
 
 [surround]
-[media width="150" description="The left hand panel" float="left"]data_custom/images/docs/configuration_left.png[/media]
-[media width="150" description="The menu editor" float="right"]data_custom/images/docs/configuration_menu_editor.png[/media]
+[media width="150" description="The left hand panel" float="left"]data_custom/images/docs/tut_configuration/configuration_left.png[/media]
+[media width="150" description="The menu editor" float="right"]data_custom/images/docs/tut_configuration/configuration_menu_editor.png[/media]
 You may wish to remove some of the links from the default menus on your installation. To do this, log in as an administrator and click the 'Edit menu' link. Using the menu editor is beyond the scope of this tutorial.
 [/surround]
 
@@ -156,7 +156,7 @@ If you are not running a community site, you will almost certainly want to delet
 
 [title="2"]Environment configuration[/title]
 [surround]
-[media width="150" description="Your base-configuration" float="right"]data_custom/images/docs/configuration_environment.png[/media]
+[media width="150" description="Your base-configuration" float="right"]data_custom/images/docs/tut_configuration/configuration_environment.png[/media]
 {!config:DOC_BASE_CONFIGURATION}
 [/surround]
 [title="2"]Scheduling[/title]
@@ -245,7 +245,7 @@ If you enable the mail queue (recommended for performance), then e-mail will be 
 
 [title="2"]Closed site, and opening[/title]
 [surround]
-[media width="150" description="Your site is initially closed" float="right"]data_custom/images/docs/configuration_closed.png[/media]
+[media width="150" description="Your site is initially closed" float="right"]data_custom/images/docs/tut_configuration/configuration_closed.png[/media]
 It's not advertised in the interface, but it is possible for a user to join a closed Conversr-powered site if they have been given the URL to the join module (they can't see any panels in this event). Once they have joined they can't log in though unless they have subsequently been put in a usergroup with 'Access closed site' permission. The reasoning here is that the staff may give out the join URL and ask someone to use it, and then give special access because they want them to be able to get in early. If you do not like this behaviour, you can alter the join-module's permissions so that the Guest usergroup cannot access it.
 
 Once you feel your site is ready for the general public, you will want to 'open the doors' so to speak. You can do this from the configuration: find the options in the Admin Zone, the Configuration page, the Site Configuration section, the 'Closed Site' subsection.

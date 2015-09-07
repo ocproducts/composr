@@ -6,7 +6,7 @@
 
 [title="2"]Events[/title]
 
-[media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/calendar_add_event.png[/media]
+[media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/tut_calendar/calendar_add_event.png[/media]
 Each entry in the calendar is called an 'event'. It is important to understand that an event is not a single point in time, or even a range in time, but rather something that may happen regularly. This is achieved through 'recurrence', which has a particularly powerful implementation in Composr.
 
 For this tutorial I have just added a single recurring event into the system for clarity: you will see how this single event is shown on the various calendar views, and get an impression on how the system works. In reality, the calendar may be used by any number of members, with any number of events. Composr will actually recognise conflicting events, and display conflicting events in parallel activity streams on the day view interface.
@@ -24,13 +24,13 @@ System commands are a special type, as events added to this define code to be ex
 
 You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under the 'Calendar' icon in the Content Management Zone.
 
-[media width="150" description="Viewing a calendar event" float="right"]data_custom/images/docs/calendar_view_event.png[/media]
+[media width="150" description="Viewing a calendar event" float="right"]data_custom/images/docs/tut_calendar/calendar_view_event.png[/media]
 When you add an event, you may define the following special settings:
  - The event type.
  - The start date and time. This defaults to an arbitrary time in the future. For a recurring event, this is the first time the event happens.
  - The end date and time. This is optional, and should only be set for an event that specifically has an end (many events can be considered points in time).
  - The recurrence type. For example, you can decide that recurrence is on a weekly basis.
- - The recurrence pattern. This is a source of popular confusion, but it is actually a very powerful tool. Significant in-line help is given for this, but basically it allows you to say things like 'this happens every weekday'. In our example, we have allowed the Cricket team to have a week off after every three weeks of practice.[media width="150" description="Adding an event type" float="right"]data_custom/images/docs/calendar_event_types.png[/media]
+ - The recurrence pattern. This is a source of popular confusion, but it is actually a very powerful tool. Significant in-line help is given for this, but basically it allows you to say things like 'this happens every weekday'. In our example, we have allowed the Cricket team to have a week off after every three weeks of practice.[media width="150" description="Adding an event type" float="right"]data_custom/images/docs/tut_calendar/calendar_event_types.png[/media]
 
  - The number of recurrences. In our example, the Cricket team only practices 25 times (therefore they have around 32 weeks between the start and end of their season, because of the weeks off).
  - Whether the event is public. Private events are generally used if the event is intended (by the event submitter) for a diary-like usage of the calendar system.
@@ -43,8 +43,8 @@ A member may remove reminders for events, and also have multiple reminders with 
 
 [title="2"]Views[/title]
 [surround]
-[media width="150" description="The calendar day view" float="right"]data_custom/images/docs/calendar_view_day.png[/media]
-[media width="150" description="The calendar year view" float="right"]data_custom/images/docs/calendar_view_year.png[/media]
+[media width="150" description="The calendar day view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_day.png[/media]
+[media width="150" description="The calendar year view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_year.png[/media]
 The calendar has 5 views:
  - at the top level, you can view a whole year
  - you can view a whole month
@@ -53,8 +53,8 @@ The calendar has 5 views:
  - you can view a specific event
 [/surround]
 [surround]
-[media width="150" description="The calendar week view" float="left"]data_custom/images/docs/calendar_view_week.png[/media]
-[media width="150" description="The calendar month view" float="right"]data_custom/images/docs/calendar_view_month.png[/media]
+[media width="150" description="The calendar week view" float="left"]data_custom/images/docs/tut_calendar/calendar_view_week.png[/media]
+[media width="150" description="The calendar month view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_month.png[/media]
 The user interface has been very carefully designed so as to allow very quick and easy navigation between these views, allowing you to focus in and out, and move along, from where you are viewing.
 
 The less focused the view, the less detail that is shown. On the year view you not see detail on any specific event happening on a day, but you can see trends and gauge how busy the individual days are. On the month view you can see specific events, but it is less easy to see how a day is time-tabled. On the week view you can can see a full time-table, but you can only see event titles by hovering the mouse. On the day view, you can see parallel activity streams, and actual event details.
@@ -62,7 +62,7 @@ The less focused the view, the less detail that is shown. On the year view you n
 The views support filtering of event-types via a series of check-boxes (tick-boxes).
 [/surround]
 [surround]
-[media width="150" description="Calendar interest filtering" float="left"]data_custom/images/docs/calendar_interests.png[/media]
+[media width="150" description="Calendar interest filtering" float="left"]data_custom/images/docs/tut_calendar/calendar_interests.png[/media]
 You may also declare your 'interests', which marks you down for auto-reminding for new events of the types you have said you consider interesting.
 
 From the screen-shots of the calendar views you can see how the recurrence pattern causes a gap where for one week in four, there is no shown event.

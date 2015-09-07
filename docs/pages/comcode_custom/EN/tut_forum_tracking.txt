@@ -10,8 +10,8 @@ Virtual forums are basically special types of forum that list topics in a distin
 
 [title="3"]Posts since last visit[/title]
 [surround]
-[media width="150" description="The link to see posts since your last forum visit" float="left"]data_custom/images/docs/forum_tracking_Posts-since-last-visit-link.png[/media]
-[media width="150" description="A sample of the interface" float="right"]data_custom/images/docs/forum_tracking_Posts-since-last-visit.png[/media]
+[media width="150" description="The link to see posts since your last forum visit" float="left"]data_custom/images/docs/tut_forum_tracking/forum_tracking_posts_since_last_visit_link.png[/media]
+[media width="150" description="A sample of the interface" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_posts_since_last_visit.png[/media]
 The 'posts since last visit' virtual forum displays all the posts that were made since you last visited the site. The virtual forum displays the posts as a list of links to the respective topics, with all the normal trimmings, such as topic icon, jump to first unread link, previews, etc. Clicking on one of the listed links would take you straight to the first new post in the specified topic.
 
 The last-visit detection system works using session cookies. If the last-visit cookie is not present then Composr knows that you are starting a new visit, and loads in a new copy of the cookie using the last-active time stored in the database against your account.
@@ -22,38 +22,38 @@ This has three ramifications:
 [/surround]
 [title="3"]Topics with unread posts[/title]
 [surround]
-[media width="150" description="The link to see topics with unread posts" float="left"]data_custom/images/docs/forum_tracking_Topics-with-unread-posts-link.png[/media]
-[media width="150" description="A sample of the interface" float="right"]data_custom/images/docs/forum_tracking_Topics-with-unread-posts.png[/media]
+[media width="150" description="The link to see topics with unread posts" float="left"]data_custom/images/docs/tut_forum_tracking/forum_tracking_topics_with_unread_posts_link.png[/media]
+[media width="150" description="A sample of the interface" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_topics_with_unread_posts.png[/media]
 The 'topics with unread posts' virtual forum displays any topics on the forum that have unread posts -- posts that you have not viewed.  Again, the virtual forum displays the posts as a list of links to the respective topics, with all the normal trimmings, such as topic icon, jump to first unread link, previews, etc. Clicking on one of the listed links would take you straight to the first unread post in the specified topic.
 [/surround]
 [title="2"]Read status[/title]
 [surround]
-[media width="150" description="How the read/unread status of a topic works" float="right"]data_custom/images/docs/forum_tracking_Topic-read-status.gif[/media]
+[media width="150" description="How the read/unread status of a topic works" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_topic_read_status.gif[/media]
 A topic can either be 'read', or 'unread'. If a topic is unread, it is shown in bold in the topic listing, and has a little triangle icon next to it (the 'jump to first unread' link).
 [/surround]
 [title="3"]Marking as unread[/title]
 [surround]
-[media width="150" description="The button to mark a topic as unread" float="left"]data_custom/images/docs/forum_tracking_Mark-topic-unread-link.png[/media]
+[media width="150" description="The button to mark a topic as unread" float="left"]data_custom/images/docs/tut_forum_tracking/forum_tracking_mark_topic_unread_link.png[/media]
 Marking as unread is a convenient way to tell yourself to come back to a topic without any hassle. When you open up a topic, it is automatically marked as 'read'. However, you may want to make the topic appear as unread again, perhaps for the aforementioned reason. To do this, you need to click the "mark 'unread'" button.
 
 This function is available for forums as well as topics. If you use it on a forum then it is the same as doing it on every unread topic within that forum, and any sub-forums thereof.
 [/surround]
 [title="3"]Marking as read[/title]
 [surround]
-[media width="150" description="The button to mark a topic as read" float="right"]data_custom/images/docs/forum_tracking_Mark-forum-read-link.png[/media]
+[media width="150" description="The button to mark a topic as read" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_mark_forum_read_link.png[/media]
 Marking as read is a function only available for forums, to save you the hassle of going through each topic and reading them when you might not want to, or they might not be relevant. Simply go to the forum view of the forum you want to mark as read (or any of its parents, such as the home forum), and click the "mark 'read'" button.
 
 This function is not available for individual topics, as to reach the button, you would be marking the topic as read anyway.
 [/surround]
 [title="2"]Notifications[/title]
 [surround]
-[media width="150" description="The button to get notifications for a forum" float="left"]data_custom/images/docs/forum_tracking_Track-forum-link.png[/media]
-[media width="150" description="The button sets a notification on a forum/topic" float="right"]data_custom/images/docs/forum_tracking_Tracking2.png[/media]
-[media width="150" description="Options for getting notifications for a topic in your member profile" float="right"]data_custom/images/docs/forum_tracking_Tracking-options.png[/media]
+[media width="150" description="The button to get notifications for a forum" float="left"]data_custom/images/docs/tut_forum_tracking/forum_tracking_track_forum_link.png[/media]
+[media width="150" description="The button sets a notification on a forum/topic" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_tracking2.png[/media]
+[media width="150" description="Options for getting notifications for a topic in your member profile" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_tracking_options.png[/media]
 Notifications (previously called 'tracking' -- note that the screenshots in this tutorial are out-dated) allows you to mark topics for notification; when a new reply is posted, you will be notified of its presence (e.g. by e-mail). Also a notification can be sent if a topic is moved (as long as there is activity within the last two weeks). There is an automatic notifications option that each member may set in his/her profile (options for automatically enabling topics the member posts in for notifications).
 
 As well as automatic notifications, you can enable notifications for topics manually, by clicking the "monitor" button in the topic view.
-[media width="150" description="The button to enable notifications for a topic" float="right"]data_custom/images/docs/forum_tracking_Track-topic-link.png[/media]
+[media width="150" description="The button to enable notifications for a topic" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_track_topic_link.png[/media]
 
 You can also mark whole forums for notifications, by clicking the "monitor" button in the forum view. Note that if you enable notifications in a forum it does not automatically enable for sub-forums of that forum.
 
@@ -61,8 +61,8 @@ In fact you can set notifications for virtually any category of content. This ca
 [/surround]
 [title="2"]Disabling notifications[/title]
 [surround]
-[media width="150" description="The button to disable notifications for a forum" float="left"]data_custom/images/docs/forum_tracking_Untrack-forum-link.png[/media]
-[media width="150" description="The button to disable notifications for a topic" float="right"]data_custom/images/docs/forum_tracking_Untrack-topic-link.png[/media]
+[media width="150" description="The button to disable notifications for a forum" float="left"]data_custom/images/docs/tut_forum_tracking/forum_tracking_untrack_forum_link.png[/media]
+[media width="150" description="The button to disable notifications for a topic" float="right"]data_custom/images/docs/tut_forum_tracking/forum_tracking_untrack_topic_link.png[/media]
 After enabling notifications topics and forums, you can easily disable it again, using the obvious buttons.
 [/surround]
 

@@ -6,7 +6,7 @@ Composr includes a highly-configurable notification system for members to be ale
 
 [title="2"]Choosing notifications[/title]
 
-[media width="150" description="Setting notifications" float="right"]data_custom/images/docs/notifications.png[/media]
+[media width="150" description="Setting notifications" float="right"]data_custom/images/docs/tut_notifications/notifications.png[/media]
 There are a wide number of notification types that members can receive.
 Some are set to be enabled by default, and some are only available based on privileges.
 

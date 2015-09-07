@@ -1,15 +1,15 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Helping improve site accessibility for disabled users[/title]
 
-[media width="150" description="Composr accessibility compliance" float="right"]data_custom/images/docs/accessibility_excel.png[/media]
+[media width="150" description="Composr accessibility compliance" float="right"]data_custom/images/docs/tut_accessibility/accessibility_excel.png[/media]
 The [concept]W3C[/concept], the standards organisation responsible for core web standards, has a project, the web accessibility initiative ([concept]WAI[/concept]), that defines a standard for the creation of accessible web pages: the web content accessibility guidelines ([concept]WCAG[/concept]). In addition, U.S. federal agencies are required by law to meet [concept]section 508[/concept] guidelines on accessibility.
 
-[media width="150" description="Composr in a text-mode browser" float="left"]data_custom/images/docs/accessibility_links.png[/media]
+[media width="150" description="Composr in a text-mode browser" float="left"]data_custom/images/docs/tut_accessibility/accessibility_links.png[/media]
 Accessibility is concerned with ensuring web sites are accessible to those with differing needs, in particular those with disabilities. Naturally, a web site cannot be made accessible to all forms of disability, but with some work, they can cater for a large proportion of disabled users, such as blind or partially-sighted users. The basic premise, is that things implied to by visual artefacts, such as colour and position, are not universal for people with various forms of impairment, and by making information explicit in your HTML mark-up ('semantic' mark-up, because the structure now extends to conceptual structure, to a degree), you can make your site more accessible to them; for example, by explicitly linking the text associated with an input form field, a blind user (who is without visual aids) knows, without difficulty, what the field is for.
 
-[media width="150" description="Composr accessibility compliance" float="left"]data_custom/images/docs/accessibility_labels.png[/media]
+[media width="150" description="Composr accessibility compliance" float="left"]data_custom/images/docs/tut_accessibility/accessibility_labels.png[/media]
 Under U.K. law, and other jurisdictions, there is anti-discrimination legislation that covers the provision of services. It is arguable that this legislation covers designing websites such that they conform with accessibility standards. Therefore if you are a business operating in such a jurisdiction, it is highly advisable that you conform.
 
-[media width="150" description="Composr has an inbuilt webstandards checker to ensure high compliance against many standards" float="right"]data_custom/images/docs/accessibility_enable_webstandards_checker.png[/media]
+[media width="150" description="Composr has an inbuilt webstandards checker to ensure high compliance against many standards" float="right"]data_custom/images/docs/tut_accessibility/accessibility_enable_webstandards_checker.png[/media]
 In addition to making a site accessible by the disabled, good accessibility practice also helps usability. For example,
  - by making sure that web pages are given a so-called [concept]semantic[/concept] structure, they automatically become more usable on text-only web browsers. A system administrator needing to access an intranet externally via a remote console would find this particularly useful.
  - forms become more usable, as you do not need to click directly on the sometimes small check-boxes, radio-buttons, and lists to activate them: you can click on any part of the label as well. This makes filling in forms a lot quicker, as less precision mouse work is required.
@@ -22,12 +22,12 @@ Composr complies with the highest level of the WCAG (to the latest version at th
 
 [title="2"]Web master concerns[/title]
 
-[media width="150" description="Composr displays HTML and any errors in an easily readable fashion" float="right"]data_custom/images/docs/accessibility_webstandards_checker.png[/media]
+[media width="150" description="Composr displays HTML and any errors in an easily readable fashion" float="right"]data_custom/images/docs/tut_accessibility/accessibility_webstandards_checker.png[/media]
 After you have decided on the layout of your website, and created appropriate pages, you will need to create a site-map. The site-map is linked to from the bottom of every Composr page, and you will see that Composr comes with a default place-holder.
 
 The complexity of your site-map depends upon the complexity of your website. A small website may be able to just point the user to the left hand menu, whilst a large website should detail the full site structure, with links to all pages that should be directly accessible.
 
-[media width="150" description="This image displays how colour can be used to improve usability, but without it being required to understand an interface" float="left"]data_custom/images/docs/accessibility_colour_useful_not_needed.png[/media]
+[media width="150" description="This image displays how colour can be used to improve usability, but without it being required to understand an interface" float="left"]data_custom/images/docs/tut_accessibility/accessibility_colour_useful_not_needed.png[/media]
 The checkpoint tables included in this document, under the template compliance section, include checkpoints that apply to webmaster rather, or in addition to, the design of Composr itself. Therefore it is important to read this table and act in accordance with it. Web-master concerns are mainly:[html]<ul><li>Fill in optional captions for media</li>
 <li>Layout your site in a clear and consistent manner</li>
 <li>Do not fill your site with multimedia without providing information about that multimedia</li>

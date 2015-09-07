@@ -74,7 +74,7 @@ If you wish for the other system to appear directly inside Composr, much like a 
 
 [title="3"]iframe[/title]
 
-[media width="150" description="Creating a new Comcode page to place the iframe" float="right"]data_custom/images/docs/integration_cc_page.png[/media]
+[media width="150" description="Creating a new Comcode page to place the iframe" float="right"]data_custom/images/docs/tut_integration/integration_cc_page.png[/media]
 An iframe is an HTML construct that allows you to place one site inside a region ('frame') of another. There are a few main drawbacks with frame based approaches however:
  - the browser back button will send the whole Composr site back, not the embedded site. In other words, if you have made clicks inside the embedded system, and then click 'back' in your browser, Composr will move back, with the likely result being the embedded section is no longer the display Composr page
  - sometimes web browser bugs can cause rendering problems, especially when it comes to scrollbars

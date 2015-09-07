@@ -7,7 +7,7 @@ If you find there is malicious activity on your website, you may feel the need t
 [title="2"]Tracing users[/title]
 
 [box="Tip" width="25em" float="right"]Computers often have more than one [concept]IP address[/concept] (one for each 'network interface', such as a network card or modem). If you want to find your own IP address, as Composr sees it, hold the mouse over the 'Account' link in your personal block. A useful website is http://www.myipaddress.com.[/box]
-[media width="150" description="DNSstuff is a very useful website for looking into technical Internet related issues" float="left"]data_custom/images/docs/trace_dnsstuff.png[/media]
+[media width="150" description="DNSstuff is a very useful website for looking into technical Internet related issues" float="left"]data_custom/images/docs/tut_trace/trace_dnsstuff.png[/media]
 To trace users, you need to identify the computer performing the malicious action: unfortunately (from this perspective), the Internet is largely anonymous and decentralised, and without any clear legal authority to turn to. To some extent, a computer on the Internet can be identified by virtue of its 'IP address' (Internet Protocol address); an IP address is a 4 byte piece of data (traditionally, although a new 6 byte standard has been worked on for a number of years now), represented usually in a human readable form of 4 numbers (0-255) separated by dots. There are a number of different sources of IP addresses, however the decentralisation of the system can lead to abuse; these sources are:
 
 [box="Tip" width="25em" float="right"]To find out about your network settings on Windows, type 'ipconfig /all' at a command prompt. On Linux or Mac, type 'ifconfig'.[/box]
@@ -24,8 +24,8 @@ There is a major problem with identifying users by IP address, and that is one o
 
 [title="2"]Tools at your disposal[/title]
 
-[media width="150" description="Tools available in the Admin Zone security section" float="right"]data_custom/images/docs/trace_menu.png[/media]
-[media width="150" description="Tools available in the Admin Zone Audit Section" float="right"]data_custom/images/docs/trace_menu2.png[/media]
+[media width="150" description="Tools available in the Admin Zone security section" float="right"]data_custom/images/docs/tut_trace/trace_menu.png[/media]
+[media width="150" description="Tools available in the Admin Zone Audit Section" float="right"]data_custom/images/docs/tut_trace/trace_menu2.png[/media]
 Composr provides a number of features for tracking IP addresses:
  - When a guest makes a post on [concept]Conversr[/concept], the IP address is viewable by putting the mouse over the listed name of the guest poster (where the user-name of a real member usually resides). If you click it, it'll do an investigate-user operation on the IP address
  - For every page view, the IP address of the page viewer is stored. This allows detection of what areas of the site a viewer has visited, and in what order
@@ -35,7 +35,7 @@ Composr provides modules for working with IP addresses:
  - The 'Action Logs' module (access it from the Admin Zone > Audit > Actions logs) can be used to quickly find out information from a submit that wasn't immediately available (for example, if a user submitted something without being logged-in and hence was not identified, but if by an IP address scan, they were in-fact identifiable). The module can also be used to ban or unban a submitter, based on both member (prevents the member submitting again) and IP address (prevents the IP address being used to access the site)
  - The 'Banned IP addresses' (access it from Admin Zone > Security > Banner IP addresses) module can be used to enter IP addresses for banning, along with free-form notes
 
-[media width="150" description="Managing banned IP addresses" float="right"]data_custom/images/docs/trace_ip_bans.png[/media]
+[media width="150" description="Managing banned IP addresses" float="right"]data_custom/images/docs/tut_trace/trace_ip_bans.png[/media]
 Note that banned IP addresses are restricted from accessing Composr from a very earlier point. Composr ([concept]Conversr[/concept]) does also support banning of members based upon a user profile setting, which provides a 'You have been banned' style message. In addition, members may be placed in a banned usergroup that has restricted privileges. To summarise, there are many types of banning:
  - member submission
  - IP address
@@ -43,14 +43,14 @@ Note that banned IP addresses are restricted from accessing Composr from a very 
  - banned usergroup
 in addition to various other punitive measures, such as removing rank, or charging points. See 'Policing a community site' for more information.
 [surround]
-[media width="150" description="Choosing a member to view the action logs of" float="left"]data_custom/images/docs/trace_dig_1.png[/media]
-[media width="150" description="Investigating a submitter" float="left"]data_custom/images/docs/trace_dig_2.png[/media]
+[media width="150" description="Choosing a member to view the action logs of" float="left"]data_custom/images/docs/tut_trace/trace_dig_1.png[/media]
+[media width="150" description="Investigating a submitter" float="left"]data_custom/images/docs/tut_trace/trace_dig_2.png[/media]
 [box="Tip" width="25em" float="right"]http://www.dnsstuff.com and http://www.samspade.org/ are very useful websites for Internet digging.[/box]
 [/surround]
 [title="2"]A closer look at the Investigate User module[/title]
 
-[media width="150" description="Options available during an investigation" float="right"]data_custom/images/docs/trace_investigate_2.png[/media]
-[media width="150" description="Starting an investigation" float="right"]data_custom/images/docs/trace_investigate_1.png[/media]
+[media width="150" description="Options available during an investigation" float="right"]data_custom/images/docs/tut_trace/trace_investigate_2.png[/media]
+[media width="150" description="Starting an investigation" float="right"]data_custom/images/docs/tut_trace/trace_investigate_1.png[/media]
 {!security:DOC_INVESTIGATE_USER}
  - DNS lookup - this will find try and find a domain name attached to the IP address, and then the IP address attached to the domain name: with a second IP address, further analysis might be performed
  - WHOIS query - this will try and find a domain name attached to the IP address, and then try to find real-world details about the registered owner of that domain name

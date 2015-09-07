@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Nuances of forum integration[/title]
 
-[media width="150" float="right"]data_custom/images/docs/intro_forums.png[/media]
+[media width="150" float="right"]data_custom/images/docs/tut_nuances/intro_forums.png[/media]
 Composr supports integration with a wide variety of forum systems through our forum driver system. Integration is seamless for the most part, but there are a few issues as described in this tutorial.
 
 Composr draws upon the forum for features such as:
@@ -24,7 +24,7 @@ A good example -- if your login password has weird symbols (ones that don't appe
 
 [title="2"]Comment topics[/title]
 
-[media width="150" description="Configuration of special forums" float="right"]data_custom/images/docs/nuances_2.png[/media]
+[media width="150" description="Configuration of special forums" float="right"]data_custom/images/docs/tut_nuances/nuances_2.png[/media]
 Most resources in Composr that have commenting enabled create comment topics in the configured comment forum. If a forum stores posts in BBCode, then if Comcode features not supported in BBCode were used, they will be displayed unparsed when viewing from the forum.
 
 You should moderate comments from the forum as you would any other forum topic. On some forum drivers, however, the forum "latest post" area may not update properly to show new posts. It is best to have the comment topic forums ("Website comment topics" and "Website support tickets", by default) located on the root of the forum-view, as Composr will never update "last post" areas for parent-forum trees.
@@ -33,7 +33,7 @@ The first post in comment topics is a special 'spacer post'. This is necessary f
  - To indicate what content the topic is for
  - To allow the first true post in the topic to be deleted (with ordinary forum topics the first post can not usually be deleted because it is considered as setting the grounds for the topic)
 
-[media width="150" description="The configured special forums do actually exist... see! (our own forum actually configures it all like this by default)" float="right"]data_custom/images/docs/nuances_1.png[/media]
+[media width="150" description="The configured special forums do actually exist... see! (our own forum actually configures it all like this by default)" float="right"]data_custom/images/docs/tut_nuances/nuances_1.png[/media]
 
 [title="2"]Super-members[/title]
 
@@ -53,13 +53,13 @@ The forum base URL should not include a script name -- it should be a URL-prefix
 
 [title="2"]Show forum within website[/title]
 
-[media width="150" description="Configuring Composr to generate in-line forum links from Admin Zone > Setup > Configuration > Site options > Advanced" float="left"]data_custom/images/docs/nuances_3.png[/media]
-[media width="150" description="The default forum link before you fix it..." float="right"]data_custom/images/docs/nuances_forum_menu_1.png[/media]
+[media width="150" description="Configuring Composr to generate in-line forum links from Admin Zone > Setup > Configuration > Site options > Advanced" float="left"]data_custom/images/docs/tut_nuances/nuances_3.png[/media]
+[media width="150" description="The default forum link before you fix it..." float="right"]data_custom/images/docs/tut_nuances/nuances_forum_menu_1.png[/media]
 Composr supports integration of your forum into the portal, so that it fits between your menus, and your header and footer. For this to work, Composr loads up the forum on-server, and integrates its XHTML code and CSS into the XHTML code and CSS of Composr; it also relays cookies, to give the illusion that you are interacting directly with the forum code.
 
 This feature can be turned on from the Admin Zone configuration module, and once on, any Composr generated forum link will be passed through the module (such as links to member profiles). You will also need to replace the forum link in the menu so as to pass through the 'forums' embedding module, as the menus are not managed by the configuration options. To do this, click the "edit menu" link underneath the menu, and make the change as identified in the screenshots.
 
-[media width="150" description="...and this is how you should make it be" float="right"]data_custom/images/docs/nuances_forum_menu_2.png[/media]
+[media width="150" description="...and this is how you should make it be" float="right"]data_custom/images/docs/tut_nuances/nuances_forum_menu_2.png[/media]
 
 Be aware that the forum and Composr both will look a bit weird because it will be running with two sets of CSS sheets that have not been designed to work together.
 

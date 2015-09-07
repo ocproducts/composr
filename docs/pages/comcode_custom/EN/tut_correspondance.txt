@@ -6,16 +6,16 @@ At times you'll want to know how to talk to your members privately (i.e. not on 
 
 [title="2"]Private Topics[/title]
 [surround]
-[media width="150" description="The link to start a new Private Topic" float="left"]data_custom/images/docs/correspondance_hovering-over-startPT-link.png[/media]
-[media width="150" description="Choosing what kind of whisper to use" float="right"]data_custom/images/docs/correspondance_whisper-page.png[/media]
+[media width="150" description="The link to start a new Private Topic" float="left"]data_custom/images/docs/tut_correspondance/correspondance_hovering_over_startpt_link.png[/media]
+[media width="150" description="Choosing what kind of whisper to use" float="right"]data_custom/images/docs/tut_correspondance/correspondance_whisper_page.png[/media]
 Private Topics are very similar in concept to "private/personal messaging" -- a common feature among other forum systems. However, when designing Conversr, we took the concept one step further, and integrated private messaging with the forum system in a new way. Private messaging systems are usually segregated from the main forum system; different layout, posting mechanisms, etc. With Conversr, Private Topics are just that: topics. They are simply topics that are marked as between two users, and are shown in a special "Private Topics" virtual forum.
 
 Private Topics may involve more than 2 people -- a topic is initially between 2 members but other members may be invited.
 [/surround]
 [title="2"]Inline personal posts (whispers)[/title]
 [surround]
-[media width="150" description="Typing in a personal post" float="left"]data_custom/images/docs/correspondance_whisper-form.png[/media]
-[media width="150" description="A personal post as displayed" float="right"]data_custom/images/docs/correspondance_whisper.png[/media]
+[media width="150" description="Typing in a personal post" float="left"]data_custom/images/docs/tut_correspondance/correspondance_whisper_form.png[/media]
+[media width="150" description="A personal post as displayed" float="right"]data_custom/images/docs/tut_correspondance/correspondance_whisper.png[/media]
 Another innovation we have developed for Conversr is that of inline personal posts (henceforth known as "whispers" for brevity's sake). Whispers allow forum-goers to privately reply within a public forum topic.
 
 The whispers are like regular posts but marked as only viewable by the sender and receiver, and nobody else (apart from staff).
@@ -25,30 +25,30 @@ The whispers are like regular posts but marked as only viewable by the sender an
 [title="3"]Starting a Private Topic[/title]
 
 Starting a Private Topic is rather easy. There are 3 ways to do it:
-1) Simply go to the member page of the person you would like to converse with, and click on the "Start Private Topic" link in the "Actions" box at the bottom of the page ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_hovering-over-startPT-link.png[/url]).
-2) Alternatively, you could click on the "Whisper" button on the bottom of a forum post by the person with whom you would like to converse; then click on the "Quote post to a new Private Topic with this member" option ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_whisper-page.png[/url]).
+1) Simply go to the member page of the person you would like to converse with, and click on the "Start Private Topic" link in the "Actions" box at the bottom of the page ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_hovering_over_startpt_link.png[/url]).
+2) Alternatively, you could click on the "Whisper" button on the bottom of a forum post by the person with whom you would like to converse; then click on the "Quote post to a new Private Topic with this member" option ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_whisper_page.png[/url]).
 3) It is also possible to start a Private Topic with any member without having to find their exact username or member profile. All you need to do now is to visit your own Account, and select to start a Private Topic; you will then be able to type in the username that you wish to send a message to and Composr will search for the username for you.
 
-All 3 methods take you to a standard "new topic" page. Fill out all the fields, and hit "Add topic" to create the Private Topic with your chosen conversant ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_create-PT-page.png[/url] and [url="image" rel="lightbox"]correspondance_create-PT-page1.png[/url]). Once your input has been processed, you will be redirected to the newly-created Private Topic ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_new-PT.png[/url])
+All 3 methods take you to a standard "new topic" page. Fill out all the fields, and hit "Add topic" to create the Private Topic with your chosen conversant ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_create_pt_page.png[/url] and [url="image" rel="lightbox"]tut_correspondance/correspondance_create_pt_page1.png[/url]). Once your input has been processed, you will be redirected to the newly-created Private Topic ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_new_pt.png[/url])
 
-The new Private Topic will have also appeared in your Private Topics list, so you can easily access it. To get to your Private Topics list, click on the "Private Topics" button in the top bar and click "Inbox" ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_hovering-over-PT-link.png[/url]). The page lists all the Private Topics you have ever started, or been a participant in, in much the same way as a normal forum ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_PT-page.png[/url]).
+The new Private Topic will have also appeared in your Private Topics list, so you can easily access it. To get to your Private Topics list, click on the "Private Topics" button in the top bar and click "Inbox" ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_hovering_over_pt_link.png[/url]). The page lists all the Private Topics you have ever started, or been a participant in, in much the same way as a normal forum ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_pt_page.png[/url]).
 
 [surround]
-[media width="150" description="The Private Topics link" float="left"]data_custom/images/docs/correspondance_hovering-over-PT-link.png[/media]
-[media width="150" description="Creating a Private Topic (1)" float="left"]data_custom/images/docs/correspondance_create-PT-page.png[/media]
-[media width="150" description="Our new Private Topic" float="right"]data_custom/images/docs/correspondance_new-PT.png[/media]
-[media width="150" description="Creating a Private Topic (2)" float="right"]data_custom/images/docs/correspondance_create-PT-page1.png[/media]
+[media width="150" description="The Private Topics link" float="left"]data_custom/images/docs/tut_correspondance/correspondance_hovering_over_pt_link.png[/media]
+[media width="150" description="Creating a Private Topic (1)" float="left"]data_custom/images/docs/tut_correspondance/correspondance_create_pt_page.png[/media]
+[media width="150" description="Our new Private Topic" float="right"]data_custom/images/docs/tut_correspondance/correspondance_new_pt.png[/media]
+[media width="150" description="Creating a Private Topic (2)" float="right"]data_custom/images/docs/tut_correspondance/correspondance_create_pt_page1.png[/media]
 [/surround]
 [title="3"]Private Topic notifications[/title]
 
-[media width="150" description="An e-mail notification of a new Private Topic" float="left"]data_custom/images/docs/correspondance_Thunderbird-notification-e-mail.png[/media]
-[media width="150" description="Notification of a new personal message" float="right"]data_custom/images/docs/correspondance_forum-notification-message.png[/media]
-When a new post is added by another conversant in a Private Topic that you are part of, you will be notified by the system of its presence. If your notification settings allow it, you will be e-mailed about the new post ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_Thunderbird-notification-e-mail.png[/url]), and you will always be notified by a little message at the top of the site ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_forum-notification-message.png[/url]). The notification message at the top of the forums will disappear once you've viewed the Private Topic, or replied to it.
+[media width="150" description="An e-mail notification of a new Private Topic" float="left"]data_custom/images/docs/tut_correspondance/correspondance_thunderbird_notification_e_mail.png[/media]
+[media width="150" description="Notification of a new personal message" float="right"]data_custom/images/docs/tut_correspondance/correspondance_forum_notification_message.png[/media]
+When a new post is added by another conversant in a Private Topic that you are part of, you will be notified by the system of its presence. If your notification settings allow it, you will be e-mailed about the new post ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_thunderbird_notification_e_mail.png[/url]), and you will always be notified by a little message at the top of the site ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_forum_notification_message.png[/url]). The notification message at the top of the forums will disappear once you've viewed the Private Topic, or replied to it.
 
 [title="3"]Replying to a Private Topic[/title]
 
-[media width="150" description="Our Private Topic listed on the Private Topics page" float="right"]data_custom/images/docs/correspondance_PT-page.png[/media]
-When you receive notification about a new post in one of your Private Topics, you'll probably want to reply. You can either click the "Reply" link in the notification message at the top of the forums, which will take you straight to the reply page, or you can go to the topic (via your Private Topics virtual forum), and reply to the message just like you would in a normal topic: with the quick reply box, or the reply button ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_reply-to-PT.png[/url]).
+[media width="150" description="Our Private Topic listed on the Private Topics page" float="right"]data_custom/images/docs/tut_correspondance/correspondance_pt_page.png[/media]
+When you receive notification about a new post in one of your Private Topics, you'll probably want to reply. You can either click the "Reply" link in the notification message at the top of the forums, which will take you straight to the reply page, or you can go to the topic (via your Private Topics virtual forum), and reply to the message just like you would in a normal topic: with the quick reply box, or the reply button ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_reply_to_pt.png[/url]).
 
 [title="2"]Deleting Private Topics[/title]
 
@@ -72,9 +72,9 @@ As Private Topics behave in a similar fashion to normal topics, they are moderat
 [title="2"]Using whispers[/title]
 
 [surround]
-[media width="150" description="Replying to a Private Topic" float="left"]data_custom/images/docs/correspondance_reply-to-PT.png[/media]
-[media width="150" description="The button to whisper to a poster" float="right"]data_custom/images/docs/correspondance_whisper-link.png[/media]
-To post a whisper, click the "Whisper" link at the bottom of a forum post you would like to quote to the respective member. Then select the "In-topic personal post to this member" option ([url="image" rel="lightbox"]data_custom/images/docs/correspondance_whisper-link.png[/url]).
+[media width="150" description="Replying to a Private Topic" float="left"]data_custom/images/docs/tut_correspondance/correspondance_reply_to_pt.png[/media]
+[media width="150" description="The button to whisper to a poster" float="right"]data_custom/images/docs/tut_correspondance/correspondance_whisper_link.png[/media]
+To post a whisper, click the "Whisper" link at the bottom of a forum post you would like to quote to the respective member. Then select the "In-topic personal post to this member" option ([url="image" rel="lightbox"]data_custom/images/docs/tut_correspondance/correspondance_whisper_link.png[/url]).
 
 Fill out the posting form as you would for a normal post, and submit it. You will be redirected to the correct topic, and see your whisper highlighted in the topic view.
 

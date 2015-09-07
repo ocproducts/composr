@@ -1,6 +1,6 @@
 [title sub="Written by Allen Ellis (ocProducts)"]Composr Tutorial: Themeing your site[/title]
 
-[media width="150" float="right"]data_custom/images/docs/intro_themes.png[/media]
+[media width="150" float="right"]data_custom/images/docs/tut_themes/intro_themes.png[/media]
 {!themes:DOC_THEMES}
 
 [contents]decimal,lower-alpha[/contents]
@@ -94,15 +94,15 @@ As stated earlier, the templates allow you to control the layout of your site, b
 
 Before you edit your templates, you need to know which template you're going to edit. It's also important to know if you actually want to edit a template in the first place. In many cases, the page is built up using [concept]Comcode[/concept], in which case you would edit the page simply by clicking the "edit page" link at the bottom of the page.
 
-[media width="150" description="The \"Tree\" dropdown box" float="right"]data_custom/images/docs/themes_tree_go.png[/media]
+[media width="150" description="The \"Tree\" dropdown box" float="right"]data_custom/images/docs/tut_themes/themes_tree_go.png[/media]
 An example of this is the front page in the 'root' zone. If, for example you wanted to edit the 'poll' section, you simply click the "Edit Page" link at the bottom of the page. This takes you directly to an "edit comcode" page, where you can edit any element of that page. Knowing the difference between [concept]Comcode page[/concept]s and pages that use templates is sometimes difficult. The general rule of thumb is that if there's an 'edit page' button at the bottom of the page, try it first to see if you can edit what you want. If not, you'll need to determine which template you need to edit.
 
-[media width="150" description="An example of the \"Tree\" page" float="left"]data_custom/images/docs/themes_page_tree.png[/media]
-To get a list of all of the templates for a given page, choose the "tree" option from your toolkit ([url="see example" rel="lightbox"]data_custom/images/docs/themes_tree_go.png[/url]). Then click the "view" option, and a new window will appear, containing a list of templates for the page you're viewing, shown in a structured tree format ([url="image" rel="lightbox"]data_custom/images/docs/themes_page_tree.png[/url]). This list may look a little bit intimidating at first, but once you understand the concept behind it, it's relatively simple.
+[media width="150" description="An example of the \"Tree\" page" float="left"]data_custom/images/docs/tut_themes/themes_page_tree.png[/media]
+To get a list of all of the templates for a given page, choose the "tree" option from your toolkit ([url="see example" rel="lightbox"]data_custom/images/docs/tut_themes/themes_tree_go.png[/url]). Then click the "view" option, and a new window will appear, containing a list of templates for the page you're viewing, shown in a structured tree format ([url="image" rel="lightbox"]data_custom/images/docs/tut_themes/themes_page_tree.png[/url]). This list may look a little bit intimidating at first, but once you understand the concept behind it, it's relatively simple.
 
 The list is essentially a list of all of the templates used on that page. The ones that are nested underneath parents are templates that are used within those parents.
 
-[media width="150" description="The template editing page" float="right"]data_custom/images/docs/themes_edit_templates.png[/media]
+[media width="150" description="The template editing page" float="right"]data_custom/images/docs/tut_themes/themes_edit_templates.png[/media]
 The entries on the list are individual templates. If you know which one you want to edit, you can simply click it, and you will be taken to a page where you can edit that template. You may also select multiple templates for editing; this is very advantageous as it allows you to do a group-preview of your changes before you save them.
 
 On this page, you will see a text field where you can edit the HTML for this template. Below it is a grayed-out version of the same template, containing the original in case you need to reference it.
@@ -142,7 +142,7 @@ It's a very useful feature.
 
 [title="3"]Images[/title]
 
-[media width="150" description="The \"Add Image\" page" float="right"]data_custom/images/docs/themes_add_image.png[/media]
+[media width="150" description="The \"Add Image\" page" float="right"]data_custom/images/docs/tut_themes/themes_add_image.png[/media]
 Many of the links and buttons in Composr are created as images. If you wish to edit these images (or add new ones), you can do so via Composr's "Edit Images" interface.
 
 To edit an image, go to the Admin Zone > Style > Themes, then choose the "Manage theme images" link for the theme of your choice. You will be taken to a screen with a dropdown list of every image currently in use. Choose an image, then click "Edit Image".

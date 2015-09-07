@@ -59,13 +59,13 @@ class tutorial_image_consistency_test_set extends cms_test_case
                 $matches = array();
                 $num_matches = preg_match_all('#data_custom/images/docs/([^"\'\s]*\.(gif|jpg|jpeg|png))#', $contents, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $this->images_referenced[$matches[1][$i]] = true;
+                    $this->images_referenced[$matches[1][$i]] = $path . '/' . $f;
                 }
 
                 $matches = array();
                 $num_matches = preg_match_all('#\[media[^\[\]]*]data_custom/images/docs/([^\[\]]*)\[/media\]#', $contents, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $this->images_referenced[$matches[1][$i]] = true;
+                    $this->images_referenced[$matches[1][$i]] = $path . '/' . $f;
                 }
             }
         }
@@ -94,4 +94,54 @@ class tutorial_image_consistency_test_set extends cms_test_case
             $this->assertTrue(isset($this->images_referenced[$x]), 'Unused screenshot: ' . $x);
         }
     }
+
+    // The below aren't true tests, they help us meet our image layout requirements
+
+    /*public function testNoFilesInRoot()
+    {
+        $path = get_file_base() . '/data_custom/images/docs';
+
+        foreach ($this->images_referenced as $x => $tutorial_path) {
+            if (isset($this->images[$x])) {
+                if (strpos($x, '/') === false) {
+                    $path2 = $path . '/' . basename($tutorial_path, '.txt');
+                    @mkdir($path2);
+                    rename($path . '/'. $x, $path2 . '/' . $x);
+                    file_put_contents($tutorial_path, str_replace($x, basename($tutorial_path, '.txt') . '/' . $x, file_get_contents($tutorial_path)));
+                }
+            }
+        }
+    }*/
+
+    /*public function testLowerCaseFilenames()
+    {
+        $path = get_file_base() . '/data_custom/images/docs';
+
+        foreach ($this->images_referenced as $x => $tutorial_path) {
+            if (isset($this->images[$x])) {
+                if (strtolower($x) != $x) {
+                    $path2 = $path . '/' . $x;
+                    $path3 = $path . '/' . strtolower($x);
+                    rename($path2, $path3);
+                    file_put_contents($tutorial_path, str_replace($x, strtolower($x), file_get_contents($tutorial_path)));
+                }
+            }
+        }
+    }*/
+
+    /*public function testUnderScores()
+    {
+        $path = get_file_base() . '/data_custom/images/docs';
+
+        foreach ($this->images_referenced as $x => $tutorial_path) {
+            if (isset($this->images[$x])) {
+                if (strpos($x, '-') !== false) {
+                    $path2 = $path . '/' . $x;
+                    $path3 = $path . '/' . str_replace('-', '_', $x);
+                    rename($path2, $path3);
+                    file_put_contents($tutorial_path, str_replace($x, str_replace('-', '_', $x), file_get_contents($tutorial_path)));
+                }
+            }
+        }
+    }*/
 }

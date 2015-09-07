@@ -10,39 +10,39 @@ This document contains a series of tutorials stepping you through creation of so
 
 [b]Step1:[/b]
 Use the admin username and password to login, and navigate to the admin zone of your Composr website. Navigate to the 'Content' dropdown menu and select 'Catalogues'.
-[media width="150"]data_custom/images/docs/sup_catalogues_1.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_1.png[/media]
 
 [b]Step2:[/b]
 From the Manage Catalogues window, select 'Add catalogue' option to create a new catalogue.
-[media width="150"]data_custom/images/docs/sup_catalogues_2.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_2.png[/media]
 
 [b]Step3:[/b]
 In the 'Add catalogue' window, fill all the necessary fields.
 Let's create a catalogue for holding entries for different cars. To create a new catalogue named 'cars', the Title, Codename and Description can be filled as shown in the screen shot. Leave the remaining options as default. This includes leaving the display type as 'Field-maps', which is the best choice if we're going to customise the layout (described in subsequent tutorials).
-[media width="150"]data_custom/images/docs/sup_catalogues_3.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_3.png[/media]
 
 [b]Step4:[/b]
 In the 'Add new fields to this catalogue' section, add the details of each new field.
 In this example, the name of the first field is set to 'Make' with a description 'Make of the car'. The field type is set to 'A brief line of text'. Leave the rest of the options as default.
-[media width="150"]data_custom/images/docs/sup_catalogues_4.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_4.png[/media]
 
 Similarly add two more fields for 'Model' and 'Engine Capacity'.
-[media width="150"]data_custom/images/docs/sup_catalogues_5.png[/media]
-[media width="150"]data_custom/images/docs/sup_catalogues_6.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_5.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_6.png[/media]
 
 The fourth field can be used to upload a picture of the car. For this set the Field type to 'An uploaded picture'.
-[media width="150"]data_custom/images/docs/sup_catalogues_7.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_7.png[/media]
 
 Submit the form by clicking the 'Add catalogue' button at the bottom of the form.
 
 [b]Step5:[/b]
 After creating a catalogue successfully, you can add entries to it.
 Click on the 'Add an entry' button to proceed to do this.
-[media width="150"]data_custom/images/docs/sup_catalogues_8.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_8.png[/media]
 
 [b]Step6:[/b]
 Fill all the details as required in the 'Add a Cars entry' form. Also choose a picture to upload for the entry.
-[media width="150"]data_custom/images/docs/sup_catalogues_9.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_9.png[/media]
 
 You may notice there is only one category to choose from (using the term 'choose' loosely). We could have added more categories, but for the purpose of these tutorials, we'll just assume everything is in the same category. Having multiple categories doesn't really complicate things for you, it would just mean you'd need to make sure you navigated to the right category when testing.
 
@@ -52,7 +52,7 @@ Repeat step5 and step6 to add more entries to the catalogue.
 To view the catalogue entry, navigate to the Catalogue name from the content menu. You will be able to see a screen similar to the one show in the screen shot below.
 
 If you already customised your panels or menus (perhaps via the Setup Wizard), you may not see a direct link – but you may see a link to 'Catalogues' and then a link to your catalogue from that page. You can add a direct link onto your menus manually from the menu editor.
-[media width="150"]data_custom/images/docs/sup_catalogues_10.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_10.png[/media]
 
 [title="2"]Embedding a catalogue into a page[/title]
 
@@ -75,18 +75,18 @@ The catalogue block can be embedded using the 'main_cc_embed' block. You can man
 Here '8' stands for the catalogue category ID and '30' stands for the maximum number of results to be included. You can find the IDs by looking at the IDs used in the URL when you go to edit a category. However...
 
 The 'Add block' tool in the comcode editor can be used to make this process easier. It will let you pick out the ID visually instead. Select the 'Add block' button from above the Comcode text editing box. In the overlay that opens, scroll down to the Catalogues section.
-[media width="150"]data_custom/images/docs/sup_catalogues_11.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_11.png[/media]
 
 Select the 'Catalogue category embedding' subheading to bring up the Block construction assistant settings for the main_cc_embed block.
 
-[media width="150"]data_custom/images/docs/sup_catalogues_12.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_12.png[/media]
 
 Fill in the required details and select the 'Use' button. The comcode for embedding the catalogue similar to the above code will be added to the comcode editor. 
 
 The changes can be saved if you are done (click the 'Save' button at the bottom of your open Comcode page editing screen).
 
 You will see the catalogue block has been embedded, like in the following screen shot.
-[media width="150"]data_custom/images/docs/sup_catalogues_13.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_13.png[/media]
 
 [title="2"]Customising catalogue layout[/title]
 
@@ -193,7 +193,7 @@ Here,
 
 [b]Step6:[/b]
 Save both the files and refresh the web page. You will get a screen similar to the one shown in the screen shot below.
-[media width="150"]data_custom/images/docs/sup_catalogues_14.png[/media]
+[media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_14.png[/media]
 
 Naturally, you will want to do a more sophisticated layout to match your own particular needs. This tutorial has given you the tools to insert Composr's data (well, your data) into whatever wonderful HTML and CSS you care to write.
 

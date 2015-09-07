@@ -17,7 +17,7 @@ The easiest way to add a file for a download is by attaching the file to the web
 
 [title="2"]Uploading, and then referencing the URL[/title]
 [surround]
-[media width="150" description="Attaching a file to a download, and charging for it" float="right"]data_custom/images/docs/adv_downloads_add.png[/media]
+[media width="150" description="Attaching a file to a download, and charging for it" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_add.png[/media]
 If a file is too large to comfortably upload by web-form, users with FTP or SFTP/SCP access to the server may wish to upload it using this, and then provide the 'Add download' form with an equivalent HTTP URL (or the direct FTP URL) to the location they upload to.
 The draw-backs with this method are:
  - It is less convenient than attaching directly
@@ -26,7 +26,7 @@ The draw-backs with this method are:
 [/surround]
 [title="2"]Batch adding from an FTP server[/title]
 
-[media width="150" description="The FTP downloads interface" float="right"]data_custom/images/docs/adv_downloads_ftp_downloads.png[/media]
+[media width="150" description="The FTP downloads interface" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_ftp_downloads.png[/media]
 Composr includes a feature that allows staff to batch add files that are on an FTP server, into Composr, by FTP URL. This is particularly useful for adding large batches of downloads, where immediately making custom download descriptions available is not necessary.
 The draw-backs with this method are:
  - Attractive descriptions have to be added separately
@@ -49,7 +49,7 @@ To do this, the old download is edited such that the outmode field is set to poi
 
 [title="2"]Selling downloads[/title]
 
-[media width="150" description="A download 'for sale'" float="left"]data_custom/images/docs/adv_downloads_charge.png[/media]
+[media width="150" description="A download 'for sale'" float="left"]data_custom/images/docs/tut_adv_downloads/adv_downloads_charge.png[/media]
 A common example of a community that would benefit from this, is a community based around the 'modding' of a computer game, where members release 'modifications' for download. Such games include 'Quake', 'The Sims', and many others.
 Members may add downloads, and charge for those downloads, using the 'submitter gets points' option. Thus with this, the creators are awarded for their work by the users, using a simple form of currency; this works two ways, much like real world economies do: members are encouraged to become the 'rich members' (as entrepreneurs) as well as to generally earn points (contribute to society).
 

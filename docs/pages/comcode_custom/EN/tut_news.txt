@@ -8,8 +8,8 @@ The news system can be used for website news, press releases, community news, bl
 
 [title="2"]Adding news[/title]
 
-[media width="150" description="An add link is presented on the news block" float="left"]data_custom/images/docs/news_link.png[/media]
-[media width="150" description="The screen that you add news from" float="right"]data_custom/images/docs/news_add_page.png[/media]
+[media width="150" description="An add link is presented on the news block" float="left"]data_custom/images/docs/tut_news/news_link.png[/media]
+[media width="150" description="The screen that you add news from" float="right"]data_custom/images/docs/tut_news/news_add_page.png[/media]
 When you first install your website, you may notice that there are no news posts. Adding more news posts is very simple.
 
 From the front page, you'll notice the news block (assuming you didn't disable it in the Setup Wizard). At the bottom of that block is a link: 'Add News'. This link is only visible to members with sufficient permission to add news.

@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a virtual support desk[/title]
 
-[media width="150" description="Configuring the support ticket and comment topic systems" float="right"]data_custom/images/docs/support_forum_config.png[/media]
+[media width="150" description="Configuring the support ticket and comment topic systems" float="right"]data_custom/images/docs/tut_support_desk/support_forum_config.png[/media]
 Composr can be used as an effective support desk tool. For those unfamiliar with the concept of a support desk, or who may not relate their personal needs to being an application of such, these are some common properties of a support desk system:
  - PLACEMENT: the ability for issues to be placed, both by staff, and by the audience being supported
  - NOTIFICATION: notifications, for staff to be made aware of issues
@@ -22,11 +22,11 @@ Four different Composr systems may be used to provide such a support desk:
 
 [title="2"]The Support Ticket system[/title]
 [surround]
-[media width="150" description="Managing support ticket types" float="right"]data_custom/images/docs/support_ticket_types.png[/media]
+[media width="150" description="Managing support ticket types" float="right"]data_custom/images/docs/tut_support_desk/support_ticket_types.png[/media]
 {!tickets:DOC_TICKETS}
 [/surround]
-[media width="150" description="Viewing support tickets as staff" float="right"]data_custom/images/docs/support_list_tickets.png[/media]
-[media width="150" description="Viewing a support ticket" float="left"]data_custom/images/docs/support_show_ticket.png[/media]
+[media width="150" description="Viewing support tickets as staff" float="right"]data_custom/images/docs/tut_support_desk/support_list_tickets.png[/media]
+[media width="150" description="Viewing a support ticket" float="left"]data_custom/images/docs/tut_support_desk/support_show_ticket.png[/media]
 
 Support tickets are created simply by visiting the support ticket page, clicking to add a ticket, and filling in the appropriate details. Upon completion of this, an e-mail is sent to the staff, and the staff can then respond to the ticket as appropriate.
 
@@ -224,7 +224,7 @@ For more information on this, see the 'Running a discussion forum based help des
 
 [title="2"]The Feedback system[/title]
 
-[media width="150" description="The feedback commenting system in action" float="right"]data_custom/images/docs/support_feedback.png[/media]
+[media width="150" description="The feedback commenting system in action" float="right"]data_custom/images/docs/tut_support_desk/support_feedback.png[/media]
 Most forms of Composr content support commenting, via the feedback system. For example, if enabled for a download, and in Composr, the download may have an attached discussion. This discussion is actually stored on the forum in a comment topic.
 
 The advantage of the feedback system over the Discussion Forums is simply that the discussion is attached directly to actual content. For most forms of content, these discussions are unlikely to be classifiable as 'support', but the download system in particular may contain questions and answers relating to the download itself.

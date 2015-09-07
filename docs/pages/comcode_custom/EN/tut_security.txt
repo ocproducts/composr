@@ -163,7 +163,7 @@ The point I am trying to convey is that you should decide on an appropriate leve
 
 Composr defines a large number of 'hack attack' situations, and in case of any of these situations occurring it will: stop the execution; send out an e-mail detailing the attack; and log the attack in the security log. These situations are varied, but the most common is when input is found that does not match input constraints (for example, a script parameter which should be a number is not).
 
-[media width="150" description="A security alert for a real hack-attempt" float="right"]data_custom/images/docs/security_attack.png[/media]
+[media width="150" description="A security alert for a real hack-attempt" float="right"]data_custom/images/docs/tut_security/security_attack.png[/media]
 If you get alerts that suggest someone is actively trying to hack into your website, it is advisable to ban their IP address at the web server level as soon as humanely possible (unless they have already been automatically banned). This is just a precaution, but it is possible (although unlikely) that a skilled hacker who is referring to Composr source code has only accidentally triggered an alert, and may have found an alternative vulnerability in your site already, or may find one soon. Of course we know of no such vulnerabilities, and we do in fact consider it unlikely that a direct vulnerability will be found in Composr, but it is always best to be cautious with regards security. You should also be aware that a hacker may change their IP address, simply by changing their Internet connection, or working through proxies: you may decide in this case of a serious attack, to consult authorities, passing them the IP address of the offender and the hack-attack e-mail.
 
 Most security logs are accidental (caused by mistyped URLs, or buggy software) or are caused by bots. The screen-shot shows a typical hack-attack by a bot that crawls the web looking for vulnerable scripts: in this case, the bot is trying to use a parameter of the Composr poll voting form to send an e-mail, on the basis that by trying to abuse every form it finds, it will eventually find one that does work as a spam relay: it would then latch on to this and use the victim website as a mass spam relay, for as long as it can. In this case it hit a Composr site, so was logged.
@@ -244,14 +244,14 @@ In summary, we have defense across a number of layers, and code without making p
 [title="2"]Anti-spam measures[/title]
 
 [surround]
-[media width="150" description="In this config option that embeds an \"E-mail the staff\" link, the address is obfuscated so most bots won't understand it" float="right"]data_custom/images/docs/security_antispam.png[/media]
+[media width="150" description="In this config option that embeds an \"E-mail the staff\" link, the address is obfuscated so most bots won't understand it" float="right"]data_custom/images/docs/tut_security/security_antispam.png[/media]
 Throughout Composr, measures are taken to reduce the chance of e-mail addresses being harvested for use by spammers. Typically, spammers gather e-mail addresses by using bots to automatically scavenge text that looks like an e-mail address from web pages; however Composr does not display member e-mail addresses publicly at all, and instead provides a 'contact member' module. In addition, whenever the staff address, or a staff member's address , is shown, it is [concept]obfuscated[/concept], so as to make it unlikely to be picked up as an e-mail address.
 [/surround]
 
 [title="2"]Failed logins[/title]
 
 [surround]
-[media width="150" description="Failed login attempts" float="right"]data_custom/images/docs/security_logins.png[/media]
+[media width="150" description="Failed login attempts" float="right"]data_custom/images/docs/tut_security/security_logins.png[/media]
 When a user tries to login Composr, but fails, it is logged. A proportion (approximately 15%) of these failures turn out to be real attempts to gain unauthorised access to the site, as demonstrated in the screen-shot.
 [/surround]
 
@@ -307,7 +307,7 @@ This section details some techniques to increase the security of your site. Most
 
 [title="3"]Guest access[/title]
 
-[media width="150" description="Securing the member joining process" float="right"]data_custom/images/docs/security_cns_members.png[/media]
+[media width="150" description="Securing the member joining process" float="right"]data_custom/images/docs/tut_security/security_cns_members.png[/media]
 In order to reduce the risk of hackers gaining unauthorised access to areas of your website, you could close down access to all possible areas except to vetted members. These options are located in Admin Zone > Setup > Configuration > User/usergroup options. By default, Composr is set up to deny guest access to almost all of the site; however, security can be improved further by only allowing members to become fully joined after a manual vetting process.
 To force members to be vetted, you need to enable the 'Require member validation' option, as shown in the screen-shot.
 
@@ -331,7 +331,7 @@ Please be aware Composr can not function with a base URL that is HTTPS, or with 
 
 [title="3"]Secured zones[/title]
 
-[media width="150" description="Securing a zone so that an explicitly logged-in session is required" float="right"]data_custom/images/docs/security_require_session.png[/media]
+[media width="150" description="Securing a zone so that an explicitly logged-in session is required" float="right"]data_custom/images/docs/tut_security/security_require_session.png[/media]
 Composr has "confirmed" and "non-confirmed" sessions.
 When you login to the Composr site you have a "confirmed" session. If you then come back to the site and automatically are logged in via cookies then that session is "non-confirmed". This distinction is common on many sites as a security feature.
 
@@ -359,7 +359,7 @@ It is a bit like a partial log out.
 [title="3"]Restricting logins[/title]
 
 [surround]
-[media width="150" description="Restricting login so it can only be done for IP addresses that are confirmed via e-mail" float="right"]data_custom/images/docs/security_ip_enquire.png[/media]
+[media width="150" description="Restricting login so it can only be done for IP addresses that are confirmed via e-mail" float="right"]data_custom/images/docs/tut_security/security_ip_enquire.png[/media]
 In [concept]Conversr[/concept], it is possible to set usergroups so that members of those usergroups may only immediately login from IP addresses that have been confirmed as valid. To confirm an address as valid, an e-mail is sent out to the member with a confirmation link.
 
 This technique reduces the chance of someone gaining unauthorised access to an account, but is also very annoying for users who do not have a stable IP address.

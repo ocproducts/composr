@@ -6,7 +6,7 @@ The Composr gallery system provides a number of advanced features -- this tutori
 
 [title="2"]Importing[/title]
 
-[media width="150" description="The interface to import to a gallery" float="right"]data_custom/images/docs/adv_gallery_import.png[/media]
+[media width="150" description="The interface to import to a gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_import.png[/media]
 {!galleries:DOC_GALLERY_IMPORT}
 
 If you have a CSV (spreadsheet) file named [tt]uploads/galleries/descriptions.csv[/tt], with the first column containing filenames, and the second column containing descriptions, then this will be checked when bulk importing files.
@@ -22,8 +22,8 @@ These ZIP files contain only the actual image and video files, and not any meta 
 
 [title="2"]Member Galleries -- quick start[/title]
 [surround]
-[media width="150" description="Editing a gallery to be a member gallery container" float="right"]data_custom/images/docs/adv_gallery_container.png[/media]
-[media width="150" description="Making a personal gallery by adding an image" float="right"]data_custom/images/docs/adv_gallery_add.png[/media]
+[media width="150" description="Editing a gallery to be a member gallery container" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_container.png[/media]
+[media width="150" description="Making a personal gallery by adding an image" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_add.png[/media]
 Composr supports members having their own galleries of images/videos.
 
 To enable this:
@@ -38,7 +38,7 @@ Members may have multiple personal galleries if you set multiple galleries to be
 [/surround]
 [title="2"]Member Galleries -- full explanation[/title]
 [surround]
-[media width="150" description="A personal gallery as displayed in the container gallery" float="right"]data_custom/images/docs/adv_gallery_members.png[/media]
+[media width="150" description="A personal gallery as displayed in the container gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_members.png[/media]
 If a member is in a usergroup with special permission (permission to have personal categories), they may create their own galleries that are:
 1) displayed as belonging to them
 2) display their profile details
@@ -52,12 +52,12 @@ The settings of new personal galleries are based on:
 3) the permissions of the container gallery
 For example, if the container gallery does not allow videos, neither will personal galleries underneath it, unless edited after it's auto-creation to do so.
 
-[media width="150" description="The naming scheme that identifies personal galleries" float="right"]data_custom/images/docs/adv_gallery_naming.png[/media]
+[media width="150" description="The naming scheme that identifies personal galleries" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_naming.png[/media]
 Personal galleries, like personal news categories, may be created on demand, simply by choosing a personal gallery for the adding member that 'has the potential to exist' from the list of galleries to submit to: upon submitting, the gallery is automatically created. Personal galleries are given a codename corresponding to the owner, as shown in the screen-shot.
 
 
 
-[media width="150" description="Viewing an image in a member gallery" float="right"]data_custom/images/docs/adv_gallery_member.png[/media]
+[media width="150" description="Viewing an image in a member gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_member.png[/media]
 An example of a complex gallery hierarchy is as follows:
  - (root)
   - Germany Holiday Photos 2004 (*)

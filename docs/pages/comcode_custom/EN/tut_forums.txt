@@ -8,20 +8,20 @@ Conversr is sometimes abbreviated as CNS.
 
 [title="2"]Structure[/title]
 
-[media width="150" description="Adding a forum" float="left"]data_custom/images/docs/forums_add.png[/media]
-[media width="150" description="When editing forums, the full structure is displayed, with an opportunity to re-order both groupings and sub-forums within" float="right"]data_custom/images/docs/forums_edit.png[/media]
+[media width="150" description="Adding a forum" float="left"]data_custom/images/docs/tut_forums/forums_add.png[/media]
+[media width="150" description="When editing forums, the full structure is displayed, with an opportunity to re-order both groupings and sub-forums within" float="right"]data_custom/images/docs/tut_forums/forums_edit.png[/media]
 {!cns:DOC_FORUMS}
 
 Forums are actually a very powerful collaboration tool, not merely limited to chat. For example, ocProducts use a forum as an integral part of the processs for the designing of the software you're using right now: it is surprising what forums and topics can be made to represent.
 
-[media width="150" description="Rough structure of the discussion forums" float="right"]data_custom/images/docs/forums_structure.png[/media]
+[media width="150" description="Rough structure of the discussion forums" float="right"]data_custom/images/docs/tut_forums/forums_structure.png[/media]
 So, now that I have explained the structure of a discussion forum, I will explain what each of these constructs are for.
 
 A forum exists to organise topics into some kind of common subject. For example, it is common for a website to have a debates forum, which contains member-created topics, each representing a single debate. A topic in the debates forum such as a topic titled 'Does extraterrestrial life exist?', contains a number of member-created posts, that together form a continuing line of discussion. A topic gets created, in the most appropriate forum, when a member wishes to discuss something and knows of no topic to continue (by making a new post in); the topic is started with a single post, that leads the discussion, by the member who made the topic.
 
 The sub-forum system exists so that forums may be organised such that subjects are logically sub-classified in such a way as to prevent an 'explosion' of forums displayed on the home forum (which would be cluttered and difficult to navigate). Whether a forum with sub-forums should itself be able to hold topics is up to you, but often allowing this is a useful technique for allowing placement of a topic that classifies under a forum, but not one of the sub-forums.
 
-[media width="150" description="Adding a forum grouping" float="left"]data_custom/images/docs/forums_grouping_add.png[/media]
+[media width="150" description="Adding a forum grouping" float="left"]data_custom/images/docs/tut_forums/forums_grouping_add.png[/media]
 [box="Important note" width="25em" float="right"]Whilst discussion forums are primarily meant for discussion, they may in-fact be used for the general purpose of conveying information. It is often typical for a topic that may-not-be-replied-to be made by staff to convey some form of alert: the discussion forums might be used rather than news, or some other Composr medium, due to the easiness of creating and organising topics, the flexibility of the medium, or to target an audience that views the discussion forums more regularly than the other mediums.[/box]
 {!cns:DOC_FORUM_CATEGORIES}
 
@@ -38,8 +38,8 @@ Topics may be moved between forums by moderators.
 
 [title="2"]Strategies for organising your forums[/title]
 [surround]
-[media width="150" description="A home forum" float="left"]data_custom/images/docs/forums_view.png[/media]
-[media width="150" description="A sub-forum of the home forum" float="right"]data_custom/images/docs/forums_view_2.png[/media]
+[media width="150" description="A home forum" float="left"]data_custom/images/docs/tut_forums/forums_view.png[/media]
+[media width="150" description="A sub-forum of the home forum" float="right"]data_custom/images/docs/tut_forums/forums_view_2.png[/media]
 When you design your discussion forums, you need to decide what forums you will create, and how to organise them. A very common mistake is to create far too many forums, which has the effect of diluting your community, and making it feel dead: which in return often terminally reduces member activity. If a month after creating a forum, you expect it to have less than ten topics, then you probably should not be making it: remember: you can always add new forums later, and mass move topics into them. Conversely, it would be a mistake to create too few forums, leading to a situation where it is difficult to locate topics.
 [/surround]
 Conversr creates a default forum structure which is appropriate for a small or new community. To encourage discussion specific to your site, you may wish to add a new grouping with perhaps 3 forums (sub-forums of the home forum) placed in that grouping.

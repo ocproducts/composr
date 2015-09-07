@@ -12,8 +12,8 @@ Be aware that hits coming from the web server itself will be filtered from the s
 
 [title="3"]Installing geo-location data[/title]
 [surround]
-[media width="150" description="The menu link to install geolocation data" float="left"]data_custom/images/docs/statistics_Install-geolocation-data-link.png[/media]
-[media width="150" description="The message shown when installing geolocation data" float="right"]data_custom/images/docs/statistics_Installing-geolocation-data.png[/media]
+[media width="150" description="The menu link to install geolocation data" float="left"]data_custom/images/docs/tut_statistics/statistics_install_geolocation_data_link.png[/media]
+[media width="150" description="The message shown when installing geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_installing_geolocation_data.png[/media]
 {!stats:DOC_INSTALL_GEOLOCATION_DATA}
 
 [box="Important note" width="25em" float="right"]Do not disturb the geolocation data installation process. You will be informed when it is complete.[/box]
@@ -60,14 +60,14 @@ The per-page breakdowns list more detailed statistics for each page, in various 
 [surround]
 There is a screen for download statistics, but you may also wish to allow your visitors to see some trends...
 
-[media width="150" description="The download statistics box" float="right"]data_custom/images/docs/statistics_Download-statistics.png[/media]
+[media width="150" description="The download statistics box" float="right"]data_custom/images/docs/tut_statistics/statistics_download_statistics.png[/media]
 There are two methods for revealing download trends to your visitors:
 1) Download statistics are generally available on an individual download page
 2) You can also pull out key downloads for the benefit of your visitors is to use one of the download blocks: [i]most popular downloads[/i], and [i]most recently-added downloads[/i]. These are explained below.
 [/surround]
 [title="2"]Other statistics[/title]
 [surround]
-[media width="150" description="View statistics are shown for various forms of content" float="right"]data_custom/images/docs/statistics_News-item-stats.png[/media]
+[media width="150" description="View statistics are shown for various forms of content" float="right"]data_custom/images/docs/tut_statistics/statistics_news_item_stats.png[/media]
 All content will automatically store download/view statistics as appropriate, which will usually be displayed on the respective entry screen.
 
 An example of this would be news entries: each news entry records how many times it is viewed, and displays this number on its view screen.

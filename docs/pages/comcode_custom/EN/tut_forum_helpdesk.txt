@@ -6,7 +6,7 @@ Running an online helpdesk is something many companies will want to do. It allow
 
 [title="2"]Multi-moderation[/title]
 
-[media width="150" description="Adding a multi-moderation" float="right"]data_custom/images/docs/forum_helpdesk_Add-multi-moderation.png[/media]
+[media width="150" description="Adding a multi-moderation" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_add_multi_moderation.png[/media]
 {!cns_multi_moderations:DOC_MULTI_MODERATIONS}
 
 [title="3"]Adding a multi-moderation[/title]
@@ -15,7 +15,7 @@ To add a multi-moderation, go to Admin Zone > Structure > Forums > Multi-moderat
 
 [title="3"]Using a multi-moderation[/title]
 
-[media width="150" description="Applying a multi-moderation" float="right"]data_custom/images/docs/forum_helpdesk_Using-multi-moderation.png[/media]
+[media width="150" description="Applying a multi-moderation" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_using_multi_moderation.png[/media]
 To use a multi-moderation, you need to browse to an appropriate topic. Select an appropriate multi-moderation from the 'Topic actions' drop-down list, and click the 'Proceed' button to apply the multi-moderation to the topic. Note that Composr comes with several pre-defined multi-moderations that are present from when you install Composr.
 
 You may also use multi-moderations from the forum view screen, by selecting topics you want to multi-moderate and using a multi-moderation from the 'Topic actions' drop-down list.
@@ -30,7 +30,7 @@ For topic view screens the actions are available in the 'Actions upon marked pos
 
 [title="2"]Post templates[/title]
 
-[media width="150" description="Adding a post template" float="right"]data_custom/images/docs/forum_helpdesk_Add-post-template.png[/media]
+[media width="150" description="Adding a post template" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_add_post_template.png[/media]
 {!cns_post_templates:DOC_POST_TEMPLATES}
 
 [title="3"]Adding a post template[/title]
@@ -39,7 +39,7 @@ To add a post template, just open up the 'Add post template' screen in the Admin
 
 [title="3"]Using a post template[/title]
 
-[media width="150" description="The interface to select post templates for use in a post" float="right"]data_custom/images/docs/forum_helpdesk_Using-post-template.png[/media]
+[media width="150" description="The interface to select post templates for use in a post" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_using_post_template.png[/media]
 To use a post template, simply submit a new topic or post using the verbose posting form (i.e. not the quick-reply box). On this form, if any post templates are defined for the current forum, a post template drop-down list will appear. Using this list, you can select a post template to use. If a post template has been marked as the default post for the current forum, the post field will already contain that post template.
 
 [concepts

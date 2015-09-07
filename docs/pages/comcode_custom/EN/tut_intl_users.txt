@@ -34,10 +34,10 @@ To download and install the Transifex translations you can follow the following 
 
 [title="2"]Turning on a different language[/title]
 
-[media width="150" description="Changing the default site language" float="right"]data_custom/images/docs/intl_config_2.png[/media]
+[media width="150" description="Changing the default site language" float="right"]data_custom/images/docs/tut_intl_users/intl_config_2.png[/media]
 To change the default language used on the whole site, use the [tt]http://yourbaseurl/config_editor.php[/tt] script (load up the URL, with [tt]yourbaseurl[/tt] substituted with your real base URL).
 
-[media width="150" description="Language configuration" float="right"]data_custom/images/docs/intl_config.png[/media]
+[media width="150" description="Language configuration" float="right"]data_custom/images/docs/tut_intl_users/intl_config.png[/media]
 It is possible to configure Composr such that members may select which language to use on your site, and pages are then presented in this language. There are a number of ways a user may choose a language:
  - via the language block (which inserts a [tt]keep_lang[/tt] parameter into the URL, to preserve their choice until they close the browser window)
  - via their member profile (Conversr supports this better than other forum drivers, although the integration can be improved by editing the [tt]lang/map.ini[/tt] file)

@@ -59,7 +59,7 @@ The second option is the manual installer. This option requires you to manually 
 [title="2"]Preparing files[/title]
 
 [surround]
-[media width="150" description="Example of \"Download Now\" link" float="left"]data_custom/images/docs/install_download.png[/media]
+[media width="150" description="Example of \"Download Now\" link" float="left"]data_custom/images/docs/tut_install/install_download.png[/media]
 To install Composr, you must first download it from our web site ({$BRAND_BASE_URL}). It is generally best to choose the latest version, and, as stated above, we also recommend choosing the "quick method".
 
 Download Composr from our website. Save it to a location where you'll be able to find it.
@@ -71,20 +71,20 @@ After it downloads, you'll need to extract the files. The exact methods for doin
 
 [i]An alternative to uploading via SFTP/FTP is using the File Manager within the web hosting control panel. However it is worth trying to get it working using SFTP/FTP, as it is a valuable basic tool.[/i]
 
-[media width="150" description="File upload demonstration" float="right" thumb_url="data_custom/images/docs/install_upload_ftp_thumb.png"]data_custom/images/docs/install_upload_ftp.gif[/media]
-[media width="150" description="Internet Explorer FTP login" float="right"]data_custom/images/docs/install_login_ftp.png[/media]
+[media width="150" description="File upload demonstration" float="right" thumb_url="data_custom/images/docs/tut_install/install_upload_ftp_thumb.png"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/media]
+[media width="150" description="Internet Explorer FTP login" float="right"]data_custom/images/docs/tut_install/install_login_ftp.png[/media]
 The next step is to upload the files to your web server. To do this you'll need an SFTP/FTP client (such as [url="FileZilla"]https://filezilla-project.org/[/url], or use the one that comes with Windows). The exact steps to upload the files depend slightly depending on which SFTP/FTP client you choose.
 
-If you'd like to use the one bundled with windows, open a new Internet Explorer window, and in the address bar, type [tt]ftp://username@servername.com[/tt], replacing [tt]username[/tt] with your username and [tt]servername[/tt] with the servername given to you by your web host. You should be presented with a login screen (if not, you can access it by choosing File > Login As), where you can enter the username and password given to you by your web host ([url="image" rel="lightbox"]data_custom/images/docs/install_login_ftp.png[/url]). Then you'll need to navigate to your webroot (possibly in a folder called [tt]www[/tt] or [tt]httpdocs[/tt]). If you can't find your webroot, e-mail your web-host for help.
+If you'd like to use the one bundled with windows, open a new Internet Explorer window, and in the address bar, type [tt]ftp://username@servername.com[/tt], replacing [tt]username[/tt] with your username and [tt]servername[/tt] with the servername given to you by your web host. You should be presented with a login screen (if not, you can access it by choosing File > Login As), where you can enter the username and password given to you by your web host ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_login_ftp.png[/url]). Then you'll need to navigate to your webroot (possibly in a folder called [tt]www[/tt] or [tt]httpdocs[/tt]). If you can't find your webroot, e-mail your web-host for help.
 
 At this point you need to decide whether you want your website to reside in your root folder or not. If you choose to place it in your root folder (which is the recommended option), people will be able to access your site by going to [tt]http://www.mywebsite.com[/tt] (unless you don't own your own domain name). If you choose to place it in a subfolder (for example, "subfolder"), people will access your Composr installation by going to [tt]http://www.mywebsite.com/subfolder[/tt].
 
 When you successfully connect, find your webroot, and navigate into a subfolder if you chose to. You need to upload the files that were inside the zip package you downloaded. If you chose the quick installer, these files are called 'install.php', the other is called 'data.cms'. If you chose the manual installer, there will be many more.
 
-You now need to put these files in the desired folder. This can usually be done by dragging and dropping the files from your computer to your web host in your SFTP/FTP client ([url="image" rel="lightbox"]data_custom/images/docs/install_upload_ftp.gif[/url]).
+You now need to put these files in the desired folder. This can usually be done by dragging and dropping the files from your computer to your web host in your SFTP/FTP client ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/url]).
 
 [title="2"]Installation[/title]
-[media width="150" description="The Composr installation screen" float="left"]data_custom/images/docs/install_step1.png[/media]
+[media width="150" description="The Composr installation screen" float="left"]data_custom/images/docs/tut_install/install_step1.png[/media]
 
 After you upload these files, you've completed the hardest part of the installation. The next step is to open your web browser and go to [tt]http://www.mywebsite.com/install.php[/tt] (substitute '[tt]http://www.mywebsite.com/[/tt]' as appropriate for your domain and install path). You should be greeted with a welcome screen, asking you which language you would like to use.
 
@@ -93,7 +93,7 @@ On step two, you are shown a license agreement. You must agree to the license ag
 On step three, you are presented with a choice to choose which forum system you would like to use for your website. We strongly recommend that you use Composr's own forum (Conversr), which if chosen will be installed at the same time as Composr. If you're using a third-party forum software, then you will need to already have it installed. Select the name of the software on the left, and then choose the appropriate version from the right-hand column.
 
 [box="Tip" width="25em" float="right"]Advanced: If you would like your website to be one of many on one network, you can choose the option to install a multi-site-network. This is an advanced feature that you are very unlikely to want to use. Read our [page="_SEARCH:tut_msn"]multi-site-network[/page] tutorial for more information on this feature, and to decide whether or not you would like to use it.[/box]
-[media width="150" description="Step 4: primary configuration" float="left"]data_custom/images/docs/install_step4.png[/media]
+[media width="150" description="Step 4: primary configuration" float="left"]data_custom/images/docs/tut_install/install_step4.png[/media]
 On step 4 is where the core configuration settings are input. Fill out each of the configuration options to the best of your knowledge.
 
 Most of the settings will have been auto-detected for you. You will definitely need to fill in the following fields manually though:
@@ -105,11 +105,11 @@ There are no constraints on the kind of password to use, but it is a good idea t
 
 All of the database fields should be filled out with the information you recorded earlier in this tutorial. When you finish, click the "Install Composr" link at the bottom of the screen.
 
-[media width="150" description="Step 5: success message" float="right"]data_custom/images/docs/install_step5.png[/media]
+[media width="150" description="Step 5: success message" float="right"]data_custom/images/docs/tut_install/install_step5.png[/media]
 
-[surround]Hopefully, at this point you'll receive this [url="success message" rel="lightbox"]data_custom/images/docs/install_step5.png[/url]. If you receive any errors, return to the previous page and correct them. Click the "Proceed" button to continue through the installation. There will be a few more similar screens until you finish the installation.
+[surround]Hopefully, at this point you'll receive this [url="success message" rel="lightbox"]data_custom/images/docs/tut_install/install_step5.png[/url]. If you receive any errors, return to the previous page and correct them. Click the "Proceed" button to continue through the installation. There will be a few more similar screens until you finish the installation.
 
-[media width="150" description="Final screen" float="left"]data_custom/images/docs/install_done.png[/media]
+[media width="150" description="Final screen" float="left"]data_custom/images/docs/tut_install/install_done.png[/media]
 
 After you finish the installation, you are presented with one final screen, congratulating you on your successful installation, and giving you two choices -- you can either jump right to your new homepage, or go to the Setup Wizard. If you have never used Composr before, we suggest that you run the Setup Wizard, as it will guide you through the basic settings of your website and familiarise you with the way Composr works.
 

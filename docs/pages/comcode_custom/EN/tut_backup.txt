@@ -33,13 +33,13 @@ Each backup option will contain a script that can restore your SQL database in t
 
 To access this backup addon, enter the Admin Zone. As shown in the screen-shot, there are two links to create a backup. The addon must be installed first (it is a bundled addon, but not kept on by default in the Setup Wizard).
 
-[media width="150" description="Locating the backup facility" float="left"]data_custom/images/docs/backup_1.png[/media]
+[media width="150" description="Locating the backup facility" float="left"]data_custom/images/docs/tut_backup/backup_1.png[/media]
 
 From here, you can access the backup feature by either selecting the 'Make Backup' link on the left hand menu under 'Features' or by selecting the 'Make Backup' link on the to-do list.
 
 The available selection on the to-do list will also show you how long ago it has been since a backup was made last.
 
-[media width="150" description="The backup interface" float="right"]data_custom/images/docs/backup_2.png[/media]
+[media width="150" description="The backup interface" float="right"]data_custom/images/docs/tut_backup/backup_2.png[/media]
 
 Among other things, selecting the 'Make Backup' option will load up Make Backup screen (see cropped screen-shot), here you will get the options of making a Full Backup or an Incremental Backup (as described previously) and an option for the maximum size of file that will be backed up in megabytes.
 
@@ -47,7 +47,7 @@ Clicking 'Make Backup' button once you have selected the backup method that you 
 
 On clicking this, Composr will generate a message similar to as shown in the screen-shot.
 
-[media width="150" description="The backup progress screen, summarising the process until completion" float="left"]data_custom/images/docs/backup_3.png[/media]
+[media width="150" description="The backup progress screen, summarising the process until completion" float="left"]data_custom/images/docs/tut_backup/backup_3.png[/media]
 
 Depending on the final target size of backup file and the power of your server (more processing power = quicker backup generation, less procession power = slower backup generation), this can take anything from a few seconds to many hours. So, please be patient with the backup generation process. An e-mail will be sent once the backup has finished, and logs will be generated to allow you to track progress.
 

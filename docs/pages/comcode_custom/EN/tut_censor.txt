@@ -6,7 +6,7 @@ Depending on your site policies (for a good discussion of this, see the 'Legal a
 
 [title="2"]Tools that actively enforce your policy[/title]
 
-[media width="150" description="Working with the word filter" float="right"]data_custom/images/docs/censor_word.png[/media]
+[media width="150" description="Working with the word filter" float="right"]data_custom/images/docs/tut_censor/censor_word.png[/media]
 {!wordfilter:DOC_WORDFILTER}
 
 The word filter makes no attempt to try and detect when users try to 'cheat it', as this would be a futile struggle: if users abuse the filter, then they are almost certainly knowingly that they are doing so, and thus setting themselves up for punishment.
@@ -27,9 +27,9 @@ Members may specify the privacy settings for content they post, if the [tt]conte
 
 [title="2"]Tools for punishment[/title]
 [surround]
-[media width="150" description="Using the points system for punishment" float="right"]data_custom/images/docs/censor_point_in_right_direction.png[/media]
-[media width="150" description="Making a warning" float="right"]data_custom/images/docs/censor_make_warning.png[/media]
-[media width="150" description="A warning as displayed on the Account of a member" float="right"]data_custom/images/docs/censor_warning.png[/media]
+[media width="150" description="Using the points system for punishment" float="right"]data_custom/images/docs/tut_censor/censor_point_in_right_direction.png[/media]
+[media width="150" description="Making a warning" float="right"]data_custom/images/docs/tut_censor/censor_make_warning.png[/media]
+[media width="150" description="A warning as displayed on the Account of a member" float="right"]data_custom/images/docs/tut_censor/censor_warning.png[/media]
 There are a number of ways to punish members who do not follow site policy (such as trolls), including:
  - Charging points to the member
  - Giving them a negative number of points (which might result in sustaining a reduced rank for a time, if you also moving them down to a lower ranking usergroup on the rank scale)
@@ -50,7 +50,7 @@ If you use the punishment system to put a user in probation, Composr automatical
 
 [title="2"]Banning[/title]
 
-[media width="150" description="Banning a member" float="right"]data_custom/images/docs/censor_member.png[/media]
+[media width="150" description="Banning a member" float="right"]data_custom/images/docs/tut_censor/censor_member.png[/media]
 There are many methods for banning a Composr user:
  - banning member submission. This is useful if you only want to ban a member from making submissions, and not the whole site; it is done from the Action Logs module (accessed from Admin Zone > Audit > Action logs). This feature is also useful if you are not using [concept]Conversr[/concept], and want to ban a member in Composr, but not in the forum.
  - banning an IP address, or IP address range. {!submitban:DOC_IP_BAN}
@@ -61,7 +61,7 @@ There are many methods for banning a Composr user:
 
 {!submitban:DOC_ACTIONLOG}
 
-[media width="150" description="Recent actions performed" float="right"]data_custom/images/docs/adminzone_recent_actions.png[/media]
+[media width="150" description="Recent actions performed" float="right"]data_custom/images/docs/tut_censor/adminzone_recent_actions.png[/media]
 This section shows the recent actions performed by you and your staff. Virtually every action that is done by your staff is logged here.
  - [b]Username[/b] is the name of the member who performed this action
  - [b]IP Address[/b] is the [concept]IP address[/concept] of the member who performed this action.
@@ -75,7 +75,7 @@ There are also 'sort by' and 'show per page' options at the bottom of this secti
 [title="2"]Post history[/title]
 
 [surround]
-[media width="150" description="Post history" float="right"]data_custom/images/docs/censor_post_history.png[/media]
+[media width="150" description="Post history" float="right"]data_custom/images/docs/tut_censor/censor_post_history.png[/media]
 If you are using Conversr, then you may make use of the 'post history' feature. This feature was designed for the situation where a member has edit and delete permission over their own posts, and abuses it to hide evidence of their own misdeeds. For staff, a 'history' button is provided by any edited post, and a 'history' button by any topic with post-deletion history. The interface under these buttons allows:
 1) viewing of old versions
 2) restoration of what was deleted

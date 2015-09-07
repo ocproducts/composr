@@ -48,18 +48,18 @@ There is also a usergroup setting, "Open membership", that defines whether membe
 
 [title="2"]Merging members[/title]
 
-[media width="150" description="Merging members" float="left"]data_custom/images/docs/adv_members_merge.png[/media]
+[media width="150" description="Merging members" float="left"]data_custom/images/docs/tut_adv_members/adv_members_merge.png[/media]
 {!cns:DOC_MERGE_MEMBERS}
 It is possible that some reassignments will not be possible, in which case, records may be dropped; for example, if both members share a secondary usergroup, Composr would fail [due to database key constraints] to assign both membership records to the same user, and hence drop one of them. You do not need to worry as this is handled automatically.
 
 [title="2"]Custom profile fields[/title]
 [surround]
-[media width="150" description="Adding a custom profile field" float="right"]data_custom/images/docs/adv_members_cpf.png[/media]
+[media width="150" description="Adding a custom profile field" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf.png[/media]
 {!cns:DOC_CUSTOM_PROFILE_FIELDS}
 
 You can manage Custom Profile Fields from: Admin Zone > Tools > Members > Custom Profile Fields.
 [/surround]
-[media width="150" description="Custom profile fields are edited by editing member profiles" float="right"]data_custom/images/docs/adv_members_cpf_edit.png[/media]
+[media width="150" description="Custom profile fields are edited by editing member profiles" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_edit.png[/media]
 There are a number of custom profile field options that you may set that allow CPFs to function for a number of different purposes, including:
  - Storing hidden details on member (for example, a list of rule infractions, such as to aid decisions on cumulative punishment)
  - Allowing members to specify details about themselves (for example, their occupation)
@@ -69,10 +69,10 @@ There are a number of custom profile field options that you may set that allow C
 There is a 'Privacy' sub-tab in the account settings that allows members to limit access beyond this. If there are more than 15 CPFs it will only give them options for the CPFs they have filled in.
 
 [surround]
-[media width="150" description="Custom profile fields are optionally shown where members post" float="right"]data_custom/images/docs/adv_members_cpf_space_1.png[/media]
+[media width="150" description="Custom profile fields are optionally shown where members post" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_1.png[/media]
 A 'locked' custom profile field can not be edited or deleted.
 
-[media width="150" description="Custom profile fields are all shown in member profiles (those that the viewer has permission to view)" float="right"]data_custom/images/docs/adv_members_cpf_space_2.png[/media]
+[media width="150" description="Custom profile fields are all shown in member profiles (those that the viewer has permission to view)" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_2.png[/media]
 It is possible to configure where a value for a custom profile field for members will be displayed. The field will always be visible from their profile page, but also:
  - if 'show in posts' is selected, it will also be visible on their forum posts, and their member galleries and member gallery images/videos
  - if 'show in post previews' is selected, it will also be visible when displaying a member sub-gallery in a list of sub-galleries
@@ -188,8 +188,8 @@ Note that there is an option "Take date of births". If that is disabled then dat
 
 [title="2"]Bookmarks[/title]
 
-[media width="150" description="The bookmarks popup" float="right"]data_custom/images/docs/members_bookmarks.png[/media]
-[media width="150" description="Managing bookmarks" float="right"]data_custom/images/docs/members_bookmarks_manage.png[/media]
+[media width="150" description="The bookmarks popup" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks.png[/media]
+[media width="150" description="Managing bookmarks" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks_manage.png[/media]
 If members are logged in then they may bookmark pages of your website within the site itself. The icon to do this is at the bottom of every Composr page unless the 'bookmarks' addon has been installed, or it has been removed from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
 
 The bookmark feature is particularly useful for:
@@ -198,7 +198,7 @@ The bookmark feature is particularly useful for:
 
 [title="2"]Welcome E-mails[/title]
 [surround]
-[media width="150" description="Creating a welcome e-mail" float="right"]data_custom/images/docs/adv_members_welcome_email.png[/media]
+[media width="150" description="Creating a welcome e-mail" float="right"]data_custom/images/docs/tut_adv_members/adv_members_welcome_email.png[/media]
 Composr provides special support for composing a series of welcome e-mails that are sent out to new members on a predefined schedule.
 The purpose of this feature is to gradually advertise the features of your website to your members in a way that reinforces awareness. As most members will not usually return to a website, welcome e-mails provide a strong tool to keep them aware and entice them to fully embrace whatever service you are providing.
 

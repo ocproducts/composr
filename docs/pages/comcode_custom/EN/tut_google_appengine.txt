@@ -60,7 +60,7 @@ Extract the Composr manual installation package to a directory on your developme
 
 [media width="150" description="The application launcher, after the application has been created.
 
-I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/appengine_launcher.png[/media]
+I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/tut_google_appengine/appengine_launcher.png[/media]
 Start up the GAE launcher.
 
 (the exact tool/process may depend on what platform you are using -- i.e. Windows/Linux/Mac. These instructions have been written on a Mac. If you have Windows you may struggle with the command line a bit. [url="Cygwin"]http://www.cygwin.com/[/url] is great.)
@@ -85,7 +85,7 @@ The default settings assume all the different identifier's are the same, but the
 
 [title="3"]Live setup instructions / notes[/title]
 
-[media width="150" description="Creating a Google App Engine application." float="left"]data_custom/images/docs/appengine_create.png[/media][media width="150" description="Enabling necessary services." float="right"]data_custom/images/docs/google_cloud_services.png[/media]
+[media width="150" description="Creating a Google App Engine application." float="left"]data_custom/images/docs/tut_google_appengine/appengine_create.png[/media][media width="150" description="Enabling necessary services." float="right"]data_custom/images/docs/tut_google_appengine/google_cloud_services.png[/media]
 When adding your GAE application, ignore any settings relating to authentication for users. Composr uses its own authentication, not Google authentication settings. That said, an administrator of the GAE app will automatically be logged in as the first admin on the Composr site (unless you choose to explicitly log in to a different user from the login screen).
 
 You want your datastore to be set for "High Replication". This is the default.
@@ -100,7 +100,7 @@ To enable Google Cloud Storage and Google Cloud SQL, go to 'Services' in the lef
 Once enabled, options to configure the services will be shown on the left-hand menu.
 
 [surround]
-[media width="150" description="Setting Google Cloud Storage permissions (2)." float="right"]data_custom/images/docs/cloud_storage_permissions_2.png[/media][media width="150" description="Setting Google Cloud Storage permissions (1)." float="right"]data_custom/images/docs/cloud_storage_permissions_1.png[/media][media width="150" description="Enabling Google Cloud Storage (2)." float="right"]data_custom/images/docs/google_cloud_storage.png[/media][media width="150" description="Enabling Google Cloud Storage (1)." float="right"]data_custom/images/docs/google_cloud_storage_link.png[/media]
+[media width="150" description="Setting Google Cloud Storage permissions (2)." float="right"]data_custom/images/docs/tut_google_appengine/cloud_storage_permissions_2.png[/media][media width="150" description="Setting Google Cloud Storage permissions (1)." float="right"]data_custom/images/docs/tut_google_appengine/cloud_storage_permissions_1.png[/media][media width="150" description="Enabling Google Cloud Storage (2)." float="right"]data_custom/images/docs/tut_google_appengine/google_cloud_storage.png[/media][media width="150" description="Enabling Google Cloud Storage (1)." float="right"]data_custom/images/docs/tut_google_appengine/google_cloud_storage_link.png[/media]
 When you go to Google Cloud Storage, you will see a link to go to "online browser". From there you can set up a bucket.
 
 Annoyingly it takes you to the beta version of Google Cloud Console, which you'll need to exit out of when you're done (did I mention it is a jumble?).
@@ -115,7 +115,7 @@ Next, we need to grant GAE permissions on the bucket:
 [/surround]
 
 [surround]
-[media width="150" description="Creating a Google Cloud SQL database, within the instance." float="right"]data_custom/images/docs/cloud_sql_database.png[/media][media width="150" description="Creating a Google Cloud SQL instance." float="right"]data_custom/images/docs/cloud_sql.png[/media]
+[media width="150" description="Creating a Google Cloud SQL database, within the instance." float="right"]data_custom/images/docs/tut_google_appengine/cloud_sql_database.png[/media][media width="150" description="Creating a Google Cloud SQL instance." float="right"]data_custom/images/docs/tut_google_appengine/cloud_sql.png[/media]
 Next set up your Google Cloud SQL instance. You should leave the "Replication mode" as "Synchronous", for stability reasons. You have to authorise your GAE application when you add the Google Cloud SQL instance. The instance does not itself contain a database, so when added click the 'SQL Prompt' tab and enter an SQL command:
 [code]
 CREATE DATABASE <application>;

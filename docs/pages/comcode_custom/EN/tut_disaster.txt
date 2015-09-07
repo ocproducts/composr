@@ -41,15 +41,15 @@ Obviously this needs a greater level of access than ordinary members would have.
 
 For this, I am assuming that you are using [concept]Conversr[/concept]. If you are using another forum then the method will be similar, but will be done upon the data of that forum.
 
-[media width="150" description="Select to browse the f_members table" float="left"]data_custom/images/docs/disaster_pass_1.png[/media]
-[media width="150" description="Edit the row for the username for which the password should be changed" float="right"]data_custom/images/docs/disaster_pass_2.png[/media]
+[media width="150" description="Select to browse the f_members table" float="left"]data_custom/images/docs/tut_disaster/disaster_pass_1.png[/media]
+[media width="150" description="Edit the row for the username for which the password should be changed" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_2.png[/media]
 1) Enter phpMyAdmin
 
 2) Browse the contents of the Composr f_members table (named [tt]cms2_f_members[/tt] if you used the default table prefix).
 
 3) You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
 
-[media width="150" description="Change the settings and 'Go'" float="right"]data_custom/images/docs/disaster_pass_3.png[/media]
+[media width="150" description="Change the settings and 'Go'" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_3.png[/media]
 4) There are numerous fields, but we only need to change three:
  - [tt]m_pass_hash_salted[/tt] should be given the new password. It is essential that you also choose 'MD5' from the list to the left of the input field, so that the password gets 'encrypted' (Composr assumes an encrypted password and if it is not then it will not successfully log in).
  - [tt]m_pass_salt[/tt] should be blanked out.
@@ -86,8 +86,8 @@ You should then encrypt your password via changing the password within the [tt]/
 
 [title="2"]Unbanning an IP[/title]
 
-[media width="150" description="Select to browse the banned_ip table" float="left"]data_custom/images/docs/disaster_ban_1.png[/media]
-[media width="150" description="Delete the row corresponding to your IP address" float="right"]data_custom/images/docs/disaster_ban_2.png[/media]
+[media width="150" description="Select to browse the banned_ip table" float="left"]data_custom/images/docs/tut_disaster/disaster_ban_1.png[/media]
+[media width="150" description="Delete the row corresponding to your IP address" float="right"]data_custom/images/docs/tut_disaster/disaster_ban_2.png[/media]
 If you are unfortunate enough to have somehow been banned from your own website, use phpMyAdmin to browse the 'banned_ip' table, and delete the row containing your IP address. If you don't know your IP address then you can find it out from http://www.myipaddress.com/.
 
 [title="2"]Resetting page ownerships[/title]

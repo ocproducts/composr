@@ -8,8 +8,8 @@ Staff can use these features to distinguish themselves from ordinary users, and 
 
 [title="2"]Staff and the staff page[/title]
 
-[media width="150" description="The staff list" float="left"]data_custom/images/docs/staff_list.png[/media]
-[media width="150" description="Viewing a staff member" float="right"]data_custom/images/docs/staff_actual.png[/media]
+[media width="150" description="The staff list" float="left"]data_custom/images/docs/tut_staff/staff_list.png[/media]
+[media width="150" description="Viewing a staff member" float="right"]data_custom/images/docs/tut_staff/staff_actual.png[/media]
 {!staff:DOC_STAFF}
 
 You can configure staff from the staff administration page. This is available from the Admin Zone > Security > Staff. The staff administration page allows you to choose staff (if the staff filter is on) as well as configure their listed details. You may also configure their details by editing the corresponding custom profile fields from your forums profile editing screen.
@@ -20,8 +20,8 @@ By default, Conversr is installed with a single staff member, 'admin'. It is rec
 
 [title="3"]Private forums[/title]
 [surround]
-[media width="150" description="Now you see it..." float="left"]data_custom/images/docs/staff_forums_1.png[/media]
-[media width="150" description="Now you don't (because I logged out and hence lost my staff permissions)" float="right"]data_custom/images/docs/staff_forums_2.png[/media]
+[media width="150" description="Now you see it..." float="left"]data_custom/images/docs/tut_staff/staff_forums_1.png[/media]
+[media width="150" description="Now you don't (because I logged out and hence lost my staff permissions)" float="right"]data_custom/images/docs/tut_staff/staff_forums_2.png[/media]
 A very effective feature in running a website, where there are multiple staff involved, are forum permissions. By using a forum where only members in staff usergroups may gain access, staff can collaborate on matters relating to the operation of the site. Many members may not realise it, but often staff forums of large sites are almost as busy as the publicly accessible forums.
 
 Conversr creates a default staff forum for you on installation.
@@ -78,12 +78,12 @@ On point '3':
 
 [title="2"]Topic reporting[/title]
 
-[media width="150" description="A post needs a report / warning" float="left"]data_custom/images/docs/staff_report_1.png[/media]
-[media width="150" description="An offended member reports the post" float="right"]data_custom/images/docs/staff_report_2.png[/media]
+[media width="150" description="A post needs a report / warning" float="left"]data_custom/images/docs/tut_staff/staff_report_1.png[/media]
+[media width="150" description="An offended member reports the post" float="right"]data_custom/images/docs/tut_staff/staff_report_2.png[/media]
 On busy forums, it is often impossible for staff to read every post that is made. Therefore there is a facility for members to report problem posts to the staff (with an additional reporter message), so that the staff can then perform any appropriate action on the post.
 
 Once a post is reported, the reported is actually created as a topic in the default 'Reported posts' forum. This method is, at the time of writing, unique to Composr, and allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with. We have found it often to be the case that staff will report posts themselves, so that they can easily bring them (and possibly their related action) to the attention of other staff.
-[media width="150" description="The staff will see the report in the 'reported posts' forum" float="right"]data_custom/images/docs/staff_report_3.png[/media]
+[media width="150" description="The staff will see the report in the 'reported posts' forum" float="right"]data_custom/images/docs/tut_staff/staff_report_3.png[/media]
 
 [title="2"]Warning members[/title]
 

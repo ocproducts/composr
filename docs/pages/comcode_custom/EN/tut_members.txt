@@ -20,15 +20,15 @@ There are a number of ways a member might join an [concept]Conversr[/concept] we
 
 [title="3"]Regular mechanism[/title]
 
-[media width="150" description="Joining a Composr powered site" float="right"]data_custom/images/docs/members_join.png[/media]
+[media width="150" description="Joining a Composr powered site" float="right"]data_custom/images/docs/tut_members/members_join.png[/media]
 Users that were not created during installation will need to join your site before they may login, and by default, to actually access most of the website. This is made very easy, with join links placed in various positions, such as (by default) the front page, and the forum-view.
 
 To join, users will have to agree to your rules, which are actually the same as those defined in your ':rules' Comcode page. In other words, to edit your rules, you need to edit this page. Once the rules are agreed to, they get a form to fill in with various details; for information on how to require additional details at joining, see the 'Advanced Composr member system' tutorial.
 
 The form includes, if enabled in the configuration, a security image ([concept]CAPTCHA[/concept]) that they must enter a numeric code from. There is also an audio equivalent to the image. Users with special needs might have difficulty with CAPTCHA: therefore you may, on occasion, need to add a member manually from the Admin Zone, and give them the details personally. The purpose of CAPTCHA is to prevent 'bots' (computer programs usually designed to wreak some form of havoc) from joining your site and abusing it.
 
-[media width="150" description="The login block (which turns into a 'personal stats' block after logging in)" float="left"]data_custom/images/docs/members_login_block.png[/media]
-[media width="150" description="The detailed logging in page" float="right"]data_custom/images/docs/members_login.png[/media]
+[media width="150" description="The login block (which turns into a 'personal stats' block after logging in)" float="left"]data_custom/images/docs/tut_members/members_login_block.png[/media]
+[media width="150" description="The detailed logging in page" float="right"]data_custom/images/docs/tut_members/members_login.png[/media]
 There are a number of constraints on how fields may be filled in, and some of these are configurable from the main Admin Zone Configuration. For example, special characters are not allowed in user-names, and by default, any e-mail address may only be used for one account.
 
 Once the form is filled in successfully, an e-mail will be sent to the given e-mail address containing a link to activate the account (assuming this option has not been disabled). The purpose of this is to ensure that they are giving a real working e-mail address, and hence are contactable. If the e-mail never arrives for any joining user, the most likely situation is a fault with e-mail sending on the server: it is essential that Composr is connected to a working e-mail server, either by directly residing on it, or by setting up SMTP settings in the main Admin Zone Configuration (see the [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page] tutorial). Joining users must be patient for a few minutes, as e-mails can sometimes take a while to arrive.
@@ -64,7 +64,7 @@ There is no direct way to request an invitation. Someone must know someone who i
 
 [title="3"]Pre-joining members[/title]
 
-[media width="150" description="Adding members manually in the Admin Zone" float="right"]data_custom/images/docs/adv_members_add.png[/media]
+[media width="150" description="Adding members manually in the Admin Zone" float="right"]data_custom/images/docs/tut_members/adv_members_add.png[/media]
 {!cns:DOC_ADD_MEMBER}
 An interface is provided to add a new member to the site, with support for detailing the full set of profile options, including ones not available normally during joining, and ones not available for members to set themselves.
 
@@ -79,7 +79,7 @@ Composr can also support automatic member joining via LDAP and http-auth. For mo
 
 [title="2"]Profiles[/title]
 
-[media width="150" description="The member directory, where profiles may be accessed from" float="right"]data_custom/images/docs/members_directory.png[/media]
+[media width="150" description="The member directory, where profiles may be accessed from" float="right"]data_custom/images/docs/tut_members/members_directory.png[/media]
 In Composr, the term 'profile' is used almost as a synonym for 'account'. Each member has a profile, which stores the settings for their account. There are countless areas in Composr that link to view a member profile, generally where a user-name is displayed in some form of context (for example, as the user who made a shout-box comment).
 
 An alternative way to view a member profile is to select/search using the member directory.
@@ -96,7 +96,7 @@ Member profiles contain information on the member, including:
  - Their primary usergroup
  - The most recent web browser they have used (only viewable by those with permission)
 
-[media width="150" description="Viewing a member profile" float="right"]data_custom/images/docs/members_profile.png[/media]
+[media width="150" description="Viewing a member profile" float="right"]data_custom/images/docs/tut_members/members_profile.png[/media]
 Member profiles contain many links to other Composr pages that relate to that member, with additional links presented to staff and the member themselves. As Composr can be a very user-centric system, there are a lot of links presented here and this makes member profile pages a very convenient convergence of features.
 Links include:
  - Member blog and blog archive, if they have a blog
@@ -116,7 +116,7 @@ Links include:
 
 [title="2"]Member observation[/title]
 
-[media width="150" description="Viewing the list of on-line members" float="right"]data_custom/images/docs/members_online.png[/media]
+[media width="150" description="Viewing the list of on-line members" float="right"]data_custom/images/docs/tut_members/members_online.png[/media]
 There is a link to view the current 'Users On-line' on forum pages (at the bottom). There is also a block you can use, 'side_users_online' that shows:
  - a list of on-line users
  - how many guests are on-line
@@ -135,7 +135,7 @@ Profile settings, mainly custom profile fields, may be edited on the edit profil
 
 [title="3"]Edit settings[/title]
 
-[media width="150" description="Editing your/a member profile" float="right"]data_custom/images/docs/members_edit_profile.png[/media]
+[media width="150" description="Editing your/a member profile" float="right"]data_custom/images/docs/tut_members/members_edit_profile.png[/media]
 The 'edit settings' sub-tab allows you to edit most details associated with an account, including options and what would literally be called 'profile'.
 Staff see much more to edit than ordinary members, including all the hidden custom fields that Composr uses to keep track of point and staff details.
 
@@ -149,14 +149,14 @@ Interesting editable fields for profiles include:
 
 [title="3"]Edit photo[/title]
 
-[media width="150" description="Editing your/a member photo" float="right"]data_custom/images/docs/members_edit_photo.png[/media]
+[media width="150" description="Editing your/a member photo" float="right"]data_custom/images/docs/tut_members/members_edit_photo.png[/media]
 Members may choose a photo of themselves (or staff can) for display in their profile.
 
 There is a permission to specify whether members may view the photos of other members, as there is an obvious 'stalking'/'paedophile' issue that must be considered for forums with young members.
 
 [title="3"]Edit signature[/title]
 
-[media width="150" description="Editing your/a member signature" float="right"]data_custom/images/docs/members_edit_signature.png[/media]
+[media width="150" description="Editing your/a member signature" float="right"]data_custom/images/docs/tut_members/members_edit_signature.png[/media]
 Members may have a signature which is displayed beneath their forum posts. This is not a signature in terms of verifying identity, as it may be copied by other members: rather, it allows members to broadcast their identity and other details in a prominent position. Signatures often include things such as:
  - their name
  - a personal banner
@@ -168,7 +168,7 @@ It is common for websites to impose restrictions and rules with regard to signat
 
 [title="3"]Edit avatar[/title]
 
-[media width="150" description="Editing your/a member avatar" float="right"]data_custom/images/docs/members_edit_avatar.png[/media]
+[media width="150" description="Editing your/a member avatar" float="right"]data_custom/images/docs/tut_members/members_edit_avatar.png[/media]
 In computer parlance, an avatar is a representation of self. On the Internet, this is almost always a square image showing a picture that is, preferably, unique to that person. Avatars are displayed on profile pages, and next to forum posts.
 
 Composr provides two sets of default avatars for inartistic/uninspired members to choose from (or possibly, if they just love our default avatars!). However, members may also upload their own avatars, or link to an avatar elsewhere.
@@ -224,14 +224,14 @@ You have 3 options when it comes to assigning default avatars to members.
 
 [title="3"]Edit title[/title]
 
-[media width="150" description="Editing your/a member title" float="right"]data_custom/images/docs/members_edit_title.png[/media]
+[media width="150" description="Editing your/a member title" float="right"]data_custom/images/docs/tut_members/members_edit_title.png[/media]
 If members are in a usergroup with the 'May choose a custom title' permission, they may give themselves a personal title. This overrides the title of their primary usergroup for the member.
 
 Titles are displayed alongside forum posts, in the section that is accessed by 'hovering over' their user-name.
 
 [title="3"]Deleting a member[/title]
 
-[media width="150" description="The usergroup directory" float="right"]data_custom/images/docs/members_usergroup_directory.png[/media]
+[media width="150" description="The usergroup directory" float="right"]data_custom/images/docs/tut_members/members_usergroup_directory.png[/media]
 If members are in a usergroup with the 'Delete own member account' permission, they may delete themselves. This is provided for those (arguably paranoid) members concerned about privacy or spam, who prefer not to leave old accounts around. You may choose to disallow permission because often members will quickly return after 'getting over' some 'event' that caused them to 'leave', and cause administrative trouble when they start demanding control over their old content, as well as their old points.
 
 There is also an admin feature that allows you to delete 'lurkers' (the definition of lurker is up to you, as the feature is quite flexible). You can access this feature from the Admin Zone, Tools section, 'Delete Lurkers' icon.
@@ -244,7 +244,7 @@ Privacy allows you to specify what custom profile fields will be visible to whom
 
 [title="2"]Usergroups[/title]
 
-[media width="150" description="Managing a usergroup" float="right"]data_custom/images/docs/members_usergroup.png[/media]
+[media width="150" description="Managing a usergroup" float="right"]data_custom/images/docs/tut_members/members_usergroup.png[/media]
 {!cns:DOC_GROUPS}
 
 Note that you cannot delete certain default usergroups that are used for system functions or as fail-safes.

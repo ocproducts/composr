@@ -6,7 +6,7 @@ As you add content to your website, it becomes increasingly important that your 
 
 [title="2"]Simple searching[/title]
 
-[media width="150" description="The search block" float="right"]data_custom/images/docs/search_block.png[/media]
+[media width="150" description="The search block" float="right"]data_custom/images/docs/tut_search/search_block.png[/media]
 By default, there is a 'search' block that sits on a panel of the 'Site' zone of your website (assuming it was not disabled in the Setup Wizard). This is the easiest way to use the search. There is a text box where you can type what you're looking for. The 'Search Content' button will then search your entire website for matching content and results will be displayed on a results screen.
 
 [title="2"]Detailed searches[/title]
@@ -15,7 +15,7 @@ If you would like to carry out detailed searches, there is a 'More' button in th
 
 [title="3"]Search For[/title]
 
-[media width="150" description="Detailed searches" float="right"]data_custom/images/docs/search_details.png[/media]
+[media width="150" description="Detailed searches" float="right"]data_custom/images/docs/tut_search/search_details.png[/media]
 This is the text box where you type the content that you're searching for.
 
 [title="3"]Boolean Search[/title]
@@ -52,12 +52,12 @@ Placing a checkmark beside each content type will cause Composr to search for en
 
 [title="2"]Advanced searches[/title]
 [surround]
-[media width="150" description="Performing an advanced search for a specific content type" float="right"]data_custom/images/docs/search_advanced.png[/media]
+[media width="150" description="Performing an advanced search for a specific content type" float="right"]data_custom/images/docs/tut_search/search_advanced.png[/media]
 Many forms of content allow advanced searches which allow you to search underneath a chosen category. For members and catalogues you may also perform template searches. An advanced search limits you to that individual content type. The advanced searching screen is reached by clicking one of the 'Advanced' links on the main search screen.
 [/surround]
 [title="2"]Searching from the Forum[/title]
 [surround]
-[media width="150" description="The search button on the forum" float="left"]data_custom/images/docs/search_forum.png[/media]
+[media width="150" description="The search button on the forum" float="left"]data_custom/images/docs/tut_search/search_forum.png[/media]
 
 To initiate a search while in the forum (our own [concept]Conversr[/concept] forum), you need to click the 'Search' button on the forum or use the contextual search box on the forum member bar. The contextual search will search beneath your current forum if you are on a forum-view screen, or within your current topic if you are on a topic-view screen.
 [/surround]

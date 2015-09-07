@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Custom structured content (via catalogues)[/title]
 
-[media width="150" description="Adding a catalogue" float="right"]data_custom/images/docs/catalogues_add.png[/media]
+[media width="150" description="Adding a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_add.png[/media]
 {!catalogues:DOC_CATALOGUES}
 The pre-made catalogues are:
  - Links
@@ -11,7 +11,7 @@ The pre-made catalogues are:
  - Contacts
 All the pre-made catalogues may be removed in the Setup Wizard, so depending on what you chose in that wizard, they may or may not currently be on your site.
 
-[media width="150" description="Choosing a catalogue to add an entry to" float="right"]data_custom/images/docs/catalogues_choose_to_add_to.png[/media]
+[media width="150" description="Choosing a catalogue to add an entry to" float="right"]data_custom/images/docs/tut_catalogues/catalogues_choose_to_add_to.png[/media]
 Catalogues can be used to model most things required by large websites that would otherwise have to be implemented either as new modules, or hard-coded pages. Note that catalogues are designed to store records of which there are likely more than one, not as a container for all unstructured custom information (that is what Comcode pages are for).
 
 Catalogues are initially defined by the fields in them. 'Categories' are then made in the catalogue. Then categories are filled with 'entries'.
@@ -50,7 +50,7 @@ If you later want to add some custom code features for interacting with catalogu
 [title="2"]Fields[/title]
 
 [surround]
-[media width="150" description="Adding an entry to a catalogue" float="right"]data_custom/images/docs/catalogues_add_entry.png[/media][media width="150" description="There are a whole host of options available after catalogue activity" float="right"]data_custom/images/docs/catalogues_do_next.png[/media]
+[media width="150" description="Adding an entry to a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_add_entry.png[/media][media width="150" description="There are a whole host of options available after catalogue activity" float="right"]data_custom/images/docs/tut_catalogues/catalogues_do_next.png[/media]
 A catalogue consists of a number of fields.
 
 You may order the fields, make some invisible, make some optional, and choose which defines ordering.
@@ -64,7 +64,7 @@ For details about the actual field types you can use, see the [page="_SEARCH:tut
 
 [title="2"]Modes of display[/title]
 
-[media width="150" description="A non-tree catalogue uses an index" float="right"]data_custom/images/docs/catalogues_view_index.png[/media]
+[media width="150" description="A non-tree catalogue uses an index" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_index.png[/media]
 There are two options to set how a catalogue may display:
  - 'Display type' -- you can display entries in categories as title lists, field-maps, tabular listings, or in a grid of images (full customisation is possible via templating).
  - 'Is tree' -- a tree catalogue has a full hierarchical category tree, much like the download system does; a non-tree catalogue just shows the categories from a single catalogue index.
@@ -72,11 +72,11 @@ There are two options to set how a catalogue may display:
 Note that if you set all fields of your catalogue to "Display in category-views" and disable comments and ratings and trackbacks, there will be no links to the entry view screen. This is due to there being little purpose in this screen because everything already displays on categories.
 
 [surround]
-[media width="150" description="A catalogue with a display type of Title lists -- entries link onto their own pages" float="left"]data_custom/images/docs/catalogues_display_type_title_lists.png[/media]
-[media width="150" description="A catalogue with a display type of Field-maps" float="left"]data_custom/images/docs/catalogues_display_type_field_maps.png[/media]
-[media width="150" description="A catalogue with a display type of Tabular listings" float="left"]data_custom/images/docs/catalogues_display_type_tabular_listings.png[/media]
-[media width="150" description="A catalogue with a display type of Grid of images (not a good example, because to show it properly we should have an image field, and lots of entries)" float="left"]data_custom/images/docs/catalogues_display_type_grid_images.png[/media]
-[media width="150" description="Viewing a catalogue entry" float="right"]data_custom/images/docs/catalogues_view_entry.png[/media]
+[media width="150" description="A catalogue with a display type of Title lists -- entries link onto their own pages" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_title_lists.png[/media]
+[media width="150" description="A catalogue with a display type of Field-maps" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_field_maps.png[/media]
+[media width="150" description="A catalogue with a display type of Tabular listings" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_tabular_listings.png[/media]
+[media width="150" description="A catalogue with a display type of Grid of images (not a good example, because to show it properly we should have an image field, and lots of entries)" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_grid_images.png[/media]
+[media width="150" description="Viewing a catalogue entry" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_entry.png[/media]
 [/surround]
 
 [title="3"]Display type[/title]
@@ -138,7 +138,7 @@ To add a catalogue (amongst other functions) go to Content Management > Catalogu
 
 [title="2"]Editing a catalogue[/title]
 
-[media width="150" description="Editing a catalogue" float="right"]data_custom/images/docs/catalogues_edit.png[/media]
+[media width="150" description="Editing a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_edit.png[/media]
 You can edit a catalogue to change details, add, edit or remove fields.
 
 You cannot change field data types after you have created them (except between field types that have the same "storage" type) as this would affect the integrity of any data that may have already been entered into them. A workaround is to export to CSV, delete the field, create a new field with the same name and the new type, and reimport the CSV.

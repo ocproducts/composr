@@ -27,7 +27,7 @@ Composr has a rich, multi-layered, permission system. In creation of this system
  - ease-of-use
  - quickness of configuration
 
-[media width="150" description="Privileges are set like this" float="right"]data_custom/images/docs/adv_config_privileges.png[/media]
+[media width="150" description="Privileges are set like this" float="right"]data_custom/images/docs/tut_adv_configuration/adv_config_privileges.png[/media]
 Composr has two main types of permission:
 1) privileges
 2) access permissions (for defining what may be viewed)
@@ -95,7 +95,7 @@ It is recommended that you never move pages because it complicates the upgrade p
 [title="2"].htaccess[/title]
 
 [surround]
-[media width="150" description="Finding how to change your settings" float="right"]data_custom/images/docs/phpsettings.png[/media]
+[media width="150" description="Finding how to change your settings" float="right"]data_custom/images/docs/tut_adv_configuration/phpsettings.png[/media]
 You can try and get PHP and the web server to use an optimal configuration, via a special file named '.htaccess'. If you want the 'URL scheme' option to be enabled, this step is necessary.
 Note that the file may already exist, potentially for either of two reasons:
 1) It was already there from before Composr was installed.

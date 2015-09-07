@@ -6,7 +6,7 @@
 
 [title="2"]First glance[/title]
 
-[media width="150" description="The Admin Zone at first glance" float="right"]data_custom/images/docs/adminzone_first_glance.png[/media]
+[media width="150" description="The Admin Zone at first glance" float="right"]data_custom/images/docs/tut_adminzone/adminzone_first_glance.png[/media]
 The Admin Zone is divided into sections, with links across the top-panel to allow easy access to each -- most of the tabs will take you to an interface with icons that allows you to navigate throughout the system.
 
 [title="2"]Content Management Zone[/title]
@@ -17,7 +17,7 @@ The Admin Zone is divided into sections, with links across the top-panel to allo
 
 [title="3"]To-do list[/title]
 
-[media width="150" description="The to-do list" float="right"]data_custom/images/docs/adminzone_todo_list.png[/media]
+[media width="150" description="The to-do list" float="right"]data_custom/images/docs/tut_adminzone/adminzone_todo_list.png[/media]
 The first section in your content area is your to-do list. This is an automatically generated list of things that need to be done on your website. Some are day-to-day updates, such as changing your image of the day or adding news. Some are less frequent and more critical, such as making backups and sending newsletters.
 
 Composr will attempt to mark whether or not these actions have been completely recently. For example, if it has been more than 24 hours since you updated your image of the day, it will be marked as 'not done'. You can choose how often you would like to do these activities (for example, making backups monthly instead of weekly) by going to the Setup Section then the 'Configuration' icon and then 'Administrative options'.
@@ -28,7 +28,7 @@ This section shows information about the current version of Composr that you are
 
 [title="3"]Notes[/title]
 
-[media width="150" description="The note area" float="right"]data_custom/images/docs/adminzone_notes.png[/media]
+[media width="150" description="The note area" float="right"]data_custom/images/docs/tut_adminzone/adminzone_notes.png[/media]
 This is an area for you and your staff to make notes. You can write anything you need in this space, and it will be shared between you and all of your other staff.
 
 [title="3"]Tips[/title]

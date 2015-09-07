@@ -513,7 +513,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 
 [title="2"]Composr[/title]
 
-[media width="150" description="A screen-shot from a default Composr site" float="right"]data_custom/images/docs/intro_1.png[/media]
+[media width="150" description="A screen-shot from a default Composr site" float="right"]data_custom/images/docs/tut_webapp/intro_1.png[/media]
 Composr is a website engine that drives powerful interactive and dynamic websites, by providing a wide range of features that are useful on many different kinds and themes of website. For example, Composr can easily power any of the following:
  - a community forum
  - a corporate intranet
@@ -524,13 +524,13 @@ Composr is a website engine that drives powerful interactive and dynamic website
  - a community gallery
  - [i]and much more, and any combination thereof[/i]
 
-[media width="150" description="Logging in to Composr" float="right"]data_custom/images/docs/webapp_login.png[/media]
-[media width="150" description="A screen-shot from the Admin Zone of a default Composr site" float="right"]data_custom/images/docs/intro_2.png[/media]
+[media width="150" description="Logging in to Composr" float="right"]data_custom/images/docs/tut_webapp/webapp_login.png[/media]
+[media width="150" description="A screen-shot from the Admin Zone of a default Composr site" float="right"]data_custom/images/docs/tut_webapp/intro_2.png[/media]
 The Composr philosophy is that almost all cutting-edge websites, from hobbyist communities, to those of large international companies, share a large number of common needs. Composr caters for all these needs by providing a vast pool of features that can be used as a part of the website. As you expand or change your website, Composr continues to provide: you simply start using features that you did not need to use before.
 
 At the time of writing, we do not know any other products that have such a large built-in feature set as Composr. However, Composr also excels in customisability: the features in Composr can be fully customised on a number of levels, so that even though different websites share the same engine, they can have their own individuality.
 [surround]
-[media width="150" description="Composr is an extendable architecture as well as a product" float="left"]data_custom/images/docs/webapp_architecture.png[/media]
+[media width="150" description="Composr is an extendable architecture as well as a product" float="left"]data_custom/images/docs/tut_webapp/webapp_architecture.png[/media]
 In addition, we understand that often users will have very specific, personal needs. For this reason, we make sure that the Composr framework is fully extensible, and provide numerous features to allow such extension to be achieved, suitable for different levels of expertise and requirements. It is important to understand that adding unique features can be difficult, as it is a programming exercise: but it is considerably less difficult than creating a new web application from scratch (even with a totally custom new [concept]module[/concept], most of the needs, such as user authentication, WYSIWYG editing, or secure database access, are already available), and ocProducts is available for those wishing to hire our expertise. [page="site:support"]Contact us[/page] if you need our team to do commercial development for you.
 [/surround]
 [title="2"]Why not product-X?[/title]

@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Importing data into Composr[/title]
 
-[media width="150" description="Importing will generally use the contents of database tables designed for one product to create equivalent data suitable for Composr" float="right"]data_custom/images/docs/importer_dbs.png[/media]
+[media width="150" description="Importing will generally use the contents of database tables designed for one product to create equivalent data suitable for Composr" float="right"]data_custom/images/docs/tut_importer/importer_dbs.png[/media]
 {!import:DOC_IMPORT}
 
 [contents]decimal,lower-alpha[/contents]
@@ -28,22 +28,22 @@ Information on PHP memory limits is included in our [page="docs:faq"]FAQ[/page].
 
 [title="2"]Using importers[/title]
 
-[media width="150" description="A configuration file may be required. This screen-shot illustrates what they are and where they tend to be." float="left"]data_custom/images/docs/importer_target_config_file.png[/media]
-[media width="150" description="The list of importers" float="right"]data_custom/images/docs/importer_choose.png[/media]
+[media width="150" description="A configuration file may be required. This screen-shot illustrates what they are and where they tend to be." float="left"]data_custom/images/docs/tut_importer/importer_target_config_file.png[/media]
+[media width="150" description="The list of importers" float="right"]data_custom/images/docs/tut_importer/importer_choose.png[/media]
 At the time of writing, all importers work by interface to the database of the product being imported. In addition, some require the presence of a configuration file for the product at an accessible path on the server, and will auto-detect database settings from this file. It is strongly recommended that you leave your old site installed and running, although perhaps at a moved location, so that the importer can find all the associated files that it may want to import.
 
 The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and 'ID remap table' from each import separate. The 'choose your session' interface exists so that if your Composr session is lost, you can still resume a previous import.
 
-[media width="150" description="Choosing an importer session" float="left"]data_custom/images/docs/importer_session.png[/media]
-[media width="150" description="Import setup" float="right"]data_custom/images/docs/importer_options.png[/media]
-[media width="150" description="Import choice of import actions" float="right"]data_custom/images/docs/importer_options2.png[/media]
+[media width="150" description="Choosing an importer session" float="left"]data_custom/images/docs/tut_importer/importer_session.png[/media]
+[media width="150" description="Import setup" float="right"]data_custom/images/docs/tut_importer/importer_options.png[/media]
+[media width="150" description="Import choice of import actions" float="right"]data_custom/images/docs/tut_importer/importer_options2.png[/media]
 Importers define a list of features they can import, along with a dependency system to ensure that a feature can only be imported once any features that it is dependent upon have already been imported (for example, forum posts are always dependent on forum topics, and forum topics are always dependent on forums).
 
 The importer system is designed to be robust, and is programmed as 're-entrant' code; this means that if installation is halted, via failure, timeout, or cancellation, it can continue from where it left off. This is of particular use if there is an incompatibility between your data and the importer, which is not very unlikely due to the wide variation in data for any single product across different versions and usage patterns.
 
 It is recommended that you backup your site files and database before running an importer, in case the importer fails in some way (perhaps an incomplete, or unsatisfactory import, or duplication of data by a poorly written third-party importer).
 
-[media width="150" description="After importing some data a success screen is shown. Often special messages will be included on this screen." float="right"]data_custom/images/docs/importer_imported.png[/media]
+[media width="150" description="After importing some data a success screen is shown. Often special messages will be included on this screen." float="right"]data_custom/images/docs/tut_importer/importer_imported.png[/media]
 Usually an importer will provide information for further actions that must be taken. The following forms of further action are a common requirement:
  - stats recalculation (especially for forum importers)
  - moving of on-disk files from the imported products upload directory, to Composr's (this is sometimes done automatically, depending on how the importer was written [which itself depends on the expected data patterns of the imported product]).
@@ -52,8 +52,8 @@ Composr is designed so that forms of redundancy, such as thumbnails, parsed Comc
 
 [title="2"]Converting to Conversr[/title]
 
-[media width="150" description="Composr forum drivers are specially coded PHP files stored in the [tt]sources/forum[/tt] directory (or sources_custom/forum)." float="left"]data_custom/images/docs/importer_forum_drivers.png[/media]
-[media width="150" description="The forum driver can be changed using the base-config editor, but you [b]should not do this[/b] unless you know exactly what you are doing" float="right"]data_custom/images/docs/importer_change_forum_driver.png[/media]
+[media width="150" description="Composr forum drivers are specially coded PHP files stored in the [tt]sources/forum[/tt] directory (or sources_custom/forum)." float="left"]data_custom/images/docs/tut_importer/importer_forum_drivers.png[/media]
+[media width="150" description="The forum driver can be changed using the base-config editor, but you [b]should not do this[/b] unless you know exactly what you are doing" float="right"]data_custom/images/docs/tut_importer/importer_change_forum_driver.png[/media]
 If you have been running Composr and a third-party forum, and wish to switch to using a complete Composr solution (Composr with Conversr), this is possible if there is a forum importer for your current forum product. The opportunity is presented to move to Conversr as the last importable feature of a forum import, and the function will 'jump' forum drivers for you and re-map any usergroup and user IDs. It is still strongly advised to check your permissions after performing this.
 
 Important note: If you have installed Composr, and interfaced to a third-party forum, but want to switch to Conversr without an import (because your forum is essentially empty still), then it is possible but we would discourage it for anyone other than an expert user. To do this you need to use the config editor to 'jump forum driver', but you also need to reset all your permissions for the new forum drivers usergroups, which quite possibly leaves a window of vulnerability if privileges are present which should not be. In addition, any Composr systems that reference users will reference different users after switching, as user-IDs will have changed: for example, point transactions and admin logs will reference the wrong users.

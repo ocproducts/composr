@@ -6,7 +6,7 @@
 
 [title="2"]Shared forum and members[/title]
 
-[media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL (optional only shows if applicable to your site)" float="right"]data_custom/images/docs/msn_cns_local.png[/media]
+[media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL (optional only shows if applicable to your site)" float="right"]data_custom/images/docs/tut_msn/msn_cns_local.png[/media]
 All that needs to be done to create an M.S.N. is to install each Composr such that they all share a common forum driver and forum database. At its heart, this is all a M.S.N. is: Composr provides special features that allow this to work comfortably, but there is no specific 'M.S.N.' feature or setting in Composr, nor does Composr need such.
 
 If you are using a third-party forum, unless the forum itself is modified to work from different URLs, the forums interface will not be integrated into each site. However, all Composr functions that work through the forum driver (e.g. comment topics, or support tickets) may be completely customised for the individual websites.
@@ -44,15 +44,15 @@ Composr supports a sophisticated theme detection system, whereby Composr themes 
 2) from the "forum-theme-name-to-Composr-theme" mapping of the member chosen forum-themes, if the logged in member has made a choice. In other words, if a member Bob selects a forum theme named ForumFoo, then the Composr theme would be whatever the map says that ForumFoo's Composr equivalent is (e.g. ComposrFoo)
 3) from the "forum-theme-name-to-Composr-theme" mapping of the forum-theme titled after the name of your website name. In other words, if the forum contains a theme titled "My Site" and your website happens to be called "My Site", then then Composr theme would be whatever the map says that MySite's Composr equivalent is (e.g. MySiteTheme)
 4) the Composr 'default' theme
-[media width="150" description="Configuring the network link URL to point to the central network site" float="right"]data_custom/images/docs/msn_netlink_configure.png[/media]
+[media width="150" description="Configuring the network link URL to point to the central network site" float="right"]data_custom/images/docs/tut_msn/msn_netlink_configure.png[/media]
 This system is complicated to understand and configure, and is optional, but it is useful for some websites. If you do not wish to use this system, simply manually select which themes to use for each zone, by editing the zone.
 
 Basically, Composr has a file, [tt]themes/map.ini[/tt], that contains entries that link forum-theme-codes to Composr-theme-codes. Note that the forum-theme-code is not the same as the forum-theme-title: the relationship between these vary between forums, but most forums define both a humanely readable title and a code-name.
 
 [title="2"]The netlink system[/title]
 
-[media width="150" description="The netlink block" float="left"]data_custom/images/docs/msn_netlink_block.png[/media]
-[media width="150" description="Editing the netlink definition file" float="right"]data_custom/images/docs/msn_netlink_file.png[/media]
+[media width="150" description="The netlink block" float="left"]data_custom/images/docs/tut_msn/msn_netlink_block.png[/media]
+[media width="150" description="Editing the netlink definition file" float="right"]data_custom/images/docs/tut_msn/msn_netlink_file.png[/media]
 The netlink is a simple but useful feature of multi-site-networks. It provides the navigation aid to move between sites on the network, via a simple drop-down list placed on to your panel via the 'side_network' block.
 
 The netlink system can be configured (from the Admin Zone Configuration module) so that all sites on the network point to a shared netlink definition file. The config option allows you to set the URL to the netlink of one of the network sites (usually the central site).
@@ -67,8 +67,8 @@ To share banners across your network, simply add all banners to the central site
 
 [title="2"]The staff system[/title]
 [surround]
-[media width="150" description="Configuring the staff system" float="left"]data_custom/images/docs/msn_staff.png[/media]
-[media width="150" description="Managing staff" float="right"]data_custom/images/docs/msn_staff_2.png[/media]
+[media width="150" description="Configuring the staff system" float="left"]data_custom/images/docs/tut_msn/msn_staff.png[/media]
+[media width="150" description="Managing staff" float="right"]data_custom/images/docs/tut_msn/msn_staff_2.png[/media]
 As permissions are set separately on each M.S.N. site (except for forum access permissions), it is possible to assign different staff access to key functions on different sites by usergroup. However, assigning staff is more than a permissive issue, it is also a presentation issue: for the staff page to work, there needs to be some way for Composr to actually list staff other than merely by usergroup permission. This is done via the 'staff filter' feature, available under security/usergroup configuration.
 
 The staff filter works by storing 'staff on' lists under all member profiles that would be staff if the filter was off. These are comma-separated lists of site-names the member is staff-on, and are stored as a hidden Composr custom profile field.

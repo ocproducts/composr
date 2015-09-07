@@ -298,7 +298,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
 [/codebox]
 [/box]
 
-[media width="150" description="Our functionality modification in action." float="right"]data_custom/images/docs/hardcore_online.png[/media]
+[media width="150" description="Our functionality modification in action." float="right"]data_custom/images/docs/tut_hardcore_3/hardcore_online.png[/media]
 As usual I won't explain all the code, but I will mention a few things:
  - The main PHP code doesn't have to do much more than define some colours and pass in a usergroup list. Almost all the code in my file is just code from the original [tt]cns_wrapper[/tt] function
  - I passed a new parameter into [tt]CNS_USER_MEMBER.tpl[/tt] and used that to indicate the colour to display a member link with; however, I wrapped a Tempcode '[tt]IF_PASSED[/tt]' directive around the use of the parameter because the template is reused and won't always be given a colour in that way

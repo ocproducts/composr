@@ -26,28 +26,28 @@ You cannot set:
 
 [title="2"]Access (view) control[/title]
 
-[media width="150" description="The Permissions Tree Editor" float="right"]data_custom/images/docs/permissions_tree_editor.png[/media]
+[media width="150" description="The Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_tree_editor.png[/media]
 To edit permissions in Composr you can either use:
  - The Permissions Tree Editor
  - Manual configuration
 
 {!permissions:DOC_PERMISSIONS_TREE}
 
-[media width="150" description="Making mass changes in the Permissions Tree Editor" float="right"]data_custom/images/docs/permissions_Mass-checkbox-change.gif[/media]
+[media width="150" description="Making mass changes in the Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change.gif[/media]
 The remainder details the separate permission setting interfaces in different parts of Composr. The concepts from below are relevant to using the Permissions Tree Editor, as they detail what controls are embedded at different points within the tree. We do recommend using the Permissions Tree Editor directly though, unless you happen to be working directly with the zone/category/page at the time of setting permissions for it.
 
 [title="3"]Editing zone permissions[/title]
 
 [i]This section describes editing from outside the Permissions Tree Editor. It is easier to centralise control from the Permissions Tree Editor where all the settings here may be accessed.[/i]
 
-[media width="150" description="Setting zone permissions" float="left"]data_custom/images/docs/permissions_Edit-zone-permissions.png[/media]
+[media width="150" description="Setting zone permissions" float="left"]data_custom/images/docs/tut_permissions/permissions_edit_zone_permissions.png[/media]
 You can edit zone permissions by editing the zone for which you want to change the permissions.
 
 For each zone you can set which usergroups can access (view) it.
 
 Go the Admin Zone, then the 'Structure' section, then the 'Zones' icon. Choose a zone to edit (bear in mind that you can't change permissions for the Welcome Zone, as everybody is allowed to access it), and continue.
 [surround]
-[media width="150" description="Choosing a zone to edit" float="right"]data_custom/images/docs/permissions_Choose-zone-edit.png[/media]
+[media width="150" description="Choosing a zone to edit" float="right"]data_custom/images/docs/tut_permissions/permissions_choose_zone_edit.png[/media]
 You will be presented with the zone editing form. Near the bottom are the options for usergroup access permissions: one binary 'can/can't' access permission per usergroup. Toggle the checkboxes as you see fit (if a checkbox is unchecked, the corresponding usergroup can't enter the zone, but if it is checked, the usergroup can enter the zone without problem), and submit the form.
 [/surround]
 [title="3"]Editing page permissions[/title]
@@ -55,10 +55,10 @@ You will be presented with the zone editing form. Near the bottom are the option
 [i]This section describes editing from outside the Permissions Tree Editor. It is easier to centralise control from the Permissions Tree Editor where all the settings here may be accessed. In fact, we do not link the Page Permissions interface into the default admin menu structure unless JavaScript is not enabled. There is a similar interface when editing a Comcode Page, however.[/i]
 
 [surround]
-[media width="150" description="Editing page permissions" float="right"]data_custom/images/docs/permissions_Page-permissions-grid.png[/media]
+[media width="150" description="Editing page permissions" float="right"]data_custom/images/docs/tut_permissions/permissions_page_permissions_grid.png[/media]
 For each page you can set which usergroups can access (view) it. For modules you can also often override certain privileges for the content handled within those modules.
 
-Go to the Admin Zone, then the 'Structure' section, then the 'Permissions' icon. Choose 'Page permissions'. To edit a page's permissions manually, you need to go to the page permissions page. Once more, choose a zone to edit, and submit the form. You will be presented with a checkbox-grid of the permissions for every page in your selected zone. Along the top are the names of all the usergroups on your site, and down the side are the names of all the pages in your selected zone. In the middle is a checkbox-grid for the permissions, and down the right is a column of buttons for inverting a whole row of checkboxes at once ([url="image" rel="lightbox"]data_custom/images/docs/permissions_Mass-checkbox-change1.gif[/url]).
+Go to the Admin Zone, then the 'Structure' section, then the 'Permissions' icon. Choose 'Page permissions'. To edit a page's permissions manually, you need to go to the page permissions page. Once more, choose a zone to edit, and submit the form. You will be presented with a checkbox-grid of the permissions for every page in your selected zone. Along the top are the names of all the usergroups on your site, and down the side are the names of all the pages in your selected zone. In the middle is a checkbox-grid for the permissions, and down the right is a column of buttons for inverting a whole row of checkboxes at once ([url="image" rel="lightbox"]data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change1.gif[/url]).
 
 Once all the access permissions are set as appropriate, submit the form.
 [/surround]
@@ -73,7 +73,7 @@ The best example of this would be when viewing someone's member profile. The mem
 [i]This section describes editing from outside the Permissions Tree Editor. It is perhaps easier to centralise control from the Permissions Tree Editor. All the settings described here are also present in the Permissions Tree Editor.[/i]
 
 [surround]
-[media width="150" description="Editing category permissions" float="left"]data_custom/images/docs/permissions_Edit-category-permissions.png[/media]
+[media width="150" description="Editing category permissions" float="left"]data_custom/images/docs/tut_permissions/permissions_edit_category_permissions.png[/media]
 For each category you can set which usergroups can access (view) it, and often also override certain privileges for that category.
 
 Usergroup access permissions exist for just about any type of category Composr provides: from calendar entry types to news categories, you can easily set the usergroup access permissions through the category edit page. In this example, we'll change the usergroup access permissions for a news category.
@@ -81,7 +81,7 @@ Usergroup access permissions exist for just about any type of category Composr p
 Go to the Content Management Zone. Choose the icon for the content type you want to edit. Click the 'Edit one category' icon. Select the category to edit, and submit the form.
 
 Then, set the permissions as necessary, and submit the form once more.
-[media width="150" description="Choosing a category to edit" float="right"]data_custom/images/docs/permissions_Choose-category-edit.png[/media]
+[media width="150" description="Choosing a category to edit" float="right"]data_custom/images/docs/tut_permissions/permissions_choose_category_edit.png[/media]
 
 The process is the same for editing the permissions of any type of category.
 [/surround]
@@ -89,7 +89,7 @@ The process is the same for editing the permissions of any type of category.
 [title="2"]Privileges[/title]
 
 [surround]
-[media width="150" description="Choosing a privilege section to edit permissions within" float="right"]data_custom/images/docs/permissions_Choose-privileges.png[/media]
+[media width="150" description="Choosing a privilege section to edit permissions within" float="right"]data_custom/images/docs/tut_permissions/permissions_choose_privileges.png[/media]
 {!permissions:DOC_PRIVILEGES}
 
 The privileges are accessed through the "privileges" page. On this page is a list of permission sections; all the privileges are grouped into related sections for ease-of-configuration. Choose a section, and submit the form to see and change the related privileges. The page shows a checkbox-grid of the usergroups and the privileges in your selected section. Set up the privileges as appropriate, and submit the form to change them.
@@ -99,7 +99,7 @@ For a good real-world example of how to set up privileges, see the 'Setting bypa
 
 [title="2"]Adding, Editing and Deleting content[/title]
 
-[media width="150" description="An example of overriding privileges. Changing bypass-validation permissions for galleries using the Permissions Tree Editor" float="right"]data_custom/images/docs/gallery_validation_permissions.png[/media]
+[media width="150" description="An example of overriding privileges. Changing bypass-validation permissions for galleries using the Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/gallery_validation_permissions.png[/media]
 To submit/edit/delete you need the correct privileges. You also need view permission all the way to the page that does it, in the CMS zone.
 
 Here is a worked example of how to set view and privilege permissions to submit to a links catalogue category.
@@ -126,10 +126,10 @@ Usergroups have a number of settings that are "privilege"-like. They're not actu
 
 [title="2"]Testing access and privileges[/title]
 
-[media width="150" description="The SU feature is incredibly quick and easy: just enter a name and click a button" float="left"]data_custom/images/docs/permissions_Su.png[/media]
+[media width="150" description="The SU feature is incredibly quick and easy: just enter a name and click a button" float="left"]data_custom/images/docs/tut_permissions/permissions_su.png[/media]
 To test access permissions and privileges, it's best to create a test user, or to assume the identity of a lower-ranking (non-administrator) member. This section is concerned with the use of the 'su' function.
 
-[media width="150" description="Setting privileges" float="right"]data_custom/images/docs/permissions_Edit-privileges.png[/media]
+[media width="150" description="Setting privileges" float="right"]data_custom/images/docs/tut_permissions/permissions_edit_privileges.png[/media]
 The 'su' function allows an administrator to quickly and easily assume the identity of somebody else, for whatever nefarious or benevolent purposes he sees fit. To use 'su', simply enter the name of the member whose identity you would like to assume into the 'su' box (in the footer), and press the enter/return key. A new window will open, presenting the same screen as seen by the specified user. You can navigate around as this user, experiencing the site through his/her eyes (so to speak), as all the permissions are as they are for this normal user. This can easily and effectively be used to test out permissions changes to make sure they are as required.
 
 Please note that when using 'su':

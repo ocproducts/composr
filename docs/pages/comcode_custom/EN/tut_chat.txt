@@ -8,7 +8,7 @@ More information about using the chatroom functionality is available within Comp
 
 [title="2"]The chat interface[/title]
 
-[media width="150" description="Choosing a chatroom to enter" float="right"]data_custom/images/docs/chat_Chatroom-list.png[/media]
+[media width="150" description="Choosing a chatroom to enter" float="right"]data_custom/images/docs/tut_chat/chat_chatroom_list.png[/media]
 The main chat interface (comprising the chat lobby, and each chatroom) is what most users of the chat system will see; it's where all the messages are posted and received, and thus where most activity happens.
 
 A link to the chat lobby placed on the menus of your website, and when loaded, presents you with a list of all chatrooms you are eligible to enter (i.e. ones you don't have permission to access or you've been banned from don't appear). If you have the right permissions (the 'Edit mid-impact (medium visibility) content' privilege, and access to the [tt]cms_chat[/tt] module), appropriate links also appear to the moderation module.
@@ -17,10 +17,10 @@ You will also see a friend list, which you can use to start instant messaging co
 
 [title="3"]Chatrooms[/title]
 
-[media width="150" description="Inside a chatroom" float="left"]data_custom/images/docs/chat_Chat-message-window.png[/media]
+[media width="150" description="Inside a chatroom" float="left"]data_custom/images/docs/tut_chat/chat_chat_message_window.png[/media]
 Once in a chatroom, you're presented with a automatically-updating window of the current chat messages, an input area at the top (with an expandable formatting buttons area), and some options at the bottom.
 
-[media width="150" description="Chatroom options" float="right"]data_custom/images/docs/chat_Chatroom-options.png[/media]
+[media width="150" description="Chatroom options" float="right"]data_custom/images/docs/tut_chat/chat_chatroom_options.png[/media]
 To send a message, simply enter it in the input box at the top, and press "enter", or click the "Submit message" button. The input box will be emptied, and your message will appear in the message window shortly afterwards. Messages from other conversants in the same chatroom appear periodically in the messages window.
 
 The options at the bottom of the chatroom page control how your messages appear to others, and there are also some links to pertinent links provided below. The list of links is filtered according to permissions.
@@ -51,8 +51,8 @@ You may choose to block members. Blocked members cannot easily see when you are 
 
 [title="3"]Downloading chat logs[/title]
 
-[media width="150" description="Link to download chat logs" float="left"]data_custom/images/docs/chat_Download-chat-logs-link.png[/media]
-[media width="150" description="The chat log download preparation interface" float="right"]data_custom/images/docs/chat_Download-chat-logs.png[/media]
+[media width="150" description="Link to download chat logs" float="left"]data_custom/images/docs/tut_chat/chat_download_chat_logs_link.png[/media]
+[media width="150" description="The chat log download preparation interface" float="right"]data_custom/images/docs/tut_chat/chat_download_chat_logs.png[/media]
 You can download logs of any chat conversations. To do this, simply click the "Download chat logs" link at the bottom of a chatroom (i.e. from inside the chatroom). You will be presented with a form, where you can specify the time/date range from which to collect messages. Clicking submit will process the request, and provide you with the logs.
 
 [title="3"]Setting sound effects[/title]
@@ -61,7 +61,7 @@ Chatroom users may set sound effects for different chat actions (from the link p
 
 [title="3"]Creating a private room[/title]
 [surround]
-[media width="150" description="The private room creation interface" float="left"]data_custom/images/docs/chat_Create-private-room.png[/media]
+[media width="150" description="The private room creation interface" float="left"]data_custom/images/docs/tut_chat/chat_create_private_room.png[/media]
 Private chatrooms are the chat equivalent of an [concept]Conversr[/concept] Private Topic. Anybody can create them, but only certain specified people can view them and use them. If a private chatroom is unvisited and unused for (by default) more than 24 hours, it will be automatically deleted ("pruned").
 
 When creating a private chatroom, bear in mind what sort of purpose you're creating the room to fulfil, and try to outline this in the room entry message. Make sure you add some members or usergroups to the allow/disallow lists as well, or the room you create won't be private at all (unless you define access, access is public)!
@@ -81,16 +81,16 @@ The moderation interface for the chat system (in the [tt]cms_chat[/tt] module) a
 
 [title="3"]Inline moderation[/title]
 
-[media width="150" description="Inline moderation options" float="right"]data_custom/images/docs/chat_Chat-inline-moderation-links.png[/media]
+[media width="150" description="Inline moderation options" float="right"]data_custom/images/docs/tut_chat/chat_chat_inline_moderation_links.png[/media]
 Each post in a chatroom is displayed with a few potent links, which allow users with the correct privileges to edit the message, or ban the user. Clicking on each link will take you to a page specific to each action.
 
 [title="3"]Editing messages[/title]
 
-[media width="150" description="Choosing a room to moderate" float="left"]data_custom/images/docs/chat_Moderation-panel-rooms.png[/media]
-[media width="150" description="Messages to moderate" float="right"]data_custom/images/docs/chat_Moderation-panel-messages.png[/media]
+[media width="150" description="Choosing a room to moderate" float="left"]data_custom/images/docs/tut_chat/chat_moderation_panel_rooms.png[/media]
+[media width="150" description="Messages to moderate" float="right"]data_custom/images/docs/tut_chat/chat_moderation_panel_messages.png[/media]
 To edit messages, you have to use the chat system moderation page, which resides in the Content Management Zone, but can be accessed using one of the several moderation links peppered around the main chat interface. The main moderation screen lists all the chatrooms on the system, as well as pertinent information such as how many messages have been posted in each room. Clicking on a room name takes you to a more specific interface for that room.
 
-[media width="150" description="Moderating a message" float="right"]data_custom/images/docs/chat_Moderation-panel-edit-message.png[/media]
+[media width="150" description="Moderating a message" float="right"]data_custom/images/docs/tut_chat/chat_moderation_panel_edit_message.png[/media]
 This interface lists all messages in the room (with chatcode unparsed), with some useful information and a link to the member profile view screen of the submitter. Clicking on the message post date takes you to a message-edit page. On this page, you can edit the message details, and submit them. The changes won't immediately be reflected in the views of anybody using the relevant chatroom, but if a new user joins, or if somebody refreshes the room, they'll see the changes.
 
 [title="3"]Deleting messages[/title]
@@ -99,24 +99,24 @@ To delete a chat message, simply go to its edit screen, and tick (check) the "De
 
 [title="3"]Deleting all messages[/title]
 
-[media width="150" description="The link to delete all messages in a room" float="right"]data_custom/images/docs/chat_Delete-all-messages-link.png[/media]
+[media width="150" description="The link to delete all messages in a room" float="right"]data_custom/images/docs/tut_chat/chat_delete_all_messages_link.png[/media]
 Sometimes it's necessary to delete all the messages in a chatroom, whether to preserve sanctity/sanity, or simply to clean up. To delete all the messages in a chatroom, navigate to the specified chatroom's moderation page (where all the messages are listed), and click the "Delete all messages" link. A confirmation page will appear. Clicking "Proceed" from the confirmation will result in permanent deletion of all the messages.
 
 [title="2"]Administration[/title]
 [surround]
-[media width="150" description="Selecting a chatroom for administration" float="left"]data_custom/images/docs/chat_Administration-chatrooms.png[/media]
+[media width="150" description="Selecting a chatroom for administration" float="left"]data_custom/images/docs/tut_chat/chat_administration_chatrooms.png[/media]
 The administration interface to the chat system allows the manipulation of chatrooms themselves. It is found in Admin Zone > Structure > Chatrooms.
 [/surround]
 [title="3"]Adding chatrooms[/title]
 
-[media width="150" description="The administration interface to add a chatroom" float="right"]data_custom/images/docs/chat_Administration-add-chatroom.png[/media]
+[media width="150" description="The administration interface to add a chatroom" float="right"]data_custom/images/docs/tut_chat/chat_administration_add_chatroom.png[/media]
 The form to add a chatroom to the system is under the 'Add chatroom' icon.
 
 Submitting the form will create the chatroom, and it will be immediately visible and accessible to all eligible conversants.
 
 [title="3"]Editing chatrooms[/title]
 
-[media width="150" description="The administration interface to edit a chatroom" float="right"]data_custom/images/docs/chat_Administration-edit-chatroom.png[/media]
+[media width="150" description="The administration interface to edit a chatroom" float="right"]data_custom/images/docs/tut_chat/chat_administration_edit_chatroom.png[/media]
 Click on the 'Edit chatroom' icon to see a list of all the chatrooms. Clicking on the name of a chatroom will bring you to the edit form for that chatroom.
 
 All the options are the same as for the add chatroom form, and submitting the form makes the changes immediately visible to users of the chat system.
@@ -127,8 +127,8 @@ To delete a chatroom, simply go to that chatroom's edit screen, and tick (check)
 
 [title="3"]Deleting all chatrooms[/title]
 [surround]
-[media width="150" description="The link to delete all chatrooms" float="left"]data_custom/images/docs/chat_Delete-all-rooms-link.png[/media]
-[media width="150" description="Confirmation for deleting all chatrooms" float="right"]data_custom/images/docs/chat_Delete-all-chatrooms.png[/media]
+[media width="150" description="The link to delete all chatrooms" float="left"]data_custom/images/docs/tut_chat/chat_delete_all_rooms_link.png[/media]
+[media width="150" description="Confirmation for deleting all chatrooms" float="right"]data_custom/images/docs/tut_chat/chat_delete_all_chatrooms.png[/media]
 If you want to delete all the chatrooms, and all the chat messages on the system (this is a drastic measure), you must click the "Delete all rooms" icon. You will be presented with a verbose confirmation page. Clicking "Proceed" will delete everything. You may go back in your browser to cancel the procedure.
 
 

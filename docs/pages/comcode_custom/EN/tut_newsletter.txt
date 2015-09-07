@@ -16,7 +16,7 @@ The interest levels feature is off-by-default, but even when disabled you may se
 [/surround]
 
 [surround]
-[media width="150" description="Subscribing to the newsletter" float="right"]data_custom/images/docs/newsletter_subscribe.png[/media]
+[media width="150" description="Subscribing to the newsletter" float="right"]data_custom/images/docs/tut_newsletter/newsletter_subscribe.png[/media]
 Newsletter subscribers may use a password, chosen at subscription (or randomly assigned, depending on how signup happened), to control their subscription settings. They may change their interest level for all newsletters, as well as remove interest totally. They may also have their password reset for the event that they lost it: this is only possible via confirmation of a reset, received via a link sent to the subscription e-mail address. As passwords may be reset at any time, and are only used in rare circumstances, there is no feature to choose your password.
 [/surround]
 
@@ -63,7 +63,7 @@ There is a newsletter archive available, so that you may browse through past new
 
 [title="2"]What's new ('new content')[/title]
 
-[media width="150" description="Sending a 'new content' newsletter" float="right"]data_custom/images/docs/newsletter_new.png[/media]
+[media width="150" description="Sending a 'new content' newsletter" float="right"]data_custom/images/docs/tut_newsletter/newsletter_new.png[/media]
 {!newsletter:DOC_NEWSLETTER_CONTENT}
 
 In a similar vein, you may create newsletters from news. To do this, just visit the view page for the news that you wish to use and click the appropriate link. You will then be given the choice to refine the newsletter before it is sent.

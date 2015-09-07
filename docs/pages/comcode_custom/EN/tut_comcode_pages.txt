@@ -8,15 +8,15 @@ A Comcode page is a page written in Comcode, and thus is almost written in plain
 
 [contents]decimal,lower-alpha[/contents]
 
-[media width="150" description="The WYSIWYG editor may be used to edit Comcode pages, although it provides less control" float="right"]data_custom/images/docs/comcode_pages_wysiwyg.png[/media]
-[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/comcode_pages_edit.png[/media]
+[media width="150" description="The WYSIWYG editor may be used to edit Comcode pages, although it provides less control" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_wysiwyg.png[/media]
+[media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_edit.png[/media]
 
 There are two supported ways to add a new Comcode page in Composr:
  - Go to Content Management > Pages (Comcode pages), and give a new page name in the '<zone>:<page-name>' format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be ':<page-name>'). If you don't use a colon, a default zone will be picked.
  - Just to type in the URL to where you want the page to be, and click the given link to add the missing page.
 
-[media width="150" description="The easy way to add a Comcode page" float="left"]data_custom/images/docs/comcode_pages_easyadd.png[/media]
-[media width="150" description="The edited Comcode page looks like this" float="right"]data_custom/images/docs/comcode_pages_view.png[/media]
+[media width="150" description="The easy way to add a Comcode page" float="left"]data_custom/images/docs/tut_comcode_pages/comcode_pages_easyadd.png[/media]
+[media width="150" description="The edited Comcode page looks like this" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_view.png[/media]
 Once the Comcode page editor is open, you can pretty much just type your page in plain-text, with small diversions to indicate special formatting (most notably, the 'title' tag, which every page should include). It is beyond the scope of this tutorial to explain Comcode: see the Comcode tutorial for this.
 
 [title="2"]Hiding pages from the Sitemap[/title]

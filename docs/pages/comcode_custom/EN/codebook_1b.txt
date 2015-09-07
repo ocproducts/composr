@@ -523,7 +523,7 @@ One confusing thing about stack traces is that the error chain is included withi
 
 [title="3"]How Tempcode works[/title]
 
-[media width="150" description="The Tempcode object structure" float="right"]data_custom/images/docs/tempcode_object.png[/media]
+[media width="150" description="The Tempcode object structure" float="right"]data_custom/images/docs/codebook_1b/tempcode_object.png[/media]
 The internals of Tempcode are enormously complex.
 
 It has to achieve a number of key design goals (these are implemented in Composr's Tempcode engine -- you don't need to worry about them, and that's part of the magic of Tempcode -- for documentation see the [page="docs:tut_tempcode"]Composr Tempcode programming tutorial[/page]):

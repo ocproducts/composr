@@ -47,7 +47,7 @@ Consider these situations:
  - Composr needs to modify a file [tt]themes/mytheme/templates_custom/GLOBAL_HTML_WRAP.tpl[/tt] -- usually this would not be a problem, as it would have been created by PHP when the [tt]GLOBAL_HTML_WRAP.tpl[/tt] was overridden from that of the default theme, and hence owned by 'nobody' -- however, if the theme was uploaded manually then the file would need to be given 'world write' permission
  - Composr needs to delete [tt]themes/mytheme/templates_cached/EN/GLOBAL_HTML_WRAP.tcp[/tt] (this happens a lot when editing things and Composr tries to clear caches) -- as above, normally there would be no problem, but if a webmaster uploads new templates it is often useful for them to delete the .tcd files themselves manually and allow Composr to regenerate them
 
-[media width="150" description="Changing permissions of a directory using FTP" float="right"]data_custom/images/docs/chmod_1.png[/media]
+[media width="150" description="Changing permissions of a directory using FTP" float="right"]data_custom/images/docs/tut_chmod/chmod_1.png[/media]
 The gist of these situations is quite simple:
 [indent]If Composr made something itself, it can write to/into it, without problem, but it also needs to be writeable by the webmaster via FTP so is given 'world write' permissions. If a file was uploaded and Composr needs to write to/into it, and the quick installer couldn't set permissions for it (usually because it was added after installation), then 'world write' permissions need setting manually.[/indent]
 
@@ -56,7 +56,7 @@ File permissions that Composr requires are listed in the install guide.
 
 [title="2"]How to set Linux file permissions using FTP[/title]
 
-[media width="150" description="Changing permissions of a file using FTP" float="right"]data_custom/images/docs/chmod_2.png[/media]
+[media width="150" description="Changing permissions of a file using FTP" float="right"]data_custom/images/docs/tut_chmod/chmod_2.png[/media]
 There is a extension to the FTP protocol that allows setting of file permissions. The extension is so wide-spread that most people do not know that it actually is one. Most FTP tools have file permission support, and SmartFTP has particularly user friendly support, where file permissions can be changed with tick-boxes.
 
 The screen-shots show how to set file permissions for:

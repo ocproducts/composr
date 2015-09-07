@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Providing featured content[/title]
 
-[media width="150" description="The Admin Zone provides a list of tasks, including rotation of featured content" float="right"]data_custom/images/docs/featured_checklist.png[/media]
+[media width="150" description="The Admin Zone provides a list of tasks, including rotation of featured content" float="right"]data_custom/images/docs/tut_featured/featured_checklist.png[/media]
 There are a number of Composr systems that provide featured content, rather than archives of content, or actively worked-upon content. These systems are:
  - the award system
   - award holder display
@@ -30,7 +30,7 @@ The award/content systems allows you to select out content for featuring. It may
  - random display of content in any arbitrary categories (via the [tt]main_content[/tt] block) with full [concept]Selectcode support[/concept]. No award needs to exist for this, as assignment is done via block parameters.
  - display of any arbitrary item of content (via the [tt]main_content[/tt] block). No award needs to exist for this, as assignment is done via block parameters.
 
-[media width="150" description="Making an award" float="right"]data_custom/images/docs/featured_award.png[/media]
+[media width="150" description="Making an award" float="right"]data_custom/images/docs/tut_featured/featured_award.png[/media]
 You may use the award system with any of the following types of content:
  - authors
  - calendar events
@@ -59,7 +59,7 @@ Keeping this yacht example, I will now explain each of the three ways that the a
 
 [title="3"]Display of content assigned as the current holder of an award[/title]
 
-[media width="150" description="Making a download as holder of the default 'Download of the week' award" float="right"]data_custom/images/docs/featured_dotw.png[/media]
+[media width="150" description="Making a download as holder of the default 'Download of the week' award" float="right"]data_custom/images/docs/tut_featured/featured_dotw.png[/media]
 
 If you wanted to choose a different yacht to display every week, for example, then you can just:
  - create a catalogue award
@@ -98,15 +98,15 @@ would show Conversr topic #1 in a block, without running permission checks, and 
 
 [i]As of Composr version 10, the IOTDs addon is not bundled[/i]
 
-[media width="150" description="Adding an IOTD" float="left"]data_custom/images/docs/featured_iotd_add.png[/media]
-[media width="150" description="Choosing an IOTD" float="right"]data_custom/images/docs/featured_iotd_choose.png[/media]
+[media width="150" description="Adding an IOTD" float="left"]data_custom/images/docs/tut_featured/featured_iotd_add.png[/media]
+[media width="150" description="Choosing an IOTD" float="right"]data_custom/images/docs/tut_featured/featured_iotd_choose.png[/media]
 {!iotds:DOC_IOTDS} You can turn them off by removing the block from your front page if you wish (unless you already deselected using the Setup Wizard).
 
 Often website users are the best source of IOTDs, and if you have granted submit access (configurable in the Permissions Tree Editor), they will be able to submit them into your queue.
 
 The IOTD system does not manage IOTDs for you: you need to change IOTD yourself. To make this easy, we recommend that you keep on top of the IOTDs that users submit, deleting the poor ones, so as to make picking new ones straight-forward.
 
-[media width="150" description="The IOTD block displays like this" float="right"]data_custom/images/docs/featured_iotd_view.png[/media]
+[media width="150" description="The IOTD block displays like this" float="right"]data_custom/images/docs/tut_featured/featured_iotd_view.png[/media]
 To pick an IOTD, you select one from those shown on the IOTD queue page, editing it so as to 'use it immediately'. Old IOTDs may be browsed from the IOTD archive page, which is linked to from the IOTD block.
 
 You may change 'of the day' to anything of your choosing by editing language strings in the Composr language editor (the 'iotds' language file).

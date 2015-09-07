@@ -93,7 +93,7 @@ That's all there is to writing a mini-block, although of course the PHP language
 
 I've attached a screenshot of this mini-block embedded on the homepage of a test installation of Composr:
 
-[thumb]data_custom/images/docs/osm.png[/thumb]
+[thumb]data_custom/images/docs/sup_hardcore_blocks/osm.png[/thumb]
 
 [title="3"]Bundling as an addon[/title]
 
@@ -580,7 +580,7 @@ echo ' available." />';
 
 The parameters we add to the end of the image URL may seem incomprehensible, but they are described with plenty of examples on [url="https://developers.google.com/chart/interactive/docs/reference"]Google's site[/url]. I hope you have fun playing with variables, state and Google's chart generator. I've saved this to my Composr test installation as [tt]sources_custom/miniblocks/main_userpoints.php[/tt] and here is a screenshot of the mini-block used in a news article, via the comcode [tt][block]main_userpoints[/block][/tt] (after I'd gambled away some points in the points store ;)). Every user who views the article will see a chart of their own points.
 
-[thumb]data_custom/images/docs/point_chart.png[/thumb]
+[thumb]data_custom/images/docs/sup_hardcore_blocks/point_chart.png[/thumb]
 
 [title="2"]Understanding PHP and its Types[/title]
 

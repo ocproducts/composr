@@ -10,7 +10,7 @@ If you are using the Composr forum, Conversr, emoticon management features are p
 
 [title="2"]Conversr emoticons[/title]
 [surround]
-[media width="150" description="Adding an emoticon" float="right"]data_custom/images/docs/emoticons_add.png[/media]
+[media width="150" description="Adding an emoticon" float="right"]data_custom/images/docs/tut_emoticons/emoticons_add.png[/media]
 Conversr emoticons are tied into the theme image system, although you are unlikely to need to know this as the images may be manipulated using direct features (Admin Zoen > Style > Emoticons).
 
 Images are associated with the 'code' that is typed to place the emoticon. You may have multiple codes per image, by using a single image in multiple emoticons: the interface allows you to select from existing images when you add. It is possible to bulk import emoticons from zip files.

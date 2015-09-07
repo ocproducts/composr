@@ -36,7 +36,7 @@ When you make modifications to any of Composr's default files, There is no need 
 [title="3"]Composr structure[/title]
 
 [surround]
-[media width="150" description="MVC structure for SITE-ZONE" float="left"]data_custom/images/docs/mvc_site.png[/media][media width="150" description="MVC structure for ADMIN-ZONE" float="right"]data_custom/images/docs/mvc_admin.png[/media]
+[media width="150" description="MVC structure for SITE-ZONE" float="left"]data_custom/images/docs/codebook/mvc_site.png[/media][media width="150" description="MVC structure for ADMIN-ZONE" float="right"]data_custom/images/docs/codebook/mvc_admin.png[/media]
 [/surround]
 
 Composr is written to the '[url="front controller"]http://en.wikipedia.org/wiki/Front_controller[/url]' and MVC '[url="design patterns"]http://en.wikipedia.org/wiki/Model-view-controller[/url]':
