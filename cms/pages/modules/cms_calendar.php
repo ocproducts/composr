@@ -1050,7 +1050,83 @@ class Module_cms_calendar extends Standard_crud_module
         $delete_status = post_param_string('delete', '0');
 
         list($type, $recurrence, $_recurrences, $title, $content, $priority, $_start_year, $_start_month, $_start_day, $start_monthly_spec_type, $_start_hour, $_start_minute, $_end_year, $_end_month, $_end_day, $end_monthly_spec_type, $_end_hour, $_end_minute, $timezone, $do_timezone_conv, $member_calendar) = $this->get_event_parameters();
-        if ($delete_status != '3') {
+
+        $allow_trackbacks = post_param_integer('allow_trackbacks', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+        $allow_rating = post_param_integer('allow_rating', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+        $allow_comments = post_param_integer('allow_comments', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+        $notes = post_param_string('notes', STRING_MAGIC_NULL);
+        $validated = post_param_integer('validated', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+        $seg_recurrences = post_param_integer('seg_recurrences', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+
+        $fixed_past = false;
+
+        // Fixing past occurences
+        if (($delete_status == '3') && (!fractional_edit())) {
+            // Fix past occurences
+            $past_times = find_periods_recurrence($event['e_timezone'], 1, $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], $event['e_start_hour'], $event['e_start_minute'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], $event['e_end_hour'], $event['e_end_minute'], $event['e_recurrence'], $event['e_recurrences'], utctime_to_usertime(mktime($event['e_start_hour'], $event['e_start_minute'], 0, $event['e_start_month'], $event['e_start_day'], $event['e_start_year'])), utctime_to_usertime(time()));
+            if (count($past_times) > 0) {
+                foreach ($past_times as $past_time) {
+                    list($start_year, $start_month, $start_day, $start_hour, $start_minute) = explode('-', date('Y-m-d-h-i', usertime_to_utctime($past_time[0])));
+                    if (is_null($event['e_end_day'])) {
+                        list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array(null, null, null, null, null);
+                    } else {
+                        $explode = explode('-', date('Y-m-d-h-i', usertime_to_utctime($past_time[1])));
+                        $end_year = intval($explode[0]);
+                        $end_month = intval($explode[1]);
+                        $end_day = intval($explode[2]);
+                        $end_hour = intval($explode[3]);
+                        $end_minute = intval($explode[4]);
+                    }
+                    add_calendar_event($event['e_type'], 'none', null, 0, get_translated_text($event['e_title']), get_translated_text($event['e_content']), $event['e_priority'], intval($start_year), intval($start_month), intval($start_day), 'day_of_month', intval($start_hour), intval($start_minute), $end_year, $end_month, $end_day, 'day_of_month', $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes);
+                }
+                if (is_null($_recurrences)) {
+                    $recurrences = null;
+                } else {
+                    $recurrences = max(0, $_recurrences - count($past_times));
+                }
+
+                // Find next occurence in future
+                if (count($past_times) == 0) {
+                    $start_year = $_start_year;
+                    $start_month = $_start_month;
+                    $start_day = $_start_day;
+                    $start_hour = $_start_hour;
+                    $start_minute = $_start_minute;
+                    $end_year = $_end_year;
+                    $end_month = $_end_month;
+                    $end_day = $_end_day;
+                    $end_hour = $_end_hour;
+                    $end_minute = $_end_minute;
+                }
+                $past_times = find_periods_recurrence($event['e_timezone'], 1, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $event['e_recurrence'], usertime_to_utctime($past_times[0][0] + 1));
+                if (array_key_exists(0, $past_times)) {
+                    $past_time = $past_times[0];
+                    $explode = explode('-', date('Y-m-d-h-i', $past_time[0]));
+                    $start_year = intval($explode[0]);
+                    $start_month = intval($explode[1]);
+                    $start_day = intval($explode[2]);
+                    $start_hour = intval($explode[3]);
+                    $start_minute = intval($explode[4]);
+
+                    if (is_null($event['e_end_day'])) {
+                        list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array(null, null, null, null, null);
+                    } else {
+                        $explode = explode('-', date('Y-m-d-h-i', $past_time[1]));
+                        $end_year = intval($explode[0]);
+                        $end_month = intval($explode[1]);
+                        $end_day = intval($explode[2]);
+                        $end_hour = intval($explode[3]);
+                        $end_minute = intval($explode[4]);
+                    }
+                } else {
+                    $recurrences = 0;
+                }
+
+                $fixed_past = true;
+            }
+        }
+
+        if (!$fixed_past) {
             $start_year = $_start_year;
             $start_month = $_start_month;
             $start_day = $_start_day;
@@ -1063,74 +1139,6 @@ class Module_cms_calendar extends Standard_crud_module
             $end_minute = $_end_minute;
 
             $recurrences = $_recurrences;
-        }
-
-        $allow_trackbacks = post_param_integer('allow_trackbacks', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-        $allow_rating = post_param_integer('allow_rating', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-        $allow_comments = post_param_integer('allow_comments', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-        $notes = post_param_string('notes', STRING_MAGIC_NULL);
-        $validated = post_param_integer('validated', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-        $seg_recurrences = post_param_integer('seg_recurrences', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-
-        if (($delete_status == '3') && (!fractional_edit())) {
-            // Fix past occurences
-            $past_times = find_periods_recurrence($event['e_timezone'], 1, $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], $event['e_start_hour'], $event['e_start_minute'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], $event['e_end_hour'], $event['e_end_minute'], $event['e_recurrence'], $event['e_recurrences'], utctime_to_usertime(mktime($event['e_start_hour'], $event['e_start_minute'], 0, $event['e_start_month'], $event['e_start_day'], $event['e_start_year'])), utctime_to_usertime(time()));
-            foreach ($past_times as $past_time) {
-                list($start_year, $start_month, $start_day, $start_hour, $start_minute) = explode('-', date('Y-m-d-h-i', usertime_to_utctime($past_time[0])));
-                if (is_null($past_time[1])) {
-                    list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array(null, null, null, null, null);
-                } else {
-                    $explode = explode('-', date('Y-m-d-h-i', usertime_to_utctime($past_time[1])));
-                    $end_year = intval($explode[0]);
-                    $end_month = intval($explode[1]);
-                    $end_day = intval($explode[2]);
-                    $end_hour = intval($explode[3]);
-                    $end_minute = intval($explode[4]);
-                }
-                add_calendar_event($event['e_type'], 'none', null, 0, get_translated_text($event['e_title']), get_translated_text($event['e_content']), $event['e_priority'], intval($start_year), intval($start_month), intval($start_day), 'day_of_month', intval($start_hour), intval($start_minute), $end_year, $end_month, $end_day, 'day_of_month', $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes);
-            }
-            if (is_null($_recurrences)) {
-                $recurrences = null;
-            } else {
-                $recurrences = max(0, $_recurrences - count($past_times));
-            }
-
-            // Find next occurence in future
-            if (count($past_times) == 0) {
-                $start_year = $_start_year;
-                $start_month = $_start_month;
-                $start_day = $_start_day;
-                $start_hour = $_start_hour;
-                $start_minute = $_start_minute;
-                $end_year = $_end_year;
-                $end_month = $_end_month;
-                $end_day = $_end_day;
-                $end_hour = $_end_hour;
-                $end_minute = $_end_minute;
-            }
-            $past_times = find_periods_recurrence($event['e_timezone'], 1, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $event['e_recurrence'], 1, time());
-            if (array_key_exists(0, $past_times)) {
-                $past_time = $past_times[0];
-                $explode = explode('-', date('Y-m-d-h-i', $past_time[0]));
-                $start_year = intval($explode[0]);
-                $start_month = intval($explode[1]);
-                $start_day = intval($explode[2]);
-                $start_hour = intval($explode[3]);
-                $start_minute = intval($explode[4]);
-
-                if (is_null($past_time[1])) {
-                    list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array(null, null, null, null, null);
-                } else {
-                    $explode = explode('-', date('Y-m-d-h-i', $past_time[1]));
-                    $end_year = intval($explode[0]);
-                    $end_month = intval($explode[1]);
-                    $end_day = intval($explode[2]);
-                    $end_hour = intval($explode[3]);
-                    $end_minute = intval($explode[4]);
-                }
-            } else {
-                $recurrences = 0;
-            }
         }
 
         if (addon_installed('content_privacy')) {

@@ -109,7 +109,7 @@ class Hook_profiles_tabs_about
             $modules[] = array('content', do_lang_tempcode('SEARCH'), build_url(array('page' => 'search', 'type' => 'results', 'author' => $username), get_module_zone('search')), 'buttons/search', 'search');
         }
         if (addon_installed('authors')) {
-            $author = $GLOBALS['SITE_DB']->query_value_if_there('SELECT author FROM ' . get_table_prefix() . 'authors WHERE (member_id=' . strval($member_id_viewing) . ') OR (member_id IS NULL AND ' . db_string_equal_to('author', $username) . ')');
+            $author = $GLOBALS['SITE_DB']->query_value_if_there('SELECT author FROM ' . get_table_prefix() . 'authors WHERE (member_id=' . strval($member_id_of) . ') OR (member_id IS NULL AND ' . db_string_equal_to('author', $username) . ')');
             if ((has_actual_page_access($member_id_viewing, 'authors')) && (!is_null($author))) {
                 $modules[] = array('content', do_lang_tempcode('AUTHOR'), build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $author), get_module_zone('authors')), 'menu/rich_content/authors', 'me');
             }
