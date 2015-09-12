@@ -8,8 +8,8 @@ The news system can be used for website news, press releases, community news, bl
 
 [title="2"]Adding news[/title]
 
-[media width="150" description="An add link is presented on the news block" float="left"]data_custom/images/docs/tut_news/news_link.png[/media]
 [media width="150" description="The screen that you add news from" float="right"]data_custom/images/docs/tut_news/news_add_page.png[/media]
+[media width="150" description="An add link is presented on the news block" float="right"]data_custom/images/docs/tut_news/news_link.png[/media]
 When you first install your website, you may notice that there are no news posts. Adding more news posts is very simple.
 
 From the front page, you'll notice the news block (assuming you didn't disable it in the Setup Wizard). At the bottom of that block is a link: 'Add News'. This link is only visible to members with sufficient permission to add news.
@@ -64,9 +64,9 @@ Permissions required for blogs are:
 A default service of [tt]http://pingomatic.com/ping/?title={title}&blogurl={url}&rssurl={rss}[/tt] is configured for you. This particular service is a ping relay service which takes your ping and relays it off to many other ping services for you. Most users therefore won't have a reason to add any additional ping services.
 
 The ping descriptors are just normal URLs, except you can put these three little placeholders in them which Composr will use to insert the specifics of any article being pinned:
- - {title} (which will become the title of the article)
- - {url} (which will become the URL of the article)
- - {rss} (which will become the URL to your news RSS feed)
+ - [tt]{title}[/tt] (which will become the title of the article)
+ - [tt]{url}[/tt] (which will become the URL of the article)
+ - [tt]{rss}[/tt] (which will become the URL to your news RSS feed)
 
 Pinging will only happen for news categories which may be accessed by guests.
 

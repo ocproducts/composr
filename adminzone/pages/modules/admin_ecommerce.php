@@ -252,7 +252,7 @@ class Module_admin_ecommerce extends Standard_crud_module
                 $list->attach(form_input_list_entry(strval($id), $id == $group_id, $group));
             }
         }
-        $fields->attach(form_input_list(do_lang_tempcode('GROUP'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_GROUP'), 'group_id', $list));
+        $fields->attach(form_input_list(do_lang_tempcode('USERGROUP'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_GROUP'), 'group_id', $list));
 
         $fields->attach(form_input_tick(do_lang_tempcode('USES_PRIMARY'), do_lang_tempcode('DESCRIPTION_USES_PRIMARY'), 'uses_primary', $uses_primary == 1));
 
@@ -314,7 +314,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             's_title' => do_lang_tempcode('TITLE'),
             's_cost' => do_lang_tempcode('COST'),
             's_length' => do_lang_tempcode('SUBSCRIPTION_LENGTH'),
-            's_group_id' => do_lang_tempcode('GROUP'),
+            's_group_id' => do_lang_tempcode('USERGROUP'),
             's_enabled' => do_lang('ENABLED'),
         );
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
@@ -325,7 +325,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('COST'),
             do_lang_tempcode('SUBSCRIPTION_LENGTH'),
-            do_lang_tempcode('GROUP'),
+            do_lang_tempcode('USERGROUP'),
             do_lang('ENABLED'),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);

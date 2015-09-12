@@ -22,7 +22,37 @@ Dangerous code includes:
 
 Some time in the future browsers may gain the ability to sandbox parts of web pages, which would allow us to relax these rules, but it seems a long way off still. We would need to wait for all web browsers in use to have adopted the new sandboxing behaviour before we could rely on it.
 
-[title="2"]Comcode Menus[/title]
+[title="2"]Custom Comcode[/title]
+
+[media width="150" description="Adding a Custom Comcode tag" float="right"]data_custom/images/docs/tut_adv_comcode/adv_comcode_custom.png[/media]
+{!custom_comcode:DOC_CUSTOM_COMCODE}
+
+To add a custom tag, do as follows:
+ - Enter the Admin Zone
+ - In the Setup section, go to 'Custom Comcode'
+ - Choose 'Add Custom Comcode tag'
+ - Choose the tag codename you would like to use, a title for the tag, a description, and an example of how the tag would be used.
+ - Tick the various check boxes as necessary.
+ - Place the HTML you wish to use inside the 'Replacement text' field, and put '{content}' at the place where you wish for the tag content to be (the text that sits between the opening of the Comcode tag and the closing of the Comcode tag).
+ - If you have additional parameters for the tag, list your chosen codenames, separated by commas, in the 'Parameters' field. Then place the codenames in the 'Replacement text' field, in a similar way to as you did for '{content}'.
+ - Click the 'Add Custom Comcode tag' button
+
+Your tag will be shown in your local copy of the Comcode tutorial, with your title, description and usage example.
+
+[box="Tip" width="25em" float="right"]If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.[/box]
+Note that Comcode is cached, and if you edit a tag after adding Comcode using it, it won't be updated until you edit that content (or the Comcode field precalculation cache is emptied).
+
+[title="2"]Semi-HTML[/title]
+
+The \[semihtml] tag is a special tag that allows Comcode and HTML to be naturally mixed together. Primarily, the tag is used so that the WYSIWYG editor, which is an HTML editor, may have Comcode placed within it that is not visual, and thus could not be edited in a WYSIWYG fashion.
+
+The \[semihtml] tag is also useful if you are writing some content that has very tight formatting, so it involves a lot of HTML, but also includes elements of Comcode, such as blocks. Without the \[semihtml] tag, it would be necessary to keep opening and closing \[html] tags to achieve the same effect.
+
+[title="2"]Syntax highlighting[/title]
+
+Composr supports syntax highlighting via [url="GeSHi"]http://qbnz.com/highlighter/[/url]. This operates using the normal 'code' and 'codebox' tags, adding support for GeSHi highlighter codes to the 'param' attribute of the tags. For this support to function it is necessary for you to download GeSHi and extract the [tt]geshi.php[/tt] file and [tt]geshi[/tt] directory into Composr's [tt]sources_custom[/tt] directory. This is for licensing reasons. Alternatively, install the non-bundled GeSHi addon we maintain.
+
+[title="2"]Comcode Menus (advanced)[/title]
 
 Composr has had a dedicated menu editor, however you may also write menus in Comcode if you prefer. This method is likely to be preferred by users using a screen reader, as the whole menu is represented in a single readable text field.
 
@@ -33,7 +63,7 @@ It is important to be careful not to break the syntactic rules for the menu form
 
 Here is an example of a menu tag in action...
 
-[code]
+[code="Comcode"]
 [menu='some_codename']
 -contracted section
  +expanded section
@@ -45,36 +75,12 @@ Here is an example of a menu tag in action...
 [/menu]
 [/code]
 
-[box="Tip" width="25em" float="right"]You can put a '~' symbol (tilde, commonly known as 'that wiggly/twiddly symbol') before a URL if you want it to open in a new window.[/box]
+[box="Tip" width="25em" float="right"]You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.[/box]
 Like the list syntax, the menu syntax specifies a tree structure, and uses indentation to do it. Things within a section, including the definition of sub-sections, are indented from the section start line itself.
 
 The '-' means that a section is not expanded by default, whilst the '+' means that a section is. Those lines without a '+' or '-' are lines that are actually entries on the menu, and contain the caption of the entry, followed by ' = ', followed the the URL of the entry.
 
 Menu entries are typed so that their indentation is equal to the indentation of the start of the section's title. i.e. one further depth of indentation from the section's '+' or '-'.
-
-[title="2"]Custom Comcode[/title]
-
-[media width="150" description="Adding a Custom Comcode tag" float="right"]data_custom/images/docs/tut_adv_comcode/adv_comcode_custom.png[/media]
-{!custom_comcode:DOC_CUSTOM_COMCODE}
-To add a custom tag, do as follows:
- - Enter the Admin Zone
- - In the Setup section, go to 'Custom Comcode'
- - Choose 'Add Custom Comcode tag'
- - Choose the tag codename you would like to use, a title for the tag, a description, and an example of how the tag would be used.
- - Tick the various check boxes as necessary.
- - Place the HTML you wish to use inside the 'Replacement text' field, and put '{content}' at the place where you wish for the tag content to be (the text that sits between the opening of the Comcode tag and the closing of the Comcode tag).
- - If you have additional parameters for the tag, list your chosen codenames, separated by commas, in the 'Parameters' field. Then place the codenames in the 'Replacement text' field, in a similar way to as you did for '{content}'.
- - Click the 'Add Custom Comcode tag' button
-Your tag will be shown in your local copy of the Comcode tutorial, with your title, description and usage example.
-
-[box="Tip" width="25em" float="right"]If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.[/box]
-Note that Comcode is cached, and if you edit a tag after adding Comcode using it, it won't be updated until you edit that content (or the Comcode field precalculation cache is emptied).
-
-[title="2"]Semi-HTML[/title]
-
-The \[semihtml] tag is a special tag that allows Comcode and HTML to be naturally mixed together. Primarily, the tag is used so that the WYSIWYG editor, which is an HTML editor, may have Comcode placed within it that is not visual, and thus could not be edited in a WYSIWYG fashion.
-
-The \[semihtml] tag is also useful if you are writing some content that has very tight formatting, so it involves a lot of HTML, but also includes elements of Comcode, such as blocks. Without the \[semihtml] tag, it would be necessary to keep opening and closing \[html] tags to achieve the same effect.
 
 [title="2"]Relationships with other languages, and design choices[/title]
 
@@ -98,17 +104,49 @@ Markdown has become a very popular way of representing documents. In many ways i
 3) we target Comcode to have a much wider set of functionality than just document formatting (the sole purpose of Markdown)
 4) Markdown does not play well with WYSIWYG editors, while Comcode is designed to work both with and without WYSIWYG
 
-[title="3"]Semantics and accessibility[/title]
+[title="3"]Semantics (advanced)[/title]
 
-Comcode is designed to be a language that is easy to use, versatile, rich, indistinguishable from plain-text in the simple case, and useful for writing small code snippets as well as long documents. It is not designed to be a 'semantic' language, with any kind of special separation between visual coding (such as a font tag) and structural coding (such as a block tag, or arguably a ticker tag). Whilst the separation of concerns is appropriate for a website's main layout, which is often worked upon by different people, and where the mark-up is complex and detailed enough to warrant a separation, it is not appropriate for Comcode. This said, the resultant XHTML is highly semantic.
+This section may be of interest to people with particular interest in programming language grammar.
+
+[title="4"]Separation of concerns[/title]
+
+Comcode is designed to be a language that is easy to use, versatile, rich, indistinguishable from plain-text in the simple case, and useful for writing small code snippets as well as long documents. It is not designed to have "separation of concerns" with any kind of special separation between visual coding (such as a font tag) and structural coding (such as a block tag, or arguably a ticker tag). Whilst the separation of concerns is appropriate for a website's main layout, which is often worked upon by different people, and where the mark-up is complex and detailed enough to warrant a separation, it is not appropriate for Comcode. This said, Comcode has good support for semantics...
+
+[title="4"]Formatting tags vs semantic tags[/title]
+
+Formatting tags define how things look. Semantic tags often do too, but they also define how things interpreted by computers, to give cues to search engines or accessibility devices.
+
+[title="4"]Paragraphs vs line breaks[/title]
+
+Comcode has excellent support for semantics, but there is just one small area where it isn't able to support them, which is paragraphs. In Comcode the XHTML5 is created using XHTML [tt]br[/tt] (line break) tags to separate lines. This has few practical ramifications known to us, and it is by necessity to make sure Comcode produces conformant and consistent XHTML5. However if you want to use XHTML [tt]p[/tt] tags, you should use the Comcode 'semihtml' tag so that you have full control over how whitespace will display.
+
+Example:
+[code="Comcode"]
+First paragraph.
+
+Second paragraph.
+[/code]
+
+Composr will produce:
+[code="HTML"]
+First paragraph.<br />
+<br />
+Second paragraph.
+[/code]
+
+Purists would expect:
+[code="HTML"]
+<p>First paragraph.</p>
+<p>Second paragraph.</p>
+[/code]
+
+[title="4"]Comcode is not strictly a markup language[/title]
 
 It is worth noting that the 'tag contents' of certain tags is of no visual significance what-so-ever (such as the block tag, where it has the codename of a block placed there, which is not itself displayed). This fact could be used to argue that Comcode is not a pure mark-up language.
 
-There are some accessibility issues with certain Comcode tags, and these are described in the 'Helping improve site accessibility for disabled users' tutorial.
+[title="3"]Accessibility[/title]
 
-[title="2"]Syntax highlighting[/title]
-
-Composr supports syntax highlighting via [url="GeSHi"]http://qbnz.com/highlighter/[/url]. This operates using the normal 'code' and 'codebox' tags, adding support for GeSHi highlighter codes to the 'param' attribute of the tags. For this support to function it is necessary for you to download GeSHi and extract the [tt]geshi.php[/tt] file and [tt]geshi[/tt] directory into Composr's [tt]sources_custom[/tt] directory. This is for licensing reasons. Alternatively, install the non-bundled GeSHi addon we maintain.
+There are some accessibility issues with certain Comcode tags, and these are described in the [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users tutorial[/page].
 
 [concepts
  1_key="Wiki-Code"   1_value="The mark-up language used on most Wiki systems"

@@ -41,7 +41,7 @@ If sites have a lot of features through which interaction might happen, and you 
 [title="2"]Mobile mode themeing[/title]
 
 You can use the Tempcode [tt]{$MOBILE}[/tt] symbol to make changes based on what mode things are running in:
-[code]
+[code="Tempcode"]
 {+START,IF,{$MOBILE}}
 This shows to mobile devices.
 {+END}

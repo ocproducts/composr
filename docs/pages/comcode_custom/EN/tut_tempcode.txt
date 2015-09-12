@@ -28,9 +28,9 @@ Popular template languages such as 'Velocity' or 'Smarty' are able (and often us
 
 Tempcode provides four constructs other than the plain text of the template itself:
  - [b]Parameters[/b]: [tt]{PARAMETER}[/tt] where PARAMETER is a code-name of something that was actually passed to the template
- - [b]Language strings[/b]: [tt]{!STRING,<parameters>...}[/tt] where STRING is a real language string from a loaded language file (e.g. Banner code could use strings from banners.ini, but most other code could not; global.ini contains strings usable anywhere)
- - [b]Symbols[/b]: [tt]{$SYMBOL,<parameters>...}[/tt] where SYMBOL is a real symbol Composr supports. Embedding a symbol is like making a function call or running a command in the complex place, or a substitution in the simple case
- - [b]Directives[/b]: [tt]{+START,DIRECTIVE,<parameters>...}...{+END,DIRECTIVE}[/tt] where DIRECTIVE is a real directive Composr supports. Directives essentially wrap portions of the template, controlling that portion; they are generally used for types of condition checking (e.g. IF) or loop. There are also directives like [tt]{+IMPLODE,<parameters>...}[/tt] that do not wrap, but work outside the normal "string manipulation" bounds that symbols do
+ - [b]Language strings[/b]: [tt]{!STRING,&lt;parameters>...}[/tt] where STRING is a real language string from a loaded language file (e.g. Banner code could use strings from banners.ini, but most other code could not; global.ini contains strings usable anywhere)
+ - [b]Symbols[/b]: [tt]{$SYMBOL,&lt;parameters>...}[/tt] where SYMBOL is a real symbol Composr supports. Embedding a symbol is like making a function call or running a command in the complex place, or a substitution in the simple case
+ - [b]Directives[/b]: [tt]{+START,DIRECTIVE,&lt;parameters>...}...{+END,DIRECTIVE}[/tt] where DIRECTIVE is a real directive Composr supports. Directives essentially wrap portions of the template, controlling that portion; they are generally used for types of condition checking (e.g. IF) or loop. There are also directives like [tt]{+IMPLODE,&lt;parameters>...}[/tt] that do not wrap, but work outside the normal "string manipulation" bounds that symbols do
 
 Any Tempcode construct may be escaped (made to fit in an encoding scheme, such as HTML or  URLs, such that special text characters do not interact with that encoding scheme in an insecure/corrupting way) by escaping filters with ease, just by placing the symbol associated with the mode of escaping before the closing '}'. The following escaping filters are provided:
 [list="x"]
@@ -69,12 +69,12 @@ It is absolutely crucial that Tempcode programmers use the proper escaping. With
 
 [title="2"]The Tempcode tree[/title]
 
-Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the 'site structure' tutorial.
+Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
 
 [title="2"]Placing theme images[/title]
 
 To insert an image into your template, use Composr's image parameter: [tt]{$IMG,codename}[/tt]. Replace [tt]codename[/tt] with the image code for the image you want to use. This will turn into the image's URL. Be aware that this does not insert any HTML for you, so to use it fully:
-[code]<img src="{$IMG*,page/delete}" alt="Delete This" title="Delete This" />[/code]
+[code="HTML"]<img src="{$IMG*,page/delete}" alt="Delete This" title="Delete This" />[/code]
 This would insert the image [tt]http://www.mywebsite.com/themes/default/images/page/EN/delete.png[/tt] into your page.
 [staff_note][html]<img src="[/html]{$IMG,page/delete}[html]" alt="Delete This" title="Delete This" />[/html][/staff_note]
 
@@ -380,7 +380,7 @@ Tempcode does not have explicit data-types, everything is text. However we may i
 	</tr>
 	<tr style="background: #DDFFDD">
 		<td>{$CATALOGUE_ENTRY_FIELD_VALUE_PLAIN,123,0}</td>
-		<td>As per <kbd>CATALOGUE_ENTRY_FIELD_VALUE</kbd>, but without any display processing on the value.</td>
+		<td>As per <kbd>CATALOGUE_ENTRY_FIELD_VALUE</kbd&gt;, but without any display processing on the value.</td>
 	</tr>
 	<tr style="background: #DDFFDD">
 		<td>{$CATALOGUE_ENTRY_FOR,download,3}</td>
@@ -1043,35 +1043,35 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		<td>Takes the query string parameters of a URL and turns them into hidden form inputs, so that a GET form will relay them</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_ID_VIA_URL_MONIKER,<content-type>,<url-moniker>}</td>
+		<td>{$FIND_ID_VIA_URL_MONIKER,&lt;content-type&gt;,&lt;url-moniker&gt;}</td>
 		<td>Finds the ID for a given content type's URL moniker</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_URL_MONIKER_VIA_ID,<page>,<type>,<id>}</td>
+		<td>{$FIND_URL_MONIKER_VIA_ID,&lt;page&gt;,&lt;type&gt;,&lt;id&gt;}</td>
 		<td>Finds the URL moniker for an item of content's type/ID</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_GUID_VIA_ID,<resource-type>,<resource-id>}</td>
+		<td>{$FIND_GUID_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
 		<td>Find the resource GUID from the resource ID</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_COMMANDRFS_FILENAME_VIA_ID,<resource-type>,<resource-id>}</td>
+		<td>{$FIND_COMMANDRFS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
 		<td>Find the Commandr-fs (repository) filename from the resource ID. There is an optional third parameter, which may be set to 1 if you want the resource sub-path to also be included. Sub-paths are relative to the repository-fs path for the resource-type.</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_LABEL_VIA_ID,<resource-type>,<resource-id>}</td>
+		<td>{$FIND_LABEL_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
 		<td>Find the resource label from the resource ID</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_ID_VIA_LABEL,<resource-type>,<label>}</td>
+		<td>{$FIND_ID_VIA_LABEL,&lt;resource-type&gt;,&lt;label&gt;}</td>
 		<td>Find the resource ID from the resource label</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_ID_VIA_GUID,<guid>}</td>
+		<td>{$FIND_ID_VIA_GUID,&lt;guid&gt;}</td>
 		<td>Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type.</td>
 	</tr>
 	<tr style="background: #DDFFDD">
-		<td>{$FIND_ID_VIA_COMMANDRFS_FILENAME,<resource-type>,<filename>}</td>
+		<td>{$FIND_ID_VIA_COMMANDRFS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
 		<td>Find the resource ID from the Commandr-fs (repository) filename</td>
 	</tr>
     <tr style="background: #FFDDDD">
@@ -1083,7 +1083,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
     	<td>Creates a tutorial link for the given tutorial_id to the given page-link. Needs doing in Tempcode because the Comcode parser doesn't know the target page for Comcode being parsed.</td>
     </tr>
 	<tr style="background: #DDFFDD">
-		<td>{$CPF_LIST,<field-title>}</td>
+		<td>{$CPF_LIST,&lt;field-title&gt;}</td>
 		<td>Find all the possible values for a custom profile field in a loop-iterable string</td>
 	</tr>
 </tbody></table>
@@ -1555,12 +1555,12 @@ The most important directives are:
 
 This directive is commonly used when a box or explanation needs placing around something, unless that something happens to be blank (empty).
 For example, the following is a fairly typical thing to see in a template:
-[codebox]
+[code="HTML"]
 {+START,IF_NON_EMPTY,{DOWNLOADS}}
 	<p>We have the following downloads:</p>
 	{DOWNLOADS}
 {+END}
-[/codebox]
+[/code]
 
 The [tt]IF_NON_EMPTY[/tt] template evaluates [tt]{DOWNLOADS}[/tt], to see if it is blank. If it is not blank, the contents of the directive is output, otherwise nothing happens.
 As you can see from this example, we need to check for emptyness so we don't show a boxed message about downloads that refers to nothingness.
@@ -1568,16 +1568,16 @@ As you can see from this example, we need to check for emptyness so we don't sho
 [title="3"]IF_EMPTY[/title]
 
 An alternative approach to the above example is to include a special message upon emptyness, rather than skipping over. We might do this if the content being displayed is critical and thus the emptyness must be explicitly acknowledged:
-[codebox]
+[code="HTML"]
 <p>We have the following downloads:</p>
 {DOWNLOADS}
 {+START,IF_EMPTY,{DOWNLOADS}}
 	<p class="nothing_here">(none)</p>
 {+END}
-[/codebox]
+[/code]
 
 Note here how we are displaying [tt]{DOWNLOADS}[/tt] even if it is empty. Obviously if it is empty, nothing would display, so we can get away with it. If we were being pedantic we might have wrote the following:
-[codebox]
+[code="HTML"]
 <p>We have the following downloads:</p>
 {+START,IF_NON_EMPTY,{DOWNLOADS}}
 	{DOWNLOADS}
@@ -1585,51 +1585,51 @@ Note here how we are displaying [tt]{DOWNLOADS}[/tt] even if it is empty. Obviou
 {+START,IF_EMPTY,{DOWNLOADS}}
 	<p class="nothing_here">(none)</p>
 {+END}
-[/codebox]
+[/code]
 and arguably this does better demonstrate what we're trying to do, even though the behaviour is the same (ignoring invisible differences in HTML white-space).
 
 It's often useful to be a bit clever with the emptyness-checking directives. For example:
-[codebox]
+[code="HTML"]
 <p>We have the following downloads and images:</p>
 {DOWNLOADS}
 {IMAGES}
 {+START,IF_EMPTY,{DOWNLOADS}{IMAGES}}
 	<p class="nothing_here">(none)</p>
 {+END}
-[/codebox]
+[/code]
 
 In this example, the directive checks if the [tt]{DOWNLOADS}{IMAGES}[/tt] is blank, which is exactly the same as checking if they are both blank (because blank next to blank is still just blank).
 
 [title="3"]IF[/title]
 
 The 'IF' directive allows particular complex calculations to be done. For a simple example, we can replicate the trick in the last example in a more formal way:
-[codebox]
+[code="HTML"]
 <p>We have the following downloads and images:</p>
 {DOWNLOADS}
 {IMAGES}
 {+START,IF,{$AND,{$IS_EMPTY,{DOWNLOADS}},{$IS_EMPTY,{IMAGES}}}}
 	<p class="nothing_here">(none)</p>
 {+END}
-[/codebox]
+[/code]
 
 This checks to see if "DOWNLOADS is empty and IMAGES is empty".
 
 Tempcode uses what is called a "prefix notation", and is similar to the way you write mathematical functions. For example, in common maths:
-[code]
+[code="Maths"]
 f(a,b)
 [/code]
 is how you would write "evaluate function 'f' with parameters 'a' and 'b'.
 In the similar Tempcode notation you would write (assuming 'A' and 'B' are template parameters and 'F' is a real Tempcode symbol):
-[code]
+[code="Tempcode"]
 {$F,{A},{B}}
 [/code]
 
 Here's another 'IF' directive showing a more complex computation:
-[codebox]
+[code="HTML"]
 {+START,IF,{$LT,{ADD_DATE_RAW},{$SUBTRACT,{$FROM_TIMESTAMP},86400}}}
 	<p>This content on {$SITE_NAME} is more than one day old.</p>
 {+END}
-[/codebox]
+[/code]
 
 Background: a unix timestamp is a common measurement of time on computers- it represents the number of seconds since 1970 and because of its nature as a simple decimal number, is very useful for performing arithmetic.
 This example checks to see if [tt]ADD_DATE_RAW[/tt] is less than the current unix timestamp minus 86400. 86400 is the number of seconds in a day, so in other words the example checks to see if [tt]ADD_DATE_RAW[/tt] is at least a day in the past. Because [tt]ADD_DATE_RAW[/tt] is often passed into templates that display content, it checks to see if the content is at least a day old.
@@ -1642,7 +1642,7 @@ Tempcode is extremely powerful, and hopefully now you can see how symbols, direc
 
 [title="3"]CASES[/title]
 
-[code]
+[code="Tempcode"]
 Capital city:
 {+START,CASES,{COUNTRY}}
 	UK=London
@@ -1654,7 +1654,7 @@ Capital city:
 Based on the value of "Country", a different value would be shown. We have coded cases for the UK and Ireland, and anything else would default to "Unknown".
 
 Mode #1 is substring matching:
-[code]
+[code="Tempcode"]
 Healthiness:
 {+START,CASES,{FOOD_ITEM},1}
 	Cake=Unhealthy
@@ -1666,7 +1666,7 @@ Healthiness:
 (Imagine [tt]FOOD_ITEM[/tt] contains something like [tt]Chocolate Cake[/tt] or [tt]Banoffee Pie[/tt].)
 
 Mode #2 is regular expression matching:
-[code]
+[code="Tempcode"]
 Head of state:
 {+START,CASES,{COUNTRY},2}
 	^(Canada|Australia|United Kingdom)$=King/Queen
@@ -1682,21 +1682,21 @@ You can encapsulate Tempcode within comments of other languages, in order to not
 Examples...
 
 HTML comments...
-[code]
+[code="HTML"]
 <!-- {+START,IF,{$MOBILE}} -->
 Example
 <!-- {+END} -->
 [/code]
 
 CSS comments...
-[code]
+[code="CSS"]
 /* {+START,IF,{$MOBILE}} */
 Example
 /* {+END} */
 [/code]
 
 HTML attributes...
-[code]
+[code="HTML"]
 <span x-tempcode-1="{+START,IF,{$MOBILE}}" class="mobile" x-tempcode-2="{+END}">Example</span>
 [/code]
 

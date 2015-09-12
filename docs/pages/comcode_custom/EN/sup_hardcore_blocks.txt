@@ -41,7 +41,10 @@ This section is a short example-driven tutorial on creating a new Composr block 
 
 [title="3"]Getting Started[/title]
 
-In this example we're going to create a Composr "mini-block" out of the following code: [code="html"]<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.openstreetmap.org/export/embed.html?bbox=-1.49107,53.37746,-1.48328,53.38272&amp;layer=mapnik" style="border: 1px solid black"></iframe><br /><small><a href="http://www.openstreetmap.org/?lat=53.38009&amp;lon=-1.487175&amp;zoom=16&amp;layers=M">View Larger Map</a></small>[/code]
+In this example we're going to create a Composr "mini-block" out of the following code:
+[code="HTML"]
+<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.openstreetmap.org/export/embed.html?bbox=-1.49107,53.37746,-1.48328,53.38272&amp;layer=mapnik" style="border: 1px solid black"></iframe><br /><small><a href="http://www.openstreetmap.org/?lat=53.38009&amp;lon=-1.487175&amp;zoom=16&amp;layers=M">View Larger Map</a></small>
+[/code]
 This is taken from the [url="http://www.osm.org" target="_blank"]OpenStreetMap[/url] site, and in this particular case shows a map of the main campus of the University of Sheffield. To get this code I clicked on the "Export" tab at the top of the map and chose "Embeddable HTML". The code appeared in the text box labelled "output". Lots of sites offer code like this, and the purpose of this tutorial is to make accessing such snippets of code really easy for users of our Composr sites.
 
 [title="3"]What is a mini-block?[/title]
@@ -59,25 +62,25 @@ If you don't have direct access to your Composr system, for example if you can o
 [title="3"]What to put in the mini-block?[/title]
 
 With your empty PHP text file open in your programming editor, you can begin to write the mini-block. Due to the nature of PHP, as it was originally created to embed inside HTML files, the first thing we need to do is declare that we're going to start writing some PHP in our file. We do this by writing the following at the start of the file:
-[code="php"]<?php[/code]
+[code="PHP"]<?php[/code]
 The next thing we should do is to write a short description of what we're about to do, so that we don't get confused by the code later. Such descriptions are called "comments", and we write a comment by telling PHP to ignore what we're about to say (otherwise it may get confused and try to run our sentences as if they were code). There are 2 ways to do this in PHP. The first is to write two slashes, followed by our comment, like this:
-[code="php"]// This is my comment. PHP will ignore it.[/code]
+[code="PHP"]// This is my comment. PHP will ignore it.[/code]
 PHP will ignore whatever is written after 2 slashes until the end of that line. If you want to write a comment which takes up several lines then you can either put 2 slashes at the start of each line, or you can put a slash followed by an asterisk to start the comment, and an asterisk followed by a slash to end it, like this
-[code="php"]/* This is a comment. It carries on for as long as I want it to. Even this is still a comment. I can end it like this */ [/code]
+[code="PHP"]/* This is a comment. It carries on for as long as I want it to. Even this is still a comment. I can end it like this */ [/code]
 Using this notation we can put a description at the top of our mini-block, to make our mini-block look like this so far:
-[code="php"]<?php
+[code="PHP"]<?php
 /* This is a mini-block to draw a map from OpenStreetMap.org.
 It centres on the University of Sheffield by default. */
 [/code]
 The next thing to do is to tell PHP what we want it to output. PHP is an elaborate text-rewriting system which, as it runs, gives out data. The data we want it to give out is text in the HTML format, so that visitors to our site will be able to display it in their web browsers. The exact text we want it to give out is the code we obtained from OpenStreetMap.org. Thus we first tell PHP that we want it to output something, which we do by using the "echo" command:
-[code="php"]<?php
+[code="PHP"]<?php
 /* This is a mini-block to draw a map from OpenStreetMap.org.
 It centres on the University of Sheffield by default. */
 echo [/code]
 Then, after a space, we say what we would like to have it output; the classic example being
-[code="php"]echo "hello world"[/code]
+[code="PHP"]echo "hello world"[/code]
 Note that we can't just dump our HTML into the PHP, as PHP files allow HTML to be mixed in with the PHP, which will confuse the program. Instead we need to explicitly tell it that the HTML is a piece of text, and not something that it should try to run. We do this by quoting the text, which can be done with either single quotes 'like this' or double quotes "like this". Since our HTML contains some double quotes, and "quotes can't be "nested"" (unlike brackets (which can)) we should use single quotes. To end the echo statement we need to add a semicolon ([tt];[/tt]) outside of any quotes. Thus our mini-block looks like this:
-[code="php"]<?php
+[code="PHP"]<?php
 /* This is a mini-block to draw a map from OpenStreetMap.org.
 It centres on the University of Sheffield by default. */
 echo '<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.openstreetmap.org/export/embed.html?bbox=-1.4911,53.37756,-1.48325,53.38262&amp;layer=mapnik" style="border: 1px solid black"></iframe><br /><small><a href="http://www.openstreetmap.org/?lat=53.38009&amp;lon=-1.487175&amp;zoom=16&amp;layers=M">View Larger Map</a></small>';[/code]
@@ -86,7 +89,7 @@ This suddenly looks a lot more complicated, but as far as PHP is concerned this 
 [title="3"]Using the mini-block[/title]
 
 That's all there is to writing a mini-block, although of course the PHP language is capable of far more than simply repeating something you tell it. Nevertheless, even this little mini-block should come in handy to those who would otherwise run screaming if they saw its contents. By saving it to our [tt]sources_custom/miniblocks[/tt] directory it is already available to our users, who just need to write
-[code]
+[code="Comcode"]
 [block]main_openstreetmap[/block]
 [/code]
 (or whatever else you called it, without the ".php" at the end).
@@ -109,7 +112,7 @@ One of the most widely used ideas in programming is that of the [i]function[/i].
 
 Using a function in PHP is the same as in Maths, where we just write the function's name, then put whatever we want it to act upon (its "arguments") inside some parentheses (brackets) next to the name. For instance "sine(2)". If we need to give a function multiple arguments then we put commas between them, for example if we wanted the maximum of a series of numbers we might say "max(6,3,98.5,12)". If a function doesn't require any arguments then we simply leave the brackets empty, for example if we want a random number we might write "random()". The difference between functions in Maths and functions in programming is that programming functions don't just turn numbers into other numbers, they can do anything that the language (in our case PHP) is capable of. Here are some examples of using PHP functions (with comments describing what they do):
 
-[code="php"]
+[code="PHP"]
 // 2 whole number arguments. Gives us an image
 // with a palette of 16,777,216 colours, a width of
 // 800 pixels and a height of 600 pixels.
@@ -126,7 +129,7 @@ get_base_url();
 
 Since a function can "give back" some value (we say it "returns" the value) we can pass this straight into another function as an argument by simply nesting the calls to the functions, like this:
 
-[code="php"]
+[code="PHP"]
 // This will call the "get_base_url" function,
 // which gives us a text string, and passes
 // that string straight to the "strtoupper"
@@ -149,7 +152,7 @@ Composr defines many functions, and a comprehensive description of them all can 
 The following is the code of our improved minimodule. We put it in a file in the same way as in the first example. I've decided to call this file [tt]main_openstreetmap_options.php[/tt] so that I can have both versions of the minimodule installed at once. The code still produces the HTML we took from openstreetmap.org like before, but rather than putting the whole thing in quotes and using it as-is, we split it up so that optional bits, like the values for width and height, can be swapped out for the values of Composr configuration options.
 We then use the "echo" command to output each of these bits in turn, so that the browser sees them as one long piece of HTML. A few points to notice are that we keep the quote marks and commas of the HTML intact, which is important since the browser will be expecting them; we also put our calls to the [tt]get_option[/tt] function inside a call to the [tt]strval[/tt] function; this is because our options will give us numbers and we want to convert them into text string (which strval does for us); finally we add 0.01 to the longitude and latitude at one point, this is because the OpenStreetMap code uses a different value for the left, right, top and bottom of the map so we need to keep them slightly apart or else our map will have zero contents.
 
-[code="php"]
+[code="PHP"]
 <?php
 /* This is a minimodule to show a map from OpenStreetMap.org.
 It uses site configuration options to determine what should be
@@ -178,7 +181,7 @@ echo '&amp;layers=M">View Larger Map</a></small>';  // HTML
 This is starting to look complicated isn't it! We just need to keep in mind that everything inside [tt]/*[/tt] and [tt]*/[/tt] are just comments, they're not part of the code, as are the comments after the slashes ([tt]//[/tt]). Everything that is just repeating the copy-pasted HTML from before has been given the comment "HTML". Disregarding those bits we see that the only new parts are the function calls and the "+0.01".
 
 Notice that each line ends in a semicolon ([tt];[/tt]) like the "echo" line in our first example. It's very common to forget to put these, so it may help if you think of semicolons as the symbol for "and then". For example
-[code="php"]
+[code="PHP"]
 1 + 2;
 3 + 4;
 [/code]
@@ -189,7 +192,7 @@ Means "one plus two and then three plus four and then (end)". If you're having p
 This mini-block uses functions to get Composr options, however I've made up these options for the example. In order for this mini-block to work we need to add these options to the Composr site we're going to run it on (you probably won't want to do this on a live site if you're only experimenting. I do my experimenting on a local installation of Composr that I don't mind reinstalling whenever I mess it up ;)). To do it we'll need to add a few files:
 
 [tt]sources_custom/hooks/systems/config/map_width.php[/tt]:
-[code="php"]
+[code="PHP"]
 <?php
 
 class Hook_config_map_width
@@ -228,7 +231,7 @@ class Hook_config_map_width
 [/code]
 
 [tt]sources_custom/hooks/systems/config/map_height.php[/tt]:
-[code="php"]
+[code="PHP"]
 <?php
 
 class Hook_config_map_height
@@ -267,7 +270,7 @@ class Hook_config_map_height
 [/code]
 
 [tt]sources_custom/hooks/systems/config/map_zoom.php[/tt]:
-[code="php"]
+[code="PHP"]
 <?php
 
 class Hook_config_map_zoom
@@ -306,7 +309,7 @@ class Hook_config_map_zoom
 [/code]
 
 [tt]sources_custom/hooks/systems/config/longitude.php[/tt]:
-[code="php"]
+[code="PHP"]
 <?php
 
 class Hook_config_longitude
@@ -345,7 +348,7 @@ class Hook_config_longitude
 [/code]
 
 [tt]sources_custom/hooks/systems/config/latitude.php[/tt]:
-[code="php"]
+[code="PHP"]
 <?php
 
 class Hook_config_latitude
@@ -387,7 +390,7 @@ The next thing to do is to set up the translation strings needed by these option
 
 The quickest way to do this is to put them in the "global" language file, which is available to all parts of the site. We're going to define the names for English, so make an  empty file "global.ini" in your Composr installation into the folder "lang_custom/EN". Put this into it:
 
-[code]
+[code="INI"]
 [strings]
 MAP_BLOCK=Map block
 MAP_WIDTH=Map width
@@ -416,13 +419,13 @@ In the previous section we learned how to do interesting things by "calling" (ru
 
 We saw that functions can give us values to work with, such as the value of a Composr configuration option. We also saw that we can [i]nest[/i] function calls; that is, use the value given by a function call as an argument for another function call, such as:
 
-[code="php"]
+[code="PHP"]
 strtoupper(get_base_url()); // Get the site's base URL and make it uppercase
 [/code]
 
 We can nest as many such calls as we like, for example:
 
-[code="php"]
+[code="PHP"]
 strlen(strval(strlen(get_base_url())))
 [/code]
 
@@ -435,7 +438,7 @@ Using functions in the way shown above can get very confusing. Luckily there is 
 Rather than using variables to represent unknown values like in Maths (eg. "Solve for x") instead we can use variables to 'store' values temporarily, so that we can refer to them later. This is very useful if the result you want to work out depends on performing lots of steps, like the heavily nested function calls above. In PHP, variables are written as a name with a dollar sign, "$", at the beginning, for example [tt]$my_variable[/tt]. Don't ask me why they force everyone to write dollar signs, PHP is full of silly rules.
 
 We can 'store' a value in a variable by saying that the variable is equal to the value (we call this "assigning" the variable), like this:
-[code="php"]
+[code="PHP"]
 $url = get_base_url();
 [/code]
 
@@ -450,7 +453,7 @@ It is important to understand what PHP does when it sees an assignment statement
 This means that the left hand side must be a variable name and nothing else and the right hand side must work out to the value we want and nothing else. This is different to the symmetric equalities found in Maths, where we can swap what's on each side around and it makes no difference, and also it means we can't get PHP to work out things like "$x + 20 = 25;", since "$x + 20" isn't a variable name (we can usually avoid such situations by using very simple algebra to rearrange the equation such that only the variable name is on the left).
 
 Another very important difference between PHP and Maths is that in Maths we make statements which are 'timeless', ie. they are statements of truth which don't depend on how we say them. For example we could say "x = y" and "y = 5"; this, of course, means that "x = 5". In PHP however, everything is worked out in a sequence. If we try writing this example in PHP:
-[code="php"]
+[code="PHP"]
 $x = $y;
 $y = 5;
 [/code]
@@ -462,7 +465,7 @@ PHP will start at the top of whichever file it is given (eg. when a PHP file is 
 
 The currently defined variables (and functions) along with their values makes up what is called the program's [i]state[/i] (or 'memory'). As we saw, assignment can change the program's state by defining a new variable or changing the value stored in a variable. This second possibility is the one that causes the most confusion, since it seems to defy the laws of Maths. Consider the following, which all makes perfect sense if you understand the way PHP uses state:
 
-[code="php"]
+[code="PHP"]
 $my_age = 22;
 // Simple enough, $my_age now stores 22
 
@@ -489,7 +492,7 @@ Since we can change the value of our variables at any time, we have to be carefu
 Don't worry if you find the idea of state difficult to grasp at first; although it is very powerful, stateful programming can be fraught with bugs and is very hard to model and describe Mathematically (ie. it's very hard to prove whether state is being used correctly).
 
 Personally, I favour defining new variables for things as I go (a loose form of the 'single assignment' programming style), rather than using a few variables and constantly changing the values they store. Although re-using variables makes more efficient use of memory (we overwrite any old values we don't need any more, rather than remembering them) it can cause easily avoidable headaches. For example, consider this piece of code:
-[code="php"]
+[code="PHP"]
 // Get the site's base URL
 $address = get_base_url();
 
@@ -525,7 +528,7 @@ Here we've used the variable [tt]$address[/tt] for storing both the website's ad
 
 Now that we've learned about variables, let's see how we can use them to make a seemingly complicated mini-block much simpler. Here we find out how many site points the current user has spent and has available to spend ("points" are a Composr feature where users get rewarded for contributing to the site), we store these in variables then we use echo to send the user an HTML image. The image uses [url="http://code.google.com/apis/chart"]Google Chart API[/url] to automatically generate a pie chart showing these values. Here's the code:
 
-[code="php"]
+[code="PHP"]
 <?php
 /* This will use Google Chart API to draw a graph of the current
    user's points availability. */
@@ -593,7 +596,7 @@ A programming system can usually be considered as 2 different parts; syntax and 
 In PHP, as we learned in the last tutorial, the "meaning" of the code we write is that the computer will start at the first line of the first file it is given and treat each statement it finds as an [i]instruction[/i] to carry out (joined together by semicolons which mean "and then"), until it either runs out of instructions or is told to stop. We also saw that these instructions can modify the [i]state[/i] of the computer. Computer Scientists would call this a form of "operational semantics"; the meaning of the code depends on some physical operation being performed, in this case the meaning of the code is the changes it makes to the state of the computer (its memory).
 
 This simple definition allows us to spot that code like
-[code="php"]
+[code="PHP"]
 $x = 0;
 $x = $x;
 [/code]
@@ -608,11 +611,11 @@ The type of some value, in a very non-rigourous sense, depends on both the way w
 In a similar way to using circuits that behave like numbers, we can make numbers behave like other types of things, if handled correctly. For example we can represent fractions with whole numbers by using scientific notation, such as '15&times;10[sup]-4[/sup]' to mean '0.0015'. We can represent letters and other characters as numbers if we follow a scheme (an [i]encoding[/i]) like '01 is A, 02 is B, 03 is C...', and if we have text then we can represent more complex types of thing, like PHP code and HTML pages, by inventing syntax to write them in.
 
 Because all of these values are, ultimately, numbers (and then electric signals in the computer), the computer itself doesn't know if a value is meant to represent something of another type or not. Thus it is important to know what type of values we are dealing with in our programs if we're to handle them correctly. For example, we may try to write out the string "CAR" by saying:
-[code="php"]
+[code="PHP"]
 echo "C" + "A" + "R";
 [/code]
 However, if PHP is using the text representation described above (it doesn't, but this won't affect the examples) then this will actually be an instruction to do:
-[code="php"]
+[code="PHP"]
 echo 03 + 01 + 18;
 [/code]
 This is obviously not what we were expecting, since it's the number 22. There's been a mistake in our use of types here. However, it gets worse. We now have the number 22, but we were expecting a string so we're going to make another type error as we treat 22 as a string, which will end up being a "V". As far as the computer is concerned, "V" is the result we wanted, since that's what we asked for, but from our point of view this data has become [i]corrupted[/i]. This is why semantics is difficult to get right.
@@ -620,15 +623,15 @@ This is obviously not what we were expecting, since it's the number 22. There's 
 Luckily, PHP doesn't blindly assume that we're treating types correctly. Instead, in PHP each value contains information about what type it is, and if we try to do things which don't make sense for that type of value (such as summing strings like above) then it will give us an error message or do an automatic conversion. Note that it is dangerous to rely on automatic conversion compared to specifying exactly what you mean.
 
 If we want to fix the above example, and attach one string to the end of another (as opposed to summing them), then we can use the [i]concatenation operator[/i], a full stop ".", rather than the [i]addition operator[/i], the plus "+". This means we can write our example correctly as:
-[code="php"]
+[code="PHP"]
 echo "C" . "A" . "R";
 [/code]
 This won't give a type error, and it won't corrupt our values, and it won't be forced to do an automatic conversion. The downside, of course, is that we can't freely mix strings and numbers, since they're different types. However, it's quite easy to convert numbers into strings (just write them out in decimal), and the strval function will do this for us. For example, if we want to write out the number of cars, which is stored in a variable called $car_num, then we should't say:
-[code="php"]
+[code="PHP"]
 echo "There are " . $car_num . " cars";
 [/code]
 Since this is a type error (we're trying to attach a number to some strings). Actually, it will work, because PHP will do automatic conversions. We should write it correctly as:
-[code="php"]
+[code="PHP"]
 echo "There are " . strval($car_num) . " cars";
 [/code]
 

@@ -54,13 +54,13 @@ At some point you'll need to decide which method you'd like to use to install Co
 
 We highly recommend choosing the quick installer. This is a simple process, where you upload two files to your web server, then launch our installation utility from there. It works on most servers.
 
-The second option is the manual installer. This option requires you to manually upload all of Composr's files and apply permissions to them -- the typical method for most CMS systems. This method takes much longer -- as there is a pause for "handshaking" between each file. We maintain this version in case the quick installer fails on your host (e.g. if the host does not support [abbr="File Transfer Protocol"]FTP[/abbr] or suEXEC in the way the quick installer needs).
+The second option is the manual installer. This option requires you to manually upload all of Composr's files using something like FTP and apply permissions to them -- the typical method for most CMS systems. This method takes much longer -- as there is a pause for "handshaking" between each file. We maintain this version in case the quick installer fails on your host (e.g. if the host does not support PHP-accessible [abbr="File Transfer Protocol"]FTP[/abbr] or suEXEC in the way the quick installer needs).
 
 [title="2"]Preparing files[/title]
 
 [surround]
 [media width="150" description="Example of \"Download Now\" link" float="left"]data_custom/images/docs/tut_install/install_download.png[/media]
-To install Composr, you must first download it from our web site ({$BRAND_BASE_URL}). It is generally best to choose the latest version, and, as stated above, we also recommend choosing the "quick method".
+To install Composr, you must first download it from [url="our web site"]{$BRAND_BASE_URL}[/url]. It is generally best to choose the latest version, and, as stated above, we also recommend choosing the "quick method".
 
 Download Composr from our website. Save it to a location where you'll be able to find it.
 
@@ -84,6 +84,8 @@ When you successfully connect, find your webroot, and navigate into a subfolder 
 You now need to put these files in the desired folder. This can usually be done by dragging and dropping the files from your computer to your web host in your SFTP/FTP client ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/url]).
 
 [title="2"]Installation[/title]
+
+[surround]
 [media width="150" description="The Composr installation screen" float="left"]data_custom/images/docs/tut_install/install_step1.png[/media]
 
 After you upload these files, you've completed the hardest part of the installation. The next step is to open your web browser and go to [tt]http://www.mywebsite.com/install.php[/tt] (substitute '[tt]http://www.mywebsite.com/[/tt]' as appropriate for your domain and install path). You should be greeted with a welcome screen, asking you which language you would like to use.
@@ -91,9 +93,10 @@ After you upload these files, you've completed the hardest part of the installat
 On step two, you are shown a license agreement. You must agree to the license agreement before you can install Composr. You also have the opportunity to sign up for our newsletter, which will notify you by e-mail of any updates to our software. Composr will never sell or rent your e-mail address to a third party. You can read our [page=":privacy"]privacy policy[/page] for more information.
 
 On step three, you are presented with a choice to choose which forum system you would like to use for your website. We strongly recommend that you use Composr's own forum (Conversr), which if chosen will be installed at the same time as Composr. If you're using a third-party forum software, then you will need to already have it installed. Select the name of the software on the left, and then choose the appropriate version from the right-hand column.
+[/surround]
 
-[box="Tip" width="25em" float="right"]Advanced: If you would like your website to be one of many on one network, you can choose the option to install a multi-site-network. This is an advanced feature that you are very unlikely to want to use. Read our [page="_SEARCH:tut_msn"]multi-site-network[/page] tutorial for more information on this feature, and to decide whether or not you would like to use it.[/box]
-[media width="150" description="Step 4: primary configuration" float="left"]data_custom/images/docs/tut_install/install_step4.png[/media]
+[surround]
+[media width="150" description="Step 4: primary configuration" float="right"]data_custom/images/docs/tut_install/install_step4.png[/media]
 On step 4 is where the core configuration settings are input. Fill out each of the configuration options to the best of your knowledge.
 
 Most of the settings will have been auto-detected for you. You will definitely need to fill in the following fields manually though:
@@ -105,19 +108,20 @@ There are no constraints on the kind of password to use, but it is a good idea t
 
 All of the database fields should be filled out with the information you recorded earlier in this tutorial. When you finish, click the "Install Composr" link at the bottom of the screen.
 
+Hopefully, at this point you'll receive this [url="success message" rel="lightbox"]data_custom/images/docs/tut_install/install_step5.png[/url]. If you receive any errors, return to the previous page and correct them. Click the "Proceed" button to continue through the installation. There will be a few more similar screens until you finish the installation.
+[/surround]
+
+[surround]
 [media width="150" description="Step 5: success message" float="right"]data_custom/images/docs/tut_install/install_step5.png[/media]
-
-[surround]Hopefully, at this point you'll receive this [url="success message" rel="lightbox"]data_custom/images/docs/tut_install/install_step5.png[/url]. If you receive any errors, return to the previous page and correct them. Click the "Proceed" button to continue through the installation. There will be a few more similar screens until you finish the installation.
-
 [media width="150" description="Final screen" float="left"]data_custom/images/docs/tut_install/install_done.png[/media]
-
 After you finish the installation, you are presented with one final screen, congratulating you on your successful installation, and giving you two choices -- you can either jump right to your new homepage, or go to the Setup Wizard. If you have never used Composr before, we suggest that you run the Setup Wizard, as it will guide you through the basic settings of your website and familiarise you with the way Composr works.
 
 As a final step you will have to delete the [tt]install.php[/tt] and [tt]data.cms[/tt] files you uploaded earlier, using SFTP/FTP (or the control panel File Manager). This is important for security reasons and Composr will make you do this.
 
 If you got an error message about having to delete the files just refresh the page once you have deleted them, and it will take you to where you intended to be.
+[/surround]
 
-Congratulations on your successful installation![/surround]
+[center][img]data_custom/images/docs/tut_install/congratulations.jpg[/img][/center]
 
 The Setup Wizard will guide you through some basic setup for your site, to give you a leg-up. It is not required, but most users will want to run it to set some basic things such as Site Name, colours, and what addons are to be kept installed.
 

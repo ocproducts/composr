@@ -660,7 +660,7 @@ class Module_admin_stats
             make_csv($real_data, 'load_times.csv');
         }
 
-        $output = create_bar_chart($data, do_lang('PAGE'), do_lang('LOAD_TIME'), '', do_lang('_SECONDS'));
+        $output = create_bar_chart($data, do_lang('PAGE'), do_lang('LOAD_TIME'), '', do_lang('dates:DPLU_SECONDS'));
         $this->save_graph('Global-Load-times', $output);
 
         $graph = do_template('STATS_GRAPH', array('_GUID' => '3f1ef4ebbed1e064c0ec89481dc39afc', 'GRAPH' => get_custom_base_url() . '/data_custom/modules/admin_stats/Global-Load-times.xml', 'TITLE' => do_lang_tempcode('LOAD_TIMES'), 'TEXT' => do_lang_tempcode('DESCRIPTION_LOAD_TIMES')));
@@ -1676,7 +1676,7 @@ class Module_admin_stats
         // Return a pie chart with the $type used to view this page
         $start = get_param_integer('start_' . $type, 0);
         $max = get_param_integer('max_' . $type, 25);
-        $sortables = array('views' => do_lang_tempcode('_VIEWS'));
+        $sortables = array('views' => do_lang_tempcode('COUNT_VIEWS'));
         list($sortable, $sort_order) = explode(' ', get_param_string('sort', 'views ASC'), 2);
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');

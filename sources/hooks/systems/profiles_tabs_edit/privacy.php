@@ -191,7 +191,7 @@ class Hook_profiles_tabs_edit_privacy
                     $groups->attach(form_input_list_entry(strval($gr_key), $current_group_view, $group));
                 }
 
-                $fields->attach(form_input_multi_list(do_lang_tempcode('GROUPS'), do_lang_tempcode('DESCRIPTION_VISIBLE_TO_GROUPS'), 'groups_' . strval($cpf_id), $groups));
+                $fields->attach(form_input_multi_list(do_lang_tempcode('USERGROUPS'), do_lang_tempcode('DESCRIPTION_VISIBLE_TO_GROUPS'), 'groups_' . strval($cpf_id), $groups));
             }
         }
 

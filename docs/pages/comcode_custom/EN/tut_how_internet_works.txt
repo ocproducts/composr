@@ -91,7 +91,6 @@ When most people think of an 'Internet Address' they think of something like '[t
 All Internet communication is still done using IP addresses (recall '[tt]69.60.115.116[/tt]' is an IP address). The 'domain names' are therefore translated to IP addresses behind the scenes, before the main communication starts.
 
 At the core, the process of looking up a domain name is quite simple -- it's a process of 'homing in' by moving leftwards through the name, following an interrogation path. This is best shown by example -- '[tt]www.example.com[/tt]' would be looked up as follows:
-
  - Every computer on the Internet knows how to contact the computers (the 'root' 'DNS servers') responsible for things like '[tt]com[/tt]', '[tt]org[/tt]', '[tt]net[/tt]' and '[tt]uk[/tt]'. There are a few such computers and one is contacted at random. The DNS server computer is asked if they know '[tt]www.example.com[/tt]' and will respond saying they know which server computer is responsible for '[tt]com[/tt]'.
  - The '[tt]com[/tt]' server computer is asked it knows '[tt]www.example.com[/tt]' and will respond saying they know which server computer is responsible for '[tt]example.com[/tt]'.
  - 'The [tt]'example.com[/tt]' server computer is asked if it knows '[tt]www.example.com[/tt]' and will respond saying that it knows the corresponding server computer to be '[tt]69.60.115.116[/tt]'.
@@ -107,7 +106,6 @@ Domain names are allocated by the person wanting them registering the domain nam
 I've fully covered the essence of how messages are delivered over the Internet, but so far these messages are completely raw and meaningless. Before meaningful communication can occur we need to layer on yet another protocol (recall IP and TCP protocols are already layered over our physical network).
 
 There are many protocols that work on the communications already established, including:
-
  - HTTP -- for web pages, typically read in web browser software
  - POP3 -- for reading e-mail in e-mail software, with it stored on a user's own computer
  - IMAP4 -- for reading e-mail in e-mail software, with it archived on the receiving server

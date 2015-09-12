@@ -65,7 +65,9 @@ class Hook_addon_registry_openid
      */
     public function get_copyright_attribution()
     {
-        return array();
+        return array(
+            'Mewp',
+        );
     }
 
     /**
@@ -75,7 +77,7 @@ class Hook_addon_registry_openid
      */
     public function get_licence()
     {
-        return 'Licensed on the same terms as Composr';
+        return 'MIT';
     }
 
     /**

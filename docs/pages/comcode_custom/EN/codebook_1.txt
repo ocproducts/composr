@@ -1,6 +1,5 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, part 1a[/title]
 
-[surround="spaced_list"]
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
 [contents][/contents]
@@ -903,8 +902,8 @@ As well as providing documentation, the API comments define function type signat
  - SHORT_INTEGER (an integer, 0-127)
  - REAL (a float)
  - BINARY (0 or 1)
- - MEMBER (a member id)
- - GROUP (a user group id)
+ - MEMBER (a member ID)
+ - GROUP (a usergroup ID)
  - TIME (an integer timestamp)
  - LONG_TEXT (a large block of db-targetted text)
  - SHORT_TEXT (a block of text, up to 255 characters)
@@ -1241,6 +1240,5 @@ We stick to a middle ground between these extremes, and re-use templates when th
 Each '[tt]do_template[/tt]' call in Composr, which loads up a template, passes in a parameter, '[tt]_GUID[/tt]'. The GUIDs may then be used by themers with tempcode directives to control what the template outputs.
 
 Don't bother manually putting in GUIDs. We have a script that auto-generates them and inserts them across the code base. We run this script before major releases.
-[/surround]
 
 {$SET,tutorial_tags,Development,PHP,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Back-end development, part 1.}[block]main_tutorial_rating[/block]

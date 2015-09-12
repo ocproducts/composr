@@ -161,7 +161,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
 
         $out->attach(results_entry(array(escape_html($page_converted), escape_html($date), $parameters, escape_html($myrow['browser']), escape_html($myrow['operating_system'])), false));
     }
-    return results_table(do_lang_tempcode('_RESULTS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'sort');
+    return results_table(do_lang_tempcode('RESULTS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'sort');
 }
 
 /**

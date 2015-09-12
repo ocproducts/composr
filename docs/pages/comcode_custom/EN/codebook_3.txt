@@ -1,6 +1,5 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, part 3[/title]
 
-[surround="spaced_list"]
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
 [contents][/contents]
@@ -109,7 +108,7 @@ Anything not marked with a specific bypass optimisation (in brackets) will still
 
 Note that while we have a lot of user-specific and security features in the above list, but these can be bypassed when not needed via the static cache.
 
-Various hidden optimisation flags are described later in the Code Book, and also in the Composr optimisation tutorial.
+Various hidden optimisation flags are described later in the Code Book, and also in the [page="_SEARCH:tut_optimisation"]Optimising Performance[/page].
 
 [title="2"]Why not more object-orientation?[/title]
 
@@ -367,7 +366,7 @@ If it is acceptable to debug code on a live server, putting 'exit' and 'vardump'
 
 It is common to need to log in as an administrator on a live site and not know the admin password (only knowing the hosting access).
 If you add a line to [tt]_config.php[/tt] like the following:
-[code]
+[code="PHP"]
 $SITE_INFO['backdoor_ip']='1.2.3.4';
 [/code]
 It will automatically log you in under the first administrator account. You can find your IP address from [url="common websites"]http://myipaddress.com[/url].
@@ -412,7 +411,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]disable_mbstring[/tt] -- set this to '1' if your mbstring extension causes PHP to crash
   - [tt]prefer_curl[/tt] -- set this to '1' if the server requires you to not use network sockets directly from PHP and instead use the CuRL extension (although if you need this it is likely you actually need to just configure the proxy server options instead)
   - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about it's memory limit
-  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
+  - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
   - [tt]base64_emails[/tt] -- set this to '1' if you want base64 emails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 emails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
   - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare.
   - [tt]disable_openssl[/tt] -- set this to '1' if you are on Windows and PHP<5.3.4, which has a bug in [tt]openssl_random_pseudo_bytes[/tt]. It is much better to upgrade PHP though, for better security.
@@ -487,7 +486,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]no_member_tracking[/tt] -- set this to '1' if you want to disable the member tracking feature where it's supported (it shows who is viewing a forum topic, for example)
   - [tt]min_lastvisit_frequency[/tt] -- set this to the number of seconds waited between the last-visit time being updated (performance tweak, minimises database writes)
   - [tt]no_flood_control[/tt] -- set this to '1' if you will not have flood control
-  - [tt]implicit_usergroup_sync[/tt] -- set this to '1' to enable synching of implicit usergroups (see the advanced members tutorial for more information)
+  - [tt]implicit_usergroup_sync[/tt] -- set this to '1' to enable synching of implicit usergroups (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system tutorial[/page] for more information)
   - [tt]shortened_tempcode[/tt] -- set this to '1' to not store parameter reference origins in Tempcode, which makes Tempcode use less memory/storage/CPU
   - [tt]advanced_admin_cache[/tt] -- set this to '1' to enable the Advanced Admin Cache (AAC). The AAC loads fully cached pages for administrators whilst checking the server for any updates. The result is that you see a cached page for about 1 second until the latest version is retrieved, making browsing feel much snappier. This feature is highly experimental, and only works on the very fast modern web browsers: Google Chrome, Opera, and Safari. It may be unstable even in these browsers though. If your site is on a shared domain where other users can run their own JavaScript code then you should not use it as it will lead to a serious security vulnerability.
   - [tt]save_jpegs_as_png[/tt] -- set this to '1' to allow Composr to detect when JPEG files would be smaller, and save JPEG data into PNG file extensions. It is a bit of a hack, and goes against standards, but works well
@@ -592,7 +591,7 @@ The following aren't 'keep' parameters, but are still useful and otherwise behav
 [title="3"]Extra _config.php settings[/title]
 
 Setting,
-[code]
+[code="PHP"]
 $SITE_INFO['no_email_output']='1';
 [/code]
 in [tt]_config.php[/tt] will disable emails. This is useful on a development server running with live user accounts.
@@ -633,7 +632,7 @@ Bear in mind that some sites need maintenance or have multiple people working on
 Many forms in Composr accept GET parameters for specifying default field values. This includes most 'add' forms in the system. Generally the GET parameter is exactly the same as the actual field name in the HTML, so it's easy to work it out.
 
 We also have some special cases coded up directly. These are often referenced between different parts of the Composr code. The details below are divided by module, then 'type', then parameter name.
-[code]
+[font="Courier"]
 topics
  new_post
   quote
@@ -731,7 +730,7 @@ cms_news
 cms_quiz
  add
   validated
-[/code]
+[/font]
 
 All default parameters are flagged as 'non-canonical' to search engines, so that the search engine knows that variations in value are not indicative of entirely separate web pages.
 
@@ -780,6 +779,5 @@ Rules:
 [title="2"]Conclusion[/title]
 
 We're glad you've made it to the end of our Code Book. Thanks for reading this far, and we hope you find Composr an effective and enjoyable environment to code for.
-[/surround]
 
 {$SET,tutorial_tags,Development,PHP,debrand,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Miscellaneous technical guidance.}[block]main_tutorial_rating[/block]

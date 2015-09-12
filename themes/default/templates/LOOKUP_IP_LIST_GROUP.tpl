@@ -3,7 +3,7 @@
 		<label for="banned_{UNIQID*}">
 			<kbd>{MASK*}</kbd>
 			{+START,IF,{$ADDON_INSTALLED,securitylogging}}
-				<span class="horiz_field_sep"><em>{!_BANNED}: <input type="checkbox" id="banned_{UNIQID*}" name="banned[]" value="{MASK*}"{+START,IF,{BANNED}} checked="checked"{+END} /></em></span>
+				<span class="horiz_field_sep"><em>{!BANNED}: <input type="checkbox" id="banned_{UNIQID*}" name="banned[]" value="{MASK*}"{+START,IF,{BANNED}} checked="checked"{+END} /></em></span>
 			{+END}
 		</label>
 

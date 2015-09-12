@@ -41,21 +41,19 @@ Obviously this needs a greater level of access than ordinary members would have.
 
 For this, I am assuming that you are using [concept]Conversr[/concept]. If you are using another forum then the method will be similar, but will be done upon the data of that forum.
 
-[media width="150" description="Select to browse the f_members table" float="left"]data_custom/images/docs/tut_disaster/disaster_pass_1.png[/media]
-[media width="150" description="Edit the row for the username for which the password should be changed" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_2.png[/media]
-1) Enter phpMyAdmin
-
-2) Browse the contents of the Composr f_members table (named [tt]cms2_f_members[/tt] if you used the default table prefix).
-
-3) You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
-
 [media width="150" description="Change the settings and 'Go'" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_3.png[/media]
-4) There are numerous fields, but we only need to change three:
- - [tt]m_pass_hash_salted[/tt] should be given the new password. It is essential that you also choose 'MD5' from the list to the left of the input field, so that the password gets 'encrypted' (Composr assumes an encrypted password and if it is not then it will not successfully log in).
- - [tt]m_pass_salt[/tt] should be blanked out.
- - [tt]m_password_compat_scheme[/tt] should be set to the literal value 'md5'.
-
-5) Scroll to the bottom of the form and click 'Go'.
+[media width="150" description="Edit the row for the username for which the password should be changed" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_2.png[/media]
+[media width="150" description="Select to browse the f_members table" float="right"]data_custom/images/docs/tut_disaster/disaster_pass_1.png[/media]
+[list="1"]
+[*]Enter phpMyAdmin
+[*]Browse the contents of the Composr f_members table (named [tt]cms_f_members[/tt] if you used the default table prefix).
+[*]You will see rows for all usernames. Click the little edit icon and you'll see an editing screen.
+[*]There are numerous fields, but we only need to change three:[list]
+[*][tt]m_pass_hash_salted[/tt] should be given the new password. It is essential that you also choose 'MD5' from the list to the left of the input field, so that the password gets 'encrypted' (Composr assumes an encrypted password and if it is not then it will not successfully log in).
+[*][tt]m_pass_salt[/tt] should be blanked out.
+[*][tt]m_password_compat_scheme[/tt] should be set to the literal value 'md5'.[/list]
+[*]Scroll to the bottom of the form and click 'Go'.
+[/list]
 
 You should now be able to log in to Composr using your new password.
 
@@ -64,9 +62,9 @@ You should now be able to log in to Composr using your new password.
 If you need to 'hack' your way in to the site using your FTP access, you can place a temporary backdoor.
 
 Go to http://www.myipaddress.com/ and copy your IP address, then put it into your [tt]_config.php[/tt] file:
-[codebox]
+[code="PHP"]
 $SITE_INFO['backdoor_ip']='12.34.56.78'; // Enable to a real IP address to force login from FTP access (if lost admin password)
-[/codebox]
+[/code]
 
 You will then be logged in as the first admin user there is. Additionally membership bans, probation, and flood control, will not apply when using the backdoor (so it is useful if your account was locked somehow, e.g. by a malicious other staff member).
 
@@ -77,18 +75,22 @@ It should go without saying that you should only use this 'backdoor' for a short
 If you need to log in to the upgrader, config editor, or code editor, you'll need the master password.
 
 If you have forgotten it, to change it just edit the [tt]_config.php[/tt] file:
-[code]
+[code="PHP"]
 $SITE_INFO['admin_password']='...';
 [/code]
 Change the [tt]...[/tt] bit to the actual password you want. You don't need to encrypt it, just put it in exactly.
 
 You should then encrypt your password via changing the password within the [tt]/config_editor.php[/tt] script.
 
-[title="2"]Unbanning an IP[/title]
+[title="2"]Unbanning an IP address[/title]
 
-[media width="150" description="Select to browse the banned_ip table" float="left"]data_custom/images/docs/tut_disaster/disaster_ban_1.png[/media]
+[surround]
 [media width="150" description="Delete the row corresponding to your IP address" float="right"]data_custom/images/docs/tut_disaster/disaster_ban_2.png[/media]
-If you are unfortunate enough to have somehow been banned from your own website, use phpMyAdmin to browse the 'banned_ip' table, and delete the row containing your IP address. If you don't know your IP address then you can find it out from http://www.myipaddress.com/.
+[media width="150" description="Select to browse the banned_ip table" float="right"]data_custom/images/docs/tut_disaster/disaster_ban_1.png[/media]
+If you are unfortunate enough to have somehow been banned from your own website, use phpMyAdmin to browse the 'banned_ip' table, and delete the row containing your IP address.
+
+If you don't know your IP address then you can find it out from http://www.myipaddress.com/.
+[/surround]
 
 [title="2"]Resetting page ownerships[/title]
 
@@ -97,7 +99,7 @@ If you delete or demote an admin, you may find lots of pages now show Comcode pe
 To fix this, edit the Comcode page and assign a new submitter via the edit form.
 
 To do it en-masse, you can run this in Commandr (this example assumes you are reassigning from member #5 to member #2):
-[code]
+[code="Commandr"]
 :$GLOBALS['SITE_DB']->query_update('comcode_pages',array('p_submitter'=>2),array('p_submitter'=>5));
 [/code]
 and then clear the Comcode page cache from Admin Zone > Tools > Cleanup tools.

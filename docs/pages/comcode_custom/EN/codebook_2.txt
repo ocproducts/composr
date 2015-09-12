@@ -1,6 +1,5 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, part 2[/title]
 
-[surround="spaced_list"]
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
 [contents][/contents]
@@ -81,7 +80,7 @@ The following guidelines must be adhered to by webmasters themselves:
 Composr's default CSS uses equations to define colours, all defined against a seed colour. This allows us to define a large harmonious colour scheme progmatically, and thus allows the Theme Wizard to work (re-calculating the colours against a different seed colour). It saves themers an enormous amount of time, as manually redefining each colour would be very time consuming, let alone recreating all the theme images within the colour scheme.
 
 Equations look like this in the CSS...
-[code]
+[code="CSS"]
 {$THEME_WIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
 ...
 
@@ -134,7 +133,7 @@ Composr has an inbuilt set of JavaScript libraries, which are split across a num
 4) [tt]transitions[/tt] -- Provide various transition/animation effects.
 
 To flag a javascript file to be loaded up, use the 'require_javascript' API command in the PHP code. For example, if you wanted to load up the JavaScript defined in an 'example.js' template, use:
-[code]
+[code="PHP"]
 require_javascript('example');
 [/code]
 This command is usually best placed:
@@ -393,6 +392,5 @@ When you add/edit theme images inside Composr, it makes up a filename. But inste
 Generally you should rarely use the Composr inbuilt theming tools when acting as a programmer. Just put the files in the right place and use your text editor to alter the CSS and templates. This makes for a more integrated, programmer-friendly, workflow.
 
 The only caveat with theme images is that if Composr has already searched for it a theme image in your theme, and only found the default one, you'd need to empty the theme_images table to make it search again. That's safe as long as you only add/edit via filesystem and never from inside Composr.
-[/surround]
 
 {$SET,tutorial_tags,Development,PHP,Development,CSS,JavaScript,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Front-end development.}[block]main_tutorial_rating[/block]

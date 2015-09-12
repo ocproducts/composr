@@ -3159,7 +3159,7 @@ END;
                 }
                 if (text_value.length>" . strval($size) . ")
                 {
-                    window.fauxmodal_alert('" . php_addslashes(do_lang('_POST_TOO_LONG')) . "');
+                    window.fauxmodal_alert('" . php_addslashes(do_lang('POST_TOO_LONG')) . "');
                     return false;
                 }
         ";

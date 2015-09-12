@@ -50,7 +50,7 @@
 				<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
 				<input maxlength="255" size="18" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
 
-				<input id="give_points_submit" class="buttons__points button_screen_item" type="submit" value="{!PROCEED_GO}" />
+				<input id="give_points_submit" class="buttons__points button_screen_item" type="submit" value="{!PROCEED_SHORT}" />
 			</div>
 
 			<div class="points_give_choices">

@@ -44,7 +44,7 @@ class Hook_notification_cns_club extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['cns_club'] = array(do_lang('GROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_club'));
+        $list['cns_club'] = array(do_lang('USERGROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_club'));
         return $list;
     }
 

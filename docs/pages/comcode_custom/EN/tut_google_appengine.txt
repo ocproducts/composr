@@ -117,7 +117,7 @@ Next, we need to grant GAE permissions on the bucket:
 [surround]
 [media width="150" description="Creating a Google Cloud SQL database, within the instance." float="right"]data_custom/images/docs/tut_google_appengine/cloud_sql_database.png[/media][media width="150" description="Creating a Google Cloud SQL instance." float="right"]data_custom/images/docs/tut_google_appengine/cloud_sql.png[/media]
 Next set up your Google Cloud SQL instance. You should leave the "Replication mode" as "Synchronous", for stability reasons. You have to authorise your GAE application when you add the Google Cloud SQL instance. The instance does not itself contain a database, so when added click the 'SQL Prompt' tab and enter an SQL command:
-[code]
+[code="SQL"]
 CREATE DATABASE <application>;
 [/code]
 (where [tt]<application>[/tt] is the name of your application, or a different database name if you prefer)
@@ -219,8 +219,8 @@ To copy your initial database to live, you need to follow a rather complex proce
 1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] (if you didn't already do it for "Storage", above)
 2) ...make sure you have followed the "How to Set Up Credentials to Access Protected Data" part of the above instructions
 3) Open a command prompt in your project directory
-4) Take an SQL dump of your local MySQL database. Typically you will do this with:[code]mysqldump --databases <application> -uroot > dump.sql[/code]Note that I found I had to use "--databases" to force a [tt]USE <application>;[/tt] command, which the import seems to need.
-5) Run this command:[code]gsutil cp dump.sql gs://<application>[/code]
+4) Take an SQL dump of your local MySQL database. Typically you will do this with:[code="Bash"]mysqldump --databases <application> -uroot > dump.sql[/code]Note that I found I had to use "--databases" to force a [tt]USE <application>;[/tt] command, which the import seems to need.
+5) Run this command:[code="Bash"]gsutil cp dump.sql gs://<application>[/code]
 6) Sign into the [url="Google Cloud Console"]https://cloud.google.com/console[/url], enter your project, and go to the Cloud SQL section
 7) Enter the instance into which to import data
 8) Click the [b]Import[/b] button at the top
@@ -314,7 +314,7 @@ Of course you would also need to set up [url="your own SSL certificate"]https://
 [title="3"]Error pages[/title]
 
 To enable a custom page for 404 errors, in [tt]app.yaml[/tt] uncomment (i.e. remove the [tt]#[/tt]s):
-[code]
+[code="YAML"]
 #- url: .*
 #  script: 404.htm
 [/code]

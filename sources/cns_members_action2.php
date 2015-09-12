@@ -503,7 +503,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         $default_time = is_null($dob_month) ? null : usertime_to_utctime(mktime(0, 0, 0, $dob_month, $dob_day, $dob_year));
         if (get_option('dobs') == '1') {
             $dob_required = member_field_is_required($member_id, 'dob');
-            $fields->attach(form_input_date(do_lang_tempcode($dob_required ? 'DATE_OF_BIRTH' : 'BIRTHDAY'), '', 'dob', $dob_required, false, false, $default_time, -130));
+            $fields->attach(form_input_date(do_lang_tempcode($dob_required ? 'DATE_OF_BIRTH' : 'ENTER_YOUR_BIRTHDAY'), '', 'dob', $dob_required, false, false, $default_time, -130));
             if (addon_installed('cns_forum')) {
                 $fields->attach(form_input_tick(do_lang_tempcode('RELATED_FIELD', do_lang_tempcode('REVEAL_AGE')), do_lang_tempcode('DESCRIPTION_REVEAL_AGE'), 'reveal_age', $reveal_age == 1));
             }
@@ -648,7 +648,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
                 $fields->attach(form_input_tick(do_lang_tempcode('HIGHLIGHTED_NAME'), do_lang_tempcode(addon_installed('pointstore') ? 'DESCRIPTION_HIGHLIGHTED_NAME_P' : 'DESCRIPTION_HIGHLIGHTED_NAME'), 'highlighted_name', $highlighted_name == 1));
             }
             if ((!is_null($member_id)) && ($member_id != get_member())) {// Can't ban someone new, and can't ban yourself
-                $fields->attach(form_input_tick(do_lang_tempcode('_BANNED'), do_lang_tempcode('DESCRIPTION_MEMBER_BANNED'), 'is_perm_banned', $is_perm_banned == 1));
+                $fields->attach(form_input_tick(do_lang_tempcode('BANNED'), do_lang_tempcode('DESCRIPTION_MEMBER_BANNED'), 'is_perm_banned', $is_perm_banned == 1));
             }
         }
 

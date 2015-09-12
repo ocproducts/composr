@@ -248,7 +248,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             $usergroups = new Tempcode();
             $usergroups->attach(form_input_list_entry('', $usergroup === null, do_lang_tempcode('NA_EM')));
             $usergroups->attach(cns_create_selection_list_usergroups($usergroup));
-            $fields->attach(form_input_list(do_lang_tempcode('GROUP'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_USERGROUP', escape_html(get_site_name())), 'usergroup', $usergroups, null, false, false));
+            $fields->attach(form_input_list(do_lang_tempcode('USERGROUP'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_USERGROUP', escape_html(get_site_name())), 'usergroup', $usergroups, null, false, false));
 
             $radios = new Tempcode();
             $radios->attach(form_input_radio_entry('usergroup_type', '', true, do_lang_tempcode('WELCOME_EMAIL_USERGROUP_TYPE_BOTH')));

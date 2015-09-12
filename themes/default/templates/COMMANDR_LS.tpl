@@ -7,7 +7,7 @@
 			{FILENAME*}
 
 			{+START,IF_NON_EMPTY,{FILESIZE}}
-				<span class="commandr_ls_associated_details">({!_FILE_SIZE}: {FILESIZE*})</span>
+				<span class="commandr_ls_associated_details">({!FILE_SIZE}: {FILESIZE*})</span>
 			{+END}
 			{+START,IF_NON_EMPTY,{MTIME}}
 				<span class="commandr_ls_associated_details">({!MODIFIED}: {MTIME*})</span>

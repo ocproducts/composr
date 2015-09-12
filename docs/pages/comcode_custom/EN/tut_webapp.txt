@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Web-applications, Composr, and PHP[/title]
 
-This tutorial will provide some background into the different kinds of solutions that are out there for creating websites. It is not only specific to Composr -- rather we hope to explain the inherent advantages of using a CMS such as our own.
+This tutorial will provide some background into the different kinds of solutions that are out there for creating websites. It is not only specific to Composr -- we hope to explain the inherent advantages of using a CMS such as our own -- as well as what makes Composr special.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -26,7 +26,8 @@ Fortunately there is not much to explain here beyond what you already know. Page
 
 So, from a technical point of view, a website is a bunch of files put on a computer that you access by giving a URL through a web-browser. Well done for reading so far -- there are just a lot of facts and terms, but it's not all that complex once they've sinked-in. Just like when you go to a restaurant for a meal and go through a standard ordering procedure, web browsers and web servers also have a standard operating procedure.
 
-&dagger; Some websites are also written in Adobe Flash, which is a proprietary alternative to the normal HTML/CSS/JavaScript combination. Flash works via a web browser plugin which is installed on most people's computers. The advantage to Flash is that it allows richer animations and effects, but it comes at the cost that Flash sites are less accessible, don't run on all web browsers (e.g. iPhones), you are required to buy Adobe Flash to make the animation, and there is a high reliance on Adobe's business. Often sites will mix Flash and HTML, using Flash for specific regions of the site that require sophisticated animations, or for playing videos. Composr is HTML/CSS/JavaScript, but has features to insert Flash very easily.
+[media float="right" framed="0" thumb="0"]data_custom/images/docs/dont.png[/media]
+&dagger; Some websites are also written in Adobe Flash, which is a proprietary alternative to the normal HTML/CSS/JavaScript combination. Flash works via a web browser plugin which is installed on most people's computers. The advantage to Flash is that it allows richer animations and effects, but it comes at the cost that Flash sites are less accessible, don't run on all web browsers (e.g. iPhones), you are required to buy Adobe Flash to make the animation, and there is a high reliance on Adobe's business. Often sites will mix Flash and HTML, using Flash for specific regions of the site that require sophisticated animations, or for playing videos. Composr is HTML/CSS/JavaScript, but has features to insert Flash very easily if required.
 
 [title="2"]Types of website[/title]
 
@@ -58,7 +59,7 @@ The next step from a "site of dynamic pages" is a site powered by a "Content Man
 
 [title="3"]Content-type sites[/title]
 
-In recent years, 'Blogs' have become popular; these are like cut-down CMS, where the content consists only of very simple, and generally unorganised, news postings.
+Blogs are a good example of a content-type site. Blogs are like cut-down CMS, where the content consists only of very simple, and generally unorganised, news postings.
 
 Gallery sites are also popular, where the content consists of images.
 
@@ -87,56 +88,56 @@ A CMS is an example of a web application, but the category of "web application" 
 
 [title="2"]Trends[/title]
 
-In recent years, 'Blogs' have moved from a subcultural phenomenon to the most mainstream method of on-line publishing. Small personalised websites have largely disappeared in favour of blogs, and  blogs have become a vehicle for corporate PR.
+Over time small personalised websites have largely disappeared in favour of social media websites (such as Facebook) and blogs. Blogs have become a vehicle for corporate PR.
 
 Web applications have grown in complexity, as web developers have become increasingly aware of methods for interaction that are as quick and easy to use as normal desktop applications (due to the influence of Google). These techniques are popularly named "Ajax techniques". Now instead of filling in forms, applications are being made that incorporate techniques such as "drag & drop".
 
-There has been a lot of hype about "Web applications" over past years using different technologies, that you may not have heard of, such as "Java" or "SOAP" -- but "Ajax" is actually being used on a scale that these never actually reached 
+There has been a lot of hype about "Web applications" over past years using different technologies, that you may not have heard of, such as "Java" or "SOAP" -- but "Ajax" is used on a scale that these never actually reached 
 
 CMS systems are becoming more sophisticated and all-encompassing, with support for wider varieties of content. Forums (from "community sites") and galleries (from "content-type sites"), for example, are now available in CMS systems alongside the more traditional articles and pages. One example of this is our own system, Composr.
 
 [title="2"]Overview of the advantages/disadvantages of different types of website[/title]
 
 [html]
-<table class="wide_table autosized_table">
+<table class="wide_table autosized_table results_table">
 	<tr>
 		<th colspan="2">
 			Site of Pages
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p style="font-weight: medium; text-decoration: none"><em>Likely
 			technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Simple collection of files</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p style="font-weight: medium; text-decoration: none"><em>Likely
 			deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Want to make simple pages, with little need to modify them
 			again.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p style="font-weight: medium; text-decoration: none"><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Low</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p style="font-weight: medium; text-decoration: none"><em>Negative
 			factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Very tedious to update. 
 			</p>
 			<p>Unimpressed visitors. 
@@ -145,11 +146,11 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p style="font-weight: medium; text-decoration: none"><em>Options
 			for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Use an editing application such as Microsoft Frontpage.</p>
 			<p><em>OR</em></p>
 			<p>Employ a web-designer.</p>
@@ -164,46 +165,46 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>PHP, Java, ASP, Ruby on Rails</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Want highly customised dynamic pages, but without a need to
 			make regular changes.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Medium, assuming needs are limited to a very small set of specific
 			features.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Negative factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Very tedious to update.</p>
 			<p>Why not go for a full CMS? It's a similar cost, but with much
 			greater value.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Options for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Employ a programmer.</p>
 		</td>
 	</tr>
@@ -213,18 +214,18 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>[Product]</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Want to be able to add content and not worry about page layout
 			for everything added.</p>
 			<p>Have more advanced needs, such as the need to be able to turn
@@ -232,29 +233,29 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Medium (something like Composr, which is free, but might take a bit of time to setup for a very tailored website)</p>
 			<p>Very high (a corporate-only solution such as Vignette)</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Negative factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>As a more advanced technology, there is more to understand <B>if</B>
 			the product is customised by the same person who is to regularly
 			use it.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Options for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Use a product such as Composr. Depending on needs and
 			experience, employ specialists in the software (such as the makers
 			themselves) to get the website installed and customised.</p>
@@ -266,45 +267,45 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>[Product]</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>If needs are very specific and common (such as only needing a
 			gallery or a Blog).</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Low</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Negative factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>The potential for expansion is severely limited.</p>
 			<p>Why not go for a full modern CMS that incorporates the
 			content-type (such as Composr)?</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Options for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Find an appropriate product. Depending on your experience, you
 			may wish to employ specialists in the software (such as the makers
 			themselves) to get the product installed and customised.</p>
@@ -316,43 +317,43 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>[Product] / CMS customisation</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>If you need to sell items from a medium+ inventory on-line.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Usually high, although some lower-cost products.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Negative factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>An on-line-store must face complex sales tax and shipping
 			issues.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Options for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Find an appropriate product.</p>
 			<p><em>OR</em></p>
 			<p>Pay for a CMS (such as Composr) to be customised. This would
@@ -366,46 +367,46 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>[Product(s)]</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>If it is desired for visitors to get involved with the site.
 			Whether this is desired is often dependant on the &ldquo;personality&rdquo;
 			of the organisation, but having a community can create brand value, improve customer service, help you engage with your users, and improve your market presence.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Low</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Negative factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>When visitors can interact with each other on a &ldquo;private
 			virtual property&rdquo;, issues of responsibility and exposure
 			need to be considered.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Options for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Find an appropriate product, such as Composr.</p>
 		</td>
 	</tr>
@@ -415,45 +416,45 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>[Product] / Bespoke solution</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>If it is important to get repeat-visits for something other
 			than the primary content of a website.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Medium (Product)</p>
 			<p>High to very-high (Bespoke)</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Negative factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>It is difficult to effectively compete with large portals, such
 			as that of AOL, unless the portal fits in a yet-untapped nich&eacute;.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Options for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Find an appropriate product, such as Composr.</p>
 			<p><em>OR</em></p>
 			<p>Hire programmers to create a bespoke solution.</p>
@@ -465,34 +466,34 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</th>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely technologies</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Bespoke solution, although often based on some kind of framework</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Likely deciding factor</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>If something very unique is needed.</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Cost</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Very high</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Negative factors</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>This is very high cost &ndash; it is full-blown software
 			development, requiring a variety of different skills.</p>
 			<p>A development team writing a custom system has little incentive for their code to be easily maintained, as they can just charge you more if their code is difficult to update.</p>
@@ -501,10 +502,10 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p><em>Options for you</em></p>
 		</td>
-		<td style="vertical-align: top; border: 1px solid">
+		<td>
 			<p>Hire programmers to create a bespoke solution.</p>
 		</td>
 	</tr>
@@ -513,7 +514,9 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 
 [title="2"]Composr[/title]
 
+[surround]
 [media width="150" description="A screen-shot from a default Composr site" float="right"]data_custom/images/docs/tut_webapp/intro_1.png[/media]
+[media width="150" description="Logging in to Composr" float="right"]data_custom/images/docs/tut_webapp/webapp_login.png[/media]
 Composr is a website engine that drives powerful interactive and dynamic websites, by providing a wide range of features that are useful on many different kinds and themes of website. For example, Composr can easily power any of the following:
  - a community forum
  - a corporate intranet
@@ -524,15 +527,21 @@ Composr is a website engine that drives powerful interactive and dynamic website
  - a community gallery
  - [i]and much more, and any combination thereof[/i]
 
-[media width="150" description="Logging in to Composr" float="right"]data_custom/images/docs/tut_webapp/webapp_login.png[/media]
+This section is just a very basic overview. Much more information about Composr's features is available on the main Composr website.
+[/surround]
+
+[surround]
+[media width="150" description="Composr is an extendable architecture as well as a product" float="left"]data_custom/images/docs/tut_webapp/webapp_architecture.png[/media]
 [media width="150" description="A screen-shot from the Admin Zone of a default Composr site" float="right"]data_custom/images/docs/tut_webapp/intro_2.png[/media]
 The Composr philosophy is that almost all cutting-edge websites, from hobbyist communities, to those of large international companies, share a large number of common needs. Composr caters for all these needs by providing a vast pool of features that can be used as a part of the website. As you expand or change your website, Composr continues to provide: you simply start using features that you did not need to use before.
 
 At the time of writing, we do not know any other products that have such a large built-in feature set as Composr. However, Composr also excels in customisability: the features in Composr can be fully customised on a number of levels, so that even though different websites share the same engine, they can have their own individuality.
-[surround]
-[media width="150" description="Composr is an extendable architecture as well as a product" float="left"]data_custom/images/docs/tut_webapp/webapp_architecture.png[/media]
+
 In addition, we understand that often users will have very specific, personal needs. For this reason, we make sure that the Composr framework is fully extensible, and provide numerous features to allow such extension to be achieved, suitable for different levels of expertise and requirements. It is important to understand that adding unique features can be difficult, as it is a programming exercise: but it is considerably less difficult than creating a new web application from scratch (even with a totally custom new [concept]module[/concept], most of the needs, such as user authentication, WYSIWYG editing, or secure database access, are already available), and ocProducts is available for those wishing to hire our expertise. [page="site:support"]Contact us[/page] if you need our team to do commercial development for you.
+
+There are some situations where Composr is not the most appropriate product. You'll find these are documented on the main Composr website ("What Composr is not"). You should always choose the most appropriate product for any particular situation.
 [/surround]
+
 [title="2"]Why not product-X?[/title]
 
 Most of the competitors to Composr are, like Composr, Open Source. However there is one critical difference that sets us apart from most of them -- Composr is commercially backed. There are many reasons to avoid (most) Open Source software that is not commercially backed, especially:
@@ -561,19 +570,16 @@ Composr provides the best of all the main competing kinds of system, seamlessly 
  - you do not need to mess around with individual files on your server to configure functionality: everything has a live interface as a part of the system itself
  - interfaces are consistent; for example, the same user data input system is used throughout
  - the system supports your roles in multiple different disciplines, from design, to programming, to marketing, and tries to make them all as accessible as possible
-We don't believe any of our low to mid-tier commercial competitors can compete against this.
 
 [title="2"]PHP[/title]
 
 PHP is a very widely deployed scripting language to power dynamic websites. Because of its wide deployment, and because web applications for it are relatively easy to install from a remote connection, we chose to write Composr in it.
 
-[box="Information for programmers"]The PHP language is heavily based on the long-standing C language, but PHP scripts do not require compilation and PHP provides a much richer feature-set (for example, powerful associative arrays, and a very large set of inbuilt functions). There are some aspects of the language we consider negative for large applications such as Composr (such as weak-typing, and aspects that encourage bad security practice), but using our in-house developed technology we have been able to mitigate these.[/box]
+[box="Information for programmers"]The PHP language is heavily based on the long-standing C language, but PHP scripts do not require compilation and PHP provides a much richer feature-set (for example, powerful associative arrays, and a very large set of inbuilt functions). PHP has had a long history, evolving a lot over the years from a quick & dirty system to a very high quality language that matches other languages in quality, but beats them hands-down in efficiency. In some cases we have improved on the language via our own quality standards and assurance technology.[/box]
 
 [title="2"]Enterprise vs Open Source[/title]
 
 If you are from an 'enterprise' background, you'll be used to a different kind of lexicon and approach to what is common in OSS systems.
-
-To me, PHP [i]is[/i] an app server.
 
 I'll try and summarise the difference in approaches between the two worlds:
 

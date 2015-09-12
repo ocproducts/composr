@@ -570,7 +570,7 @@ class Module_cms_calendar extends Standard_crud_module
             foreach (get_timezone_list() as $_timezone => $timezone_nice) {
                 $list .= static_evaluate_tempcode(form_input_list_entry($_timezone, $_timezone == $timezone, $timezone_nice));
             }
-            $fields2->attach(form_input_list(do_lang_tempcode('EVENT_TIMEZONE'), do_lang_tempcode('DESCRIPTION_EVENT_TIMEZONE'), 'timezone', make_string_tempcode($list)));
+            $fields2->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('DESCRIPTION_EVENT_TIMEZONE'), 'timezone', make_string_tempcode($list)));
             $fields2->attach(form_input_tick(do_lang_tempcode('DO_TIMEZONE_CONV'), do_lang_tempcode('DESCRIPTION_DO_TIMEZONE_CONV'), 'do_timezone_conv', $do_timezone_conv == 1));
         } else {
             $hidden->attach(form_input_hidden('timezone', $timezone));

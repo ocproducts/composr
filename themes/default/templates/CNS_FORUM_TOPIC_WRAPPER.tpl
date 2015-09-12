@@ -109,7 +109,7 @@
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},max}
 
 						<div class="inline">
-							<label for="order">{!ORDER}:
+							<label for="order">{!SORT}:
 							<select{+START,IF,{$JS_ON}} onchange="/*guarded*/this.form.submit();"{+END} name="order" id="order">
 								<option value="last_post"{$?,{$EQ,{ORDER},last_post}, selected="selected",}>{!FORUM_ORDER_BY_LAST_POST}</option>
 								<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>

@@ -42,7 +42,7 @@
 		1_ICON=menu/_generic_admin/add_one
 		2_URL={EDIT_URL*}
 		2_ACCESSKEY=q
-		2_TITLE={!_EDIT_LINK}
+		2_TITLE={!EDIT_LINK}
 		2_ICON=menu/_generic_admin/edit_this
 		2_REL=edit
 		3_URL={NEWSLETTER_URL*}

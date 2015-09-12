@@ -369,7 +369,7 @@ class Module_cms_downloads extends Standard_crud_module
         if (has_privilege(get_member(), 'draw_to_server')) {
             $fields->attach(form_input_tick(do_lang_tempcode('COPY_TO_SERVER'), do_lang_tempcode('DESCRIPTION_COPY_TO_SERVER'), 'copy_to_server', false));
         }
-        $fields->attach(form_input_integer(do_lang_tempcode('_FILE_SIZE'), do_lang_tempcode('DESCRIPTION_FILE_SIZE'), 'file_size', $file_size, false));
+        $fields->attach(form_input_integer(do_lang_tempcode('FILE_SIZE'), do_lang_tempcode('DESCRIPTION_FILE_SIZE'), 'file_size', $file_size, false));
         if (addon_installed('authors')) {
             if ($author == '') {
                 $author = $GLOBALS['SITE_DB']->query_select_value_if_there('authors', 'author', array('member_id' => get_member()));

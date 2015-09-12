@@ -1146,7 +1146,7 @@ class Forum_driver_smf extends Forum_driver_base
         }
         $row = $rows[0];
         if ($this->is_banned($row['ID_MEMBER'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('MEMBER_BANNED'));
+            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
             return $out;
         }
 

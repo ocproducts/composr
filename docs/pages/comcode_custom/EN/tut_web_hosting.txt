@@ -4,6 +4,8 @@ To put a website on-to the Internet, you need to arrange for 'web hosting'. This
 
 This tutorial covers requirements for hosting Composr and some general information about web hosting and security.
 
+This tutorial goes into great detail of all the low-level requirements (much of which you may not understand), and different environments to install on. Practically speaking almost any "PHP hosting" will run Composr, so long as it's not free ad-supported hosting. The verbosity of this tutorial is so that we can be really comprehensive. A simpler list is shown on the Composr download page.
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Different hosting options[/title]
@@ -54,7 +56,7 @@ Composr requires:
   - Other non-bundled addons may have different dependencies
   - If you install with PHP5.5 or newer, you may not then down-grade to anything older than PHP5.5 (as Composr will have already made use of PHP5.5's password security features for saved passwords)
  - A PHP environment with the following (a competent web-host geared towards running PHP web applications should be able to provide this):
-  - GD2 extension (including PNG and JPEG support)
+  - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your daily needs)
   - MySQL extension
   - a maximum execution time of at least 30 seconds
@@ -76,7 +78,7 @@ Composr recommends:
   - FTP
   - pSpell or Enchant, with matching aspell/hunspell installs and dictionaries (spellchecking)
   - iconv or mbstring (Unicode support)
-  - FreeType (build-option for GD)
+  - FreeType (with the build-option for GD). FreeType allows us to draw text onto graphics using TrueType fonts.
   - OpenSSL (raises security, strongly recommended)
   - ZIP
   - XML
@@ -97,7 +99,7 @@ If LDAP integration is required (for corporate network authentication integratio
 
 If you need to be able to easily remove 'bounce' emails from newsletter subscriber lists, you will need the PHP IMAP extension. If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
 
-If encrypted CPFs are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial), the PHP OpenSSL extension is required.
+If encrypted CPFs (custom profile fields) are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial), the PHP OpenSSL extension is required.
 
 [title="3"]Package installation (advanced)[/title]
 
@@ -107,7 +109,7 @@ This section is not actively maintained. Package names may change, but it is des
 
 [title="4"]Ubuntu/Debian[/title]
 
-[code]
+[code="Bash"]
 apt-get install apache2 libapache2-mod-php5 php5 php5-common php5-cli php5-apcu php5-curl php5-enchant php5-ffmpeg php5-gd php5-imap php5-mysql php5-mysqlnd php5-pspell openssl mysql-server mysql-client postfix nano wget lynx hunspell git openssh-server
 [/code]
 
@@ -122,7 +124,7 @@ Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need
 
 [title="4"]Fedora/RHEL/CentOS[/title]
 
-[code]
+[code="Bash"]
 yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysql php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server
 [/code]
 
@@ -148,11 +150,11 @@ Please note that many 'forum systems' are referred to as 'bulletin boards', and 
 
 We also provide converters for most of the above to our forum system, Conversr. If you currently use one of these systems, you have the option to convert it.
 
-[box="Tip" width="25em" float="right"]Instead of naming the forum "Website comment topics" or "Website Support Tickets", you could name it "Mysite comment hub", "Mysite help region", or anything else you choose. Just be sure to change the configuration option to reflect it.
+[box="Tip"]Instead of naming the forum "Website comment topics" or "Website Support Tickets", you could name it "Mysite comment hub", "Mysite help region", or anything else you choose. Just be sure to change the configuration option to reflect it.
 
-This is in the "Support Tickets" and "User interaction" groups of the "Feature Options" configuration category. Find this under Admin Zone > Setup > Configuration.[/box]If you have installed forums, you will likely wish to create a comments forum. To do this, create a hidden forum called 'Website comment topics'. This forum will be used to store topics relating to comments for content in your portal.
+This is in the "Support Tickets" and "User interaction" groups of the "Feature Options" configuration category. Find this under Admin Zone > Setup > Configuration.[/box]If you have installed forums, you will likely wish to create a comments forum. To do this, create a non-public forum called 'Website comment topics'. This forum will be used to store topics relating to comments for content in your portal.
 
-You may also wish to create hidden a forum called 'Website support tickets' if you wish to enable the support ticket feature.
+You may also wish to create a non-public forum called 'Website support tickets' if you wish to enable the support ticket feature.
 
 [title="2"]Domain names[/title]
 

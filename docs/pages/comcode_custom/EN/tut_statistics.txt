@@ -11,15 +11,17 @@ The administration interface resides in the Admin Zone, under the Audit section.
 Be aware that hits coming from the web server itself will be filtered from the stats, so if you are running a web server on your own computer you may not see any results if nobody else has used your website yet.
 
 [title="3"]Installing geo-location data[/title]
+
 [surround]
-[media width="150" description="The menu link to install geolocation data" float="left"]data_custom/images/docs/tut_statistics/statistics_install_geolocation_data_link.png[/media]
 [media width="150" description="The message shown when installing geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_installing_geolocation_data.png[/media]
+[media width="150" description="The menu link to install geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_install_geolocation_data_link.png[/media]
 {!stats:DOC_INSTALL_GEOLOCATION_DATA}
 
-[box="Important note" width="25em" float="right"]Do not disturb the geolocation data installation process. You will be informed when it is complete.[/box]
+[box="Important note"]Do not disturb the geolocation data installation process. You will be informed when it is complete.[/box]
 
 Once the geo-location data is installed, all the extra statistics can be used.
 [/surround]
+
 [title="3"]Page view statistics[/title]
 
 {!stats:DOC_PAGE_STATISTICS}
@@ -57,6 +59,7 @@ The per-page breakdowns list more detailed statistics for each page, in various 
 {!stats:DOC_LOAD_TIMES}
 
 [title="2"]Download statistics[/title]
+
 [surround]
 There is a screen for download statistics, but you may also wish to allow your visitors to see some trends...
 
@@ -65,7 +68,9 @@ There are two methods for revealing download trends to your visitors:
 1) Download statistics are generally available on an individual download page
 2) You can also pull out key downloads for the benefit of your visitors is to use one of the download blocks: [i]most popular downloads[/i], and [i]most recently-added downloads[/i]. These are explained below.
 [/surround]
+
 [title="2"]Other statistics[/title]
+
 [surround]
 [media width="150" description="View statistics are shown for various forms of content" float="right"]data_custom/images/docs/tut_statistics/statistics_news_item_stats.png[/media]
 All content will automatically store download/view statistics as appropriate, which will usually be displayed on the respective entry screen.

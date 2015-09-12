@@ -72,7 +72,7 @@ class Module_admin_xml_storage
         set_helper_panel_text(comcode_lang_string('DOC_XML_STORAGE'));
 
         if ($type == '_import' || $type == '_export') {
-            breadcrumb_set_self(do_lang_tempcode('_RESULTS'));
+            breadcrumb_set_self(do_lang_tempcode('RESULTS'));
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('XML_STORAGE'))));
         }
 

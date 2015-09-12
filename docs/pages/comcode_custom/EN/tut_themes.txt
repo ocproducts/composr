@@ -113,7 +113,8 @@ There is also a section at the bottom allowing you to restore a previous version
 
 If you can't access this tree drop-down, there is a slightly less user-friendly alternative. If you add [tt]?keep_markers=1[/tt] or [tt]&keep_markers=1[/tt] to the end of your URL, click "Go" again, then click View > Source in your browser, you will be able to see the HTML markup for your page, with comments marking the beginning and end of each template. This is a great way to find a template if you know exactly which section of the page it's at.
 
-[code]<!-- START-TEMPLATE=MENU_BRANCH_popup -->
+[code="HTML"]
+<!-- START-TEMPLATE=MENU_BRANCH_popup -->
 <div class="non_current_page_2">
    <!-- START-TEMPLATE=HYPERLINK -->
    <a href="http://example.com/start.htm">Welcome</a>
@@ -122,7 +123,8 @@ If you can't access this tree drop-down, there is a slightly less user-friendly 
 
 </div>
 
-<!-- END-TEMPLATE=MENU_BRANCH_popup -->[/code]
+<!-- END-TEMPLATE=MENU_BRANCH_popup -->
+[/code]
 
 You can see that it's marking the beginning and end of two templates. The first is [tt]MENU_BRANCH_popup.tpl[/tt], which contains another template: [tt]HYPERLINK.tpl[/tt].
 
@@ -132,7 +134,7 @@ You can see that it's marking the beginning and end of two templates. The first 
 If you already know which template you intend to edit, you can do it directly through the 'Edit Templates' interface. To do this, go to Admin Zone > Style > Themes. Then click "Edit Templates" for the theme of your choice. This will provide you with a list of templates to choose from.
 
 [title="3"]Understanding Templates Code (Tempcode)[/title]
-There are many sections of code in your templates that you'll need to be aware of in order to be effective in your editing. The code is written in our templating language, which is known as Tempcode. For more information see the "Tempcode programming" tutorial.
+There are many sections of code in your templates that you'll need to be aware of in order to be effective in your editing. The code is written in our templating language, which is known as Tempcode. For more information see the [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
 
 [title="4"]Screen previews[/title]
 
@@ -165,7 +167,7 @@ Composr supports QVGA mobile resolution for all frontend screens, and automated 
 
 You can choose to enable mobile mode only on a per-page basis if your content/layout isn't fully compatible (most complex fixed width designs would have problems if a lot of attention is not given). Devices like iPhones automatically go into mobile mode, so you don't want it to load up mobile display settings and overlay them on content that doesn't work, as it can make a big mess.
 To activate the feature you need to put this in your [tt]themes/<themename>/theme.ini[/tt] file:
-[code]
+[code="INI"]
 mobile_pages=forumview,topicview,topics,vforums
 [/code]
 This particular example enables mobile support just on the forum pages.
@@ -175,8 +177,8 @@ On devices like iphones or Android, it still works if mobile mode is not enabled
 
 1) Do not use a custom theme on the Admin Zone or CMS zone. It's not necessarily and would make you have to consider all kinds of extra details
 2) Uninstall any non-required addons, so you don't have to test your new theme on so many screens. It is a huge decrease in the burden of themeing
-3) The Firefox Firebug addon (or developer tools in IE8, Safari, Google Chrome, or Opera) is incredibly handy in analysing how the Composr CSS interacts with the XHTML. You can use it to run all kinds of tests, and quickly get a handle on how things are built. The Firefox Firediff extension is also great as it helps you keep track of your changes so you can easily put them back into Composr's stored CSS.
-4) Read up on CSS and XHTML generally. If you are going beyond simple themeing you'll need to understand the complex aspects of these technologies, and they aren't always simple. Composr is entirely built on web standards, and thus can be reformulated using them. The web standards are supplemented with Tempcode and glued together with the structure Composr provides (see below)
+3) The Firefox Firebug addon (or developer tools in IE8, Safari, Google Chrome, or Opera) is incredibly handy in analysing how the Composr CSS interacts with the HTML. You can use it to run all kinds of tests, and quickly get a handle on how things are built. The Firefox Firediff extension is also great as it helps you keep track of your changes so you can easily put them back into Composr's stored CSS.
+4) Read up on CSS and HTML generally. If you are going beyond simple themeing you'll need to understand the complex aspects of these technologies, and they aren't always simple. Composr is entirely built on web standards, and thus can be reformulated using them. The web standards are supplemented with Tempcode and glued together with the structure Composr provides (see below)
 5) Try and think structurally. Remember that your layout is going to be best composed using standard Composr features, like panels, menus, blocks, Custom Comcode tags, pages, and Comcode/Tempcode includes. You can bend all these far beyond the default settings (e.g. a panel can be placed anywhere and be any shape), so don't feel like you're constrained by them -- they are a tool for you to manage your site once it is finished
 6) Make good use of the template tree if you're not sure what templates are being used on a screen. Alternatively use the template search feature (available on the screen where you choose a template to edit)
 7) If you are choosing a template to edit manually from the full list but you know the name of the template, you can quickly get to it by typing rather than scrolling. Just click one of the entries in the list, and then type "dash-space-template-name", and most browsers will jump straight to it

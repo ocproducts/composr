@@ -82,6 +82,7 @@ class Module_warnings extends Standard_crud_module
             cns_require_all_forum_stuff();
         }
         require_lang('cns_warnings');
+        require_lang('submitban');
 
         if ($type == 'history') {
             $this->title = get_screen_title('PUNITIVE_HISTORY');
@@ -480,7 +481,7 @@ class Module_warnings extends Standard_crud_module
                 }
             }
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $fields->attach(form_input_tick(do_lang_tempcode('BANNED_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
+                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
 
                 $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_private_club' => 0));
                 $groups = new Tempcode();

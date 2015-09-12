@@ -95,7 +95,7 @@ You'll find lots of other more casual occurrences throughout various strings. Ch
 Next go to Admin Zone > Security > Usergroups and edit the Guests usergroup. Change its title to "Anonymous users".
 
 Next you'll need to change any posts by guests on the forum, as the name Guest is saved in when the post is made. Go to Admin Zone > Tools > Commandr, and enter this command...
-[code]
+[code="Commandr"]
 :$GLOBALS['FORUM_DB']->query_update('f_posts',array('p_poster_name_if_guest'=>'Anonymous user'),array('p_poster_name_if_guest'=>'Guest'));
 [/code]
 This will batch-update the database.

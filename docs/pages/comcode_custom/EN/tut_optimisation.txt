@@ -85,7 +85,7 @@ Composr does not cache processed content in memory that has no special featured 
 [title="2"]Aggressive caching for bots[/title]
 
 If you want to serve cached pages to bots, put a line like this into your [tt]_config.php[/tt] file:
-[code]
+[code="PHP"]
 $SITE_INFO['fast_spider_cache']='3';
 [/code]
 All user agents identified as bots or spiders, or listed in the [tt]text/bots.txt[/tt] file, will be served out of a cache. HTTP caching is also properly implemented.
@@ -93,21 +93,21 @@ The cache lifetime in this example would be 3 hours, but you can change it to wh
 The cache files are saved under the [tt]persistent_cache[/tt] directory.
 
 If you want any Guest user to be cached like this, set:
-[code]
+[code="PHP"]
 $SITE_INFO['any_guest_cached_too']='1';
 [/code]
 
 [title="2"]'keep_' parameters[/title]
 
 This is not recommended, but if you really need to squeeze performance, you can disable the 'keep_' parameters:
-[codebox]
+[code="PHP"]
 $SITE_INFO['no_keep_params']='1'; // Disable 'keep_' parameters, which can lead to a small performance improvement as URLs can be compiled directly into the template cache
-[/codebox]
+[/code]
 
 [title="2"]Disk activity[/title]
 
 If you have a hard disk that is slow, for whatever reason, you can put these settings into [tt]_config.php[/tt] to reduce access significantly:
-[codebox]
+[code="PHP"]
 /* The best ones, can also be enabled via the config_editor.php interface */
 $SITE_INFO['disable_smart_decaching']='1'; // Don't check file times to check caches aren't stale
 $SITE_INFO['no_disk_sanity_checks']='1'; // Assume that there are no missing language directories, or other configured directories; things may crash horribly if they are missing and this is enabled
@@ -124,7 +124,7 @@ $SITE_INFO['no_extra_closed_file']='1'; // Don't support reading closed.html for
 $SITE_INFO['no_installer_checks']='1'; // Don't check the installer is not there
 $SITE_INFO['assume_full_mobile_support']='1'; // Don't check the theme supports mobile devices (via loading theme.ini), assume it always does
 $SITE_INFO['no_extra_mobiles']='1'; // Don't read in extra mobile device signatures from disk
-[/codebox]
+[/code]
 They all have effects, so be careful! There are reasons these settings aren't the defaults.
 
 [title="2"]Rate limiting[/title]
@@ -134,11 +134,11 @@ A site can be impacted by a flood of requests from a machine, and it is wise to 
 If you're on a shared host, requests floods can even get you suspended, or your whole site automatically rate limited.
 
 To enable add this to [tt]_config.php[/tt]:
-[codebox]
+[code="PHP"]
 $SITE_INFO['rate_limiting']='1';
 $SITE_INFO['rate_limit_time_window']='10';
 $SITE_INFO['rate_limit_hits_per_window']='5';
-[/codebox]
+[/code]
 
 This produces soft errors with the correct HTTP header. The errors happen early, before Composr boots up.
 
@@ -161,7 +161,7 @@ cPanel users will find a resource usage graph is made available. Note that the 1
 If you are really constrained for resources, and worry some requests may take too long in some cases, you can lower the PHP time limit from Composr's default 60 seconds.
 Note that Composr does raise the limit on its own when really needed.
 
-[code]
+[code="PHP"]
 $SITE_INFO['max_execution_time']='10'; // Ten second maximum execution time
 [/code]
 
@@ -199,14 +199,14 @@ If the key buffer size is not large enough then indexing will work via disk, and
 If you notice searches for random phrases are sometimes fast, and sometimes slow, it's likely indicating the key buffer has filled up too far and is pushing critical indexes out.
 
 You can test cache coverage via priming the key buffer via the MySQL console. This example would be for searches on forum posts, and a key buffer size of 500MB:
-[code]
+[code="SQL"]
 SET GLOBAL key_buffer_size=500*1024*1024;
 LOAD INDEX INTO CACHE <dbname>.cms_translate, <dbname>.cms_seo_meta, <dbname>.cms_f_posts, <dbname>.cms_f_topics;
 SHOW STATUS LIKE 'key%';
 [/code]
 
 You'll get a result like:
-[code]
+[code="Text"]
 +------------------------+------------+
 | Variable_name          | Value      |
 +------------------------+------------+
@@ -246,7 +246,7 @@ Also see the non-bundled [tt]performance_compile[/tt] addon.
 
 If a configuration page has never been saved, default config values from that page will be calculated on the fly, which is a little slower.
 Go through and save them all, or run this Commandr command:
-[code]
+[code="Commandr"]
 :require_code('config2'); foreach (array_keys($GLOBALS['CONFIG_OPTIONS_CACHE']) as $key) if (get_option($key)!==NULL) set_option($key,get_option($key));
 [/code]
 
@@ -339,7 +339,7 @@ Composr has special support for running on server farms (or custom cloud platfor
 
 In order to implement file change synchronisation, you need to create a simple PHP file in [tt]data_custom/sync_script.php[/tt] that defines these functions:
 
-[codebox="PHP"]
+[code="PHP"]
 /**
  * Provides a hook for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
  *
@@ -360,7 +360,7 @@ function master__sync_file_move($old, $new)
 {
    // Implementation details up to the network administrators; might work via NFS, FTP, etc
 }
-[/codebox]
+[/code]
 
 In order to implement replication, just change the 'db_site_host' and 'db_forums_host' values using [tt]config_editor.php[/tt] (or editing [tt]_config.php[/tt] by hand in a text editor) so that they contain a comma-separated list of host names. The first host in the list must be the master server. It is assumed that each server has equivalent credentials and database naming. Due to the master server being a bottleneck, it will never be picked as a read-access server in the randomisation process, unless there is only one slave.
 It is advised to not set replication for the Composr 'sessions' table, as this is highly volatile. Instead you should remove any display of 'users online' from your templates because if you're at the point of replication there will be too many to list anyway (and Composr will have realised this and stopped showing it consistently in many cases, to stop performance issues).
@@ -380,7 +380,7 @@ There are a number of approaches you can take if you want to serve media from th
 You can have randomised content delivery networks used for your theme images and CSS files.
 
 Change the Content Delivery Network option to something like:
-[code]
+[code="Text"]
 example1.example.com,example2.example.com
 [/code]
 
@@ -407,18 +407,18 @@ If you receive more uploads than you can handle through normal disk space, you c
 
 Composr has no direct inbuilt S3 support, but this is intentional, because you do not need it. Assuming you have a Linux dedicated server or cloud instance, you may use the 'FUSE' system to make Composr upload directory/directories use S3.
 
-First you need to mount S3 storage to a directory, such as [tt]uploads/attachments[tt], using a filesystem driver:
+First you need to mount S3 storage to a directory, such as [tt]uploads/attachments[/tt], using a filesystem driver:
 http://tecadmin.net/mount-s3-bucket-centosrhel-ubuntu-using-s3fs/
 You'll want to mount a subdirectory of your S3 storage rather than a root. I recommend you mirror the same basic filesystem structure as Composr, so that you are mapping subdirectories with equivalence.
 You'll need to rename [tt]uploads/attachments[/tt] to something else to do this, and then move the old contents of that directory back into the S3 version of it.
 
 Now immediately you are using S3 for storage, however URLs are still coming through your own server, which will work, but not efficiently.
 Let's say we want normal image attachments to route through S3. We would edit the [tt]MEDIA_IMAGE_WEBSAFE[/tt] template, changing:
-[code]
+[code="Tempcode"]
 {URL*}
 [/code]
 to:
-[code]
+[code="Tempcode"]
 {$PREG_REPLACE,^{$CUSTOM_BASE_URL}/uploads/attachments/,http://whateverYourAmazonBaseURLIS/uploads/attachments/,{URL}}
 [/code]
 You'll need to disable the Composr "Reveal usage figures" option, as the usage figures can't be maintained with requests not routing through Composr.

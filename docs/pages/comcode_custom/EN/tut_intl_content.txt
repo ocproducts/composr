@@ -31,13 +31,13 @@ In short: Use it if you need it, and prepare for the extra cost and complexity. 
 A special Commandr command is required to set up the database structure.
 The Commandr command may take some time to run. It is advised you therefore run the SSH version of Commandr, rather than the webapp (slow webapp requests may stall or be cancelled via various levels of timeout).
 Log into SSH on your server (or equivalent process to receive a command prompt) and type:
-[code]
+[code="Bash"]
 php data/commandr.php
 [/code]
 (this assumes you run it from the Composr base directory, and that the '[tt]php[/tt]' command is in your path)
 
 Then the Commandr command required is:
-[code]
+[code="Commandr"]
 :require_code('database_multi_lang_conv'); enable_content_translation();
 [/code]
 
@@ -83,7 +83,9 @@ In Composr almost [i]everything[/i] (*) can be translated, but obviously you wou
 [title="2"]Allowing guests to choose language[/title]
 
 You will want a way to be able to give your site visitors the option to view your website in their choice of language. You can easily achieve this by adding a ready made block on one of the side panels ([i]assuming your web designer has not done this already -- if you are an ocProducts client and have discussed internationalisation, it almost certainly is already built into your web design[/i]). The code for this is:
-[code][block]side_language[/block][/code]
+[code="Comcode"]
+[block]side_language[/block]
+[/code]
 Any content which has not been translated yet will display in the original language it was written in. For example, a news post will display in English if that's how it was originally written.
 
 [title="2"]See also[/title]

@@ -27,7 +27,7 @@ Numbers are used on the example list to provide a frame of reference -- your lis
 
 <tbody>
 <tr><td>
-[/semihtml][code]
+[/semihtml][code="Comcode"]
 A list
  - 1
  - 2
@@ -162,7 +162,7 @@ JavaScript script tags, onX handlers and URLs will all be filtered/blocked. Don'
 [title="2"]Boxes[/title]
 
 You can put things in boxes. For example:
-[code][box="My Box"]Testing boxes[/box][/code]
+[code="Comcode"][box="My Box"]Testing boxes[/box][/code]
 ...produces:
 [box="My Box"]Testing boxes[/box]
 

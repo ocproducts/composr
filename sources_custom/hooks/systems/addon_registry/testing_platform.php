@@ -445,6 +445,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/xss.php',
             '_tests/tests/unit_tests/core_fields.php',
             '_tests/tests/regression_tests/input_filter_post_block.php',
+            '_tests/tests/unit_tests/tutorials_codebox.php',
 
             'sources_custom/hooks/systems/commandr_commands/find_function.php',
         );

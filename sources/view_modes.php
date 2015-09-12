@@ -712,7 +712,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
         $errors = $errorst->evaluate();
         $echo = do_template('WEBSTANDARDS_ERROR_SCREEN', array(
             '_GUID' => 'db6c362632471e7c856380d32da91054',
-            'MSG' => do_lang_tempcode('_NEXT_ITEM_BACK'),
+            'MSG' => do_lang_tempcode('NEXT_ITEM_BACK'),
             'RETURN_URL' => $return_url,
             'TITLE' => $title,
             'IGNORE_URL_2' => $ignore_url_2,
@@ -726,7 +726,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
     } else {
         $echo = do_template('WEBSTANDARDS_SCREEN', array(
             '_GUID' => 'd8de848803287e4c592418d57450b7db',
-            'MSG' => do_lang_tempcode('_NEXT_ITEM_BACK'),
+            'MSG' => do_lang_tempcode('NEXT_ITEM_BACK'),
             'RETURN_URL' => $return_url,
             'TITLE' => get_screen_title('VIEWING_SOURCE'),
             'MESSY_URL' => $messy_url,

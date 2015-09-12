@@ -28,6 +28,8 @@ Disadvantages to using a multi-site network:
 
 [title="2"]Zones[/title]
 
+[surround]
+[media width="150" description="To finalise the zone, FTP details may be needed so Composr can create the directory structure properly -- depending on server architecture" float="right"]data_custom/images/docs/tut_subcom/subcom_zone_afm.png[/media]
 [media width="150" description="Adding a new zone for our Church Of Santa subcommunity" float="right"]data_custom/images/docs/tut_subcom/subcom_zone_add.png[/media]
 Composr zones are sub-directories of your site, that operate with different settings. By default, Composr contains a number of zones:
  - Welcome ([tt]/[/tt])
@@ -37,16 +39,18 @@ Composr zones are sub-directories of your site, that operate with different sett
  - Docs ([tt]/docs[/tt]) -- Documentation
  - CMS ([tt]/cms[/tt])
  - Forum ([tt]/forum[/tt]) -- For Conversr users only
-[surround]
+
 You may add new zones, edit zones, delete zones, and move pages between zones from the Admin Zone (Structure section). When performing an action that will add, rename or delete a zone, you will need to provide details that tell Composr how it can do this; this is because on the majority of web hosting configurations, PHP does not have full access to files on the hosting account. These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
-[media width="150" description="To finalise the zone, FTP details will be needed so Composr can create the directory structure properly" float="right"]data_custom/images/docs/tut_subcom/subcom_zone_afm.png[/media]
+
+[title="3"]Zone logos (advanced)[/title]
 
 To change the logo image for a zone, add a theme image named '<zone-name>-logo'. By default zones use the logo image of the Welcome Zone.
 [/surround]
+
 [title="2"]Redirection pages[/title]
+
 [surround]
-[media width="150" description="Managing redirection pages" float="left"]data_custom/images/docs/tut_subcom/subcom_redirects.png[/media]
-[media width="150" description="Adding a download category for the NewTown Parish subcommunity" float="right"]data_custom/images/docs/tut_subcom/subcom_cat_add.png[/media]
+[media width="150" description="Managing redirection pages" float="right"]data_custom/images/docs/tut_subcom/subcom_redirects.png[/media]
 {!redirects:DOC_REDIRECTS}
 
 Redirections are useful for a number of reasons, including:
@@ -59,16 +63,18 @@ To reach the Redirects module go to Admin Zone > Structure > Redirects.
 
 [box="Special tip"]If you want a module to behave as if it was completely moved, you can set up a transparent redirect from your desired location to the actual location, and then a non-transparent redirect from the actual location to the desired location. Composr will sense your intent, so when you do something that searches for that module (e.g. for the Wiki+ module, doing a Wiki+ link) it will go to where you want. For example, if you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone, you could set up these redirects: [tt]site:supermembers[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i] [b]and[/b] [tt]collaboration:supermembers[/tt]-->[tt]site:supermembers[/tt] [i]non-transparent[/i]. Composr will see the transparent redirect as an indication the supermembers module really has a proper home in the site zone, and it will see the non-transparent redirect as an indication the supermembers module really does not have a proper home in the collaboration zone; Composr will respect these indications and link to the module in its new home.[/box]
 [/surround]
+
 [title="2"]Virtual roots[/title]
+
 [surround]
+[media width="150" description="The virtualed download category" float="right"]data_custom/images/docs/tut_subcom/subcom_virtualed.png[/media]
 [media width="150" description="Viewing the download category we added, we can find the virtualisation URL" float="right"]data_custom/images/docs/tut_subcom/subcom_cat_view.png[/media]
+[media width="150" description="Adding a download category for the NewTown Parish subcommunity" float="right"]data_custom/images/docs/tut_subcom/subcom_cat_add.png[/media]
 A number of Composr modules contain categories organised into a tree structure, including:
  - galleries
  - download categories
  - catalogue categories
-[/surround]
-[surround]
-[media width="150" description="The virtualed download category" float="left"]data_custom/images/docs/tut_subcom/subcom_virtualed.png[/media]
+
 If sub-community categories are stored under a common sub-tree of the full category tree, then the root of the 'sub-tree' may be made into the apparent root of the full-tree, by picking it as a virtual-root. This is easy to do, and doesn't involve any kind of configuration other than finding the URL to enter the module with. To find this URL you just look for the link of the current category in the breadcrumbs on a category screen (it'll have something similar to 'keep_root' in it): this is a mouthful to explain, but really very simple. Once you have the URL, you may wish to add it to to the menu of your sub-communities zone.
 
 Here are some step-by-step instructions:
@@ -78,8 +84,10 @@ Here are some step-by-step instructions:
 4) You should see now you have set a virtual root
 5) Take the URL you're at and put it on your menus as required
 [/surround]
+
 [title="2"]Usergroup management[/title]
 
+[surround]
 [media width="150" description="Adding a new usergroup" float="left"]data_custom/images/docs/tut_subcom/subcom_usergroup_add.png[/media]
 The [concept]Conversr[/concept] system has a powerful usergroup system, based on the ability for members to be in a primary usergroup, and any number of secondary usergroups. When members join they are placed, by default, in the lowest usergroup in a 'ranked' progression of usergroups: the member moves up along these ranked usergroups as they accumulate points, and their visible rank, and privileges change in accordance. It is recommended that you leave all non-staff members such that their primary usergroup stays within this rank progression, and use secondary usergroups for the purpose of placing them in sub-communities, and granting additional permissions (a member has the 'best' permission combination out of all the permissions granted to all of their usergroups).
 
@@ -93,6 +101,7 @@ You may opt to assign a leader to secondary usergroups, or to leave them leaderl
 Members may apply to join usergroups if they wish, and the usergroup leader or administrators may decide to accept or decline their application; members may also choose to 'resign' from a usergroup. All usergroup membership management is performed on the usergroup-view page.
 
 You can attach new rank images to usergroups on the usergroup editing screen. The usergroups admin module (which allows selection of a usergroup to edit) is available from Admin Zone > Security > Usergroups.
+[/surround]
 
 [title="2"]Clubs[/title]
 

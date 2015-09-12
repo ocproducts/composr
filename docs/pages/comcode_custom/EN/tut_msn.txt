@@ -66,6 +66,7 @@ You may share news by placing it on the central network site, and using the RSS 
 To share banners across your network, simply add all banners to the central site, and place the URL to the central site's [tt]http://<baseurl>/banner.php[/tt] script as the only banner in the banner rotation for all the other M.S.N. sites. You may add additional banners to M.S.N. sites if you want to mix central banners with individual rotations.
 
 [title="2"]The staff system[/title]
+
 [surround]
 [media width="150" description="Configuring the staff system" float="left"]data_custom/images/docs/tut_msn/msn_staff.png[/media]
 [media width="150" description="Managing staff" float="right"]data_custom/images/docs/tut_msn/msn_staff_2.png[/media]
@@ -92,9 +93,8 @@ Set up virtual directories in IIS manager / directory sections in the Apache con
 
 c) Composr is now set up to receive requests on the various domain names / paths that you have configured. Extra information needs adding to the Composr [tt]_config.php[/tt], to tell Composr how to map these individual source locations, into zone accesses.
 Let's pretend we've added a new subdomain 'forum.mydomain.com' ([i]for the forum zone[/i]), and a new virtual directory under our normal website entry, under 'example/path'; we'll point this to the 'xyz' (i.e. we'll map to a zone unrelated to the subdomain name or virtual directory path). You would add this to [tt]_config.php[/tt]
-Please note it is essential to configure your cookie domain to be encompassing of all the subdomains you use. In the above example you would need [tt].mydomain.com[/tt] to be set as the cookie domain. You cannot use a blank cookie domain.
 
-[code]
+[code="PHP"]
 $SITE_INFO['ZONE_MAPPING_forum']=array('forum.mydomain.com','');
 $SITE_INFO['ZONE_MAPPING_xyz']=array('mydomain.com','example/path');
 [/code]
@@ -108,10 +108,13 @@ Please note it is essential to configure your cookie domain to be encompassing o
 [title="2"]Many sites, one install (not supported, very advanced)[/title]
 
 Composr has some residual support for running many websites of a single install, although not officially supported. We informally refer to this functionality as 'Demonstratr', named after our Composr demoing system.
+
 If run like this, certain functions of Composr, such as email settings, or addon management, are disabled.
 
+The functionality is useful if you are running a massive Composr hosting service, where individual maintenance of each site is not possible. Be prepared to invest serious money or effort to sponsor the upkeep of this Composr functionality, as it has no regular testing or maintenance by core developers.
+
 The support is activated by setting options in the [tt]_config.php[/tt], like:
-[codebox]
+[code="PHP"]
 $SITE_INFO['throttle_space_complementary']=100; // Allow 100MB of disk space per user
 $SITE_INFO['throttle_space_views_per_meg']=10; // Every MB of disk space must be accessed 10 times to justify it
 $SITE_INFO['throttle_bandwidth_complementary']=500; // Allow 500MB of monthly bandwidth per user
@@ -126,9 +129,9 @@ $SITE_INFO['custom_user_someuser']=1; // This enables the 'someuser' subdomain
 
 $SITE_INFO['custom_user_someuserwithdomainname']=1; // This enables the 'someuserwithdomainname' subdomain
 $SITE_INFO['custom_domain_mypersonaldomain.com']='someuserwithdomainname'; // And this maps mypersonaldomain.com to be equivalent to the 'someuserwithdomainname' subdomain
-[/codebox]
+[/code]
 and splitting up the Composr directory structure so all the site-specific directories (uploads, zone custom pages, etc) are located like [tt]sites/someuser[/tt]. For example, for 'someuser', the following directory structure would exist under the base directory:
-[code]
+[font="Courier"]
 sites
 sites/www
 sites/www/adminzone
@@ -319,7 +322,7 @@ sites/www/uploads/cns_photos_thumbs/index.html
 sites/www/uploads/watermarks
 sites/www/uploads/watermarks/index.html
 sites/www/uploads/website_specific
-[/code]
+[/font]
 
 Composr internally differentiates between the "base URL"/"base directory" and the "custom base URL"/"custom base directory", so as to know when to load shared files, and when to load custom ones that relate to a specific site.
 
@@ -343,4 +346,4 @@ Composr does not contain a way for individual sites to be set up automatically o
 
  - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
 
-{$SET,tutorial_tags,msn,Structure and navigation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,You can link multiple installations, via a forum, into a 'multi-site-network'. Read more about it here.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,msn,Structure and navigation,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,You can link multiple installations, via a forum, into a 'multi-site-network'. Read more about it here.}[block]main_tutorial_rating[/block]

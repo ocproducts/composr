@@ -968,7 +968,7 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
         }
         $row = $rows[0];
         if ($row['member_banned'] == 1) { // All hands to the guns
-            $out['error'] = do_lang_tempcode('MEMBER_BANNED');
+            $out['error'] = do_lang_tempcode('YOU_ARE_BANNED');
             return $out;
         }
         if ($cookie_login) {

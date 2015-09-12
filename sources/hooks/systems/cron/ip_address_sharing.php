@@ -104,7 +104,7 @@ class Hook_cron_ip_address_sharing
 
                 $table = "{|\n";
                 $table .= "! " . do_lang('USERNAME') . "\n";
-                $table .= "! " . do_lang('GROUPS') . "\n";
+                $table .= "! " . do_lang('USERGROUPS') . "\n";
                 $table .= "! " . do_lang('IP_ADDRESSES') . "\n";
                 foreach ($results as $result) {
                     $table .= "|-\n";

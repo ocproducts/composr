@@ -14,7 +14,7 @@
 				{!EXECUTE_TIME}
 			</th>
 			<th>
-				{!_RESULTS}
+				{!RESULTS}
 			</th>
 		</tr>
 	</thead>

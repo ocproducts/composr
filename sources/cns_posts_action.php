@@ -79,7 +79,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
     }
     require_code('cns_groups');
     if (strlen($post) > cns_get_member_best_group_property($poster, 'max_post_length_comcode')) {
-        warn_exit(make_string_tempcode(escape_html(do_lang('_POST_TOO_LONG'))));
+        warn_exit(make_string_tempcode(escape_html(do_lang('POST_TOO_LONG'))));
     }
 
     if (!is_null($topic_id)) {

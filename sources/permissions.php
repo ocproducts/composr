@@ -100,7 +100,7 @@ function handle_permission_check_logging($member, $op, $params, $result)
     if (array_key_exists($sz, $PERMISSIONS_ALREADY_LOGGED)) {
         return;
     }
-    $PERMISSIONS_ALREADY_LOGGED[$sz] = 1;
+    $PERMISSIONS_ALREADY_LOGGED[$sz] = true;
     if ($result) {
         return;
     }

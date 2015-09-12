@@ -64,7 +64,7 @@ A match is first found against the label in the given subpath. If none is found,
 A label is not a repository filename, but in fact generally what you would expect as human readable. What this actually relates to within Composr varies from content-type-to-content-type, but in most cases it is a Title field or a Name field.
 
 For example, with:
-[code]
+[code="XML"]
 <resource type="usergroup" label="{LABEL*}" template_label="Newbie" />
 [/code]
 We would look for a usergroup with a name that matches [tt]{LABEL*}[/tt], which is the label that the administrator would have provided for the new instance.

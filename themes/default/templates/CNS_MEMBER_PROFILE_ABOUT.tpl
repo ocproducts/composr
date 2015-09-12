@@ -215,7 +215,7 @@
 
 						{+START,IF_NON_EMPTY,{BANNED}}
 							<tr>
-								<th class="de_th">{!_BANNED}:</th>
+								<th class="de_th">{!BANNED}:</th>
 								<td>{BANNED*}</td>
 							</tr>
 						{+END}

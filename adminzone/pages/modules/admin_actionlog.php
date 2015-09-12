@@ -224,7 +224,7 @@ class Module_admin_actionlog
         require_code('templates_results_table');
         $field_titles = array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B'));
         if (addon_installed('securitylogging')) {
-            $field_titles[] = do_lang_tempcode('_BANNED');
+            $field_titles[] = do_lang_tempcode('BANNED');
         }
         $fields_title = results_field_title($field_titles, $sortables, 'sort', $sortable . ' ' . $sort_order);
 

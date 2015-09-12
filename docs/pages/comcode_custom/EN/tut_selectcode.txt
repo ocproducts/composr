@@ -1,7 +1,8 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Filtering using Selectcode syntax[/title]
 
 Selectcode is a special Composr syntax (language) for writing filter lists. In other words, it is a way of writing down what you would like to be matched.
-Various areas of Composr support the Selectcode syntax, including the [tt]main_content[/tt] block, and the [tt]if_in_group[/tt] Comcode tag.
+
+Various areas of Composr support the Selectcode syntax, including the [tt]main_content[/tt] block, and the [tt]if_in_group[/tt] Comcode tag. The blocks and Comcode tags supporting Selectcode usually explicitly say so within the assistants to add them.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -22,41 +23,52 @@ Selectcode is a comma-separated list of match-specifier tokens, where a match-sp
 It's easier than it sounds. Here are some examples...
 
 Match either 1, 3, or 6 and higher.
-[code="selectcode"]
+[code="Selectcode"]
 1,3,6+
 [/code]
 
 Match anything except 2, 4, and 5 (which turns out the same as the above example, assuming we are working only with numeric IDs and 1 is the lowest ID).
-[code="selectcode"]
+[code="Selectcode"]
 *,!2,!4,!5
 [/code]
 
 Match anything within the range 1 to 5, except 3.
-[code="selectcode"]
+[code="Selectcode"]
 1-5,!3
 [/code]
+
+[title="3"]Full example[/title]
+
+Let's take the first example above and show it in-context for filtering display text.
+
+Here's some Comcode:
+[code="Comcode"]
+[if_in_group="1,3,6+"]Sample text[/if_in_group]
+[/code]
+
+In this example, the "Sample text" will only show to members in a usergroup matching the given Selectcode.
 
 [title="2"]Subtree matching[/title]
 
 The above examples all work with numeric IDs, and work on lists. In applicable contexts Selectcode can also be used to write tree structure matches. Here are some examples...
 
 Match anything under a gallery named 'foo':
-[code]
+[code="Selectcode"]
 foo*
 [/code]
 
 Match anything under a category (e.g. a gallery) named 'foo', but not 'foo' itself:
-[code]
+[code="Selectcode"]
 foo*,!foo
 [/code]
 
 Match anything  except anything under '3':
-[code]
+[code="Selectcode"]
 *,3~
 [/code]
 
 Match anything  directly under '3':
-[code]
+[code="Selectcode"]
 3>
 [/code]
 
@@ -88,21 +100,21 @@ Let's say we want to match anyone not in usergroup #14 using the Tempcode [tt]IS
 
 [title="4"]Attempt 1[/title]
 
-[code]
+[code="Tempcode"]
 {+START,IF,{$IS_IN_GROUP,!14}}...{+END}
 [/code]
 This is incorrect, because we haven't defined any positive matches.
 
 [title="4"]Attempt 2[/title]
 
-[code]
+[code="Tempcode"]
 {+START,IF,{$IS_IN_GROUP,*,!14}}...{+END}
 [/code]
 This is also incorrect, because it would match if a member happened to be in another group additionally to usergroup #14.
 
 [title="4"]Attempt 3[/title]
 
-[code]
+[code="Tempcode"]
 {+START,IF,{$NOT,{$IS_IN_GROUP,14}}}...{+END}
 [/code]
 Finally, this is correct. It negates the Selectcode after it runs, via the Tempcode [tt]NOT[/tt] symbol.
@@ -123,4 +135,4 @@ You may wonder how to find IDs for use in filtering. The best way is to look at 
  - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
  - [page="_SEARCH:tut_filtercode"]Filtering using Filtercode syntax[/page]
 
-{$SET,tutorial_tags,Power tools,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Selectcode is our language for saying what content you would like to be matched/selected. Learn how to use it.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Selectcode is our language for saying what content you would like to be matched/selected. Learn how to use it.}[block]main_tutorial_rating[/block]

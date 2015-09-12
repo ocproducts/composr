@@ -1,25 +1,38 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Cleanup tools[/title]
 
-Composr is designed to really help you with your website in every way possible, but without intruding or making assumptions. A number of tools are provided that may help you maintain your web site.
+{!cleanup:DOC_CLEANUP_TOOLS}
+
+The tools are divided into "De-cachers" and "Optimisers" (which don't all strictly involve optimising, some are for general other kinds of maintenance task).
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Caches[/title]
+[title="2"]Caches / De-cachers[/title]
 
-[box="Tip" width="25em" float="left"]A compromise between using the cleanup tools interface on a production site, and disabling caches on a development site, is to hold down the ctrl, alt and shift keys, and press your browser reset button. This will cause Composr to clear a number of caches, and also regenerate certain forms of information (for example, any Comcode referenced on the page being refreshed is re-parsed).[/box]
-For efficiency reasons, Composr defines a number of caches. During normal operation of Composr, these caches should be unnoticeable; if things are being edited from outside Composr theoretically Composr will automatically pick up on it, but you may sometimes need to force a cache flush. By default, all caches are enabled, except when Composr is installed on '[tt]localhost[/tt]'.
-
+[surround]
 [media width="150" description="Disabling caches" float="right"]data_custom/images/docs/tut_cleanup/cleanup_2.png[/media]
+For performance reasons, Composr defines a number of caches. During normal operation of Composr, these caches should be unnoticeable; if things are being edited from outside Composr theoretically Composr will automatically pick up on it, but you may sometimes need to force a cache flush.
+
+On a default install all recommended caches are enabled, except when Composr is installed on '[tt]localhost[/tt]'.
+
 Some kinds of cache may be turned off in the configuration, but leaving them on gives vastly improved performance.
 
 If you can identify a situation where you need to rebuild or empty a cache that should not exist, please report it as a bug.
+[/surround]
 
-[title="2"]Cleanup Tools[/title]
+[title="2"]Optimisers (advanced)[/title]
 
+[surround]
 [media width="150" description="The cleanup tools interface" float="right"]data_custom/images/docs/tut_cleanup/cleanup_1.png[/media]
-{!cleanup:DOC_CLEANUP_TOOLS}
+There are a number of optimisers:
+ - [b]Correct MySQL schema issues[/b] -- this is intended for programmers-only, you are very unlikely to need it.
+ - [b]Optimise/fix database tables[/b] -- this will try and fix some database tables and works with MySQL-only. If the database has become very corrupt, you may need to use a tool such as phpMyAdmin to repair a database from outside Composr.
+ - [b]Broken URLs[/b] -- this will look for broken URLs.
+ - [b]Regenerate image thumbnails[/b] -- this will regenerate all thumbnails (slow and probably not useful).
+ - [b]Find orphaned uploads[/b] -- find on-disk uploads that seem to no longer be referenced.
+ - [b]Delete page access statistics[/b] -- remove old page statistics to reduce database usage.
 
-The cleanup tools interface includes support for MySQL database repairing and optimisation. If the database has become very corrupt, you may need to use a tool such as phpMyAdmin to repair a database from outside Composr.
+Frankly most of these optimisers are not useful. We provide them for very rare situations, or for helping programmers manage complicated operations.
+[/surround]
 
 [concepts
  1_key="Cache"                 1_value="A data store that contains precalculated results such that those results do not need to be calculated more than once; caches are designed to increase efficiency"

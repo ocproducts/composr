@@ -1486,7 +1486,7 @@ class Module_admin_themes
                     $results->attach(do_template('INDEX_SCREEN_ENTRY', array('_GUID' => 'ed744a45728f3d7c1082a3dda893f352', 'URL' => $_url, 'NAME' => $file)));
                 }
             }
-            return do_template('INDEX_SCREEN', array('_GUID' => '286a7ae3add44f935a9a2018dde3ccaf', 'TITLE' => $this->title, 'PRE' => do_lang_tempcode('_RESULTS'), 'POST' => '', 'CONTENT' => $results));
+            return do_template('INDEX_SCREEN', array('_GUID' => '286a7ae3add44f935a9a2018dde3ccaf', 'TITLE' => $this->title, 'PRE' => do_lang_tempcode('RESULTS'), 'POST' => '', 'CONTENT' => $results));
         }
 
         require_javascript('editing');

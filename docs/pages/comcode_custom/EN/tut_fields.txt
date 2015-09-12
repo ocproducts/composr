@@ -154,11 +154,11 @@ This tutorial describes all the different fields and their options.
 |-
 ! Back-end UI
 | [media description="Text widget" framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_backend__long_text.png[/media]
-| [media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_backend__long_text__huge.png[/media]
+[media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_backend__long_text__huge.png[/media]
 |-
 ! Front-end UI
 | [media description="Textdescription="Huge widget"  widget" framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text.png[/media]
-| [media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text__huge.png[/media]
+[media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text__huge.png[/media]
 |}
 
 [title="3"]posting_field[/title]
@@ -200,7 +200,7 @@ This tutorial describes all the different fields and their options.
 |-
 ! Back-end UI
 | When adding there is no UI if 'RANDOM' was used.
-| [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_backend__codename.png[/media]
+[media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_backend__codename.png[/media]
 |-
 ! Front-end UI
 | [media framed="1" wysiwyg_editable="1" thumb="0"]data_custom/images/docs/tut_fields/core_fields_frontend__codename.png[/media]

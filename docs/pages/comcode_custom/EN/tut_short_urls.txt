@@ -112,7 +112,7 @@ To install IIRF:
 2) In IIS manager add the dll as an ISAPI filter, but only to the website that runs Composr. This means that the IIRF plugin will only affect the Composr website, which is important because the IIRF configuration file is not modular -- if it were applied to all websites on the server, it could cause serious problems.
 
 3) Make an [tt]IirfGlobal.ini[/tt] file in your [tt]Inetpub[/tt] folder containing the following:
-[staff_note]begin_rewrite_rules[/staff_note][codebox]
+[staff_note]begin_rewrite_rules[/staff_note][code="htaccess"]
 # Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
 RewriteCond %{DOCUMENT_ROOT}/$1 -f [OR]
 RewriteCond %{DOCUMENT_ROOT}/$1 -l [OR]
@@ -167,7 +167,7 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,U]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ index.php\?page=$1&type=$2&id=$3 [L,U]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,U]
 #RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,U]
-[/codebox][staff_note]end_rewrite_rules[/staff_note]
+[/code][staff_note]end_rewrite_rules[/staff_note]
 
 4) Reset IIS
 

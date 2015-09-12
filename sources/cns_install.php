@@ -823,7 +823,7 @@ function install_cns($upgrade_from = null)
             'mm_forum_multi_code' => 'SHORT_TEXT',
             'mm_title_suffix' => 'SHORT_TEXT'
         ));
-        cns_make_multi_moderation(do_lang('TRASH'), '', $trash_forum_id, 0, 0, 0);
+        cns_make_multi_moderation(do_lang('TRASH_VERB'), '', $trash_forum_id, 0, 0, 0);
 
         $GLOBALS['FORUM_DB']->create_table('f_warnings', array(
             'id' => '*AUTO',

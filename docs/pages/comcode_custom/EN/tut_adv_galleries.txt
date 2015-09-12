@@ -21,6 +21,7 @@ For members that have permission, gallery contents may be downloaded in a ZIP fi
 These ZIP files contain only the actual image and video files, and not any meta content such as descriptions.
 
 [title="2"]Member Galleries -- quick start[/title]
+
 [surround]
 [media width="150" description="Editing a gallery to be a member gallery container" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_container.png[/media]
 [media width="150" description="Making a personal gallery by adding an image" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_add.png[/media]
@@ -36,7 +37,9 @@ Now when members submit a new image/video, they will get the choice to create th
 
 Members may have multiple personal galleries if you set multiple galleries to be 'Personal category container'.
 [/surround]
+
 [title="2"]Member Galleries -- full explanation[/title]
+
 [surround]
 [media width="150" description="A personal gallery as displayed in the container gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_members.png[/media]
 If a member is in a usergroup with special permission (permission to have personal categories), they may create their own galleries that are:

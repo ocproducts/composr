@@ -73,7 +73,7 @@ The author must be able to select, within the application, from multiple configu
 This may be performed as users of the Composr system have their own profiles. Web browser or operating system profiles may give further control.
 
 [quote="ATAG checkpoint"]
-If a preview is provided, then (Ö):
+If a preview is provided, then:
 [/quote]
 
 As Composr is administered inside a web browser, any supported web browser may be used to view the preview.
@@ -109,7 +109,7 @@ Any authoring tool that allows authors to choose the content type used for publi
 This document provides that benchmark, and prominence is given.
 
 [quote="ATAG checkpoint"]
-All transformations and conversions supported by the authoring tool must always meet both of the following conditions (Ö)
+All transformations and conversions supported by the authoring tool must always meet both of the following conditions
 [/quote]
 
 Composr does not perform transformations/conversions on mark-up, other than on mark-up of languages that are controlled by ocProducts and hence always fully understood.
@@ -163,7 +163,7 @@ The authoring tool must present checking as an option to the author at or before
 If an author does not immediately validate the item, then they can see an error 'before completion'; otherwise they see it at completion. They may also generate previews before anything is submitted, and these previews would show the problems before the actual preview was viewable.
 
 [quote="ATAG checkpoint"]
-For each potential accessibility problem identified by the checking function (required in checkpoint B.2.2) provide at least one of the following (Ö): 
+For each potential accessibility problem identified by the checking function (required in checkpoint B.2.2) provide at least one of the following: 
 [/quote]
 
 Information is provided in the error that details the problem and the solution is either obvious from this, or also mentioned.
@@ -241,7 +241,7 @@ Any authoring tool feature that helps to sequence author actions (such as object
 Any accessibility information that is required is requested as an integral part of the operation, not as an 'add-on'. If manual input of HTML is being performed, the webstandards checker would pick up on any problems. Hence this is not totally appropriate, but is in essence complied with.
 
 [quote="ATAG checkpoint"]
-The configurability of all functions related to accessibility prompting, checking, repair, and documentation must at least match the configurability of other prompting, checking, repair, and documentation functions of the tool (respectively), in terms of both of the following (Ö)
+The configurability of all functions related to accessibility prompting, checking, repair, and documentation must at least match the configurability of other prompting, checking, repair, and documentation functions of the tool (respectively), in terms of both of the following
 [/quote]
 
 Checking and repair is configurable using a number of checkboxes that control what aspects are checked.
@@ -252,7 +252,7 @@ Documentation is not configurable.
 
 [title="2"]WCAG Compliance details[/title]
 
-Our WCAG compliance is detailed in a [url="separate document"]{$TUTORIAL_URL,tut_accessibility}[/url].
+Our WCAG compliance is detailed in a [page="_SEARCH:tut_accessibility"]separate document[/page].
 
 This is because the information is important for those who modify templates in Composr, so that they understand the techniques we have used and know how to apply them themselves.
 

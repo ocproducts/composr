@@ -72,7 +72,7 @@ class Hook_task_export_points_log
             $data_point[do_lang('USERNAME')] = $username;
             $data_point[$label] = $points_gained;
             $data_point[do_lang('POINTS_NOW')] = $points_now;
-            $data_point[do_lang('GROUPS')] = $usergroups;
+            $data_point[do_lang('USERGROUPS')] = $usergroups;
             $data_point[do_lang('EMAIL')] = $email;
 
             if (addon_installed('quizzes')) {

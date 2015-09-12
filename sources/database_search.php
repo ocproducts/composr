@@ -1472,7 +1472,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         } else {
             $results = var_export($t_rows, true);
         }
-        attach_message(do_lang('_RESULTS') . ': ' . $results, 'inform');
+        attach_message(do_lang('COUNT_RESULTS') . ': ' . $results, 'inform');
     }
 
     if (isset($cat_access)) {

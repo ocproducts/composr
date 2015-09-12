@@ -45,7 +45,7 @@ We will create a mini-block for this example, as follows:
 [tt]Block name:[/tt] [tt]main_counter[/tt] (the PHP file will be [tt]sources_custom/miniblocks/main_counter.php[/tt])
 [tt]Coding method:[/tt] A simple mini-block (without using template or language file).
 
-[codebox]
+[code="PHP"]
 <?php
 
 $target = $map['param'];
@@ -76,11 +76,10 @@ END;
 END;
 }
 ?>
-[/codebox]
-
+[/code]
 
 Now to use our block, we just need to put some Comcode into the page that we want it on:
-[code]
+[code="Comcode"]
 Some famous event...
 [block="5 Apr 2063"]main_counter[/block]
 [/code]

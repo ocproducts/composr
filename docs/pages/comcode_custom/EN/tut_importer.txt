@@ -3,6 +3,9 @@
 [media width="150" description="Importing will generally use the contents of database tables designed for one product to create equivalent data suitable for Composr" float="right"]data_custom/images/docs/tut_importer/importer_dbs.png[/media]
 {!import:DOC_IMPORT}
 
+The importer functionality can be reached from:
+Admin Zone > Tools > Import
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Importers[/title]
@@ -21,58 +24,111 @@ And the following special ones:
  - HTML website importer
  - Merge from another copy of the latest version of Composr
 
+[title="3"]Data format importing[/title]
+
+We try and support import of neutral data formats into Composr. For example, CSV files, or importing all the downloads in a directory. These features may help ease a transition and are linked from the importers list also (as shortcuts). Neutral formats are an important part of our approach because having an importer for everything is clearly not viable.
+
+[title="3"]Getting a new importer written for you[/title]
+
+New importers can be written. It costs around $1000 to develop an importer, but obviously the cost is highly dependent on the software involved. Importers can be developed by any skilled PHP developer (instructions are in the Code Book). A developer quoting to write an importer would probably not be quoting to do a full site conversion -- make sure you are clear in what you ask for.
+
 [title="2"]Memory limits[/title]
 
-Importers may use a lot of memory in order to transfer large amounts of data, so you may need to raise the memory limit on your server or import on a different server then copy your site over.
-Information on PHP memory limits is included in our [page="docs:faq"]FAQ[/page].
+Importers may use a lot of memory in order to transfer large amounts of data, so you may need to raise the memory limit on your server or import on a different server then copy your site over. Information on PHP memory limits is included in our [page="docs:faq"]FAQ[/page].
 
 [title="2"]Using importers[/title]
 
+[surround]
 [media width="150" description="A configuration file may be required. This screen-shot illustrates what they are and where they tend to be." float="left"]data_custom/images/docs/tut_importer/importer_target_config_file.png[/media]
-[media width="150" description="The list of importers" float="right"]data_custom/images/docs/tut_importer/importer_choose.png[/media]
-At the time of writing, all importers work by interface to the database of the product being imported. In addition, some require the presence of a configuration file for the product at an accessible path on the server, and will auto-detect database settings from this file. It is strongly recommended that you leave your old site installed and running, although perhaps at a moved location, so that the importer can find all the associated files that it may want to import.
+[media width="150" description="Choosing an importer session" float="left"]data_custom/images/docs/tut_importer/importer_session.png[/media]
+[media width="150" description="The list of importers" float="left"]data_custom/images/docs/tut_importer/importer_choose.png[/media]
+[media width="150" description="Import setup" float="left"]data_custom/images/docs/tut_importer/importer_options.png[/media]
+[media width="150" description="Import choice of import actions" float="left"]data_custom/images/docs/tut_importer/importer_options2.png[/media]
+[/surround]
+
+[surround]
+When you have chosen a product to import from, Composr will ask you for some details. Importers work by connecting to the database of the product being imported. In addition, some require the presence of a configuration file for the product at an accessible path on your server, and will auto-detect database settings from this file. It is recommended that you leave your old site installed and running, although perhaps at a moved location, so that the importer can find all the associated files that it may want to import.
+
+It is [b]strongly recommended[/b] that you backup your site files and database before running an importer, in case the importer fails in some way (perhaps an incomplete, or unsatisfactory import, or duplication of data by a poorly written third-party importer).
+
+[media width="150" description="After importing some data a success screen is shown. Often special messages will be included on this screen." float="right"]data_custom/images/docs/tut_importer/importer_imported.png[/media]
+The importer system is designed to be robust, and is programmed as 're-entrant' code; this means that if installation is halted, via failure, timeout, or cancellation, it can continue from where it left off. This is of particular use if there is an incompatibility between your data and the importer that a programmer needs to fix (such a situation may not be very unlikely due to the wide variation in data for any single product across different versions and deployments). Hopefully an import will go completely smoothly, but it is inherently a complex process.
+
+Sometimes an importer will list further actions that must be taken after import has finished. The following forms of further action are commonly required:
+ - stats recalculation (especially for forum importers)
+ - moving of on-disk files from the imported products upload directory, to Composr's (this is sometimes done automatically, depending on how the importer was written).
+[/surround]
+
+[title="3"]Advanced information[/title]
+
+[title="4"]Import sessions[/title]
 
 The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and 'ID remap table' from each import separate. The 'choose your session' interface exists so that if your Composr session is lost, you can still resume a previous import.
 
-[media width="150" description="Choosing an importer session" float="left"]data_custom/images/docs/tut_importer/importer_session.png[/media]
-[media width="150" description="Import setup" float="right"]data_custom/images/docs/tut_importer/importer_options.png[/media]
-[media width="150" description="Import choice of import actions" float="right"]data_custom/images/docs/tut_importer/importer_options2.png[/media]
+[title="4"]Features, content and dependencies[/title]
+
 Importers define a list of features they can import, along with a dependency system to ensure that a feature can only be imported once any features that it is dependent upon have already been imported (for example, forum posts are always dependent on forum topics, and forum topics are always dependent on forums).
 
-The importer system is designed to be robust, and is programmed as 're-entrant' code; this means that if installation is halted, via failure, timeout, or cancellation, it can continue from where it left off. This is of particular use if there is an incompatibility between your data and the importer, which is not very unlikely due to the wide variation in data for any single product across different versions and usage patterns.
+[title="4"]Cache-rebuild[/title]
 
-It is recommended that you backup your site files and database before running an importer, in case the importer fails in some way (perhaps an incomplete, or unsatisfactory import, or duplication of data by a poorly written third-party importer).
-
-[media width="150" description="After importing some data a success screen is shown. Often special messages will be included on this screen." float="right"]data_custom/images/docs/tut_importer/importer_imported.png[/media]
-Usually an importer will provide information for further actions that must be taken. The following forms of further action are a common requirement:
- - stats recalculation (especially for forum importers)
- - moving of on-disk files from the imported products upload directory, to Composr's (this is sometimes done automatically, depending on how the importer was written [which itself depends on the expected data patterns of the imported product]).
-
-Composr is designed so that forms of redundancy, such as thumbnails, parsed Comcode, and various forms of tally, can be recalculated dynamically as Composr runs. In order to remove load from the importer itself, these are rarely produced by the importer.
+Composr is designed so that forms of redundancy, such as thumbnails, parsed Comcode, and various forms of tally, can be recalculated dynamically as Composr runs. Knowing this, and in order to remove load from the importer itself, these tasks are therefore usually omitted by the importer.
 
 [title="2"]Converting to Conversr[/title]
 
+[surround]
 [media width="150" description="Composr forum drivers are specially coded PHP files stored in the [tt]sources/forum[/tt] directory (or sources_custom/forum)." float="left"]data_custom/images/docs/tut_importer/importer_forum_drivers.png[/media]
-[media width="150" description="The forum driver can be changed using the base-config editor, but you [b]should not do this[/b] unless you know exactly what you are doing" float="right"]data_custom/images/docs/tut_importer/importer_change_forum_driver.png[/media]
-If you have been running Composr and a third-party forum, and wish to switch to using a complete Composr solution (Composr with Conversr), this is possible if there is a forum importer for your current forum product. The opportunity is presented to move to Conversr as the last importable feature of a forum import, and the function will 'jump' forum drivers for you and re-map any usergroup and user IDs. It is still strongly advised to check your permissions after performing this.
+[media width="150" description="The forum driver can be changed using the Installation Options editor, but you [b]should not do this[/b] unless you know exactly what you are doing" float="right"]data_custom/images/docs/tut_importer/importer_change_forum_driver.png[/media]
+If you have been running Composr and a third-party forum, and wish to switch to using a complete Composr solution (Composr with Conversr), this is possible if there is a forum importer for your current forum product. The opportunity is presented to move to Conversr as the last importable feature of a forum import, and the function will 'jump' forum drivers for you and re-map any usergroup and user IDs. It is still strongly advised to check your permissions after performing this to ensure extra access wasn't accidentally opened up to users.
+[/surround]
 
-Important note: If you have installed Composr, and interfaced to a third-party forum, but want to switch to Conversr without an import (because your forum is essentially empty still), then it is possible but we would discourage it for anyone other than an expert user. To do this you need to use the config editor to 'jump forum driver', but you also need to reset all your permissions for the new forum drivers usergroups, which quite possibly leaves a window of vulnerability if privileges are present which should not be. In addition, any Composr systems that reference users will reference different users after switching, as user-IDs will have changed: for example, point transactions and admin logs will reference the wrong users.
+[title="3"]Converting an existing Composr website manually (experts-only)[/title]
 
-[title="2"]Switching forums, without converting to Conversr via an importer[/title]
+If you have installed Composr, and interfaced to a third-party forum, but want to switch to Conversr without an import (because your forum is essentially empty still), then it is possible but we would discourage it for anyone other than an expert user with time on their hands.
 
-ocProducts does not in any way support moving between different forum vendors/databases, after Composr has been installed. This is due to the member and usergroup IDs Composr uses being tied to the member and usergroup IDs of the linked forum. Because the actual usergroup and member data is not held or managed by Composr, Composr is entirely sensitive to changes to this data, yet has no way of properly detecting or synching against changes made to it.
-All this said, it is [i]possible[/i] to move between forums, if manual database changes are made to correct the aforementioned problems.
+The complexity is due to the member and usergroup IDs Composr uses being tied to the member and usergroup IDs of the third-party forum, and these being different after changing to Conversr.
+
+To do this you need to:
+1) Lock down the website so only your IP address can access it (outside the scope of Composr -- use [tt].htaccess[/tt] files, for example).
+2) Use the Installation Options editor to set a different forum driver.
+3) Reset all your permissions on the website.
+4) Any Composr systems that reference users will reference different users after switching, as member IDs will have changed: for example, point transactions and admin logs will reference the wrong users. Therefore you'll likely want to do some manually cleaning up of the database (such as deleting point transaction records, to erase the problem). 
+5) Re-open access.
 
 [title="2"]Specifics of importers[/title]
 
-[title="3"]Composr merge[/title]
+This section covers some particular limitations of particular importers.
 
-When merging with another copy of Composr, you should make sure the other copy must be running the same major version. Whilst other versions may merge successfully, ocProducts does not support this officially.
+[title="3"]Discussion Forum importing[/title]
+
+Compatibility notes in general:
+ - personal/private message will be glued together to form Private Topics. This is a very useful feature, and really cleans up an inbox.
+
+[title="3"]phpBB[/title]
+
+Compatibility notes:
+ - phpBB does not support attachments by default, but there is an attachment importer. Only use this if you have the popular attachments mod installed and running. Attachments are moved to the Composr attachment upload directory.
+ - phpBB uses a very strange usergroup configuration, so it is necessary to check your usergroups, permissions and usergroup membership after import. Forum permissions will not import properly.
+
+[title="3"]vBulletin[/title]
+
+Compatibility notes:
+ - the vBulletin calendar recurrence system is very different to the Composr calendar recurrence system, so recurrences may not be imported perfectly
+ - forms of rating, such as topic rating, karma, and 'goes to coventry', are not imported. However reputation is imported as points.
+ - attachments, photos and avatars are extracted from the database to the appropriate Composr uploads directory. It is best to use the live database for the import, because there is a MySQL/vBulletin bug in some MySQL versions that causes binary database data to be corrupted in SQL dumps.
+
+[title="3"]Invision Board[/title]
+
+Compatibility notes:
+ - Many Invision Board options will not be imported
+ - attachments, photos and avatars are moved to the appropriate Composr upload directory
+
+[title="3"]Composr merge (advanced)[/title]
+
+When merging with another copy of Composr, you should make sure the other copy must be running the same major version. Whilst other versions may merge successfully, Composr does not support this officially.
 
 The 'cms merge' importer can merge multiple Composr websites together that either:
  - each run on Conversr (and thus, Conversr data gets merged)
  - or, each share a forum database (what we call a "multi-site-network" situation)
-The importer only handles Composr (including Conversr) data.
 
 The 'cms merge' importer cannot:
  - Work with anything other tha Composr data (third-party forum data can not be merged, for instance)
@@ -92,41 +148,19 @@ Other limitations:
  - Due to a complex cylic-dependency, usergroup custom fields won't import
  - Comcode ownership is not imported if multi-lang-content is on
 
-Please note that URL and page-link links will not be altered during the import, meaning it is likely they will need updating (because resource IDs change).
+Please note that URL and page-link links will not be altered during the import, meaning it is likely they will need updating (because resource IDs change). For example, if a link somewhere linked to download #5, it might need to be changed to link to download #123.
 
-[title="2"]Discussion Forum importing[/title]
-
-Compatibility notes in general:
- - personal/private message will be glued together to form Private Topics. This is a very useful feature, and really cleans up an inbox.
-
-[title="3"]PhpBB[/title]
-
-Compatibility notes:
- - phpBB does not support attachments by default, but there is an attachment importer. Only use this if you have the popular attachments mod installed and running. Attachments are moved to the Composr attachment upload directory.
- - phpBB uses a very strange usergroup configuration, so it is necessary to check your usergroups, permissions and usergroup membership after import. Forum permissions will not import properly.
-
-[title="3"]vBulletin[/title]
-
-Compatibility notes:
- - the vBulletin calendar recurrence system is very different to the Composr calendar recurrence system, so recurrences may not be imported perfectly
- - forms of rating, such as topic rating, karma, and 'goes to coventry', are not imported. However reputation is imported as points.
- - Many vBulletin will not be imported
- - attachments, photos and avatars are extracted from the database to the appropriate Composr uploads directory. It is best to use the live database for the import, because there is a MySQL/vBulletin bug in some MySQL versions that causes binary database data to be corrupted in SQL dumps.
-
-[title="3"]Invision Board[/title]
-
-Compatibility notes:
- - Many Invision Board options will not be imported
- - attachments, photos and avatars are moved to the appropriate Composr upload directory
-
-[title="3"]HTML website importer[/title]
+[title="2"]HTML website importer (advanced)[/title]
 
 The HTML website importer is a special importer that can import an HTML site that is stored on disk. It is designed for migrating existing static HTML websites into Composr.
+
+It is a [i]very[/i] advanced tool that is suitable only for programmers able to tweak the code.
+
 The importer will try and establish what your [tt]GLOBAL_HTML_WRAP[/tt] template should be, but it cannot be perfect at this. It is also not able to extract panels or menus in a particularly clever way (they all go as static markup in the aforementioned template files), so you should consider your imported site as a base that will require some cleaning.
 
 If you do not have access to the files of your site, other than from the live server, you can download a website using the 'wget' tool. This tool exists on most Linux installs by default, but can also be installed for [url="Mac"]http://wget.darwinports.com/[/url] and [url="Windows"]http://gnuwin32.sourceforge.net/packages/wget.htm[/url].
 You run wget using a command like:
-[code]
+[code="Bash"]
 wget -nc -r <yoururl>
 [/code]
 and your files from the URL's domain will neatly be saved in a directory underneath the command prompts current working directory named after the domain name. wget works by spidering/crawling your website for files, so it can only download what it finds by following the links that exist on it. Note that it also is not able to find files referenced by your CSS (e.g. background images).
@@ -149,21 +183,9 @@ The importer uses a sophisticated algorithm to detect what your header and foote
 If the importer you used copied all relevant files, like avatars, photos and attachments, into Composr's directories, then you can remove the imported product directory in whole.
 However, it is advisable to keep the directory, database, and import session, around for a few weeks -- just in case any data was not correctly imported and extra maintenance required to put things right: importing is a technically complex process, so it is always best to keep your doors open.
 
-[title="2"]Getting a new importer written for you[/title]
-
-ocProducts is always happy to hear from you if you have a website running a moderately-to-highly popular product, and you would like to switch to running our software. This is not just for the obvious reason of increasing our user-base, but also presents us an opportunity: to write and test an importer to a working website. Please [page="site:support"]contact us[/page] and we may be able to arrange a reduced-cost conversion!
-
-[title="2"]Data format importing[/title]
-
-We try and support import of neutral data formats into Composr. For example, CSV files, of importing all the downloads in a directory. These features may help ease a transition and are linked into the Admin and CMS zones in appropriate places.
-
 [title="2"]Additional help[/title]
 
-As importing does not always go to plan, ocProducts is available for [page="site:support"]support[/page]. If you run a website that you are able to justify temporarily hiring us, you may wish to contact us before import, so that we can be prepared to assist, or perform the whole process ourselves.
-
-[title="2"]Writing a new importer[/title]
-
-For developers instructions on writing an importer please see the Composr Code Book.
+As importing may not always go smoothly, ocProducts is available for [page="site:support"]support[/page]. If you run a website that you are able to justify temporarily hiring us, you may wish to contact us before import, so that we can be prepared to assist, or perform the whole process ourselves.
 
 [title="2"]See also[/title]
 

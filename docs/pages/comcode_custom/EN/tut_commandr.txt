@@ -15,17 +15,21 @@ We designed Commandr to supplement the features of the Admin Zone, rather than t
 Although the system is very flexible, there are many commands to use, designed for interaction with the Composr Repository and other systems designed specifically for Commandr. Since UNIX is the grandfather of almost all of the operating systems where command-line use is most prevalent -- and administrators comfortable with command-lines will probably be UNIX experts -- many of the commands mirror their UNIX counterparts.
 
 The basic format for a command is as follows:
-[code]command_name -o -long_option -o2=value -long_option2="value 2" parameter1 "parameter 2" parameter3[/code]
+[code="Commandr"]
+command_name -o -long_option -o2=value -long_option2="value 2" parameter1 "parameter 2" parameter3
+[/code]
 This example consists of:
  - A command name (no spaces)
  - followed by a list of options (either in short or long format; this is decided by the command in question) with optional values (quoted if they contain spaces)
  - then a list of parameter values (quoted if they contain spaces).
 
 Commandr supports backslashing, so you can escape any quotes in values you're passing:
-[code]echo "Grandma said: \"Hello world!\""[/code]
+[code="Commandr"]
+echo "Grandma said: \"Hello world!\""
+[/code]
 
 For a full list of Commandr commands, simply execute the [tt]commands[/tt] command in Commandr:
-[code]
+[code="Commandr"]
 commands
 [/code]
 
@@ -33,7 +37,7 @@ commands
 
 PHP can be entered and executed by Commandr, simply by prefixing the code to be executed with a colon (":"). The returned data will be displayed as best as possible (its type will be determined and outputted as appropriate). Multiple PHP commands may be executed (separated by semi-colons, as per normal PHP code).
 For example:
-[code]
+[code="Commandr"]
 :echo "Hello"; echo " World.";
 [/code]
 
@@ -65,7 +69,7 @@ Commands can be put together in scripts and saved for later use in the [tt]bin[/
 [title="2"]Running from a normal operating system command prompt[/title]
 
 Commandr can tie directly into your operating system shell. For example, on Linux you can start it up with:
-[code]
+[code="Bash"]
 php data/commandr.php
 [/code]
 It is primarily designed for use from an HTML interface, so things like the text file editor will not work, but generally it will work as expected.
@@ -80,7 +84,7 @@ Commandrchat is designed to allow website administrators to communicate with eac
 
 Commandr is a very effective way to automate tedious maintenance tasks. For example, if you want to delete a set of images and you have their IDs, you could execute this Commandr code:
 
-[code]
+[code="Commandr"]
 :require_code('galleries2');
 $ids=array(1,2,3,4,5);
 foreach ($ids as $id) delete_image($id,true);

@@ -49,7 +49,7 @@ class Block_main_emoticon_codes
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array()';
+        $info['cache_on'] = 'array(array_key_exists(\'num_columns\', $map) ? intval($map[\'num_columns\']) : 5)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS; // Due to special emoticon codes privilege
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 2;
         return $info;
@@ -68,14 +68,51 @@ class Block_main_emoticon_codes
 
         $emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(get_member());
 
-        $entries = new Tempcode();
+        $num_columns = array_key_exists('num_columns', $map) ? intval($map['num_columns']) : 4;
+
+        $rows = new Tempcode();
+
         global $EMOTICON_LEVELS;
-        foreach ($emoticons as $code => $imgcode) {
-            if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) {
-                $entries->attach(do_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array('_GUID' => '9d723c17133313b327a9485aeb23aa8c', 'CODE' => $code, 'TPL' => do_emoticon($imgcode))));
+
+        $num = count($emoticons);
+        $keys = array_keys($emoticons);
+        $values = array_values($emoticons);
+        $i = 0;
+        while ($i < $num) {
+            $columns = array();
+
+            for ($j = 0; $j < $num_columns; $j++) {
+                if (!isset($keys[$i])) {
+                    $columns[] = array(
+                        'CODE' => '',
+                        'TPL' => '',
+                    );
+                    continue;
+                }
+
+                $code = $keys[$i];
+                $imgcode = $values[$i];
+
+                if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) { // If within a displayable level
+                    $columns[] = array(
+                        'CODE' => $code,
+                        'TPL' => do_emoticon($imgcode),
+                    );
+                }
+
+                $i++;
             }
+
+            $rows->attach(do_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array(
+                '_GUID' => '9d723c17133313b327a9485aeb23aa8c',
+                'COLUMNS' => $columns,
+            )));
         }
 
-        return do_template('BLOCK_MAIN_EMOTICON_CODES', array('_GUID' => '56c12281d7e3662b13a7ad7d9958a65c', 'ENTRIES' => $entries));
+        return do_template('BLOCK_MAIN_EMOTICON_CODES', array(
+            '_GUID' => '56c12281d7e3662b13a7ad7d9958a65c',
+            'ROWS' => $rows,
+            'NUM_COLUMNS' => strval($num_columns),
+        ));
     }
 }

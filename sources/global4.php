@@ -237,9 +237,9 @@ function member_personal_links_and_details($member_id)
             if (get_forum_type() == 'cns') {
                 $group_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $group_id), get_module_zone('groups'));
                 $hyperlink = hyperlink($group_url, $usergroups[$group_id], false, true);
-                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array('_GUID' => 'sas41eddsd4sdddssdsa2618fd7fff', 'KEY' => do_lang_tempcode('GROUP'), 'VALUE' => $hyperlink)));
+                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array('_GUID' => 'sas41eddsd4sdddssdsa2618fd7fff', 'KEY' => do_lang_tempcode('USERGROUP'), 'VALUE' => $hyperlink)));
             } else {
-                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '65180134fbc4cf7e227011463d466677', 'KEY' => do_lang_tempcode('GROUP'), 'VALUE' => $usergroups[$group_id])));
+                $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '65180134fbc4cf7e227011463d466677', 'KEY' => do_lang_tempcode('USERGROUP'), 'VALUE' => $usergroups[$group_id])));
             }
         }
     }

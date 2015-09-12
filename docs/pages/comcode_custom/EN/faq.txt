@@ -50,20 +50,6 @@ Supported standards include true XHTML5 support, valid hack-free CSS and the hig
 
 As web standards are evolving and we often need to make use of ones that are not yet finalised, sometimes checker tools may produce some warnings. This is normal for any modern website, as things are moving ahead so fast.
 
-[title="3"]Do you support blogging?[/title]
-
-Composr has excellent support for blogging, through the news system. The news system features both RSS and Atom syndication, for both input and output of news. Members of a Composr site may have their own blogs.
-
-[title="3"]Do you support classified ads?[/title]
-
-Classified ads are supported in the 'catalogues' system. You'd add a catalogue for the ads:
- - you'd define some fields (such as 'Ad title' and 'Ad message')
- - you'd define timeout settings
- - you'd then add some categories to the catalogue
- - you'd assign various permissions so that members could submit to this catalogue
- - you'd link the catalogue onto your menus
- - possible you'd place a 'recent entries' block onto your front page
-
 [title="3"]Will you implement (some feature)?[/title]
 
 ocProducts is very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
@@ -85,7 +71,7 @@ ocProducts does not officially get involved in the translation of Composr. Pleas
 
 [title="2"]Licensing and costs[/title]
 
-[html]<div></div><a id="oss"></a>[/html][b]How much does Composr cost?[/title]
+[html]<div></div><a id="oss"></a>[/html][title="3"]How much does Composr cost?[/title]
 Composr is completely free under an OSI-approved Open Source licence (the Common Public Attribution License). There are no restrictions on usage, and we don't keep away any 'pro' features from our users. There is no requirement to display our logo or copyright notices on your website, we don't want to box people in from a design and marketing perspective either.
 
 The team has always been very pro Open Source. Given that software can be easily copied and therefore the value of Composr can be distributed across the world effortlessly, we think we have a social responsibility to take advantage of this and therefore structure our business in a way that can work with it. Software has such great potential to empower individuals from all walks of life, so we believe wherever possible companies shouldn't put the brakes on it by restricting the way things can be used via economic levies.
@@ -273,9 +259,9 @@ Composr is designed to run on a PHP memory limit of 16MB or higher; very old PHP
 Note that the 'blank page' problem is likely to be due to memory running out, as some PHP installations do not give errors in this event, even if the PHP 'display_errors' option is enabled.
 
 Also note that some web hosts have PHP installations that report memory limits that are higher than they actually are. If you see an error like:
-[code]
+[quote]
 PHP[1] Out of memory (allocated 6815744) (tried to allocate 311296 bytes)
-[/code]
+[/quote]
 then this is telling you PHP [i]actually[/i] has a memory limit of approximately 6815744+311296 bytes (about 7MB).
 
 It may be possible to get Composr to raise the memory limit for you. Our default [tt]recommended.htaccess[/tt] file does this -- try renaming it to [tt].htaccess[/tt] to activate it. If you get the problem during the quick installer and thus don't have this file yet, you can find it in the manual installer package.
@@ -314,7 +300,7 @@ You need to create [tt]php.ini[/tt] files that override your web-server's defaul
 2) You may need to replicate settings from the original [tt]php.ini[/tt] file into your own one. Usually your web-host will provide some kind of documentation that you can copy&paste from.
 
 This is what your [tt]php.ini[/tt] file should look like, assuming you do not need to add any extra lines (see "2" above).
-[codebox]
+[codebox="INI"]
 ; Composr needs uploads; many hosts leave these low
 post_max_size=16M
 upload_max_filesize=16M

@@ -170,20 +170,20 @@ class Module_admin
     public function _synonyms()
     {
         return array(
-            array('maximum', 'limit', 'total', 'max', 'increase', 'long'),
+            array('maximum', 'limit', 'total', 'max', 'increase', 'long', 'count', 'tally'),
             array('characters', 'words', 'bytes'),
 
             array('fault', 'error', 'bug', 'warning', 'notice', 'mistake', 'glitch', 'flaw', 'failure'),
             array('delineate', 'delimit', 'delimitate', 'demarcate'),
-            array('order', 'sort'),
-            array('sudo', 'masquerade'),
+            array('order', 'sort', 'position'),
+            array('sudo', 'masquerade', 'su'),
             array('multi-moderation', 'multimoderation'),
             array('invitation', 'invite'),
             array('social', 'forum'),
             array('xml_fields', 'filtering'),
             array('banner', 'advert', 'advertising', 'advertise'),
             array('news', 'blogs', 'press release'),
-            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible'), // i.e. Composr validation
+            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'publish'), // i.e. Composr validation
             array('webstandards', 'check', 'conformance'),
             // ^ We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
             //  sanitisation or check or well-formed (for input data, or transactions)
@@ -193,7 +193,7 @@ class Module_admin
             array('theme', 'skin', 'style'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
-            array('pm', 'pt', 'dm', 'private message', 'private topic'),
+            array('pm', 'pt', 'dm', 'private message', 'private topic', 'whisper'),
             array('filedump', 'library', 'file manager'),
             array('word-filter', 'wordfilter', 'swear', 'curse'),
             array('colour', 'color', 'css', 'font', 'background'),
@@ -232,7 +232,7 @@ class Module_admin
             array('display', 'render', 'view'),
             array('gallery', 'album', 'galleries', 'podcast', 'multimedia'),
             array('audit', 'log', 'usage'),
-            array('download', 'file', 'document'),
+            array('download', 'file', 'document', 'publication'),
             array('page', 'article', 'comcode'),
             array('entry', 'item', 'content', 'resource', 'submission'),
             array('category', 'node', 'section', 'repository', 'collection'),
@@ -240,11 +240,11 @@ class Module_admin
             array('speed', 'slow', 'fast', 'optimisation', 'performance', 'efficiency'),
             array('panel', 'sidebar', 'frame', 'bar'),
             array('usergroup', 'group', 'promote', 'rank'),
-            array('member', 'user', 'contact'),
+            array('member', 'user', 'contact', 'person'),
             array('profile', 'account', 'memberaccount'),
             array('accessibility', 'a11y'),
             array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation'),
-            array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant', 'restrict'),
+            array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant', 'restrict', 'prohibite'),
             array('access', 'view'),
             array('overlay', 'popup', 'dialog', 'window'),
             array('option', 'setting', 'value'),
@@ -263,7 +263,7 @@ class Module_admin
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
             array('description', 'caption', 'summary'),
             array('choose', 'set', 'specify'),
-            array('add', 'submit', 'create', 'make'),
+            array('add', 'submit', 'create', 'make', 'publish'),
             array('edit', 'modify', 'manage', 'change', 'control', 'moderate', 'update'),
             array('delete', 'erase', 'remove', 'discard', 'prune'),
             array('restore', 'revert', 'undo'),
@@ -271,7 +271,8 @@ class Module_admin
             array('language', 'unicode', 'utf', 'utf8', 'utf-8', 'character', 'charset', '24', 'clock', 'timezone', 'time-zone', 'time', 'date', 'translate'),
             array('ldap', 'active directory'),
             array('contact', 'feedback', 'ticket', 'message', 'issue', 'email', 'e-mail', 'support', 'desk'),
-            array('documentation', 'help', 'guide'),
+            array('post', 'message'),
+            array('documentation', 'help', 'guide', 'manual'),
             array('sef', 'short', 'friendly'),
             array('survey', 'quiz', 'competition', 'test', 'questionnaire'),
             array('swf', 'flash'),
@@ -967,7 +968,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Usergroup settings
-        $current_results_type = do_lang('USERGROUP_SETTINGS');
+        $current_results_type = do_lang('USERGROUP_SETTINGS_SEARCH_GROUP');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'admin_cns_groups', 'adminzone'))) {
             $content[$current_results_type] = new Tempcode();
@@ -1009,7 +1010,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Member settings
-        $current_results_type = do_lang('MEMBER_SETTINGS');
+        $current_results_type = do_lang('MEMBER_SETTINGS_SEARCH_GROUP');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'members'))) {
             $content[$current_results_type] = new Tempcode();

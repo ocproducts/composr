@@ -38,7 +38,7 @@
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr class="{$GET,cycle}">
 					<td colspan="5">
-						<span class="field_name">{!INVOICE_NOTE}</span>: {NOTE*}
+						<span class="field_name">{!NOTE}</span>: {NOTE*}
 					</td>
 				</tr>
 			{+END}

@@ -8,11 +8,12 @@
 [title="2"]Gallery structure[/title]
 
 [media width="150" description="Viewing a gallery that has a subgallery" float="right"]data_custom/images/docs/tut_galleries/gallery_subcat.png[/media]
-Galleries are organised in a hierarchical (tree) structure. For more information of these tree structures, see the 'Providing downloads' tutorial, as the download system is the perfect clean example of a Composr tree-structured system. The gallery structure is more complex than that of the download structure, and additional information on it is given in the 'Advanced galleries' tutorial.
+Galleries are organised in a hierarchical (tree) structure. For more information of these tree structures, see the [page="_SEARCH:tut_downloads"]Providing downloads tutorial[/page], as the download system is the perfect clean example of a Composr tree-structured system. The gallery structure is more complex than that of the download structure, and additional information on it is given in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries tutorial[/page].
 
 Galleries may have 'representative images' (rep-images). When a user views a gallery with sub-galleries, the sub-galleries are actually shown with their rep-images, so as to make them look more attractive and give an impression of the contents. Rep-images may be chosen when adding or editing a gallery, or when adding an image to a gallery it can be chosen that that image shall also become the rep-image.
 
 [title="2"]Galleries[/title]
+
 [surround]
 [media width="150" description="A gallery in flow mode" float="right"]data_custom/images/docs/tut_galleries/gallery_flow_mode.png[/media]
 A gallery is a category of the gallery system, and is used to hold images and videos (together, gallery entries). Galleries can also hold audio files which are treated in the same way as videos.
@@ -26,6 +27,7 @@ There are two display modes for galleries:
 
 From the gallery, the user can choose any of the available entries (images or videos), and the chosen entry will be presented to the user on a full wide page.
 [/surround]
+
 [title="2"]Gallery index[/title]
 
 A gallery index is provided that lists all galleries in the system. Galleries that are empty are omitted from this list.
@@ -84,7 +86,7 @@ However, if you install the non-bundled getid3 addon then this can work much mor
 [title="2"]Ordering[/title]
 
 [media width="150" description="Adding an image to a gallery" float="right"]data_custom/images/docs/tut_galleries/gallery_add_image.png[/media]
-Gallery entries are ordered in the same order they were added to the system. If you are batch importing (covered in the Advanced Galleries tutorial), then you may want to define a custom ordering. To do this, you just need to give all the images in the batch names that are consistent with a numbering scheme of your choice. Composr will detect numbering schemes automatically, and order by them.
+Gallery entries are ordered in the same order they were added to the system. If you are batch importing (covered in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries tutorial[/page]), then you may want to define a custom ordering. To do this, you just need to give all the images in the batch names that are consistent with a numbering scheme of your choice. Composr will detect numbering schemes automatically, and order by them.
 
 The rule is very simple: Composr will order by filename if when taking all numbers out of all filenames in the gallery, the filenames are all the same.
 

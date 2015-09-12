@@ -21,6 +21,7 @@ Four different Composr systems may be used to provide such a support desk:
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]The Support Ticket system[/title]
+
 [surround]
 [media width="150" description="Managing support ticket types" float="right"]data_custom/images/docs/tut_support_desk/support_ticket_types.png[/media]
 {!tickets:DOC_TICKETS}
@@ -177,7 +178,7 @@ The Messaging system hooks up to the [tt]main_contact_us[/tt] block. This block 
 
 The Discussion Forum (our own Conversr, at least) is designed to be an extremely efficient multi-purpose working environment: forums are at their heart an interactive communication medium. There are also a number of special features, such as post templates, and multi moderations, that make the forums particularly appropriate for use to provide support.
 
-For more information on this, see the 'Running a discussion forum based help desk' tutorial.
+For more information on this, see the [page="_SEARCH:tut_forum_helpdesk"]Running a discussion-forum-based helpdesk tutorial[/page].
  
 [title="3"]Approach to support functions[/title]
 

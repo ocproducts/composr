@@ -691,7 +691,6 @@ class Hook_addon_registry_catalogues
                 'ID' => placeholder_id(),
                 'ENTRY' => $entry,
                 'EDIT_URL' => placeholder_url(),
-                '_EDIT_LINK' => placeholder_link(),
                 'TRACKBACK_DETAILS' => lorem_phrase(),
                 'RATING_DETAILS' => lorem_phrase(),
                 'COMMENT_DETAILS' => lorem_phrase(),

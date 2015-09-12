@@ -277,7 +277,7 @@ function try_su_login($member)
             if ((!is_guest($member)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member))) { // All hands to the guns
                 global $USER_THEME_CACHE;
                 $USER_THEME_CACHE = 'default';
-                critical_error('MEMBER_BANNED');
+                critical_error('YOU_ARE_BANNED');
             }
         }
         $GLOBALS['IS_ACTUALLY_ADMIN'] = true;

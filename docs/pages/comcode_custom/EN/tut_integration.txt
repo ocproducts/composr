@@ -2,8 +2,7 @@
 
 This tutorial will provide details on how to integrate Composr with another web system (known henceforth as the 'other system') installed for your website.
 
-Please note that many systems, especially complex ones, will not easily integrate without reprogramming. In this event, you may wish to hire ocProducts for commercial assistance.
-Even the kinds of integration here usually require a high level of skill in web technologies and Composr technologies.
+Please note that many systems, especially complex ones, will not easily integrate without reprogramming. In this event, you may wish to hire a company such as ocProducts for commercial assistance. Even the kinds of integration here usually require a high level of skill in web technologies and Composr technologies.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -82,7 +81,7 @@ An iframe is an HTML construct that allows you to place one site inside a region
 
 To place an iframed system into Composr, the easiest way is to make a new Comcode page which will contain the frame, link that onto your menu, and place the following Comcode into the page:
 
-[code]
+[code="Comcode"]
 [html]
 <iframe frameBorder="0" scrolling="no" title="whatever the embedded system is" src="whatever the system URL is" style="width: 100%; height: whatever height you want px;">whatever the embedded system is</iframe>
 [/html]
@@ -95,7 +94,7 @@ Where the following are appropriately replaced:
 
 If the embedded system has a non-predictable height, then under normal circumstances, an extra set of scroll-bars would be rendered around it when your pre-set height is exceeded. In order to avoid this without needing to choose an excessive default height, special code must be written that will regularly resize the iframe element placed in Composr so it has the same height as the actual contents of the frame -- hence eliminating the need for a vertical scrollbar. Note that if you do this, the embedded system must be on the exact same domain as Composr, or web browser security will prevent the height detection from working.
 
-[code]
+[code="Comcode"]
 [html]
 <script>
 // <![CDATA[
@@ -165,7 +164,7 @@ Note I had to add a little CSS to stop Google trying to render parts of its layo
 If you are using a third-party API with Composr, you can upload all the PHP files to the [tt]sources_custom[/tt] directory.
 
 Before calling the third-party code it is advisable to call these lines of PHP code:
-[code]
+[code="PHP"]
 require_code('developer_tools');
 destrictify();
 [/code]
@@ -216,7 +215,7 @@ Copy the [tt]example.js[/tt] file to [tt]themes/default/javascript_custom/exampl
 If there is both a minified (compressed) and non-minified version, use the non-minified version. Composr does it's own minification automatically, and it's better you be able to read the JavaScript code properly. Additional this way is it less likely the Tempcode parser will accidentally try and interpret parts of the code as Tempcode variables.
 
 You may wish to edit the file to include this at the top:
-[code]
+[code="CSS"]
 /*{$,Parser hint: pure}*/
 /*{$,Parser hint: .innerHTML okay}*/
 [/code]
@@ -234,7 +233,7 @@ require_javascript('example');
 [/code]
 
 If you want to include the JavaScript library from a template, do:
-[code]
+[code="Tempcode"]
 {$REQUIRE_JAVASCRIPT,example}
 [/code]
 
@@ -246,26 +245,26 @@ You may find you need to put some "\" symbols before some "{" symbols, to stop c
 For example, if the file contained [tt]{Example}[/tt], you'd need to change it to [tt]\{Example}[/tt] because to Composr this looks like a template parameter.
 
 Let's say that [tt]example.js[/tt] contains:
-[code]
+[code="JavaScript"]
 var ex_alert_string='An error has happened.';
 [/code]
 We could either try and match this to an existing Composr language string, or make a new one. Let's make a new one.
 We create [tt]lang_custom/EN/example.ini[/tt]:
-[code]
+[code="INI"]
 [strings]
 EX_ALERT_STRING=An error has happened.
 [/code]
 And then change the code in [tt]example.js[/tt] to:
-[code]
+[code="JavaScript"]
 var ex_alert_string='{example:EX_ALERT_STRING;}';
 [/code]
 
 Let's say that [tt]example.js[/tt] also contains:
-[code]
+[code="JavaScript"]
 var ex_alert_image='images/alert.png';
 [/code]
 We could copy the [tt]images[/tt] directory from the JavaScript library as [tt]themes/default/images_custom/example[/tt], and then change the the code in [tt]example.js[/tt] to:
-[code]
+[code="JavaScript"]
 var ex_alert_image='{$IMG;,example/alert}';
 [/code]
 
@@ -314,7 +313,7 @@ require_css('example');
 [/code]
 
 If you want to include the CSS library from a template, do:
-[code]
+[code="Tempcode"]
 {$REQUIRE_CSS,example}
 [/code]
 
@@ -326,7 +325,7 @@ It is important to understand that it is impossible for two web systems to 'shar
 
 [title="2"]Sharing members[/title]
 
-It can be a bit tricky to share members between Composr and another system. There are four general ways to go about it:
+It can be a bit tricky to share members between Composr and another system. There are many ways to go about it:
 1) Make/have-made a Composr forum driver that is for the other system (as Composr can support different member systems through a forum driver). This is only appropriate if either the other system actually is the forum you will be using, or you are not actually wanting a forum for your site
 2) Reprogram the other system so that it uses the same member system that Composr uses (be that Composr's own, or that of a third party system); you might be able to find a modification for the other system that does it already (for instance, if you are using a widespread forum like phpBB, and want to integrate an external system, it is possible that the other system already has a modification to allow it to tie itself to phpBB)
 3) Disable joining of members in the other system, and make it so that login checks against whatever member system Composr is using; maintain a separate member database in the other system, but effectively tie it in to whatever Composr is using

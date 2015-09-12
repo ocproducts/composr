@@ -34,7 +34,7 @@ class Hook_content_meta_aware_download
         return array(
             'supports_custom_fields' => true,
 
-            'content_type_label' => 'DOWNLOAD',
+            'content_type_label' => 'DOWNLOAD_NOUN',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'download_downloads',

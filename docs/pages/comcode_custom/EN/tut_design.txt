@@ -6,7 +6,7 @@ This tutorial is an introduction to the artistic side of web development -- web 
 
 [title="2"]Introduction[/title]
 
-With the improvement in web technology, web design has grown from cheesy layouts consisting of big borders, tiled background and animated GIFs -- to an application of the creative arts, blurring into the commercial design industry.
+With the improvement in web technology, web design has grown from cheesy layouts consisting of big borders, tiled background and animated GIFs -- to an application of the creative arts, blending into the wider commercial design industry.
 
 Nowadays visitors expect an important website to be as impressive as a glossy magazine, or a TV show, and good design is the route to this.
 
@@ -18,7 +18,7 @@ Design is about communication: communicating style, communicating a brand, commu
 
 [title="3"]Style and brand[/title]
 
-What does a design say? Colour, pattern, language, and many other factors, all imply things about a website and organisation. A well conceived brand consists of certain tenants, and the design implementation of that brand effectively communicates them.
+What does a design say? Colour, pattern, language, and many other factors, all imply things about a website and organisation. A well conceived brand consists of certain tenets, and the design implementation of that brand effectively communicates them.
 
 Consider a simple example: a website with a dark background, smooth gradients around shades of brown, and vivid and short pieces of text, might be great for a website selling chocolates. It would communicate the simple pleasure of chocolate, and subliminally reinforce the concept via the chocolate-like colours. On every mental level it puts chocolate fully into the mind of the visitor, and can work to trigger the right feelings, and the overall richness and effect works to leave a lasting impression (lasting mental imprint).
 
@@ -29,7 +29,7 @@ However, for this kind of design to be used on an environmental website might be
 
 Brands also have their own distinct 'personalities' which should be reflected. What's the difference between a Reebok and a Nike? The brands will aim to influence a specific group of people in a way that resonates with what is important to them, and use their unique identity to establish a feeling of authenticity, a fashion, and customer loyalty.
 
-Of course, different people think in different ways. As a programmer I think in terms of logics all the time and am very much a "left-brained" thinker (more inclined to study words than pick up from visual cues and emotive techniques). As a software user reading this tutorial you may well be the same. It is critical with design that you learn to appreciate how different people think, and come up with a design that hits all the right spots -- that works with different people's psychologies.
+Of course, different people think in different ways. As a programmer I think in terms of logics all the time and am very much a "left-brained" thinker (more inclined to study words than pick up from visual cues and emotive techniques). As a software user reading this tutorial you may well be the same. It is critical with design that you learn to appreciate how different people think, and come up with a design that hits all the right spots -- that works with different peoples' psychologies.
 
 A brand will typically include a logo, specification of what fonts to use in what circumstances (e.g. headers may have a special font), a colour scheme, a set of reusable styles (e.g. a way to show a box, or a pull-quote), suggested style of language, and a set of brand principles.
 
@@ -71,6 +71,7 @@ The following is true of just about every attractive design:
 
 [title="3"]Practical example for beginners: how to make an attractive box[/title]
 
+[media width="150" description="Our box. It's not going to win any awards, but it does the job." float="right"]data_custom/images/docs/tut_design/simple_box.png[/media]
 A simple way to make an attractive box is:
  - give the box a background colour.
  - put a border around the box with a colour that is half way between the box's background colour and the background colour of what is adjacent to the box. This will highlight and smooth the transition.
@@ -79,7 +80,7 @@ A simple way to make an attractive box is:
  - make the box float to the right.
 
 In [abbr="Cascading Style Sheets"]CSS[/abbr], this would be implemented with something like the following:
-[code]
+[code="HTML"]
 <div style="float: right; padding: 10px; margin: 20px; background: #d0e0a3; border: 1px solid #98c126;">
 	Text in box
 </div>
@@ -99,7 +100,7 @@ To decide on a colour scheme consider an online tool like [url="http://www.color
 
 [title="2"]Web Technologies[/title]
 
-Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our "Introduction to XHTML, CSS and JavaScript" tutorial.
+Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript tutorial[/page].
 
 [title="2"]Software[/title]
 
@@ -109,7 +110,6 @@ Instead of Photoshop you could consider:
  - [url="Paint.net"]http://www.getpaint.net/[/url] (free, Windows-only)
  - [url="GIMP"]http://www.gimp.org/[/url] / [url="GIMPshop"]http://plasticbugs.com/[/url] (free)
  - [url="Corel Paint Shop Pro"]http://www.jasc.com/[/url] (cheaper than Photoshop -- but less powerful)
- - [url="Adobe Fireworks"]http://www.adobe.com/products/fireworks/[/url] (more web-orientated, but less powerful)
 
 There is an enormous amount to know when it comes to using this kind of software, including:
  - Colour spaces
@@ -125,7 +125,7 @@ You may find the best way to learn is through tutorials. Here are some sites fea
  - http://www.good-tutorials.com/
  - http://www.tutorialized.com/tutorials/Photoshop/1
  - http://www.photoshopstar.com/
- - http://psd.tutsplus.com/
+ - http://design.tutsplus.com/
 
 [concepts
  1_key="Photoshop"                 1_value="The de-facto standard software for web designers"

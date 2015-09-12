@@ -401,7 +401,7 @@ class Module_admin_ecommerce_logs
 
         $products = $product_ob->get_products();
         if ($products[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-            $fields->attach(form_input_date(do_lang_tempcode('CUSTOM_EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
+            $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));

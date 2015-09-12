@@ -14,6 +14,7 @@ This tree principle applies to many areas of Composr: we strive to standardise t
 Download categories may have 'representative images'. When you are viewing a link to a category from it's parent category, the representative image will be included.
 
 [title="2"]Adding a download[/title]
+
 [surround]
 [media width="150" description="Adding a download" float="left"]data_custom/images/docs/tut_downloads/downloads_add.png[/media]
 [media width="150" description="Do-next options are provided after adding a download, as is also the case when managing other Composr content" float="right"]data_custom/images/docs/tut_downloads/downloads_do_next.png[/media]
@@ -31,6 +32,7 @@ For an uploaded file, you will see upon edit that the filename of the actual on-
 [media width="150" description="Viewing a download" float="left"]data_custom/images/docs/tut_downloads/downloads_view.png[/media]
 When you add a download, Composr automatically adds a specially named gallery for it. You will actually see a convenient 'add image' icon directly after adding the download, and you will also find an equivalent link on the download-view screen itself. The download gallery is displayed in-line, within the actual download-view screen. The Composr gallery system is used for adding and storage of the images. If you have no images added for the download yet there is a shortcut on the main download add/edit form for that; otherwise you can choose which of the images should also serve as the thumbnail for the download on the download add/edit form.
 [/surround]
+
 [title="2"]Editing/Deleting a download[/title]
 
 [media width="150" description="Editing a download" float="left"]data_custom/images/docs/tut_downloads/downloads_edit_file.png[/media]

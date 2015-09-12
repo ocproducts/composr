@@ -346,14 +346,14 @@ class Module_shopping
             $fields_title = results_field_title(
                 array(
                     '',
-                    do_lang_tempcode('_PRODUCT_NAME'),
+                    do_lang_tempcode('PRODUCT'),
                     do_lang_tempcode('UNIT_PRICE'),
                     do_lang_tempcode('QUANTITY'),
                     do_lang_tempcode('ORDER_PRICE_AMT'),
                     do_lang_tempcode('TAX'),
                     do_lang_tempcode('SHIPPING_PRICE'),
                     do_lang_tempcode('TOTAL_PRICE'),
-                    do_lang_tempcode('REMOVE_FROM_CART')
+                    do_lang_tempcode('REMOVE')
                 ), null
             );
 

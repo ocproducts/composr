@@ -174,8 +174,8 @@ Any transaction that goes through is matched to a product that will then verify 
 [title="4"]Actual code (for programmers)[/title]
 
 This is an abbreviated line of code from within the [tt]get_products[/tt] method defining a product in [tt]sources/hooks/systems/ecommerce/usergroup.php[/tt]:
-[code]
-$products['USERGROUP'.strval($sub['id'])]=array(PRODUCT_SUBSCRIPTION,$sub['s_cost'],'handle_usergroup_subscription',array(...),$item_name);
+[code="PHP"]
+$products['USERGROUP' . strval($sub['id'])] = array(PRODUCT_SUBSCRIPTION, $sub['s_cost'], 'handle_usergroup_subscription', array(...), $item_name);
 [/code]
 
 The 'product name' would be [tt]USERGROUP<id>[/tt]. You can see how we have created a separate product for each different kind of usergroup subscription.
@@ -212,6 +212,7 @@ However, we've designed it to be modular. In Composr another method of doing a t
 4) enter the sale amount that the product expects to be receiving (which you can leave blank for it to work this out itself).
 
 [title="2"]Subscriptions[/title]
+
 [surround]
 [media width="150" description="Adding a capability for a usergroup subscription" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_subscription.png[/media]
 
@@ -224,7 +225,9 @@ Usergroup subscriptions are implemented on top of subscriptions. Set up a usergr
 
 You can add as many usergroup subscriptions as you like, even multiple to the same usergroup. For example, [by adding more subscriptions] you could make it cheaper to subscribe yearly than monthly.
 [/surround]
+
 [title="2"]Invoices[/title]
+
 [surround]
 [media width="150" description="Invoicing a member" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_invoice.png[/media]
 Members may be invoiced by the staff. To do this, go to the Admin Zone > Audit > eCommerce > Create invoice.
@@ -301,6 +304,7 @@ If you need more flexibility than this (perhaps many different product options f
 The currency the website works in is defined in the configuration. If you use PayPal you need to make sure your account can accept this currency and is not set up to allow people to choose which currency to pay in (as it stops Composr being able to verify the payment if they use this feature).
 
 [title="2"]Charts[/title]
+
 [surround]
 [media width="150" description="A profit/loss account for a fresh install" float="left"]data_custom/images/docs/tut_ecommerce/ecommerce_pl.png[/media]
 Composr includes some basic accountancy charting support. This is not intended as a replacement for a proper accountancy system, but does serve as a very useful overview of finances and a record of activity.
@@ -312,6 +316,7 @@ Composr can generate the following charts over a custom specified period:
  - Cash flow diagram
 
 [/surround]
+
 [title="2"]Payment system[/title]
 
 [surround]

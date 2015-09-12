@@ -66,7 +66,7 @@ class Hook_addon_registry_columns
     public function get_copyright_attribution()
     {
         return array(
-            'Based on the code of Adam Wulf',
+            'Based on the code of Adam Wulf ("Columnizer")',
         );
     }
 

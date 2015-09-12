@@ -27,7 +27,6 @@ Composr has a rich, multi-layered, permission system. In creation of this system
  - ease-of-use
  - quickness of configuration
 
-[media width="150" description="Privileges are set like this" float="right"]data_custom/images/docs/tut_adv_configuration/adv_config_privileges.png[/media]
 Composr has two main types of permission:
 1) privileges
 2) access permissions (for defining what may be viewed)
@@ -36,6 +35,7 @@ Composr uses a "best of" permission system, meaning that a member has the best p
 
 [title="3"]Privileges[/title]
 
+[media width="150" description="Privileges are set like this" float="right"]data_custom/images/docs/tut_adv_configuration/adv_config_privileges.png[/media]
 Privileges allow the assignment of permissions to usergroups via check-boxes. Privileges have a very specific meaning, rather than perform a higher level role of deciding whether something may be viewed.
 Broadly, privileges are used to grant things like 'whether a member can access the site when it is closed', as well as to define sweeping permissions for content classes.
 Sweeping permissions are there so that instead of making you specify who can control (edit/delete/etc) each/every content-item/type-of-content/category-contents individually, you can specify them by impact-class.
@@ -66,9 +66,9 @@ To configure access permissions, you may edit the resource the permissions are f
 
 [title="2"]Installation options (base-configuration)[/title]
 
-If your core configuration settings change, if you move servers for example, then Composr may cease to function. To ameliorate this, an external configuration editor is provided that can reconfigure the [tt]_config.php[/tt] that stores core configuration settings, such as database access details.
+If your core configuration settings change, if you move servers for example, then Composr may cease to function. To ameliorate this, an Installation Options editor is provided that can reconfigure the [tt]_config.php[/tt] that stores core configuration settings, such as database access details.
 
-To launch the external config editor, go to the Admin Zone > Setup > Configuration > Installation Options.
+To launch the Installation Options editor, go to the Admin Zone > Setup > Configuration > Installation Options.
 If you are locked outside Composr, you will need to open up the [tt]<base-url>/config_editor.php[/tt] URL manually.
 
 The password to enter the config editor is the password you specified during installation (the 'Master password'). If you have forgotten it, you will need to edit [tt]_config.php[/tt] by hand.
@@ -88,9 +88,9 @@ You may use the config editor to:
 
 You may delete, and move pages using the [concept]Sitemap editor[/concept].
 
-If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via 'page' tags) will become invalid, unless they were specified as being in the zone named '_SEARCH' (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the 'Creating Sub-communities' tutorial. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
+If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via 'page' tags) will become invalid, unless they were specified as being in the zone named '_SEARCH' (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page]. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
 
-It is recommended that you never move pages because it complicates the upgrade process. It is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
+It is recommended that you never move default Composr pages because it complicates the upgrade process. Instead it is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
 
 [title="2"].htaccess[/title]
 
@@ -120,7 +120,7 @@ If you wish to have encrypted [concept]Conversr[/concept] custom profile fields,
 
 To generate the public/private key pair, you will need access to a computer running OpenSSL; either a local one, or your server via SSH. At a shell, execute the following commands to generate the public/private key pair:
 
-[code]openssl genrsa -aes256 -out private.pem 2048
+[code="Bash"]openssl genrsa -aes256 -out private.pem 2048
 openssl rsa -in private.pem -out public.pem -outform PEM -pubout[/code]
 
 The first command will generate a private key with a passphrase supplied when [tt]openssl[/tt] requests it. The passphrase must be long, secure, and kept private, as it's the only way to access the private key (and thus the encrypted data). The second command will generate a public key from the private key, and will require the [i]same[/i] passphrase to be entered again.

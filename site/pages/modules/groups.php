@@ -113,7 +113,7 @@ class Module_groups
                 'image' => find_theme_image('icons/48x48/menu/social/groups'),
             ));
 
-            $this->title = get_screen_title($club ? 'CLUB' : 'USERGROUP', true, array(make_fractionable_editable('group', $id, $group_name)));
+            $this->title = get_screen_title($club ? 'CLUB' : 'VIEW_USERGROUP', true, array(make_fractionable_editable('group', $id, $group_name)));
 
             $this->id = $id;
             $this->group = $group;
@@ -148,7 +148,7 @@ class Module_groups
                 $group_name = cns_get_group_name($id);
 
                 breadcrumb_set_self(do_lang_tempcode('DONE'));
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('USERGROUPS')), array('_SELF:_SELF:view:' . strval($id), do_lang_tempcode('USERGROUP', escape_html($group_name)))));
+                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('USERGROUPS')), array('_SELF:_SELF:view:' . strval($id), do_lang_tempcode('VIEW_USERGROUP', escape_html($group_name)))));
             } else {
                 $group_name = cns_get_group_name($id);
             }

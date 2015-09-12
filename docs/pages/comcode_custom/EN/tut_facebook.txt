@@ -44,7 +44,7 @@ If you need to add someone else to your Facebook app (what you added above), to 
 To use the Facebook login support your Facebook app needs to be told the domain name you are using. This is for security reasons and because it saves login cookies to this domain. It can't be a domain like 'localhost' or 'mycomputer', so if you are testing on a local computer you will need to create an imaginary domain name and link it into 127.0.0.1 via your computers 'hosts' file, and configure your [tt]_config.php[/tt] file to use that as the base URL.
 
 For example, [tt]mycomposrtestsite.com[/tt], with a line like the following in your hosts file:
-[code]
+[code="Text"]
 127.0.0.1 mycomposrtestsite.com
 [/code]
 

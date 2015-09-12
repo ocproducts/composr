@@ -225,6 +225,9 @@ h1, h2, h3, .faux_h2 {
 	color: {$GET,heading_text};
 	border-bottom: 1px solid {$GET,pale_border};
 }
+h3 {
+	letter-spacing: -0.75px;
+}
 h1 {
 	font-size: 1.6em;
 	margin-top: 0.27em; /* Consistency with boxes (so gap between header and content is consistent), but rationalised against higher em font size */
@@ -240,6 +243,7 @@ h3 a, h3 a:hover {
 }
 h4 {
 	font-size: 1em;
+	color: {$GET,heading_text};
 	font-weight: bold;
 }
 /* An iframe screen */
@@ -463,7 +467,9 @@ header h1 {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
 	position: relative;
-	top: -16px;
+	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+		top: -16px;
+	/*{+END}*/
 	padding-top: 6px;
 	padding-bottom: 3px;
 }
@@ -495,12 +501,8 @@ header h1 {
 	display: block;
 }
 .logo_outer .logo {
-	/*{+START,IF,{$MOBILE}}*/
-		width: 100%;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		max-width: 100%;
-	/*{+END}*/
+	width: 100%;
+	height: auto;
 }
 
 .global_navigation {
@@ -1380,7 +1382,7 @@ th.meta_data_title {
 
 	overflow: hidden;
 }
-td>.box {
+td>.box, .right>.box, .left>.box {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1429,6 +1431,7 @@ td>.box {
 	text-decoration: none;
 	font-size: 1em;
 	border: 0;
+	letter-spacing: 0;
 
 	/* .box_inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
 	margin: -0.506em 0 0.506em -0.506em; /* Would be -0.5 but Opera does not seem to like */
@@ -2711,12 +2714,14 @@ dl.compact_list>dd {
 	margin: 0;
 }
 
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol {
+ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul, .zone_running_docs .comcode_page ol {
 	margin: 0;
 	padding: 0 !important;
+}
+ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul {
 	list-style-type: square;
 }
-.spaced_list li {
+.spaced_list li, .zone_running_docs .comcode_page li {
 	margin: 0.5em 0 0.5em 25px !important;
 	padding: 0;
 }
@@ -2731,8 +2736,9 @@ ul.actions_list {
 	padding: 0;
 	margin: 0;
 }
-ul.actions_list>li {
-	padding: 2px 0 2px 18px;
+ul.actions_list>li, .attachment ul.actions_list>li /*for higher precedence for attachments within docs zone*/ {
+	padding: 2px 0 2px 18px !important;
+	margin: 0 !important;
 }
 ul.actions_list_compact>li, ul.actions_list_super_compact>li {
 	padding: 0 0 0 18px;
@@ -4019,12 +4025,12 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	display: none;
 }
 
-.comcode_table_of_contents ol {
-	padding: 0;
-	margin: 0;
+body div.comcode_table_of_contents>div.box_inner>ol {
+	padding: 0 !important;
+	margin: 0 !important;
 	margin-{!en_left}: 20px !important;
 }
-.comcode_table_of_contents li {
+body div.comcode_table_of_contents>div.box_inner>ol>li {
 	margin: 0.2em 0 !important;
 	padding: 0 !important;
 }
@@ -4106,13 +4112,16 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 
 .attachment {
 	margin: 1em 0;
+	margin-bottom: 1px !important; /* Overrides 0 on .left>figure, .right>figure */
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		border: 1px solid {$GET,standard_border};
 		padding: 0.5em !important;
 	/*{+END}*/
 	font-size: 0.9em;
-	display: inline-block;
+	/*display: inline-block; Actually table works better, shows margins even when not floated*/
+	display: table;
 	max-width: 100%;
+	background: {$GET,WB};
 }
 figure {
 	margin: 1em 0;

@@ -4,6 +4,8 @@ This tutorial will describe the thought processes required to successfully desig
 
 [contents]decimal,lower-alpha[/contents]
 
+[media framed="0" thumb="0"]data_custom/images/docs/tut_drinking/feature_rich.jpg[/media]
+
 [title="2"]The process[/title]
 
 The ordinary process of creating a bespoke advanced website (rather than just a basic site of pages) goes along lines as follows:
@@ -14,36 +16,36 @@ The ordinary process of creating a bespoke advanced website (rather than just a 
 Different people and teams operate slightly differently, and different development methodologies (such as 'the waterfall method', or 'extreme programming') dictate the process to be different, but generally, the basic process is similar.
 
 Creating a Composr-based website is similar, but during the design phase it is very important to take into account that the system should be designed to make use of the features Composr already provides. This presents a huge economic reward, but also requires a special mode of thinking. During the phase, instead of thinking:
-[quote]'how can I coherently structure this, and what set of features will I end up needing for it?'[/quote]
+[quote]How can I coherently structure this, and what set of features will I end up needing for it?[/quote]
 you (or a designer working on your behalf) needs to be thinking:
-[quote]'what Composr feature best fits each of my needs?'[/quote]
-This may seem an obvious approach but to do it you need to open your mind, setting aside preconceptions that you may have developed about things, so that you can start thinking about them in Composr terms instead. Often you will need to adapt your initial ideas so that they map better to what Composr can provide -- not for the worse, but just to make your implementation easier. If you would rather avoid this, or find that the closest matching Composr features need adapting, you may want to [page="site:support"]contact ocProducts[/page].
+[quote]What Composr feature best fits each of my needs?[/quote]
+This may seem an obvious approach but to do it you need to open your mind, setting aside preconceptions that you may have developed about things, so that you can start thinking about them in Composr terms instead. Often you will need to adapt your initial ideas so that they map better to what Composr can provide -- not for the worse, but just to make your implementation easier.
 
 [title="2"]An example[/title]
 
-I can personally attest to the confused image that comes from a client who is not implementing a system themselves, and the need for clarification (and the client cannot be blamed for this -- they are not a trained systems analyst!). In this sense, implementing a solution in Composr is no different to any other -- it will need to be refined before it can be implemented. Here is a made-up example, of written up notes of a clients requirement for one aspect of their website...
+A client who wants a web system developing will often have a confused idea for what they want. The client cannot be blamed for this -- they are not a trained systems analyst! Composr is therefore similar to any kind of systems engineering product -- an experienced system analyst (or generally smart person) will need to refine down the idea prior to implementation.
 
-[quote="Client"]'There should be a set of pages where from each you can download one of our products. The user should get a choice between the version packaged for engineers, and the version packaged for managers. Files should be available in both zipped-pdf and pdf format.'[/quote]
+Follows is an imaginery scenario, a brief provided by a client...
 
-On face value, this looks like it would not fit into Composr in a clean way (i.e. Without just putting a load of attachments on to a page and manually maintaining it), without implementing a new custom module. However, with some careful thought, this could be re-shaped to fit perfectly with features Composr provides...
+[quote="Client"]There should be a set of pages where from each you can download one of our products. The user should get a choice between the version packaged for engineers, and the version packaged for managers. Files should be available in both zipped-pdf and pdf format.[/quote]
+
+On face value, this looks like it would not fit into Composr's pre-existing features in a clean way (i.e. without just putting a load of attachments on to a page and manually maintaining it). However, with some careful thought, this could be re-shaped to fit perfectly with features Composr provides...
 
 [quote="Composr-solution analyst"]
 A download category tree should be provided as follows...
-For engineers
-<each product>
-
-<pdf download>
-
-<zipped-pdf download>
-For managers
-<each product>
-
-<pdf download>
-
-<zipped-pdf download>
+For engineers:
+ <each product>
+  <pdf download>
+  <zipped-pdf download>
+For managers:
+ <each product>
+  <pdf download>
+  <zipped-pdf download>
 [/quote]
 
-It might not be exactly what was asked for, but it meets requirements and the client would likely be pleased to find that for 'no extra cost' their products may have images shown on the download page, and outmoding: things that they might never have considered, but now love. If this example was a bit more complex, and the download system was lacking, then improving the download system would be substantially cheaper than writing a whole new module from-scratch.
+It might not be exactly what was asked for, but it meets requirements and the client would likely be pleased to find that for "no extra cost" their products may have images shown on the download page, comments, and ratings: things that they might never have considered, but now love.
+
+If this example was a bit more complex, and the download system was lacking, then improving the download system would likely still be substantially cheaper than writing a whole new module from-scratch.
 
 [title="2"]Content types[/title]
 

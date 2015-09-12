@@ -9,7 +9,7 @@
 		{+END}
 		{+START,IF_NON_PASSED,POST_COMMENT}
 			<span class="field_name">
-				<label class="accessibility_hidden" for="{NAME*}">{!_POST}</label>
+				<label class="accessibility_hidden" for="{NAME*}">{!TEXT}</label>
 			</span>
 
 			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required_star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>

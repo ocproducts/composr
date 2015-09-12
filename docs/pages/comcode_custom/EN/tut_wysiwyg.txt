@@ -6,7 +6,8 @@ Composr "Long text" Comcode content is, by default, edited using a WYSIWYG edito
 
 [title="2"]WYSIWYG editors on the web[/title]
 
-A WYSIWYG (What You See Is What You Get) editor is a document editor where the editor's editing interface roughly mirrors the appearance of the final document. Web sites deploy WYSIWYG editors via a combination of JavaScript and built-in editing features that are present in some of the popular modern web browsers. Online WYSIWYG editors are HTML editors: the document created is manipulated and transmitted as HTML.
+[media description="The Composr WYSIWYG editor. See the disable button in the top-right." float="right" width="150"]data_custom/images/docs/tut_wysiwyg/wysiwyg.png[/media]
+A WYSIWYG (What You See Is What You Get) editor is a document editor where the editor's editing interface roughly mirrors the appearance of the final document. Web sites deploy WYSIWYG editors via a combination of JavaScript and built-in editing features that are present in the popular modern web browsers. Online WYSIWYG editors are HTML editors: the document created is manipulated and transmitted as HTML.
 
 [title="2"]Integrated editor[/title]
 
@@ -73,14 +74,15 @@ There are currently 5 ways to get images (and other files) into the WYSIWYG edit
 
 [title="3"]Attachments[/title]
 
-Composr has its own system for making attachments. If the WYSIWYG editor is for a 'Post area' then there will be an attachment facility beneath it. Files may be chosen using this attachment facility, and when this is done, a marker will be placed into the editor. The marker looks something like:
-[code]
-[attachment]new_1[/attachment]
-[/code]
+Composr has its own system for making attachments. If the WYSIWYG editor is for a 'Post area' then there will be either:
+1) an attachment facility beneath it
+2) attachment upload via the WYSIWYG's image button (if the "Simplified attachments UI" option is on, which is the default)
 
-You may move this marker around by cutting and pasting it -- placing it anywhere you desire within the editor.
+Once files are chosen you may get the attachment options. Attachment options let you do things like 'float' the attachment. Whether you get the options or not depends on the code written in the [tt]ATTACHMENT_UI_DEFAULTS.js[/tt] template. By default image attachments bypass the options to simplify things (you can use the editor to change how attached images look anyway).
 
-You may also choose the attachment display method using a drop-down list near to where you chose the file. There are options there to 'float' the attachment, or to display it as an inline image, amongst others.
+After the options are set either a marker will be placed into the editor (non-image attachments) or the image will appear after a few seconds.
+
+You may move this marker/image around by cutting and pasting it -- placing it anywhere you desire within the editor.
 
 [title="3"]URLs: Referencing uploaded images[/title]
 
@@ -139,7 +141,7 @@ The remove styles button in the editor is very useful for removing junk styles.
 
 Additionally, the source-code view can be used to manually clean things up.
 
-[title="4"]Comcode conversion[/title]
+[title="4"]Comcode conversion (advanced)[/title]
 
 It is the view of ocProducts that, where possible, content should be able to be hand-edited, and usable in different contexts (e.g. on mobile phones as well as on the web).
 
@@ -152,7 +154,7 @@ Where HTML cannot be fully eliminated, Composr will encapsulate it with Comcode 
 Sometimes the Comcode conversion is imperfect. For example, line breaks can be introduced, or some custom formatting can be lost.
 
 If you do not want Comcode conversion, you can disable the Composr "Convert XHTML to Comcode" configuration option or include this hint in your content:
-[codebox]
+[code="Comcode"]
 {$,page hint: no_smart_conversion}
 [/codebox]
 
@@ -161,7 +163,7 @@ If you do not want Comcode conversion, you can disable the Composr "Convert XHTM
 Sometimes WYSIWYG editing is more trouble than it's worth. When particularly complex layouts are produced, or code pasted from documents, it can still result messy and slow code; especially when content is long. This is particularly bad for web-sites that favour very high web standards (such as perfect WCAG accessibility), which will always need to have a degree of hand-coding in them, to maintain those high standards.
 Generally it's also not a good idea to have anything that is not directly WYSIWYG in the WYSIWYG editor, including careful use of tags to apply custom CSS styles, or JavaScript. Various things can relate to it getting stripped or corrupted.
 For these situations it is best to simply turn the WYSIWYG editor off. You can do this on a per document basis by pasting this bit into your code:
-[code]
+[code="Tempcode"]
 {$,page hint: no_wysiwyg}
 [/code]
 If you turn off the WYSIWYG editor when editing something, Composr may actually add this automatically. You may notice then that the enable/disable button disappears from alongside that field. This is to stop other content editors going in, and then accidentally corrupting carefully constructed Comcode via WYSIWYG.

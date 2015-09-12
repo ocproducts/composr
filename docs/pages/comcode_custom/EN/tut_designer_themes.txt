@@ -4,7 +4,6 @@ Composr is designed for maximum design flexibility, and has a lot of functionali
 
 [contents]decimal,lower-alpha[/contents]
 
-[surround="spaced_list"]
 [title="2"]Feedback[/title]
 
 It is very important that at any point where you think things are confusing, either in Composr, or in this documentation, that you write it down and let us know. We strive to make Composr the most user-friendly way for making a sophisticated cost-effective website and we really need to know where people get confused in order to do that. Our job is never done making Composr easy to use.
@@ -114,7 +113,7 @@ CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates
 	[*]Comcode page: Right panel (if you have one on the design), [tt]:panel_right[/tt]
 	[*]Comcode page: Top panel (if you have one on the design), [tt]:panel_top[/tt]
 	[*]Comcode page: Bottom panel (if you have one on the design), [tt]:panel_bottom[/tt]
-	[*][tt]GLOBAL_HTML_WRAP[/tt]: Often there will be blocks in the header, like 'search' or 'login'. You can place these using code like [tt]{$BLOCK,block=<blockname>}[/tt]. Similarly sometimes the is a menu in the footer, which can be placed like [code]{$BLOCK,block=menu,type=<menu-type>,param=<menu-name>}[/code]
+	[*][tt]GLOBAL_HTML_WRAP[/tt]: Often there will be blocks in the header, like 'search' or 'login'. You can place these using code like [tt]{$BLOCK,block=<blockname>}[/tt]. Similarly sometimes the is a menu in the footer, which can be placed like [code="Tempcode"]{$BLOCK,block=menu,type=<menu-type>,param=<menu-name>}[/code]
 [/list]
 [/list]
 
@@ -129,7 +128,7 @@ There are a small number of cases where (for performance reasons) Composr does n
 [/box]
 [list="1"]
 [*]Now that the blocks are placed, you need to style them. See the tip to the right for how to find out what templates to edit.
-[*]There's a big risk that the final webmaster may come along and ruin any custom XHTML you have written via editing using the WYSIWYG editor. You can disable the WYSIWYG editor for a page by pasting this special comment into it:[code]{$,page hint: no_wysiwyg}{$,page hint: no_smart_conversion}[/code]
+[*]There's a big risk that the final webmaster may come along and ruin any custom XHTML you have written via editing using the WYSIWYG editor. You can disable the WYSIWYG editor for a page by pasting this special comment into it:[code="Tempcode"]{$,page hint: no_wysiwyg}{$,page hint: no_smart_conversion}[/code]
 [/list]
 
 [semihtml][b]This section is accompanied by a <a onclick="window.open(this.getAttribute('href'),'','width=910,height=700,status=no,resizable=yes,scrollbars=no'); return false;" href="{$BASE_URL*}/uploads/website_specific/compo.sr/swf_play.php?file=video_tutorials/designer_themes__investigation.mp4&amp;width=900&amp;height=675">video</a>.[/b][/semihtml]
@@ -165,11 +164,11 @@ Tempcode is not really a markup language. We call it a "filtering language". I w
 In particular some confusion can arise between Comcode and Tempcode, because both languages can be used to place blocks but the syntax is very different due to the conceptual difference between the languages. The concept of a Composr block is independent to Comcode or Tempcode, it's just a feature of Composr, and both languages can tie in to it.
 
 Here is how blocks can be placed in both languages...
-[code]
+[code="Comcode"]
 [block="mainparameter" a="1" b="2"]blockname[/block]
 [/code]
 is a "Comcode tag". The following Comcode is also equivalent:
-[code]
+[code="Comcode"]
 [block param="mainparameter" a="1" b="2"]blockname[/block]
 [/code]
 because the parameter named 'param' can be written in short-hand. 'param' is only special in two ways:
@@ -177,7 +176,7 @@ because the parameter named 'param' can be written in short-hand. 'param' is onl
  - Most blocks use it to pass in the main parameter the block needs, usually some kind of ID code. For example, for the [tt]menu[/tt] block it is the name of the menu to be loaded.
 
 The "Tempcode symbol" is written like:
-[code]
+[code="Tempcode"]
 {$BLOCK,block=blockname,param=mainparameter,a=1,b=2}
 [/code]
 As you can see there is no short-hand for skipping out 'param' in Tempcode, and the parameters are written in a different way, and the block name is also given as a parameter named [tt]block[/tt].
@@ -190,7 +189,7 @@ When Composr runs it actually converts the simple Comcode into the more complex 
 
 Comcode is a powerful language but you do not need to use it, because you can just use a single Comcode tag to embed XHTML into that Comcode.
 Just write like this:
-[code]
+[code="Comcode"]
 [semihtml]
 XHTML goes here
 [/semihtml]
@@ -207,7 +206,9 @@ If you are using jQuery you may want to consider linking to the online copy that
 [title="3"]Placing blocks into templates[/title]
 
 You can place a block in a template like:
-[code]{$BLOCK,block=<blockname>,...}[/code]
+[code="Tempcode"]
+{$BLOCK,block=<blockname>,...}
+[/code]
 Where "..." is further parameters.
 
 For an example you can see how it is done for the [tt]menu[/tt] block, in the 'Menus' section further down.
@@ -215,7 +216,7 @@ For an example you can see how it is done for the [tt]menu[/tt] block, in the 'M
 [title="3"]Creating page-links[/title]
 
 If you are linking to a specific page via a template or some XHTML within a Comcode page (i.e. you're not using a Composr menu) you can generate a consistent link to the page like:
-[code]
+[code="Text"]
 href="{$PAGE_LINK*,site:news}"
 [/code]
 "news" is the name of the page being linked to, and "site" is the zone the "news" page is in.
@@ -246,11 +247,11 @@ There are three situations that may require you to add new panels to Composr, or
 
 The solution to these problems are page/panel inclusion into templates. Any page name that starts with "panel_" is a panel and won't be shown in the site-map. Similarly, any page name that starts with "_" is considered special and won't show in the site-map.
 To include a new panel with the page name of [tt]panel_<panelname>[/tt] it is as simple as placing this code into your template:
-[code]
+[code="Tempcode"]
 {$LOAD_PANEL,panel_<panelname>}
 [/code]
 To include a page named [tt]<otherpagename>[/tt] into another Comcode page you can do something very similar using this in the page being included into:
-[code]
+[code="Tempcode"]
 {$LOAD_PAGE,<otherpagename>}
 [/code]
 Obviously the pages you reference must exist to show. Go to Content Management > Pages (Comcode pages) and type in the new page-link beneath the list of existing pages. For example, for these examples (assuming we are working in the welcome zone) we would create [tt]:panel_<panelname>[/tt] and [tt]:otherpagename[/tt]. You will then be in the page editor and can define the page contents there.
@@ -263,7 +264,7 @@ If you want the Logo Wizard to be able to modify your logo, you will need to mak
 1) [tt]themes/<yourthemename>/images/logo/default_logos/1.png[/tt] (the actual logo image)
 1) [tt]themes/<yourthemename>/images/logo/default_backgrounds/1.png[/tt] (the background to the full header)
 The logo wizard will use these as source files when creating the compound logo. If you need the logo wizard to put them in different places to the default Composr logo, or to use different colours, you can put the following into your [tt]themes/<yourthemename>/theme.ini[/tt] file:
-[code]
+[code="INI"]
 logo_x_offset=0
 logo_y_offset=0
 site_name_colour=FFFFFF
@@ -291,11 +292,11 @@ You don't want to hard-code sets of page-links into templates for themes as it's
 The menu layout types are distinguished by their templates. Each menu type has it's own set of templates that includes the name of the menu layout type. The template naming pattern would be [tt]MENU_<layouttype>.tpl[/tt], [tt]MENU_BRANCH_<layouttype>.tpl[/tt] and [tt]MENU_SPACER_<layouttype>.tpl[/tt]. You can create a new menu layout type just by making a new set of templates (using an existing set as a base), but this is virtually never necessary: it is often easiest just to customise one of the default sets.
 
 You can have as many menus of each layout type as you like. They are placed using the [tt]menu[/tt] block.
-[code]
+[code="Tempcode"]
 {$BLOCK,block=menu,type=<layouttype>,param=<name>}
 [/code]
 and in Comcode like:
-[code]
+[code="Tempcode"]
 [block="<name>" type="<layouttype>"]menu[/block]
 [/code]
 Where [tt]<name>[/tt] is something that identifies the particular menu instance, holding together the links in that particular menu instance. You can just make the [tt]<name>[/tt]s up, and you'll get a new empty menu each time you do.
@@ -325,7 +326,9 @@ To do this copy the following templates and edit the copies (for this example I 
 Each individual field is passed into the main template (for the case of the [tt]main_cc_embed[/tt] block, it is [tt]CATALOGUE_project_staff_CATEGORY_EMBED[/tt]), with names like [tt]{FIELD_0}[/tt] etc (this is the first field). [tt]{FIELDS}[/tt] is the formulaic arrangement and you'll probably want to remove it.
 
 If you're not sure what parameters are available to use in a template you can add this code temporarily:
-[code]{+START,PARAM_INFO}{+END}[/code]
+[code="Tempcode"]
+{+START,PARAM_INFO}{+END}
+[/code]
 And this will show a full print out of all the parameters available to you. Often it's hard to read this if you don't have a lot of space in your design at the time of you putting this in, but you can copy and paste it out to a word processor to keep it for reference. For example you may want the URL or the parameter for the IMG tag and these can both be found in this way.
 
 [semihtml][b]This section is accompanied by a <a onclick="window.open(this.getAttribute('href'),'','width=910,height=700,status=no,resizable=yes,scrollbars=no'); return false;" href="{$BASE_URL*}/uploads/website_specific/compo.sr/swf_play.php?file=video_tutorials/designer_themes__catalogues.mp4&amp;width=900&amp;height=675">video</a>.[/b][/semihtml]
@@ -374,14 +377,14 @@ These are achieved using Composr's [tt]main_screen_actions[/tt] block. We have d
 A lot of designs have buttons to change the font size. Personally I think this is a dreadful feature (because it's already a feature of every web browser, so achievable by the end user in a consistent way that works across all websites), but a lot of clients like it because they think it is a mark of an accessible website.
 
 Assuming your designs use 'em' font sizes then you can easily achieve it by adding a little JavaScript like this to your text size buttons:
-[code]
+[code="Text"]
 onclick="document.body.style.fontSize='120%'; return false;
 [/code]
 
 [title="3"]Complex content arrangements[/title]
 
 Sometimes a design will have what looks like a panel but actually only appears on the start page. For example, there might be an obvious page area, panels either side of the page area, and an obvious header, but also a bar that goes above the panels and is only shown for the start page. The best way to implement this is by actually making it a panel (one of the default ones, [tt]panel_top[/tt]) but putting some special code in there to make it only show for the start page. You can do this with the following code:
-[code]
+[code="Tempcode"]
 {+START,IF,{$MATCH_KEY_MATCH,:start}}
 ...
 {+END}
@@ -419,23 +422,22 @@ You will need to ensure you don't put English text into your templates. To avoid
 Designed by BigBoy designs
 [/quote]
 to internationalise it you would need to create a named language string. We'll pick a name that represents the text. In this case, [tt]DESIGNED_BY_TEAM[/tt]. We would replace the text with [tt]{!DESIGNED_BY_TEAM,BigBoy designs}[/tt] and add this to the [tt]lang_custom/EN/global.ini[/tt] file (create this file if it des not already exist):
-[code]
+[code="INI"]
 DESIGNED_BY_TEAM=Designed by {1}
 [/code]
 Do you see how we passed in a bit of constant text to the phrase that would not be translated ("BigBoy designs") and embedded it via [tt]{1}[/tt]? By doing this we avoid assuming word-order, because some languages order words in different ways.
 
 To make a French version of this string, we would simply add this to [tt]lang_custom/FR/global.ini[/tt]:
-[code]
+[code="INI"]
 DESIGNED_BY_TEAM=Con絠par {1}
 [/code]
 
 All Composr content can be translated, so you don't need to worry about things like menu items. The content text can be translated by the site team from the Admin Zone via a prioritised translation queue.
-[/surround]
 
 [title="2"]How Tempcode works, an illustrated example[/title]
 
 This is the default [tt]BLOCK_SIDE_NEWS.tpl[/tt]...
-[code]
+[code="HTML"]
 <div class="box guid_{_GUID}"><div class="box_inner">
 	<h3>{TITLE}</h3>
 
@@ -463,7 +465,7 @@ Now I will explain what this means, by cutting it up into pieces....
 
 1)
 
-[code]
+[code="Tempcode"]
 {CONTENT}
 [/code]
 
@@ -476,7 +478,7 @@ Another example: For a 'tree' menu, the 'wrapper' template is [tt]MENU_tree.tpl[
 
 2)
 
-[code]
+[code="Tempcode"]
 {+START,IF_EMPTY,{CONTENT}}
 	...
 {+END}
@@ -487,7 +489,7 @@ This is useful to show a "there is no news yet" message when there is no news.
 
 3)
 
-[code]
+[code="Tempcode"]
 {+START,IF_NON_EMPTY,{CONTENT}}
 	...
 {+END}
@@ -496,7 +498,7 @@ This is useful to show a "there is no news yet" message when there is no news.
 This is the opposite to '2'. It shows the "..." part if there are news posts passed in.
 This is useful if you want to do something like put [tt]<ul>...</ul>[/tt] around the news (if each item is a list entry) but only want to show the [tt]<ul>[/tt] and [tt]</ul>[/tt] if the list is not going to be empty.
 I.e. this kind of thing...
-[code]
+[code="Tempcode"]
 {+START,IF_NON_EMPTY,{CONTENT}}
 	<ul>
 		{CONTENT}
@@ -508,7 +510,7 @@ Often we will use it in templates even when it is not needed if we also have a [
 
 4)
 
-[code]
+[code="HTML"]
 <p class="nothing_here">...</p>
 [/code]
 
@@ -516,7 +518,7 @@ This just is some static HTML.
 
 5)
 
-[code]
+[code="Tempcode"]
 {!NO_NEWS}
 [/code]
 
@@ -525,7 +527,7 @@ For themes it is alright to hard-code English text.
 
 6)
 
-[code]
+[code="Tempcode"]
 {$?,{BLOG},{!BLOG_NO_NEWS},{!NO_NEWS}}
 [/code]
 
@@ -538,7 +540,7 @@ The purpose of the logic is we don't want to say "there is no news yet" when we 
 
 7)
 
-[code]
+[code="Tempcode"]
 {$IS_NON_EMPTY,{SUBMIT_URL}}
 [/code]
 
@@ -550,7 +552,7 @@ However, because this code is actually used inside a check (see 11, below) it is
 
 8)
 
-[code]
+[code="Tempcode"]
 {$?,...,<a rel="add" href="{SUBMIT_URL*}">{!ADD_NEWS}</a>|}
 [/code]
 

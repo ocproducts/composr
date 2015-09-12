@@ -26,12 +26,13 @@ Now all we need to do is to read over Composr's '[tt]cns_wrapper[/tt]' function 
 Knowing how to program, I now have written my code, with my modified files saved as following:
 
 [box="CNS_USER_MEMBER.tpl"]
-[codebox]
-{+START,IF_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{AT#}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}{+START,IF_NON_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{!MEMBER}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}<span class="accessibility_hidden">, </span>[/codebox]
+[code="HTML"]
+{+START,IF_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{AT#}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}{+START,IF_NON_PASSED,AT}<a {+START,IF_PASSED,COLOUR}style="color: {COLOUR}" {+END}title="{!MEMBER}" href="{PROFILE_URL*}">{USERNAME*}</a>{+END}<span class="accessibility_hidden">, </span>
+[/code]
 [/box]
 
 [box="CNS_STATS.tpl"]
-[codebox]
+[code="HTML"]
 <br />
 
 <div class="box guid_{_GUID}">
@@ -76,11 +77,11 @@ Knowing how to program, I now have written my code, with my modified files saved
 </div>
 
 <br />
-[/codebox]
+[/code]
 [/box]
 
 [box="cns_general.php"]
-[codebox]
+[code="PHP"]
 <?php
 
 /**
@@ -295,7 +296,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
 
     return $wrap;
 }
-[/codebox]
+[/code]
 [/box]
 
 [media width="150" description="Our functionality modification in action." float="right"]data_custom/images/docs/tut_hardcore_3/hardcore_online.png[/media]

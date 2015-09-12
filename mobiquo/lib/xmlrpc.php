@@ -1764,7 +1764,8 @@ class xmlrpc_client
 			print "<PRE>\n---CURL INFO---\n";
 			foreach (curl_getinfo($curl) as $name=>$val)
 			{
-				print $name.': '.htmlentities($val)."\n";
+				if (is_scalar($val))
+    				print $name.': '.htmlentities($val)."\n";
 			}
 			print "---END---\n</PRE>";
 		}

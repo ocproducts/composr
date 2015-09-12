@@ -604,7 +604,7 @@ class Forum_driver_ipb1 extends forum_driver_ipb_shared
         }
         $row = $rows[0];
         if ($this->is_banned($row['id'])) { // All hands to the guns
-            $out['error'] = do_lang_tempcode('MEMBER_BANNED');
+            $out['error'] = do_lang_tempcode('YOU_ARE_BANNED');
             return $out;
         }
         if ($row['password'] != $password_hashed) {

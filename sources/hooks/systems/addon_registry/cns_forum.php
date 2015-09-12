@@ -506,7 +506,7 @@ class Hook_addon_registry_cns_forum
 
         $orderings = '<option>1</option><option>2</option><option>3</option>';
 
-        $orderings = '<label for="order_' . strval(1) . '">' . do_lang('ORDER') . ' <select id="order_' . strval(1) . '" name="order_' . strval(1) . '">' . $orderings . '</select></label>';
+        $orderings = '<label for="order_' . strval(1) . '">' . do_lang('SORT') . ' <select id="order_' . strval(1) . '" name="order_' . strval(1) . '">' . $orderings . '</select></label>';
 
         $forum_groupings = do_lorem_template('CNS_EDIT_FORUM_SCREEN_GROUPING', array(
             'ORDERINGS' => $orderings,

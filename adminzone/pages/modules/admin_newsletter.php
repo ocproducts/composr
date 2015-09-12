@@ -704,7 +704,7 @@ class Module_admin_newsletter extends Standard_crud_module
                         $_c = newsletter_who_send_to($map, $lang, 0, 0);
                         $c6 = $_c[6]['g' . strval($group_id)];
                         if ($c6 != 0) {
-                            $newsletters->attach(form_input_list_entry('g' . strval($group_id), false, do_lang_tempcode('THIS_WITH', do_lang_tempcode('GROUP'), make_string_tempcode(escape_html($group)))));
+                            $newsletters->attach(form_input_list_entry('g' . strval($group_id), false, do_lang_tempcode('THIS_WITH', do_lang_tempcode('USERGROUP'), make_string_tempcode(escape_html($group)))));
                         }
                     }
                 }
@@ -1463,7 +1463,7 @@ class Module_admin_newsletter extends Standard_crud_module
                     $_c = newsletter_who_send_to($map, $lang, 0, 0);
                     $c6 = $_c[6]['g' . strval($group_id)];
                     if ($c6 != 0) {
-                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('GROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c6))), 'g' . strval($group_id), post_param_integer('g' . strval($group_id), 0) == 1));
+                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('USERGROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c6))), 'g' . strval($group_id), post_param_integer('g' . strval($group_id), 0) == 1));
                     }
                 }
             }

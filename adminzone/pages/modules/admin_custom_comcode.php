@@ -144,6 +144,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $type = get_param_string('type', 'browse');
 
         require_lang('custom_comcode');
+        require_lang('comcode');
 
         set_helper_panel_tutorial('tut_adv_comcode');
 

@@ -367,7 +367,7 @@ class CMSUserRead
 
             $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($user_id);
             foreach ($groups as $group_id) {
-                $custom_fields_list[do_lang('GROUP')] = cns_get_group_name($group_id, true);
+                $custom_fields_list[do_lang('USERGROUP')] = cns_get_group_name($group_id, true);
             }
 
             $member_title = get_member_title($user_id);

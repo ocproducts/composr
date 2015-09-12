@@ -128,7 +128,7 @@ There is a special feature on the screen to add a catalogue with a category tree
 To define the tree you just need to type in the categories you want in a special format that is very quick to write.
 
 This is best shown by example, so here is an example for a catalogue category tree with that has categories for each of the states/provinces in the USA and Canada:
-[code]
+[code="Text"]
 USA\Alabama|USA\Alaska|USA\Arizona|USA\Arkansas|USA\California|USA\Colorado|USA\Connecticut|USA\Delaware|USA\Florida|USA\Georgia|USA\Hawaii|USA\Idaho|USA\Illinois|USA\Indiana|USA\Iowa|USA\Kansas|USA\Kentucky|USA\Louisiana|USA\Maine|USA\Maryland|USA\Massachusetts|USA\Michigan|USA\Minnesota|USA\Mississippi|USA\Missouri|USA\Montana|USA\Nebraska|USA\Nevada|USA\New Hampshire|USA\New Jersey|USA\New Mexico|USA\New York|USA\North Carolina|USA\North Dakota|USA\Ohio|USA\Oklahoma|USA\Oregon|USA\Pennsylvania|USA\Rhode Island|USA\South Carolina|USA\South Dakota|USA\Tennessee|USA\Texas|USA\Utah|USA\Vermont|USA\Virginia|USA\Washington|USA\West Virginia|USA\Wisconsin|USA\Wyoming|Canada\Alberta|Canada\British Columbia|Canada\Manitoba|Canada\New Brunswick|Canada\Newfoundland and Labrador|Canada\Northwest Territories|USA\Nova Scotia|USA\Ontario|USA\Prince Edward Island|Canada\Quebec|Canada\Saskatchewan|Canada\Yukon Territory
 [/code]
 
@@ -159,7 +159,7 @@ Whilst the main [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template uses
 
 
 For example, take the [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template:
-[codebox]
+[code="HTML"]
 <div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table">
 	<colgroup>
 		<col class="field_name_column" />
@@ -170,10 +170,10 @@ For example, take the [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] templat
 		{FIELDS}
 	</tbody>
 </table></div>
-[/codebox]
+[/code]
 
 If we wanted to jazz a 'classifieds' catalogue up a bit, we might change it to something like:
-[codebox]
+[code="HTML"]
 <div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table">
 	<colgroup>
 		<col class="field_name_column" />
@@ -194,7 +194,7 @@ If we wanted to jazz a 'classifieds' catalogue up a bit, we might change it to s
 	to query more about {FIELD_0*}.
 </p>
 {+END}
-[/codebox]
+[/code]
 
 You can see how you can reference individual fields in the template like [samp]{FIELD_0}[/samp].
 For a full table of fields you can use, put [samp]{+START,PARAM_INFO}{+END}[/samp] temporarily into the template, and it will show you everything defined in a neat table.
@@ -229,20 +229,20 @@ As well as customising the catalogue templates, you may also customise the langu
 To do this, you need to manually edit the [tt]catalogues.ini[/tt] file to add new equivalents to the [tt]DEFAULT__*[/tt] strings (where 'DEFAULT' is replaced with the codename of the catalogue that you are customising for).
 
 You can see this has already been done for some of the default catalogues:
-[codebox]
+[code="INI"]
 links__CATALOGUE={1}
 links__CATALOGUE_INDEX=Link category index: {1}
 links__CATALOGUE_CATEGORY={1}
 links__CATALOGUE_ENTRY=Link: {1}
-[/codebox]
+[/code]
 
 If you have the language cache enabled then you will need to empty the language cache before these changes will show up.
 
 You can also add descriptions to the add and edit screens for catalogues by creating new strings like:
-[codebox]
+[code="INI"]
 CATALOGUE_<catalogue-name>_ADD_TEXT=Shown on add screen.
 CATALOGUE_<catalogue-name>_EDIT_TEXT=Shown on edit screen.
-[/codebox]
+[/code]
 
 [title="3"]eCommerce catalogues[/title]
 

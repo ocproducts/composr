@@ -1,6 +1,5 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, part 1b[/title]
 
-[surround="spaced_list"]
 &laquo; Return to [page="_SEARCH:codebook"]Code Book table of contents[/page]
 
 [contents][/contents]
@@ -231,7 +230,7 @@ Use cases:
  - if you just have a few fields so want to show all entries at once
 
 First call up the code:
-[code]
+[code="PHP"]
 require_code('templates_results_table');
 [/code]
 
@@ -354,13 +353,13 @@ Of course, you need to define an appropriate URL, an appropriate language string
  - It also propagates any [tt]attach_message[/tt] calls onto the final screen, so that any messages put out will actually be seen
 
 If you just want to do a simple redirect without returning a screen, you can use [tt]assign_refresh[/tt]:
-[code]
+[code="PHP"]
 require_code('site2');
 assign_refresh($url, 0.0);
 [/code]
 
 Of course you can also just do raw PHP, for the simplest cases:
-[code]
+[code="PHP"]
 header('Location:' . $url);
 [/code]
 
@@ -418,7 +417,7 @@ To support URL monikers you need to define a new content type, via defining a ne
 You need to define all the details in the hook, which is frankly a complex task. Some of these will be defined as 'null', as you probably won't (for example) have a search hook to tie it into.
 
 The specific ones relating to URL monikers are...
-[code]
+[code="PHP"]
 'support_url_monikers' => true, // Set to true
 'connection' => $GLOBALS['SITE_DB'], // Database the resource table is in
 'table' => 'example', // The resource table
@@ -793,7 +792,7 @@ The term 'module' here is not exactly the same as a 'module' in the usual Compos
 
 When global privileges are overridden for pages, the page that the overriding is defined for is usually the name of the content management page; for example, if the 'add_midrange_content' privileges is overridden (this permission controls whether a member may submit a 'medium-impact entry', like a download or image) for the download system as a whole, it would be overridden with the page name 'cms_downloads'.
 If we were overriding for a category, it would then be the permission-module that identified the type of category we were overriding for, and the ID of that category would also be stored. E.g. if we were overriding for a download category '3' (permissions module is 'downloads'), we'd be referencing '3' and 'downloads'.
-Note the distinction between overriding for a page, and for overriding for a permission-module -- for many permissions webmasters can override for both, meaning page names and also permission-modules/identifiers together need to be passed to the API functions. If the permissions tree editor allows an override to be set, you must make your permission calls respect this by referencing the correct permission-modules and page names. It is the [tt]get_privilege_overrides[/tt] function of a module (e.g. 'cms_downloads') that defines what permissions may be overridden.
+Note the distinction between overriding for a page, and for overriding for a permission-module -- for many permissions webmasters can override for both, meaning page names and also permission-modules/identifiers together need to be passed to the API functions. If the Permissions Tree Editor allows an override to be set, you must make your permission calls respect this by referencing the correct permission-modules and page names. It is the [tt]get_privilege_overrides[/tt] function of a module (e.g. 'cms_downloads') that defines what permissions may be overridden.
 
 Privileges are checked and set purely through the permissions API ('[tt]has_privilege[/tt]'), using permission-modules (e.g. 'downloads') and identifiers (e.g. '3'). There are no hooks needed, just:
  - the name of the privilege
@@ -1083,6 +1082,5 @@ Sometimes on a complex project you will want a module to have a default Filterco
 The best way to achieve this is to code up a startup hook. Using PHP code you can detect non-presence of a URL variable, and then set your own default directly into [tt]$_GET[/tt] according to your own context.
 
 For example, if you wanted a module as seen in one zone to have one virtual root, and the same module as seen in another zone, to have another -- you could code up a startup hook that sets the default root accordingly.
-[/surround]
 
 {$SET,tutorial_tags,Development,PHP,core_forum_drivers,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Back-end development, part 2.}[block]main_tutorial_rating[/block]

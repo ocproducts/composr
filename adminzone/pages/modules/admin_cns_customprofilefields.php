@@ -234,7 +234,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                     $groups->attach(form_input_list_entry(strval($group['id']), count(array_intersect(array($group['id']), explode(',', $only_group))) != 0, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
                 }
             }
-            $fields->attach(form_input_multi_list(do_lang_tempcode('GROUP'), do_lang_tempcode('DESCRIPTION_FIELD_ONLY_GROUP'), 'only_group', $groups));
+            $fields->attach(form_input_multi_list(do_lang_tempcode('USERGROUP'), do_lang_tempcode('DESCRIPTION_FIELD_ONLY_GROUP'), 'only_group', $groups));
         } else {
             $hidden->attach(form_input_hidden('only_group', ''));
         }
@@ -362,7 +362,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             if (!$selected_one) {
                 $orderlist->attach(form_input_list_entry(strval($order), true, integer_format($order + 1)));
             }
-            $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('ORDER'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $orderlist));
+            $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $orderlist));
 
             $fr = array();
             $fr[] = $trans;

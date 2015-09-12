@@ -258,7 +258,7 @@ When a user tries to login Composr, but fails, it is logged. A proportion (appro
 [title="2"]robots.txt[/title]
 
 To remove the possibility of search engines indexing the login screens of your Admin Zone you can create a [tt]robots.txt[/tt] file on the root of your domain name:
-[code]
+[code="htaccess"]
 User-agent: *
 Disallow: /adminzone/
 Sitemap: http://yourwebsite/data_custom/sitemaps/index.xml
@@ -294,7 +294,7 @@ All users with privileged access should have referrers enabled in their web brow
 By default browsers do have referrers enabled, but some firewall products may disable them for very minor privacy reasons (to stop a website knowing what link you followed to get to it, which most people would agree is not really a privacy issue to them at all).
 
 To check you have referrers enabled, go to Commandr (Admin Zone > Tools > Commandr) and type:
-[code]
+[code="Commandr"]
 :echo cms_srv('HTTP_REFERER');
 [/code]
 You should get a URL back that is a URL under your own website.
@@ -313,7 +313,7 @@ To force members to be vetted, you need to enable the 'Require member validation
 
 [title="3"]SSL[/title]
 
-{!security:DOC_SSL}
+{!ssl:DOC_SSL}
 
 SSL certificates vary in price immensely, but the price generally depends on the strength of encryption, the prominence of the root certificate authority (a more respected authority may charge more because it carries out more checks, and thus experienced users feel more confident with it), the distance from the root certificate authority the certificate is, and the validity length.
 
@@ -378,7 +378,7 @@ It may seem an obvious solution, to not use an executable file to store configur
 [title="3"]Master password[/title]
 
 For added security you can remove the:
-[code]
+[code="PHP"]
 $SITE_INFO['master_password']='...';
 [/code]
 line from [tt]_config.php[/tt].

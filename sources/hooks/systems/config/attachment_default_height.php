@@ -31,7 +31,7 @@ class Hook_config_attachment_default_height
     public function get_details()
     {
         return array(
-            'human_name' => 'ATTACHMENT_DEFAULT_HEIGHT',
+            'human_name' => 'DEFAULT_VIDEO_HEIGHT',
             'type' => 'integer',
             'category' => 'FEATURE',
             'group' => '_COMCODE',

@@ -101,7 +101,7 @@ function add_bookmark_form($post_url)
 
     $set_name = 'folder';
     $required = true;
-    $set_title = do_lang_tempcode('BOOKMARK_FOLDER');
+    $set_title = do_lang_tempcode('FOLDER');
     $field_set = alternate_fields_set__start($set_name);
 
     $field_set->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('DESCRIPTION_OLD_BOOKMARK_FOLDER'), 'folder', $list, null, false, false));

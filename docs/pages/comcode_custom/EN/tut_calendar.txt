@@ -42,6 +42,7 @@ For monthly events you can also specify a special day-of-week position, from the
 A member may remove reminders for events, and also have multiple reminders with different notice times.
 
 [title="2"]Views[/title]
+
 [surround]
 [media width="150" description="The calendar day view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_day.png[/media]
 [media width="150" description="The calendar year view" float="right"]data_custom/images/docs/tut_calendar/calendar_view_year.png[/media]
@@ -67,6 +68,7 @@ You may also declare your 'interests', which marks you down for auto-reminding f
 
 From the screen-shots of the calendar views you can see how the recurrence pattern causes a gap where for one week in four, there is no shown event.
 [/surround]
+
 [title="2"]Adding an event[/title]
 
 To add an event, simply click in one of the boxes on the calendar view; this will fill in the date and time automatically for you, although you may wish to adjust them.
@@ -109,7 +111,7 @@ Users may choose to overlay [concept]RSS[/concept] or [concept]Atom[/concept] fe
 
 [title="2"]Internationalisation / Culture[/title]
 
-It is possible to customise the calendar to have a different start-of-week-day, or to use a 24 hour clock. This is done by editing the time strings in the [tt]global[/tt] language file. For more information, see 'Localisation and internationalisation' tutorial.
+It is possible to customise the calendar to have a different start-of-week-day, or to use a 24 hour clock. This is done by editing the time strings in the [tt]global[/tt] language file. For more information, see the [page="_SEARCH:tut_intl"]Localisation and internationalisation tutorial[/page].
 
 [concepts
  1_key="Event"                1_value="An entry in the calendar system that may recur"

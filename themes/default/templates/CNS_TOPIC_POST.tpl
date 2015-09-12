@@ -14,7 +14,7 @@
 	<div class="cns_forum_box_right cns_post_details" role="note">
 		<div class="cns_post_details_date">
 			{$SET,post_date,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
-			{$?,{$MOBILE},{$GET,post_date},{!POST_DATE,{$GET,post_date}}}
+			{$?,{$MOBILE},{$GET,post_date},{!POSTED_TIME_SIMPLE,{$GET,post_date}}}
 		</div>
 
 		{+START,IF_NON_EMPTY,{POSTER}}

@@ -120,6 +120,8 @@ class Block_main_staff_checklist
     {
         require_javascript('ajax');
 
+        require_lang('dates');
+
         // Handle custom tasks
         $new_task = post_param_string('new_task', null);
         $recurint = post_param_integer('recur', 0);
@@ -134,16 +136,16 @@ class Block_main_staff_checklist
             $recurevery = '';
             switch ($r['recurevery']) {
                 case 'mins':
-                    $recurevery = do_lang('_MINUTES');
+                    $recurevery = do_lang('DPLU_MINUTES');
                     break;
                 case 'hours':
-                    $recurevery = do_lang('_HOURS');
+                    $recurevery = do_lang('DPLU_HOURS');
                     break;
                 case 'days':
-                    $recurevery = do_lang('_DAYS');
+                    $recurevery = do_lang('DPLU_DAYS');
                     break;
                 case 'months':
-                    $recurevery = do_lang('_MONTHS');
+                    $recurevery = do_lang('DPLU_MONTHS');
                     break;
             }
             $custasks->attach(do_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(

@@ -51,7 +51,7 @@ class Hook_search_filedump
         $info = array();
         $info['lang'] = do_lang_tempcode('FILEDUMP');
         $info['default'] = false;
-        $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('_FILE_SIZE'));
+        $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('FILE_SIZE'));
 
         $info['permissions'] = array(
             array(

@@ -24,10 +24,10 @@
 						</td>
 					</tr>
 					<tr>
-						<th>{!BOOKMARK_FOLDER}</th>
+						<th>{!FOLDER}</th>
 						<td>
 							<div class="constrain_field">
-								<div class="accessibility_hidden"><label for="folder_{ID*}">{!BOOKMARK_FOLDER}</label></div>
+								<div class="accessibility_hidden"><label for="folder_{ID*}">{!FOLDER}</label></div>
 								<input maxlength="80" size="{$?,{$MOBILE},30,50}" disabled="disabled" type="text" id="folder_{ID*}" name="folder" value="{FOLDER*}" />
 							</div>
 						</td>

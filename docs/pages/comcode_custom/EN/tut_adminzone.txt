@@ -4,6 +4,7 @@
 
 [contents]decimal,lower-alpha[/contents]
 
+[surround]
 [title="2"]First glance[/title]
 
 [media width="150" description="The Admin Zone at first glance" float="right"]data_custom/images/docs/tut_adminzone/adminzone_first_glance.png[/media]
@@ -13,8 +14,11 @@ The Admin Zone is divided into sections, with links across the top-panel to allo
 
 {!menus:DOC_CMS}
 
+[/surround]
+
 [title="2"]Admin Zone[/title]
 
+[surround]
 [title="3"]To-do list[/title]
 
 [media width="150" description="The to-do list" float="right"]data_custom/images/docs/tut_adminzone/adminzone_todo_list.png[/media]
@@ -25,6 +29,7 @@ Composr will attempt to mark whether or not these actions have been completely r
 [title="3"]Version Information[/title]
 
 This section shows information about the current version of Composr that you are using, and whether or not it is the most recent one. If not, you will be given a link to upgrade to the latest version.
+[/surround]
 
 [title="3"]Notes[/title]
 
@@ -63,19 +68,6 @@ If the [tt]content_reviews[/tt] addon is installed, you can set content to be re
 You can also set the last review date to be shown visibly to users. This might be very useful from some legal and customer service standpoints -- it is essentially an automatic public declaration of content that may be outdated, and thus that you should not necessarily be held to what it says.
 
 The content review settings are shown on content add/edit forms.
-
-[title="2"]Printing[/title]
-
-It is not usually appropriate for a printed webpage to look like it does on the screen. For example, margins would want removing from each side of the site, social media links should not show, background images should be disabled, and so on.
-There are 3 approaches to solving this problem that work together:
-1) Browsers automatically disable background images, when printing
-2) CSS provides a mechanism for specifying different display rules for the printed version; Composr makes use of this
-3) Composr has a parameter, [tt]wide_print[/tt], that will influence some aspects of how pages are put together
-
-The Composr [tt]wide_print[/tt] parameter is activated from either:
-a) The link from the [tt]side_printer_friendly[/tt] block
-b) The link from the [tt]main_screen_actions[/tt] block
-c) [i]Or, a link you've put together yourself[/i]
 
 [concepts
  1_key="Admin Zone"   1_value="The zone used to perform most site maintenance, accessible only by staff"

@@ -61,11 +61,11 @@ This rule (not on by default) introduces the assumption that the site is running
 Instead of disabling these rules, most issues can be avoided by the host removing the appropriate line from their configuration.
 
 For hosts using ModSecurity v1, remove:
-[code]
+[code="htaccess"]
 SecFilterScanPOST On
 [/code]
 For hosts using ModSecurity v2, remove:
-[code]
+[code="htaccess"]
 SecRequestBodyAccess On
 [/code]
 

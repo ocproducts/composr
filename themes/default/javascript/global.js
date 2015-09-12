@@ -1406,17 +1406,18 @@ function toggleable_tray(element,no_animate,cookie_id_name)
 }
 function begin_toggleable_tray_animation(element,animate_dif,animate_ticks,final_height,pic)
 {
-	var fullHeight=find_height(element,true);
+	var full_height=find_height(element,true);
 	if (final_height==-1) // We are animating to full height - not a fixed height
 	{
-		final_height=fullHeight;
+		final_height=full_height;
 		element.style.height='0px';
 		element.style.visibility='visible';
 		element.style.position='static';
 	}
-	if (fullHeight>300) // Quick finish in the case of huge expand areas
+	if (full_height>300) // Quick finish in the case of huge expand areas
 	{
-		animate_dif*=6;
+		toggleable_tray_done(element,final_height,animate_dif,'hidden',animate_ticks,pic);
+		return;
 	}
 	element.style.outline='1px dashed gray';
 
@@ -1453,27 +1454,31 @@ function toggleable_tray_animate(element,final_height,animate_dif,orig_overflow,
 		window.setTimeout(function() { toggleable_tray_animate(element,final_height,animate_dif,orig_overflow,animate_ticks,pic); } ,animate_ticks);
 	} else
 	{
-		element.style.height='auto';
+		toggleable_tray_done(element,final_height,animate_dif,orig_overflow,animate_ticks,pic);
+	}
+}
+function toggleable_tray_done(element,final_height,animate_dif,orig_overflow,animate_ticks,pic)
+{
+	element.style.height='auto';
+	if (animate_dif<0)
+	{
+		element.style.display='none';
+	}
+	element.style.overflow=orig_overflow;
+	element.style.outline='0';
+	if (pic)
+	{
 		if (animate_dif<0)
 		{
-			element.style.display='none';
-		}
-		element.style.overflow=orig_overflow;
-		element.style.outline='0';
-		if (pic)
+			set_tray_theme_image(pic,'expcon','expand','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/expand}','{$IMG;,2x/trays/expand}','{$IMG;,1x/trays/expand2}','{$IMG;,2x/trays/expand2}');
+		} else
 		{
-			if (animate_dif<0)
-			{
-				set_tray_theme_image(pic,'expcon','expand','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/expand}','{$IMG;,2x/trays/expand}','{$IMG;,1x/trays/expand2}','{$IMG;,2x/trays/expand2}');
-			} else
-			{
-				set_tray_theme_image(pic,'expcon','contract','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/contract}','{$IMG;,2x/trays/contract}','{$IMG;,1x/trays/contract2}','{$IMG;,2x/trays/contract2}');
-			}
-			pic.setAttribute('alt',pic.getAttribute('alt').replace((animate_dif<0)?'{!CONTRACT;}':'{!EXPAND;}',(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}'));
-			pic.cms_tooltip_title=(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}';
+			set_tray_theme_image(pic,'expcon','contract','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/contract}','{$IMG;,2x/trays/contract}','{$IMG;,1x/trays/contract2}','{$IMG;,2x/trays/contract2}');
 		}
-		trigger_resize(true);
+		pic.setAttribute('alt',pic.getAttribute('alt').replace((animate_dif<0)?'{!CONTRACT;}':'{!EXPAND;}',(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}'));
+		pic.cms_tooltip_title=(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}';
 	}
+	trigger_resize(true);
 }
 function handle_tray_cookie_setting(id)
 {

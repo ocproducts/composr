@@ -14,7 +14,7 @@ As with the previous tutorial, we'll avoid making things difficult for ourselves
 
 Here is our adminzone/pages/mini-modules_custom/admin_tracking.php file:
 
-[codebox]
+[code="PHP"]
 <?php
 
 /*
@@ -70,7 +70,7 @@ echo 'Failures...';
 print_r($failure);
 
 ?>
-[/codebox]
+[/code]
 
 [media width="150" description="Our mini-module in action on {$BRAND_BASE_URL}. Heavily censored to protect our and our visitors privacy ;)." float="right"]data_custom/images/docs/tut_hardcore_2/hardcore_censor.png[/media]
 We call up the mini-module by going to [tt]http://baseurl/adminzone/?page=admin_tracking[/tt], as we saved it as a page in the Admin Zone.

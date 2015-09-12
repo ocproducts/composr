@@ -348,7 +348,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     {
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('_POST'), do_lang_tempcode('DESCRIPTION_POST_TEMPLATE_X'), 'text', $text, true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('FORUM_POST'), do_lang_tempcode('DESCRIPTION_POST_TEMPLATE_X'), 'text', $text, true));
         $fields->attach(cns_get_forum_multi_code_field($forum_multi_code));
         $fields->attach(form_input_tick(do_lang_tempcode('DEFAULT'), do_lang_tempcode('USE_AS_DEFAULT_ON_APPLICABLE_FORUMS'), 'use_default_forums', $use_default_forums == 1));
 

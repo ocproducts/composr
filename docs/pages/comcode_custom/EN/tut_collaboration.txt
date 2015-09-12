@@ -21,6 +21,7 @@ By default, some resources (Comcode pages, menu links, and catalogues), are crea
 These may be used, deleted, or moved, according to your specific needs.
 
 [title="2"]File/Media library[/title]
+
 [surround]
 The File/Media library is a tool to allow sharing of files, located in the CMS zone. It provides the ability to upload, download, and delete files, and organise files into folders.
 [box="Important note" width="25em" float="right"]There is nothing stopping ordinary users from downloading from the file/media library if they have the URL to a file. This is sometimes useful, but you should be aware that if files are given guessable filenames, they will not be secure.[/box]
@@ -31,13 +32,15 @@ The File/Media library has two main purposes:
 1) Sharing media with the staff team, for use in content
 2) A general shared drive for collaborators
 
-You can get a browser to embed items from the File/Media library. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the <kbd>media</kbd> tag.
+You can get a browser to embed items from the File/Media library. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the [tt]media[/tt] tag.
 
 [title="2"]Other Super-members[/title]
+
 [surround]
 [media width="150" description="The Super-members fellows page" float="right"]data_custom/images/docs/tut_collaboration/collaboration_supermembers.png[/media]
 The Collaboration Zone includes a page listing all members that have access, with links to information relating to them, and to contact them. It exists to make sure super-members are aware of each other, and to facilitate easy communication between them.
 [/surround]
+
 [title="2"]Additional resources that may be used[/title]
 
 The following are not by default set up for specifically for Super-Members, but may be:

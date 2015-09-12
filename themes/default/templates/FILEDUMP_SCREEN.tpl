@@ -49,8 +49,8 @@
 						<option{+START,IF,{$EQ,{SORT},time DESC}} selected="selected"{+END} value="time DESC">{!DATE_TIME},{!_DESCENDING}</option>
 						<option{+START,IF,{$EQ,{SORT},name ASC}} selected="selected"{+END} value="name ASC">{!FILENAME},{!_ASCENDING}</option>
 						<option{+START,IF,{$EQ,{SORT},name DESC}} selected="selected"{+END} value="name DESC">{!FILENAME},{!_DESCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},size ASC}} selected="selected"{+END} value="size ASC">{!_FILE_SIZE},{!_ASCENDING}</option>
-						<option{+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!_FILE_SIZE},{!_DESCENDING}</option>
+						<option{+START,IF,{$EQ,{SORT},size ASC}} selected="selected"{+END} value="size ASC">{!FILE_SIZE},{!_ASCENDING}</option>
+						<option{+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!FILE_SIZE},{!_DESCENDING}</option>
 					</select>
 
 					<input class="buttons__filter button_micro" type="submit" value="{!FILTER}" />

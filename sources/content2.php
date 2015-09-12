@@ -63,7 +63,7 @@ function meta_data_get_fields($content_type, $content_id, $allow_no_owner = fals
         $views_field = in_array('views', $fields_to_skip) ? null : $info['views_field'];
         if (!is_null($views_field)) {
             $views = is_null($content_row) ? 0 : $content_row[$views_field];
-            $fields->attach(form_input_integer(do_lang_tempcode('_VIEWS'), do_lang_tempcode('DESCRIPTION_META_VIEWS'), 'meta_views', null, false));
+            $fields->attach(form_input_integer(do_lang_tempcode('COUNT_VIEWS'), do_lang_tempcode('DESCRIPTION_META_VIEWS'), 'meta_views', null, false));
         }
 
         $submitter_field = in_array('submitter', $fields_to_skip) ? null : $info['submitter_field'];

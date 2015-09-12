@@ -117,7 +117,7 @@ It is very common for the best modern designs to have content text built direct 
 
 Here is a simple example of a custom button:
 
-[code]
+[code="Comcode"]
 [block="text_overlay" data="This is a test" img="button1"]main_custom_gfx[/block]
 [/code]
 
@@ -136,7 +136,7 @@ Full list of parameters:
 
 Take the above example further, how would you like to automatically have [b]both[/b] frames of a rollover generated for you?
 
-[code]
+[code="Comcode"]
 [block="rollover_button" data="This is a test" img1="button1" img2="button2"]main_custom_gfx[/block]
 [/code]
 
@@ -164,5 +164,6 @@ You may also wish to have a prescence on question and answer sites, such as:
 
  - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
  - [page="_SEARCH:tut_metadata"]Meta Data[/page]
+ - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
 
 {$SET,tutorial_tags,core_graphic_text,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial will explain and detail some of the features of web technologies that are often forgotten.}[block]main_tutorial_rating[/block]

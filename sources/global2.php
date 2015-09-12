@@ -284,6 +284,12 @@ function init__global2()
         require_code('temporal'); // Date/time functions
         convert_data_encodings(get_param_integer('known_utf8', 0) == 1);
         if (!$MICRO_BOOTUP) {
+            // FirePHP console support, only for administrators
+            if ((get_param_integer('keep_firephp', 0) == 1) && (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) || ($GLOBALS['IS_ACTUALLY_ADMIN']))) {
+                require_code('firephp');
+                $GLOBALS['OUTPUT_STREAMING'] = false;
+            }
+
             require_code('permissions'); // So we can check access
         }
     }
@@ -400,11 +406,6 @@ function init__global2()
 
     if (($SEMI_DEV_MODE) && (!$MICRO_AJAX_BOOTUP)) { // Lots of code that only runs if you're a programmer. It tries to make sure coding standards are met.
         semi_dev_mode_startup();
-    }
-
-    // FirePHP console support, only for administrators
-    if ((get_param_integer('keep_firephp', 0) == 1) && (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) || ($GLOBALS['IS_ACTUALLY_ADMIN']))) {
-        require_code('firephp');
     }
 
     // Reduce down memory limit / raise if requested

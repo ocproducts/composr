@@ -1081,7 +1081,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
 
                             // Shortcut lookahead
-                            if (!$differented) {
+                            if (!$differented && !$in_code_tag) {
                                 if (($in_semihtml) && ($next == '-') && (substr($comcode, $pos - 1, 3) == '-->')) { // To stop shortcut interpretation
                                     $continuation .= '-->';
                                     $pos += 2;
@@ -1106,7 +1106,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
 
                             // Table syntax
-                            if (!$differented) {
+                            if (!$differented && !$in_code_tag) {
                                 if (($pos < $len) && ($comcode[$pos] == '|')) {
                                     $end_tbl = strpos($comcode, "\n" . '|}', $pos);
                                     if ($end_tbl !== false) {
@@ -1271,7 +1271,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                 // Advertising
                                 $b_all = true; // leave true - for test purposes only
-                                if ((!$semiparse_mode) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
+                                if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
                                         $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'banners b LEFT JOIN ' . get_table_prefix() . 'banner_types t ON b.b_type=t.id WHERE t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', ''), null, null, true);

@@ -401,7 +401,7 @@ class Module_cms_galleries extends Standard_crud_module
                 }
                 $radios = new Tempcode();
                 $radios->attach(form_input_radio_entry('type', 'orphan_add', true, do_lang_tempcode('ADD_GALLERY_SELECTION')));
-                $radios->attach(form_input_radio_entry('type', 'orphan_delete', false, do_lang_tempcode('DELETE_GALLERY_SELECTION')));
+                $radios->attach(form_input_radio_entry('type', 'orphan_delete', false, do_lang_tempcode('DELETE_SELECTION')));
                 $fields_2->attach(form_input_radio(do_lang_tempcode('ACTION'), '', 'type', $radios, true));
                 // Feedback
                 require_code('feedback2');

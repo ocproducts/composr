@@ -1,27 +1,47 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Adding standalone pages of content (via Comcode)[/title]
-[surround]
-[box="Note" width="25em" float="right"]If you are using short URLs, then '<base-url>/<zone>/pg/<page-name>' will also access the page.[/box]
-You may easily add new pages of information to Composr by making a 'Comcode page'.
-A Comcode page is a page written in Comcode, and thus is almost written in plain text. Like any page in Composr, a Comcode page is accessed by using:
-'[tt]<base-url>/<zone>/index.php?page=<page-name>[/tt]'.
-[/surround]
+
+You may easily add new pages of information to Composr by making a 'Comcode page'. A Comcode page is a page written in Comcode, and thus is almost written in plain text. This tutorial covers some basic information relating to Comcode pages.
 
 [contents]decimal,lower-alpha[/contents]
 
-[media width="150" description="The WYSIWYG editor may be used to edit Comcode pages, although it provides less control" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_wysiwyg.png[/media]
+[title="2"]Adding a new page[/title]
+
+[surround]
 [media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_edit.png[/media]
+[media width="150" description="The easy way to add a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_easyadd.png[/media]
 
 There are two supported ways to add a new Comcode page in Composr:
- - Go to Content Management > Pages (Comcode pages), and give a new page name in the '<zone>:<page-name>' format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be ':<page-name>'). If you don't use a colon, a default zone will be picked.
- - Just to type in the URL to where you want the page to be, and click the given link to add the missing page.
+1) Go to Content Management > Pages (Comcode pages), and give a new page name in the '<zone>:<page-name>' format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be ':<page-name>'). If you don't use a colon, a default zone will be picked.
+2) Just to type in the URL to where you want the page to be, and click the given link to add the missing page.
 
-[media width="150" description="The easy way to add a Comcode page" float="left"]data_custom/images/docs/tut_comcode_pages/comcode_pages_easyadd.png[/media]
-[media width="150" description="The edited Comcode page looks like this" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_view.png[/media]
-Once the Comcode page editor is open, you can pretty much just type your page in plain-text, with small diversions to indicate special formatting (most notably, the 'title' tag, which every page should include). It is beyond the scope of this tutorial to explain Comcode: see the Comcode tutorial for this.
+Once the Comcode page editor is open, you can pretty much just type your page in.
+
+If WYSIWYG is on:
+You'll have a nice editor to use.
+
+If WYSIWYG is off:
+You'll pretty much type plain-text, with small diversions to indicate special formatting (most notably, the 'title' tag, which every page should include).
+It is beyond the scope of this tutorial to explain Comcode: see the [page="_SEARCH:tut_comcode"]Comcode and the attachment system tutorial[/page] for this.
+[/surround]
 
 [title="2"]Hiding pages from the Sitemap[/title]
 
 There may be cases where you don't want a Comcode page to appear in your Sitemap. The easiest way to solve this is to preface the name of the Comcode page with an underscore (_). For example, pages named [tt]_test[/tt] and [tt]_example[/tt] will not show on the Sitemap due to starting with the underscore symbol.
+
+[title="2"]URLs[/title]
+
+[surround]
+[media width="150" description="The edited Comcode page looks like this" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_view.png[/media]
+Like any page in Composr, a Comcode page is accessed by using:
+[tt]http://yourwebsite/<zone>/index.php?page=<page-name>[/tt]
+
+Actually If you are using short URLs, then it may be something else (depending on which [page="_SEARCH:tut_short_urls"]URL scheme[/page] you use):
+[tt]http://yourwebsite/<zone>/pg/<page-name>[/tt]
+or:
+[tt]http://yourwebsite/<zone>/<page-name>.htm[/tt]
+or:
+[tt]http://yourwebsite/<zone>/<page-name>[/tt]
+[/surround]
 
 [concepts
  1_key="Comcode page"   1_value="A Composr page written in Comcode, editable from inside Composr"
@@ -30,7 +50,9 @@ There may be cases where you don't want a Comcode page to appear in your Sitemap
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
+ - [page="_SEARCH:tut_wysiwyg"]WYSIWYG editing[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
 
 {$SET,tutorial_tags,Pages,Content,core_comcode_pages,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to add new pages, using Comcode. It couldn't be simpler to do: Comcode pages almost look like plain text.}[block]main_tutorial_rating[/block]

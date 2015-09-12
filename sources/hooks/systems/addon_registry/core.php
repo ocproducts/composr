@@ -1761,7 +1761,7 @@ class Hook_addon_registry_core
         )));
 
         $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
-            'KEY' => do_lang_tempcode('GROUP'),
+            'KEY' => do_lang_tempcode('USERGROUP'),
             'VALUE' => placeholder_link(),
         )));
 
@@ -1810,7 +1810,7 @@ class Hook_addon_registry_core
         )));
 
         $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
-            'KEY' => do_lang_tempcode('GROUP'),
+            'KEY' => do_lang_tempcode('USERGROUP'),
             'VALUE' => placeholder_link(),
         )));
 
@@ -1898,20 +1898,24 @@ class Hook_addon_registry_core
         require_code('comcode_renderer');
 
         $emoticons = placeholder_emoticons();
-        $entries = new Tempcode();
+
+        $rows = new Tempcode();
         global $EMOTICON_LEVELS;
         foreach ($emoticons as $code => $imgcode) {
             if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) {
-                $entries->attach(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array(
-                    'CODE' => $code,
-                    'TPL' => do_emoticon($imgcode),
+                $rows->attach(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array(
+                    'COLUMNS' => array(array(
+                        'CODE' => $code,
+                        'TPL' => do_emoticon($imgcode),
+                    )),
                 )));
             }
         }
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES', array(
-                'ENTRIES' => $entries,
+                'ROWS' => $rows,
+                'NUM_COLUMNS' => 1,
             )), null, '', true)
         );
     }

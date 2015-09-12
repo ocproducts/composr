@@ -126,7 +126,7 @@ class Block_main_members
         } else {
             $filters_row_a = 'm_username=' . php_addslashes(do_lang('USERNAME'));
             if ($usergroup == '') {
-                $filters_row_a .= ',usergroup=' . php_addslashes(do_lang('GROUP'));
+                $filters_row_a .= ',usergroup=' . php_addslashes(do_lang('USERGROUP'));
             }
             $filters_row_b = '';
             $cpfs = cns_get_all_custom_fields_match(cns_get_all_default_groups(), 1, 1, null, null, 1, null);

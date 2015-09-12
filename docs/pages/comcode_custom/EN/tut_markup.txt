@@ -67,7 +67,7 @@ This form of tag is called self-closing, but is only found occasionally. For bot
  - Don't put more than one space between anything
 
 Tags can contain as many attributes as you like, but they must be valid, and you can't repeat the same attribute twice. Let's look a little closer at the syntax for an attribute.
-[code]
+[code="Text"]
 attributename="attributevalue"
 [/code]
 The syntax for an attribute is quite simple, too. However, there are some rules and guidelines you must stick to:

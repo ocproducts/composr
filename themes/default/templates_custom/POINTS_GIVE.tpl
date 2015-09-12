@@ -78,7 +78,7 @@
 					<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
 					<input maxlength="8" onkeydown="if (!key_pressed(event,[null,'-','0','1','2','3','4','5','6','7','8','9','.'])) return false; return null;" size="7" id="give_amount" class="input_integer_required field_input_non_filled" value="{!AMOUNT}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="amount" />
 
-					<input id="give_points_submit" class="buttons__points button_micro" type="submit" value="{!PROCEED_GO}" />
+					<input id="give_points_submit" class="buttons__points button_micro" type="submit" value="{!PROCEED_SHORT}" />
 				</p>
 			</div>
 

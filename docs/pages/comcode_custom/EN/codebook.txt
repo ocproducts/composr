@@ -1,6 +1,5 @@
 [title sub="Written by Chris Graham (ocProducts)"]Code Book, contents and introduction[/title]
 
-[surround="spaced_list"]
 The Code Book contains documentation to teach experienced developers how to program for Composr.
 
 This guide is not a substitute for learning PHP, HTML, CSS, or other languages. Some introductory material for learning web development is available in our [page="docs:"]main set of tutorials[/page]. There is an excellent PHP book available for free online.
@@ -203,6 +202,5 @@ The documentation and tools on the Composr website may be out of date between Co
  - [url="Github"]https://github.com/chrisgraham/Composr/[/url] (contains Composr, unit tests, all unbundled addons and support tools)
  - [url="Tracker"]{$BRAND_BASE_URL}/tracker/my_view_page.php[/url]
  - [url="Written test sets"]https://www.dropbox.com/sh/07d7we9bu3voj8v/SPa1GlArQd[/url] (when tracker tasks are carried out, tests may be pasted onto the tracker issue; there is also a master list of manual test sets on compo.sr, but access is limited is its within an interactive tool)
-[/surround]
 
 {$SET,tutorial_tags,Development,PHP,testing_platform,Development,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Contents and Introduction.}[block]main_tutorial_rating[/block]

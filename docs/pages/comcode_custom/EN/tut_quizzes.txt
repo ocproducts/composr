@@ -59,7 +59,7 @@ You may also put line(s) starting with a ':' and followed by an explanation, bel
 There is support for marking. If an answer is followed by [tt][*][/tt] then it is considered "correct" (this is very important for competitions and tests). If nothing is marked correct, the question will be considered as manually-marked (resulting in a quoted result range for the user, rather than a specific result), unless [tt][UNMARKED][/tt] is put after the question, in which case it will be collected but not count towards marking.
 
 Comcode is supported, so you could include images using code such as:
-[code]
+[code="Comcode"]
 [url="/example.png" target="_blank"][img]/example_thumb.png[/img][/url]
 [/code]
 

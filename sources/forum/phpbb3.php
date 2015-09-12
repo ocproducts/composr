@@ -1424,7 +1424,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         }
         $row = $rows[0];
         if ($this->is_banned($row['user_id'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('MEMBER_BANNED'));
+            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
             return $out;
         }
         if ($cookie_login) {

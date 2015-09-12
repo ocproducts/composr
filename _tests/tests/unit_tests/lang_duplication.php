@@ -33,6 +33,8 @@ class lang_duplication_test_set extends cms_test_case
 
         $num = 0;
 
+        $all_keys = array();
+
         $dh = opendir(get_file_base() . '/lang/EN/');
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) != '.ini') {
@@ -50,6 +52,11 @@ class lang_duplication_test_set extends cms_test_case
                     $vals[$val] = array();
                 }
                 $vals[$val][] = $key;
+
+                if (isset($all_keys[$key])) {
+                    $this->assertTrue(false, 'Duplication for key ' . $key . ' string');
+                }
+                $all_keys[$key] = true;
             }
 
             $num += count($input);
@@ -60,12 +67,23 @@ class lang_duplication_test_set extends cms_test_case
 
         $percentage_duplicated = 100.0 - 100.0 * floatval($num_unique) / floatval($num);
 
-        $this->assertTrue($percentage_duplicated < 6.0); // Ideally we'd lower it, but 6% is what it was when this test was written. We're testing it's not getting worse.
+        $this->assertTrue($percentage_duplicated < 6.0, 'Overall heavy duplication'); // Ideally we'd lower it, but 6% is what it was when this test was written. We're testing it's not getting worse.
+
+        // Find if there is any unnecessary underscoring
+        /*foreach (array_keys($all_keys) as $key) {     Was useful once, but there are reasonable cases remaining
+            if ((substr($key, 0, 1) == '_') && (strtoupper($key) == $key) && (!isset($all_keys[substr($key, 1)]))) {
+                $this->assertTrue(false, 'Unnecessary prefixing of ' . $key);
+            }
+        }*/
 
         // Find out what is duplicated
         foreach ($vals as $val => $multiple) {
             if (count($multiple) == 1) {
                 unset($vals[$val]);
+            } else {
+                if (count(array_unique($vals[$val])) != count($vals[$val])) {
+                    $this->assertTrue(false, 'Exact duplication of key&val ' . $val . ' string');
+                }
             }
         }
         //@var_dump($vals);exit();

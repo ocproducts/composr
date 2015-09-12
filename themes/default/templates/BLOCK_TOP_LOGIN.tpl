@@ -18,7 +18,7 @@
 
 		<ul class="horizontal_links">
 			{+START,IF_NON_EMPTY,{JOIN_URL}}<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/join}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/join} 2x" /> <a href="{JOIN_URL*}">{!_JOIN}</a></li>{+END}
-			<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{$?,{$MOBILE},{!_LOGIN},{!FULL_LOGIN}}</a></li>
+			<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{$?,{$MOBILE},{!_LOGIN},{!OPTIONS}}</a></li>
 		</ul>
 	</form>
 {+END}

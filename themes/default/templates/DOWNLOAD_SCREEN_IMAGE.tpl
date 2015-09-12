@@ -13,7 +13,7 @@
 
 	{+START,IF_NON_EMPTY,{EDIT_URL}}
 		<p class="associated_link associated_links_block_group">
-			<a href="{EDIT_URL*}" title="{!EDIT_IMAGE}, #{ID*}">{!_EDIT_LINK}</a>
+			<a href="{EDIT_URL*}" title="{!EDIT_IMAGE}, #{ID*}">{!EDIT_LINK}</a>
 		</p>
 	{+END}
 </figure>

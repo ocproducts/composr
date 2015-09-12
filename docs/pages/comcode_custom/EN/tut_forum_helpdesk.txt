@@ -6,6 +6,7 @@ Running an online helpdesk is something many companies will want to do. It allow
 
 [title="2"]Multi-moderation[/title]
 
+[surround]
 [media width="150" description="Adding a multi-moderation" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_add_multi_moderation.png[/media]
 {!cns_multi_moderations:DOC_MULTI_MODERATIONS}
 
@@ -19,6 +20,7 @@ To add a multi-moderation, go to Admin Zone > Structure > Forums > Multi-moderat
 To use a multi-moderation, you need to browse to an appropriate topic. Select an appropriate multi-moderation from the 'Topic actions' drop-down list, and click the 'Proceed' button to apply the multi-moderation to the topic. Note that Composr comes with several pre-defined multi-moderations that are present from when you install Composr.
 
 You may also use multi-moderations from the forum view screen, by selecting topics you want to multi-moderate and using a multi-moderation from the 'Topic actions' drop-down list.
+[/surround]
 
 [title="2"]Mass-moderation[/title]
 
@@ -30,6 +32,7 @@ For topic view screens the actions are available in the 'Actions upon marked pos
 
 [title="2"]Post templates[/title]
 
+[surround]
 [media width="150" description="Adding a post template" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_add_post_template.png[/media]
 {!cns_post_templates:DOC_POST_TEMPLATES}
 
@@ -41,6 +44,7 @@ To add a post template, just open up the 'Add post template' screen in the Admin
 
 [media width="150" description="The interface to select post templates for use in a post" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_using_post_template.png[/media]
 To use a post template, simply submit a new topic or post using the verbose posting form (i.e. not the quick-reply box). On this form, if any post templates are defined for the current forum, a post template drop-down list will appear. Using this list, you can select a post template to use. If a post template has been marked as the default post for the current forum, the post field will already contain that post template.
+[/surround]
 
 [concepts
  1_key="Multi-moderation"   1_value="Executing a pre-defined set of actions upon a topic"

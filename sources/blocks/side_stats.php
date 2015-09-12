@@ -90,7 +90,7 @@ class Block_side_stats
                     'VALUE' => integer_format($on_forum),
                 )));
             }
-            $title = do_lang_tempcode('SECTION_USERS');
+            $title = do_lang_tempcode('USERS_ONLINE');
         } else {
             if (get_option('activity_show_stats_count_users_online') == '1') {
                 $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(

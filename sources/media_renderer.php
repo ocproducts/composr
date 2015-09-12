@@ -253,6 +253,12 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         if ($no_height) {
             $attributes['height'] = $_height;
         }
+        if ($no_width && !$no_height) {
+            $attributes['width'] = strval(intval(round(floatval($attributes['height']) * (float)$_width / (float)$_height)));
+        }
+        if (!$no_width && $no_height) {
+            $attributes['height'] = strval(intval(round(floatval($attributes['width']) * (float)$_height / (float)$_width)));
+        }
     }
     if ((!array_key_exists('length', $attributes)) || (!is_numeric($attributes['length']))) {
         $attributes['length'] = '';

@@ -39,22 +39,22 @@ Once files are transferred, you need to replicate the correct file permissions s
 [b]If you are on a suEXEC-style server you can bypass this section. Most users nowadays are.[/b]
 
 If you have 'shell access' on your new server, typing the following from a shell inside your Composr installation directory will quickly fix your permissions to what they should be:
-[code]
+[code="Bash"]
 chmod +x fixperms.sh
 ./fixperms.sh
 [/code]
 
 If you do not have such access:
 1) Try asking the web host to do it
-2) you can get Composr to set the permissions for you using a special feature you'll find in the [tt]http://mysite/upgrader.php[/tt] script.
-3) If all else fails, you need to change any permissions described in the Advanced Installation tutorial and any files that were created/uploaded during running the site. This could be incredibly time-consuming, so is not recommended.
+2) You can get Composr to set the permissions for you using a special feature you'll find in the [tt]http://mysite/upgrader.php[/tt] script.
+3) If all else fails, you need to change any permissions described in the [page="_SEARCH:tut_adv_installation"]Advanced installation tutorial[/page] and any files that were created/uploaded during running the site. This could be incredibly time-consuming, so is not recommended.
 
 [title="2"]Database contents[/title]
 
 Almost your site data is stored in the database so it is crucial that database contents is backed up, transferred, and restored, to the new server.
 
 Backup is best done using the shell, via the [tt]mysqldump[/tt] command.
-[code]
+[code="Bash"]
 mysqldump -uusername -ppassword database > filename.sql
 [/code]
 Download the .sql file to your machine. This file is called an "SQL dump".
@@ -66,7 +66,7 @@ Reasonable web hosts allow you to directly download an SQL dump via phpMyAdmin. 
 Upload the SQL dump to your new server using SFTP/FTP.
 
 Restoration is then best done via the [tt]mysql[/tt] command:
-[code]
+[code="Bash"]
 mysql -uusername -ppassword database < filename.sql
 [/code]
 
@@ -75,8 +75,16 @@ If you don't have shell access to import a database you'll probably end up using
 [/box]
 
 If the new database settings are different to the old ones, you will need to use the [tt]config_editor.php[/tt] script to update your Composr settings (or edit [tt]_config.php[/tt] by hand).
+
 You may need to update the following settings:
-[tt]db_site[/tt], [tt]db_site_host[/tt], [tt]db_site_user[/tt], [tt]db_site_password[/tt], [tt]db_forums[/tt], [tt]db_forums_host[/tt], [tt]db_forums_user[/tt], [tt]db_forums_password[/tt]
+ - [tt]db_site[/tt]
+ - [tt]db_site_host[/tt]
+ - [tt]db_site_user[/tt]
+ - [tt]db_site_password[/tt]
+ - [tt]db_forums[/tt]
+ - [tt]db_forums_host[/tt]
+ - [tt]db_forums_user[/tt]
+ - [tt]db_forums_password[/tt]
 
 [title="2"]Changing URL[/title]
 

@@ -221,7 +221,7 @@ class Module_cms_banners extends Standard_crud_module
         }
         $sortables = array(
             'name' => do_lang_tempcode('CODENAME'),
-            'b_type' => do_lang_tempcode('_BANNER_TYPE'),
+            'b_type' => do_lang_tempcode('BANNER_TYPE'),
             'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //'campaign_remaining'=>do_lang_tempcode('HITS_ALLOCATED'),
             'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
@@ -519,7 +519,7 @@ class Module_cms_banners extends Standard_crud_module
 class Module_cms_banners_cat extends Standard_crud_module
 {
     public $lang_type = 'BANNER_TYPE';
-    public $select_name = '_BANNER_TYPE';
+    public $select_name = 'BANNER_TYPE';
     public $select_name_description = '_DESCRIPTION_BANNER_TYPE';
     public $orderer = 'id';
     public $array_key = 'id';
@@ -548,7 +548,7 @@ class Module_cms_banners_cat extends Standard_crud_module
             't_is_textual' => do_lang_tempcode('BANNER_IS_TEXTUAL'),
             't_image_width' => do_lang_tempcode('WIDTH'),
             't_image_height' => do_lang_tempcode('HEIGHT'),
-            't_max_file_size' => do_lang_tempcode('_FILE_SIZE'),
+            't_max_file_size' => do_lang_tempcode('FILE_SIZE'),
             't_comcode_inline' => do_lang_tempcode('COMCODE_INLINE'),
         );
         if (db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
@@ -563,7 +563,7 @@ class Module_cms_banners_cat extends Standard_crud_module
             do_lang_tempcode('BANNER_IS_TEXTUAL'),
             do_lang_tempcode('WIDTH'),
             do_lang_tempcode('HEIGHT'),
-            do_lang_tempcode('_FILE_SIZE'),
+            do_lang_tempcode('FILE_SIZE'),
             do_lang_tempcode('COMCODE_INLINE'),
             do_lang_tempcode('COUNT_TOTAL'),
             do_lang_tempcode('ACTIONS'),
@@ -608,7 +608,7 @@ class Module_cms_banners_cat extends Standard_crud_module
             $fields->attach(form_input_tick(do_lang_tempcode('BANNER_IS_TEXTUAL'), do_lang_tempcode('DESCRIPTION_BANNER_IS_TEXTUAL'), 'is_textual', $is_textual == 1));
         }
         $fields->attach(form_input_dimensions(do_lang_tempcode('DIMENSIONS'), do_lang_tempcode('DESCRIPTION_BANNER_DIMENSIONS'), 'image_width', 'image_height', $image_width, $image_height, true));
-        $fields->attach(form_input_integer(do_lang_tempcode('_FILE_SIZE'), do_lang_tempcode('DESCRIPTION_BANNER_FILE_SIZE'), 'max_file_size', $max_file_size, true));
+        $fields->attach(form_input_integer(do_lang_tempcode('FILE_SIZE'), do_lang_tempcode('DESCRIPTION_BANNER_FILE_SIZE'), 'max_file_size', $max_file_size, true));
         $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_INLINE'), do_lang_tempcode('DESCRIPTION_COMCODE_INLINE'), 'comcode_inline', $comcode_inline == 1));
 
         $fields->attach(meta_data_get_fields('banner_type', ($id == '') ? null : $id));

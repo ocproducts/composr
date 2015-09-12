@@ -31,7 +31,7 @@ class Hook_config_attachment_default_width
     public function get_details()
     {
         return array(
-            'human_name' => 'ATTACHMENT_DEFAULT_WIDTH',
+            'human_name' => 'DEFAULT_VIDEO_WIDTH',
             'type' => 'integer',
             'category' => 'FEATURE',
             'group' => '_COMCODE',

@@ -1212,7 +1212,7 @@ abstract class Standard_crud_module
                 'TEXT' => $text,
                 'TABLE' => $table,
                 'SUBMIT_ICON' => 'buttons__sort',
-                'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('ORDER') : null,
+                'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('SORT') : null,
                 'POST_URL' => get_self_url(),
                 'JAVASCRIPT' => $this->javascript_for_choose,
             ));

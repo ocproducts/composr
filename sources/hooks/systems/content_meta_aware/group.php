@@ -38,7 +38,7 @@ class Hook_content_meta_aware_group
         return array(
             'supports_custom_fields' => true,
 
-            'content_type_label' => 'GROUP',
+            'content_type_label' => 'USERGROUP',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_groups',

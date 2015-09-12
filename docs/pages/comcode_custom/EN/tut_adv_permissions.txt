@@ -16,7 +16,7 @@ Some software tries to make options for everything, but the result tends to be t
 
 [title="3"]An example: controlling member-directory access[/title]
 
-[surround="spaced_list float_surrounder"]
+[surround]
 [media width="150" description="Set the denys." float="right"]data_custom/images/docs/tut_adv_permissions/permissions_match_keys_ex2.png[/media][media width="150" description="Make sure the pre-requisite addon is installed." float="right"]data_custom/images/docs/tut_adv_permissions/permissions_match_keys_ex1.png[/media]
 You may wish to prevent members viewing the member directory, but let them view their own profile
 
@@ -49,7 +49,7 @@ To implement this, you need to switch to a template editing mind-set, rather tha
 2) working off the back of a standard permission's setting using something like the [tt]HAS_PRIVILEGE[/tt] symbol)
 
 For example,
-[code]
+[code="Tempcode"]
 {+START,IF,{$IS_IN_GROUP,3-7,10}}
     Only groups 3, 4, 5, 6, 7, and 10, see this.
 {+END}

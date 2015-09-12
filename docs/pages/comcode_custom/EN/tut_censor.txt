@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Dealing with annoying users[/title]
 
-Depending on your site policies (for a good discussion of this, see the 'Legal and social responsibilities' tutorial), you are likely to require some tools to help you maintain the policy. Some of these tools actively enforce your policy, some of them allow you to 'moderate' to maintain your own policy, and some of them provide punishment for users that abuse policy (such that they may be removed from causing further harm, or made an example of such that other users do not 'follow suit').
+Depending on your site policies (for a good discussion of this, see the [page="_SEARCH:tut_legal"]Legal and social responsibilities tutorial[/page]), you are likely to require some tools to help you maintain the policy. Some of these tools actively enforce your policy, some of them allow you to 'moderate' to maintain your own policy, and some of them provide punishment for users that abuse policy (such that they may be removed from causing further harm, or made an example of such that other users do not 'follow suit').
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -26,6 +26,7 @@ Naturally, privileged users may edit and delete any content on the system; by de
 Members may specify the privacy settings for content they post, if the [tt]content_privacy[/tt] addon is installed. For example, they may post an image and set it so only their friends may view it.
 
 [title="2"]Tools for punishment[/title]
+
 [surround]
 [media width="150" description="Using the points system for punishment" float="right"]data_custom/images/docs/tut_censor/censor_point_in_right_direction.png[/media]
 [media width="150" description="Making a warning" float="right"]data_custom/images/docs/tut_censor/censor_make_warning.png[/media]
@@ -43,6 +44,7 @@ Since Composr version 4, all the various punishment tools are made available on 
 
 As all these methods work on members, but not users in general (i.e. not guest users), you may wish to consider making it a requirement for all users to join in order to participate on the website. In other words, you may wish to remove permission for guests to make submissions.
 [/surround]
+
 [title="2"]Probation[/title]
 
 The probation feature is designed to work via the punishment system. You could manually put a member into the probation usergroup, but it's not advisable because any secondary usergroups they are in may lead to extra undesirable privileges.

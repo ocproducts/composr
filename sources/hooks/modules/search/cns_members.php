@@ -133,7 +133,7 @@ class Hook_search_cns_members
             }
             $groups->attach(form_input_list_entry(strval($default_group), true, do_lang_tempcode('USERGROUP_SEARCH_COMBO', escape_html($combination))));
         }
-        $fields[] = array('NAME' => '_user_group', 'DISPLAY' => do_lang_tempcode('GROUP'), 'TYPE' => '_LIST', 'SPECIAL' => $groups);
+        $fields[] = array('NAME' => '_user_group', 'DISPLAY' => do_lang_tempcode('USERGROUP'), 'TYPE' => '_LIST', 'SPECIAL' => $groups);
         return $fields;
     }
 

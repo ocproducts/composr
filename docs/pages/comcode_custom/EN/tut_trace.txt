@@ -47,6 +47,7 @@ in addition to various other punitive measures, such as removing rank, or chargi
 [media width="150" description="Investigating a submitter" float="left"]data_custom/images/docs/tut_trace/trace_dig_2.png[/media]
 [box="Tip" width="25em" float="right"]http://www.dnsstuff.com and http://www.samspade.org/ are very useful websites for Internet digging.[/box]
 [/surround]
+
 [title="2"]A closer look at the Investigate User module[/title]
 
 [media width="150" description="Options available during an investigation" float="right"]data_custom/images/docs/tut_trace/trace_investigate_2.png[/media]

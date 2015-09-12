@@ -311,7 +311,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
 
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('_POST'), do_lang_tempcode('DESCRIPTION_MULTI_MODERATION_POST'), 'post_text', $post_text, false));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('FORUM_POST'), do_lang_tempcode('DESCRIPTION_MULTI_MODERATION_POST'), 'post_text', $post_text, false));
         $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION'), do_lang_tempcode('DESCRIPTION_DESTINATION_FORUM'), 'move_to', null, 'choose_forum', array(), false, is_null($move_to) ? null : strval($move_to)));
         $pin_state_list = new Tempcode();
         $pin_state_list->attach(form_input_radio_entry('pin_state', '-1', is_null($pin_state), do_lang_tempcode('NA_EM')));

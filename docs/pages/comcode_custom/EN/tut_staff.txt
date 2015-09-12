@@ -19,9 +19,10 @@ By default, Conversr is installed with a single staff member, 'admin'. It is rec
 [title="2"]Coordinating with other staff[/title]
 
 [title="3"]Private forums[/title]
+
 [surround]
-[media width="150" description="Now you see it..." float="left"]data_custom/images/docs/tut_staff/staff_forums_1.png[/media]
 [media width="150" description="Now you don't (because I logged out and hence lost my staff permissions)" float="right"]data_custom/images/docs/tut_staff/staff_forums_2.png[/media]
+[media width="150" description="Now you see it..." float="right"]data_custom/images/docs/tut_staff/staff_forums_1.png[/media]
 A very effective feature in running a website, where there are multiple staff involved, are forum permissions. By using a forum where only members in staff usergroups may gain access, staff can collaborate on matters relating to the operation of the site. Many members may not realise it, but often staff forums of large sites are almost as busy as the publicly accessible forums.
 
 Conversr creates a default staff forum for you on installation.
@@ -41,7 +42,7 @@ You can also share links and notes on the Admin Zone front page.
 
 Staff have access to a wide variety of notifications, to be informed on what is happening on the site.
 
-In particular, if the [tt]main_contact_us[/block] (staff messaging system) is being used for user contact messages, messages will be directed to a shared location in the Admin Zone (and notifications sent out), and staff will be able to take responsibility for handling the contents of the message.
+In particular, if the [tt]main_contact_us[/tt] (staff messaging system) is being used for user contact messages, messages will be directed to a shared location in the Admin Zone (and notifications sent out), and staff will be able to take responsibility for handling the contents of the message.
 
 [title="3"]Notes within content[/title]
 
@@ -76,18 +77,22 @@ There are a few angles to version control on a Composr site:
 On point '3':
 [tt]git[/tt] is a standard tool to use when making code changes, but not for database changes. However it is possible to use WebDAV in coordination with [tt]git[/tt] to manually do formal "commits" when changes are made to a website. If you are an enterprise interested in this functionality, you'll likely want to take on ocProducts as consultants to test/tune this functionality to your particular content needs, or set up an automated system if appropriate.
 
-[title="2"]Topic reporting[/title]
+[title="2"]Post reporting[/title]
 
+[surround]
 [media width="150" description="A post needs a report / warning" float="left"]data_custom/images/docs/tut_staff/staff_report_1.png[/media]
-[media width="150" description="An offended member reports the post" float="right"]data_custom/images/docs/tut_staff/staff_report_2.png[/media]
+[media width="150" description="An offended member reports the post" float="left"]data_custom/images/docs/tut_staff/staff_report_2.png[/media]
+[media width="150" description="The staff will see the report in the 'reported posts' forum" float="right"]data_custom/images/docs/tut_staff/staff_report_3.png[/media]
 On busy forums, it is often impossible for staff to read every post that is made. Therefore there is a facility for members to report problem posts to the staff (with an additional reporter message), so that the staff can then perform any appropriate action on the post.
 
-Once a post is reported, the reported is actually created as a topic in the default 'Reported posts' forum. This method is, at the time of writing, unique to Composr, and allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with. We have found it often to be the case that staff will report posts themselves, so that they can easily bring them (and possibly their related action) to the attention of other staff.
-[media width="150" description="The staff will see the report in the 'reported posts' forum" float="right"]data_custom/images/docs/tut_staff/staff_report_3.png[/media]
+Once a post is reported, the reported is actually created as a topic in the default 'Reported posts' forum. This method is, at the time of writing, unique to Composr, and allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with.
+
+We have found it often to be the case that staff will report posts themselves, so that they can easily bring them (and possibly their related action) to the attention of other staff.
+[/surround]
 
 [title="2"]Warning members[/title]
 
-Conversr provides a facility for warning members. This is just one example of a punitive measure that may be taken out against a member. For full details, see the 'Tools for punishment' section of the '[page="_SEARCH:tut_censor"]Policing a community site[/page]' tutorial.
+Conversr provides a facility for warning members. This is just one example of a punitive measure that may be taken out against a member. For full details, see the 'Tools for punishment' section of the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
 
 [title="2"]Whispering[/title]
 

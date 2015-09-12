@@ -335,7 +335,7 @@ class Module_banners
         list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
         $sortables = array(
             'name' => do_lang_tempcode('CODENAME'),
-            'b_type' => do_lang_tempcode('_BANNER_TYPE'),
+            'b_type' => do_lang_tempcode('BANNER_TYPE'),
             'the_type' => do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //'campaign_remaining'=>do_lang_tempcode('HITS_ALLOCATED'),
             'importance_modulus' => do_lang_tempcode('IMPORTANCE_MODULUS'),
@@ -351,7 +351,7 @@ class Module_banners
 
         $hr = array(
             do_lang_tempcode('CODENAME'),
-            do_lang_tempcode('_BANNER_TYPE'),
+            do_lang_tempcode('BANNER_TYPE'),
             //do_lang_tempcode('DEPLOYMENT_AGREEMENT'),
             //do_lang_tempcode('HITS_ALLOCATED'),
             do_lang_tempcode('_IMPORTANCE_MODULUS'),
@@ -440,7 +440,7 @@ class Module_banners
                 $type = do_lang_tempcode('BANNER_PERMANENT');
                 break;
             case BANNER_CAMPAIGN:
-                $type = do_lang_tempcode('_BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
+                $type = do_lang_tempcode('BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
                 break;
             case BANNER_DEFAULT:
                 $type = do_lang_tempcode('BANNER_DEFAULT');
@@ -459,7 +459,7 @@ class Module_banners
         require_code('templates_map_table');
         $fields->attach(map_table_field(do_lang_tempcode('TYPE'), $type));
         if ($myrow['b_type'] != '') {
-            $fields->attach(map_table_field(do_lang_tempcode('_BANNER_TYPE'), $myrow['b_type']));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_TYPE'), $myrow['b_type']));
         }
         $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));

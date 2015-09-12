@@ -1,5 +1,5 @@
 /*
- * Flip! jQuery Plugin (http://lab.smashup.it/flip/)
+ * Flip! jQuery Plugin (http://nnattawat.github.io/flip/)
  * @author Luca Manno (luca@smashup.it) [http://i.smashup.it]
  *			  [Original idea by Nicola Rizzo (thanks!)]
  *

@@ -11,7 +11,7 @@ The form field filter system can influence both form results, and the default va
 
 The config file is [tt]data/xml_config/fields.xml[/tt] and should be overridden to [tt]data_custom/xml_config/fields.xml[/tt]. You will see there are some default settings in that file, which are designed to be fairly innocuous. You should review the default settings as examples.
 
-The root XML tag for the config file is 'fieldRestrictions'. Otherwise, the config file mostly consists of restriction tags. Restriction tags (explained later) can be placed directly beneath 'fieldRestrictions', but they may also be placed under the special 'qualify' and 'filter' tags. Furthermore, 'qualify' and 'filter' tags can be placed underneath themselves and each other to provide nestings of arbitrary complexity.
+The root XML tag for the config file is 'fieldRestrictions'. Otherwise, the config file mostly consists of restriction tags. Restriction tags (explained further down) can be placed directly beneath 'fieldRestrictions', but they may also be placed under the special 'qualify' and 'filter' tags. Furthermore, 'qualify' and 'filter' tags can be placed underneath themselves and each other to provide nestings of arbitrary complexity.
 
 [title="2"]The 'qualify' and 'filter' tags[/title]
 
@@ -28,7 +28,7 @@ The 'filter' tag again is used to limit the situations under which restriction t
 
 [title="2"]Restriction tags[/title]
 
-The following restriction tags are supported for manipulating form results:
+The following restriction tags are for manipulating form results:
  - 'minLength', give an error if the field value does not meet the minimum length. This is useful to prevent people posting poorly completed entries.
  - 'maxLength', give an error if the field value does not meet the maximum length.
  - 'possibilitySet', give an error if the field value does not match the contained wildcard expression. If you apply the 'secretive' attribute with a value of '1' then the user will not be told what the possible values are, which is useful if you are trying to implement a password (e.g. you can only send me a PT if you use the word "abracadabra" in it).
@@ -39,7 +39,7 @@ The following restriction tags are supported for manipulating form results:
 
 You may give each of these restriction tags an 'error' attribute, which will be used for the case when they trigger. If you do not provide a message a default will be used based upon the restriction involved.
 
-The following restriction tags are supported for manipulating form results, and also default form field values:
+The following restriction tags are for both manipulating form results and also default form field values:
  - 'replace', replace the value of the attribute 'from' in the field value with the contents of the tag. This is useful if for example you renamed your product and you wanted people to stop using the old product name on your website.
  - 'removeShout', filter out shouting in the field value (ENTIRELY UPPER CASE FIELD VALUES). This is useful for making a forum appear more civil.
  - 'sentenceCase', make the field value sentence case.

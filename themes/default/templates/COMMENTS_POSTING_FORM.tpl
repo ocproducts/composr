@@ -79,7 +79,7 @@
 						{+START,IF,{$GET,GET_TITLE}}
 							<tr>
 								<th class="de_th vertical_alignment">
-									<label for="title">{!POST_TITLE}:</label>
+									<label for="title">{!SUBJECT}:</label>
 								</th>
 
 								<td>

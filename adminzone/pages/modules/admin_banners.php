@@ -123,7 +123,7 @@ class Module_admin_banners
         $has_banner_network = $_sum != 0.0;
 
         require_code('templates_results_table');
-        $field_titles_arr = array(do_lang_tempcode('NAME'), do_lang_tempcode('TYPE'), do_lang_tempcode('_BANNER_TYPE'));
+        $field_titles_arr = array(do_lang_tempcode('NAME'), do_lang_tempcode('TYPE'), do_lang_tempcode('BANNER_TYPE'));
         if ($has_banner_network) {
             $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITSFROM'), do_lang_tempcode('BANNER_VIEWSFROM')));
         }
@@ -144,7 +144,7 @@ class Module_admin_banners
                     $type = do_lang_tempcode('BANNER_PERMANENT');
                     break;
                 case 1:
-                    $type = do_lang_tempcode('_BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
+                    $type = do_lang_tempcode('BANNER_HITS_LEFT', do_lang_tempcode('BANNER_CAMPAIGN'), make_string_tempcode(integer_format($myrow['campaign_remaining'])));
                     break;
                 case 2:
                     $type = do_lang_tempcode('BANNER_DEFAULT');

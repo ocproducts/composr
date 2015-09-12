@@ -34,7 +34,7 @@ class Hook_config_secondary_members_per_page
             'human_name' => 'SECONDARY_MEMBERS_PER_PAGE',
             'type' => 'integer',
             'category' => 'USERS',
-            'group' => 'GROUPS',
+            'group' => 'USERGROUPS',
             'explanation' => 'CONFIG_OPTION_secondary_members_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

@@ -16,6 +16,7 @@ The easiest way to add a file for a download is by attaching the file to the web
  - PHP server settings often severely limit the maximum file size that may be uploaded
 
 [title="2"]Uploading, and then referencing the URL[/title]
+
 [surround]
 [media width="150" description="Attaching a file to a download, and charging for it" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_add.png[/media]
 If a file is too large to comfortably upload by web-form, users with FTP or SFTP/SCP access to the server may wish to upload it using this, and then provide the 'Add download' form with an equivalent HTTP URL (or the direct FTP URL) to the location they upload to.
@@ -24,6 +25,7 @@ The draw-backs with this method are:
  - FTP/SFTP/SCP access is required and for obvious security reasons, these details are rarely given freely. Note that there is no restriction on actually uploading the file to your website's own server, so people may reference separate web space: but this leaves the download database integrity at the mercy of this secondary web space
  - The file is not contained in Composr, and thus cannot be managed by it (for example, deleted when the download is deleted)
 [/surround]
+
 [title="2"]Batch adding from an FTP server[/title]
 
 [media width="150" description="The FTP downloads interface" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_ftp_downloads.png[/media]
@@ -49,24 +51,26 @@ To do this, the old download is edited such that the outmode field is set to poi
 
 [title="2"]Selling downloads[/title]
 
-[media width="150" description="A download 'for sale'" float="left"]data_custom/images/docs/tut_adv_downloads/adv_downloads_charge.png[/media]
+[surround]
+[media width="150" description="A download 'for sale'" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_charge.png[/media]
 A common example of a community that would benefit from this, is a community based around the 'modding' of a computer game, where members release 'modifications' for download. Such games include 'Quake', 'The Sims', and many others.
 Members may add downloads, and charge for those downloads, using the 'submitter gets points' option. Thus with this, the creators are awarded for their work by the users, using a simple form of currency; this works two ways, much like real world economies do: members are encouraged to become the 'rich members' (as entrepreneurs) as well as to generally earn points (contribute to society).
 
 Another example is a community based upon subscription: points could be bought via a service such as PayPal (Composr at the time of writing provides no specific support for this, but staff could manually allocate points based on PayPal transactions) and the website could require spending of these points to download files.
-
-[concepts
- 1_key="outmode"   1_value="Mark an entry as having been replaced by another one"
-]Concepts[/concepts]
+[/surround]
 
 [title="2"]Moving download galleries[/title]
 
 If you don't like that download galleries are placed underneath the root gallery, you can move them under a different gallery. Follow these steps:
 1) Create a new container gallery from Content Management > Galleries > Add Gallery. Let's say you've given it a codename of [tt]downloads[/tt].
 2) Change the "Create download galleries under" option from Admin Zone > Setup > Configuration > Feature options > Downloads, to "downloads"
-3) From Commandr, Admin Zone > Tools > Commandr, run this command to mass-move your existing galleries:[code]:$GLOBALS['SITE_DB']->query('UPDATE '.get_table_prefix().'galleries SET parent_id=\'downloads\' WHERE parent_id=\'root\' AND name LIKE \'download\_%\'');[/code]
+3) From Commandr, Admin Zone > Tools > Commandr, run this command to mass-move your existing galleries:[code="Commandr"]:$GLOBALS['SITE_DB']->query('UPDATE '.get_table_prefix().'galleries SET parent_id=\'downloads\' WHERE parent_id=\'root\' AND name LIKE \'download\_%\'');[/code]
 
 The advantage to moving them is that then you can essentially forget about them. You can proceed to add images/videos via the direct link from when viewing a download.
+
+[concepts
+ 1_key="outmode"   1_value="Mark an entry as having been replaced by another one"
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

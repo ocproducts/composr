@@ -169,7 +169,7 @@
 							<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
 							<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>
 							<select class="search_sort" id="search_sort" name="sort">
-								<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
+								<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 								<option{+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
 								<option{+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
 								{+START,IF,{CAN_ORDER_BY_RATING}}

@@ -60,6 +60,7 @@ You can download logs of any chat conversations. To do this, simply click the "D
 Chatroom users may set sound effects for different chat actions (from the link provided in the chat lobby), and also override the sound effects so they are different for different members. New sound effects may be uploaded in [tt].mp3[/tt] format, or effects may be chosen from the inbuilt sound effect library.
 
 [title="3"]Creating a private room[/title]
+
 [surround]
 [media width="150" description="The private room creation interface" float="left"]data_custom/images/docs/tut_chat/chat_create_private_room.png[/media]
 Private chatrooms are the chat equivalent of an [concept]Conversr[/concept] Private Topic. Anybody can create them, but only certain specified people can view them and use them. If a private chatroom is unvisited and unused for (by default) more than 24 hours, it will be automatically deleted ("pruned").
@@ -103,10 +104,12 @@ To delete a chat message, simply go to its edit screen, and tick (check) the "De
 Sometimes it's necessary to delete all the messages in a chatroom, whether to preserve sanctity/sanity, or simply to clean up. To delete all the messages in a chatroom, navigate to the specified chatroom's moderation page (where all the messages are listed), and click the "Delete all messages" link. A confirmation page will appear. Clicking "Proceed" from the confirmation will result in permanent deletion of all the messages.
 
 [title="2"]Administration[/title]
+
 [surround]
 [media width="150" description="Selecting a chatroom for administration" float="left"]data_custom/images/docs/tut_chat/chat_administration_chatrooms.png[/media]
 The administration interface to the chat system allows the manipulation of chatrooms themselves. It is found in Admin Zone > Structure > Chatrooms.
 [/surround]
+
 [title="3"]Adding chatrooms[/title]
 
 [media width="150" description="The administration interface to add a chatroom" float="right"]data_custom/images/docs/tut_chat/chat_administration_add_chatroom.png[/media]
@@ -126,6 +129,7 @@ All the options are the same as for the add chatroom form, and submitting the fo
 To delete a chatroom, simply go to that chatroom's edit screen, and tick (check) the "Delete" box, then click the "Save" button. The chatroom will be completely erased, and so will all messages in that chatroom. Any conversants using that chatroom will receive an error the next time they refresh, or the next time the system checks for messages.
 
 [title="3"]Deleting all chatrooms[/title]
+
 [surround]
 [media width="150" description="The link to delete all chatrooms" float="left"]data_custom/images/docs/tut_chat/chat_delete_all_rooms_link.png[/media]
 [media width="150" description="Confirmation for deleting all chatrooms" float="right"]data_custom/images/docs/tut_chat/chat_delete_all_chatrooms.png[/media]
@@ -137,6 +141,7 @@ If you are using the shoutbox block, which works via a chatroom, you will have j
 Be sure to create a new chatroom for the shoutbox to feed from and re-associate it via the block parameter (or if you didn't use a block parameter, the block will automatically associate with the new chatroom as it'll be the first one).
 [/box]
 [/surround]
+
 [title="2"]Advice for younger users[/title]
 
 Teenagers and children may hear many stories of chatrooms being dangerous and that they should stay away from them. As an administrator, you should place some emphasis on safety, and make sure your younger users are aware of the following guidelines:

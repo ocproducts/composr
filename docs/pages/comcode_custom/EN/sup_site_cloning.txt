@@ -33,13 +33,13 @@ Note that some hosts have SSH access disabled by default, and depending on your 
 
 If you don't like to use the shell (ssh) or do not have access, then steps 3-5 can be performed using a normal phpMyAdmin workflows. However, on some servers phpMyAdmin may time-out when exporting/importing databases, so the advanced steps have been included here.[/box]
 STEP 3: Backup the database of your main site by executing the following command in a shell (ssh) window, taking care to first replace the place holders with your specific details:
-[code]mysqldump -uMAIN_DB_USERNAME -pMAIN_DB_PASSWORD MAIN_DB_NAME > main_db_backup.sql[/code]
+[code="Bash"]mysqldump -uMAIN_DB_USERNAME -pMAIN_DB_PASSWORD MAIN_DB_NAME > main_db_backup.sql[/code]
 
 STEP 4: Prepare the clone site's database to accept main site's database using the following ssh command (change place holders as required):
-[code]mysql -uCLONE_DB_USERNAME -pCLONE_DB_PASSWORD -BNe "show tables" CLONE_DB_NAME | tr '\n' ',' | sed -e 's/,$//' | awk '{print "SET FOREIGN_KEY_CHECKS = 0;DROP TABLE IF EXISTS " $1 ";SET FOREIGN_KEY_CHECKS = 1;"}' | mysql -uCLONE_DB_USERNAME -pCLONE_DB_PASSWORD CLONE_DB_NAME[/code]
+[code="Bash"]mysql -uCLONE_DB_USERNAME -pCLONE_DB_PASSWORD -BNe "show tables" CLONE_DB_NAME | tr '\n' ',' | sed -e 's/,$//' | awk '{print "SET FOREIGN_KEY_CHECKS = 0;DROP TABLE IF EXISTS " $1 ";SET FOREIGN_KEY_CHECKS = 1;"}' | mysql -uCLONE_DB_USERNAME -pCLONE_DB_PASSWORD CLONE_DB_NAME[/code]
 
 STEP 5: Replace the clone site's database with that of the main site using the following ssh command (change place holders as required):
-[code]mysql -uCLONE_DB_USERNAME -pCLONE_DB_PASSWORD CLONE_DB_NAME < main_db_backup.sql[/code]
+[code="Bash"]mysql -uCLONE_DB_USERNAME -pCLONE_DB_PASSWORD CLONE_DB_NAME < main_db_backup.sql[/code]
 
 At this point you can delete [tt]main_db_backup.sql[/tt] if you wish (by executing the [tt]rm main_db_backup.sql[/tt] command in the ssh window). I sometimes don't if I'm going to be playing around with the tables of my clone site directly. So if I stuff something up I can just do steps 4 and 5 and I'm good to go.
 
