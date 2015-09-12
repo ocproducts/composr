@@ -43,6 +43,7 @@ class tutorials_codebox_test_set extends cms_test_case
             'HTML',
             'CSS',
             'SQL',
+            'MySQL',
             'Commandr',
             'Bash',
             'INI',
@@ -57,6 +58,7 @@ class tutorials_codebox_test_set extends cms_test_case
             'YAML',
             'htaccess',
             'Page-link',
+            'URL',
 
             // Use this if nothing else (or [font="Courier"]...[/font])
             'Text',

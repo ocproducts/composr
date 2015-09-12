@@ -202,8 +202,9 @@ Tags may be easily added via the "Comcode Tag Assistant" feature in Composr, whi
 
 [title="2"]Attachments[/title]
 
-[media width="150" description="Adding an attachment" float="left"]data_custom/images/docs/tut_comcode/comcode_attachment_add.png[/media]
+[surround]
 [media width="150" description="Editing an attachment" float="right"]data_custom/images/docs/tut_comcode/comcode_attachment_edit.png[/media]
+[media width="150" description="Adding an attachment" float="right"]data_custom/images/docs/tut_comcode/comcode_attachment_add.png[/media]
 Composr has a powerful attachment system that is integrated into Comcode, with a number of content types support attachments, such as news articles and Conversr forum posts.
 Using them couldn't be easier: you just choose a file (or many files) from your computer, and Composr will automatically add an 'attachment' tag into the Comcode you are writing. You may then move that tag to any location you want, for placement of the actual attachment when the content is viewed. There is special built in support for in-line display of various media forms, and support of download of other types of file; any file can be added so long as the file type is in the allowed list of file types defined in the Admin Zone (see the [page="_SEARCH:tut_security"]Security tutorial[/page] for a discussion on  this).
 
@@ -211,6 +212,7 @@ Attachments may be given special captions, which are usually displayed as a part
 Images have automatically generated and cached thumbnails.
 
 If you go back to edit the content with your attachment, you will see that it has been given a number, whereas it as just marked as 'new' when being added. You may actually copy and paste the attachment tag into any other area of Comcode, so as to re-use the attachment. Anyone with permission to access any of the attachment supporting content locations that the attachment is placed in will be able to view/download it. The attachment will remain in the system until all content that using it is edited to stop using it, or deleted.
+[/surround]
 
 [box="Important note"]Be careful when placing attachment tags in a Comcode spot that does not support attachments natively. This is supported, but the attachment will be deleted if its original content is deleted, as non-native Comcode spots have no way of recording that they have used it. In addition, if a viewer does not have access to the attachment's original content, they won't have access to your copy&pasted usage to a non-native Comcode spot.[/box]
 

@@ -4,7 +4,7 @@
  * ------
  * Author: Doug Porter (powerbuilder.geshi@gmail.com)
  * Copyright: (c) 2009 Doug Porter
- * Release Version: 1.0.8.6
+ * Release Version: 1.0.8.12
  * Date Started: 2009/07/13
  *
  * PowerBuilder (PowerScript) language file for GeSHi.
@@ -262,7 +262,7 @@ $language_data = array (
             'omstream!', 'open!', 'orb!', 'original!',
             'osf1!', 'other!', 'outside!', 'oval!',
             'pagedown!', 'pageleft!', 'pageright!', 'pageup!',
-            'parenttreeitem!', 'pbtcmspobject!', 'pentium!', 'percentage!',
+            'parenttreeitem!', 'pbtocppobject!', 'pentium!', 'percentage!',
             'picture!', 'picturebutton!', 'picturehyperlink!', 'picturelistbox!',
             'pictureselected!', 'pie3d!', 'piegraph!', 'pipeend!',
             'pipeline!', 'pipemeter!', 'pipestart!', 'popup!',
@@ -414,5 +414,3 @@ $language_data = array (
     'HIGHLIGHT_STRICT_BLOCK' => array(
         )
 );
-
-?>

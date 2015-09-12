@@ -1894,7 +1894,7 @@ function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $p
     $textual_area = isset($TEXTUAL_TAGS[$current_tag]);
 
     $white_space_area = $textual_area;
-    if (((($current_tag == 'code') || ($current_tag == 'codebox')) && (isset($attribute_map['param'])) && ((strtolower($attribute_map['param']) == 'php') || (file_exists(get_file_base() . '/sources/geshi/' . filter_naughty(($attribute_map['param'] == 'HTML') ? 'html4strict' : strtolower($attribute_map['param'])) . '.php')) || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($attribute_map['param'] == 'HTML') ? 'html4strict' : strtolower($attribute_map['param'])) . '.php')))) || ($current_tag == 'attachment') || ($current_tag == 'attachment_safe') || ($current_tag == 'menu')) {
+    if (((($current_tag == 'code') || ($current_tag == 'codebox')) && (isset($attribute_map['param'])) && ((strtolower($attribute_map['param']) == 'php') || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($attribute_map['param'] == 'HTML') ? 'html5' : strtolower($attribute_map['param'])) . '.php')))) || ($current_tag == 'attachment') || ($current_tag == 'attachment_safe') || ($current_tag == 'menu')) {
         $in_separate_parse_section = true;
     } else {
         // Code tags are white space area, but not textual area

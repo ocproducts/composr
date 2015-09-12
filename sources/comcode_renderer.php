@@ -2233,7 +2233,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
 {
     $_embed = mixed();
     $title = do_lang_tempcode('CODE');
-    if ((file_exists(get_file_base() . '/sources/geshi/' . filter_naughty(($type == 'HTML') ? 'html4strict' : strtolower($type)) . '.php')) || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($type == 'HTML') ? 'html4strict' : strtolower($type)) . '.php'))) {
+    if (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($type == 'HTML') ? 'html5' : strtolower($type)) . '.php')) {
         $evaluated = $embed->evaluate();
 
         if (($in_semihtml) || ($is_all_semihtml)) {
@@ -2245,7 +2245,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
         if (class_exists('GeSHi')) {
             require_code('developer_tools');
             destrictify(false);
-            $geshi = new GeSHi($evaluated, ($type == 'HTML') ? 'html4strict' : strtolower($type));
+            $geshi = new GeSHi($evaluated, ($type == 'HTML') ? 'html5' : strtolower($type));
             $geshi->set_header_type(GESHI_HEADER_DIV);
             if ($numbers) {
                 $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS);

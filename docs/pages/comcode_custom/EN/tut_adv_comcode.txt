@@ -50,7 +50,7 @@ The \[semihtml] tag is also useful if you are writing some content that has very
 
 [title="2"]Syntax highlighting[/title]
 
-Composr supports syntax highlighting via [url="GeSHi"]http://qbnz.com/highlighter/[/url]. This operates using the normal 'code' and 'codebox' tags, adding support for GeSHi highlighter codes to the 'param' attribute of the tags. For this support to function it is necessary for you to download GeSHi and extract the [tt]geshi.php[/tt] file and [tt]geshi[/tt] directory into Composr's [tt]sources_custom[/tt] directory. This is for licensing reasons. Alternatively, install the non-bundled GeSHi addon we maintain.
+Composr supports syntax highlighting via [url="GeSHi"]http://qbnz.com/highlighter/[/url]. This operates using the normal 'code' and 'codebox' tags, adding support for GeSHi highlighter codes to the 'param' attribute of the tags. We maintain a non-bundled GeSHi addon that provides the necessary files.
 
 [title="2"]Comcode Menus (advanced)[/title]
 

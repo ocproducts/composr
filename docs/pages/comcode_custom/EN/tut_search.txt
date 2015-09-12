@@ -138,7 +138,7 @@ event_scheduler=ON
 4) Run this query: [tt]USE <yourdbname>;[/tt]
 
 5) Run this query:
-[code="SQL"]
+[code="MySQL"]
 delimiter |
 
 DROP EVENT IF EXISTS killslowsearches;
@@ -197,7 +197,7 @@ This kills any MySQL connections running for more than 2 digits of seconds, incl
 
 An alternate workaround is possible in MySQL 5.7+, as MySQL have introduced a query timeout setting.
 Set it in MySQL like:
-[code="SQL"]
+[code="MySQL"]
 SET GLOBAL MAX_STATEMENT_TIME=10000;
 [/code]
 (this is for 10 seconds, i.e. 10,000 milliseconds)

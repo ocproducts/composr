@@ -38,7 +38,9 @@ This tutorial focuses mainly on XHTML, CSS and JavaScript, which are the three t
 Like all web sites, a Composr site uses [abbr="Uniform Resource Locator"]URL[/abbr]s (aka web addresses) to link pages. Within Composr, they are usually written as page-links (see above) and then compiled to URLs at the same time the XHTML is generated.
 
 URLs (when written in full) are constructed as follows:
-[tt]protocol://server:port/path?parameter=value&anotherparameter=anothervalue&anotherparameter=anothervalue[/tt]
+[code="URL"]
+protocol://server:port/path?parameter=value&anotherparameter=anothervalue&anotherparameter=anothervalue
+[/code]
 
 They are constructed as follows:
  - For a web page, the protocol is always 'http' or 'https' (because the page is transferred via the HTTP(S) protocol)
@@ -561,8 +563,7 @@ CSS (Cascading StyleSheets) is the language used to style and position elements 
 CSS is a simple language, consisting of [i]rules[/i], which contain various [i]properties[/i]; the individual parameters for styling an element.
 The basic format of a rule is as follows.
 [code="CSS"]
-selector
-{
+selector {
 	property: property-value;
 }
 [/code]
@@ -572,13 +573,11 @@ There are several types of selector defined by the CSS 1 standard, which we will
 
 The most basic selector is the [i]type selector[/i], and it selects all the XHTML tags in the markup of the specified name.
 [code="CSS"]
-p
-{
+p {
 	property: property-value;
 }
 
-div
-{
+div {
 	property: property-value;
 	property: property-value;
 }
@@ -587,12 +586,10 @@ The CSS above would apply the specified properties to any [tt]<p>[/tt] or [tt]<d
 
 Another basic selector is the [i]class selector[/i], which selects all XHTML tags with the specified class attribute value.
 [code="CSS"]
-.warning
-{
+.warning {
 	property: property-value;
 }
-span.timestamp
-{
+span.timestamp {
 	property: property-value;
 }
 [/code]
@@ -609,23 +606,20 @@ In that example, the [tt]<span>[/tt] tag has two CSS classes attached. However, 
 
 ID [i]selectors[/i] are another basic selector type, which apply properties to elements based upon their ID attribute (for more information on the ID attribute, see the JavaScript section below).
 [code="CSS"]
-#main_doc
-{
+#main_doc {
 	property: property-value;
 }
 [/code]
 Note that this rule should (in theory) only be applied to [b]one[/b] tag in the entire page (if at all), as the ID attribute of any tag should be [b]unique[/b]. Due to this, the ID selector isn't used as frequently as other selectors, and when it is used, it is usually used for basic page layout rules, such as positioning the title, main body, and menus. Note also that ID selectors can be coupled with type selectors, as with the class selector.
 [code="CSS"]
-h1#title
-{
+h1#title {
 	property: property-value;
 }
 [/code]
 
 The final basic selector is the [i]descendant selector[/i], which applies properties to specific tags, but only if they are a descendant of another specified tag (or tags). Note that it applies the properties to the final tag in the sequence (i.e. the right-most tag in the selector).
 [code="CSS"]
-h3 a
-{
+h3 a {
 	property: property-value;
 }
 [/code]
@@ -633,7 +627,7 @@ This example applies the specified properties to any <a> tag which is beneath a 
 
 Now that the basic selectors have been covered, we move on to properties and property values. A property can only accept [b]one[/b] out of a list of pre-defined values. Some values are variable (such as widths, and other numeric values), but most are just text.
 
-Some commonly used properties are listed below.
+Some commonly used properties are listed below...
 
 [html]
 <table class="columned_table results_table wide_table">
@@ -810,15 +804,13 @@ All these properties are no use without property values. Although most elements 
 
 Pixel measurements should generally be used for fixed-size objects, which are usually encountered when doing the basic layout of a page.
 [code="CSS"]
-#left_col
-{
+#left_col {
 	width: 200px;
 }
 [/code]
 Percentage measurements are much better to use, however, as they allow dynamic resizing of page layout if the browser window is resized.
 [code="CSS"]
-#left_col
-{
+#left_col {
 	width: 20%;
 }
 [/code]
@@ -859,8 +851,6 @@ function is_IE()
 	return false;
 }
 [/code]
-
-If you are knowledgeable in the area of programming, you will notice that JavaScript uses C-style syntax.
 
 JavaScript is most powerful when applied to the DOM -- the Document Object Model, which is a way of accessing the properties and attributes of every node in the document tree of an XHTML (or XML, etc.) page. You don't need to know about how to use the DOM in JavaScript, you just need to know that the DOM extensively references the IDs of XHTML elements, specified by their ID tag.
 
@@ -936,7 +926,7 @@ To use these event attributes, simply put them into the tag.
 [/code]
 
 You can also put more than just a function call into event attributes.
-[code="JavaScript"]
+[code="HTML"]
 <a href="http://example.com/" title="Example website" onclick="window.alert('You clicked the link!'); log_click('http://example.com/'); ">example.com</a>
 [/code]
 

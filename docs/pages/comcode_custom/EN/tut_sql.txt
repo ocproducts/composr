@@ -58,11 +58,12 @@ A query is a command, or a question, sent to a database in a special language ca
 
 To run a query, you need to click the 'SQL' tab once you have chosen a database to view/edit. You then type in the query. In phpMyAdmin, it is often easier to use the interface to make changes, rather than working out what query to type. Occasionally ocProducts might suggest a query that could help solve a problem, as it is easier for us to give the query, than to explain all the mouse-clicks required. The screen-shots shown an example for executing a query to delete an item of news.
 
-SQL is beyond the scope of this tutorial, but basic queries fit one of the following structures:
- - [tt]INSERT INTO <table-name> (<field-name>,...) VALUES (<field-value>,...)[/tt]
- - [tt]UPDATE <table-name> SET <field-name>=<field_value>, ... WHERE <key-field>=<key-value>[/tt]
- - [tt]DELETE FROM <table-name> WHERE <key-field>=<key-value>[/tt]
- - [tt]SELECT * FROM <table-name> WHERE <key-field>=<key-value>[/tt]
+SQL is beyond the scope of this tutorial, but basic queries fit one of the following structures...
+
+[code="SQL"]INSERT INTO <table-name> (<field-name>,...) VALUES (<field-value>,...)[/code]
+[code="SQL"]UPDATE <table-name> SET <field-name>=<field_value>, ... WHERE <key-field>=<key-value>[/code]
+[code="SQL"]DELETE FROM <table-name> WHERE <key-field>=<key-value>[/code]
+[code="SQL"]SELECT * FROM <table-name> WHERE <key-field>=<key-value>[/code]
 
 [title="2"]Composr database structure[/title]
 

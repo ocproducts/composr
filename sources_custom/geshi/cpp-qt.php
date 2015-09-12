@@ -4,10 +4,10 @@
  * -------
  * Author: Iulian M
  * Copyright: (c) 2006 Iulian M
- * Release Version: 1.0.8.6
+ * Release Version: 1.0.8.12
  * Date Started: 2004/09/27
  *
- * C++ (with QT extensions) language file for GeSHi.
+ * C++ (with Qt extensions) language file for GeSHi.
  *
  * CHANGES
  * -------
@@ -41,21 +41,25 @@
  ************************************************************************************/
 
 $language_data = array (
-    'LANG_NAME' => 'C++ (QT)',
+    'LANG_NAME' => 'C++ (Qt)',
     'COMMENT_SINGLE' => array(1 => '//', 2 => '#'),
     'COMMENT_MULTI' => array('/*' => '*/'),
     'COMMENT_REGEXP' => array(
         //Multiline-continued single-line comments
         1 => '/\/\/(?:\\\\\\\\|\\\\\\n|.)*$/m',
         //Multiline-continued preprocessor define
-        2 => '/#(?:\\\\\\\\|\\\\\\n|.)*$/m'
+        2 => '/#(?:\\\\\\\\|\\\\\\n|.)*$/m',
+        //C++ 11 string literal extensions
+        3 => '/(?:L|u8?|U)(?=")/',
+        //C++ 11 string literal extensions (raw)
+        4 => '/R"([^()\s\\\\]*)\((?:(?!\)\\1").)*\)\\1"/ms'
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array("'", '"'),
     'ESCAPE_CHAR' => '',
     'ESCAPE_REGEXP' => array(
         //Simple Single Char Escapes
-        1 => "#\\\\[\\\\abfnrtv\'\"?\n]#i",
+        1 => "#\\\\[abfnrtv\\\'\"?\n]#i",
         //Hexadecimal Char Specs
         2 => "#\\\\x[\da-fA-F]{2}#",
         //Hexadecimal Char Specs
@@ -89,7 +93,7 @@ $language_data = array (
             'EXIT_FAILURE', 'EXIT_SUCCESS', 'RAND_MAX', 'CLOCKS_PER_SEC',
             'virtual', 'public', 'private', 'protected', 'template', 'using', 'namespace',
             'try', 'catch', 'inline', 'dynamic_cast', 'const_cast', 'reinterpret_cast',
-            'static_cast', 'explicit', 'friend', 'wchar_t', 'typename', 'typeid', 'class' ,
+            'static_cast', 'explicit', 'friend', 'typename', 'typeid', 'class' ,
             'foreach','connect', 'Q_OBJECT' , 'slots' , 'signals', 'Q_SIGNALS', 'Q_SLOTS',
             'Q_FOREACH', 'QCOMPARE', 'QVERIFY', 'qDebug', 'kDebug', 'QBENCHMARK'
             ),
@@ -120,7 +124,21 @@ $language_data = array (
             'register', 'short', 'shortint', 'signed', 'static', 'struct',
             'typedef', 'union', 'unsigned', 'void', 'volatile', 'extern', 'jmp_buf',
             'signal', 'raise', 'va_list', 'ptrdiff_t', 'size_t', 'FILE', 'fpos_t',
-            'div_t', 'ldiv_t', 'clock_t', 'time_t', 'tm',
+            'div_t', 'ldiv_t', 'clock_t', 'time_t', 'tm', 'wchar_t',
+
+            'int8', 'int16', 'int32', 'int64',
+            'uint8', 'uint16', 'uint32', 'uint64',
+
+            'int_fast8_t', 'int_fast16_t', 'int_fast32_t', 'int_fast64_t',
+            'uint_fast8_t', 'uint_fast16_t', 'uint_fast32_t', 'uint_fast64_t',
+
+            'int_least8_t', 'int_least16_t', 'int_least32_t', 'int_least64_t',
+            'uint_least8_t', 'uint_least16_t', 'uint_least32_t', 'uint_least64_t',
+
+            'int8_t', 'int16_t', 'int32_t', 'int64_t',
+            'uint8_t', 'uint16_t', 'uint32_t', 'uint64_t',
+
+            'intmax_t', 'uintmax_t', 'intptr_t', 'uintptr_t'
             ),
         5 => array(
             "Q_UINT16", "Q_UINT32", "Q_UINT64", "Q_UINT8", "Q_ULLONG",
@@ -475,6 +493,8 @@ $language_data = array (
         'COMMENTS' => array(
             1 => 'color: #888888;',
             2 => 'color: #006E28;',
+            3 => 'color: #BF0303;',
+            4 => 'color: #BF0303;',
             'MULTI' => 'color: #888888; font-style: italic;'
             ),
         'ESCAPE_CHAR' => array(
@@ -520,7 +540,7 @@ $language_data = array (
         2 => '',
         3 => '',
         4 => '',
-        5 => 'http://doc.trolltech.com/latest/{FNAMEL}.html'
+        5 => 'http://qt-project.org/doc/latest/{FNAMEL}.html'
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
@@ -546,5 +566,3 @@ $language_data = array (
         )
     )
 );
-
-?>

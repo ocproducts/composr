@@ -4,7 +4,7 @@
  * ----------------
  * Author: Roberto Armellin (r.armellin@tin.it)
  * Copyright: (c) 2004 Roberto Armellin, Nigel McNie (http://qbnz.com/highlighter/)
- * Release Version: 1.0.8.6
+ * Release Version: 1.0.8.12
  * Date Started: 2004/09/17
  *
  * Visual FoxPro language file for GeSHi.
@@ -250,7 +250,7 @@ $language_data = array (
             'Menus','Messages','Middle','Min','Minimize','Minus',
             'Mod','Modal','Module','Mono43','Movers','Multilocks',
             'Mvarsiz','Mvcount','N','Near','Negotiate','Noalias',
-            'Noappend','Noclear','Noclose','Noconsole','Ncmstrans','Nodata',
+            'Noappend','Noclear','Noclose','Noconsole','Nocptrans','Nodata',
             'Nodebug','Nodelete','Nodup','Noedit','Noeject','Noenvironment',
             'Nofloat','Nofollow','Nogrow','Noinit','Nolgrid','Nolink',
             'Nolock','Nomargin','Nomdi','Nomenu','Nominimize','Nomodify'
@@ -452,5 +452,3 @@ $language_data = array (
     'HIGHLIGHT_STRICT_BLOCK' => array(
         )
 );
-
-?>

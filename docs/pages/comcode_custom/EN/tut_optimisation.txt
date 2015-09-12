@@ -199,7 +199,7 @@ If the key buffer size is not large enough then indexing will work via disk, and
 If you notice searches for random phrases are sometimes fast, and sometimes slow, it's likely indicating the key buffer has filled up too far and is pushing critical indexes out.
 
 You can test cache coverage via priming the key buffer via the MySQL console. This example would be for searches on forum posts, and a key buffer size of 500MB:
-[code="SQL"]
+[code="MySQL"]
 SET GLOBAL key_buffer_size=500*1024*1024;
 LOAD INDEX INTO CACHE <dbname>.cms_translate, <dbname>.cms_seo_meta, <dbname>.cms_f_posts, <dbname>.cms_f_topics;
 SHOW STATUS LIKE 'key%';
