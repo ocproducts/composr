@@ -87,7 +87,6 @@ You now need to put these files in the desired folder. This can usually be done 
 
 [surround]
 [media width="150" description="The Composr installation screen" float="left"]data_custom/images/docs/tut_install/install_step1.png[/media]
-
 After you upload these files, you've completed the hardest part of the installation. The next step is to open your web browser and go to [tt]http://www.mywebsite.com/install.php[/tt] (substitute '[tt]http://www.mywebsite.com/[/tt]' as appropriate for your domain and install path). You should be greeted with a welcome screen, asking you which language you would like to use.
 
 On step two, you are shown a license agreement. You must agree to the license agreement before you can install Composr. You also have the opportunity to sign up for our newsletter, which will notify you by e-mail of any updates to our software. Composr will never sell or rent your e-mail address to a third party. You can read our [page=":privacy"]privacy policy[/page] for more information.

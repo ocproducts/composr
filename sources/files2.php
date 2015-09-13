@@ -1714,7 +1714,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
         }
         $DOWNLOAD_LEVEL--;
-        $HTTP_MESSAGE = 'could not connect to host (' . $errstr . ')';
+        $HTTP_MESSAGE = 'could not connect to host'; // Could append  (' . $errstr . ') but only when debugging because we use this string like a constant in some places
         if ($put !== null) {
             fclose($put);
             if (!$put_no_delete) {

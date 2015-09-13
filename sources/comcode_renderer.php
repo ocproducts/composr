@@ -494,7 +494,12 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         $GLOBALS['COMCODE_PARSE_URLS_CHECKED']++;
         $test = ($GLOBALS['COMCODE_PARSE_URLS_CHECKED'] >= MAX_URLS_TO_READ) ? '' : http_download_file($url_full, 0, false);
         if ((is_null($test)) && (in_array($GLOBALS['HTTP_MESSAGE'], array('404', 'could not connect to host')))) {
-            $temp_tpl = do_template('WARNING_BOX', array('_GUID' => '7bcea67226f89840394614d88020e3ac', 'FOR_GUESTS' => false, 'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full))));
+            $temp_tpl = do_template('WARNING_BOX', array(
+                '_GUID' => '7bcea67226f89840394614d88020e3ac',
+                'FOR_GUESTS' => false,
+                'INLINE' => true,
+                'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full)),
+            ));
             if (array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) {
                 $GLOBALS['COMCODE_BROKEN_URLS'][] = array($url_full, null);
             } elseif ((!in_array(get_page_name(), $GLOBALS['DONT_CARE_MISSING_PAGES'])) && (running_script('index'))) {

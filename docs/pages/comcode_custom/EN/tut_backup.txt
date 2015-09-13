@@ -43,7 +43,6 @@ From here, you can access the backup feature by either selecting the 'Make Backu
 The available selection on the to-do list will also show you how long ago it has been since a backup was made last.
 
 [media width="150" description="The backup interface" float="right"]data_custom/images/docs/tut_backup/backup_2.png[/media]
-
 Among other things, selecting the 'Make Backup' option will load up Make Backup screen (see cropped screen-shot), here you will get the options of making a Full Backup or an Incremental Backup (as described previously) and an option for the maximum size of file that will be backed up in megabytes.
 
 Clicking 'Make Backup' button once you have selected the backup method that you wish to use will generate the backup.

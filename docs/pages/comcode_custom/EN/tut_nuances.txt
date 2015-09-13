@@ -152,7 +152,7 @@ header('X-Frame-Options: SAMEORIGIN');
 
 If you use vBulletin 3.5 or earlier put:
 [code="PHP"]
-$SITE_INFO['vb_version']=3.5;
+$SITE_INFO['vb_version'] = 3.5;
 [/code]
 into [tt]_config.php[/tt].
 
@@ -170,7 +170,7 @@ OpenID, LDAP, and Facebook connect integration is not supported via the IPB foru
 
 If you use IPB stronghold cookies (version 2.2 and later) put:
 [code="PHP"]
-$SITE_INFO['stronghold_cookies']=1;
+$SITE_INFO['stronghold_cookies'] = 1;
 [/code]
 into [tt]_config.php[/tt].
 

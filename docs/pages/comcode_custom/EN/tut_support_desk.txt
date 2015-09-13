@@ -2,15 +2,15 @@
 
 [media width="150" description="Configuring the support ticket and comment topic systems" float="right"]data_custom/images/docs/tut_support_desk/support_forum_config.png[/media]
 Composr can be used as an effective support desk tool. For those unfamiliar with the concept of a support desk, or who may not relate their personal needs to being an application of such, these are some common properties of a support desk system:
- - PLACEMENT: the ability for issues to be placed, both by staff, and by the audience being supported
- - NOTIFICATION: notifications, for staff to be made aware of issues
- - CATEGORISATION: categorisation of issues
- - PRIORITISATION: prioritisation of issues
- - ASSIGNING: the issue is assigned to a specific member of staff
- - TRACKING: tracking of issues
- - COORDINATION: coordination with the resolution of issues between relevant parties
- - RESOLUTION: the ability for issues to be marked as 'resolved'
- - ARCHIVING: past issues may be browsed
+ - [b]Placement[/b]: the ability for issues to be placed, both by staff, and by the audience being supported
+ - [b]Notification[/b]: notifications, for staff to be made aware of issues
+ - [b]Categorisation[/b]: categorisation of issues
+ - [b]Prioritisation[/b]: prioritisation of issues
+ - [b]Assigning[/b]: the issue is assigned to a specific member of staff
+ - [b]Tracking[/b]: tracking of issues
+ - [b]Coordination[/b]: coordination with the resolution of issues between relevant parties
+ - [b]Resolution[/b]: the ability for issues to be marked as 'resolved'
+ - [b]Archiving[/b]: past issues may be browsed
 
 Four different Composr systems may be used to provide such a support desk:
  - The Support Ticket system
@@ -23,11 +23,9 @@ Four different Composr systems may be used to provide such a support desk:
 [title="2"]The Support Ticket system[/title]
 
 [surround]
+[media width="150" description="Viewing a support ticket" float="right"]data_custom/images/docs/tut_support_desk/support_show_ticket.png[/media]
 [media width="150" description="Managing support ticket types" float="right"]data_custom/images/docs/tut_support_desk/support_ticket_types.png[/media]
 {!tickets:DOC_TICKETS}
-[/surround]
-[media width="150" description="Viewing support tickets as staff" float="right"]data_custom/images/docs/tut_support_desk/support_list_tickets.png[/media]
-[media width="150" description="Viewing a support ticket" float="left"]data_custom/images/docs/tut_support_desk/support_show_ticket.png[/media]
 
 Support tickets are created simply by visiting the support ticket page, clicking to add a ticket, and filling in the appropriate details. Upon completion of this, an e-mail is sent to the staff, and the staff can then respond to the ticket as appropriate.
 
@@ -36,9 +34,11 @@ The support ticket system supports attachments, but only in [concept]Conversr[/c
 Guests may create support tickets, but they need to leave their e-mail address (there is a field for this) if they want a reply.
 
 Staff will see all open support tickets when they visit the support ticket page, but users may only seen their own. If the support ticket list is left open then it will automatically make your computer beep if a new ticket is made, and refresh to show that new ticket. Likewise, if a support ticket is left open, your computer will beep and the ticket will refresh, if a new post is made in the ticket.
+[/surround]
 
 [title="3"]Requirements[/title]
 
+[media width="150" description="Viewing support tickets as staff" float="right"]data_custom/images/docs/tut_support_desk/support_list_tickets.png[/media]
  - you must not be using the 'none' forum driver (don't worry, you probably aren't)
  - you must have created the support forum that is referenced in the Composr configuration (don't worry, for regular [concept]Conversr[/concept] users it's auto-created)
  - users will need a way to get to the support system; a link is in the default menus, and may also be created using the menu editor
@@ -46,43 +46,48 @@ Staff will see all open support tickets when they visit the support ticket page,
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>A special interface is provided for this</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>Support ticket types may be managed from the Admin Zone</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td>You can make use of ticket types to set up a priority scale</td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td>If more than one member of staff are viewing the same support ticket then a notification will be shown; when you reply, you are automatically assigned to the ticket; multiple staff may be assigned, manually or automatically; you may unassign yourself or other staff</td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>E-mail/etc notifications are sent</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>A topic-like reply feature is provided. There's a staff-only reply feature to make hidden messages only the staff may see</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td>Ticket may be closed</td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>Ticket list is made available, according to permissions</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>A special interface is provided for this</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>Support ticket types may be managed from the Admin Zone</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td>You can make use of ticket types to set up a priority scale</td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td>If more than one member of staff are viewing the same support ticket then a notification will be shown; when you reply, you are automatically assigned to the ticket; multiple staff may be assigned, manually or automatically; you may unassign yourself or other staff</td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>E-mail/etc notifications are sent</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>A topic-like reply feature is provided. There's a staff-only reply feature to make hidden messages only the staff may see</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td>Ticket may be closed</td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>Ticket list is made available, according to permissions</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -134,43 +139,48 @@ The Messaging system hooks up to the [tt]main_contact_us[/tt] block. This block 
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>A special interface is provided for this</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>You can place multiple contact-us blocks, each identified with different IDs. Staff members may set notifications for them individually.</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td><i>Not supported at the time of writing, although ticket types may be used in this way</i></td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td>If more than one member of staff are viewing the same support ticket then a notification will be shown</td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>E-mail/etc notifications are sent</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>Staff may privately discuss messages and take ownership</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td>Once a staff member has taken ownership over staff can essentially consider the matter resolved</td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>It is possible to browse past messages</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>A special interface is provided for this</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>You can place multiple contact-us blocks, each identified with different IDs. Staff members may set notifications for them individually.</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td><em>Not supported at the time of writing, although ticket types may be used in this way</em></td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td>If more than one member of staff are viewing the same support ticket then a notification will be shown</td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>E-mail/etc notifications are sent</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>Staff may privately discuss messages and take ownership</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td>Once a staff member has taken ownership over staff can essentially consider the matter resolved</td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>It is possible to browse past messages</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -183,43 +193,48 @@ For more information on this, see the [page="_SEARCH:tut_forum_helpdesk"]Running
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>Standard forum features may be used effectively</td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>Staff may set up notifications against forums as appropriate</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>Sub-forums may be used for this</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td>Sub-forums may be used for this</td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td>Sub-forums or topic titles may be used for this</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>A reply feature is provided</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td>Topic may be closed</td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>The forum-view allows browsing and searching</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>Standard forum features may be used effectively</td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>Staff may set up notifications against forums as appropriate</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>Sub-forums may be used for this</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td>Sub-forums may be used for this</td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td>Sub-forums or topic titles may be used for this</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>A reply feature is provided</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td>Topic may be closed</td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>The forum-view allows browsing and searching</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -235,43 +250,48 @@ To use the feedback commenting system, you must not be using the 'none' forum dr
 [title="3"]Approach to support functions[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Support feature</th>
-      <th>Method</th>
-   </tr>
-   <tr>
-      <td>PLACEMENT</td>
-      <td>There is an implicit attachment to a related piece of content (such as a download)</td>
-   </tr>
-   <tr>
-      <td>CATEGORISATION</td>
-      <td>There is an implicit attachment to a related piece of content (such as a download)</td>
-   </tr>
-   <tr>
-      <td>PRIORITISATION</td>
-      <td>Sub-forums may be used for this</td>
-   </tr>
-   <tr>
-      <td>ASSIGNING</td>
-      <td><i>Not supported</i></td>
-   </tr>
-   <tr>
-      <td>NOTIFICATIONS</td>
-      <td>a notification can be enabled for when new feedback is posted</td>
-   </tr>
-   <tr>
-      <td>COORDINATION</td>
-      <td>A reply feature is provided</td>
-   </tr>
-   <tr>
-      <td>RESOLUTION</td>
-      <td><i>Not supported</i></td>
-   </tr>
-   <tr>
-      <td>ARCHIVING</td>
-      <td>Content may be searched and browsed</td>
-   </tr>
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Support&nbsp;feature</th>
+			<th>Method</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>Placement</th>
+			<td>There is an implicit attachment to a related piece of content (such as a download)</td>
+		</tr>
+		<tr>
+			<th>Categorisation</th>
+			<td>There is an implicit attachment to a related piece of content (such as a download)</td>
+		</tr>
+		<tr>
+			<th>Prioritisation</th>
+			<td>Sub-forums may be used for this</td>
+		</tr>
+		<tr>
+			<th>Assigning</th>
+			<td><em>Not supported</em></td>
+		</tr>
+		<tr>
+			<th>Notifications</th>
+			<td>a notification can be enabled for when new feedback is posted</td>
+		</tr>
+		<tr>
+			<th>Coordination</th>
+			<td>A reply feature is provided</td>
+		</tr>
+		<tr>
+			<th>Resolution</th>
+			<td><em>Not supported</em></td>
+		</tr>
+		<tr>
+			<th>Archiving</th>
+			<td>Content may be searched and browsed</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -280,7 +300,7 @@ To use the feedback commenting system, you must not be using the 'none' forum dr
 Composr does not come with its own issue management database, but we have a non-bundled addon that includes an integrated modified version of Mantis.
 
 [concepts
- 1_key="support desk"   1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
+ 1_key="support desk"	1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
  2_key="support ticket" 2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
 ]Concepts[/concepts]
 

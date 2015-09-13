@@ -49,7 +49,7 @@ Please note that whilst Composr works without JavaScript, some times alternative
 [title="3"]Priority 1 checkpoints[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
+<table class="columned_table results_table wide_table autosized_table"><tbody>
 	<tr>
 		<th colspan="2">
 			In General (Priority 1)
@@ -276,13 +276,13 @@ Please note that whilst Composr works without JavaScript, some times alternative
 			the user can add such a link if they wish.</p>
 		</td>
 	</tr>
-</table>
+</tbody></table>
 [/html]
 
 [title="3"]Priority 2 checkpoints[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
+<table class="columned_table results_table wide_table autosized_table"><tbody>
 	<tr>
 		<th colspan="2">
 			In General (Priority 2)
@@ -659,13 +659,13 @@ Please note that whilst Composr works without JavaScript, some times alternative
 			<p>See 6.4.</p>
 		</td>
 	</tr>
-</table>
+</tbody></table>
 [/html]
 
 [title="3"]Priority 3 checkpoints[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
+<table class="columned_table results_table wide_table autosized_table"><tbody>
 	<tr>
 		<th colspan="2">
 			In General (Priority 3)
@@ -914,7 +914,7 @@ Please note that whilst Composr works without JavaScript, some times alternative
 			<p>Assistive technologies now provide this.</p>
 		</td>
 	</tr>
-</table>
+</tbody></table>
 [/html]
 
 [title="2"]Example accessibility problems[/title]
@@ -1026,18 +1026,18 @@ A properly marked-up version, using Composr conventions, would look as follows:
 
 [code="HTML"]
 <table class="map_table results_table">
-   <tr>
-      <th>Name</th>
-      <td>Ronald</td>
-   </tr>
-   <tr>
-      <th>Age</th>
-      <td>32</td>
-   </tr>
-   <tr>
-      <th>Location</th>
-      <td>Leeds</td>
-   </tr>
+    <tr>
+        <th>Name</th>
+        <td>Ronald</td>
+    </tr>
+    <tr>
+        <th>Age</th>
+        <td>32</td>
+    </tr>
+    <tr>
+        <th>Location</th>
+        <td>Leeds</td>
+    </tr>
 </table>
 [/code]
 

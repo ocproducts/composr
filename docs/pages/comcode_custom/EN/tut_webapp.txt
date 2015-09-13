@@ -10,17 +10,25 @@ You know what a website is from an experience point-of-view: a site consists of 
 
 [html]
 <ul>
-<li><em>a site consists of pages</em><br />
-A website is built with web pages. The natural thing is to think that a 'web page' is a self-contained document. In actual fact, a web page usually consists of separate files (such as images, sound-clips or videos) that are tied together by a programming language called 'HTML' (&dagger;). An HTML file contains code required to put all the pieces of a web page together like you see on your screen now (e-mails can also be made in HTML). Also specified in the HTML file are the instructions for displaying the text you are reading now, including the font-size, colour and style. All these elements will produce a web page, and the mix of Human-text and computer-code can often be very daunting when it comes to writing or editing an HTML -- this is why people often use additional computer software to create web pages for them.<br /><br /></li>
-<li><em>each page has a URL</em><br />
-URLs actually encode a number of things that together provide all the information needed to retrieve a page from the world-wide-web. This isn't unlike real-world addresses, which usually need to include a human name, a house number and a post-code/zip-code. The main two things a URL encodes are:<ol>
-<li>the computer a page is stored upon (a 'web server') &ndash; <b>http://example.com</b>/example.html
-</li>
-<li>the name of the page on that computer &ndash; http://example.com<b>/example.html</b></li>
-</ol>
-For a simple web-page, (2) is simply a filename that  the computer reads from its hard-disk and sends back.<br /><br /></li>
-<li><em>pages are joined to other pages via hyper-links</em><br />
-Fortunately there is not much to explain here beyond what you already know. Pages each have their own URL, and it is these URLs that are used for hyper-links.</li>
+	<li>
+		<em>a site consists of pages</em><br />
+		A website is built with web pages. The natural thing is to think that a 'web page' is a self-contained document. In actual fact, a web page usually consists of separate files (such as images, sound-clips or videos) that are tied together by a programming language called 'HTML' (&dagger;). An HTML file contains code required to put all the pieces of a web page together like you see on your screen now (e-mails can also be made in HTML). Also specified in the HTML file are the instructions for displaying the text you are reading now, including the font-size, colour and style. All these elements will produce a web page, and the mix of Human-text and computer-code can often be very daunting when it comes to writing or editing an HTML -- this is why people often use additional computer software to create web pages for them.<br /><br />
+	</li>
+
+	<li>
+		<em>each page has a URL</em><br />
+		URLs actually encode a number of things that together provide all the information needed to retrieve a page from the world-wide-web. This isn't unlike real-world addresses, which usually need to include a human name, a house number and a post-code/zip-code. The main two things a URL encodes are:
+		<ol>
+			<li>the computer a page is stored upon (a 'web server') &ndash; <strong>http://example.com</strong>/example.html</li>
+			<li>the name of the page on that computer &ndash; http://example.com<strong>/example.html</strong></li>
+		</ol>
+		For a simple web-page, (2) is simply a filename that  the computer reads from its hard-disk and sends back.<br /><br />
+	</li>
+
+	<li>
+		<em>pages are joined to other pages via hyper-links</em><br />
+		Fortunately there is not much to explain here beyond what you already know. Pages each have their own URL, and it is these URLs that are used for hyper-links.
+	</li>
 </ul>
 [/html]
 
@@ -99,7 +107,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 [title="2"]Overview of the advantages/disadvantages of different types of website[/title]
 
 [html]
-<table class="wide_table autosized_table results_table">
+<table class="wide_table autosized_table results_table autosized_table"><tbody>
 	<tr>
 		<th colspan="2">
 			Site of Pages
@@ -107,8 +115,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 	</tr>
 	<tr>
 		<td>
-			<p style="font-weight: medium; text-decoration: none"><em>Likely
-			technologies</em></p>
+			<p><em>Likely technologies</em></p>
 		</td>
 		<td>
 			<p>Simple collection of files</p>
@@ -116,17 +123,15 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 	</tr>
 	<tr>
 		<td>
-			<p style="font-weight: medium; text-decoration: none"><em>Likely
-			deciding factor</em></p>
+			<p><em>Likely deciding factor</em></p>
 		</td>
 		<td>
-			<p>Want to make simple pages, with little need to modify them
-			again.</p>
+			<p>Want to make simple pages, with little need to modify them again.</p>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<p style="font-weight: medium; text-decoration: none"><em>Cost</em></p>
+			<p><em>Cost</em></p>
 		</td>
 		<td>
 			<p>Low</p>
@@ -134,20 +139,18 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 	</tr>
 	<tr>
 		<td>
-			<p style="font-weight: medium; text-decoration: none"><em>Negative
+			<p><em>Negative
 			factors</em></p>
 		</td>
 		<td>
-			<p>Very tedious to update. 
-			</p>
-			<p>Unimpressed visitors. 
-			</p>
+			<p>Very tedious to update.</p>
+			<p>Unimpressed visitors.</p>
 			<p>Severe limit on functionality.</p>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<p style="font-weight: medium; text-decoration: none"><em>Options
+			<p><em>Options
 			for you</em></p>
 		</td>
 		<td>
@@ -155,8 +158,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>OR</em></p>
 			<p>Employ a web-designer.</p>
 			<p><em>OR</em></p>
-			<p>Use a 'site builder' tool, like those that are often provided
-			with web-hosting.</p>
+			<p>Use a 'site builder' tool, like those that are often provided with web-hosting.</p>
 		</td>
 	</tr>
 	<tr>
@@ -177,8 +179,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Likely deciding factor</em></p>
 		</td>
 		<td>
-			<p>Want highly customised dynamic pages, but without a need to
-			make regular changes.</p>
+			<p>Want highly customised dynamic pages, but without a need to make regular changes.</p>
 		</td>
 	</tr>
 	<tr>
@@ -186,8 +187,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Cost</em></p>
 		</td>
 		<td>
-			<p>Medium, assuming needs are limited to a very small set of specific
-			features.</p>
+			<p>Medium, assuming needs are limited to a very small set of specific features.</p>
 		</td>
 	</tr>
 	<tr>
@@ -196,8 +196,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</td>
 		<td>
 			<p>Very tedious to update.</p>
-			<p>Why not go for a full CMS? It's a similar cost, but with much
-			greater value.</p>
+			<p>Why not go for a full CMS? It's a similar cost, but with much greater value.</p>
 		</td>
 	</tr>
 	<tr>
@@ -226,10 +225,8 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Likely deciding factor</em></p>
 		</td>
 		<td>
-			<p>Want to be able to add content and not worry about page layout
-			for everything added.</p>
-			<p>Have more advanced needs, such as the need to be able to turn
-			content on and off, or have multiple members of staff.</p>
+			<p>Want to be able to add content and not worry about page layout for everything added.</p>
+			<p>Have more advanced needs, such as the need to be able to turn content on and off, or have multiple members of staff.</p>
 		</td>
 	</tr>
 	<tr>
@@ -246,9 +243,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Negative factors</em></p>
 		</td>
 		<td>
-			<p>As a more advanced technology, there is more to understand <B>if</B>
-			the product is customised by the same person who is to regularly
-			use it.</p>
+			<p>As a more advanced technology, there is more to understand <strong>if</strong> the product is customised by the same person who is to regularly use it.</p>
 		</td>
 	</tr>
 	<tr>
@@ -256,9 +251,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Options for you</em></p>
 		</td>
 		<td>
-			<p>Use a product such as Composr. Depending on needs and
-			experience, employ specialists in the software (such as the makers
-			themselves) to get the website installed and customised.</p>
+			<p>Use a product such as Composr. Depending on needs and experience, employ specialists in the software (such as the makers themselves) to get the website installed and customised.</p>
 		</td>
 	</tr>
 	<tr>
@@ -279,8 +272,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Likely deciding factor</em></p>
 		</td>
 		<td>
-			<p>If needs are very specific and common (such as only needing a
-			gallery or a Blog).</p>
+			<p>If needs are very specific and common (such as only needing a gallery or a Blog).</p>
 		</td>
 	</tr>
 	<tr>
@@ -297,8 +289,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		</td>
 		<td>
 			<p>The potential for expansion is severely limited.</p>
-			<p>Why not go for a full modern CMS that incorporates the
-			content-type (such as Composr)?</p>
+			<p>Why not go for a full modern CMS that incorporates the content-type (such as Composr)?</p>
 		</td>
 	</tr>
 	<tr>
@@ -306,9 +297,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Options for you</em></p>
 		</td>
 		<td>
-			<p>Find an appropriate product. Depending on your experience, you
-			may wish to employ specialists in the software (such as the makers
-			themselves) to get the product installed and customised.</p>
+			<p>Find an appropriate product. Depending on your experience, you may wish to employ specialists in the software (such as the makers themselves) to get the product installed and customised.</p>
 		</td>
 	</tr>
 	<tr>
@@ -345,8 +334,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Negative factors</em></p>
 		</td>
 		<td>
-			<p>An on-line-store must face complex sales tax and shipping
-			issues.</p>
+			<p>An on-line-store must face complex sales tax and shipping issues.</p>
 		</td>
 	</tr>
 	<tr>
@@ -356,9 +344,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 		<td>
 			<p>Find an appropriate product.</p>
 			<p><em>OR</em></p>
-			<p>Pay for a CMS (such as Composr) to be customised. This would
-			be appropriate when general-CMS features are needed as well as
-			shopping-cart features.</p>
+			<p>Pay for a CMS (such as Composr) to be customised. This would be appropriate when general-CMS features are needed as well as shopping-cart features.</p>
 		</td>
 	</tr>
 	<tr>
@@ -379,9 +365,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Likely deciding factor</em></p>
 		</td>
 		<td>
-			<p>If it is desired for visitors to get involved with the site.
-			Whether this is desired is often dependant on the &ldquo;personality&rdquo;
-			of the organisation, but having a community can create brand value, improve customer service, help you engage with your users, and improve your market presence.</p>
+			<p>If it is desired for visitors to get involved with the site. Whether this is desired is often dependant on the &ldquo;personality&rdquo; of the organisation, but having a community can create brand value, improve customer service, help you engage with your users, and improve your market presence.</p>
 		</td>
 	</tr>
 	<tr>
@@ -397,9 +381,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Negative factors</em></p>
 		</td>
 		<td>
-			<p>When visitors can interact with each other on a &ldquo;private
-			virtual property&rdquo;, issues of responsibility and exposure
-			need to be considered.</p>
+			<p>When visitors can interact with each other on a &ldquo;private virtual property&rdquo;, issues of responsibility and exposure need to be considered.</p>
 		</td>
 	</tr>
 	<tr>
@@ -428,8 +410,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Likely deciding factor</em></p>
 		</td>
 		<td>
-			<p>If it is important to get repeat-visits for something other
-			than the primary content of a website.</p>
+			<p>If it is important to get repeat-visits for something other than the primary content of a website.</p>
 		</td>
 	</tr>
 	<tr>
@@ -446,8 +427,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Negative factors</em></p>
 		</td>
 		<td>
-			<p>It is difficult to effectively compete with large portals, such
-			as that of AOL, unless the portal fits in a yet-untapped nich&eacute;.</p>
+			<p>It is difficult to effectively compete with large portals, such as that of AOL, unless the portal fits in a yet-untapped nich&eacute;.</p>
 		</td>
 	</tr>
 	<tr>
@@ -494,8 +474,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Negative factors</em></p>
 		</td>
 		<td>
-			<p>This is very high cost &ndash; it is full-blown software
-			development, requiring a variety of different skills.</p>
+			<p>This is very high cost &ndash; it is full-blown software development, requiring a variety of different skills.</p>
 			<p>A development team writing a custom system has little incentive for their code to be easily maintained, as they can just charge you more if their code is difficult to update.</p>
 			<p>You will be charged every time you want to add a feature.</p>
 			<p>Your features won't be as tried and tested as those in an established product.</p>
@@ -509,7 +488,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p>Hire programmers to create a bespoke solution.</p>
 		</td>
 	</tr>
-</table>
+</tbody></table>
 [/html]
 
 [title="2"]Composr[/title]

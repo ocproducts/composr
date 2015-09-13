@@ -4164,6 +4164,7 @@ a[rel="lightbox"] {
 .attachment img {
 	vertical-align: middle;
 	max-width: 100%;
+	/*height: auto; Would always override HTML height - so we need to make sure that any width+height given in the HTML isn't too big and then max-width won't kick in and cause an inconsistency -- or not give width+height at all, in which case height will indeed auto-scale without needing height:auto here (although be aware that the media renderers will always auto-detect widths+heights as either thumbnail size or from source media)*/
 }
 
 .attachment figcaption {

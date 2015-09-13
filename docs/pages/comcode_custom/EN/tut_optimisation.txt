@@ -86,7 +86,7 @@ Composr does not cache processed content in memory that has no special featured 
 
 If you want to serve cached pages to bots, put a line like this into your [tt]_config.php[/tt] file:
 [code="PHP"]
-$SITE_INFO['fast_spider_cache']='3';
+$SITE_INFO['fast_spider_cache'] = '3';
 [/code]
 All user agents identified as bots or spiders, or listed in the [tt]text/bots.txt[/tt] file, will be served out of a cache. HTTP caching is also properly implemented.
 The cache lifetime in this example would be 3 hours, but you can change it to whatever you require.
@@ -94,14 +94,14 @@ The cache files are saved under the [tt]persistent_cache[/tt] directory.
 
 If you want any Guest user to be cached like this, set:
 [code="PHP"]
-$SITE_INFO['any_guest_cached_too']='1';
+$SITE_INFO['any_guest_cached_too'] = '1';
 [/code]
 
 [title="2"]'keep_' parameters[/title]
 
 This is not recommended, but if you really need to squeeze performance, you can disable the 'keep_' parameters:
 [code="PHP"]
-$SITE_INFO['no_keep_params']='1'; // Disable 'keep_' parameters, which can lead to a small performance improvement as URLs can be compiled directly into the template cache
+$SITE_INFO['no_keep_params'] = '1'; // Disable 'keep_' parameters, which can lead to a small performance improvement as URLs can be compiled directly into the template cache
 [/code]
 
 [title="2"]Disk activity[/title]
@@ -109,21 +109,21 @@ $SITE_INFO['no_keep_params']='1'; // Disable 'keep_' parameters, which can lead 
 If you have a hard disk that is slow, for whatever reason, you can put these settings into [tt]_config.php[/tt] to reduce access significantly:
 [code="PHP"]
 /* The best ones, can also be enabled via the config_editor.php interface */
-$SITE_INFO['disable_smart_decaching']='1'; // Don't check file times to check caches aren't stale
-$SITE_INFO['no_disk_sanity_checks']='1'; // Assume that there are no missing language directories, or other configured directories; things may crash horribly if they are missing and this is enabled
-$SITE_INFO['hardcode_common_module_zones']='1'; // Don't search for common modules, assume they are in default positions
-$SITE_INFO['prefer_direct_code_call']='1'; // Assume a good opcode cache is present, so load up full code files via this rather than trying to save RAM by loading up small parts of files on occasion
+$SITE_INFO['disable_smart_decaching'] = '1'; // Don't check file times to check caches aren't stale
+$SITE_INFO['no_disk_sanity_checks'] = '1'; // Assume that there are no missing language directories, or other configured directories; things may crash horribly if they are missing and this is enabled
+$SITE_INFO['hardcode_common_module_zones'] = '1'; // Don't search for common modules, assume they are in default positions
+$SITE_INFO['prefer_direct_code_call'] = '1'; // Assume a good opcode cache is present, so load up full code files via this rather than trying to save RAM by loading up small parts of files on occasion
 
 /* Very minor ones */
-$SITE_INFO['charset']='utf-8'; // To avoid having to do lookup of character set via a preload of the language file
-$SITE_INFO['known_suexec']='1'; // To assume .htaccess is writable for implementing security blocks, so don't check
-$SITE_INFO['dev_mode']='0'; // Don't check for dev mode by looking for traces of git
-$SITE_INFO['no_extra_logs']='1'; // Don't allow extra permission/query logs
-$SITE_INFO['no_extra_bots']='1'; // Don't read in extra bot signatures from disk
-$SITE_INFO['no_extra_closed_file']='1'; // Don't support reading closed.html for closing down the site
-$SITE_INFO['no_installer_checks']='1'; // Don't check the installer is not there
-$SITE_INFO['assume_full_mobile_support']='1'; // Don't check the theme supports mobile devices (via loading theme.ini), assume it always does
-$SITE_INFO['no_extra_mobiles']='1'; // Don't read in extra mobile device signatures from disk
+$SITE_INFO['charset'] = 'utf-8'; // To avoid having to do lookup of character set via a preload of the language file
+$SITE_INFO['known_suexec'] = '1'; // To assume .htaccess is writable for implementing security blocks, so don't check
+$SITE_INFO['dev_mode'] = '0'; // Don't check for dev mode by looking for traces of git
+$SITE_INFO['no_extra_logs'] = '1'; // Don't allow extra permission/query logs
+$SITE_INFO['no_extra_bots'] = '1'; // Don't read in extra bot signatures from disk
+$SITE_INFO['no_extra_closed_file'] = '1'; // Don't support reading closed.html for closing down the site
+$SITE_INFO['no_installer_checks'] = '1'; // Don't check the installer is not there
+$SITE_INFO['assume_full_mobile_support'] = '1'; // Don't check the theme supports mobile devices (via loading theme.ini), assume it always does
+$SITE_INFO['no_extra_mobiles'] = '1'; // Don't read in extra mobile device signatures from disk
 [/code]
 They all have effects, so be careful! There are reasons these settings aren't the defaults.
 
@@ -135,9 +135,9 @@ If you're on a shared host, requests floods can even get you suspended, or your 
 
 To enable add this to [tt]_config.php[/tt]:
 [code="PHP"]
-$SITE_INFO['rate_limiting']='1';
-$SITE_INFO['rate_limit_time_window']='10';
-$SITE_INFO['rate_limit_hits_per_window']='5';
+$SITE_INFO['rate_limiting'] = '1';
+$SITE_INFO['rate_limit_time_window'] = '10';
+$SITE_INFO['rate_limit_hits_per_window'] = '5';
 [/code]
 
 This produces soft errors with the correct HTTP header. The errors happen early, before Composr boots up.
@@ -162,7 +162,7 @@ If you are really constrained for resources, and worry some requests may take to
 Note that Composr does raise the limit on its own when really needed.
 
 [code="PHP"]
-$SITE_INFO['max_execution_time']='10'; // Ten second maximum execution time
+$SITE_INFO['max_execution_time'] = '10'; // Ten second maximum execution time
 [/code]
 
 Note that PHP's time limit does not count time taken doing database queries and other external tasks.

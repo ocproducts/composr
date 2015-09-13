@@ -38,7 +38,7 @@ The process of setting file permissions is often referred to as 'chmodding', as 
 
 [title="2"]PHP Web applications[/title]
 
-Most web servers run PHP scripts with the credentials of a user named 'nobody'. Therefore the user 'nobody' needs to be able to do everything Composr needs to do. Unfortunately the main problem with permissions that make them so tricky with PHP web applications is that the user used to upload files is not 'nobody', and 'nobody' is not in the same primary group as the FTP user either. There is usually no convenient way to change ownership of a file so as to assign them to 'nobody', and if it was done, it would be a security problem anyway (as the entire installation directory would be writeable to by [b]any[/b] PHP script on the server). Therefore, if Composr is to write to any uploaded file, it must be possible for any user to do so -- and hence permissions must be set as such.
+Most web servers run PHP scripts with the credentials of a user named 'nobody'. Therefore the user 'nobody' needs to be able to do everything Composr needs to do. Unfortunately the main problem with permissions that make them so tricky with PHP web applications is that the user used to upload files is not 'nobody', and 'nobody' is not in the same primary group as the FTP user either. There is usually no convenient way to change ownership of a file so as to assign them to 'nobody', and if it was done, it would be a security problem anyway (as the entire installation directory would be writable to by [b]any[/b] PHP script on the server). Therefore, if Composr is to write to any uploaded file, it must be possible for any user to do so -- and hence permissions must be set as such.
 
 Consider these situations:
  - Composr needs to run -- it therefore needs to be able to list the contents of all its directories and read all its files -- this means there must be 'world read permission' (permission for anyone to read the file/directory) for all files and directories, and 'world execute permission' for all directories -- this is almost always provided by default fortunately, so does not need to be set
@@ -48,7 +48,7 @@ Consider these situations:
  - Composr needs to delete [tt]themes/mytheme/templates_cached/EN/GLOBAL_HTML_WRAP.tcp[/tt] (this happens a lot when editing things and Composr tries to clear caches) -- as above, normally there would be no problem, but if a webmaster uploads new templates it is often useful for them to delete the .tcd files themselves manually and allow Composr to regenerate them
 
 The gist of these situations is quite simple:
-[indent]If Composr made something itself, it can write to/into it, without problem, but it also needs to be writeable by the webmaster via FTP so is given 'world write' permissions. If a file was uploaded and Composr needs to write to/into it, and the quick installer couldn't set permissions for it (usually because it was added after installation), then 'world write' permissions need setting manually.[/indent]
+[indent]If Composr made something itself, it can write to/into it, without problem, but it also needs to be writable by the webmaster via FTP so is given 'world write' permissions. If a file was uploaded and Composr needs to write to/into it, and the quick installer couldn't set permissions for it (usually because it was added after installation), then 'world write' permissions need setting manually.[/indent]
 
 A typical file permission issue is shown in the screen-shot.
 File permissions that Composr requires are listed in the install guide.
@@ -61,8 +61,8 @@ File permissions that Composr requires are listed in the install guide.
 There is a extension to the FTP protocol that allows setting of file permissions. The extension is so wide-spread that most people do not know that it actually is one. Most FTP tools have file permission support, and SmartFTP has particularly user friendly support, where file permissions can be changed with tick-boxes.
 
 The screen-shots show how to set file permissions for:
- - a file that needs to be world writeable
- - a directory that needs to be world writeable
+ - a file that needs to be world writable
+ - a directory that needs to be world writable
 [/surround]
 
 [concepts

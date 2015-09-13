@@ -34,14 +34,14 @@ Here's my code...
 [code="PHP"]
 function execute_temp()
 {
-	$r=$GLOBALS['SITE_DB']->query("SHOW COLUMNS FROM test_tbl LIKE 'test_col'");
-	$enum_vals=array_map('quote_trim',explode(',',preg_replace('#^.*\((.*)\).*$#','$1',$r[0]['Type'])));
+	$r = $GLOBALS['SITE_DB']->query("SHOW COLUMNS FROM test_tbl LIKE 'test_col'");
+	$enum_vals = array_map('quote_trim', explode(',', preg_replace('#^.*\((.*)\).*$#', '$1', $r[0]['Type'])));
 	@print_r($enum_vals);
 }
 
 function quote_trim($in)
 {
-	return trim($in,"'");
+	return trim($in, "'");
 }
 [/code]
 
@@ -55,8 +55,8 @@ This allows me to use other parts of Composr's query API, as consistent table pr
 $GLOBALS['SITE_DB']->query_delete('test_tbl'); // Wipe current table contents
 
 // Put some stuff in, trying with both the enum values, and enum indexes
-$GLOBALS['SITE_DB']->query_insert('test_tbl',array('test_col'=>'a'));
-$GLOBALS['SITE_DB']->query_insert('test_tbl',array('test_col'=>2)); // 2nd index relates to 'b' (the second enum value)
+$GLOBALS['SITE_DB']->query_insert('test_tbl', array('test_col' => 'a'));
+$GLOBALS['SITE_DB']->query_insert('test_tbl', array('test_col' => 2)); // 2nd index relates to 'b' (the second enum value)
 
 // Should the contents
 @print_r($GLOBALS['SITE_DB']->query_select('test_tbl'));

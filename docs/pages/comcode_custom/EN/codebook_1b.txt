@@ -30,7 +30,7 @@ Some tips/guidelines for usage:
  - remember to cache against theme where appropriate (i.e. do not assume all users will use the same theme by caching theme-tainted data without using the theme name as part of the cache identifier)
  - use the server server cache when appropriate (when things are known to be relevant to all installs and when there is no site-specific aspects to the data) and never when not
  - where possible put user-specific stuff in templates as symbols rather than parameters, so that they may be cached so as not to depend on users (symbols 'survive' the cache and get reinterpreted after cache extraction). If you can't do this, and the data does contain user-specific data, you'll need to cache against each user, and that is very inefficient
- - where appropriate store 'false' rather than 'NULL', to distinguish between 'non presence in cache' and 'not setness': often a little extra logic is needed, as Composr uses NULL for most "not setness" API results
+ - where appropriate store 'false' rather than 'null', to distinguish between 'non presence in cache' and 'not setness': often a little extra logic is needed, as Composr uses null for most "not setness" API results
  - emptying the cache on admin actions is fine because they are relatively rare, compared to total hits a site gets; whilst it is preferable to be able to delete specific objects, that's not always possible (e.g. with Comcode pages, they are cached against theme, but having a load of loop code to selectively choose what to decache would be excessive)
  - make use of cache layers: e.g. we didn't optimise some functions in Composr because higher level block caching would often make my optimisation almost pointless
  - cache what is used most: we want to support lots of users, so we need regular website access use cases to be most efficient -- making admin actions more efficient is almost pointless
@@ -80,6 +80,8 @@ The following are the core Composr APIs (green is used to indicate the most impo
 |-
 | Caches
 | [tt]sources/caches.php[/tt]
+[tt]sources/caches2.php[/tt]
+[tt]sources/caches3.php[/tt]
 | Use the functions, which tie into pre-instantiated cache objects (you don't need to instantiate anything).
 |-
 | CAPTCHA
@@ -106,7 +108,6 @@ The following are the core Composr APIs (green is used to indicate the most impo
 | [color="green"]Files[/color]
 | [tt]sources/files.php[/tt]
 [tt]sources/files2.php[/tt]
-[tt]API docs[/tt] (was created before the API was split into the above files)
 | Needs [tt]require_code[/tt] if you need anything in [tt]files2.php[/tt].
 |-
 | [color="green"]Forms (for full tabular form interfaces, not for any time you need a standalone input field)[/color]
@@ -124,7 +125,6 @@ The following are the core Composr APIs (green is used to indicate the most impo
 | [color="green"]Language and internationalisation[/color]
 | [tt]sources/lang.php[/tt]
 [tt]sources/lang2.php[/tt]
-[tt]API docs[/tt] (was created before the API was split into the above files)
 | Needs [tt]require_code[/tt] if you need anything in [tt]lang2.php[/tt].
 |-
 | Filtering syntax (Selectcode)
@@ -134,7 +134,6 @@ The following are the core Composr APIs (green is used to indicate the most impo
 | [color="green"]Permissions[/color]
 | [tt]sources/permissions.php[/tt]
 [tt]sources/permissions2.php[/tt]
-[tt]API docs[/tt] (was created before the API was split into the above files)
 | Needs [tt]require_code[/tt] if you need anything in [tt]permissions2.php[/tt].
 |-
 | Content submission security
@@ -166,7 +165,6 @@ The following are the core Composr APIs (green is used to indicate the most impo
 [tt]sources/templates_results_table.php[/tt]
 [tt]sources/templates_table_table.php[/tt]
 [tt]sources/templates_view_space.php[/tt]
-[tt]API docs[/tt] (was created before the API was split into the above files)
 | Needs [tt]require_code[/tt].
 |-
 | [color="green"]Date and time[/color]
@@ -180,7 +178,6 @@ The following are the core Composr APIs (green is used to indicate the most impo
 | Themes (esp theme image management)
 | [tt]sources/themes.php[/tt]
 [tt]sources/themes2.php[/tt]
-[tt]API docs[/tt] (was created before the API was split into the above files)
 | Needs [tt]require_code[/tt] if you need anything in [tt]themes2.php[/tt].
 |-
 | Data sanitisation
@@ -236,7 +233,7 @@ require_code('templates_results_table');
 
 Then you'll do a query, probably using something like:
 [code="PHP"]
-$rows = $GLOBALS['SITE_DB']->query_select('table',array('*'));
+$rows = $GLOBALS['SITE_DB']->query_select('table', array('*'));
 [/code]
 (actually it'll be a bit more complex, when we support pagination)
 
@@ -503,7 +500,7 @@ You don't need all that code all the time, but if you don't use "[tt]exit[/tt]" 
 
 In fact, rather than the ugly code above that just dumps information into the output stream, you can do something a lot fancier:
 [code="PHP"]
-attach_message(gettype($var).var_export($var,true),'warn');
+attach_message(gettype($var) . var_export($var, true), 'warn');
 [/code]
 
 This should show the message in a nice position in the Composr output.
@@ -534,9 +531,9 @@ It has to achieve a number of key design goals (these are implemented in Composr
  - It has to be simple for a themer to use (via the written language)
  - The template structure must be preservable, so themers can see what structures different screens use
  - The full Tempcode language has to be supported, with loop's, if tests, escaping, etc
- - It must be preprocessable.
-  - For example, a template might include a block, which might require some CSS -- this CSS would need to be included in the HTML <head> before the block itself was output
-  - The Shift encoding feature ('SHIFT_ENCODE' directive to set, 'SHIFT_ENCODING' symbol to get) has to work. Shift encoding provides the ability to define things in one template, and have them used in another: clearly something rather difficult for a template engine to implement.
+ - It must be preprocessable. For example:
+  - a template might include a block, which might require some CSS -- this CSS would need to be included in the HTML <head> before the block itself was output
+  - the SET/GET feature has to work, even if SETing something that an earlier template GETs
 
 Tempcode works via a very elaborate concept that we call the 'closure tree'. Essentially Tempcode objects link to form a tree structure via parameters. If you pass some Tempcode to a template as a parameter, that parameter is encoded into the Tempcode tree of the result of the template call.
 
@@ -553,8 +550,6 @@ Tempcode in Composr 3 worked in an entirely different way to Composr 4+. It was 
 I have just explained the history of Tempcode so I can make an important point -- Tempcode is a bit of a black-box, and the internal engine can be rewritten so long as the API, written language, and semantics, are preserved. If the Tempcode language is ever changed, the caches need to be cleared -- to clear away any compiled Tempcode (we never store anything primarily in compiled Tempcode -- instead we store in Comcode and cache the Tempcode).
 
 [title="3"]Development mode[/title]
-
-This section is mostly intended for ocProducts staff.
 
 If Composr is running out of a git repository, or with our own custom version of PHP, it will automatically run inside 'development mode'. Development mode involves a number of intentionally quirky and strict changes to how Composr runs, including:
  - You will get error messages if you use too many queries, unless [tt]$GLOBALS['NO_QUERY_LIMIT'][/tt] is set to true.
@@ -621,24 +616,24 @@ It also enforces some other coding standards, such as not allowing relative path
 When coding for Composr, you should be careful to make sure all our design goals are maintained. Sometimes trade-offs have to be made between design goals, sometimes an option can remove the need for a trade-off, and sometimes an option would just bloat and confuse the product. Good balance and thoughtfulness is required before rushing to add the latest cool ideas.
 
 We have established the following design goals (in no particular order):
- - Security -- Composr should be completely secure and un-hackable, but also be able to track offenders and be easily restorable if the worst happens
- - Performance -- Composr should be as efficient as possible, with both CPU and memory usage; things like caches and optimised code, and sensible feature design, can achieve this. Tip: use xdebug for profiling, along with WinCacheGrind.
- - Great design -- Composr should look excellent on every page
- - General quality -- Composr should not contain things such as spelling errors
- - Flexibility / generality -- Composr should be able to work in many different kinds of website. Features should be usable in different ways for different people. It should not have a restricted layout (hence Comcode, modules, blocks, and templates)
- - International -- Composr should work well across the world, across language and culture (as long as someone puts the effort in to do a translation)
- - Compatibility -- Composr should work well with common versions of required technologies
- - Modability -- Composr should be modular, and overrideable; easy to change without tearing the things to pieces, preferably without even editing things (just adding)
- - Usability -- Composr should be very easy to use. The best user-experience and interaction-design methods should be used.
- - Power/features -- Composr should be as powerful as any competing product, but that should not be an excuse for implementing crap that bloats and over-complicates the product; we all want loads of features, but we don't want to confuse the users or tie ourselves up so tight that future development is very difficult
- - Standards compliance -- An accessible web, based on open standards, which is stable and not tied to any specific vendor, is desirable for all; by sticking to standards, you are ensuring Composr works on a wide range of technologies, and for a wide audience
- - Documentation -- Remember that the best documentation is when the interface describes itself, but the written documentation must be excellent.
- - Consistency -- The whole system should have common ways of doing things. Everything should seem consistent to the user, and be so behind the scenes. Consistency is piece of mind, consistency is ease of use, consistency is simplicity, consistency is less code to test and fix. I can't stress how important it is to be consistent.
- - Independence -- Composr should not have unnecessary dependencies, such as MySQL.
- - Stability / Error-trapping / Input-sanitisation -- Composr should catch all errors, not let things like PHP notices slip through. This means that programmers have to get used to a new level of strictness, we are much less tolerant of errors slipping through because for complex software like Composr we can't afford weak foundations.
- - Scaleability -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
- - Portability -- People should be able to move their websites between servers without much difficulty.
- - Simplicity -- Features only needed by a minority should be 'off-by-default'
+ - [b]Security[/b] -- Composr should be completely secure and un-hackable, but also be able to track offenders and be easily restorable if the worst happens
+ - [b]Performance[/b] -- Composr should be as efficient as possible, with both CPU and memory usage; things like caches and optimised code, and sensible feature design, can achieve this. Tip: use xdebug for profiling, along with WinCacheGrind.
+ - [b]Great design[/b] -- Composr should look excellent on every page
+ - [b]General quality[/b] -- Composr should not contain things such as spelling errors
+ - [b]Flexibility[/b] / [b]generality[/b] -- Composr should be able to work in many different kinds of website. Features should be usable in different ways for different people. It should not have a restricted layout (hence Comcode, modules, blocks, and templates)
+ - [b]International[/b] -- Composr should work well across the world, across language and culture (as long as someone puts the effort in to do a translation)
+ - [b]Compatibility[/b] -- Composr should work well with common versions of required technologies
+ - [b]Modability[/b] -- Composr should be modular, and overrideable; easy to change without tearing the things to pieces, preferably without even editing things (just adding)
+ - [b]Usability[/b] -- Composr should be very easy to use. The best user-experience and interaction-design methods should be used.
+ - [b]Power[/b] / [b]features[/b] -- Composr should be as powerful as any competing product, but that should not be an excuse for implementing crap that bloats and over-complicates the product; we all want loads of features, but we don't want to confuse the users or tie ourselves up so tight that future development is very difficult
+ - [b]Standards compliance[/b] -- An accessible web, based on open standards, which is stable and not tied to any specific vendor, is desirable for all; by sticking to standards, you are ensuring Composr works on a wide range of technologies, and for a wide audience
+ - [b]Documentation[/b] -- Remember that the best documentation is when the interface describes itself, but the written documentation must be excellent.
+ - [b]Consistency[/b] -- The whole system should have common ways of doing things. Everything should seem consistent to the user, and be so behind the scenes. Consistency is piece of mind, consistency is ease of use, consistency is simplicity, consistency is less code to test and fix. I can't stress how important it is to be consistent.
+ - [b]Independence[/b] -- Composr should not have unnecessary dependencies, such as MySQL.
+ - [b]Stability[/b] / [b]Error-trapping[/b] / [b]Input-sanitisation[/b] -- Composr should catch all errors, not let things like PHP notices slip through. This means that programmers have to get used to a new level of strictness, we are much less tolerant of errors slipping through because for complex software like Composr we can't afford weak foundations.
+ - [b]Scaleability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
+ - [b]Portability[/b] -- People should be able to move their websites between servers without much difficulty.
+ - [b]Simplicity[/b] -- Features only needed by a minority should be 'off-by-default'
 
 [title="3"]Importers[/title]
 
@@ -754,7 +749,7 @@ Valid product types are:
 1) [tt]PRODUCT_PURCHASE_WIZARD[/tt] (a one-off purchase)
 2) [tt]PRODUCT_INVOICE[/tt] (an invoice payment) -- you are very unlikely to need this one
 3) [tt]PRODUCT_SUBSCRIPTION[/tt] (a subscription payment -- the product details array should contain '[tt]length[/tt]' and '[tt]length_units[/tt]' values to define how the subscription will work). 'length_units' can be 'd', 'w', 'm' or 'y'. An example product details array (this would be for a subscription that recurred every 1 month):
-4) [tt]array('length'=>1,'length_units'=>'m')[/tt]
+4) [tt]array('length' => 1, 'length_units' => 'm')[/tt]
 5) [tt]PRODUCT_OTHER[/tt] (something that is not purchased via the purchase wizard, but done manually -- usually it is something the website staff are adding manually to show up on the eCommerce charts, not something actually related to the website itself) -- you are very unlikely to need this one
 6) [tt]PRODUCT_CATALOGUE[/tt] (a shopping cart product) -- you are very unlikely to need this one
 7) [tt]PRODUCT_ORDERS[/tt] (a full shopping cart order) -- you are very unlikely to need this one
@@ -814,7 +809,7 @@ If you are going to do override checks though, make sure that your page-modules 
 
 In the [tt]install[/tt] function for your page-module, add the following code to actually add the permission:
 [code="PHP"]
-add_privilege('FOO_SECTION','may_foobar',false);
+add_privilege('FOO_SECTION', 'may_foobar', false);
 [/code]
 That code adds the permission 'may_foobar' to a section of options named 'FOO_SECTION' (a language string for this must exist), and sets it to false for every usergroup except staff usergroups. It'll run when your code first installs. When developing often you add permissions adhoc until you're finished (you can't be reinstalling your module each time) -- in which case temporarily also put the code in [tt]data_custom/execute_temp.php[/tt] and run that.
 
@@ -823,7 +818,7 @@ In the [tt]uninstall[/tt] function for your page-module, add the following code:
 delete_privilege('may_foobar');
 [/code]
 In your modules language file, add:
-[code="HTML"]
+[code="INI"]
 PRIVILEGE_may_foobar=May foobar
 [/code]
 
@@ -833,29 +828,29 @@ To allow SEO (search engine optimization) meta-data in your addon, the following
 
 This function [tt]seo_meta_set_for_implicit()[/tt] implicitly (by virtue of extracting keywords from the strings it is passed) sets the meta information for the specified resource. Add it in the model [tt]add_download[/tt] function:
 [code="PHP"]
-seo_meta_set_for_implicit('downloads_download',strval($id),
-	array($name,$description,$comments),$description);
+seo_meta_set_for_implicit('downloads_download', strval($id),
+	array($name, $description, $comments), $description);
 [/code]
 The function [tt]seo_get_fields[/tt] gets templated form fields to insert into a form page, for manipulation of seo fields. Add it in the CRUD CMS-module, [tt]get_form_fields[/tt] function:
 [code="PHP"]
 $fields->attach(
-	seo_get_fields('downloads_download',strval($id))
+	seo_get_fields('downloads_download', strval($id))
 );
 [/code]
 
 In the CRUD CMS-module, you need extra parameters to the call to the model [tt]edit_download[/tt] function:
-[tt],post_param_string('meta_keywords'),post_param_string('meta_description')[/tt]
+[tt],post_param_string('meta_keywords'), post_param_string('meta_description')[/tt]
 
 In the model [tt]edit_download[/tt] function you need to take the extra parameters:
-[tt],$meta_keywords,$meta_description[/tt]
+[tt], $meta_keywords, $meta_description[/tt]
 and you need to use them:
-[tt]seo_meta_set_for_explicit('downloads_download',strval($id),$meta_keywords,$meta_description);[/tt]
+[tt]seo_meta_set_for_explicit('downloads_download',strval($id), $meta_keywords, $meta_description);[/tt]
 
 The function [tt]seo_meta_erase_storage[/tt] erases a seo entry... as these shouldn't be left hanging around once content is deleted. Add this function in the model [tt]delete_download[/tt] function, you need to clean up:
-[tt]seo_meta_erase_storage('downloads_download',$id);[/tt]
+[tt]seo_meta_erase_storage('downloads_download', $id);[/tt]
 
 In the page-module you need to load up the settings when the content is viewed:
-[tt]seo_meta_load_for('downloads_download',strval($id),$title_to_use);[/tt]
+[tt]seo_meta_load_for('downloads_download', strval($id), $title_to_use);[/tt]
 
 [title="3"]Feedback mechanisms[/title]
 
@@ -871,22 +866,22 @@ Add the following code snippets to enable your feedback system (roughly, this co
 
 In the [tt]install[/tt] function for your module, in the table creation...
 [code="PHP"]
-'allow_rating'=>'BINARY',
-'allow_comments'=>'SHORT_INTEGER',
-'allow_trackbacks'=>'BINARY',
-'notes'=>'LONG_TEXT',
+'allow_rating' => 'BINARY',
+'allow_comments' => 'SHORT_INTEGER',
+'allow_trackbacks' => 'BINARY',
+'notes' => 'LONG_TEXT',
 [/code]
 
 In the [tt]uninstall[/tt] function for your module...
 [code="PHP"]
 $GLOBALS['SITE_DB']->query_delete('trackbacks',
 	array(
-		'trackback_for_type'=>'<your_chosen_feedback_module_name>'
+		'trackback_for_type' => '<your_chosen_feedback_module_name>'
 	)
 );
 $GLOBALS['SITE_DB']->query_delete('rating',
 	array(
-		'rating_for_type'=>'<your_chosen_feedback_module_name>'
+		'rating_for_type' => '<your_chosen_feedback_module_name>'
 	)
 );
 [/code]
@@ -898,39 +893,38 @@ require_code('feedback');
 
 In the [tt]get_form_fields[/tt] function header of your CRUD CMS module...
 [code="PHP"]
-,$allow_rating=1,$allow_comments=1,$allow_trackbacks=1,$notes=''
+, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = ''
 [/code]
 
 In the [tt]get_form_fields[/tt] function of your CRUD CMS module...
 [code="PHP"]
-$fields->attach(feedback_fields($allow_rating,$allow_comments,
-$allow_trackbacks,$notes));
+$fields->attach(feedback_fields($allow_rating, $allow_comments, $allow_trackbacks, $notes));
 [/code]
 
 In the add_actualisation and [tt]edit_actualisation[/tt] functions of your CRUD CMS module...
 [code="PHP"]
-$allow_rating=post_param_integer('allow_rating',0);
-$allow_comments=post_param_integer('allow_comments',0);
-$allow_trackbacks=post_param_integer('allow_trackbacks',0);
-$notes=post_param_string('notes');
+$allow_rating = post_param_integer('allow_rating', 0);
+$allow_comments = post_param_integer('allow_comments', 0);
+$allow_trackbacks = post_param_integer('allow_trackbacks', 0);
+$notes = post_param_string('notes');
 [/code]
 
 In the [tt]fill_in_edit_form[/tt] function of your CRUD CMS module, where the [tt]get_form_fields[/tt] function is called...
 [code="PHP"]
-,$myrow['allow_rating'],$myrow['allow_comments'],$myrow['allow_trackbacks'],$myrow['notes']
+, $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes']
 [/code]
 
 In the model add/edit actualisation functions add some extra parameters...
 [code="PHP"]
-,$allow_rating,$allow_comments,$allow_trackbacks,$notes
+, $allow_rating, $allow_comments, $allow_trackbacks, $notes
 [/code]
 
 In the model add/edit actualisation function [tt]query_insert[/tt]/[tt]query_update[/tt] calls...
 [code="PHP"]
-'allow_rating'=>$allow_rating,
-'allow_comments'=>$allow_comments,
-'allow_trackbacks'=>$allow_trackbacks,
-'notes'=>$notes,
+'allow_rating' => $allow_rating,
+'allow_comments' => $allow_comments,
+'allow_trackbacks' => $allow_trackbacks,
+'notes' => $notes,
 [/code]
 
 In the model delete actualisation function...
@@ -945,24 +939,19 @@ $GLOBALS['SITE_DB']->query_delete('trackbacks',array(
 
 In the view function for your content...
 [code="PHP"]
-actualise_rating($myrow['allow_rating'],
-	'<your_chosen_feedback_module_name>',$id);
-actualise_post_comment($myrow['allow_comments'],
-	'<your_chosen_feedback_module_name>',$id,$self_url, $self_title);
-$rating_details=get_rating_box(
-	'<your_chosen_feedback_module_name>',$id);
-$comment_details=get_comments(
-	'<your_chosen_feedback_module_name>',$myrow['allow_comments']==1,$id);
-$trackback_details=get_trackbacks(
-	'<your_chosen_feedback_module_name>',strval($id),$myrow['allow_trackbacks']==1);
+actualise_rating($myrow['allow_rating'], '<your_chosen_feedback_module_name>', $id);
+actualise_post_comment($myrow['allow_comments'], '<your_chosen_feedback_module_name>', $id, $self_url, $self_title);
+$rating_details = get_rating_box('<your_chosen_feedback_module_name>', $id);
+$comment_details = get_comments('<your_chosen_feedback_module_name>', $myrow['allow_comments'] == 1, $id);
+$trackback_details = get_trackbacks('<your_chosen_feedback_module_name>', strval($id), $myrow['allow_trackbacks'] == 1);
 [/code]
 (the above advice is currently out-dated, the parameters required by the API have changed, and there is a new function, [tt]embed_feedback_systems[/tt], that encapsulates all of the above)
 
 In the main template call to display your content on it's own screen...
 [code="PHP"]
-'TRACKBACK_DETAILS'=>$trackback_details,
-'RATING_DETAILS'=>$rating_details,
-'COMMENTS_DETAILS'=>$comment_details,
+'TRACKBACK_DETAILS' => $trackback_details,
+'RATING_DETAILS' => $rating_details,
+'COMMENTS_DETAILS' => $comment_details,
 [/code]
 
 [title="3"]CRUD modules[/title]
@@ -995,9 +984,9 @@ Rather than an CRUD module having a '[tt]run[/tt]' method like most modules, the
 
 CRUD module's define entry-points in a [tt]get_entry_point[/tt] method like other module's do, however they also tie into the base class's function to return a compound result, as follows:
 [code="PHP"]
-function get_entry_points($check_perms=true,$member_id=NULL,$support_crosslinks=true)
+function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true)
 {
-	return array_merge(array('browse'=>'IOTDS'),parent::get_entry_points());
+	return array_merge(array('browse' => 'IOTDS'), parent::get_entry_points());
 }
 [/code]
 (in this example the CRUD module adds one extra entry-point, 'browse').
@@ -1064,7 +1053,7 @@ The following steps are required for correct use of Composr's language/Comcode/a
 
 If you are working with the Composr git repository, you can commit addons into git without them having to be a part of Composr.
 
-Only do this if the addon would generally be useful to a decent number of people -- things specific to one website, or one specific kind of website, should not be in git (unless it is a part of the Composr build/publish/website infrastructure).
+Only do this if the addon would generally be useful to a decent number of people -- things specific to one website, or one specific kind of website, should not be in the official git repository (unless it is a part of the Composr build/publish/website infrastructure).
 
 To add the addon as non-bundled:
  - Decide on the informal and formal names for your addon (e.g. "Fun time" and "fun_time")

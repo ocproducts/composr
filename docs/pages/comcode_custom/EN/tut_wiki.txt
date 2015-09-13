@@ -22,7 +22,6 @@ This simple structure of posts, pages, and children, is Wiki+'s core. There are 
  - Jumping to a random page.
  - Seeing a list of recent changes to the database.
  - Moving posts.[media width="150" description="Editing the Wiki+ tree" float="right"]data_custom/images/docs/tut_wiki/wiki_tree_edit.png[/media]
-
  - Merging posts.
  - Viewing the tree structure of the whole database (transferred in a compressed format, and reduced so as only to show a single path to any page).
  - Search

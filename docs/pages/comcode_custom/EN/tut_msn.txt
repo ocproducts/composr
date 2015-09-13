@@ -44,18 +44,21 @@ Composr supports a sophisticated theme detection system, whereby Composr themes 
 2) from the "forum-theme-name-to-Composr-theme" mapping of the member chosen forum-themes, if the logged in member has made a choice. In other words, if a member Bob selects a forum theme named ForumFoo, then the Composr theme would be whatever the map says that ForumFoo's Composr equivalent is (e.g. ComposrFoo)
 3) from the "forum-theme-name-to-Composr-theme" mapping of the forum-theme titled after the name of your website name. In other words, if the forum contains a theme titled "My Site" and your website happens to be called "My Site", then then Composr theme would be whatever the map says that MySite's Composr equivalent is (e.g. MySiteTheme)
 4) the Composr 'default' theme
-[media width="150" description="Configuring the network link URL to point to the central network site" float="right"]data_custom/images/docs/tut_msn/msn_netlink_configure.png[/media]
+
 This system is complicated to understand and configure, and is optional, but it is useful for some websites. If you do not wish to use this system, simply manually select which themes to use for each zone, by editing the zone.
 
 Basically, Composr has a file, [tt]themes/map.ini[/tt], that contains entries that link forum-theme-codes to Composr-theme-codes. Note that the forum-theme-code is not the same as the forum-theme-title: the relationship between these vary between forums, but most forums define both a humanely readable title and a code-name.
 
 [title="2"]The netlink system[/title]
 
-[media width="150" description="The netlink block" float="left"]data_custom/images/docs/tut_msn/msn_netlink_block.png[/media]
+[surround]
+[media width="150" description="Configuring the network link URL to point to the central network site" float="left"]data_custom/images/docs/tut_msn/msn_netlink_configure.png[/media]
 [media width="150" description="Editing the netlink definition file" float="right"]data_custom/images/docs/tut_msn/msn_netlink_file.png[/media]
+[media width="150" description="The netlink block" float="right"]data_custom/images/docs/tut_msn/msn_netlink_block.png[/media]
 The netlink is a simple but useful feature of multi-site-networks. It provides the navigation aid to move between sites on the network, via a simple drop-down list placed on to your panel via the 'side_network' block.
 
 The netlink system can be configured (from the Admin Zone Configuration module) so that all sites on the network point to a shared netlink definition file. The config option allows you to set the URL to the netlink of one of the network sites (usually the central site).
+[/surround]
 
 [title="2"]News[/title]
 
@@ -95,8 +98,8 @@ c) Composr is now set up to receive requests on the various domain names / paths
 Let's pretend we've added a new subdomain 'forum.mydomain.com' ([i]for the forum zone[/i]), and a new virtual directory under our normal website entry, under 'example/path'; we'll point this to the 'xyz' (i.e. we'll map to a zone unrelated to the subdomain name or virtual directory path). You would add this to [tt]_config.php[/tt]
 
 [code="PHP"]
-$SITE_INFO['ZONE_MAPPING_forum']=array('forum.mydomain.com','');
-$SITE_INFO['ZONE_MAPPING_xyz']=array('mydomain.com','example/path');
+$SITE_INFO['ZONE_MAPPING_forum'] = array('forum.mydomain.com','');
+$SITE_INFO['ZONE_MAPPING_xyz'] = array('mydomain.com','example/path');
 [/code]
 
 As of Composr 10, you can do this setup in the normal zone management interface. It does save to [tt]_config.php[/tt] though.
@@ -115,22 +118,22 @@ The functionality is useful if you are running a massive Composr hosting service
 
 The support is activated by setting options in the [tt]_config.php[/tt], like:
 [code="PHP"]
-$SITE_INFO['throttle_space_complementary']=100; // Allow 100MB of disk space per user
-$SITE_INFO['throttle_space_views_per_meg']=10; // Every MB of disk space must be accessed 10 times to justify it
-$SITE_INFO['throttle_bandwidth_complementary']=500; // Allow 500MB of monthly bandwidth per user
-$SITE_INFO['throttle_bandwidth_views_per_meg']=1; // There must be at least one page view for each MB downloaded
+$SITE_INFO['throttle_space_complementary'] = 100; // Allow 100MB of disk space per user
+$SITE_INFO['throttle_space_views_per_meg'] = 10; // Every MB of disk space must be accessed 10 times to justify it
+$SITE_INFO['throttle_bandwidth_complementary'] = 500; // Allow 500MB of monthly bandwidth per user
+$SITE_INFO['throttle_bandwidth_views_per_meg'] = 1; // There must be at least one page view for each MB downloaded
 
-$SITE_INFO['custom_base_url_stub']='http://mydomain.com/sites'; // This should be the same as the 'base_url', with '/sites' on the end
-$SITE_INFO['custom_file_base_stub']='sites'; // This should always be 'sites'
-$SITE_INFO['custom_share_domain']='mydomain.com'; // This should be the same domain name used in 'base_url'
-$SITE_INFO['custom_share_path']='sites'; // This should always be 'sites'
+$SITE_INFO['custom_base_url_stub'] = 'http://mydomain.com/sites'; // This should be the same as the 'base_url', with '/sites' on the end
+$SITE_INFO['custom_file_base_stub'] = 'sites'; // This should always be 'sites'
+$SITE_INFO['custom_share_domain'] = 'mydomain.com'; // This should be the same domain name used in 'base_url'
+$SITE_INFO['custom_share_path'] = 'sites'; // This should always be 'sites'
 
-$SITE_INFO['custom_user_someuser']=1; // This enables the 'someuser' subdomain
+$SITE_INFO['custom_user_someuser'] = 1; // This enables the 'someuser' subdomain
 
-$SITE_INFO['custom_user_someuserwithdomainname']=1; // This enables the 'someuserwithdomainname' subdomain
-$SITE_INFO['custom_domain_mypersonaldomain.com']='someuserwithdomainname'; // And this maps mypersonaldomain.com to be equivalent to the 'someuserwithdomainname' subdomain
+$SITE_INFO['custom_user_someuserwithdomainname'] = 1; // This enables the 'someuserwithdomainname' subdomain
+$SITE_INFO['custom_domain_mypersonaldomain.com'] = 'someuserwithdomainname'; // And this maps mypersonaldomain.com to be equivalent to the 'someuserwithdomainname' subdomain
 [/code]
-and splitting up the Composr directory structure so all the site-specific directories (uploads, zone custom pages, etc) are located like [tt]sites/someuser[/tt]. For example, for 'someuser', the following directory structure would exist under the base directory:
+...and splitting up the Composr directory structure so all the site-specific directories (uploads, zone custom pages, etc) are located like [tt]sites/someuser[/tt]. For example, for 'someuser', the following directory structure would exist under the base directory:
 [font="Courier"]
 sites
 sites/www

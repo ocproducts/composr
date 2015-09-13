@@ -68,7 +68,7 @@ Login to the Composr site using the admin username and password. Then navigate t
 [b]Step2:[/b]
 The catalogue block can be embedded using the 'main_cc_embed' block. You can manually embed catalogue by pasting the below line of code in the appropriate place in the comcode editor.
 
-[code="PHP"]
+[code="Comcode"]
 [block="8" max="30"]main_cc_embed[/block]
 [/code]
 

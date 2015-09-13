@@ -116,7 +116,7 @@ Using a function in PHP is the same as in Maths, where we just write the functio
 // 2 whole number arguments. Gives us an image
 // with a palette of 16,777,216 colours, a width of
 // 800 pixels and a height of 600 pixels.
-imagecreatetruecolor(800,600);
+imagecreatetruecolor(800, 600);
 
 // 1 text ("string") argument. Gives us the
 // lowercase text 'hello world'.
@@ -166,9 +166,9 @@ echo strval(get_option('longitude'));
 echo ',';  // HTML
 echo strval(get_option('latitude'));
 echo ',';  // HTML
-echo strval(get_option('longitude')+0.01);  // Give the map an area of 0.01x0.01
+echo strval(get_option('longitude') + 0.01);  // Give the map an area of 0.01x0.01
 echo ',';  // HTML
-echo strval(get_option('latitude')+0.01);  // Give the map an area of 0.01x0.01
+echo strval(get_option('latitude') + 0.01);  // Give the map an area of 0.01x0.01
 echo '&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="http://www.openstreetmap.org/?lat=';  // HTML
 echo strval(get_option('latitude'));
 echo '&amp;lon=';  // HTML

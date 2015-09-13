@@ -85,35 +85,36 @@ this is a room locked on all sides [b]and[/b] the surrounding rooms locked on th
 If you click on the 'realms' link, you will be brought to a page that displays the following information for all of the current realms.
 
 [html]
-<table class="columned_table results_table wide_table">
-	 <tr>
-		  <td><h4>Object</h4></td>
-		  <td><h4>Example</h4></td>
-	 </tr>
-	 <tr>
-		  <td>&nbsp;</td>
-		  <td>&nbsp;</td>
-	 </tr>
-	 <tr>
-		  <td>Realm Name</td>
-		  <td>Deck 8 - Primary Computer Core</td>
-	 </tr>
-	 <tr>
-		  <td>Realm Number</td>
-		  <td>20</td>
-	 </tr>
-	 <tr>
-		  <td>Number of rooms</td>
-		  <td>20 rooms</td>
-	 </tr>
-	 <tr>
-		  <td>Realm Status</td>
-		  <td>Public</td>
-	 </tr>
-	 <tr>
-		  <td>Owner of the Realm</td>
-		  <td>mrdefender</td>
-	 </tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Object</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>Realm Name</td>
+			<td>Deck 8 - Primary Computer Core</td>
+		</tr>
+		<tr>
+			<td>Realm Number</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>Number of rooms</td>
+			<td>20 rooms</td>
+		</tr>
+		<tr>
+			<td>Realm Status</td>
+			<td>Public</td>
+		</tr>
+		<tr>
+			<td>Owner of the Realm</td>
+			<td>mrdefender</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -162,42 +163,42 @@ When/if this happens, [b]it is important[/b] that you send a reply [b]to him and
 It is possible to format your message or room or realm text using Comcode. To make it easier, we'll show you some examples as well as explaining how to use it. Remember to always close your format code with a / . Of course, you can combine multiple commands... just remember that any command you open, you need to close.
 
 [html]
-<table class="columned_table results_table wide_table">
-	 <tr>
-		  <td>BOLD:</td>
-		  <td>[b]your text[/b]</td>
-		  <td>This will have 'your text' in bold.</td>
-	 </tr>
-	 <tr>
-		  <td>ITALIC:</td>
-		  <td>[i]your text[/i]</td>
-		  <td>This will have 'your text' italicised.</td>
-	 </tr>
-	 <tr>
-		  <td>UNDERLINED:</td>
-		  <td>[u]your text[/u]</td>
-		  <td>This will make 'your text' underlined.</td>
-	 </tr>
-</table>
+<table class="map_table results_table wide_table autosized_table"><tbody>
+	<tr>
+		<th>BOLD:</th>
+		<td>[b]your text[/b]</td>
+		<td>This will have 'your text' in bold.</td>
+	</tr>
+	<tr>
+		<th>ITALIC:</th>
+		<td>[i]your text[/i]</td>
+		<td>This will have 'your text' italicised.</td>
+	</tr>
+	<tr>
+		<th>UNDERLINED:</th>
+		<td>[u]your text[/u]</td>
+		<td>This will make 'your text' underlined.</td>
+	</tr>
+</tbody></table>
 [/html]
 
 [title="4"]Font sizes and colours[/title]
 
 [html]
-<table class="columned_table results_table wide_table">
-	 <tr>
-		  <td>COLOR: </td>
-		  <td>[font color="color"]your text[/font] will have the text appear as the colour provided.</td>
-	 </tr>
-	 <tr>
-		  <td>SIZE: </td>
-		  <td>[font size="size"]your text[/font] will have the text appear at the size you provided.</td>
-	 </tr>
-	 <tr>
-		  <td>FACE: </td>
-		  <td>[font face="fontname"]your text[/font] will have the text appear as the provided font.</td>
-	 </tr>
-</table>
+<table class="map_table results_table wide_table autosized_table"><tbody>
+	<tr>
+		<th>COLOR:</th>
+		<td>[font color="color"]your text[/font] will have the text appear as the colour provided.</td>
+	</tr>
+	<tr>
+		<th>SIZE:</th>
+		<td>[font size="size"]your text[/font] will have the text appear at the size you provided.</td>
+	</tr>
+	<tr>
+		<th>FACE:</th>
+		<td>[font face="fontname"]your text[/font] will have the text appear as the provided font.</td>
+	</tr>
+</tbody></table>
 [/html]
 
 You can combine all of them together also, using any combination of the color, size and face parameters to the font tag.
@@ -210,9 +211,9 @@ You can also make point-form lists by putting " - " at the start of each list it
 
 Follow the following example to create links:
 
-[html]
+[code="Comcode"]
 [url="link text"]http://www.something.com/something[/url]
-[/html]
+[/code]
 
 [title="4"]Using Smilies[/title]
 

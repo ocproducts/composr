@@ -70,10 +70,10 @@ The Point Store provides a number of products/services that members can access u
 [media width="150" description="Configuring the Point Store" float="right"]data_custom/images/docs/tut_points/points_pointstore_config.png[/media]
 {!pointstore:DOC_POINTSTORE}
 [/surround]
+
 [surround]
 [media width="150" description="Configuring the Point Store's prices" float="right"]data_custom/images/docs/tut_points/points_prices.png[/media]
 [media width="150" description="The Point Store shop-front" float="left"]data_custom/images/docs/tut_points/points_pointstore.png[/media]
-
 When a member buys something from the Point Store, the staff are informed of it via e-mail of appropriate details. The exception to this is that community billboard message is simply placed in a queue that, if enabled, the staff are expected to keep a hold on manually).
 
 There is a module in the Admin Zone for sales inventory management. It should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid: cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user). Refunds must manually be given through the points system if points have been already charged by the point of cancellation.

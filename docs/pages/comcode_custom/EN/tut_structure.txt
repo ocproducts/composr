@@ -137,20 +137,18 @@ As mentioned previously, the two common ways templates are joined are:
 Both are used: although if we wished, we could have avoided embedded, having a combination of both techniques produces the most attractive solution.
 
 A simplified view of the part of the Composr template tree that is common across all pages is:
-[font="Courier"]
----GLOBAL_HTML_WRAP
-------PANEL_TOP (optional)
----------...
-------PANEL_LEFT (optional)
----------...
-------(main page)
----------SCREEN_TITLE
----------(main pages wrapping template, and a lot more)
-------PANEL_RIGHT (optional)
----------...
-------PANEL_BOTTOM (optional)
----------...
-[/font]
+ - GLOBAL_HTML_WRAP
+  - PANEL_TOP (optional)
+   - ...
+  - PANEL_LEFT (optional)
+   - ...
+  - (main page)
+   - SCREEN_TITLE
+   - (main pages wrapping template, and a lot more)
+   - PANEL_RIGHT (optional)
+    - ...
+   - PANEL_BOTTOM (optional)
+    - ...
 When something appears beneath, on the same level, it has been attached. When one of more things appear a level deeper, they have been wrapped. As a tree structure, it is built up from the most deep parts of the tree, and wrapped/attached all the way back until the final composition exists: and then it is output.
 
 [title="4"]Wrapping[/title]
@@ -186,16 +184,14 @@ Composr uses the Sitemap:
  - to display the structure to you in the Sitemap editor and Permission Tree Editor
 
 The Sitemap generally reflects the actual structure of your website, and works roughly on these levels:
-[tt]
 (Root)
----Zone
-------Page group
----------Page
-------------Entry-point
----------------Category
-------------------...
----------------------Entry
-[/tt]
+ - Zone
+  - Page group
+   - Page
+    - Entry-point
+     - Category
+      - ...
+       - Entry
 
 Zones are the first level and operate as different top-level security contexts, and potentially have different panels, a different theme, and different navigations.
 

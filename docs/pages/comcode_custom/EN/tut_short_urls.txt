@@ -33,7 +33,7 @@ The available URL schemes are:
 Often site owners wish to link to the current logged in member's profile. It is not obvious how to create a generic link for this, and it is hard to give one to a webmaster because it depends upon their URL scheme (and base URL).
 We therefore will use this scenario of an example of how the URL would look in all the different URL schemes.
 
-Let's start with the page-link. If you don't supply an [tt]id[/tt] parameter to the [tt]view[/t] screen of the [tt]members[/tt] module then it will automatically use the current member's ID (or show a login screen if it's a guest).
+Let's start with the page-link. If you don't supply an [tt]id[/tt] parameter to the [tt]view[/tt] screen of the [tt]members[/tt] module then it will automatically use the current member's ID (or show a login screen if it's a guest).
 The page-link is therefore:
 [tt]:members:view[/tt]
 (I've assumed "Single public zone" is on, if that option is off then it would be [tt]site:members:view[/tt])

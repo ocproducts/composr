@@ -6,6 +6,7 @@
 
 [title="2"]Payment gateways[/title]
 
+[surround]
 [media width="150" description="The eCommerce layering in Composr for usergroup subscriptions" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_layer.png[/media]
 To accept payment in the modern world, an organisation must obviously have some kind of 'tie in' to the banking system.
 The banking system runs with international standards for things such as:
@@ -16,6 +17,7 @@ The banking system runs with international standards for things such as:
 Cheque processing is relatively straight forward, but more infrastructure is needed to process credit or debit cards. This is accomplished by using a [concept]payment gateway[/concept] in one of two ways:
  - by getting an agent to fully handle the transaction and relay the funds
  - by having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
+[/surround]
 
 [surround]
 [box="Important note" width="25em" float="right"]It is the webmasters responsibility to research any payment system before use, to convince themselves they are happy with the quality and terms of service. Whilst Composr by default only supports PayPal, and has theoretically support for WorldPay and SecPay, this should not be considered an endorsement of any of those services.[/box]
@@ -37,7 +39,7 @@ To configure the payment gateway settings go to Admin Zone > Setup > Configurati
 
 [title="3"]Config options[/title]
 
-The options have the following requirement for PayPal:
+The option requirements for PayPal are as follows:
 
 [html]
 <table class="map_table results_table wide_table autosized_table"><tbody>
@@ -148,16 +150,16 @@ In Composr by default there are the following 'kinds' of 'product':
  - work: this is a generic kind of product used to represent something that has been invoiced
  - Various kinds of non-purchasable product that exist for accounting purpose -- 'interest', 'tax', 'wage' and 'other'. These aren't for sale on your site but positive or negative transaction sums can be entered against them in the Admin Zone, so your profit/loss and cash-flow charts can be accurate.
 
+[box="For programmers" width="25em" float="right"]In the code these are defined via a [tt]PRODUCT_*[/tt] constant from the [tt]ecommerce[/tt] code file.[/box]
 Product kinds fit into the following general categories:
  - Invoice: requests for payment created from the Admin Zone, paid for from the [tt]site:invoices[/tt] module (above: work)
  - Subscription: one-off purchases made from the [tt]site:purchase[/tt] module (above: usergroup subscriptions)
  - Shopping cart: an item purchased from the [tt]site:catalogues[/tt]/[tt]site:shopping[/tt] modules (above: catalogue items)
  - Other (above: interest, tax, wage, other)
  - Purchase wizard: one-off purchases made from the [tt]site:purchase[/tt] module (above: [i]none available out-of-the-box[/i])
-[box="For programmers" width="25em" float="right"]In the code these are defined via a [tt]PRODUCT_*[/tt] constant from the [tt]ecommerce[/tt] code file.[/box]
 
-Whilst the abstraction of this may be confusing, it is very beneficial as all kinds of automatically handled products may be programmed to integrate with Composr functionality.
 [box="Important note" width="25em" float="right"]Usergroup subscriptions are only available if the forum system is [concept]Conversr[/concept].[/box]
+Whilst the abstraction of this may be confusing, it is very beneficial as all kinds of automatically handled products may be programmed to integrate with Composr functionality.
 For example, a programmer could create the following with relative ease:
  - a product that increases the number of available hits on banners
  - a product that sends out an e-mail to a dispatch warehouse instructing them to mail out a copy of a bands latest album to the address specified in the member profile of the purchaser.
@@ -215,7 +217,6 @@ However, we've designed it to be modular. In Composr another method of doing a t
 
 [surround]
 [media width="150" description="Adding a capability for a usergroup subscription" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_subscription.png[/media]
-
 Usergroup subscriptions are implemented on top of subscriptions. Set up a usergroup description as follows:
 1) Add a usergroup that members will be able to subscribe to. Make sure it is not 'Open membership', otherwise people could join it without paying.
 2) Assign additional access to this usergroup (or remove access from some of the other usergroups!).
@@ -228,12 +229,10 @@ You can add as many usergroup subscriptions as you like, even multiple to the sa
 
 [title="2"]Invoices[/title]
 
-[surround]
 [media width="150" description="Invoicing a member" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_invoice.png[/media]
 Members may be invoiced by the staff. To do this, go to the Admin Zone > Audit > eCommerce > Create invoice.
 
 Members may view their invoicing history and staff may quickly locate unpaid invoices and invoices for which the work has not yet been fulfilled.
-[/surround]
 
 [title="2"]Online store[/title]
 
@@ -306,21 +305,20 @@ The currency the website works in is defined in the configuration. If you use Pa
 [title="2"]Charts[/title]
 
 [surround]
-[media width="150" description="A profit/loss account for a fresh install" float="left"]data_custom/images/docs/tut_ecommerce/ecommerce_pl.png[/media]
+[media width="150" description="A profit/loss account for a fresh install" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_pl.png[/media]
 Composr includes some basic accountancy charting support. This is not intended as a replacement for a proper accountancy system, but does serve as a very useful overview of finances and a record of activity.
-
-[box="Important note" width="25em" float="right"]ocProducts does not accept any responsibility for the financial accounts of users of the Composr eCommerce system. Accountancy features are provided as an aid only and are not guaranteed to perform to match any legislative, tax, or accountancy conventions.[/box]
 
 Composr can generate the following charts over a custom specified period:
  - Profit and loss account
  - Cash flow diagram
 
+[box="Important note"]ocProducts does not accept any responsibility for the financial accounts of users of the Composr eCommerce system. Accountancy features are provided as an aid only and are not guaranteed to perform to match any legislative, tax, or accountancy conventions.[/box]
 [/surround]
 
 [title="2"]Payment system[/title]
 
 [surround]
-[media width="150" description="Inputting a manual transaction" float="left"]data_custom/images/docs/tut_ecommerce/ecommerce_manual.png[/media]
+[media width="150" description="Inputting a manual transaction" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_manual.png[/media]
 Whilst Composr only supports PayPal/WorldPay/SecPay payments by default, it does allow manual transactions to be entered. This is possible in the Admin Zone module. Entering a manual transaction will trigger any code associated with the purchase of a product (such as a usergroup promotion).
 
 Manual transactions may also be used to input transactions that are totally external to Composr, and thus otherwise immeasurable by the charting. For example, an organisations expenditure may be recorded by manually inputting a negative transaction for the special 'Other' product.

@@ -152,7 +152,8 @@ We also provide converters for most of the above to our forum system, Conversr. 
 
 [box="Tip"]Instead of naming the forum "Website comment topics" or "Website Support Tickets", you could name it "Mysite comment hub", "Mysite help region", or anything else you choose. Just be sure to change the configuration option to reflect it.
 
-This is in the "Support Tickets" and "User interaction" groups of the "Feature Options" configuration category. Find this under Admin Zone > Setup > Configuration.[/box]If you have installed forums, you will likely wish to create a comments forum. To do this, create a non-public forum called 'Website comment topics'. This forum will be used to store topics relating to comments for content in your portal.
+This is in the "Support Tickets" and "User interaction" groups of the "Feature Options" configuration category. Find this under Admin Zone > Setup > Configuration.[/box]
+If you have installed forums, you will likely wish to create a comments forum. To do this, create a non-public forum called 'Website comment topics'. This forum will be used to store topics relating to comments for content in your portal.
 
 You may also wish to create a non-public forum called 'Website support tickets' if you wish to enable the support ticket feature.
 

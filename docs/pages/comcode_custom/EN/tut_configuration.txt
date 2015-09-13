@@ -67,52 +67,57 @@ A Comcode page is a page in the system that you can edit either via a [concept]W
 Comcode pages may be selected for editing from the Comcode pages editor in the Admin Zone. The list to choose from has them listed in 'zone:page-name' format, which is a very common naming convention in Composr that is a bit like an 'Composr URL' (it's called a 'page-link'). The default Comcode pages are:
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>Zone</th>
-      <th>Page</th>
-      <th>Purpose</th>
-   </tr>
-   <tr>
-      <td>All</td>
-      <td>start</td>
-      <td>This is the default front-page of a zone</td>
-   </tr>
-   <tr>
-      <td>All</td>
-      <td>panel_left, and sometimes panel_right (and also any [tt]panel_[/tt] page may be added and used by a user, if a template such as [tt]GLOBAL_HTML_WRAP.tpl[/tt] references them)</td>
-      <td>Your actual menus, either side of your pages, are assembled by Comcode pages. Not all zones have menu pages, and there are other ones available that are un-used by default. They may also be turned off on a per-zone basis, by making a zone 'wide'.</td>
-   </tr>
-   <tr>
-      <td>Welcome</td>
-      <td>sitemap</td>
-      <td>The Site Map, which by default, is automatically generated using a special block.</td>
-   </tr>
-   <tr>
-      <td>Welcome</td>
-      <td>_rules</td>
-      <td>Site rules, also shown when joining the website.</td>
-   </tr>
-   <tr>
-      <td>Welcome</td>
-      <td>privacy</td>
-      <td>Privacy information.</td>
-   </tr>
-   <tr>
-      <td>Welcome</td>
-      <td>feedback</td>
-      <td>This provides a feedback form, linked from the footer.</td>
-   </tr>
-   <tr>
-      <td>Site</td>
-      <td>help</td>
-      <td>Help for your site. Contains default information on points, etc.</td>
-   </tr>
-   <tr>
-      <td>Collaboration Zone</td>
-      <td>about</td>
-      <td>This describes the Collaboration Zone (if you have that installed). I recommend that you don't edit this yet.</td>
-   </tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Zone</th>
+			<th>Page</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>All</td>
+			<td>start</td>
+			<td>This is the default front-page of a zone</td>
+		</tr>
+		<tr>
+			<td>All</td>
+			<td>panel_left, and sometimes panel_right (and also any [tt]panel_[/tt] page may be added and used by a user, if a template such as [tt]GLOBAL_HTML_WRAP.tpl[/tt] references them)</td>
+			<td>Your actual menus, either side of your pages, are assembled by Comcode pages. Not all zones have menu pages, and there are other ones available that are un-used by default. They may also be turned off on a per-zone basis, by making a zone 'wide'.</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td>sitemap</td>
+			<td>The Site Map, which by default, is automatically generated using a special block.</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td>_rules</td>
+			<td>Site rules, also shown when joining the website.</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td>privacy</td>
+			<td>Privacy information.</td>
+		</tr>
+		<tr>
+			<td>Welcome</td>
+			<td>feedback</td>
+			<td>This provides a feedback form, linked from the footer.</td>
+		</tr>
+		<tr>
+			<td>Site</td>
+			<td>help</td>
+			<td>Help for your site. Contains default information on points, etc.</td>
+		</tr>
+		<tr>
+			<td>Collaboration Zone</td>
+			<td>about</td>
+			<td>This describes the Collaboration Zone (if you have that installed). I recommend that you don't edit this yet.</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -141,7 +146,6 @@ When you choose to manage images in the default theme, you will be warned agains
 Choose 'logo/-logo' (the logo for the Welcome Zone, and the logo for any zone that does not have its own) from the drop-down list presented. After clicking the button you will see the current image; all you need to do is create your own replacement on your computer (as a .jpeg/.jpg, .png, .gif or .png file) and choose to browse for it to upload. You do not need to erase the current URL, as your upload will replace it, and you definitely should leave the 'Name' field unchanged.
 
 [media width="150" description="Editing a logo theme image" float="right"]data_custom/images/docs/tut_configuration/configuration_logo_2.png[/media]
-
 Your choice of image file formats:
  - Use either '.png', '.jpg', or '.gif' files.
   - '.jpg' is usually the best choice for a logo, because the file size can be very low. Be aware though that the JPEG format is a 'lossy' format, i.e. the higher the compression, the lower the quality of the image. JPEG does not support transparency.
@@ -264,9 +268,9 @@ It's not advertised in the interface, but it is possible for a user to join a cl
 [/surround]
 
 [concepts
- 1_key=".htaccess"                         1_value="A file used by the Apache web server to set configuration options that apply to the directory (and sub-directories thereof-) that the file is contained in"
- 2_key="Main Admin Zone Configuration"     2_value="The 'Configuration' module of the Admin Zone"
- 3_key="Base-configuration"                3_value="The Base-configuration for low-level settings such as database settings, available from config_editor.php"
+ 1_key=".htaccess"								 1_value="A file used by the Apache web server to set configuration options that apply to the directory (and sub-directories thereof-) that the file is contained in"
+ 2_key="Main Admin Zone Configuration"	  2_value="The 'Configuration' module of the Admin Zone"
+ 3_key="Base-configuration"					 3_value="The Base-configuration for low-level settings such as database settings, available from config_editor.php"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

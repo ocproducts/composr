@@ -50,7 +50,7 @@ echo 'b';
 [/code]
 However in this example, the second line truly does depend on the first line:
 [code="PHP"]
-$a=1+2;
+$a = 1 + 2;
 echo $a;
 [/code]
 This example uses 'variables', which will be described in the next section.
@@ -72,7 +72,7 @@ Variable names are not actually case sensitive, but we recommend that you consid
 
 An example of how to create a integer called 'fred' would be:
 [code="PHP"]
-$fred=1;  // initialise fred as an integer.
+$fred = 1;  // initialise fred as an integer.
 [/code]
 The '// ...' bit is called a comment, and is only there to help label the code for humans reading it.
 '$' is placed before the name of any variable when it is referenced.
@@ -81,7 +81,7 @@ Variables may be either local or global. Local variables can only be used by the
 A global variable would be created as follows:
 [code="PHP"]
 global $FRED;
-$FRED=1;  // initialise fred as a global integer.
+$FRED = 1;  // initialise fred as a global integer.
 [/code]
 Whenever the variable is used, the global line must be used to identify what the variable 'FRED' is. Note that by convention (as used in Composr), I have put the name in upper case.
 
@@ -104,17 +104,17 @@ FORMAT:
 
 EXAMPLE:
 [code="PHP"]
-  if ($a==2) echo 'a equals 2';
+  if ($a == 2) echo 'a equals 2';
 [/code]
 
 The IF statement can also have multiple commands contained within 'braces' (braces are used in PHP to group commands).
 
 EXAMPLE:
 [code="PHP"]
-if ($a==2)                // If a is equal to 2 then ...
+if ($a == 2)                // If a is equal to 2 then ...
 {
    echo 'Hello';   // Write hello to the screen and then
-   $a=3;                    // give a the value of 3.
+   $a = 3;                    // give a the value of 3.
 }
 [/code]
 
@@ -122,16 +122,16 @@ The IF statement may have very complex conditions: for example, it can check tha
 
 EXAMPLE:
 [code="PHP"]
-if (($a==2) && ($b==3)) ...
+if (($a == 2) && ($b == 3)) ...
 [/code]
 
 If statements can also be nested and if statements can also use another operator, the 'not' operator:
 
 EXAMPLE:
 [code="PHP"]
-if (!($a==3))
+if (!($a == 3))
 {
-   if ($b==3) echo 'hi';
+   if ($b == 3) echo 'hi';
 }
 [/code]
 
@@ -154,7 +154,7 @@ PHP arithmetic looks very similar to that of standard maths. Simply type an expr
 
 EXAMPLE:
 [code="PHP"]
-$a=$a+1; // this would increment (add one on to $a).
+$a = $a + 1; // this would increment (add one on to $a).
 [/code]
 
 The four simplest operators are:
@@ -176,7 +176,7 @@ Note that these examples are based around variables being [b]reassigned a value[
 
 If you want to repeat a set of instructions until a condition is met (a loop) then you must use one of three built in commands. All of these commands can have braces and nested loops (loops within loops) within them, and they can also all be broken out of abruptly. These three commands are:
 [code="PHP"]
-for($counter=<start value>;<condition>;<control-command>)
+for ($counter = <start value>; <condition>; <control-command>)
 [/code]
 [code="PHP"]
 while(<condition>)
@@ -236,8 +236,8 @@ if (<statement>) <If true do this> else <If false do this>
 
 For example,
 [code="PHP"]
-$a=1;
-if ($a==1) echo 'a equals 1'; else echo 'a does not equal 1';
+$a = 1;
+if ($a == 1) echo 'a equals 1'; else echo 'a does not equal 1';
 [/code]
 
 [box="Little point" width="25em" float="right"]'else if' can be abbreviated 'elseif' in PHP.[/box]
@@ -250,7 +250,7 @@ Note that '==' is used: this is because of the distinction between testing for e
 This is used to act differently depending on many different values of a value.
 This is best directly demonstrated by example:
 [code="PHP"]
-$a=1;
+$a = 1;
 switch ($a)
 {
    case 1:
@@ -269,8 +269,8 @@ The 'break;' lines are very important because without them, execution actually c
 
 This allows conditional testing to be performed inside an expression. We could reformulate our first example as:
 [code="PHP"]
-$a=1;
-echo ($a==1)?'a equals 1':'a does not equal 1';
+$a = 1;
+echo ($a == 1) ? 'a equals 1' : 'a does not equal 1';
 [/code]
 
 '?' acts like a barrier between the check and the possible expressions that may be chosen.
@@ -288,7 +288,7 @@ By convention, Composr names constants in upper case. Unlike variables, constant
 
 To create a constant you use the 'define' command:
 [code="PHP"]
-define('<CONSTANT_NAME>',<value>);
+define('<CONSTANT_NAME>', <value>);
 [/code]
 
 [title="2"]Functions[/title]
@@ -309,7 +309,7 @@ $val=write('some text here');
 
 If I were to change the last example to:
 [code="PHP"]
-function write($text='no parameters were given')
+function write($text = 'no parameters were given')
 {
    echo $text;
    return 1;
@@ -326,7 +326,7 @@ In Composr, all functions should contain a header that identifies them and defin
  * @param  string $text The string to output
  * @return integer The integer to return (always 1)
  */
-function write($text='no parameters were given')
+function write($text = 'no parameters were given')
 {
    echo $text;
    return 1;
@@ -373,9 +373,9 @@ These can be used within strings, but only if the string is defined using '' quo
 
 A cast is used to force one data type to be converted to another one. It is very simple to use: all you need to do is put the type you want to change to in brackets before the name. For example,
 [code="PHP"]
-$a=1;
-$b=2.0;
-$a=(int)$b; // Now $a=2, not 2.0 (and hence it has not had to be converted to a float).
+$a = 1;
+$b = 2.0;
+$a = (int)$b; // Now $a = 2, not 2.0 (and hence it has not had to be converted to a float).
 [/code]
 
 [title="2"]Arrays[/title]
@@ -383,14 +383,14 @@ $a=(int)$b; // Now $a=2, not 2.0 (and hence it has not had to be converted to a 
 Let's do some more work with arrays.
 An array is a collection of values that all stored underneath a single name: separated by 'keys'. To create a new array you use the array() expression. For example,
 [code="PHP"]
-$hello=array(1,2,3,4);
+$hello = array(1, 2, 3, 4);
 [/code]
 To access the 3rd element of that array you would refer to it as: $hello[2] (0 is the first element).
 This is only one type of array in PHP, called a list. A list is an array where the keys are all automatically assigned, as integers.
 
 Another way to create an array would be:
 [code="PHP"]
-$hello=array('a'=>1,'b'=>2,'c'=>3,'d'=>4);
+$hello = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4);
 [/code]
 This is a 'map' or 'associative array'. You extract in exactly the same way as a list by using the key: for example, $hello['c'].
 

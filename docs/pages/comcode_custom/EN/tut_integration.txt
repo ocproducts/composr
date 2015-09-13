@@ -29,12 +29,12 @@ In this scenario, a HTML page named [tt]mypage.html[/tt] has been made in an edi
 Imagine [tt]mypage.html[/tt] contains...
 [code="HTML"]
 <html>
-   <head>
-      <title>This is my page</title>
-   </head>
-   <body>
-      <img src="myimage.png" />
-   </body>
+	<head>
+		<title>This is my page</title>
+	</head>
+	<body>
+		<img src="myimage.png" />
+	</body>
 </html>
 [/code]
 
@@ -49,8 +49,8 @@ To integrate this page as [tt]site:mypage[/tt], the following steps would need t
 Composr can actually handle most things for you if you want to defer control to it:
  - Copy any [tt].htm[/tt] files into the [tt]pages/html_custom/EN/[/tt] directory ([tt].html[/tt] files should be renamed to [tt].htm[/tt] files)
   - [i]Unless[/i] the file is meant to be located in a subdirectory and Composr has a zone with the same name as that subdirectory. In this case, you'd place it in the equivalent directory of that zone so that Composr can better automatically rewrite any links to the page:
-   - For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named 'example'. Put the file in [tt]example/pages/html_custom/EN/[/tt]
-   - If the directories go more than one level deep, Composr will translate '/' to '_' when matching against a zone name (e.g. [tt]site/more[/tt] would be considered a zone named [tt]site_more[/tt])
+	- For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named 'example'. Put the file in [tt]example/pages/html_custom/EN/[/tt]
+	- If the directories go more than one level deep, Composr will translate '/' to '_' when matching against a zone name (e.g. [tt]site/more[/tt] would be considered a zone named [tt]site_more[/tt])
  - Copy any non-.htm files (images, etc) into [tt]uploads/website_specific[/tt]
  - Your pages should then show up as normal Composr entry-points in the menu editor
  - Go through the pages in Composr to find any broken links and adjust them so that they work. Composr can't perfectly fix your links for you every-time, but it does do a pretty good job. Read on for more information how link rewriting works.
@@ -100,15 +100,15 @@ If the embedded system has a non-predictable height, then under normal circumsta
 // <![CDATA[
 function resizeEmbeddedFrame()
 {
-   var frame=document.getElementById('frame');
-   if ((frame) && (top.frames['frame'].document.body))
-   {
-      if (top.frames['frame'].document.body.offsetHeight+'px'!=frame.style.height)
-      {
-         frame.style.height=top.frames['frame'].document.body.offsetHeight+'px';
-         frame.scrolling='no';
-      }
-   } else clearInterval(tid);
+	var frame=document.getElementById('frame');
+	if ((frame) && (top.frames['frame'].document.body))
+	{
+		if (top.frames['frame'].document.body.offsetHeight+'px'!=frame.style.height)
+		{
+			frame.style.height=top.frames['frame'].document.body.offsetHeight+'px';
+			frame.scrolling='no';
+		}
+	} else clearInterval(tid);
 }
 //]]></script>
 </script>
@@ -337,7 +337,7 @@ It can be a bit tricky to share members between Composr and another system. Ther
 These are all very technical tasks, so we do not expect that many users will have the experience to easily carry them out themselves.
 
 [concepts
- 1_key="iframe"   1_value="A portion of the main web page that encloses another web page (with its own URL)"
+ 1_key="iframe"	1_value="A portion of the main web page that encloses another web page (with its own URL)"
 ]Concepts[/concepts]
 
 [title="3"]Directing external systems to log in a user to a Composr site[/title]

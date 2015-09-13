@@ -94,75 +94,47 @@ class Hook_media_rendering_image_websafe
             $url_direct_filesystem = $_url;
         }
 
-        // Put in defaults
-        $blank_thumbnail = (!array_key_exists('thumb_url', $attributes)) || ((is_object($attributes['thumb_url'])) && ($attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] == ''));
-        if ((!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width']))) {
-            if ($blank_thumbnail) {
-                $attributes['width'] = get_option('thumb_width');
-            }
-            // else: media_renderer will derive from the provided thumbnail
-            $auto_width = true;
-        } else {
-            $auto_width = false;
-        }
-        if ((!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height']))) {
-            if ($blank_thumbnail) {
-                $attributes['height'] = get_option('thumb_width');
-            }
-            // else: media_renderer will derive from the provided thumbnail
-            $auto_height = true;
-        } else {
-            $auto_height = false;
-        }
         $use_thumb = (!array_key_exists('thumb', $attributes)) || ($attributes['thumb'] == '1');
+
+        $blank_thumbnail = (!array_key_exists('thumb_url', $attributes)) || ((is_object($attributes['thumb_url'])) && ($attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] == ''));
+        // ^ If thumbnail is blank, then we will be using default thumbnail width/height and generating it from the main image UNLESS we decided not to use a thumbnail at all
+
         if ((!$use_thumb) || (!function_exists('imagetypes'))) {
             $attributes['thumb_url'] = $url;
         }
-        if ($blank_thumbnail) {
-            if ($use_thumb) {
-                $new_name = $attributes['width'] . '__' . url_to_filename($_url_safe);
-                require_code('images');
-                if (!is_saveable_image($new_name)) {
-                    $new_name .= '.png';
+
+        if ((!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width']))) {
+            if ($blank_thumbnail && $use_thumb) {
+                $attributes['width'] = get_option('thumb_width');
+            }
+            // else: media_renderer will derive from the provided thumbnail
+            $auto_box_width = true;
+        } else {
+            $auto_box_width = false;
+        }
+
+        if ((!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height']))) {
+            if ($blank_thumbnail && $use_thumb) {
+                $attributes['height'] = get_option('thumb_width');
+            }
+            // else: media_renderer will derive from the provided thumbnail
+            $auto_box_height = true;
+        } else {
+            $auto_box_height = false;
+        }
+
+        if ($use_thumb && $blank_thumbnail) {
+            $new_name = $attributes['width'] . '__' . url_to_filename($_url_safe);
+            require_code('images');
+            if (!is_saveable_image($new_name)) {
+                $new_name .= '.png';
+            }
+            $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
+            if (function_exists('imagepng')) {
+                if (!file_exists($file_thumb)) {
+                    convert_image($url_direct_filesystem, $file_thumb, $auto_box_width ? -1 : intval($attributes['width']), $auto_box_height ? -1 : intval($attributes['height']), ($auto_box_width && $auto_box_height) ? intval($attributes['width']) : -1, false);
                 }
-                $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
-                if (function_exists('imagepng')) {
-                    if (!file_exists($file_thumb)) {
-                        convert_image($url_direct_filesystem, $file_thumb, $auto_width ? -1 : intval($attributes['width']), $auto_height ? -1 : intval($attributes['height']), ($auto_width && $auto_height) ? intval($attributes['width']) : -1, false);
-                    }
-                    $attributes['thumb_url'] = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
-                    if (($auto_width) || ($auto_height)) {
-                        if (function_exists('getimagesize')) {
-                            $size = @getimagesize($file_thumb);
-                            if ($size !== false) {
-                                list($width, $height) = $size;
-                                if ($auto_width) {
-                                    $attributes['width'] = strval($width);
-                                }
-                                if ($auto_height) {
-                                    $attributes['height'] = strval($height);
-                                }
-                                if ($auto_width && !$auto_height) {
-                                    $attributes['width'] = strval(intval(round(floatval($attributes['height']) * (float)$width / (float)$height)));
-                                }
-                                if (!$auto_width && $auto_height) {
-                                    $attributes['height'] = strval(intval(round(floatval($attributes['width']) * (float)$height / (float)$width)));
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                if ((function_exists('getimagesize')) && (($auto_width) || ($auto_height))) {
-                    require_code('images');
-                    list($_width, $_height) = _symbol_image_dims(array($_url));
-                    if ($auto_width) {
-                        $attributes['width'] = $_width;
-                    }
-                    if ($auto_height) {
-                        $attributes['height'] = $_height;
-                    }
-                }
+                $attributes['thumb_url'] = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
             }
         }
 

@@ -24,7 +24,7 @@ You may also use multi-moderations from the forum view screen, by selecting topi
 
 [title="2"]Mass-moderation[/title]
 
-On forum and topic view screens, you may select topics/posts with a tickbox (checkbox), and execute actions upon them.
+On forum and topic view screens, you may select topics/posts with a checkbox, and execute actions upon them.
 
 For forum view screens the actions are available in the 'Topic actions' drop-down list.
 

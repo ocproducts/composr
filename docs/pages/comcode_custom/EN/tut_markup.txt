@@ -115,325 +115,330 @@ Up until now, we've only been working with theoretical and fictional XHTML tags 
 Anyway: some XHTML elements.
 
 [html]
-<table class="columned_table results_table wide_table">
-	<tr>
-		<th>
-			Element
-		</th>
-		<th>
-			Description
-		</th>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;a&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A hyperlink. Recommended attributes: <kbd>href</kbd>
-			(URL to link to), <kbd>title</kbd>
-			(text to display when hovered-over).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;body&gt;</kbd></p>
-		</td>
-		<td>
-			<p>The parent tag for the main document body.
-			<strong>Required</strong>.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;div&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Defines a document section. (See CSS section
-			below.)</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;em&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Adds emphasis to the text it surrounds.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;fieldset&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Groups form elements together logically. (See
-			<kbd>&lt;form&gt;</kbd>
-			tag below.)</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;form&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Defines a form with which to submit data.
-			Required attributes: <kbd>action</kbd>
-			(URL to send data to). Recommended attributes: <kbd>method</kbd>
-			(how to send the data; either <kbd>get</kbd>,
-			or <kbd>post</kbd>)</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;h1&gt;</kbd>
-			to <kbd>&lt;h6&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Document headings; <kbd>&lt;h1&gt;</kbd>
-			is the most important (you should have one of these at the
-			beginning of your page, quoting your page title), <kbd>&lt;h6&gt;</kbd>
-			is the least important.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;head&gt;</kbd></p>
-		</td>
-		<td>
-			<p>The meta-data section of the document. Contains
-			information about the document which isn&rsquo;t displayed, but
-			used by the browser in other ways. <strong>Required</strong>.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;html&gt;</kbd></p>
-		</td>
-		<td>
-			<p>The main tag in an XHTML document. Required
-			attributes: <kbd>xmlns</kbd>
-			(the XML namespace; should be &ldquo;<a href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>&rdquo;).
-			<strong>Required</strong>.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;img
-			/&gt;</kbd></p>
-		</td>
-		<td>
-			<p>An in-page image. Note that this tag shouldn&rsquo;t
-			be used to place layout images; only page-specific images. (See
-			CSS section below.) Required attributes: <kbd>src</kbd>
-			(the URL of the image), <kbd>alt</kbd>
-			(alternate text to be displayed if the image cannot be displayed).
-			Recommended attributes: <kbd>title</kbd>
-			(text to display when hovered-over).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;input
-			/&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A form input, for entering data. Recommended
-			attributes: <kbd>value</kbd>
-			(the value to display &ndash; varies from type to type), <kbd>type</kbd>
-			(the type of input to display: <kbd>button</kbd>,
-			<kbd>checkbox</kbd>,
-			<kbd>file</kbd>,
-			<kbd>hidden</kbd>,
-			<kbd>image</kbd>,
-			<kbd>password</kbd>,
-			<kbd>radio</kbd>,
-			<kbd>reset</kbd>,
-			<kbd>submit</kbd>,
-			<kbd>text</kbd>),
-			<kbd>name</kbd>
-			(the name with which to refer to the input on the server), <kbd>id</kbd>
-			(the <strong>unique</strong> identifier with which to refer to this element
-			(see CSS and JavaScript sections below)).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;label&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A label associated with a form element.
-			Recommended attributes: <kbd>for</kbd>
-			(the ID of the form element associated with this <kbd>&lt;label&gt;</kbd>).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;legend&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A caption for a <kbd>&lt;fieldset&gt;</kbd>.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;li&gt;</kbd></p>
-		</td>
-		<td>
-			<p>An element in a list (see <kbd>&lt;ul&gt;</kbd>
-			and <kbd>&lt;ol&gt;</kbd>).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;ol&gt;</kbd></p>
-		</td>
-		<td>
-			<p>An <em>ordered</em> (sequential and numbered)
-			list.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;optgroup&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Groups <kbd>&lt;option&gt;</kbd>s
-			in a <kbd>&lt;select&gt;</kbd>
-			list. Required attributes: <kbd>label</kbd>
-			(the label for the option group).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;option&gt;</kbd></p>
-		</td>
-		<td>
-			<p>An option in a <kbd>&lt;select&gt;</kbd>
-			list. Recommended attributes: <kbd>value</kbd>
-			(the value to be sent to the server when the form is submitted).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;p&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A paragraph. This element is very commonly
-			used.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;select&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A drop-down list. Recommended attributes: <kbd>name</kbd>
-			(the name with which to refer to the input on the server), <kbd>id</kbd>
-			(the <strong>unique</strong> identifier with which to refer to this element
-			(see CSS and JavaScript sections below)).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;span&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Groups inline elements. (See CSS section
-			below.)</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;strong&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Designates text as strong (usually displayed as
-			<strong>bold</strong>).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;sub&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Designates text as subscript.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;sup&gt;</kbd></p>
-		</td>
-		<td>
-			<p>Designates text as superscript.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;table&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A table. Note that this <strong>should not</strong> be
-			used to lay-out pages! (See CSS section below.) Recommended
-			attributes: <kbd>summary</kbd>
-			(a medium-length summary of the content of the table for
-			non-visual browsers).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;td&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A table cell.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;textarea&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A multi-line text input area. Required
-			attributes: <kbd>cols</kbd>
-			(how many character columns to display), <kbd>rows</kbd>
-			(how many character rows to display). Recommended attributes: <kbd>name</kbd>
-			(the name with which to refer to the input on the server), <kbd>id</kbd>
-			(the <strong>unique</strong> identifier with which to refer to this element
-			(see CSS and JavaScript sections below)).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;th&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A table header cell.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;title&gt;</kbd></p>
-		</td>
-		<td>
-			<p>The title of the page (to be displayed in the
-			browser&rsquo;s title bar, for example). <strong>Required</strong>.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;tr&gt;</kbd></p>
-		</td>
-		<td>
-			<p>A table row.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>&lt;ul&gt;</kbd></p>
-		</td>
-		<td>
-			<p>An <em>unordered</em> (non-numbered &ndash; blank
-			bulleted) list.</p>
-		</td>
-	</tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>
+				Element
+			</th>
+			<th>
+				Description
+			</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>
+				<p><kbd>&lt;a&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A hyperlink. Recommended attributes: <kbd>href</kbd>
+				(URL to link to), <kbd>title</kbd>
+				(text to display when hovered-over).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;body&gt;</kbd></p>
+			</td>
+			<td>
+				<p>The parent tag for the main document body.
+				<strong>Required</strong>.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;div&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Defines a document section. (See CSS section
+				below.)</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;em&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Adds emphasis to the text it surrounds.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;fieldset&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Groups form elements together logically. (See
+				<kbd>&lt;form&gt;</kbd>
+				tag below.)</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;form&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Defines a form with which to submit data.
+				Required attributes: <kbd>action</kbd>
+				(URL to send data to). Recommended attributes: <kbd>method</kbd>
+				(how to send the data; either <kbd>get</kbd>,
+				or <kbd>post</kbd>)</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;h1&gt;</kbd>
+				to <kbd>&lt;h6&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Document headings; <kbd>&lt;h1&gt;</kbd>
+				is the most important (you should have one of these at the
+				beginning of your page, quoting your page title), <kbd>&lt;h6&gt;</kbd>
+				is the least important.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;head&gt;</kbd></p>
+			</td>
+			<td>
+				<p>The meta-data section of the document. Contains
+				information about the document which isn&rsquo;t displayed, but
+				used by the browser in other ways. <strong>Required</strong>.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;html&gt;</kbd></p>
+			</td>
+			<td>
+				<p>The main tag in an XHTML document. Required
+				attributes: <kbd>xmlns</kbd>
+				(the XML namespace; should be &ldquo;<a href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>&rdquo;).
+				<strong>Required</strong>.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;img
+				/&gt;</kbd></p>
+			</td>
+			<td>
+				<p>An in-page image. Note that this tag shouldn&rsquo;t
+				be used to place layout images; only page-specific images. (See
+				CSS section below.) Required attributes: <kbd>src</kbd>
+				(the URL of the image), <kbd>alt</kbd>
+				(alternate text to be displayed if the image cannot be displayed).
+				Recommended attributes: <kbd>title</kbd>
+				(text to display when hovered-over).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;input
+				/&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A form input, for entering data. Recommended
+				attributes: <kbd>value</kbd>
+				(the value to display &ndash; varies from type to type), <kbd>type</kbd>
+				(the type of input to display: <kbd>button</kbd>,
+				<kbd>checkbox</kbd>,
+				<kbd>file</kbd>,
+				<kbd>hidden</kbd>,
+				<kbd>image</kbd>,
+				<kbd>password</kbd>,
+				<kbd>radio</kbd>,
+				<kbd>reset</kbd>,
+				<kbd>submit</kbd>,
+				<kbd>text</kbd>),
+				<kbd>name</kbd>
+				(the name with which to refer to the input on the server), <kbd>id</kbd>
+				(the <strong>unique</strong> identifier with which to refer to this element
+				(see CSS and JavaScript sections below)).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;label&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A label associated with a form element.
+				Recommended attributes: <kbd>for</kbd>
+				(the ID of the form element associated with this <kbd>&lt;label&gt;</kbd>).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;legend&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A caption for a <kbd>&lt;fieldset&gt;</kbd>.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;li&gt;</kbd></p>
+			</td>
+			<td>
+				<p>An element in a list (see <kbd>&lt;ul&gt;</kbd>
+				and <kbd>&lt;ol&gt;</kbd>).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;ol&gt;</kbd></p>
+			</td>
+			<td>
+				<p>An <em>ordered</em> (sequential and numbered)
+				list.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;optgroup&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Groups <kbd>&lt;option&gt;</kbd>s
+				in a <kbd>&lt;select&gt;</kbd>
+				list. Required attributes: <kbd>label</kbd>
+				(the label for the option group).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;option&gt;</kbd></p>
+			</td>
+			<td>
+				<p>An option in a <kbd>&lt;select&gt;</kbd>
+				list. Recommended attributes: <kbd>value</kbd>
+				(the value to be sent to the server when the form is submitted).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;p&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A paragraph. This element is very commonly
+				used.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;select&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A drop-down list. Recommended attributes: <kbd>name</kbd>
+				(the name with which to refer to the input on the server), <kbd>id</kbd>
+				(the <strong>unique</strong> identifier with which to refer to this element
+				(see CSS and JavaScript sections below)).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;span&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Groups inline elements. (See CSS section
+				below.)</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;strong&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Designates text as strong (usually displayed as
+				<strong>bold</strong>).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;sub&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Designates text as subscript.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;sup&gt;</kbd></p>
+			</td>
+			<td>
+				<p>Designates text as superscript.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;table&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A table. Note that this <strong>should not</strong> be
+				used to lay-out pages! (See CSS section below.) Recommended
+				attributes: <kbd>summary</kbd>
+				(a medium-length summary of the content of the table for
+				non-visual browsers).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;td&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A table cell.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;textarea&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A multi-line text input area. Required
+				attributes: <kbd>cols</kbd>
+				(how many character columns to display), <kbd>rows</kbd>
+				(how many character rows to display). Recommended attributes: <kbd>name</kbd>
+				(the name with which to refer to the input on the server), <kbd>id</kbd>
+				(the <strong>unique</strong> identifier with which to refer to this element
+				(see CSS and JavaScript sections below)).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;th&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A table header cell.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;title&gt;</kbd></p>
+			</td>
+			<td>
+				<p>The title of the page (to be displayed in the
+				browser&rsquo;s title bar, for example). <strong>Required</strong>.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;tr&gt;</kbd></p>
+			</td>
+			<td>
+				<p>A table row.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>&lt;ul&gt;</kbd></p>
+			</td>
+			<td>
+				<p>An <em>unordered</em> (non-numbered &ndash; blank
+				bulleted) list.</p>
+			</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -441,53 +446,58 @@ Although this table doesn't list all of the XHTML elements (it lists approximate
 
 [html]
 	<table class="columned_table results_table wide_table">
-		<tr>
-			<th>
-				Attribute
-			</th>
-			<th>
-				Description
-			</th>
-		</tr>
-		<tr>
-			<td>
-				<p><kbd>class</kbd></p>
-			</td>
-			<td>
-				<p>The CSS class of the element; used to style
-				and jazz-up appearances. (See CSS section below.)</p>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<p><kbd>id</kbd></p>
-			</td>
-			<td>
-				<p>The <strong>unique</strong> identifier for the element
-				(see CSS and JavaScript sections below).</p>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<p><kbd>style</kbd></p>
-			</td>
-			<td>
-				<p>Inline styling rules &ndash; used to apply
-				styling without using a separate CSS definition. Note that it&rsquo;s
-				advisable to <em>separate</em> structure and styling, so use of
-				this attribute is deprecated for all intents and purposes. (See
-				CSS section below.)</p>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<p><kbd>title</kbd></p>
-			</td>
-			<td>
-				<p>Text to display in a tooltip when the element
-				is hovered-over.</p>
-			</td>
-		</tr>
+		<thead>
+			<tr>
+				<th>
+					Attribute
+				</th>
+				<th>
+					Description
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td>
+					<p><kbd>class</kbd></p>
+				</td>
+				<td>
+					<p>The CSS class of the element; used to style
+					and jazz-up appearances. (See CSS section below.)</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p><kbd>id</kbd></p>
+				</td>
+				<td>
+					<p>The <strong>unique</strong> identifier for the element
+					(see CSS and JavaScript sections below).</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p><kbd>style</kbd></p>
+				</td>
+				<td>
+					<p>Inline styling rules &ndash; used to apply
+					styling without using a separate CSS definition. Note that it&rsquo;s
+					advisable to <em>separate</em> structure and styling, so use of
+					this attribute is deprecated for all intents and purposes. (See
+					CSS section below.)</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p><kbd>title</kbd></p>
+				</td>
+				<td>
+					<p>Text to display in a tooltip when the element
+					is hovered-over.</p>
+				</td>
+			</tr>
+		</tbody>
 	</table>
 [/html]
 
@@ -630,171 +640,176 @@ Now that the basic selectors have been covered, we move on to properties and pro
 Some commonly used properties are listed below...
 
 [html]
-<table class="columned_table results_table wide_table">
-	<tr>
-		<th>
-			Property
-		</th>
-		<th>
-			Description
-		</th>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>background</kbd></p>
-		</td>
-		<td>
-			<p>The background colour and image.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>border</kbd></p>
-		</td>
-		<td>
-			<p>The border; a line (of specified width) that
-			borders (in a box) the specified element.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>display</kbd></p>
-		</td>
-		<td>
-			<p>Used to alter the display mode of the specified
-			element (i.e. change it from a block-level to an inline element).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>position</kbd></p>
-		</td>
-		<td>
-			<p>The mode with which to place the element.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>height</kbd></p>
-		</td>
-		<td>
-			<p>The height.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>width</kbd></p>
-		</td>
-		<td>
-			<p>The width.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>font</kbd></p>
-		</td>
-		<td>
-			<p>Font options and configuration.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>list-style</kbd></p>
-		</td>
-		<td>
-			<p>How to layout and draw a list.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>margin</kbd></p>
-		</td>
-		<td>
-			<p>The margin options: the space around the
-			<strong>outside</strong> of an element separating it from other elements
-			(think of it as a &ldquo;moat&rdquo; for an element).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>padding</kbd></p>
-		</td>
-		<td>
-			<p>The padding options: the space on the <strong>inside</strong>
-			of an element (between the border and the content &ndash; think of
-			it as the cavity in a cavity wall).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>bottom</kbd></p>
-		</td>
-		<td>
-			<p>The space below an element, and above the
-			element&rsquo;s parent&rsquo;s border.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>left</kbd></p>
-		</td>
-		<td>
-			<p>The space to the left of an element, and to the
-			right of the element&rsquo;s parent&rsquo;s border.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>right</kbd></p>
-		</td>
-		<td>
-			<p>The space to the right of an element, and to
-			the left of the element&rsquo;s parent&rsquo;s border.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>top</kbd></p>
-		</td>
-		<td>
-			<p>The space above an element, and below the
-			element&rsquo;s parent&rsquo;s border.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>color</kbd></p>
-		</td>
-		<td>
-			<p>The colour of <strong>text</strong>.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>text-align</kbd></p>
-		</td>
-		<td>
-			<p>The horizontal alignment of text.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>text-decoration</kbd></p>
-		</td>
-		<td>
-			<p>Decoration applied to text, such as underline
-			or overline.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>text-indent</kbd></p>
-		</td>
-		<td>
-			<p>Indentation applied to the <strong>first line</strong> of
-			text.</p>
-		</td>
-	</tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>
+				Property
+			</th>
+			<th>
+				Description
+			</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>
+				<p><kbd>background</kbd></p>
+			</td>
+			<td>
+				<p>The background colour and image.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>border</kbd></p>
+			</td>
+			<td>
+				<p>The border; a line (of specified width) that
+				borders (in a box) the specified element.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>display</kbd></p>
+			</td>
+			<td>
+				<p>Used to alter the display mode of the specified
+				element (i.e. change it from a block-level to an inline element).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>position</kbd></p>
+			</td>
+			<td>
+				<p>The mode with which to place the element.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>height</kbd></p>
+			</td>
+			<td>
+				<p>The height.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>width</kbd></p>
+			</td>
+			<td>
+				<p>The width.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>font</kbd></p>
+			</td>
+			<td>
+				<p>Font options and configuration.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>list-style</kbd></p>
+			</td>
+			<td>
+				<p>How to layout and draw a list.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>margin</kbd></p>
+			</td>
+			<td>
+				<p>The margin options: the space around the
+				<strong>outside</strong> of an element separating it from other elements
+				(think of it as a &ldquo;moat&rdquo; for an element).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>padding</kbd></p>
+			</td>
+			<td>
+				<p>The padding options: the space on the <strong>inside</strong>
+				of an element (between the border and the content &ndash; think of
+				it as the cavity in a cavity wall).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>bottom</kbd></p>
+			</td>
+			<td>
+				<p>The space below an element, and above the
+				element&rsquo;s parent&rsquo;s border.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>left</kbd></p>
+			</td>
+			<td>
+				<p>The space to the left of an element, and to the
+				right of the element&rsquo;s parent&rsquo;s border.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>right</kbd></p>
+			</td>
+			<td>
+				<p>The space to the right of an element, and to
+				the left of the element&rsquo;s parent&rsquo;s border.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>top</kbd></p>
+			</td>
+			<td>
+				<p>The space above an element, and below the
+				element&rsquo;s parent&rsquo;s border.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>color</kbd></p>
+			</td>
+			<td>
+				<p>The colour of <strong>text</strong>.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>text-align</kbd></p>
+			</td>
+			<td>
+				<p>The horizontal alignment of text.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>text-decoration</kbd></p>
+			</td>
+			<td>
+				<p>Decoration applied to text, such as underline
+				or overline.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>text-indent</kbd></p>
+			</td>
+			<td>
+				<p>Indentation applied to the <strong>first line</strong> of
+				text.</p>
+			</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -857,66 +872,71 @@ JavaScript is most powerful when applied to the DOM -- the Document Object Model
 Another feature of JavaScript is its event model. You can specify JavaScript functions or code to be called when, for example, a link is clicked. You do this either via the event attributes in an XHTML document, or through event listening functions in JavaScript.
 
 [html]
-<table class="columned_table results_table wide_table">
-	<tr>
-		<th>
-			Event attribute
-		</th>
-		<th>
-			Description
-		</th>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>onload</kbd></p>
-		</td>
-		<td>
-			<p>Called when the document loads. Can only be put
-			in <kbd>&lt;body&gt;</kbd>
-			or <kbd>&lt;frameset&gt;</kbd>
-			tags.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>onchange</kbd></p>
-		</td>
-		<td>
-			<p>Called when an input is changed. Can only be
-			put in one of the form tags (<kbd>&lt;input&gt;</kbd>,
-			<kbd>&lt;select&gt;</kbd>,
-			etc.).</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>onsubmit</kbd></p>
-		</td>
-		<td>
-			<p>Called when the form is submitted. Can only be
-			put in a <kbd>&lt;form&gt;</kbd>
-			tag.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>onkeypress</kbd></p>
-		</td>
-		<td>
-			<p>Called when a key is pressed (and released) and
-			the element has focus. Can be put in any tag, with a few logical
-			exceptions.</p>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<p><kbd>onclick</kbd></p>
-		</td>
-		<td>
-			<p>Called when a the element is clicked. Can be
-			put in any tag, with a few logical exceptions.</p>
-		</td>
-	</tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>
+				Event attribute
+			</th>
+			<th>
+				Description
+			</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>
+				<p><kbd>onload</kbd></p>
+			</td>
+			<td>
+				<p>Called when the document loads. Can only be put
+				in <kbd>&lt;body&gt;</kbd>
+				or <kbd>&lt;frameset&gt;</kbd>
+				tags.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>onchange</kbd></p>
+			</td>
+			<td>
+				<p>Called when an input is changed. Can only be
+				put in one of the form tags (<kbd>&lt;input&gt;</kbd>,
+				<kbd>&lt;select&gt;</kbd>,
+				etc.).</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>onsubmit</kbd></p>
+			</td>
+			<td>
+				<p>Called when the form is submitted. Can only be
+				put in a <kbd>&lt;form&gt;</kbd>
+				tag.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>onkeypress</kbd></p>
+			</td>
+			<td>
+				<p>Called when a key is pressed (and released) and
+				the element has focus. Can be put in any tag, with a few logical
+				exceptions.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p><kbd>onclick</kbd></p>
+			</td>
+			<td>
+				<p>Called when a the element is clicked. Can be
+				put in any tag, with a few logical exceptions.</p>
+			</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -980,24 +1000,24 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://www.smashingmagazine.com/2008/09/11/75-really-useful-javascript-techniques/
 
 [concepts
- 1_key="XML"          1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"
- 2_key="HTML"         2_value="HyperText Markup Language: a language for the documents of the world wide web"
- 3_key="XHTML"        3_value="eXtensible HyperText Markup Language: HTML adapted to follow XML rules"
- 4_key="CSS"          4_value="Cascading Style Sheets: a technology that allows style to be specified in a config-file like fashion, and mapped to XHTML structure"
- 5_key="JavaScript"   5_value="The standard client-side scripting language for the Internet, allowing web pages to be dynamic without reloading of pages. In standardisation, it is known as ECMA-Script, but that term is rarely used."
- 6_key="tag"          6_value="A piece of structure: an XML tree is made up of tags"
- 7_key="element"      7_value="Another name for a tag really"
- 8_key="(tag) attribute"           8_value="Tags may contain attributes that specify properties for the tag"
- 9_key="inline (tag)"  9_value="A tag that wraps around a portion of HTML to apply something to it, or to use it"
- 10_key="block (tag)"  10_value="A tag that takes up a boxed area of the screen space, and may have its own background. Block tags force a visual line-break after them, unless they are styled to be inline"
- 11_key="(tag) class"  11_value="A tag class is generally used so as to join XHTML tags to CSS styles"
- 12_key="(XML) ID"     12_value="An ID is generally used so as to allow JavaScript code to reference specific XHTML tags"
- 13_key="(JavaScript) event"        13_value="JavaScript hooks on to web browser actions via an event model; tags 'fire' events, and JavaScript can be set up to launch certain code upon the event firing"
- 14_key="(CSS) selector"            14_value="CSS rules apply to certain tags, and selectors are used to determine which tags; selectors are very powerful, although Internet Explorer only supports a few of them"
- 15_key="(CSS) property"            15_value="CSS rules specify values for properties in order to style"
- 16_key="DOM"          16_value="Document Object Model. A scheme of referencing a document based upon the XHRML structure. Usually used with JavaScript."
- 17_key="DHTML"        17_value="Dynamic HTML. Almost a synonym for JavaScript"
- 18_key="client-side"  18_value="Code that is processed on a viewer's computer. The opposite of server-side"
+ 1_key="XML"						1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"
+ 2_key="HTML"						2_value="HyperText Markup Language: a language for the documents of the world wide web"
+ 3_key="XHTML"						3_value="eXtensible HyperText Markup Language: HTML adapted to follow XML rules"
+ 4_key="CSS"						4_value="Cascading Style Sheets: a technology that allows style to be specified in a config-file like fashion, and mapped to XHTML structure"
+ 5_key="JavaScript"				5_value="The standard client-side scripting language for the Internet, allowing web pages to be dynamic without reloading of pages. In standardisation, it is known as ECMA-Script, but that term is rarely used."
+ 6_key="tag"						6_value="A piece of structure: an XML tree is made up of tags"
+ 7_key="element"					7_value="Another name for a tag really"
+ 8_key="(tag) attribute"		8_value="Tags may contain attributes that specify properties for the tag"
+ 9_key="inline (tag)"			9_value="A tag that wraps around a portion of HTML to apply something to it, or to use it"
+ 10_key="block (tag)"			10_value="A tag that takes up a boxed area of the screen space, and may have its own background. Block tags force a visual line-break after them, unless they are styled to be inline"
+ 11_key="(tag) class"			11_value="A tag class is generally used so as to join XHTML tags to CSS styles"
+ 12_key="(XML) ID"				12_value="An ID is generally used so as to allow JavaScript code to reference specific XHTML tags"
+ 13_key="(JavaScript) event"	13_value="JavaScript hooks on to web browser actions via an event model; tags 'fire' events, and JavaScript can be set up to launch certain code upon the event firing"
+ 14_key="(CSS) selector"		14_value="CSS rules apply to certain tags, and selectors are used to determine which tags; selectors are very powerful, although Internet Explorer only supports a few of them"
+ 15_key="(CSS) property"		15_value="CSS rules specify values for properties in order to style"
+ 16_key="DOM"						16_value="Document Object Model. A scheme of referencing a document based upon the XHRML structure. Usually used with JavaScript."
+ 17_key="DHTML"					17_value="Dynamic HTML. Almost a synonym for JavaScript"
+ 18_key="client-side"			18_value="Code that is processed on a viewer's computer. The opposite of server-side"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

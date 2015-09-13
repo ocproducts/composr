@@ -52,7 +52,7 @@ Most members do not have permission to delete a Private Topic -- this is because
 However, there is an alternative mechanism that can be used to achieve the same effect. The two primary members involved in a Private Topic may categorise the topic for their own purposes, and there is a 'Trash' category that exists by default.
 
 To 'trash' a topic:
- - click its checkbox (tickbox) in the main "Private Topics" screen (your inbox);
+ - click its checkbox in the main "Private Topics" screen (your inbox);
  - scroll down and select "Categorise Private Topics" from the "Topic/poll actions" dropdown list of actions;
  - click the Proceed button directly adjacent to the dropdown list;
  - click 'Trash' in the 'Category' field;

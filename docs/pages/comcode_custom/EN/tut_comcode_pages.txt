@@ -9,7 +9,6 @@ You may easily add new pages of information to Composr by making a 'Comcode page
 [surround]
 [media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_edit.png[/media]
 [media width="150" description="The easy way to add a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_easyadd.png[/media]
-
 There are two supported ways to add a new Comcode page in Composr:
 1) Go to Content Management > Pages (Comcode pages), and give a new page name in the '<zone>:<page-name>' format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be ':<page-name>'). If you don't use a colon, a default zone will be picked.
 2) Just to type in the URL to where you want the page to be, and click the given link to add the missing page.

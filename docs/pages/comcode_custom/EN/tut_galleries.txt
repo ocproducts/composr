@@ -1,26 +1,31 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Providing galleries[/title]
 
+[surround]
 [media width="150" description="An image in a gallery" float="right"]data_custom/images/docs/tut_galleries/gallery_view_image.png[/media]
+[media width="150" description="Adding an image to a gallery" float="right"]data_custom/images/docs/tut_galleries/gallery_add_image.png[/media]
 {!galleries:DOC_GALLERIES} This tutorial describes the basic gallery features, and how to use them.
 
 [contents]decimal,lower-alpha[/contents]
+[/surround]
 
 [title="2"]Gallery structure[/title]
 
+[surround]
 [media width="150" description="Viewing a gallery that has a subgallery" float="right"]data_custom/images/docs/tut_galleries/gallery_subcat.png[/media]
 Galleries are organised in a hierarchical (tree) structure. For more information of these tree structures, see the [page="_SEARCH:tut_downloads"]Providing downloads tutorial[/page], as the download system is the perfect clean example of a Composr tree-structured system. The gallery structure is more complex than that of the download structure, and additional information on it is given in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries tutorial[/page].
 
 Galleries may have 'representative images' (rep-images). When a user views a gallery with sub-galleries, the sub-galleries are actually shown with their rep-images, so as to make them look more attractive and give an impression of the contents. Rep-images may be chosen when adding or editing a gallery, or when adding an image to a gallery it can be chosen that that image shall also become the rep-image.
+[/surround]
 
 [title="2"]Galleries[/title]
 
 [surround]
+[media width="150" description="A gallery in multi-page mode" float="right"]data_custom/images/docs/tut_galleries/gallery_not_flow_mode.png[/media]
 [media width="150" description="A gallery in flow mode" float="right"]data_custom/images/docs/tut_galleries/gallery_flow_mode.png[/media]
 A gallery is a category of the gallery system, and is used to hold images and videos (together, gallery entries). Galleries can also hold audio files which are treated in the same way as videos.
 
 Galleries are given a name, and a title. The name should be a code-name that can easily be typed in a URL, rather than a cleanly readable name. For example, 'holiday2004' would be a good gallery name for a gallery with title, 'Holiday Pictures, 2004 (Sweden)'.
 
-[media width="150" description="A gallery in multi-page mode" float="right"]data_custom/images/docs/tut_galleries/gallery_not_flow_mode.png[/media]
 There are two display modes for galleries:
  - Flow mode -- this mode allows you to see all the entries in the gallery at the same time as viewing one of the entries. This makes navigation more efficient. Note that there is a limit of 40 media files displayed in the carousel, so flow mode is only a good option for small galleries.
  - Multi-page mode -- this mode provides page browsing features so as to be able to browse through a large numbers of entries.
@@ -85,7 +90,6 @@ However, if you install the non-bundled getid3 addon then this can work much mor
 
 [title="2"]Ordering[/title]
 
-[media width="150" description="Adding an image to a gallery" float="right"]data_custom/images/docs/tut_galleries/gallery_add_image.png[/media]
 Gallery entries are ordered in the same order they were added to the system. If you are batch importing (covered in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries tutorial[/page]), then you may want to define a custom ordering. To do this, you just need to give all the images in the batch names that are consistent with a numbering scheme of your choice. Composr will detect numbering schemes automatically, and order by them.
 
 The rule is very simple: Composr will order by filename if when taking all numbers out of all filenames in the gallery, the filenames are all the same.

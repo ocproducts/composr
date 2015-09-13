@@ -236,7 +236,8 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         $as_admin = true;
     }
 
-    // Put in defaults
+    // Put in defaults...
+
     $no_width = (!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width']));
     $no_height = (!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height']));
     if ($no_width || $no_height) { // Try and work out the best default width/height, from the thumbnail if possible (image_websafe runs it's own code to do the equivalent, as that defaults to thumb_width rather than attachment_default_width&attachment_default_height)
@@ -260,15 +261,19 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
             $attributes['height'] = strval(intval(round(floatval($attributes['width']) * (float)$_height / (float)$_width)));
         }
     }
+
     if ((!array_key_exists('length', $attributes)) || (!is_numeric($attributes['length']))) {
         $attributes['length'] = '';
     }
+
     if (!array_key_exists('thumb_url', $attributes)) {
         $attributes['thumb_url'] = '';
     }
+
     if ((!array_key_exists('filename', $attributes)) || ($attributes['filename'] == '')) {
         $attributes['filename'] = urldecode(basename(preg_replace('#\?.*#', '', $_url)));
     }
+
     if ((!array_key_exists('mime_type', $attributes)) || ($attributes['mime_type'] == '')) {
         // As this is not necessarily a local file, we need to get the mime-type in the formal way.
         //  If this was an uploaded file (i.e. new file in the JS security context) with a dangerous mime type, it would have been blocked by now.
@@ -276,9 +281,11 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         $meta_details = get_webpage_meta_details($_url);
         $attributes['mime_type'] = $meta_details['t_mime_type'];
     }
+
     if (!array_key_exists('description', $attributes)) {
         $attributes['description'] = '';
     }
+
     if ((!array_key_exists('filesize', $attributes)) || (!is_numeric($attributes['filesize']))) {
         $attributes['filesize'] = '';
     }

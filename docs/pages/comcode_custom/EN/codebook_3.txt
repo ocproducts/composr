@@ -157,7 +157,7 @@ Deploying to a live server using git is a great idea. However, be aware some cav
 [list="1"]
 [*]Disable dev-mode in the config file using:
 [code="PHP"]
-$SITE_INFO['dev_mode']='0';
+$SITE_INFO['dev_mode'] = '0';
 [/code]
 git automatically enables dev mode, which intentionally inteferes with things to help you develop quality code -- such as adding extra checks, or disabling cookies so that you don't rely on them. This is great for development, where the developer is in control of everything, but not correct for production.
 [*]Use a decent [tt].gitignore[/tt] so you don't get a lot of noise when running [tt]git status[/tt]. Our default one is good but may need tuning.
@@ -207,7 +207,7 @@ Sometimes this advice will not help: if there is an "@" (error suppression opera
 
 If you get errors about query limits consider optimising your code to use less queries. If you cannot do this, you can set:
 [code="PHP"]
-$GLOBALS['NO_QUERY_LIMIT']=true;
+$GLOBALS['NO_QUERY_LIMIT'] = true;
 [/code]
 in your code.
 
@@ -217,7 +217,7 @@ You can also put [tt]&keep_no_query_limit=1[/tt] into the URL to have query limi
 
 If development mode is running then the [tt]inspect[/tt] function will be available in PHP. You can run commands like:
 [code="PHP"]
-inspect($a,$b,$c);
+inspect($a, $b, $c);
 [/code]
 and Composr will output the contents of these variables very neatly for you, and give a stack trace.
 
@@ -342,7 +342,7 @@ Here are some general tips:
 If you are debugging a standalone PHP script (i.e. outside Composr), make sure you have errors turned on:
 [code="PHP"]
 error_reporting(E_ALL);
-ini_set('display_errors','1');
+ini_set('display_errors', '1');
 [/code]
 Having full reporting of all PHP notices, and display of them on screen, helps greatly in finding causes of issues.
 
@@ -367,7 +367,7 @@ If it is acceptable to debug code on a live server, putting 'exit' and 'vardump'
 It is common to need to log in as an administrator on a live site and not know the admin password (only knowing the hosting access).
 If you add a line to [tt]_config.php[/tt] like the following:
 [code="PHP"]
-$SITE_INFO['backdoor_ip']='1.2.3.4';
+$SITE_INFO['backdoor_ip'] = '1.2.3.4';
 [/code]
 It will automatically log you in under the first administrator account. You can find your IP address from [url="common websites"]http://myipaddress.com[/url].
 
@@ -592,7 +592,7 @@ The following aren't 'keep' parameters, but are still useful and otherwise behav
 
 Setting,
 [code="PHP"]
-$SITE_INFO['no_email_output']='1';
+$SITE_INFO['no_email_output'] = '1';
 [/code]
 in [tt]_config.php[/tt] will disable emails. This is useful on a development server running with live user accounts.
 
@@ -632,105 +632,88 @@ Bear in mind that some sites need maintenance or have multiple people working on
 Many forms in Composr accept GET parameters for specifying default field values. This includes most 'add' forms in the system. Generally the GET parameter is exactly the same as the actual field name in the HTML, so it's easy to work it out.
 
 We also have some special cases coded up directly. These are often referenced between different parts of the Composr code. The details below are divided by module, then 'type', then parameter name.
-[font="Courier"]
-topics
- new_post
-  quote
-  intended_solely_for
-
-warnings
- add
-  member_id
-  post_id
-
-admin_aggregate_types
- add
-  aggregate_type
- sync
-  type
-
-admin_ecommerce_logs
- add
-  group_id
- trigger
-  type_code
-
-admin_cns_forums
- add
-  parent_forum
-  forum_grouping_id
-
-admin_cns_merge_members
- browse
-  from
-  to
-
-cms_authors
- _add
-  author
-
-cms_banners
- add
-  b_type
-
-cms_blogs
- add
-  cat
-  validated
-
-cms_booking
- add_booking
-  bookable_id
-  day
-  month
-  year
-
-cms_catalogues
- add_entry
-  catalogue_name
-  category_id / category_id_suggest
-  field_*
-  validated
- add_category
-  catalogue_name
-  parent_id
- add_catalogue
-  id
-
-cms_calendar
- add
-  date
-  e_type
-  validated
-
-cms_downloads
- add
-  cat
-  validated
- add_category
-  parent_id
-
-cms_galleries
- import
-  member_id
-  cat
- add
-  cat
-  validated
- add_other
-  cat
-  validated
- add_category
-  parent_id
-
-cms_news
- add
-  cat
-
-cms_quiz
- add
-  validated
-[/font]
+ - [tt]topics[/tt]
+  - [tt]new_post[/tt]
+   - [tt]quote[/tt]
+   - [tt]intended_solely_for[/tt]
+ - [tt]warnings[/tt]
+  - [tt]add[/tt]
+   - [tt]member_id[/tt]
+   - [tt]post_id[/tt]
+ - [tt]admin_aggregate_types[/tt]
+  - [tt]add[/tt]
+   - [tt]aggregate_type[/tt]
+  - [tt]sync[/tt]
+  - [tt]type[/tt]
+ - [tt]admin_ecommerce_logs[/tt]
+ - [tt]add[/tt]
+   - [tt]group_id[/tt]
+   - [tt]trigger[/tt]
+   - [tt]type_code[/tt]
+ - [tt]admin_cns_forums[/tt]
+  - [tt]add[/tt]
+   - [tt]parent_forum[/tt]
+   - [tt]forum_grouping_id[/tt]
+ - [tt]admin_cns_merge_members[/tt]
+  - [tt]browse[/tt]
+   - [tt]from[/tt]
+   - [tt]to[/tt]
+ - [tt]cms_authors[/tt]
+  - [tt]_add[/tt]
+   - [tt]author[/tt]
+ - [tt]cms_banners[/tt]
+  - [tt]add[/tt]
+   - [tt]b_type[/tt]
+ - [tt]cms_blogs[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+ - [tt]cms_booking[/tt]
+  - [tt]add_booking[/tt]
+   - [tt]bookable_id[/tt]
+   - [tt]day[/tt]
+   - [tt]month[/tt]
+   - [tt]year[/tt]
+ - [tt]cms_catalogues[/tt]
+  - [tt]add_entry[/tt]
+   - [tt]catalogue_name[/tt]
+   - [tt]category_id / category_id_suggest[/tt]
+   - [tt]field_*[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_category[/tt]
+   - [tt]catalogue_name[/tt]
+   - [tt]parent_id[/tt]
+  - [tt]add_catalogue[/tt]
+   - [tt]id[/tt]
+ - [tt]cms_calendar[/tt]
+  - [tt]add[/tt]
+   - [tt]date[/tt]
+   - [tt]e_type[/tt]
+   - [tt]validated[/tt]
+ - [tt]cms_downloads[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_category[/tt]
+   - [tt]parent_id[/tt]
+ - [tt]cms_galleries[/tt]
+  - [tt]import[/tt]
+   - [tt]member_id[/tt]
+   - [tt]cat[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_other[/tt]
+   - [tt]cat[/tt]
+   - [tt]validated[/tt]
+  - [tt]add_category[/tt]
+   - [tt]parent_id[/tt]
+ - [tt]cms_news[/tt]
+  - [tt]add[/tt]
+   - [tt]cat[/tt]
+ - [tt]cms_quiz[/tt]
+  - [tt]add[/tt]
+   - [tt]validated[/tt]
 
 All default parameters are flagged as 'non-canonical' to search engines, so that the search engine knows that variations in value are not indicative of entirely separate web pages.
 

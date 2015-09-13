@@ -64,39 +64,44 @@ All bundled languages packs are located in the 'lang' directory of Composr. Ther
 Language string codes that are in lower-case are special strings, that should not be translated directly. These strings contain encoded information relating to the language pack.
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>String codename</th>
-      <th>Purpose</th>
-   </tr>
-   <tr>
-      <td>charset</td>
-      <td>The character set needed for the language (standard code for an ASCII character set). Most people leave this as 'utf-8' (Unicode, works with any characters), although regional character sets are supported also.</td>
-   </tr>
-   <tr>
-      <td>locale</td>
-      <td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command.</td>
-   </tr>
-   <tr>
-      <td>dir</td>
-      <td>The direction of text (usually <kbd>ltr</kbd>, but sometimes <kbd>rtl</kbd> for languages such as Arabic). An "rtl" language would likely require many few template changes as well as language changes. If someone does this we would consider integrating the changes back into a future version of Composr.</td>
-   </tr>
-   <tr>
-      <td>en_right</td>
-      <td>Sometimes templates have to apply CSS properties values of 'left' or 'right', according to the text direction. For a rtl language, this becomes 'left' instead of 'right'. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
-   </tr>
-   <tr>
-      <td>en_left</td>
-      <td>As above, but opposite.</td>
-   </tr>
-   <tr>
-      <td>date_* / time_* / calendar_*</td>
-      <td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://php.net/manual/en/function.date.php[/url], [url="2"]http://php.net/manual/en/function.strftime.php[/url][html]). If there are no '%' signs it's "date", if there are % signs it's "strftime".</td>
-   </tr>
-   <tr>
-      <td>dont_escape_trick</td>
-      <td>Ignore this string, it is purely used by code, and should never have its value be changed.</td>
-   </tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>String codename</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th>charset</th>
+			<td>The character set needed for the language (standard code for an ASCII character set). Most people leave this as 'utf-8' (Unicode, works with any characters), although regional character sets are supported also.</td>
+		</tr>
+		<tr>
+			<th>locale</th>
+			<td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command.</td>
+		</tr>
+		<tr>
+			<th>dir</th>
+			<td>The direction of text (usually <kbd>ltr</kbd>, but sometimes <kbd>rtl</kbd> for languages such as Arabic). An "rtl" language would likely require many few template changes as well as language changes. If someone does this we would consider integrating the changes back into a future version of Composr.</td>
+		</tr>
+		<tr>
+			<th>en_right</th>
+			<td>Sometimes templates have to apply CSS properties values of 'left' or 'right', according to the text direction. For a rtl language, this becomes 'left' instead of 'right'. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
+		</tr>
+		<tr>
+			<th>en_left</th>
+			<td>As above, but opposite.</td>
+		</tr>
+		<tr>
+			<th>date_* / time_* / calendar_*</th>
+			<td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://php.net/manual/en/function.date.php[/url], [url="2"]http://php.net/manual/en/function.strftime.php[/url][html]). If there are no '%' signs it's "date", if there are % signs it's "strftime".</td>
+		</tr>
+		<tr>
+			<th>dont_escape_trick</th>
+			<td>Ignore this string, it is purely used by code, and should never have its value be changed.</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
@@ -368,11 +373,11 @@ If you wish to directly distribute your translation as an addon, you can export 
 [/surround]
 
 [concepts
- 1_key="language string"   1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
- 2_key="character set"     2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
- 3_key="Unicode"           3_value="An encoding scheme for multi-byte characters, supporting multiple languages together without any need for special character sets."
- 4_key="Transifex"         4_value="The translation platform we use to translate Composr"
- 5_key="Collation"         5_value="A character scheme within the database, used for interpreting the basic grammatical construct of text, as well as the character set"
+ 1_key="language string"	1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
+ 2_key="character set"	  2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
+ 3_key="Unicode"			  3_value="An encoding scheme for multi-byte characters, supporting multiple languages together without any need for special character sets."
+ 4_key="Transifex"			4_value="The translation platform we use to translate Composr"
+ 5_key="Collation"			5_value="A character scheme within the database, used for interpreting the basic grammatical construct of text, as well as the character set"
  6_key="Internationalisation"  6_value="The process of making software work well in different international settings. It includes multiple aspects, such as time-zones, date formats, and language translations."
 ]Concepts[/concepts]
 

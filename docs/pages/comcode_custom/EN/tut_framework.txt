@@ -1,6 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr programming framework[/title]
 
 [media width="150" description="Composr has a well documented API (code)" float="right"]data_custom/images/docs/tut_framework/framework_api.png[/media]
+[media width="150" description="Composr has a well documented API (compiled out)" float="right"]data_custom/images/docs/tut_framework/framework_devguide.png[/media]
 Composr is not just a web application, but also a programming framework. Composr defines a very large, fully documented, API, and has numerous mechanisms for the addition of code. Programmers are able to cleanly extend or override any aspect of the system, to enhance Composr or bend Composr in any area necessary.
 
 It should be noted that Composr can be heavily customised without any programming, via editing the templates, but this will mostly only adjust layout and appearance, rather than adding-to or modifying Composr behaviour.
@@ -10,8 +11,7 @@ It is also important to note, that programming tasks are inherently technical, a
  - experience
  - a technical mind
 
-[media width="150" description="Composr has a well documented API" float="right"]data_custom/images/docs/tut_framework/framework_devguide.png[/media]
-There is nothing we could do to change this, as it is just the unavoidable nature of the work. Wherever possible we make things abstract (such as [concept]Comcode page[/concept]s, or [concept]Catalogue[/concept]s) so users with specific needs do not need to hire-in-help or learn programming to fulfil them.
+Wherever possible we make things work on a configurable level though (such as [concept]Comcode page[/concept]s, or [concept]Catalogue[/concept]s) so users with specific needs do not need to hire-in-help or learn programming to fulfil them for such cases.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -49,10 +49,10 @@ These methods include:
 
 [title="2"]An example of a new module[/title]
 
+[media width="150" description="Composr language files for the tester addon" float="right"]data_custom/images/docs/tut_framework/framework_file_language.png[/media]
 [media width="150" description="Composr templates for the tester addon" float="right"]data_custom/images/docs/tut_framework/framework_file_templates.png[/media]
 As a part of testing Composr 2.5 (along time ago now), we wrote a new custom module that provided a quick way for all testers and developers to progress for the testing/bug-fixing process in a collaborative fashion. The module allowed the addition of tests, and assigning of those tests to members in a testing usergroup. It had a security system, so that non-testers could not access the system, and so that security could be defined to determine which testers had write access to edit tests. It also had forum integration, so that bug report topics could automatically be created and associated with a test.
 
-[media width="150" description="Composr language files for the tester addon" float="right"]data_custom/images/docs/tut_framework/framework_file_language.png[/media]
 All this was done, without touching the core Composr code. The Composr API made all the integration (security, members, usergroups, forum topics, etc) very easy. It is not the intent of this tutorial to explain exactly how this module was written, but some screen-shots have been attached to illustrate where new files were created in order for it to work.
 
 The process of writing the module went along this basic route:
@@ -156,26 +156,29 @@ There is one important rule when it comes to programmatic alteration: you are no
 
 [title="2"]Addons[/title]
 
+[surround]
+[media width="150" description="Exporting an addon (2)" float="right"]data_custom/images/docs/tut_framework/framework_export_2.png[/media]
 [media width="150" description="Exporting an addon (1)" float="right"]data_custom/images/docs/tut_framework/framework_export_1.png[/media]
 {!addons:DOC_ADDONS}
+[/surround]
 
-[media width="150" description="Exporting an addon (2)" float="left"]data_custom/images/docs/tut_framework/framework_export_2.png[/media]
-Sometimes addons are known as 'hacks'. This stems from the alternative (perhaps, original) definition of a 'hacker' as an enthusiastic programmer, often one who likes to manipulate existing systems. It is not meant as a security related term. Another term sometimes used is 'mods'.
-
+[surround]
 [media width="150" description="Importing an addon (2)" float="right"]data_custom/images/docs/tut_framework/framework_import_2.png[/media]
 [media width="150" description="Importing an addon (1)" float="right"]data_custom/images/docs/tut_framework/framework_import_1.png[/media]
 You will only be able to export files into an addon from directories that are 'allowed' to contain new or modified files. For example, the 'sources' directory should not be modified, but the 'sources_custom' directory may. This is part of the file override system Composr employs: modified versions of old files or entirely new files should be placed in the custom version of a directory so that it is clear they are non-original, and will not be automatically overwritten during upgrade. There are a few directories that have no [tt]_custom[/tt] equivalent, and therefore you may export files to a mod from these.
 Overridden PHP files may override on a per-function/per-class level. In other words, if you overrode a PHP file then you could make your [tt]sources_custom[/tt] file such that the only functions/classes it contains are the ones that you changed.
+[/surround]
 
 [title="2"]The Code Editor[/title]
 
-[media width="150" description="A password is obviously needed to use the code editor" float="left"]data_custom/images/docs/tut_framework/framework_code_editor_1.png[/media]
-[media width="150" description="Choosing a code file to edit" float="left"]data_custom/images/docs/tut_framework/framework_code_editor_2.png[/media]
-[media width="150" description="Using the code editor" float="left"]data_custom/images/docs/tut_framework/framework_code_editor_3.png[/media]
-
+[surround]
+[media width="150" description="Using the code editor" float="right"]data_custom/images/docs/tut_framework/framework_code_editor_3.png[/media]
+[media width="150" description="Choosing a code file to edit" float="right"]data_custom/images/docs/tut_framework/framework_code_editor_2.png[/media]
+[media width="150" description="A password is obviously needed to use the code editor" float="right"]data_custom/images/docs/tut_framework/framework_code_editor_1.png[/media]
 Composr provides a very simple code editor for editing of existing Composr code files, or creation of new files. The code editor has inbuilt, automated, support for the Composr file override system: editing an original Composr file will save the edited version in the equivalent '_custom' suffixed directory where possible.
 
 The code editor is very useful for making adhoc changes to a live-site, but is not intended as a full development environment.
+[/surround]
 
 [title="2"]PHP programming help[/title]
 

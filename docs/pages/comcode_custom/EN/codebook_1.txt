@@ -78,7 +78,7 @@ Addons may define dependencies.
 
 In the case where we have an addons [addon A] hook for another addon [addon B] (e.g. the galleries hook for the newsletter addon), we place the hook in addon A. This is because the hook would only run if addon B is there, so placing it in addon A is safe -- but if it was placed in addon B and addon A wasn't installed, it would fail unless we wrote extra code. Composr will auto create directories that do not exist -- directories aren't a part of addons, only individual files.
 
-Config options that have dependencies between two modules (e.g. the [tt]points_ADD_DOWNLOAD[/tt] option -- which needs points and downloads) should have a default value evaluation of NULL if the foreign dependency is not met. So for this example, the option is part of the downloads addon, and the default is NULL if the points addon is not installed.
+Config options that have dependencies between two modules (e.g. the [tt]points_ADD_DOWNLOAD[/tt] option -- which needs points and downloads) should have a default value evaluation of null if the foreign dependency is not met. So for this example, the option is part of the downloads addon, and the default is null if the points addon is not installed.
 
 [title="4"]User management of addons[/title]
 
@@ -198,7 +198,7 @@ exit();
 
 function csv_escape($value)
 {
-	return str_replace('"','""',$value);
+	return str_replace('"', '""', $value);
 }
 [/code]
 
@@ -211,8 +211,8 @@ A module is a PHP file that defines one class. For a page in the 'site' zone nam
 The module class must include a function named [tt]info[/tt], which returns a map of fields that describe the module:
  - [tt]author[/tt] -- this is a string indicating who authored the module. The author does not need to be defined anywhere else -- this field is only intended for human-reading.
  - [tt]organisation[/tt] -- like author, but this is the organisation that the author is working on behalf of. For all official modules, it is 'ocProducts'.
- - [tt]hacked_by[/tt] -- this should be left to NULL, unless the module is an edited version of someone else's module, in which case it would be the name of the person altering the module (the new author)
- - [tt]hack_version[/tt] -- this should be left to NULL, unless the module is an edited version of someone else's module, in which case it should start as the integer '1' and then be incremented for each new version of the module (see explanation of 'version')
+ - [tt]hacked_by[/tt] -- this should be left to null, unless the module is an edited version of someone else's module, in which case it would be the name of the person altering the module (the new author)
+ - [tt]hack_version[/tt] -- this should be left to null, unless the module is an edited version of someone else's module, in which case it should start as the integer '1' and then be incremented for each new version of the module (see explanation of 'version')
  - [tt]version[/tt] -- this is the version number for the module. The version can start at any integer, but '1' is usual. This number should be incremented whenever a compatibility-breaking change is implemented.
  - [tt]update_require_upgrade[/tt] -- this should be either 0 or 1 (it defaults to 0 if it is left out). If it is 1 then the [tt]install[/tt] function will be called when Composr detects that the module's version has increased since it was originally installed. It should only be set to 1 if the [tt]install[/tt] function is written to be able to perform upgrades (this requires extra effort).
  - [tt]locked[/tt] -- this prevents administrators from uninstalling this module. This should be set to false unless the module is a core module that should never be uninstalled.
@@ -257,9 +257,9 @@ It is used in the Sitemap, which in turn is used by things like the menu editor 
 
 For example,
 [code="PHP"]
-function get_entry_points($check_perms=true,$member_id=NULL,$support_crosslinks=true)
+function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true)
 {
-	return array('browse'=>'ROOT','tree_view'=>'TREE');
+	return array('browse' => 'ROOT', 'tree_view' => 'TREE');
 }
 [/code]
 returns a mapping for two entry-points: the 'browse' screen (which almost any module will have), and the 'tree_view' screen. 'ROOT' and 'TREE' are language strings.
@@ -317,7 +317,7 @@ Composr defines the following field types:
 
 If a field type has "*" in front of the name, then it will form the primary key. All tables must have a primary key on at least one field.
 
-The field types (apart from the AUTO and various string types) may have a "?" put in front of them (E.g. "?INTEGER"). This indicates that the value may be NULL.
+The field types (apart from the AUTO and various string types) may have a "?" put in front of them (E.g. "?INTEGER"). This indicates that the value may be null.
 
 Composr minimises it's use of database features, in order to increase portability. We intentionally do not use the following database features:
  - stored procedures
@@ -360,7 +360,7 @@ Your code will follow a pattern like:
 /**
  * Standard modular info function.
  *
- * @return ?array Map of module info (NULL: module is disabled).
+ * @return ?array Map of module info (null: module is disabled).
  */
 function info()
 {
@@ -385,10 +385,10 @@ function uninstall()
 /**
  * Standard modular install function.
  *
- * @param  ?integer What version we're upgrading from (NULL: new install)
- * @param  ?integer What hack version we're upgrading from (NULL: new-install/not-upgrading-from-a-hacked-version)
+ * @param  ?integer What version we're upgrading from (null: new install)
+ * @param  ?integer What hack version we're upgrading from (null: new-install/not-upgrading-from-a-hacked-version)
  */
-function install($upgrade_from=NULL,$upgrade_from_hack=NULL)
+function install($upgrade_from = null, $upgrade_from_hack = null)
 {
 	if (is_null($upgrade_from))
 	{
@@ -718,7 +718,7 @@ foreach (array_keys($_hooks) as $hook) {
 This code finds all modules/search hooks, then loops over the list of hook names (these are stored in the keys returned from the [tt]find_all_hooks[/tt] function). In each loop iteration it:
 1) loads up the code file for the hook
 2) instantiates the object in the hook using Composr's [tt]object_factory[/tt] function (which it can do because it assumes a class naming convention for all of these kind of hooks)
-3) checks to see if the object instantiated okay, and if it didn't, continue to the next loop iteration. The true parameter to [tt]object_factory[/tt] will prevent Composr automatically failing if it can not create an object and instead make it return [tt]NULL[/tt]. We do this in case users accidentally upload some other kind of PHP file to the hook directory: if we didn't check for the error here, it'd have caused a stack dump as it wouldn't contain the class we needed.
+3) checks to see if the object instantiated okay, and if it didn't, continue to the next loop iteration. The true parameter to [tt]object_factory[/tt] will prevent Composr automatically failing if it can not create an object and instead make it return [tt]null[/tt]. We do this in case users accidentally upload some other kind of PHP file to the hook directory: if we didn't check for the error here, it'd have caused a stack dump as it wouldn't contain the class we needed.
 4) calls the [tt]info[/tt] function on the hook, loading it's results in [tt]$info[/tt]. Again, this is an assumption via a convention for these kinds of hooks, that they will have an [tt]info[/tt] function that behaves in a certain way. From this particular example (search hook) our [tt]info[/tt] function will return us an array structure of details about what the hook can do, and later the code will determine whether to put an 'advanced' search link in for the hook according to whether it supports advanced searches or not (I haven't shown that code here for conciseness).
 
 (*1) Not quite. Hook files of the same kind might be in [tt]sources/hooks/<something>/<somethingelse>[/tt] and also [tt]sources_custom/hooks/<something>/<somethingelse>[/tt].
@@ -738,7 +738,7 @@ foreach (array_keys($hooks) as $hook) {
     require_code('hooks/modules/members/' . filter_naughty_harsh($hook));
     $object = object_factory('Hook_members_' . filter_naughty_harsh($hook));
     $hook_result = $object->run($member_id);
-    $modules = array_merge($modules,$hook_result);
+    $modules = array_merge($modules, $hook_result);
 }
 [/code]
 
@@ -880,7 +880,7 @@ With phpdoc and the function header-line itself, every function has the followin
  - A description
  - A list of all parameters
   - The code-name of the parameter
-  - The type of the parameter (including whether false [~type] or NULL [?type] values are accepted)
+  - The type of the parameter (including whether false [~type] or null [?type] values are accepted)
   - A description of the parameter
   - Whether the parameter is optional
  - The return type (if any), and a description of it
@@ -924,7 +924,7 @@ As well as providing documentation, the API comments define function type signat
  - resource
  - mixed (this should rarely be used; but when is, means multiple types may come out of the parameter/function)
 
-Question marks ("?") may appear before types, meaning the value may be NULL. NULL must always have a meaning add must be documented in a note in the parameter description... "(null: <explanation>)". Similarly tilde marks ("~") may appear before types, meaning the value may be false, and this must also be commented like "(false: <explanation>)". Sometimes it is also useful to specify the meaning of the empty string like "(blank: <explanation>)".
+Question marks ("?") may appear before types, meaning the value may be null. Null must always have a meaning add must be documented in a note in the parameter description... "(null: <explanation>)". Similarly tilde marks ("~") may appear before types, meaning the value may be false, and this must also be commented like "(false: <explanation>)". Sometimes it is also useful to specify the meaning of the empty string like "(blank: <explanation>)".
 
 [title="3"]Language files[/title]
 
@@ -1100,7 +1100,7 @@ So, how does strict-typing work? In PHP each variable does have a type, it's jus
 
 Consider the following:
 [code="PHP"]
-$values = array(NULL,0,'',false);
+$values = array(null, 0, '', false);
 foreach ($values as $x) {
     if (!$x) {
         echo "Value is false\n";
@@ -1111,9 +1111,9 @@ foreach ($values as $x) {
 This is a perfect example of how nasty PHP can be in the wrong hands, as "Value is false" is written out four times (each time).
 
 For Composr we would expect the following:
- - Do not treat values as a boolean unless they are a boolean. Usually any single variable is going to have a certain type (in this example this is not the case, but usually it is and should be). To check if something is null use [tt]is_null($something)[/tt]. To check something is blank use [tt]$something==''[/tt]. To check if something is false use [tt]!$something[/tt]. To check if something is zero use [tt]$something==0[/tt].
- - Don't do [tt]$something==NULL[/tt]. As mentioned above, use [tt]is_null($something)[/tt].
- - Don't use 'isset' unless you really have to. Almost always use [tt]is_null($something)[/tt] or [tt]array_key_exists($element,$array)[/tt] so our tools can discern properly what your code is doing, and so the code stays portable.
+ - Do not treat values as a boolean unless they are a boolean. Usually any single variable is going to have a certain type (in this example this is not the case, but usually it is and should be). To check if something is null use [tt]is_null($something)[/tt]. To check something is blank use [tt]$something == ''[/tt]. To check if something is false use [tt]!$something[/tt]. To check if something is zero use [tt]$something == 0[/tt].
+ - Don't do [tt]$something == null[/tt]. As mentioned above, use [tt]is_null($something)[/tt].
+ - Don't use 'isset' unless you really have to. Almost always use [tt]is_null($something)[/tt] or [tt]array_key_exists($element, $array)[/tt] so our tools can discern properly what your code is doing, and so the code stays portable.
  - Similar to the above, don't use 'empty'.
  - If you have a variable that really is mixed type (like [tt]$x[/tt] in this example) and you need to do a boolean check just for the case it is a boolean variable, do either [tt]is_bool($x) && (!$x)[/tt] or [tt]$x===false[/tt].
 
@@ -1130,12 +1130,12 @@ if ($foo) {
 }
 [/code]
 
-If a numeric variable has no value, set it to NULL, like...
+If a numeric variable has no value, set it to null, like...
 [code="PHP"]
 if ($foo) {
     $number = 1;
 } else {
-    $number = NULL;
+    $number = null;
 }
 [/code]
 and then use the [tt]is_null[/tt]/[tt]is_integer[/tt] functions as required. We do not consider 'null' a type like the others, due to how databases interpret it. We consider it more like a special marker meaning 'no value'.
@@ -1153,14 +1153,14 @@ as this will flag the situation to our tools.
 
 Another example:
 [code="PHP"]
-$results=$GLOBALS['SITE_DB']->query_select('some_table',array('*'),NULL,'',1);
+$results = $GLOBALS['SITE_DB']->query_select('some_table', array('*'), null, '', 1);
 process($result['0']);
 [/code]
 List arrays have numeric indices, so it is wrong to reference them as strings like the above code does.
 
 Another example:
 [code="PHP"]
-$secondary_groups = explode(',',$row['additionalGroups']);
+$secondary_groups = explode(',', $row['additionalGroups']);
 foreach ($secondary_groups as $group) {
     $GLOBAL['FORUM_DB']->query_insert('f_groups',array(
         'm_group_id' => $group,
@@ -1170,7 +1170,7 @@ foreach ($secondary_groups as $group) {
 [/code]
 This is a good example of why type strictness is important to us. This will create an array of strings, and the DB will be modified using strings -- however the database uses integers. So this code won't work on MySQL strict mode, or other database software. This is better...
 [code="PHP"]
-$secondary_groups=array_map('intval',explode(',',$row['additionalGroups']));
+$secondary_groups = array_map('intval', explode(',', $row['additionalGroups']));
 [/code]
 
 [title="3"]Tempcode (template) types[/title]
@@ -1199,7 +1199,7 @@ return do_next_manager(
 		...
 		array(
 			'blog_icon',
-			array('cms_news',array('type'=>'add'),'cms'),
+			array('cms_news',array('type' => 'add'), 'cms'),
 			'Add a blog entry',
 			'Blah blah this text is hovered'
 		),
