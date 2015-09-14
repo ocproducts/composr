@@ -398,7 +398,7 @@ The default Composr [tt]panel_top[/tt] already does something similar to what we
 
 [title="3"]Development mode[/title]
 
-If you are developing from a git checkout (you'll know if you are) then your install will be in dev mode. The main thing you will notice is that invalid XHTML will often create very nasty error screens in the browser. This is an intentional feature, as we throw Composr into this mode for developers so that bugs cannot go unnoticed and to ensure we write proper XHTML. On live sites we don't have dev mode on because it is inevitable that bad XHTML will leak in, and many versions of Internet Explorer can't support proper XHTML mode anyway.
+If you are developing from a git checkout (you'll know if you are) then your install will be in dev mode. The main thing you will notice is that invalid XHTML will often create very nasty error screens in the browser. This is an intentional feature, as we throw Composr into this mode for developers so that bugs cannot go unnoticed and to ensure we write proper XHTML. On live sites we don't have dev mode on because it is inevitable that bad XHTML will leak in, and many web browsers can't support proper XHTML mode anyway.
 
 One problem though is some third-party code won't work with XHTML. For example, we have observed that Google Maps cannot. To disable XHTML you can manually/temporarily add this to the end of the URL: [tt]&keep_no_dev_mode=1[/tt]. This will carry through with any links you click.
 

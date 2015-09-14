@@ -64,7 +64,7 @@ If you can't remember a PHP or Composr-critical error message, you may be able t
 
 If your report is not clear enough for us to [i]mmediately[/i] see it as a bug we may require you to post with a commercial ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
 
-[title="3"Automatic reporting[/title]
+[title="3"]Automatic reporting[/title]
 
 Composr comes with an automatic bug reporting mechanism, that is enabled by default but may be disabled during installation and at any time in the site configuration. We prefer that users leave this option enabled, as it allows us to fix bugs that do not get reported (which is probably a high percentage). This system logs and emails us any stack traces you may encounter.
 
@@ -98,7 +98,8 @@ It may be that you have very large numbers of visitors. If you have many hits ea
 
 On a reasonably decent server, average Composr requests should be well under 1 second execution time on the server. 0.1 seconds is about right for a simple page on a well-configured server that isn't overloaded.
 
-(Note that when we look at execution time, we're not talking about time between clicking and seeing a page -- that is [tt]browser reaction time + latency + queue time + execution time + latency + render time + probably some other stuff[/tt])
+(Note that when we look at execution time, we're not talking about time between clicking and seeing a page -- that is:
+[tt]browser reaction time + latency + queue time + execution time + latency + render time + probably some other stuff[/tt])
 
 So Composr doesn't use a lot of CPU inherently. However, CPU is probably the biggest limiting factor on a server. If you have 10 reqs/sec (requests per second), with each request averaging 0.5 seconds, then this would use 5 CPU cores constantly. For a normal Composr site that is a lot of visitors to get, but the webhost has to think of the server as a whole...
 
@@ -226,7 +227,7 @@ In Composr it can happen if the base URL has changed. One possibility is if it i
 
 [title="2"]Providing feedback, or making feature requests[/title]
 
-[media width="150" float="right"]data_custom/images/docs/tut_software_feedback/482033_challenge.jpg[/media]
+[media width="150" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/482033_challenge.jpg[/media]
 Feedback is one of the most important signals for us when developing Composr. Our users are often able to show us ideas from new angles, which play a big role in Composr's future. Unfortunately, it is often not possible for us to comment on whether or not any certain feature will be developed.
 
 The reason we can't comment on user feedback is because whether we answer 'yes' or 'no' we end up in a difficult situation, as described below. 
@@ -258,7 +259,7 @@ There are many reasons, but here are a few:
 4) We may feel a feature would introduce security risks;
 5) We may feel a feature directly conflicts with other plans;
 6) We may feel a feature would make Composr [page="site:antifeatures"]bloatware[/page];
-7) We may feel a feature breaks important engineering principles such as [url="separation of concerns"]http://en.wikipedia.org/wiki/Separation_of_concerns[/url]
+7) We may feel a feature breaks important engineering principles such as [url="separation of concerns"]http://en.wikipedia.org/wiki/Separation_of_concerns[/url];
 8) We may feel a feature is somehow incoherent with Composr's under-the-hood architecture, so would need many subtle and complex changes to numerous interconnected subsystems, and introduce risks of new bugs or confusion about redefined Composr concepts;
 9) A feature could also be very time consuming or costly, or require skills or experience that no available developer has -- and contrary to often widely-held perceptions, the developers aren't sitting on a big pile of cash, everything is very hard-earned ;);
 10) For features relating to 'flexibility', we sometimes feel that implementing yet another complex extra layer of control may be more complex to control that just customisation of the actual PHP code (which Composr supports in a neat and controlled way);
@@ -318,11 +319,9 @@ Here's how not to give feedback:
 [quote]
 Composr's design looks dated.
 [/quote]
-
 [quote]
 Composr doesn't look as good as Wordpress.
 [/quote]
-
 [quote]
 Composr doesn't look attractive.
 [/quote]
@@ -475,7 +474,8 @@ That said, please don't let it stop you giving feedback. The critical difference
 
 [title="3"]Avoid doing any of the following[/title]
 
-1) Expect the developers to work on a weekend, or evenings or in the middle of the night, unless there's been a very special arrangement for it
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
+1) Expect the developers to work on a weekend, or evenings, or in the middle of the night, unless there's been a very special arrangement for it
 2) Expect free one-on-one support
 3) When the developers say they can't do something for free, try and twist definitions (e.g. if something specific you want to do is not easy, call it a usability problem and call all usability problems bugs)
 4) If a developer gives out a personal email address for dealing with some issue, keep coming back to it with support questions. Or, send support questions to developers via other external channels, e.g. on Facebook, to try and circumvent the support system (in the process, completely failing to involve yourself in the Composr community)

@@ -88,6 +88,6 @@ c) [i]Or, a link you've put together yourself[/i]
  - [page="_SEARCH:tut_accessibility"]Making an accessible website with Composr[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions[/page]
  - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
- - [page="_SEARCH:tut_fringe"]Favicons, Web fonts, Media file compatibility[/page]
+ - [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page]
 
 {$SET,tutorial_tags,printer_friendly_block,Introduction,Design & Themeing,CSS,JavaScript,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial details the browser requirements for visitors to a Composr site, determined by the CSS/XHTML/JavaScript in our default theme.}[block]main_tutorial_rating[/block]

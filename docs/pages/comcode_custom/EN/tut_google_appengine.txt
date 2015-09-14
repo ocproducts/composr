@@ -1,9 +1,15 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Installing on Google App Engine[/title]
 
-[b]This functionality is currently not working. It works on the development server, but a GAE crash has prevented us making it work live. Google were investigating the issue at the time of writing.[/b] Many of the improvements made for this functionality are of general advantage on other cloud hosts (e.g. the task queue improves general scalability).
+[b]This functionality is currently not working. It works on the development server, but a GAE crash has prevented us making it work live. Google were investigating the issue at the time of writing.[/b] Many of the improvements made for this functionality are of general advantage on other cloud hosts (e.g. the task queue improves general scalability). We still love App Engine, so we can put the functionality through to a new testing cycle based on customer demand.
+
+---
+
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_google_appengine/composr_with_gae.jpg[/media]
 
 Composr can run on Google App Engine (GAE). GAE is a cloud hosting service designed for high scalability. Unlike almost all other cloud services, it does not require significant preparation and ongoing maintenance in order to scale (you do not need to set up Virtual Machine images, or manually start/stop server instances).
+
 Most people don't realise how much work the normal "cloud" services are to properly utilise, as the marketing can be really very misleading, and successful customers are development teams rather than webmasters.
+
 The easy Composr scalability with App Engine is possible because it is a locked-down environment. Essentially the Composr developers have done up-front work to ensure Composr meets certain restraints that allow Google to automatically copy things across different servers without it being noticeable.
 
 All the above said, hosting a large scale cloud deployment is still not simple. Some restraints will affect you, and you will need to be comfortable working on the command line, and staging your changes on a local development machine. We'll save you having to have a programming/IT team to get Composr running, or the need to fork Composr, but it still requires some level of expertise.
@@ -31,11 +37,11 @@ The following are known limitations with GAE:
  - The feature to e-mail in support tickets is not supported, although [url="it could be added via an alternative mechanism"]http://compo.sr/tracker/view.php?id=1429[/url].
 
 The following Composr bundled addons will not work:
- - (All the addons mentioned for uninstallation in the Setup Wizard, further down in this tutorial)
+ - (All the addons mentioned for uninstallation in the Setup Wizard, further down in this tutorial, under "Setup Wizard: Step 4")
 
 [title="2"]Costs[/title]
 
-GAE is charged based on usage. Google provide documents that explain what is chargeable, and by how much.
+GAE is charged based on usage. Google provide documents that explain what is chargeable, and at what price.
 
 It is hard to compare GAE costs to those of shared hosting. Typically a shared host will assume you won't max out your resource allocation fully (and if you tried, they'd ban you, often regardless of their advertised terms). Therefore you would need to compare averaged typical resource usage on shared hosting, to the costs on GAE.
 Anecdotally, we have heard the costs are similar, but we have not tested this. It will of course vary greatly on a case-by-case basis.
@@ -56,32 +62,26 @@ You will also need to install MySQL, as this doesn't come with the SDK. MySQL is
 
 [title="2"]Composr installation[/title]
 
-Extract the Composr manual installation package to a directory on your development machine (not the quick installer!).
+(the exact tool/process may depend on what platform you are using -- i.e. Windows/Linux/Mac. These instructions have been written on a Mac. If you have Windows you may struggle with the command line a bit. [url="Cygwin"]http://www.cygwin.com/[/url] is great.)
 
 [media width="150" description="The application launcher, after the application has been created.
 
 I have created mine under my local Apache server root (where I already have a git checkout), but that is only for convenience." float="right"]data_custom/images/docs/tut_google_appengine/appengine_launcher.png[/media]
-Start up the GAE launcher.
-
-(the exact tool/process may depend on what platform you are using -- i.e. Windows/Linux/Mac. These instructions have been written on a Mac. If you have Windows you may struggle with the command line a bit. [url="Cygwin"]http://www.cygwin.com/[/url] is great.)
-
-Add the in the launcher. Simple add the directory you extracted Composr to, and it should automatically configure it from that.
-
-Select your application row in the list of applications, and click "Run".
-
-In your web browser, go to [tt]http://localhost:8080/install.php[/tt]
-(your first application will be running on port 8080 by default, which also means you can also have Apache installed on the machine if you so wish.)
-
+[list="1"]
+[*]Extract the Composr manual installation package to a directory on your development machine (not the quick installer!).
+[*]Start up the GAE launcher.
+[*]Add Composr in the launcher: simply add the directory you extracted Composr to, and it should automatically configure it from that.
+[*]Select your application row in the list of applications, and click "Run".
+[*]In your web browser, go to [tt]http://localhost:8080/install.php[/tt] (your first application will be running on port 8080 by default, which also means you can also have Apache installed on the machine if you so wish.)
 Ignore any "There is no PHP GD extension on the server" error. The PHP SDK (at the time of writing does not have GD), but the live environment does.
-
-The installer will ask for various GAE-specific details. It will provide links that take you to where you can set these up. That said, things aren't always straight-forward, so you must read the "Live setup instructions / notes" below to tell you what you actually need to configure.
-
+[*]The installer will ask for various GAE-specific details. It will provide links that take you to where you can set these up. That said, things aren't always straight-forward, so you must read the "Live setup instructions / notes" below to tell you what you actually need to configure.
 A top-level view of what you'll be setting up:
  - App Engine application ID -- The identifier for the live GAE application; Google will automatically also use this as the Google Cloud project name
  - Google Cloud Storage bucket name -- The identifier for the live Google Cloud Storage (this is basically the live filesystem, which is stored separately to the application itself)
  - Database hostname -- This includes the identifier for the Google Cloud SQL database's Google Cloud Platform project and the identifier for the Google Cloud SQL instance
  - Database name -- The name of the Google Cloud SQL database, which you must create manually
 The default settings assume all the different identifier's are the same, but they don't have to be. These are separate services that are linked together for your live application to run. That said, this tutorial assumes you are using the same identifiers because it simplifies things considerably.
+[/list]
 
 [title="3"]Live setup instructions / notes[/title]
 
@@ -220,6 +220,8 @@ Now consider your plans for world domination while your files upload (or, read a
 
 [title="3"]Database[/title]
 
+(in the below instructions obviously substitute [tt]<application>[/tt] for the real name of the application)
+ 
 To copy your initial database to live, you need to follow a rather complex procedure of exporting, copying to live Google Cloud Storage, then importing from live Google Cloud Storage...
 1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] (if you didn't already do it for "Storage", above)
 2) ...make sure you have followed the "How to Set Up Credentials to Access Protected Data" part of the above instructions
@@ -245,6 +247,8 @@ Upload may take around 30 minutes.
 Note that you should ignore any "Could not guess mimetype for ..." errors.
 
 To view the live project, go to [tt]http://<application>.appspot.com[/tt] in your web browser.
+
+(obviously substitute [tt]<application>[/tt] for the real name of the application)
 
 [title="4"]Developers[/title]
 
@@ -322,6 +326,11 @@ To enable a custom page for 404 errors, in [tt]app.yaml[/tt] uncomment (i.e. rem
 [code="YAML"]
 #- url: .*
 #  script: 404.htm
+[/code]
+-->
+[code="YAML"]
+- url: .*
+  script: 404.htm
 [/code]
 And, then create [tt]404.htm[/tt] by saving out the result of [tt]/index.php?page=404[/tt]
 

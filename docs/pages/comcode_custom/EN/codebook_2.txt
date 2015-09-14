@@ -40,20 +40,8 @@ The syntax for Tempcode (the Composr language used for controlling template outp
  - [tt]{!X,BLAH}[/tt] means "Insert language element X with parameter BLAH". BLAH will usually be a parameter itself, so it might look like: [tt]{!X,BLAH,{SOME_PARAM}}[/tt]. (often language strings will have a place for such a parameter, for instance: [tt]A_SITE_ABOUT=A site about {1}[/tt])
  - [tt]{$X}[/tt] means "Insert symbol X". The symbols are not PHP variables (although the syntax is similar, because it is a similar concept). An example of a symbol is 'BASE_URL' (so to use this write [tt]{$BASE_URL}[/tt]). Symbols can also be used to perform functions, such as equality checks.
  - [tt]{+START,BLAH}...{+END}[/tt] means "Wrap (...) with a directive named BLAH". A directive can be anything that does something to the code it wraps. There are a number of directives that you may use, including output filters such as 'IF', loops, and boxes.
-This syntax is explained in more detail in the main Composr documentation.
 
-Any Tempcode construct may be escaped (made to fit in an encoding scheme, such as HTML or URLs, such that special text characters do not interact with that encoding scheme in an insecure/corrupting way) by escaping filters with ease, just by placing the symbol associated with the mode of escaping before the closing '}'. For example, [tt]{BLAH*}[/tt] will add the parameter BLAH, escaped for HTML output. The following escaping filters are provided:
- - [tt](*)[/tt] HTML (e.g. [tt]Hello & Goodbye[/tt] --> [tt]Hello &amp; Goodbye[/tt])
- - [tt](;)[/tt] Between single quotes (e.g. [tt]Who's here[/tt] --> [tt]Who\'s here[/tt])
- - [tt](#)[/tt] Between double quotes (e.g. [tt]She said, "Hello"[/tt] --> [tt]She said, \"Hello\"[/tt])
- - [tt](~)[/tt] Where new lines are not allowed (text is drawn up to reside on a single line)
- - [tt](@)[/tt] Comcode (e.g. [tt]Use the [url] tag[/tt] --> [tt]Use the \[url] tag[/tt])
- - [tt](/)[/tt] Special JavaScript SGML-issue (e.g. [tt]print('</p>');[/tt] --> [tt]print('<\/p')[/tt])
- - [tt](^)[/tt] Where new lines become "\n" (multiple lines drawn together with \n as a separator)
- - [tt](|)[/tt] JavaScript Ids (e.g. [tt]This is a -terrible- ID[/tt] --> [tt]This__is__a____terrible____ID[/tt])
-It is absolutely crucial that Tempcode programmers use the proper escaping. Without it, all kinds of insecurities and unreliabilities can develop. About 50% of parameters in the default Composr templates actually use HTML escaping so that plain text placed inside a template does not interfere with the HTML structure itself and displays literally.
-
-A full description of the Tempcode language is available in the [page="docs:tut_tempcode"]Tempcode programming[/page] tutorial.
+A full description of the Tempcode language is available in the [page="docs:tut_tempcode"]Tempcode programming[/page] tutorial. Read the Escaping section careful because it is extremely important for security.
 
 [title="3"]WCAG notes[/title]
 
@@ -112,7 +100,7 @@ GIF files are:
 
 JPEG files do not support transparency, and as we prefer to not assume any particular image won't be edited to have transparency, we opt to not use them. Also JPEG has serious problems when images are re-saved, which is a standard event when editing default images. Otherwise we acknowledge JPEG provides superior compression in most normal circumstances.
 
-Besides the lack of animation, and problems on IE6, there is one further problem with PNG images- various web browsers, including Internet Explorer and Safari, are incompatible with the settings used by Photoshop to save them. The colours are always slightly wrong -- noticeable if the images need to line up with background colours defined in the CSS. The problem is caused by the browsers not supporting PNG gamma settings properly. Fortunately this problem is solved by passing the images through a free compression-optimisation program called PNGGauntlet (for Windows; use OptiPNG on a Mac), which is worth doing anyway as it provides significant loss-less file-size savings over what Photoshop can do. Instructions for using PNG Gauntlet:
+Besides the lack of animation, and problems on IE6, there is one further problem with PNG images- various web browsers, including Microsoft Edge and Safari, are incompatible with the settings used by Photoshop to save them. The colours are always slightly wrong -- noticeable if the images need to line up with background colours defined in the CSS. The problem is caused by the browsers not supporting PNG gamma settings properly. Fortunately this problem is solved by passing the images through a free compression-optimisation program called PNGGauntlet (for Windows; use OptiPNG on a Mac), which is worth doing anyway as it provides significant loss-less file-size savings over what Photoshop can do. Instructions for using PNG Gauntlet:
  - Backup your images, just in case something goes wrong.
  - Download PNGGauntlet and run it. Select RGB+Alpha as the output type, and minimise depth reduction. Do not preserve gamma information.
  - Tick (check) the 'Overwrite Original Files' checkbox.

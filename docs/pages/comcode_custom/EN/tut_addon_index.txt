@@ -495,7 +495,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Core rendering functionality for imagery.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_fringe">Favicons, Web fonts, Media file compatibility</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_fringe">Supplementary web technologies (media, social networking, etc)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_graphic_text&amp;status_id=10">Link</a></td>
         </tr>

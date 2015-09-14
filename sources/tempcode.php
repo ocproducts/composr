@@ -42,7 +42,6 @@ function init__tempcode()
     define('FORCIBLY_ENTITY_ESCAPED', 12); // To force a language string to be escaped
     define('CSS_ESCAPED', 13); // To stop CSS injection
     define('UL2_ESCAPED', 14); // rawurlencode
-    define('TEMPCODE_VARIABLE_ESCAPED', 15); // Commas become \,
     define('PURE_STRING', 16); // Used to indicating we just put something directly into the output. Works with __toString on PHP5 or normal strings. Does no escaping.
 
     define('TC_SYMBOL', 0);
@@ -159,9 +158,9 @@ function fast_uniqid()
 }
 
 /**
- * Get a string (natural for Tempcode's stream-based processing-model) representation of a bound Tempcode variable
+ * Get a string (natural for Tempcode's stream-based processing-model) representation of a bound Tempcode construct
  *
- * @param  mixed $var Variable (or NULL if not set)
+ * @param  mixed $var Construct (or NULL if not set)
  * @param  ID_TEXT $origin Where this parameter is referenced, in a compressed reference form
  * @return string Value
  */
@@ -519,8 +518,6 @@ function apply_tempcode_escaping($escaped, &$value)
             $value = preg_replace('#[^\w\#\.\-\%]#', '_', $value);
         } elseif ($escape == NAUGHTY_ESCAPED) {
             $value = filter_naughty_harsh($value, true);
-        } elseif ($escape == TEMPCODE_VARIABLE_ESCAPED) {
-            $value = str_replace(',', '\,', $value);
         }
     }
     if (($GLOBALS['XSS_DETECT']) && ($escaped != array())) {
@@ -569,8 +566,6 @@ function apply_tempcode_escaping_inline($escaped, $value)
             $value = preg_replace('#[^\w\#\.\-\%]#', '_', $value);
         } elseif ($escape == NAUGHTY_ESCAPED) {
             $value = filter_naughty_harsh($value, true);
-        } elseif ($escape == TEMPCODE_VARIABLE_ESCAPED) {
-            $value = str_replace(',', '\,', $value);
         }
     }
     if (($GLOBALS['XSS_DETECT']) && ($escaped != array())) {
@@ -1563,9 +1558,9 @@ class Tempcode
     }
 
     /**
-     * Find whether a variable within this Tempcode is parameterless.
+     * Find whether a construct within this Tempcode is parameterless.
      *
-     * @param  integer $at Offset to the variable
+     * @param  integer $at Offset to the construct
      * @return boolean Whether it is parameterless
      */
     public function parameterless($at)

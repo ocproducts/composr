@@ -1920,10 +1920,10 @@ table.scrollable_inside {
 	margin-top: 1em;
 }
 
-.results_table>thead>tr:first-child *:first-child, .results_table>tbody>tr:first-child>*:first-child {
+.results_table>thead:first-child>tr:first-child *:first-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:first-child, .results_table>tbody>tr:first-child>*:first-child {
 	{$BETA_CSS_PROPERTY,border-top-left-radius: 5px;}
 }
-.results_table>thead>tr:first-child *:last-child, .results_table>tbody>tr:first-child>*:last-child {
+.results_table>thead:first-child>tr:first-child *:last-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:last-child, .results_table>tbody>tr:first-child>*:last-child {
 	{$BETA_CSS_PROPERTY,border-top-right-radius: 5px;}
 }
 .results_table.columned_table>tbody>tr:first-child>*:first-child {
@@ -1932,10 +1932,10 @@ table.scrollable_inside {
 .results_table.columned_table>tbody>tr:first-child>*:last-child {
 	{$BETA_CSS_PROPERTY,border-top-right-radius: 0px;}
 }
-.results_table>tbody>tr:last-child>*:first-child, .results_table>tbody>tr.last>*:first-child {
+.results_table>tbody:last-child>tr:last-child>*:first-child, .results_table>tbody>tr.last>*:first-child {
 	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
 }
-.results_table>tbody>tr:last-child>*:last-child, .results_table>tbody>tr.last>*:last-child {
+.results_table>tbody:last-child>tr:last-child>*:last-child, .results_table>tbody>tr.last>*:last-child {
 	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
 }
 

@@ -246,19 +246,28 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         if ((function_exists('getimagesize')) && (array_key_exists('thumb_url', $attributes)) && (((is_object($attributes['thumb_url'])) && (!$attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] != '')))) {
             require_code('images');
             list($_width, $_height) = _symbol_image_dims(array(is_object($attributes['thumb_url']) ? $attributes['thumb_url']->evaluate() : $attributes['thumb_url']));
+
+            // Uh oh. Maybe broken image
+            if (empty($_width)) {
+                $_width = get_option('attachment_default_width');
+            }
+            if (empty($_height)) {
+                $_width = get_option('attachment_default_height');
+            }
         }
 
-        if ($no_width) {
-            $attributes['width'] = $_width;
-        }
-        if ($no_height) {
-            $attributes['height'] = $_height;
-        }
         if ($no_width && !$no_height) {
             $attributes['width'] = strval(intval(round(floatval($attributes['height']) * (float)$_width / (float)$_height)));
         }
-        if (!$no_width && $no_height) {
+        elseif (!$no_width && $no_height) {
             $attributes['height'] = strval(intval(round(floatval($attributes['width']) * (float)$_height / (float)$_width)));
+        } else {
+            if ($no_width) {
+                $attributes['width'] = $_width;
+            }
+            if ($no_height) {
+                $attributes['height'] = $_height;
+            }
         }
     }
 

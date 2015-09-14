@@ -212,7 +212,7 @@ This way, the JavaScript code can be overidden within themes, optimised by Compo
 We'll assume the JavaScript file is [tt]example.js[/tt].
 
 Copy the [tt]example.js[/tt] file to [tt]themes/default/javascript_custom/example.js[/tt].
-If there is both a minified (compressed) and non-minified version, use the non-minified version. Composr does it's own minification automatically, and it's better you be able to read the JavaScript code properly. Additional this way is it less likely the Tempcode parser will accidentally try and interpret parts of the code as Tempcode variables.
+If there is both a minified (compressed) and non-minified version, use the non-minified version. Composr does it's own minification automatically, and it's better you be able to read the JavaScript code properly. Additional this way is it less likely the Tempcode parser will accidentally try and interpret parts of the code as Tempcode constructs.
 
 You may wish to edit the file to include this at the top:
 [code="CSS"]

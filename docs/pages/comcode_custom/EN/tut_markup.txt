@@ -6,36 +6,158 @@ This tutorial is an introduction to the main standard web technologies that Comp
 
 [title="2"]Overview[/title]
 
-Composr is built on top of standard web/Internet technologies. These technologies are as follows:
- - [abbr="Transfer Control Protocol / Internet Protocol"]TCP/IP[/abbr] -- this is the protocol for transmitting Internet data and is where IP addresses come from
- - [abbr="HyperText Transfer Protocol"]HTTP[/abbr], and cookies [i](optional)[/i] -- this is the protocol for transmitting web data and is where [abbr="Uniform Resource Locator"]URL[/abbr]s come
- - [abbr="eXtensible Markup Language"]XML[/abbr] (including [abbr="Really Simple Syndication"]RSS[/abbr], Atom, [abbr="Outline Processor Markup Language"]OPML[/abbr], [abbr="Scalable Vector Graphics"]SVG[/abbr] and use in [abbr="Asynchronous JavaScript and XML"]AJAX[/abbr]) -- this is a standard for structuring data, used for many web formats that Composr supports
- - [abbr="eXtensible HyperText Markup Language"]XHTML5[/abbr] (and microformats) -- this is the standard for web pages
- - [abbr="Cascading Style Sheets"]CSS[/abbr] -- this is the standard for styling web pages; it ties into the XHTML
- - JavaScript (aka ECMA-Script) [i](optional)[/i] and [abbr="Document Object Model"]DOM[/abbr] -- this is the standard to make web pages interactive; it ties into the XHTML
- - Dublin Core -- this is the standard for adding meta-data to web pages; it ties into the XHTML
- - PHP -- this is the programming language Composr is written in
- - Web server -- this is the software applicaton that serves data over HTTP, and ties into PHP; Apache and [abbr="Internet Information Server"]IIS[/abbr] are examples of the web server applications Composr can use
- - [abbr="Structured Query Language"]SQL[/abbr] -- this is the standard for accessing/manipulating data inside databases; Composr uses it to talk to the database (e.g. [tt]SELECT * FROM table WHERE something='somevalue'[/tt]), which is usually the MySQL database application
- - [abbr="File Transfer Protocol"]FTP[/abbr] -- this is the standard for uploading files to a server
- - Other standards like iCalendar, CSV files, JPEG, PNG, Zip, Tar, Gzip -- these are used in specific areas of Composr, for reading and writing special file types
- - ISO character sets and Unicode (UTF-8) -- these are the alternative standards for Internationalisation support; Composr supports both
- - [abbr="Multipurpose Internet Mail Extensions"]MIME[/abbr] -- this is the standard for e-mails
- - [abbr="Simple Mail Transfer Protocol"]SMTP[/abbr] -- this is the standard for sending e-mails
- - [abbr="Lightweight Directory Access Protocol"]LDAP[/abbr] -- this is the standard for having shared logins on a computer network, which Composr can use
+Composr is built on top of standard web/Internet protocols, languages and [abbr="Application Programming Interfaces"]APIs[/abbr]. The main ones are as follows...
 
-Composr includes some technologies of its own:
- - Tempcode -- this is Composr's template technology (Composr combines data with XHTML templates in order to construct XHTML web pages)
- - Comcode -- this is Composr's easy-to-use content language (lumps of text are written in this, and there are optional ways of encoding sophisticated behaviours; it compiles to more complex XHTML/CSS/JavaScript, via templates)
- - Dublin Core extensions -- Composr extends Dublin Core (described above)
- - Commandr -- A command line interface to a Composr website
- - Page-links -- A simple technology for generating link between pages, that compiles to HTTP URLs; page-links are local to a website (i.e. they can only work to generate links within a site), and are consistent regardless of the SEO URL scheme employed (Composr supports URL rewriting, which can make the appearance of final URLs vary considerably)
+[semihtml]
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Protocol</th>
+			<th>Description</th>
+			<th>Relevance to you</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>[abbr="Transfer Control Protocol / Internet Protocol"]TCP/IP[/abbr]</td>
+			<td>This is the protocol for transmitting Internet data.</td>
+			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]IP addresses and tracing users tutorial[/page]).</td>
+		</tr>
+		<tr>
+			<td>[abbr="HyperText Transfer Protocol"]HTTP[/abbr]</td>
+			<td>This is the protocol for transmitting web data.</td>
+			<td>You won't need much awareness that web [abbr="Uniform Resource Locator"]URL[/abbr]s come from the HTTP standard, as do cookies, as does HTTP authentication (not used on many sites, but sometimes useful).</td>
+		</tr>
+		<tr>
+			<td>[abbr="eXtensible Markup Language"]XML[/abbr] (including [abbr="Really Simple Syndication"]RSS[/abbr], Atom, [abbr="Outline Processor Markup Language"]OPML[/abbr], [abbr="Extensible Stylesheet Language Transformations"]XSLT[/abbr], [abbr="Scalable Vector Graphics"]SVG[/abbr] and use in [abbr="Asynchronous JavaScript and XML"]AJAX[/abbr])</td>
+			<td>XML is a standard for structuring data, used for many web formats that Composr supports, as well as a few configurable parts of Composr.</td>
+			<td>You won't need much awareness of XML unless doing particular advanced configuration.</td>
+		</tr>
+		<tr>
+			<td>[abbr="JavaScript Object Notation"]JSON[/abbr]</td>
+			<td>This is a popular alternative to XML and is commonly used for web APIs between servers or between servers and web browsers.</td>
+			<td>You won't need to know JSON.</td>
+		</tr>
+		<tr>
+			<td>[abbr="eXtensible HyperText Markup Language 5"]XHTML5[/abbr], [abbr="HyperText Markup Language 5"]HTML5[/abbr] (and microformats)</td>
+			<td>This is the standard for web pages. XHTML is (for all intents and purposes) a more formal version of HTML, and we ensure Composr is written to this to make things clear and consistent. You will usually hear people talk about HTML rather than XHTML, and practically you can consider them the same.</td>
+			<td>Knowing (X)HTML is crucial to defining layouts and general template editing.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Cascading Style Sheets"]CSS[/abbr]</td>
+			<td>This is the standard for styling web pages; it ties into the (X)HTML.</td>
+			<td>Knowing CSS is crucial for adjusting theme styles.</td>
+		</tr>
+		<tr>
+			<td>JavaScript (aka ECMA-Script) [i](optional)[/i] and [abbr="Document Object Model"]DOM[/abbr]</td>
+			<td>This is the standard to make web pages interactive; it ties into the (X)HTML.</td>
+			<td>You will only need to know JavaScript if doing particularly advanced themeing.</td>
+		</tr>
+		<tr>
+			<td>Dublin Core</td>
+			<td>This is the standard for adding meta-data to web pages; it ties into the XHTML.</td>
+			<td>You are unlikely to need any awareness of this.</td>
+		</tr>
+		<tr>
+			<td>PHP</td>
+			<td>This is the programming language Composr is written in.</td>
+			<td>Knowledge of PHP is only required if changing core Composr code.</td>
+		</tr>
+		<tr>
+			<td>Web server</td>
+			<td>this is the software applicaton that serves data over HTTP, and ties into PHP; Apache and [abbr="Internet Information Server"]IIS[/abbr] are examples of the web server applications Composr can use.</td>
+			<td>An awareness of web server configuration may be important. For example, how to configure Apache via [tt].htaccess[/tt] files.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Structured Query Language"]SQL[/abbr]</td>
+			<td>This is the standard for accessing/manipulating data inside databases; Composr uses it to talk to the database (e.g. [tt]SELECT * FROM table WHERE something='somevalue'[/tt]), which is usually the MySQL database application.</td>
+			<td>A basic understanding of SQL is useful. Sometimes going down to the database level, bypassing Composr, is useful. For example, to make a bulk text change across the system you could write some queries to do so.</td>
+		</tr>
+		<tr>
+			<td>[abbr="File Transfer Protocol"]FTP[/abbr] or [abbr="Security File Transfer Protocol"]SFTP[/abbr]</td>
+			<td>This is the standard for uploading files to a server.</td>
+			<td>It is good to set up an SFTP client (FTP is not secure, so best avoided) and use that for uploading/downloading files. It is more convenient and reliable than using a web hosting control panel's file manager.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Internet Message Access Protocol"]IMAP[/abbr] and [abbr="Post Office Protocol 3"]POP3[/abbr]</td>
+			<td>These are the common protocols for accessing e-mail.</td>
+			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of them.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Simple Mail Transfer Protocol"]SMTP[/abbr]</td>
+			<td>This is the protocol for sending e-mail.</td>
+			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of it.</td>
+		</tr>
+		<tr>
+			<td>File formats like iCalendar, CSV files, JPEG, PNG, Zip, Tar, Gzip</td>
+			<td>These are used in specific areas of Composr, for reading and writing special file types.</td>
+			<td>The ability to use image editors, and choose appropriate image file types, is definitely useful. Being able to import and export appropriately-structured CSV files (spreadsheets) is also useful.</td>
+		</tr>
+		<tr>
+			<td>ISO character sets and Unicode (UTF-8)</td>
+			<td>These are the alternative standards for Internationalisation support; Composr supports both.</td>
+			<td>By default Composr uses UTF-8 which means you don't really need much awareness of character sets. It is useful to know how UTF-8 works (particular how some character use more than one byte)</td>
+		</tr>
+		<tr>
+			<td>[abbr="Multipurpose Internet Mail Extensions"]MIME[/abbr]</td>
+			<td>This is the standard for the composition of e-mails.</td>
+			<td>You don't need to know anything about MIME specifically, but a basic awareness that e-mails can have dual text and HTML versions, and contain both attachments and inline images, is useful.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Lightweight Directory Access Protocol"]LDAP[/abbr]</td>
+			<td>This is the standard for having shared logins on a computer network, which Composr can use.</td>
+			<td>This is only relevant if you are setting up a corporate Intranet.</td>
+		</tr>
+	</tbody>
+</table>
+[/semihtml]
+
+Composr itself provides the following protocols and languages...
+
+[semihtml]
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Protocol</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>Tempcode</td>
+			<td>This is Composr's template technology (Composr combines data with XHTML templates in order to construct XHTML web pages).</td>
+		</tr>
+		<tr>
+			<td>Comcode</td>
+			<td>This is Composr's easy-to-use content language (lumps of text are written in this, and there are optional ways of encoding sophisticated behaviours; it compiles to more complex XHTML/CSS/JavaScript, via templates).</td>
+		</tr>
+		<tr>
+			<td>Dublin Core extensions</td>
+			<td>Composr extends Dublin Core (described above).</td>
+		</tr>
+		<tr>
+			<td>Page-links</td>
+			<td>A simple technology for generating link between pages, that compiles to HTTP URLs; page-links are local to a website (i.e. they can only work to generate links within a site), and are consistent regardless of the SEO URL scheme employed (Composr supports URL rewriting, which can make the appearance of final URLs vary considerably).</td>
+		</tr>
+		<tr>
+			<td>[page="_SELF:tut_filtercode"]Filtercode[/page]</td>
+			<td>For filtering results, simpler than SQL.</td>
+		</tr>
+		<tr>
+			<td>[page="_SELF:tut_selectcode"]Selectcode[/page]</td>
+			<td>For selecting particular results based on ID/category/tree-position.</td>
+		</tr>
+	</tbody>
+</table>
+[/semihtml]
 
 This tutorial focuses mainly on XHTML, CSS and JavaScript, which are the three technologies one needs to understand to do advanced themeing. Links to full resources for learning these technologies are also provided.
 
 [title="2"]URLs[/title]
 
-Like all web sites, a Composr site uses [abbr="Uniform Resource Locator"]URL[/abbr]s (aka web addresses) to link pages. Within Composr, they are usually written as page-links (see above) and then compiled to URLs at the same time the XHTML is generated.
+Like all web sites, a Composr site uses [abbr="Uniform Resource Locator"]URL[/abbr]s (aka web addresses) to link pages. Within Composr, they are usually written as Composr page-links (defined above in "Overview") and then compiled to URLs at the same time the XHTML is generated.
 
 URLs (when written in full) are constructed as follows:
 [code="URL"]
@@ -43,17 +165,31 @@ protocol://server:port/path?parameter=value&anotherparameter=anothervalue&anothe
 [/code]
 
 They are constructed as follows:
- - For a web page, the protocol is always 'http' or 'https' (because the page is transferred via the HTTP(S) protocol)
- - The port is almost always '80' which is the default port. If the port is 80 then it is not written down (i.e. ":80" is actually not in the URL)
- - The server is either specified by a domain name or an IP address
- - The path often relates to a file on the server, but does not have to: it is up to the web server how to treat it. For a Composr site the path usually points to a PHP file on the server (which the web server will recognise as being something it has to run, and relay the output), except if SEO URLs are on then it might go through a level of indirection (e.g. it looks to the visitor like it refers to an [tt].htm[/tt] file but actually is invisibly redirectly to go through a complex path involving the [tt]index.php[/tt])
- - There can be any number of parameters (including none). The first one has a "?" before it and subsequent ones have a "&" before it
+ - [b]Protocol[/b]: For a web page, the protocol is always 'http' or 'https' (because the page is transferred via the HTTP(S) protocol).
+ - [b]Port[/b]: The port is almost always '80' which is the default port. If the port is 80 then it is not written down (i.e. ":80" is actually not in the URL).
+ - [b]Hostname[/b]: The server is either specified by a domain name or an IP address.
+ - [b]Path[/b]: The path often relates to a file on the server, but does not have to: it is up to the web server how to treat it. For a Composr site the path usually points to a PHP file on the server (which the web server will recognise as being something it has to run, and relay the output), except if SEO URLs are on then it might go through a level of indirection (e.g. it looks to the visitor like it refers to an [tt].htm[/tt] file but actually is invisibly redirectly to go through a complex path involving the [tt]index.php[/tt]).
+ - [b]Parameter(s)[/b]: There can be any number of parameters (including none). The first one has a "?" before it and subsequent ones have a "&" before it.
+
+Here is a real example:
+[code="URL"]
+http://example.com/somepath/deeper/something?one=1&two=2
+[/code]
+
+This deconstructs as follows:
+ - [b]Protocol[/b]: This is an [tt]HTTP[/tt] URL.
+ - [b]Port[/b]: As the port is not specified this is on the standard port 80.
+ - [b]Hostname[/b]: This is on the machine where the domain name [tt]example.com[/tt] points to.
+ - [b]Path[/b]: The path is [tt]somepath/deeper/something[/tt].
+ - [b]Parameter(s)[/b]: We have two parameters [tt]one[/tt] as 1, [tt]two[/tt] as 2.
 
 [title="2"]XHTML[/title]
 
 XHTML5 (eXtensible HyperText Markup Language) is the language in which the Composr layout is written, and is what Composr is designed to output. A markup language is a text-based formatting system that allows an author to designate the structure and importance of pieces of a web page. You can't have a web page without markup; all web pages consist of markup. XHTML5 is the same as HTML5 except written to a higher standard of tidyness. It is designed with XML (eXtensible Markup Language) compatibility in mind.
 
 As previously mentioned, all Composr pages are output as XHTML. To customise the appearance of your site, it is just about impossible to do anything major without editing the XHTML. In Composr, the XHTML is split up into various templates for ease-of-use and reusability. Composr also has an inbuilt XHTML webstandards checker, to help you in customising your site.
+
+[title="3"]Syntax[/title]
 
 The basic concepts behind XHTML are very simple: your document starts with a document-type definition, then the markup follows. The markup consists of various [concept]tag[/concept]s, each with optional and mandatory [concept]attribute[/concept]s.
 [code="HTML"]
@@ -90,8 +226,8 @@ Putting tags together is only slightly more complex than using single tags. You 
 
 A key part of this is the fact that there is some required markup in all XHTML documents: the three root tags. These tags ([tt]<html>[/tt], [tt]<head>[/tt] and [tt]<body>[/tt]) [b]must[/b] be present in a particular place in [b]every[/b] XHTML document along with a valid document-type definition and some required attributes, or browsers won't be able to make head-or-tail of the page.
 [code="HTML"]
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd>
-<html xmlns=http://www.w3.org/1999/xhtml>
+<!DOCTYPE html>
+<html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Sample page</title>
@@ -110,9 +246,11 @@ One of the nice things about XHTML is the fact that you can place extraneous whi
 [/code]
 Doing this when writing markup is [b]highly advisable[/b] as it saves hours of searching through markup to find closing parts, etc.
 
-Up until now, we've only been working with theoretical and fictional XHTML tags and attributes. Now it's time to introduce you to some of the most commonly-used tags. However, first it must be noted that XHTML is not a [b]layout[/b] language! It should not be used with the intention of creating a page with a particular appearance! XHTML coding should be approached with a purely structure-based mindset. That is, XHTML should be used to [b]mark-up the structure of the document[/b] (e.g. headings, paragraphs, sections, links, lists, and other such [b]structural[/b] paradigms). Anybody who uses XHTML with the intention of creating a page that looks a particular way is using it [b]incorrectly[/b]. To learn about how to style a page, see the CSS section below.
+Up until now, we've only been working with theoretical and fictional XHTML tags and attributes. Next it's time to introduce you to some of the most commonly-used tags. However, first it must be noted that XHTML is not a [b]layout[/b] language! It should not be used with the intention of creating a page with a particular appearance! XHTML coding should be approached with a purely structure-based mindset. That is, XHTML should be used to [b]mark-up the structure of the document[/b] (e.g. headings, paragraphs, sections, links, lists, and other such [b]structural[/b] paradigms). Anybody who uses XHTML with the intention of creating a page that looks a particular way is using it [b]incorrectly[/b]. To learn about how to style a page, see the CSS section below.
 
-Anyway: some XHTML elements.
+[title="3"]Elements and attributes[/title]
+
+Now, some HTML elements...
 
 [html]
 <table class="columned_table results_table wide_table autosized_table">
@@ -213,10 +351,7 @@ Anyway: some XHTML elements.
 				<p><kbd>&lt;html&gt;</kbd></p>
 			</td>
 			<td>
-				<p>The main tag in an XHTML document. Required
-				attributes: <kbd>xmlns</kbd>
-				(the XML namespace; should be &ldquo;<a href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>&rdquo;).
-				<strong>Required</strong>.</p>
+				<p>The main tag in an XHTML document. <strong>Required</strong>.</p>
 			</td>
 		</tr>
 		<tr>
@@ -442,7 +577,7 @@ Anyway: some XHTML elements.
 </table>
 [/html]
 
-Although this table doesn't list all of the XHTML elements (it lists approximately half of them), the others are used so rarely it's easier to look them up when required, than learn them first. This table also does not list all the attributes of all the elements. However, it lists the important ones, and the following table lists all the attributes that can be used with any XHTML element; the standard attributes.
+Although the above table doesn't list all of the XHTML elements (it lists approximately half of them), the others are used so rarely it's easier to look them up when required, than learn them first. This table also does not list all the attributes of all the elements. However, it lists the important ones, and the following table lists all the attributes that can be used with any XHTML element; the standard attributes.
 
 [html]
 	<table class="columned_table results_table wide_table">
@@ -503,17 +638,26 @@ Although this table doesn't list all of the XHTML elements (it lists approximate
 
 There are other standard attributes, but only four, and they're used exceedingly infrequently. Note that there are also event attributes (see JavaScript section below).
 
+[title="3"]Element types[/title]
+
 Now that you've learnt all the XHTML elements, how to use them, and their attributes, you might think it's all over. This is not true; XHTML has a final surprise for you.
 
-As you might have guessed, you can't put any element inside another. There are rules. The basic rule is that of block-level and inline elements. Every XHTML element is either a block-level element, or an inline element (with a few exceptions, which are beyond the scope of this tutorial, but they don't behave particularly differently anyway.) With a few exceptions, block-level elements may not contain other block-level elements. As well as this, inline elements may not contain block-level elements. Block-level elements may, however, contain inline elements.
+As you might have guessed, you can't put any element inside another. There are rules. The basic rule is that of block-level and inline elements. Every XHTML element is either a block-level element, or an inline element (with a few exceptions, which are beyond the scope of this tutorial, but they don't behave particularly differently anyway.) Block-level elements may contain either other block-level elements or inline elements. However, inline elements may only contain other inline elements.
+
+Examples of block elements: [tt]div[/tt], [tt]p[/tt], [tt]body[/tt], [tt]ul[/tt], [tt]li[/tt]
+
+Examples of inline elements: [tt]span[/tt], [tt]h1[/tt], [tt]a[/tt], [tt]strong[/tt], [tt]em[/tt]
+
+Examples of other elements (not so easily classifiable): [tt]html[/tt], [tt]head[/tt], [tt]style[/tt], [tt]script[/tt], [tt]table[/tt], [tt]tr[/tt], [tt]td[/tt]
+
+[title="3"]Example[/title]
 
 What follows is an example XHTML document, utilising all of the above principles:
 [code="HTML"]
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xml:lang="en">
+<!DOCTYPE html>
+<html>
 	<head>
-		<title>Example XHTML document</title>
+		<title>Example HTML document</title>
 		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 		<meta name="keywords" content="example document,XHTML,element,attribute" />
 		<meta name="author" content="ocProducts" />
@@ -836,7 +980,7 @@ The final part of the CSS jigsaw is [i]inheritance[/i], or [i]cascade[/i]. This 
 
 [i]Cascade[/i] is actually a variation of inheritance, on a larger scale. Specifically, it is the inheritance of rules in the hierarchy of stylesheets. Although only applicable for very large sites, it is important to know about: a stylesheet can import another stylesheet using something called the '@import' rule. [i]Cascade[/i] is when the rules and properties from the first stylesheet cascade into the second stylesheet, and are applied to elements unless overruled.
 
-[title="2"]JavaScript[/title]
+[title="2"]JavaScript (advanced)[/title]
 
 JavaScript is the final piece in the web development puzzle. It allows dynamic, event-driven, interactive functionality, and is the prime component of emerging technologies such as Ajax.
 
@@ -1013,7 +1157,7 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  11_key="(tag) class"			11_value="A tag class is generally used so as to join XHTML tags to CSS styles"
  12_key="(XML) ID"				12_value="An ID is generally used so as to allow JavaScript code to reference specific XHTML tags"
  13_key="(JavaScript) event"	13_value="JavaScript hooks on to web browser actions via an event model; tags 'fire' events, and JavaScript can be set up to launch certain code upon the event firing"
- 14_key="(CSS) selector"		14_value="CSS rules apply to certain tags, and selectors are used to determine which tags; selectors are very powerful, although Internet Explorer only supports a few of them"
+ 14_key="(CSS) selector"		14_value="CSS rules apply to certain tags, and selectors are used to determine which tags; selectors are very powerful"
  15_key="(CSS) property"		15_value="CSS rules specify values for properties in order to style"
  16_key="DOM"						16_value="Document Object Model. A scheme of referencing a document based upon the XHRML structure. Usually used with JavaScript."
  17_key="DHTML"					17_value="Dynamic HTML. Almost a synonym for JavaScript"

@@ -2,6 +2,7 @@
 
 Composr supports short URLs. [i]Officially[/i] we only support them in Apache, but practically you can get them working on any web server.
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/advantage.png[/media]
 These short URLs have the following advantages:
  - More intuitive URL structure
  - More professional looking URLs, no direct reference to the website's implementation language
@@ -51,11 +52,11 @@ If the URL scheme is "Very simple unadorned URLs":
 [tt](baseurl)/members/view[/tt]
 
 For completeness, let's show what they would be if it was linking to member #3:
-[tt]:members:view:3[/tt]
-[tt](baseurl)/index.php?page=members&type=view&id=3[/tt]
-[tt](baseurl)/pg/members/view/3[/tt]
-[tt](baseurl)/members/view/3.htm[/tt]
-[tt](baseurl)/members/view/3[/tt]
+ - [tt]:members:view:3[/tt]
+ - [tt](baseurl)/index.php?page=members&type=view&id=3[/tt]
+ - [tt](baseurl)/pg/members/view/3[/tt]
+ - [tt](baseurl)/members/view/3.htm[/tt]
+ - [tt](baseurl)/members/view/3[/tt]
 (actually, depending on configuration, the number might be based on the username rather than the ID)
 
 [title="2"]Setup instructions[/title]
@@ -69,6 +70,7 @@ Composr can also do short URLs on the following web-servers:
 
 [title="3"]Apache[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_short_urls/apache.png[/media]
 Perform the following steps:
 1) If you haven't already got a working Composr [tt].htaccess[/tt] file (the quick installer may have made it for you automatically), rename [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt]. If your site gives errors after doing this, try [tt]plain.htaccess[/tt] instead.
 2) If things go wrong, you can disable short URLs via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
@@ -101,6 +103,7 @@ If you're still stuck (i.e. you've determined [tt].htaccess[/tt] is being read, 
 
 [title="3"]IIS6 and below[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_short_urls/iis.png[/media]
 You need to be a server administrator of your server, to install the free IIRF ISAPI module available from:
 http://cheeso.members.winisp.net/IIRF.aspx
 

@@ -1,11 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Facebook Support[/title]
 
-This tutorial describes Composr Facebook integration. It mostly describes functionality supplied by the non-bundled Facebook Support addon. This functionality includes:
- - Showing data from Facebook
- - Sharing to Facebook (manually)
- - Logging in using Facebook
- - Automatically syndicating content to Facebook
- - OpenGraph support (meta-data)
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/fb_composr.jpg[/media]
+This tutorial describes Composr Facebook integration. It mostly describes functionality supplied by the non-bundled Facebook Support addon.
 
 You may want to get a developer to help configure things. We're helping people getting Composr integrated, even when you're not a developer, but bear in mind that it can be tricky sometimes. Facebook is in flux, and Composr has to play catch-up quite a lot. All the standards involved in the integration are also in flux. Things are a lot better than they were, but still not always ideal. Any screenshots we show for Facebook could be out-dated by the time you read this.
 
@@ -55,7 +51,7 @@ Note there is no need to use a real domain name, it can be completely made up.
 [title="3"]Step 2) Install the Composr Facebook Support addon[/title]
 
 [surround]
-[media width="150" description="Choosing addon" float="right"]data_custom/images/docs/tut_facebook/facebook_addon_b.png[/media]
+[media width="150" description="Choosing the addon" float="right"]data_custom/images/docs/tut_facebook/facebook_addon_b.png[/media]
 [media width="150" description="Going to import a non-bundled addon" float="right"]data_custom/images/docs/tut_facebook/facebook_addon_a.png[/media]
 To install...
 
@@ -128,7 +124,7 @@ You can either place this block manually within Comcode, similar to the standard
 
 [title="2"]Social sharing[/title]
 
-[i]This section is relevant even if you are not using the Facebook Support addon[/i]
+[i]This section is relevant even if you are not using the Facebook Support addon.[/i]
 
 The [tt]main_screen_actions[/tt] block contains a Facebook share link if the Facebook Support addon is not installed. If the Facebook Support addon is installed it becomes a Like Button instead.
 
@@ -136,7 +132,7 @@ It is important to understand how the Facebook share button works. The button do
 
 [title="2"]Meta-data when people link to you from Facebook (OpenGraph)[/title]
 
-[i]This section is relevant even if you are not using the Facebook Support addon[/i]
+[i]This section is relevant even if you are not using the Facebook Support addon.[/i]
 
 [url="OpenGraph"]http://ogp.me/[/url] is a Facebook-sponsored standard for web-page meta-data.
 
@@ -307,7 +303,7 @@ This is very simple. Just do a "reset password" on your account and it will be t
 
 [title="3"]Links in member profiles[/title]
 
-[i]This section is relevant even if you are not using the Facebook Support addon[/i]
+[i]This section is relevant even if you are not using the Facebook Support addon.[/i]
 
 Composr comes with a default "Facebook profile" Custom Profile Field, available to members.
 

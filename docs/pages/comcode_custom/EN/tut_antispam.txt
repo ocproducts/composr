@@ -9,6 +9,7 @@ The actual configuration options are under Admin Zone > Setup > Configuration > 
 
 [title="2"]CAPTCHA[/title]
 
+[media width="150" description="The CAPTCHA" float="right"]data_custom/images/docs/tut_antispam/captcha.png[/media]
 CAPTCHA is the conventional tool to stop guest actions (such as joining, or posting) without first proving your human.
 Composr uses a unique method behind-the-scenes to generate the CAPTCHA (the 'CSS' method), which has proven very effective.
 
@@ -36,6 +37,9 @@ We use the popular [url="Stop Forum Spam system"]http://www.stopforumspam.com/[/
 
 [title="2"]Settings[/title]
 
+[media width="150" description="The settings" float="right"]data_custom/images/docs/tut_antispam/settings.png[/media]
+The settings are located at Admin Zone > Setup > Configuration > Security options, the Spammer detection section.
+
 You can configure when spam checks are performed via the "Spammer checking level" option:
  - Every page view (performs RBL checks always, and full check on actions)
  - Actions (joining, posting, trackbacks)
@@ -56,6 +60,7 @@ Other settings include:
 
 [title="2"]Black hole[/title]
 
+[media width="150" description="The black hole in a form's HTML" float="right"]data_custom/images/docs/tut_antispam/blackhole.png[/media]
 Composr forms can include a 'black hole' which is a specially hidden field that should not filled in, but spambots are likely to fill in by accident (because they don't have the same sense for 'hidden' that a human does). If a spammer fills in the black hole field then they will be marked as spammers.
 
 [title="2"]Project Honey Pot[/title]
@@ -66,9 +71,11 @@ You need to specifically configure the settings for Honey Pot -- it requires you
 [title="2"]Reported posts[/title]
 
 If someone spams on the forum (assuming you are running [concept]Conversr[/concept]) then they can use the 'report post' feature to alert the staff to the spammer activity.
+This is described in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
 
 [title="2"]What we don't do[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 We're not a fan of all anti-spam systems. Here's a run-down of what we don't do:
  - Some popular spam checking tools will run checks through a commercial third-party server. We'd rather deliver our code to you within Composr, for improved performance, and in line with our Open Source philosophy.
  - We don't try and use pattern-analysis to detect spammers, because it would be so easy for a spammer to adjust their spam-bots to get past our filters.
@@ -79,19 +86,23 @@ We're not a fan of all anti-spam systems. Here's a run-down of what we don't do:
 It is possible that occasionally a spammer may get through Composr's settings. If so, please make a thorough report via the compo.sr forum -- so that we have the chance to properly look into how it got through.
 
 Include:
-a) What exact anti-spam settings are configured
-b) Where the spammer is getting through (e.g. making a forum post)
-c) The spammer's IP address
-d) The spammer's user-agent
-e) The time of the incident
-f) Whether the spam was by a guest (and if so, if you have guest posting permissions configured)
+[list="a"]
+[*] What exact anti-spam settings are configured
+[*] Where the spammer is getting through (e.g. making a forum post)
+[*] The spammer's IP address
+[*] The spammer's user-agent
+[*] The time of the incident
+[*] Whether the spam was by a guest (and if so, if you have guest posting permissions configured)
+[/list]
 
 Avoid being anecdotal or emotional -- give clear and concise facts.
 
 Once you've made your report hopefully someone can then tell you what case category you are in:
-a) Incorrect Composr set up -- in which case someone may be able to advise
-b) Manual spammer attack
-c) Insufficient protection within Composr -- in which case we can consider making Composr improvements
+[list="a"]
+[*] Incorrect Composr set up -- in which case someone may be able to advise
+[*] Manual spammer attack
+[*] Insufficient protection within Composr -- in which case we can consider making Composr improvements
+[/list]
 
 [concepts
  1_key="CAPTCHA"           1_value="A security image/sound consisting of numbers that a human must enter into a text box. It is designed to prevent bots from spamming your website."

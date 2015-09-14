@@ -28,7 +28,7 @@ Note that private topic receipt is disabled for topic-derived notifications, in 
 Web notifications are particularly cool. If you have the website open (or pinned open, which some browsers support), then visitors will be notified directly through the Composr user interface within a matter of seconds. From the list of recent/unread notifications, you can view an overlay with the full notification details, or a full page detailing all enabled web notifications from the last period of days.
 
 Additionally, most platforms will allow native notification display:
- - in the Windows notification center (except on Internet Explorer, which does not support this [at the time of writing, where IE9 is the latest], see below)
+ - in the Windows notification center
  - in the MacOS notification center
  - in the Internet Explorer pinned site notification area
  - [s]in the main notification area of iPhone or Android phones[/s] -- unfortunately this doesn't work at the time of writing, as background pages don't run and most mobile browsers don't support HTML5 notifications
@@ -62,21 +62,22 @@ Instead, only the IDs of notification categories that the user has already monit
 
 [title="2"]Lock-down[/title]
 
+[media width="150" description="Setting notification type lock-downs" float="right"]data_custom/images/docs/tut_notifications/lockdown.png[/media]
 In the Admin Zone you can define what notification types are "locked-down". You can use this to:
  - See which notifications are designed for staff only
- - Stop any member from receiving a notification
- - Force members to receive notifications
+ - Stop any member from receiving particular notification types
+ - Force members to receive particular notifications types
 
 You will see the following columns:
  - Notification title (the column title is actually unlabelled, but this is what it is)
  - "Privileged / Restricted" -- this is Yes or No, and shows the general access for this notification type in Composr (it is non-configurable, shown for informative purposes only)
  - "Not locked down, free choice" -- this is a checkbox, defaulting to 'On'. If you uncheck it then the members will have the settings that you choose in the interface (i.e. they can no longer choose their own settings). If it stays checked, the following checkboxes have no effect.
- - "Member's typical notification type" -- specifies that a notification will be forcibly sent out in the member's average way they've set to receive notifications
- - (All the different ways of receiving notifications) -- the checkbox selections here determine [i]specifically[/i] how members will forcibly receive this notification (you will not typically use this in combination with "Member's typical notification type").
+ - "Member's typical notification type" -- specifies that a notification type will be forcibly sent out in the member's average way they've set to receive notifications
+ - (All the different ways of receiving notifications) -- the checkbox selections here determine [i]specifically[/i] how members will forcibly receive this notification type (you will not typically use this in combination with "Member's typical notification type").
  
-If no checkboxes are checked then the members will not be able to recieve the notification at all. This is quite a common configuration, essentially allowing you to turn off a notification for the whole website.
+If no checkboxes are checked then the members will not be able to recieve the notification type at all. This is quite a common configuration, essentially allowing you to turn off a notification type for the whole website.
 
-Note that the settings apply to all members (while respecting the notification permissions). You cannot set against specific usergroups.
+Note that the settings apply to all members (while respecting the notification permissions). You cannot set lock-downs against specific usergroups.
 
 [title="2"]Security[/title]
 

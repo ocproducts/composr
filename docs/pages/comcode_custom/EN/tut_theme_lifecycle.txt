@@ -59,19 +59,19 @@ First install a diff tool on your own desktop machine such as [url="WinMerge"]ht
 Then download the themes directory from your server, to your own desktop machine.
 
 Comparing these files:
-[tt]themes/example/css_custom/global.css.editfrom[/tt]
-[tt]themes/default/css/global.css[/tt]
-would show all changes made in the default theme since you first made your override (i.e. official changes).
+ - [tt]themes/example/css_custom/global.css.editfrom[/tt]
+ - [tt]themes/default/css/global.css[/tt]
+...would show all changes made in the default theme since you first made your override (i.e. official changes).
 
 Comparing these files:
-[tt]themes/example/css_custom/global.css.editfrom[/tt]
-[tt]themes/example/css_custom/global.css[/tt]
-would show all the changes you directly made within your own theme (i.e. your changes).
+ - [tt]themes/example/css_custom/global.css.editfrom[/tt]
+ - [tt]themes/example/css_custom/global.css[/tt]
+...would show all the changes you directly made within your own theme (i.e. your changes).
 
 Comparing these files:
-[tt]themes/default/css/global.css[/tt]
-[tt]themes/example/css_custom/global.css[/tt]
-would show all the differences between the default theme and your own theme (i.e. the changes you directly made, any the changes made in the default theme since you first made your override).
+ - [tt]themes/default/css/global.css[/tt]
+ - [tt]themes/example/css_custom/global.css[/tt]
+...would show all the differences between the default theme and your own theme (i.e. the changes you directly made, any the changes made in the default theme since you first made your override).
 
 Therefore using a diff tool you can locate what changes you need to make back into your custom theme, then upload your updated file(s).
 

@@ -103,28 +103,24 @@ class Hook_media_rendering_image_websafe
             $attributes['thumb_url'] = $url;
         }
 
-        if ((!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width']))) {
-            if ($blank_thumbnail && $use_thumb) {
-                $attributes['width'] = get_option('thumb_width');
-            }
-            // else: media_renderer will derive from the provided thumbnail
-            $auto_box_width = true;
-        } else {
-            $auto_box_width = false;
-        }
-
-        if ((!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height']))) {
-            if ($blank_thumbnail && $use_thumb) {
-                $attributes['height'] = get_option('thumb_width');
-            }
-            // else: media_renderer will derive from the provided thumbnail
-            $auto_box_height = true;
-        } else {
-            $auto_box_height = false;
-        }
-
         if ($use_thumb && $blank_thumbnail) {
-            $new_name = $attributes['width'] . '__' . url_to_filename($_url_safe);
+            $auto_box_width = false;
+            if ((!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width']))) {
+                $thumb_box_width = intval(get_option('thumb_width'));
+                $auto_box_width = true;
+            } else {
+                $thumb_box_width = intval($attributes['width']);
+            }
+
+            $auto_box_height = false;
+            if ((!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height']))) {
+                $thumb_box_height = intval(get_option('thumb_width'));
+                $auto_box_height = true;
+            } else {
+                $thumb_box_height = intval($attributes['height']);
+            }
+
+            $new_name = strval($thumb_box_width) . '__' . url_to_filename($_url_safe);
             require_code('images');
             if (!is_saveable_image($new_name)) {
                 $new_name .= '.png';
@@ -132,7 +128,7 @@ class Hook_media_rendering_image_websafe
             $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
             if (function_exists('imagepng')) {
                 if (!file_exists($file_thumb)) {
-                    convert_image($url_direct_filesystem, $file_thumb, $auto_box_width ? -1 : intval($attributes['width']), $auto_box_height ? -1 : intval($attributes['height']), ($auto_box_width && $auto_box_height) ? intval($attributes['width']) : -1, false);
+                    convert_image($url_direct_filesystem, $file_thumb, $auto_box_width ? -1 : $thumb_box_width, $auto_box_height ? -1 : $thumb_box_height, ($auto_box_width && $auto_box_height) ? $thumb_box_width : -1, false);
                 }
                 $attributes['thumb_url'] = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
             }

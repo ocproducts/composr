@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Favicons, Web fonts, Media file compatibility[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Supplementary web technologies (media, social networking, etc)[/title]
 
 This tutorial will explain and detail some of the fringe features of web technologies.
 
@@ -9,8 +9,6 @@ This tutorial will explain and detail some of the fringe features of web technol
 Microsoft created a technology that allows websites to have their own little icons, for placement in the Favorites menu, and the web browser window icon. This technology has since been adopted for use by other web browsers.
 
 Favicons are supported in Composr, and to use one you just need to edit the 'favicon' theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
-
-Please note that on Internet Explorer the favicon will only be used for the web browser window for a page that has been put into the Favorites/Bookmarks. It is this action that triggers the web browser to acknowledge and cache the icon.
 
 The default icon actually contains multiple sizes:
  - 16x16 &ndash; Standard size for browsers
@@ -32,9 +30,9 @@ The default icon actually contains multiple sizes:
 Fonts have always been a tricky area in computing, as the actual font typeface is a copyrighted works, and hence cannot be distributed without a licence. This problem extends to the Internet, where there is a stronger need for common fonts than there ever was. It is important to remember that not all viewers to a website will be using Microsoft Windows, and therefore they will not all have the set of default windows fonts.
 
 Fortunately there are three things that improve on this situation:
- - there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information)
- - CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use
- - [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts
+ - there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information).
+ - CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use.
+ - [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts. It is very easy to integrate via a change to the [tt]HTML_HEAD[/tt] template and the CSS.
 
 [title="3"]Fonts within content[/title]
 
@@ -74,7 +72,7 @@ You have a choice between six options:
  - Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
  - Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
  - Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
- - Use standard MPEG technology other than h264 -- the drawback to this is that MPEG standardisation has declined, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
+ - Use standard MPEG technology other than h264 -- the drawback to this is that such MPEG standardisation is weak, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
  - Use an open alternative such as those sponsored by the BBC, or Ogg, or Google (WebM) -- using them is technical difficult, and users generally need to install special software
 
 Our practical advice is to always use h264/mp3, which has worked on all major browsers for a number of years.
@@ -96,24 +94,14 @@ The clear points of confusion are:
 
 For web-safe videos you need to use either the aac or mp3 audio codec, the h264 video codec, and the mp4 container format.
 
-[title="2"]Achieving advanced designs with the custom graphics block[/title]
+[title="2"]Achieving advanced designs with the custom graphics block (advanced)[/title]
 
-It's commonplace nowadays for professional designers/developers working on static sites to make use of:
- - Rich typography
- - Text overlaid onto images
- - Custom rollovers
+It is very common for the best modern designs to have content text built direct into graphics. There are 3 approaches to achieve this:
+1) CSS. This is usually the best approach, using CSS to overlay the text over images.
+2) Having web developers manually create lots of variants of the same image, each with different text.
+3) Automatically generating the images in Composr using the custom graphics block.
 
-[title="3"]Rich typography[/title]
-
-It's well known that built-in web browser font support is severely limited, for two reasons:
-1) There is only a small set of fonts you can trust to be installed on a users computer (the "Web fonts")
-2) Browser fonts can often look ugly when put against smooth designs, as they are not always anti-aliased (depends on operating system and web browser)
-
-Fortunately using something like Google Fonts allows you to get access to a much larger set of fonts. Composr has no special support for it, but that is not needed -- it is very easy to integrate via a change to the [tt]HTML_HEAD[/tt] template and the CSS.
-
-[title="3"]Text overlaid onto images[/title]
-
-It is very common for the best modern designs to have content text built direct into graphics. The only solution until now has been for web developers to make lots of variants of the same image, each with different text. Now it is possible to have a site generate its own graphics, so it is easy for any content writers to extend and maintain, without ever going back into Photoshop.
+This section describes the last approach. Frankly this is quite an obscure and rare thing to need to do, because of the power of CSS. However it does have its occasionally usefulness.
 
 Here is a simple example of a custom button:
 

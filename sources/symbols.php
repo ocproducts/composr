@@ -49,7 +49,7 @@ function init__symbols()
 }
 
 /**
- * Evaluate a conventional Tempcode variable, handling escaping
+ * Evaluate a conventional Tempcode construct, handling escaping
  *
  * @param  string $lang The language to evaluate this symbol in (some symbols refer to language elements).
  * @param  array $escaped Array of escaping operations.

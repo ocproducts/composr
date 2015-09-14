@@ -4,19 +4,221 @@ Tempcode is Composr's template programming language. On the simplest level, it p
 
 [contents]decimal,lower-alpha[/contents]
 
+[title="2"]Syntax[/title]
+
+The "syntax" of a language is simply the grammar. Tempcode's syntax is extremely simple.
+
+Tempcode provides four constructs other than the plain text of the template itself:
+1) [b]Parameters[/b]: [tt]{PARAMETER}[/tt] where PARAMETER is a code-name of something that was actually passed to the template.
+2) [b]Language strings[/b]: [tt]{!STRING,<parameters>...}[/tt] where STRING is a real language string from a loaded language file (e.g. Banner code could use strings from banners.ini, but most other code could not; global.ini contains strings usable anywhere).
+3) [b]Symbols[/b]: [tt]{$SYMBOL,<parameters>...}[/tt] where SYMBOL is a real symbol Composr supports. Embedding a symbol is like making a function call or running a command in the complex place, or a substitution in the simple case.
+4) [b]Directives[/b]: [tt]{+START,DIRECTIVE,<parameters>...}...{+END}[/tt] where DIRECTIVE is a real directive Composr supports. Directives essentially wrap portions of the template, controlling that portion; they are generally used for types of condition checking (e.g. IF) or loops. There are also directives like [tt]{+IMPLODE,<parameters>...}[/tt] that do not wrap, but work outside the normal "string manipulation" bounds that symbols do.
+
+[title="3"]Escaping[/title]
+
+Any of the above 4 Tempcode constructs may be escaped. By "escaped", I mean made to fit in an encoding scheme, such as HTML or URLs, such that special text characters do not interact with that encoding scheme in an insecure/corrupting way). This is done with ease using escaping filters, just by placing the character associated with the mode of escaping before the closing '}'.
+For example, [tt]{BLAH*}[/tt] will add the parameter BLAH, escaped for HTML output.
+
+The following escaping filters are provided ([color="green"]green[/color] indicates common usage, [color="red"]red[/color] indicates advanced usage)...
+
+[semihtml]
+<table class="wide_table columned_table results_table">
+	<colspan>
+		<col style="width: 3em" />
+		<col style="width: 17em" />
+		<col style="width: 10em" />
+		<col style="width: 10em" />
+	</colspan>
+
+	<thead>
+		<tr>
+			<th>Character</th>
+			<th>Purpose</th>
+			<th colspan="2">Example</th>
+		</tr>
+		<tr>
+			<th></th>
+			<th></th>
+			<th><em>Before</em></th>
+			<th><em>After</em></th>
+		</tr>
+	</thead>
+
+	<thead>
+		<tr>
+			<th colspan="4">HTML and XML</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](*)[/tt]</td>
+			<td>Text embedded within HTML.</td>
+			<td>[tt]Hello &amp; Goodbye[/tt]</td>
+			<td>[tt]Hello &amp;amp; Goodbye[/tt]</td>
+		</tr>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt]=[/tt]</td>
+			<td>HTML escaping (like above), if you are 100% sure you want the data escaping, even if it comes from something that might already be in HTML such as a language string.</td>
+			<td colspan="2"><em>as above</em></td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](|)[/tt]</td>
+			<td>Make something appropriate for use as an HTML/XML ID, usually to be referenced by JavaScript and CSS.</td>
+			<td>[tt]This is a -terrible- ID[/tt]</td>
+			<td>[tt]This__is__a____terrible____ID[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">JavaScript</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](/)[/tt]</td>
+			<td>Works around a special JavaScript SGML-issue: anything looking like HTML tags within a [tt]&lt;script&gt;[/tt] tag must be specially-escaped.</td>
+			<td>[tt]print('&lt;/p&gt;');[/tt]</td>
+			<td>[tt]print('&lt;\/p&gt;');[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt]%[/tt]</td>
+			<td>Make something appropriate as a strict codename. This is used where JavaScript code is involved for the highest level of security.</td>
+			<td>[tt]This[/tt]</td>
+			<td>[tt]This[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td colspan="2"></td>
+			<td>[tt]This is[/tt]</td>
+			<td><em>Hack-attack triggered</em></td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">CSS</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt]'[/tt]</td>
+			<td>Make something appropriate for use as a CSS value (anything that isn't a part of a very constrained non-string value is replaced with underscore).</td>
+			<td>[tt]green and red[/tt]</td>
+			<td>[tt]green_and_red[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4"><em>Both</em> JavaScript <em>and</em> CSS</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](;)[/tt]</td>
+			<td>Make something fit between JavaScript/CSS-style single quotes.</td>
+			<td>[tt]Who's here[/tt]</td>
+			<td>[tt]Who\'s here[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](#)[/tt]</td>
+			<td>Make something fit between JavaScript/CSS-style double quotes.</td>
+			<td>[tt]She said, "Hello"[/tt]</td>
+			<td>[tt]She said, \"Hello\"[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](~)[/tt]</td>
+			<td>Where new lines are not allowed (text is drawn up to reside on a single line).</td>
+			<td>[tt]a<br />b[/tt]</td>
+			<td>[tt]ab[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](^)[/tt]</td>
+			<td>Where new lines become [tt]\n[/tt] (multiple lines drawn together with \n as a separator).</td>
+			<td>[tt]a<br />b[/tt]</td>
+			<td>[tt]a\nb[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">Comcode</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](@)[/tt]</td>
+			<td>Make sure something doesn't look like a Comcode tag.</td>
+			<td>[tt]Use the [url] tag[/tt]</td>
+			<td>[tt]Use the \[url] tag[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">URLs</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt]&amp;[/tt]</td>
+			<td>Make sure something fits in as a URL parameter, with special Comcode URL escaping also.</td>
+			<td>[tt]a&amp;b[/tt]</td>
+			<td>[tt]a:amp:b[/tt]</td>
+		</tr>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt].[/tt]</td>
+			<td>Make sure something fits in as a URL parameter, if you don't want extra Composr URL escaping to happen. Use this when building up non-Composr URLs.</td>
+			<td>[tt]a&amp;b[/tt]</td>
+			<td>[tt]a%26b[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">Special <em>(not actually for escaping)</em></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt]-[/tt]</td>
+			<td colspan="3">Special code to indicate that a construct should not be pre-processed. This is useful very occasionally if you want to stop something like a block being preloaded if it is buried under a Tempcode IF directive and hence doesn't always run. Stopping pre-processing will stop any JavaScript or [abbr="Cascading Style Sheets"]CSS[/abbr] dependencies being called up, however.</td>
+		</tr>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt]+[/tt]</td>
+			<td colspan="3">Must be used as the only escaping character. This indicates that something:[list]
+[*]should not be escaped
+[*]definitely is passed into the template (no user-friendly warnings will be given if it is not)
+[*]should be output directly, the way PHP wants (so will not follows the normal rules for Tempcode display of boolean values or arrays)
+[/list]
+This is substantially faster in terms of the amount of memory, CPU time, and storage. However, it should only really be used by programmers knowing exactly what they are doing.
+</td>
+		</tr>
+	</tbody>
+</table>
+[/semihtml]
+
+It is absolutely crucial that Tempcode programmers use the proper escaping. Without it, all kinds of insecurities and unreliabilities can develop. About 50% of parameters in the default Composr templates actually use HTML escaping so that plain text placed inside a template does not interfere with the HTML structure itself and displays literally.
+
+If you're wondering what the characters refer to: nothing. They are just characters that are easy to type on a regular keyboard. We like the ability to be able to apply the escapings in this shorthand, in the same way that maths benefits from consise symbolic shorthand.
+
+[title="3"]The Tempcode tree (advanced)[/title]
+
+Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
+
 [title="2"]Philosophy[/title]
+
+Tempcode is quite different from other templating languages, and it's worth covering that.
 
 Most templating languages will try to either:
  - use XML, to add programming constructs into the mark-up itself
  - allow PHP code, or an abstraction of PHP code, to run within the templates
 
 Our approach is distinctly different, as we uphold four strong principles:
- - templates should be editable in an HTML editor without Tempcode being broken (although the HTML editor at this time must be able to support 'fragments of HTML')
- - templates should not contain code on the same level as PHP, for security reasons (a theme should not be able to delete files, for instance)
- - there should be a very clear separation of role between templates and code; code should not be put into templates simply because it is convenient, as this muddies the architecture, causing maintenance issues
- - templates should not 'execute': Tempcode should act as a filter/token-placer for output, reshaping output, rather than intertwining code with it. This is again, an architectural issue
-
-Due to our design principles, Tempcode is a very unusual language, with a very simple syntax.
+1) templates should be editable in an HTML editor without Tempcode being broken (although the HTML editor at this time must be able to support 'fragments of HTML')
+2) templates should not contain code on the same level as PHP, for security reasons (a theme should not be able to delete files, for instance)
+3) there should be a very clear separation of role between templates and code; code should not be put into templates simply because it is convenient, as this muddies the architecture, causing maintenance issues
+4) templates should not 'execute': Tempcode should act as a filter/token-placer for output, reshaping output, rather than intertwining code with it. This is again, an architectural issue
 
 [title="3"]Advanced philosophy (experts only)[/title]
 
@@ -24,79 +226,39 @@ For those interested in 'programming language semantics', Tempcode is neither a 
 
 Popular template languages such as 'Velocity' or 'Smarty' are able (and often used) to function in a similar sense to this, but their language design is imperative at core, and the result simply is just far less elegant. Tempcode just 'feels right', with its clean syntax and PHP-separation, whilst other languages look literally like conventional programming code has been added inside the template in an ad-hoc way (even if the full programming syntax has been simplified a bit).
 
-[title="2"]Syntax[/title]
-
-Tempcode provides four constructs other than the plain text of the template itself:
- - [b]Parameters[/b]: [tt]{PARAMETER}[/tt] where PARAMETER is a code-name of something that was actually passed to the template
- - [b]Language strings[/b]: [tt]{!STRING,&lt;parameters>...}[/tt] where STRING is a real language string from a loaded language file (e.g. Banner code could use strings from banners.ini, but most other code could not; global.ini contains strings usable anywhere)
- - [b]Symbols[/b]: [tt]{$SYMBOL,&lt;parameters>...}[/tt] where SYMBOL is a real symbol Composr supports. Embedding a symbol is like making a function call or running a command in the complex place, or a substitution in the simple case
- - [b]Directives[/b]: [tt]{+START,DIRECTIVE,&lt;parameters>...}...{+END,DIRECTIVE}[/tt] where DIRECTIVE is a real directive Composr supports. Directives essentially wrap portions of the template, controlling that portion; they are generally used for types of condition checking (e.g. IF) or loop. There are also directives like [tt]{+IMPLODE,&lt;parameters>...}[/tt] that do not wrap, but work outside the normal "string manipulation" bounds that symbols do
-
-Any Tempcode construct may be escaped (made to fit in an encoding scheme, such as HTML or  URLs, such that special text characters do not interact with that encoding scheme in an insecure/corrupting way) by escaping filters with ease, just by placing the symbol associated with the mode of escaping before the closing '}'. The following escaping filters are provided:
-[list="x"]
-[*][tt]*[/tt] HTML   (or [tt]=[/tt] if you are 100% sure you want the data escaping, even if it comes from something that might already be in HTML)
-	(e.g. [tt]Hello & Goodbye[/tt]  [html]&rarr;[/html]  [tt]Hello &amp; Goodbye[/tt])
-[*][tt];[/tt] Between single quotes
-	(e.g. [tt]Who's here[/tt]  [html]&rarr;[/html]  [tt]Who\'s here[/tt])
-[*][tt]#[/tt] Between double quotes
-	(e.g. [tt]She said, 'Hello'[/tt]  [html]&rarr;[/html]  [tt]She said, \'Hello\'[/tt])
-[*][tt]~[/tt] Where new lines are not allowed
-	(text is drawn up to reside on a single line)
-[*][tt]@[/tt] Comcode
-	(e.g. [tt]Use the \[url] tag[/tt]  [html]&rarr;[/html]  [tt]Use the \\\[url] tag[/tt])
-[*][tt]'[/tt] CSS
-	(anything that isn't a part of a very constrained non-string value is stripped)
-[*][tt]/[/tt] Special JavaScript SGML-issue
-	(e.g. [tt]print('</p>');[/tt]  [html]&rarr;[/html]  [tt]print('<\/p')[/tt])
-[*][tt]^[/tt] Where new lines become '\n'
-	(multiple lines drawn together with [tt]\n[/tt] as a separator)
-[*][tt]&[/tt] URL parameters   (or [tt].[/tt] if you don't want extra Composr URL escaping to happen)
-	(e.g. [tt]a&b[/tt]  [html]&rarr;[/html]  [tt]a%26b[/tt])
-[*][tt]|[/tt] JavaScript/XML IDs
-	(e.g. [tt]This is a -terrible- ID[/tt]  [html]&rarr;[/html]  [tt]This__is__a____terrible____ID[/tt])
-[*][tt]%[/tt] Strict codenames
-	(e.g. [tt]ThiS[/tt] [html]&rarr;[/html] [tt]ThiS[/tt]   [i]but[/i]  [tt]This is[/tt]  --> \[\[hack attack]] triggered)
-[/list]
-You can also use [tt]-[/tt] to indicate that a symbol should not be pre-processed, which is very occasionally useful if you want to stop something like a block being preloaded if it is buried under a Tempcode IF directive and hence doesn't always run. Stopping pre-processing will stop any JavaScript or [abbr="Cascading Style Sheets"]CSS[/abbr] dependencies being called up, however.
-
-An optimisation is to use [tt]+[/tt] as the only escaping symbol. This indicates that something:
- - should not be escaped
- - definitely is passed into the template (no user-friendly warnings will be given if it is not)
- - should be output directly, the way PHP wants (so will not follows the normal rules for Tempcode display of boolean values or arrays)
-This is substantially faster in terms of the amount of memory, CPU time, and storage. However, it should only really be used by programmers knowing exactly what they are doing.
-
-It is absolutely crucial that Tempcode programmers use the proper escaping. Without it, all kinds of insecurities and unreliabilities can develop. About 50% of parameters in the default Composr templates actually use HTML escaping so that plain text placed inside a template does not interfere with the HTML structure itself and displays literally.
-
-[title="2"]The Tempcode tree[/title]
-
-Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
-
 [title="2"]Placing theme images[/title]
 
-To insert an image into your template, use Composr's image parameter: [tt]{$IMG,codename}[/tt]. Replace [tt]codename[/tt] with the image code for the image you want to use. This will turn into the image's URL. Be aware that this does not insert any HTML for you, so to use it fully:
-[code="HTML"]<img src="{$IMG*,page/delete}" alt="Delete This" title="Delete This" />[/code]
-This would insert the image [tt]http://www.mywebsite.com/themes/default/images/page/EN/delete.png[/tt] into your page.
-[staff_note][html]<img src="[/html]{$IMG,page/delete}[html]" alt="Delete This" title="Delete This" />[/html][/staff_note]
+[box="Party like it's 1999" float="right"]
+[center][semihtml]
+<img src="{$IMG*,under_construction_animated}" alt="Under Construction" title="Under Construction" />
+[/semihtml]
 
-The advantage to using the Composr code instead of hand coding the image is two-fold. First, you'll notice that it is able to automatically detect the theme and language that is currently in use (in this case, the default theme and English). Secondly, if you ever move the image, you don't have to edit every page that ever used it to point to the new location. You can edit images from within the themes management screen (go to Admin Zone > Style > Themes).
+(this guy's back must
+be really hurting by now)[/center]
+[/box]
+This is your first practical example of Tempcode, and perhaps the most common use of Tempcode symbols.
 
-[title="2"]Numbers and logic[/title]
+To insert an image into your template, use Composr's image symbol: [tt]{$IMG,codename}[/tt]. Replace [tt]codename[/tt] with the image code for the image you want to use. This will turn into the image's URL. Be aware that this does not insert any HTML for you, so to use it fully:
+[code="HTML"]<img src="{$IMG*,under_construction_animated}" alt="Under Construction" title="Under Construction" />[/code]
+This would insert the image [tt]http://www.mywebsite.com/themes/default/images/under_construction_animated.png[/tt] into your page, as shown on the right.
 
-Tempcode is an entirely string based language. It does, however, provide significant logic and number functionality, which is made possible by conversion from text as symbols require. Numbers are read directly, and should not contain any special formatting other than the British English decimal point (.) symbol. 'True' is encoded as '1' and 'False' is encoded as '0'.
+The advantage to using the Composr code instead of hand coding the image is two-fold. First, you can have different versions of theme images for different languages and themes. Secondly, if you ever move the image, you don't have to edit every page that ever used it to point to the new location. You can edit images from within the themes management screen (go to Admin Zone > Style > Themes).
 
 [title="2"]Symbols[/title]
 
-[title="3"]Notes[/title]
-
-If a symbol is missing important parameters, it generally is skipped.
-
-Some of the more advanced symbols are not fully laid-out, but they are all defined in [tt]sources/symbols.php[/tt] in an obvious way, so advanced users can read this file.
-
-You are very unlikely to ever want to use rows in red, as they are intended for use by core Composr code.
+[title="3"]Numbers and logic[/title]
 
 Tempcode does not have explicit data-types, everything is text. However we may interpret the text in symbols as follows:
- - Tempcode number: the text is assumed to be a number written as a normal decimal string (e.g. 12345)
- - Tempcode boolean: the text is assumed to be 0 (meaning false) or 1 (meaning true)
+ - Tempcode number: the text is assumed to be a number written as a normal decimal string (e.g. 12345). Numbers should not contain any special formatting other than the British English decimal point (.) symbol.
+ - Tempcode boolean: the text is assumed to be 0 (meaning false) or 1 (meaning true).
+
+[title="3"]Further notes[/title]
+
+If a symbol is missing important parameters, it generally is skipped entirely.
+
+Some of the more advanced symbols are not fully laid-out, but they are all defined in [tt]sources/symbols.php[/tt] or [tt]sources/symbols2.php[/tt] in an obvious way, so advanced users can read this file.
+
+You are very unlikely to ever want to use rows in red, as they are intended for use by core Composr code.
 
 [title="3"]General[/title]
 
@@ -1159,29 +1321,29 @@ The [tt]{$THUMBNAIL}[/tt] tag is actually much more sophisticated and powerful t
 
 Usage: [tt]{$THUMBNAIL,source_image,widthxheight,output_dir,filename,fallback_image,type,where,background,only_make_smaller}[/tt]
 where:
- - source_image is the URL to the full image
- - widthxheight is the desired width/height for the thumbnail. For types (see below) of width or height or crop you can omit either of the width or height for automatically calculated proportionality (e.g. [tt]x20[/tt] for just a height). If you specify both for crop it crops to the exact specified box rather than to the implied proportional box.
- - output_dir is the name of a directory under Composr's "uploads" directory
- - filename is the name of the thumbnail filename. If not provided it will be automatically chosen based on the source_image and an articulation of the thumbnail settings
- - fallback_image is the URL to the image to use if no thumbnail could be generated. If not provided the source_image will be used
- - type is either:
-  - "box" for an image which should be maximally fitted into the given box dimensions (the default)
-  - "width" for an image which is stretched to the given width and a height in proportion to that
-  - "height" for an image which is stretched to the given height and a width in proportion to that
-  - "crop" for an image which has been shrunk until one of its dimensions matched that given and the rest has been chopped off
-  - "pad" for an image which has been shrunk until it completely fits within the given dimensions, and then padded out
-  - "pad_vert_crop_vert" for an image that may only have cropping or padding done above/below and therefore gets stretched to force that to be the case
-  - "pad_horiz_crop_horiz" for an image that may only have cropping or padding done left/right and therefore gets stretched to force that to be the case
- - The "where" argument is not needed for "width" or "height" type thumbnails. For "crop" & "pad" types it is where to crop/pad:
-  - "start"
-  - "end"
-  - "both" (assuming bottom-to-top and right-to-left)
+ - [tt]source_image[/tt] is the URL to the full image
+ - [tt]widthxheight[/tt] is the desired width/height for the thumbnail. For types (see below) of width or height or crop you can omit either of the width or height for automatically calculated proportionality (e.g. [tt]x20[/tt] for just a height). If you specify both for crop it crops to the exact specified box rather than to the implied proportional box.
+ - [tt]output_dir[/tt] is the name of a directory under Composr's "uploads" directory
+ - [tt]filename[/tt] is the name of the thumbnail filename. If not provided it will be automatically chosen based on the source_image and an articulation of the thumbnail settings
+ - [tt]fallback_image[/tt] is the URL to the image to use if no thumbnail could be generated. If not provided the source_image will be used
+ - [tt]type[/tt] is either:
+  - [tt]box[/tt] for an image which should be maximally fitted into the given box dimensions (the default)
+  - [tt]width[/tt] for an image which is stretched to the given width and a height in proportion to that
+  - [tt]height[/tt] for an image which is stretched to the given height and a width in proportion to that
+  - [tt]crop[/tt] for an image which has been shrunk until one of its dimensions matched that given and the rest has been chopped off
+  - [tt]pad[/tt] for an image which has been shrunk until it completely fits within the given dimensions, and then padded out
+  - [tt]pad_vert_crop_vert[/tt] for an image that may only have cropping or padding done above/below and therefore gets stretched to force that to be the case
+  - [tt]pad_horiz_crop_horiz[/tt] for an image that may only have cropping or padding done left/right and therefore gets stretched to force that to be the case
+ - The [tt]where[/tt] argument is not needed for "width" or "height" type thumbnails. For "crop" & "pad" types it is where to crop/pad:
+  - [tt]start[/tt]
+  - [tt]end[/tt]
+  - [tt]both[/tt] (assuming bottom-to-top and right-to-left)
   - If the "where" option is omitted for cropped thumbnails then it will be centred. For padded thumbnails it will resize the image to get rid of any need for padding (ie. "padding none").
- - For "pad" types the background is used to pad the image:
+ - For [tt]pad[/tt] types the background is used to pad the image:
   - a hex code for a specific color (with alpha)
-  - or, "none" for no padding (ie. the image dimensions are not those given, but will fit inside them).
+  - or, [tt]none[/tt] for no padding (ie. the image dimensions are not those given, but will fit inside them).
   - or, if the option is omitted for padded thumbnails then the average color of the image is used.
- - only_make_smaller can be set to "1" if the image should not be resized at all if it is already smaller than the requested thumbnail size
+ - [tt]only_make_smaller[/tt] can be set to "1" if the image should not be resized at all if it is already smaller than the requested thumbnail size
 
 [title="3"]Logic[/title]
 
@@ -1199,14 +1361,12 @@ Understanding of these symbols requires an understanding of basic boolean operat
 
 	<tbody>
 		<tr style="background: #DDFFDD">
-			<td>{$?,1,shows if true,shows if not true}</td>
-			<td>
-				Do an inline IF test, outputting the second parameter if the first evaluates to true and the third (optional parameter) if it does not<br /><br />
-				<kbd>{$?,0,yes,no}</kbd> &rarr; <kbd>no</kbd><br />
-				<kbd>{$?,1,yes,no}</kbd> &rarr; <kbd>yes</kbd><br />
-				<kbd>{$?,0,yes}</kbd> &rarr; (blank)<br />
-				<kbd>{$?,1,yes}</kbd> &rarr; <kbd>yes</kbd>
-			</td>
+			<td>{$EQ,a,b}</td>
+			<td>Test for string equality (pass in any number of strings to check they are all the same)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NEQ,a,b}</td>
+			<td>Test for string inequality (this is the same as [/html][tt]{$NOT,{$EQ,...}}[/tt])[html]</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$NOT,1}</td>
@@ -1218,27 +1378,19 @@ Understanding of these symbols requires an understanding of basic boolean operat
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$NOR,1,1}</td>
-			<td>Boolean NOR (this is the same as [/html][tt]{$NOT,{$OR,...}}[/tt][html])</td>
+			<td>Boolean NOR (this is the same as [/html][tt]{$NOT,{$OR,...}}[/tt][html]). NOR means "Neither"</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$XOR,1,1}</td>
-			<td>Boolean XOR (pass in two Tempcode booleans to check that just one of them is true but not both of them)</td>
-		</tr>
-		<tr style="background: #DDFFDD">
-			<td>{$NAND,1,1}</td>
-			<td>Boolean NAND (this is the same as [/html][tt]{$NOT,{$AND,...}}[/tt][html])</td>
+			<td>Boolean XOR (pass in two Tempcode booleans to check that just one of them is true but not both of them). XOR means "one or the other but not both"</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$AND,1,1}</td>
 			<td>Boolean AND (pass in any number of Tempcode booleans to check they are all true)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$EQ,a,b}</td>
-			<td>Test for string equality (pass in any number of strings to check they are all the same)</td>
-		</tr>
-		<tr style="background: #DDFFDD">
-			<td>{$NEQ,a,b}</td>
-			<td>Test for string inequality (this is the same as [/html][tt]{$NOT,{$EQ,...}}[/tt])[html]</td>
+			<td>{$NAND,1,1}</td>
+			<td>Boolean NAND (this is the same as [/html][tt]{$NOT,{$AND,...}}[/tt][html]). NAND means "Not both"</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$LT,1,2}</td>
@@ -1255,6 +1407,16 @@ Understanding of these symbols requires an understanding of basic boolean operat
 		<tr style="background: #DDFFDD">
 			<td>{$IS_NON_EMPTY,this obviously is not blank}</td>
 			<td>Find whether a string is not blank</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$?,1,shows if true,shows if not true}</td>
+			<td>
+				Do an inline IF test, outputting the second parameter if the first evaluates to true and the third (optional parameter) if it does not<br /><br />
+				<kbd>{$?,0,yes,no}</kbd> &rarr; <kbd>no</kbd><br />
+				<kbd>{$?,1,yes,no}</kbd> &rarr; <kbd>yes</kbd><br />
+				<kbd>{$?,0,yes}</kbd> &rarr; (blank)<br />
+				<kbd>{$?,1,yes}</kbd> &rarr; <kbd>yes</kbd>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -1636,9 +1798,9 @@ Note that you cannot use directives for symbol parameters because directives con
 [title="2"]Examples[/title]
 
 The most important directives are:
- - IF_NON_EMPTY
- - IF_EMPTY
- - IF
+ - [tt]IF_NON_EMPTY[/tt]
+ - [tt]IF_EMPTY[/tt]
+ - [tt]IF[/tt]
 
 [title="3"]IF_NON_EMPTY[/title]
 
@@ -1720,10 +1882,10 @@ Here's another 'IF' directive showing a more complex computation:
 {+END}
 [/code]
 
-Background: a unix timestamp is a common measurement of time on computers- it represents the number of seconds since 1970 and because of its nature as a simple decimal number, is very useful for performing arithmetic.
+Background: a unix timestamp is a common measurement of time on computers -- it represents the number of seconds since 1970 and because of its nature as a simple decimal number, is very useful for performing arithmetic.
 This example checks to see if [tt]ADD_DATE_RAW[/tt] is less than the current unix timestamp minus 86400. 86400 is the number of seconds in a day, so in other words the example checks to see if [tt]ADD_DATE_RAW[/tt] is at least a day in the past. Because [tt]ADD_DATE_RAW[/tt] is often passed into templates that display content, it checks to see if the content is at least a day old.
 
-I threw [tt]{$SITE_NAME}[/tt] into the example just to demonstrate symbols are not only for use in IF directives- this one is being used to perform a simple placement of the website name. All symbols do is compute results, so those results might be used for further computations as parameters to computational symbols (such as 'SUBTRACT'), or they might be passed into a directive, or they might be simply output. It merely depends on where they are placed.
+I threw [tt]{$SITE_NAME}[/tt] into the example just to demonstrate symbols are not only for use in IF directives -- this one is being used to perform a simple placement of the website name. All symbols do is compute results, so those results might be used for further computations as parameters to computational symbols (such as 'SUBTRACT'), or they might be passed into a directive, or they might be simply output. It merely depends on where they are placed.
 
 Tempcode is extremely powerful, and hopefully now you can see how symbols, directives, and parameters, can come together to allow great things to happen!
 
@@ -1801,10 +1963,11 @@ The template editor has special support for the GUIDs, showing what GUIDs a temp
 If you enter the template editor from the 'Template tree' screen then you will be told the GUID that was used by the node in the tree that you selected.
 
 [concepts
- 1_key="symbol"           1_value="A special element that may be inserted into "
+ 1_key="symbol"           1_value="A special element that may be inserted into"
  2_key="parameter"        2_value="A parameter to a template; only parameters that the code calling the template supports may be used"
  3_key="directive"        3_value="A tool used to surround an area of a template between a START and an END, to apply something to it (such as only using it conditionally)"
- 4_key="variable"         4_value="Two uses: 1) Either of a parameter, symbol, directive or language string reference. 2) A named piece of memory used by Tempcode symbols that manipulate variables."
+ 4_key="variable"         4_value="A named piece of memory used by Tempcode symbols that manipulate variables, or informally some internal other piece of Composr memory that Tempcode has a way of accessing"
+ 5_key="construct"        5_value="A Tempcode symbol, parameter, or language reference"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
