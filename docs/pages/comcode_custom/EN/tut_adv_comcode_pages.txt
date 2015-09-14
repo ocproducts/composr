@@ -156,15 +156,15 @@ Comcode pages may be organised to form that tree structure and then those Comcod
 
 [title="3"]Embedding entries[/title]
 
-To embed entries you may use the '[tt]main_content[/tt]' block. This is described in more detail in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
+To embed entries you may use the [tt]main_content[/tt] block. This is described in more detail in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
 
 [title="3"]Embedding categories[/title]
 
-The '[tt]main_multi_content[/tt]', '[tt]main_cc_embed[/tt]', '[tt]main_gallery_embed'[/tt] and '[tt]main_news[/tt]' blocks allow you to combine categories with your own personal surrounding Comcode.
+The [tt]main_multi_content[/tt], [tt]main_cc_embed[/tt], '[tt]main_gallery_embed'[/tt] and [tt]main_news[/tt] blocks allow you to combine categories with your own personal surrounding Comcode.
 
 [title="3"]Embedding anything[/title]
 
-We provide a special module-->block feature to integrate any module screen into a Comcode page. This is done using the '[tt]main_include_module[/tt]' block. Further details in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
+We provide a special module-->block feature to integrate any module screen into a Comcode page. This is done using the [tt]main_include_module[/tt] block. Further details in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
 
 [concepts
  1_key="Block"   1_value="Building blocks that can be inserted into a Comcode page, in order to add interactive and data-bound functionality"

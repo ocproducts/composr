@@ -38,7 +38,7 @@ Almost all users would best choose managed menus.
 
 The Comcode/managed menu system supports 'template sets' to allow different kinds of menu on a website.
 
-The template set to use is specified as one of the parameters to the '[tt]menu[/tt]' block.
+The template set to use is specified as one of the parameters to the [tt]menu[/tt] block.
 
 The following template sets exist:
  - [b]embossed[/b] (the default type, a very simple single-layered type for side-placed menus; big buttons to make it tablet-friendly; does not support multiple-levels)
@@ -104,7 +104,7 @@ In the form part of the interface there are the following fields:
 
 Entry points are used in the site-tree tool in the menu editor.
 
-Entry points are basically Composr links that are robust to changes in your website and are of the syntax, '[tt]<zone>:<page>[:<param>=<val>...][/tt]'. In other words, they all have at least a zone and a page, and may also specify additional parameters: for example, '[tt]site:downloads:type=add[/tt]' is the entry point to add a download. If you do not want to hard-code what zone a page is in (perhaps because you might move it in the future), you may specify '_SEARCH' (do a search, which is slightly inefficient) or '_SELF' (the zone the menu is being displayed in).
+Entry points are basically Composr links that are robust to changes in your website and are of the syntax, [tt]<zone>:<page>[:<param>=<val>...][/tt]. In other words, they all have at least a zone and a page, and may also specify additional parameters: for example, [tt]site:downloads:type=add[/tt] is the entry point to add a download. If you do not want to hard-code what zone a page is in (perhaps because you might move it in the future), you may specify '_SEARCH' (do a search, which is slightly inefficient) or '_SELF' (the zone the menu is being displayed in).
 
 Entry points are the subset of all "page-links" that point to specific parts of the software, rather than some content that you have added. Page-links are described in full in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
 

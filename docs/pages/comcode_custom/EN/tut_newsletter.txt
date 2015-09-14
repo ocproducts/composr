@@ -129,10 +129,10 @@ Creating templated newsletters is best shown by example (this is the newsletter 
 </html>
 [/code]
 
-Note how the example includes the 'html' tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard '[tt]MAIL[/tt]' template.
+Note how the example includes the 'html' tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard [tt]MAIL[/tt] template.
 
 You have the following template variables available to you (beyond all the default capabilities of Comcode):
- - [b]title[/b], The subject line of the email (and also the equivalent of '[tt]{TITLE}[/tt]' in the [tt]MAIL[/tt] template)
+ - [b]title[/b], The subject line of the email (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL[/tt] template)
  - [b]forename[/b], The forename of the subscriber (may be blank if it is not known)
  - [b]surname[/b], The surname of the subscriber (may be blank if it is not known)
  - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER[/tt] language string -- depending on what data is available on the reader)

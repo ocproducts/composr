@@ -77,19 +77,19 @@ You can configure the awards (when you add or edit the award itself) to carry a 
 
 [title="3"]Arbitrary randomisation display[/title]
 
-If you do not want to go to the effort of creating an award and manually awarding content for it, then you can just use the '[tt]main_content[/tt]' block in randomisation mode. This is easy to setup, it's just a block option when you add that block. You get the choice of which categories you want to randomly display from by way of a 'select' block parameter (written in [concept]Selectcode support[/concept] syntax).
+If you do not want to go to the effort of creating an award and manually awarding content for it, then you can just use the [tt]main_content[/tt] block in randomisation mode. This is easy to setup, it's just a block option when you add that block. You get the choice of which categories you want to randomly display from by way of a 'select' block parameter (written in [concept]Selectcode support[/concept] syntax).
 
 By doing this you use the award system without actually using an award.
 
 [title="3"]Arbitrary content display[/title]
 
-If you want to display a specific item of content as you require, but without actually wrapping it up in an actual award, then you may use the '[tt]main_content[/tt]' block with parameters to specify exactly what item you wish to display.
+If you want to display a specific item of content as you require, but without actually wrapping it up in an actual award, then you may use the [tt]main_content[/tt] block with parameters to specify exactly what item you wish to display.
 
 As with randomisation, this allows you to use the award system without actually using an award.
 
 [title="2"]Using module screens as blocks[/title]
 
-Whilst the '[tt]main_content[/tt]' block (see above) can show content within blocks, it is conceivable that you might want to display full module screens as if they were blocks. This is possible with the '[tt]main_include_module[/tt]' block.
+Whilst the [tt]main_content[/tt] block (see above) can show content within blocks, it is conceivable that you might want to display full module screens as if they were blocks. This is possible with the [tt]main_include_module[/tt] block.
 
 For example:
 [code="Comcode"]

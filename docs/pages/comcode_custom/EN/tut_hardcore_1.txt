@@ -92,7 +92,7 @@ At the end of each of the tutorial in this series I will be releasing some exerc
 
 [title="3"]Exercise-1: Hit counter[/title]
 
-Make a block that acts as a good old-style hit counter. To do this you'll probably want to use the '[tt]get_value[/tt]' and '[tt]set_value[/tt]' functions. I'm not going to tell you where they are because you can find them yourself by doing a file search for '[tt]function get_value([/tt]' -- once you do, you can view the actual source code for the functions in your text editor.
+Make a block that acts as a good old-style hit counter. To do this you'll probably want to use the [tt]get_value[/tt] and [tt]set_value[/tt] functions. I'm not going to tell you where they are because you can find them yourself by doing a file search for [tt]function get_value([/tt] -- once you do, you can view the actual source code for the functions in your text editor.
 
 [title="3"]Exercise-2: Post requestor[/title]
 

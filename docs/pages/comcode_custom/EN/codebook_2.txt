@@ -187,7 +187,7 @@ It is important that:
 [*]You use the "//" bits. Usually Composr will be running as HTML even though it is marked-up as XHTML (this is a little known fact but is the case for almost websites out there, whatever they are running). HTML interprets everything in the script tag as CDATA automatically so everything inside there is parsed as JavaScript; the "//" bits are simply JavaScript comments to stop the CDATA bits being interpreted as JavaScript code.
 [*]You should actually use CDATA so the document does conform as XHTML.
 [*]You should not put it all on one line, because then the JavaScript line-comment will end up commenting all the code out and nothing will happen.
-[*]Don't use any Composr JavaScript except for JavaScript in the main '[tt]global.js[/tt]' library, unless you have put it inside an '[tt]onload[/tt]' event handler, like:
+[*]Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside an [tt]onload[/tt] event handler, like:
 [code="HTML"]
 add_event_listener_abstract(window,'load',function() { ... });
 [/code]
@@ -256,7 +256,7 @@ AJAX requests can be either synchronous or asynchronous. A synchronous request r
 In our JavaScript template file, we typically define basically two functions if we are writing asynchronous AJAX. One function is for initiating the AJAX event (can be any name you like) and another is to handle the response of the AJAX script (has any name, but it must be passed to the Composr [tt]do_ajax_request[/tt] function). If you are writing synchronous AJAX you can pass the null value instead of a function, and the [tt]do_ajax_request[/tt] function will respond with the result.
 
 To handle the AJAX request on the server-side we will need to call a new entry-point script that we'll place in the 'data' folder; so we make a URL to this script, and of course we also need to write it.
-In the [tt]data/<script-name>.php[/tt], we [tt]require_code[/tt] a file that will contain a new PHP function to implement our server-side behaviour and then call that function (and nothing else). It is a Composr convention to define this function in [tt]sources/ajax.php[/tt], but we don't have to (and shouldn't if it's not a very core AJAX function to Composr). Remember if you are writing third-party functionality it should go into a file under '[tt]sources_custom/[/tt]' instead.
+In the [tt]data/<script-name>.php[/tt], we [tt]require_code[/tt] a file that will contain a new PHP function to implement our server-side behaviour and then call that function (and nothing else). It is a Composr convention to define this function in [tt]sources/ajax.php[/tt], but we don't have to (and shouldn't if it's not a very core AJAX function to Composr). Remember if you are writing third-party functionality it should go into a file under [tt]sources_custom/[/tt] instead.
 
 Note that the Composr entry-point script code is 99% boilerplate. Only the final few lines are customised, the rest is copy&pasted.
 
@@ -303,7 +303,7 @@ echo '</result></request>';
 [/code]
 
 Once the server has returned a result to the client, it will be processed for handling.
- - For synchronous requests, the result object is returned from [tt]do_ajax_request[/tt] linearly (asynchronous requests will return nothing from [tt]do_ajax_request[/tt]). Code may then use the '[tt]responseText[/tt]' and '[tt]responseXML[/tt]' properties of this as required.
+ - For synchronous requests, the result object is returned from [tt]do_ajax_request[/tt] linearly (asynchronous requests will return nothing from [tt]do_ajax_request[/tt]). Code may then use the [tt]responseText[/tt] and [tt]responseXML[/tt] properties of this as required.
  - For asynchronous requests, the response handler (the 'method') function is called, with two parameters: [tt]ajax_result_frame[/tt] (the full XML), and [tt]ajax_result[/tt] (the pay-load XML). It is the responsibility for the method function to process the XML in ajax_result (ajax_result_frame is unlikely to be used by the method) -- the code can assume the XML will be valid because HTTP status error handling and XML frame error handling will already have occurred.
 There is an implied format contract between the PHP code we wrote and the JavaScript we wrote. In other words, we are not likely to have incompatibilities between the data of the server (PHP) and client (JavaScript) as you will have designed them together. Therefore you don't need to write any special error handling code to make sure the structure returned is correct, unless you've written in your own extra error handling into the pay-load.
 

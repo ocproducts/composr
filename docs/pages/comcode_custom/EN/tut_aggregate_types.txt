@@ -89,7 +89,7 @@ Subpaths are from the content repository, relative to where the content type is 
 
 'Access' rules set view permissions, and 'privilege' rules set privileges. '1' grants access, and '0' denies access.
 
-'usergroup' references are to usergroup labels. '[tt]*[/tt]' is understood specially as a wildcard, meaning to set against all usergroups.
+'usergroup' references are to usergroup labels. [tt]*[/tt] is understood specially as a wildcard, meaning to set against all usergroups.
 Instead of a 'usergroup', you can specify a 'member', which is a reference to a member label (i.e. username).
 
 The 'preset' values may be any of the following:

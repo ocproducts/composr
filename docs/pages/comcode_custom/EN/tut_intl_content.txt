@@ -34,7 +34,7 @@ Log into SSH on your server (or equivalent process to receive a command prompt) 
 [code="Bash"]
 php data/commandr.php
 [/code]
-(this assumes you run it from the Composr base directory, and that the '[tt]php[/tt]' command is in your path)
+(this assumes you run it from the Composr base directory, and that the [tt]php[/tt] command is in your path)
 
 Then the Commandr command required is:
 [code="Commandr"]

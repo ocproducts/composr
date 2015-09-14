@@ -72,7 +72,7 @@ Composr is split into addons. Some addons are core, some are optional. Optional 
 
 Addons contain module-pages (and blocks), and it is these modules (and blocks) that define things like database structure. Actually addons may define this too directly in their registry file, but it is rare for us to do it this way. Modules (and blocks) are independently versioned, but the versions of individual modules (and blocks) are hidden from user -- the module versions exist so that modules have a way of tracking when they need to upgrade themselves (a mismatch between the version on-disk, and the installed version in the database will prompt a module to upgrade itself).
 
-Composr knows an addon is installed if there is an '[tt]addon_registry[/tt]' hook present. File lists for addons are defined in these hooks. Templates may work against the 'ADDON_INSTALLED' symbol, to guard dependencies; likewise, code may use the [tt]addon_installed[/tt] function. In some cases, modularisation is enforced using hooks rather than extra logic; this is done in the case where there is a clear concept that can be created, which might be useful for other people to add into in the future (e.g. the 'side_stats' blocks allows different addons to plug in hooks so their stats can be displayed). Third-party addons do not have so much luxury over adding extra code into the main Composr code, so must rely on either existing hooks, or code overriding.
+Composr knows an addon is installed if there is an [tt]addon_registry[/tt] hook present. File lists for addons are defined in these hooks. Templates may work against the 'ADDON_INSTALLED' symbol, to guard dependencies; likewise, code may use the [tt]addon_installed[/tt] function. In some cases, modularisation is enforced using hooks rather than extra logic; this is done in the case where there is a clear concept that can be created, which might be useful for other people to add into in the future (e.g. the 'side_stats' blocks allows different addons to plug in hooks so their stats can be displayed). Third-party addons do not have so much luxury over adding extra code into the main Composr code, so must rely on either existing hooks, or code overriding.
 
 Addons may define dependencies.
 
@@ -206,7 +206,7 @@ function csv_escape($value)
 
 A module is a PHP file that defines one class. For a page in the 'site' zone named 'example', the file would be [tt]site/pages/modules/example.php[/tt] (or [tt]site/pages/modules_custom/example.php[/tt] if this module is non-official, or a modified version of an official module). Our module 'example' would contain a class named 'Module_example'. Usually this class does not inherit, although some modules do inherit from a class named 'Standard_crud_module', which is used for acceleration/standardising development of add/edit/delete user interfaces.
 
-[title="5"]The '[tt]info[/tt]' function[/title]
+[title="5"]The [tt]info[/tt] function[/title]
 
 The module class must include a function named [tt]info[/tt], which returns a map of fields that describe the module:
  - [tt]author[/tt] -- this is a string indicating who authored the module. The author does not need to be defined anywhere else -- this field is only intended for human-reading.
@@ -217,9 +217,9 @@ The module class must include a function named [tt]info[/tt], which returns a ma
  - [tt]update_require_upgrade[/tt] -- this should be either 0 or 1 (it defaults to 0 if it is left out). If it is 1 then the [tt]install[/tt] function will be called when Composr detects that the module's version has increased since it was originally installed. It should only be set to 1 if the [tt]install[/tt] function is written to be able to perform upgrades (this requires extra effort).
  - [tt]locked[/tt] -- this prevents administrators from uninstalling this module. This should be set to false unless the module is a core module that should never be uninstalled.
 
-[title="5"]The '[tt]run[/tt]' function[/title]
+[title="5"]The [tt]run[/tt] function[/title]
 
-The module class must include a function named [tt]run[/tt]. This function is called when the module is loaded up as a page. The function should never use '[tt]echo[/tt]' or '[tt]print[/tt]' commands, but rather, it returns page output in Tempcode format using the [tt]do_template[/tt] function. Tempcode is essentially a tree structure of composed template output, and will be properly explained later in the tutorial.
+The module class must include a function named [tt]run[/tt]. This function is called when the module is loaded up as a page. The function should never use [tt]echo[/tt] or [tt]print[/tt] commands, but rather, it returns page output in Tempcode format using the [tt]do_template[/tt] function. Tempcode is essentially a tree structure of composed template output, and will be properly explained later in the tutorial.
 
 The [tt]run[/tt] function typically is written to do 4 things:
 1) Loads-up/records dependencies that all screens in the module use, using the [tt]require_code[/tt]/[tt]require_lang[/tt]/[tt]require_css[/tt]/[tt]require_javascript[/tt] API calls.
@@ -250,7 +250,7 @@ function run()
 }
 [/code]
 
-[title="5"]The '[tt]get_entry_points[/tt]' function[/title]
+[title="5"]The [tt]get_entry_points[/tt] function[/title]
 
 This function returns a mapping that identifies all the supported 'types' (screens) that may be launched directly via URL (i.e. all the ones that don't rely on form submissions to have been sent to them). The mapping maps from the 'type' to a language string codename that provides a human-readable label to describe the screen.
 It is used in the Sitemap, which in turn is used by things like the menu editor (to help Composr website administrators find links to add to their menus).
@@ -264,7 +264,7 @@ function get_entry_points($check_perms = true, $member_id = null, $support_cross
 [/code]
 returns a mapping for two entry-points: the 'browse' screen (which almost any module will have), and the 'tree_view' screen. 'ROOT' and 'TREE' are language strings.
 
-[title="5"]The '[tt]install[/tt]' and '[tt]uninstall[/tt]' functions[/title]
+[title="5"]The [tt]install[/tt] and [tt]uninstall[/tt] functions[/title]
 
 Modules are responsible for the installation, upgrading, and uninstallation of the database (and some filesystem) parts of the system that they provide screens for.
 For example, the 'downloads' module sets up:
@@ -285,7 +285,7 @@ If you are supplying an updated module to a user, outside of the formal addon pr
  - Make sure the user does [b]not[/b] uninstall the old module, because we do not wish to lose the data
  - Get the user to simply replace the old module file with your new one; just accessing it will then cause it to auto-upgrade
 
-[title="5"]The '[tt]install[/tt]' function[/title]
+[title="5"]The [tt]install[/tt] function[/title]
 
 All database access is Composr is performed through the database objects. For almost all situations, the [tt]$GLOBALS['SITE_DB'][/tt] object will be the one to be use.
 
@@ -347,9 +347,9 @@ If multi-language content is not enabled all the same APIs are used, but the 'tr
 
 When developing a module you might find it easiest to set up the database tables by hand, and then code in the installer afterwards. Otherwise it can be time-consuming going backwards and forwards reinstalling modules every time a small change is required.
 
-Be aware that the '[tt]get_option[/tt]' function always returns a string regardless of the 'type' of the config option. All config options are stored as strings, and the 'type' only specifies the input mechanism.
+Be aware that the [tt]get_option[/tt] function always returns a string regardless of the 'type' of the config option. All config options are stored as strings, and the 'type' only specifies the input mechanism.
 
-[title="5"]Upgrading via the '[tt]install[/tt]' function[/title]
+[title="5"]Upgrading via the [tt]install[/tt] function[/title]
 
 The code in the [tt]install[/tt] function needs to analyse the parameters passed to see if an upgrade is being performed (and from what version) or if a new install is being performed. The code is then structured to act accordingly.
 For a new module there is no need to consider how upgrades would happen.
@@ -404,7 +404,7 @@ function install($upgrade_from = null, $upgrade_from_hack = null)
 }
 [/code]
 
-[title="5"]The '[tt]uninstall[/tt]' function[/title]
+[title="5"]The [tt]uninstall[/tt] function[/title]
 
 The [tt]uninstall[/tt] function is usually very simple, with calls to the [tt]drop_table_if_exists[/tt] function of a database object. Uninstall function takes no parameters and doesn't return a value.
 
@@ -415,7 +415,7 @@ The following object methods are not actually called as methods, but actually as
  - [tt]get_entry_points[/tt]
  - [tt]install[/tt]
  - [tt]uninstall[/tt]
-This means that you cannot use '[tt]$this[/tt]' inside the code.
+This means that you cannot use [tt]$this[/tt] inside the code.
 Architecturally this is not ideal, but for practical reasons it was necessary because of the PHP memory limit. Upon installation, or module querying (e.g. to build the site map), instantiating all objects fully would use a lot more memory than the PHP memory limit would allow.
 
 [title="5"]Config options[/title]
@@ -722,7 +722,7 @@ This code finds all modules/search hooks, then loops over the list of hook names
 4) calls the [tt]info[/tt] function on the hook, loading it's results in [tt]$info[/tt]. Again, this is an assumption via a convention for these kinds of hooks, that they will have an [tt]info[/tt] function that behaves in a certain way. From this particular example (search hook) our [tt]info[/tt] function will return us an array structure of details about what the hook can do, and later the code will determine whether to put an 'advanced' search link in for the hook according to whether it supports advanced searches or not (I haven't shown that code here for conciseness).
 
 (*1) Not quite. Hook files of the same kind might be in [tt]sources/hooks/<something>/<somethingelse>[/tt] and also [tt]sources_custom/hooks/<something>/<somethingelse>[/tt].
-This is because you place custom files in '[tt]sources_custom[/tt]' so that they are easily identified as such. It is very common in the case of hooks, if you're adding a new hook to the software.
+This is because you place custom files in [tt]sources_custom[/tt] so that they are easily identified as such. It is very common in the case of hooks, if you're adding a new hook to the software.
 
 (*2) The Conversr members module does member searching, but does not use the search hooks. This search is separate and hard-coded. There is still a search hook for member searching for the search module to use though.
 You can generally tell what the hook is used by by it's file path. For example hooks in [tt]sources/hooks/modules/search[/tt] are for the search module.
@@ -742,7 +742,7 @@ foreach (array_keys($hooks) as $hook) {
 }
 [/code]
 
-In this case you can see the code assumes the hooks have a '[tt]->run[/tt]' method that takes a member ID as a parameter, and returns an array. Again this is the 'contract' these hooks have to meet.
+In this case you can see the code assumes the hooks have a [tt]->run[/tt] method that takes a member ID as a parameter, and returns an array. Again this is the 'contract' these hooks have to meet.
 
 Let's look at one of our hook implementations to see what code it has in it. We will look at the 'calendar' members hook ([tt]sources/hooks/members/calendar.php[/tt]):
 
@@ -782,9 +782,9 @@ class Hook_members_calendar
 }
 [/code]
 
-Notice how this class is named '[tt]Hook_members_calendar[/tt]'. The '[tt]calendar[/tt]' bit comes from the filename, the '[tt]Hook_[/tt]' bit is a standard contention for any hook, and the '[tt]members_[/tt]' bit is something all the members hooks are using as a convention and really is just there to stop namespace conflicts (e.g. if we also have a calendar hook for search we wouldn't want these two classes in Composr to have the name, so we try to make our sets of hooks use their own unique naming convention to keep them apart).
+Notice how this class is named [tt]Hook_members_calendar[/tt]. The [tt]calendar[/tt] bit comes from the filename, the [tt]Hook_[/tt] bit is a standard contention for any hook, and the [tt]members_[/tt] bit is something all the members hooks are using as a convention and really is just there to stop namespace conflicts (e.g. if we also have a calendar hook for search we wouldn't want these two classes in Composr to have the name, so we try to make our sets of hooks use their own unique naming convention to keep them apart).
 
-As discussed previously, these hooks have a convention of having a '[tt]run[/tt]' method that takes a member ID as a parameter, and thus the hook implementation above has this. The code inside the method does 3 things:
+As discussed previously, these hooks have a convention of having a [tt]run[/tt] method that takes a member ID as a parameter, and thus the hook implementation above has this. The code inside the method does 3 things:
 1) It returns no-results if the calendar addon is not installed. We don't strictly need to do this, as this file won't be here normally if the calendar addon is not installed (the hook file is listed as one of the files in the calendar addon so would be uninstalled along with other calendar files). The reason we do it is in case the file was accidentally restored after the calendar addon was removed (there are many ways someone might accidentally do that).
 2) It checks a couple of permissions. One is that the accessing user has permission to 'assume_any_member' -- if they don't, no-results are returned, so the link won't show (this particular hook's link is for the purposes of admins, to allow them to access other member's calendars via their member profile, so should only show to admins really). It also checks the accessing user has access to the calendar module in general.
 3) It then returns an array structure that matches the convention for these hooks. That is:
@@ -797,7 +797,7 @@ So now that I have explained how hook's have contracts, how they are called, and
 
 [title="4"]Another example: symbols[/title]
 
-Composr supports 'symbols' in templates, that do special things. An example of a symbol is our '[tt]MEMBER_PROFILE_LINK[/tt]' symbol, which makes it easy to link to a member's profile page from a template (often templates are passed member id's as parameters, so it allows them to work with their parameters in an effective way). But Composr needs to be extendable. Addons must be able to add their own symbols (e.g. maybe an ecommerce addon would need to define a 'BALANCE' symbol to show a member's balance in any arbitrary template), so there are symbol hooks.
+Composr supports 'symbols' in templates, that do special things. An example of a symbol is our [tt]MEMBER_PROFILE_LINK[/tt] symbol, which makes it easy to link to a member's profile page from a template (often templates are passed member id's as parameters, so it allows them to work with their parameters in an effective way). But Composr needs to be extendable. Addons must be able to add their own symbols (e.g. maybe an ecommerce addon would need to define a 'BALANCE' symbol to show a member's balance in any arbitrary template), so there are symbol hooks.
 
 For performance Composr doesn't use any symbol hooks for any default functionality, but they are available for new addons.
 
@@ -946,7 +946,7 @@ We don't normally bother defining a descriptions section, but I included it here
 Error handling in PHP is very inconsistent.
 
 There are four main ways to get an error message:
- - use a '[tt]*_last_error()[/tt]' function
+ - use a [tt]*_last_error()[/tt] function
  - check return values
  - catch the output of a command using output buffering
  - suppress the error with '@', then listen to the [tt]$php_errormsg[/tt] variable
@@ -998,7 +998,7 @@ Escaping all data embedded in HTML is a key part of security.
 
 [title="4"]URL parameter escaping[/title]
 
-Parameters in URL's are separated by '&'. Keys and values and separated by '='. Also spaces are not allowed, amongst many other characters. If you pass any complex data that will go into a URL, use the [tt]urlencode[/tt] function ('[tt]window.encodeURIComponent[/tt]' in JavaScript) which will sort all this for you. The Composr [tt]build_url[/tt] function handles it all in a much better way though, so you should actually almost always use this.
+Parameters in URL's are separated by '&'. Keys and values and separated by '='. Also spaces are not allowed, amongst many other characters. If you pass any complex data that will go into a URL, use the [tt]urlencode[/tt] function ([tt]window.encodeURIComponent[/tt] in JavaScript) which will sort all this for you. The Composr [tt]build_url[/tt] function handles it all in a much better way though, so you should actually almost always use this.
 
 [title="3"]Security[/title]
 
@@ -1068,7 +1068,7 @@ Some nosy or malicious users may choose to try and poke around in upload, or pag
 It goes without saying, but I'll say it anyway, that any code that finds its way into an eval call should only come directly from hard-coded Composr code itself. Never do something stupid like:
 eval('add_image('.get_param_string('image_id').');');
 
-This code would allow any user to inject malicious PHP code into the '[tt]image_id[/tt]' variable. Never use variables inside [tt]eval()[/tt] unless you're positive that no user could have contaminated its value.
+This code would allow any user to inject malicious PHP code into the [tt]image_id[/tt] variable. Never use variables inside [tt]eval()[/tt] unless you're positive that no user could have contaminated its value.
 
 On a similar note, when using user-input with the PHP [tt]preg_replace[/tt] function, always make sure that it is properly escaped, as the [tt]preg_replace[/tt] function can actually do arbitrary code execution if input is not properly escaped.
 
@@ -1090,7 +1090,7 @@ As a strict rule we always use strict typing. The custom version of PHP ocProduc
 There are a number of advantages to strict typing:
  - Special tools can be written to scan code for errors, and these work much better if they are allowed to infer relationships via correct type information. Our own Code Quality Checker does this. For example, if we get parameter order wrong in a function call (e.g. to [tt]strpos[/tt]) the checker can identify that as the type signature of the function call does not match the type signature of the [tt]strpos[/tt] function.
  - Similar to the above, our own type-strict version of PHP will catch more mistakes with strict-typing. Sometimes the mistakes will be a result of strict-typing not being followed, but usually it will be something like a parameter being missed-out, or the wrong variable being used.
- - It allows us better security. For example, if a string is being put into an expression that forms the first parameter of the [tt]preg_replace[/tt] function where we think we are passing a number, it could be a huge security hole (as it could be used to do arbitrary code execution). The programmer might have thought they were using an integer but because he/she used '[tt]get_param_string[/tt]' instead of '[tt]get_param_integer[/tt]' to read in a value he/she in fact did not. Because Composr enforces strict-typing these kind of mistakes get picked up on much more often.
+ - It allows us better security. For example, if a string is being put into an expression that forms the first parameter of the [tt]preg_replace[/tt] function where we think we are passing a number, it could be a huge security hole (as it could be used to do arbitrary code execution). The programmer might have thought they were using an integer but because he/she used [tt]get_param_string[/tt] instead of [tt]get_param_integer[/tt] to read in a value he/she in fact did not. Because Composr enforces strict-typing these kind of mistakes get picked up on much more often.
  - It discourages sloppy thinking.
  - We have very close attention to detail. We don't like to throw numbers into templates and just have them output directly -- we want them to have commas for thousands, for example (depending on locale). Forcing explicit type conversions makes us consider these kinds of issues where otherwise they would easily be forgotten.
  - Many databases are type-strict, but MySQL is not. Thus for developers programming on MySQL it is easy to just completely forget about these issues because code will always work on their development environment.
@@ -1237,7 +1237,7 @@ There is a design issue that comes to us when we design template structure... do
 
 We stick to a middle ground between these extremes, and re-use templates when the usage pattern is almost identical. For example, almost all of Composr uses the same form field templates, but Wiki+ posts use different templates to forum posts. However, there are still places where we re-use templates in situations that sites may wish to develop in separate directions.
 
-Each '[tt]do_template[/tt]' call in Composr, which loads up a template, passes in a parameter, '[tt]_GUID[/tt]'. The GUIDs may then be used by themers with tempcode directives to control what the template outputs.
+Each [tt]do_template[/tt] call in Composr, which loads up a template, passes in a parameter, [tt]_GUID[/tt]. The GUIDs may then be used by themers with tempcode directives to control what the template outputs.
 
 Don't bother manually putting in GUIDs. We have a script that auto-generates them and inserts them across the code base. We run this script before major releases.
 

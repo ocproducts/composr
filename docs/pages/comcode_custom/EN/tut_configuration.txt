@@ -177,7 +177,7 @@ That said, Composr is actually pretty smart about caches. Often you'll find it h
 
 [title="2"]Scheduling[/title]
 
-In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task to run the '[tt]data/cron_bridge.php[/tt]' file on an every-minute basis. By doing this, you tie in Composr's scheduler with the server's scheduler.
+In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task to run the [tt]data/cron_bridge.php[/tt] file on an every-minute basis. By doing this, you tie in Composr's scheduler with the server's scheduler.
 
 Examples of scheduling tasks:
  - Sending out calendar event notifications
@@ -196,7 +196,7 @@ The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file
 
 On Linux, the system level scheduler is 'Cron', and the process of adding a task is known as 'setting up a Cronjob'. Many web hosting control panels allow you to do this.
 
-The following command might work for a Composr installation in the '[tt]/home/examplesite/htdocs[/tt]' directory:
+The following command might work for a Composr installation in the [tt]/home/examplesite/htdocs[/tt] directory:
 [code="Bash"]
 php /home/examplesite/htdocs/data/cron_bridge.php
 [/code]
@@ -218,7 +218,7 @@ and tell CRON to execute [tt]/home/examplesite/htdocs/data/cron_bridge.sh[/tt].
 
 [title="3"]Specific advice for Windows[/title]
 
-On Windows the following command might work for a Composr installation in the '[tt]c:\sites\examplesite\www[/tt]' directory:
+On Windows the following command might work for a Composr installation in the [tt]c:\sites\examplesite\www[/tt] directory:
 [code="BAT"]
 c:\php\php.exe c:\sites\examplesite\www\data\cron_bridge.php
 [/code]

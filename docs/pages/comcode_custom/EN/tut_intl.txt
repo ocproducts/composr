@@ -154,7 +154,7 @@ Here's how the above sample cases would be translated:
 5) This is partly referring to a Composr directory. Translation in French may look like [tt]Le moteur de rendu à utiliser (du type à crochets: 'blocks/main_custom_gfx')[/tt].
 6) This contains an HTML entity (a smart-quotes apostrophe character). Translation in French may look like [tt]Le plan de Christopher[/tt]. In this case we didn't keep the entity because the translation didn't warrant it. The purpose of this example is to show that "apos" is not some English text to translate directly, it is HTML, which would be the same in any language, but may or may not persist depending on your translation target.
 7) Again this one contains HTML entities. Translation in French may look like [tt]{1} dirige le &lsquo;{2}&rsquo; groupe d'utilisateurs[/tt].
-8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the '[tt]{$SITE_NAME}[/tt]' intact. Translation in French may look like [tt]WelBienvenue à {$SITE_NAME}[/tt].
+8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the [tt]{$SITE_NAME}[/tt] intact. Translation in French may look like [tt]WelBienvenue à {$SITE_NAME}[/tt].
 
 [title="3"]Character sets[/title]
 

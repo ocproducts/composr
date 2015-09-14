@@ -213,7 +213,7 @@ The following are the core Composr APIs (green is used to indicate the most impo
 
 Note that this is used to provide a base class. Many Composr modules use it, but as a base class you should never need to override this file (because you can just override or add methods when you inherit from it).
 
-Generally any code in a file suffixed '[tt]_action.php[/tt]', and often code in a file suffixed '[tt]_2.php[/tt]' (or '[tt]_3.php[/tt]') is involved in writing data. This is not a strictly enforced rule, and the main reason for the division is performance -- it takes more CPU, disk activity, and memory, if unnecessary functions are loaded up. As writes are less common, the extra functions are usually put into a separate file. Some of the '_2.php' files never need to be loaded up manually using '[tt]require_code[/tt]' because they are auto-loaded by stub functions in the primary files (this is a memory optimisation for the case where a set of functions are needed a lot but not always).
+Generally any code in a file suffixed [tt]_action.php[/tt], and often code in a file suffixed [tt]_2.php[/tt] (or [tt]_3.php[/tt]) is involved in writing data. This is not a strictly enforced rule, and the main reason for the division is performance -- it takes more CPU, disk activity, and memory, if unnecessary functions are loaded up. As writes are less common, the extra functions are usually put into a separate file. Some of the '_2.php' files never need to be loaded up manually using [tt]require_code[/tt] because they are auto-loaded by stub functions in the primary files (this is a memory optimisation for the case where a set of functions are needed a lot but not always).
 
 For AJAX handler scripts, less may be loaded into the global scope than indicated in the table, and less may generally be initialised -- for performance reasons.
 
@@ -445,10 +445,10 @@ Custom profile fields allow webmasters to add new fields to member records, exte
 
 To do this:
 1) Add a custom profile field in your module's installation code, via a regular [tt]install_create_custom_field[/tt] function call on the forum driver. This is a special function created purely for the purpose of creating system member profile fields. It works on any forum driver, not just Conversr -- for Conversr it sets Conversr custom profile fields, and on most forum drivers it also sets custom profile fields, but on a few it might just alter the database structure directly.
-2) Pass in the name of the custom profile field as '[tt]<your-chosen-name>[/tt]' (e.g. '[tt]example[/tt]'). It will be stored with an 'cms_' prefix, which indicates it is a system field.
-3) Conversr-only. Define a language string '[tt]SPECIAL_CPF__cms_<your-chosen-name>[/tt]' that contains the true human-readable name. You can define this in your own language file.
-4) Conversr-only. Write a new '[tt]systems/cns_cpf_filter[/tt]' hook. If you want your field to be editable, you need to include it as a key in the returned array of the [tt]to_enable[/tt] function (see existing hooks for examples). You can use one hook file for lots of fields. Your function should 'require_lang' the language file you defined your strings in.
-Retrieve your field using the [tt]get_cms_cpf[/tt] function, or in templates with the '[tt]{$CPF_VALUE}[/tt]' symbol, omitting the 'cms_' prefix (i.e. just use the name you set).
+2) Pass in the name of the custom profile field as [tt]<your-chosen-name>[/tt] (e.g. [tt]example[/tt]). It will be stored with an 'cms_' prefix, which indicates it is a system field.
+3) Conversr-only. Define a language string [tt]SPECIAL_CPF__cms_<your-chosen-name>[/tt] that contains the true human-readable name. You can define this in your own language file.
+4) Conversr-only. Write a new [tt]systems/cns_cpf_filter[/tt] hook. If you want your field to be editable, you need to include it as a key in the returned array of the [tt]to_enable[/tt] function (see existing hooks for examples). You can use one hook file for lots of fields. Your function should 'require_lang' the language file you defined your strings in.
+Retrieve your field using the [tt]get_cms_cpf[/tt] function, or in templates with the [tt]{$CPF_VALUE}[/tt] symbol, omitting the 'cms_' prefix (i.e. just use the name you set).
 
 Conversr stores the data in two tables (you should not need to know this, but it may be useful if you are manually checking the database during the debugging process):
  - [tt]f_custom_fields[/tt] -- this stores the field definitions, one field definition per row. Think of it being like a schema.
@@ -456,23 +456,23 @@ Conversr stores the data in two tables (you should not need to know this, but it
 
 [title="3"]Showing new links on member profiles[/title]
 
-To add new links to member profiles, write a '[tt]modules/members[/tt]' hook. Look at existing hooks as examples.
+To add new links to member profiles, write a [tt]modules/members[/tt] hook. Look at existing hooks as examples.
 
 [title="3"]Running extra startup code[/title]
 
-To run extra startup code write a '[tt]systems/startup[/tt]' hook. You can set it up to execute at a number of points in the bootstrapping process.
+To run extra startup code write a [tt]systems/startup[/tt] hook. You can set it up to execute at a number of points in the bootstrapping process.
 
 [title="3"]Adding to the Admin Zone/CMS menus[/title]
 
-To do this write a '[tt]systems/page_groupings[/tt]' hook. Look at existing hooks as examples.
+To do this write a [tt]systems/page_groupings[/tt] hook. Look at existing hooks as examples.
 
 [title="3"]Adding a new symbol, to refer to custom data and functions within templates[/title]
 
-To add a new symbol you'll need to write a '[tt]systems/symbols[/tt]' hook. This is a very useful technique for extending the Tempcode system.
+To add a new symbol you'll need to write a [tt]systems/symbols[/tt] hook. This is a very useful technique for extending the Tempcode system.
 
 [title="3"]Running scheduled scripts[/title]
 
-To run a scheduled script you'll need to do it via writing a '[tt]systems/cron[/tt]' hook. For it to work, CRON must be set up on the server and tied into Composr (described in the Composr documentation). Look at existing hooks as examples. Alternatively, if you do not want to bother setting up CRON, or want to see the script output (e.g. errors) when debugging, just call up [tt]http://yourbaseurl/data/cron_bridge.php[/tt] manually in the browser.
+To run a scheduled script you'll need to do it via writing a [tt]systems/cron[/tt] hook. For it to work, CRON must be set up on the server and tied into Composr (described in the Composr documentation). Look at existing hooks as examples. Alternatively, if you do not want to bother setting up CRON, or want to see the script output (e.g. errors) when debugging, just call up [tt]http://yourbaseurl/data/cron_bridge.php[/tt] manually in the browser.
 
 [title="3"]Running temporary code[/title]
 
@@ -555,10 +555,10 @@ If Composr is running out of a git repository, or with our own custom version of
  - You will get error messages if you use too many queries, unless [tt]$GLOBALS['NO_QUERY_LIMIT'][/tt] is set to true.
  - Cookies will be disabled, forcing use of 'keep_session' for session propagating. This helps us make sure Composr doesn't need cookies to run.
  - Persistent caching will randomly toggle between on and off (this can cause strange XML errors occasionally due to a race condition in the text-based persistent cache -- try refreshing the page if you get random XML errors).
- - If you create a bad link to a screen (e.g. without using '[tt]build_url[/tt]') you will get an error about that. This is because 'keep_devtest=1' is passed through and must be passed through for any referred (i.e. internal) link. Don't manually pass this -- the code must do it itself, as it is injected by '[tt]build_url[/tt]' to prove [tt]build_url[/tt] was used.
+ - If you create a bad link to a screen (e.g. without using [tt]build_url[/tt]) you will get an error about that. This is because 'keep_devtest=1' is passed through and must be passed through for any referred (i.e. internal) link. Don't manually pass this -- the code must do it itself, as it is injected by [tt]build_url[/tt] to prove [tt]build_url[/tt] was used.
  - Form field descriptions will be forced to end with full stops (.).
  - The template cache will randomly get emptied.
- - Extra error messages if you try and pass a number to '[tt]do_lang[/tt]' or '[tt]do_lang_tempcode[/tt]' (you are supposed to convert to a string first manually).
+ - Extra error messages if you try and pass a number to [tt]do_lang[/tt] or [tt]do_lang_tempcode[/tt] (you are supposed to convert to a string first manually).
  - You'll get an error if you don't call a template ending '_SCREEN' at some point during your code.
  - Relative URLs will intentionally not work, due to an intentionally broken 'base' tag. This forces you to use absolute URLs as per coding standards. One exception is URLs like '#example', which are broken by the 'base' tag, but then fixed at run time using JavaScript -- you are allowed to use those.
  - To save time you can define language strings inline in PHP code, and then Composr will automatically find the closest matching loaded language file to the name of the page you are running, and then move your inline definition into that file whilst removing it from your PHP file. For example, you can write: do_lang('EXAMPLE=This is an example'); and as soon as it runs for the first time the definition will be shifted into a proper language file. Note that if the call does not get executed, nothing is done -- but that's a good way to see if you're not testing your code fully.
@@ -607,7 +607,7 @@ CSRF attacks are already avoided via a form token system and referral checking s
 
 Our custom version of PHP (linked to under "Programming/programmatic-interface standards") performs 2 main functions:
  - It makes PHP type strict (if turned on, which Composr does do), so that automatic type conversion results in a PHP notice, which causes a Composr stack dump.
- - It turns on some very special innovative XSS security hole detection code. All PHP strings are tagged as "escaped or non-escaped", and this tagging is maintained through all string operations (e.g. if a string that is escaped is appended to a string that is non-escaped, the result will be a string that is non-escaped). Functions like '[tt]htmlentities[/tt]' result in escaping being marked, and there is also an [tt]ocp_mark_as_escaped[/tt] function to force this manually (useful if you are intentionally injecting HTML literal code, e.g. from an RSS feed). If you output a non-escaped string, a PHP warning is produced about it -- because the developer has not blocked what could well be an XSS security hole. We're very proud of this system, and how elegant it is, and as far as we know it's not anything anyone has done before -- it took quite a few thought experiment sessions until we can up with it.
+ - It turns on some very special innovative XSS security hole detection code. All PHP strings are tagged as "escaped or non-escaped", and this tagging is maintained through all string operations (e.g. if a string that is escaped is appended to a string that is non-escaped, the result will be a string that is non-escaped). Functions like [tt]htmlentities[/tt] result in escaping being marked, and there is also an [tt]ocp_mark_as_escaped[/tt] function to force this manually (useful if you are intentionally injecting HTML literal code, e.g. from an RSS feed). If you output a non-escaped string, a PHP warning is produced about it -- because the developer has not blocked what could well be an XSS security hole. We're very proud of this system, and how elegant it is, and as far as we know it's not anything anyone has done before -- it took quite a few thought experiment sessions until we can up with it.
 
 It also enforces some other coding standards, such as not allowing relative paths to files.
 
@@ -716,7 +716,7 @@ The import API gives importers an ability to do foreign key conversions. For exa
 
 The importer system is designed to be robust, and is programmed as 're-entrant' code; this means that if installation is halted, via failure, timeout, or cancellation, it can continue from where it left off. This is of particular use if there is an incompatibility between your data and the importer, which is not very unlikely due to the wide variation in data for any single product across different versions and usage patterns.
 One problem with importers that import members is that almost always passwords are not available and not compatible with Composr's hashing scheme. To workaround this:
-1) Conversr needs to be given a handler for the password hashing scheme. This is done by writing a special '[tt]systems/cns_auth[/tt]' hook.
+1) Conversr needs to be given a handler for the password hashing scheme. This is done by writing a special [tt]systems/cns_auth[/tt] hook.
 2) The member must be imported with a reference code representing the hashing scheme to use (the cns_make_member function supports passing this in)
 
 A common mistake when writing importers is with HTML entities. Some software stores some fields as HTML (albeit taglessly -- just with the entities), whilst Composr never does. You need to decode any HTML fields using 'html_entity_decode' before passing them into the Composr API, like "[tt]html_entity_decode($field_value,ENT_QUOTES,get_charset())[/tt]".
@@ -748,7 +748,7 @@ This is a custom function for hooks to report their products' information. It is
 Valid product types are:
 1) [tt]PRODUCT_PURCHASE_WIZARD[/tt] (a one-off purchase)
 2) [tt]PRODUCT_INVOICE[/tt] (an invoice payment) -- you are very unlikely to need this one
-3) [tt]PRODUCT_SUBSCRIPTION[/tt] (a subscription payment -- the product details array should contain '[tt]length[/tt]' and '[tt]length_units[/tt]' values to define how the subscription will work). 'length_units' can be 'd', 'w', 'm' or 'y'. An example product details array (this would be for a subscription that recurred every 1 month):
+3) [tt]PRODUCT_SUBSCRIPTION[/tt] (a subscription payment -- the product details array should contain [tt]length[/tt] and [tt]length_units[/tt] values to define how the subscription will work). 'length_units' can be 'd', 'w', 'm' or 'y'. An example product details array (this would be for a subscription that recurred every 1 month):
 4) [tt]array('length' => 1, 'length_units' => 'm')[/tt]
 5) [tt]PRODUCT_OTHER[/tt] (something that is not purchased via the purchase wizard, but done manually -- usually it is something the website staff are adding manually to show up on the eCommerce charts, not something actually related to the website itself) -- you are very unlikely to need this one
 6) [tt]PRODUCT_CATALOGUE[/tt] (a shopping cart product) -- you are very unlikely to need this one
@@ -789,7 +789,7 @@ When global privileges are overridden for pages, the page that the overriding is
 If we were overriding for a category, it would then be the permission-module that identified the type of category we were overriding for, and the ID of that category would also be stored. E.g. if we were overriding for a download category '3' (permissions module is 'downloads'), we'd be referencing '3' and 'downloads'.
 Note the distinction between overriding for a page, and for overriding for a permission-module -- for many permissions webmasters can override for both, meaning page names and also permission-modules/identifiers together need to be passed to the API functions. If the Permissions Tree Editor allows an override to be set, you must make your permission calls respect this by referencing the correct permission-modules and page names. It is the [tt]get_privilege_overrides[/tt] function of a module (e.g. 'cms_downloads') that defines what permissions may be overridden.
 
-Privileges are checked and set purely through the permissions API ('[tt]has_privilege[/tt]'), using permission-modules (e.g. 'downloads') and identifiers (e.g. '3'). There are no hooks needed, just:
+Privileges are checked and set purely through the permissions API ([tt]has_privilege[/tt]), using permission-modules (e.g. 'downloads') and identifiers (e.g. '3'). There are no hooks needed, just:
  - the name of the privilege
  - the name of the page that controls it's overridden value (if there is one, e.g. 'cms_downloads')
  - the combination of permission-module and identifier (if it can be overridden per-category)
@@ -980,7 +980,7 @@ Each CRUD module extends the 'Standard_crud_module' base class. This class has m
 require_code('crud_module');
 [/code]
 
-Rather than an CRUD module having a '[tt]run[/tt]' method like most modules, they instead are given a 'run_start' method. This method is called automatically from the base class's own 'run' method, which handles screen types that are standard to all CRUD modules. The CRUD module defines the default screen type to be the 'add' screen type, unless you define a '[tt]browse[/tt]' method within your own code.
+Rather than an CRUD module having a [tt]run[/tt] method like most modules, they instead are given a 'run_start' method. This method is called automatically from the base class's own 'run' method, which handles screen types that are standard to all CRUD modules. The CRUD module defines the default screen type to be the 'add' screen type, unless you define a [tt]browse[/tt] method within your own code.
 
 CRUD module's define entry-points in a [tt]get_entry_point[/tt] method like other module's do, however they also tie into the base class's function to return a compound result, as follows:
 [code="PHP"]
@@ -1008,7 +1008,7 @@ CRUD modules define the following standard methods:
 
 Often they also define the following:
  - [tt]edit[/tt], If the auto-generated "choose what to edit" screen needs customising.
- - [tt]create_selection_list_ajax_tree[/tt], If we are using tree list control in edit page, we need to define [tt]create_selection_list_ajax_tree[/tt] function in our module. That tree list is using for selecting the editable data. We need to give the name of an '[tt]systems/ajax_tree[/tt]' hook file which create the data for tree list to the Composr [tt]form_input_tree_list[/tt] function. The hook file will return XML data for the tree list and the built-in Composr AJAX functions (called up by 'form_input_tree_list') will receive that data and fill it in tree list. In every node expansion in the tree list another AJAX request is generated to expand the particular node's ID. The AJAX script will find the child data for that parent ID and return it's child data.
+ - [tt]create_selection_list_ajax_tree[/tt], If we are using tree list control in edit page, we need to define [tt]create_selection_list_ajax_tree[/tt] function in our module. That tree list is using for selecting the editable data. We need to give the name of an [tt]systems/ajax_tree[/tt] hook file which create the data for tree list to the Composr [tt]form_input_tree_list[/tt] function. The hook file will return XML data for the tree list and the built-in Composr AJAX functions (called up by 'form_input_tree_list') will receive that data and fill it in tree list. In every node expansion in the tree list another AJAX request is generated to expand the particular node's ID. The AJAX script will find the child data for that parent ID and return it's child data.
  - [tt]get_submitter[/tt], If there is a complex calculation required for who submitted a resource (required for the purposes of permission checking).
  - [tt]do_next_manager[/tt], If the standard do-next results screen is too basic (e.g. if extra icons are needed).
  - [tt]browse[/tt], The function to show the screen when the module is loaded up. If we do not define this, 'browse' acts the same as 'add'. If you define a [tt]browse[/tt] method (which many CRUD modules do do) then you must call it yourself from your 'run_start' method. Often 'browse' methods are used with do-next-manager interfaces, to provide a front end for choosing different options.
