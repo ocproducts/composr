@@ -26,7 +26,7 @@ Most modern designs are fixed width on desktop computers, and have "responsive d
 
 [title="2"]See Also[/title]
 
- - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_releasing_themes"]Themeing your site[/page]
  - [page="_SEARCH:tut_mobile"]Mobile design[/page]
  - [page="_SEARCH:tut_design"]Introduction to web design[/page]

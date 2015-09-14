@@ -629,6 +629,8 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_short_urls/apache.png',
             'data_custom/images/docs/tut_short_urls/iis.png',
             'data_custom/images/docs/tut_repository/os_webdav.jpg',
+            'data_custom/images/docs/tut_browsers/browsers.png',
+            'data_custom/images/docs/tut_browsers/browserstack.png',
             'data_custom/images/docs/tut_facebook/facebook_addon_a.png',
             'data_custom/images/docs/tut_facebook/facebook_addon_b.png',
             'data_custom/images/docs/tut_facebook/facebook_config.png',

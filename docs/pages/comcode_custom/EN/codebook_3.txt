@@ -413,7 +413,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about it's memory limit
   - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
   - [tt]base64_emails[/tt] -- set this to '1' if you want base64 emails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 emails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
-  - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare.
+  - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare. It reduces security.
   - [tt]disable_openssl[/tt] -- set this to '1' if you are on Windows and PHP<5.3.4, which has a bug in [tt]openssl_random_pseudo_bytes[/tt]. It is much better to upgrade PHP though, for better security.
   - [tt]disable_ssl_for__<domain>[/tt] -- set this to '1' to disable SSL certificate checking for the given domain name. This is not a great idea, but may be necessary if a required service has a broken certificate yet it only supports HTTPS.
   - [tt]manualproc_mail[/tt] -- set this to '1' to debug problems with the PHP mail command (the PHP mail command won't relay error information from the sendmail process, this will replace it with something that does); it only works on servers that allow PHP process control
@@ -459,7 +459,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]resize_rep_images[/tt] -- set this to '0' if you do not want uploaded rep-images to be sized down automatically to the standard thumbnail size
   - [tt]default_event_type[/tt] -- set this to the ID of the default event type to select for new events
   - [tt]edit_with_my_comcode_perms[/tt] -- set this to '1' if content you edit should display with your Comcode permissions. Only enable this if you trust yourself to spot XSS attacks.
-  - [tt]site_location[/tt] -- an address for where your website is, sometimes used in meta-data.
+  - [tt]site_location[/tt] -- a real-world address for where your website is, sometimes used in meta-data.
   - [tt]google_news_urls[/tt] -- set this to '1' if news URLs should contain a Google-News-friendly entry ID.
   - [tt]enable_delayed_inserts[/tt] -- set this to '1' to enable MySQL delayed inserts. Delayed inserts can cause a very small performance improvement if log calculations happen quite regularly; however they only work on MyISAM tables and are deprecated as of MySQL 5.6
   - [tt]really_want_highlighting[/tt] -- set this to '1' if you want to force HTML to be converted to Comcode when searches happen, so keyword highlighting works better.
@@ -488,11 +488,10 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]no_flood_control[/tt] -- set this to '1' if you will not have flood control
   - [tt]implicit_usergroup_sync[/tt] -- set this to '1' to enable synching of implicit usergroups (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system tutorial[/page] for more information)
   - [tt]shortened_tempcode[/tt] -- set this to '1' to not store parameter reference origins in Tempcode, which makes Tempcode use less memory/storage/CPU
-  - [tt]advanced_admin_cache[/tt] -- set this to '1' to enable the Advanced Admin Cache (AAC). The AAC loads fully cached pages for administrators whilst checking the server for any updates. The result is that you see a cached page for about 1 second until the latest version is retrieved, making browsing feel much snappier. This feature is highly experimental, and only works on the very fast modern web browsers: Google Chrome, Opera, and Safari. It may be unstable even in these browsers though. If your site is on a shared domain where other users can run their own JavaScript code then you should not use it as it will lead to a serious security vulnerability.
   - [tt]save_jpegs_as_png[/tt] -- set this to '1' to allow Composr to detect when JPEG files would be smaller, and save JPEG data into PNG file extensions. It is a bit of a hack, and goes against standards, but works well
   - [tt]maximum_result_count_point[/tt] -- the number of search results to count up to (defaults to '1000'); a higher figure means that for multi-condition searches extra computation will be required to see which result rows match the search conditions (single-condition search counting is usually fast because an index gives an instant answer)
   - [tt]search_days__<search-hook>[/tt] -- (see "Low-level tuning")
-  - [tt]js_keep_params[/tt] -- handle keep variable propagation via JavaScript. Used in conjunction with [tt]$SITE_INFO['no_keep_params']='1';[/tt]
+  - [tt]js_keep_params[/tt] -- handle keep variable propagation via JavaScript. Used in conjunction with [tt]$SITE_INFO['no_keep_params'] = '1';[/tt]
  - Performance tuning (negative)
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs
