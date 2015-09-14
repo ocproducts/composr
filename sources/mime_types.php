@@ -55,6 +55,11 @@ function get_mime_type($extension, $as_admin)
         'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 
+        // iWork
+        'pages' => 'application/x-iwork-pages-sffpages',
+        'numbers' => 'application/x-iwork-pages-sffnumbers',
+        'keynote' => 'application/x-iwork-pages-sffkey',
+
         // XML
         'xml' => $as_admin ? 'text/xml' : 'application/octet-stream',
         'rss' => $as_admin ? 'application/rss+xml' : 'application/octet-stream',

@@ -44,9 +44,10 @@ The [tt]var[/tt] meta-filesystem is perhaps the most interesting because if Webd
 
 [title="2"]WebDAV[/title]
 
-WebDAV is a web-based-filesystem protocol that most operating systems support. This lets you access the repository as a normal folder on your computer. Composr uses a PHP WebDAV-library called SabreDAV to bind Commandr-fs to WebDAV. To get this, you'll need to install the WebDAV non-bundled addon.
+[media width="150" description="WebDAV software" float="right"]data_custom/images/docs/tut_repository/os_webdav.jpg[/media]
+WebDAV is a web-based-filesystem protocol that most operating systems support (theoretically). This lets you access the repository as a normal folder on your computer. Composr uses a PHP WebDAV-library called SabreDAV to bind Commandr-fs to WebDAV. To get this, you'll need to install the WebDAV non-bundled addon.
 
-Be aware that some operating systems do not support WebDAV very well. The SabreDAV team have excellent documentation illustrating issues that are outside our control:
+Be aware that some operating systems do not support WebDAV very well in practice. The SabreDAV team have excellent documentation illustrating issues that are outside our control, and in most cases third-party software can be used for a better experience:
  - On Mac [url="Finder has some slowness issues"]https://code.google.com/p/sabredav/wiki/Finder[/url]. Cyberduck works well, but doesn't currently provide a way to mount to a folder.
  - On Windows, you may want to use [url="NetDrive"]http://www.netdrive.net/[/url] to mount WebDAV, as [url="windows has some issues"]https://code.google.com/p/sabredav/wiki/Windows[/url] (some versions of Windows cannot run a share off a subdirectory, basic authentication needs a registry patch to make it work, and you have to disable "Automatic Detect Settings")
   - You can use BitKinex, NetDrive or Cyberduck, but only NetDrive can mount to a directory
@@ -73,32 +74,51 @@ Every file or folder in a filesystem is a Composr "resource". In most cases, eve
 [title="3"]Addressing[/title]
 
 Each resource has a number of addressing methods:
- - resource-type and resource-ID combination
- - label
- - moniker
- - filename
- - GUID
+1) resource-type and resource-ID combination
+2) label
+3) moniker
+4) filename
+5) GUID
+
+Composr maintains a database table that ties all the different addressing schemes together.
+
+[title="4"]Resource-type and resource-ID combination[/title]
 
 Within normal Composr code, resources are addressed by the resource-type and resource-ID combination. For example, [tt]download[/tt] and [tt]4[/tt]. Sometimes the resource-type is not needed, when the code involved implicitly knows what resource-type it is working with (e.g. if you're working within the [tt]downloads[/tt] module, it clearly knows IDs refer to downloads).
+
 The resource/content-types are defined by the PHP files in the [tt]sources/hooks/systems/resource_meta_aware[/tt] and [tt]sources/hooks/systems/content_meta_aware[/tt] directories.
+
 The repository internally has a sense of resource-type and resource-ID combination for looking up data, but all communication actually works via one of the other methods. This is so that we can transfer data between different sites without having the sequential ID numbers failing to match up correctly.
 
+[title="4"]Label[/title]
+
 Each kind of resource has a label, and the meaning of this differs from resource to resource. Generally though, it is the human-readable title of it.
-The repository has an internal API for adding and referencing resources by title, which is used by some Composr code.
-However, the title is too free-form to be used for file names, so we actually convert it automatically into a 'moniker'. This is similar to Composr's 'URL monikers' system, but actually the repository uses its own set of monikers. A moniker is guaranteed to be generated as unique across the whole filesystem, while of course a label may not be (we could imagine two entries in a category with the same title for example).
+
+The repository has an internal API for adding and referencing resources by label, which is used by some Composr code.
+
+[title="4"]Moniker[/title]
+
+The label is too free-form to be used for file names, so we actually convert it automatically into a 'moniker'. This is similar to Composr's 'URL monikers' system, but actually the repository uses its own set of monikers. A moniker is guaranteed to be generated as unique across the whole filesystem, while of course a label may not be (we could imagine two entries in a category with the same label for example).
+
+[title="4"]Filename[/title]
+
 Once we have a moniker, this essentially then is combined with the file extension (if applicable -- not for folders), to form the filename. Usually the file extension is [tt].xml[/tt], as the meta-filesystems use XML for encoding data. Because monikers are unique, filenames are actually unique and we know we will never get conflicting names.
 
 Because entries are usually represented as files within folders (categories), we can therefore think of resources as being identified via a full file path, which is essentially a combination of monikers and slashes ([tt]/[/tt] on Mac/Linux, [tt]\[/tt] on Windows).
+
 Obviously an entry's category is the same as the folder it is within, so the filesystem automatically carries many data relationships this way.
+
+[title="4"]GUID[/title]
 
 For the remaining cases where we have relationships between resources that are not carried by directory structure, we encode it using multiple addressing schemes stored within the [tt].xml[/tt] files, in precedence order:
 1) GUID
 2) label and subpath
-GUIDs are long codes, with dashes in, designed to be globally unique. This ensures that when they are generated on different sites, they won't conflict. Each resource is assigned a GUID, and when that resource is copied between sites, the GUID is preserved -- which allows us to match things up, even though ID numbers will not match up.
-If we copy something from one site to another, and can't get a GUID match, we try and get a label match. This would automatically match members on different sites by having the same username, for example.
-If we still cannot get a match, the label is used to create a new resource, and we'll associate with that. Any resource in the filesystems can be created by label alone, and the other fields are set as default as a result.
 
-Composr maintains a database table that ties all the different addressing schemes together.
+GUIDs are long codes, with dashes in, designed to be globally unique. This ensures that when they are generated on different sites, they won't conflict. Each resource is assigned a GUID, and when that resource is copied between sites, the GUID is preserved -- which allows us to match things up, even though ID numbers will not match up.
+
+If we copy something from one site to another, and can't get a GUID match, we try and get a label match. This would automatically match members on different sites by having the same username, for example.
+
+If we still cannot get a match, the label is used to create a new resource, and we'll associate with that. Any resource in the filesystems can be created by label alone, and the other fields are set as default as a result.
 
 [title="3"]Comcode[/title]
 
@@ -117,6 +137,7 @@ This is a little laborious, but if you are at the technical skill level where yo
 
 [title="2"]Use care when copying[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
 It would be a mistake to just try and backup everything in the repository, and think you can copy it all back to a site to restore it. You should have full regular database backups for your first go-to backup technique.
 
 In most cases you should work just under [tt]var[/tt] for this kind of thing, and you should think in terms of copying over folders and files that you know about, not everything at once. This will greatly reduce the chance of you unexpected behaviours. The system is complex and doing a lot of magic underneath the hood to make things match up -- don't take it too much for granted.
@@ -151,4 +172,4 @@ These are the current known omissions for the repository:
  - [page="_SEARCH:tut_aggregate_types"]Aggregate Content Types[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
 
-{$SET,tutorial_tags,Power tools,Collaboration,Administration,commandr,regular}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,How the Composr content repository works and may be accessed and used.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Power tools,Collaboration,Administration,commandr,expert}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,How the Composr content repository works and may be accessed and used.}[block]main_tutorial_rating[/block]

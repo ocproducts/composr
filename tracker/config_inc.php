@@ -67,7 +67,7 @@ $g_file_upload_method	= DISK; # or DISK
 $g_absolute_path_default_upload_folder = dirname(__FILE__).DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR ; # used with DISK, must contain trailing \ or /.
 $g_max_file_size		= 25000000;	# in bytes
 $g_preview_attachments_inline_max_size = 256 * 1024;
-$g_allowed_files		= 'patch,diff,swf,sql,odg,odp,odt,ods,ps,pdf,doc,ppt,csv,xls,docx,pptx,xlsx,pub,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,flv,avi,mov,mpg,mpeg,mp4,asf,wmv,ram,ra,rm,qt,zip,tar,rar,gz,wav,mp3,ogg,torrent,php,css,tpl,ini,eml';		# extensions comma separated, e.g. 'php,html,java,exe,pl'
+$g_allowed_files		= 'pages,numbers,patch,diff,swf,sql,odg,odp,odt,ods,ps,pdf,doc,ppt,csv,xls,docx,pptx,xlsx,pub,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,flv,avi,mov,mpg,mpeg,mp4,asf,wmv,ram,ra,rm,qt,zip,tar,rar,gz,wav,mp3,ogg,torrent,php,css,tpl,ini,eml';		# extensions comma separated, e.g. 'php,html,java,exe,pl'
 $g_disallowed_files		= '';		# extensions comma separated
 
 
