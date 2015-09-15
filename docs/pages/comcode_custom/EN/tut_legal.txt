@@ -63,7 +63,7 @@ As you need to avoid liability (unless you want it) for damage to 'persons', you
 Perhaps the best way to tackle this problem is a three-pronged approach:
  - Perform cursory checks to make sure submitted data is not illegal
  - Add member rules that prohibit uploading of illegal content
- - Disclaim liability for such content (whilst this would likely not work if your website became littered with illegal content, it is perhaps more defensible for exceptions)
+ - Disclaim liability for such content (while this would likely not work if your website became littered with illegal content, it is perhaps more defensible for exceptions)
 Of course there is a big difference between highly criminal content (such as terrorist advice, if it is illegal in your jurisdiction) and minor civil-law-breaking content, such as unintended copyright infringement.
 
 You may wish to add to your legal page that you disclaim liability for mis-use of registered trademarks, and that they remain the property of their respective owners.

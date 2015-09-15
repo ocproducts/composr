@@ -29,7 +29,7 @@ Composr's file system is basically split up into:
 [*]'lang' which contains language strings.
 [/list]
 
-When you make modifications to any of Composr's default files, There is no need to overwrite the existing files, because Composr comes with a file-based override/inheritance system. This allows files to be overridden with replacements whilst leaving the old files intact for reference. This is done by saving your modified files in the [tt]*_custom[/tt] directories. i.e. if we need to make modifications in [tt]site/pages/modules/polls.php[/tt], then we need to save our modified version as [tt]site/pages/modules_custom/polls.php[/tt]) .
+When you make modifications to any of Composr's default files, There is no need to overwrite the existing files, because Composr comes with a file-based override/inheritance system. This allows files to be overridden with replacements while leaving the old files intact for reference. This is done by saving your modified files in the [tt]*_custom[/tt] directories. i.e. if we need to make modifications in [tt]site/pages/modules/polls.php[/tt], then we need to save our modified version as [tt]site/pages/modules_custom/polls.php[/tt]) .
 
 [title="3"]Composr structure[/title]
 
@@ -96,8 +96,8 @@ Here is a glossary of some of the terms that are used to describe Composr concep
  - [b]Member[/b], a user with an account.Note that in occasional contexts we may refer to members, when actually the member is using the "guest account" -- the key point here is that a member is identifiable in at least some way, even if it's just identified to the guest account
  - [b]Conversr[/b], the Composr forum/member system (optional).
  - [b]Pages[/b], These are just pages a user might wish to view; they can be:
-  - 'comcode pages' -- written in Comcode
-  - 'html pages' -- written in HTML
+  - 'Comcode pages' -- written in Comcode
+  - 'HTML pages' -- written in HTML
   - modules pages -- pages, that belong to a modules.
  - [b]Panels[/b], These are pages (usually Comcode pages) that are named with the prefix 'panel_'. They may be referenced in the templates using the 'LOAD_PANEL' symbol. The default Composr templates automatically place panels named 'panel_left' or 'panel_right'.
  - [b]Page-link[/b], These are paths formatted like "zone:page:screentype:id:param=value(:...)" that Composr uses for detailing links. They are like URLs, but local to a Composr website. Page-links are converted to URLs and this conversion sometimes adds extra URL parameters (for instance, any parameters prefixed 'keep_' are propagated across screens). Entry points are a special case of page-link -- entry points are the page-links to screens that modules provide regardless of the current state of the modules content (e.g. the catalogue index will always be there -- it is a stable entry point into the system).
@@ -137,7 +137,7 @@ Composr contains many "cross-cutting" features that are often present in differe
  - Blocking guests trying to edit something owned by Guest (a bug if it isn't, but it would be good to try and abstract this)
  - Ditto blocking editing interface for something you don't have category access to
  - [b]Attachments[/b], Comcode, Multi-language support (instructions for implementation provided in this book)
- - [b]Validation[/b], validation-required e-mails, Unvalidated warnings, and permissions to determine who may view unvalidated content, and a hook to identify all unvalidated resources (see how it's done in existing modules, it's quite straight-forward- just identify the lines of code that involve validation and basically copy&paste them to the right spots in your own code)
+ - [b]Validation[/b], validation-required e-mails, Non-validated warnings, and permissions to determine who may view non-validated content, and a hook to identify all non-validated resources (see how it's done in existing modules, it's quite straight-forward- just identify the lines of code that involve validation and basically copy&paste them to the right spots in your own code)
  - [b]Control actions[/b] links (see the [tt]{+START,INCLUDE,STAFF_ACTIONS}[/tt] code in [tt]DOWNLOAD_SCREEN.tpl[/tt])
  - [b]Logging[/b] (use the [tt]log_it[/tt] function in your model code, for adding, editing, and deleting)
  - [b]Mass action[/b], and policy for deletion of categories (implementation varies, but consider what happens to a categories entry when you delete that category)

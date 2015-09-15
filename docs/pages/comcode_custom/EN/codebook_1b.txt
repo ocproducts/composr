@@ -31,7 +31,7 @@ Some tips/guidelines for usage:
  - use the server server cache when appropriate (when things are known to be relevant to all installs and when there is no site-specific aspects to the data) and never when not
  - where possible put user-specific stuff in templates as symbols rather than parameters, so that they may be cached so as not to depend on users (symbols 'survive' the cache and get reinterpreted after cache extraction). If you can't do this, and the data does contain user-specific data, you'll need to cache against each user, and that is very inefficient
  - where appropriate store 'false' rather than 'null', to distinguish between 'non presence in cache' and 'not setness': often a little extra logic is needed, as Composr uses null for most "not setness" API results
- - emptying the cache on admin actions is fine because they are relatively rare, compared to total hits a site gets; whilst it is preferable to be able to delete specific objects, that's not always possible (e.g. with Comcode pages, they are cached against theme, but having a load of loop code to selectively choose what to decache would be excessive)
+ - emptying the cache on admin actions is fine because they are relatively rare, compared to total hits a site gets; while it is preferable to be able to delete specific objects, that's not always possible (e.g. with Comcode pages, they are cached against theme, but having a load of loop code to selectively choose what to decache would be excessive)
  - make use of cache layers: e.g. we didn't optimise some functions in Composr because higher level block caching would often make my optimisation almost pointless
  - cache what is used most: we want to support lots of users, so we need regular website access use cases to be most efficient -- making admin actions more efficient is almost pointless
  - don't cache non-featured stuff that could stay in the cache forever but relatively rarely get used (even if a gallery is viewed on every page view, this is not justification to cache all 100 of them: but we could cache the current IOTD block): memory is finite, do not waste it
@@ -143,7 +143,7 @@ The following are the core Composr APIs (green is used to indicate the most impo
 | Archiving and compression
 | [tt]sources/tar.php[/tt]
 [tt]sources/zip.php[/tt]
-[tt]sources/m_zip.php[/tt] (use the PHP API, this implements that if the PHP zip extension is not available)
+[tt]sources/m_zip.php[/tt] (use the PHP API, this implements that if the PHP ZIP extension is not available)
 | Needs [tt]require_code[/tt].
 |-
 | [color]Templating (Tempcode engine)[/color]
@@ -545,7 +545,7 @@ Some complex tracking goes on to ensure that the correct template functions are 
 
 When I say "function call" and "function", this is actually simulated for performance reasons (PHP uses huge amounts of memory to store real functions). It actually happens via an 'eval' call. There are a few exceptions to this where real calls are used, when a template is so commonly used that we think it does justify getting loaded up as a real function.
 
-Tempcode in ocPortal 3 worked in an entirely different way to ocPortal 4+. It was actually an interpreted programming language, and hence was quite a lot slower (whilst PHP of course is an interpreted language itself, it is fast because it is interpreted by assembly code). Rather than being compiled PHP, it essentially used the equivalent of op-codes and operands. Tempcode in ocPortal 2 was similar to ocPortal 3, except a bit more primitive -- ocPortal 3 would 'flatten' the template tree, and was very clever about being able to merge certain things to increase execution speed and memory consumption.
+Tempcode in ocPortal 3 worked in an entirely different way to ocPortal 4+. It was actually an interpreted programming language, and hence was quite a lot slower (while PHP of course is an interpreted language itself, it is fast because it is interpreted by assembly code). Rather than being compiled PHP, it essentially used the equivalent of op-codes and operands. Tempcode in ocPortal 2 was similar to ocPortal 3, except a bit more primitive -- ocPortal 3 would 'flatten' the template tree, and was very clever about being able to merge certain things to increase execution speed and memory consumption.
 
 I have just explained the history of Tempcode so I can make an important point -- Tempcode is a bit of a black-box, and the internal engine can be rewritten so long as the API, written language, and semantics, are preserved. If the Tempcode language is ever changed, the caches need to be cleared -- to clear away any compiled Tempcode (we never store anything primarily in compiled Tempcode -- instead we store in Comcode and cache the Tempcode).
 
@@ -561,7 +561,7 @@ If Composr is running out of a git repository, or with our own custom version of
  - Extra error messages if you try and pass a number to [tt]do_lang[/tt] or [tt]do_lang_tempcode[/tt] (you are supposed to convert to a string first manually).
  - You'll get an error if you don't call a template ending '_SCREEN' at some point during your code.
  - Relative URLs will intentionally not work, due to an intentionally broken 'base' tag. This forces you to use absolute URLs as per coding standards. One exception is URLs like '#example', which are broken by the 'base' tag, but then fixed at run time using JavaScript -- you are allowed to use those.
- - To save time you can define language strings inline in PHP code, and then Composr will automatically find the closest matching loaded language file to the name of the page you are running, and then move your inline definition into that file whilst removing it from your PHP file. For example, you can write: do_lang('EXAMPLE=This is an example'); and as soon as it runs for the first time the definition will be shifted into a proper language file. Note that if the call does not get executed, nothing is done -- but that's a good way to see if you're not testing your code fully.
+ - To save time you can define language strings inline in PHP code, and then Composr will automatically find the closest matching loaded language file to the name of the page you are running, and then move your inline definition into that file while removing it from your PHP file. For example, you can write: do_lang('EXAMPLE=This is an example'); and as soon as it runs for the first time the definition will be shifted into a proper language file. Note that if the call does not get executed, nothing is done -- but that's a good way to see if you're not testing your code fully.
 
 You can turn off most of development mode by putting "[tt]&keep_no_dev_mode=1[/tt]" into the URL, but this is not promoted as development mode was intentionally written to help us do on-the-fly testing of things that might otherwise go unnoticed.
 
@@ -670,7 +670,7 @@ Stuff that is not an Conversr feature but uses the forum, has to go through the 
 
 A forum driver works via a [tt]sources/forum/*.php[/tt] file. A forum driver is basically an implementation to a standardised interface, and is accessed from ocPortal via [tt]$GLOBALS['FORUM_DRIVER'][/tt]. There's not a lot to say about this, as there are so many existing forum drivers in Composr to look-at/refer-to and they all follow a pattern. The API is mature and simple.
 
-To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's 'forum_type' option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member ID's are group ID's) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it whilst you debug it -- then install again from scratch using your new forum driver from the offset.
+To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's 'forum_type' option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member ID's are group ID's) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it while you debug it -- then install again from scratch using your new forum driver from the offset.
 
 [title="4"]Writing an importer[/title]
 
@@ -719,7 +719,7 @@ One problem with importers that import members is that almost always passwords a
 1) Conversr needs to be given a handler for the password hashing scheme. This is done by writing a special [tt]systems/cns_auth[/tt] hook.
 2) The member must be imported with a reference code representing the hashing scheme to use (the cns_make_member function supports passing this in)
 
-A common mistake when writing importers is with HTML entities. Some software stores some fields as HTML (albeit taglessly -- just with the entities), whilst Composr never does. You need to decode any HTML fields using 'html_entity_decode' before passing them into the Composr API, like "[tt]html_entity_decode($field_value,ENT_QUOTES,get_charset())[/tt]".
+A common mistake when writing importers is with HTML entities. Some software stores some fields as HTML (albeit taglessly -- just with the entities), while Composr never does. You need to decode any HTML fields using 'html_entity_decode' before passing them into the Composr API, like "[tt]html_entity_decode($field_value,ENT_QUOTES,get_charset())[/tt]".
 If you are unsure how software stores it's data, enter test data that uses various quotation mark symbols, so that it will jump out at you when you view the raw database.
 
 There is a very complex situation for non-forum importers that use forum-driver functions during import, in order to find data to associate with database records they are creating. For example, an importer for a simple download system which stores 'usernames' of download-submitters, might wish to try to bind these usernames to actual user-ids, using the forum-database that Composr normally uses. However, by default the forum-database is tied to the local-Conversr-install during installation, as when forum data is imported, this Conversr database is required (as this is where the information will be piped to). Therefore there are two import API functions that allow switching to and from local and M.S.N. Conversr installations:

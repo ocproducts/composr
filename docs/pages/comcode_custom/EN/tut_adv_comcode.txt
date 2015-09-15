@@ -39,7 +39,9 @@ To add a custom tag, do as follows:
 
 Your tag will be shown in your local copy of the Comcode tutorial, with your title, description and usage example.
 
-[box="Tip" width="25em" float="right"]If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.[/box]
+[box="Tip" width="25em" float="right"]
+If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.
+[/box]
 Note that Comcode is cached, and if you edit a tag after adding Comcode using it, it won't be updated until you edit that content (or the Comcode field precalculation cache is emptied).
 
 [title="2"]Semi-HTML[/title]
@@ -75,10 +77,12 @@ Here is an example of a menu tag in action...
 [/menu]
 [/code]
 
-[box="Tip" width="25em" float="right"]You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.[/box]
+[box="Tip" width="25em" float="right"]
+You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.
+[/box]
 Like the list syntax, the menu syntax specifies a tree structure, and uses indentation to do it. Things within a section, including the definition of sub-sections, are indented from the section start line itself.
 
-The '-' means that a section is not expanded by default, whilst the '+' means that a section is. Those lines without a '+' or '-' are lines that are actually entries on the menu, and contain the caption of the entry, followed by ' = ', followed the the URL of the entry.
+The '-' means that a section is not expanded by default, while the '+' means that a section is. Those lines without a '+' or '-' are lines that are actually entries on the menu, and contain the caption of the entry, followed by ' = ', followed the the URL of the entry.
 
 Menu entries are typed so that their indentation is equal to the indentation of the start of the section's title. i.e. one further depth of indentation from the section's '+' or '-'.
 
@@ -88,7 +92,7 @@ Menu entries are typed so that their indentation is equal to the indentation of 
 
 Comcode is largely able to deal with [concept]BBCode[/concept] code. BBCode is a popular (but not formally-specified) system among standalone forum systems. Comcode is not formally designed as an extension of BBCode, but we intentionally aimed to be a super-set of it so that we are compatible with code imported from third-party forum systems, and so that our forum drivers can work well.
 
-Comcode can support all major features of all the major BBCode-like languages, and lax syntax (for example, missing quotation symbols) as is often allowed in BBCode. However, BBCode implementations do not support a lot of the functionality of Comcode, such as the 'block' tag and our list syntax; in addition, the Comcode implementation is that of a fully parsed language, with a well-defined syntax, whilst BBCode is almost always implemented as an adhoc language to be turned into HTML via [concept]regular expressions[/concept].
+Comcode can support all major features of all the major BBCode-like languages, and lax syntax (for example, missing quotation symbols) as is often allowed in BBCode. However, BBCode implementations do not support a lot of the functionality of Comcode, such as the 'block' tag and our list syntax; in addition, the Comcode implementation is that of a fully parsed language, with a well-defined syntax, while BBCode is almost always implemented as an adhoc language to be turned into HTML via [concept]regular expressions[/concept].
 
 [title="3"]Wiki-Code compatibility[/title]
 
@@ -110,7 +114,7 @@ This section may be of interest to people with particular interest in programmin
 
 [title="4"]Separation of concerns[/title]
 
-Comcode is designed to be a language that is easy to use, versatile, rich, indistinguishable from plain-text in the simple case, and useful for writing small code snippets as well as long documents. It is not designed to have "separation of concerns" with any kind of special separation between visual coding (such as a font tag) and structural coding (such as a block tag, or arguably a ticker tag). Whilst the separation of concerns is appropriate for a website's main layout, which is often worked upon by different people, and where the mark-up is complex and detailed enough to warrant a separation, it is not appropriate for Comcode. This said, Comcode has good support for semantics...
+Comcode is designed to be a language that is easy to use, versatile, rich, indistinguishable from plain-text in the simple case, and useful for writing small code snippets as well as long documents. It is not designed to have "separation of concerns" with any kind of special separation between visual coding (such as a font tag) and structural coding (such as a block tag, or arguably a ticker tag). While the separation of concerns is appropriate for a website's main layout, which is often worked upon by different people, and where the mark-up is complex and detailed enough to warrant a separation, it is not appropriate for Comcode. This said, Comcode has good support for semantics...
 
 [title="4"]Formatting tags vs semantic tags[/title]
 

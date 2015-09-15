@@ -10,7 +10,7 @@ At ocProducts we really want to encourage users of Composr to start making addon
  - Assisted, answering technical questions
  - Provided a distribution system
  - Made Composr Open Source
-However, at the end of the day addon-making is in the hands of users -- whilst we can empower, we cannot write all the actual addons ourselves unless we can cover our costs. Therefore users who need addons need to 'carry the torch', promoting and being active in the Composr community. The more everyone puts in, the more everyone gets out -- Composr users together are stronger than ocProducts is.
+However, at the end of the day addon-making is in the hands of users -- while we can empower, we cannot write all the actual addons ourselves unless we can cover our costs. Therefore users who need addons need to 'carry the torch', promoting and being active in the Composr community. The more everyone puts in, the more everyone gets out -- Composr users together are stronger than ocProducts is.
 
 The 'Making an addon' series of tutorials are highly technical, intended for those who already know PHP programming and the basics of Composr's modularity. You can always go to web to search and learn it.
 If you have any questions or want to discuss solutions, we've created forums on the compo.sr website for each tutorial in this series. [b]Please[/b] ask questions there, even if they seem basic.

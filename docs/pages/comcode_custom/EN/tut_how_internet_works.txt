@@ -38,7 +38,7 @@ The Internet is a testament both simultaneously due to the way technologists coo
 
 What I have described so far is probably not the Internet as you or most would see it. It's unlikely you see the Internet as a democratic and uniform computer network, and to an extent, it isn't. The reason for this is that I have only explained the foundations of the system so far, and this foundation operates below the level you'd normally be aware of. On the lowest level you would be aware of, the Internet is actually more like a situation between a getter and a giver -- there's something you want from the Internet, so you connect up and get it. Even when you send an e-mail, you're getting the service of e-mail delivery.
 
-Being a computer network, the Internet consists of computers -- however, not all computers on the Internet are created equal. Some computers are there to provide services, and some are there to consume those services. We call the providing computers 'servers' and the consuming computers 'clients'. At the theoretical level, the computers have equal status on the network, but servers are much better connected than clients and are generally put in place by companies providing some kind of commercial service. You don't pay to view a web site, but somebody pays for the server the website is located on -- usually the owner of the web site pays a 'web host' (a commercial company who owns the server).
+Being a computer network, the Internet consists of computers -- however, not all computers on the Internet are created equal. Some computers are there to provide services, and some are there to consume those services. We call the providing computers 'servers' and the consuming computers 'clients'. At the theoretical level, the computers have equal status on the network, but servers are much better connected than clients and are generally put in place by companies providing some kind of commercial service. You don't pay to view a website, but somebody pays for the server the website is located on -- usually the owner of the website pays a 'web host' (a commercial company who owns the server).
 
 [title="2"]Making contact[/title]
 
@@ -111,7 +111,7 @@ There are many protocols that work on the communications already established, in
  - IMAP4 -- for reading e-mail in e-mail software, with it archived on the receiving server
  - SMTP -- for sending e-mail from e-mail software
  - FTP -- for uploading and downloading files (sometimes via a web browser, although using special FTP software is better)
- - ICMP -- for 'pinging', amongst other things (a 'ping' is the Internet equivalent to shouting out a 'are you there')
+ - ICMP -- for 'pinging', among other things (a 'ping' is the Internet equivalent to shouting out a 'are you there')
  - Telnet -- for logging into another computer across the Internet and typing in commands for it (the old operating systems that the Internet developed around are heavily based on the typing in of commands rather than just using a mouse -- don't expect to be able to telnet to a Windows computer)
  - MSN Messenger -- this is just one example of many protocols that aren't really standard and shared conventions, but rather ones designed by a single software manufacturer wholly for the purposes of their own software
 

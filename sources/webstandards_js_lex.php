@@ -503,7 +503,7 @@ function webstandards_js_lex($text)
 }
 
 /**
- * Get the next character whilst lexing
+ * Get the next character while lexing
  *
  * @param  integer $i Get character at this position
  * @return list Get triplet about the next character (whether end reached, new position, character)
@@ -519,7 +519,7 @@ function lex__get_next_char($i)
 }
 
 /**
- * Get the next characters whilst lexing
+ * Get the next characters while lexing
  *
  * @param  integer $i Get character at this position
  * @param  integer $num How many to get

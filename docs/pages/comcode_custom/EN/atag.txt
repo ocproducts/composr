@@ -64,7 +64,7 @@ For any structured element set, the author must always be able to select content
 The authoring tool must provide the ability to save and reload all configuration settings related to visual or auditory output and keyboard operability.
 [/quote]
 
-As the interface is that of a web interface, such configuration would be stored in a user's own web browser. It is assumed that different users use different web browser installs. If more control is needed than a web browsers CSS override and view settings can provide, it is possible to edit templates to distinguish between users and user-groups - as this criteria is rationalised in order to allow personal settings, this should meet the criteria.
+As the interface is that of a web interface, such configuration would be stored in a user's own web browser. It is assumed that different users use different web browser installs. If more control is needed than a web browsers CSS override and view settings can provide, it is possible to edit templates to distinguish between users and usergroups - as this criteria is rationalised in order to allow personal settings, this should meet the criteria.
 
 [quote="ATAG checkpoint"]
 The author must be able to select, within the application, from multiple configuration sets.
@@ -238,7 +238,7 @@ The prominence is extremely high - the system will actually put up a blocker pag
 Any authoring tool feature that helps to sequence author actions (such as object insertion dialogs, design guides, templates, wizards, tutorials, or instruction text) must integrate relevant accessibility prompts at or before the author is required to make the authoring decision related to the prompt (e.g. finalize a page design wizard or an image insertion operation).
 [/quote]
 
-Any accessibility information that is required is requested as an integral part of the operation, not as an 'add-on'. If manual input of HTML is being performed, the webstandards checker would pick up on any problems. Hence this is not totally appropriate, but is in essence complied with.
+Any accessibility information that is required is requested as an integral part of the operation, not as an 'addon'. If manual input of HTML is being performed, the webstandards checker would pick up on any problems. Hence this is not totally appropriate, but is in essence complied with.
 
 [quote="ATAG checkpoint"]
 The configurability of all functions related to accessibility prompting, checking, repair, and documentation must at least match the configurability of other prompting, checking, repair, and documentation functions of the tool (respectively), in terms of both of the following

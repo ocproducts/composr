@@ -23,7 +23,7 @@ Event types are used to categorise events. There is a good selection of default 
  - System command.
 System commands are a special type, as events added to this define code to be executed (and permissions protect members adding to it by default).
 
-You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under the 'Calendar' icon in the Content Management Zone.
+You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under Content Management > Calendar.
 [/surround]
 
 [surround]
@@ -89,7 +89,9 @@ Changing this is not really viable: the internals of the calendar are extremely 
 
 [title="2"]Recurrence fixing[/title]
 
-[box="Important note" width="25em" float="right"]It is advisable to take a database backup before fixing an event, just in case the process does not complete as you expect it to. The recurrence programming code in the calendar system is (has to be) extremely complex, and this is a place where a minor bug or user mistake could wreak havoc.[/box]
+[box="Important -- take a backup" width="25em" float="right"]
+It is advisable to take a database backup before fixing an event, just in case the process does not complete as you expect it to. The recurrence programming code in the calendar system is (has to be) extremely complex, and this is a place where a minor bug or user mistake could wreak havoc.
+[/box]
 If you have a recurring event, but for some reason, the event stops recurring, or there is a break in the recurrence pattern, then you will be pleased to hear that Composr has a feature for coping with this. The process of using the feature is labelled 'fixing an event'.
 
 To fix an event, you just edit the event as if it was starting afresh, but select the edit action (at the bottom of the form) of 'Edit with fixing past recurrences'. This will cause all past recurrences of the event to be hard-coded into the system as individual events, and the edited event will now be completely separate to anything that has happened before.

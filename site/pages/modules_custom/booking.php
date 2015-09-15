@@ -133,7 +133,7 @@ class Module_booking
                 'b_day' => 'SHORT_INTEGER',
                 'b_month' => 'SHORT_INTEGER',
                 'b_year' => 'INTEGER',
-                'code_allocation' => 'ID_TEXT', // These code allocations will be given out arbitrarily, which means later on if things get busy, things could be suboptimal (e.g. people's 'stay' split across different codes on different dates, whilst reorganising could solve that). So a human would probably reorganise this manually in some cases, and it should not be considered a real-world guarantee, or a necessary thing to make sure people get a full run-length on a single code
+                'code_allocation' => 'ID_TEXT', // These code allocations will be given out arbitrarily, which means later on if things get busy, things could be suboptimal (e.g. people's 'stay' split across different codes on different dates, while reorganising could solve that). So a human would probably reorganise this manually in some cases, and it should not be considered a real-world guarantee, or a necessary thing to make sure people get a full run-length on a single code
                 'notes' => 'LONG_TEXT',
                 'booked_at' => 'TIME', // time booking was made
                 'paid_at' => '?TIME',

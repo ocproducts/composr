@@ -61,55 +61,55 @@ Here are the main content types (your meat & potatoes of publishing)...
 ! Related concepts
 |-
 ! Comcode pages
-| comcode_pages
+| [tt]comcode_pages[/tt]
 | Standalone web pages. Written in Comcode, which can include arbitrary HTML also.
 | Effectively categorised by zones, in that a page (Comcode or otherwise) exists within a zone.
 | Zones
 |-
 ! News
-| news
+| [tt]news[/tt]
 | Post news stories and articles, chronologically. Blogs is a specialisation of news (a blog is simply a news category owned by a member).
 | Flat (news categories), multi-categorisation (via primary and secondary news categories).
 | Blogs
 |-
 ! Calendar
-| calendar
+| [tt]calendar[/tt]
 | Organise events on a public calendar / private diary.
 | Flat (event types).
 | 
 |-
 ! Wiki+
-| wiki
+| [tt]wiki[/tt]
 | Encyclopedia system, designed for taking public contributions. Like a wiki but a hybrid system that also supports tree-like structuring. Made up of pages, consisting of page text and/or posts.
 | Node structure (Wiki+ pages), looks hierarchical but you may place child pages under multiple parent pages.
 | 
 |-
 ! Downloads
-| downloads
+| [tt]downloads[/tt]
 | A library of downloadable files. Can be used to provide documents, or any other organised structure of files for visitors to download.
 | Hierarchical (download categories).
 | 
 |-
 ! Galleries
-| galleries
+| [tt]galleries[/tt]
 | Browsable galleries containing Images and Videos.
 | Hierarchical (galleries).
 | 
 |-
 ! Polls
-| polls
+| [tt]polls[/tt]
 | Post polls, often chronologically. Take in the views of your visitors via a simple voting mechanism.
 | None.
 | 
 |-
 ! Quizzes
-| quiz
+| [tt]quiz[/tt]
 | Have tests, competitions, and surveys, consisting of multiple questions, with a variety of answer inputting methods. Visitors may fill the quizzes in and results get processed.
 | None.
 | 
 |-
 ! Catalogues
-| catalogues
+| [tt]catalogues[/tt]
 | Create custom content types with the fields you want. Various different ways to display them. Catalogues contain categories contain entries. A number of default catalogues are bundled as examples/plumbing, but may be deleted or changed. One of the default catalogues is used for online shopping.
 | A choice of hierarchical or flat (catalogue categories).
 | Shopping cart, Orders
@@ -210,10 +210,10 @@ Honourable mentions...
 | Forums are hierarchical and divided by grouping. Topics are in a sense a category for posts because they group them together.
 | Forum groupings, Topics, Posts, Multi-moderations, Post Templates, Forum polls
 |-
-! Chat rooms
+! Chatrooms
 | chat
 | Live chats between users.
-| You can have multiple chat rooms.
+| You can have multiple chatrooms.
 | 
 |-
 ! Newsletters
@@ -301,7 +301,7 @@ To add as a news article, head along to Content Management > News. Once added, i
 
 There are a number of different features in Composr which can be used for database storage, manipulation and retrieval:
  - 'catalogues' allow you to define the fields for records, and then have these records and the manipulation and display thereof to be included as a first-class aspect of your website. Catalogues support hierarchical structuring of data.
- - Wiki+ is a wiki-like hierarchical database; it is much more powerful than a wiki however, as whilst it can behave as a free-form and open-access database navigated by embedded hyperlinks, it can also behave as a highly moderated and formal structured database.
+ - Wiki+ is a wiki-like hierarchical database; it is much more powerful than a wiki however, as while it can behave as a free-form and open-access database navigated by embedded hyperlinks, it can also behave as a highly moderated and formal structured database.
  - The forum can actually be used very effectively as a database, if a formal structure and presentation is less important than an ability to rapidly manipulate free-form data in a comfortable and informal environment.
  - Comcode pages (static documents) may also be used, with each 'record' being created by creating a new page; consistant structure may be created using 'Custom Comcode tags'.
  - [i]By integrating an existing system.[/i]

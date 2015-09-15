@@ -63,7 +63,7 @@ class Hook_addon_registry_core_database_drivers
         return array(
             'tut_web_hosting',
             'tut_install',
-            'tut_adv_installation',
+            'tut_adv_install',
         );
     }
 

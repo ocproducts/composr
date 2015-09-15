@@ -38,8 +38,8 @@ Members need the "Place content in a featured position" privilege to post on the
 The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an adhoc basis, by either:
 1) referencing them in the child-list for a page (available under the 'Edit Tree' button),
 2) or by referencing them via the special Comcode syntax ([tt][[pagename]][/tt]).
-The 'Edit Wiki+ page' selection list in the Content Management Zone may be used to find/select pages which have been orphaned from the Wiki+ hierarchy.
-In a typical set-up, staff are given access to modify the Wiki+ tree, whilst ordinary users rely on the Comcode syntax to create new inline links. Whether ordinary users are given access to add new pages can vary substantially between deployments, depending heavily on what role Wiki+ is being used for.
+The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ hierarchy.
+In a typical setup, staff are given access to modify the Wiki+ tree, while ordinary users rely on the Comcode syntax to create new inline links. Whether ordinary users are given access to add new pages can vary substantially between deployments, depending heavily on what role Wiki+ is being used for.
 
 [title="3"]Orphaned pages[/title]
 

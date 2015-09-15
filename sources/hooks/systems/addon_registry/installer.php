@@ -62,7 +62,7 @@ class Hook_addon_registry_installer
     {
         return array(
             'tut_install',
-            'tut_adv_installation',
+            'tut_adv_install',
             'tut_chmod',
         );
     }

@@ -5,7 +5,7 @@ Some of our systems rely on your web browser allowing {$SITE_NAME} to allow popu
 [b]You have been brought here as we detected a failure to open a popup window.[/b]{+END}
 [title="2"]Web browsers[/title]
 
-Often web browsers come built in with popup blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
+Often web browsers come built-in with popup blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
 
 [title="3"]Microsoft Edge / Microsoft Internet Explorer[/title]
 

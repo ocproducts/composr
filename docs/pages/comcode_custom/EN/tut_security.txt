@@ -55,7 +55,7 @@ Framework security:
  - Prevention of attacks carried out by the upload of malicious files, via various forms of automatic filtering. Per-directory disabling of PHP code as an extra level of security (Apache-only)
  - Prevention of access-control-bypass via manually downloading privileged files via URL via automatic filename obfuscation
  - Prevention of directory listing attacks in deep directories, via empty [tt]index.html[/tt] files
- - Disabling of common insecure PHP features such as "register globals" and "allow url fopen"
+ - Disabling of common insecure PHP features such as "register globals" and "allow URL fopen"
  - Automatic enabling of a number of Suhosin features designed to improve security, and coding standards that allow our code to work with them. Suhosin is an unofficial extension to PHP that adds extra security constraints
  - Prevention of "jumping-in" attacks against deep framework code via a secure code modularisation standard
  - Automatic imposition of limits, to prevent exploitation of bugs leading to the draining of computational resources
@@ -323,7 +323,7 @@ Assuming you have already installed the SSL certificate on the server, you can s
 Go to the Admin Zone > Security > SSL/TLS (HTTPS) configuration, and tick (check) the boxes for the following pages... [tt]:join[/tt], [tt]:login[/tt], [tt]:purchase[/tt], [tt]:shopping[/tt], [tt]site:members[/tt]. (These are the pages that purchases or passwords happen on -- but you can enable for other pages too if you like)
 (this assumes that you have the [tt]ssl[/tt] addon installed)
 
-If you are not able to use SSL, don't think that your site is very insecure: it probably is possible for a hacker to gather the password during transit, but it would not be easy. Sometimes when we consider computer security we lose sight of the insecurities we face every day: it is possible a death cult could take over your office for a week whilst fighting off the military with heavy rocket propelled grenades: likelihoods need to be kept within proportion. This said, if you have very sensitive information, or run an e-commerce site, SSL is essential, as the stakes are high enough for criminal interest to be stimulated.
+If you are not able to use SSL, don't think that your site is very insecure: it probably is possible for a hacker to gather the password during transit, but it would not be easy. Sometimes when we consider computer security we lose sight of the insecurities we face every day: it is possible a death cult could take over your office for a week while fighting off the military with heavy rocket propelled grenades: likelihoods need to be kept within proportion. This said, if you have very sensitive information, or run an e-commerce site, SSL is essential, as the stakes are high enough for criminal interest to be stimulated.
 
 Note that a page viewed under HTTPS will use HTTPS for all images and other embedded files. The banner will be disabled to make sure this requirement is enforced. The reason for this is that users should not get mixed environment messages that warn them about potential security problems. Template makers and coders should be careful to use the proper Composr mechanisms for referencing resources.
 
@@ -367,9 +367,9 @@ This technique reduces the chance of someone gaining unauthorised access to an a
 
 [title="3"]_config.php (when suEXEC is not enabled)[/title]
 
-By default, [tt]_config.php[/tt] is left 'world-writable' by the installer if suEXEC is not enabled. This allows the configuration editor to work with it, and allowed the file to be initially filled, but does represent a potential security risk on a shared server.
+By default, [tt]_config.php[/tt] is left 'world-writable' by the installer if suEXEC is not enabled. This allows the Installation Options editor to work with it, and allowed the file to be initially filled, but does represent a potential security risk on a shared server.
 
-Whilst many files are world writable, this file is a particular target, because it may be executed. Therefore if someone on a shared server can write to the file, perhaps via shell access, then they can execute code on your site, possibly unnoticed. It is worth noting that if they had shell access, they could trash your database and uploads anyway, but not so easily execute code on your domain.
+While many files are world writable, this file is a particular target, because it may be executed. Therefore if someone on a shared server can write to the file, perhaps via shell access, then they can execute code on your site, possibly unnoticed. It is worth noting that if they had shell access, they could trash your database and uploads anyway, but not so easily execute code on your domain.
 
 To solve this problem, simply remove execute permission for the [tt]_config.php[/tt] file.
 
@@ -418,7 +418,7 @@ Often these kinds of hacks run on the server level, going from one site to the n
 
 This said, it is easy for permissions to get set too liberally when uploading. This can happen if an FTP client is set to mirror local permissions, and local permissions are set to full write -- or if the client or server just has default permissions that are too high.
 
-The above is the most likely scenario and is quite common amongst people running web scripts.
+The above is the most likely scenario and is quite common among people running web scripts.
 
 The other less likely possibilities that come to mind would be:
 1) some hole in some script on your account. It could be any script you have because this kind of situation often combines with the likely one above: some script on the server somewhere has a hole, then the hacker tunnels through that to infect other things on the server that have too liberal permissions. Or, if you do have correct permissions, some script on your hosting account, affecting other things on your hosting account.

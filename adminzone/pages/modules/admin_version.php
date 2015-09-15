@@ -353,7 +353,7 @@ class Module_admin_version
 
             $GLOBALS['SITE_DB']->create_table('logged_mail_messages', array(
                 'id' => '*AUTO',
-                'm_subject' => 'LONG_TEXT', // Whilst data for a subject would be tied to SHORT_TEXT, a language string could bump it up higher
+                'm_subject' => 'LONG_TEXT', // While data for a subject would be tied to SHORT_TEXT, a language string could bump it up higher
                 'm_message' => 'LONG_TEXT',
                 'm_to_email' => 'LONG_TEXT',
                 'm_extra_cc_addresses' => 'LONG_TEXT',

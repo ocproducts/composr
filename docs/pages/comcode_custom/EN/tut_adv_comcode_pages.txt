@@ -26,7 +26,8 @@ These classifications are not forced however. It is common, for example, to use 
 
 [title="2"]How to use a block[/title]
 
-[media width="150" description="Actual Comcode that references blocks" float="right"]data_custom/images/docs/tut_adv_comcode_pages/adv_comcode_pages.png[/media]
+[media width="150" description="Actual Comcode that references blocks (with WYSIWYG on, highlighting the add block button)" float="right"]data_custom/images/docs/tut_adv_comcode_pages/wysiwyg.png[/media]
+[media width="150" description="Actual Comcode that references blocks (with WYSIWYG off, highlighting the add block button)" float="right"]data_custom/images/docs/tut_adv_comcode_pages/adv_comcode_pages.png[/media]
 Unlike other systems that you may have experience with, Composr blocks (such as news blocks or poll blocks) are not arranged graphically. Usage of blocks is easiest shown by example. If you log in to your site as your administrator member, and choose to edit the front page of the Welcome Zone, then you will see the page consists of Comcode: in particular, you will see (if you turn WYSIWYG off) that the '\[block]' tag is used many times in the page.
 
 To use a block, all you actually need to do is to use the Comcode '\[block]' tag, with the name of the block as the tag contents. Parameters passed to the block simply get placed as parameters for the block tag itself.
@@ -126,7 +127,7 @@ You can add a video chat box to your site without any special API integration, j
 [list]
 [*]Sign up for an account at [url="TokBox"]http://www.tokbox.com/[/url]
 [*]Create a Comcode page on your site where you want the video chat/conferencing to be located
-[*]Go to [url="http://www.tokbox.com/#embed="]http://www.tokbox.com/#embed=[/url] and log in using the user name and password from step 1 if you aren't already logged in.
+[*]Go to [url="http://www.tokbox.com/#embed="]http://www.tokbox.com/#embed=[/url] and log in using the username and password from step 1 if you aren't already logged in.
 [*]Select the size you want your video chat to be
 [*]Choose whether you want to add text chat or not
 [*]Choose whether you want to show the list of participants or not

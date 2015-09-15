@@ -87,9 +87,9 @@ If you are adding features to the standard Composr, you must make use of Theme W
 [title="3"]PNG images[/title]
 
 As a standard Composr uses 32-bit PNG files over other image types, unless:
- - animation is required (.gif used instead)
- - background image transparency is required (8-bit .png used instead)
- - where the image needs to be given a size different to it's natural dimensions (.gif used instead)
+ - animation is required ([tt].gif[/tt] used instead)
+ - background image transparency is required (8-bit [tt].png[/tt] used instead)
+ - where the image needs to be given a size different to it's natural dimensions ([tt].gif[/tt] used instead)
 
 We use PNG files as they have the added advantage that they can be 'alpha-blended' for smooth, blended, visuals.
 
@@ -251,7 +251,7 @@ Also we need our own JavaScript template file to implement our AJAX-tied behavio
 require_javascript('example');
 [/code]
 
-AJAX requests can be either synchronous or asynchronous. A synchronous request runs linearly: JavaScript makes the call and then the browser will wait for the response before resuming execution. An asynchronous request involves a later (at an unknown point) 'call back' to a response handler (the "method") that we would write specially. Technically a synchronous-AJAX request is a contradiction (the 'A' in AJAX means 'asynchronous'), but the way people use the term AJAX means it's best we not worry about this. It's rare for us to use synchronous requests as it can make the browser freeze whilst it waits.
+AJAX requests can be either synchronous or asynchronous. A synchronous request runs linearly: JavaScript makes the call and then the browser will wait for the response before resuming execution. An asynchronous request involves a later (at an unknown point) 'call back' to a response handler (the "method") that we would write specially. Technically a synchronous-AJAX request is a contradiction (the 'A' in AJAX means 'asynchronous'), but the way people use the term AJAX means it's best we not worry about this. It's rare for us to use synchronous requests as it can make the browser freeze while it waits.
 
 In our JavaScript template file, we typically define basically two functions if we are writing asynchronous AJAX. One function is for initiating the AJAX event (can be any name you like) and another is to handle the response of the AJAX script (has any name, but it must be passed to the Composr [tt]do_ajax_request[/tt] function). If you are writing synchronous AJAX you can pass the null value instead of a function, and the [tt]do_ajax_request[/tt] function will respond with the result.
 
@@ -361,8 +361,10 @@ However, things aren't always so simple. There are some exceptions because some 
  - other modules use very fine-tuned listings for display categories/content. For example, the chat lobby shows rooms as a compact list.
  - other modules make custom content queries which don't match up to what the parameters for existing blocks can achieve. For example, the authors module shows what downloads and news belongs to a particular author.
 
-[box float="right"]This abstraction quandary comes up in other places too. Often programmers will try and abstract everything and end up with a mess. For example, Composr CRUD modules define the form structure manually. We could try and automatically generate forms via the semantic database structure we already have -- but for usability we need much more control over how each form will look in every case.[/box]
-There is a constant battle between abstraction, and intuitive interfaces. Not everything can be simplified down to an instance of a common pattern. Therefore Composr abstracts the patterns in layers, and then module/block code will interface with the layer that is compatible with its requirements and fill in the gaps. This minimises code, whilst maximises the user experience, and allows new unplanned experiences to be created by webmasters who wish to interface with the APIs at various levels. In general, even if a block is not used to display listings, the code required is still minimal due to use of the [tt]render_<content-type>_box[/tt] functions.
+[box float="right"]
+This abstraction quandary comes up in other places too. Often programmers will try and abstract everything and end up with a mess. For example, Composr CRUD modules define the form structure manually. We could try and automatically generate forms via the semantic database structure we already have -- but for usability we need much more control over how each form will look in every case.
+[/box]
+There is a constant battle between abstraction, and intuitive interfaces. Not everything can be simplified down to an instance of a common pattern. Therefore Composr abstracts the patterns in layers, and then module/block code will interface with the layer that is compatible with its requirements and fill in the gaps. This minimises code, while maximises the user experience, and allows new unplanned experiences to be created by webmasters who wish to interface with the APIs at various levels. In general, even if a block is not used to display listings, the code required is still minimal due to use of the [tt]render_<content-type>_box[/tt] functions.
 
 [title="4"]Why not use blocks for everything?[/title]
 

@@ -57,7 +57,7 @@ Do not complain in-topic about the subject being too far off-topic or otherwise 
 
 [title="2"]Chat[/title]
 
-In no circumstances may you use the chat rooms to start or continue sexually suggestive dialogue with any member under the age of consent (whichever age is highest between any geographic region where the hypothetical parties are located).
+In no circumstances may you use the chatrooms to start or continue sexually suggestive dialogue with any member under the age of consent (whichever age is highest between any geographic region where the hypothetical parties are located).
 
 [title="2"]Signatures[/title]
 
@@ -67,7 +67,7 @@ Remember that a big signature is not always a good signature. Keep it nice and s
 
 [title="2"]Avatars[/title]
 
-For your own sake, avoid trying to use .bmp files as avatars - the system will not let you, because you should compress them to a more appropriate format, such as the .png format.
+For your own sake, avoid trying to use .bmp files as avatars - the system will not let you, because you should compress them to a more appropriate format, such as the [tt].png[/tt] format.
 Avatars size is restricted by the system according to your usergroup.
 
 [title="2"]Points[/title]

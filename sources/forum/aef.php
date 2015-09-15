@@ -992,7 +992,7 @@ class Forum_driver_aef extends Forum_driver_base
 
     /**
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
-     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, whilst others made the humanly readeable name.
+     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
      *
      * @param  boolean $skip_member_specific Whether to avoid member-specific lookup
      * @return ID_TEXT The theme

@@ -39,11 +39,11 @@ Before starting your report:
 
 What to include on your report:
  - [b]Describe your problem[/b]. If the problem it is at all complex it may also help if you can give precise [b]steps to reproduce the problem[/b]. That said, we are a huge fan of [url="Jing"]http://www.techsmith.com/jing.html[/url], and often simply spending a few minutes recording a video means you won't need to type much explanation and your problem will be more easily understood without ambiguity or language problems.
- - If you think there is any chance that the problem only happens on some browsers (e.g. some kind of layout problem or Javascript problem), [b]report which browser you are using[/b] (e.g. Microsoft Internet Explorer 9).
+ - If you think there is any chance that the problem only happens on some browsers (e.g. some kind of layout problem or JavaScript problem), [b]report which browser you are using[/b] (e.g. Microsoft Internet Explorer 9).
  - If you are not running the latest stable version of Composr, state [b]which Composr version you are running[/b].
  - If you get an error message, copy and paste the [b]error message[/b]. The developers need to know precisely what it said, without paraphrasing or typos.
  - If you see a stack trace, or are invited to generate one, include that [b]full stack trace[/b]. Often stack traces are extremely useful. You should scan over the stack trace first though to make sure there isn't anything in there you wouldn't be happy sharing (such as your website URL, or potentially passwords or sensitive text). If you find anything you do not want to share, simply censor it out of the report. Don't expect the developers to censor things for you unless it really jumps out at them, that's not something they'll have time for.
- - Mention [b]anything else that you might think potentially relevant to the situation[/b]. For example, if you have disabled Javascript, or are browsing on a phone, or have installed hotfixes in related areas of the code, or if you're on a really new version of PHP. We can't list everything that might be relevant here, and that's the point (don't consider the aforementioned examples a checklist): if something that is likely to be relevant comes to mind, include it.
+ - Mention [b]anything else that you might think potentially relevant to the situation[/b]. For example, if you have disabled JavaScript, or are browsing on a phone, or have installed hotfixes in related areas of the code, or if you're on a really new version of PHP. We can't list everything that might be relevant here, and that's the point (don't consider the aforementioned examples a checklist): if something that is likely to be relevant comes to mind, include it.
  - Consider [b]offering server access[/b]. If your problem might be hard to reproduce, take some time to reproduce, or be specific to your own server (e.g. only occur on certain PHP versions), it may help the developers to have direct access to your server to see the problem and develop/test a fix. You can add FTP details to your site in your member account (these will get encrypted). If you wish to grant developer access then make sure you agree to the [url="server access policy"]http://compo.sr/site/server_access.htm[/url] (designed to protect the developers from claims against them), and clearly include in your report that you agree and that you are happy for direct site access. The developers like to resolve bugs efficiently with the minimal amount of discussion, so if you can provide access immediately at the point of making your report it may help a lot (otherwise the developers may need to come back with questions, and the back-and-forth and second guessing could take a while).
 
 In general:
@@ -60,7 +60,7 @@ In general:
  - [b]Write for a broad audience[/b]. Other users are probably also reading your report. Don't write the report as something about you and your site, try to keep the focus on the problem itself, and Composr.
  - [b]Assume the staff have amnesia[/b]. You may have previously interacted with staff, and therefore assume details of this will be remembered. However, assuming 4 issues are dealt with per day, that means 1460 issues per year - so please forgive that staff will often dump their memory after dealing with something.
 
-If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in the Admin Zone, under the Audit Section). The error log shows all non-user-errors that have occurred on your site.
+If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in Admin Zone > Audit > Error log). The error log shows all non-user-errors that have occurred on your site.
 
 If your report is not clear enough for us to [i]mmediately[/i] see it as a bug we may require you to post with a commercial ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
 
@@ -107,7 +107,7 @@ Let's imagine the webhost has 500 accounts on the server, and 7% of those sites 
 [tt]500*0.07*0.5/10=1.75 seconds of request per second of real time[/tt], probably enough to tax a dual-core server.
 So you can see, depending on what kinds of customers the host has, what software they run, how many accounts are held on the server, and the power of the server, hosts may have to do some push back against what their customers might do.
 
-If you are using the Composr chat room, and a few people leave it open, the reqs/sec could rise considerably.
+If you are using the Composr chatroom, and a few people leave it open, the reqs/sec could rise considerably.
 
 If you are going to run a popular CMS site, you will eventually outgrow shared hosting and need a VPS, dedicated server, or cloud instances. Until then, try and see past webhost marketing and choose a host that has a good reputation and good hardware -- absolutely don't cheap-out and try and get really cheap hosting, as you'll suffer from it. Cheap hosting is ideal only for simple static sites that get few hits. It's really important to realise how cut-throat and difficult it is for web hosts -- think how much salary a host needs to pay for the support you use from them, for the hardware they provide, for the marketing/advertising/offers they run, and for maintaining their business (their own website, etc) -- you'll see how squeezed it is and how if you go on the cheap end you can't possibly do well from it.
 
@@ -121,13 +121,13 @@ Normally Composr requests are explicitly limited to a [i]maximum[/i] of 64MB, wh
 
 If a webhost complains about memory usage they are probably looking at an aggregate figure.
 
-[title="4"]Example: chat room[/title]
+[title="4"]Example: chatroom[/title]
 
-The chat room is one possible cause for an aggregate figure to rise, as it has regular hits for each person who has the chat room open. This is because the chat room has to be constantly checked for new messages (hopefully one day this won't be the case, but current PHP and web browser features prevent a smarter approach on shared hosting).
+The chatroom is one possible cause for an aggregate figure to rise, as it has regular hits for each person who has the chatroom open. This is because the chatroom has to be constantly checked for new messages (hopefully one day this won't be the case, but current PHP and web browser features prevent a smarter approach on shared hosting).
 
 Let's say that 8MB is used by the chat message check script. This memory use is from the actual parsed PHP code that is loaded up, as PHP tends to use quite a lot of memory for it (orders of magnitude more than the disk size of PHP files).
 
-The chat room checks messages by default each 10 seconds (so on average a message will be received 5 seconds after sent).
+The chatroom checks messages by default each 10 seconds (so on average a message will be received 5 seconds after sent).
 
 If each request takes 0.05 seconds, and there are 20 people in the room...
 
@@ -137,7 +137,7 @@ Assuming only a single server core, this means a server would be using the 8MB 1
 
 If the server has 1GB of RAM dedicated to web requests, it could sustain 500 customers using this volume of RAM.
 
-So, the chat room is unlikely to be a problem unless the webhost is really cheaping out in a big way (e.g. putting thousands of users on a subleased VPS).
+So, the chatroom is unlikely to be a problem unless the webhost is really cheaping out in a big way (e.g. putting thousands of users on a subleased VPS).
 
 [title="4"]Example: general use[/title]
 
@@ -362,7 +362,7 @@ Usually this is more of an issue of a specific configuration of Composr looking 
 
 [title="3"]How to give constructive criticism[/title]
 
-This is best shown by example. Recently (at the time of writing) we got some very vague feedback, mentioned in passing in our chat room. It was not mentioned, but we were able to guess that this related to some display issues on the Composr demo, and analysis (read: second guessing) led to some bug reports, that we could then resolve:
+This is best shown by example. Recently (at the time of writing) we got some very vague feedback, mentioned in passing in our chatroom. It was not mentioned, but we were able to guess that this related to some display issues on the Composr demo, and analysis (read: second guessing) led to some bug reports, that we could then resolve:
  - http://compo.sr/tracker/view.php?id=1169
  - http://compo.sr/tracker/view.php?id=1170
  - http://compo.sr/tracker/view.php?id=1171
@@ -403,7 +403,7 @@ We are unlikely to chase fashions with Composr, i.e. we will try and make the de
 
 [b]Browser-compatibility[/b]: We have to make Composr work across a range of web browsers, not just Webkit.
 
-[b]Low-weight[/b]: Often designers working on custom websites will pick a lot of the very latest design frameworks and Javascript libraries. However, with Composr we have to support a great number of features, without pulling in dependencies for them all. We can't have lots of different libraries with overlapping functionality, and different coding styles -- Composr would suffer major performance problems, but also become a nightmare to design themes for. In recent years there has been an incredible churn in front-end libraries -- what is hot one year, is outdated the next. It's very important that we isolate Composr from all this and try and make the default theme simple, consistent, and performant.
+[b]Low-weight[/b]: Often designers working on custom websites will pick a lot of the very latest design frameworks and JavaScript libraries. However, with Composr we have to support a great number of features, without pulling in dependencies for them all. We can't have lots of different libraries with overlapping functionality, and different coding styles -- Composr would suffer major performance problems, but also become a nightmare to design themes for. In recent years there has been an incredible churn in front-end libraries -- what is hot one year, is outdated the next. It's very important that we isolate Composr from all this and try and make the default theme simple, consistent, and performant.
 
 [b]Opinion[/b]: It has to be noted that design is very personal, and not everyone is going to agree on what is good design. Different people have different taste.
 
@@ -444,7 +444,7 @@ A consequence for this is that when we are providing services to people we are a
 One tricky thing about our business is we walk the line between enthusiast and enterprise services, trying to serve everybody's needs well, and aiming to be fair and open to everybody, be socially responsible, and to maintain a healthy community atmosphere. We make advanced stuff really affordable, but when that stuff is heavily customised with a lot of extra design work, and given heavy customisation to tune it to particular needs, it still can cost a lot of money. Often people who are in communities aren't accustomed to the kind of figures that companies have to pay for things, and expect services to be cheaper, more like the price you see for things in shops, or pay for a software license. There's a big gap between 'free'/$100 and 'tens of thousands of dollars'. The reality though is most websites for businesses cost this much, or often a lot more because they are developed by a permanent staff.
 Prices seem relatively high, because wages are always a lot higher than disposable income -- think how many $100 there are in the yearly salary of someone who has been through years of university training and with an in-demand skill-set, and then add to that things like the cost of dead time (periods where incoming work is slow), administration costs, write-downs (e.g. non-paying-clients), training, marketing and PR, management, sickness leave, vacation periods, tax, expansion funds, contingency, office and bills, return on investment, and many other costs. For people outside business costing, the actual cost things come to is a bit of a shock, but the figures that go around are fair reflections on the costs of it all.
 
-Now comes the reason we're including all these details in this tutorial. We often get a situation where people come to us looking to purchase some heavy Composr customisations, but don't have past experience of business costs. Most people don't. It doesn't help that most of the real costs for quality programming services out there are never advertised, when costs for the lowest quality of work, or out-of-the-box products, are advertised openly. By explaining the background to how costs are calculated, and what we can and can't deliver for free, I hope we can demonstrate how we maintain an enormous passion for Composr and Open Source, whilst showing that our commercial services are necessarily aimed at organisations with a realistic business budget, and not intended to be taken up by the majority of our users (community websites).
+Now comes the reason we're including all these details in this tutorial. We often get a situation where people come to us looking to purchase some heavy Composr customisations, but don't have past experience of business costs. Most people don't. It doesn't help that most of the real costs for quality programming services out there are never advertised, when costs for the lowest quality of work, or out-of-the-box products, are advertised openly. By explaining the background to how costs are calculated, and what we can and can't deliver for free, I hope we can demonstrate how we maintain an enormous passion for Composr and Open Source, while showing that our commercial services are necessarily aimed at organisations with a realistic business budget, and not intended to be taken up by the majority of our users (community websites).
 
 Please be aware also that ocProducts doesn't take payment-in-kind, such as payment in stock, payment via advertising, mentions on mailing lists, commissions, or long-deferred payments. Our operating margins are already quite slim, so in these situations we'd expect a business client to use something like a bank loan to fund their enterprise. We're not professional valuators or risk assessors.
 

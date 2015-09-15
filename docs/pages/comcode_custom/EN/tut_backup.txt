@@ -8,12 +8,15 @@ This tutorial will describe and explain Composr's in-built backup addon, includi
 
 {!backups:DOC_BACKUPS}
 
+[box="Important -- backup security" width="25em" float="right"]
+Do not leave backups such that others might get a-hold of them, as this would be a big security risk due to sensitive data stored upon them. Keep backup CDs in a locked drawer, for example.
+[/box]
 Unfortunately disasters occur all the time, and to think it 'will not happen to me' is a very foolhardy position, because often it can happen for reasons totally unexpected and unavoidable. I don't have statistics on data loss, but just in the last few weeks before writing this tutorial:
  - I personally nearly lost the contents of a 120GB hard disk (due to a bug in the Windows boot sector recreation process)
  - I have personally rescued a server where two of the hard disks had developed bad sectors together (fortunately no data was lost here, but that was lucky)
  - A client of mine had their hard disk corrupt, loosing a great deal of data that took weeks to rebuild and incurred extra costs in consultancy to help automatically recreate some of the lost database rows
+
 [surround]
-[box="Important note" width="25em" float="right"]Do not leave backups such that others might get a-hold of them, as this would be a big security risk due to sensitive data stored upon them. Keep backup CDs in a locked drawer, for example.[/box]
 A good backup strategy will automatically and regularly backup all, or all changed/new, files, with months of history, and store them all twice in two different geographical regions. This is not realistic for most Composr users, but should drum home the fact that at the very least you should keep off-server backups to allow both roll-back and disk corruption/destruction recovery.
 [/surround]
 
@@ -26,12 +29,14 @@ Access the backup addon from: Admin Zone > Tools > Backups
 
 [i]Note that we only recommend using the Composr backup addon if you really have to, because it is limited to what PHP is allowed to do on the server. See the "Alternative backup strategies" section below.[/i]
 
-Depending on the options that are specified by the user (which will be discussed later), the site will put a copy of every single file and folder stored within the Composr installation directory into a .tar file. It will also keep the entire file structure intact as well.
+Depending on the options that are specified by the user (which will be discussed later), the site will put a copy of every single file and folder stored within the Composr installation directory into a [tt].tar[/tt] file. It will also keep the entire file structure intact as well.
 
-[box="Important note" width="25em" float="right"]The maximum file size that will be backed up refers to the size of any individual file added to the backup, not the size of the total backup.[/box]
+[box="The maximum file size setting" width="25em" float="right"]
+The maximum file size that will be backed up refers to the size of any individual file added to the backup, not the size of the total backup.
+[/box]
 The options for a backup are the following:
- - Full Backup -- this is where the site will store a copy of every file and folder in the Composr install directory into a .tar file as described above.
- - Incremental Backup -- this backup will store a copy of any new files and/or any files that have changed since the last backup into a .tar file. These are smaller backups and are suggested if a Full backup has been performed once before.
+ - Full Backup -- this is where the site will store a copy of every file and folder in the Composr install directory into a [tt].tar[/tt] file as described above.
+ - Incremental Backup -- this backup will store a copy of any new files and/or any files that have changed since the last backup into a [tt].tar[/tt] file. These are smaller backups and are suggested if a Full backup has been performed once before.
 
 Each backup option will contain a script that can restore your SQL database in the event that you loose your SQL database. Note however that it will not backup your forum tables, irrespective of whether they are in the same database as Composr.
 
@@ -42,7 +47,6 @@ From here, you can access the backup feature by either selecting the 'Make Backu
 
 The available selection on the to-do list will also show you how long ago it has been since a backup was made last.
 
-[media width="150" description="The backup interface" float="right"]data_custom/images/docs/tut_backup/backup_2.png[/media]
 Among other things, selecting the 'Make Backup' option will load up Make Backup screen (see cropped screen-shot), here you will get the options of making a Full Backup or an Incremental Backup (as described previously) and an option for the maximum size of file that will be backed up in megabytes.
 
 Clicking 'Make Backup' button once you have selected the backup method that you wish to use will generate the backup.
@@ -52,9 +56,10 @@ On clicking this, Composr will generate a message similar to as shown in the scr
 
 [surround]
 [media width="150" description="The backup progress screen, summarising the process until completion" float="left"]data_custom/images/docs/tut_backup/backup_3.png[/media]
+[media width="150" description="The backup interface" float="right"]data_custom/images/docs/tut_backup/backup_2.png[/media]
 Depending on the final target size of backup file and the power of your server (more processing power = quicker backup generation, less procession power = slower backup generation), this can take anything from a few seconds to many hours. So, please be patient with the backup generation process. An e-mail will be sent once the backup has finished, and logs will be generated to allow you to track progress.
 
-If your server supports 'gzip' then you will get a '.tar.gz' version of your backup that is a compressed version of your '.tar' backup. It will be created afterwards.
+If your server supports 'gzip' then you will get a [tt].tar.gz[/tt] version of your backup that is a compressed version of your [tt].tar[/tt] backup. It will be created afterwards.
 [/surround]
 
 [title="2"]Restoration, Did it work?[/title]

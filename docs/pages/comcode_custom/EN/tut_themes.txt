@@ -101,7 +101,7 @@ As stated earlier, the templates allow you to control the layout of your site, b
 Before you edit your templates, you need to know which template you're going to edit. It's also important to know if you actually want to edit a template in the first place. In many cases, the page is built up using [concept]Comcode[/concept], in which case you would edit the page simply by clicking the "edit page" link at the bottom of the page.
 
 [media width="150" description="The \"Template Tree\" option selected in the Page rendering tools" float="right"]data_custom/images/docs/tut_themes/themes_tree_go.png[/media]
-An example of this is the front page in the 'root' zone. If, for example you wanted to edit the 'poll' section, you simply click the "Edit Page" link at the bottom of the page. This takes you directly to an "edit comcode page" screen, where you can edit any element of that page. Knowing the difference between [concept]Comcode page[/concept]s and pages that use templates is sometimes difficult. The general rule of thumb is that if there's an 'edit page' button at the bottom of the page, try it first to see if you can edit what you want. If not, you'll need to determine which template you need to edit.
+An example of this is the front page in the 'root' zone. If, for example you wanted to edit the 'poll' section, you simply click the "Edit Page" link at the bottom of the page. This takes you directly to an "Edit Comcode page" screen, where you can edit any element of that page. Knowing the difference between [concept]Comcode page[/concept]s and pages that use templates is sometimes difficult. The general rule of thumb is that if there's an 'edit page' button at the bottom of the page, try it first to see if you can edit what you want. If not, you'll need to determine which template you need to edit.
 
 [media width="150" description="An example of the \"Tree\" page" float="left"]data_custom/images/docs/tut_themes/themes_page_tree.png[/media]
 To get a list of all of the templates for a given page, choose the "tree" option from your toolkit ([url="see example" rel="lightbox"]data_custom/images/docs/tut_themes/themes_tree_go.png[/url]). Then click the "view" option, and a new window will appear, containing a list of templates for the page you're viewing, shown in a structured tree format ([url="image" rel="lightbox"]data_custom/images/docs/tut_themes/themes_page_tree.png[/url]). This list may look a little bit intimidating at first, but once you understand the concept behind it, it's relatively simple.
@@ -136,10 +136,12 @@ You can see that it's marking the beginning and end of two templates. The first 
 
 [title="3"]Alternative Method[/title]
 
-[box="\"Default\"?" width="32em" float="right"]You may notice that this list of templates are all in the [tt]themes/default[/tt] folder, which isn't necessarily the theme you're trying to edit.
+[box="\"Default\"?" width="32em" float="right"]
+You may notice that this list of templates are all in the [tt]themes/default[/tt] folder, which isn't necessarily the theme you're trying to edit.
 This is intentional -- the only templates that will be copied into your [tt]themes/mytheme/templates[/tt] folder are ones that you've actually made changes to.
 
-Everything else is just left in the [tt]themes/default/templates[/tt] folder. This is to cut down on the amount of files you need to keep track of.[/box]
+Everything else is just left in the [tt]themes/default/templates[/tt] folder. This is to cut down on the amount of files you need to keep track of.
+[/box]
 If you already know which template you intend to edit, you can do it directly through the 'Edit Templates' screen.
 
 1) Go to Admin Zone > Style > Themes.
@@ -161,7 +163,7 @@ It's a very useful feature.
 Many of the links and buttons in Composr are created as images. If you wish to edit these images (or add new ones), you can do so via Composr's "Edit Images" interface.
 
 To edit an image, go to the Admin Zone > Style > Themes, then choose the "Manage theme images" link for the theme of your choice. You will be taken to a screen with a dropdown list of every image currently in use. Choose an image, then click "Edit Image".
-Alternatively, for most images you can get straight to their editing screen by holding down the 'control', 'shift' and 'alt' keys together (Mac users: 'Command' + 'Option/Alt' + 'Shift') whilst clicking on the image.
+Alternatively, for most images you can get straight to their editing screen by holding down the 'control', 'shift' and 'alt' keys together (Mac users: 'Command' + 'Option/Alt' + 'Shift') while clicking on the image.
 
 On this screen, you are shown the current version of this image in the top. You also have the opportunity to edit this image's name, location, or to upload a new image in its place.
 
@@ -169,7 +171,9 @@ To add an image, go to Admin Zone > Style > Themes, then choose the "Manage them
  - [b]Name[/b]: You can call this whatever you like, but we recommend putting in something based on the image's pathname. For example, the "delete" image in the folder [tt]themes/themename/images/page/delete[/tt], is currently titled [tt]page/delete.png[/tt]. This makes it easy to tell on first glance which folder an image is in, which in turn usually determines what style of image it is
  - [b]Upload[/b] or [b]URL[/b]: Choose one of these options to upload your image to your website. Use the upload field for files that currently exist on your computer, or use the URL option for an image that is already online somewhere
 
-[box="Power users"]You can add new theme images by saving them directly into [tt]themes/yourtheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to the software itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools.[/box]
+[box="Power users"]
+You can add new theme images by saving them directly into [tt]themes/yourtheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to the software itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools.
+[/box]
 
 If you are adding a theme image that is only relevant to your new theme, you should not tick "Use for all themes". For example, an image that is only referenced by one of your customised templates.
 

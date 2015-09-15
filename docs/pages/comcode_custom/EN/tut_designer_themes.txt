@@ -32,7 +32,7 @@ As a designer you will find a number of challenges that a designer does not norm
 1) All content in a design has to be editable, so there's got to be some kind of feature associated with all the content. Every bit of text is associated to some kind of field for some kind of content type.
 2) If content is missing (for example), it shouldn't just leave empty boxes, it should instead either remove boxes or automatically insert placeholder content. You need to think how things will work.
 3) Often there will be more or less content on the final site than you've laid out in your design. Maybe in your design you assumed you could lay things out in columns of 3 items, but the end-user decided to add 5.
-4) Whilst you can probably ensure that you can align things on a design, when users start adding content, you cannot know how much they will type.
+4) While you can probably ensure that you can align things on a design, when users start adding content, you cannot know how much they will type.
 5) For a theme, chances are the end user will make changes. For instance, they may switch out your choice of blocks with a different choice. Therefore you have to implement in a modular way, so that design elements or pages you did not specifically give attention to still look decent. A good example of this is styling the standard box templates (which most blocks will use) so that all boxes look good, rather than trying to style each individual block completely separately.
 6) Similarly, you won't have time as a designer to give individual design attention to each screen, so you will need to work modularly for this reason also, applying new styles on top of the default Composr styles in such a way that your styles are applied generally enough to display wherever is appropriate but if they are very specific that they are not applied [i]too[/i] generally. By making sensible decisions about making styles apply wherever appropriate but only wherever appropriate you are essentially creating a consistent design language, which is a key part of the normal branding process anyway.
 7) Sometimes not everything should show for every user. For example a link to add content might only be shown to administrators.
@@ -425,7 +425,7 @@ And this will show a full print out of all the parameters available to you. Ofte
 [title="3"]Login boxes[/title]
 
 The [tt][block]side_personal_stats[/block][/tt] Comcode is used for creating a login box for use on a panel. However the [tt]side_personal_stats[/tt] block displays differently according to whether you are logged in or not (obviously...).
-The [tt]BLOCK_SIDE_PERSONAL_STATS_NO.tpl[/tt] template is displayed for non-logged in users, whilst the [tt]BLOCK_SIDE_PERSONAL_STATS.tpl[/tt] template is displayed for logged in users.
+The [tt]BLOCK_SIDE_PERSONAL_STATS_NO.tpl[/tt] template is displayed for non-logged in users, while the [tt]BLOCK_SIDE_PERSONAL_STATS.tpl[/tt] template is displayed for logged in users.
 
 When you design a page you probably only think of it as a login box, but when you make a real site you obviously need to think about what happens when someone is already logged in, as everything has to function nicely too, as it's not a static design anymore.
 

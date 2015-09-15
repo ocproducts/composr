@@ -1160,7 +1160,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
 /**
  * Filter out any CSS selector blocks from the given CSS if they definitely do not affect the given (X)HTML.
- * Whilst this is a clever algorithm, it isn't so clever as to actually try and match each selector against a DOM tree. If any segment of a compound selector matches, match is assumed.
+ * While this is a clever algorithm, it isn't so clever as to actually try and match each selector against a DOM tree. If any segment of a compound selector matches, match is assumed.
  *
  * @param  ID_TEXT $c CSS file
  * @param  ?ID_TEXT $theme Theme (null: default)

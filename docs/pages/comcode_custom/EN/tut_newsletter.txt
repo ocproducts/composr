@@ -48,7 +48,9 @@ The block sets only for a single newsletter, and does not support interest level
 
 Newsletters are created using Comcode, and sent out in a dual format: both text and HTML. Most users will be able to read the HTML variant, as this is now by far the standard for common e-mail messages; however if they have this disabled, or an unusual e-mail client that cannot read HTML mails, then they will see the plain text version, which is your original Comcode.
 
-[box="Important note" width="25em" float="right"]You can use the WYSIWYG editor for making newsletters if you wish, but it is not advisable because plain-text readers will get some really ugly plain-text from it. If you make the newsletter using manual Comcode, the plain-text readers will see the Comcode, which is intrinsically easy to read.[/box]
+[box="Be wary of WYSIWYG" width="25em" float="right"]
+You can use the WYSIWYG editor for making newsletters if you wish, but it is not advisable because plain-text readers will get some really ugly plain-text from it. If you make the newsletter using manual Comcode, the plain-text readers will see the Comcode, which is intrinsically easy to read.
+[/box]
 When you send a newsletter you choose where to send it. Usergroups/newsletters with no members (to be precise, no members that can receive emails) will not be shown as options.
 
 In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL_WRAP[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
@@ -65,16 +67,14 @@ If you have [page="_SEARCH:tut_configuration"]CRON enabled[/page], once you proc
 
 There is a newsletter archive available, so that you may browse through past newsletters, to make sure you present a consistent image, and generally keep track of what has been sent out in bulk for professional reasons.
 
-[title="2"]What's new ('new content')[/title]
+[title="2"]Automatic issues[/title]
 
-[surround]
-[media width="150" description="Sending a 'new content' newsletter" float="right"]data_custom/images/docs/tut_newsletter/newsletter_new.png[/media]
+[media width="150" description="Sending an automatic issue" float="right"]data_custom/images/docs/tut_newsletter/newsletter_new.png[/media]
 {!newsletter:DOC_WHATSNEW}
 
 In a similar vein, you may create newsletters from news. To do this, just visit the view page for the news that you wish to use and click the appropriate link. You will then be given the choice to refine the newsletter before it is sent.
 
 For each content type supported, it shows only if there are less than 300 items that would be covered. If there are 300 or more, then it considers the content type too common to include and no items are shown.
-[/surround]
 
 [title="2"]Customised targeting[/title]
 

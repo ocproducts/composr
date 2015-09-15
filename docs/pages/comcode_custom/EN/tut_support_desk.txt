@@ -300,8 +300,8 @@ To use the feedback commenting system, you must not be using the 'none' forum dr
 Composr does not come with its own issue management database, but we have a non-bundled addon that includes an integrated modified version of Mantis.
 
 [concepts
- 1_key="support desk"	1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
- 2_key="support ticket" 2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
+ 1_key="support desk      1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
+ 2_key="support ticket"   2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

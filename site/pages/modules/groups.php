@@ -249,6 +249,9 @@ class Module_groups
             $groups[$g_id]['_name'] = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
         }
 
+        $col_widths = array('150', '70', '200');
+        $col_widths_non_rank = array('350', '70');
+
         // Categorise
         $_staff = array();
         $_ranks = array();
@@ -321,7 +324,7 @@ class Module_groups
             $staff->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true), escape_html($num_members)), false));
             $i++;
         }
-        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $fields_title, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, array('200'));
+        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $fields_title, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, $col_widths_non_rank);
 
         //-Ranks
         $ranks = array();
@@ -350,7 +353,7 @@ class Module_groups
                 }
                 $rank->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, false), escape_html($num_members), $p_t), false));
             }
-            $rank = results_table(do_lang_tempcode('RANK_SETS'), $start, 'rank_start_' . strval($g_id), $max, 'rank_max_' . strval($g_id), $max_rows, $fields_title, $rank, $sortables, $sortable, $sort_order, 'rank_sort_' . strval($g_id), null, array('200'));
+            $rank = results_table(do_lang_tempcode('RANK_SETS'), $start, 'rank_start_' . strval($g_id), $max, 'rank_max_' . strval($g_id), $max_rows, $fields_title, $rank, $sortables, $sortable, $sort_order, 'rank_sort_' . strval($g_id), null, $col_widths);
             $ranks[] = $rank;
         }
 
@@ -383,7 +386,7 @@ class Module_groups
             $others->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, false), escape_html($num_members)), false));
         }
         if (!$others->is_empty()) {
-            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $fields_title, $others, $sortables, $sortable, $sort_order, 'others_sort', null, array('200'));
+            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $fields_title, $others, $sortables, $sortable, $sort_order, 'others_sort', null, $col_widths_non_rank);
         }
 
         $tpl = do_template('CNS_GROUP_DIRECTORY_SCREEN', array('_GUID' => '39aebd8fcb618c2ae45e867d0c96a4cf', 'TITLE' => $this->title, 'STAFF' => $staff, 'OTHERS' => $others, 'RANKS' => $ranks));

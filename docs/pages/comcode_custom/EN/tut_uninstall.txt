@@ -1,6 +1,8 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Uninstalling Composr from a server[/title]
 
-[box="Important note" width="25em" float="right"]Uninstalling Composr will remove all database data, such that it is irrecoverable (unless you have backups). This means that all that will remain of content such as downloads are the actual uploaded files under the 'uploads' directory.[/box]
+[box="Destructive operation" width="25em" float="right"]
+Uninstalling Composr will remove all database data, such that it is irrecoverable (unless you have backups). This means that all that will remain of content such as downloads are the actual uploaded files under the 'uploads' directory.
+[/box]
 Removing Composr from a hosting account (of your own) is very easy. We provide a script that will remove the Composr tables from your database for you, leaving only the Composr files, contained neatly within the installation directory.
 
 [contents]decimal,lower-alpha[/contents]
@@ -9,7 +11,7 @@ Removing Composr from a hosting account (of your own) is very easy. We provide a
 
 [surround]
 [media width="150" description="The uninstalling interface is very straight-forward" float="right"]data_custom/images/docs/tut_uninstall/uninstall_1.png[/media]
-If you decide to uninstall Composr for any reason, you may remove the database data by accessing [tt]<base-url>/uninstall.php[/tt] (e.g. [tt]http://yourdomainname.com/uninstall.php[/tt]), and entering the administration password that you defined during installation.
+If you decide to uninstall Composr for any reason, you may remove the database data by accessing [tt]http://yoursite/uninstall.php[/tt] (e.g. [tt]http://yourdomainname.com/uninstall.php[/tt]), and entering the administration password that you defined during installation.
 
 You may then delete the Composr installation directory assuming there is nothing in it that you want to keep yourself.
 [/surround]
@@ -23,7 +25,7 @@ It is very important to us that we work to improve our offerings, and we need yo
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_installation"]Advanced installation[/page]
+ - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_moving"]Moving sites[/page]
  - [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page]
 

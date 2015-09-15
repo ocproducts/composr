@@ -1,13 +1,14 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Creating an economy/reward-system for members via points[/title]
 
-[media width="150" description="A logged-in member may see their points from the login block" float="right"]data_custom/images/docs/tut_points/points_block.png[/media]
+[media width="150" description="A logged-in member may see their points from the header" float="right"]data_custom/images/docs/tut_points/points_block.png[/media]
 {!points:DOC_POINTS}
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Earning points[/title]
 
-[media width="150" description="The points profile page for a member" float="right"]data_custom/images/docs/tut_points/points_page.png[/media]
+[media width="150" description="Configuring the points balance" float="right"]data_custom/images/docs/tut_points/points_config.png[/media]
+[media width="150" description="The points tab on a member's profile ([concept]Conversr[/concept])" float="right"]data_custom/images/docs/tut_points/points_page.png[/media]
 There are many ways to earn points in Composr. You may not wish to tell your members the precise details for these, in order to avoid abuse and unbalanced member activity, although of course they could educate themselves by reading this tutorial.
 
 Methods of earning points include:
@@ -22,12 +23,14 @@ Methods of earning points include:
  - Entering/passing quizzes
  - Being given them (this is described in a later section)
  - Earning them from selling a download (this is described in a later section)
- - Earning them in the Buildr addon (this is described in a later section)
-Most methods of earning points may be altered in the configuration (Admin Zone > Setup > Configuration > Points options), so that the number of points earned from various activities is appropriate for your web site.
 
-[title="3"]A note about how points are calculated[/title]
+Most methods of earning points may be altered in the configuration (Admin Zone > Setup > Configuration > Points options), so that the number of points earned from various activities is appropriate for your website.
 
-[media width="150" description="Configuring the points balance" float="right"]data_custom/images/docs/tut_points/points_config.png[/media]
+There is a distinction between the point count for points available for spending, and the point count for the total points ever earned (which contributes to rank and leader-board position). This will usually be made clear, but sometimes circumstance will dictate what is the appropriate meaning.
+
+[title="3"]A note about how points are calculated (somewhat advanced)[/title]
+
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
 The number of points a member has is not stored in any place, so is not directly editable. Instead, a members points is dynamically calculated, according to various statistics. You may alter the number of points a member has by viewing their points profile and using either the 'charge' or 'give' features (both of which accept negative values if you are a member of staff). For example, you can charge a member points by charging them a positive number of points, or giving them a negative number (a negative gift would usually be used to reverse a gift that you thought should not have happened). Likewise, you can give a member points by giving them a positive number, or charging them a negative number of points (a negative charge would usually be used to provide a refund).
 
 The reason points are calculated in this way is that the forum driver system means that Composr has no way of determining when a member makes a forum post (the forum does not tell Composr, as it is often a third-party piece of software).
@@ -36,69 +39,57 @@ The main ramification of this is that if posts are deleted, the point count goes
 
 [title="2"]Gift points[/title]
 
-[box="Important note" width="25em" float="right"]Gift points are not exactly like payment, because it doesn't detract from your own point count to give points, it detracts from your gift point count. Members have a quota of gift points, to allocate as they see fit: if they run out, it simply means that they can't give any more for a while.[/box]
-[concept]Gift points[/concept] allow members to reward each other. Like money can be used to pay someone, so can gift points, based on whatever they value. This economical situation is very important, and essentially capitalism is embodied, such that people go hunting for work that is valued most highly in order to get high returns of points. Reasons for giving gift points include:
+[surround]
+[media width="150" description="Gift transactions should be monitored so as to pick up on cheating (mutual giving for example)" float="right"]data_custom/images/docs/tut_points/points_admin_monitor.png[/media]
+[media width="150" description="Those who give may get rewarded by the system (this encourages an active community)" float="right"]data_custom/images/docs/tut_points/points_lucky.png[/media]
+[concept]Gift points[/concept] allow members to reward each other. Like money can be used to pay someone, so can gift points, based on whatever they value. This economical situation is very important, and essentially capitalism is embodied, such that people go hunting for work that is valued most highly in order to get high returns of points.
+
+Reasons for giving gift points include:
  - Pseudo-payment for a service provided
  - A prize for winning a competition
  - A sign of appreciation for produce a high quality product that benefits the community
-[surround]
-[media width="150" description="Gift transactions should be monitored so as to pick up on cheating (mutual giving for example)" float="left"]data_custom/images/docs/tut_points/points_admin_monitor.png[/media]
-[media width="150" description="Those who give may get rewarded by the system (this encourages an active community)" float="right"]data_custom/images/docs/tut_points/points_lucky.png[/media]
+
+Gift points are not exactly like payment, because it doesn't detract from your own point count to give points, it detracts from your gift point count. Members have a quota of gift points, to allocate as they see fit: if they run out, it simply means that they can't give any more for a while.
+
 Gift points are useless unless spent, so the only advantage to hoarding them is to give a large amount in some kind of special situation being awaited; once given, the gift point receiver has the total added to their actual point count. Obviously members could abuse this, by giving points to each other in some form of reciprocal arrangement ("you pat my back I'll pat yours"): this is why there is an admin interface to monitor all gift transactions for fraud (and selectively reverse transactions). You can reach this interface from the Admin Zone > Audit > Gift-point transactions.
 [/surround]
 
 [title="2"]The Point Store[/title]
 
-The Point Store provides a number of products/services that members can access using points, including:
+[surround]
+[media width="150" description="Configuring the Point Store" float="right"]data_custom/images/docs/tut_points/points_pointstore_config.png[/media]
+[media width="150" description="Configuring the Point Store's prices" float="right"]data_custom/images/docs/tut_points/points_prices.png[/media]
+[media width="150" description="The Point Store shop-front" float="right"]data_custom/images/docs/tut_points/points_pointstore.png[/media]
+{!pointstore:DOC_POINTSTORE}
+
+When a member buys something from the Point Store, the staff are informed of it via e-mail of appropriate details.
+
+There is a module in the Admin Zone for sales inventory management. It should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid: cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user). Refunds must manually be given through the points system if points have been already charged by the point of cancellation.
+[/surround]
+
+[title="3"]Banners[/title]
+
+While by default any member may submit a banner, the implication is that a Point Store-bought banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
+ 
+All banners bought are added to the 'General' banner type.
+
+[title="3"]Topic pinning[/title]
+
+On [concept]Conversr[/concept] sites, members can purchase to have a particular topic pinned on the forum.
+
+[title="3"]Gambling[/title]
+
+Members can gamble points. On average, members lose out on points when they try and gamble them though.
+
+[title="3"]E-mail accounts[/title]
+
+What may be purchased:
  - POP3 email accounts, and upgrades
   - staff define which email domains members may purchase addresses on
   - staff must set up the email accounts manually after they are purchased/upgrades
  - email Forwarding accounts, and updates
   - staff define which email domains members may purchase addresses on
   - staff must set up the email accounts manually after they are purchased/upgrades
- - community billboard message (for members to leave a message on the website)
- - banners, and upgrades (these are always for the 'General' banner type)
- - gambling (on average, members lose out on points when they try and gamble them)
- - buying access
-  - staff set up what permissions may be bought, how long they last for, and how much they cost
- - custom product
-  - staff set up custom products by description and cost, then members may buy them
-  - staff must manually dispatch the custom product, whatever it is
- - name highlighting ([concept]Conversr[/concept] only)
- - topic pinning
-[surround]
-[media width="150" description="Configuring the Point Store" float="right"]data_custom/images/docs/tut_points/points_pointstore_config.png[/media]
-{!pointstore:DOC_POINTSTORE}
-[/surround]
-
-[surround]
-[media width="150" description="Configuring the Point Store's prices" float="right"]data_custom/images/docs/tut_points/points_prices.png[/media]
-[media width="150" description="The Point Store shop-front" float="left"]data_custom/images/docs/tut_points/points_pointstore.png[/media]
-When a member buys something from the Point Store, the staff are informed of it via e-mail of appropriate details. The exception to this is that community billboard message is simply placed in a queue that, if enabled, the staff are expected to keep a hold on manually).
-
-There is a module in the Admin Zone for sales inventory management. It should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid: cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user). Refunds must manually be given through the points system if points have been already charged by the point of cancellation.
-[/surround]
-
-[title="3"]Community billboard[/title]
-
-[i]As of Composr 10, the community billboard is a non-bundled addon.[/i]
-
-[surround]
-{!community_billboard:DOC_COMMUNITY_BILLBOARD}
-
-The queue is accessed via the Staff Checklist on the Admin Zone front page. Note that the queue is not self-managed, you need to control which message is active, as they won't automatically rotate or expire.
-
-Messages may be manually added in the Admin Zone, but regular users will be adding them via the Point Store. When that happens, you are notified of the new message have been added.
-
-For the community billboard to display, you must place the symbol code, [tt]{$COMMUNITY_BILLBOARD}[/tt] into a template or page. Commonly this would be into [tt]GLOBAL_HTML_WRAP.tpl[/tt] so that it can show somewhere in the page footer.
-
-[media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/tut_points/points_community_billboard_manage.png[/media]
-[media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/tut_points/points_community_billboard_add.png[/media]
-[media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/tut_points/points_default_community_billboard.png[/media]
-[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_points/points_community_billboard_actual.png[/media]
-[/surround]
-
-[title="3"]E-mail accounts and the Point Store[/title]
 
 If e-mail accounts are sold through the Point-Store, Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the Point-Store configuration defines 3 URLs that can be set according to your server.
 
@@ -132,7 +123,17 @@ The forwarding add address is:
 The POP3 quota change address is:
 [indent][tt]http://{DOMAIN}:2082/frontend/x/mail/pops.html[/tt][/indent]
 
+[title="3"]Name highlighting[/title]
+
+On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the purchasers name gets special highlighting within forum topics.
+
+[title="3"]Custom products[/title]
+
+Staff set up custom products by description and cost, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
+
 [title="3"]Permission products[/title]
+
+Staff can set up what permissions may be bought, how long they last for, and how much they cost.
 
 The different types of permission (product) are configured with settings as follows:
 
@@ -158,10 +159,28 @@ You will set &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
 
 Normally &ldquo;The category&rdquo; will be a numeric ID.
 
+[title="3"]Community billboard (non-bundled)[/title]
+
+[i]As of Composr 10, the community billboard is a non-bundled addon.[/i]
+
+[surround]
+{!community_billboard:DOC_COMMUNITY_BILLBOARD}
+
+The queue is accessed via the Staff Checklist on the Admin Zone front page. Note that the queue is not self-managed, you need to control which message is active, as they won't automatically rotate or expire. We mentioned above that the staff are automatically notified when a Point Store purchase is made, but actually this isn't the case for the community billboard.
+
+Messages may be manually added in the Admin Zone (a link is on the dashboard checklist), but regular users will be adding them via the Point Store. When that happens, you are notified of the new message have been added.
+
+For the community billboard to display, you must place the symbol code, [tt]{$COMMUNITY_BILLBOARD}[/tt] into a template or page. Commonly this would be into [tt]GLOBAL_HTML_WRAP.tpl[/tt] so that it can show somewhere in the page footer.
+
+[media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/tut_points/points_community_billboard_manage.png[/media]
+[media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/tut_points/points_community_billboard_add.png[/media]
+[media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/tut_points/points_default_community_billboard.png[/media]
+[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_points/points_community_billboard_actual.png[/media]
+[/surround]
+
 [title="2"]Other economy tie-ins[/title]
 
-[box="Important note" width="25em" float="right"]There is a distinction between the point count for points available for spending, and the point count for the total points ever earned (which contributes to rank and leader-board position). This will usually be made clear, but sometimes circumstance will dictate what is the appropriate meaning.[/box]
-[title="3"]Buildr[/title]
+[title="3"]Buildr (non-bundled)[/title]
 
 Buildr is a very large addon for Composr, made by ocProducts in a semi-official capacity. It is not included with the main release as it is totally inappropriate for non-community sites, and hence would be consider as 'bloat' (an excessive feature that gets in the way and causes undue complexity and confusion) by most.
 
@@ -188,6 +207,9 @@ Alternatively, and perhaps more popularly, sites may allow members to exchange r
 
 [title="2"]Rank in Conversr[/title]
 
+[surround]
+[media width="150" description="Rank ladder shown in the usergroup directory" float="right"]data_custom/images/docs/tut_points/rank.png[/media]
+[media width="150" description="Rank configured when editing a usergroup" float="right"]data_custom/images/docs/tut_points/rank_options.png[/media]
 [concept]Conversr[/concept] has a usergroup system that allows automated progression from one usergroup to another, according to point count. This is configured by default such that the usergroup rank images for the usergroups involved imply a rising rank.
 
 The 'status symbol' of rank is an incentive for members to earn points (hence contributing to the site and community), but permissions may also be configured such as to give permission according to rank, simply by assigning the permissions differently for different usergroups.
@@ -195,6 +217,7 @@ The 'status symbol' of rank is an incentive for members to earn points (hence co
 If you would like to use rank, but not other point features, remove view permissions to the 'points' module and edit the 'Block options' (in the configuration) to not display point details. You cannot remove the points addon if you wish to use ranks.
 
 Note that rank changes are triggered by actions. Someone will not go up in rank based on things like how long they've been a member, until some action (e.g. posting on the forum) triggers a rank recalculation.
+[/surround]
 
 [title="2"]The leader-board[/title]
 
@@ -217,7 +240,7 @@ A common point of confusion is users thinking the leader-board shows who are the
  3_key="Gift points"     3_value="Gift points are automatically accumulated over time and exist only as gifts to give to other members, where they translate to real points"
  4_key="Point Store"     4_value="The Point Store allows conversion of points into items such as community e-mail accounts"
  5_key="leader-board"    5_value="The point leader-board shows the top point holders, and is drawn up on a weekly basis"
- 6_key="Buildr"         6_value="A Composr addon that provides a simple virtual world environment to interact in; points are the currency of Buildr"
+ 6_key="Buildr"          6_value="A Composr addon that provides a simple virtual world environment to interact in; points are the currency of Buildr"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

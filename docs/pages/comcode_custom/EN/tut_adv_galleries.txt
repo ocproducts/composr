@@ -94,7 +94,7 @@ The tier that a member resides in is based on usergroup permissions with two pri
 
 [title="3"]EXIF[/title]
 
-On gallery import, e.g. when you import from a zip, EXIF data may be gathered.
+On gallery import, e.g. when you import from a ZIP, EXIF data may be gathered.
 
 This process works by matching up custom fields created for images, with the name of EXIF tags:
 http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html

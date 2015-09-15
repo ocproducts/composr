@@ -64,16 +64,18 @@ Access permissions are also configured by check-boxes. Composr supports a layere
 4) Category access permissions (where forums and galleries count as categories in this context)
 To configure access permissions, you may edit the resource the permissions are for, or use the Permissions Tree Editor. For example, to edit zone access permissions, you need to edit the appropriate zone, or browse to the zone in the Permissions Tree Editor.
 
-[title="2"]Installation options (base-configuration)[/title]
+[title="2"]Installation Options[/title]
 
 If your core configuration settings change, if you move servers for example, then Composr may cease to function. To ameliorate this, an Installation Options editor is provided that can reconfigure the [tt]_config.php[/tt] that stores core configuration settings, such as database access details.
 
 To launch the Installation Options editor, go to the Admin Zone > Setup > Configuration > Installation Options.
-If you are locked outside Composr, you will need to open up the [tt]<base-url>/config_editor.php[/tt] URL manually.
+If you are locked outside Composr, you will need to open up the [tt]http://yoursite/config_editor.php[/tt] URL manually.
 
 The password to enter the config editor is the password you specified during installation (the 'Master password'). If you have forgotten it, you will need to edit [tt]_config.php[/tt] by hand.
 
-[box="Note" width="25em" float="right"]If you change servers you will also need to set file permissions. Please read the advanced installation tutorial for details on this. If you upload new themes, you will need to set permissions on the [tt]templates_cached/<lang>[/tt] and [tt]*_custom[/tt] directories after uploading.[/box]
+[box="Note" width="25em" float="right"]
+If you change servers you will also need to set file permissions. Please read the advanced installation tutorial for details on this. If you upload new themes, you will need to set permissions on the [tt]templates_cached/<lang>[/tt] and [tt]*_custom[/tt] directories after uploading.
+[/box]
 You may use the config editor to:
  - Change the default site language
  - Change the database driver
@@ -137,4 +139,4 @@ The final step is to configure Composr to use the key pair to encrypt data. In t
  - [page="_SEARCH:tut_permissions"]Access Control and Privileges[/page]
  - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
 
-{$SET,tutorial_tags,core_configuration,apache_config_files,Configuration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting permissions. Search-Engine-Friendly URLs. Addons. Changing installation options.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,core_configuration,apache_config_files,Configuration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting permissions. Search-Engine-Friendly URLs. Addons. Changing Installation Options.}[block]main_tutorial_rating[/block]

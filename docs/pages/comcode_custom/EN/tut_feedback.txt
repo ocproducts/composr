@@ -127,7 +127,7 @@ As you can see, that's complex, so unless you have a spam problem here that your
 
 [title="2"]The shout-box block[/title]
 
-Composr includes a 'shout-box' block, which is essentially a little portion of your menu that can be used for members to place short messages. Like all blocks, the shout-box is of course optional. The shout-box is tied to a specified chat room, which by default, is the 'General Chat' chat-room.
+Composr includes a 'shout-box' block, which is essentially a little portion of your menu that can be used for members to place short messages. Like all blocks, the shout-box is of course optional. The shout-box is tied to a specified chatroom, which by default, is the 'General Chat' chat-room.
 
 [title="2"]Polls[/title]
 

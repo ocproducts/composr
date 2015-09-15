@@ -23,16 +23,22 @@ These may be used, deleted, or moved, according to your specific needs.
 [title="2"]File/Media library[/title]
 
 [surround]
+[media width="150" description="The File/Media library" float="right"]data_custom/images/docs/tut_collaboration/collaboration_filedump.png[/media]
 The File/Media library is a tool to allow sharing of files, located in the CMS zone. It provides the ability to upload, download, and delete files, and organise files into folders.
-[box="Important note" width="25em" float="right"]There is nothing stopping ordinary users from downloading from the file/media library if they have the URL to a file. This is sometimes useful, but you should be aware that if files are given guessable filenames, they will not be secure.[/box]
-[media width="150" description="The File Dump" float="left"]data_custom/images/docs/tut_collaboration/collaboration_filedump.png[/media]
-[/surround]
 
 The File/Media library has two main purposes:
 1) Sharing media with the staff team, for use in content
 2) A general shared drive for collaborators
 
 You can get a browser to embed items from the File/Media library. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the [tt]media[/tt] tag.
+
+[box="Important -- Security"]
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
+There is nothing stopping ordinary users from downloading from the file/media library if they have the URL to a file.
+
+This is sometimes useful, but you should be aware that if files are given guessable filenames, they will not be secure.
+[/box]
+[/surround]
 
 [title="2"]Other Super-members[/title]
 
@@ -47,7 +53,7 @@ The following are not by default set up for specifically for Super-Members, but 
  - Blogs (Personal news categories)
  - Personal galleries
  - Private forums
- - Private chat rooms
+ - Private chatrooms
  - Sole access to any Composr feature, such as the download system, or Wiki+.
 
 If a Composr website is intended solely for collaboration, and the collaborators are trusted, it might be a good idea to make each of them staff, rather than a super-member.
@@ -55,7 +61,7 @@ If a Composr website is intended solely for collaboration, and the collaborators
 [concepts
  1_key="Super-Member"          1_value="A member given access to collaboration facilities"
  2_key="Collaboration Zone"    2_value="The zone where isolated collaboration facilities are located"
- 3_key="File-Dump"             3_value="A tool to allow members to store their own files"
+ 3_key="File/Media Library"    3_value="A tool to allow members to store their own files"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

@@ -94,7 +94,7 @@ function delete_workflow($id)
 /**
  * Deleting an approval point will remove it from any workflow it is a
  * part of. Any content which has been approved for this approval point
- * will be unaffected, whilst those not-yet-approved will first be
+ * will be unaffected, while those not-yet-approved will first be
  * approved, then have the approval point removed. This is to prevent any
  * content asking to be approved on a point which doesn't exist.
  *

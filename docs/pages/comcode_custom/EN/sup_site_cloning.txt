@@ -25,13 +25,15 @@ STEP 1: Install a fresh copy of Composr. This will be your clone site. If you al
 
 STEP 2: Use the Composr upgrader tool ([tt]http://yoursite.com/upgrader.php[/tt]) to flush the caches of your master site. There is no need to close the site.
 
-[box="What the shell?" width="25em" float="right"]When I say "ssh window", I'm referring to the use of a [b]Secure Shell[/b] console (terminal) application. Its the 'standard' secure tool/method of remote communication with a server.
+[box="What the shell?" width="25em" float="right"]
+When I say "ssh window", I'm referring to the use of a [b]Secure Shell[/b] console (terminal) application. Its the 'standard' secure tool/method of remote communication with a server.
 
 Its a command-line tool (like Commandr). The advantage of using ssh over phpMyAdmin is that you can script/automate steps to do things simpler/faster/consistently.
 
 Note that some hosts have SSH access disabled by default, and depending on your host, you would activate it either through your hosts self-service tools or by sending a them a support ticket.
 
-If you don't like to use the shell (ssh) or do not have access, then steps 3-5 can be performed using a normal phpMyAdmin workflows. However, on some servers phpMyAdmin may time-out when exporting/importing databases, so the advanced steps have been included here.[/box]
+If you don't like to use the shell (ssh) or do not have access, then steps 3-5 can be performed using a normal phpMyAdmin workflows. However, on some servers phpMyAdmin may time-out when exporting/importing databases, so the advanced steps have been included here.
+[/box]
 STEP 3: Backup the database of your main site by executing the following command in a shell (ssh) window, taking care to first replace the place holders with your specific details:
 [code="Bash"]mysqldump -uMAIN_DB_USERNAME -pMAIN_DB_PASSWORD MAIN_DB_NAME > main_db_backup.sql[/code]
 

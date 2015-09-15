@@ -800,7 +800,7 @@ function cns_ldap_get_member_primary_group($member_id)
             $gid = get_first_default_group();
         }
     } else {
-        // Whilst Windows has primaryGroupID, it has an ID that refers outside of LDAP, so is of no use to us. We use the last a member is in as the primary
+        // While Windows has primaryGroupID, it has an ID that refers outside of LDAP, so is of no use to us. We use the last a member is in as the primary
         $results = ldap_search($LDAP_CONNECTION, member_search_qualifier() . get_option('ldap_base_dn'), '(&(objectclass=' . get_member_class() . ')(' . member_property() . '=' . ldap_escape(cns_member_cnsid_to_ldapcn($member_id)) . '))', array('memberof'));
         $entries = ldap_get_entries($LDAP_CONNECTION, $results);
         if ((array_key_exists(0, $entries)) && (array_key_exists('memberof', $entries[0]))) { // Might not exist in LDAP

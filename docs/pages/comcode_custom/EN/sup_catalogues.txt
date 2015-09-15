@@ -63,10 +63,10 @@ If you are using multiple categories, you'll probably not want to embed, as it i
 This tutorial explains how to do embedding.
 
 [b]Step1:[/b]
-Login to the Composr site using the admin username and password. Then navigate to the Comcode Page where you want to embed the catalogue block. Click on the 'Edit this page' link at the bottom of the page. If you haven't created the page yet, create it (Admin Zone --> Structure --> Add-New-Page Wizard), which will put you into the editing screen also.
+Log in to the Composr site using the admin username and password. Then navigate to the Comcode Page where you want to embed the catalogue block. Click on the 'Edit this page' link at the bottom of the page. If you haven't created the page yet, create it (Admin Zone --> Structure --> Add-New-Page Wizard), which will put you into the editing screen also.
 
 [b]Step2:[/b]
-The catalogue block can be embedded using the 'main_cc_embed' block. You can manually embed catalogue by pasting the below line of code in the appropriate place in the comcode editor.
+The catalogue block can be embedded using the 'main_cc_embed' block. You can manually embed catalogue by pasting the below line of code in the appropriate place in the Comcode editor.
 
 [code="Comcode"]
 [block="8" max="30"]main_cc_embed[/block]
@@ -74,14 +74,14 @@ The catalogue block can be embedded using the 'main_cc_embed' block. You can man
 
 Here '8' stands for the catalogue category ID and '30' stands for the maximum number of results to be included. You can find the IDs by looking at the IDs used in the URL when you go to edit a category. However...
 
-The 'Add block' tool in the comcode editor can be used to make this process easier. It will let you pick out the ID visually instead. Select the 'Add block' button from above the Comcode text editing box. In the overlay that opens, scroll down to the Catalogues section.
+The 'Add block' tool in the Comcode editor can be used to make this process easier. It will let you pick out the ID visually instead. Select the 'Add block' button from above the Comcode text editing box. In the overlay that opens, scroll down to the Catalogues section.
 [media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_11.png[/media]
 
 Select the 'Catalogue category embedding' subheading to bring up the Block construction assistant settings for the main_cc_embed block.
 
 [media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_12.png[/media]
 
-Fill in the required details and select the 'Use' button. The comcode for embedding the catalogue similar to the above code will be added to the comcode editor. 
+Fill in the required details and select the 'Use' button. The Comcode for embedding the catalogue similar to the above code will be added to the Comcode editor. 
 
 The changes can be saved if you are done (click the 'Save' button at the bottom of your open Comcode page editing screen).
 
@@ -122,7 +122,7 @@ Your first edit will be counter-intuitive, but is incredibly useful. Paste the b
 {+START,PARAM_INFO}{+END}
 [/code]
 
-Save the file and refresh the web page you opened in Step2. You'll see a table of all the available parameters to the template. These will be used for referencing the fields of the content you've added, amongst other things.
+Save the file and refresh the web page you opened in Step2. You'll see a table of all the available parameters to the template. These will be used for referencing the fields of the content you've added, among other things.
 
 [b]Step4:[/b]
 From the parameter table you can see that the individual fields in the catalogue entry can be accessed using Tempcode parameters like [tt]{FIELD_0}[/tt], [tt]{FIELD_1}[/tt], etc.

@@ -931,7 +931,7 @@ function cms_version_pretty()
 }
 
 /**
- * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults amongst other things.
+ * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults among other things.
  *
  * @return string The domain of the website
  */

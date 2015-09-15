@@ -17,7 +17,7 @@ You know what a website is from an experience point-of-view: a site consists of 
 
 	<li>
 		<em>each page has a URL</em><br />
-		URLs actually encode a number of things that together provide all the information needed to retrieve a page from the world-wide-web. This isn't unlike real-world addresses, which usually need to include a human name, a house number and a post-code/zip-code. The main two things a URL encodes are:
+		URLs actually encode a number of things that together provide all the information needed to retrieve a page from the world-wide-web. This isn't unlike real-world addresses, which usually need to include a human name, a house number and a post-code/ZIP code. The main two things a URL encodes are:
 		<ol>
 			<li>the computer a page is stored upon (a 'web server') &ndash; <strong>http://example.com</strong>/example.html</li>
 			<li>the name of the page on that computer &ndash; http://example.com<strong>/example.html</strong></li>
@@ -81,14 +81,14 @@ Community sites provide features for interaction between users, such as:
  - member registration (to get a unique user-name and account)
  - discussion forums
  - polls
- - chat rooms
+ - chatrooms
  - content-commenting
 
 Through these features, a virtual community is created: members register themselves, and communicate with yourself and each other. Members tend to become further drawn in over time, and like in the real-world, develop a sense of belonging.
 
 [title="3"]Portal sites[/title]
 
-A portal site is a site generally centred around a vibrant front-page, where fresh and varied content is presented. Some forms of portal site are very corporate, and focused on providing facilities to a user (Yahoo!, for example), whilst others are more community-orientated.
+A portal site is a site generally centred around a vibrant front-page, where fresh and varied content is presented. Some forms of portal site are very corporate, and focused on providing facilities to a user (Yahoo!, for example), while others are more community-orientated.
 
 [title="3"]Web applications[/title]
 
@@ -528,7 +528,7 @@ Most of the competitors to Composr are, like Composr, Open Source. However there
  - the developers think that 'you have to install it manually, because having an installer would just leave users ignorant to the projects internal workings'
  - the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users
  - the product reflects far from a stream-lined vision
- - whilst the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces
+ - while the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces
  - there is great infighting and rivalry between developers
  - many features are only available within non-bundled addons. You'd spend half your time trying to smooth over the cracks between the various addons, or you'd need to tolerate the lack of full integration. Being able to search the various kinds of content on a website at once is a pretty basic thing, right? We don't know of any of our competitors that provide this kind of thing.
 
@@ -554,7 +554,9 @@ Composr provides the best of all the main competing kinds of system, seamlessly 
 
 PHP is a very widely deployed scripting language to power dynamic websites. Because of its wide deployment, and because web applications for it are relatively easy to install from a remote connection, we chose to write Composr in it.
 
-[box="Information for programmers"]The PHP language is heavily based on the long-standing C language, but PHP scripts do not require compilation and PHP provides a much richer feature-set (for example, powerful associative arrays, and a very large set of inbuilt functions). PHP has had a long history, evolving a lot over the years from a quick & dirty system to a very high quality language that matches other languages in quality, but beats them hands-down in efficiency. In some cases we have improved on the language via our own quality standards and assurance technology.[/box]
+[box="Information for programmers"]
+The PHP language is heavily based on the long-standing C language, but PHP scripts do not require compilation and PHP provides a much richer feature-set (for example, powerful associative arrays, and a very large set of inbuilt functions). PHP has had a long history, evolving a lot over the years from a quick & dirty system to a very high quality language that matches other languages in quality, but beats them hands-down in efficiency. In some cases we have improved on the language via our own quality standards and assurance technology.
+[/box]
 
 [title="2"]Enterprise vs Open Source[/title]
 

@@ -165,7 +165,7 @@ function load_value_options()
  *
  * @param  ID_TEXT $name The name of the option
  * @param  boolean $missing_ok Where to accept a missing option (and return NULL)
- * @return ?SHORT_TEXT The value (null: either null value, or no option found whilst $missing_ok set)
+ * @return ?SHORT_TEXT The value (null: either null value, or no option found while $missing_ok set)
  */
 function get_option($name, $missing_ok = false)
 {

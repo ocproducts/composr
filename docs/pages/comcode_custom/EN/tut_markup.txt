@@ -157,7 +157,7 @@ This tutorial focuses mainly on XHTML, CSS and JavaScript, which are the three t
 
 [title="2"]URLs[/title]
 
-Like all web sites, a Composr site uses [abbr="Uniform Resource Locator"]URL[/abbr]s (aka web addresses) to link pages. Within Composr, they are usually written as Composr page-links (defined above in "Overview") and then compiled to URLs at the same time the XHTML is generated.
+Like all websites, a Composr site uses [abbr="Uniform Resource Locator"]URL[/abbr]s (aka web addresses) to link pages. Within Composr, they are usually written as Composr page-links (defined above in "Overview") and then compiled to URLs at the same time the XHTML is generated.
 
 URLs (when written in full) are constructed as follows:
 [code="URL"]
@@ -1144,24 +1144,24 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://www.smashingmagazine.com/2008/09/11/75-really-useful-javascript-techniques/
 
 [concepts
- 1_key="XML"						1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"
- 2_key="HTML"						2_value="HyperText Markup Language: a language for the documents of the world wide web"
- 3_key="XHTML"						3_value="eXtensible HyperText Markup Language: HTML adapted to follow XML rules"
- 4_key="CSS"						4_value="Cascading Style Sheets: a technology that allows style to be specified in a config-file like fashion, and mapped to XHTML structure"
- 5_key="JavaScript"				5_value="The standard client-side scripting language for the Internet, allowing web pages to be dynamic without reloading of pages. In standardisation, it is known as ECMA-Script, but that term is rarely used."
- 6_key="tag"						6_value="A piece of structure: an XML tree is made up of tags"
- 7_key="element"					7_value="Another name for a tag really"
- 8_key="(tag) attribute"		8_value="Tags may contain attributes that specify properties for the tag"
- 9_key="inline (tag)"			9_value="A tag that wraps around a portion of HTML to apply something to it, or to use it"
- 10_key="block (tag)"			10_value="A tag that takes up a boxed area of the screen space, and may have its own background. Block tags force a visual line-break after them, unless they are styled to be inline"
- 11_key="(tag) class"			11_value="A tag class is generally used so as to join XHTML tags to CSS styles"
- 12_key="(XML) ID"				12_value="An ID is generally used so as to allow JavaScript code to reference specific XHTML tags"
- 13_key="(JavaScript) event"	13_value="JavaScript hooks on to web browser actions via an event model; tags 'fire' events, and JavaScript can be set up to launch certain code upon the event firing"
- 14_key="(CSS) selector"		14_value="CSS rules apply to certain tags, and selectors are used to determine which tags; selectors are very powerful"
- 15_key="(CSS) property"		15_value="CSS rules specify values for properties in order to style"
- 16_key="DOM"						16_value="Document Object Model. A scheme of referencing a document based upon the XHRML structure. Usually used with JavaScript."
- 17_key="DHTML"					17_value="Dynamic HTML. Almost a synonym for JavaScript"
- 18_key="client-side"			18_value="Code that is processed on a viewer's computer. The opposite of server-side"
+ 1_key="XML"                  1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"
+ 2_key="HTML"                 2_value="HyperText Markup Language: a language for the documents of the world wide web"
+ 3_key="XHTML"                3_value="eXtensible HyperText Markup Language: HTML adapted to follow XML rules"
+ 4_key="CSS"                  4_value="Cascading Style Sheets: a technology that allows style to be specified in a config-file like fashion, and mapped to XHTML structure"
+ 5_key="JavaScript"           5_value="The standard client-side scripting language for the Internet, allowing web pages to be dynamic without reloading of pages. In standardisation, it is known as ECMA-Script, but that term is rarely used."
+ 6_key="tag"                  6_value="A piece of structure: an XML tree is made up of tags"
+ 7_key="element"              7_value="Another name for a tag really"
+ 8_key="(tag) attribute"      8_value="Tags may contain attributes that specify properties for the tag"
+ 9_key="inline (tag)"         9_value="A tag that wraps around a portion of HTML to apply something to it, or to use it"
+ 10_key="block (tag)"         10_value="A tag that takes up a boxed area of the screen space, and may have its own background. Block tags force a visual line-break after them, unless they are styled to be inline"
+ 11_key="(tag) class"         11_value="A tag class is generally used so as to join XHTML tags to CSS styles"
+ 12_key="(XML) ID"            12_value="An ID is generally used so as to allow JavaScript code to reference specific XHTML tags"
+ 13_key="(JavaScript) event"  13_value="JavaScript hooks on to web browser actions via an event model; tags 'fire' events, and JavaScript can be set up to launch certain code upon the event firing"
+ 14_key="(CSS) selector"      14_value="CSS rules apply to certain tags, and selectors are used to determine which tags; selectors are very powerful"
+ 15_key="(CSS) property"      15_value="CSS rules specify values for properties in order to style"
+ 16_key="DOM"                 16_value="Document Object Model. A scheme of referencing a document based upon the XHRML structure. Usually used with JavaScript."
+ 17_key="DHTML"               17_value="Dynamic HTML. Almost a synonym for JavaScript"
+ 18_key="client-side"         18_value="Code that is processed on a viewer's computer. The opposite of server-side"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

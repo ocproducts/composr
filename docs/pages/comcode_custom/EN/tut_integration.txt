@@ -20,7 +20,9 @@ The two main issues that present themselves are:
  - HTML files tend to have associated data files, and the path these are read from when integrated into Composr will not be the same as the path of the HTML file itself (as page files are located in a different location to where the index.php file that handles the page request is located)
  - HTML files contain surrounding mark-up that must be stripped, because Composr already provides it
 
-[box="Note" width="25em" float="right"]Relative URLs are normally read relative to the path the referencing page is in. However, this behaviour can be changed using an HTML tag 'base', but Composr does not use this by default; you may place a 'base' into Composr in [tt]HTML_HEAD.tpl[/tt] if you wish, to create a common location for relative-URLs to be relative to. This is possible in Composr as Composr itself only uses absolute URLs.[/box]
+[box="Note" width="25em" float="right"]
+Relative URLs are normally read relative to the path the referencing page is in. However, this behaviour can be changed using an HTML tag 'base', but Composr does not use this by default; you may place a 'base' into Composr in [tt]HTML_HEAD.tpl[/tt] if you wish, to create a common location for relative-URLs to be relative to. This is possible in Composr as Composr itself only uses absolute URLs.
+[/box]
 
 The best way I can explain how to integrate an HTML page is by presenting a simple scenario.
 
@@ -336,10 +338,6 @@ It can be a bit tricky to share members between Composr and another system. Ther
 
 These are all very technical tasks, so we do not expect that many users will have the experience to easily carry them out themselves.
 
-[concepts
- 1_key="iframe"	1_value="A portion of the main web page that encloses another web page (with its own URL)"
-]Concepts[/concepts]
-
 [title="3"]Directing external systems to log in a user to a Composr site[/title]
 
 Composr handles log in anywhere as a part of the framework (i.e. any request Composr is handling).
@@ -362,6 +360,10 @@ For completeness, this is what the [tt]login[/tt] page [i]does[/i] do:
  - Handles "Become invisible" toggle
 
 If coding a system to create an Composr login automatically (i.e. without needing to direct the user to a POST request) you'd need to set the session cookie to a random number, and then insert a row into the Composr [tt]sessions[/tt] table to match against it.
+
+[concepts
+ 1_key="iframe"    1_value="A portion of the main web page that encloses another web page (with its own URL)"
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

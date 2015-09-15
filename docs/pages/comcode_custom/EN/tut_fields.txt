@@ -426,7 +426,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 | [i]None[/i]
 |-
 ! Supported field options
-| [tt]filetype_filter[/tt] (comma separated list of file extensions; default is not to have a filter)
+| [tt]filetype_filter[/tt] (comma-separated list of file extensions; default is not to have a filter)
 |-
 ! Back-end UI
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__upload.png[/media]
@@ -450,7 +450,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 ! Supported field options
 | [tt]auto_sort=on|off[/tt] (whether to sort the entered options; default is off)
 
-[tt]filetype_filter[/tt] (comma separated list of file extensions; default is not to have a filter)
+[tt]filetype_filter[/tt] (comma-separated list of file extensions; default is not to have a filter)
 |-
 ! Back-end UI
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__upload_multi.png[/media]

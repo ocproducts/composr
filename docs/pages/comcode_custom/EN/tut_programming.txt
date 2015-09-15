@@ -13,7 +13,7 @@ PHP is a:
  - scripting (interpreted) language -- this means that
  - web language -- this means that functionality for running on a web server and outputting web pages to connecting computers, as well as other Internet-related tasks, is provided as standard and easy to do; PHP does not need to be used as a web language though
  - Open Source language -- it is free to download and use, and if you wish you can get the source code (which is written in C) and make your own versions, although by doing so you are likely breaking compatibility with the other PHP installs out there
-PHP also has a very large library of built in functionality to do things such as, for example, connect to databases.
+PHP also has a very large library of built-in functionality to do things such as, for example, connect to databases.
 
 PHP is designed to be quick and easy to programming. This makes it great for learning to program on, although for large systems like Composr it is biased toward 'easiness' has required us to make special measures to increase cross-install compatibility, security, and the ability to automatically find problems. To achieve these things we have very carefully crafted our framework to abstract away from common PHP problems, and created a 'Code quality checker' to automatically scan code for problems. The checker requires that high standards of code are done in order to be able to find the problems -- which to some extent shows why the 'easiness' of PHP is a reason it is also difficult to detect problems before running into them.
 
@@ -174,7 +174,7 @@ Note that these examples are based around variables being [b]reassigned a value[
 
 [title="2"]Iteration[/title]
 
-If you want to repeat a set of instructions until a condition is met (a loop) then you must use one of three built in commands. All of these commands can have braces and nested loops (loops within loops) within them, and they can also all be broken out of abruptly. These three commands are:
+If you want to repeat a set of instructions until a condition is met (a loop) then you must use one of three built-in commands. All of these commands can have braces and nested loops (loops within loops) within them, and they can also all be broken out of abruptly. These three commands are:
 [code="PHP"]
 for ($counter = <start value>; <condition>; <control-command>)
 [/code]
@@ -240,10 +240,12 @@ $a = 1;
 if ($a == 1) echo 'a equals 1'; else echo 'a does not equal 1';
 [/code]
 
-[box="Little point" width="25em" float="right"]'else if' can be abbreviated 'elseif' in PHP.[/box]
+[box="Little point" width="25em" float="right"]
+'else if' can be abbreviated 'elseif' in PHP.
+[/box]
 $a is set to one, so the IF statement will confirm that. If we'd set $a to 2, the 'else' part would execute instead.
 
-Note that '==' is used: this is because of the distinction between testing for equality ('==') and setting a variable ('='). Confusion is understandable as the PHP '==' is written '=' in mathematics, whilst the PHP '=' is often written as '<--' in mathematics.
+Note that '==' is used: this is because of the distinction between testing for equality ('==') and setting a variable ('='). Confusion is understandable as the PHP '==' is written '=' in mathematics, while the PHP '=' is often written as '<--' in mathematics.
 
 [title="3"]Switch case[/title]
 
@@ -333,7 +335,7 @@ function write($text = 'no parameters were given')
 }
 [/code]
 
-PHP contains a huge number of functions that are built in, although some need PHP extensions to be available. The purpose of this tutorial however is not to explain the functions PHP provides.
+PHP contains a huge number of functions that are built-in, although some need PHP extensions to be available. The purpose of this tutorial however is not to explain the functions PHP provides.
 
 [title="2"]Reference parameters[/title]
 
@@ -417,7 +419,7 @@ Composr also uses a class for database modification. This is a good example of t
 
 Classes can have both private and public variables/functions. Only functions within the class can access the private variables. So a programmer could create a 'person' class and use a 'moveright' function to move the person right. The 'moveright' could influence the internal private 'x' variable, adjusting it as necessary. This is a very good way of making a program more simple than it really is, hiding code to perhaps another programmer who doesn't want to know about it.
 
-A programmer can use something called 'Inheritance', to create a new class extended from the previous class. The new class is 'derived' from the previous class, and the new class will 'inherit' the old classes functions and variables, whilst adding its own. For example, we could derive a 'player' and a 'monster' class from the 'person' class. In a computer game, each could inherit collision detection, shooting ability, movement, etc. The 'player' could have a 'score' variable added, for instance. One could then create more than one 'player' instance for a multi-player game (which would be much easier in OOP, than with functions -- especially if we were tacking on the functionality as an afterthought).
+A programmer can use something called 'Inheritance', to create a new class extended from the previous class. The new class is 'derived' from the previous class, and the new class will 'inherit' the old classes functions and variables, while adding its own. For example, we could derive a 'player' and a 'monster' class from the 'person' class. In a computer game, each could inherit collision detection, shooting ability, movement, etc. The 'player' could have a 'score' variable added, for instance. One could then create more than one 'player' instance for a multi-player game (which would be much easier in OOP, than with functions -- especially if we were tacking on the functionality as an afterthought).
 
 [title="2"]Abstraction[/title]
 
@@ -425,7 +427,7 @@ In order to build complex computer systems it is necessary to wrap up problems t
 We do this exact same thing in real life: for instance, we have a concept of a 'vegetable' which allows us to talk about healthy diets in quick terms. The concept of a 'vegetable' is created because it is a concept we can re-use in different situations, but only need to learn once for us all to understand each other when we express it.
 The process of creating of concepts is called 'abstraction'.
 
-To return to our 'vegetable' example: people often refer to tomatoes as a vegetable, because they share many properties and generally fit into the usage pattern of the concept -- however by strict biological definitions, a tomato is actually a fruit. This is the ultimate problem with abstraction that we must live with -- whilst we can simplify the world (or a computer system), there are exceptions to every rule -- and it can become awkward when we need all the properties of one abstraction, but we need it to be 'slightly different' in some way. This isn't a huge problem in computing, because we can just workaround the problem by improving our abstractions to be more flexible (parametrised), but it is important that it is understood that the process is not perfect.
+To return to our 'vegetable' example: people often refer to tomatoes as a vegetable, because they share many properties and generally fit into the usage pattern of the concept -- however by strict biological definitions, a tomato is actually a fruit. This is the ultimate problem with abstraction that we must live with -- while we can simplify the world (or a computer system), there are exceptions to every rule -- and it can become awkward when we need all the properties of one abstraction, but we need it to be 'slightly different' in some way. This isn't a huge problem in computing, because we can just workaround the problem by improving our abstractions to be more flexible (parametrised), but it is important that it is understood that the process is not perfect.
 
 Methods of abstraction in programming include the usage of different code-files, functions, and objects. Abstracted concepts in Composr are all over the place; examples include the attachment system, the 'require CSS' system, the download system -- in-fact, just about every form of modularity is an abstraction, although some simple processes would best not be described in those terms to avoid confusion with the more significant abstractions.
 

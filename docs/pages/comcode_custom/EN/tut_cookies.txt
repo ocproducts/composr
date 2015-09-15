@@ -27,7 +27,9 @@ Composr supports integration of login cookies with third party forum systems tha
 
 [title="2"]Sessions[/title]
 
-[box="Technical note" width="25em" float="right"]Session for guests are actually using normal cookies, not session cookies. This is because they may need to be identified between visits if Composr has been extended with features such as a shopping cart system. There are less security ramifications for doing this for guests, as they have no special privileges.[/box]
+[box="Technical note" width="25em" float="right"]
+Session for guests are actually using normal cookies, not session cookies. This is because they may need to be identified between visits if Composr has been extended with features such as a shopping cart system. There are less security ramifications for doing this for guests, as they have no special privileges.
+[/box]
 A session identifies a user, even if they are not a member. It is a unique number attached to a user and stored in a 'session cookie' or their URLs. A session cookie is a special kind of cookie that is automatically deleted when a user closes their web browser.
 
 Session cookies are used as the primary means of Composr user identification. Once a user is established to be a guest, or they have logged in (or their login cookies have logged them in), a session will be created/resumed that uniquely identifies them; for members, the session is tied to their member account.
@@ -45,7 +47,7 @@ JavaScript is built into web browsers directly. It is used to provide an interac
 
 Composr detects JavaScript by making the web browser write a cookie using JavaScript -- if such a cookie exists, Composr knows that JavaScript is enabled. Likewise, if the cookie does not get set, Composr knows JavaScript is probably not enabled.
 
-Whilst this is indirect, and requires one page view before detection is accurate, it is the best way to detect JavaScript because web browsers do not announce its presence to web servers directly.
+While this is indirect, and requires one page view before detection is accurate, it is the best way to detect JavaScript because web browsers do not announce its presence to web servers directly.
 
 If Composr says JavaScript is not enabled it can mean three things:
 1) JavaScript truly isn't enabled
@@ -56,7 +58,7 @@ Number 2 is the most likely cause, and this can be adjusted in the "Privacy" opt
 
 If the problem is number 3, then you can adjust your cookie setting by opening up [tt]http://mybaseurl/config_editor.php[/tt] -- if you wipe out the "cookie_domain" setting so it is blank, and set "cookie_path" to "/" then cookies should always save correctly.
 
-If the problem is number 1, then you can adjust the browser settings to reenable JavaScript. In Microsoft Edge / Internet Explorer, the setting you need is under the "Security" options tab. Whilst it is true that most security risks involve JavaScript, disabling JavaScript is like not leaving your house in case you are mugged -- you also limit your positive experiences, and lock yourselves out of normal functionality that is a part of most websites.
+If the problem is number 1, then you can adjust the browser settings to reenable JavaScript. In Microsoft Edge / Internet Explorer, the setting you need is under the "Security" options tab. While it is true that most security risks involve JavaScript, disabling JavaScript is like not leaving your house in case you are mugged -- you also limit your positive experiences, and lock yourselves out of normal functionality that is a part of most websites.
 
 [title="2"]Privacy[/title]
 
@@ -73,7 +75,7 @@ ocProducts recommends that users do have cookies enabled, but that they possibly
 3) Session cookie XSS prevention security is lost if web browser tabs are used: the cookies don't expire because the browser is never closed.
 4) Cookie expiry time is measured in GMT UNIX timestamp seconds, hence client/server time is theoretically the same -- but care is still needed as computer clocks may be fast/slow
 5) A third-party cookie is a cookie that is set onto a domain name that the main page document cannot read. This is possible only because a document may reference images on other servers, and these images may themselves set cookies (any URL can generate cookies). Some browser privacy settings disable these.
-6) Whilst cookies are sometimes disabled by people for privacy concerns, session cookies are usually allowed as an exception -- so it isn't the end of the world if session cookies are required -- but it's better to be able to store session IDs in the URL. Some popular websites do require cookies to be enabled though (Tesco.com, New York Times, ...).
+6) While cookies are sometimes disabled by people for privacy concerns, session cookies are usually allowed as an exception -- so it isn't the end of the world if session cookies are required -- but it's better to be able to store session IDs in the URL. Some popular websites do require cookies to be enabled though (Tesco.com, New York Times, ...).
 7) Full cookie data is sent with all web requests that the cookies are scoped under, even image requests -- so it is inefficient to store a lot of cookies.
 8) Cookies must be set against a domain name. This is either done by putting [tt].domain[/tt] as the cookie domain, or by leaving the domain blank when setting the cookie; the domain should never be defined as [tt]domain[/tt] as it will not work properly.
 9) Cookies work with an elaborate but confusing precedence system. Only cookies underneath a matched domain/path combination will be sent to a server URL (for privacy reasons), and they will be given precedence based on 'most specific gets priority'. To change a cookie the server must set it against the domain/path combination it was created with. The variables a cookie was defined under are not available server-side, which means that anyone modifying the cookie must know these in advance, or guess wildly.

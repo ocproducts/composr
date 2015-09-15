@@ -137,7 +137,7 @@ USA\Alabama|USA\Alaska|USA\Arizona|USA\Arkansas|USA\California|USA\Colorado|USA\
 
 [title="2"]Adding a catalogue[/title]
 
-To add a catalogue (amongst other functions) go to Content Management > Catalogues > Add catalogue.
+To add a catalogue (among other functions) go to Content Management > Catalogues > Add catalogue.
 
 [title="2"]Editing a catalogue[/title]
 
@@ -158,7 +158,7 @@ If you have multiple catalogues on your website and you wish for them to have cu
 
 It is possibly to achieve template customisation wholely within the default set of templates, by using template programming. The catalogue name is passed into every catalogue template meaning you can use template IF directives to differentiate against that name, producing different output accordingly.
 
-Whilst the main [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template uses the [tt]FIELDS[/tt] parameter by default (which consists of precomposited template field rows, built using the other templates), it is also given special parameters correlating to each individual field row and each individual field value. You may thus entirely customise the catalogue look using these low level values to make very customised arrangements that are more complex than the simple tabular arrangement used by default.
+While the main [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template uses the [tt]FIELDS[/tt] parameter by default (which consists of precomposited template field rows, built using the other templates), it is also given special parameters correlating to each individual field row and each individual field value. You may thus entirely customise the catalogue look using these low level values to make very customised arrangements that are more complex than the simple tabular arrangement used by default.
 
 
 For example, take the [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template:

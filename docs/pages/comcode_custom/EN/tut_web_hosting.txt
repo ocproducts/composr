@@ -62,7 +62,7 @@ Composr requires:
   - a maximum execution time of at least 30 seconds
   - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable web hosts) -- the installer will warn if any critical functions have been
   - no other explicit disabling of standard functionality that we require. Commonly web hosts do this using modsecurity, suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
-  - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, whilst caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with dev mode on). A higher limit, e.g. 40MB, may be required if running PHP4.
+  - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, while caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with dev mode on). A higher limit, e.g. 40MB, may be required if running PHP4.
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free web hosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
  - A web server that runs MySQL (*), version 5.5.3 or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often web hosts will quote a number of databases that web-hosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable web-host
  - A web server running IIS (the Microsoft web server), Apache (the common Linux web server), or LiteSpeed. It is very unlikely you will find a web-host that provides something else. Other servers might work but are not supported
@@ -150,9 +150,11 @@ Please note that many 'forum systems' are referred to as 'bulletin boards', and 
 
 We also provide converters for most of the above to our forum system, Conversr. If you currently use one of these systems, you have the option to convert it.
 
-[box="Configurability of linked forums"]Instead of naming the forum "Website comment topics" or "Website Support Tickets", you could name it "Mysite comment hub", "Mysite help region", or anything else you choose. Just be sure to change the configuration option to reflect it.
+[box="Configurability of linked forums"]
+Instead of naming the forum "Website comment topics" or "Website Support Tickets", you could name it "Mysite comment hub", "Mysite help region", or anything else you choose. Just be sure to change the configuration option to reflect it.
 
-This is in the "Support Tickets" and "User interaction" groups of the "Feature Options" configuration category. Find this under Admin Zone > Setup > Configuration.[/box]
+This is in the "Support Tickets" and "User interaction" groups of the "Feature Options" configuration category. Find this under Admin Zone > Setup > Configuration.
+[/box]
 If you have installed forums, you will likely wish to create a comments forum. To do this, create a non-public forum called 'Website comment topics'. This forum will be used to store topics relating to comments for content in your portal.
 
 You may also wish to create a non-public forum called 'Website support tickets' if you wish to enable the support ticket feature.
@@ -256,7 +258,7 @@ So, the main take-away is:
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_installation"]Advanced installation[/page]
+ - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
 

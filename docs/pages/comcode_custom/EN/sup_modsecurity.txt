@@ -22,11 +22,11 @@ This rule blocks URLs being passed as parameters within URLs. Composr regularly 
 
 This only occurs if short URLs are not enabled, because the rule works by detecting .php, and it won't do this with short URLs.
 
-We could probably work around this problem in Composr by encoding the parameter so that it no longer looks like a URL, but this would be messy and have to work across both Javascript and PHP within Composr, so the complexity cost is too high.
+We could probably work around this problem in Composr by encoding the parameter so that it no longer looks like a URL, but this would be messy and have to work across both JavaScript and PHP within Composr, so the complexity cost is too high.
 
 [title="2"]340007 / 340095 / 340113 / 340118 / 340128 / 340147 / 340148 / 340149 / 340157 / 340159 / 350147 / 350148 / 380006 / 380018 / 390708 / 390727 / 973331 -- WYSIWYG editing, template editing and code editor[/title]
 
-It is possible to get Javascript code into the WYSIWYG editor. This will then trigger this rule.
+It is possible to get JavaScript code into the WYSIWYG editor. This will then trigger this rule.
 
 To workaround you could manually remove the code from the editor's source view, if the code was not intended to be there.
 

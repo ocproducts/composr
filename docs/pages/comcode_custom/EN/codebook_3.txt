@@ -396,7 +396,7 @@ If you put a file called [tt]closed.html[/tt] then this will be shown to people 
 
 [title="3"]Hidden 'values'[/title]
 
-Values are like hidden configuration options. They are either hidden because they are managed by code (perhaps used for keeping track of something), or because they are obscure. To set a value, open up Commandr (under the 'tools' section in the Admin Zone or clicking the symbol at the bottom-left of any page) and type [tt]:set_value('<name>','1');[/tt] (replace '1' if appropriate, but usually we do use '1' to enable). In normal PHP code, you can use the same [tt]set_value[/tt] function, and also the [tt]get_value[/tt] function. You can automatically add a new hidden value just by setting it for the first time.
+Values are like hidden configuration options. They are either hidden because they are managed by code (perhaps used for keeping track of something), or because they are obscure. To set a value, open up Commandr (Admin Zone > Tools > Commandr -- or clicking the symbol at the bottom-left of any page) and type [tt]:set_value('<name>','1');[/tt] (replace '1' if appropriate, but usually we do use '1' to enable). In normal PHP code, you can use the same [tt]set_value[/tt] function, and also the [tt]get_value[/tt] function. You can automatically add a new hidden value just by setting it for the first time.
 
 We have the following which are either unlikely to be useful, or potentially unstable or unpolished:
  - Integrations
@@ -453,7 +453,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]disable_password_change_notifications_for_staff[/tt] -- set this to '1' if you want staff password edits to not result in notifications to users
   - [tt]commercial_spellchecker[/tt] -- set this to '1' if you want to enable the WYSIWYG editor's spellcheck.net spellchecker
   - [tt]filtercode_protected_fields[/tt] -- a comma-separated list of fields Filtercode cannot work on (above the ones hard-coded as forbidden)
-  - [tt]memory_limit[/tt] -- set this to a memory limit to override Composr's built in one (e.g. "128M"). This will make memory bugs on your server more dangerous, so use at your own risk (a memory usage problem can take down a whole server) -- although memory bugs are unlikely given that Composr users report if they ever see this error
+  - [tt]memory_limit[/tt] -- set this to a memory limit to override Composr's built-in one (e.g. "128M"). This will make memory bugs on your server more dangerous, so use at your own risk (a memory usage problem can take down a whole server) -- although memory bugs are unlikely given that Composr users report if they ever see this error
   - [tt]canonical_keep_params[/tt] -- set this to a comma-separated list of keep_ parameters that should be allowed to propagate within search engines
   - [tt]no_tech_login_messages[/tt] -- set to '1' if you don't want technical explanations attaching when a user is forced to login
   - [tt]cc_sort_date__<catalogue-name>[/tt] -- set this to '1' if you want catalogue category children to be sorted by date rather than title
@@ -603,7 +603,7 @@ Composr is a great platform for web developers. A web developer can build all ki
 However, if you're making a website for somebody else it is is important to bear in mind they probably do not want to learn Composr like you have.
 
 Here are some hints:
- - You might want to use the 'debranding' feature in the Admin Zone (Tools section)
+ - You might want to use the debranding feature, Admin Zone > Style > Debranding
  - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify it's interface to compensate.
  - If you have to hand code a Comcode page with HTML then include the following hint in it: [tt]{$,page hint: no_smart_conversion}[/tt]. This will stop the WYSIWYG editor trying to convert the HTML back into Comcode, which can mess up hand-crafted markup and CSS (normally WYSIWYG only guarantees to preserve style/structure created within itself).
  - If for some reason you don't want the WYSIWYG editor to run for a page (e.g. if it has a Google ad on, that can cause the editor to malfunction) then include the following hint in it: [tt]{$,page hint: no_wysiwyg}[/tt]

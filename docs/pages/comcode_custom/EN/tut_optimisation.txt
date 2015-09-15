@@ -38,9 +38,9 @@ The Composr caches are:
  - [b]theme image cache[/b]: this removes the need for Composr to search for theme image files whenever they are referenced by code (a code could translate to perhaps 10 different URLs, due to the flexibility of the system)
  - [b]values caches[/b]: this isn't a specific cache, but caching of values such as member post counts removes the need for Composr to recalculate them on-the-fly
  - [b]persistent cache[/b]: this is a very special cache that is explained in the next section
- - [b]advanced admin cache[/b]: this can be turned on in the Admin Zone configuration to let admins have cached pages on their computer that are immediately (without server communication) interstitially displayed (for roughly 1 second) whilst the server generates the up-to-date page
- - [b]fast spider cache[/b]: this can be turned on from the installation options editor to feed static pages to bots, to stop bots hurting site performance
- - [b]self learning cache[/b]: this can be turned on from the installation options editor and allows pages to learn what resources they need, for efficient bulk loading of essentials while avoiding loading full resource sets upfront
+ - [b]advanced admin cache[/b]: this can be turned on in the Admin Zone configuration to let admins have cached pages on their computer that are immediately (without server communication) interstitially displayed (for roughly 1 second) while the server generates the up-to-date page
+ - [b]fast spider cache[/b]: this can be turned on from the Installation Options editor to feed static pages to bots, to stop bots hurting site performance
+ - [b]self learning cache[/b]: this can be turned on from the Installation Options editor and allows pages to learn what resources they need, for efficient bulk loading of essentials while avoiding loading full resource sets upfront
 
 [box="Technical note for programmers"]
 Composr is not designed to "cache everything as it will be displayed" because the high dynamic nature of the system makes that impossible. Instead, Tempcode is typically cached against relevant parameters, which provides a "half way" between determined output and neutral data.
@@ -76,9 +76,9 @@ The cache is implemented to work with either:
  - Wincache -- a PHP accelerator developed by Microsoft, optimised for Windows
  - XCache -- another PHP accelerator
  - eAccelerator -- an old PHP accelerator that is no longer developed, so using this is not recommended
- - disk cache -- whilst this does increase disk usage, it still provides a performance boost over not having a persistent cache
+ - disk cache -- while this does increase disk usage, it still provides a performance boost over not having a persistent cache
 
-Composr will not use a persistent cache by default (except in v6.0.0) but it may be enable from the installation options editor.
+Composr will not use a persistent cache by default (except in v6.0.0) but it may be enable from the Installation Options editor.
 
 Composr does not cache processed content in memory that has no special featured status, as this would only trade reliance on CPU for reliance on memory in a non-productive fashion.
 
@@ -90,7 +90,7 @@ $SITE_INFO['fast_spider_cache'] = '3';
 [/code]
 All user agents identified as bots or spiders, or listed in the [tt]text/bots.txt[/tt] file, will be served out of a cache. HTTP caching is also properly implemented.
 The cache lifetime in this example would be 3 hours, but you can change it to whatever you require.
-The cache files are saved under the [tt]persistent_cache[/tt] directory.
+The cache files are saved under the [tt]caches/persistent[/tt] directory.
 
 If you want any Guest user to be cached like this, set:
 [code="PHP"]
@@ -277,8 +277,8 @@ Composr has been tested up to a million of the following:
  - Catalogue categories
  - Catalogue entries in a single catalogue category
  - Shopping orders
- - Chat rooms (only a few can be public though)
- - Chat messages in a single chat room
+ - Chatrooms (only a few can be public though)
+ - Chat messages in a single chatroom
  - Download categories
  - Downloads in a single download category
  - Polls

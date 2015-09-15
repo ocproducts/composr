@@ -304,14 +304,14 @@ function db_get_type_remap()
 {
     $type_remap = array(
         'AUTO' => 'integer unsigned auto_increment',
-        'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+        'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
         'INTEGER' => 'integer',
         'UINTEGER' => 'integer unsigned',
         'SHORT_INTEGER' => 'tinyint',
         'REAL' => 'real',
         'BINARY' => 'tinyint(1)',
-        'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
-        'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+        'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
+        'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
         'TIME' => 'integer unsigned',
         'LONG_TRANS' => 'integer unsigned',
         'SHORT_TRANS' => 'integer unsigned',

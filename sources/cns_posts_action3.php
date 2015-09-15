@@ -26,7 +26,7 @@
  * @param  ?AUTO_LINK $forum_id The forum that the topic containing the post is in (null: find out from the DB).
  * @param  ?MEMBER $poster The member that made the post being validated (null: find out from the DB).
  * @param  ?LONG_TEXT $post The post, in Comcode format (null: It'll have to be looked-up).
- * @return AUTO_LINK The ID of the topic (whilst this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
+ * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
  */
 function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster = null, $post = null)
 {
@@ -102,7 +102,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
  * @param  boolean $run_checks Whether to run checks
- * @return AUTO_LINK The ID of the topic (whilst this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
+ * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
  */
 function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_emphasised, $intended_solely_for, $show_as_edited, $mark_as_unread, $reason, $check_perms = true, $edit_time = null, $add_time = null, $submitter = null, $null_is_literal = false, $run_checks = true)
 {

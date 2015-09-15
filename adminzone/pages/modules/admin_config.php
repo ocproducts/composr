@@ -417,8 +417,14 @@ class Module_admin_config
                 $human_name = do_lang_tempcode($myrow['human_name']);
                 $_explanation = do_lang($myrow['explanation'], null, null, null, null, false);
                 if (is_null($_explanation)) {
-                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
-                    $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
+                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group'], null, null, null, null, false);
+                    if (is_null($_explanation)) {
+                        // So an error shows
+                        $_explanation = do_lang($myrow['explanation']);
+                        $explanation = do_lang_tempcode($myrow['explanation']);
+                    } else {
+                        $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
+                    }
                 } else {
                     $explanation = do_lang_tempcode($myrow['explanation']);
                 }

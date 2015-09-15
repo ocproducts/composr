@@ -35,7 +35,7 @@ You can edit your download via the edit link when viewing it.
 [title="2"]How other users get your theme pack[/title]
 
 Theme packs are just packaged as normal Composr addons, so are installed from Admin Zone > Setup > Addons.
-The user will need to import the addon into their own site, which they can do either by point and click (all compo.sr's addons are shown for easy import), or via uploading the .tar file after downloading it manually from {$BRAND_BASE_URL}.
+The user will need to import the addon into their own site, which they can do either by point and click (all compo.sr's addons are shown for easy import), or via uploading the [tt].tar[/tt] file after downloading it manually from {$BRAND_BASE_URL}.
 Once a theme is installed, it is available from Admin Zone > Style > Manage themes, and can be set as active.
 
 [title="2"]Automatic upgrades with new versions[/title]

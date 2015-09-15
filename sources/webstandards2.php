@@ -997,7 +997,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                     if (function_exists('require_code')) {
                         require_code('webstandards_js_lint');
                     }
-                    $content = substr($OUT, $POS, strpos($OUT, '</script>', $POS) - $POS); // Whilst the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                    $content = substr($OUT, $POS, strpos($OUT, '</script>', $POS) - $POS); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
                     $content = preg_replace('#((<![CDATA[)|(]]>)|(<!--)|(-->))#', '', $content);
                     $js_conformance = check_js($content, true);
                     if (is_array($js_conformance)) {
@@ -1008,7 +1008,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
             case 'style':
                 if (($GLOBALS['WEBSTANDARDS_CSS']) && ((!isset($attributes['type'])) || ((isset($attributes['type'])) && ($attributes['type'] == 'text/css')))) { // Validate CSS
-                    $content = substr($OUT, $POS, strpos($OUT, '</style>', $POS) - $POS); // Whilst the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                    $content = substr($OUT, $POS, strpos($OUT, '</style>', $POS) - $POS); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
                     $content = preg_replace('#((<![CDATA[)|(]]>)|(<!--)|(-->))#', '', $content);
                     $css_conformance = _webstandards_css_sheet($content);
                     if (is_array($css_conformance)) {
@@ -1106,7 +1106,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
             case 'table':
                 if ((isset($attributes['summary'])) && (($attributes['summary'] == do_lang('SPREAD_TABLE')) || ($attributes['summary'] == do_lang('MAP_TABLE')))) {
-                    $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // Whilst the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                    $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
                     $th_count = substr_count($content, '<th');
                     if (($th_count == 0) && (trim($content) != 'x')) {
                         $errors[] = array('WCAG_MISSING_TH');

@@ -35,7 +35,7 @@ class Hook_config_webstandards
             'type' => 'tick',
             'category' => 'ACCESSIBILITY',
             'group' => 'WEBSTANDARDS',
-            'explanation' => 'CONFIG_OPTION_validation',
+            'explanation' => 'CONFIG_OPTION_webstandards',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 2,

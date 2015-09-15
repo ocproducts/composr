@@ -67,7 +67,7 @@ Comcode is supported, so you could include images using code such as:
 
 You can set time limits, and also how frequently quizzes can be reattempted.
 
-Note that if you change the time limit whilst someone is using the quiz then the limit will not properly be reflected for them unless they refresh their browser. Specifically:
+Note that if you change the time limit while someone is using the quiz then the limit will not properly be reflected for them unless they refresh their browser. Specifically:
  - If the limit is lengthened, JavaScript would not know and give an error too early.
  - If the limit is shortened, JavaScript would not know and give no error when it should have -- but a server-side error would be given when submitting.
 

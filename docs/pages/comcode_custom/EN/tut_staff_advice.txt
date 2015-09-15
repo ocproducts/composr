@@ -30,7 +30,7 @@ I would suggest that new staff members are recruited with relatively minor respo
 
 A digression from all the advice given so far, would be to actually not choose staff at all, and instead allow the Composr points system to choose them for you: as they participate more, and as they are given more gift points. An automatic usergroup progression could be put in place that promotes them to have further access.
 
-Whilst this is an interesting concept, with interesting properties (such as an ability for anyone to make the site come alive wholly on their own work, even when no other staff are around) and might work in practice, it is worth noting it should be done with caution. The points system is open for abuse in areas if kept unchecked: someone may gain points by spamming.
+While this is an interesting concept, with interesting properties (such as an ability for anyone to make the site come alive wholly on their own work, even when no other staff are around) and might work in practice, it is worth noting it should be done with caution. The points system is open for abuse in areas if kept unchecked: someone may gain points by spamming.
 
 [title="2"]Managing staff[/title]
 

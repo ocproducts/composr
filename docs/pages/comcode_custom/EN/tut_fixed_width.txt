@@ -17,7 +17,7 @@ Proponents of fixed-width argue:
 [media width="150" description="A fluid-width Composr site with a relatively thin browser window. Composr's default theme defines a minimum width of 1024, hence the scrollbar." float="right"]data_custom/images/docs/tut_fixed_width/fluid_thin.png[/media]
 [media width="150" description="A fluid-width Composr site with a relatively wide browser window stretching the layout" float="right"]data_custom/images/docs/tut_fixed_width/fluid_wide.png[/media]
 Opponents of fixed-width argue:
- - that fixed-width designs make unreasonable assumptions about how web sites should be viewed; for example, mobile devices would fail to have enough width for a typical fixed-width design yet are prevented from automatically performing adjustments
+ - that fixed-width designs make unreasonable assumptions about how websites should be viewed; for example, mobile devices would fail to have enough width for a typical fixed-width design yet are prevented from automatically performing adjustments
  - that people with large resolutions can always make their browser window smaller
  - that using fixed-width is done by those that are applying traditional design skills to the new online medium without adjusting them properly for that medium
 [/surround]

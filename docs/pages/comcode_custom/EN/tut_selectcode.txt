@@ -84,7 +84,7 @@ Obviously you can only use the tree match specifiers if you are applying the fil
 [title="2"]Categories or entries?[/title]
 
 Selectcode is not written specifically to be for matching against category IDs or entry IDs, it again depends what the filter is applied to.
-However, if you are using tree match specifiers then these will be written against categories even if you are matching against entries. For example, if you are writing a filter to match against download entries, and you use tree match specifiers, the tree match specifiers would be referring to download categories, whilst the other specifiers would be referring to download entries.
+However, if you are using tree match specifiers then these will be written against categories even if you are matching against entries. For example, if you are writing a filter to match against download entries, and you use tree match specifiers, the tree match specifiers would be referring to download categories, while the other specifiers would be referring to download entries.
 
 [title="2"]Blank filters, and precedence[/title]
 

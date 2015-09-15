@@ -4,7 +4,7 @@ Composr is designed to be able to support large community sites, and a common fe
  - [b]Zones[/b] (different zones may be created for each sub-community, located under a URL beneath the main site, with their own set of pages)
  - [b]Redirection pages[/b] (using redirection pages, common modules, such as the download module, may be made to appear as if they are running from individual zones)
  - [b]Categories, and virtual roots[/b] (using a combination of separate categories [and sub-branches there-of] for different sub-communities, and the 'virtual root' system, it can be made to appear that each sub-community has their own catalogue/download/gallery
- - [b]Comcode pages, Chat rooms, Polls[/b] (all these support individual creating and referencing, such that different instances can be presented to different sub-communities)
+ - [b]Comcode pages, Chatrooms, Polls[/b] (all these support individual creating and referencing, such that different instances can be presented to different sub-communities)
  - [b]Banners, Calendar[/b] (all these support category based referencing such that a division between sub-community interests can be created)
  - [b]Sub-forums[/b] (different communities can be given their own branch of the discussion forums, with the [concept]Conversr[/concept] 'Clubs' feature providing special support for this)
  - [b]Themes[/b] (different themes may be applied to different zones, giving sub-communities individual looks)
@@ -31,16 +31,11 @@ Disadvantages to using a multi-site network:
 [surround]
 [media width="150" description="To finalise the zone, FTP details may be needed so Composr can create the directory structure properly -- depending on server architecture" float="right"]data_custom/images/docs/tut_subcom/subcom_zone_afm.png[/media]
 [media width="150" description="Adding a new zone for our Church Of Santa subcommunity" float="right"]data_custom/images/docs/tut_subcom/subcom_zone_add.png[/media]
-Composr zones are sub-directories of your site, that operate with different settings. By default, Composr contains a number of zones:
- - Welcome ([tt]/[/tt])
- - Admin Zone ([tt]/adminzone[/tt]) -- Where Composr is configured
- - Collaboration ([tt]/collaboration[/tt]) -- Where privileged members may access collaboration tools
- - Site ([tt]/site[/tt]) -- Where the majority of the Composr modules are, by default
- - Docs ([tt]/docs[/tt]) -- Documentation
- - CMS ([tt]/cms[/tt])
- - Forum ([tt]/forum[/tt]) -- For Conversr users only
+An introduction to zones is covered in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
 
-You may add new zones, edit zones, delete zones, and move pages between zones from the Admin Zone (Structure section). When performing an action that will add, rename or delete a zone, you will need to provide details that tell Composr how it can do this; this is because on the majority of web hosting configurations, PHP does not have full access to files on the hosting account. These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
+You may add new zones, edit zones, delete zones, and move pages between zones from Admin Zone > Structure > Zones.
+
+When performing an action that will add, rename or delete a zone, you may need to provide details that tell Composr how it can do this; this is because on the some web hosting configurations, PHP does not have full access to files on the hosting account (lack of suEXEC). These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
 
 [title="3"]Zone logos (advanced)[/title]
 
@@ -61,7 +56,9 @@ Redirections are useful for a number of reasons, including:
 
 To reach the Redirects module go to Admin Zone > Structure > Redirects.
 
-[box="Special tip"]If you want a module to behave as if it was completely moved, you can set up a transparent redirect from your desired location to the actual location, and then a non-transparent redirect from the actual location to the desired location. Composr will sense your intent, so when you do something that searches for that module (e.g. for the Wiki+ module, doing a Wiki+ link) it will go to where you want. For example, if you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone, you could set up these redirects: [tt]site:supermembers[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i] [b]and[/b] [tt]collaboration:supermembers[/tt]-->[tt]site:supermembers[/tt] [i]non-transparent[/i]. Composr will see the transparent redirect as an indication the supermembers module really has a proper home in the site zone, and it will see the non-transparent redirect as an indication the supermembers module really does not have a proper home in the collaboration zone; Composr will respect these indications and link to the module in its new home.[/box]
+[box="Special tip"]
+If you want a module to behave as if it was completely moved, you can set up a transparent redirect from your desired location to the actual location, and then a non-transparent redirect from the actual location to the desired location. Composr will sense your intent, so when you do something that searches for that module (e.g. for the Wiki+ module, doing a Wiki+ link) it will go to where you want. For example, if you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone, you could set up these redirects: [tt]site:supermembers[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i] [b]and[/b] [tt]collaboration:supermembers[/tt]-->[tt]site:supermembers[/tt] [i]non-transparent[/i]. Composr will see the transparent redirect as an indication the super-members module really has a proper home in the site zone, and it will see the non-transparent redirect as an indication the super-members module really does not have a proper home in the collaboration zone; Composr will respect these indications and link to the module in its new home.
+[/box]
 [/surround]
 
 [title="2"]Virtual roots[/title]

@@ -107,14 +107,14 @@ function get_innodb_data_types()
 {
     $type_remap = array(
         'AUTO' => 'integer auto_increment', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE
-        'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+        'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
         'INTEGER' => 'integer',
         'UINTEGER' => 'integer unsigned',
         'SHORT_INTEGER' => 'tinyint',
         'REAL' => 'real',
         'BINARY' => 'tinyint(1)',
-        'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
-        'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+        'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
+        'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
         'TIME' => 'integer unsigned',
         'LONG_TRANS' => 'integer', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE
         'SHORT_TRANS' => 'integer', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE

@@ -6,7 +6,7 @@
 
 [title="2"]The administration interface[/title]
 
-The administration interface resides in the Admin Zone, under the Audit section.
+The administration interface resides in Admin Zone > Audit > Site statistics.
 
 Be aware that hits coming from the web server itself will be filtered from the stats, so if you are running a web server on your own computer you may not see any results if nobody else has used your website yet.
 
@@ -17,7 +17,9 @@ Be aware that hits coming from the web server itself will be filtered from the s
 [media width="150" description="The menu link to install geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_install_geolocation_data_link.png[/media]
 {!stats:DOC_INSTALL_GEOLOCATION_DATA}
 
-[box="Important note"]Do not disturb the geolocation data installation process. You will be informed when it is complete.[/box]
+[box="Important -- keep it going"]
+Do not disturb the geolocation data installation process. You will be informed when it is complete.
+[/box]
 
 Once the geo-location data is installed, all the extra statistics can be used.
 [/surround]
@@ -98,7 +100,7 @@ It is a good way to visualise how people are using the site. This works best whe
 
 [url="Google Analytics"]http://www.google.com/analytics/[/url] is an excellent free package for analysing website activity, allowing you to spot all kinds of trends in your data.
 
-We don't consider Google Analytics a competitor to our own inbuilt analytics -- both offer different features, complementing each other. Google Analytics is easy to install, we have support built in so you just need to enter your analytics code in the Composr configuration.
+We don't consider Google Analytics a competitor to our own inbuilt analytics -- both offer different features, complementing each other. Google Analytics is easy to install, we have support built-in so you just need to enter your analytics code in the Composr configuration.
 
 [concepts
  1_key="SVG"            1_value="Scaleable Vector Graphics, a text-markup-based graphics format that allows infinite scalability of graphics without texture loss due to being vector-based (co-ordinate-delimited shapes) instead of pixel based (specific data for each pixel)."

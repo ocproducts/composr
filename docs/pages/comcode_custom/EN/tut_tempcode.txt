@@ -224,7 +224,7 @@ Our approach is distinctly different, as we uphold four strong principles:
 
 For those interested in 'programming language semantics', Tempcode is neither a functional or imperative language, but has aspects of both. A functional language essentially is focused on output being controlled by a complex mathematical expression. An imperative language essentially is focused on output being controlled by a sequence of commands. With Tempcode, output is focused on the stream of text coming from a template, and the composition of these streams; 'symbols' and 'directives' can control, manipulate and add to the stream, but they are more like embedded functional-language function-chains and control-tags than imperative code. Sequences of commands can be simulated by placing symbols and directives next to each other in the output stream and using variable manipulation features to bridge data across the portions of the output stream.
 
-Popular template languages such as 'Velocity' or 'Smarty' are able (and often used) to function in a similar sense to this, but their language design is imperative at core, and the result simply is just far less elegant. Tempcode just 'feels right', with its clean syntax and PHP-separation, whilst other languages look literally like conventional programming code has been added inside the template in an ad-hoc way (even if the full programming syntax has been simplified a bit).
+Popular template languages such as 'Velocity' or 'Smarty' are able (and often used) to function in a similar sense to this, but their language design is imperative at core, and the result simply is just far less elegant. Tempcode just 'feels right', with its clean syntax and PHP-separation, while other languages look literally like conventional programming code has been added inside the template in an ad-hoc way (even if the full programming syntax has been simplified a bit).
 
 [title="2"]Placing theme images[/title]
 
@@ -1889,7 +1889,9 @@ I threw [tt]{$SITE_NAME}[/tt] into the example just to demonstrate symbols are n
 
 Tempcode is extremely powerful, and hopefully now you can see how symbols, directives, and parameters, can come together to allow great things to happen!
 
-[box]See [tt]tempcode_test.txt[/tt] for more examples on how to use symbols and directives.[/box]
+[box]
+See [tt]tempcode_test.txt[/tt] for more examples on how to use symbols and directives.
+[/box]
 
 [title="3"]CASES[/title]
 

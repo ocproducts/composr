@@ -122,7 +122,7 @@ to
 
 [title="2"]Cookie integration (advanced, non-supported)[/title]
 
-Composr, where possible, will allow you to use the same cookies for logging into Composr as you do for your forum. However this is difficult to set-up as:
+Composr, where possible, will allow you to use the same cookies for logging into Composr as you do for your forum. However this is difficult to setup as:
  - it requires cookie domain and path consistency between Composr and the forum
  - if mistakes are made during configuration, they may block the success of reconfigurations, by the unsuccessful cookies being dominant over the correct ones
  - web browsers can behave differently with respect to cookies, especially when they are configured differently
@@ -133,7 +133,7 @@ Due to all these problems, we do not support this functionality officially.
 Make sure:
  - That the forum cookie path is set to '/', or at least a URL path that both the forum and the website exist underneath. A blank path will not work
  - That the cookie domain is valid for both the forums and the website. If your website and forum are on different sub-domains, then blank will not work. For example '.forums.example.com' would not cover a website on 'example.com'. '.example.com' would cover both -- and hence that should be used for the cookie domain. The proceeding 'dot' has a special meaning. Preferably, forum and website will be on the same exact domain, so to avoid any confusion
- - That the cookies have the same names. For most forums this will be auto-detected. The names Composr use will be based on the real cookie names, whilst forums may ask you just to define a stub
+ - That the cookies have the same names. For most forums this will be auto-detected. The names Composr use will be based on the real cookie names, while forums may ask you just to define a stub
  - That you clear cookies from the Composr/forums sites and reload your web browser between configuration changes. Please note that clearing all cookies indiscriminatingly is likely to be annoying for you because you will have to re-enter many passwords on Internet sites, and you may not remember them all
 
 [title="2"]Forum specifics (advanced)[/title]

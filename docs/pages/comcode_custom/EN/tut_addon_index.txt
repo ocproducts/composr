@@ -142,7 +142,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/social/chat/chat.png" />Chat<br />(<kbd>chat</kbd>)</td>
-            <td>Chat rooms and instant messaging.</td>
+            <td>Chatrooms and instant messaging.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
             <td><a href="http://compo.sr/docs10/index.php?page=tut_chat">Running chatrooms (features and advice)</a></td>
@@ -435,7 +435,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Set configuration options.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_configuration">Advanced configuration</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_moving">Moving sites</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_configuration">Advanced configuration</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_moving">Moving sites</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_configuration&amp;status_id=10">Link</a></td>
         </tr>
@@ -445,7 +445,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The code layer that binds the software to one of various different kinds of database software.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_web_hosting">Web hosting for Composr</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_install">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_installation">Advanced installation</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_web_hosting">Web hosting for Composr</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_install">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_database_drivers&amp;status_id=10">Link</a></td>
         </tr>
@@ -725,7 +725,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A simple website help page. Note that removing this will not remove the menu link automatically.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=help_page&amp;status_id=10">Link</a></td>
         </tr>
@@ -755,7 +755,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The installer files (can be removed immediately after installing; in-fact Composr makes you remove install.php manually).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_install">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_installation">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_chmod">Linux file permissions</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_install">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_chmod">Linux file permissions</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=installer&amp;status_id=10">Link</a></td>
         </tr>
@@ -785,7 +785,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Bash shell scripts to help configure permissions on Linux/Unix servers.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_installation">Advanced installation</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=linux_helper_scripts&amp;status_id=10">Link</a></td>
         </tr>
@@ -985,7 +985,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Quick-start setup wizard.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_drinking">Drinking from the feature pool</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_drinking">Drinking from the feature pool</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=setupwizard&amp;status_id=10">Link</a></td>
         </tr>
@@ -1175,7 +1175,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>A .bat script to help configure permissions on Windows servers.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_installation">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_windows">Installing Composr on a Windows desktop</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_windows">Installing Composr on a Windows desktop</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=windows_helper_scripts&amp;status_id=10">Link</a></td>
         </tr>
@@ -1205,7 +1205,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Different logos for individual zones.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_configuration">Basic configuration and getting started</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=zone_logos&amp;status_id=10">Link</a></td>
         </tr>

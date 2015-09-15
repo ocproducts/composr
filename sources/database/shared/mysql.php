@@ -140,14 +140,14 @@ class Database_super_mysql
     {
         $type_remap = array(
             'AUTO' => 'integer unsigned auto_increment',
-            'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing (NB: *_TRANS is signed, so trans fields are not perfectly AUTO_LINK compatible and can have double the positive range -- in the real world it will not matter though)
+            'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing (NB: *_TRANS is signed, so trans fields are not perfectly AUTO_LINK compatible and can have double the positive range -- in the real world it will not matter though)
             'INTEGER' => 'integer',
             'UINTEGER' => 'integer unsigned',
             'SHORT_INTEGER' => 'tinyint',
             'REAL' => 'real',
             'BINARY' => 'tinyint(1)',
-            'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
-            'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+            'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
+            'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
             'TIME' => 'integer unsigned',
             'LONG_TRANS' => 'integer unsigned',
             'SHORT_TRANS' => 'integer unsigned',

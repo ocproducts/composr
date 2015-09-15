@@ -729,7 +729,7 @@ You can generally tell what the hook is used by by it's file path. For example h
 
 [title="4"]Another example: member profiles[/title]
 
-Composr needs to be able to provide a spot for addons to put links on somebody's profile page (e.g. maybe an ecommerce addon needs to put a link to their transaction history onto their profiles). So there is a kind of hook in Composr to achieve this. The contract the hook meets is to take a member ID and return a list of extra links to put in their profile.
+Composr needs to be able to provide a spot for addons to put links on somebody's profile screen (e.g. maybe an ecommerce addon needs to put a link to their transaction history onto their profiles). So there is a kind of hook in Composr to achieve this. The contract the hook meets is to take a member ID and return a list of extra links to put in their profile.
 
 The code that uses these hooks is as follows:
 [code="PHP"]
@@ -797,7 +797,7 @@ So now that I have explained how hook's have contracts, how they are called, and
 
 [title="4"]Another example: symbols[/title]
 
-Composr supports 'symbols' in templates, that do special things. An example of a symbol is our [tt]MEMBER_PROFILE_LINK[/tt] symbol, which makes it easy to link to a member's profile page from a template (often templates are passed member id's as parameters, so it allows them to work with their parameters in an effective way). But Composr needs to be extendable. Addons must be able to add their own symbols (e.g. maybe an ecommerce addon would need to define a 'BALANCE' symbol to show a member's balance in any arbitrary template), so there are symbol hooks.
+Composr supports 'symbols' in templates, that do special things. An example of a symbol is our [tt]MEMBER_PROFILE_LINK[/tt] symbol, which makes it easy to link to a member's profile screen from a template (often templates are passed member id's as parameters, so it allows them to work with their parameters in an effective way). But Composr needs to be extendable. Addons must be able to add their own symbols (e.g. maybe an ecommerce addon would need to define a 'BALANCE' symbol to show a member's balance in any arbitrary template), so there are symbol hooks.
 
 For performance Composr doesn't use any symbol hooks for any default functionality, but they are available for new addons.
 
@@ -851,7 +851,7 @@ Composr has a multi-faceted testing strategy as there is no perfect solution for
 4) Manual functional test set we always grow when we add new features (stored on compo.sr, via our tester module)
 5) Some other manual test sets, stored on our company filing system (e.g. Comcode test set) -- now also mostly implemented as unit tests
 6) Unit test framework (incorporates regression testing, as long as we write regression tests whenever we find bugs; incorporates UI testing in a sense as we can program a web bot to do things plus dump all the XHTML)
-7) Custom version of PHP, with type strictness, and XSS detection, amongst other things
+7) Custom version of PHP, with type strictness, and XSS detection, among other things
 8) Manual testing at core-team meetups, especially Usability testing / Blackbox testing
 9) Public beta testing and bug reporting
 10) Composr development mode, which applies lots of tricksy things, checking various things are done at run-time, and turning features on and off randomly, and doing some performance testing
@@ -998,7 +998,7 @@ Escaping all data embedded in HTML is a key part of security.
 
 [title="4"]URL parameter escaping[/title]
 
-Parameters in URL's are separated by '&'. Keys and values and separated by '='. Also spaces are not allowed, amongst many other characters. If you pass any complex data that will go into a URL, use the [tt]urlencode[/tt] function ([tt]window.encodeURIComponent[/tt] in JavaScript) which will sort all this for you. The Composr [tt]build_url[/tt] function handles it all in a much better way though, so you should actually almost always use this.
+Parameters in URLs are separated by '&'. Keys and values and separated by '='. Also spaces are not allowed, among many other characters. If you pass any complex data that will go into a URL, use the [tt]urlencode[/tt] function ([tt]window.encodeURIComponent[/tt] in JavaScript) which will sort all this for you. The Composr [tt]build_url[/tt] function handles it all in a much better way though, so you should actually almost always use this.
 
 [title="3"]Security[/title]
 
@@ -1031,10 +1031,10 @@ Another common (and very remedial) logic error is assuming that a hacker won't t
 
 Another common logic error is passing in secondary ID values from a form, for edit/deletion in actualiser code, and only checking permissions on a primary ID. For example, if a record has some subrecords, and there are checkboxes to delete those subrecords available on the main record's edit screen, it is easy to forget that you need to run permissions checks on the subrecords as well as the main record. As an alternative to running extra permssion checks, sometimes it is possible to construct queries on the subrecords that hard-codes the primary ID, such that the query will only execute if the subrecords referenced really do belong to the main record we checked permissions for; this is valid protection also, and usually involves less code.
 
-Any special and obvious hack-attack situation that you can figure out (whether real or not) should be logged using the [tt]log_hack_attack_and_die[/tt] function, so that site staff may detect when people are trying to hack or probe the site. Whilst hackers with the source code may avoid the attack scenario you've predicted and logged, it is likely they will make mistakes and get logged anyway, which can be a huge benefit to site admins.
+Any special and obvious hack-attack situation that you can figure out (whether real or not) should be logged using the [tt]log_hack_attack_and_die[/tt] function, so that site staff may detect when people are trying to hack or probe the site. While hackers with the source code may avoid the attack scenario you've predicted and logged, it is likely they will make mistakes and get logged anyway, which can be a huge benefit to site admins.
 
 XSS is short-hand for "cross-site-scripting", and essentially poisons a user's HTML output. There are two common ways this can occur:
- - through URL's
+ - through URLs
  - through submitted data
 The general premise is that through some kind of invalid input, JavaScript gets inserted into the HTML output. This kind of hack is indirect -- invalid output is generated via the vulnerability, then someone with wide website access is tricked, or naturally directed, to view that output.
 The JavaScript in the output usually does something particularly malicious, like redirecting someone's password cookie to a hackers website -- allowing the hacker to steal their credentials.
@@ -1059,11 +1059,11 @@ Jumping-in is a term I just coined for this guide to refer to when a .php file i
 
 CSRF (Cross-Site-Request-Forgery). It is easy to forget we encode actions in forms... potentially destructive actions which are called by the automated click of a button. The person clicking a button on a form has no idea where that form leads unless there is some text to say, and that text may not be accurate. A hacker could create a form on his/her own website that is encoded to submit malicious requests to a victim webmaster's own website. The hacker would then just need to trick the webmaster to fill that form in via some form of deception ("fill in this form on my website to win a free iPod"). Because the webmaster has access to his/her own site, any form they fill in also does by extension and thus the submission of the malicious form could cause real destruction before the webmaster realised what had happened.
 The hacker in this situation has just performed a destructive action by proxy. Sometimes these hacks are elaborate in that XSS was used to make a user not even know they were clicking a link in the first place (and thus the hacker staying potentially anonymous).
-We can't completely prevent this type of attack... a user might be tricked into filling in a form on someone's website that directs to a manipulative URL on their own. It can only be advised that users be careful what they click... i.e. they don't go to dubious web sites or click links given in dubious circumstances, or click links with apparent malicious or strange intent.
+We can't completely prevent this type of attack... a user might be tricked into filling in a form on someone's website that directs to a manipulative URL on their own. It can only be advised that users be careful what they click... i.e. they don't go to dubious websites or click links given in dubious circumstances, or click links with apparent malicious or strange intent.
 It might be suggested that the REFERER be checked to make sure the REFERER for an admin action is always inside the users site, but the REFERER field is often changed by privacy aware users to be non-representative, and thus cannot be relied upon. Nevertheless, Composr does do this if the referer field is provided.
 One action Composr does take, is to refuse to allow a user to click-through to an internal Admin Zone URL directly from an external site if they are not already logged in... it requires an explicit login for every new browser window. It might seem that this is an unnecessary hassle, but it truly is the only standard/environment-compliant way to prevent automated Admin Zone-actions. Users may disable this feature by turning it off when they edit a zone, and likewise turn it on for other zones.
 
-Some nosy or malicious users may choose to try and poke around in upload, or page folders, by manually specifying URL's. They may attempt directory browsing, or to guess the URL to a file. Composr prevents directory browsing by placing index.html files in folders that shouldn't be browseable, thus nullifying the browse-ability with a blank output (one cannot assume the web server is configured to have directory browsing to disabled). In addition, .htaccess files are placed in folders where files should not be accessed by URL at all, but this only works on Apache servers. The upload system supports obfuscation of upload names in order to make URL guessing unrealistic.
+Some nosy or malicious users may choose to try and poke around in upload, or page folders, by manually specifying URLs. They may attempt directory browsing, or to guess the URL to a file. Composr prevents directory browsing by placing index.html files in folders that shouldn't be browseable, thus nullifying the browse-ability with a blank output (one cannot assume the web server is configured to have directory browsing to disabled). In addition, .htaccess files are placed in folders where files should not be accessed by URL at all, but this only works on Apache servers. The upload system supports obfuscation of upload names in order to make URL guessing unrealistic.
 
 It goes without saying, but I'll say it anyway, that any code that finds its way into an eval call should only come directly from hard-coded Composr code itself. Never do something stupid like:
 eval('add_image('.get_param_string('image_id').');');

@@ -34,26 +34,26 @@ The award/content systems allows you to select out content for featuring. It may
 [media width="150" description="A [tt]main_awards[/tt] block" float="right"]data_custom/images/docs/tut_featured/featured_award_block.png[/media]
 [media width="150" description="Making an award" float="right"]data_custom/images/docs/tut_featured/featured_award.png[/media]
 You may use the award system with any of the following types of content:
- - authors
- - calendar events
- - catalogues
- - catalogue categories
- - catalogue entries
+ - Authors
+ - Calendar events
+ - Catalogues
+ - Catalogue categories
+ - Catalogue entries
  - Wiki+ pages
  - Wiki+ posts
- - comcode pages
- - downloads
- - download categories
- - forum posts
- - forum topics
- - forums
- - galleries
- - images
- - members
- - news
- - quizzes
- - usergroups
- - videos
+ - Comcode pages
+ - Downloads
+ - Download categories
+ - Forum posts
+ - Forum topics
+ - Forums
+ - Galleries
+ - Images
+ - Members
+ - News
+ - Quizzes
+ - Usergroups
+ - Videos
 
 So, why are are these awards so useful? Well, we find users often come to us wanting to be able to feature different entries of the same thing on their front page. For example, a boating club might have a catalogue filled with different types of yacht, and want to be able to have them shown on the front page.
 
@@ -69,7 +69,7 @@ If you wanted to choose a different yacht to display every week, for example, th
 
 Composr has one award that is pre-created for you as an example: Download Of The Week.
 
-Each award has its own archive, under the [tt]awards[/tt] page. The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
+Each award has its own archive, under the [tt]site:awards[/tt] page, which is linked to on the default menus on the website ('Top content (Awards)', under the 'About' menu). The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
 
 [box="Assigning points"]
 You can configure the awards (when you add or edit the award itself) to carry a number of points. If you do this, the submitter of content given that award will be given some points, and that'll show up on their points profile.
@@ -89,7 +89,7 @@ As with randomisation, this allows you to use the award system without actually 
 
 [title="2"]Using module screens as blocks[/title]
 
-Whilst the [tt]main_content[/tt] block (see above) can show content within blocks, it is conceivable that you might want to display full module screens as if they were blocks. This is possible with the [tt]main_include_module[/tt] block.
+While the [tt]main_content[/tt] block (see above) can show content within blocks, it is conceivable that you might want to display full module screens as if they were blocks. This is possible with the [tt]main_include_module[/tt] block.
 
 For example:
 [code="Comcode"]

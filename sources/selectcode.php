@@ -35,7 +35,7 @@ Note that:
  - subtree specifiers work on category-sets rather than record-sets. In other words, it's a different set of IDs, unless the category-set equals the record-set for the specific case. It is possible that there could be no category-set available, in which case subtree specifiers will produce no effect.
  - nothing is accepted by default. If you want this, add '*' into your Selectcode.
  - avoidance overrides acceptance, and there is no ordering. For example, "!3,3*" would get everything under category 3 except ID#3 (if our record-set equals our category-set, this example makes more sense as something useful)
- - whilst Selectcode isn't fully expressive, almost anything can be achieved with a little thought. There is no practical reason to need brackets, order-support, etc.
+ - while Selectcode isn't fully expressive, almost anything can be achieved with a little thought. There is no practical reason to need brackets, order-support, etc.
  - for record searching, look at Filtercode, the companion language
 
 EXAMPLE CALLS...

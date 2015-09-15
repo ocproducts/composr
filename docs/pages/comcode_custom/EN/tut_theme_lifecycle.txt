@@ -29,7 +29,7 @@ This override process is exactly the same for templates (including JavaScript te
 
 [title="2"]The template cache[/title]
 
-Composr never actually directly serves CSS files to the visitor web browsers. First the CSS files are compiled with Tempcode, and then they are minified. The Tempcode process allows Composr to properly tie-in theme images, language string references, colour references, and to separately compile out the mobile and desktop versions of the CSS, amongst other things.
+Composr never actually directly serves CSS files to the visitor web browsers. First the CSS files are compiled with Tempcode, and then they are minified. The Tempcode process allows Composr to properly tie-in theme images, language string references, colour references, and to separately compile out the mobile and desktop versions of the CSS, among other things.
 
 Templates are obviously not served direct to the visitor web browser either.
 

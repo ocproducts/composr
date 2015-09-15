@@ -9,12 +9,16 @@ This tutorial focuses on IP addresses. A member-focused view is taken in the [pa
 [title="2"]Tracing users (how IP addressing work)[/title]
 
 [surround="right float_separation"]
-[box="Find your IP address" width="25em"]Computers often have more than one [concept]IP address[/concept] (one for each 'network interface', such as a network card or modem).
+[box="Find your IP address" width="25em"]
+Computers often have more than one [concept]IP address[/concept] (one for each 'network interface', such as a network card or modem).
 
-If you want to find your own IP address, as Composr sees it, hold the mouse over the 'Account' link in the top bar or use a [url="third-party IP address reporting website"]http://www.myipaddress.com[/url].[/box]
+If you want to find your own IP address, as Composr sees it, hold the mouse over the 'Account' link in the top bar or use a [url="third-party IP address reporting website"]http://www.myipaddress.com[/url].
+[/box]
 
-[box="Finding network settings" width="25em"]To find out about your network settings on Windows, type [tt]ipconfig /all[/tt] at a command prompt.
-On Linux or Mac, type [tt]ifconfig[/tt].[/box]
+[box="Finding network settings" width="25em"]
+To find out about your network settings on Windows, type [tt]ipconfig /all[/tt] at a command prompt.
+On Linux or Mac, type [tt]ifconfig[/tt].
+[/box]
 [/surround]
 [media width="150" description="[url=\"DNSstuff\"]]http://www.dnsstuff.com[/url] is a very useful website for looking into technical Internet related issues" float="right"]data_custom/images/docs/tut_trace/trace_dnsstuff.png[/media]
 To trace users, you need to identify the computer performing the malicious action: unfortunately (from this perspective), the Internet is largely anonymous and decentralised, and without any clear legal authority to turn to. To some extent, a computer on the Internet can be identified by virtue of its 'IP address' (Internet Protocol address); an IP address is a 4 byte piece of data (traditionally, although a new 6 byte standard has been worked on for a number of years now), represented usually in a human readable form of 4 numbers (0-255) separated by dots. There are a number of different sources of IP addresses, however the decentralisation of the system can lead to abuse; these sources are:
@@ -23,9 +27,11 @@ To trace users, you need to identify the computer performing the malicious actio
  - Local network IP address [tt]10.0.*.*[/tt] or [tt]192.168.*.*[/tt] type (non-routeable [can't travel across the Internet] and open for anyone's local usage as it does not need to assigned by any authority, which means that something odd is happening if you find one of these)
  - Localhost IP address, [tt]127.0.0.1[/tt]. If you see this, then the request came from the server, or the IP address was added to the Composr database arbitrarily by some code because the true one was not known (often importers do this)
 
-[box="Finding a domain's IP address" width="25em" float="right"]To find out what your computer thinks the IP address of an Internet server is, type:
+[box="Finding a domain's IP address" width="25em" float="right"]
+To find out what your computer thinks the IP address of an Internet server is, type:
 [tt]nslookup <server-domain-name>[/tt]
-at a command prompt.[/box]
+at a command prompt.
+[/box]
 There is a scheme for the allocation and organisation of IP addresses -- they are leased in large blocks. The number of addresses in the blocks depend on what 'class' of block is being leased. This is outside the scope of this tutorial, except to make the point that IP addresses belonging to the same computer network (often, an ISP, and hence, the network being all users of that ISP from a certain roughly geographic region) share a common address prefix.
 
 There is a major problem with identifying users by IP address, and that is one of [concept]proxy[/concept]s and [concept]gateway[/concept]s (also known as, [concept]NAT[/concept] [network address translation]). If a network is 'behind' a server that makes Internet requests on their behalf, and relays information back using its own internal algorithms, then all users of this server may be seen under a single IP address. Composr will try and detect the 'true' IP address, based on the information available, but we cannot guarantee this will be the case. AOL is renowned for using proxy servers, and will particularly jump rapidly between IP addresses when the AOL browser is used. For the gateway case, it is more than likely that a large school, for example, would use a gateway, rather than exposing all school computers to the Internet via their own IP addresses (in this sense, a NAT/gateway is a form of firewall).

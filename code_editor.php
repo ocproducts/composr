@@ -229,7 +229,7 @@ END;
 }
 
 /**
- * Search inside a directory for editable files, whilst favouring the overridden versions.
+ * Search inside a directory for editable files, while favouring the overridden versions.
  *
  * @param  SHORT_TEXT $dir The directory path to search.
  * @return array A list of the HTML elements for the list box selection.

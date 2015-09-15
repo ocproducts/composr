@@ -1744,7 +1744,7 @@ function fix_mysql_database_charset()
  *
  * @param  ID_TEXT $new_charset Character set
  * @param  object $db Database
- * @param  boolean $reencode Whether to let MySQL do a reencoding of the characters (if this is set to false we actually are adjusting the interpretation whilst leaving the disk data the same)
+ * @param  boolean $reencode Whether to let MySQL do a reencoding of the characters (if this is set to false we actually are adjusting the interpretation while leaving the disk data the same)
  */
 function change_mysql_database_charset($new_charset, $db, $reencode = false)
 {

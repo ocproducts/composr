@@ -289,7 +289,7 @@ function is_page_https($zone, $page)
 /**
  * Find if mod_rewrite is in use
  *
- * @param  boolean $avoid_remap Whether to explicitly avoid using mod_rewrite. Whilst it might seem weird to put this in as a function parameter, it removes duplicated logic checks in the code.
+ * @param  boolean $avoid_remap Whether to explicitly avoid using mod_rewrite. While it might seem weird to put this in as a function parameter, it removes duplicated logic checks in the code.
  * @return boolean Whether mod_rewrite is in use
  */
 function can_try_mod_rewrite($avoid_remap = false)

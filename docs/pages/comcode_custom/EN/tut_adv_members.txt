@@ -69,7 +69,7 @@ There are a number of custom profile field options that you may set that allow C
  - Storing hidden details on member (for example, a list of rule infractions, such as to aid decisions on cumulative punishment)
  - Allowing members to specify details about themselves (for example, their occupation)
  - Forcing members to specify certain additional details (for example, on a forum for staff of a company, you could make members enter their job role, so as to reduce the chance of a non employee from joining and remaining an active member)
- - Allowing members of a certain sub-communities (via their usergroup) to specify details appropriate to that sub-community (for example, those in the 'Football' usergroup of a school discussion forum could specify the position they play, whilst those in the 'Music' usergroup could specify the instrument they play).
+ - Allowing members of a certain sub-communities (via their usergroup) to specify details appropriate to that sub-community (for example, those in the 'Football' usergroup of a school discussion forum could specify the position they play, while those in the 'Music' usergroup could specify the instrument they play).
 
 For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].
 [/surround]
@@ -82,7 +82,7 @@ Additionally, you could run into problems with large numbers of CPFs on some ser
 
 [title="3"]Display rules[/title]
 
-It is possible to configure where a value for a custom profile field for members will be displayed. The field will always be visible from their profile page, but also:
+It is possible to configure where a value for a custom profile field for members will be displayed. The field will always be visible from their profile screen, but also:
  - if 'show in posts' is selected, it will also be visible on their forum posts, and their member galleries and member gallery images/videos
  - if 'show in post previews' is selected, it will also be visible when displaying a member sub-gallery in a list of sub-galleries
 
@@ -153,7 +153,7 @@ To mark a CPF as encrypted, tick the "Encryption" box when creating the field, m
 
 When editing the value of an encrypted CPF, the encrypted data will be shown. To change the value, simply overwrite it with the data you want to change it to. Leaving the value alone will [i]not[/i] cause it to be doubly-encrypted so don't worry.
 
-When viewing an encrypted CPF on a member's profile page, the encrypted data will not be decrypted or shown (the server literally does not know how). To decrypt and view the data, click the "Decrypt" JavaScript link for the CPF. A popup will allow the decryption passphrase to be entered and the data decrypted. The decryption passphrase is the passphrase used to unlock the private key, as specified when originally generating the public/private key pair. Typically only staff will have knowledge of the passphrase, since there's only one for the entire site.
+When viewing an encrypted CPF on a member's profile screen, the encrypted data will not be decrypted or shown (the server literally does not know how). To decrypt and view the data, click the "Decrypt" JavaScript link for the CPF. A popup will allow the decryption passphrase to be entered and the data decrypted. The decryption passphrase is the passphrase used to unlock the private key, as specified when originally generating the public/private key pair. Typically only staff will have knowledge of the passphrase, since there's only one for the entire site.
 
 Note that encrypted CPFs are not supported for any kind of CPF value that is not typed in (such as list selections).
 

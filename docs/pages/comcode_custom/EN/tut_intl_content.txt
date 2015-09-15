@@ -76,7 +76,7 @@ Content translation is primarily performed in a special 'Translate content' part
 
 You will see there is also an option in the footer for opening up a 'Translate content' screen just with language strings (the user content kind) that were included on the page you are viewing. This is a nice feature if the main translation queue is to full to realistically deal with and you just want new content to get translated.
 
-In Composr almost [i]everything[/i] (*) can be translated, but obviously you would not want to translate every forum post for a large community (for example). For this reason, Composr saves language with 'priorities', and that of the highest priority will be presented for translation first. For example, the names of zones would be the highest priority, whilst forum posts would be the lowest.
+In Composr almost [i]everything[/i] (*) can be translated, but obviously you would not want to translate every forum post for a large community (for example). For this reason, Composr saves language with 'priorities', and that of the highest priority will be presented for translation first. For example, the names of zones would be the highest priority, while forum posts would be the lowest.
 
 (*) A few things cannot be translated such as forum names. The reasoning is that you [i]do not want[/i] such things translated, but rather you should have a different copy of each forum for each language. This is an exceptional situation, and is only designed like this due to the way forums are used. Other kinds of category may be translated as described above.
 

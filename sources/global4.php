@@ -219,7 +219,7 @@ function member_personal_links_and_details($member_id)
             $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '6241e58edfdsf735f3a2618fd7fff', 'KEY' => do_lang_tempcode('COUNT_POINTS_USED'), 'VALUE' => integer_format(points_used($member_id)))));
         }
         if (get_option('points_show_personal_stats_total_points') == '1') {
-            $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '3e6183abf9054574c0cd292d25a4fe5c', 'KEY' => do_lang_tempcode('COUNT_POINTS_EVER'), 'VALUE' => integer_format(total_points($member_id)))));
+            $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '3e6183abf9054574c0cd292d25a4fe5c', 'KEY' => do_lang_tempcode((get_option('points_show_personal_stats_points_left') == '1') ? 'COUNT_POINTS_EVER' : 'COUNT_POINTS'), 'VALUE' => integer_format(total_points($member_id)))));
         }
         if (get_option('points_show_personal_stats_gift_points_left') == '1') {
             $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => '6241e5ssd45ddsdsdsa2618fd7fff', 'KEY' => do_lang_tempcode('COUNT_GIFT_POINTS_LEFT'), 'VALUE' => integer_format(get_gift_points_to_give($member_id)))));

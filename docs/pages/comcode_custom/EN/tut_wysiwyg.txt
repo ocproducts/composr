@@ -7,7 +7,7 @@ Composr "Long text" Comcode content is, by default, edited using a WYSIWYG edito
 [title="2"]WYSIWYG editors on the web[/title]
 
 [media description="The Composr WYSIWYG editor. See the disable button in the top-right." float="right" width="150"]data_custom/images/docs/tut_wysiwyg/wysiwyg.png[/media]
-A WYSIWYG (What You See Is What You Get) editor is a document editor where the editor's editing interface roughly mirrors the appearance of the final document. Web sites deploy WYSIWYG editors via a combination of JavaScript and built-in editing features that are present in the popular modern web browsers. Online WYSIWYG editors are HTML editors: the document created is manipulated and transmitted as HTML.
+A WYSIWYG (What You See Is What You Get) editor is a document editor where the editor's editing interface roughly mirrors the appearance of the final document. Websites deploy WYSIWYG editors via a combination of JavaScript and built-in editing features that are present in the popular modern web browsers. Online WYSIWYG editors are HTML editors: the document created is manipulated and transmitted as HTML.
 
 [title="2"]Integrated editor[/title]
 

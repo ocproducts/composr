@@ -26,7 +26,7 @@ Catalogues store information in a database-like fashion, with a strict record fo
 
 Wiki+ is a very adhoc system, and designed as a community database (but not in the formal sense of a database with records). It is great for storing structured information when presentation is less important than efficiency of use. Imagine Wikipedia.
 
-Discussion forums are even more adhoc from Wiki+, and whilst they can be heavily structured, they are designed to hold transitory information. Two distinct advantages are the efficiency that moderation features provide, and the fact that users tend to 'lurk' on forums and thus information released through forums reaches them fast.
+Discussion forums are even more adhoc from Wiki+, and while they can be heavily structured, they are designed to hold transitory information. Two distinct advantages are the efficiency that moderation features provide, and the fact that users tend to 'lurk' on forums and thus information released through forums reaches them fast.
 
 Downloads may be used to release information indirectly, essentially via storing it in an archive of files/publications.
 

@@ -12,9 +12,9 @@ Your options are:
  - Install on traditional hosting (shared hosting/VPS)
   - [b]Use a supported integration[/b]. You can install with just a few clicks if your web host has a supported integration such as Softaculous or Installatron installed. If this is the case then you don't need to read this tutorial.
   - [b]Use the quick installer[/b]. This tutorial covers this case.
-  - [b]Use the manual installer[/b]. You are unlikely to need to use the manual installer. If you do, the [page="_SEARCH:tut_adv_installation"]Advanced Installation[/page] tutorial provides supplementary information to the installation fundamentals described in this tutorial.
+  - [b]Use the manual installer[/b]. You are unlikely to need to use the manual installer. If you do, the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] tutorial provides supplementary information to the installation fundamentals described in this tutorial.
   - [b]Get ocProducts to install for you[/b]. If you wish then ocProducts can [page="site:support"]install Composr for you[/page].
- - [b]Install on dedicated server or cloud machine (IaaS)[/b]. If a control panel is provided then installation may be identical to traditional hosting. Otherwise you will need to have a more advanced understanding of server management. Many details are described in the [page="_SEARCH:tut_adv_installation"]Advanced Installation[/page] and [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page] tutorials.
+ - [b]Install on dedicated server or cloud machine (IaaS)[/b]. If a control panel is provided then installation may be identical to traditional hosting. Otherwise you will need to have a more advanced understanding of server management. Many details are described in the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] and [page="_SEARCH:tut_web_hosting"]Web hosting for Composr[/page] tutorials.
  - [b]Install on a PaaS service[/b]. PaaS services are typically managed directly by programmers and specific instructions would vary greatly between service.
  - Install on a Windows machine
   - [b]Use a WAMP system[/b]. Covered in the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page] tutorial.
@@ -60,11 +60,11 @@ The second option is the manual installer. This option requires you to manually 
 
 [surround]
 [media width="150" description="Example of \"Download Now\" link" float="left"]data_custom/images/docs/tut_install/install_download.png[/media]
-To install Composr, you must first download it from [url="our web site"]{$BRAND_BASE_URL}[/url]. It is generally best to choose the latest version, and, as stated above, we also recommend choosing the "quick method".
+To install Composr, you must first download it from [url="our website"]{$BRAND_BASE_URL}[/url]. It is generally best to choose the latest version, and, as stated above, we also recommend choosing the "quick method".
 
 Download Composr from our website. Save it to a location where you'll be able to find it.
 
-After it downloads, you'll need to extract the files. The exact methods for doing this will vary based on which zip utility you use.
+After it downloads, you'll need to extract the files. The exact methods for doing this will vary based on which ZIP utility you use.
 [/surround]
 
 [title="3"]Using SFTP/FTP[/title]
@@ -79,7 +79,7 @@ If you'd like to use the one bundled with windows, open a new Internet Explorer 
 
 At this point you need to decide whether you want your website to reside in your root folder or not. If you choose to place it in your root folder (which is the recommended option), people will be able to access your site by going to [tt]http://www.mywebsite.com[/tt] (unless you don't own your own domain name). If you choose to place it in a subfolder (for example, "subfolder"), people will access your Composr installation by going to [tt]http://www.mywebsite.com/subfolder[/tt].
 
-When you successfully connect, find your webroot, and navigate into a subfolder if you chose to. You need to upload the files that were inside the zip package you downloaded. If you chose the quick installer, these files are called 'install.php', the other is called 'data.cms'. If you chose the manual installer, there will be many more.
+When you successfully connect, find your webroot, and navigate into a subfolder if you chose to. You need to upload the files that were inside the ZIP package you downloaded. If you chose the quick installer, these files are called 'install.php', the other is called 'data.cms'. If you chose the manual installer, there will be many more.
 
 You now need to put these files in the desired folder. This can usually be done by dragging and dropping the files from your computer to your web host in your SFTP/FTP client ([url="image" rel="lightbox"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/url]).
 
@@ -137,7 +137,7 @@ The Setup Wizard will guide you through some basic setup for your site, to give 
  - [page="_SEARCH:tut_web_hosting"]Web hosting information[/page] (including Composr minimum requirements)
  - [page=":privacy"]ocProducts privacy policy[/page]
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
- - [page="_SEARCH:tut_adv_installation"]Advanced installation[/page]
+ - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_uninstall"]Uninstalling Composr[/page]
 
 {$SET,tutorial_tags,installer,core_database_drivers,Installation,novice,pinned}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,We explain what you need to do to install Composr. This tutorial is particularly important if you use the manual installer.}[block]main_tutorial_rating[/block]

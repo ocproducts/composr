@@ -104,7 +104,7 @@ To do it en-masse, you can run this in Commandr (this example assumes you are re
 [/code]
 and then clear the Comcode page cache from Admin Zone > Tools > Cleanup tools.
 
-[title="2"]Changing base configuration[/title]
+[title="2"]Changing Installation Options[/title]
 
 If your server base configuration has changed (such as your database password, for example) then you need to update Composr's [tt]_config.php[/tt] config file to reflect this. You can either do this directly, or you can do it via launching the [tt]config_editor.php[/tt] script installed at the base of your website (you will need your master password to do this).
 
