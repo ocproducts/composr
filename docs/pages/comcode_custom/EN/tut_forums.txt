@@ -73,7 +73,7 @@ You'll need to enable the following global privileges:
  - 'Avoid validation (approval) for mid-impact content', if a member is to be able to create a topic without requiring validation
 
 You can set them in 3 places (in order from highest level to lowest level):
-1) In the 'Submission' set of the global privilege settings (go to Admin Zone > Security > Privileges, then the Submission section)
+1) In the 'Submission' set of the global privilege settings (go to Admin Zone > Security > Privileges > Submission)
 2) Or, you can use the Permissions Tree Editor (go to Admin Zone > Security > Permissions Tree Editor) to set these on the forum zone's 'forumview' module (if you don't want these to apply for any other 'mid-impact content' across the site)
 3) Or, you can set them against specific forums using either the Permissions Tree Editor or the editing screen of a forum
 

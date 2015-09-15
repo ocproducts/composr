@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Making an addon (part 2)[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Making an addon (part 2)[/title]
 
 Welcome to the second of our series of addon making tutorials. If you haven't yet read the first tutorial then it's advisable that you do so before reading this one.
 
@@ -79,7 +79,7 @@ print_r($failure);
 ?>
 [/code]
 
-[media width="150" description="Our mini-module in action on {$BRAND_BASE_URL}. Heavily censored to protect our and our visitors privacy ;)." float="right"]data_custom/images/docs/tut_hardcore_2/hardcore_censor.png[/media]
+[media width="150" description="Our mini-module in action on {$BRAND_BASE_URL}. Heavily censored to protect our and our visitors privacy ;)." float="right"]data_custom/images/docs/sup_hardcore_2/hardcore_censor.png[/media]
 We call up the mini-module by going to [tt]http://baseurl/adminzone/?page=admin_tracking[/tt], as we saved it as a page in the Admin Zone.
 
 The mini-module is actually very simple -- mainly it just looks for all the hits to the website where a 'from' parameter was given, and then puts out all the URLs they visited since entering the site, by date, along with some other basic information. It also looks for whether each hit user joined or went to purchase and tallies it against each 'from' value it finds.
@@ -111,8 +111,8 @@ To claim your prize, post in the Addons forum and 'report post' with the phrase 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_hardcore_1"]Making an addon (part 1)[/page]
- - [page="_SEARCH:tut_hardcore_3"]Making an addon (part 3)[/page]
+ - [page="_SEARCH:sup_hardcore_1"]Making an addon (part 1)[/page]
+ - [page="_SEARCH:sup_hardcore_3"]Making an addon (part 3)[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_framework"]The Composr programming framework[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]

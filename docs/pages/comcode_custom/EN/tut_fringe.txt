@@ -94,7 +94,7 @@ The clear points of confusion are:
 
 For web-safe videos you need to use either the aac or mp3 audio codec, the h264 video codec, and the mp4 container format.
 
-[title="2"]Achieving advanced designs with the custom graphics block (advanced)[/title]
+[title="2"]The custom graphics block (advanced)[/title]
 
 It is very common for the best modern designs to have content text built direct into graphics. There are 3 approaches to achieve this:
 1) CSS. This is usually the best approach, using CSS to overlay the text over images.

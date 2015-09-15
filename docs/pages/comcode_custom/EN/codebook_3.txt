@@ -229,6 +229,7 @@ If you have an IDE with a debugger then this is better, but we find most develop
 
 [title="2"]Tips[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
 This section contains a number of general programming tips. Much of this applies to all programming, not just Composr programming. However there are also a number of tips for Composr that will help you on a day-to-day basis.
 
 [title="3"]Deployment[/title]

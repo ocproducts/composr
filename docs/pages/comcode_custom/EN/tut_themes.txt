@@ -19,11 +19,14 @@ At this time, there are over 1,000 templates that make up Composr and all of its
 
 [title="2"]Cheating: the Theme Wizard[/title]
 
+[media width="150" description="The Theme Wizard" float="right"]data_custom/images/docs/tut_themes/themewizard.png[/media]
 {!themes:DOC_THEMEWIZARD}
 
-The Theme Wizard is available at Admin Zone > Style > Themes, Theme Wizard link (under Add theme).
+Be aware of the following small deficiencies:
+ - Some default software emoticons are animated, and attractive animated images have to be saved to a particular background colour -- so you may wish to uninstall these animated emoticons or rework them in an image editor.
+ - Extreme black/white themes will not come out of the Theme Wizard 100% perfectly, and need a small amount of tuning. Using the Theme Wizard at extreme black/white, causes contrast problems, as a result of the maths (essentially, there are fewer intermediate shades of black or white than there are shades of colour if the saturation is high enough for colour to be discernible). There's no good automatic solution to that, other than to manually go in and change some of our subtly shaded colours to hard white/black as required. The issue is worst in the few places where we're using different colours to provide contrast rather than combination dark & light.
 
-Note that extreme black/white themes will not come out of the Theme Wizard 100% perfectly, and need a small amount of tuning. Using the Theme Wizard at extreme black/white, causes contrast problems, as a result of the maths (essentially, there are fewer intermediate shades of black or white than there are shades of colour if the saturation is high enough for colour to be discernible). There's no good automatic solution to that, other than to manually go in and change some of our subtly shaded colours to hard white/black as required. The issue is worst in the few places where we're using different colours to provide contrast rather than combination dark & light.
+The Theme Wizard is available at Admin Zone > Style > Themes, Theme Wizard link (under Add theme).
 
 {!themes:DOC_LOGOWIZARD}
 
@@ -33,6 +36,7 @@ Note that extreme black/white themes will not come out of the Theme Wizard 100% 
 
 When making your own theme, you need to be aware of several things. Firstly, it is good to have a general idea of what you're going to do before you dive into making changes. This way you can hopefully maintain a more consistent look across your website, and avoid a lot of repeated work.
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 When making a new theme, it is wise to put good design tactics to use before beginning your work. These include:
  - Maintaining a consistent look across your pages
  - Avoid "busy", cramped looking pages -- allow room for your viewer to 'breath'. Padding is an excellent way to accomplish this
@@ -43,11 +47,12 @@ There are more design tips like this in books and across the Internet, if you ar
 
 [title="2"]Technical aspect[/title]
 
-To create a new theme manually, go to 'Style' section of your Admin Zone and you will find an icon for it. This will bring up a list of your current themes, which is probably just the "default" theme. We highly recommend creating a new theme and working within that, since if you accidentally make a mistake you can always fall back to the default theme.
+[media width="150" description="The link to add a theme" float="right"]data_custom/images/docs/tut_themes/manage_themes.png[/media]
+To create a new theme manually, go to Admin Zone > Style > Manage Themes, and you will find a link to do it. This will bring up a list of your current themes, which is probably just the "default" theme. We highly recommend creating a new theme and working within that, since if you accidentally make a mistake you can always fall back to the default theme.
 
 Click the "Add Theme" link at the bottom. This will bring you to a screen prompting you for a name for this new theme, an option to apply it as the default theme across all of your zones, as well as other options. It is advisable to not tick the 'use as default on all zones' option until you've styled your new theme to your liking, unless your website is closed to the public anyway. If your website is currently open and you want to make sure that no other members may even manually select your new theme until you are ready, you may set permissions for it.
 
-Clicking "Add theme" then brings you to a page that prompts you to type in your FTP details. This is so that Composr can create the appropriate folders and files without requiring you to CHMOD these folders to 777 (which would pose a security risk). If you are running this on your local windows computer, or if you know the [tt]/themes[/tt] folder is world-writable, you can probably leave these fields empty and just click the "Abstract file management" button.
+Clicking "Add theme" then brings you to a page that prompts you to type in your FTP details. This is so that Composr can create the appropriate folders and files without requiring you to CHMOD these folders to 777 (which would pose a security risk). If you are running this on your local windows computer, or if you know the [tt]themes[/tt] folder is world-writable, you can probably leave these fields empty and just click the "Abstract file management" button.
 
 At this point, Composr will make a set of empty folders for this new theme, and you may begin editing it. You will be prompted to edit this theme's templates, CSS, images, or be taken back to a main page.
 
@@ -71,6 +76,7 @@ You should be able to see your changes right away.
 
 [title="4"]Contextual CSS editing[/title]
 
+[media width="150" description="Page rendering tools in the footer" float="right"]data_custom/images/docs/tut_themes/rendering_tools.png[/media]
 You can edit CSS contextually, via the edit links in the Page Rendering Tools dropdown in the footer (assuming this still exists in your theme).
 
 The contextual editor allows you to make live changes, to preview on the fly, then save them.
@@ -94,8 +100,8 @@ As stated earlier, the templates allow you to control the layout of your site, b
 
 Before you edit your templates, you need to know which template you're going to edit. It's also important to know if you actually want to edit a template in the first place. In many cases, the page is built up using [concept]Comcode[/concept], in which case you would edit the page simply by clicking the "edit page" link at the bottom of the page.
 
-[media width="150" description="The \"Tree\" dropdown box" float="right"]data_custom/images/docs/tut_themes/themes_tree_go.png[/media]
-An example of this is the front page in the 'root' zone. If, for example you wanted to edit the 'poll' section, you simply click the "Edit Page" link at the bottom of the page. This takes you directly to an "edit comcode" page, where you can edit any element of that page. Knowing the difference between [concept]Comcode page[/concept]s and pages that use templates is sometimes difficult. The general rule of thumb is that if there's an 'edit page' button at the bottom of the page, try it first to see if you can edit what you want. If not, you'll need to determine which template you need to edit.
+[media width="150" description="The \"Template Tree\" option selected in the Page rendering tools" float="right"]data_custom/images/docs/tut_themes/themes_tree_go.png[/media]
+An example of this is the front page in the 'root' zone. If, for example you wanted to edit the 'poll' section, you simply click the "Edit Page" link at the bottom of the page. This takes you directly to an "edit comcode page" screen, where you can edit any element of that page. Knowing the difference between [concept]Comcode page[/concept]s and pages that use templates is sometimes difficult. The general rule of thumb is that if there's an 'edit page' button at the bottom of the page, try it first to see if you can edit what you want. If not, you'll need to determine which template you need to edit.
 
 [media width="150" description="An example of the \"Tree\" page" float="left"]data_custom/images/docs/tut_themes/themes_page_tree.png[/media]
 To get a list of all of the templates for a given page, choose the "tree" option from your toolkit ([url="see example" rel="lightbox"]data_custom/images/docs/tut_themes/themes_tree_go.png[/url]). Then click the "view" option, and a new window will appear, containing a list of templates for the page you're viewing, shown in a structured tree format ([url="image" rel="lightbox"]data_custom/images/docs/tut_themes/themes_page_tree.png[/url]). This list may look a little bit intimidating at first, but once you understand the concept behind it, it's relatively simple.
@@ -130,8 +136,15 @@ You can see that it's marking the beginning and end of two templates. The first 
 
 [title="3"]Alternative Method[/title]
 
-[box="\"Default\"?" width="32em" float="right"]You may notice that this list of templates are all in the [tt]/default[/tt] folder, which isn't necessarily the theme you're trying to edit. This is intentional -- the only templates that will be copied into your [tt]/mytheme/templates[/tt] folder are ones that you've actually made changes to. Everything else is just left in the [tt]/default/templates[/tt] folder. This is to cut down on the amount of files you need to keep track of.[/box]
-If you already know which template you intend to edit, you can do it directly through the 'Edit Templates' interface. To do this, go to Admin Zone > Style > Themes. Then click "Edit Templates" for the theme of your choice. This will provide you with a list of templates to choose from.
+[box="\"Default\"?" width="32em" float="right"]You may notice that this list of templates are all in the [tt]themes/default[/tt] folder, which isn't necessarily the theme you're trying to edit.
+This is intentional -- the only templates that will be copied into your [tt]themes/mytheme/templates[/tt] folder are ones that you've actually made changes to.
+
+Everything else is just left in the [tt]themes/default/templates[/tt] folder. This is to cut down on the amount of files you need to keep track of.[/box]
+If you already know which template you intend to edit, you can do it directly through the 'Edit Templates' screen.
+
+1) Go to Admin Zone > Style > Themes.
+2) Click "Edit Templates" for the theme of your choice.
+3) You will see a list of templates to choose from, so you can pick the appropriate one.
 
 [title="3"]Understanding Templates Code (Tempcode)[/title]
 There are many sections of code in your templates that you'll need to be aware of in order to be effective in your editing. The code is written in our templating language, which is known as Tempcode. For more information see the [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
@@ -144,7 +157,7 @@ It's a very useful feature.
 
 [title="3"]Images[/title]
 
-[media width="150" description="The \"Add Image\" page" float="right"]data_custom/images/docs/tut_themes/themes_add_image.png[/media]
+[media width="150" description="The \"Add Image\" screen" float="right"]data_custom/images/docs/tut_themes/themes_add_image.png[/media]
 Many of the links and buttons in Composr are created as images. If you wish to edit these images (or add new ones), you can do so via Composr's "Edit Images" interface.
 
 To edit an image, go to the Admin Zone > Style > Themes, then choose the "Manage theme images" link for the theme of your choice. You will be taken to a screen with a dropdown list of every image currently in use. Choose an image, then click "Edit Image".
@@ -152,10 +165,11 @@ Alternatively, for most images you can get straight to their editing screen by h
 
 On this screen, you are shown the current version of this image in the top. You also have the opportunity to edit this image's name, location, or to upload a new image in its place.
 
-[box="Power users" width="32em" float="right"]You can add new theme images by saving them directly into [tt]themes/yourtheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to the software itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools.[/box]
 To add an image, go to Admin Zone > Style > Themes, then choose the "Manage theme images" link for the theme of your choice, as before. There is a link at the bottom, "Add theme image", which will take you to a screen allowing you to create a new theme image.
- - [b]Name[/b]: You can call this whatever you like, but we recommend putting in something based on the image's pathname. For example, the "delete" image in the folder [tt]/themename/images/page/delete[/tt], is currently titled [tt]page/delete.png[/tt]. This makes it easy to tell on first glance which folder an image is in, which in turn usually determines what style of image it is
+ - [b]Name[/b]: You can call this whatever you like, but we recommend putting in something based on the image's pathname. For example, the "delete" image in the folder [tt]themes/themename/images/page/delete[/tt], is currently titled [tt]page/delete.png[/tt]. This makes it easy to tell on first glance which folder an image is in, which in turn usually determines what style of image it is
  - [b]Upload[/b] or [b]URL[/b]: Choose one of these options to upload your image to your website. Use the upload field for files that currently exist on your computer, or use the URL option for an image that is already online somewhere
+
+[box="Power users"]You can add new theme images by saving them directly into [tt]themes/yourtheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to the software itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools.[/box]
 
 If you are adding a theme image that is only relevant to your new theme, you should not tick "Use for all themes". For example, an image that is only referenced by one of your customised templates.
 
@@ -175,6 +189,7 @@ On devices like iphones or Android, it still works if mobile mode is not enabled
 
 [title="2"]Tips[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
 1) Do not use a custom theme on the Admin Zone or CMS zone. It's not necessarily and would make you have to consider all kinds of extra details
 2) Uninstall any non-required addons, so you don't have to test your new theme on so many screens. It is a huge decrease in the burden of themeing
 3) The Firefox Firebug addon (or developer tools in IE8, Safari, Google Chrome, or Opera) is incredibly handy in analysing how the Composr CSS interacts with the HTML. You can use it to run all kinds of tests, and quickly get a handle on how things are built. The Firefox Firediff extension is also great as it helps you keep track of your changes so you can easily put them back into Composr's stored CSS.

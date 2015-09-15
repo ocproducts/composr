@@ -67,9 +67,9 @@ An introduction to the Composr framework:
 
 [title="2"]Composr addons[/title]
  In addition to this Code Book, we also have some tutorials with worked examples of making addons:
- - [page="docs:tut_hardcore_1"]Making an addon (part 1)[/page]
- - [page="docs:tut_hardcore_2"]Making an addon (part 2)[/page]
- - [page="docs:tut_hardcore_3"]Making an addon (part 3)[/page]
+ - [page="docs:sup_hardcore_1"]Making an addon (part 1)[/page]
+ - [page="docs:sup_hardcore_2"]Making an addon (part 2)[/page]
+ - [page="docs:sup_hardcore_3"]Making an addon (part 3)[/page]
 and information about integrating third-party code:
  - [page="docs:tut_integration"]Integration of Composr and other installed scripts/applications[/page]
 

@@ -1,17 +1,15 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The Composr programming framework[/title]
 
-[media width="150" description="Composr has a well documented API (code)" float="right"]data_custom/images/docs/tut_framework/framework_api.png[/media]
-[media width="150" description="Composr has a well documented API (compiled out)" float="right"]data_custom/images/docs/tut_framework/framework_devguide.png[/media]
 Composr is not just a web application, but also a programming framework. Composr defines a very large, fully documented, API, and has numerous mechanisms for the addition of code. Programmers are able to cleanly extend or override any aspect of the system, to enhance Composr or bend Composr in any area necessary.
 
-It should be noted that Composr can be heavily customised without any programming, via editing the templates, but this will mostly only adjust layout and appearance, rather than adding-to or modifying Composr behaviour.
+It should be noted that Composr can be heavily customised without any programming, via editing the templates, but this will mostly only adjust layout and appearance, rather than adding-to or modifying Composr behaviour. Wherever possible we make things work on a configurable level though (such as [concept]Comcode page[/concept]s, or [concept]Catalogue[/concept]s) so users with specific needs do not need to hire-in-help or learn programming to fulfil them for such cases.
 
-It is also important to note, that programming tasks are inherently technical, and requires some combination of some of these elements:
+It is also important to note, that this is a tutorial for programmers, and that programming tasks are inherently technical, and requires some combination of some of these elements:
  - education
  - experience
  - a technical mind
 
-Wherever possible we make things work on a configurable level though (such as [concept]Comcode page[/concept]s, or [concept]Catalogue[/concept]s) so users with specific needs do not need to hire-in-help or learn programming to fulfil them for such cases.
+This tutorial covers day-to-day aspects of making and installing addons, especially embedding or overriding code. For a more exhaustive document describing ground-up Composr programming, see the [page="_SEARCH:codebook"]Composr Code Book[/page].
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -21,13 +19,15 @@ Composr is Free Software and Open Source, meaning it's completely open and custo
 
 [title="2"]The Composr API[/title]
 
+[media width="150" description="Composr has a well documented API (code)" float="right"]data_custom/images/docs/tut_framework/framework_api.png[/media]
+[media width="150" description="Composr has a well documented API (compiled out)" float="right"]data_custom/images/docs/tut_framework/framework_devguide.png[/media]
 Every [concept]function[/concept] in Composr is documented using a system based on [concept]phpdoc[/concept] (itself based on 'javadoc'). One purpose in this documentation is that it makes it easy for a programmer to program for Composr: they have a few hundred fully documented Composr functions available to them.
 
 With phpdoc and the function header-line itself, every function has the following:
  - A description
- - A list of all parameters
+ - A list of all parameters:
   - The code-name of the parameter
-  - The type of the parameter (including whether false [~type] or NULL [?type] values are accepted)
+  - The type of the parameter (including whether false [~type] or null [?type] values are accepted)
   - A description of the parameter
   - Whether the parameter is optional
  - The return type (if any), and a description of it
@@ -39,6 +39,7 @@ This section provides a high-level overview of Composr's core programming. Much 
 
 Composr is not just a lump of code like most software: a lot of effort has gone into structuring the system so that code may be cleanly hooked in, via various methods.
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/advantage.png[/media]
 These methods include:
  - Overriding of existing source files with modified versions. Every directory that holds effective source code (as opposed to the shell files such as [tt]index.php[/tt] or [tt]dload.php[/tt] that just provide entry points into Composr) support a system of overriding: in other words, every Composr source code file can be replaced with a customised version, cleanly, without damaging the existing code and without the changes getting buried. This is done via elevation of a file to a [tt]_custom[/tt] suffixed directory of where the file originally was
  - A Composr editor (the code editor) is provided to provide a simple (password protected) editor for your site, and does this automatically
@@ -51,7 +52,7 @@ These methods include:
 
 [media width="150" description="Composr language files for the tester addon" float="right"]data_custom/images/docs/tut_framework/framework_file_language.png[/media]
 [media width="150" description="Composr templates for the tester addon" float="right"]data_custom/images/docs/tut_framework/framework_file_templates.png[/media]
-As a part of testing Composr 2.5 (along time ago now), we wrote a new custom module that provided a quick way for all testers and developers to progress for the testing/bug-fixing process in a collaborative fashion. The module allowed the addition of tests, and assigning of those tests to members in a testing usergroup. It had a security system, so that non-testers could not access the system, and so that security could be defined to determine which testers had write access to edit tests. It also had forum integration, so that bug report topics could automatically be created and associated with a test.
+As a part of testing ocPortal 2.5 (along time ago now), we wrote a new custom module that provided a quick way for all testers and developers to progress for the testing/bug-fixing process in a collaborative fashion. The module allowed the addition of tests, and assigning of those tests to members in a testing usergroup. It had a security system, so that non-testers could not access the system, and so that security could be defined to determine which testers had write access to edit tests. It also had forum integration, so that bug report topics could automatically be created and associated with a test.
 
 All this was done, without touching the core Composr code. The Composr API made all the integration (security, members, usergroups, forum topics, etc) very easy. It is not the intent of this tutorial to explain exactly how this module was written, but some screen-shots have been attached to illustrate where new files were created in order for it to work.
 
@@ -70,17 +71,17 @@ The process of writing the module went along this basic route:
 The new module, approximately 1,000 lines of code (PHP and XHTML) was completed within one long day, and in active use soon after. It is a moderately advanced module, and was of great help to our organisation. Naturally, it would take a lot longer for an inexperienced Composr programmer to create this module, but the point is that it was made a lot faster due to our API and extension infrastructure: without these, a custom application from scratch might have taken a full week to develop. The alternative to a custom module would have been a third party application, but this would not have provided us with the level of integration we demand for our systems (not to mention compatibility with things as they are currently, and how they might change in the future). It is worth mentioning at this point that [page="site:support"]ocProducts staff[/page] are available for implementing systems built around on Composr.
 
 Some of the API functions used in the module include:
- - create_table
- - add_privilege
- - query_select
- - do_template
- - do_lang
- - has_privilege
- - build_url
- - assign_refresh
- - get_param_integer
- - get_member
- - member_group_query
+ - [tt]create_table[/tt]
+ - [tt]add_privilege[/tt]
+ - [tt]query_select[/tt]
+ - [tt]do_template[/tt]
+ - [tt]do_lang[/tt]
+ - [tt]has_privilege[/tt]
+ - [tt]build_url[/tt]
+ - [tt]assign_refresh[/tt]
+ - [tt]get_param_integer[/tt]
+ - [tt]get_member[/tt]
+ - [tt]member_group_query[/tt]
 I'm sure you can see why such a function library (and the pre-written subsystems that exist behind them) speeds up development considerably. All this is built into Composr by default, so no libraries need hunting down, installing and managing to achieve all this.
 
 [title="2"]Overrides[/title]
@@ -152,6 +153,7 @@ In Composr it works as thus:
 2) Next you define an init function of this file. If you were overriding [tt]sources/example.php[/tt] you would define a [tt]init__example[/tt] function. If you were overriding [tt]sources/forum/example.php[/tt] you would define a [tt]init__forum__example[/tt] function (i.e. any slashes get changed to '__' in the function name)
 3) The init function should take a single parameter, and return something based upon that parameter. The value of this parameter will be the string value of the code you're overriding, after any function/class renaming has happened (see 'Replacing/supplementing a file' above). i.e. your function is taking a huge lump of PHP code as its parameter. In-between taking the parameter and returning it you can perform any changes you like. You can use any string functions like [tt]preg_replace[/tt] or [tt]strpos[/tt]; or use the handy Composr [tt]get_function_hash / insert_code_before__by_linenum / insert_code_after__by_linenum / insert_code_before__by_command / insert_code_after__by_command / remove_code[/tt] functions
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 There is one important rule when it comes to programmatic alteration: you are not allowed to call [tt]non_overridded__init__<whatever>[/tt] from your [tt]init__<whatever>[/tt] function. You cannot do this because the PHP code containing that function has not been evaluated at that point and thus the function is not yet defined. If you try and do it then Composr will disable programmatic alteration and hence revert to the more basic 'Replacing/supplementing a file' technique. Composr will automatically call [tt]non_overridded__init__<whatever>[/tt] as soon as it becomes available so you do not need to copy&paste its contents to your own function. If you do not want [tt]non_overridded__init__<whatever>[/tt] to be automatically called then you need to rename it in your own init function so that Composr cannot find it.
 
 [title="2"]Addons[/title]
@@ -182,27 +184,33 @@ The code editor is very useful for making adhoc changes to a live-site, but is n
 
 [title="2"]PHP programming help[/title]
 
+[surround]
 [media width="150" description="PHP has an excellent reference manual" float="right"]data_custom/images/docs/tut_framework/framework_phphelp.png[/media]
 It is beyond the scope of ocProducts documentation to explain how to program in PHP (although we do have a stab at it in the [page="_SEARCH:tut_programming"]Introduction to programming tutorial[/page]), or other languages that are used such as SQL or HTML. PHP includes an excellent reference guide, and there are many good tutorials on the web for HTML. Composr uses a very minimalistic form of SQL, and usually code does not need to use any directly, due to our database abstraction functions, so this should not be a problem.
 
 The Composr API guide does actually include a PHP reference that defines a subset of PHP that we allow ourselves to use in Composr. The subset is specially limited so as to avoid PHP version conflicts, and the need for PHP extensions that may not be installed.
+[/surround]
 
 [title="2"]Other advantages to our framework[/title]
 
-If you still are not convinced that Composr is the right choice for you, consider some of these:
- - There are many frameworks for creating web applications available (such as Typo3 or Ruby-On-Rails), but few true frameworks like Composr are also 'out of the box' systems
- - In addition to the above, few pure frameworks provide the dimensions of functionality that Composr can provide
- - Composr's framework has excellent security. For example,
-  - the database abstraction system allows relational databases to be accessed without concern of SQL-injection
-  - The template system is written to make XSS injection virtually impossible (where the vast majority of programmers write code that is full of XSS vulnerabilities, without even knowing what they are)
- - Composr's framework is of professional quality, managed by a single company that keeps every aspect of it to high standards, and compatible with each other. If you opt for frameworks which are incomplete, and end up using addon libraries to achieve additional functionality, you will soon realise, both immediately and after-time, that the lack of central control results in:
-  - major compatibility problems
-  - messy feature overlap
-  - inconsistent philosophies for code
-  - inconsistent philosophies for documentation
-  - a large number of agents to contact for different kinds of problem
-  - no central authority for you to agree licensing with, should you need to do so (and this is not unlikely, as many projects flower to unexpected ends)
-  - orphaned projects that die
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/advantage.png[/media]
+If you still are not convinced that Composr is the right choice for you, consider some of these:[list]
+ [*] There are many frameworks for creating web applications available (such as Typo3 or Ruby-On-Rails), but few true frameworks like Composr are also 'out of the box' systems.
+ [*] In addition to the above, few pure frameworks provide the dimensions of functionality that Composr can provide.
+ [*] Composr's framework has excellent security. For example,[list]
+  [*] the database abstraction system allows relational databases to be accessed without concern of SQL-injection;
+  [*] The template system is written to make XSS injection virtually impossible (where the vast majority of programmers write code that is full of XSS vulnerabilities, without even knowing what they are).
+ [/list]
+ [*] Composr's framework is of professional quality, managed by a single company that keeps every aspect of it to high standards, and compatible with each other. If you opt for frameworks which are incomplete, and end up using addon libraries to achieve additional functionality, you will soon realise, both immediately and after-time, that the lack of central control results in:[list="1"]
+  [*] major compatibility problems;
+  [*] messy feature overlap;
+  [*] inconsistent philosophies for code;
+  [*] inconsistent philosophies for documentation;
+  [*] a large number of agents to contact for different kinds of problem;
+  [*] no central authority for you to agree licensing with, should you need to do so (and this is not unlikely, as many projects flower to unexpected ends);
+  [*] orphaned projects that die
+[/list]
+[/list]
 
 [concepts
  1_key="API"      1_value="Application Programming Interface: functions in libraries (in Composr's case, files under sources/) intended for common use by other code."

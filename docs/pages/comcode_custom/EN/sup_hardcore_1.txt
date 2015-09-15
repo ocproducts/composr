@@ -1,4 +1,6 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Making an addon (part 1)[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Making an addon (part 1)[/title]
+
+A Composr addon is simply a set of new files that together achieve some goal.
 
 At ocProducts we really want to encourage users of Composr to start making addons and releasing them in an Open Source code ecosystem. In order to get the ball rolling we've done a number of things:
  - Made a powerful framework for customising Composr and releasing addons
@@ -8,19 +10,19 @@ At ocProducts we really want to encourage users of Composr to start making addon
  - Assisted, answering technical questions
  - Provided a distribution system
  - Made Composr Open Source
-However, at the end of the day addon-making is in the hands of users -- whilst we can empower, we cannot write all the actual addons ourselves unless we're paid to do so. Therefore users who need addons need to 'carry the torch', promoting and being active in the Composr community. The more everyone puts in, the more everyone gets out -- our users together are stronger than we are.
+However, at the end of the day addon-making is in the hands of users -- whilst we can empower, we cannot write all the actual addons ourselves unless we can cover our costs. Therefore users who need addons need to 'carry the torch', promoting and being active in the Composr community. The more everyone puts in, the more everyone gets out -- Composr users together are stronger than ocProducts is.
 
 The 'Making an addon' series of tutorials are highly technical, intended for those who already know PHP programming and the basics of Composr's modularity. You can always go to web to search and learn it.
-If you have any questions or want to discuss solutions, we've created forums on our website for each tutorial in this series. [b]Please[/b] ask questions there, even if they seem basic.
+If you have any questions or want to discuss solutions, we've created forums on the compo.sr website for each tutorial in this series. [b]Please[/b] ask questions there, even if they seem basic.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Development Environment/Files[/title]
 
 [surround]
-[media width="150" description="Use an environment you're comfortable in" float="left"]data_custom/images/docs/tut_hardcore_1/hardcore_windows.png[/media]
-[media width="150" description="A good editor is essential" float="right"]data_custom/images/docs/tut_hardcore_1/hardcore_editor.png[/media]
-[media width="150" description="Firefox is probably the best browser to develop in, thanks to the great selection of powerful extensions" float="right"]data_custom/images/docs/tut_hardcore_1/hardcore_browser.png[/media]
+[media width="150" description="Use an environment you're comfortable in" float="left"]data_custom/images/docs/sup_hardcore_1/hardcore_windows.png[/media]
+[media width="150" description="A good editor is essential" float="right"]data_custom/images/docs/sup_hardcore_1/hardcore_editor.png[/media]
+[media width="150" description="Firefox is probably the best browser to develop in, thanks to the great selection of powerful extensions" float="right"]data_custom/images/docs/sup_hardcore_1/hardcore_browser.png[/media]
 Personally I develop Composr on my own computer under Windows. I have a PHP webserver setup and I manipulate files directly on my hard disk. I have caching disabled on my Composr install so that I don't have to mess around decaching when I change files directly.
 
 One of the most handy things about developing on the desktop is to be able to quickly run file contents searches in Windows to find out where stuff is done. Unfortunately though, by default Windows will not search inside most non-Microsoft file types unless you do some special set up. Here is a [url="guide to what to do"]http://www.howtogeek.com/99406/how-to-search-for-text-inside-of-any-file-using-windows-search/[/url] to fix this -- use the technique for the ".php", ".css" and ".tpl" file types.
@@ -32,7 +34,7 @@ Composr might seem a bit daunting with its (approximately) 4,000 files, but reme
 
 [title="2"]Making a counter block[/title]
 
-[media width="150" description="A very simple countdown block -- but it'd be easy to style it and put it to work on useful tasks!" float="right"]data_custom/images/docs/tut_hardcore_1/hardcore_count.png[/media]
+[media width="150" description="A very simple countdown block -- but it'd be easy to style it and put it to work on useful tasks!" float="right"]data_custom/images/docs/sup_hardcore_1/hardcore_count.png[/media]
 We're going to be making a new Composr block that does 'counting down' or 'counting up' to a date/time given as a parameter to that block. Knowledge of PHP basics is required.
 
 Since we are going to make a block, we'll quickly go over the fundamentals of what blocks do in Composr.
@@ -44,8 +46,8 @@ Blocks are fully self-contained units. Blocks have no limit in the amount of cod
 [/list]
 
 We will create a mini-block for this example, as follows:
-[tt]Block name:[/tt] [tt]main_counter[/tt] (the PHP file will be [tt]sources_custom/miniblocks/main_counter.php[/tt])
-[tt]Coding method:[/tt] A simple mini-block (without using template or language file).
+[b]Block name:[/b] [tt]main_counter[/tt] (the PHP file will be [tt]sources_custom/miniblocks/main_counter.php[/tt])
+[b]Coding method:[/b] A simple mini-block (without using template or language file).
 
 [code="PHP"]
 <?php
@@ -97,9 +99,12 @@ Make a block that acts as a good old-style hit counter. To do this you'll probab
 [title="3"]Exercise-2: Post requestor[/title]
 
 Make a block that detects if the current logged in member has ever posted on the forum. If they have, don't do any output, but if they haven't output a suggestion that they make a post.
-You might go about this in one of two ways:
- - Writing it by checking post count, which can be read via the Composr forum driver system ([tt]$count=$GLOBALS['FORUM_DRIVER']->get_post_count(get_member());[/tt]
- - Assuming a forum type, such as Conversr, and querying the database ([tt]$count=$GLOBALS['FORUM_DB']->query_select_value('<post table name>','COUNT(*)',array('<poster field id>'=>get_member()));[/tt])
+You might go about this in one of two ways:[list]
+[*]Writing it by checking post count, which can be read via the Composr forum driver system
+([tt]$count=$GLOBALS['FORUM_DRIVER']->get_post_count(get_member());[/tt])
+[*]Assuming a forum type, such as Conversr, and querying the database
+([tt]$count=$GLOBALS['FORUM_DB']->query_select_value('<post table name>','COUNT(*)',array('<poster field id>'=>get_member()));[/tt])
+[/list]
 
 The second is more adventurous and help you get used to using the database, which is always helpful.
 
@@ -116,12 +121,12 @@ $GLOBALS['SITE_DB']->query('UPDATE cms_whatever_table SET whatever_property=' . 
 [/code]
 The race is on.
 
-1 point will be automatically given to anybody who posts on our forum because you get a point for each forum post anyway ;). Please do use our forum!
+1 point will be automatically given to anybody who posts on the forum because you get a point for each forum post anyway ;). Please do use the forum!
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_hardcore_2"]Making an addon (part 2)[/page]
- - [page="_SEARCH:tut_hardcore_3"]Making an addon (part 3)[/page]
+ - [page="_SEARCH:sup_hardcore_2"]Making an addon (part 2)[/page]
+ - [page="_SEARCH:sup_hardcore_3"]Making an addon (part 3)[/page]
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_framework"]The Composr programming framework[/page]

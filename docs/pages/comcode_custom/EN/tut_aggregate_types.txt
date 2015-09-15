@@ -1,8 +1,10 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Aggregate Content Types[/title]
 
-{!DOC_AGGREGATE_TYPES}
+{!aggregate_types:DOC_AGGREGATE_TYPES}
 
 Aggregate content types are built on top of the [page="_SEARCH:tut_repository"]Composr repository[/page].
+
+This is advanced functionality designed to be set up by experienced developers.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -57,11 +59,11 @@ Here is an example of the definition of two aggregate content types: Course, and
 
 [title="3"]How the XML is applied when adding an instance[/title]
 
-For each resource rule defined within the aggregate type we are creating an instance of...
+For each resource rule (resource element) defined within the aggregate type we are creating an instance of...
 
-A match is first found against the label in the given subpath. If none is found, a new content item will be created under that subpath, with the given label, defaulting from the given template (if a template is supplied).
+A match is first found against the label given in the subpath attribute of the resource element. If none is found, a new content item will be created under that subpath with the given label, defaulting resource options from the resource identified by the template attribute (if a template attribute is supplied).
 
-A label is not a repository filename, but in fact generally what you would expect as human readable. What this actually relates to within Composr varies from content-type-to-content-type, but in most cases it is a Title field or a Name field.
+A label is not a repository filename, but rather it is generally what you would expect as human readable. What this actually relates to within Composr varies from content-type-to-content-type, but in most cases it is a Title field or a Name field.
 
 For example, with:
 [code="XML"]
@@ -75,28 +77,31 @@ Resource rules may contain property rules, access rules, and privilege rules. Pr
 
 [title="3"]More detail on labels[/title]
 
-Composr can look up the label because the repository is able to search against labels, not just filenames. We use labels here because they match what we're trying to build out much more directly -- if we find we can't get a match, we know the minimal of what we need to make (a content item with that label).
+Usually in the repository we would use filenames, but labels are a much more appropriate key when it comes to aggregate content types. We are looking up and creating based upon labels. Fortunately Composr can look up the label because the repository is able to search against labels.
 
 At no point do you reference raw content IDs. The repository does not use them (except within the internal code) and content-buildout naturally uses human-friendly naming.
 
 [title="3"]More detail on subpaths[/title]
 
-If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are making a new folder (a category) for a content type that doesn't have hierarchical categories, or an entry for a content type that does not have categories at all.
+If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are either:
+1) Making an entry for a content type that does not have categories at all.
+2) Making a new folder (a category) for a content type that doesn't have hierarchical categories.
 
-Subpaths are from the content repository, relative to where the content type is stored in it (associated categories and entries are both stored under the same place - e.g. download categories and downloads are both under [tt]/var/downloads[/tt]). The path components are similar to labels, but monikerified (turned into a codename, which will be enforced as unique). You can find what they are by browsing the repository. Or, if it's a case where the content type uses a human readable codename, the subpath is usually the same as the codename (e.g. the name of a zone, or a gallery).
+Subpaths are relative to where the content type is stored in the repository (associated categories and entries are both stored under the same place - e.g. download categories and downloads are both under [tt]/var/downloads[/tt]). The path components are similar to labels, but monikerified (turned into a codename, which will be enforced as unique). You can find what they are by browsing the repository. Or, if it's a case where the content type uses a human readable codename, the subpath is usually the same as the codename (e.g. the name of a zone, or a gallery).
 
 [title="3"]More detail on permissions[/title]
 
 'Access' rules set view permissions, and 'privilege' rules set privileges. '1' grants access, and '0' denies access.
 
-'usergroup' references are to usergroup labels. [tt]*[/tt] is understood specially as a wildcard, meaning to set against all usergroups.
-Instead of a 'usergroup', you can specify a 'member', which is a reference to a member label (i.e. username).
+The 'usergroup' attribute references are to usergroup labels. [tt]*[/tt] is understood specially as a wildcard, meaning to set against all usergroups.
+Instead of a 'usergroup' attribute, you can specify a 'member' attribute, which is a reference to a member label (i.e. username).
 
-The 'preset' values may be any of the following:
+The 'preset' attribute values may be any of the following:
  - read
  - submit
  - unvetted
  - moderate
+'preset's work off the same system as in the Permissions Tree Editor. They are for bulk-setting privileges to common combinations.
 
 [title="3"]More detail on parameters[/title]
 
@@ -110,7 +115,7 @@ Templates allow cloning of resources, so the XML doesn't need to define every ne
 
 [title="2"]Synching[/title]
 
-If a resource rule matches to an existing resource, it won't actually skip over things. It will actually change the properties of the matched resource to that specified. If you do not want this, you need to set [tt]resync="false"[/tt] on either the resource rule, or individual sub-rules.
+If a resource rule matches to an existing resource (i.e. no new resource needs adding), it won't skip over that resource completely when an aggregate content type instance is being added. It will actually change the properties of the matched resource to that specified. If you do not want this, you need to set [tt]resync="false"[/tt] on either the resource rule, or individual sub-rules.
 
 You can actually manually re-sync all instances. This is useful if, for example, you have extended the XML structure with additional categories, and you want to create them out for your existing instances.
 You can re-sync all instances of all aggregate content types, or for just a selection.

@@ -81,6 +81,8 @@ class Module_admin_themewizard
         }
 
         if ($type == 'browse') {
+            breadcrumb_set_parents(array(array('_SELF:adminzone:browse', do_lang_tempcode('MANAGE_THEMES'))));
+
             breadcrumb_set_self(do_lang_tempcode('THEMEWIZARD'));
 
             $this->title = get_screen_title('_THEMEWIZARD', true, array(escape_html(integer_format(1)), escape_html(integer_format(4))));

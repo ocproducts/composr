@@ -12,11 +12,11 @@ These features are known together as the Composr 'feedback system'.
 
 [title="2"]Enabling[/title]
 
-We recognise that many websites owners will not wish to allow users to affect the state of their website: because of this, commenting and rating may be enabled/disabled on a site-wide basis. They are, however, enabled by default. To disable the elements of the feedback, check-boxes are given in the 'User interaction' subsection of the 'Feature options' section of the main Admin Zone Configuration module.
+We recognise that many websites owners will not wish to allow users to affect the state of their website: because of this, commenting and rating may be enabled/disabled on a site-wide basis. They are, however, enabled by default. To disable the elements of the feedback, check-boxes are given in Admin Zone > Setup > Configuration > Feature options > User interaction.
 
 In addition to site-wide control of feedback, feedback may also be enabled/disabled on a content entry level. For a piece of content to support rating, for example, that content must be configured for rating, and Composr must have rating enabled site-wide. Composr is quite smart: if most of the content entries for a content type don't have ratings/comments enabled then the default for new entries will match that.
 
-Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in the 'Feature options' section of the main Admin Zone Configuration module.
+Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in Admin Zone > Setup > Configuration > Feature options > User interaction.
 
 Note that any commenting scenario requires a forum installed. Using the 'No forums or members' forum driver (chosen at installation), or using the in-built forum but with the [tt]cns_forum[/tt] addon not installed, will not work.
 

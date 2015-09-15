@@ -125,7 +125,7 @@ If you do not wish to use both the IOTD and gallery systems on the same website 
 
 [title="2"]Random quotes[/title]
 
-{!quotes:DOC_QUOTES} To access quote administration, go to: Admin Zone > Style section > Edit quotes.
+{!quotes:DOC_QUOTES} To access quote administration, go to: Admin Zone > Style > Edit quotes.
 
 You will find that by default a selection of deep quotes are provided.
 

@@ -55,8 +55,8 @@ Composr can actually handle most things for you if you want to defer control to 
  - Your pages should then show up as normal Composr entry-points in the menu editor
  - Go through the pages in Composr to find any broken links and adjust them so that they work. Composr can't perfectly fix your links for you every-time, but it does do a pretty good job. Read on for more information how link rewriting works.
 
-Composr link alternation works by replacing simple patterns to local relative links. For example, a link "site/mypage.htm" would go to the Composr "site:mypage" entry point. If the [tt]mypage.htm[/tt] file had been correctly copied to [tt]pages/html_custom/EN/[/tt] then Composr would actually load it up as intended.
-A link "mypage.htm" would go to the Composr ":mypage" entry point.
+Composr link alternation works by replacing simple patterns to local relative links. For example, a link [tt]site/mypage.htm[/tt] would go to the Composr [tt]site:mypage[/tt] entry point. If the [tt]mypage.htm[/tt] file had been correctly copied to [tt]pages/html_custom/EN/[/tt] then Composr would actually load it up as intended.
+A link [tt]mypage.htm[/tt] would go to the Composr [tt]:mypage[/tt] entry point.
 
 As Composr can only rewrite the simple links, the process of fixing broken links is often a matter of simplifying them. For example:
  - [tt]http://mybaseurl/mypage.htm[/tt] could not be fixed by Composr, because it is not a local link. Change it to [tt]mypage.htm[/tt].

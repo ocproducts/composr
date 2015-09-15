@@ -88,7 +88,7 @@ This suddenly looks a lot more complicated, but as far as PHP is concerned this 
 
 [title="3"]Using the mini-block[/title]
 
-That's all there is to writing a mini-block, although of course the PHP language is capable of far more than simply repeating something you tell it. Nevertheless, even this little mini-block should come in handy to those who would otherwise run screaming if they saw its contents. By saving it to our [tt]sources_custom/miniblocks[/tt] directory it is already available to our users, who just need to write
+That's all there is to writing a mini-block, although of course the PHP language is capable of far more than simply repeating something you tell it. Nevertheless, even this little mini-block should come in handy to those who would otherwise run screaming if they saw its contents. By saving it to our [tt]sources_custom/miniblocks[/tt] directory it is already available to Composr users, who just need to write
 [code="Comcode"]
 [block]main_openstreetmap[/block]
 [/code]
@@ -403,7 +403,7 @@ CONFIG_GROUP_DESCRIP_MAP_BLOCK=Parameters to control the OpenStreetMap block.
 
 (if the file already exists, add the above to the end of it, omitting the first line)
 
-Save the file and go to Admin Zone > Setup > Configuration, and click on "Block options". There should be a section called "Map block" where you can enter the latitude, longitude, width, height and zoom level of the map.
+Save the file and go to Admin Zone > Setup > Configuration > Block options. There should be a section called "Map block" where you can enter the latitude, longitude, width, height and zoom level of the map.
 
 (As an aside, we could have used block parameters instead of adding new configuration options, which would have actually been much simpler)
 
@@ -641,10 +641,10 @@ Although types are very useful for finding programming mistakes, like most of PH
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_hardcore_1"]Making an addon (part 1)[/page]
+ - [page="_SEARCH:sup_hardcore_1"]Making an addon (part 1)[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
  - [page="_SEARCH:codebook"]Composr Code Book[/page]
- - [page="_SEARCH:tut_hardcore_minimodules"]Writing mini-modules[/page]
+ - [page="_SEARCH:sup_hardcore_minimodules"]Writing mini-modules[/page]
  - [url="PHP website"]http://www.php.net[/url]
 
 {$SET,tutorial_tags,Development,PHP,regular}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,A worked guide to writing new PHP code for Composr.}[block]main_tutorial_rating[/block]

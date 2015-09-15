@@ -50,7 +50,7 @@ It's a choice you have. You can link in both ways, one way, or the other way.
 
 As Wiki+ is (by default) open to posting by any user, you may feel it is necessary to moderate posts: especially as they may detract from the quality of the database. When a member posts, an e-mail is sent to the staff e-mail address: this will help you to moderate posts on the system, as they are made.
 
-It is possible to provide greater open-access to Wiki+, so that anyone may edit all page details and navigation, in the same way that they may do so on a wiki. If you wish to enable the permissions for this (Admin Zone > Security > Privileges, Wiki+ section) then you will likely want to make use of the page history feature to revert unwanted changes, as well as Composr's site-wide tracing and moderation abilities.
+It is possible to provide greater open-access to Wiki+, so that anyone may edit all page details and navigation, in the same way that they may do so on a wiki. If you wish to enable the permissions for this (Admin Zone > Security > Privileges > Wiki+) then you will likely want to make use of the page history feature to revert unwanted changes, as well as Composr's site-wide tracing and moderation abilities.
 
 [title="2"]Expanding images[/title]
 

@@ -38,7 +38,7 @@ We use the popular [url="Stop Forum Spam system"]http://www.stopforumspam.com/[/
 [title="2"]Settings[/title]
 
 [media width="150" description="The settings" float="right"]data_custom/images/docs/tut_antispam/settings.png[/media]
-The settings are located at Admin Zone > Setup > Configuration > Security options, the Spammer detection section.
+The settings are located at Admin Zone > Setup > Configuration > Security options > Spammer detection.
 
 You can configure when spam checks are performed via the "Spammer checking level" option:
  - Every page view (performs RBL checks always, and full check on actions)

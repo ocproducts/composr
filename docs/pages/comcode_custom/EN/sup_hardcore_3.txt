@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Making an addon (part 3)[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Making an addon (part 3)[/title]
 
 Welcome to the third of our series of addon making tutorials. If you haven't yet read the prior tutorials then it's advisable that you do so before reading this one.
 
@@ -6,7 +6,7 @@ Welcome to the third of our series of addon making tutorials. If you haven't yet
 
 [title="2"]Showing an expanded users-online display in Conversr[/title]
 
-[i]A similar feature to this was added to Composr 4, so this example is no longer usable. But it is still a good tool for learning.[/i]
+[i]A similar feature to this was added to ocPortal 4, so this example is no longer usable and has been left to get out of date. But it is still a good tool for learning.[/i]
 
 Today we're going to make a modification to how Conversr shows the online users at the bottom of the forum-view.
 We're going to colour-code each user there against usergroup, and give usergroup colour-keys beneath.
@@ -37,21 +37,21 @@ Knowing how to program, I now have written my code, with my modified files saved
 
 <div class="box guid_{_GUID}">
    <div class="box_inner">
-   	<h4>{!_STATISTICS}</h4>
+      <h4>{!_STATISTICS}</h4>
 
-		<div class="cns_stats_1">
-			<table cellpadding="0" cellspacing="0" class="map_table cns_stats_2">
+      <div class="cns_stats_1">
+         <table cellpadding="0" cellspacing="0" class="map_table cns_stats_2">
             <colgroup span="2">
                <col class="cns_bottom_bar_left_column" />
                <col class="cns_bottom_bar_right_column" />
             </colgroup>
 
-				<tr>
-					<th class="de_th cns_column1 cns_stats_usersonline_1">
-   					<span class="field_name">{!USERS_ONLINE}:</span><br />
-   					<span class="associated_link">[ <a href="{USERS_ONLINE_URL*}">{!DETAILS}</a> ]</span>
-					</th>
-					<td class="cns_stats_usersonline_2">
+            <tr>
+               <th class="de_th cns_column1 cns_stats_usersonline_1">
+                  <span class="field_name">{!USERS_ONLINE}:</span><br />
+                  <span class="associated_link">[ <a href="{USERS_ONLINE_URL*}">{!DETAILS}</a> ]</span>
+               </th>
+               <td class="cns_stats_usersonline_2">
                   {USERS_ONLINE}
 
                   <p>
@@ -59,21 +59,21 @@ Knowing how to program, I now have written my code, with my modified files saved
                      {$SET,doing_first_group,1}
                      {+START,LOOP,GROUPS}{+START,IF,{$NOT,{$GET,doing_first_group}}}, {+END}<a style="color: {GCOLOUR*}" href="{$PAGE_LINK*,_SEARCH:groups:view:{GID}}">{GTITLE*}</a>{$SET,doing_first_group,0}{+END}
                   </p>
-					</td>
-				</tr>
-				<tr>
-					<th class="de_th cns_column1 cns_stats_main_1">
-   					{!FORUM_STATISTICS}:
-					</th>
-					<td class="cns_stats_main_2">
-					{!FORUM_NUM_TOPICS,{NUM_TOPICS*}}, {!FORUM_NUM_POSTS,{NUM_POSTS*}}, {!FORUM_NUM_MEMBERS,{NUM_MEMBERS*}}<br />
-					{!NEWEST_MEMBER,<a href="{NEWEST_MEMBER_PROFILE_URL*}">{NEWEST_MEMBER_USERNAME*}</a>}<br />
-					{BIRTHDAYS}
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
+               </td>
+            </tr>
+            <tr>
+               <th class="de_th cns_column1 cns_stats_main_1">
+                  {!FORUM_STATISTICS}:
+               </th>
+               <td class="cns_stats_main_2">
+               {!FORUM_NUM_TOPICS,{NUM_TOPICS*}}, {!FORUM_NUM_POSTS,{NUM_POSTS*}}, {!FORUM_NUM_MEMBERS,{NUM_MEMBERS*}}<br />
+               {!NEWEST_MEMBER,<a href="{NEWEST_MEMBER_PROFILE_URL*}">{NEWEST_MEMBER_USERNAME*}</a>}<br />
+               {BIRTHDAYS}
+               </td>
+            </tr>
+         </table>
+      </div>
+   </div>
 </div>
 
 <br />
@@ -188,27 +188,27 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
 
             $private_topic_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), null, true, false, false, 'tab__pts')
 
-         $head = do_template('CNS_MEMBER_BAR', array(
-             '_GUID' => 's3kdsadf0p3wsjlcfksdj',
-             'AVATAR' => array_key_exists('avatar', $member_info) ? $member_info['avatar'] : '',
-             'PROFILE_URL' => $profile_url,
-             'USERNAME' => $member_info['username'],
-             'LOGOUT_URL' => build_url(array('page' => 'login', 'type' => 'logout'), get_module_zone('login')),
-             'NUM_POINTS_ADVANCE' => array_key_exists('num_points_advance', $member_info) ? number_format($member_info['num_points_advance']) : do_lang('NA'),
-             'NUM_POINTS' => number_format($member_info['points']),
-             'NUM_POSTS' => number_format($member_info['posts']),
-             'PRIMARY_GROUP' => $member_info['primary_group_name'],
-             'LAST_VISIT_DATE_RAW' => strval($member_info['last_visit_time']),
-             'LAST_VISIT_DATE' => $member_info['last_visit_time_string'],
-             'PRIVATE_TOPIC_URL' => $private_topic_url,
-             'NEW_POSTS_URL' => build_url(array('page' => 'vforums', 'type' => 'browse'), get_module_zone('vforums')),
-             'UNREAD_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unread'), get_module_zone('vforums')),
-             'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered_topics'), get_module_zone('vforums')),
-             'INVOLVED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'involved_topics'), get_module_zone('vforums')),
-             'PT_EXTRA' => $pt_extra,
-             'NEW_TOPICS' => number_format($new_topics),
-             'NEW_POSTS' => number_format($new_posts)
-         ));
+            $head = do_template('CNS_MEMBER_BAR', array(
+                '_GUID' => 's3kdsadf0p3wsjlcfksdj',
+                'AVATAR' => array_key_exists('avatar', $member_info) ? $member_info['avatar'] : '',
+                'PROFILE_URL' => $profile_url,
+                'USERNAME' => $member_info['username'],
+                'LOGOUT_URL' => build_url(array('page' => 'login', 'type' => 'logout'), get_module_zone('login')),
+                'NUM_POINTS_ADVANCE' => array_key_exists('num_points_advance', $member_info) ? number_format($member_info['num_points_advance']) : do_lang('NA'),
+                'NUM_POINTS' => number_format($member_info['points']),
+                'NUM_POSTS' => number_format($member_info['posts']),
+                'PRIMARY_GROUP' => $member_info['primary_group_name'],
+                'LAST_VISIT_DATE_RAW' => strval($member_info['last_visit_time']),
+                'LAST_VISIT_DATE' => $member_info['last_visit_time_string'],
+                'PRIVATE_TOPIC_URL' => $private_topic_url,
+                'NEW_POSTS_URL' => build_url(array('page' => 'vforums', 'type' => 'browse'), get_module_zone('vforums')),
+                'UNREAD_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unread'), get_module_zone('vforums')),
+                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered_topics'), get_module_zone('vforums')),
+                'INVOLVED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'involved_topics'), get_module_zone('vforums')),
+                'PT_EXTRA' => $pt_extra,
+                'NEW_TOPICS' => number_format($new_topics),
+                'NEW_POSTS' => number_format($new_posts)
+            ));
         } else { // Guest
             $_this_url = build_url(array('page' => '_SELF'), '_SELF', null, true);
             $this_url = $_this_url->evaluate();
@@ -299,7 +299,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
 [/code]
 [/box]
 
-[media width="150" description="Our functionality modification in action." float="right"]data_custom/images/docs/tut_hardcore_3/hardcore_online.png[/media]
+[media width="150" description="Our functionality modification in action." float="right"]data_custom/images/docs/sup_hardcore_3/hardcore_online.png[/media]
 As usual I won't explain all the code, but I will mention a few things:
  - The main PHP code doesn't have to do much more than define some colours and pass in a usergroup list. Almost all the code in my file is just code from the original [tt]cns_wrapper[/tt] function
  - I passed a new parameter into [tt]CNS_USER_MEMBER.tpl[/tt] and used that to indicate the colour to display a member link with; however, I wrapped a Tempcode [tt]IF_PASSED[/tt] directive around the use of the parameter because the template is reused and won't always be given a colour in that way
@@ -329,8 +329,8 @@ To claim your prize, post in the Addons forum and 'report post' with the phrase 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_hardcore_1"]Making an addon (part 1)[/page]
- - [page="_SEARCH:tut_hardcore_2"]Making an addon (part 2)[/page]
+ - [page="_SEARCH:sup_hardcore_1"]Making an addon (part 1)[/page]
+ - [page="_SEARCH:sup_hardcore_2"]Making an addon (part 2)[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_framework"]The Composr programming framework[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]

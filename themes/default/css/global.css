@@ -4245,6 +4245,16 @@ a[rel="lightbox"] {
 */
 
 /*{+START,IF,{$CONFIG_OPTION,filetype_icons}}*/
+	/* Higher than media links for lower CSS precedence */
+	a[target="_blank"].user_link { /* Detected external links have styling */
+		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top;
+		padding-right: 10px;
+	}
+	body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
+		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top !important;
+		padding-right: 10px !important;
+	}
+
 	a[href^="mailto:"] {
 		background: url('{$IMG;,icons/16x16/filetypes/email_link}') no-repeat right top !important; /* Important because the URL may contain arbitrary stuff, including ".php", due to embedded mail body */
 		padding: 0 22px 5px 0 !important;
@@ -4310,16 +4320,7 @@ a[rel="lightbox"] {
 		padding: 0 22px 5px 0;
 	}
 
-	a[target="_blank"].user_link { /* Detected external links have styling */
-		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top;
-		padding-right: 10px;
-	}
-	body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
-		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top !important;
-		padding-right: 10px !important;
-	}
-
-	body a.link_exempt, body .link_exempt_wrap a, body a[href*=".php"].user_link, a[rel="lightbox"] { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
+	body a.link_exempt, body .link_exempt_wrap a, body a[href*=".php"]:not(.force_filetype_icon).user_link, a[rel="lightbox"] { /* Turn off the "new window" icon for URLs containing ".php" because usually in Composr these are used for system pages that don't warrant these icons */
 		background-image: none !important;
 		padding: 0px !important;
 	}
@@ -4329,6 +4330,15 @@ a[rel="lightbox"] {
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+		a[target="_blank"].user_link { /* Detected external links have styling */
+			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
+			background-size: 7px 8px;
+		}
+		body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
+			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
+			background-size: 7px 8px;
+		}
+
 		a[href^="mailto:"] {
 			background-image: url('{$IMG;,icons/32x32/filetypes/email_link}');
 			background-size: 16px 16px;
@@ -4392,15 +4402,6 @@ a[rel="lightbox"] {
 		a[href$=".asf"].user_link, a[href$=".ra"].user_link, a[href$=".wma"].user_link, a[href$=".wav"].user_link, a[href$=".mp3"].user_link, a[href$=".ogg"].user_link, a[href$=".mid"].user_link, a[href$=".mov"].user_link, a[href$=".qt"].user_link, a[href$=".wmv"].user_link, a[href$=".ram"].user_link, a[href$=".rm"].user_link, a[href$=".avi"].user_link, a[href$=".mpg"].user_link, a[href$=".mpe"].user_link, a[href$=".mpeg"].user_link, a[href$=".mp4"].user_link, a[href$=".webm"].user_link, body div a.media_link {
 			background-image: url('{$IMG;,icons/32x32/filetypes/page_media}');
 			background-size: 16px 16px;
-		}
-
-		a[target="_blank"].user_link { /* Detected external links have styling */
-			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
-			background-size: 7px 8px;
-		}
-		body div a.external_link { /* Explicitly marked external links must show the styling with precedence */
-			background-image: url('{$IMG;,icons/32x32/filetypes/external_link}');
-			background-size: 7px 8px;
 		}
 	}
 /*{+END}*/

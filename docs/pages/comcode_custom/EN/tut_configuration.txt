@@ -121,7 +121,7 @@ Comcode pages may be selected for editing from the Comcode pages editor in the A
 </table>
 [/html]
 
-[box="Tip" width="25em" float="right"]Using a combination of changing a zones start page, page redirections, and zone/page access permissions, you may change the front page of your site to any of your choosing. For example, you can change the front page to be in-line forums by:
+[box="Switching out the front page" width="25em" float="right"]Using a combination of changing a zones start page, page redirections, and zone/page access permissions, you may change the front page of your site to any of your choosing. For example, you can change the front page to be in-line forums by:
 1) editing the Welcome Zone to use 'forums' as the start page
 2) creating a page redirection from '','forums' to 'site','forums' (because the 'forums' module isn't actually in the Welcome Zone)
 3) changing your 'site' zone access permissions to grant guest access.[/box]
