@@ -6,7 +6,7 @@ Staff can use these features to distinguish themselves from ordinary users, and 
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Staff and the staff page[/title]
+[title="2"]Staff and the staff module[/title]
 
 [media width="150" description="The staff list" float="left"]data_custom/images/docs/tut_staff/staff_list.png[/media]
 [media width="150" description="Viewing a staff member" float="right"]data_custom/images/docs/tut_staff/staff_actual.png[/media]

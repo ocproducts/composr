@@ -1,9 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running advertisements (via the banner system)[/title]
 
-[surround]
 [media width="150" description="A banner" float="right"]data_custom/images/docs/tut_banners/banners_action.png[/media]
 {!banners:DOC_BANNERS}
-[/surround]
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -11,6 +9,8 @@
 
 [surround]
 [media width="150" description="Adding a banner" float="right"]data_custom/images/docs/tut_banners/banners_add.png[/media]
+Manage banners from Content Management > Banners.
+
 There are many options to allow a rich and flexible rotation system. These include:
  - The deployment agreement. A permanent banner can always be shown. A campaign banner is given a finite number of 'clicks', and will not be shown when the clicks have run out (although that number is editable). Default banners can always be shown, but are generally set to only appear when there are no permanent or campaign banners.
  - You may specify a banner type. Types are set up to enforce certain restrictions (image dimensions, and file size) on the banners within that type. It is possible to call up the Composr banner.php with '?b_type=<type>' on the URL, which will force only banners of that type to be shown. Likewise, the 'BANNER' symbols first parameter can be set to <type> (e.g. [tt]{$BANNER,skyscraper}[/tt]). This is useful for a number of things, but perhaps the most significant is that is allows you to distinguish between banners of different sizes, storing each in an effectively separate rotation. You can then edit your templates to reference these different rotations, by pasting in the appropriate HTML (see BANNER.tpl for an unfiltered example -- this is the HTML used for the banner that appears in the top-right by default).
@@ -67,8 +67,8 @@ This code is given out when you add a banner. The 'source' comes from the name o
 
 [title="3"]Who may view what[/title]
 
-[media width="150" description="Configuring the HTML to an external banner/rotation" float="left"]data_custom/images/docs/tut_banners/banners_config.png[/media]
-If you turn on the "Permissions" option (Admin Zone > Setup > Configuration > Feature options, Banners option group), you'll be able to configure which usergroups may view which individual banners. This is useful for banner targeting -- and the flip side of that is you can avoid showing inappropriate banners, e.g. adults banners to minors.
+[media width="150" description="Configuring the HTML to an external banner/rotation" float="right"]data_custom/images/docs/tut_banners/banners_config.png[/media]
+If you turn on the "Permissions" option (Admin Zone > Setup > Configuration > Feature options > Banner options), you'll be able to configure which usergroups may view which individual banners. This is useful for banner targeting -- and the flip side of that is you can avoid showing inappropriate banners, e.g. adults banners to minors.
 
 [title="3"]Who may avoid banners[/title]
 
@@ -78,9 +78,11 @@ Any usergroup with the "Avoid banners" permission will not see banners. Super ad
 
 [surround]
 [media width="150" description="Viewing the status of a banner" float="left"]data_custom/images/docs/tut_banners/banners_view.png[/media]
-There is a facility for staff and banner submitters to view the status of their banner. Information about how much the banner has been viewed and clicked is shown, as well as the equivalent statistics for how the banners associated website (if there is one) has viewed and clicked the banner network.
+There is a facility for staff and banner submitters to view the status of their banner. This is via the banners module ([tt]site:banners[/tt] page-link, About > Banners on the default menus). Information about how much the banner has been viewed and clicked is shown, as well as the equivalent statistics for how the banners associated website (if there is one) has viewed and clicked the banner network.
 
 The details shown may have important statistical significance. For example, a banner that is viewed a lot, but never clicked, may not be a 'profitable' one to have in the rotation (note however, that a simple banner view could impact a visitor, and thus it actually being clicked is not always a measure of the user impact).
+
+Staff may view more details banner statistics from Admin Zone > Audit > Banner statistics.
 [/surround]
 
 [title="2"]Having multiple banner sets[/title]

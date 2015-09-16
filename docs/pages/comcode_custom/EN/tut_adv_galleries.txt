@@ -6,7 +6,7 @@ The Composr gallery system provides a number of advanced features -- this tutori
 
 [title="2"]Importing[/title]
 
-[media width="150" description="The interface to import to a gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_import.png[/media]
+[media width="150" description="The screen to import to a gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_import.png[/media]
 {!galleries:DOC_GALLERY_IMPORT}
 
 If you have a CSV (spreadsheet) file named [tt]uploads/galleries/descriptions.csv[/tt], with the first column containing filenames, and the second column containing descriptions, then this will be checked when bulk importing files.

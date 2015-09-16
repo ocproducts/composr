@@ -175,7 +175,7 @@ Method 2:[list="a"]
 [media width="150" description="Editing a Comcode page" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages_edit.png[/media]
 Once the Comcode page editor is open, you can pretty much just type your page in.
 
-This interface is exactly the same both for adding a new page and editing an existing page.
+This screen is exactly the same both for adding a new page and editing an existing page.
 
 
 [b]If WYSIWYG is on[/b]:

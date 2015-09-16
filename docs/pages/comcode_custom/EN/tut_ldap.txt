@@ -25,7 +25,6 @@ The LDAP standard is more concerned with protocol and structure than the actual 
 
 [title="3"]Active Directory[/title]
 
-[surround]
 [media width="150" description="Adding a user to Active Directory" float="right"]data_custom/images/docs/tut_ldap/ldap_adduser.png[/media]
 Active Directory is a fundamental part of post-NT Windows networking. It resides on the [concept]domain controller[/concept](s) of the network, and is an LDAP based system that includes a lot of information, especially users and usergroups.
 
@@ -33,7 +32,6 @@ As Active Directory is so standard across Windows, Composr has good support for 
 
 The usergroup, 'Administrators' is mapped to the Composr Administrators usergroup.
 The usergroup, 'Users' is mapped to the lowest ranking Composr member usergroup.
-[/surround]
 
 [title="3"]OpenLDAP[/title]
 
@@ -46,13 +44,13 @@ The usergroups, 'root' and 'admin', are mapped to the Composr Administrators use
 [surround]
 [media width="150" description="Synchronising with LDAP (Composr doesn't duplicate LDAP information, but some parameters need to be set and clean-ups undertaken, which this tool assists)" float="right"]data_custom/images/docs/tut_ldap/ldap_sync.png[/media]
 When you use Composr with LDAP, there are some necessary changes to how Composr behaves:
- - Automatic mapping between the standard Composr usergroups and LDAP usergroups will be performed, even when the names do not quite correlate. For example, an administrator in LDAP, will be an administrator in Composr, automatically
- - Unless you allow it, joining on Composr will be disabled, in favour of only allowing new LDAP accounts to be seen. Composr assumes all LDAP account management is done elsewhere, and only employs read-only access to the LDAP data
- - It is necessary to use the LDAP synchronisation module to choose which LDAP usergroups will be featured in Composr. This is done for reasons of cleanliness: often an LDAP database will consist of many cryptic usergroups that would look out-of-place on the portal
- - When an LDAP user logs in for the first time, Composr will ask for some supplementary information them (such as their e-mail address) in order to complete the Composr profile. This is because usually LDAP does not hold this data, but Composr requires it
- - Passwords and user-names of LDAP users cannot be changed
- - LDAP users may not change their usergroup membership from within Composr
- - The 'lost password' feature will not work for LDAP users
+ - Automatic mapping between the standard Composr usergroups and LDAP usergroups will be performed, even when the names do not quite correlate. For example, an administrator in LDAP, will be an administrator in Composr, automatically.
+ - Unless you allow it, joining on Composr will be disabled, in favour of only allowing new LDAP accounts to be seen. Composr assumes all LDAP account management is done elsewhere, and only employs read-only access to the LDAP data.
+ - It is necessary to use the LDAP synchronisation module to choose which LDAP usergroups will be featured in Composr. This is done for reasons of cleanliness: often an LDAP database will consist of many cryptic usergroups that would look out-of-place on the portal. Do this from Admin Zone > Security > LDAP.
+ - When an LDAP user logs in for the first time, Composr will ask for some supplementary information them (such as their e-mail address) in order to complete the Composr profile. This is because usually LDAP does not hold this data, but Composr requires it.
+ - Passwords and user-names of LDAP users cannot be changed.
+ - LDAP users may not change their usergroup membership from within Composr.
+ - The 'lost password' feature will not work for LDAP users.
 [/surround]
 
 [concepts

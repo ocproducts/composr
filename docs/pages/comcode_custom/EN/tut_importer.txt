@@ -63,7 +63,7 @@ Sometimes an importer will list further actions that must be taken after import 
 
 [title="4"]Import sessions[/title]
 
-The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and 'ID remap table' from each import separate. The 'choose your session' interface exists so that if your Composr session is lost, you can still resume a previous import.
+The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and 'ID remap table' from each import separate. The 'choose your session' screen exists so that if your Composr session is lost, you can still resume a previous import.
 
 [title="4"]Features, content and dependencies[/title]
 

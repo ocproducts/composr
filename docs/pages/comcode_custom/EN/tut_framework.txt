@@ -179,6 +179,8 @@ Overridden PHP files may override on a per-function/per-class level. In other wo
 [media width="150" description="A password is obviously needed to use the code editor" float="right"]data_custom/images/docs/tut_framework/framework_code_editor_1.png[/media]
 Composr provides a very simple code editor for editing of existing Composr code files, or creation of new files. The code editor has inbuilt, automated, support for the Composr file override system: editing an original Composr file will save the edited version in the equivalent '_custom' suffixed directory where possible.
 
+Access the code editor from Admin Zone > Tools > Code editor.
+
 The code editor is very useful for making adhoc changes to a live-site, but is not intended as a full development environment.
 [/surround]
 

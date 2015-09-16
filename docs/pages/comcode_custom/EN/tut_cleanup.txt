@@ -22,7 +22,7 @@ If you can identify a situation where you need to rebuild or empty a cache that 
 [title="2"]Optimisers (advanced)[/title]
 
 [surround]
-[media width="150" description="The cleanup tools interface" float="right"]data_custom/images/docs/tut_cleanup/cleanup_1.png[/media]
+[media width="150" description="The cleanup tools screen" float="right"]data_custom/images/docs/tut_cleanup/cleanup_1.png[/media]
 There are a number of optimisers:
  - [b]Correct MySQL schema issues[/b] -- this is intended for programmers-only, you are very unlikely to need it.
  - [b]Optimise/fix database tables[/b] -- this will try and fix some database tables and works with MySQL-only. If the database has become very corrupt, you may need to use a tool such as phpMyAdmin to repair a database from outside Composr.

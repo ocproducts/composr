@@ -42,7 +42,7 @@ To add a post template, just open up the 'Add post template' screen in the Admin
 
 [title="3"]Using a post template[/title]
 
-[media width="150" description="The interface to select post templates for use in a post" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_using_post_template.png[/media]
+[media width="150" description="The screen to select post templates for use in a post" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_using_post_template.png[/media]
 To use a post template, simply submit a new topic or post using the verbose posting form (i.e. not the quick-reply box). On this form, if any post templates are defined for the current forum, a post template drop-down list will appear. Using this list, you can select a post template to use. If a post template has been marked as the default post for the current forum, the post field will already contain that post template.
 [/surround]
 

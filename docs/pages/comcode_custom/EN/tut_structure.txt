@@ -77,7 +77,7 @@ Re-installing or un-installing a module will generally delete all data associate
 If a module has been upgraded (i.e. The on-disk file has been replaced with a newer version), you may upgrade it (to upgrade/create on-disk and on-database data) in 3 ways:
  - Simply use the module, and it will upgrade itself
  - Run the [tt]http://yoursite/upgrader.php[/tt] script, which will upgrade all modules on your site that need it, as well as clearing caches
- - Use the module management interface to upgrade the module
+ - Use the module management screen to upgrade the module
 There is also a concept of a 'hacked' module (a module modified as a part of an unofficial addon): the process of performing any upgrades an on-disk file needs for this is the same as for a conventional module upgrade.
 
 [title="3"]Entry points / Page-links[/title]

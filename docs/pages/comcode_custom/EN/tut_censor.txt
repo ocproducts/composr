@@ -9,6 +9,8 @@ Depending on your site policies (for a good discussion of this, see the [page="_
 [media width="150" description="Working with the word filter" float="right"]data_custom/images/docs/tut_censor/censor_word.png[/media]
 {!wordfilter:DOC_WORDFILTER}
 
+Access the word filter from Admin Zone > Security > Word filter.
+
 The word filter makes no attempt to try and detect when users try to 'cheat it', as this would be a futile struggle: if users abuse the filter, then they are almost certainly knowingly that they are doing so, and thus setting themselves up for punishment.
 
 In addition to the word filter there is a more sophisticated filtering system, the [page="_SEARCH:tut_fields_filter"]The form field filter system[/page].
@@ -61,7 +63,7 @@ There are many methods for banning a Composr user:
 
 [title="2"]The Action Log (audit trails)[/title]
 
-{!submitban:DOC_ACTIONLOG}
+{!actionlog:DOC_ACTIONLOG}
 
 [media width="150" description="Recent actions performed" float="right"]data_custom/images/docs/tut_censor/adminzone_recent_actions.png[/media]
 This section shows the recent actions performed by you and your staff. Virtually every action that is done by your staff is logged here.

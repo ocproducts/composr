@@ -47,7 +47,7 @@ This may hurt your sense for 'completeness', but practically speaking most sites
 
 [title="4"]Language file format (technical overview)[/title]
 
-This section will describe the format used to store [concept]language string[/concept]s in Composr. In theory, learning this is not necessary, as an interface in the Admin Zone is provided that works with this behind-the-scenes; however it is useful to know, especially if you are wishing to work through the language files in a text editor.
+This section will describe the format used to store [concept]language string[/concept]s in Composr. In theory, learning this is not necessary, as a module in the Admin Zone is provided that works with this behind-the-scenes; however it is useful to know, especially if you are wishing to work through the language files in a text editor.
 
 Composr language packs are made up of [tt].ini[/tt] files (the language files), containing mappings between special codes (based on the English) and the actual string as displayed. For example, a common string in the 'global' language file (the one containing common strings used throughout the portal), is coded as:
 [code="INI"]

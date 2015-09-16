@@ -190,7 +190,7 @@ We'll assume we'll continue to use the [tt]main_content_filtering[/tt] block for
 
 [title="3"]Putting into a panel[/title]
 
-If you want to place a filter on the news page, with it shown in a panel only on the news page, you'd put something like this into your panel's Comcode:
+If you want to place a filter on the news module, with it shown in a panel only on the news module, you'd put something like this into your panel's Comcode:
 [code="Comcode"]
 {+START,IF,{$MATCH_KEY_MATCH,site:news}}[block="author~=<author>,date_and_time><date_and_time>,news|news_article|title|meta_keywords|meta_description~=<news>,submitter=<submitter>,average_rating>=<average_rating>" content_type="news" labels="date_and_time=Newer than,news=Containing,submitter=Submitted by,average_rating=Minimum rating" types="date_and_time=days"]main_content_filtering[/block]{+END}
 [/code]

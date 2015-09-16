@@ -53,7 +53,7 @@ There is a dedicated blog posting module in the Content Management zone. It is a
 
 Permissions required for blogs are:
  - Permission to access the [tt]cms[/tt] zone [set in Admin Zone > Security > Permission tree editor]
- - Permissions to access the [tt]cms:cms_blogs[/tt] page (it's on by default) [set in Admin Zone > Security > Permission tree editor]
+ - Permissions to access the [tt]cms:cms_blogs[/tt] module (it's on by default) [set in Admin Zone > Security > Permission tree editor]
  - The 'have personal categories permission' [set in Admin Zone > Security > Global privileges]
  - The 'add mid-level content permission' [set in Admin Zone > Security > Privileges, or in the permission tree editor if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
 

@@ -56,7 +56,7 @@ On clicking this, Composr will generate a message similar to as shown in the scr
 
 [surround]
 [media width="150" description="The backup progress screen, summarising the process until completion" float="left"]data_custom/images/docs/tut_backup/backup_3.png[/media]
-[media width="150" description="The backup interface" float="right"]data_custom/images/docs/tut_backup/backup_2.png[/media]
+[media width="150" description="The backup screen" float="right"]data_custom/images/docs/tut_backup/backup_2.png[/media]
 Depending on the final target size of backup file and the power of your server (more processing power = quicker backup generation, less procession power = slower backup generation), this can take anything from a few seconds to many hours. So, please be patient with the backup generation process. An e-mail will be sent once the backup has finished, and logs will be generated to allow you to track progress.
 
 If your server supports 'gzip' then you will get a [tt].tar.gz[/tt] version of your backup that is a compressed version of your [tt].tar[/tt] backup. It will be created afterwards.

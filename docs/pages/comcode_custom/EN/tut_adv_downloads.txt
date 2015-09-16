@@ -28,7 +28,7 @@ The draw-backs with this method are:
 
 [title="3"]Batch adding from an FTP server[/title]
 
-[media width="150" description="The FTP downloads interface" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_ftp_downloads.png[/media]
+[media width="150" description="The FTP downloads screen" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_ftp_downloads.png[/media]
 Composr includes a feature that allows staff to batch add files that are on an FTP server, into Composr, by FTP URL. This is particularly useful for adding large batches of downloads, where immediately making custom download descriptions available is not necessary.
 The draw-backs with this method are:
  - Attractive descriptions have to be added separately

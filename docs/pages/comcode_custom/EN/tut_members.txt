@@ -50,7 +50,7 @@ If a member has forgotten their password, there is a link to have it reset avail
 [title="3"]Recommendation and Invites[/title]
 
 [media width="150" description="Sending out a recommendation" float="right"]data_custom/images/docs/tut_members/recommend.png[/media]
-The recommendation module ([tt]:recommend[/tt] page-link, is on the default menus) performs two functions:
+The recommendation module ([tt]:recommend[/tt] page-link, About > Recommend site on the default menus) performs two functions:
 1) General recommendation, sending out e-mails from people recommending your website
 2) Invites, if joining is restricted
 
@@ -78,7 +78,7 @@ There is no direct way to request an invitation. Someone must know someone who i
 [media width="150" description="Adding members manually in the Admin Zone" float="right"]data_custom/images/docs/tut_members/members_add.png[/media]
 {!cns:DOC_ADD_MEMBER}
 
-An interface is provided (Admin Zone > Tools > Members > Add member account) to add a new member to the site, with support for detailing the full set of profile options, including ones not available normally during joining, and ones not available for members to set themselves.
+A screen is provided (Admin Zone > Tools > Members > Add member account) to add a new member to the site, with support for detailing the full set of profile options, including ones not available normally during joining, and ones not available for members to set themselves.
 
 The most common situations where it is convenient to pre-join a member are:
  - if you want to add a member to the site before directing them to it, so that you don't have to make them go through the process themselves, or so that you can properly control or quickly set all their details, such as username and usergroup.
@@ -200,7 +200,7 @@ If you don't want the avatar feature (many modern sites prefer to keep just phot
 Our default avatars may not be appropriate for some sites, but you may add or remove them.
 
 This can be done in two ways:
-1) Using the Admin Zone, the theme image editing interface
+1) Using the Admin Zone, the theme image editing screen
 2) Manually managing files, FTP / Hosting File manager
 
 To actual get rid of the existing default avatars you will need to remove the addons that they are bundled with:[list="a"]
@@ -211,7 +211,7 @@ To actual get rid of the existing default avatars you will need to remove the ad
 
 There are two ways to create a new avatars. Avatars are just theme images in Composr, stored in a particular folder. We typically add them to the default theme so that all themes can have them (automatic inheritance).
 
-[title="5"]Using the theme image editing interface (slow, tedious - but no extra tools needed)[/title]
+[title="5"]Using the theme image editing screen (slow, tedious - but no extra tools needed)[/title]
 
 1) Go to Admin Zone > Style > Themes > Edit Theme Images (on the default theme)
 2) Click the "Add Theme Image" button (at the bottom)

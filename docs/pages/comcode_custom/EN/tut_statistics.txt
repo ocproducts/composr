@@ -4,9 +4,9 @@
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]The administration interface[/title]
+[title="2"]The administration module[/title]
 
-The administration interface resides in Admin Zone > Audit > Site statistics.
+The administration module resides in Admin Zone > Audit > Site statistics.
 
 Be aware that hits coming from the web server itself will be filtered from the stats, so if you are running a web server on your own computer you may not see any results if nobody else has used your website yet.
 

@@ -2,22 +2,22 @@
 
 [media width="150" description="The Admin Zone provides a list of tasks, including rotation of featured content" float="right"]data_custom/images/docs/tut_featured/featured_checklist.png[/media]
 There are a number of Composr systems that provide featured content, rather than archives of content, or actively worked-upon content. These systems are:
- - the award system
-  - award holder display
-  - randomisation display
-  - content display
- - image of the day
- - random quotes
- - polls (although these are covered in the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page])
- - community billboard messages (although this is covered in the [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points tutorial[/page])
+ - The award system
+  - Award holder display
+  - Randomisation display
+  - Content display
+ - Image of the day
+ - Random quotes
+ - Polls (although these are covered in the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page])
+ - Community billboard messages (although this is covered in the [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points tutorial[/page])
 
 This is a short tutorial briefly covering these systems, and featured content in general.
 
 Benefits of providing featured content include:
- - giving your site a 'fresh' feeling, and a feeling that it is an active site
- - giving variety to your site, without much effort
- - drawing users in, such that they regularly re-visit to see what new content is featured
- - putting content in a prime position so as to draw attention to it, perhaps as a reward for the content creator, perhaps for its relevancy, or perhaps to recommend it
+ - Giving your site a 'fresh' feeling, and a feeling that it is an active site
+ - Giving variety to your site, without much effort
+ - Drawing users in, such that they regularly re-visit to see what new content is featured
+ - Putting content in a prime position to draw attention to it, perhaps as a reward for the content creator, perhaps for its relevancy, or perhaps to recommend it
 
 The obvious disadvantage of non-randomised featured content is the effort that is taken to maintain it. The Admin Zone provides a tool on your front page to assist with this, but it will only be able to do so if you regularly check it.
 
@@ -39,8 +39,6 @@ You may use the award system with any of the following types of content:
  - Catalogues
  - Catalogue categories
  - Catalogue entries
- - Wiki+ pages
- - Wiki+ posts
  - Comcode pages
  - Downloads
  - Download categories
@@ -54,6 +52,8 @@ You may use the award system with any of the following types of content:
  - Quizzes
  - Usergroups
  - Videos
+ - Wiki+ pages
+ - Wiki+ posts
 
 So, why are are these awards so useful? Well, we find users often come to us wanting to be able to feature different entries of the same thing on their front page. For example, a boating club might have a catalogue filled with different types of yacht, and want to be able to have them shown on the front page.
 
@@ -69,7 +69,7 @@ If you wanted to choose a different yacht to display every week, for example, th
 
 Composr has one award that is pre-created for you as an example: Download Of The Week.
 
-Each award has its own archive, under the [tt]site:awards[/tt] page, which is linked to on the default menus on the website ('Top content (Awards)', under the 'About' menu). The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
+Each award has its own archive, in the awards module ([tt]site:awards[/tt] page-link, About > Top content (Awards) of the default menus). The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
 
 [box="Assigning points"]
 You can configure the awards (when you add or edit the award itself) to carry a number of points. If you do this, the submitter of content given that award will be given some points, and that'll show up on their points profile.
@@ -102,8 +102,9 @@ would show Conversr topic #1 in a block, without running permission checks, and 
 [i]As of Composr version 10, the IOTDs addon is not bundled[/i]
 
 [surround]
+[media width="150" description="Choosing an IOTD" float="right"]data_custom/images/docs/tut_featured/featured_iotd_choose.png[/media]
+[media width="150" description="Adding an IOTD" float="right"]data_custom/images/docs/tut_featured/featured_iotd_add.png[/media]
 [media width="150" description="The IOTD block displays like this" float="right"]data_custom/images/docs/tut_featured/featured_iotd_view.png[/media]
-[media width="150" description="Adding an IOTD" float="left"]data_custom/images/docs/tut_featured/featured_iotd_add.png[/media]
 {!iotds:DOC_IOTDS}
 
 IOTDs are added from:
@@ -112,10 +113,7 @@ Content > Images of the day > Add image of the day
 Often website users are the best source of IOTDs, and if you have granted submit access (configurable in the Permissions Tree Editor), they will be able to submit them into your queue.
 
 The IOTD system does not manage IOTDs for you: you need to change IOTD yourself. To make this easy, we recommend that you keep on top of the IOTDs that users submit, deleting the poor ones, so as to make picking new ones straight-forward.
-[/surround]
 
-[surround]
-[media width="150" description="Choosing an IOTD" float="right"]data_custom/images/docs/tut_featured/featured_iotd_choose.png[/media]
 To pick an IOTD, you select one from those shown on the IOTD queue page (Content > Images of the day > Edit image of the day), editing it so as to 'use it immediately'. Old IOTDs may be browsed from the IOTD archive page, which is linked to from the IOTD block.
 
 You may change 'of the day' to anything of your choosing by editing language strings in the Composr language editor (the 'iotds' language file).

@@ -519,7 +519,7 @@ The 'keep' parameters available are:
  - [tt]keep_currency[/tt] -- set to an ISO currency code to tell Composr which currency you use
  - [tt]keep_country[/tt] -- set to an ISO country code to tell Composr which currency you're in
  - [tt]keep_cat_display_type[/tt] -- set to a number representing the catalogue category display-type to try out (0=entry-tables, 1=lists, 2=matrix)
- - [tt]keep_id_order[/tt] -- use this in conjunction with the admin_cns_groups page to force a usergroup reordering based on the named DB field of your choice
+ - [tt]keep_id_order[/tt] -- use this in conjunction with the [tt]admin_cns_groups[/tt] module to force a usergroup reordering based on the named DB field of your choice
  - [tt]keep_backup_alien[/tt] -- set this to '1' if the backup module should only be backing up non-Composr files (i.e. do a backup of the website, but not the software)
  - [tt]keep_module_dangerous[/tt] -- set this to '1' to allow uninstallation of modules that are locked
  - [tt]keep_preserve_ids[/tt] -- set this to '1' when doing an CMS-merge import, to preserve ID's in the import (and not import duplicated ID's); this is not supported officially

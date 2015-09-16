@@ -41,7 +41,7 @@ There is a major problem with identifying users by IP address, and that is one o
 Composr tracks IP addresses in a number of ways:
  - When a guest makes a post on [concept]Conversr[/concept], the IP address is viewable by putting the mouse over the listed name of the guest poster (where the user-name of a real member usually resides). If you click it, it'll do an investigate-user operation on the IP address
  - For every page view, the IP address of the page viewer is stored. This allows detection of what areas of the site a viewer has visited, and in what order
- - Whenever a submission is made, the IP address is stored. The submitter banning management interface shows these IP addresses in its drop-down list
+ - Whenever a submission is made, the IP address is stored. The submitter banning management screen shows these IP addresses in its drop-down list
 
 [title="2"]Tools[/title]
 

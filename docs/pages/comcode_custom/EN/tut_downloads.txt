@@ -18,6 +18,8 @@ Download categories may have 'representative images'. When you are viewing a lin
 [surround]
 [media width="150" description="Adding a download" float="left"]data_custom/images/docs/tut_downloads/downloads_add.png[/media]
 [media width="150" description="Do-next options are provided after adding a download, as is also the case when managing other Composr content" float="left"]data_custom/images/docs/tut_downloads/downloads_do_next.png[/media]
+Manage downloads from Content Management > Downloads.
+
 When you add a download you have a choice as to whether to specify a URL or to attach a file. There are other options actually, explained in more detail in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads tutorial[/page].
 
 We recommend that you attach a file, as Composr can then manage it without risk of the URL being broken by something outside of the Composr control.
@@ -46,7 +48,7 @@ When you add a download, Composr automatically adds a specially named gallery fo
 [media width="150" description="Viewing a download" float="right"]data_custom/images/docs/tut_downloads/downloads_view.png[/media]
 [media width="150" description="Our download, listed in its category" float="right"]data_custom/images/docs/tut_downloads/downloads_in_subcat.png[/media]
 [media width="150" description="The subcategory (where our download is being stored) is displayed" float="right"]data_custom/images/docs/tut_downloads/downloads_subcat.png[/media]
-Downloads are accessed from the [tt]site:downloads[/tt] page, which is linked to on the default menus on the website ('Downloads', under the 'Content' menu).
+Downloads are accessed from the downloads module ([tt]site:downloads[/tt] page-link, Content > Downloads on the default menus).
 This link will take the user to the Home download category, from which they can browse through the categories until they find a download they want.
 
 We understand how important it is for users to be able to navigate fast around a website, so we have also created a 'view the whole download tree' feature that they may use to jump straight to the category of their choosing; this is not linked in by default, but can be placed on menus by browsing for it in the menu editor's entry-point tree. The data for the tree is downloaded in a very compressed format, making it fast to load.
@@ -78,7 +80,7 @@ In addition, the search module is able to search within the actual downloadable 
 
 [concepts
  1_key="Download"          1_value="An entry in the download system, bound to a local file or a URL"
- 2_key="Do-next manager"   2_value="A standard Composr interface shown after managing content"
+ 2_key="Do-next manager"   2_value="A standard Composr screen shown after managing content"
  3_key="Download licence"  3_value="The licence a download is said to be provided under"
 ]Concepts[/concepts]
 

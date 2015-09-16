@@ -5,6 +5,12 @@
 
 [contents]decimal,lower-alpha[/contents]
 
+[title="2"]Managing quizzes[/title]
+
+Quizzes can be added/edited/deleted from Content Management > Quizzes.
+
+Quiz results can be managed from Admin Zone > Audit > Quizzes.
+
 [title="2"]Types of quiz[/title]
 
 In summary:
@@ -65,15 +71,17 @@ Comcode is supported, so you could include images using code such as:
 
 [title="2"]Time limits[/title]
 
-You can set time limits, and also how frequently quizzes can be reattempted.
+You can set a time limit for a quiz, and also how frequently quizzes can be reattempted.
 
 Note that if you change the time limit while someone is using the quiz then the limit will not properly be reflected for them unless they refresh their browser. Specifically:
  - If the limit is lengthened, JavaScript would not know and give an error too early.
  - If the limit is shortened, JavaScript would not know and give no error when it should have -- but a server-side error would be given when submitting.
 
-[title="2"]Adding to menus[/title]
+[title="2"]Accessing/linking quizzes[/title]
 
-To add your quiz to a menu, use the Sitemap tool within the menu editor. You will find your quiz is available as a link underneath the Site\Quiz module.
+Quizzes may be accessed via the quiz module ([tt]site:quiz[/tt] page-link, Content > Quizzes on the default menus).
+
+If you don't have the default menus you may want to create a menu link direct to your quiz. To add your quiz to a menu, use the Sitemap tool within the menu editor. You will find your quiz is available as a link underneath Site\Quiz.
 
 [title="2"]Scoring[/title]
 
@@ -101,7 +109,7 @@ You can determine the level of security or difficulty on quizzes:
  - Limiting open time range
  - Validation (to hide quizzes that are not yet ready)
 
-[title="2"]Quiz sets[/title]
+[title="2"]Quiz sets (advanced)[/title]
 
 If you prefix quiz names with "Example: " then you can create quiz sets.
 
@@ -112,9 +120,10 @@ Often surveyors will want to create long multi-part questionnaires. You could li
 [title="2"]Exporting to CSV[/title]
 
 You can export quiz results to a CSV file which is very useful for data analysis purposes. In particular, if some test/competition questions need to be manually marked, doing so in spreadsheet software works well.
+
 Many marketing agencies prefer to pick competition winners from raw CSV data, as well as processing the data for further marketing purposes.
 
-[title="2"]Advanced quiz interfaces[/title]
+[title="2"]Advanced quiz interfaces (advanced)[/title]
 
 You may want quizzes that span multiple screens, or take the user in different directions as they answer questions.
 It's not really feasible for us to allow the quiz system to build arbitrarily complex quiz systems. There would be too many assumptions / deviations between different project requirements, and such a system would be too complex to configure. Generally these will therefore require a programmer to construct. We do have a "decision tree" framework in Composr that can aid in building complex multi-screen form systems. It takes out most of the work of building the screens, the forms, the state management, and the UI -- just leaving the programmer to declaratively specify the question structure and bind it to some actualiser code.

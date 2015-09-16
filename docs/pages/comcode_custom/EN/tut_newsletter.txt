@@ -19,7 +19,7 @@ Composr newsletters support a concept of 'interest levels', which you can use to
 
 You may have multiple newsletters in Composr, for each of which members may choose to subscribe with an interest level of their choosing.
 
-[b]The interest levels feature is off-by-default[/b], but even when disabled you may see it mentioned within the administrative interface. This is because if you ever do have it turned on you may accumulate members who chose an interest level, and you may make use of that data even if you no longer request new subscribers to set their interest levels (by disabling them again).
+[b]The interest levels feature is off-by-default[/b], but even when disabled you may see it mentioned within the administrative screens. This is because if you ever do have it turned on you may accumulate members who chose an interest level, and you may make use of that data even if you no longer request new subscribers to set their interest levels (by disabling them again).
 [/surround]
 
 [title="2"]Newsletter signup[/title]
@@ -96,7 +96,7 @@ The easiest way is to go to where members signup, and act on their behalf.
 
 To unsubscribe a member from a newsletter:
 1) Log in with your administrative account, if you haven't already got an admin login open
-2) Go to the newsletter page (the [tt]site:newsletter[/tt] page-link)
+2) Go to the newsletter module ([tt]site:newsletter[/tt] page-link, About > Newsletter on the default menus)
 3) Enter the email address you wish to unsubscribe. Leave all other fields blank.
 4) If you have interest levels enabled: change "Subscription level for <newsletter name>" to "Not subscribed". If you do not have interest levels enabled, untick (uncheck) "Subscribe to <newsletter name>".
 5) Click "Join newsletter/Change settings"

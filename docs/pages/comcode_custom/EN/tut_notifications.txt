@@ -68,6 +68,8 @@ In the Admin Zone you can define what notification types are "locked-down". You 
  - Stop any member from receiving particular notification types
  - Force members to receive particular notifications types
 
+Access this from Admin Zone > Setup > Notification lock-down.
+
 You will see the following columns:
  - Notification title (the column title is actually unlabelled, but this is what it is)
  - "Privileged / Restricted" -- this is Yes or No, and shows the general access for this notification type in Composr (it is non-configurable, shown for informative purposes only)

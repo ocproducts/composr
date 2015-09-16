@@ -51,7 +51,7 @@ Reasons for giving gift points include:
 
 Gift points are not exactly like payment, because it doesn't detract from your own point count to give points, it detracts from your gift point count. Members have a quota of gift points, to allocate as they see fit: if they run out, it simply means that they can't give any more for a while.
 
-Gift points are useless unless spent, so the only advantage to hoarding them is to give a large amount in some kind of special situation being awaited; once given, the gift point receiver has the total added to their actual point count. Obviously members could abuse this, by giving points to each other in some form of reciprocal arrangement ("you pat my back I'll pat yours"): this is why there is an admin interface to monitor all gift transactions for fraud (and selectively reverse transactions). You can reach this interface from the Admin Zone > Audit > Gift-point transactions.
+Gift points are useless unless spent, so the only advantage to hoarding them is to give a large amount in some kind of special situation being awaited; once given, the gift point receiver has the total added to their actual point count. Obviously members could abuse this, by giving points to each other in some form of reciprocal arrangement ("you pat my back I'll pat yours"): this is why there is an admin screen to monitor all gift transactions for fraud (and selectively reverse transactions). You can reach this screen from the Admin Zone > Audit > Gift-point transactions.
 [/surround]
 
 [title="2"]The Point Store[/title]

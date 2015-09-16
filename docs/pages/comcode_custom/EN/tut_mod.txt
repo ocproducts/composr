@@ -39,7 +39,7 @@ Post moderation actions are:
 [/surround]
 
 [surround]
-[media width="150" description="Mass moving posts results in this interface" float="right"]data_custom/images/docs/tut_mod/mod_move_posts.png[/media]
+[media width="150" description="Mass moving posts results in this screen" float="right"]data_custom/images/docs/tut_mod/mod_move_posts.png[/media]
 [media width="150" description="Mass moderation of posts is performed by selecting posts and then choosing an action" float="right"]data_custom/images/docs/tut_mod/mod_posts.png[/media]
 The 'split posts from' feature moves posts out of the current topic and into a new one.
 
