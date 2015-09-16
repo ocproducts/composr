@@ -125,7 +125,7 @@ Of course, if you want people to be able to submit, you probably also want them 
 
 Privileges on the other hand are inherited all the way from the global privileges. You don't need to set them at all if they are set in the global privileges and you haven't set up any overrides. However you would be able to set overrides on the Links catalogue itself, and the particular category you might want to allow/disallow links to be submitted to, should you wish to have more fine-grained control.
 
-Note that privileges are not inherited through category trees, so setting privileges on a parent category will not change privilege to the child categories. If you wanted whole subtrees of categories to have different privileges you'd need to use the batch selection feature in the Permission Tree Editor. It is rare to want to be able to do this though.
+Note that privileges are not inherited through category trees, so setting privileges on a parent category will not change privilege to the child categories. If you wanted whole subtrees of categories to have different privileges you'd need to use the batch selection feature in the Permissions tree editor. It is rare to want to be able to do this though.
 
 Similarly, you do not need view permissiosn on parent categories to view child categories, although it would be hard to find a category if you did not have access to view it's parents.
 [/surround]

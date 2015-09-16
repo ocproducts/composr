@@ -373,7 +373,7 @@ Catalogues holds structured records of data. The system is extremely powerful, a
 
 [title="3"]How do I prevent users from modifying CMS content?[/title]
 
-Often webmasters are surprised that by default users allowed into the CMS zone. This is because the default privileges allow submission of content, but subject to validation -- a good feature on community sites. To deny access to the whole CMS zone use the Permission Tree Editor (under Admin Zone > Security).
+Often webmasters are surprised that by default users allowed into the CMS zone. This is because the default privileges allow submission of content, but subject to validation -- a good feature on community sites. To deny access to the whole CMS zone use the Permissions tree editor (under Admin Zone > Security).
 
 [title="3"]I broke my panel layout. How do I restore it?[/title]
 

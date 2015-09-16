@@ -95,6 +95,7 @@ Composr can also support automatic member joining via LDAP and http-auth. For mo
 In Composr, the term 'profile' is used almost as a synonym for 'account'. Each member has a profile, which stores the settings for their account. There are countless areas in Composr that link to view a member profile, generally where a user-name is displayed in some form of context (for example, as the user who made a shout-box comment).
 
 An alternative way to view a member profile is to select/search using the member directory.
+The directory is provided by the members module ([tt]site:members[/tt] page-link, Social > Member directory on the default menus).
 
 Member profiles contain information on the member, including:
  - Statistics: Posts, Points, last submission time, and most active forum
@@ -250,7 +251,7 @@ Titles are displayed alongside forum posts, in the section that is accessed by '
 
 If members are in a usergroup with the 'Delete own member account' privilege, they may delete themselves. This is provided for those members concerned about privacy or spam, who prefer not to leave old accounts around. You may choose to disallow privileges because often members will quickly return after 'getting over' some 'event' that caused them to 'leave', and cause administrative trouble when they start demanding control over their old content, as well as their old points.
 
-If an account needs deleting due to duplication, there's a merge feature to merge accounts which you may wish to use instead. That feature will reassign content from one account to the other.
+If an account needs deleting due to duplication, there's a merge feature (Admin Zone > Tools > Members > Merge members) to merge accounts which you may wish to use instead. That feature will reassign content from one account to the other.
 
 There is also an admin feature that allows you to delete 'lurkers' (the definition of lurker is up to you, as the feature is quite flexible). You can access this feature from Admin Zone > Tools > Delete Lurkers.
 

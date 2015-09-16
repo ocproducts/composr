@@ -128,7 +128,7 @@ Mini-modules allow:
 We will present 3 examples. To try each out, simply save the code into a [tt]site/pages/minimodules_custom/example_page.php[/tt] file, then call it up via [tt]http://yourbaseurl/site/index.php?page=example_page[/tt].
 As you can see, [tt]site/pages/minimodules_custom/example_page.php[/tt] corresponds to a page called [tt]example_page[/tt], in the [tt]site[/tt] zone.
 
-As mini-modules are just a kind of Composr page, you can control access to them using normal Composr page permissions (i.e. set from Admin Zone > Security > Permission Tree Editor).
+As mini-modules are just a kind of Composr page, you can control access to them using normal Composr page permissions (i.e. set from Admin Zone > Security > Permissions tree editor).
 
 [title="5"]Example 1[/title]
 

@@ -8,36 +8,43 @@
 [contents]decimal,lower-alpha[/contents]
 [/surround]
 
-[title="2"]Gallery structure[/title]
+[title="2"]Gallery structure and settings[/title]
 
 [surround]
-[media width="150" description="Viewing a gallery that has a subgallery" float="right"]data_custom/images/docs/tut_galleries/gallery_subcat.png[/media]
+[media width="150" description="Galleries are structured. Here is a gallery that has a subgallery" float="right"]data_custom/images/docs/tut_galleries/gallery_subcat.png[/media]
+A gallery is a category of the gallery system, and is used to hold images and videos (together, gallery entries). Galleries can also hold audio files which are treated in the same way as videos.
+
 Galleries are organised in a hierarchical (tree) structure. For more information of these tree structures, see the [page="_SEARCH:tut_downloads"]Providing downloads tutorial[/page], as the download system is the perfect clean example of a Composr tree-structured system. The gallery structure is more complex than that of the download structure, and additional information on it is given in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries tutorial[/page].
 
+Galleries are given a name, and a title. The name should be a code-name that can easily be typed in a URL, rather than a cleanly readable name. For example, 'holiday2004' would be a good gallery name for a gallery with title, 'Holiday Pictures, 2004 (Sweden)'.
+
 Galleries may have 'representative images' (rep-images). When a user views a gallery with sub-galleries, the sub-galleries are actually shown with their rep-images, so as to make them look more attractive and give an impression of the contents. Rep-images may be chosen when adding or editing a gallery, or when adding an image to a gallery it can be chosen that that image shall also become the rep-image.
+
+You will find icons to add/edit galleries/images/videos at:
+Content Management > Galleries
+
+You can delete a gallery/image/video from the bottom of its edit form.
 [/surround]
 
-[title="2"]Galleries[/title]
+[title="2"]Viewing galleries[/title]
 
 [surround]
 [media width="150" description="A gallery in multi-page mode" float="right"]data_custom/images/docs/tut_galleries/gallery_not_flow_mode.png[/media]
 [media width="150" description="A gallery in flow mode" float="right"]data_custom/images/docs/tut_galleries/gallery_flow_mode.png[/media]
-A gallery is a category of the gallery system, and is used to hold images and videos (together, gallery entries). Galleries can also hold audio files which are treated in the same way as videos.
-
-Galleries are given a name, and a title. The name should be a code-name that can easily be typed in a URL, rather than a cleanly readable name. For example, 'holiday2004' would be a good gallery name for a gallery with title, 'Holiday Pictures, 2004 (Sweden)'.
-
 There are two display modes for galleries:
  - Flow mode -- this mode allows you to see all the entries in the gallery at the same time as viewing one of the entries. This makes navigation more efficient. Note that there is a limit of 40 media files displayed in the carousel, so flow mode is only a good option for small galleries.
  - Multi-page mode -- this mode provides page browsing features so as to be able to browse through a large numbers of entries.
 
-From the gallery, the user can choose any of the available entries (images or videos), and the chosen entry will be presented to the user on a full wide page.
-[/surround]
+Regardless of display mode, the user can choose any of the available entries (images or videos), and the chosen entry will be presented to the user.
 
-[title="2"]Gallery index[/title]
+Galleries are viewed from the galleries module ([tt]site:galleries[/tt] page-link, Content > Galleries home on the default menus).
+
+[title="3"]Gallery index[/title]
 
 A gallery index is provided that lists all galleries in the system. Galleries that are empty are omitted from this list.
 
 The index is not linked onto the menus by default but may be added via the entry-point finder in the menu editor if you want it.
+[/surround]
 
 [title="2"]Watermarking[/title]
 

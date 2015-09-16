@@ -191,7 +191,7 @@ Composr uses the Sitemap:
  - to generate the Sitemap shown to users on the sitemap page
  - to generate some content selection lists
  - to generate the XML Sitemap provided to search engines
- - to display the structure to you in the Sitemap editor and Permission Tree Editor
+ - to display the structure to you in the Sitemap editor and Permissions tree editor
 
 The Sitemap generally reflects the actual structure of your website, and works roughly on these levels:
 (Root)

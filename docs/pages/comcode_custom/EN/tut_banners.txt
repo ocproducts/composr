@@ -5,7 +5,7 @@
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Managing your own banner rotation[/title]
+[title="2"]Setting up banners[/title]
 
 [surround]
 [media width="150" description="Adding a banner" float="right"]data_custom/images/docs/tut_banners/banners_add.png[/media]
@@ -13,14 +13,16 @@ Manage banners from Content Management > Banners.
 
 There are many options to allow a rich and flexible rotation system. These include:
  - The deployment agreement. A permanent banner can always be shown. A campaign banner is given a finite number of 'clicks', and will not be shown when the clicks have run out (although that number is editable). Default banners can always be shown, but are generally set to only appear when there are no permanent or campaign banners.
- - You may specify a banner type. Types are set up to enforce certain restrictions (image dimensions, and file size) on the banners within that type. It is possible to call up the Composr banner.php with '?b_type=<type>' on the URL, which will force only banners of that type to be shown. Likewise, the 'BANNER' symbols first parameter can be set to <type> (e.g. [tt]{$BANNER,skyscraper}[/tt]). This is useful for a number of things, but perhaps the most significant is that is allows you to distinguish between banners of different sizes, storing each in an effectively separate rotation. You can then edit your templates to reference these different rotations, by pasting in the appropriate HTML (see BANNER.tpl for an unfiltered example -- this is the HTML used for the banner that appears in the top-right by default).
+ - You may specify a banner type. Types are set up to enforce certain restrictions (image dimensions, and file size) on the banners within that type. It is possible to call up the Composr [tt]banner.php[/tt] with [tt]?b_type=<type[/tt] on the URL, which will force only banners of that type to be shown. Likewise, the 'BANNER' symbols first parameter can be set to <type> (e.g. [tt]{$BANNER,skyscraper}[/tt]). This is useful for a number of things, but perhaps the most significant is that is allows you to distinguish between banners of different sizes, storing each in an effectively separate rotation. You can then edit your templates to reference these different rotations, by pasting in the appropriate HTML (see BANNER.tpl for an unfiltered example -- this is the HTML used for the banner that appears in the top-right by default).
  - Banners may be given an expiration date; this is useful in many situations, such as if a banner becomes inappropriate after an advertised event finishes, or if a client has only paid until a certain date.
  - The 'importance modulus' allows you to balance the likelihoods of different banners being shown. It is not a percentage or fraction, but a high number (higher than other banners are given on average) should be given to a banner that is more likely to be shown.
 
-Important note: The campaign banner system allows a hit-balancing system, whereby the site the banner is for may show your network banners itself, and for each click they put into your network, they get an extra click out.
+You can delete a banner from the bottom of its edit form.
 [/surround]
 
-[title="2"]More on balancing banners[/title]
+[title="3"]Balancing banners[/title]
+
+The campaign banner system allows a hit-balancing system, whereby the site the banner is for may show your network banners itself, and for each click they put into your network, they get an extra click out.
 
 All banners are balanced against each other by an attribute known as the 'importance modulus', which is defined for every banner. The banner with the highest importance level is the one most likely to get shown. As new banners are added, importance modulus of banners will be needed to be adjusted higher if they're chance of being shown is required not to go down; this would be at the detriment of the banners you did not adjust the importance levels of.
 
@@ -28,7 +30,7 @@ In other words, the importance modulus is not a chance of a banner being shown, 
 
 The system will show permanent and campaign banners as a 50:50 split. Default banners can appear instead of either though, but only according to their importance level.
 
-[title="2"]Supported file types[/title]
+[title="3"]Supported file types[/title]
 
 The banner system supports 4 different broad categories of file type:
  - images
@@ -38,20 +40,20 @@ The banner system supports 4 different broad categories of file type:
  - pure HTML
  - HTML, with support for embedded PHP code
 
-[title="3"]Text[/title]
+[title="4"]Text[/title]
 
 You can add textual banners, which by default look exactly like Google Text ads. The best thing though is that you can set them to be 'hot text', which means that any Comcode will be scanned for use of the keywords, with matches leading to inline display of the text banners.
 
-[title="3"]Frames[/title]
+[title="4"]Frames[/title]
 
-If you specify a URL to a script (such as the URL to another Composr installation's banner.php) instead of an image, then that script will be loaded in a frame, and is assumed to provide its own rotation inside that space. Because of this, only the script URL is required in place of the image URL, and the actual 'URL' field may be left blank and will be ignored (as the linked rotation provides these itself).
+If you specify a URL to a script (such as the URL to another Composr installation's [tt]banner.php[/tt]) instead of an image, then that script will be loaded in a frame, and is assumed to provide its own rotation inside that space. Because of this, only the script URL is required in place of the image URL, and the actual 'URL' field may be left blank and will be ignored (as the linked rotation provides these itself).
 
 Linking to non-image URLs instead of images is handy in a number of situations, including:
  - if you want to chain banner networks together
  - if you want to link to a textual banner
  - if you want to make a page that displays a randomised banner based on some kind of algorithm (such as choosing randomly from a folder of pictures)
 
-[title="3"]Using a banner network's HTML[/title]
+[title="2"]Using a banner network's HTML (advanced)[/title]
 
 [surround]
 In order to use banners from an existing banner network, you often are asked to incorporate a chunk of HTML into your site. Composr makes this easy for you, as you can add banners consisting of raw HTML (or even PHP code).
@@ -93,7 +95,12 @@ Each of these sets may be called up as a separate rotation, displayed in a diffe
 
 To set up a new rotation, displayed in the layout in a space of your choosing, use the following instructions.
 
-a) Copy this code from the [tt]GLOBAL_HTML_WRAP[/tt] template:
+[list="1"]
+[*]Create a new banner type from Content Management > Banners.
+You will be able to edit the banner type from under here later if you need to.
+You can delete a banner from the bottom of its edit form.
+
+[*] Copy this code from the [tt]GLOBAL_HTML_WRAP[/tt] template:
 [code="HTML"]
    {$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner parameter twice}
    {+START,IF_NON_EMPTY,{$GET,BANNER}}
@@ -101,7 +108,7 @@ a) Copy this code from the [tt]GLOBAL_HTML_WRAP[/tt] template:
    {+END}
 [/code]
 
-b) Change this bit of the above:
+[*] Change this bit of the above:
 [code="Tempcode"]
 {$BANNER}
 [/code]
@@ -111,9 +118,10 @@ to:
 [/code]
 Where 'example' is changed for whatever type string you've used for the banner set you want to show.
 
-c) Change the [tt]global_banner[/tt] CSS class used in the code snippet to a new CSS class of your own choosing (or just pull it out if you don't require any special styling around your banner).
+[*] Change the [tt]global_banner[/tt] CSS class used in the code snippet to a new CSS class of your own choosing (or just pull it out if you don't require any special styling around your banner).
 
-d) Place the code in any template you like (or multiple ones). Obviously you'll need to write it in in such a way as for it to fit well into the layout. This is a standard CSS/XHTML themeing issue.
+[*] Place the code in any template you like (or multiple ones). Obviously you'll need to write it in in such a way as for it to fit well into the layout. This is a standard CSS/XHTML themeing issue.
+[/list]
 
 [title="2"]The Point Store[/title]
 

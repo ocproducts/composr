@@ -34,6 +34,7 @@ Disadvantages to using a multi-site network:
 An introduction to zones is covered in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
 
 You may add new zones, edit zones, delete zones, and move pages between zones from Admin Zone > Structure > Zones.
+You can delete a zone from the bottom of its edit form.
 
 When performing an action that will add, rename or delete a zone, you may need to provide details that tell Composr how it can do this; this is because on the some web hosting configurations, PHP does not have full access to files on the hosting account (lack of suEXEC). These details are the same as you provided when using the Composr quick installer (assuming you used this to install).
 
@@ -102,7 +103,7 @@ You can attach new rank images to usergroups on the usergroup editing screen. Th
 
 [title="2"]Clubs[/title]
 
-The [concept]Conversr[/concept] system provides a clubs feature. Clubs are special usergroups:
+The [concept]Conversr[/concept] system provides a clubs feature (Content Management > Clubs). Clubs are special usergroups:
  - that can not have special permissions (they are not shown in permission editing interfaces)
  - that may be joined and left like ordinary usergroups (via secondary usergroup membership)
  - that come with their own forum (privileges to this are automatically assigned when the club and forum are created and cannot be revoked through the Composr permission editing interfaces)

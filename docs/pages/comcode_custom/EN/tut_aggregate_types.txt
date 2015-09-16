@@ -16,6 +16,8 @@ The administrator, looking to make use of aggregate content types, would follow 
 
 The key feature of aggregate content types of course is that step 2 may be repeated many times, to build out complex structures with great efficiency.
 
+You can delete an aggregate content type from the bottom of its edit form.
+
 [title="2"]XML definition[/title]
 
 Aggregate content types are defined in XML in the [tt]data/xml_config/aggregate_types.xml[/tt] (overridden as [tt]data_custom/xml_config/aggregate_types.xml[/tt]).

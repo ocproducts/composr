@@ -56,7 +56,7 @@ Clicking "Add theme" then brings you to a page that prompts you to type in your 
 
 At this point, Composr will make a set of empty folders for this new theme, and you may begin editing it. You will be prompted to edit this theme's templates, CSS, images, or be taken back to a main page.
 
-It is recommended that at this point you go to the "My profile" link in the site header shown on the main website, then "Edit Profile" and switch over to your new theme, so that you can see changes as you make them.
+It is recommended that at this point you go to edit your account settings and switch over to your new theme, so that you can see changes as you make them.
 
 [title="3"]CSS[/title]
 
@@ -179,6 +179,12 @@ If you are adding a theme image that is only relevant to your new theme, you sho
 
 If you are adding a theme image that potentially could be used by any theme, you should tick "Use for all themes". For example, an image used on one of your menus (you can add such images by adding them with image codes that start [tt]icons/[/tt]).
 
+You can delete a theme image from the bottom of its edit form.
+
+[title="2"]Deleting themes[/title]
+
+You can delete a theme from the bottom of its edit form.
+
 [title="2"]Mobile support[/title]
 
 Composr supports QVGA mobile resolution for all frontend screens, and automated mobile device detection. Mobile mode can also be flipped manually via a footer link.
@@ -204,7 +210,7 @@ On devices like iphones or Android, it still works if mobile mode is not enabled
 8) Remember to test how your e-mails look as well as your screens
 9) The font-size changer assumes you will use em-based (i.e. relative) sizing for all styles. The font sizer works by setting a larger base font size. The default theme sizes almost everything relatively (using 'em'), so a larger base font size has an effect that cascades through everything. If you change styles to 'pt' or 'px' then that is absolute and hence the cascade will be stopped at that point.
 
-For more tips, see [page="forum:topicview:browse:9553"]a walk-through guide[/page] on our forum.
+For more tips, see [page="forum:topicview:browse:9553"]a walk-through guide[/page] on our forum. TODO
 
 [concepts
  1_key="Theme"   1_value="Your theme is the sum of your CSS, images, and templates, which work together to create the style and layout for your site."

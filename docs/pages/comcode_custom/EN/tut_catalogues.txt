@@ -48,10 +48,6 @@ If you later want to add some custom code features for interacting with catalogu
 
 [title="2"]Fields[/title]
 
-[surround]
-[media width="150" description="There are a whole host of options available after catalogue activity" float="right"]data_custom/images/docs/tut_catalogues/catalogues_do_next.png[/media]
-[media width="150" description="Adding an entry to a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_add_entry.png[/media]
-[media width="150" description="Choosing a catalogue to add an entry to" float="right"]data_custom/images/docs/tut_catalogues/catalogues_choose_to_add_to.png[/media]
 A catalogue consists of a number of fields.
 
 You may order the fields, make some invisible, make some optional, and choose which defines ordering.
@@ -61,7 +57,6 @@ The first field in a catalogue is used as the title field for entries in that ca
 You may also specify which fields may be used to search the catalogue (searching is performed with the regular Composr search module).
 
 For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].
-[/surround]
 
 [title="2"]Modes of display[/title]
 
@@ -139,12 +134,40 @@ USA\Alabama|USA\Alaska|USA\Arizona|USA\Arkansas|USA\California|USA\Colorado|USA\
 
 To add a catalogue (among other functions) go to Content Management > Catalogues > Add catalogue.
 
-[title="2"]Editing a catalogue[/title]
+Once a catalogue is added it will get its own icon under Content Management.
+
+[title="2"]Editing/deleting a catalogue[/title]
 
 [media width="150" description="Editing a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_edit.png[/media]
-You can edit a catalogue to change details, add, edit or remove fields.
+You can edit a catalogue to change details, add, edit or remove fields. Access this at:
+Content Management > Catalogues > Edit catalogue, or from under Content Management > [tt]<Catalogue name>[/tt].
 
 You cannot change field data types after you have created them (except between field types that have the same "storage" type) as this would affect the integrity of any data that may have already been entered into them. A workaround is to export to CSV, delete the field, create a new field with the same name and the new type, and reimport the CSV.
+
+You can delete a catalogue from the bottom of its edit form.
+
+[title="2"]Adding/editing/deleting categories.[/title]
+
+[surround]
+[media width="150" description="There are a whole host of options available after catalogue activity" float="right"]data_custom/images/docs/tut_catalogues/catalogues_do_next.png[/media]
+[media width="150" description="Adding an entry to a catalogue" float="right"]data_custom/images/docs/tut_catalogues/catalogues_add_entry.png[/media]
+[media width="150" description="Choosing a catalogue to add an entry to" float="right"]data_custom/images/docs/tut_catalogues/catalogues_choose_to_add_to.png[/media]
+Add or edit categories from:
+Content Management > [tt]<Catalogue name>[/tt].
+
+You can delete a category from the bottom of its edit form.
+
+[title="2"]Adding/editing/deleting entries[/title]
+
+Add or edit entries from:
+Content Management > [tt]<Catalogue name>[/tt]. A form has been built for you automatically.
+
+You can delete an entry from the bottom of its edit form.
+
+[title="2"]Viewing catalogues[/title]
+
+You view catalogues via the catalogues module ([tt]site:catalogues:index:<catalogue-name>[/tt] page-link gets you to a catalogue's index). Individual catalogue links are automatically added under Content on the default menus.
+[/surround]
 
 [title="2"]Permissions[/title]
 

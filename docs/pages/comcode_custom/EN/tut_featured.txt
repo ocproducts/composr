@@ -57,14 +57,20 @@ You may use the award system with any of the following types of content:
 
 So, why are are these awards so useful? Well, we find users often come to us wanting to be able to feature different entries of the same thing on their front page. For example, a boating club might have a catalogue filled with different types of yacht, and want to be able to have them shown on the front page.
 
+You can manage award types from:
+Admin Zone > Setup > Top content (Awards)
+You can delete an award type from the bottom of its edit form.
+
 Keeping this yacht example, I will now explain each of the three ways that the award system may be used.
 
 [title="3"]Display of content assigned as the current holder of an award[/title]
 
-If you wanted to choose a different yacht to display every week, for example, then you can just:
-1) create a catalogue award (Admin Zone > Setup > Top content (Awards) > Add award type)
-2) place the award block on the front page and set it to refer to the award you just made (the Block assistant will help you, accessible from the 'Add block' button on the Comcode page editing screen)
-3) change the 'Yacht of the week' just by editing a yacht's catalogue entry (or when you add an entry, make it 'Yacht of the week' immediately)
+If you wanted to choose a different yacht to display every week, for example, then you can just:[list="1"]
+[*] create a catalogue award (Admin Zone > Setup > Top content (Awards) > Add award type)
+[*] place the award block on the front page and set it to refer to the award you just made
+(the Block assistant will help you, accessible from the 'Add block' button on the Comcode page editing screen)
+[*] change the 'Yacht of the week' just by editing a yacht's catalogue entry (or when you add an entry, make it 'Yacht of the week' immediately)
+[/list]
 (screenshots for these 3 steps are shown in the parent section above)
 
 Composr has one award that is pre-created for you as an example: Download Of The Week.
@@ -115,6 +121,8 @@ Often website users are the best source of IOTDs, and if you have granted submit
 The IOTD system does not manage IOTDs for you: you need to change IOTD yourself. To make this easy, we recommend that you keep on top of the IOTDs that users submit, deleting the poor ones, so as to make picking new ones straight-forward.
 
 To pick an IOTD, you select one from those shown on the IOTD queue page (Content > Images of the day > Edit image of the day), editing it so as to 'use it immediately'. Old IOTDs may be browsed from the IOTD archive page, which is linked to from the IOTD block.
+
+You can delete an IOTD from the bottom of its edit form.
 
 You may change 'of the day' to anything of your choosing by editing language strings in the Composr language editor (the 'iotds' language file).
 

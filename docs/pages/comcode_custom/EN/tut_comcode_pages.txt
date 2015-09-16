@@ -191,6 +191,10 @@ You'll pretty much type plain-text, with small diversions to indicate special fo
 
 It is beyond the scope of this tutorial to explain Comcode: see the [page="_SEARCH:tut_comcode"]Comcode and the attachment system tutorial[/page] for this.
 [/indent]
+
+[title="2"]Deleting pages[/title]
+
+You can delete a Comcode page from the bottom of its edit form.
 [/surround]
 
 [title="2"]Page templates[/title]

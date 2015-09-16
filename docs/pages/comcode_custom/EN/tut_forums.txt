@@ -31,6 +31,11 @@ The sub-forum system exists so that forums may be organised such that subjects a
 
 {!cns:DOC_FORUM_CATEGORIES}
 
+Add or edit forums and forum groupings from:
+Admin Zone > Structure > Forums
+
+You can delete a forum or forum grouping from the bottom of its edit form.
+
 [title="2"]Topics in a forum[/title]
 
 Within a forum, there are a number of to modify a topic, to change their behaviour:
@@ -45,7 +50,7 @@ Topics may be moved between forums by moderators.
 [title="2"]Strategies for organising your forums[/title]
 
 [surround]
-[media width="150" description="A home forum" float="left"]data_custom/images/docs/tut_forums/forums_view.png[/media]
+[media width="150" description="The home forum (i.e. root forum)" float="left"]data_custom/images/docs/tut_forums/forums_view.png[/media]
 [media width="150" description="A sub-forum of the home forum" float="right"]data_custom/images/docs/tut_forums/forums_view_2.png[/media]
 When you design your discussion forums, you need to decide what forums you will create, and how to organise them. A very common mistake is to create far too many forums, which has the effect of diluting your community, and making it feel dead: which in return often terminally reduces member activity. If a month after creating a forum, you expect it to have less than ten topics, then you probably should not be making it: remember: you can always add new forums later, and mass move topics into them. Conversely, it would be a mistake to create too few forums, leading to a situation where it is difficult to locate topics.
 

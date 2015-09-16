@@ -11,40 +11,60 @@ This tutorial will describe the Wiki+ system, which is Composr's equivalent to a
 
 [title="2"]Pages and posts[/title]
 
-[media width="150" description="Making a Wiki+ post" float="right"]data_custom/images/docs/tut_wiki/wiki_post.png[/media]
+[surround]
+[media width="150" description="Editing the Wiki+ tree" float="right"]data_custom/images/docs/tut_wiki/wiki_tree_edit.png[/media]
 Wiki+ consists of a pages which may include a page description and any number of posts. If there are no posts, or if the page has been configured to hide them (the per-page "Hide posts" option), then the pages appear much like those on a wiki; otherwise it functions more like a forum.
 
 Pages may also contain a list of pages that are 'underneath' the page; however, a page can be underneath any number of pages, as the Wiki+ hierarchy is loosely defined (technically it is a node based network rather than a real tree structure). When pages are accessed from different paths, the path to the page as it has been accessed is displayed, so that back-tracking is easier, and that the user does not get confused by the path suddenly changing when they enter a 'child' page.
+
 If you do not choose to develop a tree structure then Wiki+ navigation will be much like the navigation of a wiki- Comcode has special wiki-like support for making quick links between Wiki+ pages just by writing [tt][[pagename]][/tt].
 
 This simple structure of posts, pages, and children, is Wiki+'s core. There are of course peripheral features, such as:
  - Giving pages some 'page text', which sits above the posts on that page; this text is staff decided, and thus provides an authoritative space.
  - Jumping to a random page.
  - Seeing a list of recent changes to the database.
- - Moving posts.[media width="150" description="Editing the Wiki+ tree" float="right"]data_custom/images/docs/tut_wiki/wiki_tree_edit.png[/media]
+ - Moving posts.
  - Merging posts.
  - Viewing the tree structure of the whole database (transferred in a compressed format, and reduced so as only to show a single path to any page).
  - Search
  - Editing posts
 
 This simplicity is key to the flexibility of the system- it is a system of control built around organised text, and how that text is used and structured is completely up to the website staff.
+[/surround]
 
-[title="3"]Posting on the front page[/title]
-
-Members need the "Place content in a featured position" privilege to post on the front page of Wiki+.
-
-[title="2"]Maintenance[/title]
+[title="2"]Maintenance of the structure[/title]
 
 The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an adhoc basis, by either:
-1) referencing them in the child-list for a page (available under the 'Edit Tree' button),
+1) referencing them in the child-list for a page,
 2) or by referencing them via the special Comcode syntax ([tt][[pagename]][/tt]).
+
+There is an obvious 'Edit tree' button to edit the tree structure visible when you're on a Wiki+ page. You can create child pages just by listing the titles you want. When you've saved the child structure you can then see that reflected.
+
+When on a page you can then easily edit that page from the obvious button. You can delete a page from the bottom of its edit form. 
+
 The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ hierarchy.
+
 In a typical setup, staff are given access to modify the Wiki+ tree, while ordinary users rely on the Comcode syntax to create new inline links. Whether ordinary users are given access to add new pages can vary substantially between deployments, depending heavily on what role Wiki+ is being used for.
 
 [title="3"]Orphaned pages[/title]
 
 Orphaned pages should not be perceived as a bad thing. It's fine to have pages not linked into the tree structure, if you're linking to them in the typical wiki-code style syntax ([[page name]]). Comcode has subsumed that part of wiki-code.
 It's a choice you have. You can link in both ways, one way, or the other way.
+
+[title="3"]Making, editing, and deleting posts[/title]
+
+[surround]
+[media width="150" description="Making a Wiki+ post" float="right"]data_custom/images/docs/tut_wiki/wiki_post.png[/media]
+You will see a very obvious button to make posts when you're on a Wiki+ page (at the bottom of the page).
+
+You will see a very obvious button to edit a post underneath that post.
+
+You can delete a post from the bottom of its edit form.
+
+[title="4"]Posting on the front page[/title]
+
+Members need the "Place content in a featured position" privilege to post on the front page of Wiki+.
+[/surround]
 
 [title="2"]Moderation[/title]
 

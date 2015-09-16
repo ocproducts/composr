@@ -46,35 +46,43 @@ The block sets only for a single newsletter, and does not support interest level
 
 [title="2"]Sending newsletters[/title]
 
-Newsletters are created using Comcode, and sent out in a dual format: both text and HTML. Most users will be able to read the HTML variant, as this is now by far the standard for common e-mail messages; however if they have this disabled, or an unusual e-mail client that cannot read HTML mails, then they will see the plain text version, which is your original Comcode.
+Newsletters are written in [page="_SEARCH:tut_comcode"]Comcode[/page] and can be edited using the [page="_SEARCH:tut_wysiwyg"]WYSIWYG editor[/page].
 
-[box="Be wary of WYSIWYG" width="25em" float="right"]
-You can use the WYSIWYG editor for making newsletters if you wish, but it is not advisable because plain-text readers will get some really ugly plain-text from it. If you make the newsletter using manual Comcode, the plain-text readers will see the Comcode, which is intrinsically easy to read.
-[/box]
 When you send a newsletter you choose where to send it. Usergroups/newsletters with no members (to be precise, no members that can receive emails) will not be shown as options.
 
-In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL_WRAP[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
+In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
 
-On the 'compose newsletter' screen there is a link to view newsletter subscribers. This will show all newsletter subscribers at all interest levels.
-
-When composing your newsletter you will be given a choice to send it out at a scheduled time. This is particularly useful for companies that need to coordinate a marketing plan.
+When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the Composr scheduler enabled[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
 
 Before your newsletter is sent, you have an opportunity to preview it, so you can ensure it is correct. Look at your preview carefully, as it is easy to make minor typographical or layout mistakes that would affect the professionalism portrayed in these bulk e-mails. You will also be e-mailed the newsletter during the preview stage so that you can perform the ultimate check.
 
-If you have [page="_SEARCH:tut_configuration"]CRON enabled[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
+If you have [page="_SEARCH:tut_configuration"]the Composr scheduler enabled[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
+
+[title="3"]Dual format e-mails[/title]
+
+[box="Be wary of WYSIWYG" width="25em" float="right"]
+You can use the WYSIWYG editor for making newsletters if you wish, but it is not advisable if "Support plain-text e-mails" is enabled, because plain-text readers will get some really ugly plain-text from it. If you make the newsletter using manual Comcode, the plain-text readers will see the Comcode, which is intrinsically easy to read.
+[/box]
+If the "Support plain-text e-mails" option is enabled (it's not by default) then newsletters are sent out in a dual format: both text and HTML. Most users will be able to read the HTML variant, as this is now by far the standard for common e-mail messages; however if they have this disabled, or an unusual e-mail client that cannot read HTML mails, then they will see the plain text version, which is your original Comcode.
 
 [title="2"]Sent newsletters[/title]
 
-There is a newsletter archive available, so that you may browse through past newsletters, to make sure you present a consistent image, and generally keep track of what has been sent out in bulk for professional reasons.
+There is a newsletter archive available (from under Admin Zone > Tools > Newsletter > Newsletter archive), so that you may browse through past newsletters, to make sure you present a consistent image, and generally keep track of what has been sent out in bulk for professional reasons.
 
 [title="2"]Automatic issues[/title]
 
 [media width="150" description="Sending an automatic issue" float="right"]data_custom/images/docs/tut_newsletter/newsletter_new.png[/media]
 {!newsletter:DOC_WHATSNEW}
 
-In a similar vein, you may create newsletters from news. To do this, just visit the view page for the news that you wish to use and click the appropriate link. You will then be given the choice to refine the newsletter before it is sent.
+Access this functionality from:
+Admin Zone > Tools > Newsletter > Manage automatic issues
+You will find you can add/edit/delete automatic issues from here.
 
-For each content type supported, it shows only if there are less than 300 items that would be covered. If there are 300 or more, then it considers the content type too common to include and no items are shown.
+For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" option). If there are 300 or more, then it considers the content type too common to include and no items are shown.
+
+[title="2"]Creating from news[/title]
+
+In a similar vein to automatic issues, you may create newsletters from news. To do this, just visit the view page for the news that you wish to use and click the appropriate link. You will then be given the choice to refine the newsletter before it is sent.
 
 [title="2"]Customised targeting[/title]
 
@@ -89,6 +97,8 @@ This can be used in many ways, such as:
 You can also import from a CSV file. Composr is quite flexible in supporting different layouts-- it will try and auto-sense things.
 
 Note that if you are using interest levels, each set of users with a different interest level should be stored in a different CSV file, as when you import them they would all be imported to the same one.
+
+All these features are available under Admin Zone > Tools > Newsletter.
 
 [title="2"]Manually unsubscribing a member[/title]
 
@@ -150,6 +160,8 @@ It is saying "if the forename is available, use the forename, if the forename is
 [title="2"]Bounce filtering[/title]
 
 There is a feature for removing newsletter subscribers that bounce e-mails (i.e. dead e-mail accounts). This stops noise coming back when you send out a newsletter, and increases the efficiency of future sends.
+
+Access this from under Admin Zone > Tools > Newsletter > Bounce filter.
 
 The removal process also removes the "allow staff e-mails" setting from members who have a matching e-mail address.
 

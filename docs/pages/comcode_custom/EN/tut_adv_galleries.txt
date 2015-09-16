@@ -14,6 +14,21 @@ Also, EXIF data (in JPEG and TIFF files) will be checked for descriptions.
 
 The orphaned files importer will auto-select any orphaned files that are put in a directory of the same name as the gallery you are importing. This is useful if you have been organising your gallery images/videos into a directory structure before-hand, as it stops you having to manually re-select what-goes-where when you do the import. Note that the gallery structure is only one-level-deep, there is no support for subdirectory nesting; however, that is not required anyway as gallery names must be unique and thus there is no potential for directory name conflict.
 
+[title="3"]EXIF[/title]
+
+On gallery import, e.g. when you import from a ZIP, EXIF data may be gathered.
+
+This process works by matching up custom fields created for images, with the name of EXIF tags:
+http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
+
+For example, see [tt]GainControl[/tt] is an EXIF field. If there was a custom field named [tt]GainControl[/tt] or [tt]Gain Control[/tt], it should copy the EXIF value into that during a gallery import.
+
+Additionally, the EXIF caption is used for the title. i.e. the caption goes into the standard Composr title field, not a custom field.
+
+For non-gallery-import, the user is expected to manually fill in the form.
+
+JavaScript developers may also make use of the fact that the uploader will return EXIF details when it finishes. The JavaScript programmer has to define a [tt]handle_meta_data_receipt[/tt] function and do something with the data.
+
 [title="2"]Exporting[/title]
 
 For members that have permission, gallery contents may be downloaded in a ZIP file archive, from a download link presented at the bottom of a gallery screen.
@@ -91,21 +106,6 @@ The 'low' and 'high' limits are configurable using configuration options, with s
 The tier that a member resides in is based on usergroup permissions with two privileges which may be set for usergroups:
  - has high limit in member galleries
  - has no limit in member galleries
-
-[title="3"]EXIF[/title]
-
-On gallery import, e.g. when you import from a ZIP, EXIF data may be gathered.
-
-This process works by matching up custom fields created for images, with the name of EXIF tags:
-http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
-
-For example, see [tt]GainControl[/tt] is an EXIF field. If there was a custom field named [tt]GainControl[/tt] or [tt]Gain Control[/tt], it should copy the EXIF value into that during a gallery import.
-
-Additionally, the EXIF caption is used for the title. i.e. the caption goes into the standard Composr title field, not a custom field.
-
-For non-gallery-import, the user is expected to manually fill in the form.
-
-JavaScript developers may also make use of the fact that the uploader will return EXIF details when it finishes. The JavaScript programmer has to define a [tt]handle_meta_data_receipt[/tt] function and do something with the data.
 
 [title="3"]Linking directly for a member to add to their own member gallery[/title]
 

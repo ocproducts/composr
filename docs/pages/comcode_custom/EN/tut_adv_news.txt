@@ -4,6 +4,27 @@ This tutorial describes some of the more complex features available for news, in
 
 [contents]decimal,lower-alpha[/contents]
 
+[title="3"]Scheduled news / Manual date selection[/title]
+
+See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the scheduler.
+
+You will see an advance scheduling option once the scheduler is enabled (requires the Composr 'calendar' addon to be installed also).
+
+Scheduling posts work by having the entry initially non-validated, then it will be auto-validated at the chosen time.
+
+[title="3"]Pinging[/title]
+
+'Pinging' (in the context of blogging) refers to an automatic alert feature that some software (including Composr) has. When you write a news post the URL to the news post can automatically be given to one or more ping services (defined in Admin Zone > Setup > Configuration > Feature options). These ping services typically are blog search engines, and the ping action automatically tells the search engine to go and index your new article.
+
+A default service of [tt]http://pingomatic.com/ping/?title={title}&blogurl={url}&rssurl={rss}[/tt] is configured for you. This particular service is a ping relay service which takes your ping and relays it off to many other ping services for you. Most users therefore won't have a reason to add any additional ping services.
+
+The ping descriptors are just normal URLs, except you can put these three little placeholders in them which Composr will use to insert the specifics of any article being pinned:
+ - [tt]{title}[/tt] (which will become the title of the article)
+ - [tt]{url}[/tt] (which will become the URL of the article)
+ - [tt]{rss}[/tt] (which will become the URL to your news RSS feed)
+
+Pinging will only happen for news categories which may be accessed by guests.
+
 [title="2"]Personal Categories / Blogs[/title]
 
 [surround]
@@ -12,12 +33,20 @@ This tutorial describes some of the more complex features available for news, in
 [media width="150" description="A blog being started by adding news to a category that will automatically be created" float="right"]data_custom/images/docs/tut_adv_news/adv_news_blog.png[/media]
 Composr has advanced support for blogging: members in permitted usergroups may have their own personal news categories, otherwise known as 'blogs' (short for 'web logs').
 
-To create a 'blog', a member only needs to choose to add news, and select their own personal category; if the category does not yet exist, it will be displayed as 'new', and created automatically upon submission. The news will display on the front page of the website (by default), and the blog for the member may be viewed from the links given in their member profile.
+A member's blog is displayed in a tab on their member profile (Conversr-only). Depending on how you set up your news block on your main site, they may or may not display in it also.
 
-There is a blogs CMS module separate to the news CMS module. This is provided for two reasons:
+To create a 'blog', a member only needs to choose to add news, and select their own personal category; if the category does not yet exist, it will be displayed as 'new', and created automatically upon submission.
+
+There is also a blogs CMS module separate to the news CMS module, under Content Management > Blogs. It is a stripped down version of the main news posting module, designed to make blog posting simpler. This is provided for two reasons:
 1) as a niceity so that you don't need to explain 'blogs are news' to your users
 2) so you can lock down access, so that members may submit to blogs but not website news
 The presence of the blogs CMS module does not stop you using the regular news CMS module to submit blog posts.
+
+Permissions required for blogs are:
+ - Permission to access the [tt]cms[/tt] zone [set in Admin Zone > Security > Permissions tree editor]
+ - Permissions to access the [tt]cms:cms_blogs[/tt] module (it's on by default) [set in Admin Zone > Security > Permissions tree editor]
+ - The 'have personal categories permission' [set in Admin Zone > Security > Global privileges]
+ - The 'add mid-level content permission' [set in Admin Zone > Security > Privileges, or in the Permissions tree editor if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
 [/surround]
 
 [title="2"]Advanced filtering of the news archive[/title]

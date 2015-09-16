@@ -803,7 +803,7 @@ View permissions are checked using the [tt]has_category_access[/tt] function, or
 It is very easy to reference existing permissions from your code. Just use the [tt]has_privilege[/tt], [tt]has_actual_page_access[/tt], and [tt]has_category_access[/tt] functions. Note that it is important to use the [tt]has_actual_page_access[/tt] function if you're accessing resources belonging to a page-module if you aren't running at page-module code itself at the time (e.g. the RSS feed for the page-module). You actually don't need to call 'has_actual_page_access' from page-module code itself because Composr checks this for you.
 
 The [tt]has_privilege[/tt] function supports checking full overrides as well as just basic global settings. To do full override checks you can give parameters to specify what page-module you consider your resources to belong to, as well as permission-module and category ID's.
-If you are going to do override checks though, make sure that your page-modules define what they can override so that the Composr Permission Tree Editor knows what to make editable. For examples of how to do this, see [tt]cms/pages/modules/cms_downloads.php[/tt] and [tt]site/pages/modules/downloads.php[/tt].
+If you are going to do override checks though, make sure that your page-modules define what they can override so that the Composr Permissions tree editor knows what to make editable. For examples of how to do this, see [tt]cms/pages/modules/cms_downloads.php[/tt] and [tt]site/pages/modules/downloads.php[/tt].
 
 [title="4"]Adding a new privilege[/title]
 

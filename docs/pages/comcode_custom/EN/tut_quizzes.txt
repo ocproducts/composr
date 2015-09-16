@@ -8,6 +8,7 @@
 [title="2"]Managing quizzes[/title]
 
 Quizzes can be added/edited/deleted from Content Management > Quizzes.
+You can delete a quiz from the bottom of its edit form.
 
 Quiz results can be managed from Admin Zone > Audit > Quizzes.
 

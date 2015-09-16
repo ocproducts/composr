@@ -14,61 +14,46 @@ When you first install your website, you may notice that there are no news posts
 
 From the front page, you'll notice the news block (assuming you didn't disable it in the Setup Wizard). At the bottom of that block is a link: 'Add News'. This link is only visible to members with sufficient permission to add news.
 
-This screen is a standard form in Composr, and the red fields indicate required fields.
+You can manage news from Content Management > News. You'll find an add icon under here.
 
+The add icon brings up the add screen, which is a standard form in Composr. It contains these fields:
  - [b]Title[/b]: this is the title (headline) that your news post will have
- - [b]Main category[/b]: This is the primary category that your news announcement will be listed in; it is special when compared to secondary categories as access to the primary news category is required for anyone to see or read the article
+ - [b]Main category[/b]: This is the primary category that your news post will be listed in; it is special when compared to secondary categories as access to the primary news category is required for anyone to see or read the article
  - [b]Secondary category[/b]: In this space, you may choose additional categories for this post to be listed in. (hold ctrl to select more than one)
  - [b]Source[/b]: the primary source/author of this source. It may be you
- - [b]Allow rating[/b]: With this option ticked, your members will be able to rate your news announcement on a scale of 1/10
- - [b]Allow comments[/b]: With this option ticked, your members will be able to leave comments at the end of your news announcement
- - [b]Allow trackbacks[/b]: With this option ticked, your members will have to ability to [[trackback]] this announcement
+ - [b]Allow rating[/b]: With this option ticked, your members will be able to rate your news
+ - [b]Allow comments[/b]: With this option ticked, your members will be able to leave comments at the end of your news post
+ - [b]Allow trackbacks[/b]: With this option ticked, your members will have to ability to [[trackback]] this post
  - [b]Notes[/b]: This is additional information that the staff will be able to see when they are validating this post
- - [b]Validated[/b]: Tick this and this announcement will be visible and posted after you click 'add news'. If you leave this unticked, it will remain in a validation queue until it is either validated or deleted by the staff
- - [b]News article[/b]: In this space, you can write your news announcement in detail, with options to include formatting and/or emoticons
- - [b]News summary[/b]: this is a brief summary (1 or 2 paragraphs) of your news announcement. If your announcement is less than 2 paragraphs or so, you may choose to not write a summary at all (in which case Composr is smart enough to use the actual article in place of a summary)
+ - [b]Validated[/b]: Tick this and this post will be visible and posted after you click 'add news'. If you leave this unticked, it will remain in a validation queue until it is either validated or deleted by the staff
+ - [b]News article[/b]: In this space, you can write your news post in detail, with options to include formatting and/or emoticons
+ - [b]News summary[/b]: this is a brief summary (1 or 2 paragraphs) of your news post. If your post is less than 2 paragraphs or so, you may choose to not write a summary at all (in which case Composr is smart enough to use the actual article in place of a summary)
  - [b]Attachments[/b]: At the bottom of the page, you have the ability to add as many attachments to this post from your computer as you like
 
-After being validated by the staff, your news announcement will be visible on the front page unless you choose to schedule for it to be only made visible on a certain date and time. If you chose for it to be in the 'personal category of myname', then it will also be available by clicking the 'Blog' link in your profile.
+After being validated by the staff, your news post will be visible on the front page unless you choose to schedule for it to be only made visible on a certain date and time. If you chose for it to be in the 'personal category of myname', then it will also be available by clicking the 'Blog' link in your profile.
 
-[title="2"]More detail[/title]
+[title="2"]Editing and deleting news[/title]
 
-[title="3"]Permissions[/title]
+You can easily edit a news post from Content Management > News > Edit news.
+Or, from the edit link shown underneath when viewing it.
+
+You can delete a news post from the bottom of its edit form.
+
+[title="2"]Adding, editing and deleting news categories[/title]
+
+News categories are very easy to manage from Content Management > News.
+
+You can delete a news category from the bottom of its edit form.
+
+[title="2"]Viewing news[/title]
+
+News can be accessed via the news module ([tt]site:news[/tt] page-link, Content > News on the default menus).
+
+Typically sites will also make it available via placement of the [tt]main_news[/tt] block on the front page.
+
+[title="2"]Permissions[/title]
 
 News entries may be in multiple news categories, but a user needs access to the primary news category to be able to read the news.
-
-[title="3"]Scheduled news / Manual date selection[/title]
-
-See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the scheduler.
-
-You will see an advance scheduling option once the scheduler is enabled (requires the Composr 'calendar' addon to be installed also).
-
-Scheduling posts work by having the entry initially non-validated, then it will be auto-validated at the chosen time.
-
-[title="3"]Enabling member blogs[/title]
-
-Blog posts are just news posts that exist in a category that is owned by a member. A member's blog is displayed in a tab on their member profile (Conversr-only). Depending on how you set up your news block on your main site, they may or may not display in it.
-
-There is a dedicated blog posting module in the Content Management zone. It is a stripped down version of the main news posting module, designed to make blog posting simpler.
-
-Permissions required for blogs are:
- - Permission to access the [tt]cms[/tt] zone [set in Admin Zone > Security > Permission tree editor]
- - Permissions to access the [tt]cms:cms_blogs[/tt] module (it's on by default) [set in Admin Zone > Security > Permission tree editor]
- - The 'have personal categories permission' [set in Admin Zone > Security > Global privileges]
- - The 'add mid-level content permission' [set in Admin Zone > Security > Privileges, or in the permission tree editor if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
-
-[title="3"]Advanced: Pinging[/title]
-
-'Pinging' (in the context of blogging) refers to an automatic alert feature that some software (including Composr) has. When you write a news post the URL to the news post can automatically be given to one or more ping services (defined in Admin Zone > Setup > Configuration > Feature options). These ping services typically are blog search engines, and the ping action automatically tells the search engine to go and index your new article.
-
-A default service of [tt]http://pingomatic.com/ping/?title={title}&blogurl={url}&rssurl={rss}[/tt] is configured for you. This particular service is a ping relay service which takes your ping and relays it off to many other ping services for you. Most users therefore won't have a reason to add any additional ping services.
-
-The ping descriptors are just normal URLs, except you can put these three little placeholders in them which Composr will use to insert the specifics of any article being pinned:
- - [tt]{title}[/tt] (which will become the title of the article)
- - [tt]{url}[/tt] (which will become the URL of the article)
- - [tt]{rss}[/tt] (which will become the URL to your news RSS feed)
-
-Pinging will only happen for news categories which may be accessed by guests.
 
 [title="2"]Alternative strategies[/title]
 

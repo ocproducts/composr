@@ -33,6 +33,10 @@ Our own forum does not allow poll voting by guests, and hence more serious ratin
 
 There is a 'main_rating' block that you may use to allow any Comcode page to be rated (by placing the block on the page).
 
+[title="3"]Trackbacks[/title]
+
+Trackbacks are described in the [page="_SEARCH:tut_adv_news"]Advanced news tutorial[/page].
+
 [title="3"]Comments[/title]
 
 Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in Admin Zone > Setup > Configuration > Feature options > User interaction.

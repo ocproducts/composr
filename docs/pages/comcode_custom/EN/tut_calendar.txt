@@ -12,6 +12,8 @@ Each entry in the calendar is called an 'event'. It is important to understand t
 
 For this tutorial I have just added a single recurring event into the system for clarity: you will see how this single event is shown on the various calendar views, and get an impression on how the system works. In reality, the calendar may be used by any number of members, with any number of events. Composr will actually recognise conflicting events, and display conflicting events in parallel activity streams on the day view screen.
 
+[title="3"]Event types[/title]
+
 Event types are used to categorise events. There is a good selection of default event types which have their own icons:
  - Anniversary
  - Appointment
@@ -24,11 +26,17 @@ Event types are used to categorise events. There is a good selection of default 
 System commands are a special type, as events added to this define code to be executed (and permissions protect members adding to it by default).
 
 You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under Content Management > Calendar.
+You can delete an event type from the bottom of its edit form.
 [/surround]
+
+[title="3"]Adding events[/title]
 
 [surround]
 [media width="150" description="Viewing a calendar event" float="right"]data_custom/images/docs/tut_calendar/calendar_view_event.png[/media]
 [media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/tut_calendar/calendar_add_event.png[/media]
+Adding and editing events is done from under Content Management > Calendar.
+You can delete an event from the bottom of its edit form.
+
 When you add an event, you may define the following special settings:
  - The event type.
  - The start date and time. This defaults to an arbitrary time in the future. For a recurring event, this is the first time the event happens.
@@ -58,6 +66,10 @@ The calendar has 5 views:
 3) you can view a whole week
 4) you can view a whole day
 5) you can view a specific event
+
+The views are a part of the calendar module
+([tt]site:calendar[/tt] page-link,
+Social > Calendar on the default menus).
 [/surround]
 
 [surround]
