@@ -90,6 +90,11 @@ As inline personal posts are just enhanced posts, they are moderated and adminis
 
 There is also a "contact member" addon. This allows you to e-mail a member, without the message being stored on the website. It is mainly useful to allow guests to contact a member without joining. Most websites will be likely to want to remove it, for reasons of simplicity.
 
+[title="2"]Opt-out[/title]
+
+If the "Allow members to opt-out of e-mails" option is enabled then members may choose to not let members contacting them.
+If the "Allow members to opt-out of staff e-mails" option is enabled then members can also choose to not let staff contact them via the newsletter functionality.
+
 [concepts
  1_key="Private Topics"   1_value="Topics visible only to selected conversants, available only from each conversant's \"Private Topics\" virtual forum."
  2_key="Whispering"        2_value="In-topic posts only visible to the sender, and one specific recipient."

@@ -55,6 +55,8 @@ In your HTML this meta-data looks similar to:
 <meta name="keywords" content="example,keywords,go,here" />
 [/code]
 
+If you don't like the presence of the meta-data options then you can disable the "Enable SEO fields" option.
+
 [title="2"]OpenGraph[/title]
 
 OpenGraph is the system devised by Facebook, for automatically supplying details relating to a webpage when a link to it is posted on Facebook. It's an Open Standard that may also be used by others.

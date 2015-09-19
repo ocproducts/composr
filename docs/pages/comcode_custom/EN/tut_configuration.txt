@@ -65,6 +65,8 @@ The most important options are in 'Site options', choose that and scroll down yo
 There are many more options in the main configuration, and the actual options available depend on which addons are installed.
 
 Repeat for all other sections you may want to edit.
+
+We don't list all the options in the documentation because they are often either obvious/self-describing, or too specialist to mention -- so it's a good idea to browse through to see what interests you.
 [/surround]
 
 [title="2"]Editing default Comcode pages[/title]

@@ -20,7 +20,7 @@ Passwords:
  - Visual representation of password quality
  - Password complexity rules
  - Password expiry and prevention of re-use
- - Password hashing (even if hackers steal the database they won't have actual passwords)
+ - Password hashing with configurable ratchet (even if hackers steal the database they won't have actual passwords; controlled via "Cryptographic ratchet" option)
  - Configurable cryptographic complexity ratchet to protect against brute-force techniques to convert hashes back into passwords
  - Temporary passwords, so that staff may set up accounts without needing to know the final password that will be used
 
@@ -171,26 +171,29 @@ Most security logs are accidental (caused by mistyped URLs, or buggy software) o
 [title="2"]Alert types[/title]
 
 At the time of writing, the following types of alert are defined:
- - [b]DODGY_GET_HACK[/b], A suspicious URL was given that includes characters looking like they may be there to do dodgy things. As URLs are generally clean of symbols, it is safe for Composr to detect dangerous looking ones, such as file system paths, new line characters, and HTML symbols
- - [s][b]REFERRER_IFRAME_HACK[/b], It looks like someone tried to abuse an iframe in Composr, where the iframe URL was given by the main page URL. By doing this, social engineering, or referrer faking, might be achievable[/s] -- [i]not currently in use, we now use alternative and more reliable CSRF-prevention methods[/i]
- - [b]EVIL_POSTED_FORM_HACK[/b], This may be due to a social engineering attack, where a logged in administrator has been tricked into filling in a form targeted to delete something from the website (CSRF)
- - [b]VOTE_CHEAT[/b], The user tried to vote outside the allowed range of options (e.g. 11 or -2). I can think of no way this could be done accidentally
- - [b]SCRIPT_UPLOAD_HACK[/b], The user tried to upload a PHP script. This may well be innocent (if they are uploading a saved web-page with .php in the URL for example, or if they are uploading a script they expect people to be able to download in raw form)
- - [b]ASCII_ENTITY_URL_HACK[/b], The user introduced HTML into a Comcode HTML tag that used ASCII-encoded entities. This is likely to be innocent, but is blocked because it can be used to trick JavaScript filtration
- - [b]SCRIPT_TAG_HACK[/b], The user tried to introduce a script tag. This would be likely to be a hack attempt if it wasn't for the fact that by default, ordinary members cannot submit any HTML at all; it is therefore likely that a privileged user has out-stepped the norm, or a privileged member is not to be trusted
- - [b]SCRIPT_URL_HACK[/b] / [b]SCRIPT_URL_HACK_2[/b], This is highly likely to be a hack attempt, as a user explicitly specified a URL which was code and not a real URL
- - [b]LAME_SPAM_HACK[/b], This is a blocked spam attempt, where a Guest user posted with the terms [tt][link[/tt] and [tt]<a [/tt] within a single post, almost certainly a common kind of "try everything" attempt to get spam links posted (Composr does not even support a 'link' bbcode tag)
- - [b]TRY_TO_DOWNLOAD_SCRIPT[/b], The user tried to add a download with a manual URL that links to private files that are not meant to be downloadable. This may be an honest mistake -- but if it is [tt]_config.php[/tt], then it is very likely to be a hack attempt. A more detailed explanation follows further in this tutorial
- - [b]TICKET_OTHERS_HACK[/b], The user tried to access support tickets from another user. This is either a bug (we know of no way it would happen normally), or a hack attempt
- - [b]TICKET_SYSTEM_WEIRD[/b], The user tried to access a support ticket with an non-standard name. This is either a bug, or a hack attempt; if it is a hack attempt, it is probably not one that would get anywhere even if it was not blocked
- - [b]ORDERBY_HACK[/b], Tried to change the SQL ordering attribute, perhaps for SQL injection
- - [b]BYPASS_VALIDATION_HACK[/b], The user tried to specify that their content be validated even though they had no form option to specify it as such. The user is therefore very likely to be trying to hack the site by specifying options that don't exist for them in the hope they will go unfiltered
- - [b]HEADER_SPLIT_HACK[/b], A URL was submitted that contains a blank line. The submitter of the content with this URL is very likely to be a hacker, as there is no conventional way this situation could be come by
- - [b]EVAL_HACK[/b], The EVAL command would have executed arbitrary code if it was not blocked. This is extremely likely to be a hack attempt and should be taken seriously
- - [b]PATH_HACK[/b], Tried to use a file path redirection to get outside intended directory
- - [b]ADMINCENTRE_ACCESS_DENIED[/b], The user tried to access a secured zone without permission. This is unlikely to be a serious attack, as the user may just have been following a misplaced URL, or messing about. This error is not enabled by default on Composr because we found that Google ads triggered it massively!
- - [b]PHP_DOWNLOAD_INNOCENT[/b], Somehow a PHP file got referenced in the download system. This should have been filtered by 'TRY_TO_DOWNLOAD_SCRIPT', but was not. This is a serious security breach if it happens
- - [b]BRUTEFORCE_LOGIN_HACK[/b], Someone gave incorrect login details 30 times over a 15 minute period (brute-force attack)
+ - [tt]DODGY_GET_HACK[/tt], A suspicious URL was given that includes characters looking like they may be there to do dodgy things. As URLs are generally clean of symbols, it is safe for Composr to detect dangerous looking ones, such as file system paths, new line characters, and HTML symbols
+ - [s][tt]REFERRER_IFRAME_HACK[/tt], It looks like someone tried to abuse an iframe in Composr, where the iframe URL was given by the main page URL. By doing this, social engineering, or referrer faking, might be achievable[/s] -- [i]not currently in use, we now use alternative and more reliable CSRF-prevention methods[/i]
+ - [tt]EVIL_POSTED_FORM_HACK[/tt], This may be due to a social engineering attack, where a logged in administrator has been tricked into filling in a form targeted to delete something from the website (CSRF)
+ - [tt]VOTE_CHEAT[/tt], The user tried to vote outside the allowed range of options (e.g. 11 or -2). I can think of no way this could be done accidentally
+ - [tt]SCRIPT_UPLOAD_HACK[/tt], The user tried to upload a PHP script. This may well be innocent (if they are uploading a saved web-page with .php in the URL for example, or if they are uploading a script they expect people to be able to download in raw form)
+ - [tt]ASCII_ENTITY_URL_HACK[/tt], The user introduced HTML into a Comcode HTML tag that used ASCII-encoded entities. This is likely to be innocent, but is blocked because it can be used to trick JavaScript filtration
+ - [tt]SCRIPT_TAG_HACK[/tt], The user tried to introduce a script tag. This would be likely to be a hack attempt if it wasn't for the fact that by default, ordinary members cannot submit any HTML at all; it is therefore likely that a privileged user has out-stepped the norm, or a privileged member is not to be trusted
+ - [tt]SCRIPT_URL_HACK[/tt] / [tt]SCRIPT_URL_HACK_2[/tt], This is highly likely to be a hack attempt, as a user explicitly specified a URL which was code and not a real URL
+ - [tt]LAME_SPAM_HACK[/tt], This is a blocked spam attempt, where a Guest user posted with the terms [tt][link[/tt] and [tt]<a [/tt] within a single post, almost certainly a common kind of "try everything" attempt to get spam links posted (Composr does not even support a 'link' bbcode tag)
+ - [tt]TRY_TO_DOWNLOAD_SCRIPT[/tt], The user tried to add a download with a manual URL that links to private files that are not meant to be downloadable. This may be an honest mistake -- but if it is [tt]_config.php[/tt], then it is very likely to be a hack attempt. A more detailed explanation follows further in this tutorial
+ - [tt]TICKET_OTHERS_HACK[/tt], The user tried to access support tickets from another user. This is either a bug (we know of no way it would happen normally), or a hack attempt
+ - [tt]TICKET_SYSTEM_WEIRD[/tt], The user tried to access a support ticket with an non-standard name. This is either a bug, or a hack attempt; if it is a hack attempt, it is probably not one that would get anywhere even if it was not blocked
+ - [tt]ORDERBY_HACK[/tt], Tried to change the SQL ordering attribute, perhaps for SQL injection
+ - [tt]BYPASS_VALIDATION_HACK[/tt], The user tried to specify that their content be validated even though they had no form option to specify it as such. The user is therefore very likely to be trying to hack the site by specifying options that don't exist for them in the hope they will go unfiltered
+ - [tt]HEADER_SPLIT_HACK[/tt], A URL was submitted that contains a blank line. The submitter of the content with this URL is very likely to be a hacker, as there is no conventional way this situation could be come by
+ - [tt]EVAL_HACK[/tt], The EVAL command would have executed arbitrary code if it was not blocked. This is extremely likely to be a hack attempt and should be taken seriously
+ - [tt]PATH_HACK[/tt], Tried to use a file path redirection to get outside intended directory
+ - [tt]ADMINCENTRE_ACCESS_DENIED[/tt], The user tried to access a secured zone without permission. This is unlikely to be a serious attack, as the user may just have been following a misplaced URL, or messing about. This error is not enabled by default on Composr because we found that Google ads triggered it massively!
+ - [tt]PHP_DOWNLOAD_INNOCENT[/tt], Somehow a PHP file got referenced in the download system. This should have been filtered by 'TRY_TO_DOWNLOAD_SCRIPT', but was not. This is a serious security breach if it happens
+ - [tt]BRUTEFORCE_LOGIN_HACK[/tt], Someone gave incorrect login details 30 times over a 15 minute period (brute-force attack)
+
+After a number ("Hack-attack ban threshold" option) of hack-attack attempts an IP address will be banned, if the "Enable auto-banning" option is enabled.
+Similarly and more specifically there are a number of options specifically attached to the brute force login detection for automatic bans.
 
 [title="3"]The "TRY_TO_DOWNLOAD_SCRIPT" error in detail[/title]
 
@@ -207,23 +210,13 @@ This error could also be caused by some server configuration issue too. For exam
 
 [title="2"]Input filtering[/title]
 
-We have 4 privileges relating to input filtering:
-1) Avoid broad input filtering security layer
-2) Use dangerous Comcode
-3) Use potentially-troublesome Comcode
-4) Subject to a more liberal HTML filter
-
-"Avoid broad input filtering security layer" turns on filtering that may result in some data loss, but gives an additional level of security in case we have an actual security hole at another layer.
+The "Avoid broad input filtering security layer" privilege turns off filtering that may result in some data loss. Without the privilege it adds an additional level of security in case we have an actual security hole at another layer.
 This generally protects against:
  - Request parameters that look like the file paths of particularly sensitive files
  - Request parameters that look like particularly dangerous HTML, or miscellaneous vectors for injecting CSS or JavaScript code
 It is generally a good idea to not given untrusted users this privilege, as the need for such users to be able to post text that looks like file paths, dangerous HTML, or JavaScript, is not very high.
 
-"Use dangerous Comcode" should only be granted to trusted staff. Users with this permission can effectively exert full control over the site, via placement of advanced blocks.
-
-"Use potentially-troublesome Comcode" is fairly safe to give. Without it we will try and filter out certain stuff that may be annoying (such as particular interactive interfaces), but not an actual security risk.
-
-"Subject to a more liberal HTML filter" is fairly safe to give, but for high security sites best avoided. If granted, users can basically use whatever HTML they want, if we don't see that HTML as a security risk (insecure HTML will be cleaned up automatically). Without this, there's a particular white-list of allowed HTML (not specifically tags, but tag patterns), corresponding to HTML created directly within the WYSIWYG editor. Users may get confused why content they paste into the WYSIWYG editor comes out a mess, as pasted content is unlikely to use only white-listed HTML segments.
+There are many privileges relating to Comcode filtering. These are detailed in the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode tutorial[/page].
 
 We also have of internal checks that always run, many related to "Alert types" (see above), including:[list="a"]
 [*] Constraining of input parameters for filename-only scenarios ([tt]filter_naughty[/tt], [tt]PATH_HACK[/tt])

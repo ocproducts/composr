@@ -71,6 +71,12 @@ Positive advice:
  - Get DKIM configured on your server.
  - If you're really stuck with your e-mail server being blocked, you could use a service like [url="Mandrill"]https://www.mandrill.com/[/url]. Mandrill may require the "Enable Blind CC (BCC)" option to be turned off, as we have had a report of it not working on Mandrill, but that they provide an account setting to make CC behave like BCC.
 
+[title="2"]Queues and debugging[/title]
+
+Composr has config options for:
+1) turning on a mail queue (for efficient delivery).
+2) keeping stuff in the queue until you let it out (when testing a site, the "E-mail debug mode" option).
+
 [concepts
  1_key="SMTP"   1_value="The e-mail protocol for sending e-mail and delivery between servers"
  2_key="IMAP"   2_value="A protocol for accessing e-mail stored on a server"

@@ -13,7 +13,7 @@ A WYSIWYG (What You See Is What You Get) editor is a document editor where the e
 
 [title="2"]Integrated editor[/title]
 
-The Composr WYSIWYG editor is CKEditor.
+The Composr WYSIWYG editor is CKEditor. It is enabled by default via the "Enable WYSIWYG editing" option.
 
 [i]For programmers[/i]: Composr can, in principle, support almost any WYSIWYG editor component. Composr binds itself to the editor via JavaScript code stored in Composr's [tt]WYSIWYG_LOAD.tpl[/tt], [tt]WYSIWYG_SETTINGS.tpl[/tt], and [tt]posting.js[/tt] templates. The editor itself is stored in [tt]data/ckeditor[/tt].
 

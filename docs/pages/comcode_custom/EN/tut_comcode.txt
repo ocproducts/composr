@@ -402,6 +402,14 @@ Be careful when placing attachment tags in a Comcode spot that does not support 
  4_key="WYSIWYG"          4_value="What-You-See-Is-What-You-Get: the name of the type of interactive editing interface used for formatting text in many programs, including modern word processors"
 ]Concepts[/concepts]
 
+[title="2"]oEmbed[/title]
+
+Links posted within Comcode will be processed via a system called oEmbed to try and turn them into embeds.
+
+For example, if you have a URL to a Google Map, the Google Map will embed automatically for you.
+
+There are a number of configuration options that allow you to fine-tune this functionality.
+
 [title="2"]Auto-save[/title]
 
 If you type into a "posting form" (news posting, forum topic creation and replies, Wiki+ posting, Comcode page editing), then auto-save will be in place.

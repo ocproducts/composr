@@ -1116,6 +1116,10 @@ A properly marked-up version, using Composr conventions, would look as follows:
 </table>
 [/code]
 
+[title="2"]Accessible authoring[/title]
+
+You will find a number of options in Admin Zone > Setup > Configuration > Accessibility options, for tuning the webmaster experience to meet particular accessibility requirements.
+
 [concepts
  1_key="WAI"         1_value="Web Accessibility Initiative; a group working under the W3C who are the official standards organisation behind the world wide web."
  2_key="WCAG"        2_value="Web Content Accessibility Guidelines, as written under the WAI."

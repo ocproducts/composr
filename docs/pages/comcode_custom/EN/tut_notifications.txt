@@ -39,6 +39,8 @@ Additionally, most platforms will allow native notification display:
 
 This option works to automatically set up a member to receive notifications on content they have interacted with. This happens at the point of them making an interaction -- it automatically sets up a monitor. It is not retroactive.
 
+Members have this set automatically if the global "Auto-monitor posted content" option is enabled.
+
 [title="2"]Smart Topic notification[/title]
 
 The "Smart Topic notification" option works to stop members being flooded with notifications for a topic, until they've caught up. It sends them just one notification until they have read it again.

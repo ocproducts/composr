@@ -350,7 +350,7 @@ It triggers if these post parameters are present:
 
 (the [tt]login[/tt] page in Composr is mostly a front end, and doesn't handle log in itself)
 
-If posting from a different domain name then 'Form-posting partner sites' must be set to include the domain name you're using.
+If posting from a different domain name then the 'Form-posting partner sites' option must be set to include the domain name you're using.
 
 For completeness, this is what the [tt]login[/tt] page [i]does[/i] do:
  - Shows error messages if a log in fails
@@ -361,6 +361,10 @@ For completeness, this is what the [tt]login[/tt] page [i]does[/i] do:
  - Handles "Become invisible" toggle
 
 If coding a system to create an Composr login automatically (i.e. without needing to direct the user to a POST request) you'd need to set the session cookie to a random number, and then insert a row into the Composr [tt]sessions[/tt] table to match against it.
+
+[title="2"]Creating new forms in HTML but not PHP[/title]
+
+You may need to tune the "Pages without security tokens" option if you are setting up pages with custom forms but not going through the full Composr forms API.
 
 [concepts
  1_key="iframe"    1_value="A portion of the main web page that encloses another web page (with its own URL)"

@@ -320,6 +320,10 @@ Without narrow-in, you see nothing under the root, file X under 'a', and file Y 
 
 With narrow-in, you see everything under the root, everything under 'a', and just file Y under 'b'.
 
+[title="2"]Infinite scrolling[/title]
+
+There is an option "Infinite scrolling" if you wish to enable infinite scrolling for navigating back through old content rather than traditional pagination.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]

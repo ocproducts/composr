@@ -112,6 +112,8 @@ Clubs are provided so that members may create their own sub-communities on the w
 
 The club forum has default permissions that only allow website staff and club members into it. The club functionality provides no special moderation controls -- so by default the forum would need to be moderated by the website staff, rather than self-moderated. As it is a regular forum, additional permission changes can be achieved manually (for example, creating a new usergroup for the club's management and assigning moderator permissions over the forum to members of that).
 
+The parent forum and forum grouping for new club forums is configurable.
+
 [concepts
  1_key="virtual root"       1_value="Virtual roots allow you to split a Composr tree based content system (such as the download system) so it appears to have multiple databases"
  2_key="redirection page"   2_value="Allows pages to be redirected to from different zone/page combinations, either transparently, or with a redirection message"

@@ -35,10 +35,10 @@ Update: Actually the default list is now empty, as we learnt that there currentl
 
 We use the popular [url="Stop Forum Spam system"]http://www.stopforumspam.com/[/url] system to look for known spammers based upon IP address, username, and e-mail address. We also report who you identify as spammers, back to Stop Forum Spam.
 
-[title="2"]Settings[/title]
+[title="2"]Options[/title]
 
-[media width="150" description="The settings" float="right"]data_custom/images/docs/tut_antispam/settings.png[/media]
-The settings are located at Admin Zone > Setup > Configuration > Security options > Spammer detection.
+[media width="150" description="The options" float="right"]data_custom/images/docs/tut_antispam/settings.png[/media]
+The options are located at Admin Zone > Setup > Configuration > Security options > Spammer detection.
 
 You can configure when spam checks are performed via the "Spammer checking level" option:
  - Every page view (performs RBL checks always, and full check on actions)
@@ -54,7 +54,7 @@ The confidence level is then compared about a number of configured thresholds:
  - Block (the attempted action will be blocked)
  - Ban (the user's IP address will be banned)
 
-Other settings include:
+Other options include:
  - Specifying how long spam results are cached for
  - Specifying how long to trust reports of a spammer that were assigned a "last spam activity" date
 
@@ -66,7 +66,7 @@ Composr forms can include a 'black hole' which is a specially hidden field that 
 [title="2"]Project Honey Pot[/title]
 
 We integrate the Project Honey Pot service, for injection of a hidden Honey Pot link onto pages. Spambots following the link will flag as spammers in the Project Honey Pot system. This feeds the HTTP:BL block list, which is one of the RBL services Composr can use.
-You need to specifically configure the settings for Honey Pot -- it requires you to sign up for their service, and fill in some special configuration options.
+You need to specifically configure the options for Honey Pot -- it requires you to sign up for their service, and fill in some special configuration options.
 
 [title="2"]Reported posts[/title]
 
@@ -83,11 +83,11 @@ We're not a fan of all anti-spam systems. Here's a run-down of what we don't do:
 
 [title="2"]Making a spam report to the developers[/title]
 
-It is possible that occasionally a spammer may get through Composr's settings. If so, please make a thorough report via the compo.sr forum -- so that we have the chance to properly look into how it got through.
+It is possible that occasionally a spammer may get through Composr's options. If so, please make a thorough report via the compo.sr forum -- so that we have the chance to properly look into how it got through.
 
 Include:
 [list="a"]
-[*] What exact anti-spam settings are configured
+[*] What exact anti-spam options are configured
 [*] Where the spammer is getting through (e.g. making a forum post)
 [*] The spammer's IP address
 [*] The spammer's user-agent

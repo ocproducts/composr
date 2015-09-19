@@ -86,6 +86,8 @@ One small disadvantage of URL Monikers, is it makes it a bit harder to find out 
 [/code]
 This is very cryptic, but the ID number is on the end after [tt]%3A[/tt] (in this example, it's 13).
 
+The URL monikers option can be enabled/disabled via the "URL monikers enabled" option.
+
 [title="2"]Google Webmaster Tools[/title]
 
 Google Webmaster Tools lets you monitor search engine crawling activity on your website. Other search engines often have similar systems.

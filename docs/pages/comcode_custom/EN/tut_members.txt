@@ -37,7 +37,7 @@ The form includes, if enabled in the configuration, a security image ([concept]C
 
 There are a number of constraints on how fields may be filled in, and some of these are configurable from the main Admin Zone Configuration. For example, special characters are not allowed in user-names, and by default, any e-mail address may only be used for one account.
 
-Once the form is filled in successfully, an e-mail will be sent to the given e-mail address containing a link to activate the account (assuming this option has not been disabled). The purpose of this is to ensure that they are giving a real working e-mail address, and hence are contactable. If the e-mail never arrives for any joining user, the most likely situation is a fault with e-mail sending on the server: it is essential that Composr is connected to a working e-mail server, either by directly residing on it, or by setting up SMTP settings in the main Admin Zone Configuration (see the [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page] tutorial). Joining users must be patient for a few minutes, as e-mails can sometimes take a while to arrive.
+Once the form is filled in successfully, an e-mail will be sent to the given e-mail address containing a link to activate the account (assuming the "Confirmation of member e-mail addresses" option has not been disabled). The purpose of this is to ensure that they are giving a real working e-mail address, and hence are contactable. If the e-mail never arrives for any joining user, the most likely situation is a fault with e-mail sending on the server: it is essential that Composr is connected to a working e-mail server, either by directly residing on it, or by setting up SMTP settings in the main Admin Zone Configuration (see the [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page] tutorial). Joining users must be patient for a few minutes, as e-mails can sometimes take a while to arrive.
 
 [surround]
 [media width="150" description="The login block (which turns into a 'personal stats' block after logging in)" float="left"]data_custom/images/docs/tut_members/members_login_block.png[/media]
@@ -89,6 +89,12 @@ The most common situations where it is convenient to pre-join a member are:
 
 Composr can also support automatic member joining via LDAP and http-auth. For more information on these mechanisms see the links at the bottom of this page.
 
+[title="2"]Log in[/title]
+
+Log in is normally done by username.
+
+However, if the "Restrict to one member per e-mail address" option is enabled then members will be able to log in with e-mail address also (because Composr knows that this will be a unique key for the user also).
+
 [title="2"]Profiles[/title]
 
 [media width="150" description="The member directory, where profiles may be accessed from" float="right"]data_custom/images/docs/tut_members/members_directory.png[/media]
@@ -135,7 +141,7 @@ There is a link to view the current 'Users Online' on forum pages (at the bottom
  - a list of online users
  - how many guests are online
  - the newest member
- - member birthdays
+ - member birthdays (unless the "Enable birthdays" option is disabled)
 
 Member birthdays are also shown on forum-view screens. Note that birthdays for members who have chosen to reveal their age will include the display of their age.
 
@@ -259,7 +265,9 @@ If an admin account is deleted you may wish to add that account's username to th
 
 [title="3"]Privacy[/title]
 
-Privacy allows you to specify what custom profile fields will be visible to whom.
+Privacy allows you to specify what custom profile fields will be visible to whom. It is controlled via the "Member privacy controls" option.
+
+If the "Extended privacy option control" option is enabled then it can be set in low-level detail. Otherwise it works via simple access levels for each field.
 
 [title="2"]Usergroups[/title]
 
