@@ -16,12 +16,12 @@ The root XML tag for the config file is 'fieldRestrictions'. Otherwise, the conf
 [title="2"]The 'qualify' and 'filter' tags[/title]
 
 The 'qualify' tag is used to limit the context under which restriction tags may apply. Without the 'qualify' tag, the restrictions would always apply.
-The tag may take 3 attributes (all optional, but they may also be used together):
+The tag may take these attributes (all optional, but they may also be used together):
  - 'pages', a comma-separated list of strings (with wildcard support) indicating the page on which the contained restrictions apply
  - 'types', a comma-separated list of strings (with wildcard support) indicating the types (i.e. the URL 'type' parameter) on which the contained restrictions apply
  - 'fields', a comma-separated list of strings (with wildcard support) indicating the names of parameters on which the contained restrictions apply
 
-The 'filter' tag again is used to limit the situations under which restriction tags may apply, but it filters based on membership rather than context. The tag may take 3 attributes (all optional, but they may also be used together):
+The 'filter' tag again is used to limit the situations under which restriction tags may apply, but it filters based on membership rather than context. The tag may take these attributes (all optional, but they may also be used together):
  - 'notStaff', if this is set to '1' then the contained restrictions will only apply to non-staff (if you leave it out it will apply to all)
  - 'groups', a comma-separated list of usergroup ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)
  - 'members', a comma-separated list of member ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)

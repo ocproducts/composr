@@ -24,7 +24,7 @@ On Linux or Mac, type [tt]ifconfig[/tt].
 To trace users, you need to identify the computer performing the malicious action: unfortunately (from this perspective), the Internet is largely anonymous and decentralised, and without any clear legal authority to turn to. To some extent, a computer on the Internet can be identified by virtue of its 'IP address' (Internet Protocol address); an IP address is a 4 byte piece of data (traditionally, although a new 6 byte standard has been worked on for a number of years now), represented usually in a human readable form of 4 numbers (0-255) separated by dots. There are a number of different sources of IP addresses, however the decentralisation of the system can lead to abuse; these sources are:
  - [concept]ISP[/concept] (Internet service provider) assigned IP addresses, via DHCP (dynamic host configuration protocol). These are provided to computers when they, or their Internet router, sign on to the Internet via an ISP). This is the most usual situation, and as these change, it can not be relied upon that a user will keep their address; however, addresses usually are similar, and can be 'wildcarded' by the Composr IP ban feature. It is possible other users might at some point get that address, even though it is not very likely: if you place a ban on a wide range of addresses, such as [tt]14.*.*.*[/tt], you are increasing the likelihood of a conflict to a dangerously high percentage, especially if an IP address belongs to a popular ISP
  - ISP (Internet service provider) assigned fixed IP addresses. Some ISPs provide these, often at additional cost
- - Local network IP address [tt]10.0.*.*[/tt] or [tt]192.168.*.*[/tt] type (non-routeable [can't travel across the Internet] and open for anyone's local usage as it does not need to assigned by any authority, which means that something odd is happening if you find one of these)
+ - Local network IP address [tt]10.0.*.*[/tt] or [tt]192.168.*.*[/tt] type (non-routable [can't travel across the Internet] and open for anyone's local usage as it does not need to assigned by any authority, which means that something odd is happening if you find one of these)
  - Localhost IP address, [tt]127.0.0.1[/tt]. If you see this, then the request came from the server, or the IP address was added to the Composr database arbitrarily by some code because the true one was not known (often importers do this)
 
 [box="Finding a domain's IP address" width="25em" float="right"]
@@ -87,7 +87,7 @@ These tools are:
 
 [concepts
  1_key="IP address"  1_value="Every computer connected to the Internet has an IP address of its own, although the IP address may change if that computer has 'rented' it via DHCP"
- 2_key="DHCP"        2_value="Dynamic Host Configuration Protocol: a protocol that hands out IP addresses to computers on a network (including those connecting to the Internet), often arbitarily"
+ 2_key="DHCP"        2_value="Dynamic Host Configuration Protocol: a protocol that hands out IP addresses to computers on a network (including those connecting to the Internet), often arbitrarily"
  3_key="ISP"         3_value="An Internet Service Provider"
  4_key="gateway"     4_value="A gateway routes packets between one network to another (e.g. between a network and the Internet) via NAT"
  5_key="NAT"         5_value="Network Address Translation. NAT allows two networks to communicate with IP addresses that a normal router could not have joined together"

@@ -167,7 +167,7 @@ if ($type == 'auto_probe') {
         $advice_parts = array(
             'maybe_delete' => 'The following files might need deleting',
             'css_diff' => 'The following CSS/tpl changes have happened (diff; may need applying to overridden templates)',
-            'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an adhoc upgrader'
+            'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an ad hoc upgrader'
         );
         foreach ($advice_parts as $d => $message) {
             echo '

@@ -12,9 +12,9 @@ Only read this section if you feel you need an explanation for this.
 
 Composr supports a "persistent cache" that can store any arbitrary PHP data (e.g. query results) between page views. This is faster than the database: although one would think databases are made very fast, they do not know how to directly access the actual data structures used, and have an overhead in their interprocess connection system, so will never be as fast as a persistent cache.
 The persistent cache is implemented in 3 ways, and one of them is used, or none if it is not enabled (by default it isn't):
- - via the eAccelerator/mmcache/APC/xcache PHP extensions (requires PHP extension)
- - via the memcached server daemon (requires PHP extension to access it)
- - via file writing (for testing only -- not 'concurrent' safe for use on live sites)
+1) via the eAccelerator/mmcache/APC/xcache PHP extensions (requires PHP extension)
+2) via the memcached server daemon (requires PHP extension to access it)
+3) via file writing (for testing only -- not 'concurrent' safe for use on live sites)
 
 The usage of the cache is very simple. You can:
  - read a named (nameable by any data structure, like an array) entry ([tt]persistant_cache_get[/tt])
@@ -238,9 +238,9 @@ $rows = $GLOBALS['SITE_DB']->query_select('table', array('*'));
 (actually it'll be a bit more complex, when we support pagination)
 
 These are the three main functions for the UI:
- - [tt]results_field_title[/tt] (defines field header templating)
- - [tt]results_entry[/tt] (defines individual result row templating)
- - [tt]results_table[/tt] (defines the surrounding interface)
+1) [tt]results_field_title[/tt] (defines field header templating)
+2) [tt]results_entry[/tt] (defines individual result row templating)
+3) [tt]results_table[/tt] (defines the surrounding interface)
 
 You compose some [tt]results_field_title[/tt] call results together using PHP arrays, to form the combined header.
 
@@ -451,8 +451,8 @@ To do this:
 Retrieve your field using the [tt]get_cms_cpf[/tt] function, or in templates with the [tt]{$CPF_VALUE}[/tt] symbol, omitting the 'cms_' prefix (i.e. just use the name you set).
 
 Conversr stores the data in two tables (you should not need to know this, but it may be useful if you are manually checking the database during the debugging process):
- - [tt]f_custom_fields[/tt] -- this stores the field definitions, one field definition per row. Think of it being like a schema.
- - [tt]f_member_custom_fields[/tt] -- this stores the actual field values, each row represents a member and the field values are spread across normal database columns (aka fields).
+1) [tt]f_custom_fields[/tt] -- this stores the field definitions, one field definition per row. Think of it being like a schema.
+2) [tt]f_member_custom_fields[/tt] -- this stores the actual field values, each row represents a member and the field values are spread across normal database columns (aka fields).
 
 [title="3"]Showing new links on member profiles[/title]
 
@@ -606,8 +606,8 @@ CSRF attacks are already avoided via a form token system and referral checking s
 [title="3"]Custom version of PHP[/title]
 
 Our custom version of PHP (linked to under "Programming/programmatic-interface standards") performs 2 main functions:
- - It makes PHP type strict (if turned on, which Composr does do), so that automatic type conversion results in a PHP notice, which causes a Composr stack dump.
- - It turns on some very special innovative XSS security hole detection code. All PHP strings are tagged as "escaped or non-escaped", and this tagging is maintained through all string operations (e.g. if a string that is escaped is appended to a string that is non-escaped, the result will be a string that is non-escaped). Functions like [tt]htmlentities[/tt] result in escaping being marked, and there is also an [tt]ocp_mark_as_escaped[/tt] function to force this manually (useful if you are intentionally injecting HTML literal code, e.g. from an RSS feed). If you output a non-escaped string, a PHP warning is produced about it -- because the developer has not blocked what could well be an XSS security hole. We're very proud of this system, and how elegant it is, and as far as we know it's not anything anyone has done before -- it took quite a few thought experiment sessions until we can up with it.
+1) It makes PHP type strict (if turned on, which Composr does do), so that automatic type conversion results in a PHP notice, which causes a Composr stack dump.
+2) It turns on some very special innovative XSS security hole detection code. All PHP strings are tagged as "escaped or non-escaped", and this tagging is maintained through all string operations (e.g. if a string that is escaped is appended to a string that is non-escaped, the result will be a string that is non-escaped). Functions like [tt]htmlentities[/tt] result in escaping being marked, and there is also an [tt]ocp_mark_as_escaped[/tt] function to force this manually (useful if you are intentionally injecting HTML literal code, e.g. from an RSS feed). If you output a non-escaped string, a PHP warning is produced about it -- because the developer has not blocked what could well be an XSS security hole. We're very proud of this system, and how elegant it is, and as far as we know it's not anything anyone has done before -- it took quite a few thought experiment sessions until we can up with it.
 
 It also enforces some other coding standards, such as not allowing relative paths to files.
 
@@ -623,7 +623,7 @@ We have established the following design goals (in no particular order):
  - [b]Flexibility[/b] / [b]generality[/b] -- Composr should be able to work in many different kinds of website. Features should be usable in different ways for different people. It should not have a restricted layout (hence Comcode, modules, blocks, and templates)
  - [b]International[/b] -- Composr should work well across the world, across language and culture (as long as someone puts the effort in to do a translation)
  - [b]Compatibility[/b] -- Composr should work well with common versions of required technologies
- - [b]Modability[/b] -- Composr should be modular, and overrideable; easy to change without tearing the things to pieces, preferably without even editing things (just adding)
+ - [b]Modability[/b] -- Composr should be modular, and overridable; easy to change without tearing the things to pieces, preferably without even editing things (just adding)
  - [b]Usability[/b] -- Composr should be very easy to use. The best user-experience and interaction-design methods should be used.
  - [b]Power[/b] / [b]features[/b] -- Composr should be as powerful as any competing product, but that should not be an excuse for implementing crap that bloats and over-complicates the product; we all want loads of features, but we don't want to confuse the users or tie ourselves up so tight that future development is very difficult
  - [b]Standards compliance[/b] -- An accessible web, based on open standards, which is stable and not tied to any specific vendor, is desirable for all; by sticking to standards, you are ensuring Composr works on a wide range of technologies, and for a wide audience
@@ -670,7 +670,7 @@ Stuff that is not an Conversr feature but uses the forum, has to go through the 
 
 A forum driver works via a [tt]sources/forum/*.php[/tt] file. A forum driver is basically an implementation to a standardised interface, and is accessed from ocPortal via [tt]$GLOBALS['FORUM_DRIVER'][/tt]. There's not a lot to say about this, as there are so many existing forum drivers in Composr to look-at/refer-to and they all follow a pattern. The API is mature and simple.
 
-To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's 'forum_type' option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member ID's are group ID's) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it while you debug it -- then install again from scratch using your new forum driver from the offset.
+To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's 'forum_type' option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member IDs are group IDs) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it while you debug it -- then install again from scratch using your new forum driver from the offset.
 
 [title="4"]Writing an importer[/title]
 
@@ -687,7 +687,7 @@ Importers are implemented using the Composr 'hook' system, meaning that a new im
  - Merge from another copy of the latest version of Composr
 
 The importer-file consists of an object that defines:
- - a [tt]probe_db_access[/tt] function that tries to autodetect database connection details from the given installation directory of the software being imported
+ - a [tt]probe_db_access[/tt] function that tries to auto-detect database connection details from the given installation directory of the software being imported
  - an [tt]info[/tt] function that provides importer details through a standard data structure. These details include:
   - the name and versions of the product(s) the importer supports
   - the default table prefix for the database of the product
@@ -696,13 +696,13 @@ The importer-file consists of an object that defines:
   - a message to display after the import has completed. In the case of most of the existing importers it's a standard message telling the user to go run our cleanup tools.
  - miscellaneous other advanced details
  - feature-import functions, which are named according to the code-names of the import features listed within the info data structure (import_<feature>). The object only needs to define feature-import functions for those features it can import.
- - any other miscellaneous functions that the importer may use internally (somtimes importers have their own unique situations where moderately complex conversion of data between representation schemes is required, and support functions are often useful to keep the code tidy)
+ - any other miscellaneous functions that the importer may use internally (sometimes importers have their own unique situations where moderately complex conversion of data between representation schemes is required, and support functions are often useful to keep the code tidy)
 
 The import system mainly provides a workflow via it's GUI, and the actual API is relatively light-weight (although the whole Composr API is available to importers). The workflow is as follows:
  - Finds which importer to use (options available correspond to what hooks are on the file system)
  - Finds an import session to continue, or starts a new session (described below)
  - Gets path details for the system being imported
- - Verifies the path details and autoprobes for database connection details
+ - Verifies the path details and auto-probes for database connection details
  - Provides the user a UI for working through each importable feature, one-at-a-time
 At the last stage the feature functions are called. The import functions themselves are passed details that will allow them access to the imported database, and they generally just loop over the data for the feature being imported, and use the Composr API's to add the data.
 
@@ -722,9 +722,9 @@ One problem with importers that import members is that almost always passwords a
 A common mistake when writing importers is with HTML entities. Some software stores some fields as HTML (albeit taglessly -- just with the entities), while Composr never does. You need to decode any HTML fields using 'html_entity_decode' before passing them into the Composr API, like "[tt]html_entity_decode($field_value,ENT_QUOTES,get_charset())[/tt]".
 If you are unsure how software stores it's data, enter test data that uses various quotation mark symbols, so that it will jump out at you when you view the raw database.
 
-There is a very complex situation for non-forum importers that use forum-driver functions during import, in order to find data to associate with database records they are creating. For example, an importer for a simple download system which stores 'usernames' of download-submitters, might wish to try to bind these usernames to actual user-ids, using the forum-database that Composr normally uses. However, by default the forum-database is tied to the local-Conversr-install during installation, as when forum data is imported, this Conversr database is required (as this is where the information will be piped to). Therefore there are two import API functions that allow switching to and from local and M.S.N. Conversr installations:
- - [tt]cns_over_local[/tt] (this sets Composr to use the local Conversr for the FORUM_DB object)
- - [tt]cns_over_msn[/tt] (this sets Composr to use the database of the regular forum for the FORUM_DB object -- which may or may not be Conversr, and even if it is Conversr, it might not be the local Conversr)
+There is a very complex situation for non-forum importers that use forum-driver functions during import, in order to find data to associate with database records they are creating. For example, an importer for a simple download system which stores 'usernames' of download-submitters, might wish to try to bind these usernames to actual user-IDs, using the forum-database that Composr normally uses. However, by default the forum-database is tied to the local-Conversr-install during installation, as when forum data is imported, this Conversr database is required (as this is where the information will be piped to). Therefore there are two import API functions that allow switching to and from local and M.S.N. Conversr installations:
+1) [tt]cns_over_local[/tt] (this sets Composr to use the local Conversr for the FORUM_DB object)
+2) [tt]cns_over_msn[/tt] (this sets Composr to use the database of the regular forum for the FORUM_DB object -- which may or may not be Conversr, and even if it is Conversr, it might not be the local Conversr)
 Note that the importer system does not change the actual forum driver used. Therefore it cannot be assumed that the global FORUM_DRIVER object is an Conversr forum driver, nor can it be assumed it holds a local database. The Conversr system has been programmed to never use FORUM_DRIVER itself, it uses CNS_DRIVER (which you may use yourself if writing a forum importer), which is always guaranteed to be linked to Conversr.
 A related problem is that some parts of Composr's API might assume that the FORUM_DB object points to Conversr if the [tt]get_forum_type[/tt] function returns 'cns'; or there can be problems with reference variables that confuses forum driver objects. Therefore running these commands might be required in some other cases -- in particular when Comcode is being parsed. Don't worry too much -- emulate what the other importers do.
 
@@ -755,7 +755,7 @@ Valid product types are:
 7) [tt]PRODUCT_ORDERS[/tt] (a full shopping cart order) -- you are very unlikely to need this one
 [*][tt]get_needed_fields[/tt] -- This function will return field Tempcode, for inclusion in a purchase form.
 [*][tt]set_needed_fields[/tt] -- This function processes the data entered from the purchase form (get_needed_fields), or if there was no purchase form it may act on URL parameters that might be present. Often this function is used to save data into the database prior to purchase (after purchase the data would then be retrieved/processed/marked-active). You can assume this function always runs in a screen after get_needed_fields, and therefore you can use the normal functions like post_param_string to read in the data. This function returns the purchase-ID, which henceforth is used to refer to the sale (and thus, retrieve it's data). The purchase-ID is often a database key, for the case of a row being added -- but also often it instead is more implicit (e.g. a member ID, or a chosen codename).
-[*][tt]get_identifier_manual_field_inputter[/tt] -- This optional function (often not used) will return field Tempcode for allowing an administrator to select an identifier when manually triggering a purchase. Often identifiers are automatically worked out (in-fact, often they are member ID's of the purchasers), so this method allows a more user-friendly open selection for the identifier for the case where the identifier likely is not auto-computable (i.e. when the administrator is purchasing on behalf of a third-party).
+[*][tt]get_identifier_manual_field_inputter[/tt] -- This optional function (often not used) will return field Tempcode for allowing an administrator to select an identifier when manually triggering a purchase. Often identifiers are automatically worked out (in-fact, often they are member IDs of the purchasers), so this method allows a more user-friendly open selection for the identifier for the case where the identifier likely is not auto-computable (i.e. when the administrator is purchasing on behalf of a third-party).
 [*][tt]get_agreement[/tt] -- This function will return license text to be approved by the buyer. Some product do not need license agreements and hence do not need this method.
 [*][tt]get_message[/tt] -- This function gets a message that will be displayed inside the purchase wizard. Often a very general description of the hook's products will be shown from here.
 [*][tt]is_available[/tt] -- This function returns the status of product: whether it is available or not. For example, often products are not available to Guests (because there is no member ID to save a purchase against), or a product may not be available due to it being out of stock.
@@ -802,7 +802,7 @@ View permissions are checked using the [tt]has_category_access[/tt] function, or
 
 It is very easy to reference existing permissions from your code. Just use the [tt]has_privilege[/tt], [tt]has_actual_page_access[/tt], and [tt]has_category_access[/tt] functions. Note that it is important to use the [tt]has_actual_page_access[/tt] function if you're accessing resources belonging to a page-module if you aren't running at page-module code itself at the time (e.g. the RSS feed for the page-module). You actually don't need to call 'has_actual_page_access' from page-module code itself because Composr checks this for you.
 
-The [tt]has_privilege[/tt] function supports checking full overrides as well as just basic global settings. To do full override checks you can give parameters to specify what page-module you consider your resources to belong to, as well as permission-module and category ID's.
+The [tt]has_privilege[/tt] function supports checking full overrides as well as just basic global settings. To do full override checks you can give parameters to specify what page-module you consider your resources to belong to, as well as permission-module and category IDs.
 If you are going to do override checks though, make sure that your page-modules define what they can override so that the Composr Permissions tree editor knows what to make editable. For examples of how to do this, see [tt]cms/pages/modules/cms_downloads.php[/tt] and [tt]site/pages/modules/downloads.php[/tt].
 
 [title="4"]Adding a new privilege[/title]
@@ -811,7 +811,7 @@ In the [tt]install[/tt] function for your page-module, add the following code to
 [code="PHP"]
 add_privilege('FOO_SECTION', 'may_foobar', false);
 [/code]
-That code adds the permission 'may_foobar' to a section of options named 'FOO_SECTION' (a language string for this must exist), and sets it to false for every usergroup except staff usergroups. It'll run when your code first installs. When developing often you add permissions adhoc until you're finished (you can't be reinstalling your module each time) -- in which case temporarily also put the code in [tt]data_custom/execute_temp.php[/tt] and run that.
+That code adds the permission 'may_foobar' to a section of options named 'FOO_SECTION' (a language string for this must exist), and sets it to false for every usergroup except staff usergroups. It'll run when your code first installs. When developing often you add permissions ad hoc until you're finished (you can't be reinstalling your module each time) -- in which case temporarily also put the code in [tt]data_custom/execute_temp.php[/tt] and run that.
 
 In the [tt]uninstall[/tt] function for your page-module, add the following code:
 [code="PHP"]

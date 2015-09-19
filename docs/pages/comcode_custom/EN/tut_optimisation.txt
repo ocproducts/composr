@@ -8,7 +8,7 @@ If you have need to be able to take particularly high load, considering getting 
 
 [title="2"]Making PHP run faster[/title]
 
-Speed can be approximately doubled if an "opcode cache" is installed as a PHP extension. These caches cache compiled PHP code so that PHP does not need to re-compile scripts on every page view. The 5 main solutions for this are:
+Speed can be approximately doubled if an "opcode cache" is installed as a PHP extension. These caches cache compiled PHP code so that PHP does not need to re-compile scripts on every page view. The main solutions for this are:
  - APC (free, recommended)
  - wincache (Windows only)
  - xcache
@@ -17,7 +17,7 @@ Speed can be approximately doubled if an "opcode cache" is installed as a PHP ex
  - ionCube PHP Accelerator (free)
 
 We recommend using APC, for reasons that will become apparent.
-Only one opcode cache can be used, and they often need to be manually compiled against the PHP version on the server and then installed as an extension. Such system administation is beyond the scope of this tutorial.
+Only one opcode cache can be used, and they often need to be manually compiled against the PHP version on the server and then installed as an extension. Such system administration is beyond the scope of this tutorial.
 
 [title="2"]Persistent database connections[/title]
 
@@ -69,14 +69,14 @@ Composr is not designed to "cache everything as it will be displayed" because th
 
 The persistent cache is a cache that aims to store regularly-accessed data in-memory between requests, so that it does not actually need to be loaded from the database or re-calculated on each page load. This cache removes about 30% of the page load time, but most importantly, takes load away from the database, allowing the database to become less of a limiting factor in high throughput situations.
 
-The cache is implemented to work with either:
- - APC (or another opcode cache mentioned in the intro paragraph), which provides in-memory storage features as well as an opcode cache and is associated with core PHP development (hence why we recommend it as the opcode cache to use)
- - memcache ('memcache' is the PHP extension for the 'memcached' server), which provides a heavyweight solution to memory sharing -- it is not recommended that this be used for typical websites, as memcached requires additional configuration
-  - or memcached, which works via the other PHP memcached server extension
- - Wincache -- a PHP accelerator developed by Microsoft, optimised for Windows
- - XCache -- another PHP accelerator
- - eAccelerator -- an old PHP accelerator that is no longer developed, so using this is not recommended
- - disk cache -- while this does increase disk usage, it still provides a performance boost over not having a persistent cache
+The cache is implemented to work with any one of:
+ - [b]APC[/b] (or another opcode cache mentioned in the intro paragraph), which provides in-memory storage features as well as an opcode cache and is associated with core PHP development (hence why we recommend it as the opcode cache to use)
+ - [b]memcache[/b] ('memcache' is the PHP extension for the 'memcached' server), which provides a heavyweight solution to memory sharing -- it is not recommended that this be used for typical websites, as memcached requires additional configuration
+  - or [b]memcached[/b], which works via the other PHP memcached server extension
+ - [b]Wincache[/b] -- a PHP accelerator developed by Microsoft, optimised for Windows
+ - [b]XCache[/b] -- another PHP accelerator
+ - [b]eAccelerator[/b] -- an old PHP accelerator that is no longer developed, so using this is not recommended
+ - [b]disk cache[/b] -- while this does increase disk usage, it still provides a performance boost over not having a persistent cache
 
 Composr will not use a persistent cache by default (except in v6.0.0) but it may be enable from the Installation Options editor.
 
@@ -233,7 +233,7 @@ If getting Composr search to work well does not seem feasible, there is a simple
 If you have outgrown normal shared hosting / a single VPS or server, you can do a cloud deployment of Composr, and there are a few options:
 1) Composr runs perfectly on Rackspace Cloud Sites hosting, where you can set up quite large instances (we have been told that behind-the-scenes there is database replication, to share database load).
 2) You can run on Amazon Cloud Server Instances (or pretty much any cloud service that supports custom images, or PHP). There is a Composr Bitnami image for easy installation on Amazon's infrastructure. Bitnami also provide their own Amazon-based hosting service. If you want to use multiple instances you will need to set up your own MySQL replication and file-synching, but Composr does have support for it (see "Server farms"). There are some solutions to auto-scale out cloud instances, although many companies handle it manually.
-3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this, and you could use HHVM for great performance. This is similar to Facebook's infrastructure and a very challening option, but perhaps the best from a huge-scale cost perspective.
+3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this, and you could use HHVM for great performance. This is similar to Facebook's infrastructure and a very challenging option, but perhaps the best from a huge-scale cost perspective.
 4) You can use Google App Engine, to get automated scaling, with a tradeoff that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine tutorial[/page]. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
 
 [title="2"]Other optimisations[/title]
@@ -301,7 +301,7 @@ Composr has been tested up to a million of the following:
 (where we have tested the million resources 'under a single' something this is to place additional pressure on the testing process)
 
 If there is a lot of data then Composr will do a number of things to workaround the problem:
-1) Choose-to-select lists will either become non-active or be restricted just to a selection of the most recent entries (instead the user can follow in-situe edit links to get to edit something).
+1) Choose-to-select lists will either become non-active or be restricted just to a selection of the most recent entries (instead the user can follow in-situ edit links to get to edit something).
 2) A very small number of features, like A-Z indexes, will become non-functional.
 3) Pagination features will become more obvious.
 4) In some cases, subcategories may not be shown. For example, if there are hundreds of personal galleries, those galleries will need to be accessed via member profiles rather than gallery browsing. This is because pagination is not usually implemented for subcategory browsing.
@@ -398,8 +398,8 @@ If you use a service like CloudFlare it can automatically provide CDN functional
 [i]This section is mainly applicable to programmers, although specific service implementations may be available within addons[/i]
 
 Composr contains 2 kinds of hooks for sending off uploads to third-party servers:
- - [tt]upload_syndication[/tt] -- transfers attachments and gallery files to other services, useful both for syndication and remote hosting; supports a basic UI for determining whether syndication happens
- - [tt]cdn_transfer[/tt] -- transparently transfers uploads directly to other services at an early stage; has no UI
+1) [tt]upload_syndication[/tt] -- transfers attachments and gallery files to other services, useful both for syndication and remote hosting; supports a basic UI for determining whether syndication happens
+2) [tt]cdn_transfer[/tt] -- transparently transfers uploads directly to other services at an early stage; has no UI
 
 [title="4"]S3 storage[/title]
 
@@ -443,7 +443,7 @@ To invoke (we are assuming that HHVM has been properly installed and is in the p
  - Open a shell to the Composr directory
  - Type [tt]sh hphp.sh[/tt] (this is in the 'hphp_buildkit' addon)
 
-In order to support hphp (which imposes some language restrictions) we made some changes to Composr, and updated our coding standards. There's no guarantee that any individual non-bundled addon will meet the coding standards, however.
+In order to support HHVM (which imposes some language restrictions) we made some changes to Composr, and updated our coding standards. There's no guarantee that any individual non-bundled addon will meet the coding standards, however.
 
 We expect Facebook will improve HHVM performance will increase over time. They are working on improvements to the PHP language, which Composr could benefit from with further development. Type hinting is particularly interesting, as it has great performance potential and mirrors our code quality efforts that have already made Composr type-strict. We have preliminary support for this already, but it is not consistently maintained to be production-ready.
 

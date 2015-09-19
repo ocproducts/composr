@@ -63,8 +63,8 @@ For details about the actual field types you can use, see the [page="_SEARCH:tut
 [surround]
 [media width="150" description="A non-tree catalogue uses an index" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_index.png[/media]
 There are two options to set how a catalogue may display:
- - 'Display type' -- you can display entries in categories as title lists, field-maps, tabular listings, or in a grid of images (full customisation is possible via templating).
- - 'Is tree' -- a tree catalogue has a full hierarchical category tree, much like the download system does; a non-tree catalogue just shows the categories from a single catalogue index.
+1) 'Display type' -- you can display entries in categories as title lists, field-maps, tabular listings, or in a grid of images (full customisation is possible via templating).
+2) 'Is tree' -- a tree catalogue has a full hierarchical category tree, much like the download system does; a non-tree catalogue just shows the categories from a single catalogue index.
 
 Note that if you set all fields of your catalogue to "Display in category-views" and disable comments and ratings and trackbacks, there will be no links to the entry view screen. This is due to there being little purpose in this screen because everything already displays on categories.
 [/surround]
@@ -110,9 +110,10 @@ Templates:
 This is probably the most attractive display, and works well if you only really need to show a title and a thumbnail on the category screen.
 
 The default template ([tt]CATALOGUE_DEFAULT_GRID_ENTRY_WRAP.tpl[/tt]) assumes the first field is the title and the second field is the picture.
-You therefore need to either:
-1) Follow this convention
-2) Create [tt]CATALOGUE_yournewcatalogue_GRID_ENTRY_WRAP.tpl[/tt] such that it references a different field sequence number (replace [tt]FIELD_1_THUMB[/tt], noting that we're counting field sequence numbers starting from zero)
+You therefore need to either:[list="a"]
+[*] Follow this convention
+[*] Create [tt]CATALOGUE_yournewcatalogue_GRID_ENTRY_WRAP.tpl[/tt] such that it references a different field sequence number (replace [tt]FIELD_1_THUMB[/tt], noting that we're counting field sequence numbers starting from zero)
+[/list]
 
 However there is an important exception to the above. The products catalogue already is bundled with a custom template set which is already referencing a different picture field. You also are not supposed to rearrange the first few fields in the products catalogue because they have a hard-coded meaning.
 
@@ -222,8 +223,8 @@ If we wanted to jazz a 'classifieds' catalogue up a bit, we might change it to s
 {+END}
 [/code]
 
-You can see how you can reference individual fields in the template like [samp]{FIELD_0}[/samp].
-For a full table of fields you can use, put [samp]{+START,PARAM_INFO}{+END}[/samp] temporarily into the template, and it will show you everything defined in a neat table.
+You can see how you can reference individual fields in the template like [tt]{FIELD_0}[/tt].
+For a full table of fields you can use, put [tt]{+START,PARAM_INFO}{+END}[/tt] temporarily into the template, and it will show you everything defined in a neat table.
 
 Field values are available in three forms:
 1) Standard (e.g. [tt]{FIELD_0}[/tt]) --  Parsed for Comcode (if applicable), and displayed

@@ -23,11 +23,11 @@ It is recommended that you do not 'jump over' major releases (e.g. v2 to v4, jum
 ocProducts cannot make any guarantees about the speed of which any new bugs might be patched, for any upgrade. It is your own responsibility to make and test a full website backup (files and database) before you upgrade, for use in the unlikely event of you wanting to revert your upgrade.
 Some users may wish to test upgrades (and pre-fix any theme compatibility problems that could occur) on a staging site (a private mirror of their live site).
 
-[title="3"]Special note- multi-site-networks[/title]
+[title="3"]Special note: multi-site-networks[/title]
 
 If you are using [concept]Conversr[/concept] on a M.S.N. and upgrading to a new major release then you will need to upgrade all the sites together, starting with the one that hosts the forums.
 
-[title="3"]Special note- upgrading third-party forums[/title]
+[title="3"]Special note: upgrading third-party forums[/title]
 
 If you are using a third-party forum and upgrading that software, be sure to check that the Composr forum driver you are using is compatible with the new version. This is usually only an issue with major new releases of third-party software. If you need a new/upgraded forum driver, please [page="site:support"]contact ocProducts[/page].
 

@@ -51,7 +51,7 @@ Repeat step5 and step6 to add more entries to the catalogue.
 [b]Step7:[/b]
 To view the catalogue entry, navigate to the Catalogue name from the content menu. You will be able to see a screen similar to the one show in the screen shot below.
 
-If you already customised your panels or menus (perhaps via the Setup Wizard), you may not see a direct link – but you may see a link to 'Catalogues' and then a link to your catalogue from that page. You can add a direct link onto your menus manually from the menu editor.
+If you already customised your panels or menus (perhaps via the Setup Wizard), you may not see a direct link -- but you may see a link to 'Catalogues' and then a link to your catalogue from that page. You can add a direct link onto your menus manually from the menu editor.
 [media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_10.png[/media]
 
 [title="2"]Embedding a catalogue into a page[/title]
@@ -156,7 +156,7 @@ Clear the contents of [tt]CATALOGUE_cars_FIELDMAP_ENTRY_WRAP.tpl[/tt] file again
 </div>
 [/code]
 
-You may wonder why some parameters are given a '*' on the end. This is because these parameters aren't yet formatted for HTML, they're plain text. The '*' tells Composr to format them for HTML, which means replacing “&” with “&amp;”, “>” with “&gt;” and other such things. It is important for security. The [tt]{FIELD_<number>}[/tt] parameters are already formatted for HTML, as these hold already-displayed field values, not raw plain text values (e.g. [tt]{FIELD_3}[/tt] holds the HTML to show the picture, not the raw picture URL).
+You may wonder why some parameters are given a '*' on the end. This is because these parameters aren't yet formatted for HTML, they're plain text. The '*' tells Composr to format them for HTML, which means replacing [tt]&[/tt] with [tt]&amp;[/tt], [tt]>[/tt] with [tt]&gt;[/tt] and other such things. It is important for security. The [tt]{FIELD_<number>}[/tt] parameters are already formatted for HTML, as these hold already-displayed field values, not raw plain text values (e.g. [tt]{FIELD_3}[/tt] holds the HTML to show the picture, not the raw picture URL).
 
 [b]Step5:[/b]
 Pick the appropriate instructions below, depending on your scenario:
@@ -241,7 +241,7 @@ And put this into our [tt]catalogues.css[/tt] file (at the start or end, don't e
 
 [title="2"]Further customisation of catalogue layout[/title]
 
-[title="3"]Customing the catalogue entry viewing screen[/title]
+[title="3"]Customising the catalogue entry viewing screen[/title]
 
 [b]Step1:[/b]
 So far we've redesigned catalogue categories, but we haven't touched the screen for viewing entries yet.

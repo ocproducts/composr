@@ -15,9 +15,10 @@ This tutorial covers some basic information relating to Comcode pages.
 [title="2"]Default pages[/title]
 
 [media width="150" description="The list of Comcode pages to be edited/deleted" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages.png[/media]
-Comcode pages may be selected for editing either:
-1) From Content Management > Pages (Comcode pages), which gives you a table to choose from.
-2) By clicking the edit link underneath a page being viewed.
+Comcode pages may be selected for editing either:[list="a"]
+[*] From Content Management > Pages (Comcode pages), which gives you a table to choose from.
+[*] By clicking the edit link underneath a page being viewed.
+[/list]
 
 The default Comcode pages are...
 [html]

@@ -85,9 +85,10 @@ At no point do you reference raw content IDs. The repository does not use them (
 
 [title="3"]More detail on subpaths[/title]
 
-If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are either:
-1) Making an entry for a content type that does not have categories at all.
-2) Making a new folder (a category) for a content type that doesn't have hierarchical categories.
+If no subpath is given for a resource rule, it is considered '' (i.e. blank). This means we are either:[list="a"]
+[*] Making an entry for a content type that does not have categories at all.
+[*] Making a new folder (a category) for a content type that doesn't have hierarchical categories.
+[/list]
 
 Subpaths are relative to where the content type is stored in the repository (associated categories and entries are both stored under the same place - e.g. download categories and downloads are both under [tt]/var/downloads[/tt]). The path components are similar to labels, but monikerified (turned into a codename, which will be enforced as unique). You can find what they are by browsing the repository. Or, if it's a case where the content type uses a human readable codename, the subpath is usually the same as the codename (e.g. the name of a zone, or a gallery).
 

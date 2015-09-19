@@ -48,9 +48,9 @@ The 'merge posts into' feature moves posts out of the current topic and into an 
 When moving to a new topic, the title of the topic is as of the first moved post. If the first moved post has no title the topic will be given an arbitrary title (which you may later edit).
 
 Deleted posts will be kept behind in the 'post history'. Post history can be accessed in three ways:
- - Clicking the 'history' button next to a post (for edited posts only)
- - Clicking the 'post history' link in a member profile
- - Selecting the 'topic history' topic action
+1) Clicking the 'history' button next to a post (for edited posts only)
+2) Clicking the 'post history' link in a member profile
+3) Selecting the 'topic history' topic action
 
 The 'post history' feature allows you to view text of all revisions a post has gone through, and restore deleted posts. It is also possible to delete post history. The 'post history' feature was designed so you can track moderations, including moderations done by actual posters (in case they are trying to cover something up).
 [/surround]
@@ -66,9 +66,9 @@ Without the right permissions members will not be able to make topics and posts 
 [title="2"]Important posts[/title]
 
 Moderators may choose to flag a post of theirs as important. This will usually be used to carry one of three meanings:
- - the post contains important information
- - the moderator is exerting their authority
- - the post was created by a multi-moderation, and hence is automated or otherwise standardised
+1) the post contains important information
+2) the moderator is exerting their authority
+3) the post was created by a multi-moderation, and hence is automated or otherwise standardised
 
 [concepts
  1_key="Moderation"        1_value="The process of managing a discussion forum's content and community"

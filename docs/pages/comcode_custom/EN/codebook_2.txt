@@ -13,16 +13,16 @@ ocProducts maintains a [url="checklist for standards"]{$BRAND_BASE_URL}/docs/sta
 [title="3"]Standard language strings you can re-use[/title]
 
 The following language strings from [tt]global.ini[/tt] and [tt]critical_errors.ini[/tt] are commonly reused:
- - Nothing here: MISSING_RESOURCE, NO_ENTRIES, NO_CATEGORIES, NONE, NONE_EM
- - Actions: PROCEED, SAVE, SET, CHOOSE, USE, ADD, EDIT, DELETE, SEND, VIEW, MORE, BROWSE, _JOIN, _LOGIN
- - Choices and records: YES, NO, EXISTING, NEW, OLD
- - Users and usergroups: SUBMITTER, USERNAME, PASSWORD, GROUP, _USERGROUP, BY, BY_SIMPLE, GUEST, MEMBER
- - URLs, uploads and thumbnails: URL, IMAGE_URL, UPLOAD, THUMBNAIL
- - Resources: PAGE, ENTRY, CATEGORY
- - Table columns/fields, Identifiers: IDENTIFIER, CODENAME, TITLE, NAME
- - Table columns/fields, Properties: SIZE, DATE, DATE_TIME, TYPE, VALIDATED
- - Table columns/fields, Other: AMOUNT, FROM, TO, REASON, PARAMETER_A, PARAMETER_B
- - Rating, sorting, browsing and results: RATING, SORT, SORT_BY, RESULT, _RESULTS, START, DONE, ROOT, NEXT, PREVIOUS
+ - Nothing here: [tt]MISSING_RESOURCE[/tt], [tt]NO_ENTRIES[/tt], [tt]NO_CATEGORIES[/tt], [tt]NONE[/tt], [tt]NONE_EM[/tt]
+ - Actions: [tt]PROCEED[/tt], [tt]SAVE[/tt], [tt]SET[/tt], [tt]CHOOSE[/tt], [tt]USE[/tt], [tt]ADD[/tt], [tt]EDIT[/tt], [tt]DELETE[/tt], [tt]SEND[/tt], [tt]VIEW[/tt], [tt]MORE[/tt], [tt]BROWSE[/tt], [tt]_JOIN[/tt], [tt]_LOGIN[/tt]
+ - Choices and records: [tt]YES[/tt], [tt]NO[/tt], [tt]EXISTING[/tt], [tt]NEW[/tt], [tt]OLD[/tt]
+ - Users and usergroups: [tt]SUBMITTER[/tt], [tt]USERNAME[/tt], [tt]PASSWORD[/tt], [tt]GROUP[/tt], [tt]_USERGROUP[/tt], [tt]BY[/tt], [tt]BY_SIMPLE[/tt], [tt]GUEST[/tt], [tt]MEMBER[/tt]
+ - URLs: uploads and thumbnails: [tt]URL[/tt], [tt]IMAGE_URL[/tt], [tt]UPLOAD[/tt], [tt]THUMBNAIL[/tt]
+ - Resources: [tt]PAGE[/tt], [tt]ENTRY[/tt], [tt]CATEGORY[/tt]
+ - Table columns/fields, Identifiers: [tt]IDENTIFIER[/tt], [tt]CODENAME[/tt], [tt]TITLE[/tt], [tt]NAME[/tt]
+ - Table columns/fields, Properties: [tt]SIZE[/tt], [tt]DATE[/tt], [tt]DATE_TIME[/tt], [tt]TYPE[/tt], [tt]VALIDATED[/tt]
+ - Table columns/fields, Other: [tt]AMOUNT[/tt], [tt]FROM[/tt], [tt]TO[/tt], [tt]REASON[/tt], [tt]PARAMETER_A[/tt], [tt]PARAMETER_B[/tt]
+ - Rating, sorting, browsing and results: [tt]RATING[/tt], [tt]SORT[/tt], [tt]SORT_BY[/tt], [tt]RESULT[/tt], [tt]_RESULTS[/tt], [tt]START[/tt], [tt]DONE[/tt], [tt]ROOT[/tt], [tt]NEXT[/tt], [tt]PREVIOUS[/tt]
 
 [title="3"]Templates and themes[/title]
 
@@ -48,24 +48,24 @@ A full description of the Tempcode language is available in the [page="docs:tut_
 WCAG is the standard accessibility standard. Imagine, for example, a blind user using a website.
 
 Adherence to the following guidelines can't be automatically detected, so need to be checked manually in your XHTML:
- - [color="red"][tt]<noscript>[/tt] is given whenever appropriate and possible[/color]
- - [color="red"]When plugins are used, info about it must be displayed[/color]
- - [color="red"]When an appropriate markup language exists, use markup rather than images to convey information.[/color]
- - [color="red"]Mark up lists and list items properly.[/color]
- - [color="red"]Ensure that all information conveyed with color is also available without color, for example from context or markup.[/color]
- - [color="red"][tt]<blockquote>[/tt] may not used for non-quoting[/color]
+ - [color="#AA2222"][tt]<noscript>[/tt] is given whenever appropriate and possible[/color]
+ - [color="#AA2222"]When plugins are used, info about it must be displayed[/color]
+ - [color="#AA2222"]When an appropriate markup language exists, use markup rather than images to convey information.[/color]
+ - [color="#AA2222"]Mark up lists and list items properly.[/color]
+ - [color="#AA2222"]Ensure that all information conveyed with color is also available without color, for example from context or markup.[/color]
+ - [color="#AA2222"][tt]<blockquote>[/tt] may not used for non-quoting[/color]
 
 The following guidelines must be adhered to by webmasters themselves:
- - [color="red"]Until user agents allow users to freeze moving content, avoid movement in pages and Until user agents allow users to control flickering, avoid causing the screen to flicker. By default, nothing flickers, but Comcode allows it. It's a question of whether a site is designed to be accessible for all, or 'fancy' for the majority[/color]
- - [color="red"]Alternatives given to multimedia content[/color]
- - [color="red"]Use the clearest and simplest language appropriate for a site's content.[/color]
- - [color="red"]Divide large blocks of information into more manageable groups where natural and appropriate.[/color]
- - [color="red"]Specify the expansion of each abbreviation or acronym in a document where it first occurs.[/color]
- - [color="red"]Place distinguishing information at the beginning of headings, paragraphs, lists, etc.[/color]
+ - [color="#AA2222"]Until user agents allow users to freeze moving content, avoid movement in pages and Until user agents allow users to control flickering, avoid causing the screen to flicker. By default, nothing flickers, but Comcode allows it. It's a question of whether a site is designed to be accessible for all, or 'fancy' for the majority[/color]
+ - [color="#AA2222"]Alternatives given to multimedia content[/color]
+ - [color="#AA2222"]Use the clearest and simplest language appropriate for a site's content.[/color]
+ - [color="#AA2222"]Divide large blocks of information into more manageable groups where natural and appropriate.[/color]
+ - [color="#AA2222"]Specify the expansion of each abbreviation or acronym in a document where it first occurs.[/color]
+ - [color="#AA2222"]Place distinguishing information at the beginning of headings, paragraphs, lists, etc.[/color]
 
 [title="3"]The Theme Wizard[/title]
 
-Composr's default CSS uses equations to define colours, all defined against a seed colour. This allows us to define a large harmonious colour scheme progmatically, and thus allows the Theme Wizard to work (re-calculating the colours against a different seed colour). It saves themers an enormous amount of time, as manually redefining each colour would be very time consuming, let alone recreating all the theme images within the colour scheme.
+Composr's default CSS uses equations to define colours, all defined against a seed colour. This allows us to define a large harmonious colour scheme programatically, and thus allows the Theme Wizard to work (re-calculating the colours against a different seed colour). It saves themers an enormous amount of time, as manually redefining each colour would be very time consuming, let alone recreating all the theme images within the colour scheme.
 
 Equations look like this in the CSS...
 [code="CSS"]
@@ -100,7 +100,7 @@ GIF files are:
 
 JPEG files do not support transparency, and as we prefer to not assume any particular image won't be edited to have transparency, we opt to not use them. Also JPEG has serious problems when images are re-saved, which is a standard event when editing default images. Otherwise we acknowledge JPEG provides superior compression in most normal circumstances.
 
-Besides the lack of animation, and problems on IE6, there is one further problem with PNG images- various web browsers, including Microsoft Edge and Safari, are incompatible with the settings used by Photoshop to save them. The colours are always slightly wrong -- noticeable if the images need to line up with background colours defined in the CSS. The problem is caused by the browsers not supporting PNG gamma settings properly. Fortunately this problem is solved by passing the images through a free compression-optimisation program called PNGGauntlet (for Windows; use OptiPNG on a Mac), which is worth doing anyway as it provides significant loss-less file-size savings over what Photoshop can do. Instructions for using PNG Gauntlet:
+Besides the lack of animation, there is one further problem with PNG images -- various web browsers, including Microsoft Edge and Safari, are incompatible with the settings used by Photoshop to save them. The colours are always slightly wrong -- noticeable if the images need to line up with background colours defined in the CSS. The problem is caused by the browsers not supporting PNG gamma settings properly. Fortunately this problem is solved by passing the images through a free compression-optimisation program called PNGGauntlet (for Windows; use OptiPNG on a Mac), which is worth doing anyway as it provides significant loss-less file-size savings over what Photoshop can do. Instructions for using PNG Gauntlet:
  - Backup your images, just in case something goes wrong.
  - Download PNGGauntlet and run it. Select RGB+Alpha as the output type, and minimise depth reduction. Do not preserve gamma information.
  - Tick (check) the 'Overwrite Original Files' checkbox.
@@ -114,7 +114,7 @@ JavaScript is separate from Java, and built into web browsers directly. It is us
 
 [title="3"]JavaScript libraries[/title]
 
-Composr has an inbuilt set of JavaScript libraries, which are split across a number of JavaScript template files that each begin with the name 'JAVASCRIPT'. The core library that is loaded onto every screen is named just [tt]global.js[/tt]. This core library is very general and doesn't know about Composr's individual modules- it is a general-purpose library to provide functionality usable anywhere. Most of the other JavaScript libraries are specific to individual modules (e.g. the chat module uses [tt]chat.js[/tt]) or to specific aspects of Composr (e.g. the Comcode editing interface uses [tt]editing.js[/tt]). There are a few additional general purpose JavaScript libraries:
+Composr has an inbuilt set of JavaScript libraries, which are split across a number of JavaScript template files that each begin with the name 'JAVASCRIPT'. The core library that is loaded onto every screen is named just [tt]global.js[/tt]. This core library is very general and doesn't know about Composr's individual modules -- it is a general-purpose library to provide functionality usable anywhere. Most of the other JavaScript libraries are specific to individual modules (e.g. the chat module uses [tt]chat.js[/tt]) or to specific aspects of Composr (e.g. the Comcode editing interface uses [tt]editing.js[/tt]). There are a few additional general purpose JavaScript libraries:
 1) [tt]ajax[/tt] -- AJAX call functionality, which should be used for all AJAX code.
 2) [tt]dragdrop[/tt] -- A drag and drop library (do not use this unless drag & drop really is the best way to build an interface, which is very rare)
 3) [tt]jquery[/tt] -- Bundled jQuery library, used on some screens (but not usually included as a cross-site dependency).
@@ -129,7 +129,7 @@ This command is usually best placed:
 2) or, in the [tt]run[/tt] function if it is used by all/most screens in your module
 
 Alternatively, you can load JavaScript from a template with a command like:
-[code="HTML"]
+[code="Tempcode"]
 {$REQUIRE_JAVASCRIPT,example}
 [/code]
 
@@ -142,24 +142,23 @@ In Composr, JavaScript libraries are automatically minified to save on bandwidth
 
 [title="3"]Useful Composr JavaScript functions[/title]
 
- - Escaping: escape_html, escape_comcode
- - Cookies: set_cookie, read_cookie
- - Introspection: get_elements_by_class_name, abstract_get_computed_style, browser_matches
- - Calling up dependencies: load_snippet, require_javascript
- - Viewport: get_window_width, get_window_height, get_window_scroll_width, get_window_scroll_height, get_window_scroll_x, get_window_scroll_y
- - Element positioning: find_pos_x, find_pos_y, find_width, find_height
- - Tooltips: activate_tooltip
- - Misc: set_opacity, add_event_listener_abstract, cancel_bubbling, keep_stub
- - HTML manipulation: get_inner_html, set_inner_html
- - AJAX: ajax.js: do_ajax_request
- - Animation: toggleable_tray, smooth_scroll, transitions.js: fade_transition
+ - [b]Escaping[/b]: [tt]escape_html[/tt], [tt]escape_comcode[/tt]
+ - [b]Cookies[/b]: [tt]set_cookie[/tt], [tt]read_cookie[/tt]
+ - [b]Introspection[/b]: [tt]get_elements_by_class_name[/tt], [tt]abstract_get_computed_style[/tt], [tt]browser_matches[/tt]
+ - [b]Calling up dependencies[/b]: [tt]load_snippet[/tt], [tt]require_javascript[/tt]
+ - [b]Viewport[/b]: [tt]get_window_width[/tt], [tt]get_window_height[/tt], [tt]get_window_scroll_width[/tt], [tt]get_window_scroll_height[/tt], [tt]get_window_scroll_x[/tt], [tt]get_window_scroll_y[/tt]
+ - [b]Element positioning[/b]: [tt]find_pos_x[/tt], [tt]find_pos_y[/tt], [tt]find_width[/tt], [tt]find_height[/tt]
+ - [b]Tooltips[/b]: [tt]activate_tooltip[/tt]
+ - [b]Misc[/b]: [tt]set_opacity[/tt], [tt]add_event_listener_abstract[/tt], [tt]cancel_bubbling[/tt], [tt]keep_stub[/tt]
+ - [b]HTML manipulation[/b]: [tt]get_inner_html[/tt], [tt]set_inner_html[/tt]
+ - [b]AJAX[/b]: ajax.js: [tt]do_ajax_request[/tt]
+ - [b]Animation[/b]: [tt]toggleable_tray[/tt], [tt]smooth_scroll[/tt], transitions.js: [tt]fade_transition[/tt]
 
 [title="3"]JavaScript event handlers[/title]
 
 Add in JavaScript event handlers to your HTML normally as required. For example, to make a popup window link:
 [code="HTML"]
-<a href="{BASE_URL*}/popup.htm"
-	onclick="window.open(this.getAttribute('href'));">Click me</a>
+<a href="{BASE_URL*}/popup.htm" onclick="window.open(this.getAttribute('href'));">Click me</a>
 [/code]
 It's acceptable to write inline event handler code like this as long as it doesn't get too long.
 
@@ -188,7 +187,7 @@ It is important that:
 [*]You should actually use CDATA so the document does conform as XHTML.
 [*]You should not put it all on one line, because then the JavaScript line-comment will end up commenting all the code out and nothing will happen.
 [*]Don't use any Composr JavaScript except for JavaScript in the main [tt]global.js[/tt] library, unless you have put it inside an [tt]onload[/tt] event handler, like:
-[code="HTML"]
+[code="JavaScript"]
 add_event_listener_abstract(window,'load',function() { ... });
 [/code]
 [*]This is because Composr does not want to pre-load any more JavaScript library code than is necessary via loading it in <head> (it stops the page rendering at all until the files have been downloaded), and we can't assume the order JavaScript will be loaded in compared to the order in which inline code is executed (it changes randomly, and between browsers). By putting our code inside an onload handler we force it to only run after all our dependent JavaScript files have loaded.
@@ -212,7 +211,7 @@ window.my_template_parameter='{MY_TEMPLATE_PARAMETER;/}';
 [/code]
 
 In the JavaScript library (which must have been loaded using [tt]require_javascript[/tt]):
-[code="HTML"]
+[code="JavaScript"]
 function output_my_parameter()
 {
 	// Output the global variable we made.
@@ -226,13 +225,10 @@ The above example used global variables which is bad programming practice. I did
 
 In the template:
 [code="HTML"]
-<a
-	href="#"
-	onclick="output_my_parameter('{MY_TEMPLATE_PARAMETER;*}');"
->Click me</a>
+<a href="#" onclick="output_my_parameter('{MY_TEMPLATE_PARAMETER;*}');">Click me</a>
 [/code]
 In the JavaScript library:
-[code="HTML"]
+[code="JavaScript"]
 function output_my_parameter(message)
 {
 	window.alert(message);
@@ -242,12 +238,12 @@ function output_my_parameter(message)
 [title="3"]Writing AJAX functionality[/title]
 
 For adding AJAX functionality, we can use the functions defined in the [tt]ajax.js[/tt] template (in particular, [tt]do_ajax_request[/tt]). For using those functions, we should include [tt]ajax[/tt] as a JavaScript dependency using this PHP code:
-[code="HTML"]
+[code="PHP"]
 require_javascript('ajax');
 [/code]
 
 Also we need our own JavaScript template file to implement our AJAX-tied behaviour, because the code is probably going to be too long to include in-line with the HTML. For example, create a new file named [tt]example.js[/tt], which would be loaded up from PHP code by:
-[code="HTML"]
+[code="PHP"]
 require_javascript('example');
 [/code]
 
@@ -260,7 +256,7 @@ In the [tt]data/<script-name>.php[/tt], we [tt]require_code[/tt] a file that wil
 
 Note that the Composr entry-point script code is 99% boilerplate. Only the final few lines are customised, the rest is copy&pasted.
 
-Don't try and omit making an entry-point script and call index.php instead, because you really do not want all the peripherary implications of a full page load (zone permissions, global HTML wrapper, etc). In other words, you are not going through a zone, you are not using the [tt]do_site[/tt] methodology of loading up a Composr page.
+Don't try and omit making an entry-point script and call index.php instead, because you really do not want all the peripheral implications of a full page load (zone permissions, global HTML wrapper, etc). In other words, you are not going through a zone, you are not using the [tt]do_site[/tt] methodology of loading up a Composr page.
 
 Our PHP function should return a response in XML (i.e. XML format, with a [tt]text/xml[/tt] mime type) or for the very simplest use-cases in text format (i.e. with a [tt]text/plain[/tt] mime type). In other words, run the correct [tt]header[/tt] command before anything else. You can only return XHTML if you do it under an [tt]text/plain[/tt] mime type. The only time in which XHTML is returned with a [tt]text/html[/tt] mime type is if there was some kind of error and Composr outputs an error screen, in which case it would be automatically accompanied with an HTTP status code of '500', and any non-200 status code would prompt the AJAX framework to put out an error message. If you are writing your own webmaster-friendly error handling then you should put out errors in the XML frame Composr uses (described below), or you should encode your own error passing system into the pay-load data.
 
@@ -271,7 +267,7 @@ If in doubt, use XML.
 
 The XML frame you should output from PHP should be structured as follows:
 
-[code="HTML"]
+[code="XML"]
 <?xml version="1.0" encoding="charset"?>
 <request>
 	<result>
@@ -291,6 +287,7 @@ The XML frame you should output from PHP should be structured as follows:
 
 This example of the full usage. However normally you don't return any method or messages, so you will see real code is usually much simpler, like:
 [code="PHP"]
+<?php
 header('Content-Type: text/xml; charset=' . get_charset());
 prepare_for_known_ajax_response(); // Make sure input data is converted, as JavaScript always uses utf-8 even if we are not set to use it
 echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
@@ -330,8 +327,8 @@ The rest of this section will focus on how the content API uses boxes...
 Almost every kind of content (and category) has an content type hook defined. That content type hook will specify how a box of that content (or category) will be displayed. The convention is that the content type hooks glue themselves to the [tt]render_<content-type>_box[/tt] functions, which glue themselves to particular templates.
 
 So, how do the templates work? Any content type will probably have two main templates used to display it:
- - A box template ([tt]<content_type>_BOX.tpl[/tt]) [what we are discussing here]
- - A screen template ([tt]<content_type>_SCREEN.tpl[/tt])
+1) A box template ([tt]<content_type>_BOX.tpl[/tt]) [what we are discussing here]
+2) A screen template ([tt]<content_type>_SCREEN.tpl[/tt])
 
 Box templates are used on category listings, previews, search results, and when picking out content to display with an award. Box templates generally hold the following criteria:
  - Must be surrounding with standard box markup, or mainly consist of a table
@@ -361,7 +358,7 @@ However, things aren't always so simple. There are some exceptions because some 
  - other modules use very fine-tuned listings for display categories/content. For example, the chat lobby shows rooms as a compact list.
  - other modules make custom content queries which don't match up to what the parameters for existing blocks can achieve. For example, the authors module shows what downloads and news belongs to a particular author.
 
-[box float="right"]
+[box float="right" width="20em"]
 This abstraction quandary comes up in other places too. Often programmers will try and abstract everything and end up with a mess. For example, Composr CRUD modules define the form structure manually. We could try and automatically generate forms via the semantic database structure we already have -- but for usability we need much more control over how each form will look in every case.
 [/box]
 There is a constant battle between abstraction, and intuitive interfaces. Not everything can be simplified down to an instance of a common pattern. Therefore Composr abstracts the patterns in layers, and then module/block code will interface with the layer that is compatible with its requirements and fill in the gaps. This minimises code, while maximises the user experience, and allows new unplanned experiences to be created by webmasters who wish to interface with the APIs at various levels. In general, even if a block is not used to display listings, the code required is still minimal due to use of the [tt]render_<content-type>_box[/tt] functions.

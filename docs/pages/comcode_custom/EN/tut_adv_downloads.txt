@@ -44,7 +44,7 @@ The draw-backs with this method are:
  - Only staff may perform this
  - The file is not contained in Composr, and thus cannot be managed by it (for example, deleted when the download is deleted)
 
-[title="2"]Outmodeing[/title]
+[title="2"]Outmoding[/title]
 
 When a download in the download database has a new version released, either as a direct upgrade, or by some other means (such as being bundled in a wider package), the old download may be marked as 'outmoded' by the newer one.
 

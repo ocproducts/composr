@@ -89,14 +89,11 @@ There are 3 approaches to solving this problem that work together:
 2) CSS provides a mechanism for specifying different display rules for the printed version; Composr makes use of this
 3) Composr has a parameter, [tt]wide_print[/tt], that will influence some aspects of how pages are put together
 
-The Composr [tt]wide_print[/tt] parameter is activated from either:
-a) The link from the [tt]side_printer_friendly[/tt] block
-b) The link from the [tt]main_screen_actions[/tt] block
-c) [i]Or, a link you've put together yourself[/i]
-
-[title="2"]Testing[/title]
-
-
+The Composr [tt]wide_print[/tt] parameter is activated from either:[list="a"]
+[*] The link from the [tt]side_printer_friendly[/tt] block
+[*] The link from the [tt]main_screen_actions[/tt] block
+[*] [i]Or, a link you've put together yourself[/i]
+[/list]
 
 [title="2"]See also[/title]
 

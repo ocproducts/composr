@@ -386,7 +386,7 @@ class Hook_config_latitude
 }
 [/code]
 
-The next thing to do is to set up the translation strings needed by these options. In Composr prettty much everything is translatable, so we can't just give an English name and leave all non-English speakers unable to use the mini-block. Instead, what we gave to the human_name settings were code names which we can use to reference these options' names. Now we must define these names in at least one language.
+The next thing to do is to set up the translation strings needed by these options. In Composr pretty much everything is translatable, so we can't just give an English name and leave all non-English speakers unable to use the mini-block. Instead, what we gave to the human_name settings were code names which we can use to reference these options' names. Now we must define these names in at least one language.
 
 The quickest way to do this is to put them in the "global" language file, which is available to all parts of the site. We're going to define the names for English, so make an  empty file "global.ini" in your Composr installation into the folder "lang_custom/EN". Put this into it:
 
@@ -443,8 +443,8 @@ $url = get_base_url();
 [/code]
 
 Now we can use the short name [tt]$url[/tt] instead of the longer function call [tt]get_base_url()[/tt] (it's also more efficient, since the value only has to be worked out once). Notice the semicolon at the end, which means that this is an instruction to carry out (a "statement"). Assignment statements can do one of two things:
- - Define a new variable (if the variable written on the left hasn't been used yet)
- - Change the value stored in an existing variable (if the variable has been used before)
+1) Define a new variable (if the variable written on the left hasn't been used yet)
+2) Change the value stored in an existing variable (if the variable has been used before)
 
 It is important to understand what PHP does when it sees an assignment statement, which is this:
 1) Work out the value of what is on the right hand side.

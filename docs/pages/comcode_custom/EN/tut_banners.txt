@@ -32,7 +32,7 @@ The system will show permanent and campaign banners as a 50:50 split. Default ba
 
 [title="3"]Supported file types[/title]
 
-The banner system supports 4 different broad categories of file type:
+The banner system supports different broad categories of file type:
  - images
  - flash (swf format)
  - text
@@ -146,7 +146,7 @@ If banners won't show check:
 [concepts
  1_key="Default banner"       1_value="A banner that is displayable at any time (i.e. both when campaign and permanent banners would be chosen for viewing), but is intended to have a low importance level such that it is shown when the system is low on banners"
  2_key="Campaign banner"      2_value="A banner that has a limited number of hits, but with support for hit balancing should the banner be tied to a site that is generating banner network clicks"
- 3_key="Importance modulus"   3_value="A number representing the how likely a banner is to be shown, releative to the other importance moduli (in essence, they are ratios to each other of how likely the banner will be shown)"
+ 3_key="Importance modulus"   3_value="A number representing the how likely a banner is to be shown, relative to the other importance moduli (in essence, they are ratios to each other of how likely the banner will be shown)"
  4_key="Hit balancing"        4_value="A feature that allows a banner network to be created such that banners get as many hits out of the system as their sites put clicks into the system"
  5_key="Banner"               5_value="An advertising banner"
 ]Concepts[/concepts]

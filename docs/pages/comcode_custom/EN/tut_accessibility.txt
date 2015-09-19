@@ -36,7 +36,7 @@ The checkpoint tables included in this document, under the template compliance s
 <li>Do not fill your site with multimedia without providing information about that multimedia</li>
 <li>Avoid using Comcode tags that make the page dynamic in the user web browser, such as [ticker] and [jumping]</li></ul>[/html]
 
-It is possible to use Comcode in such a way that a page becomes invalid. Usually this is not something that would be accidentally triggered, as there is a correlation between common sense and webstandards checking for most of these scenarios. An example error would occur if you put a \[block] tag inside a \[url] tag: intuitively, this does not make sense, as a block could not be a sensible link title.
+It is possible to use Comcode in such a way that a page becomes invalid. Usually this is not something that would be accidentally triggered, as there is a correlation between common sense and webstandards checking for most of these scenarios. An example error would occur if you put a [tt][block][/tt] tag inside a [tt][url][/tt] tag: intuitively, this does not make sense, as a block could not be a sensible link title.
 
 It is also possible to degrade validation by creating different items of content that share the same title. For example, if two forums share the same title, it is likely that on the forum page there will by an error due to two separate links sharing the same link text. Composr avoids this when it is reasonable to think that two links may share a title, by providing additional distinguishing information for the link, but does not universally distinguish all links in the portal in such a way, as to do so would merely make the link-text closer to that of the URL, undermining the accessibility in itself by making them overly complex. To work-around this, simply try to choose distinctive titles for your content.
 
@@ -44,7 +44,7 @@ It is also possible to degrade validation by creating different items of content
 
 This section will detail Composr compliance with the guidelines, with any relevant notes. The check-list is taken directly from the W3C specification. If the templates are edited, and conformance is still desired, then it is recommended that you enable the webstandards checker while editing templates (only staff will see the error messages even when it is enabled): the webstandards checker is of enormous practical assistance in finding and describing errors, for all relevant specifications. The table will detail any special information relating to how Composr is designed to work with some of the more tricky requirements.
 
-Please note that while Composr works without JavaScript, some times alternatives have to be used. For example, the menu editor requires JavaScript, so if JavaScript is not usable, the \[menu] Comcode tag must be used instead.
+Please note that while Composr works without JavaScript, some times alternatives have to be used. For example, the menu editor requires JavaScript, so if JavaScript is not usable, the [tt][menu][/tt] Comcode tag must be used instead.
 
 [title="3"]Priority 1 checkpoints[/title]
 
@@ -998,7 +998,7 @@ Please note that while Composr works without JavaScript, some times alternatives
 
 Macromedia Flash is inherently inaccessible to those with certain kinds of disabilities, because it assumes that the web browsing is a visual, mouse-orientated experience. While Flash does not deserve harsh criticism for this (almost all of traditional desktop interfaces make the same assumption), it is inferior to well written (X)HTML from the accessibility perspective. HTML's document model of interfaces provides the 'semantic' structure that allows web pages to be accessible.
 
-Therefore, to make an accessible website, Flash should be avoided for anything other than auxillary usage that XHTML could not reasonably achieve.
+Therefore, to make an accessible website, Flash should be avoided for anything other than auxiliary usage that XHTML could not reasonably achieve.
 
 [title="3"]JavaScript[/title]
 
@@ -1029,7 +1029,7 @@ Preferably, the CSS information would be moved into it's own named class, with t
 
 [title="3"]Confusing text[/title]
 
-Writing skills are important for a website targetted at the general-public, and especially so when a segment of the audience have cognitive disorders.
+Writing skills are important for a website targeted at the general-public, and especially so when a segment of the audience have cognitive disorders.
 Take the following text, for example:
 [quote]
 [title="4"]Introduction[/title]
@@ -1072,9 +1072,9 @@ For example:
  - Clearly defining where tags start and end allows user agents more certainty over the correct interpretation, and hence they can be better expressed non-visually. While there are rules for interpreting HTML in a way that is fully expressed, there is no guarantee that the author's intent is that of the interpretations assumption.
  - Overlapping tags might make sense visually, but are unnecessarily complex when expressed non-visually.
  - CSS is preferable to the use of the 'font' tag because the user may override the presentation with that of their own; for example, a user could increase the contrast between certain colours by overriding part of a CSS class.
- - Using a simple and consistant strict grammar makes document markup easier to read and understand, and hence reduces the chance of making other errors due to the reduction in distraction.
+ - Using a simple and consistent strict grammar makes document markup easier to read and understand, and hence reduces the chance of making other errors due to the reduction in distraction.
 
-[title="3"]Ommited accessibility information[/title]
+[title="3"]Omitted accessibility information[/title]
 
 This is an example of a table that has not been marked up in an accessible fashion:
 [code="HTML"]
@@ -1095,7 +1095,7 @@ This is an example of a table that has not been marked up in an accessible fashi
 [/code]
 
 If visually scanned, it is obvious how this table is laid out. However, non-visual user agents would read out each data cell with equal prominence and the user would need to build up an understand of it themselves based on this raw 'linearised' stream of information; this is especially problematic when data tables and layout tables are mixed without any distinguishing marks.
-If properly marked-up, the user would get an understand with greater ease. While this might seem a minor issue, it is infact very important because it lowers the burden for a user who is likely to have many other problems that are less avoidable.
+If properly marked-up, the user would get an understand with greater ease. While this might seem a minor issue, it is in-fact very important because it lowers the burden for a user who is likely to have many other problems that are less avoidable.
 
 A properly marked-up version, using Composr conventions, would look as follows:
 
@@ -1119,7 +1119,7 @@ A properly marked-up version, using Composr conventions, would look as follows:
 [concepts
  1_key="WAI"         1_value="Web Accessibility Initiative; a group working under the W3C who are the official standards organisation behind the world wide web."
  2_key="WCAG"        2_value="Web Content Accessibility Guidelines, as written under the WAI."
- 3_key="Semantic"    3_value="Roughly means 'meaning', and often used as the opposite to 'syntax'. Semanticly constructed web pages have well considered structural definition, leading to some aspects of meaning in the layout."
+ 3_key="Semantic"    3_value="Roughly means 'meaning', and often used as the opposite to 'syntax'. Semantically constructed web pages have well considered structural definition, leading to some aspects of meaning in the layout."
  4_key="Section 508" 4_value="Accessibility legislation similar to WCAG, that applies to US federal institutions."
  5_key="ATAG"        5_value="Authoring Tool Accessibility Guidelines."
 ]Concepts[/concepts]

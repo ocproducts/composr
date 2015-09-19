@@ -187,8 +187,8 @@ Buildr is a very large addon for Composr, made by ocProducts in a semi-official 
 Buildr is essentially a game, where members may move in, interact with, and create, a limitless world of rooms, split across multiple themed 'realms'. It can be used to create puzzles, adventures, board games, simulations, and with imagination, many other things.
 
 Points are at the very core of Buildr, and are used in two ways:
- - It costs points (according to a configurable price) to add content to Buildr. Of course, members may try and redeem these points by asking members to give gift points back to them, but this feature prevents abuse and limits the need for moderation.
- - Members may add items to the system, and then sell these items to other members. An example of this being used, is for the controller of a realm used for a 'quest' to add a 'healthy' item into the system: those with more points have a higher chance of surviving to the end of the quest, as they can heal themselves.
+1) It costs points (according to a configurable price) to add content to Buildr. Of course, members may try and redeem these points by asking members to give gift points back to them, but this feature prevents abuse and limits the need for moderation.
+2) Members may add items to the system, and then sell these items to other members. An example of this being used, is for the controller of a realm used for a 'quest' to add a 'healthy' item into the system: those with more points have a higher chance of surviving to the end of the quest, as they can heal themselves.
 
 The Buildr system is very simple, yet via the small set of options available, presents amazing possibilities.
 

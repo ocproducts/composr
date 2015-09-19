@@ -46,9 +46,10 @@ If you put in some text between quote marks, matching will be done on the basis 
 [title="2"]Controlling page display in detail[/title]
 
 You may wish to only show certain parts of screens to particular usergroups. For example, you may want to 'tease' content to non-paying users.
-To implement this, you need to switch to a template editing mind-set, rather than a permissions mind-set. Use normal Tempcode techniques to fence off or change the output of templates, either:
-1) by using the [tt]IS_IN_GROUP[/tt] symbol
-2) working off the back of a standard permission's setting using something like the [tt]HAS_PRIVILEGE[/tt] symbol)
+To implement this, you need to switch to a template editing mind-set, rather than a permissions mind-set. Use normal Tempcode techniques to fence off or change the output of templates, either:[list="a"]
+[*] by using the [tt]IS_IN_GROUP[/tt] symbol
+[*] working off the back of a standard permission's setting using something like the [tt]HAS_PRIVILEGE[/tt] symbol)
+[/list]
 
 For example,
 [code="Tempcode"]

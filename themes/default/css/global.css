@@ -707,6 +707,10 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	/*{+END}*/
 }
 
+.zone_running_docs .comcode_page {
+	line-height: 1.35em;
+}
+
 /*{+START,IF,{$MOBILE}}*/
 	.global_middle, .panel_solo {
 		padding-{!en_left}: 2px;

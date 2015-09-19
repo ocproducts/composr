@@ -92,9 +92,10 @@ You can mark which answers are correct (not applicable to surveys), and write ou
 
 You can reward members with points for passing a test.
 
-Questions that aren't multi-choice will be either:
- - manually-marked
- - unmarked
+Questions that aren't multi-choice will be either:[list="a"]
+[*] manually-marked
+[*] unmarked
+[/list]
 
 Manually marked questions result in a percentage range being shown to the user, as the system won't know the true percentage. There's no feature to put in the mark, the expectation would be that it would happen elsewhere (e.g. when picking a competition winner, when contacting the student manually, etc).
 

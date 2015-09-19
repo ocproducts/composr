@@ -145,7 +145,7 @@ function _css_quot_fixup($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -164,7 +164,7 @@ function _cdata_protect($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -179,7 +179,7 @@ function _codetag_protect($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text

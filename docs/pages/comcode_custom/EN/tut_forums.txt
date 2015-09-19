@@ -13,7 +13,7 @@ Conversr is sometimes abbreviated as CNS.
 [media width="150" description="When editing forums, the full structure is displayed, with an opportunity to re-order both groupings and sub-forums within" float="right"]data_custom/images/docs/tut_forums/forums_edit.png[/media]
 {!cns:DOC_FORUMS}
 
-Forums are actually a very powerful collaboration tool, not merely limited to chat. For example, ocProducts used a forum as an integral part of the processs for the designing of the software you're using right now: it is surprising what forums and topics can be made to represent.
+Forums are actually a very powerful collaboration tool, not merely limited to chat. For example, ocProducts used a forum as an integral part of the process for the designing of the software you're using right now: it is surprising what forums and topics can be made to represent.
 
 So, now that I have explained the structure of a discussion forum, I will explain what each of these constructs are for.
 
@@ -87,7 +87,7 @@ You can set them in 3 places (in order from highest level to lowest level):
 2) Or, you can use the Permissions Tree Editor (go to Admin Zone > Security > Permissions Tree Editor) to set these on the forum zone's 'forumview' module (if you don't want these to apply for any other 'mid-impact content' across the site)
 3) Or, you can set them against specific forums using either the Permissions Tree Editor or the editing screen of a forum
 
-This flexibility is very intentional- you have a choice of setting things at a high level to apply to the whole website, but also the choice to make overrides at a lower level.
+This flexibility is very intentional -- you have a choice of setting things at a high level to apply to the whole website, but also the choice to make overrides at a lower level.
 
 [title="2"]Anonymous posting[/title]
 

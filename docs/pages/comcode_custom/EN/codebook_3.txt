@@ -159,7 +159,7 @@ Deploying to a live server using git is a great idea. However, be aware some cav
 [code="PHP"]
 $SITE_INFO['dev_mode'] = '0';
 [/code]
-git automatically enables dev mode, which intentionally inteferes with things to help you develop quality code -- such as adding extra checks, or disabling cookies so that you don't rely on them. This is great for development, where the developer is in control of everything, but not correct for production.
+git automatically enables dev mode, which intentionally interferes with things to help you develop quality code -- such as adding extra checks, or disabling cookies so that you don't rely on them. This is great for development, where the developer is in control of everything, but not correct for production.
 [*]Use a decent [tt].gitignore[/tt] so you don't get a lot of noise when running [tt]git status[/tt]. Our default one is good but may need tuning.
 [*]Either keep the config file out of git, or put code in there to differentiate between machines via checking [tt]$_SERVER['SERVER_ADDR'][/tt] ([tt]$_SERVER['LOCAL_ADDR'][/tt] on a Windows server).
 [*]Make heavy use of git branches so that you don't get stuck having to perfect all code before you can update anything onto the server.
@@ -234,10 +234,10 @@ This section contains a number of general programming tips. Much of this applies
 
 [title="3"]Deployment[/title]
 
-Be very careful deploying these two files:
- - [tt]_config.php[/tt]
- - [tt].htaccess[/tt]
- - [tt]php.ini[/tt]
+Be very careful deploying these three files:
+1) [tt]_config.php[/tt]
+2) [tt].htaccess[/tt]
+3) [tt]php.ini[/tt]
 
 [tt]_config.php[/tt] is obvious, you don't want to overwrite the live server environment settings with development ones.
 Sometimes it is a good idea to code up [tt]_config.php[/tt] to detect what server it is on, then share that file across all platforms. This is mainly a personal choice.
@@ -425,7 +425,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]rebrand_base_url[/tt] -- to change where branding URLs go to (e.g. the stub that is used when linking to documentation), set it here
   - [tt]company_name[/tt] -- if Composr is being rebranded to be 'made' by another company, set the name here (this has no effect of copyright of course, but ocProducts allows this)
  - Developer testing
-  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome emails don't get mistargeted/over-sent
+  - [tt]notification_safety_testing[/tt] -- set this to '1' to enable extra checks to ensure notifications or welcome emails don't get misdirected/over-sent
   - [tt]memory_tracking[/tt] -- set this to the number of megabytes peak memory usage after which you want the execution URL to be silently logged to the error log (useful for debugging memory usage on a live site). The value must be an integer, with no trailing 'M'. This does not impose a memory limit, which is 64MB by default in Composr, but may be turned off within certain carefully-chosen execution contexts (usually admin tasks which are necessarily memory consuming). Requires PHP 5.2+.
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to enable the Composr profiler, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
   - [tt]monitor_slow_urls[/tt] -- set this to '1' to log any requests taking at least 5 seconds to [tt]data_custom/time_log.txt[/tt]
@@ -522,7 +522,7 @@ The 'keep' parameters available are:
  - [tt]keep_id_order[/tt] -- use this in conjunction with the [tt]admin_cns_groups[/tt] module to force a usergroup reordering based on the named DB field of your choice
  - [tt]keep_backup_alien[/tt] -- set this to '1' if the backup module should only be backing up non-Composr files (i.e. do a backup of the website, but not the software)
  - [tt]keep_module_dangerous[/tt] -- set this to '1' to allow uninstallation of modules that are locked
- - [tt]keep_preserve_ids[/tt] -- set this to '1' when doing an CMS-merge import, to preserve ID's in the import (and not import duplicated ID's); this is not supported officially
+ - [tt]keep_preserve_ids[/tt] -- set this to '1' when doing an CMS-merge import, to preserve IDs in the import (and not import duplicated IDs); this is not supported officially
  - [tt]keep_theme[/tt] -- set this to a theme name, to temporarily try out a different theme
  - [tt]keep_safe_mode[/tt] -- set this to '1' so that where possible, any customised files will be ignored; the default theme will be used
  - [tt]keep_no_output_streaming[/tt] -- set this to '1' to disable output streaming (i.e. enable full pre-processing)
@@ -564,12 +564,12 @@ The following 'keep' parameters have interface triggers, but are also handy for 
  - [tt]keep_theme_seed[/tt] -- set this to kiddie or random or a 6-character HTML colour code, to get dynamic themegen going for your page view (this is very slow, but fun!); you must be staff, with a confirmed session, for this to work
  - [tt]keep_theme_dark[/tt] -- used in conjunction with keep_theme_seed; set to '1' if it is a dark seed
  - [tt]keep_theme_source[/tt] -- used in conjunction with keep_theme_seed; set to the name of the theme being used as the source
- - [tt]keep_theme_algorithm[/tt] -- used in conjunction with keep_theme_seed; set this to 'equations' or 'hsv' to set the theme algoritm
+ - [tt]keep_theme_algorithm[/tt] -- used in conjunction with keep_theme_seed; set this to 'equations' or 'hsv' to set the theme algorithm
  - [tt]keep_print[/tt] -- set this to '1' to display a 'printer friendly' version of the page
  - [tt]keep_lang[/tt] -- set to a two-letter ISO language code to tell Composr which language to use
  - [tt]keep_session[/tt] -- this isn't useful for manual editing, but it is used to note session-IDs when [session-]cookies are not working
  - [tt]keep_timezone[/tt] -- this is the timezone code (tz style) to view in
- - [tt]keep_catalogue_<catalogue-name>_root[/tt] -- set to a category ID for the current viewed content type to trick the breadcrumbs into showing a 'virtual root'; this can also be activated by browsing to the category you'd like to be virtual root (as staff) and then clicking on the final link in the breacrumb chain (the link representing the current category)
+ - [tt]keep_catalogue_<catalogue-name>_root[/tt] -- set to a category ID for the current viewed content type to trick the breadcrumbs into showing a 'virtual root'; this can also be activated by browsing to the category you'd like to be virtual root (as staff) and then clicking on the final link in the breadcrumb chain (the link representing the current category)
  - [tt]keep_wiki_root[/tt] -- as above, but used to propagate Wiki+ virtual roots
  - [tt]keep_gallery_root[/tt] -- as above, but used to propagate gallery virtual roots
  - [tt]keep_download_root[/tt] -- as above, but used to propagate download virtual roots
@@ -598,7 +598,7 @@ in [tt]_config.php[/tt] will disable emails. This is useful on a development ser
 
 [title="3"]Hints for making websites for other people[/title]
 
-Composr is a great platform for web developers. A web developer can build all kinds of sites using Composr -- from simple new media sites, to social networks, to seeminly-bespoke sites such as property directories.
+Composr is a great platform for web developers. A web developer can build all kinds of sites using Composr -- from simple new media sites, to social networks, to seemingly-bespoke sites such as property directories.
 
 However, if you're making a website for somebody else it is is important to bear in mind they probably do not want to learn Composr like you have.
 

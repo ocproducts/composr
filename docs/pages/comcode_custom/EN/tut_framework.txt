@@ -181,7 +181,7 @@ Composr provides a very simple code editor for editing of existing Composr code 
 
 Access the code editor from Admin Zone > Tools > Code editor.
 
-The code editor is very useful for making adhoc changes to a live-site, but is not intended as a full development environment.
+The code editor is very useful for making ad hoc changes to a live-site, but is not intended as a full development environment.
 [/surround]
 
 [title="2"]PHP programming help[/title]

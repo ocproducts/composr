@@ -13,7 +13,7 @@ The actual configuration options are under Admin Zone > Setup > Configuration > 
 CAPTCHA is the conventional tool to stop guest actions (such as joining, or posting) without first proving your human.
 Composr uses a unique method behind-the-scenes to generate the CAPTCHA (the 'CSS' method), which has proven very effective.
 
-Generally-speaking, CAPTCHA will fully protect you from spam. The exception tends to be when real humans do set up accounts, then spam using them. Some spammers subcontract CAPTCHA solution to humans on low-salaries. Other spammers serve target site's CAPTCHAs out to video sites (for example) where viewers unwittlingly are made to solve them in order to be allowed to watch a video.
+Generally-speaking, CAPTCHA will fully protect you from spam. The exception tends to be when real humans do set up accounts, then spam using them. Some spammers subcontract CAPTCHA solution to humans on low-salaries. Other spammers serve target site's CAPTCHAs out to video sites (for example) where viewers unwittingly are made to solve them in order to be allowed to watch a video.
 Therefore, we have additional controls.
 
 Alternative CAPTCHA systems, such as solving maths problems, or recognising cats, or answering domain-problems (i.e. something specific about the subject of the website the CAPTCHA is on), are very popular. However this is purely "security through obscurity". A spammer can easily target a specific site's collection of answers, then spam that site enormously -- because unlike the regular CAPTCHAs, these CAPTCHAs work on a much more limited set of problems and solutions.
@@ -22,7 +22,7 @@ Other CAPTCHA systems use scanned text, or incredibly distorted text, that often
 
 In other words, Composr's default CAPTCHA tries to be both highly secure, and reasonable for a human to use, and then we have additional protections too.
 
-We have an audio option for the CAPTCHA which is important for users with visual impairements. You can also remove the distortion effects from the CAPTCHA, which makes readability easier, but makes it much easier for a spammer to crack it.
+We have an audio option for the CAPTCHA which is important for users with visual impairments. You can also remove the distortion effects from the CAPTCHA, which makes readability easier, but makes it much easier for a spammer to crack it.
 
 [title="2"]Remote Block Lists (RBLs)[/title]
 

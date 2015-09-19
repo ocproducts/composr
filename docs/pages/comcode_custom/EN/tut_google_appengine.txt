@@ -205,9 +205,10 @@ In given code samples replace [tt]<application>[/tt] with the name of your appli
 
 [title="3"]Storage[/title]
 
-You may want to copy your initial custom files to live. If you have no relevant custom files (which is possible), there is no need to. To copy your files you will need to either:
-a) [url="use gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] with the files in [tt]data_custom/modules/google_appengine[/tt] (that is your custom filesystem for Cloud Storage, which Composr has kept separated from your application files).
-b) Alternatively, you can include your custom files as a part of the application. You do this by merging the [tt]data_custom/modules/google_appengine[/tt] folder back down into your main Composr folder. Note though that this does not work for the [tt]uploads[/tt] directory, as uploads are always considered custom and Composr will not search the application directory when locating them.
+You may want to copy your initial custom files to live. If you have no relevant custom files (which is possible), there is no need to. To copy your files you will need to either:[list="a"]
+[*] [url="use gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url] with the files in [tt]data_custom/modules/google_appengine[/tt] (that is your custom filesystem for Cloud Storage, which Composr has kept separated from your application files).
+[*] Alternatively, you can include your custom files as a part of the application. You do this by merging the [tt]data_custom/modules/google_appengine[/tt] folder back down into your main Composr folder. Note though that this does not work for the [tt]uploads[/tt] directory, as uploads are always considered custom and Composr will not search the application directory when locating them.
+[/list]
 
 If you are going to use [tt]gsutil[/tt], this is the process...
 1) [url="Download and install gsutil"]https://developers.google.com/storage/docs/gsutil_install[/url]

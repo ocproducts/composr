@@ -78,7 +78,7 @@ class Hook_cleanup_criticise_mysql_fields
      */
     public function run()
     {
-        // Script to fix db_meta registration for adhoc created tables
+        // Script to fix db_meta registration for ad hoc created tables
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 

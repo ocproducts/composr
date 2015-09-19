@@ -423,9 +423,9 @@ Architecturally this is not ideal, but for practical reasons it was necessary be
 Configuration options are created using the [tt]config[/tt] hooks. The hooks contain a [tt]get_details()[/tt] function that defines a few elements:
 1) A language string codename that identifies a human-readable name for the configuration option.
 2) The codename for the configuration option.
-3) A data type for the configuration option (this defines how the option is edited- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt].
+3) A data type for the configuration option (this defines how the option is edited -- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt].
 4) Some PHP code that returns (in string format) what the default/initial value for the configuration option should be. Often it is just a static value, but sometimes it is calculated in an intelligent way. Alternatively, return boolean false if the config option is disabled for some reason, such as a missing dependency (disabled config options will not show in the configuration module).
-5) A language string codename that identifies a human-readable name for the configuration category which the option belongs to. Many of these are 'FEATURE', which is the conventional set for all configuration options relating to optional Composr systems. Configuration sets do not need to be individually defined- all sets that are referenced will be automatically listed and indexed.
+5) A language string codename that identifies a human-readable name for the configuration category which the option belongs to. Many of these are 'FEATURE', which is the conventional set for all configuration options relating to optional Composr systems. Configuration sets do not need to be individually defined -- all sets that are referenced will be automatically listed and indexed.
 6) A language string codename that identifies a human-readable name for the configuration group which the option belongs to. This often indicates the name of system that the addon is providing screens for.
 
 [title="5"]Screen conventions[/title]
@@ -446,7 +446,7 @@ Composr is basically a programming language within a programming language. The o
 1) Composr's templating language/syntax
 2) The name for instances of compiled Composr templates. These instances are instances of the 'Tempcode' object.
 
-Tempcode (the language) is very rich and dynamic. It is designed so that templates can be infinitely complex but so that they can be cached so that the data that goes into them does not need to be recalculated each time. This caching usually only applies to blocks- modules generally do not employ Tempcode caching. For example, the 'main_multi_content' block might have been templated to look different for people in a certain usergroup, yet we also don't want to have to regenerate this block each time it is viewed. Tempcode is powerful enough to be able to represent arbitrary differences like this in a way that survives caching.
+Tempcode (the language) is very rich and dynamic. It is designed so that templates can be infinitely complex but so that they can be cached so that the data that goes into them does not need to be recalculated each time. This caching usually only applies to blocks -- modules generally do not employ Tempcode caching. For example, the 'main_multi_content' block might have been templated to look different for people in a certain usergroup, yet we also don't want to have to regenerate this block each time it is viewed. Tempcode is powerful enough to be able to represent arbitrary differences like this in a way that survives caching.
 
 Due to this requirement, Composr must not deal in string output, it has to deal in Tempcode output. All through the system Tempcode is composed together, rather than strings.
 
@@ -457,7 +457,7 @@ function category_screen()
     // Get the ID number of the category being viewed
     $id = get_param_integer('id');
 
-    // Find all subcategories to the category being viewed, in id order
+    // Find all subcategories to the category being viewed, in ID order
     $rows = $GLOBALS['SITE_DB']->query_select('categories', // Use this table
         array('id','name'), // Get these fields
         array('parent' => $id), // WHERE this
@@ -663,11 +663,11 @@ It was ticked: {TICKED}.
 Blocks in Composr are written almost identically to modules. They may have [tt]install[/tt]/[tt]uninstall[/tt]/[tt]info[/tt] methods, which work in the same way, and a [tt]run[/tt] method.
 
 The main five differences and points of note are:
- - The run method takes a parameter, which is a map (array) of the parameters given to the block. You cannot assume any parameter is passed, so for each you must allow a default which you can hard-code into your block code. If you see existing blocks that do [tt]unset($map)[/tt] in the code that is just because that particular block does not use any parameters and we wanted the code to pass Zend's Code Analyzer with zero errors about unused variables.
- - You should define a [tt]BLOCK_blockname_DESCRIPTION[/tt] and [tt]BLOCK_blockname_USE[/tt] language string for the block, to explain what it does and what it is for.
- - The info method defines a 'parameters' entry in the array returned. This is simply a list of the parameters the block can take. It is used by the block construction tool. For each parameter listed there there should be a language string [tt]BLOCK_blockname_PARAM_parametername[/tt]. Look at  how existing block parameter language strings are done to see how to lay it out -- the format is parsed by the block construction tool so it is quite strict. In particular reference the default value in your string.
- - You can allow the block to cache by defining a 'caching_environment' method. This returns an array which has a 'ttl' (the number of minutes the cache lasts) and a 'cache_on' which is a string containing PHP code that defines the signature (array) for a cached instance of the block. The PHP code can make use of [tt]$map[/tt], and must define a different array for each possible way the block could turn out (i.e. the array is a signature that distinguishes that particular appearance, based on the block's parameters and optionally other things like the viewing user's usergroup membership).
- - Blocks do not automatically upgrade when run like modules do. If you define upgrade paths you need to trigger them from the Composr upgrader script.
+1) The run method takes a parameter, which is a map (array) of the parameters given to the block. You cannot assume any parameter is passed, so for each you must allow a default which you can hard-code into your block code. If you see existing blocks that do [tt]unset($map)[/tt] in the code that is just because that particular block does not use any parameters and we wanted the code to pass Zend's Code Analyzer with zero errors about unused variables.
+2) You should define a [tt]BLOCK_blockname_DESCRIPTION[/tt] and [tt]BLOCK_blockname_USE[/tt] language string for the block, to explain what it does and what it is for.
+3) The info method defines a 'parameters' entry in the array returned. This is simply a list of the parameters the block can take. It is used by the block construction tool. For each parameter listed there there should be a language string [tt]BLOCK_blockname_PARAM_parametername[/tt]. Look at  how existing block parameter language strings are done to see how to lay it out -- the format is parsed by the block construction tool so it is quite strict. In particular reference the default value in your string.
+4) You can allow the block to cache by defining a 'caching_environment' method. This returns an array which has a 'ttl' (the number of minutes the cache lasts) and a 'cache_on' which is a string containing PHP code that defines the signature (array) for a cached instance of the block. The PHP code can make use of [tt]$map[/tt], and must define a different array for each possible way the block could turn out (i.e. the array is a signature that distinguishes that particular appearance, based on the block's parameters and optionally other things like the viewing user's usergroup membership).
+5) Blocks do not automatically upgrade when run like modules do. If you define upgrade paths you need to trigger them from the Composr upgrader script.
 
 Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the add-block-tool to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called 'example' with parameters 'a' and 'b'. You would define language strings as follows:
 
@@ -729,7 +729,7 @@ You can generally tell what the hook is used by by it's file path. For example h
 
 [title="4"]Another example: member profiles[/title]
 
-Composr needs to be able to provide a spot for addons to put links on somebody's profile screen (e.g. maybe an ecommerce addon needs to put a link to their transaction history onto their profiles). So there is a kind of hook in Composr to achieve this. The contract the hook meets is to take a member ID and return a list of extra links to put in their profile.
+Composr needs to be able to provide a spot for addons to put links on somebody's profile screen (e.g. maybe an eCommerce addon needs to put a link to their transaction history onto their profiles). So there is a kind of hook in Composr to achieve this. The contract the hook meets is to take a member ID and return a list of extra links to put in their profile.
 
 The code that uses these hooks is as follows:
 [code="PHP"]
@@ -797,7 +797,7 @@ So now that I have explained how hook's have contracts, how they are called, and
 
 [title="4"]Another example: symbols[/title]
 
-Composr supports 'symbols' in templates, that do special things. An example of a symbol is our [tt]MEMBER_PROFILE_LINK[/tt] symbol, which makes it easy to link to a member's profile screen from a template (often templates are passed member id's as parameters, so it allows them to work with their parameters in an effective way). But Composr needs to be extendable. Addons must be able to add their own symbols (e.g. maybe an ecommerce addon would need to define a 'BALANCE' symbol to show a member's balance in any arbitrary template), so there are symbol hooks.
+Composr supports 'symbols' in templates, that do special things. An example of a symbol is our [tt]MEMBER_PROFILE_LINK[/tt] symbol, which makes it easy to link to a member's profile screen from a template (often templates are passed member IDs as parameters, so it allows them to work with their parameters in an effective way). But Composr needs to be extendable. Addons must be able to add their own symbols (e.g. maybe an eCommerce addon would need to define a 'BALANCE' symbol to show a member's balance in any arbitrary template), so there are symbol hooks.
 
 For performance Composr doesn't use any symbol hooks for any default functionality, but they are available for new addons.
 
@@ -852,7 +852,7 @@ Composr has a multi-faceted testing strategy as there is no perfect solution for
 5) Some other manual test sets, stored on our company filing system (e.g. Comcode test set) -- now also mostly implemented as unit tests
 6) Unit test framework (incorporates regression testing, as long as we write regression tests whenever we find bugs; incorporates UI testing in a sense as we can program a web bot to do things plus dump all the XHTML)
 7) Custom version of PHP, with type strictness, and XSS detection, among other things
-8) Manual testing at core-team meetups, especially Usability testing / Blackbox testing
+8) Manual testing at core-team meet-ups, especially Usability testing / Blackbox testing
 9) Public beta testing and bug reporting
 10) Composr development mode, which applies lots of tricksy things, checking various things are done at run-time, and turning features on and off randomly, and doing some performance testing
 11) Test spider (longer term this will be integrated with unit test framework/Composr, as another menu option) -- now also implemented as a unit test
@@ -905,7 +905,7 @@ As well as providing documentation, the API comments define function type signat
  - MEMBER (a member ID)
  - GROUP (a usergroup ID)
  - TIME (an integer timestamp)
- - LONG_TEXT (a large block of db-targetted text)
+ - LONG_TEXT (a large block of db-targeted text)
  - SHORT_TEXT (a block of text, up to 255 characters)
  - ID_TEXT (text for a string identifier, up to 50 characters)
  - IP (an IP address in string form)
@@ -946,10 +946,10 @@ We don't normally bother defining a descriptions section, but I included it here
 Error handling in PHP is very inconsistent.
 
 There are four main ways to get an error message:
- - use a [tt]*_last_error()[/tt] function
- - check return values
- - catch the output of a command using output buffering
- - suppress the error with '@', then listen to the [tt]$php_errormsg[/tt] variable
+1) use a [tt]*_last_error()[/tt] function
+2) check return values
+3) catch the output of a command using output buffering
+4) suppress the error with '@', then listen to the [tt]$php_errormsg[/tt] variable
 
 Composr will react fatally on errors unless they are suppressed. This includes PHP_NOTICE's. To suppress errors from a PHP command, put an '@' symbol before the function call. If the PHP command causing the error is buried inside a Composr API function and you want errors to be shown as 'deferred' rather than fatal, you can set the global SUPPRESS_ERROR_DEATH variable to 1 temporarily.
 
@@ -1025,7 +1025,7 @@ SQL injection is prevented by the database abstraction layer. It is impossible t
 
 A good tip that isn't strictly related to security, but may be useful for general stability: if you are doing an update or delete, and you know you're only doing it to one record, put a limit of '1' on the query. This limits the damage that coding errors might cause, and it also limits the impact some possible security holes could have.
 
-One common logic error that deserves to be mentioned is the false assumption that you can check for resource ownership by equating the logged in user against the member-id of the resource. The reason for this is it doesn't cover the case of the guest user -- the guest user ID ('1') is shared between all guests. Therefore handle guests as a special case and never give them any access over guest-submitted resources.
+One common logic error that deserves to be mentioned is the false assumption that you can check for resource ownership by equating the logged in user against the member-ID of the resource. The reason for this is it doesn't cover the case of the guest user -- the guest user ID ('1') is shared between all guests. Therefore handle guests as a special case and never give them any access over guest-submitted resources.
 
 Another common (and very remedial) logic error is assuming that a hacker won't try and bypass the UI to gain access by manipulating GET/POST variables. Security checks need implementing both in UI code and in actualiser code that carries out the actual tasks.
 
@@ -1034,13 +1034,13 @@ Another common logic error is passing in secondary ID values from a form, for ed
 Any special and obvious hack-attack situation that you can figure out (whether real or not) should be logged using the [tt]log_hack_attack_and_die[/tt] function, so that site staff may detect when people are trying to hack or probe the site. While hackers with the source code may avoid the attack scenario you've predicted and logged, it is likely they will make mistakes and get logged anyway, which can be a huge benefit to site admins.
 
 XSS is short-hand for "cross-site-scripting", and essentially poisons a user's HTML output. There are two common ways this can occur:
- - through URLs
- - through submitted data
+1) through URLs
+2) through submitted data
 The general premise is that through some kind of invalid input, JavaScript gets inserted into the HTML output. This kind of hack is indirect -- invalid output is generated via the vulnerability, then someone with wide website access is tricked, or naturally directed, to view that output.
 The JavaScript in the output usually does something particularly malicious, like redirecting someone's password cookie to a hackers website -- allowing the hacker to steal their credentials.
 Composr protects against this kind of attack in three major ways
  - easy escaping syntax in templates
- - parameter constraints (taking in integers instead of stirngs, for example)
+ - parameter constraints (taking in integers instead of strings, for example)
  - HTML filtering / Comcode
  - our own custom version of PHP that we develop on, that can automatically detect these vulnerabilities in any code whenever that code is run (yes we can do his amazingly enough -- it is a very cool technology!)
 Every value in a template that is not meant to contain HTML is marked as an escaped value ({VALUE*}). This means that 'html entities' are put in replacement of HTML control characters, making it impossible for such data to contain HTML tags.
@@ -1063,7 +1063,7 @@ We can't completely prevent this type of attack... a user might be tricked into 
 It might be suggested that the REFERER be checked to make sure the REFERER for an admin action is always inside the users site, but the REFERER field is often changed by privacy aware users to be non-representative, and thus cannot be relied upon. Nevertheless, Composr does do this if the referer field is provided.
 One action Composr does take, is to refuse to allow a user to click-through to an internal Admin Zone URL directly from an external site if they are not already logged in... it requires an explicit login for every new browser window. It might seem that this is an unnecessary hassle, but it truly is the only standard/environment-compliant way to prevent automated Admin Zone-actions. Users may disable this feature by turning it off when they edit a zone, and likewise turn it on for other zones.
 
-Some nosy or malicious users may choose to try and poke around in upload, or page folders, by manually specifying URLs. They may attempt directory browsing, or to guess the URL to a file. Composr prevents directory browsing by placing index.html files in folders that shouldn't be browseable, thus nullifying the browse-ability with a blank output (one cannot assume the web server is configured to have directory browsing to disabled). In addition, .htaccess files are placed in folders where files should not be accessed by URL at all, but this only works on Apache servers. The upload system supports obfuscation of upload names in order to make URL guessing unrealistic.
+Some nosy or malicious users may choose to try and poke around in upload, or page folders, by manually specifying URLs. They may attempt directory browsing, or to guess the URL to a file. Composr prevents directory browsing by placing index.html files in folders that shouldn't be browsable, thus nullifying the browse-ability with a blank output (one cannot assume the web server is configured to have directory browsing to disabled). In addition, .htaccess files are placed in folders where files should not be accessed by URL at all, but this only works on Apache servers. The upload system supports obfuscation of upload names in order to make URL guessing unrealistic.
 
 It goes without saying, but I'll say it anyway, that any code that finds its way into an eval call should only come directly from hard-coded Composr code itself. Never do something stupid like:
 eval('add_image('.get_param_string('image_id').');');
@@ -1185,8 +1185,8 @@ It intentionally does not support integers or floats, so these must be converted
 [title="3"]Do-next-manager interfaces[/title]
 
 A 'do-next-manager' is a special navigation interface in Composr that is used in two roles:
- - What the user wants to do next. These are often shown after an administrative/content-management action is performed.
- - Where to go. These are used for browsing through the Admin and CMS zone interfaces.
+1) What the user wants to do next. These are often shown after an administrative/content-management action is performed.
+2) Where to go. These are used for browsing through the Admin and CMS zone interfaces.
 
 The do-next-manager provides a full-screen choice of options, laying out those options with icons.
 
@@ -1220,9 +1220,9 @@ To place a new item into the Admin Zone or CMS "Where to go" menus, create a new
 
 [title="3"]The translation table[/title]
 
-If multi-language content is enabled, all text strings in Composr databases (including forum posts, page comments, and generally any user-submitable text) are stored in the 'translate' table. There are two reasons for this:
- - It can be used to store parsed Comcode as Tempcode format, effectively a cache
- - Composr's API supports multi-language websites in the truest sense. Meaning that potentially, translated versions of virtually any content can be supplied for visitors. As of version 4.2 this is fully supported.
+If multi-language content is enabled, all text strings in Composr databases (including forum posts, page comments, and generally any user-submittable text) are stored in the 'translate' table. There are two reasons for this:
+1) It can be used to store parsed Comcode as Tempcode format, effectively a cache
+2) Composr's API supports multi-language websites in the truest sense. Meaning that potentially, translated versions of virtually any content can be supplied for visitors. As of version 4.2 this is fully supported.
 
 All translatable attributes in Composr are given priorities. The scheme for these priorities at the time of writing are as follows...
 1) absolutely crucial and permanent/featured

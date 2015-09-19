@@ -2,7 +2,7 @@
 
 [i]The Composr 'error log' screen points to this tutorial. If you think you have found a bug, please [page="site:free_tickets"]report it[/page]. The rest of this tutorial deals with potential disaster situations -- an error in the error log does not imply a disaster has happened.[/i]
 
-This tutorial will go through some solutions to 'disasterous' scenarios that could happen on an unstable web server configuration. It does not cover all that could go wrong by any means, as there are literally an infinite number of things that could go wrong if Composr is running in an unreliable environment.
+This tutorial will go through some solutions to 'disastrous' scenarios that could happen on an unstable web server configuration. It does not cover all that could go wrong by any means, as there are literally an infinite number of things that could go wrong if Composr is running in an unreliable environment.
 
 I am going to assume that you have access to phpMyAdmin for the purposes of this tutorial. phpMyAdmin is a user-friendly web-based frontend to MySQL, and is available from most hosting control panels. For more information, see the [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page] tutorial.
 
@@ -128,4 +128,4 @@ You can use the [tt]config_editor.php[/tt] script in order to turn them off, ove
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
  - [page="_SEARCH:tut_web_hosting"]Web hosting for Composr users[/page]
 
-{$SET,tutorial_tags,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Some 'life saving' solutions to disasterous scenarios that can happen on an unstable web server configuration.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Some 'life saving' solutions to disastrous scenarios that can happen on an unstable web server configuration.}[block]main_tutorial_rating[/block]

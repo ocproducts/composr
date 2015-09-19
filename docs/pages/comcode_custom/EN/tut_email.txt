@@ -33,12 +33,12 @@ The procedure we described above is called 'relaying' because it is a two-step p
 Sometimes SMTP servers relay over more than two steps. For example, it is possible to configure an e-mail server that relays [i]all[/i] the e-mail that does not belong to local domains to another e-mail server. Of course, the server relayed to would have to be configured to allow this.
 [/box]
 
-What I have just described is the primary mechanism for e-mail. However, there is a secondary mechanism- actually being able to read e-mails from an inbox (SMTP will populate an inbox but provides no way to actually read it). This are three common ways to read inboxes:
- - Using the IMAP protocol (which is designed to permanently store e-mail on the server)
- - Using the POP3 protocol (which is designed to transfer e-mail from the server to the user's e-mail client)
- - Accessing the mail box directly (webmail often does this) as do UNIX command-line utilities that run directly on the server
+What I have just described is the primary mechanism for e-mail. However, there is a secondary mechanism -- actually being able to read e-mails from an inbox (SMTP will populate an inbox but provides no way to actually read it). This are three common ways to read inboxes:
+1) Using the IMAP protocol (which is designed to permanently store e-mail on the server)
+2) Using the POP3 protocol (which is designed to transfer e-mail from the server to the user's e-mail client)
+3) Accessing the mail box directly (webmail often does this) as do UNIX command-line utilities that run directly on the server
 
-It is important to understand that IMAP/POP3/webamil are entirely separate from SMTP itself, except for two areas:
+It is important to understand that IMAP/POP3/webmail are entirely separate from SMTP itself, except for two areas:
 1) They access the same mailbox that SMTP writes to
 2) SMTP often whitelists the IP addresses of users who have recently logged into POP3 or IMAP to say that relaying should be allowed from those IP addresses (this is one mechanism for relaying to be allowed, another is authenticated SMTP, and another is from-address whitelisting)
 

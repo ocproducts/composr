@@ -12,7 +12,7 @@ We'll also keep tally of whether they visited the purchase module and whether th
 
 As with the previous tutorial, we'll avoid making things difficult for ourselves, and just write our code in English, without using templates. As we're making a module this time, we'll be implementing using a 'mini-module'.
 
-Here is our adminzone/pages/mini-modules_custom/admin_tracking.php file:
+Here is our [tt]adminzone/pages/mini-modules_custom/admin_tracking.php[/tt] file:
 
 [code="PHP"]
 <?php
@@ -47,7 +47,7 @@ foreach ($advertiser_sessions as $session) {
         $joining[$from] = 0;
     }
 
-    echo '<b>Tracking information for <u>' . $from . '</u> visitor</b> (' . $session['ip'] . ')....<br />';
+    echo '<b>Tracking information for <u>' . $from . '</u> visitor</b> (' . $session['ip'] . ')...<br />';
     $places = $GLOBALS['SITE_DB']->query('SELECT the_page,date_and_time,referer FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE member_id=' . (string)intval($user) . ' AND date_and_time>=' . (string)intval($session['date_and_time']) . ' ORDER BY date_and_time');
     foreach ($places as $place) {
         echo '<p>' . escape_html($place['the_page']) . ' at ' . date('Y-m-d H:i:s', $place['date_and_time']) . ' (from ' . escape_html(substr($place['referer'], 0, 200)) . ')</p>';

@@ -17,10 +17,10 @@ It is worth noting at this point, that it is my view that search engine ranking 
 [title="2"]How web crawlers work[/title]
 
 Search engines work via one of four techniques (or a combination):
- - manually maintained directories (e.g. Google uses the OpenDmoz directory)
- - accessing databases (e.g. Google uses Wikipedia)
- - web crawling (e.g. Google has one of the best web crawlers)
- - aggregation/taking of data from other search engines (e.g. Yahoo used to use Google)
+1) manually maintained directories (e.g. Google uses the OpenDmoz directory)
+2) accessing databases (e.g. Google uses Wikipedia)
+3) web crawling (e.g. Google has one of the best web crawlers)
+4) aggregation/taking of data from other search engines (e.g. Yahoo used to use Google)
 
 A web crawler is a tool that will automatically find websites on the Internet, via hyperlinks to them. The basis of the process is very simple:
  - the web crawler starts with a set of pages it already knows

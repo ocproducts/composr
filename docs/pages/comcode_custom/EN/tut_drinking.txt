@@ -80,7 +80,7 @@ Here are the main content types (your meat & potatoes of publishing)...
 |-
 ! Wiki+
 | [tt]wiki[/tt]
-| Encyclopedia system, designed for taking public contributions. Like a wiki but a hybrid system that also supports tree-like structuring. Made up of pages, consisting of page text and/or posts.
+| Encyclopaedia system, designed for taking public contributions. Like a wiki but a hybrid system that also supports tree-like structuring. Made up of pages, consisting of page text and/or posts.
 | Node structure (Wiki+ pages), looks hierarchical but you may place child pages under multiple parent pages.
 | 
 |-
@@ -288,8 +288,8 @@ Honourable mentions...
 [title="3"]Placing articles[/title]
 
 There are two ways to make an article:
- - Add it as a news article, and allow users to access it via the news system (or provide a link to it yourself, on your menus for example)
- - Add it as a new page
+1) Add it as a news article, and allow users to access it via the news system (or provide a link to it yourself, on your menus for example)
+2) Add it as a new page
 
 News articles are best used if you do not consider your article to be a long-term part of your website itself, but merely a long-term resource which is archived. You are in the driving seat, however, and you can add as many new pages as you wish, without having to have each linked to from your menu if you do not wish them to be.
 
@@ -303,7 +303,7 @@ There are a number of different features in Composr which can be used for databa
  - 'catalogues' allow you to define the fields for records, and then have these records and the manipulation and display thereof to be included as a first-class aspect of your website. Catalogues support hierarchical structuring of data.
  - Wiki+ is a wiki-like hierarchical database; it is much more powerful than a wiki however, as while it can behave as a free-form and open-access database navigated by embedded hyperlinks, it can also behave as a highly moderated and formal structured database.
  - The forum can actually be used very effectively as a database, if a formal structure and presentation is less important than an ability to rapidly manipulate free-form data in a comfortable and informal environment.
- - Comcode pages (static documents) may also be used, with each 'record' being created by creating a new page; consistant structure may be created using 'Custom Comcode tags'.
+ - Comcode pages (static documents) may also be used, with each 'record' being created by creating a new page; consistent structure may be created using 'Custom Comcode tags'.
  - [i]By integrating an existing system.[/i]
 
 If you would like to create a formal catalogue, head over to Content Management > Catalogues.
@@ -315,18 +315,18 @@ If you desire integration of an existing system into your website, you should [p
 [title="3"]Adding images[/title]
 
 There are four distinct ways for adding images in Composr:
- - Images that are a part of the visual design of the website are 'theme images'. Extensive information on themeing is provided in a number of Composr tutorials.
- - Images that are presented as a part of some other type of content, such as a press release (a news article), or a forum post, are done using attachments. A user-friendly interface for choosing attachments is provided on the actual add screens for these types of content.
- - Images that are presented in galleries.
- - Images that are uploaded manually and referenced in Comcode using the 'img' tag
+1) Images that are a part of the visual design of the website are 'theme images'. Extensive information on themeing is provided in a number of Composr tutorials.
+2) Images that are presented as a part of some other type of content, such as a press release (a news article), or a forum post, are done using attachments. A user-friendly interface for choosing attachments is provided on the actual add screens for these types of content.
+3) Images that are presented in galleries.
+4) Images that are uploaded manually and referenced in Comcode using the 'img' tag
 
 If you are wishing to add an image to a gallery, head over to Content Management > Galleries. The gallery system supports a tree structure of galleries, or you may simply add things to the root of the tree making them show right-away when the user visits the 'Galleries' link (which is on one of your website menus by default).
 
 [title="3"]Adding files[/title]
 
 There are two distinct ways of making downloadable files (as opposed to online articles) available to users in Composr:
- - You may add the file as an attachment to some other content, such as a press release (news article). This is performed on the 'add' screen for any content that supports them.
- - By adding it to the download system.
+1) You may add the file as an attachment to some other content, such as a press release (news article). This is performed on the 'add' screen for any content that supports them.
+2) By adding it to the download system.
 
 To add to the download system, head over to Content Management > Downloads. The download system supports a tree structure of download categories, or you may simply add things to the root of the tree, making them show right-away when the user visits the 'Downloads' link (which is on one of your website menus by default).
 

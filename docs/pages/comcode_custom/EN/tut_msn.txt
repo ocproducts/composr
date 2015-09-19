@@ -11,13 +11,13 @@ All that needs to be done to create an M.S.N. is to install each Composr such th
 
 If you are using a third-party forum, unless the forum itself is modified to work from different URLs, the forums interface will not be integrated into each site. However, all Composr functions that work through the forum driver (e.g. comment topics, or support tickets) may be completely customised for the individual websites.
 
-If you are using the Composr forum system (Conversr) as your forum, then it is possible to run Conversr from each site, without members even knowing (from a feature and visual point of view) that a multi-site-network is in action. All you need to do to achieve this is to set the forum-base-URL (aka the board-prefix) to that of the central Composr site, but enable the option shown in the screen-shot (available under site configuration). Note that if you do this, and you decide to move a site you are connecting to the M.S.N. with, then URLs may be broken for things such as photos, avatars and attachments- as these get uploaded locally and are stored on the forum using full URLs. In other words, they are not stored on the central site if they got uploaded from a member site, thus the other sites get a dependency on the member site's URL scheme.
+If you are using the Composr forum system (Conversr) as your forum, then it is possible to run Conversr from each site, without members even knowing (from a feature and visual point of view) that a multi-site-network is in action. All you need to do to achieve this is to set the forum-base-URL (aka the board-prefix) to that of the central Composr site, but enable the option shown in the screen-shot (available under site configuration). Note that if you do this, and you decide to move a site you are connecting to the M.S.N. with, then URLs may be broken for things such as photos, avatars and attachments -- as these get uploaded locally and are stored on the forum using full URLs. In other words, they are not stored on the central site if they got uploaded from a member site, thus the other sites get a dependency on the member site's URL scheme.
 
 It is also important to note that Conversr M.S.N. sites use local privileges and configuration settings: this is actually a feature, as it provides additional control, but it is important to keep in-mind from a security point of view.
 
 Conversr may be administered from an M.S.N. site, although some very minor restrictions are put in place, such as prevention of editing rank and emoticon images.
 
-[title="3"]Special note- upgrading[/title]
+[title="3"]Special note: upgrading[/title]
 
 If you are upgrading to a new major release then you will need to upgrade all the sites together, starting with the one that hosts the forums.
 
@@ -84,17 +84,15 @@ You can make it so you have a single Composr site that runs across different sub
 
 [i]This is an advanced feature that is not fully supported by ocProducts. It requires some fairly low level web server configuration to work (i.e. it won't work on many shared webhosts).[/i]
 
-The procedure is as follows:
-
-a) It is strongly recommended, for simplicity and user-friendliness, that you operate Composr from the root of your domain name, e.g. having [tt]http://example.com[/tt] as your base URL.
-
-b i) For multiple sub(domain) names, each representing a different zone...
+The procedure is as follows:[list="a"]
+[*] It is strongly recommended, for simplicity and user-friendliness, that you operate Composr from the root of your domain name, e.g. having [tt]http://example.com[/tt] as your base URL.
+[*] [list="i"]
+[*]For multiple sub(domain) names, each representing a different zone...
 Set up multiple website profiles in IIS manager / virtual hosts in the Apache configuration file. These profiles must all point to the Composr installation directory (not the zone you're linking the subdomain to).
-
-b ii) For complex hierarchies:
+[*] For complex hierarchies:
 Set up virtual directories in IIS manager / directory sections in the Apache configuration file. These virtual directories must all point to the Composr installation directory (not the zone you're linking the subdomain to).
-
-c) Composr is now set up to receive requests on the various domain names / paths that you have configured. Extra information needs adding to the Composr [tt]_config.php[/tt], to tell Composr how to map these individual source locations, into zone accesses.
+[/list]
+[*] Composr is now set up to receive requests on the various domain names / paths that you have configured. Extra information needs adding to the Composr [tt]_config.php[/tt], to tell Composr how to map these individual source locations, into zone accesses.
 Let's pretend we've added a new subdomain 'forum.mydomain.com' ([i]for the forum zone[/i]), and a new virtual directory under our normal website entry, under 'example/path'; we'll point this to the 'xyz' (i.e. we'll map to a zone unrelated to the subdomain name or virtual directory path). You would add this to [tt]_config.php[/tt]
 
 [code="PHP"]
@@ -104,9 +102,10 @@ $SITE_INFO['ZONE_MAPPING_xyz'] = array('mydomain.com','example/path');
 
 As of Composr 10, you can do this setup in the normal zone management screen. It does save to [tt]_config.php[/tt] though.
 
-d) Now Composr links point to the proper complex URLs, and the complex URLs are properly recognised as zones.
+[*] Now Composr links point to the proper complex URLs, and the complex URLs are properly recognised as zones.
 
 Please note it is essential to configure your cookie domain to be encompassing of all the subdomains you use. In the above example you would need [tt].mydomain.com[/tt] to be set as the cookie domain. You cannot use a blank cookie domain.
+[/list]
 
 [title="2"]Many sites, one install (not supported, very advanced)[/title]
 

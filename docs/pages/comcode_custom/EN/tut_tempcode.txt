@@ -200,7 +200,7 @@ This is substantially faster in terms of the amount of memory, CPU time, and sto
 
 It is absolutely crucial that Tempcode programmers use the proper escaping. Without it, all kinds of insecurities and unreliabilities can develop. About 50% of parameters in the default Composr templates actually use HTML escaping so that plain text placed inside a template does not interfere with the HTML structure itself and displays literally.
 
-If you're wondering what the characters refer to: nothing. They are just characters that are easy to type on a regular keyboard. We like the ability to be able to apply the escapings in this shorthand, in the same way that maths benefits from consise symbolic shorthand.
+If you're wondering what the characters refer to: nothing. They are just characters that are easy to type on a regular keyboard. We like the ability to be able to apply the escapings in this shorthand, in the same way that maths benefits from concise symbolic shorthand.
 
 [title="3"]The Tempcode tree (advanced)[/title]
 
@@ -210,9 +210,10 @@ Templates are composed together into a tree structure, and then the tree structu
 
 Tempcode is quite different from other templating languages, and it's worth covering that.
 
-Most templating languages will try to either:
- - use XML, to add programming constructs into the mark-up itself
- - allow PHP code, or an abstraction of PHP code, to run within the templates
+Most templating languages will try to either:[list="a"]
+[*] use XML, to add programming constructs into the mark-up itself
+[*] allow PHP code, or an abstraction of PHP code, to run within the templates
+[/list]
 
 Our approach is distinctly different, as we uphold four strong principles:
 1) templates should be editable in an HTML editor without Tempcode being broken (although the HTML editor at this time must be able to support 'fragments of HTML')
@@ -274,7 +275,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 	<tbody>
 		<tr style="background: #DDFFDD">
 			<td>(blank)</td>
-			<td>Place a comment. E.g.... [/html][tt]{$,this is a comment}[/tt][html]</td>
+			<td>Place a comment. E.g... [/html][tt]{$,this is a comment}[/tt][html]</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$RAND}</td>
@@ -1814,11 +1815,11 @@ For example, the following is a fairly typical thing to see in a template:
 [/code]
 
 The [tt]IF_NON_EMPTY[/tt] template evaluates [tt]{DOWNLOADS}[/tt], to see if it is blank. If it is not blank, the contents of the directive is output, otherwise nothing happens.
-As you can see from this example, we need to check for emptyness so we don't show a boxed message about downloads that refers to nothingness.
+As you can see from this example, we need to check for emptiness so we don't show a boxed message about downloads that refers to nothingness.
 
 [title="3"]IF_EMPTY[/title]
 
-An alternative approach to the above example is to include a special message upon emptyness, rather than skipping over. We might do this if the content being displayed is critical and thus the emptyness must be explicitly acknowledged:
+An alternative approach to the above example is to include a special message upon emptiness, rather than skipping over. We might do this if the content being displayed is critical and thus the emptiness must be explicitly acknowledged:
 [code="HTML"]
 <p>We have the following downloads:</p>
 {DOWNLOADS}
@@ -1839,7 +1840,7 @@ Note here how we are displaying [tt]{DOWNLOADS}[/tt] even if it is empty. Obviou
 [/code]
 and arguably this does better demonstrate what we're trying to do, even though the behaviour is the same (ignoring invisible differences in HTML white-space).
 
-It's often useful to be a bit clever with the emptyness-checking directives. For example:
+It's often useful to be a bit clever with the emptiness-checking directives. For example:
 [code="HTML"]
 <p>We have the following downloads and images:</p>
 {DOWNLOADS}

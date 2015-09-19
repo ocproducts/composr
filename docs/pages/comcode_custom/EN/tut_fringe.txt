@@ -12,8 +12,8 @@ Favicons are supported in Composr, and to use one you just need to edit the 'fav
 
 The default icon actually contains multiple sizes:
  - 16x16 &ndash; Standard size for browsers
- - 24x24 &ndash; IE9 pinned site size for user interface
- - 32x32 &ndash; IE new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
+ - 24x24 &ndash; Internet Explorer 9+ pinned site size for user interface
+ - 32x32 &ndash; Internet Explorer/Microsoft Edge new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
  - 48x48 &ndash; Windows site
 
 [title="3"]Apple web clip icons[/title]
@@ -22,7 +22,7 @@ These icons show on the iPhone and iPod Touch home screens, if you choose to boo
 
 The default icon actually contains multiple sizes:
  - 120x120 &ndash; iPhone retina touch iOS7
- - 144x144 &ndash; IE10 Metro tile for pinned site
+ - 144x144 &ndash; Microsoft Metro tile for pinned site
  - 152x152 &ndash; iPad retina touch iOS7
 
 [title="2"]Web fonts[/title]
@@ -30,9 +30,9 @@ The default icon actually contains multiple sizes:
 Fonts have always been a tricky area in computing, as the actual font typeface is a copyrighted works, and hence cannot be distributed without a licence. This problem extends to the Internet, where there is a stronger need for common fonts than there ever was. It is important to remember that not all viewers to a website will be using Microsoft Windows, and therefore they will not all have the set of default windows fonts.
 
 Fortunately there are three things that improve on this situation:
- - there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information).
- - CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use.
- - [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts. It is very easy to integrate via a change to the [tt]HTML_HEAD[/tt] template and the CSS.
+1) there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information).
+2) CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use.
+3) [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts. It is very easy to integrate via a change to the [tt]HTML_HEAD[/tt] template and the CSS.
 
 [title="3"]Fonts within content[/title]
 
@@ -68,12 +68,12 @@ Sound and video formats are an area of extreme complexity unfortunately, as is t
 Unlike for most file types, video files cannot be identified fully be file extension. The file extensions identifies the 'container format' (such as MPEG or AVI) but not the 'codec' used for the video data and which codec was used for the sound data. Codecs are often proprietary, and tied to Windows, and they often aren't installed on user's computers. Some codecs and container formats require specific software, as vendors such as Microsoft, Apple and Real tend to lock each others formats out, as they battle for supremacy.
 
 You have a choice between six options:
- - Use an old badly compressed format -- this is likely very in-feasible, due to high file size
- - Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
- - Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
- - Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
- - Use standard MPEG technology other than h264 -- the drawback to this is that such MPEG standardisation is weak, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
- - Use an open alternative such as those sponsored by the BBC, or Ogg, or Google (WebM) -- using them is technical difficult, and users generally need to install special software
+1) Use an old badly compressed format -- this is likely very in-feasible, due to high file size
+2) Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
+3) Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
+4) Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
+5) Use standard MPEG technology other than h264 -- the drawback to this is that such MPEG standardisation is weak, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
+6) Use an open alternative such as those sponsored by the BBC, or Ogg, or Google (WebM) -- using them is technical difficult, and users generally need to install special software
 
 Our practical advice is to always use h264/mp3, which has worked on all major browsers for a number of years.
 
@@ -81,7 +81,7 @@ Our practical advice is to always use h264/mp3, which has worked on all major br
 
 MPEG is a standardisation committee who release waves of MPEG standards (basically, standards for audio and video). The committee is made up of people from many companies, such as Apple, Microsoft. There are a huge number of MPEG standards, and each contain many 'parts' (which are standards of their own). The parts are then defined across many profiles, levels, and versions, and there are many customisations out there too. There are often multiple names to refer to the different parts, as they all have their own history to them.
 
-There is a great deal of confusion around the MPEG formats, because the abbeviations commonly used outside the official specifications can be very ambiguous. Here's what the terms typically actually mean:
+There is a great deal of confusion around the MPEG formats, because the abbreviations commonly used outside the official specifications can be very ambiguous. Here's what the terms typically actually mean:
  - [b]mp3[/b] is actually MPEG-2 Part 3 (audio format).
  - [b]aac[/b] is MPEG-2 Part 7 (audio format).
  - [b]mp4[/b] is actually MPEG-4 Part 14 (container format).
@@ -144,7 +144,7 @@ You may wish to set up profiles on popular social media sites, such as:
  - Pinterest
  - LinkedIn
 
-You may also wish to have a prescence on question and answer sites, such as:
+You may also wish to have a presence on question and answer sites, such as:
  - Quora
  - Stack Overflow
 

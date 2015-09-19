@@ -966,7 +966,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
  *
  * @param  string $text The template text
  * @param  integer $symbol_pos The position we are looking at in the text
- * @param  boolean $inside_directive Whether this text is infact a directive, about to be put in the context of a wider template
+ * @param  boolean $inside_directive Whether this text is in fact a directive, about to be put in the context of a wider template
  * @param  ID_TEXT $codename The codename of the template (e.g. foo)
  * @param  ?ID_TEXT $theme The theme it is for (null: current theme)
  * @param  ?ID_TEXT $lang The language it is for (null: current language)

@@ -313,9 +313,9 @@ Don't worry that I keep pulling out clever things from a proverbial hat. There a
 Create a new Point Store product based around gambling. Members pay a certain set price to do a gamble (e.g. 3 points), and then they receive a random number of points within a range (e.g. -20 to 20). Therefore the gambling odds are fair, but there's an 'administration fee' for it.
 
 Point-store hooks are just files in [tt]sources/hooks/modules/pointstore[/tt] or [tt]sources_custom/hooks/modules/pointstore[/tt]. Use [tt]community_billboard.php[/tt] as an example, but yours should be much simpler. There are actually only three functions (methods, technically) that need to be in a Point Store hook:
- - 'init', which performs common initialisation for all steps (you can probably leave this empty)
- - 'info', which contains Tempcoded HTML which describes the product and provides a link
- - a function that has the same name as whatever 'type' parameter you used in the aforementioned link; this either is the first in a chain of input and confirmation and delivery, or for a simple case like this, you can just do the actual gamble delivery in this single function.
+1) 'init', which performs common initialisation for all steps (you can probably leave this empty)
+2) 'info', which contains Tempcoded HTML which describes the product and provides a link
+3) a function that has the same name as whatever 'type' parameter you used in the aforementioned link; this either is the first in a chain of input and confirmation and delivery, or for a simple case like this, you can just do the actual gamble delivery in this single function.
 
 [title="3"]Be imaginative[/title]
 

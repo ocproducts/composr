@@ -349,7 +349,7 @@ function _lang_remap($field_name, $id, $text, $connection = null, $comcode = fal
         This is necessary as editing admin's content shouldn't let you write content with admin's privileges, even if you have privilege to edit their content
          - yet also, if the source_user is changed, when admin edits it has to change back again.
         */
-        if ((function_exists('cms_admirecookie')) && ((cms_admirecookie('use_wysiwyg', '1') == '0') && (get_value('edit_with_my_comcode_perms') === '1')) || (!has_privilege($member, 'allow_html')) || (!has_privilege($member, 'use_very_dangerous_comcode'))) {
+        if ((function_exists('cms_admirecookie')) && ((cms_admirecookie('use_wysiwyg', '1') == '0') && (get_value('edit_with_my_comcode_perms') === '1')) || (!has_privilege($member, 'allow_html')) || (!has_privilege($member, 'comcode_dangerous')) || (!has_privilege($member, 'use_very_dangerous_comcode'))) {
             $source_user = $member;
         } else {
             $source_user = $for_member; // Reset to latest submitter for main record

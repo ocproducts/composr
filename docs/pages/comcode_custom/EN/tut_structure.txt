@@ -75,9 +75,9 @@ Modules/blocks that are not locked may be un-installed and re-installed from a m
 Re-installing or un-installing a module will generally delete all data associated with it, including uploads and entries.
 [/box]
 If a module has been upgraded (i.e. The on-disk file has been replaced with a newer version), you may upgrade it (to upgrade/create on-disk and on-database data) in 3 ways:
- - Simply use the module, and it will upgrade itself
- - Run the [tt]http://yoursite/upgrader.php[/tt] script, which will upgrade all modules on your site that need it, as well as clearing caches
- - Use the module management screen to upgrade the module
+1) Simply use the module, and it will upgrade itself
+2) Run the [tt]http://yoursite/upgrader.php[/tt] script, which will upgrade all modules on your site that need it, as well as clearing caches
+3) Use the module management screen to upgrade the module
 There is also a concept of a 'hacked' module (a module modified as a part of an unofficial addon): the process of performing any upgrades an on-disk file needs for this is the same as for a conventional module upgrade.
 
 [title="3"]Entry points / Page-links[/title]
@@ -258,7 +258,7 @@ There is also the structure of your files on disk. The structure of the pages is
 Composr includes a rich collection of navigation mechanisms to help you and your visitors quickly move around your website.
 The main forms of navigation are:
  - Menus; these are the main menus that are either controlled by the menu editor or automatically generated from the sitemap. Menus are the main way for navigating around a site.
- - Assorted links; links are placed all over the system to allow navigation between areas and often provide far more detailed navigation than menus could provide (for example, clicking on a username hyperlink would normally take to that you to that member's member profile). The assorted links used can be much more adhoc and unstructured than the main menu navigation.
+ - Assorted links; links are placed all over the system to allow navigation between areas and often provide far more detailed navigation than menus could provide (for example, clicking on a username hyperlink would normally take to that you to that member's member profile). The assorted links used can be much more ad hoc and unstructured than the main menu navigation.
  - Control actions; many 'view' style pages provide 'Control Actions' boxes that include links associated with the management of the entry or category you are viewing -- for example, the screen for viewing a download would include a link to edit it in the control actions box
  - Do-next menus; these are the menus in the Admin and CMS zones that provide icons, shown if you don't go direct to somewhere via digging through multiple-levels of the drop-down menu, or after performing an action
  - The breadcrumbs; these are the links that allow you to navigate backwards along modules or site sections that support tree structures -- for example, if you were deep within the download system then breadcrumbs would be displayed allowing you to quickly go back to any of the categories underneath the category you are currently at, all the way back to the root category

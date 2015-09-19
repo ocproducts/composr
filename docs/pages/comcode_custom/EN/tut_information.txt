@@ -24,9 +24,9 @@ News articles are great for releasing "update" information. They are permanently
 
 Catalogues store information in a database-like fashion, with a strict record format that the stored information must comply with. This is therefore very appropriate for holding records, but feels forced for holding documents.
 
-Wiki+ is a very adhoc system, and designed as a community database (but not in the formal sense of a database with records). It is great for storing structured information when presentation is less important than efficiency of use. Imagine Wikipedia.
+Wiki+ is a very ad hoc system, and designed as a community database (but not in the formal sense of a database with records). It is great for storing structured information when presentation is less important than efficiency of use. Imagine Wikipedia.
 
-Discussion forums are even more adhoc from Wiki+, and while they can be heavily structured, they are designed to hold transitory information. Two distinct advantages are the efficiency that moderation features provide, and the fact that users tend to 'lurk' on forums and thus information released through forums reaches them fast.
+Discussion forums are even more ad hoc from Wiki+, and while they can be heavily structured, they are designed to hold transitory information. Two distinct advantages are the efficiency that moderation features provide, and the fact that users tend to 'lurk' on forums and thus information released through forums reaches them fast.
 
 Downloads may be used to release information indirectly, essentially via storing it in an archive of files/publications.
 
@@ -276,10 +276,10 @@ Downloads may be used to release information indirectly, essentially via storing
 [title="2"]Content type terminology[/title]
 
 We use 4 generic words in Composr for describing content:
- - Content type (plural: content types)
- - Resource (plural: resources)
- - Category (plural: categories)
- - Entry (plural: entries)
+1) Content type (plural: content types)
+2) Resource (plural: resources)
+3) Category (plural: categories)
+4) Entry (plural: entries)
 
 None of these things have any specific implementation in Composr. For example, if you looked in the Composr code you wouldn't find an "entry" defined anywhere in it. They are just words we use consistently to describe how parts of the system behave and relate to each other.
 
@@ -306,7 +306,7 @@ Catalogues are like their own content types, and come with categories. Whether t
 
 So...
 
-A content type (e.g. galleries, banners, downloads, an individual catalogue) usually contains categories, which sometimes are hierarchical –- and categories contain entries.
+A content type (e.g. galleries, banners, downloads, an individual catalogue) usually contains categories, which sometimes are hierarchical -- and categories contain entries.
 
 [title="2"]The narrow-in option[/title]
 

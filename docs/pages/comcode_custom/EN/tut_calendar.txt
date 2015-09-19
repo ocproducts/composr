@@ -121,9 +121,10 @@ It is preferable that we did this before the actual cancelled event occurrence. 
 
 [title="2"]Scheduling commands[/title]
 
-To schedule a command for execution, add an event with the event type of 'System command'. All settings (including recurrence) are as for any event, except the event text should be either:
- - a URL for Composr to call up (the process of calling a URL can be used to invoke some function of a web application)
- - a portion of Commandr code
+To schedule a command for execution, add an event with the event type of 'System command'. All settings (including recurrence) are as for any event, except the event text should be either:[list="a"]
+[*] a URL for Composr to call up (the process of calling a URL can be used to invoke some function of a web application)
+[*] a portion of Commandr code
+[/list]
 
 For scheduled commands to be executed you need to have the Composr scheduling system configured as specified in the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial.
 
@@ -137,7 +138,7 @@ It is possible to customise the calendar to have a different start-of-week-day, 
 
 [concepts
  1_key="Event"                1_value="An entry in the calendar system that may recur"
- 2_key="Recurrence pattern"   2_value="A pattern, written in binary, that indicates the on/off sequences of an events occurence, masked and repeating over the recurrences that would happen by default"
+ 2_key="Recurrence pattern"   2_value="A pattern, written in binary, that indicates the on/off sequences of an events occurrence, masked and repeating over the recurrences that would happen by default"
  3_key="Event fixing"         3_value="The process of hard-coding recurring events into individual events, so as to allow a change in the recurrence"
  4_key="Event type"           4_value="The classification of an event; appointment for example"
 ]Concepts[/concepts]

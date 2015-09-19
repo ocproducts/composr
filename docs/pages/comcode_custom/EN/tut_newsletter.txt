@@ -36,7 +36,7 @@ When a user hits the block and subscribes through it, one of the following situa
  - An existing subscription never confirmed -- Composr will treat this as a refresh to a new subscription, re-sending the confirmation e-mail
  - An existing subscription -- Composr will show an error
 
-The maintenace module is a bit richer:
+The maintenance module is a bit richer:
  - A new subscription -- Composr will sign them up and send a confirmation e-mail
  - An existing subscription never confirmed -- Composr will treat this as a refresh to a new subscription, re-sending the confirmation e-mail (regardless of what password was entered)
  - An existing subscription, with the wrong maintenance password -- Composr will give an error (with an option to re-set the password), unless you are logged in with a privileged account

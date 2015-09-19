@@ -19,9 +19,9 @@ Scheduling posts work by having the entry initially non-validated, then it will 
 A default service of [tt]http://pingomatic.com/ping/?title={title}&blogurl={url}&rssurl={rss}[/tt] is configured for you. This particular service is a ping relay service which takes your ping and relays it off to many other ping services for you. Most users therefore won't have a reason to add any additional ping services.
 
 The ping descriptors are just normal URLs, except you can put these three little placeholders in them which Composr will use to insert the specifics of any article being pinned:
- - [tt]{title}[/tt] (which will become the title of the article)
- - [tt]{url}[/tt] (which will become the URL of the article)
- - [tt]{rss}[/tt] (which will become the URL to your news RSS feed)
+1) [tt]{title}[/tt] (which will become the title of the article)
+2) [tt]{url}[/tt] (which will become the URL of the article)
+3) [tt]{rss}[/tt] (which will become the URL to your news RSS feed)
 
 Pinging will only happen for news categories which may be accessed by guests.
 
@@ -38,7 +38,7 @@ A member's blog is displayed in a tab on their member profile (Conversr-only). D
 To create a 'blog', a member only needs to choose to add news, and select their own personal category; if the category does not yet exist, it will be displayed as 'new', and created automatically upon submission.
 
 There is also a blogs CMS module separate to the news CMS module, under Content Management > Blogs. It is a stripped down version of the main news posting module, designed to make blog posting simpler. This is provided for two reasons:
-1) as a niceity so that you don't need to explain 'blogs are news' to your users
+1) as a nicety so that you don't need to explain 'blogs are news' to your users
 2) so you can lock down access, so that members may submit to blogs but not website news
 The presence of the blogs CMS module does not stop you using the regular news CMS module to submit blog posts.
 
@@ -160,7 +160,7 @@ The default news archive screen shows just the news headlines. By adding [tt]:in
  2_key="Blogger"     2_value="Someone who runs a blog"
  3_key="RSS"         3_value="Really simple syndication: a family of news feed formats"
  4_key="Atom"        4_value="A news feed format made official by a standards body"
- 5_key="Trackback"   5_value="A trackback is placed at the content home-site when a blogger references a piece of content- in essence, allowing the source material to automatically link to those that reference/quote/comment-upon it"
+ 5_key="Trackback"   5_value="A trackback is placed at the content home-site when a blogger references a piece of content -- in essence, allowing the source material to automatically link to those that reference/quote/comment-upon it"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

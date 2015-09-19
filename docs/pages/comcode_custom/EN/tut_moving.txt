@@ -63,7 +63,7 @@ mysqldump -uusername -ppassword database > filename.sql
 Download the .sql file to your machine. This file is called an "SQL dump".
 
 [box="If you can't use the shell"]
-Reasonable web hosts allow you to directly download an SQL dump via phpMyAdmin. [tt]mysqldump[/tt] is preferrable as it is more reliable, but phpMyAdmin usually works. Be aware though that bad web hosts pretend to but it ends up timing-out with an error message and/or a truncated file.
+Reasonable web hosts allow you to directly download an SQL dump via phpMyAdmin. [tt]mysqldump[/tt] is preferable as it is more reliable, but phpMyAdmin usually works. Be aware though that bad web hosts pretend to but it ends up timing-out with an error message and/or a truncated file.
 [/box]
 
 Upload the SQL dump to your new server using SFTP/FTP.

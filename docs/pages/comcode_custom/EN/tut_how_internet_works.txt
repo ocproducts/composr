@@ -106,14 +106,14 @@ Domain names are allocated by the person wanting them registering the domain nam
 I've fully covered the essence of how messages are delivered over the Internet, but so far these messages are completely raw and meaningless. Before meaningful communication can occur we need to layer on yet another protocol (recall IP and TCP protocols are already layered over our physical network).
 
 There are many protocols that work on the communications already established, including:
- - HTTP -- for web pages, typically read in web browser software
- - POP3 -- for reading e-mail in e-mail software, with it stored on a user's own computer
- - IMAP4 -- for reading e-mail in e-mail software, with it archived on the receiving server
- - SMTP -- for sending e-mail from e-mail software
- - FTP -- for uploading and downloading files (sometimes via a web browser, although using special FTP software is better)
- - ICMP -- for 'pinging', among other things (a 'ping' is the Internet equivalent to shouting out a 'are you there')
- - Telnet -- for logging into another computer across the Internet and typing in commands for it (the old operating systems that the Internet developed around are heavily based on the typing in of commands rather than just using a mouse -- don't expect to be able to telnet to a Windows computer)
- - MSN Messenger -- this is just one example of many protocols that aren't really standard and shared conventions, but rather ones designed by a single software manufacturer wholly for the purposes of their own software
+ - [b]HTTP[/b] -- for web pages, typically read in web browser software
+ - [b]POP3[/b] -- for reading e-mail in e-mail software, with it stored on a user's own computer
+ - [b]IMAP4[/b] -- for reading e-mail in e-mail software, with it archived on the receiving server
+ - [b]SMTP[/b] -- for sending e-mail from e-mail software
+ - [b]FTP[/b] -- for uploading and downloading files (sometimes via a web browser, although using special FTP software is better)
+ - [b]ICMP[/b] -- for 'pinging', among other things (a 'ping' is the Internet equivalent to shouting out a 'are you there')
+ - [b]Telnet[/b] -- for logging into another computer across the Internet and typing in commands for it (the old operating systems that the Internet developed around are heavily based on the typing in of commands rather than just using a mouse -- don't expect to be able to telnet to a Windows computer)
+ - [b]Skype -- this is just one example of many protocols that aren't really standard and shared conventions, but rather ones designed by a single software manufacturer wholly for the purposes of their own software
 
 I'm not going to go into the details of any of these protocols because it's not really relevant unless you actually need to know it.
 
@@ -141,9 +141,9 @@ HTTP is the core protocol for the web. This is why URLs usually start [tt]http:/
 Typically the 'resource identifier' is simply a file on the server computer. For example, [tt]mywebsite/index.html[/tt] would be a file on the server computer of the same path, stored underneath a special directory. On Windows the "[tt]\[/tt]" symbol is used to write out directory names, but as the web wasn't invented for Windows, the convention of the older operating systems is used.
 
 We now have three kinds of 'Internet Address', in order of increasing sophistication:
- - IP addresses
- - Domain names
- - URLs
+1) IP addresses
+2) Domain names
+3) URLs
 
 If a URL were put into web browser software by a prospective reader then the web browser would send out an appropriate request (usually, with the HTTP protocol being appropriate) to the server computer identified by the URL. The server computer would then respond and typically the web browser would end up with a file. The web browser would then interpret the file for display, much like any software running on a computer would interpret the files it understands. For the HTTP protocol, the web browser knows what to interpret the file as because the HTTP protocol uses something called a 'MIME type' to identify each kind of resource the server can send out. If the web server computer is just sending out an on-disk file then the web server computer works out the MIME type from the file extension (such as '.html') of the file.
 
@@ -157,14 +157,14 @@ I've explained how typical web pages are just files on the disk of a server comp
 The problem with sending messages around the world using protocols such as HTTP, built on well-understood standard protocols, potentially between 100s of computers, is that it's hardly safe when those messages contain passwords and credit card details.
 
 There are in fact three main security problems with just using common Internet technologies for sensitive communication. These problems are that any of the 'middleman' computers between source and destination could be:
- - listening in (for passwords, for example)
- - altering the conversation (inserting instructions into banking requests to take money out of bank accounts, for example)
- - hijacking requests (pretending to be the bank, for example)
+1) listening in (for passwords, for example)
+2) altering the conversation (inserting instructions into banking requests to take money out of bank accounts, for example)
+3) hijacking requests (pretending to be the bank, for example)
 
 To solve these three problems we need to encode data so that:
- - it's encrypted
- - it's only encryptable by the sender (i.e. Tampering becomes impossible, because they don't know how to encrypt new data to tack on)
- - it's provable that the engaging client computer really is the correct client computer and that the responding server computer really is the correct server computer
+1) it's encrypted
+2) it's only encryptable by the sender (i.e. Tampering becomes impossible, because they don't know how to encrypt new data to tack on)
+3) it's provable that the engaging client computer really is the correct client computer and that the responding server computer really is the correct server computer
 
 This is all done using something called 'TLS' (formerly named 'SSL'). I won't explain exactly how it's done, but the basis is that there's a way of encrypting, and the receiver can identify whether the sender did the encrypting itself without actually knowing how the sender did it. It's done using some mathematical trickery.
 

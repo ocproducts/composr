@@ -17,8 +17,8 @@ If you don't need to integrate a full web application, just a simple HTML page, 
 [title="3"]The careful way[/title]
 
 The two main issues that present themselves are:
- - HTML files tend to have associated data files, and the path these are read from when integrated into Composr will not be the same as the path of the HTML file itself (as page files are located in a different location to where the index.php file that handles the page request is located)
- - HTML files contain surrounding mark-up that must be stripped, because Composr already provides it
+1) HTML files tend to have associated data files, and the path these are read from when integrated into Composr will not be the same as the path of the HTML file itself (as page files are located in a different location to where the index.php file that handles the page request is located)
+2) HTML files contain surrounding mark-up that must be stripped, because Composr already provides it
 
 [box="Note" width="25em" float="right"]
 Relative URLs are normally read relative to the path the referencing page is in. However, this behaviour can be changed using an HTML tag 'base', but Composr does not use this by default; you may place a 'base' into Composr in [tt]HTML_HEAD.tpl[/tt] if you wish, to create a common location for relative-URLs to be relative to. This is possible in Composr as Composr itself only uses absolute URLs.
@@ -130,7 +130,7 @@ The draw-back on relying on this auto-resizing method is that it is somewhat com
 
 The most preferable method of getting the other system to display inside Composr is to 'port' it to Composr, as a properly constructed module, mini-module, block or mini-block. This would be very possible for most systems, but also a very significant programming effort.
 
-The quickest way is to use mini-modules/mini-blocks. These are simplified equivalents to the normal Composr blocks and modules- anything echoed out is put into the output stream in the place you'd expect. They are placed in the correspondingly named directories in Composr's file-system, and then you can just use them as normal pages/blocks.
+The quickest way is to use mini-modules/mini-blocks. These are simplified equivalents to the normal Composr blocks and modules -- anything echoed out is put into the output stream in the place you'd expect. They are placed in the correspondingly named directories in Composr's file-system, and then you can just use them as normal pages/blocks.
 
 Composr is written so that it treats 'PHP notices' as fatal errors. This is a part of our quality standards. Some poorly written PHP code, however, is designed for PHP configurations that suppress these notices. To work around this we turn off a lot of our standard checking settings when mini-modules or mini-blocks are loaded.
 
@@ -178,9 +178,10 @@ To load up them use either normal PHP code, or like [tt]require_code('example');
 [title="3"]Code-based relay[/title]
 
 A compromise between a naturally ported system and a framed system would be to actually write a Composr module that loads the web pages from the other system and puts their output directly into Composr's output stream. Composr has a special API for this, in the 'integrator' source file.
+
 There are two major problems with this approach:
- - The embedded system would always see the server's IP address instead of the clients; this could lead to security issues if it uses IP addresses as a part of its security model
- - It would be ugly (e.g. mixed visual styles), unless extra work was done to clean things up
+1) The embedded system would always see the server's IP address instead of the clients; this could lead to security issues if it uses IP addresses as a part of its security model
+2) It would be ugly (e.g. mixed visual styles), unless extra work was done to clean things up
 
 [title="3"]RSS/Atom[/title]
 
@@ -209,7 +210,7 @@ This template is included into [tt]global.js[/tt] and was specifically designed 
 [title="3"]Adding formally to the Composr theme system[/title]
 
 If you are a programmer writing an addon, you should add the JavaScript as a proper theme resource, and then do an include command to include it.
-This way, the JavaScript code can be overidden within themes, optimised by Composr, and generally will be consistent with how Composr's native JavaScript is handled.
+This way, the JavaScript code can be overridden within themes, optimised by Composr, and generally will be consistent with how Composr's native JavaScript is handled.
 
 We'll assume the JavaScript file is [tt]example.js[/tt].
 
@@ -302,7 +303,7 @@ Only do this if you are making your own theme or your own site, it's not appropr
 [title="3"]Adding formally to the Composr theme system[/title]
 
 If you are a programmer writing an addon, you should add the CSS as a proper theme resource, and then do an include command to include it.
-This way, the CSS can be overidden within themes, optimised by Composr, and generally will be consistent with how Composr's native CSS is handled.
+This way, the CSS can be overridden within themes, optimised by Composr, and generally will be consistent with how Composr's native CSS is handled.
 
 We'll assume the CSS file is [tt]example.css[/tt].
 
@@ -333,7 +334,7 @@ It can be a bit tricky to share members between Composr and another system. Ther
 3) Disable joining of members in the other system, and make it so that login checks against whatever member system Composr is using; maintain a separate member database in the other system, but effectively tie it in to whatever Composr is using
 4) Use LDAP or HTTP-auth for all systems, with each setting up their own separate 'extra' member information scheme; Composr supports LDAP and HTTP-auth, but systems that do are in the minority so it may be a lot of work bringing other involved systems 'up to speed'
 5) Manually synchronise via CSV imports from one system to another
-6) Use the [tt]user_sync[/tt] non-bundled addon to progmatically import from one database to another (requires some limited PHP programming to customise it)
+6) Use the [tt]user_sync[/tt] non-bundled addon to programmatically import from one database to another (requires some limited PHP programming to customise it)
 7) Use the [tt]user_simple_csv_sync[/tt] non-bundled addon to tie together CSV import/export between Composr and another system (requires some limited PHP programming to customise it)
 
 These are all very technical tasks, so we do not expect that many users will have the experience to easily carry them out themselves.

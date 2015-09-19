@@ -38,7 +38,7 @@ One further note about the Welcome Zone: If you use the shoutbox or poll blocks,
 [surround]
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
 As previously mentioned, but worth re-iterating: Composr is only accessible in HTTP-auth enabled areas if the user is actually able to HTTP-authenticate there. Composr will then assume that user is logged in. If Composr cannot see any HTTP-auth user, it can only be because that Composr zone is not secured with HTTP-auth.
-This takes some time to get-your-head-around, but makes sense when you do. If it helps, consider the situation like this: with HTTP-authentication, security and authentication is being taken away from Composr and moved to another layer- it puts Composr in a position to be able to make assumptions by placing a virtual shield in front of it.
+This takes some time to get-your-head-around, but makes sense when you do. If it helps, consider the situation like this: with HTTP-authentication, security and authentication is being taken away from Composr and moved to another layer -- it puts Composr in a position to be able to make assumptions by placing a virtual shield in front of it.
 [/surround]
 
 [concepts

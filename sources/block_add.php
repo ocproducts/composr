@@ -105,18 +105,22 @@ function block_helper_script()
             }
         }
 
+        // Find all blocks
+        $blocks = find_all_blocks();
+        if (!in_safe_mode()) {
+            $dh = @opendir(get_file_base() . '/sources_custom/miniblocks');
+            if ($dh !== false) {
+                while (($file = readdir($dh)) !== false) {
+                    if ((substr($file, -4) == '.php') && (preg_match('#^[\w\-]*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
+                        $blocks[substr($file, 0, strlen($file) - 4)] = 'sources_custom';
+                    }
+                }
+                closedir($dh);
+            }
+        }
+
         // Show block list
         $links = new Tempcode();
-        $blocks = find_all_blocks();
-        $dh = @opendir(get_file_base() . '/sources_custom/miniblocks');
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if ((substr($file, -4) == '.php') && (preg_match('#^[\w\-]*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
-                    $blocks[substr($file, 0, strlen($file) - 4)] = 'sources_custom';
-                }
-            }
-            closedir($dh);
-        }
         $block_types = array();
         $block_types_icon = array();
         $block_meta = array();

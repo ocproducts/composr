@@ -38,7 +38,7 @@ The per-page breakdowns list more detailed statistics for each page, in various 
  - Browsers used to view this page
  - Referrers to this page
  - Operating Systems used to view this page
- - Regionalities this page has been viewed from
+ - Regions this page has been viewed from
 
 [title="3"]Users online statistics[/title]
 

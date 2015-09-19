@@ -126,12 +126,13 @@ Compatibility notes:
 
 When merging with another copy of Composr, you should make sure the other copy must be running the same major version. While other versions may merge successfully, Composr does not support this officially.
 
-The 'cms merge' importer can merge multiple Composr websites together that either:
- - each run on Conversr (and thus, Conversr data gets merged)
- - or, each share a forum database (what we call a "multi-site-network" situation)
+The 'cms merge' importer can merge multiple Composr websites together that either:[list="a"]
+[*] each run on Conversr (and thus, Conversr data gets merged)
+[*] or, each share a forum database (what we call a "multi-site-network" situation)
+[/list]
 
 The 'cms merge' importer cannot:
- - Work with anything other tha Composr data (third-party forum data can not be merged, for instance)
+ - Work with anything other than Composr data (third-party forum data can not be merged, for instance)
  - Merge a Composr site into a Composr site that does not use the same forum database
   - [b]unless[/b] you are highly technically proficient and capable of manually changing member and usergroup IDs, using a tool such as phpMyAdmin (because these IDs could not be mapped correctly for data that used a 'foreign' forum)
   - or [b]unless[/b] both sites run on Conversr (because in this situation, the importer can import everything, and correctly remap any member and usergroup IDs)

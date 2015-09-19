@@ -39,7 +39,7 @@ Error sensitivity
 
 The checker is not a be-all-and-end-all tool for conformance. Rather, it is designed to find a high number of errors, so that problems won't be missed. It is designed to increase the efficiency and quality of the IT professionals workflow.
 
-In situations where additional code would remove ambiguity with-respect-to what may and may not be an error, the checkers enforce that the extra code to be written. For instance, the PHP checker enforces strict-typing (even though PHP itself does not), so that typing-errors may be found -- typing errors are infact, often the cause of major security problems, as well as general bugs.
+In situations where additional code would remove ambiguity with-respect-to what may and may not be an error, the checkers enforce that the extra code to be written. For instance, the PHP checker enforces strict-typing (even though PHP itself does not), so that typing-errors may be found -- typing errors are in fact, often the cause of major security problems, as well as general bugs.
 
 The checkers favour practical quality rather than strict standard compliance. For example, many CSS errors are generated purely to avoid problems with Internet Explorer's lack of standards support.
 
@@ -50,7 +50,7 @@ Some tips:
  - Layout tables are allowed, but to specify them you must place an empty table summary.
  - If you need a form field label but can't place it in your design, make it invisible.
  - If you need something to space links, make an invisible comma.
- - IE's conditional-comments feature is a useful way to workaround IE's poor Object Tag implementation. Don't use 'embed'.
+ - Internet Explorer's conditional-comments feature is a useful way to workaround IE's poor Object Tag implementation. Don't use 'embed'.
 
 If you want to check an HTML email (which requires additional rules), name the file '_mail.html' or '_mail.htm' and load in the files like any other file.
 
@@ -173,7 +173,7 @@ Relationship with Composr
 
 Some files, such as phpstub.php, and webstandards_js_lint.php, come from Composr. Composr contains the latest versions of these files, the CQC is updated separately as required.
 
-PHP- handling of return values
+PHP: handling of return values
 ------------------------------
 
 PHP gives errors via one of a few methods:
@@ -182,7 +182,7 @@ PHP gives errors via one of a few methods:
  - Return values (usually in concert with outputted errors or error returning functions)
  - Error throwing (since PHP5)
 
-Errors being outputted is by far the most common. Unfortunately it's rather difficult to handle these errors progmatically, and in many cases they should be because they could relate to external influences such as corrupt input data. The easy way to handle it is to put "@" in front of the command and then to check if the return value was false, but this leaves ambiguity to what the error actually was. A better way is to read $php_errormsg (the track_errors option must be on).
+Errors being outputted is by far the most common. Unfortunately it's rather difficult to handle these errors programmatically, and in many cases they should be because they could relate to external influences such as corrupt input data. The easy way to handle it is to put "@" in front of the command and then to check if the return value was false, but this leaves ambiguity to what the error actually was. A better way is to read $php_errormsg (the track_errors option must be on).
 
 If the PHP checker is asked to do 'checks' then it will check against a number of functions that should either be "@'d" or wrapped with a custom error handler. In the cases when there is no @ing, a warning will be shown stating that the wrapping should happen.
 

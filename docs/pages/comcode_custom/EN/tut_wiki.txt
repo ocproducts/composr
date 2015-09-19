@@ -17,7 +17,7 @@ Wiki+ consists of a pages which may include a page description and any number of
 
 Pages may also contain a list of pages that are 'underneath' the page; however, a page can be underneath any number of pages, as the Wiki+ hierarchy is loosely defined (technically it is a node based network rather than a real tree structure). When pages are accessed from different paths, the path to the page as it has been accessed is displayed, so that back-tracking is easier, and that the user does not get confused by the path suddenly changing when they enter a 'child' page.
 
-If you do not choose to develop a tree structure then Wiki+ navigation will be much like the navigation of a wiki- Comcode has special wiki-like support for making quick links between Wiki+ pages just by writing [tt][[pagename]][/tt].
+If you do not choose to develop a tree structure then Wiki+ navigation will be much like the navigation of a wiki -- Comcode has special wiki-like support for making quick links between Wiki+ pages just by writing [tt][[pagename]][/tt].
 
 This simple structure of posts, pages, and children, is Wiki+'s core. There are of course peripheral features, such as:
  - Giving pages some 'page text', which sits above the posts on that page; this text is staff decided, and thus provides an authoritative space.
@@ -29,14 +29,15 @@ This simple structure of posts, pages, and children, is Wiki+'s core. There are 
  - Search
  - Editing posts
 
-This simplicity is key to the flexibility of the system- it is a system of control built around organised text, and how that text is used and structured is completely up to the website staff.
+This simplicity is key to the flexibility of the system -- it is a system of control built around organised text, and how that text is used and structured is completely up to the website staff.
 [/surround]
 
 [title="2"]Maintenance of the structure[/title]
 
-The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an adhoc basis, by either:
-1) referencing them in the child-list for a page,
-2) or by referencing them via the special Comcode syntax ([tt][[pagename]][/tt]).
+The full Wiki+ structure and content may be manipulated from the page-view screens of Wiki+ itself. Wiki+ pages are created on an ad hoc basis, by either:[list="a"]
+[*] referencing them in the child-list for a page,
+[*] or, by referencing them via the special Comcode syntax ([tt][[pagename]][/tt]).
+[/list]
 
 There is an obvious 'Edit tree' button to edit the tree structure visible when you're on a Wiki+ page. You can create child pages just by listing the titles you want. When you've saved the child structure you can then see that reflected.
 

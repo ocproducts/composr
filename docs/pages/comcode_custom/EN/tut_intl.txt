@@ -17,8 +17,8 @@ Composr has great support for [concept]internationalisation[/concept], including
 [title="2"]Time-zones[/title]
 
 In Composr, time-zones can be adjusted in two ways:
- - adjusting the site time-zone (this is a site configuration option). This sets the default, and typically will be where your organisation is mainly centered around.
- - adjusting member time-zones in their account settings ([concept]Conversr[/concept] only). This lets individual members set their own time-zones.
+1) adjusting the site time-zone (this is a site configuration option). This sets the default, and typically will be where your organisation is mainly centred around.
+2) adjusting member time-zones in their account settings ([concept]Conversr[/concept] only). This lets individual members set their own time-zones.
 
 You can also have guest time-zones auto-detected (a configuration option). This is a good idea if your visitors are geographically-distributed.
 
@@ -151,17 +151,17 @@ Here's how the above sample cases would be translated:
 2) This is similar to above, but uses our pluralisation feature ([tt]{2}[/tt] would be a number in this case). Translation in French may look like [tt]Il existe {2} {2|pomme|pommes}[/tt].
 3) There is an HTML tag which must be left alone. Translation in French may look like [tt]Un <strong>bon</strong> jour[/tt].
 4) This is largely Comcode which must be left alone. Translation in French may look like [tt][block="quelque chose"]menu[/block][/tt].
-5) This is partly referring to a Composr directory. Translation in French may look like [tt]Le moteur de rendu à utiliser (du type à crochets: 'blocks/main_custom_gfx')[/tt].
+5) This is partly referring to a Composr directory. Translation in French may look like [tt]Le moteur de rendu &#xE0; utiliser (du type &#xE0; crochets: 'blocks/main_custom_gfx')[/tt].
 6) This contains an HTML entity (a smart-quotes apostrophe character). Translation in French may look like [tt]Le plan de Christopher[/tt]. In this case we didn't keep the entity because the translation didn't warrant it. The purpose of this example is to show that "apos" is not some English text to translate directly, it is HTML, which would be the same in any language, but may or may not persist depending on your translation target.
 7) Again this one contains HTML entities. Translation in French may look like [tt]{1} dirige le &lsquo;{2}&rsquo; groupe d'utilisateurs[/tt].
-8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the [tt]{$SITE_NAME}[/tt] intact. Translation in French may look like [tt]WelBienvenue à {$SITE_NAME}[/tt].
+8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the [tt]{$SITE_NAME}[/tt] intact. Translation in French may look like [tt]WelBienvenue &#xE0; {$SITE_NAME}[/tt].
 
 [title="3"]Character sets[/title]
 
 There are three systems that are in common usage to allow diverse characters to be displayed in a document:
- - Unicode
- - Character sets
- - HTML entities
+1) Unicode
+2) Character sets
+3) HTML entities
 
 Composr supports both character sets and Unicode. Generally everyone will want to use Unicode (utf-8) nowadays, and that's our default in Composr. PHP does not have good Unicode support, but it does have a number of common extensions and techniques for handling it (mainly mbstring and iconv), and we support all of those. If there are no extensions installed we have some basic code to 'get by okay'. If you are using a non-English language, you want to ensure your host has the PHP mbstring extension, and the vast majority of hosts do.
 
@@ -169,7 +169,7 @@ The British English pack can be used in both Unicode and Character set mode, so 
 
 [title="4"]Advanced explanation of character encodings[/title]
 
-To understand character sets, you need to understand how strings (or text files) are composed. Each character (a symbol, represented by a 'glyph' on the screen) is essentially represented a number, 0-255 (a byte); 0-127 are usually standard, and specified using the '7-bit ASCII code': the 128-255 range is essentially free, and what the numbers map to depends on the 'character set' used. As different languages use different characters (for example, accented characters, or a whole different alphabet, or even a pictographical language), different languages use different character sets.
+To understand character sets, you need to understand how strings (or text files) are composed. Each character (a symbol, represented by a 'glyph' on the screen) is essentially represented a number, 0-255 (a byte); 0-127 are usually standard, and specified using the '7-bit ASCII code': the 128-255 range is essentially free, and what the numbers map to depends on the 'character set' used. As different languages use different characters (for example, accented characters, or a whole different alphabet, or even a pictographic language), different languages use different character sets.
 
 A file that uses 'high' characters will look different when viewed in editors set to different character sets. In order to put in text in the appropriate character set, and to view it, your editor must be set to it; this is to be expected to be by default if you are translating to your native language.
 

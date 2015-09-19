@@ -107,7 +107,7 @@ The main issue with shared hosting, is that, unless either:
 [/list]
 then every web-server-created/writable file, and your database, is fully writable to by any other account holder.
 
-If you are fortunate enough to be in situation 2 (suEXEC), but not fortunate enough to be in situation 1 (open_basedir), then Composr needs special configuration to make best use of it. You need to make it so that no files are 'world writable' (which is the case unless you have suddenly switched to this environment) and so that [tt]_config.php[/tt] is not world writable or world readable (to protect your database password). So, preferably you'd have both suEXEC and open_basedir. Composr is clever enough to detect your situation, and hence will not [concept]chmod[/concept] any PHP-created-files to a world-writable state as it normal does (it normally does this so that both the account holder user and the web server user have write access to this file- and making them world writable is the only way to achieve this in a hosting environment).
+If you are fortunate enough to be in situation 2 (suEXEC), but not fortunate enough to be in situation 1 (open_basedir), then Composr needs special configuration to make best use of it. You need to make it so that no files are 'world writable' (which is the case unless you have suddenly switched to this environment) and so that [tt]_config.php[/tt] is not world writable or world readable (to protect your database password). So, preferably you'd have both suEXEC and open_basedir. Composr is clever enough to detect your situation, and hence will not [concept]chmod[/concept] any PHP-created-files to a world-writable state as it normal does (it normally does this so that both the account holder user and the web server user have write access to this file -- and making them world writable is the only way to achieve this in a hosting environment).
 
 Web hosts may use "jail shell" and ensure home directories are not world-readable. These are further mitigations against account-vs-account tampering. So actually ideally you would have suEXEC, open_basedir, jail shell, and well configured home directory security.
 
@@ -225,17 +225,18 @@ It is generally a good idea to not given untrusted users this privilege, as the 
 
 "Subject to a more liberal HTML filter" is fairly safe to give, but for high security sites best avoided. If granted, users can basically use whatever HTML they want, if we don't see that HTML as a security risk (insecure HTML will be cleaned up automatically). Without this, there's a particular white-list of allowed HTML (not specifically tags, but tag patterns), corresponding to HTML created directly within the WYSIWYG editor. Users may get confused why content they paste into the WYSIWYG editor comes out a mess, as pasted content is unlikely to use only white-listed HTML segments.
 
-We also have of internal checks that always run, many related to "Alert types" (see above), including:
-a) Constraining of input parameters for filename-only scenarios ([tt]filter_naughty[/tt], [tt]PATH_HACK[/tt])
-b) Constraining of input parameters for codename-only scenarios ([tt]filter_naughty_harsh[/tt], [tt]EVAL_HACK[/tt])
-c) Checks for URL fields, e.g. making sure "data:" URLs are not submitted, or special characters that could allow interference with HTTP headers ([tt]DODGY_GET_HACK[/tt])
-d) Checks for posted JavaScript URLs ("javascript:"), anywhere ([tt]SCRIPT_URL_HACK_2[/tt])
-e) Referrer checks, to make sure POST requests aren't being made from non-trusted sites (i.e. CSRF-prevention, [tt]EVIL_POSTED_FORM_HACK[/tt])
-f) [s]Input field length, so that strangely long parameter inputs are not accepted in most cases[/s] ([i]this was removed, it didn't raise security, and created bugs[/i])
-g) External redirections, so that hackers can't create URLs linking to your site that immediately redirect you to an unsafe third-party site (this kind of thing can trick users into thinking they have clicked onto your site, when they're not there anymore). This isn't logged as a hack-attack, as it can happen too innocently, but it is filtered out.
-h) Obvious spamming (some common spam patterns are so obvious, we can just route them direct to [tt]LAME_SPAM_HACK[/tt])
-i) Click-jacking frame protection, using standard [tt]X-Frame-Options[/tt] functionality
-j) Generally making sure things are filled in when required, and expected numbers really are numbers
+We also have of internal checks that always run, many related to "Alert types" (see above), including:[list="a"]
+[*] Constraining of input parameters for filename-only scenarios ([tt]filter_naughty[/tt], [tt]PATH_HACK[/tt])
+[*] Constraining of input parameters for codename-only scenarios ([tt]filter_naughty_harsh[/tt], [tt]EVAL_HACK[/tt])
+[*] Checks for URL fields, e.g. making sure "data:" URLs are not submitted, or special characters that could allow interference with HTTP headers ([tt]DODGY_GET_HACK[/tt])
+[*] Checks for posted JavaScript URLs ("javascript:"), anywhere ([tt]SCRIPT_URL_HACK_2[/tt])
+[*] Referrer checks, to make sure POST requests aren't being made from non-trusted sites (i.e. CSRF-prevention, [tt]EVIL_POSTED_FORM_HACK[/tt])
+[*] [s]Input field length, so that strangely long parameter inputs are not accepted in most cases[/s] ([i]this was removed, it didn't raise security, and created bugs[/i])
+[*] External redirections, so that hackers can't create URLs linking to your site that immediately redirect you to an unsafe third-party site (this kind of thing can trick users into thinking they have clicked onto your site, when they're not there anymore). This isn't logged as a hack-attack, as it can happen too innocently, but it is filtered out.
+[*] Obvious spamming (some common spam patterns are so obvious, we can just route them direct to [tt]LAME_SPAM_HACK[/tt])
+[*] Click-jacking frame protection, using standard [tt]X-Frame-Options[/tt] functionality
+[*] Generally making sure things are filled in when required, and expected numbers really are numbers
+[/list]
 
 We also have standard output escaping mechanisms so that attempts to inject bad data do not lead to bad outcomes.
 
@@ -273,8 +274,8 @@ In the security configuration, Composr defines a list of file types that may be 
  - sql,odt,ods,ps,pdf,doc,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,avi,mov,mpg,mpeg,asf,wmv,ram,ra,rm,qt,mov,zip,tar,rar,gz,wav,mp3,ogg,torrent,php
 
 It is important to understand that there are two sides to the security of file uploads:
- - on the server-side, it must be impossible for a file to be uploaded that might execute on the server, instead of download (such as a php file). You may have noticed that php is an allowed file extension in the list: this is because php uploads are explicitly blocked internally, but only in the situation where the file would be stored on disk with its original extension (which the attachment system does not do)
- - on the client-side, it must be impossible for a file to be uploaded that might get downloaded and automatically execute a malicious action on a client computer. One example of such a file type is, to the surprise of most, 'html'. .html files can contain JavaScript, which could be used, if the file was downloaded from the main website domain, to transmit the user's login cookies to any arbitrary hacker. Therefore it is crucial that html files, and other files (swf,fla,svg,xml are suspected to be dangerous at this time) are not added to the list
+1) on the server-side, it must be impossible for a file to be uploaded that might execute on the server, instead of download (such as a php file). You may have noticed that php is an allowed file extension in the list: this is because php uploads are explicitly blocked internally, but only in the situation where the file would be stored on disk with its original extension (which the attachment system does not do)
+2) on the client-side, it must be impossible for a file to be uploaded that might get downloaded and automatically execute a malicious action on a client computer. One example of such a file type is, to the surprise of most, 'html'. .html files can contain JavaScript, which could be used, if the file was downloaded from the main website domain, to transmit the user's login cookies to any arbitrary hacker. Therefore it is crucial that html files, and other files (swf,fla,svg,xml are suspected to be dangerous at this time) are not added to the list
 
 [title="2"]Protect your domain name[/title]
 
@@ -346,8 +347,8 @@ The Admin Zone is configured to require confirmed-sessions by-default because it
 Essentially the idea of confirmed vs non-confirmed sessions is a trade-off. You can maintain cookie-based logins, but to do the higher level of actions you need to confirm yourself.
 
 Composr does provide a secondary defence against this scenario, by checking referrers, but we do not consider referrers secure based on two facts:
- - this seems an area where there may be web browser vulnerabilities, or unfortunate situations, that lead to inaccuracy of this data
- - user firewalls, ironically, often block this data (for privacy reasons), preventing us from using it to add to security
+1) this seems an area where there may be web browser vulnerabilities, or unfortunate situations, that lead to inaccuracy of this data
+2) user firewalls, ironically, often block this data (for privacy reasons), preventing us from using it to add to security
 We also have security tokens on forms as a third defence.
 
 [title="4"]Conceded mode[/title]

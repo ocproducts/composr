@@ -127,7 +127,7 @@ Privileges on the other hand are inherited all the way from the global privilege
 
 Note that privileges are not inherited through category trees, so setting privileges on a parent category will not change privilege to the child categories. If you wanted whole subtrees of categories to have different privileges you'd need to use the batch selection feature in the Permissions tree editor. It is rare to want to be able to do this though.
 
-Similarly, you do not need view permissiosn on parent categories to view child categories, although it would be hard to find a category if you did not have access to view it's parents.
+Similarly, you do not need view permission on parent categories to view child categories, although it would be hard to find a category if you did not have access to view it's parents.
 [/surround]
 
 [title="2"]Usergroup settings[/title]
@@ -138,7 +138,7 @@ Usergroups have a number of settings that are "privilege"-like. They're not actu
 
 [surround]
 [media width="150" description="The 'su' feature is incredibly quick and easy: just enter a name and click a button" float="right"]data_custom/images/docs/tut_permissions/permissions_su.png[/media]
-To test access permissions and privileges, it's best to create a test member, or to assume the identity of an existing lower-ranking (non-administrator) member. Infact, if you are using [concept]Conversr[/concept] then there's a default member named 'test' for you.
+To test access permissions and privileges, it's best to create a test member, or to assume the identity of an existing lower-ranking (non-administrator) member. In fact, if you are using [concept]Conversr[/concept] then there's a default member named 'test' for you.
 
 The 'su' function allows an administrator to quickly and easily assume the identity of somebody else ("masquerade"), for whatever purposes he sees fit (and not needing to type in their password, or logout).
 

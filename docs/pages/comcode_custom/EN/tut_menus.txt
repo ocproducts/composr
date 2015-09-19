@@ -68,9 +68,9 @@ The easiest way to edit a managed menu is to click the 'edit menu' link shown un
 
 [media width="150" description="The menu editor" float="right"]data_custom/images/docs/tut_menus/menus_editor.png[/media]
 The menu editing screen is split into three main sections:
- - the actual menu tree structure
- - a form for editing a branch in the tree structure (invisible, until one of the branches is selected)
- - a Sitemap tool to find 'entry points' for insertion into the selected branch's URL field
+1) the actual menu tree structure
+2) a form for editing a branch in the tree structure (invisible, until one of the branches is selected)
+3) a Sitemap tool to find 'entry points' for insertion into the selected branch's URL field
 
 Menus are a tree structure made up of branches, where each branch may be a simple link and/or be a container for more child branches. For a branch with children that branch can be set to be initially expanded or contracted.
 
@@ -207,7 +207,7 @@ When you add a new branch to a managed menu, you can choose to include the Sitem
  1_key="Match-key"      1_value="Page-link style identifiers used to do pattern matching against URLs"
  2_key="Comcode menu"   2_value="A menu created via the Comcode 'menu' tag"
  3_key="Managed menu"   3_value="A menu created by the menu editor"
- 4_key="Panel page"     4_value="A specially named page that sits on an edge of the main page for all pages in its zone (although a templator could place it anywhere, edges are most common)"
+ 4_key="Panel page"     4_value="A specially named page that sits on an edge of the main page for all pages in its zone (although a templater could place it anywhere, edges are most common)"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

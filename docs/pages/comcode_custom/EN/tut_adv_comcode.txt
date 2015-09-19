@@ -6,19 +6,94 @@ This tutorial will explain some of the more advanced aspects of the Comcode syst
 
 [title="2"]Comcode Security[/title]
 
-A great deal of emphasis is placed on making sure Comcode is secure, as it is available to all members of a Composr website. There is a privilege, 'allow insecure Comcode', and another 'allow nuisance Comcode': we recommend that these are left turned off except for staff.
-There are additional mechanisms in Comcode to aid security, such as ones to stop JavaScript-powered URLs, and ones to stop people trying to using HTML entities to bypass JavaScript filtering.
+A great deal of emphasis is placed on making sure Comcode is secure, as Comcode is available to all members of a Composr website.
 
-Users can use HTML in Comcode, but it is subject to a security filter. There are two security filters used:
+There's essentially a 5-tier distinction you should keep in mind:
+1) Totally untrusted random users
+2) Somewhat trusted users who you still don't really know well
+3) Trusted users who you are happy to trust to not explicitly go out of their way to find sneaky ways to subvert access controls
+4) Staff trusted with almost all access who you are happy to trust to not explicitly go out of their way to find sneaky ways to subvert the highest level of access controls (typically super-moderators)
+5) Staff trusted with full access (super-administrators) [on this level you can't limit privileges, all privileges are automatically granted]
+
+The following privileges impact Comcode permissions (referencing the tiers above)...
+[semihtml]
+<table class="columned_table results_table autosized_table">
+	<thead>
+		<tr>
+			<th>Privilege</th>
+			<th>Codename</th>
+			<th>Tier</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>Use potentially-troublesome Comcode</td>
+			<td>[tt]comcode_nuisance[/tt]</td>
+			<td>2</td>
+			<td><em>This privilege currently doesn't do anything, but we reserve it for the future.</em></td>
+		</tr>
+		<tr>
+			<td>Subject to a more liberal HTML filter</td>
+			<td>[tt]allow_html[/tt]</td>
+			<td>2</td>
+			<td>Instead of only whitelisting HTML, it applies a blacklist &dagger;.</td>
+		</tr>
+		<tr>
+			<td>Avoid broad input filtering security layer</td>
+			<td>[tt]unfiltered_input[/tt]</td>
+			<td>3</td>
+			<td>This bypasses the rough supplementary filtering that applies to all Composr requests.</td>
+		</tr>
+		<tr>
+			<td>Use unrestricted markup that could be abused for XSS attacks</td>
+			<td>[tt]use_very_dangerous_comcode[/tt]</td>
+			<td>3</td>
+			<td>This allows dangerous HTML code to be posted within Comcode &dagger;&dagger;.</td>
+		</tr>
+		<tr>
+			<td>Use dangerous Comcode</td>
+			<td>[tt]comcode_dangerous[/tt]</td>
+			<td>4</td>
+			<td>Allow use of things such as [tt][block][/tt] tags, allowing arbitrary Admin Zone access (e.g. by embedding an Admin module on the front-end of the website)</td>
+		</tr>
+	</tbody>
+</table>
+[/semihtml]
+
+[box]
+&dagger; There are two alternative security filters available in Composr:
 1) The whitelist filter. This is the most secure filter, and is used by default. It only allows certain HTML fragments to be used (fragments likely to be produced via usage of the WYSIWYG editor).
-2) The blacklist filter. This is designed for high security, filtering out anything it sees as dangerous. Members are subjected to this filter if they have the "Subject to a more liberal HTML filter" permission.
+2) The blacklist filter. This is designed for high security, filtering out anything it sees as dangerous. At this level you are trusting the user won't and can't find a security hole in the sophisticated blacklist filter.
+[/box]
 
-Dangerous code includes:
+[box]
+&dagger;&dagger; Very dangerous code includes:
  - JavaScript code (reason: code can be malicious, for example steal cookies)
  - CSS code rules block ([tt]style[/tt] element) (reason: style changes can be used to deceive a visitor)
  - Code to embed external files, such as JavaScript, CSS, applets, or browser plugins (reason: external code can either be malicious or adjust existing code to be malicious)
- - Meta tags (reason: could inkect the authorisation needed for taking over the Google Webmaster Tools, for example)
+ - Meta tags (reason: could inject the authorisation needed for taking over the Google Webmaster Tools, for example)
  - Code to change the overall page document structure (reason: can significantly change how the browser processes the page)
+There are sophisticated mechanisms in Comcode to maintain this security, such as ones to stop JavaScript-powered URLs, and ones to stop people trying to using HTML entities to bypass JavaScript filtering.
+[/box]
+
+[title="3"]Edited content[/title]
+
+Comcode is interpreted with particular access credentials. When added, obviously this is the level of the submitter. When editing then the situation is more complex:
+ - We set the access credentials to that of the editing user (not the content owner) if the editing user does not have all of "Subject to a more liberal HTML filter" and "Use unrestricted markup that could be abused for XSS attacks" and "Use dangerous Comcode".
+ - Otherwise, we set the access credentials that of the content owner.
+
+These rules uphold the following 3 principles:
+1) A non-admin who has permission to edit something an admin posted (e.g. a moderator) should not be able to edit under the credentials of the admin.
+2) An admin should not be tricked into raising the access level of some Comcode when they think they are just correcting typos. A hacker could have left some dangerous (but subtle) "bombs" in their Comcode.
+3) In general we want to maintain editing under the same credentials as the original user to keep things consistent.
+
+In other words: we pick the lowest access credentials with a bias to the editing user if the status is mixed and a bias to the content owner otherwise.
+
+Note that "Avoid broad input filtering security layer" happens on the input layer, not the Comcode layer, so always runs based on the credentials of the editing user. Don't worry about this though because it's an additional layer of security, not the primary layer.
+
+[title="3"]The future[/title]
 
 Some time in the future browsers may gain the ability to sandbox parts of web pages, which would allow us to relax these rules, but it seems a long way off still. We would need to wait for all web browsers in use to have adopted the new sandboxing behaviour before we could rely on it.
 
@@ -42,13 +117,13 @@ Your tag will be shown in your local copy of the Comcode tutorial, with your tit
 [box="Tip" width="25em" float="right"]
 If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.
 [/box]
-Note that Comcode is cached, and if you edit a tag after adding Comcode using it, it won't be updated until you edit that content (or the Comcode field precalculation cache is emptied).
+Note that Comcode is cached, and if you edit a tag after adding Comcode using it, it won't be updated until you edit that content (or the Comcode field pre-calculation cache is emptied).
 
 [title="2"]Semi-HTML[/title]
 
-The \[semihtml] tag is a special tag that allows Comcode and HTML to be naturally mixed together. Primarily, the tag is used so that the WYSIWYG editor, which is an HTML editor, may have Comcode placed within it that is not visual, and thus could not be edited in a WYSIWYG fashion.
+The [tt][semihtml][/tt] tag is a special tag that allows Comcode and HTML to be naturally mixed together. Primarily, the tag is used so that the WYSIWYG editor, which is an HTML editor, may have Comcode placed within it that is not visual, and thus could not be edited in a WYSIWYG fashion.
 
-The \[semihtml] tag is also useful if you are writing some content that has very tight formatting, so it involves a lot of HTML, but also includes elements of Comcode, such as blocks. Without the \[semihtml] tag, it would be necessary to keep opening and closing \[html] tags to achieve the same effect.
+The [tt][semihtml][/tt] tag is also useful if you are writing some content that has very tight formatting, so it involves a lot of HTML, but also includes elements of Comcode, such as blocks. Without the [tt][semihtml][/tt] tag, it would be necessary to keep opening and closing [tt][html][/tt] tags to achieve the same effect.
 
 [title="2"]Syntax highlighting[/title]
 
@@ -92,7 +167,7 @@ Menu entries are typed so that their indentation is equal to the indentation of 
 
 Comcode is largely able to deal with [concept]BBCode[/concept] code. BBCode is a popular (but not formally-specified) system among standalone forum systems. Comcode is not formally designed as an extension of BBCode, but we intentionally aimed to be a super-set of it so that we are compatible with code imported from third-party forum systems, and so that our forum drivers can work well.
 
-Comcode can support all major features of all the major BBCode-like languages, and lax syntax (for example, missing quotation symbols) as is often allowed in BBCode. However, BBCode implementations do not support a lot of the functionality of Comcode, such as the 'block' tag and our list syntax; in addition, the Comcode implementation is that of a fully parsed language, with a well-defined syntax, while BBCode is almost always implemented as an adhoc language to be turned into HTML via [concept]regular expressions[/concept].
+Comcode can support all major features of all the major BBCode-like languages, and lax syntax (for example, missing quotation symbols) as is often allowed in BBCode. However, BBCode implementations do not support a lot of the functionality of Comcode, such as the 'block' tag and our list syntax; in addition, the Comcode implementation is that of a fully parsed language, with a well-defined syntax, while BBCode is almost always implemented as an ad hoc language to be turned into HTML via [concept]regular expressions[/concept].
 
 [title="3"]Wiki-Code compatibility[/title]
 

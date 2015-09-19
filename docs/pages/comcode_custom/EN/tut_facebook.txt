@@ -329,7 +329,7 @@ There are some important caveats:
 
 People often wonder why you can syndicate everything personally, but not everything on a site level. Essentially we think of these things differently. A site syndicates headline things, while a person syndicates more personal things. If something is a headline thing, it's going to have an associated news post, or calendar event, regardless of what other kinds of content may be involved. So, site syndication is focused on those news posts and calendar events. You can always manually post to Facebook if there is something else you want to draw attention to.
 
-[title="4"]Maybe just keep it simple / separate-out responsibilites?[/title]
+[title="4"]Maybe just keep it simple / separate-out responsibilities?[/title]
 
 You may prefer to use a dedicated service such as [url="Twitterfeed"]http://twitterfeed.com[/url] to tie in any of the Composr RSS feeds. This is a more flexible and automated solution. Twitterfeed is subject to the same [url="60 day issue"]http://blog.twitterfeed.com/post/60359135452/an-easier-way-to-re-connect-facebook-accounts[/url] Composr is though (it's unavoidable).
 

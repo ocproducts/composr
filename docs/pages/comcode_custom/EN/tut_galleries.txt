@@ -32,8 +32,8 @@ You can delete a gallery/image/video from the bottom of its edit form.
 [media width="150" description="A gallery in multi-page mode" float="right"]data_custom/images/docs/tut_galleries/gallery_not_flow_mode.png[/media]
 [media width="150" description="A gallery in flow mode" float="right"]data_custom/images/docs/tut_galleries/gallery_flow_mode.png[/media]
 There are two display modes for galleries:
- - Flow mode -- this mode allows you to see all the entries in the gallery at the same time as viewing one of the entries. This makes navigation more efficient. Note that there is a limit of 40 media files displayed in the carousel, so flow mode is only a good option for small galleries.
- - Multi-page mode -- this mode provides page browsing features so as to be able to browse through a large numbers of entries.
+1) Flow mode -- this mode allows you to see all the entries in the gallery at the same time as viewing one of the entries. This makes navigation more efficient. Note that there is a limit of 40 media files displayed in the carousel, so flow mode is only a good option for small galleries.
+2) Multi-page mode -- this mode provides page browsing features so as to be able to browse through a large numbers of entries.
 
 Regardless of display mode, the user can choose any of the available entries (images or videos), and the chosen entry will be presented to the user.
 
@@ -65,27 +65,38 @@ Composr can usually auto-detect video widths, heights and lengths, from the actu
 Composr supports most video formats, but video on the web is fraught with complexity.
 
 The following formats are best to use:
- - mp4 (with h.264 aac encoding)
- - webm (the new [at time of writing] Google-sponsored format, supported natively in all web browsers except IE and Safari, but available in those via normal system codec plugins)
+ - [tt].mp4[/tt] (with h.264 aac encoding)
+ - [tt].webm[/tt] (the new [at time of writing] Google-sponsored format, supported natively in all web browsers except Internet Explorer/Microsoft Edge and Safari, but available in those via normal system codec plugins)
 
 The following are almost as good:
- - mov (with h.264 aac encoding -- this modern QuickTime format is identical to mp4)
- - flv (works as long as Flash is installed -- won't work on iOS devices)
+ - [tt].mov[/tt] (with h.264 aac encoding -- this modern QuickTime format is identical to mp4)
+ - [tt].flv[/tt] (works as long as Flash is installed -- won't work on iOS devices)
 
 The following common formats are not safe:
- - avi (could be many different codecs, no consistent support even for the MPEG-compatible encodings like DivX or XVid or MS-Video, plus your browser might not load the correct plugin)
- - wmv/asf (requires Windows Media Player plugin, only properly supported on Windows)
- - ogv (Ogg video, essentially replaced by WebM)
- - mpeg/mpg (old MPEG formats, no consistent plugin support, plus your browser might not load the correct plugin)
- - rm/ram (requires RealPlayer plugin, not available on Linux)
- - qt (Old quicktime format)
+ - [tt].avi[/tt] (could be many different codecs, no consistent support even for the MPEG-compatible encodings like DivX or XVid or MS-Video, plus your browser might not load the correct plugin)
+ - [tt].wmv[/tt]/[tt].asf[/tt] (requires Windows Media Player plugin, only properly supported on Windows)
+ - [tt].ogv[/tt] (Ogg video, essentially replaced by WebM)
+ - [tt].mpeg[/tt]/[tt].mpg[/tt] (old MPEG formats, no consistent plugin support, plus your browser might not load the correct plugin)
+ - [tt].rm[/tt]/[tt].ram[/tt] (requires RealPlayer plugin, not available on Linux)
+ - [tt].qt[/tt] (Old quicktime format)
+
+Further documentation is provided in the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc) tutorial[/page].
+
+[title="4"]Transcoding[/title]
 
 You can set it up so that any video format is 'transcoded' to MP4 by setting the FFMPEG executable path in the configuration. For this to work, 'FFMPEG' needs to be installed on the server. The default transcoder settings are set to produce MP4 h.264 DVD-quality movie files.
-Unfortunately FFMPEG does have some major problems with audio/video synchronisation, mixed bit-rates, and lack of adaption to corrupt files, and incompatibilities between versions. It is also fairly slow to run, so can consume server resources, and could result in timeouts on some configurations. It's a sad situation but there's no real cheap solution to it for now, other than to focus on campaigning for WebM to become a dominant universal standard (which doesn't look like it can ever happen).
 
-[title="3"]Audio[/title]
+Unfortunately FFMPEG does have some major problems with audio/video synchronisation, mixed bit-rates, and lack of adaption to corrupt files, and incompatibilities between versions. It is also fairly slow to run, so can consume server resources, and could result in timeouts on some configurations.
+
+The best solutions (for those who can't invest heavily in heavy-weight transcoding solutions) are:
+1) just use YouTube. You can post videos on YouTube, then add a video in Composr using the normal YouTube URL as the video URL. Composr will then automatically embed the YouTube player.
+2) just post in h.264 [tt].mp4[/tt] to start with. It has become the standard and is supported in all browsers. The only down-side is having to learn how to set your codec settings right when you make the video file.
+
+[title="3"]Audio etc[/title]
 
 Audio is supported as specialisation of video support. i.e. a gallery must have video files enabled for it, for audio files to be supported.
+
+In-fact, virtually any kind of media, including random things like URLs to Google Maps, may be posted as a video. The media rendering system Composr uses is quite extensive.
 
 [title="3"]Length, width, and height[/title]
 
@@ -133,5 +144,6 @@ If you don't want this feature you can remove it by editing the [tt]GALLERY_ENTR
  - [page="_SEARCH:tut_featured"]Providing featured content[/page]
  - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
  - [page="_SEARCH:tut_adv_galleries"]Advanced galleries[/page]
+ - [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page]
 
 {$SET,tutorial_tags,Galleries,galleries,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A gallery system is provided for the storage, organisation and viewing of images and videos.  Read about it.}[block]main_tutorial_rating[/block]

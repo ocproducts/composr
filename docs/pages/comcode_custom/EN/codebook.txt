@@ -24,7 +24,7 @@ Composr's file system is basically split up into:
 [*]HTML (.htm files)[/list]
 [*]'sources' which contain code to be included
 [*]'sources/hooks' which contain hooks that tie addons together so they can interoperate
-[*]'sources/blocks' and 'sources/miniblocks' which contain block files. Blocks are plugable units that are can be included within Comcode pages and templates. They are usually displayed as a box, e.g. a menu, or a list of recent forum discussions.
+[*]'sources/blocks' and 'sources/miniblocks' which contain block files. Blocks are pluggable units that are can be included within Comcode pages and templates. They are usually displayed as a box, e.g. a menu, or a list of recent forum discussions.
 [*]'themes' which contain images, CSS and templates.
 [*]'lang' which contains language strings.
 [/list]
@@ -137,7 +137,7 @@ Composr contains many "cross-cutting" features that are often present in differe
  - Blocking guests trying to edit something owned by Guest (a bug if it isn't, but it would be good to try and abstract this)
  - Ditto blocking editing interface for something you don't have category access to
  - [b]Attachments[/b], Comcode, Multi-language support (instructions for implementation provided in this book)
- - [b]Validation[/b], validation-required e-mails, Non-validated warnings, and permissions to determine who may view non-validated content, and a hook to identify all non-validated resources (see how it's done in existing modules, it's quite straight-forward- just identify the lines of code that involve validation and basically copy&paste them to the right spots in your own code)
+ - [b]Validation[/b], validation-required e-mails, Non-validated warnings, and permissions to determine who may view non-validated content, and a hook to identify all non-validated resources (see how it's done in existing modules, it's quite straight-forward -- just identify the lines of code that involve validation and basically copy&paste them to the right spots in your own code)
  - [b]Control actions[/b] links (see the [tt]{+START,INCLUDE,STAFF_ACTIONS}[/tt] code in [tt]DOWNLOAD_SCREEN.tpl[/tt])
  - [b]Logging[/b] (use the [tt]log_it[/tt] function in your model code, for adding, editing, and deleting)
  - [b]Mass action[/b], and policy for deletion of categories (implementation varies, but consider what happens to a categories entry when you delete that category)
@@ -168,7 +168,7 @@ On a practical level:
 You can hear it from Steve Jobs too (taken from his official auto-biography by Walter Isaacson)...
 
 [quote="Walter Isaacson"]
-One of the most extreme—and telling—implementations of that philosophy came when he scrutinized the printed circuit board that would hold the chips and other components deep inside the Macintosh. No consumer would ever see it, but Jobs began critiquing it on aesthetic grounds. "That part's really pretty," he said. "But look at the memory chips. That's ugly. The lines are too close together."
+One of the most extreme-and telling-implementations of that philosophy came when he scrutinized the printed circuit board that would hold the chips and other components deep inside the Macintosh. No consumer would ever see it, but Jobs began critiquing it on aesthetic grounds. "That part's really pretty," he said. "But look at the memory chips. That's ugly. The lines are too close together."
 
 One of the new engineers interrupted and asked why it mattered. "The only thing that's important is how well it works. Nobody is going to see the PC board."
 

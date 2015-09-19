@@ -34,10 +34,11 @@ Go to Admin Zone > Structure > Redirects.
 
 Let's imagine our new zone is called [tt]foo[/tt]...
 
-You'd set up these redirects:
-a) [tt]foo:forumview[/tt] --> [tt]forum:forumview[/tt], with transparent checked.
-b) [tt]foo:topicview[/tt] --> [tt]forum:topicview[/tt], with transparent checked.
-c) [tt]foo:topics[/tt] --> [tt]forum:topics[/tt], with transparent checked.
+You'd set up these redirects:[list="a"]
+[*] [tt]foo:forumview[/tt] --> [tt]forum:forumview[/tt], with transparent checked.
+[*] [tt]foo:topicview[/tt] --> [tt]forum:topicview[/tt], with transparent checked.
+[*] [tt]foo:topics[/tt] --> [tt]forum:topics[/tt], with transparent checked.
+[/list]
 
 Now we have the forum pages running from our [tt]foo[/tt] zone :)!
 

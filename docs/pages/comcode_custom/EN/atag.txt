@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Authoring Tool Accessibility Guidelines 2.0 - Composr version 3.0 compliance[/title]
 
-This document fulfills the compliancy needs of the ATAG 2.0 draft document on demonstrating ATAG compliance for an authoring tool.
+This document fulfils the compliancy needs of the ATAG 2.0 draft document on demonstrating ATAG compliance for an authoring tool.
 The document is brief, but ocProducts are happy to clarify any issues that organisations or individuals may have, and if any flaw is found in our compliance, we will work to fix this.
 At the time of writing we believe Composr does indeed fully comply with ATAG, and we have made numerous changes to get Composr to that point. Some of the wording in the specification is, however, not completely appropriate to the kind of tool Composr is, and hence some guidelines are met in spirit rather than a strict literal interpretation would require; we believe that this is reasonable and expected.
 
@@ -154,7 +154,7 @@ This is how the webstandards checker works; it only uses global context for buil
 If the authoring tool relies on author judgment to determine if a potential accessibility problem is correctly identified, then the message to the author must be tailored to that potential accessibility problem (i.e. to that requirement in the context of that element or span of elements).
 [/quote]
 
-This is the case - errors are targetted.
+This is the case - errors are targeted.
 
 [quote="ATAG checkpoint"]
 The authoring tool must present checking as an option to the author at or before the completion of authoring.

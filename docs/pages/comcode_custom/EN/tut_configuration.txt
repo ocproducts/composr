@@ -10,9 +10,10 @@ During basic configuration, you will be familiarising yourself with Composr for 
 
 [surround]
 [media width="150" description="Reaching the Admin Zone from the main website" float="right"]data_custom/images/docs/tut_configuration/reaching_adminzone.png[/media]
-When the installer finishes, you have a choice to either:
-1) view your website
-2) run the Admin Zone's Setup Wizard (recommend)
+When the installer finishes, you have a choice to either:[list="a"]
+[*] view your website
+[*] run the Admin Zone's Setup Wizard (recommend)
+[/list]
 
 In either case you will be required to log in. Log in using an administration username. If you installed using Conversr (Composr's own forum system), the username and password will have been specified during installation (with the username being 'admin' by default).
 

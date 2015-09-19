@@ -77,7 +77,7 @@ You will see the following columns:
  - "Member's typical notification type" -- specifies that a notification type will be forcibly sent out in the member's average way they've set to receive notifications
  - (All the different ways of receiving notifications) -- the checkbox selections here determine [i]specifically[/i] how members will forcibly receive this notification type (you will not typically use this in combination with "Member's typical notification type").
  
-If no checkboxes are checked then the members will not be able to recieve the notification type at all. This is quite a common configuration, essentially allowing you to turn off a notification type for the whole website.
+If no checkboxes are checked then the members will not be able to receive the notification type at all. This is quite a common configuration, essentially allowing you to turn off a notification type for the whole website.
 
 Note that the settings apply to all members (while respecting the notification permissions). You cannot set lock-downs against specific usergroups.
 

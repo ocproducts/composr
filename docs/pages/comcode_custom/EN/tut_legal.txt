@@ -61,9 +61,9 @@ Please note that it is not usually possible to disclaim liability for everything
 
 As you need to avoid liability (unless you want it) for damage to 'persons', you also need to avoid getting into a position where you are held legally liable for the hosting of illegal content. It is unlikely you can fully disclaim responsibility for content on your site: although many 'warez' and 'file sharing' websites (perhaps, laughably) claim a defence like this, it is very shaky legal ground, and you should not let yourself get into such a position.
 Perhaps the best way to tackle this problem is a three-pronged approach:
- - Perform cursory checks to make sure submitted data is not illegal
- - Add member rules that prohibit uploading of illegal content
- - Disclaim liability for such content (while this would likely not work if your website became littered with illegal content, it is perhaps more defensible for exceptions)
+1) Perform cursory checks to make sure submitted data is not illegal
+2) Add member rules that prohibit uploading of illegal content
+3) Disclaim liability for such content (while this would likely not work if your website became littered with illegal content, it is perhaps more defensible for exceptions)
 Of course there is a big difference between highly criminal content (such as terrorist advice, if it is illegal in your jurisdiction) and minor civil-law-breaking content, such as unintended copyright infringement.
 
 You may wish to add to your legal page that you disclaim liability for mis-use of registered trademarks, and that they remain the property of their respective owners.
@@ -93,9 +93,9 @@ It is unfortunate but inevitable that in most social climates, people will have 
 Most opposing views are political in some sense, and usually related to the divide between traditionalism/conservatism and liberalism.
 
 You need to make three main decisions:
- - Are you going to reach a balance between extremes (if so, make some decisions on where the balance lies), or moderate against your-own or someone-else's personal/corporate views?
- - Are you going to define a level of what is 'appropriate' for your community, not based on personal view, but merely what you think your community should be allowed to discuss?
- - Are you going to limit discussion of topics related purely on relevance to a central topic?
+1) Are you going to reach a balance between extremes (if so, make some decisions on where the balance lies), or moderate against your-own or someone-else's personal/corporate views?
+2) Are you going to define a level of what is 'appropriate' for your community, not based on personal view, but merely what you think your community should be allowed to discuss?
+3) Are you going to limit discussion of topics related purely on relevance to a central topic?
 These decisions more than anything will mould the feeling of your community and held you set specific rules and policies.
 
 When it comes to moderation, the words 'freedom' and 'offensive' very often get carried around:
@@ -114,7 +114,7 @@ In addition to Composr's COPPA support, you should also add your real-world cont
 
 In order to enable COPPA you need to turn on "COPPA enabled", and configure your fax number and postal address.
 
-Young members (or even older members) are often nieve, as they have less experience of the world and often have lived relatively sheltered lives. Therefore you should actively protect these members from:
+Young members (or even older members) are often naive, as they have less experience of the world and often have lived relatively sheltered lives. Therefore you should actively protect these members from:
  - inappropriate exposure of materials by other members (such as pornography or other sexual content)
  - stalkers
  - paedophiles

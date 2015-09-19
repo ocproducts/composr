@@ -859,7 +859,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 | A colour
 |-
 ! Storage format (for programmer reference)
-| Colour hex code with no “#” (e.g. AAAAAA), or blank
+| Colour hex code with no "#" (e.g. AAAAAA), or blank
 |-
 ! Special default values
 | [i]None[/i]

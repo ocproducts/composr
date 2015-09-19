@@ -66,7 +66,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 		<tr>
 			<td>Web server</td>
-			<td>this is the software applicaton that serves data over HTTP, and ties into PHP; Apache and [abbr="Internet Information Server"]IIS[/abbr] are examples of the web server applications Composr can use.</td>
+			<td>this is the software application that serves data over HTTP, and ties into PHP; Apache and [abbr="Internet Information Server"]IIS[/abbr] are examples of the web server applications Composr can use.</td>
 			<td>An awareness of web server configuration may be important. For example, how to configure Apache via [tt].htaccess[/tt] files.</td>
 		</tr>
 		<tr>

@@ -54,7 +54,7 @@ If Composr says JavaScript is not enabled it can mean three things:
 2) Session Cookies are disabled
 3) The Composr cookie settings chosen at installation are incorrect
 
-Number 2 is the most likely cause, and this can be adjusted in the "Privacy" options of Microsoft Internet Explorer: it is the simplistic "High privacy" slider that causes many users to disable cookies, when infact cookies are just one of many ways that people may be tracked (hence it is false piece of mind, at the expense of functionality). A good way to determine whether session cookies are disabled is by going back to your website after closing the browser window: if the URLs in Composr have a 'keep_session' bit in them then it means that session cookies are disabled. Microsoft Edge does not have this problem because you would have to explicitly disable cookies in this browser (the IE security level feature is not in Microsoft Edge).
+Number 2 is the most likely cause, and this can be adjusted in the "Privacy" options of Microsoft Internet Explorer: it is the simplistic "High privacy" slider that causes many users to disable cookies, when in fact cookies are just one of many ways that people may be tracked (hence it is false piece of mind, at the expense of functionality). A good way to determine whether session cookies are disabled is by going back to your website after closing the browser window: if the URLs in Composr have a 'keep_session' bit in them then it means that session cookies are disabled. Microsoft Edge does not have this problem because you would have to explicitly disable cookies in this browser (the Internet Explorer security level feature is not in Microsoft Edge).
 
 If the problem is number 3, then you can adjust your cookie setting by opening up [tt]http://mybaseurl/config_editor.php[/tt] -- if you wipe out the "cookie_domain" setting so it is blank, and set "cookie_path" to "/" then cookies should always save correctly.
 
@@ -80,7 +80,7 @@ ocProducts recommends that users do have cookies enabled, but that they possibly
 8) Cookies must be set against a domain name. This is either done by putting [tt].domain[/tt] as the cookie domain, or by leaving the domain blank when setting the cookie; the domain should never be defined as [tt]domain[/tt] as it will not work properly.
 9) Cookies work with an elaborate but confusing precedence system. Only cookies underneath a matched domain/path combination will be sent to a server URL (for privacy reasons), and they will be given precedence based on 'most specific gets priority'. To change a cookie the server must set it against the domain/path combination it was created with. The variables a cookie was defined under are not available server-side, which means that anyone modifying the cookie must know these in advance, or guess wildly.
 10) There is a legitimate privacy concern with cookies when ads are concerned. Banner rotations run from centralised sites, and hence have the ability to effectively track users from this centralised site but with regard any site that they visit that uses the rotation. Nevertheless, such tracking could happen regardless of cookies, via server logging and cross-server messaging -- so blaming cookies is simplistic.
-11) Microsoft made a great extension to Netscape's original cookie spec, allowing 'HTTP only' cookies (cookies that JavaScript cannot read). Use of this prevents XSS many vulnerabilities. Unfortunately it is only supported by IE currently.
+11) Microsoft made a great extension to Netscape's original cookie spec, allowing 'HTTP only' cookies (cookies that JavaScript cannot read). Use of this prevents XSS many vulnerabilities. Unfortunately it is only supported by Internet Explorer currently.
 12) At the protocol level, cookies are sent to the server in a single Cookie HTTP header, but set from the server using individual Set-Cookie headers.
 13) Cookies just store names and values, and never any data that a web server or normal JavaScript would not have been able to discern -- because it is the web server or browser that sets the cookie.
 14) JavaScript provides its cookie support by a virtual variable, [tt]document.cookie[/tt]. The variable can be set and read, but the process is not actually direct.
@@ -93,7 +93,7 @@ ocProducts recommends that users do have cookies enabled, but that they possibly
 
 [concepts
  1_key="Cookie"           1_value="A piece of data stored on a users computer related to your website, and passed to your web server whenever the user access it"
- 2_key="Session"          2_value="A session uniquelly identifies and provides continuality for a users website usage to a better degree than an IP address or cookie could (essentially, by using both together)"
+ 2_key="Session"          2_value="A session uniquely identifies and provides continuity for a users website usage to a better degree than an IP address or cookie could (essentially, by using both together)"
  3_key="Session Cookie"   3_value="A cookie that is deleted when the web browser is closed"
 ]Concepts[/concepts]
 

@@ -10,7 +10,7 @@ Before we get into explaining domain names, I wanted to quickly talk about host 
 
 [title="2"]The business relationships of an actual domain name[/title]
 
-Domain names are purchased from a domain name registar (aka "agent"), which is an independent company which uses their prearranged relationship with a high level authority to get a domain name set up. The registrar then provides the commercial services for that domain, and the technical services to be able to set things up against it. The high level authorities differ depending on what kind of domain it is (all these authorities are chosen by the highest level authority, ICANN):
+Domain names are purchased from a domain name registrar (aka "agent"), which is an independent company which uses their prearranged relationship with a high level authority to get a domain name set up. The registrar then provides the commercial services for that domain, and the technical services to be able to set things up against it. The high level authorities differ depending on what kind of domain it is (all these authorities are chosen by the highest level authority, ICANN):
  - The high level authority for uk domains is Nominet
  - The high level authority for com, org, etc (usually Verisign)
 When dealing with the management of domain names as assets, one typically deals solely with registrars, and never deals with the high level authority. However if a registrar goes out of business or is too poor to provide reasonable service, then one needs to deal with the high level authority. Dealing with the high level authority is not ideal, as the service is more bureaucratic than commercial -- one needs to provide identity, send postal letters, and make 'statutory' payments to get anything done.
@@ -26,8 +26,8 @@ Note that domains names are not a "web" technology, they are an "Internet" techn
 Every domain name has basically one setting involved in the process of directing traffic: the nameserver for that domain name.
 
 The nameserver for the domain then will itself define where different kinds of Internet traffic get routed to. It basically defines against two different traffic kinds:
- - E-mail (MX records)
- - All other Internet traffic, including web traffic (A records)
+1) E-mail (MX records)
+2) All other Internet traffic, including web traffic (A records)
 
 [title="3"]Subdomains[/title]
 

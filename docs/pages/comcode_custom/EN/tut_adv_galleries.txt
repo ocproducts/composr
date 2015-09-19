@@ -99,13 +99,13 @@ Personal galleries may only be submitted to by the owner of the personal gallery
 
 There are permissions and configuration options relating to the gallery system that allow you to limit the number of entries that members may have in their own galleries.
 Composr provides this functionality using a three-tiered system:
- - low limit on entries in member galleries
- - high limit on entries in member galleries
- - no limit on entries in member galleries
+1) low limit on entries in member galleries
+2) high limit on entries in member galleries
+3) no limit on entries in member galleries
 The 'low' and 'high' limits are configurable using configuration options, with separate settings for both images and videos.
 The tier that a member resides in is based on usergroup permissions with two privileges which may be set for usergroups:
- - has high limit in member galleries
- - has no limit in member galleries
+1) has high limit in member galleries
+2) has no limit in member galleries
 
 [title="3"]Linking directly for a member to add to their own member gallery[/title]
 

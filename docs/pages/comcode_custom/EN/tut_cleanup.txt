@@ -35,7 +35,7 @@ Frankly most of these optimisers are not useful. We provide them for very rare s
 [/surround]
 
 [concepts
- 1_key="Cache"                 1_value="A data store that contains precalculated results such that those results do not need to be calculated more than once; caches are designed to increase efficiency"
+ 1_key="Cache"                 1_value="A data store that contains pre-calculated results such that those results do not need to be calculated more than once; caches are designed to increase efficiency"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

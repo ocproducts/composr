@@ -1,7 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Reporting problems and providing feedback[/title]
 
 This tutorial will provide you some advice for reporting different kinds of feedback for Composr. It will teach you how to do it the right way, specifically:
- - Comprehensively (you don't want to provide vague unactionable feedback)
+ - Comprehensively (you don't want to provide vague non-actionable feedback)
  - Fairly (so that you're not expecting people to be working unpaid to meet your particular needs)
  - Courteously (so as to not cheese anybody off)
 It is written from the perspective of the Composr developers.
@@ -62,7 +62,7 @@ In general:
 
 If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in Admin Zone > Audit > Error log). The error log shows all non-user-errors that have occurred on your site.
 
-If your report is not clear enough for us to [i]mmediately[/i] see it as a bug we may require you to post with a commercial ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
+If your report is not clear enough for us to [i]immediately[/i] see it as a bug we may require you to post with a commercial ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
 
 [title="3"]Automatic reporting[/title]
 

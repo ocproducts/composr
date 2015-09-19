@@ -61,7 +61,7 @@ Composr requires:
   - MySQL extension
   - a maximum execution time of at least 30 seconds
   - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable web hosts) -- the installer will warn if any critical functions have been
-  - no other explicit disabling of standard functionality that we require. Commonly web hosts do this using modsecurity, suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
+  - no other explicit disabling of standard functionality that we require. Commonly web hosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, while caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with dev mode on). A higher limit, e.g. 40MB, may be required if running PHP4.
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free web hosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
  - A web server that runs MySQL (*), version 5.5.3 or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often web hosts will quote a number of databases that web-hosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable web-host
@@ -84,9 +84,10 @@ Composr recommends:
   - XML
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server
 
-If you do not have the PHP FTP extension, then you will need either:
- - an environment where the web server user has recursive write access over the web directories (most Windows servers)
- - an environment where the web server user is the same as the virtual hosting login user (suEXEC)
+If you do not have the PHP FTP extension, then you will need either:[list="a"]
+[*] an environment where the web server user has recursive write access over the web directories (most Windows servers)
+[*] an environment where the web server user is the same as the virtual hosting login user (suEXEC)
+[/list]
 
 [title="3"]Requirements for specific features[/title]
 
@@ -210,8 +211,8 @@ As previously mentioned, this file system is merely illustrative. Different serv
 [title="2"]Server security (advanced)[/title]
 
 There are two ways that web hosts may use to manage web application on the server:
- - Shared user
- - suEXEC-style
+1) Shared user
+2) suEXEC-style
 
 With a shared user, all sites run code as a user such as [tt]apache[/tt] or [tt]nobody[/tt]. This is simpler for the host to configure, but it is not a good idea for security. It also is the reason so much 'chmodding' may be needed (so the shared user has write access to files specifically on your account). In this scenario they will typically then lock other things down, such as denying shell access and setting an [tt]open_basedir[/tt] to sandbox PHP -- but rarely are these restrictions enough and it's an inherently incorrect approach for a shared web-host to take. Different server users are likely to be able to access and interfere with (erase and edit) each others files. We strongly advise any web-hosts to use a suEXEC-style environment.
 
@@ -237,7 +238,7 @@ If you want to edit or delete a file made by the web server, using your FTP acco
 Composr detects the account owner by seeing who owns the [tt]index.php[/tt] file.
 
 So, the main take-away is:
-[indent]If you do not have suexec, any files the web server needs to be able to write to need to be either reassigned to be owned by the web server (if you are a server admin you can do that, it's more secure if other users have login access to your web server) or given world-write permissions (what most Composr users would have to do)[/indent]
+[indent]If you do not have suEXEC, any files the web server needs to be able to write to need to be either reassigned to be owned by the web server (if you are a server admin you can do that, it's more secure if other users have login access to your web server) or given world-write permissions (what most Composr users would have to do)[/indent]
 
 [title="2"]PHP-Info[/title]
 

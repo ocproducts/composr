@@ -33,12 +33,12 @@ This short tutorial aims simply to clarify what all these terms to relate to, an
 		</tr>
 		<tr>
 			<td>Member</td>
-			<td>A member has an account (aka a profile), meaning they have specifically joined. Because they have an account, they have a member-id (a number) and a username.</td>
-			<td>By using this term, we imply the user has joined and logged in, and thus is very distinguishable, via their member-id. It is always preferable for people to be logged-in members, for reliable association.</td>
+			<td>A member has an account (aka a profile), meaning they have specifically joined. Because they have an account, they have a member-ID (a number) and a username.</td>
+			<td>By using this term, we imply the user has joined and logged in, and thus is very distinguishable, via their member-ID. It is always preferable for people to be logged-in members, for reliable association.</td>
 		</tr>
 		<tr>
 			<td>Guest</td>
-			<td>A user who is not logged in. All guests share the same member-id: that of someone who is not a real member (usually '1', depending on the forum driver and database driver).</td>
+			<td>A user who is not logged in. All guests share the same member-ID: that of someone who is not a real member (usually '1', depending on the forum driver and database driver).</td>
 			<td>By using this term, we imply a user is not logged in. For example, we reference that guests do not receive points: the reason being, there is no known account to associate the points to. Code might associate stuff with the guest account, but this should never be anything that needs to have a distinguished user (like a point transfer).</td>
 		</tr>
 		<tr>
@@ -114,7 +114,7 @@ That should do it!
  4_key="guest"                4_value="Someone who is not joined or not logged in"
  5_key="author"               5_value="Someone who authored something (not necessary a user)"
  6_key="submitter"            6_value="Someone who has submitted something"
- 7_key="staff"                7_value="Someone who is on the staff list, or generally has staff access (term is often used vaguelly as a conveniance, as permissions in reality are very configurable)"
+ 7_key="staff"                7_value="Someone who is on the staff list, or generally has staff access (term is often used vaguely as a convenience, as permissions in reality are very configurable)"
  8_key="super moderator"      8_value="Someone who has special staff-like access, but not full site control"
  9_key="super administrator"  9_value="Someone who has full site control, and can't have it taken away as long as they are a super administrator"
  10_key="super member"        10_value="Someone who in in a super member usergroup, which typically has Collaboration Zone access; a vague concept to avoid having to refer to the low-level permissions"

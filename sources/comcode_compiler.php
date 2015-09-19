@@ -588,7 +588,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $found_list = true;
                             $scan_pos = $pos;
                             $list_type = '1';
-                        } elseif (($pos + 2 < $len) && (ord($next) >= ord('a')) && (ord($next) <= ord('z')) && ($comcode[$pos] == ')') && ($comcode[$pos + 1] == ' ') && ((($list_type == 'a') && ($list_indent != 0)) || (preg_match('#^[^\n]*\n\d+\) #', substr($comcode, $pos + 1)) != 0))) {
+                        } elseif (($pos + 2 < $len) && (ord($next) >= ord('a')) && (ord($next) <= ord('z')) && ($comcode[$pos] == ')') && ($comcode[$pos + 1] == ' ') && ((($list_type == 'a') && ($list_indent != 0)) || (preg_match('#^[^\n]*\n[a-z]+\) #', substr($comcode, $pos + 1)) != 0))) {
                             if (($list_indent != 0) && ($list_type != 'a')) {
                                 list($temp_tpl, $old_list_indent) = _close_open_lists($list_indent, $list_type);
                                 if ($GLOBALS['XSS_DETECT']) {

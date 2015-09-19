@@ -20,8 +20,8 @@ The banking system runs with international standards for things such as:
  - cheques ('checks' in American English)
 
 Cheque processing is relatively straight forward, but more infrastructure is needed to process credit or debit cards. This is accomplished by using a [concept]payment gateway[/concept] in one of two ways:
- - by getting an agent to fully handle the transaction and relay the funds
- - by having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
+1) By getting an agent to fully handle the transaction and relay the funds
+2) By having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
 
 Composr, by default, allows payment via PayPal, WorldPay and SecPay, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional ([page="site:support"]ocProducts can do this for you[/page]). PayPal is fully supported; WorldPay and SecPay are not regularly tested.
 
@@ -135,8 +135,8 @@ Documentation for other Payment gateways is provided in notes at the top of the 
 All supported payment gateways provide a test mode, which is turned on from the Admin Zone Configuration. Test mode allows you to make purchases from your website using the full eCommerce architecture of Composr and the payment gateway, except no money will actually be charged (it's a simulation mode) -- the ideal way to test your setup without risking real money.
 
 To prevent purchases being made by real people that you don't receive real money for, only members in a usergroup with the 'Access eCommerce system when in test mode' permission may purchase when test mode is enabled ("Purchasing is temporarily offline for maintenance. It should be back online within 24 hours: please try again later." will be seen by others). You have two supported testing choices:
- - enable this permission for all usergroups and test the eCommerce when the website is closed (using the SU feature)
- - test the eCommerce from your own admin account
+1) Enable this permission for all usergroups and test the eCommerce when the website is closed (using the SU feature)
+2) Test the eCommerce from your own admin account
 
 For PayPal test mode goes through the [url="PayPal sandbox"]https://developer.paypal.com/[/url]. Sign up on the sandbox (this is your test account for making the sale), log in, and create a test user (this is your test account for purchasing).
 Be advised that we have found the PayPal sandbox to be buggy. If your tests fail with errors like "The link you have used to enter the PayPal system is invalid. Please review the link and try again." then you may be experiencing bugs in the PayPal sandbox. By all means, please complain to PayPal about it -- we have run tests and found the sandbox fails midway through purchases on configurations that work correctly for live payments.
@@ -147,18 +147,18 @@ Be advised that we have found the PayPal sandbox to be buggy. If your tests fail
 Composr has an abstract system of 'products' that may be 'purchased'. These Composr products are not the same as products that are available from shopping-cart systems, but rather, special types of purchasable product or service that have their own code to handle their purchase.
 
 In Composr by default there are the following 'kinds' of 'product':
- - [b]usergroup subscription[/b]: you may configure as many usergroup subscriptions as you wish, and these are all handled by the 'Usergroup' product kind. Each configurured subscription is considered a 'product' for sale on your site.
+ - [b]usergroup subscription[/b]: you may configure as many usergroup subscriptions as you wish, and these are all handled by the 'Usergroup' product kind. Each configured subscription is considered a 'product' for sale on your site.
  - [b]catalogue items[/b]: these are items for sale from the online store
  - [b]orders[/b]: these products are a collection of other products bound into a group, and generated when someone finalises an order from the shopping cart
  - [b]work[/b]: this is a generic kind of product used to represent something that has been invoiced
  - Various kinds of [b]non-purchasable product[/b] that exist for accounting purpose -- 'interest', 'tax', 'wage' and 'other'. These aren't for sale on your site but positive or negative transaction sums can be entered against them in the Admin Zone, so your profit/loss and cash-flow charts can be accurate.
 
 Product kinds fit into the following general categories:
- - Invoice: requests for payment created from the Admin Zone, paid for from the invoices module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
- - Subscription: one-off purchases made from the purchase module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the subscriptions module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
- - Shopping cart: an item purchased from the catalogue/shopping modules ([tt]site:catalogues[/tt]/[tt]site:shopping[/tt] page-links, Content > Products and Content > Shopping Cart, on the default menus) (above: catalogue items)
- - Other (above: interest, tax, wage, other)
- - Purchase wizard: one-off purchases made from the purchase module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: [i]none available out-of-the-box[/i])
+ - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the invoices module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
+ - [b]Subscription[/b]: one-off purchases made from the purchase module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the subscriptions module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
+ - [b]Shopping cart[/b]: an item purchased from the catalogue/shopping modules ([tt]site:catalogues[/tt]/[tt]site:shopping[/tt] page-links, Content > Products and Content > Shopping Cart, on the default menus) (above: catalogue items)
+ - [b]Other[/b] (above: interest, tax, wage, other)
+ - [b]Purchase wizard[/b]: one-off purchases made from the purchase module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: [i]none available out-of-the-box[/i])
 
 [box="For programmers" width="25em" float="right"]
 In the code these are defined via a [tt]PRODUCT_*[/tt] constant from the [tt]ecommerce[/tt] code file.
@@ -172,9 +172,9 @@ Most useful kinds of purchase can, however, be achieved with the default usergro
 [title="3"]In more detail[/title]
 
 The eCommerce system has a central transactional framework. Each type of product is sold by putting through transactions that have three key things that correspond to that product:
- - product name (a codename, not intended for humans to read)
- - product ID
- - amount
+1) product name (a codename, not intended for humans to read)
+2) product ID
+3) amount
 Any transaction that goes through is matched to a product that will then verify the payment and dispatch the sale. The product is matched via the product name -- i.e. the product name in the transaction matches the name of a product for sale. The product will usually see if the amount is correct for that product, and it will use the ID to find how to dispatch the sale. For example, on our old site (when Composr was commercial) the 'lifetime registration' product stores the site-ID in this, and thus when the transaction went through it knew what site has been registered and could go and then send out the key etc.
 
 [title="4"]Actual code (for programmers)[/title]
@@ -249,15 +249,15 @@ The Composr online store works via the existing Composr catalogues system. Out-o
 You can access this catalogue for modifications, and adding products to, from Content Management > Products.
 
 This catalogue has some hard-coded fields:
- - Product title -- the product title / name
- - Item code -- a code of your choice for the item, probably taken from your internal labelling system
- - Price -- the item's price (pre-tax)
- - Stock level -- the number in stock
- - Stock level warning point -- the point at which you should be e-mailed if the stock level reaches
- - Whether stock is being maintained -- whether you want stock control (as above)
- - Tax rate -- the tax rate, a percentage chosen from a list (you may edit the catalogue to change what is shown in the list)
- - Weight -- the items weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight
- - Description -- a description for the item
+ - [b]Product title[/b] -- the product title / name
+ - [b]Item code[/b] -- a code of your choice for the item, probably taken from your internal labelling system
+ - [b]Price[/b] -- the item's price (pre-tax)
+ - [b]Stock level[/b] -- the number in stock
+ - [b]Stock level warning point[/b] -- the point at which you should be e-mailed if the stock level reaches
+ - [b]Whether stock is being maintained[/b] -- whether you want stock control (as above)
+ - [b]Tax rate[/b] -- the tax rate, a percentage chosen from a list (you may edit the catalogue to change what is shown in the list)
+ - [b]Weight[/b] -- the items weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight
+ - [b]Description[/b] -- a description for the item
 You may add additional fields, such as extra product images or specifications. However do [b]not[/b] re-order the original fields (or delete, or change the field type), as the system uses the order of these fields internally to know what they refer to. If you wish to change how they are shown do it via template editing.
 By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
 
@@ -343,7 +343,7 @@ Manual transactions may also be used to input transactions that are totally exte
  1_key="PayPal"           1_value="The most popular online payment gateway"
  2_key="Payment gateway"  2_value="The infrastructure for performing advanced financial transactions"
  3_key="Instant Payment Notification"  3_value="A system, originally created by PayPal, for determining the progress of a financial transaction or ongoing subscription."
- 4_key="Product"           4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very engrandised and dynamic"
+ 4_key="Product"           4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

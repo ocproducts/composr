@@ -1328,7 +1328,7 @@ class Module_galleries
      * @param  string $join Join clause for doing set query
      * @param  Tempcode $category_name The actual title for the gallery we are using
      * @param  ?AUTO_LINK $current_id The ID of the current entry of the type we are browsing in the gallery we are using (null: assume first)
-     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an adhoc root, to allow gallery splitting-up)
+     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an ad hoc root, to allow gallery splitting-up)
      * @param  ?ID_TEXT $current_type The current type being browsed (null: assume first)
      * @set image video
      * @param  BINARY $slideshow If in slideshow
@@ -1447,7 +1447,7 @@ class Module_galleries
      * @param  AUTO_LINK $first_id The ID of the first entry of the type we are browsing in the gallery we are using (null: no previous)
      * @param  ?AUTO_LINK $back_id The ID of the previous entry of the type we are browsing in the gallery we are using (null: no previous)
      * @param  ?AUTO_LINK $next_id As above, except next entry (null: no next)
-     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an adhoc root, to allow gallery splitting-up)
+     * @param  ID_TEXT $root The root gallery (the gallery we are considering as an ad hoc root, to allow gallery splitting-up)
      * @param  integer $x Position in collection
      * @param  integer $n Total in collection
      * @param  ID_TEXT $current_type The first type being browsed

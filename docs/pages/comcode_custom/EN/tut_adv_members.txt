@@ -177,9 +177,10 @@ The privileges are:
  - Bypass filling-in date of birth account options
  - Bypass filling-in date of birth account options on existing accounts
 
-Note that there are effectively two sets of privileges:
-a) Wholesale bypass of requirement (e.g. Bypass filling-in required custom profile fields)
-b) Bypass of requirement on existing accounts (e.g. Bypass filling-in required custom profile fields on existing accounts)
+Note that there are effectively two sets of privileges:[list="a"]
+[*] Wholesale bypass of requirement (e.g. Bypass filling-in required custom profile fields)
+[*] Bypass of requirement on existing accounts (e.g. Bypass filling-in required custom profile fields on existing accounts)
+[/list]
 
 The wholesale bypass would typically be granted to staff and mainly exists for scenario 1. If lets staff add new accounts without having to fill everything in that would usually be required. It also is useful to generally remove the required-field status for date of birth and/or e-mail address fields (CPFs have individual required statuses so it is less useful for those).
 The privilege on existing accounts is a weaker privilege that cover scenarios 2 and 3 well. They mean that if someone is editing an account (their own or someone else's) and the field is currently blank, they don't have to fill it in. However, if the field is already filled in then they will [i]not[/i] be allowed to blank it out.
@@ -210,7 +211,7 @@ For welcome e-mails to work the Composr cron bridge must be configured as discus
 
 As long as you have the newsletters addon installed, welcome emails will piggy-back off the newsletters templating code (regardless of whether the welcome email is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
 
-[title="2"]Importing/expoerting members[/title]
+[title="2"]Importing/exporting members[/title]
 
 You can use [abbr="Comma-Separated-Values"]CSV[/abbr] files to put member data into your website, or to export it. There are many different reasons you might want to do this, but in simple terms, organisations often need to shuffle member data between different systems and this is a good/normal way to do it.
 
@@ -245,7 +246,7 @@ Follow this process to do an import:
 2) Open the spreadsheet in some spreadsheet software (something like Microsoft Excel or LibreOffice)
 3) Blank out the existing rows in the spreadsheet (except the header row of course)
 4) Fill in new rows, as required
-5) Save back to a .csv file (.xls or .xlsx files are [b]not[/b] supported). Make sure that it is a true CSV file (i.e. comma-delimiters between fields, not tab-delimiters or semi-colon delimiters). Opening it in something like Windows Notepad is a good way to confirm this.
+5) Save back to a [tt].csv[/tt] file ([tt].xls[/tt] or [tt].xlsx[/tt] files are [b]not[/b] supported). Make sure that it is a true CSV file (i.e. comma-delimiters between fields, not tab-delimiters or semi-colon delimiters). Opening it in something like Windows Notepad is a good way to confirm this.
 6) Take a full database backup (you can never be too careful, a small typo such as a corruption of the header row, or a regular error in the new user rows, could result in proliferate errors after import)
 7) Import (Admin Zone > Tools > Members > Import member spreadsheet (CSV)). You'll be asked to upload the CSV file and optionally to give a default password. Click the button to run the import.
 

@@ -1,8 +1,8 @@
 [title sub="Written by Salman Abbas (ocProducts), Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
 
 Composr has great support for mobile. You can design for mobile in two ways:
- - Mobile mode
- - Responsive Design
+1) Mobile mode
+2) Responsive Design
 
 This tutorial explains which you might choose, and provides some guidance.
 
@@ -25,7 +25,7 @@ Ultimately the control and decision is in your hands.
 
 Pros of responsive design:
  - Optimise against a wider range of devices, including different sizes of tablet and phone
- - Show something mindblowing for desktop users with huge browser windows
+ - Show something mind-blowing for desktop users with huge browser windows
  - No complexity of there being a mode choice in the system
 
 Pros of mobile mode:

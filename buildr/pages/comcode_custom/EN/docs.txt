@@ -65,7 +65,7 @@ If you scroll down, you will see a link called 'map'. Click on it and a map will
  - The Green lined square represents your current location on the realm.
  - The question marks '?' represent a room that you haven't visited yet.
  - The name you see above the co-ordinates is the name of the owner of the room,the name that appears the most times on the map is the owner of and generally, the realm.
- - The Red lines represent a locked direction, meaning you can't create a room at that location until someone unlocks it (if they ever want too...). Example: If to the right is locked, you can't make a room to the right. To completely lock a direction off, you must lock the direction in every surrounding room there are any surrounding rooms. This will prevent people on the if outside from being trapped inside the room.... This is why you shouldn't lock off all of the directions.
+ - The Red lines represent a locked direction, meaning you can't create a room at that location until someone unlocks it (if they ever want too...). Example: If to the right is locked, you can't make a room to the right. To completely lock a direction off, you must lock the direction in every surrounding room there are any surrounding rooms. This will prevent people on the if outside from being trapped inside the room... This is why you shouldn't lock off all of the directions.
 
 [html]<div style="margin-left: 30px">[/html]If you take a look at...
 [url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png"][img="Example image" width="544" height="433"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png[/img][/url]
@@ -144,7 +144,7 @@ If you made the room you are currently in, or made the realm you are currently o
 
 [title="3"]The main interface: Interaction[/title]
 
-As with any other RPG based game, interaction is key to the game. You can chat with anyone currently in in the same room as you by typing a message shown in....
+As with any other RPG based game, interaction is key to the game. You can chat with anyone currently in in the same room as you by typing a message shown in...
 
 [img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.5.0.png[/img]
 
@@ -321,10 +321,10 @@ First, open up the map and find a spot where you want the room to be moved. Simp
 Let's say a room is at 25:7:-8 and you want to move your room to right. The co-ordinates would be 25:7:-7.
 
 The more to the right the room needs to be, the greater the X number is. (-10 to 0 to 10).
-The more towards the right, the greater the X number is. (-3,-2,-1... 1,2,3,4....)
-The more towards the left, the lower the X number is. (-1,-2,-3,-4,-5, ....)
-The more upwards a room gets, the lower the Y number gets. (-3,-2,-1... 1,2,3,4....)
-The more downwards a room gets, the higher the Y number gets. (-1, -2,-3,-4,-5, ....)
+The more towards the right, the greater the X number is. (-3,-2,-1... 1,2,3,4...)
+The more towards the left, the lower the X number is. (-1,-2,-3,-4,-5, ...)
+The more upwards a room gets, the lower the Y number gets. (-3,-2,-1... 1,2,3,4...)
+The more downwards a room gets, the higher the Y number gets. (-1, -2,-3,-4,-5, ...)
 
 [title="3"]How to delete your room[/title]
 
@@ -342,7 +342,7 @@ When the room is deleted, you will receive a 70% refund of the original price. T
 
 This short tutorial will show you how to make a realm in Buildr.
 
-Why would you want to make a realm? So many reasons.... To name a few:
+Why would you want to make a realm? So many reasons... To name a few:
  - Make a Small (single realm) or Big (multiple realm) Planet.
  - Make a Mission or 'Quest'
  - Make a Sector in space, or other area
@@ -351,7 +351,7 @@ Why would you want to make a realm? So many reasons.... To name a few:
  - Have Fun
  - Experiment with Buildr
 
-To name a few.... ;)
+To name a few... ;)
 
 Now, let's get cracking!
 
@@ -458,7 +458,7 @@ Make your way to the portal spot then scroll down and select 'add portal'. A new
 [b]Dest. X[/b]: The co-ordinate for X. The only available number here is 0 as only 1 room exists.
 [b]Dest. Y[/b]: The co-ordinate for Y. The only available number here is 0 as only 1 room exists.
 
-After the portal is created, you can click the new link and voil�, you're in your own realm!
+After the portal is created, you can click the new link and voil&#xE0;, you're in your own realm!
 
 [title="3"]Realms: The objective of a troll[/title]
 

@@ -51,7 +51,7 @@ The following are free for using:
 [surround="accessibility_hidden"][box="Tips for the JAWS screen reader"]
 For best performance, please set JAWS to read Title text. To do this, do the following:
 [list]
-[*]From IE, or Firefox, press Insert+F2, the JAWS manager dialog will open. There are lot's of options here, but what you want is the JCF (JAWS Configuration Manager).
+[*]From Internet Explorer, Microsoft Edge, or Firefox, press Insert+F2, the JAWS manager dialog will open. There are lot's of options here, but what you want is the JCF (JAWS Configuration Manager).
 [*]Press ("C") for the Configuration manager and press enter.
 [*]Press Alt+S to open the ("User options submenu").
 [*]Use your up and down arrow keys to navigate to the ("HTML Options Settings") dialog and press enter.

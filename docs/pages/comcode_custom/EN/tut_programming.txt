@@ -38,7 +38,7 @@ This script outputs 'hello world' to the web browser it is being called up by (w
 PHP actually allows you to mix commands in with plain HTML, by placing them between '<?php' and '?>' in the file. This is not used by Composr however, as it creates extremely ugly code, and makes it difficult to change the visual appearance, especially when programmers need to make new code releases, but the actual files have been changed just to make the visual output look a bit different. Composr uses a system of 'templating' where templates are defined outside the code, and called up by the code to be mixed with data and mixed with other templates: this fusion is then output to the user's web browser. In Composr, you can't just 'echo' out data like in this example, unless you are coding what we call a 'mini-module' or 'mini-block' (these listen for echoed data and insert it properly into the output stream). In Composr, if you are writing a new page, you write a type of module that fits inside Composr, and has access to all of the Composr functionality (such as accessing the database). There is nothing stopping you have your own scripts on your web server as well as Composr, and even sharing the same data, but actually coding inside a 'plug-in' (unofficial terminology) for Composr is likely to be the best solution. Plug-ins may be:
  - mini-modules
  - mini-blocks
- - standalone scripts, that start with a special block of code as used in many Composr standalone scripts, such as dload.php and index.php.
+ - standalone scripts, that start with a special block of code as used in many Composr standalone scripts, such as [tt]dload.php[/tt] and [tt]index.php[/tt].
 
 From now on in the tutorial, '<?php' and '?>' will be missed out, although they are necessary. This tutorial is not intended as a tutorial for specifically programming Composr, as Composr builds on PHP: to program Composr, you must first learn PHP, and then you can learn from existing Composr code and the Composr Code Book. In addition, this tutorial will not teach HTML: it is assumed output is plain-text, although of course the web browser will actually think of it as HTML.
 
@@ -58,12 +58,12 @@ This example uses 'variables', which will be described in the next section.
 [title="2"]Variables[/title]
 
 Variables are a means of storing data within your program. To refer to that data you assign a constant name to it when you initialise it. There are different types of variable, although PHP's 'weak typing' means you often do not need to consider this. The basic types are:
- - integer (int) -- a whole number, positive or negative
- - string -- a piece of text
- - floating point number (float) -- a real number (like an integer that may contain a fractional part, and may be much larger -- traded for accuracy)
- - boolean -- a simple 'true' or 'false', for holding truths
- - array -- something that holds other variables in an indexing system
- - NULL -- any variable may be made the NULL type, which is like a marker that doesn't actually give a specific value. It is often used to mean 'none' or 'unknown' or 'undefined' or 'erroneous result'.
+ - [b]integer[/b] (int) -- a whole number, positive or negative
+ - [b]string[/b] -- a piece of text
+ - [b]floating point number[/b] (float) -- a real number (like an integer that may contain a fractional part, and may be much larger -- traded for accuracy)
+ - [b]boolean[/b] -- a simple 'true' or 'false', for holding truths
+ - [b]array[/b] -- something that holds other variables in an indexing system
+ - [b]null[/b] -- any variable may be made the NULL type, which is like a marker that doesn't actually give a specific value. It is often used to mean 'none' or 'unknown' or 'undefined' or 'erroneous result'.
 PHP variables may jump between types according to the values that you assign them.
 Variable names have to follow these rules:
  - The first character must be a letter, not a number or _.
@@ -145,7 +145,7 @@ Comments are simple notes in the code, which the compiler ignores. Single line n
 EXAMPLE:
 [code="PHP"]
 echo 'Hi';     // This is a single-line comment
-echo 'Hello!'; /* This is a possibily-line-spanning comment */
+echo 'Hello!'; /* This is a possibly-line-spanning comment */
 [/code]
 
 [title="2"]Arithmetic[/title]
@@ -209,9 +209,9 @@ It is wise to split large scripts up and use 'include' to link them together, fo
 [title="2"]Debugging[/title]
 
 When you write code with errors in it, your program will do one of three things:
- - Not execute at all, this is a parser error.
- - Crash out during execution of the program, this is a run-time error.
- - Give incorrect results, this is a logical error.
+1) Not execute at all, this is a parser error.
+2) Crash out during execution of the program, this is a run-time error.
+3) Give incorrect results, this is a logical error.
 Parser errors are always easier to fix. The parser will actually tell you exactly where the error is and tell you what is wrong. Logical errors are often extremely time consuming and difficult to fix because they could be anywhere in your code, especially if you have a very long program with a lot of decision making and functions. Run-time errors are more difficult to fix than compile-time errors, but still not that difficult to mend.
 EXAMPLES:
  - Run-time error -- Divide by zero.
@@ -510,7 +510,7 @@ N/A is used to mark characters that have a special meaning.
 28     N/A    60    <     92    \     124    |
 29     N/A    61    =     93    ]     125    }
 30     N/A    62    >     94    ^     126    ~
-31     N/A    63    ?     95    _     127    �
+31     N/A    63    ?     95    _     
 [/tt]
 
 [concepts
@@ -522,7 +522,7 @@ N/A is used to mark characters that have a special meaning.
  6_key="Code quality checker"   6_value="The ocProducts tool designed to make programming robust PHP/Composr code easier, with and end reliability that would otherwise be unreachable"
  7_key="loop"                   7_value="A sequence of commands set to cycle until a condition is met"
  8_key="expression"             8_value="A piece of algebra with no equals sign that would lead to a single result if computed"
- 9_key="command"                9_value="An instruction to the computer; often an assignment or a function call (or both); there isn't really a distinct boundary to to say unambiguously whether larger constructs like 'If statements' are single commands or not: but the term is conveniant"
+ 9_key="command"                9_value="An instruction to the computer; often an assignment or a function call (or both); there isn't really a distinct boundary to to say unambiguously whether larger constructs like 'If statements' are single commands or not: but the term is convenient"
  10_key="function"              10_value="In PHP, a function is a chunk of code given a name and callable by that name; upon completion, code resumes to where the function was called. Functions may be given parameters, and may return a result (a function that returns no result would be a 'procedure' in some other languages)"
  11_key="iteration"             11_value="Another word for 'loop', basically"
  12_key="variable"              12_value="A named unit of memory that values are stored in"

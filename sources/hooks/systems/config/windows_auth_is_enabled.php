@@ -34,7 +34,7 @@ class Hook_config_windows_auth_is_enabled
             'human_name' => 'WINDOWS_AUTHENTICATION',
             'type' => 'tick',
             'category' => 'USERS',
-            'group' => 'LDAP',
+            'group' => '_LOGIN',
             'explanation' => 'CONFIG_OPTION_windows_auth_is_enabled',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

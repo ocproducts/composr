@@ -26,9 +26,9 @@ The obvious disadvantage of non-randomised featured content is the effort that i
 [title="2"]Awards[/title]
 
 The award/content systems allows you to select out content for featuring. It may be used in three ways:
- - display of content assigned as the current holder of an award (via the [tt]main_awards[/tt] block, or by browsing the [tt]awards[/tt] page). An award must exist (create new awards in Admin Zone > Setup > Awards) before it can be assigned.
- - random display of content in any arbitrary categories (via the [tt]main_content[/tt] block) with full [concept]Selectcode support[/concept]. No award needs to exist for this, as assignment is done via block parameters.
- - display of any arbitrary item of content (via the [tt]main_content[/tt] block). No award needs to exist for this, as assignment is done via block parameters.
+1) display of content assigned as the current holder of an award (via the [tt]main_awards[/tt] block, or by browsing the [tt]awards[/tt] page). An award must exist (create new awards in Admin Zone > Setup > Awards) before it can be assigned.
+2) random display of content in any arbitrary categories (via the [tt]main_content[/tt] block) with full [concept]Selectcode support[/concept]. No award needs to exist for this, as assignment is done via block parameters.
+3) display of any arbitrary item of content (via the [tt]main_content[/tt] block). No award needs to exist for this, as assignment is done via block parameters.
 
 [media width="150" description="Making a download as holder of the default 'Download of the week' award" float="right"]data_custom/images/docs/tut_featured/featured_dotw.png[/media]
 [media width="150" description="A [tt]main_awards[/tt] block" float="right"]data_custom/images/docs/tut_featured/featured_award_block.png[/media]
