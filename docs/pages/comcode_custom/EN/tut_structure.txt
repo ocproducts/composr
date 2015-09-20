@@ -267,7 +267,7 @@ The main forms of navigation are:
  - Control actions; many 'view' style pages provide 'Control Actions' boxes that include links associated with the management of the entry or category you are viewing -- for example, the screen for viewing a download would include a link to edit it in the control actions box
  - Do-next menus; these are the menus in the Admin and CMS zones that provide icons, shown if you don't go direct to somewhere via digging through multiple-levels of the drop-down menu, or after performing an action
  - The breadcrumbs; these are the links that allow you to navigate backwards along modules or site sections that support tree structures -- for example, if you were deep within the download system then breadcrumbs would be displayed allowing you to quickly go back to any of the categories underneath the category you are currently at, all the way back to the root category
- - Footer buttons and links; various buttons and links are placed into the footer, via the code in the [tt]GLOBAL_HTML_WRAP[/tt] template. These usually perform site-wide "utility" functions, a convention on many websites.
+ - Footer buttons and links; various buttons and links are placed into the footer, via the code in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template. These usually perform site-wide "utility" functions, a convention on many websites.
 
 [title="3"]Breadcrumbs (advanced)[/title]
 

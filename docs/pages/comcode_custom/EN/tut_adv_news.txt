@@ -146,11 +146,11 @@ By default news posts show the news category image rather than the poster's avat
 
 If you uninstall the [tt]authors[/tt] addon it will automatically change to showing avatars. The reason being that default Composr acts more like a news site than a community site -- but by removing 'authors' you tell it you're not interested in that focus.
 
-Instead of removing the [tt]authors[/tt] addon you could change the [tt]NEWS_BOX[/tt] template -- this template encodes the logic described above, so by changing the template you can achieve either behaviour, or any combination.
+Instead of removing the [tt]authors[/tt] addon you could change the [tt]NEWS_BOX.tpl[/tt] template -- this template encodes the logic described above, so by changing the template you can achieve either behaviour, or any combination.
 
 [title="2"]Integrating third-party widgets[/title]
 
-There are a lot of 'widgets' out there for blogging platforms and there's nothing stopping you using them with Composr too. For example, [url="this widget"]http://www.backtype.com/widgets/backtweets[/url] allows you to see what people are saying about your article on Twitter. You could easily put the HTML provided into your [tt]NEWS_ENTRY_SCREEN[/tt] template.
+There are a lot of 'widgets' out there for blogging platforms and there's nothing stopping you using them with Composr too. For example, [url="this widget"]http://www.backtype.com/widgets/backtweets[/url] allows you to see what people are saying about your article on Twitter. You could easily put the HTML provided into your [tt]NEWS_ENTRY_SCREEN.tpl[/tt] template.
 
 [title="2"]Make news archive screens show summaries[/title]
 

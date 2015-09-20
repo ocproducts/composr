@@ -6,20 +6,20 @@ This is a tutorial that details the default browser requirements for visitors to
 
 [title="2"]The browser wars[/title]
 
-[media float="right" framed="0" thumb="0"]data_custom/images/docs/tut_browsers/browsers.png[/media]
-Early days:
+[media float="right" framed="0" thumb="0" width="350"]data_custom/images/docs/tut_browsers/browsers.png[/media]
+[b]Early days:[/b]
 In the beginning the only mainstream web browser was Netscape Navigator. Microsoft soon realised it needed a browser too, so launched Internet Explorer.
 
-Heavy competition:
+[b]Heavy competition:[/b]
 Towards the end of the 1990s, after Microsoft started seriously competing with Netscape rather than only matching it, there was a very fast period of Internet development. Microsoft and Netscape both created technologies and submitted them to the W3C for standardisation, and the two browsers developed head-to-head, until Netscape essentially went out of business due to loss of sales when Internet Explorer was bundled with Windows and all ISPs switched to supporting it instead of Netscape Navigator.
 
-The transitory years:
+[b]The transitory years:[/b]
 Once Netscape was truly 'buried', Internet Explorer essentially stagnated for many years, left with a lot of rough edges with respect to the standards the W3C had designed and moved forward in the interim. Somewhat in the sidelines, Netscape was rebuilt in Open Source as a browser framework designed specifically to standards (packaged as Mozilla, and then Firefox), and browsers such as Opera and Konqueror also got developed to be of a similar quality. Konqueror essentially became Safari after Apple got involved (Microsoft stopped supporting Mac OS). The renewed competition, and the time for 'the dust to settle' provided the environment for a movement for websites to strictly be designed such that the web technologies they use draw on W3C/JavaScript standards only. This left an environment where Internet Explorer was clearly seen to be inferior in terms of standard compliance, and browser compatibility.
 
-Microsoft returns:
+[b]Microsoft returns:[/b]
 As Microsoft woke up to their popular competition from Firefox, they sped up their development again: releasing Internet Explorer versions 7 through 11, then the new 'Edge' browser.
 
-Google dominates:
+[b]Google dominates:[/b]
 Parallel to Microsoft speeding up, Google Chrome (based on Safari's Webkit code) came along and ate up significant market share from both Firefox and Microsoft. Google Chrome now has a big lead because it is a high quality cross-platform browser, heavily promoted by Google. Google forked Webkit to create the Blink engine. Opera threw out their own engine and started using the Blink engine.
 
 [title="2"]Supported browsers[/title]
@@ -79,7 +79,7 @@ Composr does not require cookie support, although it is recommended. To at least
 
 [title="2"]Desktop settings[/title]
 
-A screen-resolution of at least 1024x768 is strongly suggested, as this is the minimum resolution that we design the default theme for.
+A screen-resolution of at least 1024&times;768 is strongly suggested, as this is the minimum resolution that we design the default theme for.
 
 [title="2"]Printing[/title]
 

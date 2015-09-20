@@ -250,7 +250,7 @@ Then you pass it, and some other stuff, to [tt]results_table[/tt].
 
 You will also need to implement pagination and sorting. That is simply done within your initial database query. [tt]results_table[/tt] will automatically bind UI widgets to the GET parameters needed to determine sorting and the start position in the result set, and the maximum number of results to return.
 
-Finally, you can use the [tt]RESULTS_TABLE_SCREEN[/tt] template to put your result into a screen, avoiding the need to even create a screen template (in most cases -- you may want to add other things into the page).
+Finally, you can use the [tt]RESULTS_TABLE_SCREEN.tpl[/tt] template to put your result into a screen, avoiding the need to even create a screen template (in most cases -- you may want to add other things into the page).
 
 A complete example (assumes a table named [tt]example[/tt], with fields [tt]name[/tt] and [tt]add_date[/tt]):
 [code="PHP"]

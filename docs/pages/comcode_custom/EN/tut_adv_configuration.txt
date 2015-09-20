@@ -7,6 +7,7 @@ This tutorial will cover various advanced aspects of Composr configuration.
 [title="2"]Configuration[/title]
 
 Many advanced configuration options are presented and described in the main Admin Zone configuration module. As these are self explanatory, they will not be explained here in depth.
+
 Advanced configuration options include (but are not limited to):
  - Enabling and disabling caching
  - Setting up details for an external SMTP server, if PHP can not itself send e-mails

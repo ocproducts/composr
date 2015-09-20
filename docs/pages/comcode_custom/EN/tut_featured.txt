@@ -155,9 +155,12 @@ Count-downs are provided via the [tt]main_countdown[/tt] block which you can add
 
 You may place as many independent count-downs as you like.
 
-[title="2"]Hit counts[/title]
+[title="2"]Hit counters[/title]
 
-Hit counters may be placed via the [tt]main_count[/tt] block which you can add easily like with any other block in Composr. Hit counters are considered very antiquated generally, but may be useful to you in some cases. Note that hits from bots, or repeat hits, are not filtered out.
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
+Hit counters may be placed via the [tt]main_count[/tt] block which you can add easily like with any other block in Composr.
+
+Hit counters are considered very antiquated generally, but may be useful to you in some cases. Note that hits from bots, or repeat hits, are not filtered out.
 
 You may place as many independent hit counters as you like.
 

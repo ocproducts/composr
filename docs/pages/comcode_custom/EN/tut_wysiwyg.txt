@@ -32,7 +32,7 @@ Do not worry if this yellow background spreads around (this can happen if you ty
 
 By default, certain WYSIWYG features will only be given to staff users. This is because we generally want to show a simpler editor to regular users.
 
-If you want to change it you can customise the [tt]WYSIWYG_SETTINGS[/tt] template. For example, changing the second line of that template to var [tt]precision_editing=true;[/tt] would force the full editor to be available for everybody.
+If you want to change it you can customise the [tt]WYSIWYG_SETTINGS.tpl[/tt] template. For example, changing the second line of that template to var [tt]precision_editing=true;[/tt] would force the full editor to be available for everybody.
 
 [title="2"]The clipboard (copy & paste)[/title]
 

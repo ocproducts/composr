@@ -294,26 +294,26 @@ Database tables are created using the [tt]create_table[/tt] function of a databa
 2) A map between the field names, and Composr field-type-identifiers
 
 Composr defines the following field types:
- - AUTO, an auto incrementing unique key. This allows you to have a key field for the table and not have to worry about generating the keys yourself -- when you insert your data ([tt]query_insert[/tt] function) for a new row, just leave out the key, and the key will automatically be created for you, and returned by [tt]query_insert[/tt].
- - AUTO_LINK, a foreign key link referencing an AUTO field. It does not specify what table this field is in, but the code itself will know how to use it. It's usually obvious from the name chosen for the field (e.g. a field named [tt]category_id[/tt] in the [tt]news[/tt] table obviously is referencing the key of the [tt]news_categories[/tt] table).
- - INTEGER, an integer
- - UINTEGER, an integer, greater than zero
- - SHORT_INTEGER, a integer
- - REAL, a float
- - BINARY, 0 or 1 (i.e. a representation for a Boolean)
- - MEMBER, a link to a member
- - GROUP, a link to group
- - TIME, a date and time (output of the PHP time() function)
- - LONG_TRANS, a long piece of text stored in the language/comcode translation table
- - SHORT_TRANS, a short piece of text stored in the language/comcode translation table (255 length maximum)
- - SHORT_TEXT, a short non-translatable piece of text (255 length maximum)
- - LONG_TEXT, a long non-translatable piece of text
- - ID_TEXT, a very short piece of text (about 50 length maximum)
- - IP, an IP address in string form
- - LANGUAGE_NAME, a language identifier (e.g. EN)
- - EMAIL, an e-mail address
- - URLPATH, a URL or file path
- - MD5, a MD5 hash, stored in base64encoded form (the output of the md5() function is as such)
+ - [tt]AUTO[/tt], an auto incrementing unique key. This allows you to have a key field for the table and not have to worry about generating the keys yourself -- when you insert your data ([tt]query_insert[/tt] function) for a new row, just leave out the key, and the key will automatically be created for you, and returned by [tt]query_insert[/tt].
+ - [tt]AUTO_LINK[/tt], a foreign key link referencing an AUTO field. It does not specify what table this field is in, but the code itself will know how to use it. It's usually obvious from the name chosen for the field (e.g. a field named [tt]category_id[/tt] in the [tt]news[/tt] table obviously is referencing the key of the [tt]news_categories[/tt] table).
+ - [tt]INTEGER[/tt], an integer
+ - [tt]UINTEGER[/tt], an integer, greater than zero
+ - [tt]SHORT_INTEGER[/tt], a integer
+ - [tt]REAL[/tt], a float
+ - [tt]BINARY[/tt], 0 or 1 (i.e. a representation for a Boolean)
+ - [tt]MEMBER[/tt], a link to a member
+ - [tt]GROUP[/tt], a link to group
+ - [tt]TIME[/tt], a date and time (output of the PHP time() function)
+ - [tt]LONG_TRANS[/tt], a long piece of text stored in the language/comcode translation table
+ - [tt]SHORT_TRANS[/tt], a short piece of text stored in the language/comcode translation table (255 length maximum)
+ - [tt]SHORT_TEXT[/tt], a short non-translatable piece of text (255 length maximum)
+ - [tt]LONG_TEXT[/tt], a long non-translatable piece of text
+ - [tt]ID_TEXT[/tt], a very short piece of text (about 50 length maximum)
+ - [tt]IP[/tt], an IP address in string form
+ - [tt]LANGUAGE_NAME[/tt], a language identifier (e.g. EN)
+ - [tt]EMAIL[/tt], an e-mail address
+ - [tt]URLPATH[/tt], a URL or file path
+ - [tt]MD5[/tt], a MD5 hash, stored in base64encoded form (the output of the md5() function is as such)
 
 If a field type has "*" in front of the name, then it will form the primary key. All tables must have a primary key on at least one field.
 

@@ -8,8 +8,8 @@ Staff can use these features to distinguish themselves from ordinary users, and 
 
 [title="2"]Staff and the [tt]staff[/tt] module[/title]
 
-[media width="150" description="The staff list" float="left"]data_custom/images/docs/tut_staff/staff_list.png[/media]
 [media width="150" description="Viewing a staff member" float="right"]data_custom/images/docs/tut_staff/staff_actual.png[/media]
+[media width="150" description="The staff list" float="right"]data_custom/images/docs/tut_staff/staff_list.png[/media]
 {!staff:DOC_STAFF}
 
 Staff are listed/viewed from the [tt]staff[/tt] module ([tt]site:staff[/tt] page-link, About > Staff on the default menus).
@@ -42,6 +42,8 @@ On the Admin Zone front page is a checklist of tasks to be performed. This combi
 
 You can also share links and notes on the Admin Zone front page.
 
+More can be read on the Admin Zone in the [page="_SEARCH:tut_admin"]Admin Zone overview tutorial[/page].
+
 [title="3"]Staff notifications, and the messaging system[/title]
 
 Staff have access to a wide variety of notifications, to be informed on what is happening on the site.
@@ -51,6 +53,7 @@ In particular, if the [tt]main_contact_us[/tt] (staff messaging system) is being
 [title="3"]Notes within content[/title]
 
 You may wish to use the Comcode [tt]staff_note[/tt] tag to embed comments within resource Comcode. For example, adding a comment to a news post.
+
 Additionally, most content has an explicit 'staff notes' field for you to share notes within.
 
 [title="3"]Validation and workflows[/title]
@@ -113,6 +116,7 @@ When members use the Conversr whisper feature to make inline-personal-posts, the
 
 [title="2"]See also[/title]
 
+ - [page="_SEARCH:tut_admin"]Admin Zone overview[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
  - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]

@@ -122,14 +122,14 @@ But without the last image, the contents would be ordered by filename.
 [title="2"]Slide-shows[/title]
 
 When viewing an image or video visitors will be able to start moving through all the subsequent images/videos in the gallery automatically. This is referred to as a slide-show. Visitors may pause the slide-show via a click or keypress, which could be triggered via a hand-held USB control device (as such devices can be mapped to such input actions).
-If you would like to change the speed of the slide-show you can do it via editing the [tt]GALLERY_ENTRY_SCREEN[/tt] template.
+If you would like to change the speed of the slide-show you can do it via editing the [tt]GALLERY_ENTRY_SCREEN.tpl[/tt] template.
 
 On some browsers, alt-clicking on the slideshow will activate the browser full screen mode.
 
 [title="2"]e-cards[/title]
 
 When viewing an image visitors will have an option (if the [tt]recommend[/tt] addon is installed) to send the image as an e-card. This is a good form of website promotion, as the e-card also functions as a kind of website recommendation.
-If you don't want this feature you can remove it by editing the [tt]GALLERY_ENTRY_SCREEN[/tt] template.
+If you don't want this feature you can remove it by editing the [tt]GALLERY_ENTRY_SCREEN.tpl[/tt] template.
 
 [concepts
  1_key="Gallery"     1_value="A category for images and videos"

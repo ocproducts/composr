@@ -4,7 +4,7 @@
 
 ---
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_google_appengine/composr_with_gae.jpg[/media]
+[media thumb="0" framed="0" float="right" width="450"]data_custom/images/docs/tut_google_appengine/composr_with_gae.jpg[/media]
 
 Composr can run on Google App Engine (GAE). GAE is a cloud hosting service designed for high scalability. Unlike almost all other cloud services, it does not require significant preparation and ongoing maintenance in order to scale (you do not need to set up Virtual Machine images, or manually start/stop server instances).
 

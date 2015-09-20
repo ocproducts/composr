@@ -4,7 +4,7 @@ Depending on your site policies (for a good discussion of this, see the [page="_
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Tools that actively enforce your policy[/title]
+[title="2"]Tools that actively enforce your policy (Word filter and field filter)[/title]
 
 [media width="150" description="Working with the word filter" float="right"]data_custom/images/docs/tut_censor/censor_word.png[/media]
 {!wordfilter:DOC_WORDFILTER}
@@ -15,7 +15,7 @@ The word filter makes no attempt to try and detect when users try to 'cheat it',
 
 In addition to the word filter there is a more sophisticated filtering system, the [page="_SEARCH:tut_fields_filter"]The form field filter system[/page].
 
-[title="2"]Tools for moderation[/title]
+[title="2"]Tools for moderation (Validation)[/title]
 
 Composr, by default, will not allow most forms of non-trusted content to appear live on the website without validation by the staff. When a user that is not in a trusted usergroup posts content, then they will have no choice but to have it posted as non-validated, and a notification will be dispatched to the staff. The staff can then choose what to do with the content. There is also a module where staff can see all non-validated content, in case the notification was missed or disabled. This module is at:
 Admin Zone > Audit > Non-validated resources

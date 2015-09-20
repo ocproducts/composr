@@ -14,7 +14,7 @@ If members have not selected a date of birth, no birthday can show for them.
 
 Conversr contains a feature to automatically create/link-to a shared birthday topic for a member. By default, this is linked both from [tt]main_bottom_bar[/tt] and the notifications.
 
-The [tt]CNS_BIRTHDAY_LINK[/tt] template controls how the [tt]main_bottom_bar[/tt] birthday links will be shown.
+The [tt]CNS_BIRTHDAY_LINK.tpl[/tt] template controls how the [tt]main_bottom_bar[/tt] birthday links will be shown.
 You can change this to change what link is provided. For example, the Giftr addon replaces the topic link with a link to send an e-gifts.
 
 The notifications are sent using these language strings, defined in the [tt]cns[/tt] language file:
@@ -195,6 +195,7 @@ Note that there is an option "Take date of births". If that is disabled then dat
 
 [title="2"]Bookmarks[/title]
 
+[surround]
 [media width="150" description="The bookmarks popup" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks.png[/media]
 [media width="150" description="Managing bookmarks" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks_manage.png[/media]
 If members are logged in then they may bookmark pages of your website within the site itself. The icon to do this is at the bottom of every Composr page unless the [tt]bookmarks[/tt] addon has been installed, or it has been removed from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
@@ -202,6 +203,7 @@ If members are logged in then they may bookmark pages of your website within the
 The bookmark feature is particularly useful for:
  - members who want to keep bookmarks for different websites separate
  - members who move between computers
+[/surround]
 
 [title="2"]Welcome E-mails[/title]
 

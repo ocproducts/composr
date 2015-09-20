@@ -11,19 +11,19 @@ Microsoft created a technology that allows websites to have their own little ico
 Favicons are supported in Composr, and to use one you just need to edit the [tt]favicon[/tt] theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
 
 The default icon actually contains multiple sizes:
- - 16x16 &ndash; Standard size for browsers
- - 24x24 &ndash; Internet Explorer 9+ pinned site size for user interface
- - 32x32 &ndash; Internet Explorer/Microsoft Edge new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
- - 48x48 &ndash; Windows site
+ - 16&times;16 &ndash; Standard size for browsers
+ - 24&times;24 &ndash; Internet Explorer 9+ pinned site size for user interface
+ - 32&times;32 &ndash; Internet Explorer/Microsoft Edge new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
+ - 48&times;48 &ndash; Windows site
 
 [title="3"]Apple web clip icons[/title]
 
 These icons show on the iPhone and iPod Touch home screens, if you choose to bookmark a site there. They can be set by editing the [tt]webclipicon[/tt] theme image.
 
 The default icon actually contains multiple sizes:
- - 120x120 &ndash; iPhone retina touch iOS7
- - 144x144 &ndash; Microsoft Metro tile for pinned site
- - 152x152 &ndash; iPad retina touch iOS7
+ - 120&times;120 &ndash; iPhone retina touch iOS7
+ - 144&times;144 &ndash; Microsoft Metro tile for pinned site
+ - 152&times;152 &ndash; iPad retina touch iOS7
 
 [title="2"]Web fonts[/title]
 
@@ -32,7 +32,7 @@ Fonts have always been a tricky area in computing, as the actual font typeface i
 Fortunately there are three things that improve on this situation:
 1) there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information).
 2) CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use.
-3) [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts. It is very easy to integrate via a change to the [tt]HTML_HEAD[/tt] template and the CSS.
+3) [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts. It is very easy to integrate via a change to the [tt]HTML_HEAD.tpl[/tt] template and the CSS.
 
 [title="3"]Fonts within content[/title]
 

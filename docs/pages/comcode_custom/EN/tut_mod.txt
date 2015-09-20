@@ -62,7 +62,7 @@ Whether members may moderate their own posts and topics depends on their privile
 
 [title="2"]Validation[/title]
 
-Without the right permissions members will not be able to make topics and posts without them being initially marked as validated. If you have chosen to configure your forum like this then you will need to check all non-validated topics and posts for suitability of content, and choose to validate or delete them depending on this.
+Without the necessary permissions members will not be able to make topics and posts without them being initially marked as validated. If you have chosen to configure your forum like this then you will need to check all non-validated topics and posts for suitability of content, and choose to validate or delete them depending on this.
 
 [title="2"]Important posts[/title]
 

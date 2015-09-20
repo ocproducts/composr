@@ -34,6 +34,7 @@ The File/Media library has two main purposes:
 2) A general shared drive for collaborators
 
 You can get a browser to embed items from the File/Media library. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the [tt]media[/tt] tag.
+[/surround]
 
 [box="Important -- Security"]
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
@@ -41,7 +42,6 @@ There is nothing stopping ordinary users from downloading from the file/media li
 
 This is sometimes useful, but you should be aware that if files are given guessable filenames, they will not be secure.
 [/box]
-[/surround]
 
 [title="2"]Other Super-members[/title]
 

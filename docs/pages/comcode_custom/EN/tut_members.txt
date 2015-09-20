@@ -203,7 +203,7 @@ Composr provides two sets of default avatars for inartistic/uninspired members t
 
 If there is a theme image with the name [tt]cns_default_avatars/default[/tt] then this will be used as the default avatar a member gets when the join, otherwise default avatars will be picked randomly.
 
-Avatar size is limited by the maximum size determined by any of their usergroups. 80x80 pixels is the size Composr uses by default.
+Avatar size is limited by the maximum size determined by any of their usergroups. 80&times;80 pixels is the size Composr uses by default.
 
 If you don't want the avatar feature (many modern sites prefer to keep just photos), you can uninstall the [tt]cns_member_avatars[/tt] addon. This will make member photos show where avatars normally would. Don't get confused with addon naming -- [tt]cns_avatars[/tt] contains default avatar choices, but [tt]cns_member_avatars[/tt] contains the functionality itself. If you just remove [tt]cns_avatars[/tt] you'll probably end up with users with broken avatar images.
 

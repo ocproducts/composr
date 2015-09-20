@@ -40,23 +40,23 @@ The page-link is therefore:
 (I've assumed "Single public zone" is on, if that option is off then it would be [tt]site:members:view[/tt])
 
 If no URL scheme (Raw PHP-style URLs) is enabled then the URL generated would be:
-[tt](baseurl)/index.php?page=members&type=view[/tt]
+[tt]http://yourwebsite/index.php?page=members&type=view[/tt]
 
 If the URL scheme is "Use /pg/ to identify CMS pages":
-[tt](baseurl)/pg/members/view[/tt]
+[tt]http://yourwebsite/pg/members/view[/tt]
 
 If the URL scheme is "Use .htm to identify CMS pages":
-[tt](baseurl)/members/view.htm[/tt]
+[tt]http://yourwebsite/members/view.htm[/tt]
 
 If the URL scheme is "Very simple unadorned URLs":
-[tt](baseurl)/members/view[/tt]
+[tt]http://yourwebsite/members/view[/tt]
 
 For completeness, let's show what they would be if it was linking to member #3:
  - [tt]:members:view:3[/tt]
- - [tt](baseurl)/index.php?page=members&type=view&id=3[/tt]
- - [tt](baseurl)/pg/members/view/3[/tt]
- - [tt](baseurl)/members/view/3.htm[/tt]
- - [tt](baseurl)/members/view/3[/tt]
+ - [tt]http://yourwebsite/index.php?page=members&type=view&id=3[/tt]
+ - [tt]http://yourwebsite/pg/members/view/3[/tt]
+ - [tt]http://yourwebsite/members/view/3.htm[/tt]
+ - [tt]http://yourwebsite/members/view/3[/tt]
 (actually, depending on configuration, the number might be based on the username rather than the ID)
 
 [title="2"]Setup instructions[/title]

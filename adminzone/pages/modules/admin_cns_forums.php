@@ -168,7 +168,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_FORUMS'), comcode_to_tempcode(do_lang('DOC_FORUMS') . "\n\n" . do_lang('DOC_FORUM_CATEGORIES'), null, true),
+        return do_next_manager(get_screen_title('MANAGE_FORUMS'), comcode_to_tempcode(do_lang('DOC_FORUMS') . "\n\n" . do_lang('DOC_FORUM_GROUPINGS'), null, true),
             array_merge($menu_links, manage_custom_fields_donext_link('post'), manage_custom_fields_donext_link('topic'), manage_custom_fields_donext_link('forum')),
             do_lang('MANAGE_FORUMS')
         );

@@ -9,7 +9,7 @@ Conversr is sometimes abbreviated as CNS.
 [title="2"]Structure[/title]
 
 [surround]
-[media width="150" description="Adding a forum" float="left"]data_custom/images/docs/tut_forums/forums_add.png[/media]
+[media width="150" description="Adding a forum" float="right"]data_custom/images/docs/tut_forums/forums_add.png[/media]
 [media width="150" description="When editing forums, the full structure is displayed, with an opportunity to re-order both groupings and sub-forums within" float="right"]data_custom/images/docs/tut_forums/forums_edit.png[/media]
 {!cns:DOC_FORUMS}
 
@@ -18,23 +18,31 @@ Forums are actually a very powerful collaboration tool, not merely limited to ch
 So, now that I have explained the structure of a discussion forum, I will explain what each of these constructs are for.
 
 A forum exists to organise topics into some kind of common subject. For example, it is common for a website to have a debates forum, which contains member-created topics, each representing a single debate. A topic in the debates forum such as a topic titled 'Does extraterrestrial life exist?', contains a number of member-created posts, that together form a continuing line of discussion. A topic gets created, in the most appropriate forum, when a member wishes to discuss something and knows of no topic to continue (by making a new post in); the topic is started with a single post, that leads the discussion, by the member who made the topic.
-[/surround]
 
-[surround]
-[media width="150" description="Adding a forum grouping" float="left"]data_custom/images/docs/tut_forums/forums_grouping_add.png[/media]
-[box="Flexibility" width="25em" float="right"]
+The sub-forum system exists so that forums may be organised such that subjects are logically sub-classified in such a way as to prevent an 'explosion' of forums displayed on the home forum (which would be cluttered and difficult to navigate). Whether a forum with sub-forums should itself be able to hold topics is up to you, but often allowing this is a useful technique for allowing placement of a topic that classifies under a forum, but not one of the sub-forums.
+
+Add or edit forums from:
+Admin Zone > Structure > Forums
+
+You can delete a forums from the bottom of its edit form.
+
+[box="Flexibility"]
 While discussion forums are primarily meant for discussion, they may in-fact be used for the general purpose of conveying information.
 
 It is often useful for a topic that may-not-be-replied-to be made by staff to convey some form of alert. Why? The discussion forums might be used rather than news, or some other Composr medium, due to the easiness of creating and organising topics, or to target an audience that views the discussion forums more regularly than the other mediums.
 [/box]
-The sub-forum system exists so that forums may be organised such that subjects are logically sub-classified in such a way as to prevent an 'explosion' of forums displayed on the home forum (which would be cluttered and difficult to navigate). Whether a forum with sub-forums should itself be able to hold topics is up to you, but often allowing this is a useful technique for allowing placement of a topic that classifies under a forum, but not one of the sub-forums.
 
-{!cns:DOC_FORUM_CATEGORIES}
+[title="3"]Forum groupings[/title]
 
-Add or edit forums and forum groupings from:
+[surround]
+[media width="150" description="Adding a forum grouping" float="right"]data_custom/images/docs/tut_forums/forums_grouping_add.png[/media]
+{!cns:DOC_FORUM_GROUPINGS}
+
+Add or edit forum groupings from:
 Admin Zone > Structure > Forums
 
-You can delete a forum or forum grouping from the bottom of its edit form.
+You can delete a forum grouping from the bottom of its edit form.
+[/surround]
 
 [title="2"]Topics in a forum[/title]
 
@@ -50,7 +58,7 @@ Topics may be moved between forums by moderators.
 [title="2"]Strategies for organising your forums[/title]
 
 [surround]
-[media width="150" description="The home forum (i.e. root forum)" float="left"]data_custom/images/docs/tut_forums/forums_view.png[/media]
+[media width="150" description="The home forum (i.e. root forum)" float="right"]data_custom/images/docs/tut_forums/forums_view.png[/media]
 [media width="150" description="A sub-forum of the home forum" float="right"]data_custom/images/docs/tut_forums/forums_view_2.png[/media]
 When you design your discussion forums, you need to decide what forums you will create, and how to organise them. A very common mistake is to create far too many forums, which has the effect of diluting your community, and making it feel dead: which in return often terminally reduces member activity. If a month after creating a forum, you expect it to have less than ten topics, then you probably should not be making it: remember: you can always add new forums later, and mass move topics into them. Conversely, it would be a mistake to create too few forums, leading to a situation where it is difficult to locate topics.
 
@@ -111,14 +119,18 @@ Topics may have a poll attached to them (by any member) by default, so as to gau
 
 [title="2"]Editing posts[/title]
 
+There is an edit post button underneath each post.
+
 If you edit a post then you get to choose whether it shows as edited or not. The default is for this option to be checked unless you edit quickly (within 3 minutes). The special case here is because we assume that the edit is a quick correction rather than being a retraction that should be advertised.
 
-Staff can view full post history -- edits aren't secret from staff.
+Staff can view full post history: edits aren't secret from staff.
 
 [title="2"]Deleting posts[/title]
 
+There is a delete post button underneath each post.
+
 If somehow a corrupt post makes it through and obscures the delete button after it, you can manually delete (or edit) it from the edit URL:
-[tt]http://baseurl/forum/topics/edit_post/postid.htm[/tt]
+[tt]http://yoursite/forum/index.php?page=topics&type=edit_post&id=<postid>[/tt]
 You can find the post ID from above (before) the post in the topicview.
 
 [concepts

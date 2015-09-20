@@ -1814,7 +1814,7 @@ For example, the following is a fairly typical thing to see in a template:
 {+END}
 [/code]
 
-The [tt]IF_NON_EMPTY[/tt] template evaluates [tt]{DOWNLOADS}[/tt], to see if it is blank. If it is not blank, the contents of the directive is output, otherwise nothing happens.
+The [tt]IF_NON_EMPTY[/tt] directive evaluates [tt]{DOWNLOADS}[/tt], to see if it is blank. If it is not blank, the contents of the directive is output, otherwise nothing happens.
 As you can see from this example, we need to check for emptiness so we don't show a boxed message about downloads that refers to nothingness.
 
 [title="3"]IF_EMPTY[/title]

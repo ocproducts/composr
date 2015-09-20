@@ -4,7 +4,7 @@
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Events[/title]
+[title="2"]Introduction[/title]
 
 [surround]
 [media width="150" description="Adding an event type" float="right"]data_custom/images/docs/tut_calendar/calendar_event_types.png[/media]
@@ -12,7 +12,7 @@ Each entry in the calendar is called an 'event'. It is important to understand t
 
 For this tutorial I have just added a single recurring event into the system for clarity: you will see how this single event is shown on the various calendar views, and get an impression on how the system works. In reality, the calendar may be used by any number of members, with any number of events. Composr will actually recognise conflicting events, and display conflicting events in parallel activity streams on the day view screen.
 
-[title="3"]Event types[/title]
+[title="2"]Event types[/title]
 
 Event types are used to categorise events. There is a good selection of default event types which have their own icons:
  - Anniversary
@@ -29,12 +29,16 @@ You may wish to add new event types for your website; for example, a business we
 You can delete an event type from the bottom of its edit form.
 [/surround]
 
-[title="3"]Adding events[/title]
+[title="2"]Adding events[/title]
 
 [surround]
 [media width="150" description="Viewing a calendar event" float="right"]data_custom/images/docs/tut_calendar/calendar_view_event.png[/media]
 [media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/tut_calendar/calendar_add_event.png[/media]
-Adding and editing events is done from under Content Management > Calendar.
+Adding and editing events is done from either:
+1) Under Content Management > Calendar
+2) Simply clicking in one of the boxes on the calendar view; this will fill in the date and time automatically for you (although you may wish to adjust that)
+3) Clicking the 'Add Event' button from a calendar view
+
 You can delete an event from the bottom of its edit form.
 
 When you add an event, you may define the following special settings:
@@ -84,11 +88,6 @@ You may also declare your 'interests', which marks you down for auto-reminding f
 
 From the screen-shots of the calendar views you can see how the recurrence pattern causes a gap where for one week in four, there is no shown event.
 [/surround]
-
-[title="2"]Adding an event[/title]
-
-To add an event, simply click in one of the boxes on the calendar view; this will fill in the date and time automatically for you, although you may wish to adjust them.
-You may also click the 'Add Event' button to add an event, but you will need to fill in more details this way.
 
 [title="2"]Time-zone issues[/title]
 

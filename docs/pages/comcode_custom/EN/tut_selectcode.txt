@@ -9,14 +9,14 @@ Various areas of Composr support the Selectcode syntax, including the [tt]main_c
 [title="2"]The syntax[/title]
 
 Selectcode is a comma-separated list of match-specifier tokens, where a match-specifier may be:
- - an acceptable-literal (e.g. '1').
- - an avoiding-literal (e.g. '!1')
- - a bounded acceptable-range (e.g. '1-3')
- - a non-bounded acceptable-range (e.g. '3+')
- - an acceptable subtree (e.g. '3*')
- - an avoiding subtree (e.g. '3~')
- - an acceptable set of direct descendents (e.g. '3>')
- - all-acceptable '*'
+ - an acceptable-literal (e.g. [tt]1[/tt]).
+ - an avoiding-literal (e.g. [tt]!1[/tt])
+ - a bounded acceptable-range (e.g. [tt]1-3[/tt])
+ - a non-bounded acceptable-range (e.g. [tt]3+[/tt])
+ - an acceptable subtree (e.g. [tt]3*[/tt])
+ - an avoiding subtree (e.g. [tt]3~[/tt])
+ - an acceptable set of direct descendents (e.g. [tt]3>[/tt])
+ - all-acceptable ([tt]*[/tt])
 
 [title="2"]Examples[/title]
 

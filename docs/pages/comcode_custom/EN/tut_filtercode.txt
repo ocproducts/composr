@@ -197,7 +197,7 @@ If you want to place a filter on the [tt]news[/tt] module, with it shown in a pa
 
 [title="3"]Putting into a news template[/title]
 
-If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCREEN[/tt] template and add:
+If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCREEN.tpl[/tt] template and add:
 [code="Tempcode"]
 {$BLOCK,block=main_content_filtering,param=author~=<author>\,date_and_time><date_and_time>\,news|news_article|title|meta_keywords|meta_description~=<news>\,submitter=<submitter>\,average_rating>=<average_rating>,content_type=news,labels=date_and_time=Newer than\,news=Containing\,submitter=Submitted by\,average_rating=Minimum rating,types=date_and_time=days}
 [/code]

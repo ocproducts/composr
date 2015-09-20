@@ -50,7 +50,7 @@ Newsletters are written in [page="_SEARCH:tut_comcode"]Comcode[/page] and can be
 
 When you send a newsletter you choose where to send it. Usergroups/newsletters with no members (to be precise, no members that can receive emails) will not be shown as options.
 
-In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
+In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE.txt[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL.tpl[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
 
 When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the CRON bridge scheduler enabled[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
 
@@ -116,7 +116,7 @@ This works, even though the maintenance password was left blank, because Composr
 
 Want to take things to the next level with your newsletters? You can create full HTML newsletters, with embedded unsubscribe links, using newsletter templating.
 
-Creating templated newsletters is best shown by example (this is the newsletter itself, fed into the field when you send the newsletter, or put inside the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template that prepopulates that field):
+Creating templated newsletters is best shown by example (this is the newsletter itself, fed into the field when you send the newsletter, or put inside the [tt]NEWSLETTER_DEFAULT_FCOMCODE.txt[/tt] template that prepopulates that field):
 [code="HTML"]
 <html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
 <head>
@@ -139,10 +139,10 @@ Creating templated newsletters is best shown by example (this is the newsletter 
 </html>
 [/code]
 
-Note how the example includes the [tt]html[/tt] tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard [tt]MAIL[/tt] template.
+Note how the example includes the [tt]html[/tt] tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard [tt]MAIL.tpl[/tt] template.
 
 You have the following template variables available to you (beyond all the default capabilities of Comcode):
- - [b]title[/b], The subject line of the email (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL[/tt] template)
+ - [b]title[/b], The subject line of the email (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL.tpl[/tt] template)
  - [b]forename[/b], The forename of the subscriber (may be blank if it is not known)
  - [b]surname[/b], The surname of the subscriber (may be blank if it is not known)
  - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER[/tt] language string -- depending on what data is available on the reader)

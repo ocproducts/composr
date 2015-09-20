@@ -100,7 +100,7 @@ To set up a new rotation, displayed in the layout in a space of your choosing, u
 You will be able to edit the banner type from under here later if you need to.
 You can delete a banner from the bottom of its edit form.
 
-[*] Copy this code from the [tt]GLOBAL_HTML_WRAP[/tt] template:
+[*] Copy this code from the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template:
 [code="HTML"]
    {$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner parameter twice}
    {+START,IF_NON_EMPTY,{$GET,BANNER}}

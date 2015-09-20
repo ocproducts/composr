@@ -21,7 +21,7 @@ We now have PHP code and a template, and these are probably all we need to be mo
 
 I remove the old non-overridden files from my editor, and open up my copies instead.
 
-Now all we need to do is to read over Composr's [tt]cns_wrapper[/tt] function and [tt]CNS_STATS[/tt] template to get an understanding of how they work. I can't explain all that here -- you need to have built up your own code understanding so you can figure it out yourself. In fact, after reading the code I've found I'm also going to need to override the [tt]CNS_USER_MEMBER.tpl[/tt] template, so I do for that what I did for [tt]CNS_STATS.tpl[/tt].
+Now all we need to do is to read over Composr's [tt]cns_wrapper[/tt] function and [tt]CNS_STATS.tpl[/tt] template to get an understanding of how they work. I can't explain all that here -- you need to have built up your own code understanding so you can figure it out yourself. In fact, after reading the code I've found I'm also going to need to override the [tt]CNS_USER_MEMBER.tpl[/tt] template, so I do for that what I did for [tt]CNS_STATS.tpl[/tt].
 
 Knowing how to program, I now have written my code, with my modified files saved as following:
 

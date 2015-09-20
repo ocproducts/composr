@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Web hosting for Composr[/title]
 
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
 To put a website on-to the Internet, you need to arrange for 'web hosting'. This is usually done by paying for the services of a [concept]web host[/concept], who will provide you space-on and access-to, a computer (a web server) that is permanently connected to the Internet via a high-speed connection.
 
 This tutorial covers requirements for hosting Composr and some general information about web hosting and security.
@@ -73,6 +74,7 @@ Composr requires:
  - Connectivity to a mail server (SMTP) so that outgoing email can be sent out to the staff email address or the addresses of individual members
 (*) Other database software may work, but is not supported
 
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/tip.png[/media]
 Composr recommends:
  - A PHP environment with the following PHP extensions/build-options and matching system software:
   - FTP

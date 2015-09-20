@@ -2,9 +2,8 @@
 
 This tutorial will describe the thought processes required to successfully design a complex and personalised website using Composr, and an overview of what features are available.
 
+[media framed="0" thumb="0" width="500" float="right"]data_custom/images/docs/tut_drinking/feature_rich.jpg[/media]
 [contents]decimal,lower-alpha[/contents]
-
-[media framed="0" thumb="0"]data_custom/images/docs/tut_drinking/feature_rich.jpg[/media]
 
 [title="2"]The process[/title]
 

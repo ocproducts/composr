@@ -194,7 +194,7 @@ There are a number of different techniques you can use.
 
 [title="3"]A direct reference by URL[/title]
 
-If you are simply themeing your own site then the simplest thing to do is to just insert a [tt]<script>[/tt] element to the [tt]HTML_HEAD[/tt] template or the [tt]GLOBAL_HTML_WRAP[/tt] template (near the footer).
+If you are simply themeing your own site then the simplest thing to do is to just insert a [tt]<script>[/tt] element to the [tt]HTML_HEAD.tpl[/tt] template or the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template (near the footer).
 
 JavaScript libraries usually advise following a process like this because it's pretty standard. They will usually tell you whether to place in the header or the footer. Things go in the header when they are needed for the main HTML to be viable, while things that add to the page (i.e. can be loaded secondarily) go near the footer.
 
@@ -291,7 +291,7 @@ There are a number of different techniques you can use.
 
 [title="3"]A direct reference by URL[/title]
 
-If you are simply themeing your own site then the simplest thing to do is to just insert a [tt]<link>[/tt] element to the [tt]HTML_HEAD[/tt] template.
+If you are simply themeing your own site then the simplest thing to do is to just insert a [tt]<link>[/tt] element to the [tt]HTML_HEAD.tpl[/tt] template.
 
 By convention we put CSS files in [tt]uploads/website_specific/[/tt], but you may put them somewhere else if you prefer.
 

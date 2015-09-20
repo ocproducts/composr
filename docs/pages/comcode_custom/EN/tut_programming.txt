@@ -452,7 +452,7 @@ To convert between decimal and binary assign different bits weights and do some 
 
 The first bit (the one of smallest significant, on the far right) is assigned 1, then moving leftwards, 2, 4, 8, 16 and so on. The actual value of the bit is multiplied by its weight, and these are all added up.
 
-So to convert 10101001 to decimal, you calculate: 128x1+64*0+32*1+16*0+8*1+4*0+2*0+1*1 which is 169.
+So to convert 10101001 to decimal, you calculate: 128&times;1+64*0+32*1+16*0+8*1+4*0+2*0+1*1 which is 169.
 
 To convert to hexadecimal, simply group the number into groups of 4 and find the values of each and string them together:
 1010 = 10 (A in hexadecimal)

@@ -63,9 +63,9 @@ The per-page breakdowns list more detailed statistics for each page, in various 
 [title="2"]Download statistics[/title]
 
 [surround]
+[media width="150" description="The download statistics box" float="right"]data_custom/images/docs/tut_statistics/statistics_download_statistics.png[/media]
 There is a screen for download statistics, but you may also wish to allow your visitors to see some trends...
 
-[media width="150" description="The download statistics box" float="right"]data_custom/images/docs/tut_statistics/statistics_download_statistics.png[/media]
 There are two methods for revealing download trends to your visitors:
 1) Download statistics are generally available on an individual download page
 2) You can also pull out key downloads for the benefit of your visitors is to use one of the download blocks: [i]most popular downloads[/i], and [i]most recently-added downloads[/i]. These are explained below.
@@ -92,7 +92,7 @@ The [tt]side_stats[/tt] block shows various figures that relate to your website'
 
 [title="2"]Real-time analytics[/title]
 
-{!DOC_REALTIME_RAIN}
+{!realtime_rain:DOC_REALTIME_RAIN}
 
 Access Real-time analytics from:
 Admin Zone > Audit > What's happening now (RTR)

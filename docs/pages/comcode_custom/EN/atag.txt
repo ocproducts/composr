@@ -1,8 +1,12 @@
-[title sub="Written by Chris Graham (ocProducts)"]Authoring Tool Accessibility Guidelines 2.0 - Composr version 3.0 compliance[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Authoring Tool Accessibility Guidelines 2.0 - Composr version 10.0 compliance[/title]
 
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
 This document fulfils the compliancy needs of the ATAG 2.0 draft document on demonstrating ATAG compliance for an authoring tool.
+
 The document is brief, but ocProducts are happy to clarify any issues that organisations or individuals may have, and if any flaw is found in our compliance, we will work to fix this.
-At the time of writing we believe Composr does indeed fully comply with ATAG, and we have made numerous changes to get Composr to that point. Some of the wording in the specification is, however, not completely appropriate to the kind of tool Composr is, and hence some guidelines are met in spirit rather than a strict literal interpretation would require; we believe that this is reasonable and expected.
+
+At the time of writing we believe Composr does indeed fully comply with ATAG, and we have made numerous changes to get Composr to that point.
+Some of the wording in the specification is, however, not completely appropriate to the kind of tool Composr is, and hence some guidelines are met in spirit rather than a strict literal interpretation would require; we believe that this is reasonable and expected.
 
 [contents]decimal,lower-alpha[/contents]
 

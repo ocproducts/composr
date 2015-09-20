@@ -310,7 +310,7 @@ A popular request is to be able to specify options when purchasing a product, su
 This would be a major task for us to implement, and complicate the system, so we are not currently planning to add it.
 There are, however, two workarounds:
 1) Simply add the different product options as separate products.
-2) If you are using PayPal a template edit can be used to let the PayPal buy button carry through an option selection. We have left an example in the [tt]ECOM_CART_BUTTON_VIA_PAYPAL[/tt] template. This workaround shifts the configuration burden over to being a template editing task, and shifts the administration burden onto PayPal's end.
+2) If you are using PayPal a template edit can be used to let the PayPal buy button carry through an option selection. We have left an example in the [tt]ECOM_CART_BUTTON_VIA_PAYPAL.tpl[/tt] template. This workaround shifts the configuration burden over to being a template editing task, and shifts the administration burden onto PayPal's end.
 
 If you need more flexibility than this (perhaps many different product options for different kinds of product), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
 

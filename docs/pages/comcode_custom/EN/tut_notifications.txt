@@ -33,7 +33,7 @@ Additionally, most platforms will allow native notification display:
  - in the Internet Explorer pinned site notification area
  - [s]in the main notification area of iPhone or Android phones[/s] -- unfortunately this doesn't work at the time of writing, as background pages don't run and most mobile browsers don't support HTML5 notifications
 
-(If you don't want the interface to support this, you can remove the [tt]top_notifications[/tt] block from the default [tt]GLOBAL_HTML_WRAP[/tt] template and disable web notifications.)
+(If you don't want the interface to support this, you can remove the [tt]top_notifications[/tt] block from the default [tt]GLOBAL_HTML_WRAP.tpl[/tt] template and disable web notifications.)
 
 [title="2"]Automatically monitor content you've touched[/title]
 

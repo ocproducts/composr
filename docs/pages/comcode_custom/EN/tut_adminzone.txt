@@ -1,5 +1,6 @@
 [title sub="Written by Allen Ellis (ocProducts)"]Composr Tutorial: Admin Zone overview[/title]
 
+[media width="150" description="The Admin Zone at first glance" float="right"]data_custom/images/docs/tut_adminzone/adminzone_first_glance.png[/media]
 {!menus:DOC_ADMIN_ZONE} It can be accessed from anywhere by choosing the 'Admin Zone' zone link which appears at the bottom of every default-themed Composr page. You may be prompted to login again to confirm your current session -- this is for added security.
 
 [contents]decimal,lower-alpha[/contents]
@@ -7,7 +8,6 @@
 [surround]
 [title="2"]First glance[/title]
 
-[media width="150" description="The Admin Zone at first glance" float="right"]data_custom/images/docs/tut_adminzone/adminzone_first_glance.png[/media]
 The Admin Zone is divided into sections, with links across the top-panel to allow easy access to each -- most of the tabs will take you to a screen with icons that allows you to navigate throughout the system.
 
 [title="2"]Content Management Zone[/title]
@@ -70,6 +70,14 @@ If the [tt]content_reviews[/tt] addon is installed, you can set content to be re
 You can also set the last review date to be shown visibly to users. This might be very useful from some legal and customer service standpoints -- it is essentially an automatic public declaration of content that may be outdated, and thus that you should not necessarily be held to what it says.
 
 The content review settings are shown on content add/edit forms.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_staff"]Coordination between staff and staff/members[/page]
+ - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
+ - [page="_SEARCH:tut_repository"]The Composr repository[/page]
 
 [concepts
  1_key="Admin Zone"   1_value="The zone used to perform most site maintenance, accessible only by staff"

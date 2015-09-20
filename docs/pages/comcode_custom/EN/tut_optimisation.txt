@@ -58,9 +58,9 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Even though Composr supports various database vendors it is optimised for MySQL.
  - Even though Composr supports various third party forums it is optimised for Conversr.
  - Servers may have incorrectly firewalled DNS resolution, in which case the Composr "Spammer checking level" setting must be set to "Never" to avoid a 28 second timeout happening on each anti-spammer check.
- - If your website doesn't need to be able to run without a wider Internet connection (i.e. isn't an Intranet), then you could blank out any of the unmodified JavaScript libraries Composr includes (e.g. jQuery) and instead include references to a JavaScript CDN via direct includes in the [tt]HTML_HEAD[/tt] template.
+ - If your website doesn't need to be able to run without a wider Internet connection (i.e. isn't an Intranet), then you could blank out any of the unmodified JavaScript libraries Composr includes (e.g. jQuery) and instead include references to a JavaScript CDN via direct includes in the [tt]HTML_HEAD.tpl[/tt] template.
  - Comcode tabs can take a page-link rather than normal Comcode contents, for the tab to open up via AJAX (don't use this on the default tab though, as that won't work).
- - If you make very heavy use of large and complex tooltips then you may want to consider loading these via AJAX. This will require some fairly advanced coding skills, but it may be worth doing. Look at the [tt]COMCODE_MEMBER[/tt] template for an example of AJAX tooltip code.
+ - If you make very heavy use of large and complex tooltips then you may want to consider loading these via AJAX. This will require some fairly advanced coding skills, but it may be worth doing. Look at the [tt]COMCODE_MEMBER.tpl[/tt] template for an example of AJAX tooltip code.
  - Disabling URL monikers can help with performance; however this will also impact SEO if you think your URL paths are key to that.
  - Block unwanted bots you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there
  - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]search tutorial[/page])
@@ -414,7 +414,7 @@ You'll want to mount a subdirectory of your S3 storage rather than a root. I rec
 You'll need to rename [tt]uploads/attachments[/tt] to something else to do this, and then move the old contents of that directory back into the S3 version of it.
 
 Now immediately you are using S3 for storage, however URLs are still coming through your own server, which will work, but not efficiently.
-Let's say we want normal image attachments to route through S3. We would edit the [tt]MEDIA_IMAGE_WEBSAFE[/tt] template, changing:
+Let's say we want normal image attachments to route through S3. We would edit the [tt]MEDIA_IMAGE_WEBSAFE.tpl[/tt] template, changing:
 [code="Tempcode"]
 {URL*}
 [/code]

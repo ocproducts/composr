@@ -4,6 +4,8 @@ This tutorial provides an explanation of how meta data works within Composr.
 
 [contents]decimal,lower-alpha[/contents]
 
+[title="2"]Introduction[/title]
+
 Composr contains the following primary meta-data that you have a moderate chance of wanting to edit:
  - Title
  - Meta Keywords
@@ -84,7 +86,7 @@ There are many tools out there for creating favicons, but in the most basic form
 
 The Apple Web Clip image is similar to a Favicon, but larger. It is used primarily as the launch icon when a smartphone user saves a link onto their phone home screen. It is the [tt]webclipicon[/tt] theme image.
 
-There are many different recommended sizes for Apple Web Clip images, for different smartphone screen sizes. The easiest choice is just to supply a 129x129 PNG file. More advanced users could customise the [tt]HTML_HEAD[/tt] template to supply multiple possible images.
+There are many different recommended sizes for Apple Web Clip images, for different smartphone screen sizes. The easiest choice is just to supply a 129x129 PNG file. More advanced users could customise the [tt]HTML_HEAD.tpl[/tt] template to supply multiple possible images.
 
 In your HTML the icon tags look similar to:
 [code="HTML"]

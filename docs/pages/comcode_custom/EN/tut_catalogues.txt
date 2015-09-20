@@ -19,6 +19,7 @@ Catalogues are initially defined by the fields in them. 'Categories' are then ma
 
 [title="2"]A warning[/title]
 
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
 In some way we give you enough rope to hang yourself with via catalogues. In most cases, catalogues are great, but if you're not creating a pretty simple set of records you'll probably want a programmer.
 
 For a more detailed discussion, see this blog post:
@@ -61,6 +62,7 @@ For details about the actual field types you can use, see the [page="_SEARCH:tut
 [title="2"]Modes of display[/title]
 
 [surround]
+[media width="150" description="Viewing a catalogue entry" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_entry.png[/media]
 [media width="150" description="A non-tree catalogue uses an index" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_index.png[/media]
 There are two options to set how a catalogue may display:
 1) 'Display type' -- you can display entries in categories as title lists, field-maps, tabular listings, or in a grid of images (full customisation is possible via templating).
@@ -69,16 +71,10 @@ There are two options to set how a catalogue may display:
 Note that if you set all fields of your catalogue to "Display in category-views" and disable comments and ratings and trackbacks, there will be no links to the entry view screen. This is due to there being little purpose in this screen because everything already displays on categories.
 [/surround]
 
-[surround]
-[media width="150" description="A catalogue with a display type of Title lists -- entries link onto their own pages" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_title_lists.png[/media]
-[media width="150" description="A catalogue with a display type of Field-maps" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_field_maps.png[/media]
-[media width="150" description="A catalogue with a display type of Tabular listings" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_tabular_listings.png[/media]
-[media width="150" description="A catalogue with a display type of Grid of images (not a good example, because to show it properly we should have an image field, and lots of entries)" float="left"]data_custom/images/docs/tut_catalogues/catalogues_display_type_grid_images.png[/media]
-[media width="150" description="Viewing a catalogue entry" float="right"]data_custom/images/docs/tut_catalogues/catalogues_view_entry.png[/media]
-[/surround]
-
 [title="3"]Display type[/title]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Title lists -- entries link onto their own pages" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_title_lists.png[/media]
 [title="4"]Title lists[/title]
 
 Title lists are very simple lists of links. Each link links through to the full entry screen.
@@ -86,7 +82,10 @@ Title lists are very simple lists of links. Each link links through to the full 
 Templates:
  - [tt]CATALOGUE_*_TITLELIST_ENTRY.tpl[/tt]
  - [tt]CATALOGUE_*_TITLELIST_WRAP.tpl[/tt]
+[/surround]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Field-maps" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_field_maps.png[/media]
 [title="4"]Field-maps[/title]
 
 Field-maps are the most flexible display type because they can easily and automatically expand to show as much field data within the category view as you want.
@@ -94,7 +93,10 @@ Field-maps are the most flexible display type because they can easily and automa
 Templates:
  - [tt]CATALOGUE_*_FIELDMAP_ENTRY_WRAP.tpl[/tt]
  - [tt]CATALOGUE_*_FIELDMAP_ENTRY_FIELD.tpl[/tt]
+[/surround]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Tabular listings" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_tabular_listings.png[/media]
 [title="4"]Tabular listings[/title]
 
 Tabular listings will show your entries in columns. This works well if the data within any particular category-displayed field is short, and if there aren't too many of them.
@@ -104,7 +106,10 @@ Templates:
  - [tt]CATALOGUE_*_TABULAR_ENTRY_FIELD.tpl[/tt]
  - [tt]CATALOGUE_*_TABULAR_HEADCELL.tpl[/tt]
  - [tt]CATALOGUE_*_TABULAR_WRAP.tpl[/tt]
+[/surround]
 
+[surround]
+[media width="150" description="A catalogue with a display type of Grid of images (not a good example, because to show it properly we should have an image field, and lots of entries)" float="right"]data_custom/images/docs/tut_catalogues/catalogues_display_type_grid_images.png[/media]
 [title="4"]Grid of images[/title]
 
 This is probably the most attractive display, and works well if you only really need to show a title and a thumbnail on the category screen.
@@ -120,6 +125,7 @@ However there is an important exception to the above. The products catalogue alr
 Templates:
  - [tt]CATALOGUE_*_GRID_ENTRY_WRAP.tpl[/tt]
  - [tt]CATALOGUE_*_GRID_ENTRY_FIELD.tpl[/tt]
+[/surround]
 
 [title="2"]Creating a tree catalogue, fast[/title]
 
@@ -174,7 +180,7 @@ You view catalogues via the [tt]catalogues[/tt] module ([tt]site:catalogues:inde
 
 Like other Composr content types, catalogues support access permissions. However because catalogues essentially allow many different content types to be produced (each in their own catalogue), there is an extra layer of permissions available: you may set access permissions for both catalogues, and categories within them.
 
-[title="2"]Customising the look & feel of catalogues[/title]
+[title="2"]Customising the look & feel of catalogues (advanced)[/title]
 
 If you have multiple catalogues on your website and you wish for them to have customised appearances, this is possible for advanced users via one of two ways:
 
@@ -233,8 +239,6 @@ Field values are available in three forms:
 They are also provided in sequence order (e.g. [tt]{FIELD_0}[/tt]) and by field ID (e.g. [tt]{_FIELD_44}[/tt]). Field ID is more robust, should you reorder fields later it won't affect the naming.
 
 [title="3"]Custom template sets[/title]
-
-[i]For power users only[/i]
 
 With some file system manipulation, you may make use of the 'custom template sets' feature. You then need to go to the [tt]themes/default/templates[/tt] directory in Composr and copy all the [tt]CATALOGUE_DEFAULT_*.tpl[/tt] files to [tt]CATALOGUE_<your-catalogue-codename>_*.tpl[/tt].
 You would then customise these templates.
