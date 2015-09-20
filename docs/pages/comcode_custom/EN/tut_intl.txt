@@ -49,7 +49,7 @@ This may hurt your sense for 'completeness', but practically speaking most sites
 
 This section will describe the format used to store [concept]language string[/concept]s in Composr. In theory, learning this is not necessary, as a module in the Admin Zone is provided that works with this behind-the-scenes; however it is useful to know, especially if you are wishing to work through the language files in a text editor.
 
-Composr language packs are made up of [tt].ini[/tt] files (the language files), containing mappings between special codes (based on the English) and the actual string as displayed. For example, a common string in the 'global' language file (the one containing common strings used throughout the portal), is coded as:
+Composr language packs are made up of [tt].ini[/tt] files (the language files), containing mappings between special codes (based on the English) and the actual string as displayed. For example, a common string in the [tt]global[/tt] language file (the one containing common strings used throughout the portal), is coded as:
 [code="INI"]
 PROCEED=Proceed
 [/code]
@@ -57,7 +57,7 @@ Composr is developed in (British) English, and this is technically known as the 
 
 The [tt].ini[/tt] files for any translation are stored together in a directory that is named with the standard ISO two-letter code to denote that language; for example, English is 'EN'. A list of these codes is in [tt]lang/langs.ini[/tt]. We use upper-case for the names; often other software uses lower-case, but it varies.
 
-All bundled languages packs are located in the 'lang' directory of Composr. There is also a 'lang_custom' directory which contains files from custom language packs, or language files that 'override' those available in the 'lang' directory. Whenever language files are edited in the Admin Zone, changes to the original file are automatically overridden to a 'lang_custom' one.
+All bundled languages packs are located in the [tt]lang[/tt] directory of Composr. There is also a [tt]lang_custom[/tt] directory which contains files from custom language packs, or language files that 'override' those available in the [tt]lang[/tt] directory. Whenever language files are edited in the Admin Zone, changes to the original file are automatically overridden to a [tt]lang_custom[/tt] one.
 
 [title="4"]Special strings[/title]
 
@@ -87,7 +87,7 @@ Language string codes that are in lower-case are special strings, that should no
 		</tr>
 		<tr>
 			<th>en_right</th>
-			<td>Sometimes templates have to apply CSS properties values of 'left' or 'right', according to the text direction. For a rtl language, this becomes 'left' instead of 'right'. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
+			<td>Sometimes templates have to apply CSS properties values of <kbd>left</kbd> or <kbd>right</kbd>, according to the text direction. For a rtl language, this becomes <kbd>left</kbd> instead of <kbd>right</kbd>. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
 		</tr>
 		<tr>
 			<th>en_left</th>
@@ -95,7 +95,7 @@ Language string codes that are in lower-case are special strings, that should no
 		</tr>
 		<tr>
 			<th>date_* / time_* / calendar_*</th>
-			<td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://php.net/manual/en/function.date.php[/url], [url="2"]http://php.net/manual/en/function.strftime.php[/url][html]). If there are no '%' signs it's "date", if there are % signs it's "strftime".</td>
+			<td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://php.net/manual/en/function.date.php[/url], [url="2"]http://php.net/manual/en/function.strftime.php[/url][html]). If there are no <kbd>%</kbd> signs it's <kbd>date</kbd>, if there are <kbd>%</kbd> signs it's <kbd>strftime</kbd>.</td>
 		</tr>
 		<tr>
 			<th>dont_escape_trick</th>

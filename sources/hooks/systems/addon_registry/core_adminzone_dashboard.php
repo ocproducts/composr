@@ -321,7 +321,7 @@ class Hook_addon_registry_core_adminzone_dashboard
         foreach (placeholder_array() as $k => $v) {
             $custom_task->attach(do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
                 'TASK_DONE' => 'checklist0',
-                'ADD_TIME' => placeholder_time(),
+                'ADD_TIME' => placeholder_date(),
                 'RECUR_INTERVAL' => '',
                 'ID' => placeholder_id(),
                 'TASK_TITLE' => lorem_word_2(),

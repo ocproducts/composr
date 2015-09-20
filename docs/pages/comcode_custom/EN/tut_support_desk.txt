@@ -41,7 +41,7 @@ Staff will see all open support tickets when they visit the support ticket page,
 [title="3"]Requirements[/title]
 
 [media width="150" description="Viewing support tickets as staff" float="right"]data_custom/images/docs/tut_support_desk/support_list_tickets.png[/media]
- - you must not be using the 'none' forum driver (don't worry, you probably aren't)
+ - you must not be using the [tt]none[/tt] forum driver (don't worry, you probably aren't)
  - you must have created the support forum that is referenced in the Composr configuration (don't worry, for regular [concept]Conversr[/concept] users it's auto-created)
  - users will need a way to get to the support system; a link is in the default menus, and may also be created using the menu editor
 
@@ -249,7 +249,7 @@ Most forms of Composr content support commenting, via the feedback system. For e
 
 The advantage of the feedback system over the Discussion Forums is simply that the discussion is attached directly to actual content. For most forms of content, these discussions are unlikely to be classifiable as 'support', but the download system in particular may contain questions and answers relating to the download itself.
 
-To use the feedback commenting system, you must not be using the 'none' forum driver, and you must have created the comment topic forum that is referenced in the Composr configuration (for [concept]Conversr[/concept] it's auto-created).
+To use the feedback commenting system, you must not be using the [tt]none[/tt] forum driver, and you must have created the comment topic forum that is referenced in the Composr configuration (for [concept]Conversr[/concept] it's auto-created).
 
 For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page].
 

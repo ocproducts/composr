@@ -411,23 +411,13 @@ function placeholder_image()
 }
 
 /**
- * Get suitable placeholder date.
+ * Get time
  *
  * @return string Place holder text.
  */
 function placeholder_date()
 {
-    return get_timezoned_date(12345 - 60 * 60 * 24 * 200);
-}
-
-/**
- * Get time
- *
- * @return string Place holder text.
- */
-function placeholder_time()
-{
-    return get_timezoned_date(12345);
+    return get_timezoned_date(123456789);
 }
 
 /**
@@ -437,7 +427,7 @@ function placeholder_time()
  */
 function placeholder_date_raw()
 {
-    return strval(12345 - 60 * 60 * 24 * 200);
+    return strval(123456789);
 }
 
 /**

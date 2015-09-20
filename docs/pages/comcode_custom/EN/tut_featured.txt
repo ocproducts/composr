@@ -83,7 +83,7 @@ You can configure the awards (when you add or edit the award itself) to carry a 
 
 [title="3"]Arbitrary randomisation display[/title]
 
-If you do not want to go to the effort of creating an award and manually awarding content for it, then you can just use the [tt]main_content[/tt] block in randomisation mode. This is easy to setup, it's just a block option when you add that block. You get the choice of which categories you want to randomly display from by way of a 'select' block parameter (written in [concept]Selectcode support[/concept] syntax).
+If you do not want to go to the effort of creating an award and manually awarding content for it, then you can just use the [tt]main_content[/tt] block in randomisation mode. This is easy to setup, it's just a block parameter when you add that block. You get the choice of which categories you want to randomly display from by way of a [tt]select[/tt] block parameter (written in [concept]Selectcode support[/concept] syntax).
 
 By doing this you use the award system without actually using an award.
 
@@ -124,7 +124,7 @@ To pick an IOTD, you select one from those shown on the IOTD queue page (Content
 
 You can delete an IOTD from the bottom of its edit form.
 
-You may change 'of the day' to anything of your choosing by editing language strings in the Composr language editor (the 'iotds' language file).
+You may change 'of the day' to anything of your choosing by editing language strings in the Composr language editor (the [tt]iotds[/tt] language file).
 
 If you do not wish to use both the IOTD and gallery systems on the same website then you may wish to avoid the use of IOTDs in favour of an image award.
 [/surround]
@@ -151,7 +151,7 @@ The blocks are configurable, but generally you will typically use them to show t
 
 [title="2"]Count-downs[/title]
 
-Count-downs are provided via the [tt]main_countdown[/tt] block which you can add easily like with any other block in Composr. There are block options to specify the date/time the count-down is running to, and Composr will automatically maintain the count-down for you. Once it passes the date/time, it displays negative time.
+Count-downs are provided via the [tt]main_countdown[/tt] block which you can add easily like with any other block in Composr. There are block parameters to specify the date/time the count-down is running to, and Composr will automatically maintain the count-down for you. Once it passes the date/time, it displays negative time.
 
 You may place as many independent count-downs as you like.
 

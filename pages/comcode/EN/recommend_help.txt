@@ -20,7 +20,7 @@ Our recommend tool should work with all major software and web applications that
 5) Select the fields you want to save; click Finish.
 6) You will see a progress window that tells you the export is being actioned; the window closes.
 7) You can now close the Windows Live Contacts window. The process is complete.
-8) Find the .csv file in the location in which you saved it.
+8) Find the [tt].csv[/tt] file in the location in which you saved it.
 
 [title="3"]Windows Mail[/title]
 

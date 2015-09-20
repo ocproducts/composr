@@ -361,7 +361,7 @@ Other very useful logs:
 Correlate times and IP addresses to get a model of what happened.
 Also the Compsor 'SU' (switch user) feature can be very useful for testing under different users without having to know their passwords.
 
-If it is acceptable to debug code on a live server, putting 'exit' and 'vardump' commands to only run for your own IP address can be useful ([tt]if (get_ip_address()=='...') { ... }[/tt]). This is not recommended for a high-traffic site though, you're likely to make an occasional mistake that'll get spotted. So for this case, you'll just have to clone the database back to a development server and test like that.
+If it is acceptable to debug code on a live server, putting [tt]exit[/tt] and [tt]var_dump[/tt] commands to only run for your own IP address can be useful ([tt]if (get_ip_address()=='...') { ... }[/tt]). This is not recommended for a high-traffic site though, you're likely to make an occasional mistake that'll get spotted. So for this case, you'll just have to clone the database back to a development server and test like that.
 
 [title="4"]Logging into live sites[/title]
 
@@ -404,7 +404,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]no_password_hashing[/tt] -- set this to '1' if you want passwords to be stored as plain-text in the database (not recommended)
   - [tt]xhtml_strict[/tt] -- set this to '1' to do some magic to make Composr's output XHTML strict. This is slow and not really advisable as it will degrade the user experience if JavaScript is not available (new-window links would break)
   - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file
-  - [tt]allow_member_mail_relay[/tt] -- set to '1' if the [tt]form_to_email.php[/tt] script should allow e-mailing to arbitrary members via the 'allow_member_mail_relay' parameter. This potentially allows people to spam your members, so you may want to add some kind of extra security here at a web-server level (i.e. restricting access to the script).
+  - [tt]allow_member_mail_relay[/tt] -- set to '1' if the [tt]form_to_email.php[/tt] script should allow e-mailing to arbitrary members via the [tt]allow_member_mail_relay[/tt] parameter. This potentially allows people to spam your members, so you may want to add some kind of extra security here at a web-server level (i.e. restricting access to the script).
  - Unsupported functionality
   - [tt]unofficial_ecommerce[/tt] -- set to '1' if your forum driver contains usergroup manipulation functions (we don't support this, but wanted to be able to allow those willing to extend forum drivers to use our full eCommerce framework)
  - Workarounds for difficult server configurations
@@ -496,14 +496,14 @@ We have the following which are either unlikely to be useful, or potentially uns
  - Performance tuning (negative)
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs
-  - [tt]stupidity_mode[/tt] -- set to 'leet' or 'bork', for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
+  - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
 
 [title="3"]Hidden 'keep' parameters[/title]
 
 'keep' parameters are placed inside URLs in order to give Composr some extra information when loading a page. Their URL-presence is automatically relayed/preserved in all Composr links within the page. To enable a 'keep' parameter, simply append [tt]&<name>=1[/tt] to the URL (replace '1' if appropriate, but usually we do use '1' to enable). If there are no parameters in the URL and short-URLs are not enabled, use a '?' instead of a '&'.
 
 The 'keep' parameters available are:
- - [tt]keep_cache[/tt] -- set to '1' to temporarily enable caching or '0' to temporarily disable. You can also use 'cache' so it works on a per-page basis, with the exception of this not affecting the template and language caching.
+ - [tt]keep_cache[/tt] -- set to '1' to temporarily enable caching or '0' to temporarily disable. You can also use [tt]cache[/tt] so it works on a per-page basis, with the exception of this not affecting the template and language caching.
  - [tt]keep_no_dev_mode[/tt] -- set to '1' to disable development mode (which only runs if you're working out of a subversion repository anyway)
  - [tt]keep_no_ext_check[/tt] -- set to '1' to force the webstandards checker to not check dependency files
  - [tt]keep_force_htaccess[/tt] -- set to '1' to force the Conversr login to go via htauth in precedence over other login methods (e.g. login cookies, sessions)
@@ -607,7 +607,7 @@ Here are some hints:
  - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify it's interface to compensate.
  - If you have to hand code a Comcode page with HTML then include the following hint in it: [tt]{$,page hint: no_smart_conversion}[/tt]. This will stop the WYSIWYG editor trying to convert the HTML back into Comcode, which can mess up hand-crafted markup and CSS (normally WYSIWYG only guarantees to preserve style/structure created within itself).
  - If for some reason you don't want the WYSIWYG editor to run for a page (e.g. if it has a Google ad on, that can cause the editor to malfunction) then include the following hint in it: [tt]{$,page hint: no_wysiwyg}[/tt]
- - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a .htaccess file (http://seoclass.org/canonical-redirects-htaccess-and-seo) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
+ - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (http://seoclass.org/canonical-redirects-htaccess-and-seo) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
  - Always, always, test the e-mails a site gives out. It is very embarrassing if you accidentally customise your [tt]MAIL.tpl[/tt] template in a custom theme and then find e-mails are being sent out of the Admin Zone using the default theme and Composr logo. Always save your [tt]MAIL.tpl[/tt] in the default theme, and make sure that the default theme's 'logo/-logo' and 'logo/standalone-logo' theme images correctly reflect your design. And, test it! If you made complex changes, test in different e-mail programs/webmail-apps.
  - Develop using a staging/developer website, and deploy to live/customer-demo after you've finished all changes. This primarily involves uploading changed files. Composr has a great tool for transferring data between Composr sites using XML too, if you find you are needing to sync data.
  - If there are separate frontend and backend developers, the frontend developer can do an effective mockup by coding a simple mini-module/mini-block that uses a static array of data passed directly into templates. This way the built CSS and markup is "Composr ready" (particularly things like the 'IMG' symbol can be used from the start). This requires the frontend developer to have basic PHP and Tempcode experience.
@@ -631,7 +631,7 @@ Bear in mind that some sites need maintenance or have multiple people working on
 
 Many forms in Composr accept GET parameters for specifying default field values. This includes most 'add' forms in the system. Generally the GET parameter is exactly the same as the actual field name in the HTML, so it's easy to work it out.
 
-We also have some special cases coded up directly. These are often referenced between different parts of the Composr code. The details below are divided by module, then 'type', then parameter name.
+We also have some special cases coded up directly. These are often referenced between different parts of the Composr code. The details below are divided by module, then [tt]type[/tt], then parameter name.
  - [tt]topics[/tt]
   - [tt]new_post[/tt]
    - [tt]quote[/tt]

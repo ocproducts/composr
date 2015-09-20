@@ -89,18 +89,18 @@ Whenever the variable is used, the global line must be used to identify what the
 
 An IF statement checks if a condition is true, and if it is true then it will execute the command after it. Conditions are based upon the notion of an 'expression': basically this is like a mathematical expression, whereby 'operators' are used to compare variables and function output (functions are described later).
 This true/false stuff is called boolean logic. Operators used in boolean expressions (as used for an IF condition) include:
- - == (is equal to)
- - != (not equal to)
- - === (equal in both value and type)
- - !== (not equal in either of value or type)
- - >   (is greater than)
- - <   (is less than)
- - !=  (is not equal to)
- - >= (is greater than or equal to)
- - <= (is less than or equal to)
+ - [tt]==[/tt] (is equal to)
+ - [tt]!=[/tt] (not equal to)
+ - [tt]===[/tt] (equal in both value and type)
+ - [tt]!==[/tt] (not equal in either of value or type)
+ - [tt]>[/tt] (is greater than)
+ - [tt]<[/tt] (is less than)
+ - [tt]!=[/tt] (is not equal to)
+ - [tt]>=[/tt] (is greater than or equal to)
+ - [tt]<=[/tt] (is less than or equal to)
 
 FORMAT:
-  if (<condition>)   <code to execute>
+  [tt]if (<condition>)   <code to execute>[/tt]
 
 EXAMPLE:
 [code="PHP"]
@@ -118,7 +118,7 @@ if ($a == 2)                // If a is equal to 2 then ...
 }
 [/code]
 
-The IF statement may have very complex conditions: for example, it can check that all of the conditions given to it are true with the "and" operator (&&) and that one condition and/or the other is true with the "or" operator (||).
+The IF statement may have very complex conditions: for example, it can check that all of the conditions given to it are true with the "and" operator ([tt]&&[/tt]) and that one condition and/or the other is true with the "or" operator ([tt]||[/tt]).
 
 EXAMPLE:
 [code="PHP"]
@@ -135,7 +135,7 @@ if (!($a == 3))
 }
 [/code]
 
-'(!($a==3))' is actually the same as '($a!=3)'.
+[tt](!($a==3))[/tt] is actually the same as [tt]($a!=3)[/tt].
 
 [title="2"]Indentation and comments[/title]
 
@@ -160,8 +160,8 @@ $a = $a + 1; // this would increment (add one on to $a).
 The four simplest operators are:
 (multiply), / (divide), + (add), - (subtract).
 Brackets may also be used. There are a couple of techniques to simplify this specific example, as adding to a variable is very common:
- - To increment 'a' you could just type $a++. To decrement 'a' you could just type $a--.
- - To add 5 to 'a', you could type: $a+=5; // $a=$a+5.
+ - To increment [tt]a[/tt] you could just type [tt]$a++[/tt]. To decrement [tt]a[/tt] you could just type [tt]$a--[/tt].
+ - To add 5 to [tt]a[/tt], you could type: [tt]$a+=5; // $a=$a+5[/tt].
 
 Equations are worked out in order of 'BODMAS':
  - Brackets
@@ -170,7 +170,7 @@ Equations are worked out in order of 'BODMAS':
  - Multiplication
  - Addition
  - Subtraction
-Note that these examples are based around variables being [b]reassigned a value[/b] equal to an expression. $a=$a+1 is impossible in standard maths, as it demonstrates a contradiction: but as the '=' sign is for assignment, not making a statement, and as 'a' is a variable, not a constant, it is valid and normal.
+Note that these examples are based around variables being [b]reassigned a value[/b] equal to an expression. $a=$a+1 is impossible in standard maths, as it demonstrates a contradiction: but as the '=' sign is for assignment, not making a statement, and as [tt]a[/tt] is a variable, not a constant, it is valid and normal.
 
 [title="2"]Iteration[/title]
 
@@ -202,9 +202,9 @@ If the second usage is used (i.e. a foreach loop without a key in the foreach co
 
 [title="2"]include[/title]
 
-You may link PHP scripts together using the 'include', 'include_once', 'require' or 'require_once' commands. The 'once' varieties will only do the inclusion if it hasn't been done before, and the 'require' variety will kill script execution with an error if the inclusion did not work.
+You may link PHP scripts together using the [tt]include[/tt], [tt]include_once[/tt], [tt]require[/tt] or [tt]require_once[/tt] commands. The 'once' varieties will only do the inclusion if it hasn't been done before, and the 'require' variety will kill script execution with an error if the inclusion did not work.
 
-It is wise to split large scripts up and use 'include' to link them together, for reasons of modularity. Composr actually has a 'require_code' command which does a similar thing, but is more 'clever'.
+It is wise to split large scripts up and use 'include' to link them together, for reasons of modularity. Composr actually has a [tt]require_code[/tt] command which does a similar thing, but is more 'clever'.
 
 [title="2"]Debugging[/title]
 
@@ -232,7 +232,7 @@ This is the one we tend to use in our every day English and is controlled by Boo
 "If I win the lottery I will be give up my job, otherwise I will not."
 
 The actual PHP command is formed like this:
-if (<statement>) <If true do this> else <If false do this>
+[tt]if (<statement>) <If true do this> else <If false do this>[/tt]
 
 For example,
 [code="PHP"]
@@ -241,11 +241,11 @@ if ($a == 1) echo 'a equals 1'; else echo 'a does not equal 1';
 [/code]
 
 [box="Little point" width="25em" float="right"]
-'else if' can be abbreviated 'elseif' in PHP.
+[tt]else if[/tt] can be abbreviated [tt]elseif[/tt] in PHP.
 [/box]
 $a is set to one, so the IF statement will confirm that. If we'd set $a to 2, the 'else' part would execute instead.
 
-Note that '==' is used: this is because of the distinction between testing for equality ('==') and setting a variable ('='). Confusion is understandable as the PHP '==' is written '=' in mathematics, while the PHP '=' is often written as '<--' in mathematics.
+Note that [tt]==[/tt] is used: this is because of the distinction between testing for equality ([tt]==[/tt]) and setting a variable ([tt]=[/tt]). Confusion is understandable as the PHP [tt]==[/tt] is written [tt]=[/tt] in mathematics, while the PHP [tt]=[/tt] is often written as '<--' in mathematics.
 
 [title="3"]Switch case[/title]
 
@@ -265,7 +265,7 @@ switch ($a)
       echo 'a does not equal 1 or 2';
 }
 [/code]
-The 'break;' lines are very important because without them, execution actually continues as if the next 'case' section were assumed to be matched, even if it isn't.
+The 'break;' lines are very important because without them, execution actually continues as if the next [tt]case[/tt] section were assumed to be matched, even if it isn't.
 
 [title="3"]Unary syntax[/title]
 
@@ -288,7 +288,7 @@ For example, if you wanted to use PI in your program, rather than type in 3.1415
 
 By convention, Composr names constants in upper case. Unlike variables, constants do not begin with a '$' symbol.
 
-To create a constant you use the 'define' command:
+To create a constant you use the [tt]define[/tt] command:
 [code="PHP"]
 define('<CONSTANT_NAME>', <value>);
 [/code]
@@ -394,7 +394,7 @@ Another way to create an array would be:
 [code="PHP"]
 $hello = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4);
 [/code]
-This is a 'map' or 'associative array'. You extract in exactly the same way as a list by using the key: for example, $hello['c'].
+This is a 'map' or 'associative array'. You extract in exactly the same way as a list by using the key: for example, [tt]$hello['c'][/tt].
 
 Arrays come very useful when using foreach loops.
 
@@ -407,7 +407,7 @@ PHP has many commands and functions to work with arrays, such as array_key_exist
 
 If you have been programming before you will probably be accustomed to what is called procedural programming (programming with functions or procedures). Object orientation is is a level of abstraction above this, that allows you to modularise your code in a way more powerful that what functions alone can do.
 
-This is because OOP links variables and functions, integrating them into a new structure called a class. A class serves as a completely new data type (as in integers, doubles, etc. etc.). So if you created a new class called 'fish', you could create as many fish variables as you like. These fish variables aren't really variables, they are objects (with variables and functions defined within them).
+This is because OOP links variables and functions, integrating them into a new structure called a class. A class serves as a completely new data type (as in integers, doubles, etc. etc.). So if you created a new class called [tt]fish[/tt], you could create as many fish variables as you like. These fish variables aren't really variables, they are objects (with variables and functions defined within them).
 
 This can all be achieved in procedural programming, and especially in PHP: you just put all your data into an associative array. However this misses the point: by not structuring code around true relationships, such as data and the functions that execute upon them, we have code that is slightly harder to write, and doesn't really 'ring loud' the relationships it works upon.
 
@@ -417,9 +417,9 @@ Composr puts all modules and blocks into their own classes: this allows them to 
 
 Composr also uses a class for database modification. This is a good example of the more traditional benefit of object orientation: Composr can hold multiple database connections, each with their own data, and it can consider each database connection an object, and just call up methods of the object to run upon itself.
 
-Classes can have both private and public variables/functions. Only functions within the class can access the private variables. So a programmer could create a 'person' class and use a 'moveright' function to move the person right. The 'moveright' could influence the internal private 'x' variable, adjusting it as necessary. This is a very good way of making a program more simple than it really is, hiding code to perhaps another programmer who doesn't want to know about it.
+Classes can have both private and public variables/functions. Only functions within the class can access the private variables. So a programmer could create a [tt]person[/tt] class and use a [tt]moveright[/tt] function to move the person right. The [tt]moveright[/tt] could influence the internal private [tt]x[/tt] variable, adjusting it as necessary. This is a very good way of making a program more simple than it really is, hiding code to perhaps another programmer who doesn't want to know about it.
 
-A programmer can use something called 'Inheritance', to create a new class extended from the previous class. The new class is 'derived' from the previous class, and the new class will 'inherit' the old classes functions and variables, while adding its own. For example, we could derive a 'player' and a 'monster' class from the 'person' class. In a computer game, each could inherit collision detection, shooting ability, movement, etc. The 'player' could have a 'score' variable added, for instance. One could then create more than one 'player' instance for a multi-player game (which would be much easier in OOP, than with functions -- especially if we were tacking on the functionality as an afterthought).
+A programmer can use something called 'Inheritance', to create a new class extended from the previous class. The new class is 'derived' from the previous class, and the new class will 'inherit' the old classes functions and variables, while adding its own. For example, we could derive a [tt]player[/tt] and a [tt]monster[/tt] class from the [tt]person[/tt] class. In a computer game, each could inherit collision detection, shooting ability, movement, etc. The [tt]player[/tt] could have a [tt]score[/tt] variable added, for instance. One could then create more than one [tt]player[/tt] instance for a multi-player game (which would be much easier in OOP, than with functions -- especially if we were tacking on the functionality as an afterthought).
 
 [title="2"]Abstraction[/title]
 
@@ -431,7 +431,7 @@ To return to our 'vegetable' example: people often refer to tomatoes as a vegeta
 
 Methods of abstraction in programming include the usage of different code-files, functions, and objects. Abstracted concepts in Composr are all over the place; examples include the attachment system, the 'require CSS' system, the download system -- in-fact, just about every form of modularity is an abstraction, although some simple processes would best not be described in those terms to avoid confusion with the more significant abstractions.
 
-In fact, object orientated programming is strongly based on abstraction and might claim to solve many problems with it -- bit in actual truth, if it is not used wisely and only when it is not 'the wrong tool', it can actually cause new problems (such as over-specified and over-complex code) and not actually fully solve all the abstraction problems. For example, if a 'square' class was devised, and a 'rounded-corner square' class inherited from it in order to add some detail to solve our 'exception to the rule' problem, we would find that the 'rounded-corner square' can no longer be used as a square in many situations, and might even cause crashes if it was. The ultimate point here is that it is essential that programmers do not jump on bandwagons that will solve all their problems: the full detail of the world can not fit any rigid methodology, and the only alternative to a rigid methodology is spaghetti code (which is analogous to the world, with its almost infinite complexity defined by an uncountable number of physical particles). To create an architecture to solve a complex problem, the engineer must consciously, or through experience, weigh the relative advantages (design factors: such as terseness, versus expandability, and easiness versus predictable-stability) of different solutions and come up with the solution they consider best -- not the one the latest bandwagon suggests is best.
+In fact, object orientated programming is strongly based on abstraction and might claim to solve many problems with it -- bit in actual truth, if it is not used wisely and only when it is not 'the wrong tool', it can actually cause new problems (such as over-specified and over-complex code) and not actually fully solve all the abstraction problems. For example, if a [tt]square[/tt] class was devised, and a 'rounded-corner square' class inherited from it in order to add some detail to solve our 'exception to the rule' problem, we would find that the 'rounded-corner square' can no longer be used as a square in many situations, and might even cause crashes if it was. The ultimate point here is that it is essential that programmers do not jump on bandwagons that will solve all their problems: the full detail of the world can not fit any rigid methodology, and the only alternative to a rigid methodology is spaghetti code (which is analogous to the world, with its almost infinite complexity defined by an uncountable number of physical particles). To create an architecture to solve a complex problem, the engineer must consciously, or through experience, weigh the relative advantages (design factors: such as terseness, versus expandability, and easiness versus predictable-stability) of different solutions and come up with the solution they consider best -- not the one the latest bandwagon suggests is best.
 
 [title="2"]Computer arithmetic[/title]
 
@@ -464,7 +464,7 @@ Thus, the number is A9.
 There is an unfortunate problem with different operating systems supporting different 'end of line' marking situations. Roughly:
  - On Unix/Linux (therefore, most of the Internet) a new line is the line-feed (#10) character
  - On Windows and original Macs a new line consists of both carriage return and linefeed characters: and they are opposite ways around on Windows as on Macs.
-Composr handles this by converting input to the Unix system at an early stage of reading it, via the Composr 'unixify_line_format' command.
+Composr handles this by converting input to the Unix system at an early stage of reading it, via the Composr [tt]unixify_line_format[/tt] command.
 
 The origin of the Windows/Mac convention is due to type-writers: you would need to feed the paper up and return the carriage to the left of the line, before you could continue on the next line.
 

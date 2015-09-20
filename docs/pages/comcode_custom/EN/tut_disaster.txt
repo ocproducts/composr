@@ -87,7 +87,7 @@ You should then encrypt your password via changing the password within the [tt]/
 [surround]
 [media width="150" description="Delete the row corresponding to your IP address" float="right"]data_custom/images/docs/tut_disaster/disaster_ban_2.png[/media]
 [media width="150" description="Select to browse the banned_ip table" float="right"]data_custom/images/docs/tut_disaster/disaster_ban_1.png[/media]
-If you are unfortunate enough to have somehow been banned from your own website, use phpMyAdmin to browse the 'banned_ip' table, and delete the row containing your IP address.
+If you are unfortunate enough to have somehow been banned from your own website, use phpMyAdmin to browse the [tt]banned_ip[/tt] table, and delete the row containing your IP address.
 
 If you don't know your IP address then you can find it out from http://www.myipaddress.com/.
 [/surround]

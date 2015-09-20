@@ -91,7 +91,7 @@ You may move this marker/image around by cutting and pasting it -- placing it an
 
 [i]This is not available via direct-WYSIWYG if the "Simplified attachments UI" option is on.[/i]
 
-Another way to embed images is to use the image icon that exists within the WYSIWYG editor (or manually via the Comcode 'img' tag if you prefer).
+Another way to embed images is to use the image icon that exists within the WYSIWYG editor (or manually via the Comcode [tt]img[/tt] tag if you prefer).
 With this, you may reference any image that already exists on the web, via URL.
 
 The drawback with this is that the file must already exist, and be stored outside of the context of the Composr website that it is being referenced on.
@@ -157,7 +157,7 @@ You may choose to enable the Comcode conversion configuration option if you wish
 
 Composr will thus go to great efforts to turn complex HTML into equivalent simple Comcode, where possibly fully eliminating all direct usage of HTML.
 
-Where HTML cannot be fully eliminated, Composr will encapsulate it with Comcode 'semihtml' tags, within the wider Comcode.
+Where HTML cannot be fully eliminated, Composr will encapsulate it with Comcode [tt]semihtml[/tt] tags, within the wider Comcode.
 
 Sometimes the Comcode conversion is imperfect. For example, line breaks can be introduced, or some custom formatting can be lost.
 

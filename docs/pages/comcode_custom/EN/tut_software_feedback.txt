@@ -204,7 +204,7 @@ Specifically for upgrading, the developers do advise taking backups as part of t
 1) Take a backup
 2) Do an upgrade
 3) (Find it went wrong)
-4) Move the current site into a temporary directory (e.g. "failed_upgrade"), and rename the database (e.g. "failed_upgrade")
+4) Move the current site into a temporary directory (e.g. [tt]failed_upgrade[/tt]), and rename the database (e.g. [tt]failed_upgrade[/tt])
 5) Restore the backup to its original directory and database
 6) Open a support ticket explaining the problem, and providing access to the temporary site
 7) (The staff would then quickly resolve)

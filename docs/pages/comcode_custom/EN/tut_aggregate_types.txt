@@ -94,17 +94,17 @@ Subpaths are relative to where the content type is stored in the repository (ass
 
 [title="3"]More detail on permissions[/title]
 
-'Access' rules set view permissions, and 'privilege' rules set privileges. '1' grants access, and '0' denies access.
+'Access' rules set view permissions, and [tt]privilege[/tt] rules set privileges. [tt]1[/tt] grants access, and [tt]0[/tt] denies access.
 
-The 'usergroup' attribute references are to usergroup labels. [tt]*[/tt] is understood specially as a wildcard, meaning to set against all usergroups.
-Instead of a 'usergroup' attribute, you can specify a 'member' attribute, which is a reference to a member label (i.e. username).
+The [tt]usergroup[/tt] attribute references are to usergroup labels. [tt]*[/tt] is understood specially as a wildcard, meaning to set against all usergroups.
+Instead of a [tt]usergroup[/tt] attribute, you can specify a [tt]member[/tt] attribute, which is a reference to a member label (i.e. username).
 
-The 'preset' attribute values may be any of the following:
+The [tt]preset[/tt] attribute values may be any of the following:
  - read
  - submit
  - unvetted
  - moderate
-'preset's work off the same system as in the Permissions Tree Editor. They are for bulk-setting privileges to common combinations.
+[tt]preset[/tt]s work off the same system as in the Permissions Tree Editor. They are for bulk-setting privileges to common combinations.
 
 [title="3"]More detail on parameters[/title]
 
@@ -114,7 +114,7 @@ The XML is post-processed with Tempcode, which is why we write [tt]{LABEL*}[/tt]
 
 Templates allow cloning of resources, so the XML doesn't need to define every new property required. The template is simply an existing instance of a resource that we will clone our new resource from.
 
-'template_subpath' works the same as 'subpath', but for a template. Similarly, 'template_label' works the same as 'label', but to identify the template.
+[tt]template_subpath[/tt] works the same as [tt]subpath[/tt], but for a template. Similarly, [tt]template_label[/tt] works the same as [tt]label[/tt], but to identify the template.
 
 [title="2"]Synching[/title]
 

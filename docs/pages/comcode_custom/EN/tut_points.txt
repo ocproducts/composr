@@ -64,7 +64,14 @@ Gift points are useless unless spent, so the only advantage to hoarding them is 
 
 When a member buys something from the Point Store, the staff are informed of it via e-mail of appropriate details.
 
-There is a module in the Admin Zone for sales inventory management. It should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid: cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user). Refunds must manually be given through the points system if points have been already charged by the point of cancellation.
+The Point Store shop front is accessed via the pointstore module ([tt]site:pointstore[/tt] page-link, Social > Point-store on the default menus)
+
+Point Store inventory management is at:
+Admin Zone > Setup > Point Store inventory management
+
+There is a module in the Admin Zone for sales list management at:
+Admin Zone > Audit > Point Store sales list management
+The module should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid. Cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user). Refunds must manually be given through the points system if points have been already charged by the point of cancellation.
 [/surround]
 
 [title="3"]Banners[/title]
@@ -91,7 +98,7 @@ What may be purchased:
   - staff define which email domains members may purchase addresses on
   - staff must set up the email accounts manually after they are purchased/upgrades
 
-If e-mail accounts are sold through the Point-Store, Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the Point-Store configuration defines 3 URLs that can be set according to your server.
+If e-mail accounts are sold through the Point Store, Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the Point Store configuration defines 3 URLs that can be set according to your server.
 
 Example URLs follow for different web hosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
 

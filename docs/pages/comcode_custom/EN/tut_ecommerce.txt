@@ -151,7 +151,7 @@ In Composr by default there are the following 'kinds' of 'product':
  - [b]catalogue items[/b]: these are items for sale from the online store
  - [b]orders[/b]: these products are a collection of other products bound into a group, and generated when someone finalises an order from the shopping cart
  - [b]work[/b]: this is a generic kind of product used to represent something that has been invoiced
- - Various kinds of [b]non-purchasable product[/b] that exist for accounting purpose -- 'interest', 'tax', 'wage' and 'other'. These aren't for sale on your site but positive or negative transaction sums can be entered against them in the Admin Zone, so your profit/loss and cash-flow charts can be accurate.
+ - Various kinds of [b]non-purchasable product[/b] that exist for accounting purpose -- [tt]interest[/tt], [tt]tax[/tt], [tt]wage[/tt] and [tt]other[/tt]. These aren't for sale on your site but positive or negative transaction sums can be entered against them in the Admin Zone, so your profit/loss and cash-flow charts can be accurate.
 
 Product kinds fit into the following general categories:
  - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the invoices module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
@@ -244,7 +244,7 @@ Members may view their invoicing history and staff may quickly locate unpaid inv
 
 [title="2"]Online store[/title]
 
-The Composr online store works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called 'products').
+The Composr online store works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]).
 
 You can access this catalogue for modifications, and adding products to, from Content Management > Products.
 
@@ -265,7 +265,7 @@ Once you are happy with your set of fields, you can add categories and entries t
 
 Be aware that once ordered, a catalogue entry shouldn't usually be deleted. You can unvalidate the entries instead. This is vital to your ledger integrity. There is an option to forcibly purge an item from the database and all past order history for it, but it's not usually recommended.
 
-You may customise the appearance of the store in the usual way of editing catalogue templates (the 'products' catalogue already has most of the templates overridden with eCommerce-tuned styles, so you do not need to worry about accidentally altering the look of non-eCommerce catalogues).
+You may customise the appearance of the store in the usual way of editing catalogue templates (the [tt]products[/tt] catalogue already has most of the templates overridden with eCommerce-tuned styles, so you do not need to worry about accidentally altering the look of non-eCommerce catalogues).
 
 From the catalogue you can add the item to the cart, and go to the cart ([tt]site:shopping[/tt] page-link, Content > Shopping cart on the default menus) to finalise and then pay for your order.
 

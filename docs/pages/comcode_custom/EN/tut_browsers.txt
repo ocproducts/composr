@@ -69,7 +69,7 @@ There are a number of approaches that can help you with the above problems:[list
 
 JavaScript may be disabled by visitors to Composr. Sometimes users consider it unsafe and disable it (there is a strong case to this, but it is a very limiting thing to do), although by doing so on the modern web, most websites will not work.
 
-If a Composr visitor has JavaScript disabled then certain functionality will not work, such as using the menu editor (appropriate Composr error messages will be given explaining why); in addition, other functionality reduces in ability due to a lack of interactive ability in the web browser: for example, the Comcode 'hide' tag will drop-down to the level where the content isn't actually hidden by default.
+If a Composr visitor has JavaScript disabled then certain functionality will not work, such as using the menu editor (appropriate Composr error messages will be given explaining why); in addition, other functionality reduces in ability due to a lack of interactive ability in the web browser: for example, the Comcode [tt]hide[/tt] tag will drop-down to the level where the content isn't actually hidden by default.
 
 The main reason for Composr not requiring JavaScript is that interactive functionality is usually inaccessible for those with certain forms of disability such as blindness. By disabling JavaScript in their accessible browser, or by the browser not supporting it anyway, they may get a better experience.
 

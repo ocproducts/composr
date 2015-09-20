@@ -17,7 +17,8 @@ In addition to the word filter there is a more sophisticated filtering system, t
 
 [title="2"]Tools for moderation[/title]
 
-Composr, by default, will not allow most forms of non-trusted content to appear live on the website without validation by the staff. When a user that is not in a trusted usergroup posts content, then they will have no choice but to have it posted as non-validated, and a notification will be dispatched to the staff. The staff can then choose what to do with the content. There is also a page where staff can see all non-validated content, in case the notification was missed or disabled.
+Composr, by default, will not allow most forms of non-trusted content to appear live on the website without validation by the staff. When a user that is not in a trusted usergroup posts content, then they will have no choice but to have it posted as non-validated, and a notification will be dispatched to the staff. The staff can then choose what to do with the content. There is also a module where staff can see all non-validated content, in case the notification was missed or disabled. This module is at:
+Admin Zone > Audit > Non-validated resources
 
 By default, the forum, the chatrooms, and Wiki+, are the main exceptions where validation is not required. This is because these are community orientated areas of the website, where instant posting is desirable.
 
@@ -66,7 +67,7 @@ There are many methods for banning a Composr user:
 {!actionlog:DOC_ACTIONLOG}
 
 [media width="150" description="Recent actions performed" float="right"]data_custom/images/docs/tut_censor/adminzone_recent_actions.png[/media]
-This section shows the recent actions performed by you and your staff. Virtually every action that is done by your staff is logged here.
+This module shows the recent actions performed by you and your staff. Virtually every action that is done by your staff is logged here.
  - [b]Username[/b] is the name of the member who performed this action
  - [b]IP Address[/b] is the [concept]IP address[/concept] of the member who performed this action.
  - [b]Date and Time[/b] is the date and time when the action occurred. You may click this date to view further details on the submission as well as do (un)banning related to it.
@@ -74,7 +75,10 @@ This section shows the recent actions performed by you and your staff. Virtually
  - [b]First Parameter[/b] is one of the parameters of that action -- which will differ from action to action.
  - [b]Second Parameter[/b] is one of the parameters of that action -- which will differ from action to action.
 
-There are also 'sort by' and 'show per page' options at the bottom of this section to help you refine which recent actions you see.
+There are also 'sort by' and 'show per page' options at the bottom of this module to help you refine which recent actions you see.
+
+Access the action log from:
+Admin Zone > Audit > Action logs (audit trail)
 
 [title="2"]Post history[/title]
 

@@ -94,6 +94,9 @@ The [tt]side_stats[/tt] block shows various figures that relate to your website'
 
 {!DOC_REALTIME_RAIN}
 
+Access Real-time analytics from:
+Admin Zone > Audit > What's happening now (RTR)
+
 It is a good way to visualise how people are using the site. This works best when the site has multiple online users performing options, but you can rewind the clock to a time when you know this was happening.
 
 [title="2"]Google Analytics[/title]

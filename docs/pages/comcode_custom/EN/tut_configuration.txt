@@ -124,7 +124,7 @@ To operate the script, you will need the master password that you specified at i
 
 [title="2"]Scheduling[/title]
 
-In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task to run the [tt]data/cron_bridge.php[/tt] file on an every-minute basis. By doing this, you tie in Composr's scheduler with the server's scheduler.
+In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task to run the [tt]data/cron_bridge.php[/tt] file on an every-minute basis. By doing this, you tie in the CRON bridge scheduler with the server's scheduler.
 
 Examples of scheduling tasks:
  - Sending out calendar event notifications
@@ -137,7 +137,7 @@ Examples of scheduling tasks:
  - Sending out automatic newsletters
  - Sending newsletters (dripping out e-mails over a period of time, to stop resource spiking)
 
-The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my web host does not support CRON!"). More details are in the following sections. Don't call up the URL by hand because if you do then Composr will start assuming the scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
+The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file through the PHP interpreter (common), or by calling the URL (see "Help -- my web host does not support CRON!"). More details are in the following sections. Don't call up the URL by hand because if you do then Composr will start assuming the CRON bridge scheduler is working from then on which can make testing it a bit harder (once it is called once it is marked 'working' by the system -- applicable features will become available, and the todo item will be removed from the checklist on the front page of the Admin Zone).
 
 [title="3"]Specific advice for Linux[/title]
 
@@ -189,7 +189,7 @@ The following is a Windows Vista scheduler step by step process for scheduling t
 15) Change the "1 Hour to 5 Minutes" for the duration of "Indefinitely"
 16) Click 'OK'
 17) Click 'OK'
-This should have now added a schedule within windows scheduler to run the [tt]cron_bridge.php[/tt] file every 5 minutes. This step by step was created using Windows Vista, the process may change slightly in other versions of Windows.
+This should have now added a schedule within Windows scheduler to run the [tt]cron_bridge.php[/tt] file every 5 minutes. This step by step was created using Windows Vista, the process may change slightly in other versions of Windows.
 
 [title="3"]Help -- my web host does not support CRON![/title]
 

@@ -158,7 +158,7 @@ class Hook_addon_registry_core_abstract_components
         $revision_history = do_lorem_template('REVISION_HISTORY_LINE', array(
             'RENDERED_DIFF' => lorem_phrase(),
             'EDITOR' => lorem_phrase(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'DATE_RAW' => placeholder_date_raw(),
             'RESTORE_URL' => placeholder_url(),
             'URL' => placeholder_url(),

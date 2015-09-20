@@ -51,6 +51,7 @@ Deleted posts will be kept behind in the 'post history'. Post history can be acc
 1) Clicking the 'history' button next to a post (for edited posts only)
 2) Clicking the 'post history' link in a member profile
 3) Selecting the 'topic history' topic action
+4) From Admin Zone > Audit > Post edit/moderation history
 
 The 'post history' feature allows you to view text of all revisions a post has gone through, and restore deleted posts. It is also possible to delete post history. The 'post history' feature was designed so you can track moderations, including moderations done by actual posters (in case they are trying to cover something up).
 [/surround]

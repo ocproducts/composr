@@ -747,7 +747,7 @@ span.timestamp {
 	property: property-value;
 }
 [/code]
-This example applies the specified properties to any tag which has a class of 'warning', or any <span> tag which has a class of 'timestamp'. Note that you can combine type and class selectors together (as in the second rule in the above example), to produce a class selector which only applies properties to tags with the specified class, that also are of the specified tag name.
+This example applies the specified properties to any tag which has a class of [tt]warning[/tt], or any [tt]<span>[/tt] tag which has a class of [tt]timestamp[/tt]. Note that you can combine type and class selectors together (as in the second rule in the above example), to produce a class selector which only applies properties to tags with the specified class, that also are of the specified tag name.
 
 A little aside explanation about the XHTML class attribute is probably required here. As mentioned in the XHTML section above, it is a standard attribute, and as such can be applied to any element. It should contain a space-separated list of CSS class selector names to be applied to the tag. Usually, however, only one class selector is listed in the class attribute.
 [code="HTML"]
@@ -756,7 +756,7 @@ A little aside explanation about the XHTML class attribute is probably required 
 <p class="warning">I know you know that I've been messing with knowledge. However, I'd like you to forget that I know what you know, and that you don't know what I know. I know more about what you know that you could possibly ever know about my knowledge. My knowledge about your knowledge of what I know regarding now is secret, and I know that you know about the now and then of knowledge, new life, and gibberish.</p>
 </div>
 [/code]
-In that example, the [tt]<span>[/tt] tag has two CSS classes attached. However, it should be noted that when naming CSS classes, you should name them for their [i]function[/i], rather than for their [i]appearance[/i]. This is for maintenance considerations: if you name a class 'red', then change the colour to blue, you'd have to rename it, and change all the references to it, or leave it as a mess.
+In that example, the [tt]<span>[/tt] tag has two CSS classes attached. However, it should be noted that when naming CSS classes, you should name them for their [i]function[/i], rather than for their [i]appearance[/i]. This is for maintenance considerations: if you name a class [tt]red[/tt], then change the colour to blue, you'd have to rename it, and change all the references to it, or leave it as a mess.
 
 ID [i]selectors[/i] are another basic selector type, which apply properties to elements based upon their ID attribute (for more information on the ID attribute, see the JavaScript section below).
 [code="CSS"]
@@ -777,7 +777,7 @@ h3 a {
 	property: property-value;
 }
 [/code]
-This example applies the specified properties to any <a> tag which is beneath a level-three heading (<h3>).
+This example applies the specified properties to any [tt]<a>[/tt] tag which is beneath a level-three heading ([tt]<h3>[/tt]).
 
 Now that the basic selectors have been covered, we move on to properties and property values. A property can only accept [b]one[/b] out of a list of pre-defined values. Some values are variable (such as widths, and other numeric values), but most are just text.
 
@@ -996,7 +996,7 @@ function function-name(argument1,argument2)
 	lines-of-code;
 }
 [/code]
-Functions have to start with the [i]keyword[/i] 'function', then the name of the function, and the arguments required to be passed to the function in brackets. Following this should be the lines of code in the function, surrounded by curly brackets.
+Functions have to start with the [i]keyword[/i] [tt]function[/tt], then the name of the function, and the arguments required to be passed to the function in brackets. Following this should be the lines of code in the function, surrounded by curly brackets.
 
 The lines of code themselves have to follow strict rules (which are beyond the scope of this document), and have to be terminated with a semicolon.
 [code="JavaScript"]

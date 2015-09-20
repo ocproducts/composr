@@ -128,7 +128,7 @@ On some browsers, alt-clicking on the slideshow will activate the browser full s
 
 [title="2"]e-cards[/title]
 
-When viewing an image visitors will have an option (if the 'recommend' addon is installed) to send the image as an e-card. This is a good form of website promotion, as the e-card also functions as a kind of website recommendation.
+When viewing an image visitors will have an option (if the [tt]recommend[/tt] addon is installed) to send the image as an e-card. This is a good form of website promotion, as the e-card also functions as a kind of website recommendation.
 If you don't want this feature you can remove it by editing the [tt]GALLERY_ENTRY_SCREEN[/tt] template.
 
 [concepts

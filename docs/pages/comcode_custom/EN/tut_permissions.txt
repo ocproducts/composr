@@ -15,7 +15,7 @@ You can set:
  - Global privileges.
  - Overridden privileges for particular content-types, by overriding them on the module (page) controlling that content-type.
  - Overridden privileges for particular categories.
- - Adhoc access control on particular match-keys.
+ - Ad hoc access control on particular match-keys.
 
 You cannot set:
  - Permissions on the entry-level (e.g. for a specific news article). You need to use categorisation to group entries that would have the same access level.
@@ -140,7 +140,7 @@ Usergroups have a number of settings that are "privilege"-like. They're not actu
 [media width="150" description="The 'su' feature is incredibly quick and easy: just enter a name and click a button" float="right"]data_custom/images/docs/tut_permissions/permissions_su.png[/media]
 To test access permissions and privileges, it's best to create a test member, or to assume the identity of an existing lower-ranking (non-administrator) member. In fact, if you are using [concept]Conversr[/concept] then there's a default member named 'test' for you.
 
-The 'su' function allows an administrator to quickly and easily assume the identity of somebody else ("masquerade"), for whatever purposes he sees fit (and not needing to type in their password, or logout).
+The 'su' feature allows an administrator to quickly and easily assume the identity of somebody else ("masquerade"), for whatever purposes he sees fit (and not needing to type in their password, or logout).
 
 To use 'su', simply enter the username of the member whose identity you would like to assume into the 'su' box (in the footer), and press the enter/return key. A new window will open, presenting the same screen as seen by the specified user.
 This works on the default theme. Custom themes may not have this in the theme footer. In that case you  can access it by putting [tt]&keep_su=<username>[/tt] or [tt]?keep_su=<username>[/tt] onto the end of the URL as appropriate (e.g. [tt]http://yourbaseurl/index.php?keep_su=test[/tt] to masquerade as the test user looking at your front page).

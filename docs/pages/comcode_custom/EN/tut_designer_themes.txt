@@ -88,7 +88,7 @@ CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates
 
 [list="1"]
 [*]Take your theme images and copy them into a new [tt]themes/<yourthemename>/images_custom/<yoursitename>[/tt] directory. This will allow you to reference them in Composr as theme images.
-[*]Go to edit the CSS for your theme in Composr. Do this by going to Admin Zone > Themes, then the 'Edit CSS' option next to your theme. Choose to edit the 'global' CSS file. Take your CSS and paste it on the top (don't remove the default CSS!). If you prefer, you can edit [tt]themes/<yourthemename>/css_custom/global.css[/tt] in your favourite text editor.
+[*]Go to edit the CSS for your theme in Composr. Do this by going to Admin Zone > Themes, then the 'Edit CSS' option next to your theme. Choose to edit the [tt]global[/tt] CSS file. Take your CSS and paste it on the top (don't remove the default CSS!). If you prefer, you can edit [tt]themes/<yourthemename>/css_custom/global.css[/tt] in your favourite text editor.
 [*]You need to change the image references in your CSS. If you had something like [tt]images/example.jpg[/tt] it would need to be changed to [tt]{$IMG,<yoursitename>/example}[/tt]. You should not add the [tt].jpg[/tt]/[tt].png[/tt]/[tt].gif[/tt] on the end. This will make it find [tt]themes/<yourthemename>/images_custom/<yoursitename>/example.jpg[/tt] (or [tt]example.png[/tt] or [tt]example.gif[/tt]).
 [/list]
 
@@ -109,7 +109,7 @@ CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates
 [/list]
 [*]If you have incorporated left and/or right Composr panels and have made the assumption that they can never be blank/hidden (even on pages in Composr that are normally full-width), then you must put [tt]supports_wide=0[/tt] into your [tt]themes/<yourthemename>/theme.ini[/tt] file.
 [*]Once you have your main XHTML incorporated you will see lots of problems with layout, because there will be incompatibilities with your styling and the default styling. So now is a good time to fix all these. You probably will want to remove many of the default styles Composr uses from [tt]global.css[/tt], but be careful to only remove really general layout style rules -- don't just remove huge chunks of CSS indiscriminately.
-[*]Similarly, you may find you made assumptions in your CSS. For example, you may have set quite specific styles for default elements because you only use them in a specific way on your design (e.g. making all 'strong' tags really large). Your Composr theme will need to not make too many assumptions like this, remember a lot of your CSS will be running on screens you haven't given individual design attention to because they will be running a lot of default XHTML from Composr. Adjust your CSS so it targets your style rules with the necessary specificity.
+[*]Similarly, you may find you made assumptions in your CSS. For example, you may have set quite specific styles for default elements because you only use them in a specific way on your design (e.g. making all [tt]strong[/tt] tags really large). Your Composr theme will need to not make too many assumptions like this, remember a lot of your CSS will be running on screens you haven't given individual design attention to because they will be running a lot of default XHTML from Composr. Adjust your CSS so it targets your style rules with the necessary specificity.
 [/list]
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" onclick="window.open(this.getAttribute('href'),'','width=910,height=700,status=no,resizable=yes,scrollbars=no'); return false;" href="{$BASE_URL*}/uploads/website_specific/compo.sr/swf_play.php?width=900&amp;height=675&amp;file=video_tutorials/designer_themes__global_layout.mp4">video</a>.[/b][/semihtml]
@@ -140,7 +140,7 @@ Place the blocks as appropriate onto your:
 	[*]Comcode page: Right panel (if you have one on the design), [tt]:panel_right[/tt]
 	[*]Comcode page: Top panel (if you have one on the design), [tt]:panel_top[/tt]
 	[*]Comcode page: Bottom panel (if you have one on the design), [tt]:panel_bottom[/tt]
-	[*][tt]GLOBAL_HTML_WRAP.tpl[/tt]: Often there will be blocks in the header, like 'search' or 'login'. You can place these using Tempcode rather than Comcode like:
+	[*][tt]GLOBAL_HTML_WRAP.tpl[/tt]: Often there will be blocks in the header, like search or login blocks. You can place these using Tempcode rather than Comcode like:
 [tt]{$BLOCK,block=<blockname>}[/tt]. The default template already shows this in some cases, and the [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks tutorial[/page] provides a section "Tempcode syntax". Similarly sometimes there is a menu in the footer, which can be placed like:
 [code="Tempcode"]{$BLOCK,block=menu,type=<menu-type>,param=<menu-name>}[/code]
 [/list]
@@ -200,7 +200,7 @@ Comcode:
 [indent="30"]
 Composr content, panels, and pages, are written in Composr's markup language, called Comcode.
 
-On most forum software people can make posts using "bbcode". It's a bit like HTML but with the "<" turned to "[". So in bbcode you can do like [tt][b]this is bold[/b][/tt]. It's so that users can do styling without having to write full HTML (with [tt]<br>[/tt] tags for white-space preservation, etc), and also for security reasons (so users can't do things like [tt]<script>[/tt] tags).
+On most forum software people can make posts using "bbcode". It's a bit like HTML but with the [tt]<[/tt] turned to [tt][[/tt]. So in bbcode you can do like [tt][b]this is bold[/b][/tt]. It's so that users can do styling without having to write full HTML (with [tt]<br>[/tt] tags for white-space preservation, etc), and also for security reasons (so users can't do things like [tt]<script>[/tt] tags).
 
 Composr 'Comcode' is very similar to this standard 'bbcode', but it can do a lot more. In Composr we use it for content. For security and simplicity and power.
 You can do all kinds of powerful things very simply in Comcode. E.g. [tt][ticker]scrolling text[/ticker][/tt].
@@ -237,7 +237,7 @@ The following Comcode is also equivalent:
 [code="Comcode"]
 [block param="mainparameter" a="1" b="2"]blockname[/block]
 [/code]
-...because the parameter named 'param' can be written in short-hand. 'param' is only special in two ways:
+...because the parameter named [tt]param[/tt] can be written in short-hand. [tt]param[/tt] is only special in two ways:
 1) We have this Comcode short-hand notation for it.
 2) Most blocks use it to pass in the main parameter the block needs, usually some kind of ID code. For example, for the [tt]menu[/tt] block it is the name of the menu to be loaded.
 

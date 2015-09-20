@@ -175,7 +175,7 @@ class Hook_addon_registry_authors
         $news_released = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('NEWS_BRIEF', array(
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE_PLAIN' => lorem_word(),
                 'ID' => placeholder_id(),

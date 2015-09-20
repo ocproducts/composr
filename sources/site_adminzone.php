@@ -90,6 +90,8 @@ function adminzone_extended_breadcrumbs()
     }
 
     if (($page != 'admin') && ($page != 'cms')) {
+        require_lang('menus');
+
         // Loop over menus, hunting for connection
         $hooks = find_all_hooks('systems', 'page_groupings');
         $_hooks = array();

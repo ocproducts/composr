@@ -91,7 +91,7 @@ If you do not have the PHP FTP extension, then you will need either:[list="a"]
 
 [title="3"]Requirements for specific features[/title]
 
-If you want automatic thumbnail generation and transcoding you need a server with FFMPEG on it. It must be accessible via PHP either via the PHP extension (thumbnails only, not transcoding), or the ability for 'shell_exec' to run from PHP (both thumbnails and transcoding).
+If you want automatic thumbnail generation and transcoding you need a server with FFMPEG on it. It must be accessible via PHP either via the PHP extension (thumbnails only, not transcoding), or the ability for [tt]shell_exec[/tt] to run from PHP (both thumbnails and transcoding).
 It is best, however, to transcode manually off-line/off-server to avoid resource over-use.
 
 Do not try and install Composr on an ad-sponsored free web host. The banners and tracking they inject will interfere with the mechanisms of the software.
@@ -206,7 +206,7 @@ In other words, three views of the file system exist, according to context:
 [*]The URL view, which branches off from the httpdocs directory in your account directory
 [/list]
 
-As previously mentioned, this file system is merely illustrative. Different servers use different conventions; for example 'httpdocs' is often 'public_html' or 'www'.
+As previously mentioned, this file system is merely illustrative. Different servers use different conventions; for example [tt]httpdocs[/tt] is often [tt]public_html[/tt] or [tt]www[/tt].
 
 [title="2"]Server security (advanced)[/title]
 
@@ -243,6 +243,9 @@ So, the main take-away is:
 [title="2"]PHP-Info[/title]
 
 {!menus:DOC_PHPINFO}
+
+PHP-Info can be reached from:
+Admin Zone > Tools > PHP-Info / Server Checks
 
 [concepts
  1_key="web host"           1_value="A provider of Internet server facilities"

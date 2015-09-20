@@ -52,12 +52,12 @@ In this example, the "Sample text" will only show to members in a usergroup matc
 
 The above examples all work with numeric IDs, and work on lists. In applicable contexts Selectcode can also be used to write tree structure matches. Here are some examples...
 
-Match anything under a gallery named 'foo':
+Match anything under a gallery named [tt]foo[/tt]:
 [code="Selectcode"]
 foo*
 [/code]
 
-Match anything under a category (e.g. a gallery) named 'foo', but not 'foo' itself:
+Match anything under a category (e.g. a gallery) named [tt]foo[/tt], but not [tt]foo[/tt] itself:
 [code="Selectcode"]
 foo*,!foo
 [/code]
@@ -94,7 +94,7 @@ Selectcode precedence is not based on order, it is based on the rule "pick out w
 
 [title="3"]Not[/title]
 
-It is important to understand that "!" does not really mean 'not', it means 'avoid' or 'except'. There is no way to use Selectcode to match on a negative, you can only limit what positive matches are accepted.
+It is important to understand that [tt]![/tt] does not really mean 'not', it means 'avoid' or 'except'. There is no way to use Selectcode to match on a negative, you can only limit what positive matches are accepted.
 
 Let's say we want to match anyone not in usergroup #14 using the Tempcode [tt]IS_IN_GROUP[/tt] symbol, which happens to work via Selectcode.
 

@@ -191,7 +191,7 @@ Note that there is an option "Take date of births". If that is disabled then dat
 
 [media width="150" description="The bookmarks popup" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks.png[/media]
 [media width="150" description="Managing bookmarks" float="right"]data_custom/images/docs/tut_adv_members/members_bookmarks_manage.png[/media]
-If members are logged in then they may bookmark pages of your website within the site itself. The icon to do this is at the bottom of every Composr page unless the 'bookmarks' addon has been installed, or it has been removed from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
+If members are logged in then they may bookmark pages of your website within the site itself. The icon to do this is at the bottom of every Composr page unless the [tt]bookmarks[/tt] addon has been installed, or it has been removed from [tt]GLOBAL_HTML_WRAP.tpl[/tt].
 
 The bookmark feature is particularly useful for:
  - members who want to keep bookmarks for different websites separate
@@ -202,9 +202,13 @@ The bookmark feature is particularly useful for:
 [surround]
 [media width="150" description="Creating a welcome e-mail" float="right"]data_custom/images/docs/tut_adv_members/adv_members_welcome_email.png[/media]
 Composr provides special support for composing a series of welcome e-mails that are sent out to new members on a predefined schedule.
+
+Set these up at:
+Admin Zone > Tools > Welcome E-mails
+
 The purpose of this feature is to gradually advertise the features of your website to your members in a way that reinforces awareness. As most members will not usually return to a website, welcome e-mails provide a strong tool to keep them aware and entice them to fully embrace whatever service you are providing.
 
-For welcome e-mails to work the Composr cron bridge must be configured as discussed in the [page="_SEARCH:tut_configuration"]Configuration tutorial[/page]
+For welcome e-mails to work the CRON bridge scheduler must be configured as discussed in the [page="_SEARCH:tut_configuration"]Configuration tutorial[/page]
 [/surround]
 
 [title="3"]Referencing member-specific data[/title]
@@ -285,7 +289,7 @@ Composr has support for 'implicit usergroups' which are usergroup memberships de
 [title="3"]Limitations and background sync[/title]
 
 Usually when Composr handles checks of when someone is in a usergroup it goes through some fool-proof methods to do it by looking at just that particular user. Sometimes Composr needs to efficiently find all members in a usergroup, and bypasses checking implicit groups and LDAP for performance/simplicity.
-To mitigate this, Composr has a CRON hook (scheduler task) that is disabled by default that can be turned on by an Commandr command to synchronise implicit usergroups as normal usergroup memberships. To turn that on:
+To mitigate this, Composr has a CRON hook (CRON bridge scheduler task) that is disabled by default that can be turned on by an Commandr command to synchronise implicit usergroups as normal usergroup memberships. To turn that on:
 [code="Commandr"]
 :set_value('implicit_usergroup_sync','1');
 [/code]

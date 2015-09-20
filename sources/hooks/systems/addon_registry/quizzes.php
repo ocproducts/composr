@@ -277,7 +277,7 @@ class Hook_addon_registry_quizzes
         foreach (placeholder_array() as $k => $v) {
             $link = do_lorem_template('QUIZ_BOX', array(
                 'TYPE' => lorem_word(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'NAME' => lorem_phrase(),
                 'START_TEXT' => lorem_phrase(),

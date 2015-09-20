@@ -8,7 +8,7 @@ This tutorial will explain and detail some of the fringe features of web technol
 
 Microsoft created a technology that allows websites to have their own little icons, for placement in the Favorites menu, and the web browser window icon. This technology has since been adopted for use by other web browsers.
 
-Favicons are supported in Composr, and to use one you just need to edit the 'favicon' theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
+Favicons are supported in Composr, and to use one you just need to edit the [tt]favicon[/tt] theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
 
 The default icon actually contains multiple sizes:
  - 16x16 &ndash; Standard size for browsers
@@ -18,7 +18,7 @@ The default icon actually contains multiple sizes:
 
 [title="3"]Apple web clip icons[/title]
 
-These icons show on the iPhone and iPod Touch home screens, if you choose to bookmark a site there. They can be set by editing the 'webclipicon' theme image.
+These icons show on the iPhone and iPod Touch home screens, if you choose to bookmark a site there. They can be set by editing the [tt]webclipicon[/tt] theme image.
 
 The default icon actually contains multiple sizes:
  - 120x120 &ndash; iPhone retina touch iOS7
@@ -27,7 +27,7 @@ The default icon actually contains multiple sizes:
 
 [title="2"]Web fonts[/title]
 
-Fonts have always been a tricky area in computing, as the actual font typeface is a copyrighted works, and hence cannot be distributed without a licence. This problem extends to the Internet, where there is a stronger need for common fonts than there ever was. It is important to remember that not all viewers to a website will be using Microsoft Windows, and therefore they will not all have the set of default windows fonts.
+Fonts have always been a tricky area in computing, as the actual font typeface is a copyrighted works, and hence cannot be distributed without a licence. This problem extends to the Internet, where there is a stronger need for common fonts than there ever was. It is important to remember that not all viewers to a website will be using Microsoft Windows, and therefore they will not all have the set of default Windows fonts.
 
 Fortunately there are three things that improve on this situation:
 1) there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information).
@@ -109,16 +109,16 @@ Here is a simple example of a custom button:
 [block="text_overlay" data="This is a test" img="button1"]main_custom_gfx[/block]
 [/code]
 
-(we've built the button graphic here into Composr itself, and the Theme Wizard will style it -- but you can tell the block to write onto any theme image of your choice using the 'img' parameter)
+(we've built the button graphic here into Composr itself, and the Theme Wizard will style it -- but you can tell the block to write onto any theme image of your choice using the [tt]img[/tt] parameter)
 
 Full list of parameters:
- - img (the code of the Theme image to use)
- - data (the text to write)
- - font_size (e.g. "12" for 12pt)
- - 'x' and 'y' (where to write the text)
- - color (has to be 6 hex digits, e.g. 'FFFFFF')
- - font (e.g. "Vera" for the [tt]data/fonts/Vera.ttf[/tt] file we bundle with Composr [there are a number of other ttf files in that directory ready for use])
- - center (set to "1" to center the text)
+ - [tt]img[/tt] (the code of the Theme image to use)
+ - [tt]data[/tt] (the text to write)
+ - [tt]ont_size[/tt] (e.g. "12" for 12pt)
+ - [tt]x[/tt] and [tt]y[/tt] (where to write the text)
+ - [tt]color[/tt] (has to be 6 hex digits, e.g. 'FFFFFF')
+ - [tt]font[/tt] (e.g. "Vera" for the [tt]data/fonts/Vera.ttf[/tt] file we bundle with Composr [there are a number of other [tt].ttf[/tt] files in that directory ready for use])
+ - [tt]center[/tt] (set to "1" to center the text)
 
 [title="3"]Custom rollovers[/title]
 
@@ -128,11 +128,11 @@ Take the above example further, how would you like to automatically have [b]both
 [block="rollover_button" data="This is a test" img1="button1" img2="button2"]main_custom_gfx[/block]
 [/code]
 
-This takes the same parameters, except 'img' is now 'img1', and there is also an 'img2'.
+This takes the same parameters, except [tt]img[/tt] is now [tt]img1[/tt], and there is also an [tt]img2[/tt].
 
 [title="3"]And, for programmers, more[/title]
 
-You have probably spotted that all these examples are using a new block, 'main_custom_gfx'. The three cases above are what we have supplied 'out of the box', but programmers can write additional renderers in PHP code (hooks) to create configurable graphics of any complexity.
+You have probably spotted that all these examples are using a new block, [tt]main_custom_gfx[/tt]. The three cases above are what we have supplied 'out of the box', but programmers can write additional renderers in PHP code (hooks) to create configurable graphics of any complexity.
 
 [title="2"]Social media accounts[/title]
 

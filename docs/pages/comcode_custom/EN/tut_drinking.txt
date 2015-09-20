@@ -300,7 +300,7 @@ To add as a news article, head along to Content Management > News. Once added, i
 [title="3"]Making databases[/title]
 
 There are a number of different features in Composr which can be used for database storage, manipulation and retrieval:
- - 'catalogues' allow you to define the fields for records, and then have these records and the manipulation and display thereof to be included as a first-class aspect of your website. Catalogues support hierarchical structuring of data.
+ - Catalogues allow you to define the fields for records, and then have these records and the manipulation and display thereof to be included as a first-class aspect of your website. Catalogues support hierarchical structuring of data.
  - Wiki+ is a wiki-like hierarchical database; it is much more powerful than a wiki however, as while it can behave as a free-form and open-access database navigated by embedded hyperlinks, it can also behave as a highly moderated and formal structured database.
  - The forum can actually be used very effectively as a database, if a formal structure and presentation is less important than an ability to rapidly manipulate free-form data in a comfortable and informal environment.
  - Comcode pages (static documents) may also be used, with each 'record' being created by creating a new page; consistent structure may be created using 'Custom Comcode tags'.
@@ -318,7 +318,7 @@ There are four distinct ways for adding images in Composr:
 1) Images that are a part of the visual design of the website are 'theme images'. Extensive information on themeing is provided in a number of Composr tutorials.
 2) Images that are presented as a part of some other type of content, such as a press release (a news article), or a forum post, are done using attachments. A user-friendly interface for choosing attachments is provided on the actual add screens for these types of content.
 3) Images that are presented in galleries.
-4) Images that are uploaded manually and referenced in Comcode using the 'img' tag
+4) Images that are uploaded manually and referenced in Comcode using the [tt]img[/tt] tag
 
 If you are wishing to add an image to a gallery, head over to Content Management > Galleries. The gallery system supports a tree structure of galleries, or you may simply add things to the root of the tree making them show right-away when the user visits the 'Galleries' link (which is on one of your website menus by default).
 

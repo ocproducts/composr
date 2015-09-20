@@ -271,7 +271,7 @@ class Hook_addon_registry_ecommerce
                 'ID' => placeholder_id(),
                 'STATE' => lorem_phrase(),
                 'AMOUNT' => placeholder_number(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'NOTE' => lorem_phrase(),
                 'TYPE_CODE' => lorem_phrase(),
             );

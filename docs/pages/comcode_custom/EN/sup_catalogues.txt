@@ -18,7 +18,7 @@ From the Manage Catalogues window, select 'Add catalogue' option to create a new
 
 [b]Step3:[/b]
 In the 'Add catalogue' window, fill all the necessary fields.
-Let's create a catalogue for holding entries for different cars. To create a new catalogue named 'cars', the Title, Codename and Description can be filled as shown in the screen shot. Leave the remaining options as default. This includes leaving the display type as 'Field-maps', which is the best choice if we're going to customise the layout (described in subsequent tutorials).
+Let's create a catalogue for holding entries for different cars. To create a new catalogue named [tt]cars[/tt], the Title, Codename and Description can be filled as shown in the screen shot. Leave the remaining options as default. This includes leaving the display type as 'Field-maps', which is the best choice if we're going to customise the layout (described in subsequent tutorials).
 [media width="150"]data_custom/images/docs/sup_catalogues/sup_catalogues_3.png[/media]
 
 [b]Step4:[/b]
@@ -66,7 +66,7 @@ This tutorial explains how to do embedding.
 Log in to the Composr site using the admin username and password. Then navigate to the Comcode Page where you want to embed the catalogue block. Click on the 'Edit this page' link at the bottom of the page. If you haven't created the page yet, create it (Admin Zone --> Structure --> Add-New-Page Wizard), which will put you into the editing screen also.
 
 [b]Step2:[/b]
-The catalogue block can be embedded using the 'main_cc_embed' block. You can manually embed catalogue by pasting the below line of code in the appropriate place in the Comcode editor.
+The catalogue block can be embedded using the [tt]main_cc_embed[/tt] block. You can manually embed catalogue by pasting the below line of code in the appropriate place in the Comcode editor.
 
 [code="Comcode"]
 [block="8" max="30"]main_cc_embed[/block]
@@ -95,7 +95,7 @@ Advanced users will wish to customise the layout of their catalogue entries. Thi
 [b]Step1:[/b]
 To modify the default template of the catalogue, the default template files can be overridden by creating custom templates for your catalogue.
 
-For modifying the template for the 'cars' catalogue, make copies of the following files in the [tt]themes/default/templates/[/tt] directory on your server, named as follows:
+For modifying the template for the [tt]cars[/tt] catalogue, make copies of the following files in the [tt]themes/default/templates/[/tt] directory on your server, named as follows:
 
 [tt]CATALOGUE_DEFAULT_CATEGORY_SCREEN.tpl[/tt] --> [tt]CATALOGUE_cars_CATEGORY_SCREEN.tpl[/tt]
 

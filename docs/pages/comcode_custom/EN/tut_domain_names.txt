@@ -89,7 +89,7 @@ Note that this method also has the disadvantages of "changing the nameserver".
 
 [title="3"]Use an HTML solution[/title]
 
-Another way to handle things is either to set up an HTML frameset, a simple HTML redirect page, a PHP header redirect, or a header redirect configured in the web server software (e.g. IIS, or .htaccess). This isn't ideal because the domain name cannot be used for making long URLs to the website. However, if there is a second domain name that is 'good enough' then the problem is very small because long URLs can be made against this second domain name.
+Another way to handle things is either to set up an HTML frameset, a simple HTML redirect page, a PHP header redirect, or a header redirect configured in the web server software (e.g. IIS, or [tt].htaccess[/tt]). This isn't ideal because the domain name cannot be used for making long URLs to the website. However, if there is a second domain name that is 'good enough' then the problem is very small because long URLs can be made against this second domain name.
 
 We'd use an HTML solution in the case where we can leverage no control over any domain settings whatsoever. Two situations for this would be:
  - the domain is somehow tied up

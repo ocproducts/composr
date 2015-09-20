@@ -248,7 +248,7 @@ class Module_admin
             array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant', 'restrict', 'prohibite', 'credentials'),
             array('access', 'view'),
             array('overlay', 'popup', 'dialog', 'window'),
-            array('option', 'setting', 'value'),
+            array('option', 'setting', 'value', 'parameter'),
             array('configure', 'configuration', 'setup', 'install', 'core_configuration'),
             array('emoticon', 'smiley', 'smile', 'face', 'emoji'),
             array('forum', 'board', 'bbs', 'cns_forum'),

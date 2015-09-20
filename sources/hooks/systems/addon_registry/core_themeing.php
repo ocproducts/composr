@@ -195,7 +195,7 @@ class Hook_addon_registry_core_themeing
             $themes->attach(do_lorem_template('THEME_MANAGE', array(
                 'THEME_USAGE' => lorem_phrase(),
                 'SEED' => '123456',
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'RAW_DATE' => placeholder_date_raw(),
                 'NAME' => $value,
                 'DESCRIPTION' => lorem_paragraph_html(),

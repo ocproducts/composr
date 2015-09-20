@@ -875,11 +875,11 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 	<tbody>
 		<tr style="background: #DDFFDD">
 			<td>{$FIND_SCRIPT}</td>
-			<td>Find the URL to a named Composr entry script (e.g. 'dload')</td>
+			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FIND_SCRIPT_NOHTTP}</td>
-			<td>Find the URL to a named Composr entry script (e.g. 'dload'), but as a relative URL to domain name root</td>
+			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>), but as a relative URL to domain name root</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MAKE_URL_ABSOLUTE}</td>
@@ -907,7 +907,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$KEEP,0,1}</td>
-			<td>Stuff to append to a Composr URL for 'keep parameter' passing (Composr passes any parameters between screens if their names start 'keep_', and this symbol enables that). The first parameter should be '1' if you need to place this directly on the front of a URL. The second parameter should '1' if you need to always attach a session ID (i.e. if you are creating a link that might be used somewhere outside the current cookie context, e.g. to feed into a download manager)</td>
+			<td>Stuff to append to a Composr URL for 'keep parameter' passing (Composr passes any parameters between screens if their names start <kbd>keep_</kbd>, and this symbol enables that). The first parameter should be '1' if you need to place this directly on the front of a URL. The second parameter should '1' if you need to always attach a session ID (i.e. if you are creating a link that might be used somewhere outside the current cookie context, e.g. to feed into a download manager)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$EXTEND_URL,http://example.com/index.php?foo=a,bar=b}</td>
@@ -915,7 +915,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$BLOCK,block=main_search,zone=site}</td>
-			<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name 'block'. For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
+			<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name <kbd>block</kbd>. For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$LOAD_PAGE,about,site}</td>
@@ -1324,7 +1324,7 @@ Usage: [tt]{$THUMBNAIL,source_image,widthxheight,output_dir,filename,fallback_im
 where:
  - [tt]source_image[/tt] is the URL to the full image
  - [tt]widthxheight[/tt] is the desired width/height for the thumbnail. For types (see below) of width or height or crop you can omit either of the width or height for automatically calculated proportionality (e.g. [tt]x20[/tt] for just a height). If you specify both for crop it crops to the exact specified box rather than to the implied proportional box.
- - [tt]output_dir[/tt] is the name of a directory under Composr's "uploads" directory
+ - [tt]output_dir[/tt] is the name of a directory under Composr's [tt]uploads[/tt] directory
  - [tt]filename[/tt] is the name of the thumbnail filename. If not provided it will be automatically chosen based on the source_image and an articulation of the thumbnail settings
  - [tt]fallback_image[/tt] is the URL to the image to use if no thumbnail could be generated. If not provided the source_image will be used
  - [tt]type[/tt] is either:
@@ -1335,11 +1335,11 @@ where:
   - [tt]pad[/tt] for an image which has been shrunk until it completely fits within the given dimensions, and then padded out
   - [tt]pad_vert_crop_vert[/tt] for an image that may only have cropping or padding done above/below and therefore gets stretched to force that to be the case
   - [tt]pad_horiz_crop_horiz[/tt] for an image that may only have cropping or padding done left/right and therefore gets stretched to force that to be the case
- - The [tt]where[/tt] argument is not needed for "width" or "height" type thumbnails. For "crop" & "pad" types it is where to crop/pad:
+ - The [tt]where[/tt] argument is not needed for [tt]width[/tt] or [tt]height[/tt] type thumbnails. For [tt]crop[/tt] & [tt]pad[/tt] types it is where to crop/pad:
   - [tt]start[/tt]
   - [tt]end[/tt]
   - [tt]both[/tt] (assuming bottom-to-top and right-to-left)
-  - If the "where" option is omitted for cropped thumbnails then it will be centred. For padded thumbnails it will resize the image to get rid of any need for padding (ie. "padding none").
+  - If the [tt]where[/tt] option is omitted for cropped thumbnails then it will be centred. For padded thumbnails it will resize the image to get rid of any need for padding (ie. "padding none").
  - For [tt]pad[/tt] types the background is used to pad the image:
   - a hex code for a specific color (with alpha)
   - or, [tt]none[/tt] for no padding (ie. the image dimensions are not those given, but will fit inside them).
@@ -1688,7 +1688,7 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>These allow the 'standard box' layout convention to be used without duplicating a lot of HTML in different templates. CSS could never provide this itself, as the box 'styling' actually involves a large chunk of complex structure.
 		          <br />The parameters to the directive are (all may be blank or left out):<ol>
 						<li>the title (blank means no title is used)</li>
-						<li>the type of the table (there will be a template, STANDARDBOX_&lt;type&gt; for any valid type code; the default is 'default'). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
+						<li>the type of the table (there will be a template, STANDARDBOX_&lt;type&gt; for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
 						<li>the CSS width</li>
 						<li>'|' separated list of options (meaning dependant upon templates interpretation)</li>
 						<li>'|' separated list of meta information (key|value|key|value|...) (e.g. [/html][tt]Name|Allen|Gender|Male|Country|USA[/tt][html])</li>
@@ -1960,7 +1960,7 @@ There is a design issue that comes to us when we design template structure... do
 We have tended to stick to a middle ground between these extremes, and re-used templates when the usage pattern was almost identical. For example, almost all of Composr uses the same form field templates, but Wiki+ posts use different templates to forum posts. However, there are still places where we re-use templates in situations that sites may wish to develop in separate directions.
 
 The solution to this is to make use of the GUID each template usage is given when it is used.
-Each 'do_template' call in Composr, which loads up a template, passes in a parameter, '_GUID'. The GUIDs may then be used along with tempcode directives to control what the template outputs.
+Each [tt]do_template[/tt] call in Composr, which loads up a template, passes in a parameter, [tt]_GUID[/tt]. The GUIDs may then be used along with tempcode directives to control what the template outputs.
 The template editor has special support for the GUIDs, showing what GUIDs a template is used with and providing links to view the code associated with each GUID. It also provides a feature to automatically insert an 'IF' directive that differentiates against one of the GUIDs to provide a place to put output that will only be shown for it.
 
 If you enter the template editor from the 'Template tree' screen then you will be told the GUID that was used by the node in the tree that you selected.

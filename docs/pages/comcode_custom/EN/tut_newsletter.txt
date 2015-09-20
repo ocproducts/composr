@@ -52,11 +52,11 @@ When you send a newsletter you choose where to send it. Usergroups/newsletters w
 
 In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
 
-When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the Composr scheduler enabled[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
+When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the CRON bridge scheduler enabled[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
 
 Before your newsletter is sent, you have an opportunity to preview it, so you can ensure it is correct. Look at your preview carefully, as it is easy to make minor typographical or layout mistakes that would affect the professionalism portrayed in these bulk e-mails. You will also be e-mailed the newsletter during the preview stage so that you can perform the ultimate check.
 
-If you have [page="_SEARCH:tut_configuration"]the Composr scheduler enabled[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
+If you have [page="_SEARCH:tut_configuration"]the CRON bridge scheduler enabled[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
 
 [title="3"]Dual format e-mails[/title]
 
@@ -139,7 +139,7 @@ Creating templated newsletters is best shown by example (this is the newsletter 
 </html>
 [/code]
 
-Note how the example includes the 'html' tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard [tt]MAIL[/tt] template.
+Note how the example includes the [tt]html[/tt] tag, etc -- it is not a snippet, it is a full piece of HTML. This is optional, but if you do write your newsletters like this Composr will be clever enough to bypass wrapping the newsletter in the standard [tt]MAIL[/tt] template.
 
 You have the following template variables available to you (beyond all the default capabilities of Comcode):
  - [b]title[/b], The subject line of the email (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL[/tt] template)
@@ -148,8 +148,8 @@ You have the following template variables available to you (beyond all the defau
  - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER[/tt] language string -- depending on what data is available on the reader)
  - [b]member_id[/b], The member ID of the subscriber, or blank if there is no discerned member ID
  - [b]email_address[/b], The email address of the subscriber
- - [b]sendid[/b], A special code identifying the subscriber (starts with 'm' if it is a member, or 'n' if it is a newsletter subscriber)
- - [b]unsub_url[/b], A URL to unsubscribe from (one-click unsubscribe for newsletter recipients, a link to account settings for other recipients). If you are using [tt]unsub_url[/tt] in a Comcode newsletter it is very important not to insert it plainly, as Composr will look at the link for a link caption and incidentally click that link for every user. Instead use a Comcode 'url' tag and hence tell Composr what caption to give the link.
+ - [b]sendid[/b], A special code identifying the subscriber (starts with [tt]m[/tt] if it is a member, or [tt]n[/tt] if it is a newsletter subscriber)
+ - [b]unsub_url[/b], A URL to unsubscribe from (one-click unsubscribe for newsletter recipients, a link to account settings for other recipients). If you are using [tt]unsub_url[/tt] in a Comcode newsletter it is very important not to insert it plainly, as Composr will look at the link for a link caption and incidentally click that link for every user. Instead use a Comcode [tt]url[/tt] tag and hence tell Composr what caption to give the link.
 
 If you are going to go down this path it is strongly recommended to tick (check) the 'HTML only' box when you go to send your newsletters, as the auto-generated text equivalents will not be easily readable.
 The vast majority of email applications have HTML capabilities nowadays, so you are not really sacrificing anything if you do this.

@@ -45,7 +45,7 @@ All tables have a 'key' that allows the unique identification of any row without
 [box="Finding IDs"]
 To find the ID for some Composr content, the best way is usually to find a Composr URL that points to a page that is set to edit that ID; the ID will be included as a part of the URL.
 
-For example, in the URL 'index.php?page=news&type=view&id=30', the ID is 30. By convention, when IDs like this are being used as keys, they are almost always given the field name 'id' in the database.
+For example, in the URL 'index.php?page=news&type=view&id=30', the ID is 30. By convention, when IDs like this are being used as keys, they are almost always given the field name [tt]id[/tt] in the database.
 [/box]
 
 phpMyAdmin supports very user friendly features to browse the database tables, and to make changes. To browse a table, click the table icon to the left of the table names in the left hand frame, you can then browse and sort the table contents, and select rows for modification.
@@ -73,9 +73,9 @@ At the time of writing, Composr uses 176 tables when all addons are installed.
 
 For the technically inclined, the database table structure is mostly in 4NF form, with the main exception being fields that are for caching purposes (such as post count) and other fields that remove the need for complex and slow 'JOIN's or 'EXIST's clauses.
 
-Composr is designed to support content translatable into multiple languages, although this is off by default. If enabled, then text is located in the 'translate' table, and linked into other places by language ID. The 'translate' table is also used to store parsed Comcode, which works out as a very clean solution. If an entry in the 'translate' table is being edited by hand, and has Comcode, then setting the text_parsed field to blank will cause the Comcode to be re-parsed on demand.
+Composr is designed to support content translatable into multiple languages, although this is off by default. If enabled, then text is located in the [tt]translate[/tt] table, and linked into other places by language ID. The [tt]translate[/tt] table is also used to store parsed Comcode, which works out as a very clean solution. If an entry in the [tt]translate[/tt] table is being edited by hand, and has Comcode, then setting the text_parsed field to blank will cause the Comcode to be re-parsed on demand.
 
-Composr has been designed to be able to work with many different databases, not just MySQL. We dropped official support for this feature, because like multiple language content, we could not thoroughly beta test it, especially due to very strange and varying limitations and differences in different database systems. However, Composr still avoids using MySQL-specific features wherever possible. Instead of using highly specialist (if they exist at all) queries to analyse database table structure, for systems such as backup or Conversr-member-id-migration, Composr actually stores database structure in the 'db_meta' table. Composr's own installation techniques for creating and changing database tables will properly update this table, and if modifications are being made, it is preferable that the db_meta table is updated to reflect them.
+Composr has been designed to be able to work with many different databases, not just MySQL. We dropped official support for this feature, because like multiple language content, we could not thoroughly beta test it, especially due to very strange and varying limitations and differences in different database systems. However, Composr still avoids using MySQL-specific features wherever possible. Instead of using highly specialist (if they exist at all) queries to analyse database table structure, for systems such as backup or Conversr-member-id-migration, Composr actually stores database structure in the [tt]db_meta[/tt] table. Composr's own installation techniques for creating and changing database tables will properly update this table, and if modifications are being made, it is preferable that the db_meta table is updated to reflect them.
 
 [concepts
  1_key="database"     1_value="Simply a system that stores structured information"

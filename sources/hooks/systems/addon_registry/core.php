@@ -1368,8 +1368,8 @@ class Hook_addon_registry_core
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTENT', array(
                 'TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => lorem_phrase_html(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
@@ -1390,8 +1390,8 @@ class Hook_addon_registry_core
             lorem_globalise(do_lorem_template('BLOCK_MAIN_MULTI_CONTENT', array(
                 'TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => array(
                     lorem_phrase_html()
                 ),

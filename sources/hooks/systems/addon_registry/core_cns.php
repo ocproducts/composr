@@ -814,7 +814,7 @@ class Hook_addon_registry_core_cns
             'POINTS' => placeholder_number(),
             'JOIN_DATE_RAW' => placeholder_date_raw(),
             'MEMBER_ID' => placeholder_id(),
-            'JOIN_DATE' => placeholder_time(),
+            'JOIN_DATE' => placeholder_date(),
             'PRIMARY_GROUP_NAME' => lorem_phrase(),
             'CUSTOM_FIELDS' => lorem_phrase(),
             'CUSTOM_FIELDS_FULL' => lorem_phrase(),
@@ -912,10 +912,10 @@ class Hook_addon_registry_core_cns
             'AVATAR_WIDTH' => placeholder_id(),
             'PHOTO_WIDTH' => placeholder_id(),
             'MOST_ACTIVE_FORUM' => lorem_phrase(),
-            'TIME_FOR_THEM' => placeholder_time(),
+            'TIME_FOR_THEM' => placeholder_date(),
             'TIME_FOR_THEM_RAW' => placeholder_date_raw(),
             'SUBMIT_DAYS_AGO' => lorem_phrase(),
-            'SUBMIT_TIME_RAW' => placeholder_time(),
+            'SUBMIT_TIME_RAW' => placeholder_date(),
             'LAST_VISIT_TIME_RAW' => placeholder_date_raw(),
             'ONLINE_NOW' => lorem_phrase(),
             '_ONLINE_NOW' => false,
@@ -933,7 +933,7 @@ class Hook_addon_registry_core_cns
             'EMAIL_ADDRESS' => lorem_word(),
             'AVATAR_URL' => placeholder_avatar(),
             'SIGNATURE' => lorem_phrase(),
-            'JOIN_DATE' => placeholder_time(),
+            'JOIN_DATE' => placeholder_date(),
             'JOIN_DATE_RAW' => placeholder_date_raw(),
             'CUSTOM_FIELDS' => array(
                 array(
@@ -1035,7 +1035,7 @@ class Hook_addon_registry_core_cns
                 'AT_URL' => placeholder_url(),
                 'LOCATION' => lorem_word(),
                 'MEMBER' => placeholder_link(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
             )));
         }
 

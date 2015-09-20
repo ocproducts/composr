@@ -59,9 +59,9 @@ There are a few different types of question, indicated by a little tag after the
 
 If a question is followed by [tt][REQUIRED][/tt] then the software will force it to be filled in (unless you have set a timeout and the timeout is exceeded).
 
-You may put line(s) starting with a ':' immediately under the question, to provide a longer caption for the question.
+You may put line(s) starting with a [tt]:[/tt] immediately under the question, to provide a longer caption for the question.
 
-You may also put line(s) starting with a ':' and followed by an explanation, below each answer to a question, which will be displayed at completion for the explanation as to specifically why the given answer was correct or incorrect.
+You may also put line(s) starting with a [tt]:[/tt] and followed by an explanation, below each answer to a question, which will be displayed at completion for the explanation as to specifically why the given answer was correct or incorrect.
 
 There is support for marking. If an answer is followed by [tt][*][/tt] then it is considered "correct" (this is very important for competitions and tests). If nothing is marked correct, the question will be considered as manually-marked (resulting in a quoted result range for the user, rather than a specific result), unless [tt][UNMARKED][/tt] is put after the question, in which case it will be collected but not count towards marking.
 

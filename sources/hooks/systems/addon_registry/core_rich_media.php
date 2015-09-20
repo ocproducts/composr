@@ -899,7 +899,7 @@ class Hook_addon_registry_core_rich_media
             lorem_globalise(do_lorem_template('COMCODE_DEL', array(
                 'CONTENT' => lorem_phrase(),
                 'CITE' => lorem_word(),
-                'DATETIME' => placeholder_time(),
+                'DATETIME' => placeholder_date(),
             )), null, '', true)
         );
     }
@@ -917,7 +917,7 @@ class Hook_addon_registry_core_rich_media
             lorem_globalise(do_lorem_template('COMCODE_INS', array(
                 'CONTENT' => lorem_phrase(),
                 'CITE' => lorem_word(),
-                'DATETIME' => placeholder_time(),
+                'DATETIME' => placeholder_date(),
             )), null, '', true)
         );
     }

@@ -12,9 +12,9 @@ something=value,somethingelse>value
 [/code]
 This defines two comparisons. Both must hold true for any result returned (i.e. they are ANDd).
 
-In this example, the first is an '=' comparison, and the second is an '>' comparison. Anyone who knows very basic maths will understand what these mean.
+In this example, the first is an [tt]=[/tt] comparison, and the second is an [tt]>[/tt] comparison. Anyone who knows very basic maths will understand what these mean.
 
-'something' and 'somethingelse' would be database field names for the main database table of whatever content type is being filtered.
+[tt]something[/tt] and [tt]somethingelse[/tt] would be database field names for the main database table of whatever content type is being filtered.
 
 [title="2"]The full language[/title]
 
@@ -177,7 +177,7 @@ We will take that and modify it. In this case I think the following filter is mu
 author~=<author>,date_and_time><date_and_time>,news|news_article|title|meta_keywords|meta_description~=<news>,submitter=<submitter>,average_rating>=<average_rating>
 [/code]
 
-We then feed into the block's "param" setting to get our refined filter form (see the image below).
+We then feed into the block's [tt]param[/tt] setting to get our refined filter form (see the image below).
 [/surround]
 
 [title="2"]Putting the filter form into the site[/title]

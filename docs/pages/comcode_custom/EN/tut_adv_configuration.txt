@@ -18,7 +18,7 @@ Advanced configuration options include (but are not limited to):
 
 Composr is split into a series of addons. All the addons are installed when you install Composr but it is recommended that you should remove any that aren't needed once you are familiar with the software. This is so as to make sure the non-required/unconfigured functionality doesn't accidentally get discovered by your visitors, and that any unnecessary complexity is removed. Less is more when it comes to good design, and if you ensure you have only the right set of features on your site then you can better tailor it for your visitors.
 
-To uninstall addons go to Admin Zone > Setup > Addons. Any addons that are uninstalled will be archived so you can restore them later if you wish (although any data you created for the addons, such as entries, will be permanently lost).
+To uninstall addons go to Admin Zone > Structure > Addons. Any addons that are uninstalled will be archived so you can restore them later if you wish (although any data you created for the addons, such as entries, will be permanently lost).
 
 [title="2"]Permissions[/title]
 
@@ -90,7 +90,7 @@ You may use the config editor to:
 
 You may delete, and move pages using the [concept]Sitemap editor[/concept].
 
-If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via 'page' tags) will become invalid, unless they were specified as being in the zone named '_SEARCH' (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page]. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
+If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via [tt]page[/tt] tags) will become invalid, unless they were specified as being in the zone named [tt]_SEARCH[/tt] (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page]. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
 
 It is recommended that you never move default Composr pages because it complicates the upgrade process. Instead it is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
 
@@ -98,7 +98,7 @@ It is recommended that you never move default Composr pages because it complicat
 
 [surround]
 [media width="150" description="Finding how to change your settings" float="right"]data_custom/images/docs/tut_adv_configuration/phpsettings.png[/media]
-You can try and get PHP and the web server to use an optimal configuration, via a special file named '.htaccess'. If you want the 'URL scheme' option to be enabled, this step is necessary.
+You can try and get PHP and the web server to use an optimal configuration, via a special file named [tt].htaccess[/tt]. If you want the 'URL scheme' option to be enabled, this step is necessary.
 Note that the file may already exist, potentially for either of two reasons:
 1) It was already there from before Composr was installed.
 2) Composr's quick installer automatically created an optimal file for you.

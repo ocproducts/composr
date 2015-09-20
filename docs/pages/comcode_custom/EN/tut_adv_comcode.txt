@@ -99,13 +99,12 @@ Some time in the future browsers may gain the ability to sandbox parts of web pa
 
 [title="2"]Custom Comcode[/title]
 
+[surround]
 [media width="150" description="Adding a Custom Comcode tag" float="right"]data_custom/images/docs/tut_adv_comcode/adv_comcode_custom.png[/media]
 {!custom_comcode:DOC_CUSTOM_COMCODE}
 
 To add a custom tag, do as follows:
- - Enter the Admin Zone
- - In the Setup section, go to 'Custom Comcode'
- - Choose 'Add Custom Comcode tag'
+ - Go to Admin Zone > Setup > Custom Comcode > Add Custom Comcode tag
  - Choose the tag codename you would like to use, a title for the tag, a description, and an example of how the tag would be used.
  - Tick the various check boxes as necessary.
  - Place the HTML you wish to use inside the 'Replacement text' field, and put '{content}' at the place where you wish for the tag content to be (the text that sits between the opening of the Comcode tag and the closing of the Comcode tag).
@@ -113,6 +112,7 @@ To add a custom tag, do as follows:
  - Click the 'Add Custom Comcode tag' button
 
 Your tag will be shown in your local copy of the Comcode tutorial, with your title, description and usage example.
+[/surround]
 
 [box="Tip" width="25em" float="right"]
 If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.
@@ -127,7 +127,7 @@ The [tt][semihtml][/tt] tag is also useful if you are writing some content that 
 
 [title="2"]Syntax highlighting[/title]
 
-Composr supports syntax highlighting via [url="GeSHi"]http://qbnz.com/highlighter/[/url]. This operates using the normal 'code' and 'codebox' tags, adding support for GeSHi highlighter codes to the 'param' attribute of the tags. We maintain a non-bundled GeSHi addon that provides the necessary files.
+Composr supports syntax highlighting via [url="GeSHi"]http://qbnz.com/highlighter/[/url]. This operates using the normal [tt]code[/tt] and [tt]codebox[/tt] tags, adding support for GeSHi highlighter codes to the [tt]param[/tt] attribute of the tags. We maintain a non-bundled GeSHi addon that provides the necessary files.
 
 [title="2"]Comcode Menus (advanced)[/title]
 
@@ -141,7 +141,7 @@ It is important to be careful not to break the syntactic rules for the menu form
 Here is an example of a menu tag in action...
 
 [code="Comcode"]
-[menu='some_codename']
+[menu="some_codename"]
 -contracted section
  +expanded section
   page = URL
@@ -167,7 +167,7 @@ Menu entries are typed so that their indentation is equal to the indentation of 
 
 Comcode is largely able to deal with [concept]BBCode[/concept] code. BBCode is a popular (but not formally-specified) system among standalone forum systems. Comcode is not formally designed as an extension of BBCode, but we intentionally aimed to be a super-set of it so that we are compatible with code imported from third-party forum systems, and so that our forum drivers can work well.
 
-Comcode can support all major features of all the major BBCode-like languages, and lax syntax (for example, missing quotation symbols) as is often allowed in BBCode. However, BBCode implementations do not support a lot of the functionality of Comcode, such as the 'block' tag and our list syntax; in addition, the Comcode implementation is that of a fully parsed language, with a well-defined syntax, while BBCode is almost always implemented as an ad hoc language to be turned into HTML via [concept]regular expressions[/concept].
+Comcode can support all major features of all the major BBCode-like languages, and lax syntax (for example, missing quotation symbols) as is often allowed in BBCode. However, BBCode implementations do not support a lot of the functionality of Comcode, such as the [tt]block[/tt] tag and our list syntax; in addition, the Comcode implementation is that of a fully parsed language, with a well-defined syntax, while BBCode is almost always implemented as an ad hoc language to be turned into HTML via [concept]regular expressions[/concept].
 
 [title="3"]Wiki-Code compatibility[/title]
 
@@ -197,7 +197,7 @@ Formatting tags define how things look. Semantic tags often do too, but they als
 
 [title="4"]Paragraphs vs line breaks[/title]
 
-Comcode has excellent support for semantics, but there is just one small area where it isn't able to support them, which is paragraphs. In Comcode the XHTML5 is created using XHTML [tt]br[/tt] (line break) tags to separate lines. This has few practical ramifications known to us, and it is by necessity to make sure Comcode produces conformant and consistent XHTML5. However if you want to use XHTML [tt]p[/tt] tags, you should use the Comcode 'semihtml' tag so that you have full control over how whitespace will display.
+Comcode has excellent support for semantics, but there is just one small area where it isn't able to support them, which is paragraphs. In Comcode the XHTML5 is created using XHTML [tt]br[/tt] (line break) tags to separate lines. This has few practical ramifications known to us, and it is by necessity to make sure Comcode produces conformant and consistent XHTML5. However if you want to use XHTML [tt]p[/tt] tags, you should use the Comcode [tt]semihtml[/tt] tag so that you have full control over how whitespace will display.
 
 Example:
 [code="Comcode"]

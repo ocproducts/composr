@@ -40,7 +40,7 @@ When performing an action that will add, rename or delete a zone, you may need t
 
 [title="3"]Zone logos (advanced)[/title]
 
-To change the logo image for a zone, add a theme image named '<zone-name>-logo'. By default zones use the logo image of the Welcome Zone.
+To change the logo image for a zone, add a theme image named [tt]<zone-name>-logo[/tt]. By default zones use the logo image of the Welcome Zone.
 [/surround]
 
 [title="2"]Redirection pages[/title]
@@ -73,7 +73,7 @@ A number of Composr modules contain categories organised into a tree structure, 
  - download categories
  - catalogue categories
 
-If sub-community categories are stored under a common sub-tree of the full category tree, then the root of the 'sub-tree' may be made into the apparent root of the full-tree, by picking it as a virtual-root. This is easy to do, and doesn't involve any kind of configuration other than finding the URL to enter the module with. To find this URL you just look for the link of the current category in the breadcrumbs on a category screen (it'll have something similar to 'keep_root' in it): this is a mouthful to explain, but really very simple. Once you have the URL, you may wish to add it to to the menu of your sub-communities zone.
+If sub-community categories are stored under a common sub-tree of the full category tree, then the root of the 'sub-tree' may be made into the apparent root of the full-tree, by picking it as a virtual-root. This is easy to do, and doesn't involve any kind of configuration other than finding the URL to enter the module with. To find this URL you just look for the link of the current category in the breadcrumbs on a category screen (it'll have something similar to [tt]keep_root[/tt] in it): this is a mouthful to explain, but really very simple. Once you have the URL, you may wish to add it to to the menu of your sub-communities zone.
 
 Here are some step-by-step instructions:
 1) Browse into the forum you'd like to be the virtual root. You need to be logged in as a staff member when you do this
@@ -85,23 +85,74 @@ Here are some step-by-step instructions:
 
 [title="2"]Usergroup management[/title]
 
-[surround]
-[media width="150" description="Adding a new usergroup" float="left"]data_custom/images/docs/tut_subcom/subcom_usergroup_add.png[/media]
-The [concept]Conversr[/concept] system has a powerful usergroup system, based on the ability for members to be in a primary usergroup, and any number of secondary usergroups. When members join they are placed, by default, in the lowest usergroup in a 'ranked' progression of usergroups: the member moves up along these ranked usergroups as they accumulate points, and their visible rank, and privileges change in accordance. It is recommended that you leave all non-staff members such that their primary usergroup stays within this rank progression, and use secondary usergroups for the purpose of placing them in sub-communities, and granting additional permissions (a member has the 'best' permission combination out of all the permissions granted to all of their usergroups).
+[media width="150" description="Managing a usergroup" float="right"]data_custom/images/docs/tut_subcom/usergroup.png[/media]
+The [concept]Conversr[/concept] system has a powerful usergroup system.
 
-Conversr allows you to choose which secondary usergroups a member is placed in when they join. Setting of default usergroups allows you to give people permission "by default", but to take it away if they abuse it without having to put them onto a different rank progression. For example, a 'debates' forum could be created and only the 'Civil Debater' usergroup given access; the 'Civil Debater' usergroup could be a default usergroup, meaning all have access by default -- however, members who demonstrated an inability to debate in a civil manner could be removed from it.
+{!cns:DOC_GROUPS}
+
+[title="3"]Ranks[/title]
+
+Members will be able to automatically enter usergroups on their rank ladder as they accumulate points.
+Their visible rank, and privileges change in accordance.
+
+Rank ladders are not formally codified. A member can be considered on a rank ladder if they are on a usergroup with any particular promotion path. Members may be on multiple ladders by being in multiple promotable usergroups. Usually a site will only have on rank ladder though.
+
+There is a default rank ladder that goes:
+Newbie --> Regular --> Local --> Old timer --> Local hero
+
+It is recommended that you leave all non-staff members such that their primary usergroup stays within this rank ladder, and use secondary usergroups for the purpose of placing them in sub-communities, and granting additional permissions (a member has the 'best' permission combination out of all the permissions granted to all of their usergroups). This keeps things consistent, allowing these members to have both your main rank and other usergroup memberships.
+
+You can attach your choice of rank image to any usergroup.
+
+The Setup Wizard has an option to remove the default rank ladder and have a simple 'Members' usergroup instead.
+
+[title="3"]New member status[/title]
+
+When members join they are placed, by default, in the 'Newbie' or 'Members' usergroup.
+
+Conversr allows you to choose which secondary usergroups a member is placed in when they join.
+
+Setting of default usergroups allows you to give people permission "by default", but to take it away if they abuse it without having to put them onto a different rank ladder. For example, a 'debates' forum could be created and only the 'Civil Debater' usergroup given access; the 'Civil Debater' usergroup could be a default usergroup, meaning all have access by default -- however, members who demonstrated an inability to debate in a civil manner could be removed from it.
 
 It is also possible to give members a choice from a number of primary usergroups when they join. This is especially useful for what I call 'role-based communities', where different members use the website in such a way that is distinct to their role on it. By assigning usergroup according to role, it is possible to use various Composr features in order to customise the site for each role provided.
 
-[media width="150" description="Managing the members of a usergroup" float="right"]data_custom/images/docs/tut_subcom/subcom_group_manage.png[/media]
-You may opt to assign a leader to secondary usergroups, or to leave them leaderless. A usergroup leader has the ability to control who is in their usergroup, taking pressure away from the staff. Otherwise, only administrators may add users to usergroups (this is not done using privileges, as it would grant the ability for any member with such as privilege to escalate themselves to administrator status).
+You'll find all these options on the add/edit usergroup form.
 
-Members may apply to join usergroups if they wish, and the usergroup leader or administrators may decide to accept or decline their application; members may also choose to 'resign' from a usergroup. All usergroup membership management is performed on the usergroup-view page.
+[title="3"]Back-end[/title]
 
-You can attach new rank images to usergroups on the usergroup editing screen. The usergroups admin module (which allows selection of a usergroup to edit) is available from Admin Zone > Security > Usergroups.
-[/surround]
+Manage usergroups from Admin Zone > Security > Usergroups.
+You can delete a usergroup from the bottom of its edit form -- except you cannot delete certain default usergroups that are used for system functions or as fail-safes.
 
-[title="2"]Clubs[/title]
+There is also a module for putting members into usergroups temporarily:
+Admin Zone > Security > Temporary usergroup memberships
+
+[title="3"]Front-end, and leadership[/title]
+
+[surround]
+[media width="150" description="Adding a new usergroup" float="right"]data_custom/images/docs/tut_subcom/usergroup_add.png[/media]
+[media width="150" description="The usergroup directory" float="right"]data_custom/images/docs/tut_subcom/usergroup_directory.png[/media]
+Usergroups can be browsed via the Usergroup Directory, which is part of the groups module ([tt]site:groups[/tt] page-link, Social > Usergroups on the default menus). The usergroup directory lists all non-hidden usergroups in a clear and tidy way.
+
+You may opt to assign a leader to usergroups, or to leave them leaderless. A usergroup leader has the ability to control who is in their usergroup (secondary membership only), taking pressure away from the staff. Otherwise, only administrators may add users to usergroups (this is not done using privileges, as it would grant the ability for any member with such as privilege to escalate themselves to administrator status).
+
+When a member views a usergroup they have the following possible interactions:
+ - [i]If they are not already a member:[/i]
+  - [i]If "Open membership") has been enabled:[/i]
+   - Join as secondary
+  - [i]Otherwise:[/i]
+   - Apply to join as secondary (become a prospective member)
+ - [i]Otherwise:[/i]
+  - [i]If they are a secondary member:[/i]
+   - Leave
+ - [i]If they have usergroup leadership access:[/i]
+  - Add members as secondary
+  - Remove secondary members
+  - Accept prospective members
+  - Decline prospective members
+
+When a usergroup application is made a notification is dispatched to the leader of the usergroup, or to the staff if there is no leader.
+
+[title="3"]Clubs[/title]
 
 The [concept]Conversr[/concept] system provides a clubs feature (Content Management > Clubs). Clubs are special usergroups:
  - that can not have special permissions (they are not shown in permission editing interfaces)
@@ -113,6 +164,7 @@ Clubs are provided so that members may create their own sub-communities on the w
 The club forum has default permissions that only allow website staff and club members into it. The club functionality provides no special moderation controls -- so by default the forum would need to be moderated by the website staff, rather than self-moderated. As it is a regular forum, additional permission changes can be achieved manually (for example, creating a new usergroup for the club's management and assigning moderator permissions over the forum to members of that).
 
 The parent forum and forum grouping for new club forums is configurable.
+[/surround]
 
 [concepts
  1_key="virtual root"       1_value="Virtual roots allow you to split a Composr tree based content system (such as the download system) so it appears to have multiple databases"

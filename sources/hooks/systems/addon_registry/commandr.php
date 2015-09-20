@@ -402,7 +402,7 @@ class Hook_addon_registry_commandr
         $content = do_lorem_template('COMMANDR_RSS_ITEM', array(
             'FULL_URL' => placeholder_url(),
             'NEWS_TITLE' => lorem_phrase(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'SUMMARY' => lorem_paragraph(),
         ));
 

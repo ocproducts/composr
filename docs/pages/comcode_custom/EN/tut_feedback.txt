@@ -31,7 +31,7 @@ The Composr rating system allows 'one rating per IP address'. Therefore, if a us
 
 Our own forum does not allow poll voting by guests, and hence more serious rating/poll situations may be handled there.
 
-There is a 'main_rating' block that you may use to allow any Comcode page to be rated (by placing the block on the page).
+There is a [tt]main_rating[/tt] block that you may use to allow any Comcode page to be rated (by placing the block on the page).
 
 [title="3"]Trackbacks[/title]
 
@@ -136,7 +136,7 @@ The Tempcode is just to make it easily portable between sites, no Tempcode is re
 
 If you want this within a Comcode page:
 [indent="30"]
-Just put it inside 'semihtml' Comcode tags, or paste into the source view of the WYSIWYG editor.
+Just put it inside [tt]semihtml[/tt] Comcode tags, or paste into the source view of the WYSIWYG editor.
 [/indent]
 
 The example will produce an e-mail like:
@@ -151,9 +151,9 @@ with the e-mail Subject and From lines set appropriately.
 
 We don't use CAPTCHA here to keep things simple. But you can see we did include the spammer blackhole (enabled by default, "Blackhole detection" option), which will typically trick bots into getting themselves blocked.
 CAPTCHA can be supported. To do so you have to:
-1) pass a hidden '_security' field with value '1'
+1) pass a hidden [tt]_security[/tt] field with value [tt]1[/tt]
 2) copy and paste the CAPTCHA code from [tt]COMMENTS_POSTING_FORM.tpl[/tt]
-3) ideally, configure your web server to block requests to the [tt]data/form_to_email.php[/tt] script if '_security' is not set. Otherwise CAPTCHA won't be enforced and someone could (if they had the will...) write a smart bot that strips the '_security' field from the requests.
+3) ideally, configure your web server to block requests to the [tt]data/form_to_email.php[/tt] script if [tt]_security[/tt] is not set. Otherwise CAPTCHA won't be enforced and someone could (if they had the will...) write a smart bot that strips the [tt]_security[/tt] field from the requests.
 As you can see, that's complex, so unless you have a spam problem here that your spam filters can't tackle for you, and that the blackhole doesn't deal with, it probably is not worth bothering.
 
 [title="2"]Polls[/title]

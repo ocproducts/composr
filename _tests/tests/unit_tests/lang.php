@@ -142,17 +142,28 @@ class lang_test_set extends cms_test_case
         }
 
         // Common spelling errors
-        if (stripos($string, 'preceeding') !== false) {
-            $this->assertTrue(false, 'The word \'preceeding\' was used in ' . $file . '. This should be changed to \'proceeding\'.');
-        }
-        if (stripos($string, 'cacheing') !== false) {
-            $this->assertTrue(false, 'The word \'cacheing\' was used in ' . $file . '. This should be changed to \'caching\'.');
-        }
-        if (stripos($string, 'publically') !== false) {
-            $this->assertTrue(false, 'The word \'publically\' was used in ' . $file . '. This should be changed to \'publicly\'.');
-        }
-        if (stripos($string, 'seperate') !== false) {
-            $this->assertTrue(false, 'The word \'seperate\' was used in ' . $file . '. This should be changed to \'separate\'.');
+        $common_spelling_mistakes = array(
+            'cacheing' => 'caching',
+            'publically' => 'publicly',
+            'seperate' => 'separate',
+            'adhoc' => 'ad hoc',
+            'yness' => 'iness',
+            'overidden' => 'overridden',
+            'nieve' => 'naive',
+            'in-situe' => 'in-situ',
+            'infact' => 'in fact',
+            'conveniant' => 'convenient',
+            'conveniance' => 'convenience',
+            'routeable' => 'routable',
+            'supercede' => 'supersede',
+            'targetted' => 'targeted',
+            'fulfills' => 'fulfils',
+            'progmatically' => 'programatically',
+        );
+        foreach ($common_spelling_mistakes as $from => $to) {
+            if (stripos($string, $from) !== false) {
+                $this->assertTrue(false, $from . ' should be ' . $to . ' in ' . $file . '.');
+            }
         }
 
         // Common grammar errors
@@ -179,22 +190,16 @@ class lang_test_set extends cms_test_case
                 $this->assertTrue(false, 'The term \'user\' was used in ' . $file . '. This might need to be changed to \'member\', depending on the circumstances.');
             }
 
-            if (!is_null($key)) {
-                if (strpos($string, '\n') !== false) {
-                    $this->assertTrue(false, 'The \'\n\' linebreak character was used in ' . $file . ' in the language string. This should be checked, to make sure it is really necessary.');
-                }
+            if (preg_match('#([A-Za-z]+)s( |-)#', $string) != 0) {
+                $this->assertTrue(false, 'A word in ' . $file . ' ended with an \'s\', but did not contain an apostrophe. This might be a case of mistaken plurality.');
             }
 
-            if (preg_match('#([A-Za-z]+)s( |-)#', $string) != 0) {
-                $this->assertTrue(false, 'A word ended with an \'s\', but did not contain an apostrophe. This might be a case of mistaken plurality.');
+            if (preg_match('#([A-Za-z]+)\'s#', $string) != 0) {
+                $this->assertTrue(false, 'A word in ' . $file . ' has an apostrophe, confirm it is intended..');
             }
 
             if (preg_match('#([a-z]+)( |-)([A-Z]{1})([a-z]+)#', $string) != 0) {
-                $this->assertTrue(false, 'A word that was in the middle of the string started with a capital letter. This might be a badly capitalised string.');
-            }
-
-            if (preg_match('#<([A-Za-z]+)>#', $string) != 0) {
-                $this->assertTrue(false, 'An HTML tag was used in ' . $file . ' in the language string. This should be checked, to make sure it is really necessary; HTML should be confined to the templates.');
+                $this->assertTrue(false, 'A word in ' . $file . ' that was in the middle of the string started with a capital letter. This might be a badly capitalised string.');
             }
 
             //if (stripos($string,'center')!==false) $this->assertTrue(false,'The word \'center\' was used in '.$file.'. This should be changed to \'centre\'.');

@@ -18,15 +18,15 @@ Major core contributors to Composr can get a free license to aid development.
 
 Composr's file system is basically split up into:
 [list]
-[*]Zones (the root directory itself, the 'site' directory, the 'adminzone' directory, the 'cms' directory, the 'forum' directory, and in a way the 'data' directory). Zones contain entry scripts (such as [tt]index.php[/tt]) and page sets. Zones are basically just subdirectories that group pages, making them convenient for creating different 'sections' of the website. Pages may be:[list]
-[*]Modules (.php files matching a certain class interface). Modules provide a set of related screens; e.g. all the screens for the user portion of the 'downloads' addon are in the 'downloads' module.
-[*]Comcode (.txt files)
-[*]HTML (.htm files)[/list]
-[*]'sources' which contain code to be included
-[*]'sources/hooks' which contain hooks that tie addons together so they can interoperate
-[*]'sources/blocks' and 'sources/miniblocks' which contain block files. Blocks are pluggable units that are can be included within Comcode pages and templates. They are usually displayed as a box, e.g. a menu, or a list of recent forum discussions.
-[*]'themes' which contain images, CSS and templates.
-[*]'lang' which contains language strings.
+[*]Zones (the root directory itself, the [tt]site[/tt] directory, the [tt]adminzone[/tt] directory, the [tt]cms[/tt] directory, the [tt]forum[/tt] directory, and in a way the [tt]data[/tt] directory). Zones contain entry scripts (such as [tt]index.php[/tt]) and page sets. Zones are basically just subdirectories that group pages, making them convenient for creating different 'sections' of the website. Pages may be:[list]
+[*]Modules ([tt].php[/tt] files matching a certain class interface). Modules provide a set of related screens; e.g. all the screens for the user portion of the [tt]downloads[/tt] addon are in the [tt]downloads[/tt] module.
+[*]Comcode ([tt].txt[/tt] files)
+[*]HTML ([tt].htm[/tt] files)[/list]
+[*][tt]sources[/tt] which contain code to be included
+[*][tt]sources/hooks[tt] which contain hooks that tie addons together so they can interoperate
+[*][tt]sources/blocks[/tt] and [tt]sources/miniblocks[/tt] which contain block files. Blocks are pluggable units that are can be included within Comcode pages and templates. They are usually displayed as a box, e.g. a menu, or a list of recent forum discussions.
+[*][tt]themes[/tt] which contain images, CSS and templates.
+[*][tt]lang[/tt] which contains language strings.
 [/list]
 
 When you make modifications to any of Composr's default files, There is no need to overwrite the existing files, because Composr comes with a file-based override/inheritance system. This allows files to be overridden with replacements while leaving the old files intact for reference. This is done by saving your modified files in the [tt]*_custom[/tt] directories. i.e. if we need to make modifications in [tt]site/pages/modules/polls.php[/tt], then we need to save our modified version as [tt]site/pages/modules_custom/polls.php[/tt]) .
@@ -38,7 +38,7 @@ When you make modifications to any of Composr's default files, There is no need 
 [media width="150" description="MVC structure for SITE-ZONE" float="right"]data_custom/images/docs/codebook/mvc_site.png[/media]
 Composr is written to the '[url="front controller"]http://en.wikipedia.org/wiki/Front_controller[/url]' and MVC '[url="design patterns"]http://en.wikipedia.org/wiki/Model-view-controller[/url]':
 [list]
-[*][b]Model/API[/b]: Most of the scripts from the 'sources' directory represent the model/API.
+[*][b]Model/API[/b]: Most of the scripts from the [tt]sources[/tt] directory represent the model/API.
 [*][b]View[/b]: The templates (see 'themes/default/templates' directory) represent the 'view'. Comcode pages could also be considered part of the view (though they are also content).
 [*][b]Controller[/b]: The entry scripts (e.g. the [tt]index.php[/tt] files, or files like [tt]site/dload.php[/tt]) represent the 'front controllers'. The modules (i.e. scripts from the '*/pages/modules' directories) and blocks (i.e. scripts from the 'sources/[mini]blocks' directory) represent the controllers. [tt]sources/site.php[/tt] and the initialisation functions in [tt]sources/global.php[/tt] and [tt]sources/global2.php[/tt] bind the entry scripts to the modules and control final output.
 [*][b]Dynamic pages[/b] (modules) are written in PHP and can output a set of different 'screens'. Screens are constructed out of templates (nested in a tree structure), with the PHP code specifying a certain kind of template structure, calling up templates with appropriate parameters to match the data being displayed.
@@ -48,7 +48,7 @@ Composr is written to the '[url="front controller"]http://en.wikipedia.org/wiki/
 
 [title="3"]Composr template briefing[/title]
 
-Page output is displayed  by wrapping the primary page output within  the GLOBAL template, prefixed with the HEADER template, and followed by the FOOTER template. The GLOBAL template references panels, and if those panels exist, they will also be included. Typically zones will include a 'panel_left' and a 'panel_right', so any pages within said zone will be surrounded by these panels.
+Page output is displayed  by wrapping the primary page output within  the GLOBAL template, prefixed with the HEADER template, and followed by the FOOTER template. The GLOBAL template references panels, and if those panels exist, they will also be included. Typically zones will include a [tt]panel_left[/tt] and a [tt]panel_right[/tt], so any pages within said zone will be surrounded by these panels.
 
 [title="3"]Composr framework (in-depth)[/title]
 
@@ -91,7 +91,7 @@ Here is a glossary of some of the terms that are used to describe Composr concep
  - [b]Forum[/b], A place where forum topics sit (and posts site within the topics). Forums may be organised in a tree structure. We do not use the term 'board'  that some software uses.
  - [b]Forum Driver[/b], A piece of code that allows Composr to integrate with third-party forum software.
  - [b]Fractional Edit[/b], The process of editing a piece of data (usually a title), by interactively modifying it at its point of display.
- - [b]Hooks[/b], Elements (special objects) that plug into a module/block to provide different implementations of functionality for that module/block. For example, the stats block calls upon other module's hooks (such as 'downloads') in order to generate each kind of stat; and the search blocks calls on other hooks to search each kind of content. By using hooks, modularity can be maintained and functionality extended by addition of hooks, not modification of existing code.
+ - [b]Hooks[/b], Elements (special objects) that plug into a module/block to provide different implementations of functionality for that module/block. For example, the stats block calls upon other module's hooks (such as [tt]downloads[/tt]) in order to generate each kind of stat; and the search blocks calls on other hooks to search each kind of content. By using hooks, modularity can be maintained and functionality extended by addition of hooks, not modification of existing code.
  - [b]Join[/b], the process of becoming a member.
  - [b]Member[/b], a user with an account.Note that in occasional contexts we may refer to members, when actually the member is using the "guest account" -- the key point here is that a member is identifiable in at least some way, even if it's just identified to the guest account
  - [b]Conversr[/b], the Composr forum/member system (optional).
@@ -99,21 +99,21 @@ Here is a glossary of some of the terms that are used to describe Composr concep
   - 'Comcode pages' -- written in Comcode
   - 'HTML pages' -- written in HTML
   - modules pages -- pages, that belong to a modules.
- - [b]Panels[/b], These are pages (usually Comcode pages) that are named with the prefix 'panel_'. They may be referenced in the templates using the 'LOAD_PANEL' symbol. The default Composr templates automatically place panels named 'panel_left' or 'panel_right'.
- - [b]Page-link[/b], These are paths formatted like "zone:page:screentype:id:param=value(:...)" that Composr uses for detailing links. They are like URLs, but local to a Composr website. Page-links are converted to URLs and this conversion sometimes adds extra URL parameters (for instance, any parameters prefixed 'keep_' are propagated across screens). Entry points are a special case of page-link -- entry points are the page-links to screens that modules provide regardless of the current state of the modules content (e.g. the catalogue index will always be there -- it is a stable entry point into the system).
+ - [b]Panels[/b], These are pages (usually Comcode pages) that are named with the prefix [tt]panel_[/tt]. They may be referenced in the templates using the 'LOAD_PANEL' symbol. The default Composr templates automatically place panels named [tt]panel_left[/tt] or [tt]panel_right[/tt].
+ - [b]Page-link[/b], These are paths formatted like "zone:page:screentype:id:param=value(:...)" that Composr uses for detailing links. They are like URLs, but local to a Composr website. Page-links are converted to URLs and this conversion sometimes adds extra URL parameters (for instance, any parameters prefixed [tt]keep_[/tt] are propagated across screens). Entry points are a special case of page-link -- entry points are the page-links to screens that modules provide regardless of the current state of the modules content (e.g. the catalogue index will always be there -- it is a stable entry point into the system).
  - [b]Personal post[/b], a post either within a private topic or within a normal topic, that can only be seen by the sender, the recipient, and administration staff
  - [b]Private topic[/b], a topic only seen by a select group of members (currently, the initiator and target members)
- - [b]Points[/b], Members of a site can earn 'points' by participating in site activities. The site administrator can adjust the value of different activities. Members can then gift these points to each other or redeem them at the point-store.
- - [b]Point-store[/b], The place where members can spend hard-earned points on gifts such as e-mail addresses or community billboard messages
+ - [b]Points[/b], Members of a site can earn 'points' by participating in site activities. The site administrator can adjust the value of different activities. Members can then gift these points to each other or redeem them at the Point Store.
+ - [b]Point Store[/b], The place where members can spend hard-earned points on gifts such as e-mail addresses or community billboard messages
  - [b]Standard box[/b], The type of box that wraps most Composr content, like side-blocks (e.g. 'Site statistics', 'Users online', 'Shoutbox', etc.). There are different styles of standard box.
- - [b]System[/b], A large aspect of Composr that has an influence spanning multiple files (e.g. Point-store system, Addon system, Award system). This is an informal term -- addon is used more formerly and refers to a defined set of files.
+ - [b]System[/b], A large aspect of Composr that has an influence spanning multiple files (e.g. Point Store system, Addon system, Award system). This is an informal term -- addon is used more formerly and refers to a defined set of files.
  - [b][page="docs:tut_tempcode"]Tempcode[/page][/b], An intermediary format between Comcode and XHTML, used for transmission and storage of screens in Composr. Also, the written programming language used in templates. The two things are different representations of the same thing.
  - [b]Theme[/b], A set of templates, images and CSS style-sheets that can be used on a website to completely change the layout, look and feel of the website. Different themes can be used concurrently by many members, with no impact on the system
  - [b][page="docs:tut_forum_tracking#title__4024"]Notifications[/page][/b], The process of tracking content for reply via e-mail notification. In other words: you can mark topics for notification and when a new reply is posted, you will be notified by e-mail of its presence.
  - [b]User[/b], Someone visiting a Composr site, that may or may not be a member.
  - [b]Usergroup[/b], sometimes called a group, this is a group of members and is how roles are implemented. Each usergroup is configured with it's own permissions and nothing is hard-coded. Usergroups may be configured as 'Super administrators' which have full access to everything, bypassing permissions. Members may be in multiple usergroups, and receive the best combined permissions from all of them.
  - [b]Whisper[/b], the process of creating a personal post embedded within a public topic (this is used to carry on entirely private conversations, and allow members to whisper secret messages to each other inside a public topic)
- - [b]Zones[/b], Different areas of a website, each with its own security levels, layout and feel. e.g. The Admin Zone is a different zone to the Site Zone. They are separated into a subdirectories of the main site (like subdirectory "site" for the 'Site' zone and the subdirectory "adminzone" for the "Admin Zone" zone). For the special "root" zone, called the "Welcome Zone", the files are stored in the main directory.
+ - [b]Zones[/b], Different areas of a website, each with its own security levels, layout and feel. e.g. The Admin Zone is a different zone to the Site Zone. They are separated into a subdirectories of the main site (like subdirectory [tt]site[/tt] for the 'Site' zone and the subdirectory [tt]adminzone[/tt] for the "Admin Zone" zone). For the special "root" zone, called the "Welcome Zone", the files are stored in the main directory.
 
 The following Composr concepts are used to describe content:
  - [b]Category[/b]. Categories hold entries, or sometimes, other categories, or both; they themselves tend to be designed for organisation or navigation rather than direct viewing. Galleries, forums and forum groups, are all kinds of categories; even a topic is a category in some contexts, as it holds posts.

@@ -60,7 +60,7 @@ The process of writing the module went along this basic route:
 1) The functionality of the module was decided upon, and tests designed that would allow us to test all this functionality worked once the module was finished (we usually define tests first, write a module in one go, and then carry out all the tests: it usually is the most efficient and robust way for us to write the code)
 2) The database schema was designed for the module, by consideration and then simply listing of the tables and fields that would be needed to adequately (and consistently with our standards and the guidance of our expertise)
 3) The shell for the main module was written, based on that which all other modules (other than mini-modules and abstracted CRUD modules) uses
-4) It was decided what screens that module would use, and these were all assigned code-names. Functions were created for these code-names, and the run function was filled in to call them up according to the 'type' parameter (as featured in all other modules)
+4) It was decided what screens that module would use, and these were all assigned code-names. Functions were created for these code-names, and the run function was filled in to call them up according to the [tt]type[/tt] parameter (as featured in all other modules)
 5) Install and uninstall functions were written for the module, according to the database schema
 6) Add, edit, and delete backend functions were written for the data of the module
 7) Add, edit, and delete screens were written for the data of the module (including definition of associated language strings for the standard Composr field inputting interface [wherever possible, referencing existing ones, to reduce the burden for anyone wishing to translating the module once we release it publicly as a Composr addon])
@@ -130,7 +130,7 @@ class example extends non_overridden__example
 [/code]
 This is a great technique for making changes to forum drivers.
 
-One word of caution -- if you are not supplementing a code files 'init' function, then you will want to strip out the init function from your override, otherwise both it and the original will be called in sequence. This is unavoidable, because the modified file is loaded first and thus cannot call the original init function itself -- and thus responsibility for that stays with the Composr code. There are two exceptions:
+One word of caution -- if you are not supplementing a code files [tt]init[/tt] function, then you will want to strip out the init function from your override, otherwise both it and the original will be called in sequence. This is unavoidable, because the modified file is loaded first and thus cannot call the original init function itself -- and thus responsibility for that stays with the Composr code. There are two exceptions:
 1) If your override contains every class or function the original file has (i.e. you overrode the whole file by copy&pasting) then the original init function will not be called as Composr assumes you copy&pasted all that code into your own init function.
 2) If you want a partial override but don't want the original init function to run, you need to use programmatic alteration to mask the original init function. This is explained in the last paragraph of the next section.
 
@@ -150,7 +150,7 @@ We took approach '3', and thus have written a special feature into Composr for i
 
 In Composr it works as thus:
 1) First you create a [tt]sources_custom[/tt] file
-2) Next you define an init function of this file. If you were overriding [tt]sources/example.php[/tt] you would define a [tt]init__example[/tt] function. If you were overriding [tt]sources/forum/example.php[/tt] you would define a [tt]init__forum__example[/tt] function (i.e. any slashes get changed to '__' in the function name)
+2) Next you define an init function of this file. If you were overriding [tt]sources/example.php[/tt] you would define a [tt]init__example[/tt] function. If you were overriding [tt]sources/forum/example.php[/tt] you would define a [tt]init__forum__example[/tt] function (i.e. any slashes get changed to [tt]__[/tt] in the function name)
 3) The init function should take a single parameter, and return something based upon that parameter. The value of this parameter will be the string value of the code you're overriding, after any function/class renaming has happened (see 'Replacing/supplementing a file' above). i.e. your function is taking a huge lump of PHP code as its parameter. In-between taking the parameter and returning it you can perform any changes you like. You can use any string functions like [tt]preg_replace[/tt] or [tt]strpos[/tt]; or use the handy Composr [tt]get_function_hash / insert_code_before__by_linenum / insert_code_after__by_linenum / insert_code_before__by_command / insert_code_after__by_command / remove_code[/tt] functions
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
@@ -167,7 +167,7 @@ There is one important rule when it comes to programmatic alteration: you are no
 [surround]
 [media width="150" description="Importing an addon (2)" float="right"]data_custom/images/docs/tut_framework/framework_import_2.png[/media]
 [media width="150" description="Importing an addon (1)" float="right"]data_custom/images/docs/tut_framework/framework_import_1.png[/media]
-You will only be able to export files into an addon from directories that are 'allowed' to contain new or modified files. For example, the 'sources' directory should not be modified, but the 'sources_custom' directory may. This is part of the file override system Composr employs: modified versions of old files or entirely new files should be placed in the custom version of a directory so that it is clear they are non-original, and will not be automatically overwritten during upgrade. There are a few directories that have no [tt]_custom[/tt] equivalent, and therefore you may export files to a mod from these.
+You will only be able to export files into an addon from directories that are 'allowed' to contain new or modified files. For example, the [tt]sources[/tt] directory should not be modified, but the [tt]sources_custom[/tt] directory may. This is part of the file override system Composr employs: modified versions of old files or entirely new files should be placed in the custom version of a directory so that it is clear they are non-original, and will not be automatically overwritten during upgrade. There are a few directories that have no [tt]_custom[/tt] equivalent, and therefore you may export files to a mod from these.
 Overridden PHP files may override on a per-function/per-class level. In other words, if you overrode a PHP file then you could make your [tt]sources_custom[/tt] file such that the only functions/classes it contains are the ones that you changed.
 [/surround]
 
@@ -177,7 +177,7 @@ Overridden PHP files may override on a per-function/per-class level. In other wo
 [media width="150" description="Using the code editor" float="right"]data_custom/images/docs/tut_framework/framework_code_editor_3.png[/media]
 [media width="150" description="Choosing a code file to edit" float="right"]data_custom/images/docs/tut_framework/framework_code_editor_2.png[/media]
 [media width="150" description="A password is obviously needed to use the code editor" float="right"]data_custom/images/docs/tut_framework/framework_code_editor_1.png[/media]
-Composr provides a very simple code editor for editing of existing Composr code files, or creation of new files. The code editor has inbuilt, automated, support for the Composr file override system: editing an original Composr file will save the edited version in the equivalent '_custom' suffixed directory where possible.
+Composr provides a very simple code editor for editing of existing Composr code files, or creation of new files. The code editor has inbuilt, automated, support for the Composr file override system: editing an original Composr file will save the edited version in the equivalent [tt]_custom[/tt] suffixed directory where possible.
 
 Access the code editor from Admin Zone > Tools > Code editor.
 

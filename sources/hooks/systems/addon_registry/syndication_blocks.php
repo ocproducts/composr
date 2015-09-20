@@ -164,7 +164,7 @@ class Hook_addon_registry_syndication_blocks
                 'FEED_URL' => placeholder_url(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'SUMMARY' => lorem_paragraph(),
                 'TICKER' => lorem_word(),
             )));
@@ -222,13 +222,13 @@ class Hook_addon_registry_syndication_blocks
             $__title = do_lorem_template('BLOCK_MAIN_RSS_FROM_TITLE', array(
                 'FEED_URL' => placeholder_url(),
                 'NEWS_TITLE' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
             ));
 
             $content->attach(do_lorem_template('BLOCK_MAIN_RSS_SUMMARY', array(
                 'FEED_URL' => placeholder_url(),
                 'NEWS_FULL' => $news_full,
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'TAILS' => $tails,
                 'AUTHOR' => lorem_phrase(),
                 'CATEGORY' => $category,

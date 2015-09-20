@@ -21,7 +21,7 @@ The two main issues that present themselves are:
 2) HTML files contain surrounding mark-up that must be stripped, because Composr already provides it
 
 [box="Note" width="25em" float="right"]
-Relative URLs are normally read relative to the path the referencing page is in. However, this behaviour can be changed using an HTML tag 'base', but Composr does not use this by default; you may place a 'base' into Composr in [tt]HTML_HEAD.tpl[/tt] if you wish, to create a common location for relative-URLs to be relative to. This is possible in Composr as Composr itself only uses absolute URLs.
+Relative URLs are normally read relative to the path the referencing page is in. However, this behaviour can be changed using an HTML tag [tt]base[/tt], but Composr does not use this by default; you may place a [tt]base[/tt] into Composr in [tt]HTML_HEAD.tpl[/tt] if you wish, to create a common location for relative-URLs to be relative to. This is possible in Composr as Composr itself only uses absolute URLs.
 [/box]
 
 The best way I can explain how to integrate an HTML page is by presenting a simple scenario.
@@ -42,7 +42,7 @@ Imagine [tt]mypage.html[/tt] contains...
 
 To integrate this page as [tt]site:mypage[/tt], the following steps would need to be taken:
  - Strip down the file to only contain [tt]<img src="myimage.png" />[/tt].
- - Place [tt]myimage.png[/tt] in the 'site' directory (this assumes that 'short URLs' is turned off -- if you have short URLs enabled then it is best to just use absolute URLs instead)
+ - Place [tt]myimage.png[/tt] in the [tt]site[/tt] directory (this assumes that 'short URLs' is turned off -- if you have short URLs enabled then it is best to just use absolute URLs instead)
  - Rename the file to [tt]mypage.htm[/tt] (HTML pages in Composr must end [tt].htm[/tt], not [tt].html[/tt] or anything else)
  - Place [tt]mypage.htm[/tt] in [tt]site/pages/html_custom/EN/[/tt]
 
@@ -51,8 +51,8 @@ To integrate this page as [tt]site:mypage[/tt], the following steps would need t
 Composr can actually handle most things for you if you want to defer control to it:
  - Copy any [tt].htm[/tt] files into the [tt]pages/html_custom/EN/[/tt] directory ([tt].html[/tt] files should be renamed to [tt].htm[/tt] files)
   - [i]Unless[/i] the file is meant to be located in a subdirectory and Composr has a zone with the same name as that subdirectory. In this case, you'd place it in the equivalent directory of that zone so that Composr can better automatically rewrite any links to the page:
-	- For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named 'example'. Put the file in [tt]example/pages/html_custom/EN/[/tt]
-	- If the directories go more than one level deep, Composr will translate '/' to '_' when matching against a zone name (e.g. [tt]site/more[/tt] would be considered a zone named [tt]site_more[/tt])
+	- For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named [tt]example[/tt]. Put the file in [tt]example/pages/html_custom/EN/[/tt]
+	- If the directories go more than one level deep, Composr will translate [tt]/[/tt] to [tt]_[/tt] when matching against a zone name (e.g. [tt]site/more[/tt] would be considered a zone named [tt]site_more[/tt])
  - Copy any non-.htm files (images, etc) into [tt]uploads/website_specific[/tt]
  - Your pages should then show up as normal Composr entry-points in the menu editor
  - Go through the pages in Composr to find any broken links and adjust them so that they work. Composr can't perfectly fix your links for you every-time, but it does do a pretty good job. Read on for more information how link rewriting works.
@@ -185,7 +185,7 @@ There are two major problems with this approach:
 
 [title="3"]RSS/Atom[/title]
 
-If you are trying to integrate a system that is non-interactive, and outputs all important information in either the RSS or Atom families of feed formats, you may be able to perform an integration by simply using the 'main_rss' block in combination with the feed URL (or if it is date based information, overlaying the feed URL onto the calendar).
+If you are trying to integrate a system that is non-interactive, and outputs all important information in either the RSS or Atom families of feed formats, you may be able to perform an integration by simply using the [tt]main_rss[/tt] block in combination with the feed URL (or if it is date based information, overlaying the feed URL onto the calendar).
 This form of integration is most appropriate for news and calendars, although other forms of information do sometimes fit it well.
 
 [title="2"]Integrating JavaScript libraries[/title]

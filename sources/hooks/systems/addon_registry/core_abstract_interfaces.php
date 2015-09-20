@@ -764,7 +764,7 @@ class Hook_addon_registry_core_abstract_interfaces
                 lorem_word(),
                 lorem_word(),
                 lorem_word(),
-                placeholder_time(),
+                placeholder_date(),
                 $line,
                 $select,
                 $tick,

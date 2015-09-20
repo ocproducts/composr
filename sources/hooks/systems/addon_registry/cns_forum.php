@@ -476,7 +476,7 @@ class Hook_addon_registry_cns_forum
             lorem_globalise(do_lorem_template('CNS_PRIVATE_TOPIC_LINK', array(
                 'TOPIC_URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'DATE_RAW' => placeholder_date_raw(),
                 'LAST_POST_BY_POSTER_URL' => placeholder_url(),
                 'LAST_POST_BY_USERNAME' => lorem_word(),
@@ -551,10 +551,10 @@ class Hook_addon_registry_cns_forum
             'LINK' => placeholder_url(),
             'BUTTONS' => lorem_phrase(),
             'ACTION' => lorem_phrase(),
-            'ACTION_DATE_AND_TIME' => placeholder_time(),
+            'ACTION_DATE_AND_TIME' => placeholder_date(),
             'ACTION_DATE_AND_TIME_RAW' => placeholder_date_raw(),
             'CREATE_DATE_AND_TIME_RAW' => placeholder_date_raw(),
-            'CREATE_DATE_AND_TIME' => placeholder_time(),
+            'CREATE_DATE_AND_TIME' => placeholder_date(),
             'OWNER_MEMBER' => lorem_phrase(),
             'ALTERER_MEMBER' => lorem_phrase(),
             'BEFORE' => lorem_phrase(),
@@ -660,7 +660,7 @@ class Hook_addon_registry_cns_forum
             'POSTER_TITLE' => lorem_phrase(),
             'POST_TITLE' => lorem_phrase(),
             'POST_DATE_RAW' => placeholder_date_raw(),
-            'POST_DATE' => placeholder_time(),
+            'POST_DATE' => placeholder_date(),
             'POST' => lorem_phrase(),
             'TOPIC_ID' => placeholder_id(),
             'LAST_EDITED_RAW' => lorem_phrase(),
@@ -732,7 +732,7 @@ class Hook_addon_registry_cns_forum
             $out->attach(do_lorem_template('CNS_PRIVATE_TOPIC_LINK', array(
                 'TOPIC_URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'DATE_RAW' => placeholder_date_raw(),
                 'LAST_POST_BY_POSTER_URL' => placeholder_url(),
                 'LAST_POST_BY_USERNAME' => lorem_word(),
@@ -1099,7 +1099,7 @@ class Hook_addon_registry_cns_forum
             $last_post = do_lorem_template('CNS_FORUM_TOPIC_ROW_LAST_POST', array(
                 'ID' => placeholder_id(),
                 'DATE_RAW' => placeholder_date_raw(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'POSTER' => lorem_phrase(),
                 'LAST_URL' => placeholder_url(),
             ));
@@ -1143,7 +1143,7 @@ class Hook_addon_registry_cns_forum
                 ));
 
                 $latest = do_lorem_template('CNS_FORUM_LATEST', array(
-                    'DATE' => placeholder_time(),
+                    'DATE' => placeholder_date(),
                     'DATE_RAW' => placeholder_date_raw(),
                     'TOPIC_URL' => placeholder_url(),
                     'TOPIC_TITLE' => lorem_phrase(),
@@ -1406,7 +1406,7 @@ class Hook_addon_registry_cns_forum
                 $last_post = do_lorem_template('CNS_FORUM_TOPIC_ROW_LAST_POST', array(
                     'ID' => placeholder_id(),
                     'DATE_RAW' => placeholder_date_raw(),
-                    'DATE' => placeholder_time(),
+                    'DATE' => placeholder_date(),
                     'POSTER' => lorem_phrase(),
                     'LAST_URL' => placeholder_url(),
                 ));
@@ -1670,7 +1670,7 @@ class Hook_addon_registry_cns_forum
 
             $last_edited = do_lorem_template('CNS_TOPIC_POST_LAST_EDITED', array(
                 'LAST_EDIT_DATE_RAW' => placeholder_date_raw(),
-                'LAST_EDIT_DATE' => placeholder_time(),
+                'LAST_EDIT_DATE' => placeholder_date(),
                 'LAST_EDIT_PROFILE_URL' => placeholder_url(),
                 'LAST_EDIT_USERNAME' => lorem_word(),
             ));
@@ -1689,7 +1689,7 @@ class Hook_addon_registry_cns_forum
                 'POINTS' => placeholder_number(),
                 'JOIN_DATE_RAW' => placeholder_date_raw(),
                 'MEMBER_ID' => placeholder_id(),
-                'JOIN_DATE' => placeholder_time(),
+                'JOIN_DATE' => placeholder_date(),
                 'PRIMARY_GROUP_NAME' => lorem_phrase(),
                 'CUSTOM_FIELDS' => lorem_phrase(),
                 'CUSTOM_FIELDS_FULL' => lorem_phrase(),
@@ -1745,7 +1745,7 @@ class Hook_addon_registry_cns_forum
                 'POSTER_TITLE' => lorem_word(),
                 'POST_TITLE' => lorem_word(),
                 'POST_DATE_RAW' => placeholder_date_raw(),
-                'POST_DATE' => placeholder_time(),
+                'POST_DATE' => placeholder_date(),
                 'POST' => lorem_phrase(),
                 'TOPIC_ID' => placeholder_id(),
                 'LAST_EDITED_RAW' => lorem_phrase(),

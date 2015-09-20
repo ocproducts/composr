@@ -27,7 +27,7 @@ For incoming requests we handle this all at the "Web server configuration" point
 
 From Composr's point of view, the requests always look like standard PHP URLs, with GET parameters available from [tt]$_GET[/tt] (although we use our [tt]get_param_string[/tt] functions to retrieve these, for security reasons).
 
-An Composr page view comes into an [tt]index.php[/tt] file within a zone directory. In the above example it is the 'site' zone, so [tt]site/index.php[/tt].
+An Composr page view comes into an [tt]index.php[/tt] file within a zone directory. In the above example it is the [tt]site[/tt] zone, so [tt]site/index.php[/tt].
 
 The [tt]index.php[/tt] file contains standard initialisation code. It:
 1) sets up the basic Composr file paths
@@ -43,7 +43,7 @@ One of the code files is [tt]site.php[/tt]. This code file checks zone and page 
 
 When [tt]init__global2()[/tt] is finished, control pops back into the original [tt]index.php[/tt] file, which calls [tt]do_site()[/tt]. This proceeds to work out what page code to load (module, Comcode page, etc), and make Composr compose the page (putting it into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template etc), and finally output it. To learn more about how Composr composes pages from it's various elements, and how it decides what kinds of pages to load, see our [page="docs:tut_structure"]webmaster's structure tutorial[/page].
 
-We should also note our URL convention. Essentially we have up to 3 standard URL components: page, type, id. 'page' identifies the Composr page to load (which can be any kind of page, it's found via a search process). 'type' and 'id' are specific to a particular module, but are a strong convention, and have special representation in the short URL schemes described above.
+We should also note our URL convention. Essentially we have up to 3 standard URL components: [tt]page[/tt], [tt]type[/tt], [tt]id[/tt]. [tt]page[/tt] identifies the Composr page to load (which can be any kind of page, it's found via a search process). [tt]type[/tt] and [tt]id[/tt] are specific to a particular module, but are a strong convention, and have special representation in the short URL schemes described above.
 
 For a diagram showing this process expressed a little differently, see our [url="bootstrap flow diagram"]{$BRAND_BASE_URL}/docs/flow.pdf[/url].
 
@@ -72,7 +72,7 @@ Composr is split into addons. Some addons are core, some are optional. Optional 
 
 Addons contain module-pages (and blocks), and it is these modules (and blocks) that define things like database structure. Actually addons may define this too directly in their registry file, but it is rare for us to do it this way. Modules (and blocks) are independently versioned, but the versions of individual modules (and blocks) are hidden from user -- the module versions exist so that modules have a way of tracking when they need to upgrade themselves (a mismatch between the version on-disk, and the installed version in the database will prompt a module to upgrade itself).
 
-Composr knows an addon is installed if there is an [tt]addon_registry[/tt] hook present. File lists for addons are defined in these hooks. Templates may work against the 'ADDON_INSTALLED' symbol, to guard dependencies; likewise, code may use the [tt]addon_installed[/tt] function. In some cases, modularisation is enforced using hooks rather than extra logic; this is done in the case where there is a clear concept that can be created, which might be useful for other people to add into in the future (e.g. the 'side_stats' blocks allows different addons to plug in hooks so their stats can be displayed). Third-party addons do not have so much luxury over adding extra code into the main Composr code, so must rely on either existing hooks, or code overriding.
+Composr knows an addon is installed if there is an [tt]addon_registry[/tt] hook present. File lists for addons are defined in these hooks. Templates may work against the 'ADDON_INSTALLED' symbol, to guard dependencies; likewise, code may use the [tt]addon_installed[/tt] function. In some cases, modularisation is enforced using hooks rather than extra logic; this is done in the case where there is a clear concept that can be created, which might be useful for other people to add into in the future (e.g. the [tt]side_stats[/tt] blocks allows different addons to plug in hooks so their stats can be displayed). Third-party addons do not have so much luxury over adding extra code into the main Composr code, so must rely on either existing hooks, or code overriding.
 
 Addons may define dependencies.
 
@@ -96,17 +96,17 @@ In Composr terminology 'modules' are dynamic 'pages' .
 
 Example: [tt]index.php?page=<module_name>[/tt]
 
-Each module has a number of 'screens', identified by a URL parameter named 'type'.
+Each module has a number of 'screens', identified by a URL parameter named [tt]type[/tt].
 
 Example: [tt]index.php?page=moduleName&type=<screen_name>[/tt]
 
-Generally features relating to a single system (e.g. 'download' system, 'galleries' system, 'pointstore' system, ...) in Composr are contained in a single module, with the exception that content-management and administrative features are each put into separate modules (e.g. 'cms_downloads' and 'admin_downloads') . Content-management (CMS) and Adminisative (admin) modules are made separately so they may be placed in separate zones. Typically a website might be configured to allow certain members to manage content via the CMS zone, but only staff may access the admin modules (via the Admin Zone).
+Generally features relating to a single system (e.g. 'download' system, 'galleries' system, 'pointstore' system, ...) in Composr are contained in a single module, with the exception that content-management and administrative features are each put into separate modules (e.g. [tt]cms_downloads[/tt] and 'admin_downloads') . Content-management (CMS) and Adminisative (admin) modules are made separately so they may be placed in separate zones. Typically a website might be configured to allow certain members to manage content via the CMS zone, but only staff may access the admin modules (via the Admin Zone).
 
 Module files are either full-modules or mini-modules. All standard Composr modules are full-modules. Mini-modules are designed to simplify development or integration on individual websites, where full Composr coding quality is not important.
 Henceforth any use of the word 'module' in this tutorial will be talking about a 'full-module'.
 
-Like any Composr page, a Composr module resides in a zone. Most modules reside in the 'site' zone.
-Content-management modules are all prefixed 'cms_' and reside in the 'cms' zone. Administrative modules are all prefixed 'admin_' and reside in the 'adminzone' zone. The other zones are only used in very special cases.
+Like any Composr page, a Composr module resides in a zone. Most modules reside in the [tt]site[/tt] zone.
+Content-management modules are all prefixed [tt]cms_[/tt] and reside in the [tt]cms[/tt] zone. Administrative modules are all prefixed [tt]admin_[/tt] and reside in the [tt]adminzone[/tt] zone. The other zones are only used in very special cases.
 
 Recall that Composr zones are sub-directories of your site, which operate with different settings. By default, Composr contains a number of zones:
  - Welcome ([tt]/[/tt])
@@ -204,7 +204,7 @@ function csv_escape($value)
 
 [title="4"]How do you create a new full-module?[/title]
 
-A module is a PHP file that defines one class. For a page in the 'site' zone named 'example', the file would be [tt]site/pages/modules/example.php[/tt] (or [tt]site/pages/modules_custom/example.php[/tt] if this module is non-official, or a modified version of an official module). Our module 'example' would contain a class named 'Module_example'. Usually this class does not inherit, although some modules do inherit from a class named 'Standard_crud_module', which is used for acceleration/standardising development of add/edit/delete user interfaces.
+A module is a PHP file that defines one class. For a page in the [tt]site[/tt] zone named [tt]example[/tt], the file would be [tt]site/pages/modules/example.php[/tt] (or [tt]site/pages/modules_custom/example.php[/tt] if this module is non-official, or a modified version of an official module). Our module [tt]example[/tt] would contain a class named [tt]Module_example[/tt]. Usually this class does not inherit, although some modules do inherit from a class named [tt]Standard_crud_module[/tt], which is used for acceleration/standardising development of add/edit/delete user interfaces.
 
 [title="5"]The [tt]info[/tt] function[/title]
 
@@ -212,7 +212,7 @@ The module class must include a function named [tt]info[/tt], which returns a ma
  - [tt]author[/tt] -- this is a string indicating who authored the module. The author does not need to be defined anywhere else -- this field is only intended for human-reading.
  - [tt]organisation[/tt] -- like author, but this is the organisation that the author is working on behalf of. For all official modules, it is 'ocProducts'.
  - [tt]hacked_by[/tt] -- this should be left to null, unless the module is an edited version of someone else's module, in which case it would be the name of the person altering the module (the new author)
- - [tt]hack_version[/tt] -- this should be left to null, unless the module is an edited version of someone else's module, in which case it should start as the integer '1' and then be incremented for each new version of the module (see explanation of 'version')
+ - [tt]hack_version[/tt] -- this should be left to null, unless the module is an edited version of someone else's module, in which case it should start as the integer '1' and then be incremented for each new version of the module (see explanation of [tt]version[/tt])
  - [tt]version[/tt] -- this is the version number for the module. The version can start at any integer, but '1' is usual. This number should be incremented whenever a compatibility-breaking change is implemented.
  - [tt]update_require_upgrade[/tt] -- this should be either 0 or 1 (it defaults to 0 if it is left out). If it is 1 then the [tt]install[/tt] function will be called when Composr detects that the module's version has increased since it was originally installed. It should only be set to 1 if the [tt]install[/tt] function is written to be able to perform upgrades (this requires extra effort).
  - [tt]locked[/tt] -- this prevents administrators from uninstalling this module. This should be set to false unless the module is a core module that should never be uninstalled.
@@ -223,9 +223,9 @@ The module class must include a function named [tt]run[/tt]. This function is ca
 
 The [tt]run[/tt] function typically is written to do 4 things:
 1) Loads-up/records dependencies that all screens in the module use, using the [tt]require_code[/tt]/[tt]require_lang[/tt]/[tt]require_css[/tt]/[tt]require_javascript[/tt] API calls.
-2) Gets the URL parameter named 'type' into the variable [tt]$type[/tt], usually giving a default 'type' of 'browse' for when no 'type' parameter was specified. Remember that 'type' indicates which 'screen' the module will be outputting.
+2) Gets the URL parameter named [tt]type[/tt] into the variable [tt]$type[/tt], usually giving a default [tt]type[/tt] of [tt]browse[/tt] for when no [tt]type[/tt] parameter was specified. Remember that [tt]type[/tt] indicates which 'screen' the module will be outputting.
 3) Delegates to another function depending on [tt]$type[/tt].
-4) Outputs the result of the function that was delegates to, or [tt]new Tempcode()[/tt] if no delegate was found for the given 'type'.
+4) Outputs the result of the function that was delegates to, or [tt]new Tempcode()[/tt] if no delegate was found for the given [tt]type[/tt].
 
 For example,
 [code="PHP"]
@@ -252,7 +252,7 @@ function run()
 
 [title="5"]The [tt]get_entry_points[/tt] function[/title]
 
-This function returns a mapping that identifies all the supported 'types' (screens) that may be launched directly via URL (i.e. all the ones that don't rely on form submissions to have been sent to them). The mapping maps from the 'type' to a language string codename that provides a human-readable label to describe the screen.
+This function returns a mapping that identifies all the supported 'types' (screens) that may be launched directly via URL (i.e. all the ones that don't rely on form submissions to have been sent to them). The mapping maps from the [tt]type[/tt] to a language string codename that provides a human-readable label to describe the screen.
 It is used in the Sitemap, which in turn is used by things like the menu editor (to help Composr website administrators find links to add to their menus).
 
 For example,
@@ -262,12 +262,12 @@ function get_entry_points($check_perms = true, $member_id = null, $support_cross
 	return array('browse' => 'ROOT', 'tree_view' => 'TREE');
 }
 [/code]
-returns a mapping for two entry-points: the 'browse' screen (which almost any module will have), and the 'tree_view' screen. 'ROOT' and 'TREE' are language strings.
+returns a mapping for two entry-points: the [tt]browse[/tt] screen (which almost any module will have), and the [tt]tree_view[/tt] screen. 'ROOT' and 'TREE' are language strings.
 
 [title="5"]The [tt]install[/tt] and [tt]uninstall[/tt] functions[/title]
 
 Modules are responsible for the installation, upgrading, and uninstallation of the database (and some filesystem) parts of the system that they provide screens for.
-For example, the 'downloads' module sets up:
+For example, the [tt]downloads[/tt] module sets up:
 1) database tables that relate to downloads
 2) database indexes that relate to downloads
 and removes:
@@ -294,8 +294,8 @@ Database tables are created using the [tt]create_table[/tt] function of a databa
 2) A map between the field names, and Composr field-type-identifiers
 
 Composr defines the following field types:
- - AUTO, an auto incrementing unique key. This allows you to have a key field for the table and not have to worry about generating the keys yourself -- when you insert your data ([tt]query_insert[/tt] function) for a new row, just leave out the key, and the key will automatically be created for you, and returned by 'query_insert'.
- - AUTO_LINK, a foreign key link referencing an AUTO field. It does not specify what table this field is in, but the code itself will know how to use it. It's usually obvious from the name chosen for the field (e.g. a field named 'category_id' in the 'news' table obviously is referencing the key of the 'news_categories' table).
+ - AUTO, an auto incrementing unique key. This allows you to have a key field for the table and not have to worry about generating the keys yourself -- when you insert your data ([tt]query_insert[/tt] function) for a new row, just leave out the key, and the key will automatically be created for you, and returned by [tt]query_insert[/tt].
+ - AUTO_LINK, a foreign key link referencing an AUTO field. It does not specify what table this field is in, but the code itself will know how to use it. It's usually obvious from the name chosen for the field (e.g. a field named [tt]category_id[/tt] in the [tt]news[/tt] table obviously is referencing the key of the [tt]news_categories[/tt] table).
  - INTEGER, an integer
  - UINTEGER, an integer, greater than zero
  - SHORT_INTEGER, a integer
@@ -337,17 +337,17 @@ Database indexes are created using the [tt]create_index[/tt] function of a datab
 3) A list of fields to include in the index
 (Indexes provide important speed improvements if you routinely look-up data from tables using fields other than the primary key)
 
-One important thing to understand at this point is that Composr supports multi-language content at it's core. This means that any resources that are defined need to be able to define their human-readable strings via the 'translate' table rather than directly. As of Composr 10, by default multi-language content is not enabled, but the code needs to support it anyway. This is the purpose behind the 'transtext' and 'transline' configuration option, as well as the 'SHORT_TRANS'/'LONG_TRANS'/'SHORT_TRANS__COMCODE'/'LONG_TRANS__COMCODE' field-type-identifiers.
+One important thing to understand at this point is that Composr supports multi-language content at it's core. This means that any resources that are defined need to be able to define their human-readable strings via the [tt]translate[/tt] table rather than directly. As of Composr 10, by default multi-language content is not enabled, but the code needs to support it anyway. This is the purpose behind the [tt]transtext[/tt] and [tt]transline[/tt] configuration option, as well as the 'SHORT_TRANS'/'LONG_TRANS'/'SHORT_TRANS__COMCODE'/'LONG_TRANS__COMCODE' field-type-identifiers.
 
 If you store data in tables using 'SHORT/LONG_TRANS[__COMCODE]' you retrieve that data via calling the [tt]get_translated_text[/tt] function upon the database field value.
 
-There is one other reason the 'translate' table is used, and that is so that content may be stored efficiently in 'Comcode'. Comcode is our dynamic markup language, a superset of XHTML which defines additional dynamic features. The 'translate' table allows Comcode to be stored along with the parsed version of it, which is in Tempcode format. To get back back the Tempcode, which can then be mixed in with templates, use the [tt]get_translated_tempcode[/tt] function.
+There is one other reason the [tt]translate[/tt] table is used, and that is so that content may be stored efficiently in 'Comcode'. Comcode is our dynamic markup language, a superset of XHTML which defines additional dynamic features. The [tt]translate[/tt] table allows Comcode to be stored along with the parsed version of it, which is in Tempcode format. To get back back the Tempcode, which can then be mixed in with templates, use the [tt]get_translated_tempcode[/tt] function.
 
-If multi-language content is not enabled all the same APIs are used, but the 'translate' table is bypassed. String data (and where applicable, parsed Comcode) is saved directly into the normal database tables.
+If multi-language content is not enabled all the same APIs are used, but the [tt]translate[/tt] table is bypassed. String data (and where applicable, parsed Comcode) is saved directly into the normal database tables.
 
 When developing a module you might find it easiest to set up the database tables by hand, and then code in the installer afterwards. Otherwise it can be time-consuming going backwards and forwards reinstalling modules every time a small change is required.
 
-Be aware that the [tt]get_option[/tt] function always returns a string regardless of the 'type' of the config option. All config options are stored as strings, and the 'type' only specifies the input mechanism.
+Be aware that the [tt]get_option[/tt] function always returns a string regardless of the [tt]type[/tt] of the config option. All config options are stored as strings, and the [tt]type[/tt] only specifies the input mechanism.
 
 [title="5"]Upgrading via the [tt]install[/tt] function[/title]
 
@@ -433,12 +433,12 @@ Configuration options are created using the [tt]config[/tt] hooks. The hooks con
 Modules functionality is subdivided by 'screen'. 'Screens' are segregated by their unique expected output -- individual error messages don't run from separate screen functions, because error messages aren't expected in advance, they're incidental.
 
 As an example, if a module was designed to add a resource, it would need at least two screens:
-1) The interface to allow the user to add the resource (a form screen). By convention this would be identified by 'type'='add'.
-2) The actualiser to actually add the resource, and the screen to say that the resource had been added. By convention this would be identified by 'type'='_add'.
+1) The interface to allow the user to add the resource (a form screen). By convention this would be identified by [tt]type=add[/tt].
+2) The actualiser to actually add the resource, and the screen to say that the resource had been added. By convention this would be identified by [tt]type=_add[/tt].
 
-The function names of screens do not need to mirror the names of the 'type' parameter, but usually it is clearer this way.
+The function names of screens do not need to mirror the names of the [tt]type[/tt] parameter, but usually it is clearer this way.
 
-All modules must also define the default screen, which is almost always identified by 'type'='browse' or by there being no 'type' parameter given. The role of the default screen depends on the module, but usually it either acts to display a category browser or a menu. Usually all other screens in a module will be reachable by navigating starting from the default screen of that module.
+All modules must also define the default screen, which is almost always identified by [tt]type=browse[/tt] or by there being no [tt]type[/tt] parameter given. The role of the default screen depends on the module, but usually it either acts to display a category browser or a menu. Usually all other screens in a module will be reachable by navigating starting from the default screen of that module.
 
 [title="3"]Templates and Tempcode[/title]
 
@@ -446,7 +446,7 @@ Composr is basically a programming language within a programming language. The o
 1) Composr's templating language/syntax
 2) The name for instances of compiled Composr templates. These instances are instances of the 'Tempcode' object.
 
-Tempcode (the language) is very rich and dynamic. It is designed so that templates can be infinitely complex but so that they can be cached so that the data that goes into them does not need to be recalculated each time. This caching usually only applies to blocks -- modules generally do not employ Tempcode caching. For example, the 'main_multi_content' block might have been templated to look different for people in a certain usergroup, yet we also don't want to have to regenerate this block each time it is viewed. Tempcode is powerful enough to be able to represent arbitrary differences like this in a way that survives caching.
+Tempcode (the language) is very rich and dynamic. It is designed so that templates can be infinitely complex but so that they can be cached so that the data that goes into them does not need to be recalculated each time. This caching usually only applies to blocks -- modules generally do not employ Tempcode caching. For example, the [tt]main_multi_content[/tt] block might have been templated to look different for people in a certain usergroup, yet we also don't want to have to regenerate this block each time it is viewed. Tempcode is powerful enough to be able to represent arbitrary differences like this in a way that survives caching.
 
 Due to this requirement, Composr must not deal in string output, it has to deal in Tempcode output. All through the system Tempcode is composed together, rather than strings.
 
@@ -592,7 +592,7 @@ class Module_example
 
 [code="HTML"]
 <!--
-Almost all screen templates start '{TITLE}' as all screens have a title. Titles in Composr are a bit more sophisticated than just the <h1> tag
+Almost all screen templates start '{TITLE}' as all screens have a title. Titles in Composr are a bit more sophisticated than just the [tt]<h1>[/tt] tag
 so we pass in the HTML for the title using a parameter.
 -->
 {TITLE}
@@ -652,7 +652,7 @@ Repeat, the checkbox was
 
 <p>
 <!--
-If we output directly we'll get '_true' or '_false'.
+If we output directly we'll get '1' or '0'.
 -->
 It was ticked: {TICKED}.
 </p>
@@ -666,10 +666,10 @@ The main five differences and points of note are:
 1) The run method takes a parameter, which is a map (array) of the parameters given to the block. You cannot assume any parameter is passed, so for each you must allow a default which you can hard-code into your block code. If you see existing blocks that do [tt]unset($map)[/tt] in the code that is just because that particular block does not use any parameters and we wanted the code to pass Zend's Code Analyzer with zero errors about unused variables.
 2) You should define a [tt]BLOCK_blockname_DESCRIPTION[/tt] and [tt]BLOCK_blockname_USE[/tt] language string for the block, to explain what it does and what it is for.
 3) The info method defines a 'parameters' entry in the array returned. This is simply a list of the parameters the block can take. It is used by the block construction tool. For each parameter listed there there should be a language string [tt]BLOCK_blockname_PARAM_parametername[/tt]. Look at  how existing block parameter language strings are done to see how to lay it out -- the format is parsed by the block construction tool so it is quite strict. In particular reference the default value in your string.
-4) You can allow the block to cache by defining a 'caching_environment' method. This returns an array which has a 'ttl' (the number of minutes the cache lasts) and a 'cache_on' which is a string containing PHP code that defines the signature (array) for a cached instance of the block. The PHP code can make use of [tt]$map[/tt], and must define a different array for each possible way the block could turn out (i.e. the array is a signature that distinguishes that particular appearance, based on the block's parameters and optionally other things like the viewing user's usergroup membership).
+4) You can allow the block to cache by defining a [tt]caching_environment[/tt] method. This returns an array which has a [tt]ttl[/tt] (the number of minutes the cache lasts) and a [tt]cache_on[/tt] which is a string containing PHP code that defines the signature (array) for a cached instance of the block. The PHP code can make use of [tt]$map[/tt], and must define a different array for each possible way the block could turn out (i.e. the array is a signature that distinguishes that particular appearance, based on the block's parameters and optionally other things like the viewing user's usergroup membership).
 5) Blocks do not automatically upgrade when run like modules do. If you define upgrade paths you need to trigger them from the Composr upgrader script.
 
-Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the add-block-tool to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called 'example' with parameters 'a' and 'b'. You would define language strings as follows:
+Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the add-block-tool to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called [tt]example[/tt] with parameters [tt]a[/tt] and [tt]b[/tt]. You would define language strings as follows:
 
 [code="HTML"]
 BLOCK_TRANS_NAME_example=Example
@@ -744,7 +744,7 @@ foreach (array_keys($hooks) as $hook) {
 
 In this case you can see the code assumes the hooks have a [tt]->run[/tt] method that takes a member ID as a parameter, and returns an array. Again this is the 'contract' these hooks have to meet.
 
-Let's look at one of our hook implementations to see what code it has in it. We will look at the 'calendar' members hook ([tt]sources/hooks/members/calendar.php[/tt]):
+Let's look at one of our hook implementations to see what code it has in it. We will look at the [tt]calendar[/tt] members hook ([tt]sources/hooks/members/calendar.php[/tt]):
 
 [code="PHP"]
 class Hook_members_calendar
@@ -786,7 +786,7 @@ Notice how this class is named [tt]Hook_members_calendar[/tt]. The [tt]calendar[
 
 As discussed previously, these hooks have a convention of having a [tt]run[/tt] method that takes a member ID as a parameter, and thus the hook implementation above has this. The code inside the method does 3 things:
 1) It returns no-results if the calendar addon is not installed. We don't strictly need to do this, as this file won't be here normally if the calendar addon is not installed (the hook file is listed as one of the files in the calendar addon so would be uninstalled along with other calendar files). The reason we do it is in case the file was accidentally restored after the calendar addon was removed (there are many ways someone might accidentally do that).
-2) It checks a couple of permissions. One is that the accessing user has permission to 'assume_any_member' -- if they don't, no-results are returned, so the link won't show (this particular hook's link is for the purposes of admins, to allow them to access other member's calendars via their member profile, so should only show to admins really). It also checks the accessing user has access to the calendar module in general.
+2) It checks a couple of permissions. One is that the accessing user has permission to [tt]assume_any_member[/tt] -- if they don't, no-results are returned, so the link won't show (this particular hook's link is for the purposes of admins, to allow them to access other member's calendars via their member profile, so should only show to admins really). It also checks the accessing user has access to the calendar module in general.
 3) It then returns an array structure that matches the convention for these hooks. That is:
 4) "List of tuples for results. Each tuple is: type,title,url" (checking the PHP-doc API signature is always handy if you want to know how a hook should behave). In this case the link is a 'views' link, is given a link caption of whatever the 'CALENDAR' language string contains, and has given the [tt]build_url[/tt]-defined URL. The [tt]members[/tt] module (this is where the hooks are called from) knows what to do with this tuple of data, we just had to make sure we return what was expected.
 
@@ -805,7 +805,7 @@ For performance Composr doesn't use any symbol hooks for any default functionali
 
 In Composr content types are implemented via a lot of different files. The best way to find out how to add a content type is to search for all the files named after an existing content type. 'iotds' is a good example as this is a fairly simple Composr content type, and these are the files for it (it is possible this is outdated):
  - [tt]sources_custom/hooks/systems/addon_registry/iotds.php[/tt] -- This is an addon-registry hook, and essentially just lists the files associated with the IOTD system/addon. You only need to worry about writing addon-registry hooks if you are writing code that is going to be bundled with the main Composr distribution. These hooks exist so that the addon manager can package/delete all files relating to IOTDs.
- - [tt]lang_custom/EN/iotds.ini[/tt] -- This is the file defining the language strings for the content type. Most of the strings are just ones specific to the code for IOTDs, but some will be used as standard by the CRUD module: [tt]ADD_IOTD[/tt], [tt]EDIT_IOTD[/tt], [tt]DELETE_IOTD[/tt]. For any IOTD strings to be used in code/templates the require_lang('iotds'); command would need to be run in the PHP code first (often in a module's [tt]run[/tt] function).
+ - [tt]lang_custom/EN/iotds.ini[/tt] -- This is the file defining the language strings for the content type. Most of the strings are just ones specific to the code for IOTDs, but some will be used as standard by the CRUD module: [tt]ADD_IOTD[/tt], [tt]EDIT_IOTD[/tt], [tt]DELETE_IOTD[/tt]. For any IOTD strings to be used in code/templates the [tt]require_lang('iotds');[/tt] command would need to be run in the PHP code first (often in a module's [tt]run[/tt] function).
  - [tt]site/pages/modules_custom/iotds.php[/tt] -- This is the main site module (a kind of page) that provides the user-focused IOTD functionality. It provides screens for viewing IOTDs, etc.
  - [tt]sources_custom/blocks/main_iotd.php[/tt] -- This is a block for showing the current IOTD. Webmasters may place it on their Comcode pages (such as their start page) via this Comcode:
   - [tt][block]main_iotd[/block][/tt]
@@ -898,37 +898,37 @@ The syntax is as follows:
 [/code]
 
 As well as providing documentation, the API comments define function type signatures. This is used by our Code Quality Checker to help determine bugs. The types are based off the types used to define Composr database schema, and can be any of the following:
- - AUTO_LINK (a link to a auto-increment table row)
- - SHORT_INTEGER (an integer, 0-127)
- - REAL (a float)
- - BINARY (0 or 1)
- - MEMBER (a member ID)
- - GROUP (a usergroup ID)
- - TIME (an integer timestamp)
- - LONG_TEXT (a large block of db-targeted text)
- - SHORT_TEXT (a block of text, up to 255 characters)
- - ID_TEXT (text for a string identifier, up to 50 characters)
- - IP (an IP address in string form)
- - LANGUAGE_NAME (a two character language code)
- - URLPATH (a URL)
- - PATH (an absolute file path)
- - MD5 (a string representation of an MD5 hash)
- - EMAIL (an e-mail address)
- - string
- - integer
- - array
- - boolean
- - float
- - tempcode
- - object
- - resource
- - mixed (this should rarely be used; but when is, means multiple types may come out of the parameter/function)
+ - [tt]AUTO_LINK[/tt] (a link to a auto-increment table row)
+ - [tt]SHORT_INTEGER[/tt] (an integer, 0-127)
+ - [tt]REAL[/tt] (a float)
+ - [tt]BINARY[/tt] (0 or 1)
+ - [tt]MEMBER[/tt] (a member ID)
+ - [tt]GROUP[/tt] (a usergroup ID)
+ - [tt]TIME[/tt] (an integer timestamp)
+ - [tt]LONG_TEXT[/tt] (a large block of db-targeted text)
+ - [tt]SHORT_TEXT[/tt] (a block of text, up to 255 characters)
+ - [tt]ID_TEXT[/tt] (text for a string identifier, up to 50 characters)
+ - [tt]IP[/tt] (an IP address in string form)
+ - [tt]LANGUAGE_NAME[/tt] (a two character language code)
+ - [tt]URLPATH[/tt] (a URL)
+ - [tt]PATH[/tt] (an absolute file path)
+ - [tt]MD5[/tt] (a string representation of an MD5 hash)
+ - [tt]EMAIL[/tt] (an e-mail address)
+ - [tt]string[/tt]
+ - [tt]integer[/tt]
+ - [tt]array[/tt]
+ - [tt]boolean[/tt]
+ - [tt]float[/tt]
+ - [tt]tempcode[/tt]
+ - [tt]object[/tt]
+ - [tt]resource[/tt]
+ - [tt]mixed[/tt] (this should rarely be used; but when is, means multiple types may come out of the parameter/function)
 
-Question marks ("?") may appear before types, meaning the value may be null. Null must always have a meaning add must be documented in a note in the parameter description... "(null: <explanation>)". Similarly tilde marks ("~") may appear before types, meaning the value may be false, and this must also be commented like "(false: <explanation>)". Sometimes it is also useful to specify the meaning of the empty string like "(blank: <explanation>)".
+Question marks ([tt]?[/tt]) may appear before types, meaning the value may be null. Null must always have a meaning add must be documented in a note in the parameter description... [tt](null: <explanation>)[/tt]. Similarly tilde marks ([tt]~[/tt]) may appear before types, meaning the value may be false, and this must also be commented like [tt](false: <explanation>)[/tt]. Sometimes it is also useful to specify the meaning of the empty string like [tt](blank: <explanation>)[/tt].
 
 [title="3"]Language files[/title]
 
-Language files are .ini files under [tt]lang/<lang_name>[/tt] or [tt]lang_custom/<lang_name>[/tt].
+Language files are [tt].ini[/tt] files under [tt]lang/<lang_name>[/tt] or [tt]lang_custom/<lang_name>[/tt].
 
 They follow the simple format:
 [code="HTML"]
@@ -956,7 +956,7 @@ Composr will react fatally on errors unless they are suppressed. This includes P
 There's no need in Composr code to listen for every possible error that PHP might give back. You can use some common sense, only detecting errors that have a cause, rather than trying to detect those that can't theoretically happen. Errors that can't theoretically happen, but happen anyway, will trigger Composr's automatic error mechanism and we can then deal with them as they come up.
 For example:
  - File permissions may always be wrong, so we should check return values / suppress and handle write-errors.
- - We can assume things like critical Composr directories are present, such as 'sources'
+ - We can assume things like critical Composr directories are present, such as [tt]sources[/tt]
  - We can't assume non-standard directories like 'lang/FR' are present, so we must either add some conditional logic, or cleanly handle the error event in an appropriate way (in this case perhaps explaining to the user that 'The French language pack is not installed').
 
 [title="3"]Escaping[/title]
@@ -1055,7 +1055,7 @@ If any kind of file path component comes in from a taintable source (e.g. user i
 
 Code inclusion is usually performed as part of a register_globals hack. Whenever you include code from a path given in a variable, you run the risk that that variable is poisoned. Remember that the code included by a poisoned variable might not even be on your own server!
 
-Jumping-in is a term I just coined for this guide to refer to when a .php file is accessed by URL that was only designed to be included. Never put code outside functions in Composr, unless that script is intended to be called by URL. Composr has an init__<file> function naming convention to handle the situation where included files need to run some startup code -- the [tt]require_code[/tt] function runs these functions automatically, simulating the effect of loose code.
+Jumping-in is a term I just coined for this guide to refer to when a [tt].php[/tt] file is accessed by URL that was only designed to be included. Never put code outside functions in Composr, unless that script is intended to be called by URL. Composr has an init__<file> function naming convention to handle the situation where included files need to run some startup code -- the [tt]require_code[/tt] function runs these functions automatically, simulating the effect of loose code.
 
 CSRF (Cross-Site-Request-Forgery). It is easy to forget we encode actions in forms... potentially destructive actions which are called by the automated click of a button. The person clicking a button on a form has no idea where that form leads unless there is some text to say, and that text may not be accurate. A hacker could create a form on his/her own website that is encoded to submit malicious requests to a victim webmaster's own website. The hacker would then just need to trick the webmaster to fill that form in via some form of deception ("fill in this form on my website to win a free iPod"). Because the webmaster has access to his/her own site, any form they fill in also does by extension and thus the submission of the malicious form could cause real destruction before the webmaster realised what had happened.
 The hacker in this situation has just performed a destructive action by proxy. Sometimes these hacks are elaborate in that XSS was used to make a user not even know they were clicking a link in the first place (and thus the hacker staying potentially anonymous).
@@ -1063,10 +1063,10 @@ We can't completely prevent this type of attack... a user might be tricked into 
 It might be suggested that the REFERER be checked to make sure the REFERER for an admin action is always inside the users site, but the REFERER field is often changed by privacy aware users to be non-representative, and thus cannot be relied upon. Nevertheless, Composr does do this if the referer field is provided.
 One action Composr does take, is to refuse to allow a user to click-through to an internal Admin Zone URL directly from an external site if they are not already logged in... it requires an explicit login for every new browser window. It might seem that this is an unnecessary hassle, but it truly is the only standard/environment-compliant way to prevent automated Admin Zone-actions. Users may disable this feature by turning it off when they edit a zone, and likewise turn it on for other zones.
 
-Some nosy or malicious users may choose to try and poke around in upload, or page folders, by manually specifying URLs. They may attempt directory browsing, or to guess the URL to a file. Composr prevents directory browsing by placing index.html files in folders that shouldn't be browsable, thus nullifying the browse-ability with a blank output (one cannot assume the web server is configured to have directory browsing to disabled). In addition, .htaccess files are placed in folders where files should not be accessed by URL at all, but this only works on Apache servers. The upload system supports obfuscation of upload names in order to make URL guessing unrealistic.
+Some nosy or malicious users may choose to try and poke around in upload, or page folders, by manually specifying URLs. They may attempt directory browsing, or to guess the URL to a file. Composr prevents directory browsing by placing index.html files in folders that shouldn't be browsable, thus nullifying the browse-ability with a blank output (one cannot assume the web server is configured to have directory browsing to disabled). In addition, [tt].htaccess[/tt] files are placed in folders where files should not be accessed by URL at all, but this only works on Apache servers. The upload system supports obfuscation of upload names in order to make URL guessing unrealistic.
 
 It goes without saying, but I'll say it anyway, that any code that finds its way into an eval call should only come directly from hard-coded Composr code itself. Never do something stupid like:
-eval('add_image('.get_param_string('image_id').');');
+[tt]eval('add_image('.get_param_string('image_id').');');[/tt]
 
 This code would allow any user to inject malicious PHP code into the [tt]image_id[/tt] variable. Never use variables inside [tt]eval()[/tt] unless you're positive that no user could have contaminated its value.
 
@@ -1096,7 +1096,7 @@ There are a number of advantages to strict typing:
  - Many databases are type-strict, but MySQL is not. Thus for developers programming on MySQL it is easy to just completely forget about these issues because code will always work on their development environment.
  - It makes it easier to port Composr, should we ever need to (who knows what the future has in store, PHP might not survive for ever, or it might be surpassed by another language).
 
-So, how does strict-typing work? In PHP each variable does have a type, it's just PHP does not normally stop you from, for example, using a string in place of an integer, or vice-versa (it converts a string holding an integer to a proper integer and vice-versa). With strict-typing we force ourselves to change variables to the right type using PHP's functions like 'strval'.
+So, how does strict-typing work? In PHP each variable does have a type, it's just PHP does not normally stop you from, for example, using a string in place of an integer, or vice-versa (it converts a string holding an integer to a proper integer and vice-versa). With strict-typing we force ourselves to change variables to the right type using PHP's functions like [tt]strval[/tt].
 
 Consider the following:
 [code="PHP"]
@@ -1113,8 +1113,8 @@ This is a perfect example of how nasty PHP can be in the wrong hands, as "Value 
 For Composr we would expect the following:
  - Do not treat values as a boolean unless they are a boolean. Usually any single variable is going to have a certain type (in this example this is not the case, but usually it is and should be). To check if something is null use [tt]is_null($something)[/tt]. To check something is blank use [tt]$something == ''[/tt]. To check if something is false use [tt]!$something[/tt]. To check if something is zero use [tt]$something == 0[/tt].
  - Don't do [tt]$something == null[/tt]. As mentioned above, use [tt]is_null($something)[/tt].
- - Don't use 'isset' unless you really have to. Almost always use [tt]is_null($something)[/tt] or [tt]array_key_exists($element, $array)[/tt] so our tools can discern properly what your code is doing, and so the code stays portable.
- - Similar to the above, don't use 'empty'.
+ - Don't use [tt]isset[/tt] unless you really have to. Almost always use [tt]is_null($something)[/tt] or [tt]array_key_exists($element, $array)[/tt] so our tools can discern properly what your code is doing, and so the code stays portable.
+ - Similar to the above, don't use [tt]empty[/tt].
  - If you have a variable that really is mixed type (like [tt]$x[/tt] in this example) and you need to do a boolean check just for the case it is a boolean variable, do either [tt]is_bool($x) && (!$x)[/tt] or [tt]$x===false[/tt].
 
 [title="4"]Example strict-typing mistakes[/title]
@@ -1138,7 +1138,7 @@ if ($foo) {
     $number = null;
 }
 [/code]
-and then use the [tt]is_null[/tt]/[tt]is_integer[/tt] functions as required. We do not consider 'null' a type like the others, due to how databases interpret it. We consider it more like a special marker meaning 'no value'.
+and then use the [tt]is_null[/tt]/[tt]is_integer[/tt] functions as required. We do not consider [tt]null[/tt] a type like the others, due to how databases interpret it. We consider it more like a special marker meaning 'no value'.
 
 If a variable really must have multiple types, do...
 [code="PHP"]
@@ -1178,9 +1178,9 @@ $secondary_groups = array_map('intval', explode(',', $row['additionalGroups']));
 Be aware that Tempcode only supports these data types as template parameters:
  - more Tempcode
  - strings
- - booleans (which are converted to strings as '_true' or '_false', which is what Tempcode uses for it's boolean logic)
+ - booleans (which are converted to strings as '1' or '0', which is what Tempcode uses for it's boolean logic)
  - arrays (but only for use by special directives -- referencing an array as a normal parameter will only return it's size)
-It intentionally does not support integers or floats, so these must be converted to strings manually when passed through, using 'strval' (machine-read integers), 'integer_format' (human-read integers), 'float_to_raw_string' (machine-read floats), or 'float_format' (human-read floats).
+It intentionally does not support integers or floats, so these must be converted to strings manually when passed through, using [tt]strval[/tt] (machine-read integers), [tt]integer_format[/tt] (human-read integers), [tt]float_to_raw_string[/tt] (machine-read floats), or [tt]float_format[/tt] (human-read floats).
 
 [title="3"]Do-next-manager interfaces[/title]
 
@@ -1211,8 +1211,8 @@ return do_next_manager(
 Going from top to bottom:
  - the icon theme image name
  - the page name (cms_news)
- - the list of URL parameters (in this case, one: 'type' as 'add')
- - the zone (cms)
+ - the list of URL parameters (in this case, one: [tt]type[/tt] as [tt]add[/tt])
+ - the zone ([tt]cms[/tt])
  - the link caption
  - the hover text
 
@@ -1220,7 +1220,7 @@ To place a new item into the Admin Zone or CMS "Where to go" menus, create a new
 
 [title="3"]The translation table[/title]
 
-If multi-language content is enabled, all text strings in Composr databases (including forum posts, page comments, and generally any user-submittable text) are stored in the 'translate' table. There are two reasons for this:
+If multi-language content is enabled, all text strings in Composr databases (including forum posts, page comments, and generally any user-submittable text) are stored in the [tt]translate[/tt] table. There are two reasons for this:
 1) It can be used to store parsed Comcode as Tempcode format, effectively a cache
 2) Composr's API supports multi-language websites in the truest sense. Meaning that potentially, translated versions of virtually any content can be supplied for visitors. As of version 4.2 this is fully supported.
 

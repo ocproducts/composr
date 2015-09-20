@@ -188,7 +188,7 @@ You'll have a nice editor to use.
 [b]If WYSIWYG is off[/b]:
 
 [indent="20"]
-You'll pretty much type plain-text, with small diversions to indicate special formatting (most notably, the 'title' tag, which every page should include).
+You'll pretty much type plain-text, with small diversions to indicate special formatting (most notably, the [tt]title[/tt] tag, which every page should include).
 
 It is beyond the scope of this tutorial to explain Comcode: see the [page="_SEARCH:tut_comcode"]Comcode and the attachment system tutorial[/page] for this.
 [/indent]

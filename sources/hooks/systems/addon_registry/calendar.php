@@ -372,7 +372,7 @@ class Hook_addon_registry_calendar
                 'EVENTS' => placeholder_array(),
                 'CALENDAR_URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'VIEW_URL' => placeholder_url(),
                 'ICON' => 'calendar/activity',
                 'T_TITLE' => lorem_word(),
@@ -452,7 +452,7 @@ class Hook_addon_registry_calendar
                         $entries = do_lorem_template('CALENDAR_DAY_ENTRY', array(
                             'ID' => placeholder_id(),
                             'URL' => placeholder_url(),
-                            'TIME' => placeholder_time(),
+                            'TIME' => placeholder_date(),
                             'T_TITLE' => lorem_phrase(),
                             'TITLE' => lorem_word(),
                             'DESCRIPTION' => lorem_word_2(),
@@ -496,7 +496,7 @@ class Hook_addon_registry_calendar
                             $entries = do_lorem_template('CALENDAR_WEEK_ENTRY', array(
                                 'ID' => placeholder_id(),
                                 'URL' => placeholder_url(),
-                                'TIME' => placeholder_time(),
+                                'TIME' => placeholder_date(),
                                 'TITLE' => lorem_word(),
                                 'E' => lorem_word(),
                                 'ICON' => 'calendar/general',
@@ -723,7 +723,7 @@ class Hook_addon_registry_calendar
         foreach (placeholder_array() as $v) {
             $sub->attach(do_lorem_template('CALENDAR_EVENT_SCREEN_PERSONAL_SUBSCRIPTION', array(
                 'UNSUBSCRIBE_URL' => placeholder_url(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
             )));
         }
         $subed = new Tempcode();
@@ -763,13 +763,13 @@ class Hook_addon_registry_calendar
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => lorem_phrase(),
                 'LOGO' => placeholder_img_code(''),
-                'DAY' => placeholder_time(),
+                'DAY' => placeholder_date(),
                 'RECURRENCE' => placeholder_number(),
                 'IS_PUBLIC' => lorem_phrase(),
                 'PRIORITY' => lorem_phrase(),
                 'PRIORITY_LANG' => lorem_phrase(),
                 'TYPE' => lorem_phrase(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'TIME_RAW' => placeholder_date_raw(),
                 'TIME_VCAL' => placeholder_date_raw(),
                 'EDIT_URL' => placeholder_url(),

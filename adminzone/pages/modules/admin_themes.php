@@ -2309,6 +2309,7 @@ class Module_admin_themes
         if (function_exists('set_time_limit')) {
             @set_time_limit(120);
         }
+
         require_code('lorem');
 
         // Find all templates
@@ -2316,7 +2317,7 @@ class Module_admin_themes
         $dh = opendir(get_file_base() . '/themes/default/templates');
         while (($f = readdir($dh)) !== false) {
             if (strtolower(substr($f, -4)) == '.tpl') {
-                $templates[] = $f;
+                $templates[] = 'templates/' . $f;
             }
         }
         sort($templates);
@@ -2354,6 +2355,7 @@ class Module_admin_themes
                     $displayed_already[$func] = true;
                 }
             } else {
+                // No preview for these
                 $tpl_x = do_template('TEMPLATE_LIST', array('_GUID' => '96115a3b168769744b4b69fd2e1e7f6c', 'URL' => '', 'COLOR' => 'red', 'TEMPLATE' => $t, 'LIST' => ''));
                 $lis->attach($tpl_x);
             }

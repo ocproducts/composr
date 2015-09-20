@@ -26,7 +26,7 @@ The following language strings from [tt]global.ini[/tt] and [tt]critical_errors.
 
 [title="3"]Templates and themes[/title]
 
-Template files are stored in a raw format, and are defined with the standard 'override system' of Composr; as well as this, though, a theme only has to define those templates and css files which have been changed from the 'default' theme. Search, parsing, and applying linguistic translation, to templates like this would not be efficient, so Composr compiles the templates upon first-use (unless this option is disabled).
+Template files are stored in a raw format, and are defined with the standard 'override system' of Composr; as well as this, though, a theme only has to define those templates and css files which have been changed from the [tt]default[/tt] theme. Search, parsing, and applying linguistic translation, to templates like this would not be efficient, so Composr compiles the templates upon first-use (unless this option is disabled).
 
 The ultimate compilation target for templates is 'serialised tempcode'; if the template is cached as this, it will be loaded direct into memory, and it will be bound to the parameters of the template (for example, a download box template might take the download name and URL as parameters).
 
@@ -120,7 +120,7 @@ Composr has an inbuilt set of JavaScript libraries, which are split across a num
 3) [tt]jquery[/tt] -- Bundled jQuery library, used on some screens (but not usually included as a cross-site dependency).
 4) [tt]transitions[/tt] -- Provide various transition/animation effects.
 
-To flag a javascript file to be loaded up, use the 'require_javascript' API command in the PHP code. For example, if you wanted to load up the JavaScript defined in an 'example.js' template, use:
+To flag a javascript file to be loaded up, use the [tt]require_javascript[/tt] API command in the PHP code. For example, if you wanted to load up the JavaScript defined in an 'example.js' template, use:
 [code="PHP"]
 require_javascript('example');
 [/code]
@@ -164,17 +164,17 @@ It's acceptable to write inline event handler code like this as long as it doesn
 
 Sometimes it is not appropriate to add an event directly to an HTML node, usually for one of these reasons:
  - You can't always make the assumption that a node will only have a single event handler
- - Sometimes event handlers need putting on generic events such as 'onload'
+ - Sometimes event handlers need putting on generic events such as [tt]onload[/tt]
  - Sometimes you want to add event handlers from inside JavaScript code, on-the-fly
-In these circumstances you can add the event to an HTML node indirectly by using the [tt]add_event_listener_abstract[/tt] function. This function works consistently across browsers (so long as you don't try and use 'this' inside the event handler code).
+In these circumstances you can add the event to an HTML node indirectly by using the [tt]add_event_listener_abstract[/tt] function. This function works consistently across browsers (so long as you don't try and use [tt]this[/tt] inside the event handler code).
 
 [title="3"]Inline JavaScript[/title]
 
-It's acceptable to use inline JavaScript (the 'script' tag) if it's only a short amount of code. This is a useful technique:
+It's acceptable to use inline JavaScript (the [tt]script[/tt] tag) if it's only a short amount of code. This is a useful technique:
 1) if you want to pass template parameters directly into JavaScript variables
 2) or, if you need the code to run as soon as the screen loads
 
-You should use 'CDATA' for your <script> tag, like:
+You should use 'CDATA' for your [tt]<script>[/tt] tag, like:
 [code="HTML"]
 <script>// <![CDATA[
 	...
@@ -251,7 +251,7 @@ AJAX requests can be either synchronous or asynchronous. A synchronous request r
 
 In our JavaScript template file, we typically define basically two functions if we are writing asynchronous AJAX. One function is for initiating the AJAX event (can be any name you like) and another is to handle the response of the AJAX script (has any name, but it must be passed to the Composr [tt]do_ajax_request[/tt] function). If you are writing synchronous AJAX you can pass the null value instead of a function, and the [tt]do_ajax_request[/tt] function will respond with the result.
 
-To handle the AJAX request on the server-side we will need to call a new entry-point script that we'll place in the 'data' folder; so we make a URL to this script, and of course we also need to write it.
+To handle the AJAX request on the server-side we will need to call a new entry-point script that we'll place in the [tt]data[/tt] folder; so we make a URL to this script, and of course we also need to write it.
 In the [tt]data/<script-name>.php[/tt], we [tt]require_code[/tt] a file that will contain a new PHP function to implement our server-side behaviour and then call that function (and nothing else). It is a Composr convention to define this function in [tt]sources/ajax.php[/tt], but we don't have to (and shouldn't if it's not a very core AJAX function to Composr). Remember if you are writing third-party functionality it should go into a file under [tt]sources_custom/[/tt] instead.
 
 Note that the Composr entry-point script code is 99% boilerplate. Only the final few lines are customised, the rest is copy&pasted.
@@ -301,7 +301,7 @@ echo '</result></request>';
 
 Once the server has returned a result to the client, it will be processed for handling.
  - For synchronous requests, the result object is returned from [tt]do_ajax_request[/tt] linearly (asynchronous requests will return nothing from [tt]do_ajax_request[/tt]). Code may then use the [tt]responseText[/tt] and [tt]responseXML[/tt] properties of this as required.
- - For asynchronous requests, the response handler (the 'method') function is called, with two parameters: [tt]ajax_result_frame[/tt] (the full XML), and [tt]ajax_result[/tt] (the pay-load XML). It is the responsibility for the method function to process the XML in ajax_result (ajax_result_frame is unlikely to be used by the method) -- the code can assume the XML will be valid because HTTP status error handling and XML frame error handling will already have occurred.
+ - For asynchronous requests, the response handler (the [tt]method[/tt]) function is called, with two parameters: [tt]ajax_result_frame[/tt] (the full XML), and [tt]ajax_result[/tt] (the pay-load XML). It is the responsibility for the method function to process the XML in ajax_result (ajax_result_frame is unlikely to be used by the method) -- the code can assume the XML will be valid because HTTP status error handling and XML frame error handling will already have occurred.
 There is an implied format contract between the PHP code we wrote and the JavaScript we wrote. In other words, we are not likely to have incompatibilities between the data of the server (PHP) and client (JavaScript) as you will have designed them together. Therefore you don't need to write any special error handling code to make sure the structure returned is correct, unless you've written in your own extra error handling into the pay-load.
 
 Example:

@@ -8,7 +8,7 @@ E-mail can be a complex thing. There are a number of e-mail protocols with stand
 
 Composr constructs its e-mails using language strings: each different e-mail is built from a different language string. These strings are written in Comcode. Composr sends out e-mails in dual format -- both [abbr="HyperText Markup Language"]HTML[/abbr] and plain text, so that people can disable HTML in their e-mail software if they wish to. Plain text versions are made by automatic tidying-up of the Comcode (i.e. making it a little more human-readable), and HTML versions are made by parsing the Comcode to HTML and then putting that HTML inside the [tt]MAIL[/tt] template. Composr goes to great lengths to reduce the chance of e-mails being marked as spam, and embeds all CSS and images inside the e-mail instead of linking (so that the user does not need images enabled to see them -- most users do not as it can aid spammer tracking).
 
-Just taking one example, the 'MAIL_NEW_PASSWORD' language string from the 'cns' language file, which is:
+Just taking one example, the 'MAIL_NEW_PASSWORD' language string from the [tt]cns[/tt] language file, which is:
 [code="Comcode"]
 The password for your account (username: {4}) has successfully been changed to '{1}'. You may log back into {3} from...
 
@@ -76,6 +76,9 @@ Positive advice:
 Composr has config options for:
 1) turning on a mail queue (for efficient delivery).
 2) keeping stuff in the queue until you let it out (when testing a site, the "E-mail debug mode" option).
+
+The queue can be viewed from:
+Admin Zone > Audit > E-mail queue/log
 
 [concepts
  1_key="SMTP"   1_value="The e-mail protocol for sending e-mail and delivery between servers"

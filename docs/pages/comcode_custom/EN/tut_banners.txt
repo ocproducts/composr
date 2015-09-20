@@ -63,7 +63,7 @@ If you are using Google Adsense and don't see any banners, [url="http://yurko.ne
 
 Banners are shared on a site network using an iframe going to a URL like:
 [tt]http://centralsite/banner.php?source=sitename&b_type=bannertype[/tt]
-This code is given out when you add a banner. The 'source' comes from the name of the banner you added, which for purposes of a banner network, is considered also as the name of the site also showing banners in the network. A source site won't be shown its own banners. If you wish you may just strip out the source parameter if you don't need such a restriction -- if, for example, you are just using the banner sharing code all within your own site.
+This code is given out when you add a banner. The [tt]source[/tt] comes from the name of the banner you added, which for purposes of a banner network, is considered also as the name of the site also showing banners in the network. A source site won't be shown its own banners. If you wish you may just strip out the source parameter if you don't need such a restriction -- if, for example, you are just using the banner sharing code all within your own site.
 
 [title="2"]Permissions[/title]
 
@@ -116,7 +116,7 @@ to:
 [code="Tempcode"]
 {$BANNER,example}
 [/code]
-Where 'example' is changed for whatever type string you've used for the banner set you want to show.
+Where [tt]example[/tt] is changed for whatever type string you've used for the banner set you want to show.
 
 [*] Change the [tt]global_banner[/tt] CSS class used in the code snippet to a new CSS class of your own choosing (or just pull it out if you don't require any special styling around your banner).
 

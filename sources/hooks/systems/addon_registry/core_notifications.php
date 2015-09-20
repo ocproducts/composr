@@ -196,7 +196,7 @@ class Hook_addon_registry_core_notifications
                 'FROM_AVATAR_URL' => placeholder_image_url(),
                 'PRIORITY' => '3',
                 'DATE_TIMESTAMP' => placeholder_date_raw(),
-                'DATE_WRITTEN_TIME' => placeholder_time(),
+                'DATE_WRITTEN_TIME' => placeholder_date(),
                 'NOTIFICATION_CODE' => placeholder_id(),
                 'CODE_CATEGORY' => placeholder_id(),
                 'HAS_READ' => false,
@@ -234,7 +234,7 @@ class Hook_addon_registry_core_notifications
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'PRIORITY' => '3',
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
             'NOTIFICATION_CODE' => placeholder_id(),
             'CODE_CATEGORY' => placeholder_id(),
             'HAS_READ' => true,
@@ -280,7 +280,7 @@ class Hook_addon_registry_core_notifications
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'PRIORITY' => '3',
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
             'NOTIFICATION_CODE' => placeholder_id(),
             'CODE_CATEGORY' => placeholder_id(),
             'HAS_READ' => true,
@@ -310,7 +310,7 @@ class Hook_addon_registry_core_notifications
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'PRIORITY' => '3',
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
             'NOTIFICATION_CODE' => placeholder_id(),
             'CODE_CATEGORY' => placeholder_id(),
         ));
@@ -338,7 +338,7 @@ class Hook_addon_registry_core_notifications
             'URL' => placeholder_url(),
             'FROM_AVATAR_URL' => placeholder_image_url(),
             'DATE_TIMESTAMP' => placeholder_date_raw(),
-            'DATE_WRITTEN_TIME' => placeholder_time(),
+            'DATE_WRITTEN_TIME' => placeholder_date(),
         ));
 
         return array(

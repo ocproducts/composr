@@ -46,7 +46,7 @@ There is a memory limit of 4k for this, to avoid causing slow downs in requests 
 
 [title="2"]SQL queries[/title]
 
-SQL queries can also be executed by Commandr, simply by prefixing the query to be executed with an 'at' symbol ("@"). As with PHP commands, the query results will be outputted in an appropriate manner.
+SQL queries can also be executed by Commandr, simply by prefixing the query to be executed with an 'at' symbol ([tt]@[/tt]). As with PHP commands, the query results will be outputted in an appropriate manner.
 
 Separating multiple queries using semicolons is [i]not[/i] supported.
 

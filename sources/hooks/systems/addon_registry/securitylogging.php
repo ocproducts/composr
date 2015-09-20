@@ -250,8 +250,8 @@ class Hook_addon_registry_securitylogging
         foreach (placeholder_array() as $value) {
             $inner_ip_list->attach(do_lorem_template('LOOKUP_IP_LIST_ENTRY', array(
                 'LOOKUP_URL' => placeholder_url(),
-                'DATE' => placeholder_time(),
-                '_DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
+                '_DATE' => placeholder_date(),
                 'IP' => placeholder_ip(),
                 'BANNED' => do_lang_tempcode('YES'),
                 'UNIQID' => placeholder_random(),

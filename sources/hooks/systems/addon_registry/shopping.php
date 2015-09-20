@@ -516,7 +516,7 @@ class Hook_addon_registry_shopping
                 'ORDER_DET_URL' => placeholder_url(),
                 'ORDER_TITLE' => lorem_word(),
                 'AMOUNT' => placeholder_id(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'STATE' => lorem_word_2(),
                 'NOTE' => lorem_phrase(),
             );
@@ -730,7 +730,7 @@ class Hook_addon_registry_shopping
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_products_CATEGORY_SCREEN', $map + array(
                     'ID' => placeholder_id(),
-                    'ADD_DATE_RAW' => placeholder_time(),
+                    'ADD_DATE_RAW' => placeholder_date(),
                     'TITLE' => lorem_title(),
                     '_TITLE' => lorem_phrase(),
                     'TAGS' => '',

@@ -200,8 +200,8 @@ class Hook_addon_registry_syndication
         $content = do_lorem_template('ATOM_ENTRY', array(
             'TITLE' => lorem_phrase(),
             'VIEW_URL' => placeholder_url(),
-            'DATE' => placeholder_time(),
-            'EDIT_DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
+            'EDIT_DATE' => placeholder_date(),
             'CATEGORY_RAW' => lorem_word(),
             'CATEGORY' => lorem_word(),
             'AUTHOR' => lorem_word(),
@@ -214,7 +214,7 @@ class Hook_addon_registry_syndication
                 'MODE' => lorem_word(),
                 'MODE_NICE' => lorem_word(),
                 'SELECT' => lorem_word_2(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'LOGO_URL' => placeholder_image_url(),
                 'CONTENT' => $content,
                 'CUTOFF' => placeholder_number(),
@@ -296,7 +296,7 @@ class Hook_addon_registry_syndication
             do_lorem_template('OPML_WRAPPER', array(
                 'FEEDS' => placeholder_array(),
                 'ABOUT' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'TITLE' => lorem_phrase(),
                 'MODE' => lorem_word(),
             ), null, false, null, '.xml', 'xml'

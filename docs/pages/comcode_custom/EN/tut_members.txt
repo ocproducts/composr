@@ -62,7 +62,7 @@ If you enable invites (the "Invites enabled" option), new members may only join 
 
 You can enable "Invites" in the configuration (the "Invites enabled" option) if you do not want members to be able to join in the usual way, and instead only allow them to join if they receive an invitation from an existing member.
 This process works as follows:
- - An existing member goes to the 'recommend' module to refer another member to the website (make sure you put a link to this somewhere on your menus so they can find it).
+ - An existing member goes to the [tt]recommend[/tt] module to refer another member to the website (make sure you put a link to this somewhere on your menus so they can find it).
  - That member will choose to make the recommendation as an invite.
  - That member will put in the e-mail address of the person being invited.
  - Composr will send out an invitation e-mail.
@@ -137,7 +137,7 @@ Links include:
 [title="2"]Member observation[/title]
 
 [media width="150" description="Viewing the list of online members" float="right"]data_custom/images/docs/tut_members/members_online.png[/media]
-There is a link to view the current 'Users Online' on forum pages (at the bottom). There is also a block you can use, 'side_users_online' that shows:
+There is a link to view the current 'Users Online' on forum pages (at the bottom). There is also a block you can use, [tt]side_users_online[/tt] that shows:
  - a list of online users
  - how many guests are online
  - the newest member
@@ -271,14 +271,7 @@ If the "Extended privacy option control" option is enabled then it can be set in
 
 [title="2"]Usergroups[/title]
 
-[surround]
-[media width="150" description="Managing a usergroup" float="right"]data_custom/images/docs/tut_members/members_usergroup.png[/media]
-[media width="150" description="The usergroup directory" float="right"]data_custom/images/docs/tut_members/members_usergroup_directory.png[/media]
-{!cns:DOC_GROUPS}
-
-Note that you cannot delete certain default usergroups that are used for system functions or as fail-safes.
-
-Some further information about usergroups (and clubs) is covered in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page].
+Usergroups (and clubs) are covered in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page].
 [/surround]
 
 [title="2"]Last visit dates[/title]

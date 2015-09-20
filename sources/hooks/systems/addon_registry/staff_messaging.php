@@ -172,7 +172,7 @@ class Hook_addon_registry_staff_messaging
                 'TAKE_RESPONSIBILITY_URL' => placeholder_url(),
                 'RESPONSIBLE' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'MEMBER_URL' => placeholder_url(),
                 'MEMBER_ID' => placeholder_id(),
             )), null, '', true)

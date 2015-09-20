@@ -30,7 +30,7 @@ Some tips/guidelines for usage:
  - remember to cache against theme where appropriate (i.e. do not assume all users will use the same theme by caching theme-tainted data without using the theme name as part of the cache identifier)
  - use the server server cache when appropriate (when things are known to be relevant to all installs and when there is no site-specific aspects to the data) and never when not
  - where possible put user-specific stuff in templates as symbols rather than parameters, so that they may be cached so as not to depend on users (symbols 'survive' the cache and get reinterpreted after cache extraction). If you can't do this, and the data does contain user-specific data, you'll need to cache against each user, and that is very inefficient
- - where appropriate store 'false' rather than 'null', to distinguish between 'non presence in cache' and 'not setness': often a little extra logic is needed, as Composr uses null for most "not setness" API results
+ - where appropriate store [tt]false[/tt] rather than [tt]null[/tt], to distinguish between 'non presence in cache' and 'not setness': often a little extra logic is needed, as Composr uses null for most "not setness" API results
  - emptying the cache on admin actions is fine because they are relatively rare, compared to total hits a site gets; while it is preferable to be able to delete specific objects, that's not always possible (e.g. with Comcode pages, they are cached against theme, but having a load of loop code to selectively choose what to decache would be excessive)
  - make use of cache layers: e.g. we didn't optimise some functions in Composr because higher level block caching would often make my optimisation almost pointless
  - cache what is used most: we want to support lots of users, so we need regular website access use cases to be most efficient -- making admin actions more efficient is almost pointless
@@ -44,7 +44,7 @@ Some tips/guidelines for usage:
 
 All the Composr APIs are [url="{$BRAND_BASE_URL}/docs/api/"]documented online[/url] and visible via the PHP-doc comments. If you need to look up the purpose/usage of a function the easiest way is to do a file search from your code editor for "[tt]function <function-name>[/tt]", so you can jump to the PHP-doc comment for it.
 
-Note that as a general rule, you shouldn't be using any function/method that begins '_'. This indicates a private/helper function.
+Note that as a general rule, you shouldn't be using any function/method that begins [tt]_[/tt]. This indicates a private/helper function.
 
 The following are the core Composr APIs (green is used to indicate the most important APIs)...
 
@@ -315,7 +315,7 @@ In Composr we usually avoid ever hard-coding URLs to things. There are a number 
 2) We don't want to hard-code any assumptions about relative paths, as we may change URL/directory structure later and generally want code to be able to run in multiple URL contexts (i.e. code should work when executed from different parts of the site). We can't use relative URLs starting with "/" because the site may not necessarily be installed on the root of a domain name.
 3) We don't want to hard-code domain names into URLs either, so can't use plain absolute URLs. We need our code to run on development and test installs.
 4) We need things to go through the configuration layer, e.g. showing the correct theme image for the theme a user has active, or handling configured Composr page redirects
-5) For page URLs we inject 'keep_*' parameters into the URL query string, as those are designed to propagate between Composr URL requests (i.e. stay in the address bar as you browse the site)
+5) For page URLs we inject [tt]keep_*[/tt] parameters into the URL query string, as those are designed to propagate between Composr URL requests (i.e. stay in the address bar as you browse the site)
 
 For this reason we always build up page URLs using the [tt]build_url[/tt] function. It essentially takes a map of parameters, and the zone the page is in.
 
@@ -411,7 +411,7 @@ URL monikers (use of title-derived phrases in URLs, rather than numeric IDs), wo
 Within Composr you generate URLs to the IDs, but Composr then converts those into the monikers, and back from the monikers, within the system architecture.
 
 To support URL monikers you need to define a new content type, via defining a new [tt]content_meta_aware[/tt] hook for it.
-You need to define all the details in the hook, which is frankly a complex task. Some of these will be defined as 'null', as you probably won't (for example) have a search hook to tie it into.
+You need to define all the details in the hook, which is frankly a complex task. Some of these will be defined as [tt]null[/tt], as you probably won't (for example) have a search hook to tie it into.
 
 The specific ones relating to URL monikers are...
 [code="PHP"]
@@ -445,10 +445,10 @@ Custom profile fields allow webmasters to add new fields to member records, exte
 
 To do this:
 1) Add a custom profile field in your module's installation code, via a regular [tt]install_create_custom_field[/tt] function call on the forum driver. This is a special function created purely for the purpose of creating system member profile fields. It works on any forum driver, not just Conversr -- for Conversr it sets Conversr custom profile fields, and on most forum drivers it also sets custom profile fields, but on a few it might just alter the database structure directly.
-2) Pass in the name of the custom profile field as [tt]<your-chosen-name>[/tt] (e.g. [tt]example[/tt]). It will be stored with an 'cms_' prefix, which indicates it is a system field.
+2) Pass in the name of the custom profile field as [tt]<your-chosen-name>[/tt] (e.g. [tt]example[/tt]). It will be stored with an [tt]cms_[/tt] prefix, which indicates it is a system field.
 3) Conversr-only. Define a language string [tt]SPECIAL_CPF__cms_<your-chosen-name>[/tt] that contains the true human-readable name. You can define this in your own language file.
-4) Conversr-only. Write a new [tt]systems/cns_cpf_filter[/tt] hook. If you want your field to be editable, you need to include it as a key in the returned array of the [tt]to_enable[/tt] function (see existing hooks for examples). You can use one hook file for lots of fields. Your function should 'require_lang' the language file you defined your strings in.
-Retrieve your field using the [tt]get_cms_cpf[/tt] function, or in templates with the [tt]{$CPF_VALUE}[/tt] symbol, omitting the 'cms_' prefix (i.e. just use the name you set).
+4) Conversr-only. Write a new [tt]systems/cns_cpf_filter[/tt] hook. If you want your field to be editable, you need to include it as a key in the returned array of the [tt]to_enable[/tt] function (see existing hooks for examples). You can use one hook file for lots of fields. Your function should [tt]require_lang[/tt] the language file you defined your strings in.
+Retrieve your field using the [tt]get_cms_cpf[/tt] function, or in templates with the [tt]{$CPF_VALUE}[/tt] symbol, omitting the [tt]cms_[/tt] prefix (i.e. just use the name you set).
 
 Conversr stores the data in two tables (you should not need to know this, but it may be useful if you are manually checking the database during the debugging process):
 1) [tt]f_custom_fields[/tt] -- this stores the field definitions, one field definition per row. Think of it being like a schema.
@@ -537,13 +537,13 @@ It has to achieve a number of key design goals (these are implemented in Composr
 
 Tempcode works via a very elaborate concept that we call the 'closure tree'. Essentially Tempcode objects link to form a tree structure via parameters. If you pass some Tempcode to a template as a parameter, that parameter is encoded into the Tempcode tree of the result of the template call.
 
-Each Tempcode object consists of a series of 'closures' (stored as a 'seq_part'). These closures are a pair: a PHP function name, and a set of parameters to that function. Essentially each closure represents a template call -- the PHP function name is the name of a compiled version of that template (templates are compiled to PHP code), and the parameters are the parameters to the template. A Tempcode object represents more than one template call because Tempcode gets attached together using the 'attach' method. This is why we say 'seq' -- as in, the sequence of attachments stored inside a particular Tempcode object.
+Each Tempcode object consists of a series of 'closures' (stored as a [tt]seq_part[/tt]). These closures are a pair: a PHP function name, and a set of parameters to that function. Essentially each closure represents a template call -- the PHP function name is the name of a compiled version of that template (templates are compiled to PHP code), and the parameters are the parameters to the template. A Tempcode object represents more than one template call because Tempcode gets attached together using the [tt]attach[/tt] method. This is why we say [tt]seq[/tt] -- as in, the sequence of attachments stored inside a particular Tempcode object.
 
 Some complex tracking goes on to ensure that the correct template functions are defined or loaded, as required by the closure tree. Some of these functions are actually encoded directly within the Tempcode objects via [tt]code_to_preexecute[/tt] (ones that were defined at run-time, such as attached string literals), and some are defined in the ".tcp" files.
 
 [title="4"]Even more detail (you probably will want to skip this)[/title]
 
-When I say "function call" and "function", this is actually simulated for performance reasons (PHP uses huge amounts of memory to store real functions). It actually happens via an 'eval' call. There are a few exceptions to this where real calls are used, when a template is so commonly used that we think it does justify getting loaded up as a real function.
+When I say "function call" and "function", this is actually simulated for performance reasons (PHP uses huge amounts of memory to store real functions). It actually happens via an [tt]eval[/tt] call. There are a few exceptions to this where real calls are used, when a template is so commonly used that we think it does justify getting loaded up as a real function.
 
 Tempcode in ocPortal 3 worked in an entirely different way to ocPortal 4+. It was actually an interpreted programming language, and hence was quite a lot slower (while PHP of course is an interpreted language itself, it is fast because it is interpreted by assembly code). Rather than being compiled PHP, it essentially used the equivalent of op-codes and operands. Tempcode in ocPortal 2 was similar to ocPortal 3, except a bit more primitive -- ocPortal 3 would 'flatten' the template tree, and was very clever about being able to merge certain things to increase execution speed and memory consumption.
 
@@ -553,14 +553,14 @@ I have just explained the history of Tempcode so I can make an important point -
 
 If Composr is running out of a git repository, or with our own custom version of PHP, it will automatically run inside 'development mode'. Development mode involves a number of intentionally quirky and strict changes to how Composr runs, including:
  - You will get error messages if you use too many queries, unless [tt]$GLOBALS['NO_QUERY_LIMIT'][/tt] is set to true.
- - Cookies will be disabled, forcing use of 'keep_session' for session propagating. This helps us make sure Composr doesn't need cookies to run.
+ - Cookies will be disabled, forcing use of [tt]keep_session[/tt] for session propagating. This helps us make sure Composr doesn't need cookies to run.
  - Persistent caching will randomly toggle between on and off (this can cause strange XML errors occasionally due to a race condition in the text-based persistent cache -- try refreshing the page if you get random XML errors).
  - If you create a bad link to a screen (e.g. without using [tt]build_url[/tt]) you will get an error about that. This is because 'keep_devtest=1' is passed through and must be passed through for any referred (i.e. internal) link. Don't manually pass this -- the code must do it itself, as it is injected by [tt]build_url[/tt] to prove [tt]build_url[/tt] was used.
  - Form field descriptions will be forced to end with full stops (.).
  - The template cache will randomly get emptied.
  - Extra error messages if you try and pass a number to [tt]do_lang[/tt] or [tt]do_lang_tempcode[/tt] (you are supposed to convert to a string first manually).
  - You'll get an error if you don't call a template ending '_SCREEN' at some point during your code.
- - Relative URLs will intentionally not work, due to an intentionally broken 'base' tag. This forces you to use absolute URLs as per coding standards. One exception is URLs like '#example', which are broken by the 'base' tag, but then fixed at run time using JavaScript -- you are allowed to use those.
+ - Relative URLs will intentionally not work, due to an intentionally broken [tt]base[/tt] tag. This forces you to use absolute URLs as per coding standards. One exception is URLs like '#example', which are broken by the [tt]base[/tt] tag, but then fixed at run time using JavaScript -- you are allowed to use those.
  - To save time you can define language strings inline in PHP code, and then Composr will automatically find the closest matching loaded language file to the name of the page you are running, and then move your inline definition into that file while removing it from your PHP file. For example, you can write: do_lang('EXAMPLE=This is an example'); and as soon as it runs for the first time the definition will be shifted into a proper language file. Note that if the call does not get executed, nothing is done -- but that's a good way to see if you're not testing your code fully.
 
 You can turn off most of development mode by putting "[tt]&keep_no_dev_mode=1[/tt]" into the URL, but this is not promoted as development mode was intentionally written to help us do on-the-fly testing of things that might otherwise go unnoticed.
@@ -660,7 +660,7 @@ This is for two reasons:
 
 If neither of the above reasons apply then it won't make any difference which you use, but you should do it correctly so that the above cases work properly on websites that do use these features.
 
-As a general rule, if a Composr table is stored in a table starting 'f_', then it is a part of the inbuilt forum (Conversr) and should be accessed via FORUM_DB. You should also consider whether you should be accessing it directly, as opposed to using the forum driver interface -- as any code you write will be assuming Conversr is being used.
+As a general rule, if a Composr table is stored in a table starting [tt]f_[/tt], then it is a part of the inbuilt forum (Conversr) and should be accessed via FORUM_DB. You should also consider whether you should be accessing it directly, as opposed to using the forum driver interface -- as any code you write will be assuming Conversr is being used.
 
 In the case of Conversr, the forum driver just ties into the lower-level Conversr API. In the case of others, it's a basic clean-room implementation of accessing the relevant forum software's DB and files.
 
@@ -670,7 +670,7 @@ Stuff that is not an Conversr feature but uses the forum, has to go through the 
 
 A forum driver works via a [tt]sources/forum/*.php[/tt] file. A forum driver is basically an implementation to a standardised interface, and is accessed from ocPortal via [tt]$GLOBALS['FORUM_DRIVER'][/tt]. There's not a lot to say about this, as there are so many existing forum drivers in Composr to look-at/refer-to and they all follow a pattern. The API is mature and simple.
 
-To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's 'forum_type' option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member IDs are group IDs) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it while you debug it -- then install again from scratch using your new forum driver from the offset.
+To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's [tt]forum_type[/tt] option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member IDs are group IDs) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it while you debug it -- then install again from scratch using your new forum driver from the offset.
 
 [title="4"]Writing an importer[/title]
 
@@ -719,14 +719,14 @@ One problem with importers that import members is that almost always passwords a
 1) Conversr needs to be given a handler for the password hashing scheme. This is done by writing a special [tt]systems/cns_auth[/tt] hook.
 2) The member must be imported with a reference code representing the hashing scheme to use (the cns_make_member function supports passing this in)
 
-A common mistake when writing importers is with HTML entities. Some software stores some fields as HTML (albeit taglessly -- just with the entities), while Composr never does. You need to decode any HTML fields using 'html_entity_decode' before passing them into the Composr API, like "[tt]html_entity_decode($field_value,ENT_QUOTES,get_charset())[/tt]".
+A common mistake when writing importers is with HTML entities. Some software stores some fields as HTML (albeit taglessly -- just with the entities), while Composr never does. You need to decode any HTML fields using [tt]html_entity_decode[/tt] before passing them into the Composr API, like "[tt]html_entity_decode($field_value,ENT_QUOTES,get_charset())[/tt]".
 If you are unsure how software stores it's data, enter test data that uses various quotation mark symbols, so that it will jump out at you when you view the raw database.
 
 There is a very complex situation for non-forum importers that use forum-driver functions during import, in order to find data to associate with database records they are creating. For example, an importer for a simple download system which stores 'usernames' of download-submitters, might wish to try to bind these usernames to actual user-IDs, using the forum-database that Composr normally uses. However, by default the forum-database is tied to the local-Conversr-install during installation, as when forum data is imported, this Conversr database is required (as this is where the information will be piped to). Therefore there are two import API functions that allow switching to and from local and M.S.N. Conversr installations:
 1) [tt]cns_over_local[/tt] (this sets Composr to use the local Conversr for the FORUM_DB object)
 2) [tt]cns_over_msn[/tt] (this sets Composr to use the database of the regular forum for the FORUM_DB object -- which may or may not be Conversr, and even if it is Conversr, it might not be the local Conversr)
 Note that the importer system does not change the actual forum driver used. Therefore it cannot be assumed that the global FORUM_DRIVER object is an Conversr forum driver, nor can it be assumed it holds a local database. The Conversr system has been programmed to never use FORUM_DRIVER itself, it uses CNS_DRIVER (which you may use yourself if writing a forum importer), which is always guaranteed to be linked to Conversr.
-A related problem is that some parts of Composr's API might assume that the FORUM_DB object points to Conversr if the [tt]get_forum_type[/tt] function returns 'cns'; or there can be problems with reference variables that confuses forum driver objects. Therefore running these commands might be required in some other cases -- in particular when Comcode is being parsed. Don't worry too much -- emulate what the other importers do.
+A related problem is that some parts of Composr's API might assume that the FORUM_DB object points to Conversr if the [tt]get_forum_type[/tt] function returns [tt]cns[/tt]; or there can be problems with reference variables that confuses forum driver objects. Therefore running these commands might be required in some other cases -- in particular when Comcode is being parsed. Don't worry too much -- emulate what the other importers do.
 
 To learn how to write an importer consider copying an existing one (preferably one written for a product similar to the product you are importing) and adapting it. Work through the code function by function, adjusting field names and other code as appropriate.
 
@@ -744,11 +744,11 @@ For technical information about how eCommerce is achieved in Composr, including 
 For reference, the described eCommerce hooks have the following methods:
 [list]
 [*][tt]product_info[/tt]
-This is a custom function for hooks to report their products' information. It is an array, where each entry has a key that is the product codename and a value that is an array that gives the attributes of one product (the product type, the price, the name of the custom function, an array of product-type-specific details which is often empty, and the product title). See other hooks for examples. You need to implement this for the hook to be usable in any way. Once implemented you will be able to use the Composr 'purchase' module to see your hook's products, and select them for purchase.
+This is a custom function for hooks to report their products' information. It is an array, where each entry has a key that is the product codename and a value that is an array that gives the attributes of one product (the product type, the price, the name of the custom function, an array of product-type-specific details which is often empty, and the product title). See other hooks for examples. You need to implement this for the hook to be usable in any way. Once implemented you will be able to use the Composr [tt]purchase[/tt] module to see your hook's products, and select them for purchase.
 Valid product types are:
 1) [tt]PRODUCT_PURCHASE_WIZARD[/tt] (a one-off purchase)
 2) [tt]PRODUCT_INVOICE[/tt] (an invoice payment) -- you are very unlikely to need this one
-3) [tt]PRODUCT_SUBSCRIPTION[/tt] (a subscription payment -- the product details array should contain [tt]length[/tt] and [tt]length_units[/tt] values to define how the subscription will work). 'length_units' can be 'd', 'w', 'm' or 'y'. An example product details array (this would be for a subscription that recurred every 1 month):
+3) [tt]PRODUCT_SUBSCRIPTION[/tt] (a subscription payment -- the product details array should contain [tt]length[/tt] and [tt]length_units[/tt] values to define how the subscription will work). [tt]length_units[/tt] can be [tt]d[/tt], [tt]w[/tt], [tt]m[/tt] or [tt]y[/tt]. An example product details array (this would be for a subscription that recurred every 1 month):
 4) [tt]array('length' => 1, 'length_units' => 'm')[/tt]
 5) [tt]PRODUCT_OTHER[/tt] (something that is not purchased via the purchase wizard, but done manually -- usually it is something the website staff are adding manually to show up on the eCommerce charts, not something actually related to the website itself) -- you are very unlikely to need this one
 6) [tt]PRODUCT_CATALOGUE[/tt] (a shopping cart product) -- you are very unlikely to need this one
@@ -760,7 +760,7 @@ Valid product types are:
 [*][tt]get_message[/tt] -- This function gets a message that will be displayed inside the purchase wizard. Often a very general description of the hook's products will be shown from here.
 [*][tt]is_available[/tt] -- This function returns the status of product: whether it is available or not. For example, often products are not available to Guests (because there is no member ID to save a purchase against), or a product may not be available due to it being out of stock.
 [*][tt]A user defined function[/tt] -- A user defined function to run while finishing an order transaction (it will be called automatically). It's name is that you added as an array element in the product details array returned from the get_products() function. Note this is a function, not a class method.
-[*][tt]get_product_dispatch_type[/tt] -- This optional function will return the dispatch type for a product. It will return "manual" or "automatic" -- most products are "automatic" (they require no manual effort to be dispatched -- the code sorts it out automatically).
+[*][tt]get_product_dispatch_type[/tt] -- This optional function will return the dispatch type for a product. It will return [tt]manual[/tt] or [tt]automatic[/tt] -- most products are [tt]automatic[/tt] (they require no manual effort to be dispatched -- the code sorts it out automatically).
 [*][tt]enable_manual_transaction[/tt] -- This optional function will return whether manual transactions (from the Admin Zone) are allowed or not. If enabled, uncompleted transaction's orders will display in Admin zone->Usage->Ecommerce >Manual transaction screen. Administrator can trigger the transaction as complete if he/she got an external payment via direct cash or cheque etc.
 [/list]
 
@@ -782,16 +782,16 @@ The permission architecture in Composr is particularly rich, giving the webmaste
 
 Note: View permissions are handled differently to privileges. Instead of having an 'overriding'/inheritance system, view permissions work in terms of barriers -- you need to be authorised a number of barriers (zone, page, category) before you are able to view a resource.
 
-Permission-modules are simply string codes (e.g. 'downloads') used to specify what kind of resources (e.g. download categories) identifiers are referencing -- in order to specify which view permissions or privileges are set. For view permissions it's simplest: permissions are set against a permission-module (e.g. 'download') and an identifier (e.g. '3') and looked up correspondingly.
-The term 'module' here is not exactly the same as a 'module' in the usual Composr module-page sense. A permissions-module is usually given the same name as the page-module for viewing the resource it identifies permissions for, but it may not be if the page-module supports multiple types of resource. For example, the 'catalogues' page-module has support for both catalogue-permissions and category-permissions, so the permission-modules are 'catalogues_catalogue' and 'catalogues_category'.
+Permission-modules are simply string codes (e.g. [tt]downloads[/tt]) used to specify what kind of resources (e.g. download categories) identifiers are referencing -- in order to specify which view permissions or privileges are set. For view permissions it's simplest: permissions are set against a permission-module (e.g. [tt]download[/tt]) and an identifier (e.g. '3') and looked up correspondingly.
+The term 'module' here is not exactly the same as a 'module' in the usual Composr module-page sense. A permissions-module is usually given the same name as the page-module for viewing the resource it identifies permissions for, but it may not be if the page-module supports multiple types of resource. For example, the [tt]catalogues[/tt] page-module has support for both catalogue-permissions and category-permissions, so the permission-modules are [tt]catalogues_catalogue[/tt] and [tt]catalogues_category[/tt].
 
-When global privileges are overridden for pages, the page that the overriding is defined for is usually the name of the content management page; for example, if the 'add_midrange_content' privileges is overridden (this permission controls whether a member may submit a 'medium-impact entry', like a download or image) for the download system as a whole, it would be overridden with the page name 'cms_downloads'.
-If we were overriding for a category, it would then be the permission-module that identified the type of category we were overriding for, and the ID of that category would also be stored. E.g. if we were overriding for a download category '3' (permissions module is 'downloads'), we'd be referencing '3' and 'downloads'.
-Note the distinction between overriding for a page, and for overriding for a permission-module -- for many permissions webmasters can override for both, meaning page names and also permission-modules/identifiers together need to be passed to the API functions. If the Permissions Tree Editor allows an override to be set, you must make your permission calls respect this by referencing the correct permission-modules and page names. It is the [tt]get_privilege_overrides[/tt] function of a module (e.g. 'cms_downloads') that defines what permissions may be overridden.
+When global privileges are overridden for pages, the page that the overriding is defined for is usually the name of the content management page; for example, if the [tt]add_midrange_content[/tt] privileges is overridden (this permission controls whether a member may submit a 'medium-impact entry', like a download or image) for the download system as a whole, it would be overridden with the page name [tt]cms_downloads[/tt].
+If we were overriding for a category, it would then be the permission-module that identified the type of category we were overriding for, and the ID of that category would also be stored. E.g. if we were overriding for a download category '3' (permissions module is [tt]downloads[/tt]), we'd be referencing [tt]3[/tt] and [tt]downloads[/tt].
+Note the distinction between overriding for a page, and for overriding for a permission-module -- for many permissions webmasters can override for both, meaning page names and also permission-modules/identifiers together need to be passed to the API functions. If the Permissions Tree Editor allows an override to be set, you must make your permission calls respect this by referencing the correct permission-modules and page names. It is the [tt]get_privilege_overrides[/tt] function of a module (e.g. [tt]cms_downloads[/tt]) that defines what permissions may be overridden.
 
-Privileges are checked and set purely through the permissions API ([tt]has_privilege[/tt]), using permission-modules (e.g. 'downloads') and identifiers (e.g. '3'). There are no hooks needed, just:
+Privileges are checked and set purely through the permissions API ([tt]has_privilege[/tt]), using permission-modules (e.g. [tt]downloads[/tt]) and identifiers (e.g. '3'). There are no hooks needed, just:
  - the name of the privilege
- - the name of the page that controls it's overridden value (if there is one, e.g. 'cms_downloads')
+ - the name of the page that controls it's overridden value (if there is one, e.g. [tt]cms_downloads[/tt])
  - the combination of permission-module and identifier (if it can be overridden per-category)
 
 View permissions are checked using the [tt]has_category_access[/tt] function, or other similar functions if zone or page view permissions are being checked.
@@ -800,7 +800,7 @@ View permissions are checked using the [tt]has_category_access[/tt] function, or
 
 [title="4"]Referencing existing permissions[/title]
 
-It is very easy to reference existing permissions from your code. Just use the [tt]has_privilege[/tt], [tt]has_actual_page_access[/tt], and [tt]has_category_access[/tt] functions. Note that it is important to use the [tt]has_actual_page_access[/tt] function if you're accessing resources belonging to a page-module if you aren't running at page-module code itself at the time (e.g. the RSS feed for the page-module). You actually don't need to call 'has_actual_page_access' from page-module code itself because Composr checks this for you.
+It is very easy to reference existing permissions from your code. Just use the [tt]has_privilege[/tt], [tt]has_actual_page_access[/tt], and [tt]has_category_access[/tt] functions. Note that it is important to use the [tt]has_actual_page_access[/tt] function if you're accessing resources belonging to a page-module if you aren't running at page-module code itself at the time (e.g. the RSS feed for the page-module). You actually don't need to call [tt]has_actual_page_access[/tt] from page-module code itself because Composr checks this for you.
 
 The [tt]has_privilege[/tt] function supports checking full overrides as well as just basic global settings. To do full override checks you can give parameters to specify what page-module you consider your resources to belong to, as well as permission-module and category IDs.
 If you are going to do override checks though, make sure that your page-modules define what they can override so that the Composr Permissions tree editor knows what to make editable. For examples of how to do this, see [tt]cms/pages/modules/cms_downloads.php[/tt] and [tt]site/pages/modules/downloads.php[/tt].
@@ -811,7 +811,7 @@ In the [tt]install[/tt] function for your page-module, add the following code to
 [code="PHP"]
 add_privilege('FOO_SECTION', 'may_foobar', false);
 [/code]
-That code adds the permission 'may_foobar' to a section of options named 'FOO_SECTION' (a language string for this must exist), and sets it to false for every usergroup except staff usergroups. It'll run when your code first installs. When developing often you add permissions ad hoc until you're finished (you can't be reinstalling your module each time) -- in which case temporarily also put the code in [tt]data_custom/execute_temp.php[/tt] and run that.
+That code adds the permission [tt]may_foobar[/tt] to a section of options named [tt]FOO_SECTION[/tt] (a language string for this must exist), and sets it to false for every usergroup except staff usergroups. It'll run when your code first installs. When developing often you add permissions ad hoc until you're finished (you can't be reinstalling your module each time) -- in which case temporarily also put the code in [tt]data_custom/execute_temp.php[/tt] and run that.
 
 In the [tt]uninstall[/tt] function for your page-module, add the following code:
 [code="PHP"]
@@ -989,7 +989,7 @@ function get_entry_points($check_perms = true, $member_id = null, $support_cross
 	return array_merge(array('browse' => 'IOTDS'), parent::get_entry_points());
 }
 [/code]
-(in this example the CRUD module adds one extra entry-point, 'browse').
+(in this example the CRUD module adds one extra entry-point, [tt]browse[/tt]).
 
 The standard entry-points defined by an CRUD module are:
  - add, The UI to add a resource.
@@ -1001,35 +1001,35 @@ The standard entry-points defined by an CRUD module are:
 
 CRUD modules define the following standard methods:
  - [tt]get_form_fields[/tt], To get form fields for the add/edit forms; this function takes parameters, but they must all be optional -- the parameters will only be passed for an edit form (see below).
- - [tt]fill_in_edit_form[/tt], To pass in existing field values to 'get_form_fields' for an edit form; this function is passed the ID of the record being edited/deleted, which allows you to load up the data from the database in order to pass it through to 'get_form_fields'.
+ - [tt]fill_in_edit_form[/tt], To pass in existing field values to [tt]get_form_fields[/tt] for an edit form; this function is passed the ID of the record being edited/deleted, which allows you to load up the data from the database in order to pass it through to [tt]get_form_fields[/tt].
  - [tt]add_actualisation[/tt], To handle 'add' actions (usually ties into a model function).
  - [tt]edit_actualisation[/tt], To handle 'edit' actions (usually ties into a model function); this function is passed the ID of the record being edited.
  - [tt]delete_actualisation[/tt], To handle 'delete' actions (usually ties into a model function); this function is passed the ID of the record being deleted.
 
 Often they also define the following:
  - [tt]edit[/tt], If the auto-generated "choose what to edit" screen needs customising.
- - [tt]create_selection_list_ajax_tree[/tt], If we are using tree list control in edit page, we need to define [tt]create_selection_list_ajax_tree[/tt] function in our module. That tree list is using for selecting the editable data. We need to give the name of an [tt]systems/ajax_tree[/tt] hook file which create the data for tree list to the Composr [tt]form_input_tree_list[/tt] function. The hook file will return XML data for the tree list and the built-in Composr AJAX functions (called up by 'form_input_tree_list') will receive that data and fill it in tree list. In every node expansion in the tree list another AJAX request is generated to expand the particular node's ID. The AJAX script will find the child data for that parent ID and return it's child data.
+ - [tt]create_selection_list_ajax_tree[/tt], If we are using tree list control in edit page, we need to define [tt]create_selection_list_ajax_tree[/tt] function in our module. That tree list is using for selecting the editable data. We need to give the name of an [tt]systems/ajax_tree[/tt] hook file which create the data for tree list to the Composr [tt]form_input_tree_list[/tt] function. The hook file will return XML data for the tree list and the built-in Composr AJAX functions (called up by [tt]form_input_tree_list[/tt]) will receive that data and fill it in tree list. In every node expansion in the tree list another AJAX request is generated to expand the particular node's ID. The AJAX script will find the child data for that parent ID and return it's child data.
  - [tt]get_submitter[/tt], If there is a complex calculation required for who submitted a resource (required for the purposes of permission checking).
  - [tt]do_next_manager[/tt], If the standard do-next results screen is too basic (e.g. if extra icons are needed).
- - [tt]browse[/tt], The function to show the screen when the module is loaded up. If we do not define this, 'browse' acts the same as 'add'. If you define a [tt]browse[/tt] method (which many CRUD modules do do) then you must call it yourself from your 'run_start' method. Often 'browse' methods are used with do-next-manager interfaces, to provide a front end for choosing different options.
+ - [tt]browse[/tt], The function to show the screen when the module is loaded up. If we do not define this, [tt]browse[/tt] acts the same as [tt]add[/tt]. If you define a [tt]browse[/tt] method (which many CRUD modules do do) then you must call it yourself from your [tt]run_start[/tt] method. Often [tt]browse[/tt] methods are used with do-next-manager interfaces, to provide a front end for choosing different options.
 
 CRUD modules usually define the following standard properties:
  - [tt]lang_type[/tt], the stem for languages strings the module would use. E.g. if you say 'FOO', the 'ADD_FOO', 'EDIT_FOO', and 'DELETE_FOO' language strings would all need to exist.
  - [tt]archive_entry_point[/tt], an entry-point where a user can browse everything of the resource-type handled by the CRUD module.
  - [tt]view_entry_point[/tt], an entry-point where a resource handled by the CRUD module can be viewed, with '_ID' in place of where the ID value would be.
- - [tt]permissions_require[/tt], a value of either 'low', 'mid', or 'high' -- for the kind of permissions used for resources being edited.
+ - [tt]permissions_require[/tt], a value of either [tt]low[/tt], [tt]mid[/tt], or [tt]high[/tt] -- for the kind of permissions used for resources being edited.
  - [tt]permission_module[/tt], the permission category code that identifies the module w.r.t. category access checks.
  - [tt]permissions_cat_require[/tt] (usually the same as permission_module).
  - [tt]permissions_cat_name[/tt], the name of the field which holds the value that permissions are checked with respect to (usually the category field).
  - [tt]array_key[/tt], the name of the ID field.
  - [tt]orderer[/tt], the name of the field used to order results in the 'choose what to edit' list and also the title field.
- - [tt]title_is_multi_lang[/tt], whether the title field (orderer above usually) needs to be dereferenced as a language code (i.e. it goes through the 'translate' table, if multi-language content is enabled).
+ - [tt]title_is_multi_lang[/tt], whether the title field (orderer above usually) needs to be dereferenced as a language code (i.e. it goes through the [tt]translate[/tt] table, if multi-language content is enabled).
  - [tt]table[/tt], the name of the database table used.
 
 Often they also define the following:
  - [tt]user_facing[/tt], whether regular users are likely to have access to the module (adds in extra user-friendly references that might seem a bit odd for a regular administrative module).
  - [tt]send_validation_request[/tt], whether to send out e-mail notifications to staff when non-validated resources are submitted.
- - [tt]upload[/tt], if set it should be 'image' or 'file', and has the effect of extra 'maximum file size' messages being output, as well as other extra mechanism preparation.
+ - [tt]upload[/tt], if set it should be [tt]image[/tt] or [tt]file[/tt], and has the effect of extra 'maximum file size' messages being output, as well as other extra mechanism preparation.
  - [tt]javascript[/tt], JavaScript code to be included when add/edit forms are shown; it is common to put code in here to handle field alternation ([tt]standard_alternate_fields[/tt]), automatic field disabling based on values in other fields (e.g. not allowing specifying of the fine details to something if that something is not entered at all), or extra custom field value santisations.
  - [tt]non_integer_id[/tt], whether the ID field for the table is a string (a 'codename' in Composr terminology).
 (there are also many more to choose from -- see what is defaulted at the top of [tt]crud_module.php[/tt]).
@@ -1037,7 +1037,7 @@ Often they also define the following:
 Often the following are overridden at run-time, from the run_start method:
  - [tt]add_text[/tt], a message shown on the add screen (usually set via [tt]do_lang_tempcode[/tt]).
  - [tt]edit_text[/tt], a message shown on the edit screen (usually set via [tt]do_lang_tempcode[/tt]).
- - [tt]cat_crud_module[/tt], a reference to a second CRUD module instance used for managing add/edit/delete of categories; CRUD modules can only add/edit/delete one resource set, but you can use this to pair up add/edit/delete of entries (the main module) to add/edit/delete of categories (the referenced one). Once you set 'cat_crud_module', the main module will automatically relay add_category/edit_category/_edit_category/__edit_category requests to the cat module, but continue to handle add/edit/_edit/__edit requests itself.
+ - [tt]cat_crud_module[/tt], a reference to a second CRUD module instance used for managing add/edit/delete of categories; CRUD modules can only add/edit/delete one resource set, but you can use this to pair up add/edit/delete of entries (the main module) to add/edit/delete of categories (the referenced one). Once you set [tt]cat_crud_module[/tt], the main module will automatically relay add_category/edit_category/_edit_category/__edit_category requests to the cat module, but continue to handle add/edit/_edit/__edit requests itself.
 
 [title="3"]Attachment-supporting fields: Language lookup, Comcode, and attachments[/title]
 
@@ -1056,7 +1056,7 @@ If you are working with the Composr git repository, you can commit addons into g
 Only do this if the addon would generally be useful to a decent number of people -- things specific to one website, or one specific kind of website, should not be in the official git repository (unless it is a part of the Composr build/publish/website infrastructure).
 
 To add the addon as non-bundled:
- - Decide on the informal and formal names for your addon (e.g. "Fun time" and "fun_time")
+ - Decide on the informal and formal names for your addon (e.g. "Fun time" and [tt]fun_time[/tt])
  - Save files into [tt]*_custom[/tt] directories wherever possible.
  - Create a [tt]sources_custom/hooks/systems/addon_registry/<addon_name>.php[/tt] file that lists [i]all[/i] the files relating to your addon (including the addon_registry hook itself). Of course, all other settings in the addon_registry hook should be filled out.
  - Put a screenshot in [tt]data_custom/addon_screenshots[/tt]

@@ -242,7 +242,7 @@ If there is something about your server configuration that prevents PHP scripts 
 
 [title="3"]How do I get more than <just a few megabytes> of upload support?[/title]
 
-PHP defines its own upload limits, which Composr can not exceed. Try renaming the bundled 'recommended.htaccess' file to '.htaccess'. If this fails read the answer to "Why does [tt]recommended.htaccess[/tt] not work?". If you still have problems you will need to persuade the server administrator to increase the limits defined in the PHP 'post_max_size' and 'upload_max_filesize' options.
+PHP defines its own upload limits, which Composr can not exceed. Try renaming the bundled 'recommended.htaccess' file to '.htaccess'. If this fails read the answer to "Why does [tt]recommended.htaccess[/tt] not work?". If you still have problems you will need to persuade the server administrator to increase the limits defined in the PHP [tt]post_max_size[/tt] and [tt]upload_max_filesize[/tt] options.
 
 By the way, make sure you define MB units like '50M', not '50MB'. 'MB' is not a recognised unit by PHP.
 
@@ -256,7 +256,7 @@ Composr provides ways to reference files uploaded via other means (e.g. [abbr="F
 
 Composr is designed to run on a PHP memory limit of 16MB or higher; very old PHP configurations come with an 8MB limit, but the majority of web-hosts have it raised to a more reasonable level: take into account that every Composr interface, even the installer which unpacks a large archive, is being asked to run within a tiny 8MB, which includes the space taken up by the PHP source code being run. If you encounter these problems, please submit a bug report, and we will optimise the area where they are occurring for you.
 
-Note that the 'blank page' problem is likely to be due to memory running out, as some PHP installations do not give errors in this event, even if the PHP 'display_errors' option is enabled.
+Note that the 'blank page' problem is likely to be due to memory running out, as some PHP installations do not give errors in this event, even if the PHP [tt]display_errors[/tt] option is enabled.
 
 Also note that some web hosts have PHP installations that report memory limits that are higher than they actually are. If you see an error like:
 [quote]
@@ -265,7 +265,7 @@ PHP[1] Out of memory (allocated 6815744) (tried to allocate 311296 bytes)
 then this is telling you PHP [i]actually[/i] has a memory limit of approximately 6815744+311296 bytes (about 7MB).
 
 It may be possible to get Composr to raise the memory limit for you. Our default [tt]recommended.htaccess[/tt] file does this -- try renaming it to [tt].htaccess[/tt] to activate it. If you get the problem during the quick installer and thus don't have this file yet, you can find it in the manual installer package.
-If renaming the [tt]recommended.htaccess[/tt] file results in "Internal Server Error" error messages, see the "I've renamed recommended.htaccess to .htaccess, but why Composr won't load anymore" answer below.
+If renaming the [tt]recommended.htaccess[/tt] file results in "Internal Server Error" error messages, see the "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore" answer below.
 If you are not successful in raising the memory limit you will need to contact the web host to ask them to do it, as on some hosts the limit is locked down at a server level.
 
 [title="3"]Why do I get an Internal Server Error or '500' error when saving the site configuration, using the WYSIWYG editor, or editing templates?[/title]
@@ -292,7 +292,7 @@ If you're not getting actual errors but things just aren't applying, it's probab
 [*] or, if the settings you want to change are for PHP, and PHP is configured as CGI, see "How do I set PHP settings on a CGI server?").[/list]
 [/list]
 
-If you are getting actual errors you have probably narrowed it down and found that all the "php_value"/"php_flag" lines fail. If this is the case it is because PHP on your server is set up as CGI, and on CGI you need to set PHP settings differently (read the answer to the next question).
+If you are getting actual errors you have probably narrowed it down and found that all the [tt]php_value[/tt]/[tt]php_flag[/tt] lines fail. If this is the case it is because PHP on your server is set up as CGI, and on CGI you need to set PHP settings differently (read the answer to the next question).
 
 [title="3"]How do I set PHP settings on a CGI server?[/title]
 
@@ -354,13 +354,13 @@ Composr's sample [tt].htaccess[/tt] and [tt]php.ini[/tt] files contain a remedy 
 Often people will accidentally translate these language strings:
  - left
  - right
-These are there to control [acronym="Cascading Style Sheets"]CSS[/acronym] settings, for the potential of supporting right-to-left languages. Valid values for each are 'left' or 'right' (you flip them for a right-to-left language pack). They should never be literally translated.
+These are there to control [acronym="Cascading Style Sheets"]CSS[/acronym] settings, for the potential of supporting right-to-left languages. Valid values for each are [tt]left[/tt] or [tt]right[/tt] (you flip them for a right-to-left language pack). They should never be literally translated.
 If someone has mucked up the translation on Transifex you'll need to correct it yourself.
 
 [title="3"]Why are e-mails sent by users shown as 'from' the website?[/title]
 
 When you click reply it should show the email address of the sender, assuming they gave/have one.
-The 'from' address (different to the 'reply address' you see when you click reply) is the site's address, which is necessary to stop some email services blocking the email as spam. Basically it's because if your server sends mail 'from' someone whose email account is not on your server, it looks suspicious.
+The [tt]from[/tt] address (different to the 'reply address' you see when you click reply) is the site's address, which is necessary to stop some email services blocking the email as spam. Basically it's because if your server sends mail [tt]from[/tt] someone whose email account is not on your server, it looks suspicious.
 
 [title="2"]Common usage queries[/title]
 
@@ -470,7 +470,7 @@ It is not possible to do this, as Composr screens are constructed by an amalgama
 
 [title="3"]Can I include HTML?[/title]
 
-Yes, using the 'html' Comcode tag.
+Yes, using the [tt]html[/tt] Comcode tag.
 
 If you [i]don't[/i] have the WYSIWYG editor enabled:
 [indent]Put [tt][html][/tt] and [tt][/html][/tt] into your Comcode, then put the HTML you desire in-between. If you want to mix HTML and Comcode more freely, use the [tt]semihtml[/tt] Comcode tag instead of the aforementioned [tt]html[/tt] Comcode tag.[/indent]
@@ -489,9 +489,9 @@ On the tracker issues it says "These hotfixes are not necessarily reliable or we
 
 So, please don't go installing all of them, it'll hurt you more than it will help you, and it's not expected. Just install a hotfix if you are being affected by a specific issue and keep up with the official patch releases.
 
-[title="3"]Why are 'em' units used rather than 'pt' units?[/title]
+[title="3"]Why are [tt]em[/tt] units used rather than [tt]pt[/tt] units?[/title]
 
-'em' are relatively sized units. So '1em' does nothing, while '2em' would double the font size.
+[tt]em[/tt] are relatively sized units. So '1em' does nothing, while '2em' would double the font size.
 This is done for purposes of accessibility: all sizing in Composr is relative, so the text size can be scaled up properly without any fudges.
 Also, as content is defined as layout agnostic, the content can be correctly proportioned while shown in different sizing contexts.
 The [tt]WYSIWYG_SETTINGS.tpl[/tt] template lists the font sizes in the WYSIWYG font size picker, so can be customised with pt units if this is desired.
@@ -500,7 +500,7 @@ The [tt]WYSIWYG_SETTINGS.tpl[/tt] template lists the font sizes in the WYSIWYG f
 
 There is often confusion about the difference between a block and a box. A block is an embeddable dynamic unit, and while most blocks are displayed in boxes, this is not necessarily the case. It also certainly isn't the case that all boxes are around blocks. Boxes can be placed around anything, and are used in many places.
 The box type a block uses is changeable by editing the template of that block; this is often useful if you want to place a [tt]main[/tt] block on a panel where a [tt]side[/tt] block would usually go.
-If you want to make your own box in Comcode, just use the 'box' Comcode tag around some existing Comcode.
+If you want to make your own box in Comcode, just use the [tt]box[/tt] Comcode tag around some existing Comcode.
 If you want to place a block, use the 'Add block' button you see while editing Comcode pages.
 
 ---

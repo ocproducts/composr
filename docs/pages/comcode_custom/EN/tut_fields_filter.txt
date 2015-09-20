@@ -11,42 +11,45 @@ The form field filter system can influence both form results, and the default va
 
 The config file is [tt]data/xml_config/fields.xml[/tt] and should be overridden to [tt]data_custom/xml_config/fields.xml[/tt]. You will see there are some default settings in that file, which are designed to be fairly innocuous. You should review the default settings as examples.
 
-The root XML tag for the config file is 'fieldRestrictions'. Otherwise, the config file mostly consists of restriction tags. Restriction tags (explained further down) can be placed directly beneath 'fieldRestrictions', but they may also be placed under the special 'qualify' and 'filter' tags. Furthermore, 'qualify' and 'filter' tags can be placed underneath themselves and each other to provide nestings of arbitrary complexity.
+You can also edit from:
+Admin Zone > Setup > Field filters
 
-[title="2"]The 'qualify' and 'filter' tags[/title]
+The root XML tag for the config file is 'fieldRestrictions'. Otherwise, the config file mostly consists of restriction tags. Restriction tags (explained further down) can be placed directly beneath 'fieldRestrictions', but they may also be placed under the special [tt]qualify[/tt] and [tt]filter[/tt] tags. Furthermore, [tt]qualify[/tt] and [tt]filter[/tt] tags can be placed underneath themselves and each other to provide nestings of arbitrary complexity.
 
-The 'qualify' tag is used to limit the context under which restriction tags may apply. Without the 'qualify' tag, the restrictions would always apply.
+[title="2"]The [tt]qualify[/tt] and [tt]filter[/tt] tags[/title]
+
+The [tt]qualify[/tt] tag is used to limit the context under which restriction tags may apply. Without the [tt]qualify[/tt] tag, the restrictions would always apply.
 The tag may take these attributes (all optional, but they may also be used together):
- - 'pages', a comma-separated list of strings (with wildcard support) indicating the page on which the contained restrictions apply
- - 'types', a comma-separated list of strings (with wildcard support) indicating the types (i.e. the URL 'type' parameter) on which the contained restrictions apply
- - 'fields', a comma-separated list of strings (with wildcard support) indicating the names of parameters on which the contained restrictions apply
+ - [tt]pages[/tt], a comma-separated list of strings (with wildcard support) indicating the page on which the contained restrictions apply
+ - [tt]types[/tt], a comma-separated list of strings (with wildcard support) indicating the types (i.e. the URL [tt]type[/tt] parameter) on which the contained restrictions apply
+ - [tt]fields[/tt], a comma-separated list of strings (with wildcard support) indicating the names of parameters on which the contained restrictions apply
 
-The 'filter' tag again is used to limit the situations under which restriction tags may apply, but it filters based on membership rather than context. The tag may take these attributes (all optional, but they may also be used together):
- - 'notStaff', if this is set to '1' then the contained restrictions will only apply to non-staff (if you leave it out it will apply to all)
- - 'groups', a comma-separated list of usergroup ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)
- - 'members', a comma-separated list of member ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)
+The [tt]filter[/tt] tag again is used to limit the situations under which restriction tags may apply, but it filters based on membership rather than context. The tag may take these attributes (all optional, but they may also be used together):
+ - [tt]notStaff[/tt], if this is set to '1' then the contained restrictions will only apply to non-staff (if you leave it out it will apply to all)
+ - [tt]groups[/tt], a comma-separated list of usergroup ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)
+ - [tt]members[/tt], a comma-separated list of member ID numbers to which the contained restrictions will apply (if you leave it out it will apply to all)
 
 [title="2"]Restriction tags[/title]
 
 The following restriction tags are for manipulating form results:
- - 'minLength', give an error if the field value does not meet the minimum length. This is useful to prevent people posting poorly completed entries.
- - 'maxLength', give an error if the field value does not meet the maximum length.
- - 'possibilitySet', give an error if the field value does not match the contained wildcard expression. If you apply the 'secretive' attribute with a value of '1' then the user will not be told what the possible values are, which is useful if you are trying to implement a password (e.g. you can only send me a PT if you use the word "abracadabra" in it).
- - 'disallowedSubstring', provide an error if the field value contains a match for the contained wildcard expression. This is useful as a blocking word-filter. Unlike the main Composr word filter, you have full qualification and filter support, so it is selectively applied as you require.
- - 'disallowedWord', as above but will only match whole words.
- - 'shun', provide an error if the field value equals the contained wildcard expression. This is different from 'disallowedsubstring' simply because it shuns complete matches against the field value rather than substrings.
- - 'pattern', provide an error if the given regular expression does not pass
+ - [tt]minLength[/tt], give an error if the field value does not meet the minimum length. This is useful to prevent people posting poorly completed entries.
+ - [tt]maxLength[/tt], give an error if the field value does not meet the maximum length.
+ - [tt]possibilitySet[/tt], give an error if the field value does not match the contained wildcard expression. If you apply the [tt]secretive[/tt] attribute with a value of '1' then the user will not be told what the possible values are, which is useful if you are trying to implement a password (e.g. you can only send me a PT if you use the word "abracadabra" in it).
+ - [tt]disallowedSubstring[/tt], provide an error if the field value contains a match for the contained wildcard expression. This is useful as a blocking word-filter. Unlike the main Composr word filter, you have full qualification and filter support, so it is selectively applied as you require.
+ - [tt]disallowedWord[/tt], as above but will only match whole words.
+ - [tt]shun[/tt], provide an error if the field value equals the contained wildcard expression. This is different from [tt]disallowedsubstring[/tt] simply because it shuns complete matches against the field value rather than substrings.
+ - [tt]pattern[/tt], provide an error if the given regular expression does not pass
 
-You may give each of these restriction tags an 'error' attribute, which will be used for the case when they trigger. If you do not provide a message a default will be used based upon the restriction involved.
+You may give each of these restriction tags an [tt]error[/tt] attribute, which will be used for the case when they trigger. If you do not provide a message a default will be used based upon the restriction involved.
 
 The following restriction tags are for both manipulating form results and also default form field values:
- - 'replace', replace the value of the attribute 'from' in the field value with the contents of the tag. This is useful if for example you renamed your product and you wanted people to stop using the old product name on your website.
- - 'removeShout', filter out shouting in the field value (ENTIRELY UPPER CASE FIELD VALUES). This is useful for making a forum appear more civil.
- - 'sentenceCase', make the field value sentence case.
- - 'titleCase', make the field value Title Case.
- - 'deepClean', apply the deep clean process on the field value. Clean common ugly patterns out, such as leading white-space, all-caps, or paste-from-Word problems. This is a potentially disruptive operation, so only use it on data that has been entered by n00bs.
- - 'append', append something to the field value. This is useful if you want submissions from non-staff to be flagged with a disclaimer message.
- - 'prepend', prepend something to the field value.
+ - [tt]replace[/tt], replace the value of the attribute [tt]from[/tt] in the field value with the contents of the tag. This is useful if for example you renamed your product and you wanted people to stop using the old product name on your website.
+ - [tt]removeShout[/tt], filter out shouting in the field value (ENTIRELY UPPER CASE FIELD VALUES). This is useful for making a forum appear more civil.
+ - [tt]sentenceCase[/tt], make the field value sentence case.
+ - [tt]titleCase[/tt], make the field value Title Case.
+ - [tt]deepClean[/tt], apply the deep clean process on the field value. Clean common ugly patterns out, such as leading white-space, all-caps, or paste-from-Word problems. This is a potentially disruptive operation, so only use it on data that has been entered by n00bs.
+ - [tt]append[/tt], append something to the field value. This is useful if you want submissions from non-staff to be flagged with a disclaimer message.
+ - [tt]prepend[/tt], prepend something to the field value.
 
 [title="2"]Extension[/title]
 

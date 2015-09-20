@@ -1016,7 +1016,7 @@ For example:
 </blockquote>
 [/code]
 
-The 'blockquote' tag is intended to markup quoted information, but has the side-effect of indenting text. Web browser technology designed to assist those with disabilities may make use of the so-called 'semantics' of a documents markup in order to better express it to the user, but the user would be misled in situations where such markup was used incorrectly.
+The [tt]blockquote[/tt] tag is intended to markup quoted information, but has the side-effect of indenting text. Web browser technology designed to assist those with disabilities may make use of the so-called 'semantics' of a documents markup in order to better express it to the user, but the user would be misled in situations where such markup was used incorrectly.
 
 The correct way to achieve the indentation effect would be to use CSS as follows:
 [code="HTML"]
@@ -1062,16 +1062,16 @@ This is an example of an invalid XHTML-strict fragment:
 [/code]
 
 This markup is incorrect for a number of reasons:
- - All tags that are opened must always be closed, yet the two 'p' tags have not been.
- - Tags must not overlap, yet the 'font' tag is defined in the first paragraph, and extends after that paragraph has ended.
+ - All tags that are opened must always be closed, yet the two [tt]p[/tt] tags have not been.
+ - Tags must not overlap, yet the [tt]font[/tt] tag is defined in the first paragraph, and extends after that paragraph has ended.
  - The font tag is not present in XHTML-strict.
- - All attributes must be quoted, while the 'color' attribute is not.
+ - All attributes must be quoted, while the [tt]color[/tt] attribute is not.
 
 While none of these issues are directly related to accessibility, the strict adherence to the latest XHTML and CSS specifications increases the accessibility as the standards are increasingly designed for it.
 For example:
  - Clearly defining where tags start and end allows user agents more certainty over the correct interpretation, and hence they can be better expressed non-visually. While there are rules for interpreting HTML in a way that is fully expressed, there is no guarantee that the author's intent is that of the interpretations assumption.
  - Overlapping tags might make sense visually, but are unnecessarily complex when expressed non-visually.
- - CSS is preferable to the use of the 'font' tag because the user may override the presentation with that of their own; for example, a user could increase the contrast between certain colours by overriding part of a CSS class.
+ - CSS is preferable to the use of the [tt]font[/tt] tag because the user may override the presentation with that of their own; for example, a user could increase the contrast between certain colours by overriding part of a CSS class.
  - Using a simple and consistent strict grammar makes document markup easier to read and understand, and hence reduces the chance of making other errors due to the reduction in distraction.
 
 [title="3"]Omitted accessibility information[/title]

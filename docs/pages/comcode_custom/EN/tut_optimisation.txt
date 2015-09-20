@@ -30,9 +30,9 @@ These are enabled through the "Installation Options" ([tt]config_editor.php[/tt]
 Composr provides many forms of cache, to allow the system to run as quickly as is possible.
 
 The Composr caches are:
- - [b]language cache[/b]: this removes the need for Composr to parse the .ini language files on each load
- - [b]template cache[/b]: this removes the need for Composr to parse the .tpl template files on each load
- - [b]Comcode page cache[/b]: this removes the need for Composr to parse the .txt Comcode pages on each load
+ - [b]language cache[/b]: this removes the need for Composr to parse the [tt].ini[/tt] language files on each load
+ - [b]template cache[/b]: this removes the need for Composr to parse the [tt].tpl[/tt] template files on each load
+ - [b]Comcode page cache[/b]: this removes the need for Composr to parse the [tt].txt[/tt] Comcode pages on each load
  - [b]Comcode cache[/b]: this removes the need for Composr to parse Comcode whenever it is used
  - [b]block cache[/b]: this removes the need for many blocks to be fully executed whenever they are viewed -- they are cached against the parameters they are called up with using a per-block tailored scheme
  - [b]theme image cache[/b]: this removes the need for Composr to search for theme image files whenever they are referenced by code (a code could translate to perhaps 10 different URLs, due to the flexibility of the system)
@@ -48,11 +48,11 @@ Composr is not designed to "cache everything as it will be displayed" because th
 
 [title="2"]General tips[/title]
 
- - If you are using a particularly visually complex block (e.g. deep pop-out menus) then use the 'quick_cache' block option on it if possible.
- - You can mark out parts of a complex Comcode layout as having "quick_cache" by moving the content into individual Comcode pages then using the [tt]main_include_module[/tt] block to insert it back, with the [tt]quick_cache[/tt] parameter turned on for that block.
+ - If you are using a particularly visually complex block (e.g. deep pop-out menus) then use the [tt]quick_cache[/tt] block parameter on it if possible.
+ - You can mark out parts of a complex Comcode layout as having [tt]quick_cache[/tt] by moving the content into individual Comcode pages then using the [tt]main_include_module[/tt] block to insert it back, with the [tt]quick_cache[/tt] parameter turned on for that block.
  - The [tt]main_news[/tt] and [tt]main_forum_news[/tt] blocks have an [tt]optimise[/tt] parameter which will simplify down the Comcode of anything displayed such as it will be stored statically. This usually will have no impact, but may increase performance if a lot of Comcode tags were used. It does have an impact if dynamic elements are used within posts, such as Comcode that check's a user's usergroup or displays the current date/time.
- - The defer-loading option block option is also useful, although it puts a requirement on JavaScript.
- - Avoid making very long Comcode pages if they are just going to be static for all users. Ideally for usability pages should not be very long, but there are cases where you may choose for them to be (e.g. large glossaries). You can put [tt]{$,page hint: no_smart_conversion}[/tt] into a Comcode page to prevent the WYSIWYG editor converting it to Comcode and otherwise use the Comcode 'html' tag to include pure HTML content.
+ - The defer-loading option block parameter is also useful, although it puts a requirement on JavaScript.
+ - Avoid making very long Comcode pages if they are just going to be static for all users. Ideally for usability pages should not be very long, but there are cases where you may choose for them to be (e.g. large glossaries). You can put [tt]{$,page hint: no_smart_conversion}[/tt] into a Comcode page to prevent the WYSIWYG editor converting it to Comcode and otherwise use the Comcode [tt]html[/tt] tag to include pure HTML content.
  - If you get a lot of 404 errors, it is best to make a static 404 page instead of using Composr's which can be relatively intensive. You activate a custom 404 page by putting a reference to it in the [tt].htaccess[/tt] file (our [tt]recommended.htaccess[/tt] file does this for Composr's).
  - If you are optimising your server infrastructure to be able to handle large numbers of users don't forget to change the value of the "Maximum users" config option to something much higher!
  - Even though Composr supports various database vendors it is optimised for MySQL.
@@ -98,11 +98,11 @@ If you want any Guest user to be cached like this, set:
 $SITE_INFO['any_guest_cached_too'] = '1';
 [/code]
 
-[title="2"]'keep_' parameters[/title]
+[title="2"]'keep' parameters[/title]
 
-This is not recommended, but if you really need to squeeze performance, you can disable the 'keep_' parameters:
+This is not recommended, but if you really need to squeeze performance, you can disable the 'keep' parameters:
 [code="PHP"]
-$SITE_INFO['no_keep_params'] = '1'; // Disable 'keep_' parameters, which can lead to a small performance improvement as URLs can be compiled directly into the template cache
+$SITE_INFO['no_keep_params'] = '1'; // Disable 'keep' parameters, which can lead to a small performance improvement as URLs can be compiled directly into the template cache
 [/code]
 
 [title="2"]Disk activity[/title]
@@ -363,8 +363,8 @@ function master__sync_file_move($old, $new)
 }
 [/code]
 
-In order to implement replication, just change the 'db_site_host' and 'db_forums_host' values using [tt]config_editor.php[/tt] (or editing [tt]_config.php[/tt] by hand in a text editor) so that they contain a comma-separated list of host names. The first host in the list must be the master server. It is assumed that each server has equivalent credentials and database naming. Due to the master server being a bottleneck, it will never be picked as a read-access server in the randomisation process, unless there is only one slave.
-It is advised to not set replication for the Composr 'sessions' table, as this is highly volatile. Instead you should remove any display of 'users online' from your templates because if you're at the point of replication there will be too many to list anyway (and Composr will have realised this and stopped showing it consistently in many cases, to stop performance issues).
+In order to implement replication, just change the [tt]db_site_host[/tt] and [tt]db_forums_host[/tt] values using [tt]config_editor.php[/tt] (or editing [tt]_config.php[/tt] by hand in a text editor) so that they contain a comma-separated list of host names. The first host in the list must be the master server. It is assumed that each server has equivalent credentials and database naming. Due to the master server being a bottleneck, it will never be picked as a read-access server in the randomisation process, unless there is only one slave.
+It is advised to not set replication for the Composr [tt]sessions[/tt] table, as this is highly volatile. Instead you should remove any display of 'users online' from your templates because if you're at the point of replication there will be too many to list anyway (and Composr will have realised this and stopped showing it consistently in many cases, to stop performance issues).
 
 Round-Robin DNS could be used to choose a frontend server from the farm randomly, or some other form of load balancing such as one based on a reverse proxy server.
 
@@ -439,10 +439,10 @@ This is not suitable for most people for the following reasons:
  - It generally requires some advanced skills
 However, it is very suitable for those who need to serve a high capacity and have the skills and staffing to manage all the above.
 
-The 'hphp_buildkit' addon (bundled by default) provides a config and initialisation scripts for HHVM.
+The [tt]hphp_buildkit[/tt] addon (bundled by default) provides a config and initialisation scripts for HHVM.
 To invoke (we are assuming that HHVM has been properly installed and is in the path):
  - Open a shell to the Composr directory
- - Type [tt]sh hphp.sh[/tt] (this is in the 'hphp_buildkit' addon)
+ - Type [tt]sh hphp.sh[/tt] (this is in the [tt]hphp_buildkit[/tt] addon)
 
 In order to support HHVM (which imposes some language restrictions) we made some changes to Composr, and updated our coding standards. There's no guarantee that any individual non-bundled addon will meet the coding standards, however.
 

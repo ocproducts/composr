@@ -249,9 +249,6 @@ class Module_groups
             $groups[$g_id]['_name'] = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
         }
 
-        $col_widths = array('150', '70', '200');
-        $col_widths_non_rank = array('350', '70');
-
         // Categorise
         $_staff = array();
         $_ranks = array();
@@ -307,7 +304,14 @@ class Module_groups
         $start = get_param_integer('staff_start', 0);
         $max = get_param_integer('staff_max', intval(get_option('important_groups_per_page')));
         $max_rows = count($_staff);
-        $fields_title = results_field_title(array(do_lang_tempcode('NAME'), do_lang_tempcode('COUNT_MEMBERS')), $sortables);
+        $has_images = false;
+        foreach ($_staff as $row) {
+            if ($row['g_rank_image'] != '') {
+                $has_images = true;
+            }
+        }
+        list($col_widths, $titles) = $this->_find_table_headings($has_images, false);
+        $fields_title = results_field_title($titles, $sortables);
         $staff = new Tempcode();
         $i = 0;
         foreach ($_staff as $row) {
@@ -318,13 +322,31 @@ class Module_groups
             if ($i > $start + $max) {
                 break;
             }
+
             $group_name = $row['_name'];
+
+            $rank_image = $row['g_rank_image'];
+            if ($rank_image != '') {
+                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+            } else {
+                $rank_image_tpl = new Tempcode();
+            }
+
             $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+
             $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
-            $staff->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true), escape_html($num_members)), false));
+
+            $entry = array();
+            $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
+            if ($has_images) {
+                $entry[] = $rank_image_tpl;
+            }
+            $entry[] = escape_html($num_members);
+
+            $staff->attach(results_entry($entry, false));
             $i++;
         }
-        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $fields_title, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, $col_widths_non_rank);
+        $staff = results_table(do_lang_tempcode('STAFF'), $start, 'staff_start', $max, 'staff_max', $max_rows, $fields_title, $staff, $sortables, $sortable, $sort_order, 'staff_sort', null, $col_widths);
 
         //-Ranks
         $ranks = array();
@@ -332,7 +354,14 @@ class Module_groups
             $start = get_param_integer('rank_start_' . strval($g_id), 0);
             $max = get_param_integer('rank_max_' . strval($g_id), intval(get_option('important_groups_per_page')));
             $max_rows = count($_rank);
-            $fields_title = results_field_title(array(do_lang_tempcode('NAME'), do_lang_tempcode('COUNT_MEMBERS'), do_lang_tempcode('PROMOTION_THRESHOLD')), $sortables);
+            $has_images = false;
+            foreach ($_rank as $row) {
+                if ($row['g_rank_image'] != '') {
+                    $has_images = true;
+                }
+            }
+            list($col_widths, $titles) = $this->_find_table_headings($has_images, true);
+            $fields_title = results_field_title($titles, $sortables);
             $rank = new Tempcode();
             $i = 0;
             foreach ($_rank as $row) {
@@ -343,15 +372,35 @@ class Module_groups
                 if ($i > $start + $max) {
                     break;
                 }
+
                 $group_name = $row['_name'];
+
+                $rank_image = $row['g_rank_image'];
+                if ($rank_image != '') {
+                    $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+                } else {
+                    $rank_image_tpl = new Tempcode();
+                }
+
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+
                 $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
+
                 $_p_t = $row['g_promotion_threshold'];
                 $p_t = new Tempcode();
                 if ((!is_null($_p_t)) && (array_key_exists($row['g_promotion_target'], $_rank))) {
                     $p_t = do_lang_tempcode('PROMOTION_TO', escape_html(integer_format($_p_t)), escape_html($_rank[$row['g_promotion_target']]['_name']));
                 }
-                $rank->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, false), escape_html($num_members), $p_t), false));
+
+                $entry = array();
+                $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
+                if ($has_images) {
+                    $entry[] = $rank_image_tpl;
+                }
+                $entry[] = escape_html($num_members);
+                $entry[] = $p_t;
+
+                $rank->attach(results_entry($entry, false));
             }
             $rank = results_table(do_lang_tempcode('RANK_SETS'), $start, 'rank_start_' . strval($g_id), $max, 'rank_max_' . strval($g_id), $max_rows, $fields_title, $rank, $sortables, $sortable, $sort_order, 'rank_sort_' . strval($g_id), null, $col_widths);
             $ranks[] = $rank;
@@ -376,23 +425,96 @@ class Module_groups
         $sql .= ' ORDER BY g_order,id';
         $_others = $GLOBALS['FORUM_DB']->query($sql, $max, $start);
         $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there(str_replace('SELECT * ', 'SELECT COUNT(*) ', $sql));
-        $fields_title = results_field_title(array(do_lang_tempcode('NAME'), do_lang_tempcode('COUNT_MEMBERS')), $sortables);
+        $has_images = false;
+        foreach ($_others as $row) {
+            if ($row['g_rank_image'] != '') {
+                $has_images = true;
+            }
+        }
+        list($col_widths, $titles) = $this->_find_table_headings($has_images, false);
+        $fields_title = results_field_title($titles, $sortables);
         $others = new Tempcode();
         foreach ($_others as $row) {
             $group_name = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 
+            $rank_image = $row['g_rank_image'];
+            if ($rank_image != '') {
+                $rank_image_tpl = do_template('CNS_RANK_IMAGE', array('GROUP_NAME' => $group_name, 'IMG' => $rank_image, 'IS_LEADER' => false));
+            } else {
+                $rank_image_tpl = new Tempcode();
+            }
+
             $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+
             $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
-            $others->attach(results_entry(array(hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, false), escape_html($num_members)), false));
+
+            $entry = array();
+            $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
+            if ($has_images) {
+                $entry[] = $rank_image_tpl;
+            }
+            $entry[] = escape_html($num_members);
+
+            $others->attach(results_entry($entry, false));
         }
         if (!$others->is_empty()) {
-            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $fields_title, $others, $sortables, $sortable, $sort_order, 'others_sort', null, $col_widths_non_rank);
+            $others = results_table(do_lang_tempcode('OTHER_USERGROUPS'), $start, 'others_start', $max, 'others_max', $max_rows, $fields_title, $others, $sortables, $sortable, $sort_order, 'others_sort', null, $col_widths);
         }
 
         $tpl = do_template('CNS_GROUP_DIRECTORY_SCREEN', array('_GUID' => '39aebd8fcb618c2ae45e867d0c96a4cf', 'TITLE' => $this->title, 'STAFF' => $staff, 'OTHERS' => $others, 'RANKS' => $ranks));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
+    }
+
+    /**
+     * Find table column widths and headings.
+     *
+     * @param boolean $has_images Whether there are rank images
+     * @param boolean $has_rank Whether there are rank promotions
+     * @return array A pair: column widths, table headings
+     */
+    function _find_table_headings($has_images, $has_rank)
+    {
+        if ($has_images) {
+            if ($has_rank) {
+                $col_widths = array('157', '157', '77', '157');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('IMAGE'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                    do_lang_tempcode('PROMOTION_THRESHOLD')
+                );
+            } else {
+                $col_widths = array('314', '157', '77');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('IMAGE'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                );
+            }
+        } else {
+            if ($has_rank) {
+                $col_widths = array('314', '77', '157');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                    do_lang_tempcode('PROMOTION_THRESHOLD')
+                );
+            } else {
+                $col_widths = array('471', '77');
+
+                $titles = array(
+                    do_lang_tempcode('NAME'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
+                );
+            }
+        }
+
+        return array($col_widths, $titles);
     }
 
     /**

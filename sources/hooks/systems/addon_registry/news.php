@@ -223,7 +223,7 @@ class Hook_addon_registry_news
             'IMAGE_URL' => placeholder_image_url(),
             'URL' => placeholder_url(),
             'BODY' => lorem_paragraph_html(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'DATE_RAW' => placeholder_date_raw(),
             'SUBMITTER' => placeholder_id(),
             'AUTHOR' => lorem_phrase(),
@@ -412,7 +412,7 @@ class Hook_addon_registry_news
     public function tpl_preview__news_archive_screen()
     {
         $content = do_lorem_template('NEWS_BRIEF', array(
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'FULL_URL' => placeholder_url(),
             'NEWS_TITLE_PLAIN' => lorem_word(),
             'ID' => placeholder_id(),
@@ -469,7 +469,7 @@ class Hook_addon_registry_news
                 'NEWS' => lorem_paragraph(),
                 'NEWS_TITLE' => lorem_phrase(),
                 '_DATE' => placeholder_date_raw(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
             )));
         }
 
@@ -523,7 +523,7 @@ class Hook_addon_registry_news
         $contents_arr = array();
         foreach (placeholder_array() as $k => $v) {
             $contents_arr[] = array(
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE' => lorem_word(),
             );
@@ -597,7 +597,7 @@ class Hook_addon_registry_news
                 'COMMENT_DETAILS' => $comment_details,
                 'RATING_DETAILS' => lorem_sentence(),
                 'TRACKBACK_DETAILS' => lorem_sentence(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'AUTHOR' => lorem_word(),
                 'AUTHOR_URL' => placeholder_url(),
                 'NEWS_FULL' => lorem_paragraph(),

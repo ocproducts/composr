@@ -282,7 +282,7 @@ class Hook_addon_registry_core_primary_layout
             $awards = array(
                 array(
                     'AWARD_TYPE' => lorem_title(),
-                    'AWARD_TIMESTAMP' => placeholder_time(),
+                    'AWARD_TIMESTAMP' => placeholder_date(),
                 )
             );
         }

@@ -7,7 +7,7 @@ If you are running a website, in particular a large or corporate website, there 
 [title="2"]Rules[/title]
 
 [surround]
-[media width="150" description="The default Composr 'rules' Comcode page if the Setup Wizard has not been run" float="right"]data_custom/images/docs/tut_legal/legal_rules.png[/media]
+[media width="150" description="The default Composr [tt]rules[/tt] Comcode page if the Setup Wizard has not been run" float="right"]data_custom/images/docs/tut_legal/legal_rules.png[/media]
 It is important to develop a rules page that is consistent with the approach you will take to running your website. You can use rules to lay out guidelines for member behaviour and rationalise punitive action, and to an extent they can provide a legal defence as they demonstrate that you are trying to avoid illegal activities from your website.
 
 It is inevitable that some members will break the rules, maliciously or accidentally, but they are still a powerful tool. A good rules page will list offences of a balanced specificity, along with approximate associated punishments. It may also have a legal element, referencing law, and placing legal responsibility on the user.
@@ -19,7 +19,7 @@ Composr provides a number of default rules pages that can be chosen using the Se
 
 If you are a commercial entity, or if you hold sensitive personal data, you are more likely to be affected by privacy laws than others.
 
-There is a default 'privacy' page (to hold a [concept]privacy policy[/concept]), which should be edited to correctly detail all the personal data that is collected into your systems, either by request, or by automated means. The page should say every use for this data, especially when the data is available to people outside your organisation, or used actively within your organisation in a non-administrative sense (for marketing, for instance).
+There is a default [tt]privacy[/tt] page (to hold a [concept]privacy policy[/concept]), which should be edited to correctly detail all the personal data that is collected into your systems, either by request, or by automated means. The page should say every use for this data, especially when the data is available to people outside your organisation, or used actively within your organisation in a non-administrative sense (for marketing, for instance).
 
 Composr holds the following data:
  - member profiles, including custom profile fields. Profiles are likely visible to any visitor to the site (depending on your zone access configuration), and you can define whether custom profile fields are visible

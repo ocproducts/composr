@@ -303,7 +303,7 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
@@ -386,7 +386,7 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
@@ -454,7 +454,7 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
@@ -542,7 +542,7 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
@@ -626,7 +626,7 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
@@ -694,7 +694,7 @@ class Hook_addon_registry_catalogues
                 'TRACKBACK_DETAILS' => lorem_phrase(),
                 'RATING_DETAILS' => lorem_phrase(),
                 'COMMENT_DETAILS' => lorem_phrase(),
-                'ADD_DATE' => placeholder_time(),
+                'ADD_DATE' => placeholder_date(),
                 'ADD_DATE_RAW' => placeholder_date_raw(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => placeholder_number(),

@@ -10,7 +10,7 @@
 
 			<div id="command_prompt">
 				<label for="commandr_command">{PROMPT*}</label>
-				<input type="text" id="commandr_command" name="command" onkeyup="return commandr_handle_history(this,event.keyCode?event.keyCode:event.charCode,event);" value="" /><input class="buttons__proceed button_micro" type="submit" value="{!PROCEED_SHORT=}" />
+				<input type="text" id="commandr_command" name="command" onkeyup="return commandr_handle_history(this,event.keyCode?event.keyCode:event.charCode,event);" value="" /><input class="buttons__proceed button_micro" type="submit" value="{!PROCEED_SHORT=}" role="textbox" />
 			</div>
 		</form>
 	</div>

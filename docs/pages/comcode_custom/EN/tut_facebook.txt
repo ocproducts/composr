@@ -95,7 +95,7 @@ We have the following Composr blocks, based upon the Facebook [url="Social Plugi
  - [tt]main_facebook_like[/tt] (based on Like plugin)
  - [tt]main_facebook_comments[/tt] (based on Comments plugin)
 
-The plugins are mostly just thin wrappers to what Facebook does. If you want to tweak any options that we haven't made specific block options for you can just edit the appropriate templates. For example, [tt]BLOCK_MAIN_FACEBOOK_COMMENTS.tpl[/tt] is the template used by the [tt]main_facebook_comments[/tt] block.
+The plugins are mostly just thin wrappers to what Facebook does. If you want to tweak any options that we haven't made specific block parameters for you can just edit the appropriate templates. For example, [tt]BLOCK_MAIN_FACEBOOK_COMMENTS.tpl[/tt] is the template used by the [tt]main_facebook_comments[/tt] block.
 
 If you wish you can use Facebook code directly within Composr. This would allow you to do integrations we have not made a block for, sure as the [url="Embedded Posts"]https://developers.facebook.com/docs/plugins/embedded-posts[/url] integration (that let's you embed a specific individual Facebook post).
 
@@ -103,7 +103,7 @@ You probably will not want to use [tt]main_facebook_like[/tt], as a Like Button 
 
 [title="3"]main_facebook_page[/title]
 
-This block can be used to show Facebook page fans, and Facebook page posts. There are block options to determine what exactly to show in it.
+This block can be used to show Facebook page fans, and Facebook page posts. There are block parameters to determine what exactly to show in it.
 
 This is the block you are most likely going to want to use.
 

@@ -6,9 +6,9 @@ This tutorial describes some of the more complex features available for news, in
 
 [title="3"]Scheduled news / Manual date selection[/title]
 
-See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the scheduler.
+See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the CRON bridge scheduler.
 
-You will see an advance scheduling option once the scheduler is enabled (requires the Composr 'calendar' addon to be installed also).
+You will see an advance scheduling option once the CRON bridge scheduler is enabled (requires the Composr [tt]calendar[/tt] addon to be installed also).
 
 Scheduling posts work by having the entry initially non-validated, then it will be auto-validated at the chosen time.
 
@@ -93,6 +93,7 @@ If the news block is filtered (for a blog, for example) the URLs provided will o
 The URLs are not intended to be viewed directly, although we have used a technology called 'XSLT' to allow them to be displayed in the browser if desired; instead, they should be copied and pasted to real feed reader app.
 
 To see all the feeds available from Composr (news is just the most typical usage for them), you may go to [tt]http://yourbaseurl/backend.php[/tt]: you will be presented with a screen that lists the feeds. The screen here is written in yet another language named OPML, and again made viewable in a web browser using XSLT.
+Alternatively, go to Admin Zone > Tools > RSS/Atom Feeds.
 
 [title="3"]Inbound[/title]
 
@@ -143,9 +144,9 @@ By default trackbacks are not enabled in the configuration. To use them you need
 
 By default news posts show the news category image rather than the poster's avatar.
 
-If you uninstall the 'authors' addon it will automatically change to showing avatars. The reason being that default Composr acts more like a news site than a community site -- but by removing 'authors' you tell it you're not interested in that focus.
+If you uninstall the [tt]authors[/tt] addon it will automatically change to showing avatars. The reason being that default Composr acts more like a news site than a community site -- but by removing 'authors' you tell it you're not interested in that focus.
 
-Instead of removing the 'authors' addon you could change the [tt]NEWS_BOX[/tt] template -- this template encodes the logic described above, so by changing the template you can achieve either behaviour, or any combination.
+Instead of removing the [tt]authors[/tt] addon you could change the [tt]NEWS_BOX[/tt] template -- this template encodes the logic described above, so by changing the template you can achieve either behaviour, or any combination.
 
 [title="2"]Integrating third-party widgets[/title]
 

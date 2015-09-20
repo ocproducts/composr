@@ -345,7 +345,7 @@ class Hook_addon_registry_core_feedback_features
                 'HIGHLIGHT' => ($i == 1),
                 'TITLE' => lorem_word(),
                 'TIME_RAW' => placeholder_number(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'POSTER_ID' => placeholder_id(),
                 'POSTER_URL' => placeholder_url(),
                 'POSTER_NAME' => lorem_word(),
@@ -440,8 +440,8 @@ class Hook_addon_registry_core_feedback_features
         foreach ($trackbacks as $i => $value) {
             $content->attach(do_lorem_template('TRACKBACK', array(
                 'ID' => placeholder_id() . strval($i),
-                'TIME_RAW' => placeholder_time(),
-                'TIME' => placeholder_time(),
+                'TIME_RAW' => placeholder_date(),
+                'TIME' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
                 'EXCERPT' => '',
