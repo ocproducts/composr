@@ -12,6 +12,9 @@ Some software tries to make options for everything, but the result tends to be t
 [b]For an explanation of [concept]match-key[/concept]s, see the [page="_SEARCH:tut_menus"]Customising what's on the menus[/page] tutorial.[/b]
 
 {!permissions:DOC_PAGE_MATCH_KEY_ACCESS}
+
+Configure Match-key permissions from:
+Admin Zone > Security > Match-keys
 [/surround]
 
 [title="3"]An example: controlling member-directory access[/title]

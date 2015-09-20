@@ -211,7 +211,7 @@ If you enable the mail queue (recommended for performance), then e-mail will be 
 Once you feel your site is ready for the general public, you will want to 'open the doors' so to speak. You can do this from:
 Admin Zone > Setup > Configuration > Site Options > Closed Site.
 
-It's not advertised in the interface, but it is possible for a user to join a closed Conversr-powered site if they have been given the URL to the join module (they can't see any panels in this event). Once they have joined they can't log in though unless they have subsequently been put in a usergroup with 'Access closed site' permission. The reasoning here is that the staff may give out the join URL and ask someone to use it, and then give special access because they want them to be able to get in early. If you do not like this behaviour, you can alter the join-module's permissions so that the Guest usergroup cannot access it.
+It's not advertised in the interface, but it is possible for a user to join a closed Conversr-powered site if they have been given the URL to the [tt]join[/tt] module (they can't see any panels in this event). Once they have joined they can't log in though unless they have subsequently been put in a usergroup with 'Access closed site' permission. The reasoning here is that the staff may give out the join URL and ask someone to use it, and then give special access because they want them to be able to get in early. If you do not like this behaviour, you can alter the join-module's permissions so that the Guest usergroup cannot access it.
 [/surround]
 
 [concepts

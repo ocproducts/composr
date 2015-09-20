@@ -154,11 +154,11 @@ In Composr by default there are the following 'kinds' of 'product':
  - Various kinds of [b]non-purchasable product[/b] that exist for accounting purpose -- [tt]interest[/tt], [tt]tax[/tt], [tt]wage[/tt] and [tt]other[/tt]. These aren't for sale on your site but positive or negative transaction sums can be entered against them in the Admin Zone, so your profit/loss and cash-flow charts can be accurate.
 
 Product kinds fit into the following general categories:
- - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the invoices module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
- - [b]Subscription[/b]: one-off purchases made from the purchase module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the subscriptions module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
- - [b]Shopping cart[/b]: an item purchased from the catalogue/shopping modules ([tt]site:catalogues[/tt]/[tt]site:shopping[/tt] page-links, Content > Products and Content > Shopping Cart, on the default menus) (above: catalogue items)
+ - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the [tt]invoices[/tt] module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
+ - [b]Subscription[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the [tt]subscriptions[/tt] module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
+ - [b]Shopping cart[/b]: an item purchased from the [tt]catalogue[/tt]/[tt]shopping[/tt] modules ([tt]site:catalogues[/tt]/[tt]site:shopping[/tt] page-links, Content > Products and Content > Shopping Cart, on the default menus) (above: catalogue items)
  - [b]Other[/b] (above: interest, tax, wage, other)
- - [b]Purchase wizard[/b]: one-off purchases made from the purchase module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: [i]none available out-of-the-box[/i])
+ - [b]Purchase wizard[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: [i]none available out-of-the-box[/i])
 
 [box="For programmers" width="25em" float="right"]
 In the code these are defined via a [tt]PRODUCT_*[/tt] constant from the [tt]ecommerce[/tt] code file.
@@ -230,9 +230,13 @@ Set up a usergroup description as follows:
 2) Assign additional access to this usergroup (or remove access from some of the other usergroups!).
 3) Go to Admin Zone > Setup > Usergroup subscription > Add usergroup subscription
 4) Fill in the form. Be aware that a '5' 'monthly' subscription means someone pays 'every 5 months'. It does not mean a subscription is paid every month and lasts for 5 months -- subscriptions last indefinitely until the user chooses to cancel them.
-5) Provide a path for members to visit the purchase module so that they may activate their subscription, if one does not already exist (it does exist by default). By default this is possible via upgrade links shown in the logged-in box. You do also this via the purchase module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus).
+5) Provide a path for members to visit the [tt]purchase[/tt] module so that they may activate their subscription, if one does not already exist (it does exist by default). By default this is possible via upgrade links shown in the logged-in box. You do also this via the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus).
 
 You can add as many usergroup subscriptions as you like, even multiple to the same usergroup. For example, [by adding more subscriptions] you could make it cheaper to subscribe yearly than monthly.
+
+You can edit a usergroup subscription from:
+Admin Zone > Setup > Usergroup subscription > Edit usergroup subscription
+You can delete a usergroup subscription from the bottom of its edit form.
 [/surround]
 
 [title="2"]Invoices[/title]
@@ -298,7 +302,7 @@ Guest users have no member ID, so Composr will store the order against their 'se
 
 We can't tie the purchases to IP addresses because often thousands of users can be on the same IP address.
 
-If you think users may be making delayed purchases as guests, you may want to consider removing Guest permissions to the shopping module, to force logins.
+If you think users may be making delayed purchases as guests, you may want to consider removing Guest permissions to the [tt]shopping[/tt] module, to force logins.
 
 [title="3"]Product options[/title]
 

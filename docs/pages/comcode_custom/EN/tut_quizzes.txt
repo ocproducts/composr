@@ -80,7 +80,7 @@ Note that if you change the time limit while someone is using the quiz then the 
 
 [title="2"]Accessing/linking quizzes[/title]
 
-Quizzes may be accessed via the quiz module ([tt]site:quiz[/tt] page-link, Content > Quizzes on the default menus).
+Quizzes may be accessed via the [tt]quiz[/tt] module ([tt]site:quiz[/tt] page-link, Content > Quizzes on the default menus).
 
 If you don't have the default menus you may want to create a menu link direct to your quiz. To add your quiz to a menu, use the Sitemap tool within the menu editor. You will find your quiz is available as a link underneath Site\Quiz.
 

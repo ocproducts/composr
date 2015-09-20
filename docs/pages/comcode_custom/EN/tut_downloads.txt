@@ -57,7 +57,7 @@ When you add a download, Composr automatically adds a specially-named gallery fo
 [media width="150" description="Viewing a download" float="right"]data_custom/images/docs/tut_downloads/downloads_view.png[/media]
 [media width="150" description="Our download, listed in its category" float="right"]data_custom/images/docs/tut_downloads/downloads_in_subcat.png[/media]
 [media width="150" description="The subcategory (where our download is being stored) is displayed" float="right"]data_custom/images/docs/tut_downloads/downloads_subcat.png[/media]
-Downloads are accessed from the downloads module ([tt]site:downloads[/tt] page-link, Content > Downloads on the default menus).
+Downloads are accessed from the [tt]downloads[/tt] module ([tt]site:downloads[/tt] page-link, Content > Downloads on the default menus).
 
 This link will take the user to the Home download category, from which they can browse through the categories until they find a download they want.
 
@@ -78,9 +78,9 @@ Composr will never try to delete a file that is not inside an upload directory, 
 
 [title="2"]Searching inside downloads[/title]
 
-User's may use the unified Composr searching system to find downloads that match their interests. i.e. downloads may be searched from the search module, or the search block.
+User's may use the unified Composr searching system to find downloads that match their interests. i.e. downloads may be searched from the [tt]search[/tt] module, or the search block.
 
-In addition, the search module is able to search within the actual downloadable files. The following file types are supported for keyword extraction:
+In addition, the [tt]search[/tt] module is able to search within the actual downloadable files. The following file types are supported for keyword extraction:
  - [tt].pdf[/tt]
  - [tt].txt[/tt], [tt].1st[/tt]
  - [tt].rtf[/tt]

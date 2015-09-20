@@ -112,6 +112,9 @@ To add a custom tag, do as follows:
  - Click the 'Add Custom Comcode tag' button
 
 Your tag will be shown in your local copy of the Comcode tutorial, with your title, description and usage example.
+
+You can edit a tag from Admin Zone > Setup > Custom Comcode > Edit Custom Comcode tag.
+You can delete a tag from the bottom of its edit form.
 [/surround]
 
 [box="Tip" width="25em" float="right"]

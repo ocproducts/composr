@@ -106,7 +106,7 @@ The easiest way is to go to where members signup, and act on their behalf.
 
 To unsubscribe a member from a newsletter:
 1) Log in with your administrative account, if you haven't already got an admin login open
-2) Go to the newsletter module ([tt]site:newsletter[/tt] page-link, About > Newsletter on the default menus)
+2) Go to the [tt]newsletter[/tt] module ([tt]site:newsletter[/tt] page-link, About > Newsletter on the default menus)
 3) Enter the email address you wish to unsubscribe. Leave all other fields blank.
 4) If you have interest levels enabled: change "Subscription level for <newsletter name>" to "Not subscribed". If you do not have interest levels enabled, untick (uncheck) "Subscribe to <newsletter name>".
 5) Click "Join newsletter/Change settings"
@@ -185,6 +185,10 @@ The block list is useful for situations such as:
  - You maintain a manual list of users who have unsubscribed and you are very careful to not send to them, even if someone re-subscribes them.
  - You want to block a list of e-mail addresses you know belong to competitors.
 You may add additional columns to the CSV file, which will be ignored. You can use this for keeping notes, for example. If you do this make sure you save as a true CSV file (comma-separated) though, not a TSV file.
+
+[title="2"]Welcome e-mails[/title]
+
+Welcome e-mails allow you to automatically send out e-mails to new members. This is described in the [page="_SEARCH:tut_adv_members"]Advanced Composr member system tutorial[/page].
 
 [title="2"]See also[/title]
 

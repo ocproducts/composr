@@ -58,7 +58,7 @@ If you already customised your panels or menus (perhaps via the Setup Wizard), y
 
 If you want to display the contents of a catalogue category within another page, you can embed it on there as a block. This is useful if you are trying to embed a database listing within a wider context (e.g. in the middle of an article), or if the listing is just not something you want people to have to separately navigate to).
 
-If you are using multiple categories, you'll probably not want to embed, as it is difficult to get category navigation working within an embedding scenario. The normal catalogues module (which is what you've already been using to display entries up to this point) is designed to handle all this kind of thing well, so it's best to make use of that.
+If you are using multiple categories, you'll probably not want to embed, as it is difficult to get category navigation working within an embedding scenario. The normal [tt]catalogues[/tt] module (which is what you've already been using to display entries up to this point) is designed to handle all this kind of thing well, so it's best to make use of that.
 
 This tutorial explains how to do embedding.
 
@@ -107,7 +107,7 @@ For modifying the template for the [tt]cars[/tt] catalogue, make copies of the f
 
 The [tt]CATALOGUE_cars_FIELDMAP_ENTRY_WRAP.tpl[/tt] file contains the template for displaying the individual catalogue entries within a category.
 
-The [tt]CATALOGUE_cars_CATEGORY_EMBED.tpl[/tt] file contains the template that binds all the catalogue entries together if you're displaying via embedding (the main_cc_embed block). The [tt]CATALOGUE_cars_CATEGORY_SCREEN.tpl[/tt] file contains the template that binds all the catalogue entries together if you're displaying via the catalogues module (i.e. not embedded).
+The [tt]CATALOGUE_cars_CATEGORY_EMBED.tpl[/tt] file contains the template that binds all the catalogue entries together if you're displaying via embedding (the main_cc_embed block). The [tt]CATALOGUE_cars_CATEGORY_SCREEN.tpl[/tt] file contains the template that binds all the catalogue entries together if you're displaying via the [tt]catalogues[/tt] module (i.e. not embedded).
 
 [b]Step2:[/b]
 In Composr, make sure you have the category listing open. If you are viewing via embedding, go to the page you embedded on. Otherwise, go to the default category listing for the cars catalogue.
@@ -176,7 +176,7 @@ Here,
 [tt]{CATALOGUE}[/tt] gives the name of the catalogue, and,
 [tt]{ENTRIES}[/tt] gives all the field map entries generated in step4's template.
 
-[b](if you're using the catalogues module to display the category):[/b]
+[b](if you're using the [tt]catalogues[/tt] module to display the category):[/b]
 Open the file [tt]CATALOGUE_cars_CATEGORY_SCREEN.tpl[/tt] in your text editor and clear its contents. Paste the below code to create the new template for the category screen:
 
 [code="HTML"]

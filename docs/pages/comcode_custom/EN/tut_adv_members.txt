@@ -64,6 +64,7 @@ Side note: If you (as staff) edit the profile of another member then none of the
 {!cns:DOC_CUSTOM_PROFILE_FIELDS} A 'locked' custom profile field can not be edited or deleted.
 
 You can manage Custom Profile Fields from: Admin Zone > Tools > Members > Custom Profile Fields.
+You can delete a Custom Profile Field from the bottom of its edit form.
 
 There are a number of custom profile field options that you may set that allow CPFs to function for a number of different purposes, including:
  - Storing hidden details on member (for example, a list of rule infractions, such as to aid decisions on cumulative punishment)
@@ -76,7 +77,7 @@ For details about the actual field types you can use, see the [page="_SEARCH:tut
 
 [title="3"]Limitations (don't go nuts!)[/title]
 
-If you have more than 60 textual CPFs (except Comcode ones), any ones created after the 60th will not be included for searching on the search module's member search form. This is due to a limitation in MySQL.
+If you have more than 60 textual CPFs (except Comcode ones), any ones created after the 60th will not be included for searching on the [tt]search[/tt] module's member search form. This is due to a limitation in MySQL.
 
 Additionally, you could run into problems with large numbers of CPFs on some servers. Some servers limit the number of request variables, either using a PHP setting, the unofficial Suhosin addon, or through other means that may not even be visible. If you notice field values disappearing, or WYSIWYG-edited fields showing in raw HTML after editing, it is likely caused by a server limitation.
 
@@ -157,6 +158,11 @@ When viewing an encrypted CPF on a member's profile screen, the encrypted data w
 
 Note that encrypted CPFs are not supported for any kind of CPF value that is not typed in (such as list selections).
 
+[title="3"]Statistics[/title]
+
+You can find a break-down of how CPFs were filled in from:
+Admin Zone > Audit > Custom Profile Field statistics
+
 [title="2"]Required fields[/title]
 
 The following fields usually need filling in:
@@ -205,6 +211,8 @@ Composr provides special support for composing a series of welcome e-mails that 
 
 Set these up at:
 Admin Zone > Tools > Welcome E-mails
+
+You can delete a Welcome E-mail from the bottom of its edit form.
 
 The purpose of this feature is to gradually advertise the features of your website to your members in a way that reinforces awareness. As most members will not usually return to a website, welcome e-mails provide a strong tool to keep them aware and entice them to fully embrace whatever service you are providing.
 

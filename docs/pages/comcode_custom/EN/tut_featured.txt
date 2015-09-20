@@ -75,7 +75,7 @@ If you wanted to choose a different yacht to display every week, for example, th
 
 Composr has one award that is pre-created for you as an example: Download Of The Week.
 
-Each award has its own archive, in the awards module ([tt]site:awards[/tt] page-link, About > Top content (Awards) of the default menus). The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
+Each award has its own archive, in the [tt]awards[/tt] module ([tt]site:awards[/tt] page-link, About > Top content (Awards) of the default menus). The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
 
 [box="Assigning points"]
 You can configure the awards (when you add or edit the award itself) to carry a number of points. If you do this, the submitter of content given that award will be given some points, and that'll show up on their points profile.

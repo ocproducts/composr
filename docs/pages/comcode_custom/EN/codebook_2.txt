@@ -114,7 +114,7 @@ JavaScript is separate from Java, and built into web browsers directly. It is us
 
 [title="3"]JavaScript libraries[/title]
 
-Composr has an inbuilt set of JavaScript libraries, which are split across a number of JavaScript template files that each begin with the name 'JAVASCRIPT'. The core library that is loaded onto every screen is named just [tt]global.js[/tt]. This core library is very general and doesn't know about Composr's individual modules -- it is a general-purpose library to provide functionality usable anywhere. Most of the other JavaScript libraries are specific to individual modules (e.g. the chat module uses [tt]chat.js[/tt]) or to specific aspects of Composr (e.g. the Comcode editing interface uses [tt]editing.js[/tt]). There are a few additional general purpose JavaScript libraries:
+Composr has an inbuilt set of JavaScript libraries, which are split across a number of JavaScript template files that each begin with the name 'JAVASCRIPT'. The core library that is loaded onto every screen is named just [tt]global.js[/tt]. This core library is very general and doesn't know about Composr's individual modules -- it is a general-purpose library to provide functionality usable anywhere. Most of the other JavaScript libraries are specific to individual modules (e.g. the [tt]chat[/tt] module uses [tt]chat.js[/tt]) or to specific aspects of Composr (e.g. the Comcode editing interface uses [tt]editing.js[/tt]). There are a few additional general purpose JavaScript libraries:
 1) [tt]ajax[/tt] -- AJAX call functionality, which should be used for all AJAX code.
 2) [tt]dragdrop[/tt] -- A drag and drop library (do not use this unless drag & drop really is the best way to build an interface, which is very rare)
 3) [tt]jquery[/tt] -- Bundled jQuery library, used on some screens (but not usually included as a cross-site dependency).
@@ -356,7 +356,7 @@ However, things aren't always so simple. There are some exceptions because some 
  - the Personal Galleries feature may mean that empty galleries may be left around, and also download galleries need to be skipped.
  - the gallery provides a flow-mode display type which is inherently module-based.
  - other modules use very fine-tuned listings for display categories/content. For example, the chat lobby shows rooms as a compact list.
- - other modules make custom content queries which don't match up to what the parameters for existing blocks can achieve. For example, the authors module shows what downloads and news belongs to a particular author.
+ - other modules make custom content queries which don't match up to what the parameters for existing blocks can achieve. For example, the [tt]authors[/tt] module shows what downloads and news belongs to a particular author.
 
 [box float="right" width="20em"]
 This abstraction quandary comes up in other places too. Often programmers will try and abstract everything and end up with a mess. For example, Composr CRUD modules define the form structure manually. We could try and automatically generate forms via the semantic database structure we already have -- but for usability we need much more control over how each form will look in every case.

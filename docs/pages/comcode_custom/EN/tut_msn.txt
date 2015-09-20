@@ -76,7 +76,7 @@ To share banners across your network, simply add all banners to the central site
 [surround]
 [media width="150" description="Configuring the staff system" float="left"]data_custom/images/docs/tut_msn/msn_staff.png[/media]
 [media width="150" description="Managing staff" float="right"]data_custom/images/docs/tut_msn/msn_staff_2.png[/media]
-As permissions are set separately on each M.S.N. site (except for forum access permissions), it is possible to assign different staff access to key functions on different sites by usergroup. However, assigning staff is more than a permissive issue, it is also a presentation issue: for the staff module to work, there needs to be some way for Composr to actually list staff other than merely by usergroup permission. This is done via the 'staff filter' feature, available under security/usergroup configuration.
+As permissions are set separately on each M.S.N. site (except for forum access permissions), it is possible to assign different staff access to key functions on different sites by usergroup. However, assigning staff is more than a permissive issue, it is also a presentation issue: for the [tt]staff[/tt] module to work, there needs to be some way for Composr to actually list staff other than merely by usergroup permission. This is done via the 'staff filter' feature, available under security/usergroup configuration.
 
 The staff filter works by storing 'staff on' lists under all member profiles that would be staff if the filter was off. These are comma-separated lists of site-names the member is staff-on, and are stored as a hidden Composr custom profile field.
 [/surround]

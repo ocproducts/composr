@@ -64,7 +64,7 @@ Gift points are useless unless spent, so the only advantage to hoarding them is 
 
 When a member buys something from the Point Store, the staff are informed of it via e-mail of appropriate details.
 
-The Point Store shop front is accessed via the pointstore module ([tt]site:pointstore[/tt] page-link, Social > Point-store on the default menus)
+The Point Store shop front is accessed via the [tt]pointstore[/tt] module ([tt]site:pointstore[/tt] page-link, Social > Point-store on the default menus)
 
 Point Store inventory management is at:
 Admin Zone > Setup > Point Store inventory management
@@ -231,6 +231,8 @@ Note that rank changes are triggered by actions. Someone will not go up in rank 
 [surround]
 [media width="150" description="The points leader-board" float="right"]data_custom/images/docs/tut_points/points_leader_board.png[/media]
 The leader-board is a block, and corresponding archive viewing module, for the displaying of the top point holders for each week. Like rank, this is another incentive for members to earn points.
+
+The module is the [tt]leader_board[/tt] module ([tt]site:leader_board[/tt] page-link, Social > Leader-board on the default menus).
 
 Please be aware that the leader-board is not entirely accurate, as it actually only calculates the point count of top post count holders, and orders according to this; the reason for this is that, as explained earlier, point count is not actually stored, and calculating it for all members simultaneously would not be efficient. This is unlikely to be noticed, however, because more post count holders are chosen for point calculation than point holders shown, hence a buffer zone exists to reduce the chance of error.
 

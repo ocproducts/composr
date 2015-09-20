@@ -163,12 +163,13 @@ As you can see, that's complex, so unless you have a spam problem here that your
 {!polls:DOC_POLLS}
 
 Polls are managed from Content Management > Polls.
+You can delete a poll from the bottom of its edit form.
 
 [media width="150" description="Adding a poll" float="left"]data_custom/images/docs/tut_feedback/feedback_add_poll.png[/media]
 [media width="150" description="The poll block, once a poll is chosen" float="right"]data_custom/images/docs/tut_feedback/feedback_poll.png[/media]
 By default, the poll block is displayed on the front page (unless this was changed in the Setup Wizard), and set up to display whatever poll is currently selected from those that were added. On a fresh install, there is of course no poll yet, so a message about this is shown. When you add or edit a poll, you have the choice to select it as the current poll: the selection date is stored, and this allows Composr to display an archive of past polls.
 
-The past polls can be found from the polls module ([tt]site:polls[/tt] page-link, Social > Polls on the default menus).
+Past polls can be found from the [tt]polls[/tt] module ([tt]site:polls[/tt] page-link, Social > Polls on the default menus).
 
 Members can only vote once in a poll. Guests may only vote once. IP addresses as well as member IDs are used to see who has previously voted. If a user chooses to view poll results before voting, they forfeit their vote. Once Composr has decided a user cannot vote (again), that user will only see the results whenever they see that poll.
 

@@ -101,7 +101,7 @@ However, if the "Restrict to one member per e-mail address" option is enabled th
 In Composr, the term 'profile' is used almost as a synonym for 'account'. Each member has a profile, which stores the settings for their account. There are countless areas in Composr that link to view a member profile, generally where a user-name is displayed in some form of context (for example, as the user who made a shout-box comment).
 
 An alternative way to view a member profile is to select/search using the member directory.
-The directory is provided by the members module ([tt]site:members[/tt] page-link, Social > Member directory on the default menus).
+The directory is provided by the [tt]members[/tt] module ([tt]site:members[/tt] page-link, Social > Member directory on the default menus).
 
 Member profiles contain information on the member, including:
  - Statistics: Posts, Points, last submission time, and most active forum
@@ -137,7 +137,12 @@ Links include:
 [title="2"]Member observation[/title]
 
 [media width="150" description="Viewing the list of online members" float="right"]data_custom/images/docs/tut_members/members_online.png[/media]
-There is a link to view the current 'Users Online' on forum pages (at the bottom). There is also a block you can use, [tt]side_users_online[/tt] that shows:
+
+Online members are shown at the bottom of social screens, via the default placement of the [tt]main_bottom_bar[/tt] block.
+
+You can also go directly to the [tt]users_online[/tt] module ([tt]site:users_online[/tt] page-link, Social > Users online on the default menus).
+
+There is also a side block you can use, [tt]side_users_online[/tt] that shows:
  - a list of online users
  - how many guests are online
  - the newest member

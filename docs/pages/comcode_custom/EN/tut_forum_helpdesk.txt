@@ -10,9 +10,16 @@ Running an online helpdesk is something many companies will want to do. It allow
 [media width="150" description="Adding a multi-moderation" float="right"]data_custom/images/docs/tut_forum_helpdesk/forum_helpdesk_add_multi_moderation.png[/media]
 {!cns_multi_moderations:DOC_MULTI_MODERATIONS}
 
-[title="3"]Adding a multi-moderation[/title]
+[title="3"]Adding/editing/deleting a multi-moderation[/title]
 
-To add a multi-moderation, go to Admin Zone > Structure > Forums > Multi-moderations > Add multi-moderation. Fill out all the fields on the form as required. Try to make the post sound as professional as possible (if the multi-moderation is for making a formal response). Submit the form, and the multi-moderation will be available for use in all the specified forums (from the drop down list of topic actions that you see when viewing a topic).
+To add a multi-moderation, go to:
+Admin Zone > Structure > Forums > Multi-moderations > Add multi-moderation
+...and fill out all the fields on the form as required.
+Try to make the post sound as professional as possible (if the multi-moderation is for making a formal response). Submit the form, and the multi-moderation will be available for use in all the specified forums (from the drop down list of topic actions that you see when viewing a topic).
+
+Edit multi-moderations from:
+Admin Zone > Structure > Forums > Multi-moderations > Edit multi-moderation.
+You can delete a multi-moderation from the bottom of its edit form.
 
 [title="3"]Using a multi-moderation[/title]
 
@@ -38,7 +45,10 @@ For topic view screens the actions are available in the 'Actions upon marked pos
 
 [title="3"]Adding a post template[/title]
 
-To add a post template, just open up the 'Add post template' screen in the Admin Zone (Go to Admin Zone > Structure > Forums > Post Templates), and fill in the forms. Composr provides useful features such as limiting the use of the post template to certain forums, making the post template the default post in the specified forums, and limiting use of the template to members of a certain minimum status.
+To add a post template, just open up the 'Add post template' screen in the Admin Zone (Go to Admin Zone > Structure > Forums > Post Templates), and fill in the forms.
+You can delete a post template from the bottom of its edit form.
+
+Composr provides useful features such as limiting the use of a post template to certain forums, making the post template the default post in the specified forums, and limiting use of the template to members of a certain minimum status.
 
 [title="3"]Using a post template[/title]
 

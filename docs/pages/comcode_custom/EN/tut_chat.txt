@@ -12,7 +12,7 @@ More information about using the chatroom functionality is available within Comp
 [media width="150" description="Choosing a chatroom to enter" float="right"]data_custom/images/docs/tut_chat/chat_chatroom_list.png[/media]
 The main chat screens (the chat lobby, and each chatroom) are what most users of the chat system will see; it's where all the messages are posted and received, and thus where most activity happens.
 
-The screens are within the chat module ([tt]site:chat[/tt] page-link, Social > Chat lobby on the default menus). When loaded the lobby presents you with a list of all chatrooms you are eligible to enter (i.e. ones you don't have permission to access or you've been banned from don't appear). If you have the right permissions (the 'Edit mid-impact (medium visibility) content' privilege, and access to the [tt]cms_chat[/tt] module), appropriate links also appear to the moderation module.
+The screens are within the [tt]chat[/tt] module ([tt]site:chat[/tt] page-link, Social > Chat lobby on the default menus). When loaded the lobby presents you with a list of all chatrooms you are eligible to enter (i.e. ones you don't have permission to access or you've been banned from don't appear). If you have the right permissions (the 'Edit mid-impact (medium visibility) content' privilege, and access to the [tt]cms_chat[/tt] module), appropriate links also appear to the moderation module.
 
 You will also see a friend list, which you can use to start instant messaging conversations. Instant Messaging conversations are like conversations in chatrooms, except rooms do not need to be created -- they are run on purely a private invitation basis and very quick to get going.
 [/surround]

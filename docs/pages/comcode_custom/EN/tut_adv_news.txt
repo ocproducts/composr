@@ -61,7 +61,7 @@ Also, when you view a news post you can see what categories it is in and choose 
 
 [title="2"]News archive / category indexes[/title]
 
-The default view of the news module is the news archive, i.e. showing chronological news posts, drawn out dependent on the configured above category filtering.
+The default view of the [tt]news[/tt] module is the news archive, i.e. showing chronological news posts, drawn out dependent on the configured above category filtering.
 
 There are also category index screens. The menu editor can find the entry-points for these index screens, but for reference they are:
  - [tt]site:news:select[/tt] -- list of all news categories (including blogs)

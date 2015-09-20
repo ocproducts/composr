@@ -47,7 +47,7 @@ You can delete a news category from the bottom of its edit form.
 
 [title="2"]Viewing news[/title]
 
-News can be accessed via the news module ([tt]site:news[/tt] page-link, Content > News on the default menus).
+News can be accessed via the [tt]news[/tt] module ([tt]site:news[/tt] page-link, Content > News on the default menus).
 
 Typically sites will also make it available via placement of the [tt]main_news[/tt] block on the front page.
 

@@ -688,7 +688,7 @@ If you need to define a list then you have to do that in a very strict way, like
 
 This section is an explanation of hooks in Composr, using search as an example of how they are used.
 
-The search module is a general purpose search tool. It provides a UI and it shows results. It needs to be able to find different kinds of results.
+The [tt]search[/tt] module is a general purpose search tool. It provides a UI and it shows results. It needs to be able to find different kinds of results.
 
 When something in Composr needs to do something but in lots of different kinds of way, or a place needs to be defined for different things of the same kind to happen, hooks are used.
 
@@ -696,7 +696,7 @@ Hooks are modular. They are plugins. They prevent us having to hard-code too man
 
 Hooks that go together do the same kind of thing. In the case of search, each search hook searches a different content type -- but they all search.
 
-All hooks that go together (e.g. all search hooks) have the same class interface and are stored in the same directory (*1). The code that uses the hook instantiates them and loads method(s) with parameter(s). The method(s) and parameter(s) used is essentially a design contract between hook implementations and the code written to call the hooks. They all fit a pattern. What pattern to use is defined by whatever calls the hooks -- in our case, the search module (*2); the actual hooks have to fit that pattern. Most hooks have an [tt]info[/tt] method and a [tt]run[/tt] method, but that is just a convention.
+All hooks that go together (e.g. all search hooks) have the same class interface and are stored in the same directory (*1). The code that uses the hook instantiates them and loads method(s) with parameter(s). The method(s) and parameter(s) used is essentially a design contract between hook implementations and the code written to call the hooks. They all fit a pattern. What pattern to use is defined by whatever calls the hooks -- in our case, the [tt]search[/tt] module (*2); the actual hooks have to fit that pattern. Most hooks have an [tt]info[/tt] method and a [tt]run[/tt] method, but that is just a convention.
 
 An example of some code that uses hooks is:
 [code="PHP"]
@@ -724,8 +724,8 @@ This code finds all modules/search hooks, then loops over the list of hook names
 (*1) Not quite. Hook files of the same kind might be in [tt]sources/hooks/<something>/<somethingelse>[/tt] and also [tt]sources_custom/hooks/<something>/<somethingelse>[/tt].
 This is because you place custom files in [tt]sources_custom[/tt] so that they are easily identified as such. It is very common in the case of hooks, if you're adding a new hook to the software.
 
-(*2) The Conversr members module does member searching, but does not use the search hooks. This search is separate and hard-coded. There is still a search hook for member searching for the search module to use though.
-You can generally tell what the hook is used by by it's file path. For example hooks in [tt]sources/hooks/modules/search[/tt] are for the search module.
+(*2) The Conversr [tt]members[/tt] module does member searching, but does not use the search hooks. This search is separate and hard-coded. There is still a search hook for member searching for the [tt]search[/tt] module to use though.
+You can generally tell what the hook is used by by it's file path. For example hooks in [tt]sources/hooks/modules/search[/tt] are for the [tt]search[/tt] module.
 
 [title="4"]Another example: member profiles[/title]
 
@@ -786,7 +786,7 @@ Notice how this class is named [tt]Hook_members_calendar[/tt]. The [tt]calendar[
 
 As discussed previously, these hooks have a convention of having a [tt]run[/tt] method that takes a member ID as a parameter, and thus the hook implementation above has this. The code inside the method does 3 things:
 1) It returns no-results if the calendar addon is not installed. We don't strictly need to do this, as this file won't be here normally if the calendar addon is not installed (the hook file is listed as one of the files in the calendar addon so would be uninstalled along with other calendar files). The reason we do it is in case the file was accidentally restored after the calendar addon was removed (there are many ways someone might accidentally do that).
-2) It checks a couple of permissions. One is that the accessing user has permission to [tt]assume_any_member[/tt] -- if they don't, no-results are returned, so the link won't show (this particular hook's link is for the purposes of admins, to allow them to access other member's calendars via their member profile, so should only show to admins really). It also checks the accessing user has access to the calendar module in general.
+2) It checks a couple of permissions. One is that the accessing user has permission to [tt]assume_any_member[/tt] -- if they don't, no-results are returned, so the link won't show (this particular hook's link is for the purposes of admins, to allow them to access other member's calendars via their member profile, so should only show to admins really). It also checks the accessing user has access to the [tt]calendar[/tt] module in general.
 3) It then returns an array structure that matches the convention for these hooks. That is:
 4) "List of tuples for results. Each tuple is: type,title,url" (checking the PHP-doc API signature is always handy if you want to know how a hook should behave). In this case the link is a 'views' link, is given a link caption of whatever the 'CALENDAR' language string contains, and has given the [tt]build_url[/tt]-defined URL. The [tt]members[/tt] module (this is where the hooks are called from) knows what to do with this tuple of data, we just had to make sure we return what was expected.
 
@@ -812,7 +812,7 @@ In Composr content types are implemented via a lot of different files. The best 
  - [tt]sources_custom/hooks/blocks/main_staff_checklist/iotds.php[/tt] -- This is a staff checklist hook that is used to show whether the IOTD needs setting, as a checklist item on the Admin Zone front page. Most content-types don't provide this hook.
  - [tt]sources_custom/hooks/modules/admin_import_types/iotds.php[/tt] -- This is an importer hook, it's not very interesting and you are very unlikely to need to write one.
  - [tt]sources_custom/hooks/modules/admin_setupwizard/iotds.php[/tt] -- This is a Setup Wizard hook, and this particular hook allows the Setup Wizard to place the IOTD block automatically on the website (Setup Wizard hooks can do various things, this is just one example of what a Setup Wizard hook can do). You are very unlikely to need to write one of these hooks.
- - [tt]sources_custom/hooks/modules/search/iotds.php[/tt] -- This is a search hook, to allow IOTDs to be searchable from the Composr search module.
+ - [tt]sources_custom/hooks/modules/search/iotds.php[/tt] -- This is a search hook, to allow IOTDs to be searchable from the Composr [tt]search[/tt] module.
  - [tt]sources_custom/hooks/systems/content_meta_aware/iotd.php[/tt] -- This hook is used to provide the search-engine-friendly URLs for IOTDs. It specifies the details Composr needs to be able to automatically generate URL keywords and tie them into ID numbers. In the future it is likely Composr will use this kind of hook for more things, and can generally be considered as a way for a content type to declare/define some of it's properties.
  - [tt]sources_custom/hooks/systems/page_groupings/iotds.php[/tt] -- This hook places IOTD icons in the Admin Zone/CMS Zone do-next menus.
  - [tt]sources_custom/hooks/systems/preview/iotd.php[/tt] -- This hook allows IOTDs to have user-friendly previews from the add/edit form. It provides a method to scan to see if you are trying to preview an IOTD, and another method to generate a preview from the data passed to the preview script via the POST environment.
@@ -832,7 +832,7 @@ In Composr content types are implemented via a lot of different files. The best 
 
 In Composr we need to program modules so that they auto-create database structure and database contents. Even if working direct for a single client, it is best that modules be constructed like this as it eases development (it's easy to set up different development sites for example).
 
-If creating, for example, some kind of property website, it would be best to pre-populate location tables in the installation code of the new key module that uses them. The default catalogues module does a similar thing, with it's creation of some default catalogues.
+If creating, for example, some kind of property website, it would be best to pre-populate location tables in the installation code of the new key module that uses them. The default [tt]catalogues[/tt] module does a similar thing, with it's creation of some default catalogues.
 
 It is natural that you won't get your database code right first time. When developing you probably do not want to have to manually alter the database and code separately each time a non-minor change is made, although of course you can do. Instead you can reinstall the module from the Admin Zone. Go to Admin Zone > Setup > Addons, then you'll find a link for module management under there. If you find you can't uninstall/reinstall/install your module, you coded it as 'locked' (in the info method) and you probably shouldn't have.
 

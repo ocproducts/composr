@@ -14,14 +14,14 @@ Each kind of content type displays in its own way. For example, matched news pos
 
 [title="2"]Detailed searches[/title]
 
-If you would like to carry out detailed searches you need to go to the search module.
+If you would like to carry out detailed searches you need to go to the [tt]search[/tt] module.
 
 There are 3 typical ways to reach this:
 1) By conducting a basic search from the top bar and then changing the options at the bottom of the search results.
-2) From the search module ([tt]site:search[/tt] page-link, About > Search on the default menus).
+2) From the [tt]search[/tt] module ([tt]site:search[/tt] page-link, About > Search on the default menus).
 3) If the search block has been put on a panel then there is a 'More' button there too.
 
-The search module has many options:
+The [tt]search[/tt] module has many options:
 
 [title="3"]Search For[/title]
 

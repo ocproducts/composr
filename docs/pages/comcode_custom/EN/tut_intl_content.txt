@@ -52,7 +52,7 @@ To understand what the content translation can do, and how it works, we need to 
 4) Using the Zone Editor
 5) Content translation (described in the next section)
 
-For '1' (newsletters), you will get a choice what language to send it for when you go to the newsletter module. Subscribers choose their language when they sign up.
+For '1' (newsletters), you will get a choice what language to send it for when you go to the [tt]newsletter[/tt] module. Subscribers choose their language when they sign up.
 
 Similarly, for '2'-'4', you will get a choice of language which to edit under when you go to the respective section of Composr. What you save will be saved accordingly.
 

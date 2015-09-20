@@ -37,7 +37,7 @@ There are two display modes for galleries:
 
 Regardless of display mode, the user can choose any of the available entries (images or videos), and the chosen entry will be presented to the user.
 
-Galleries are viewed from the galleries module ([tt]site:galleries[/tt] page-link, Content > Galleries home on the default menus).
+Galleries are viewed from the [tt]galleries[/tt] module ([tt]site:galleries[/tt] page-link, Content > Galleries home on the default menus).
 
 [title="3"]Gallery index[/title]
 

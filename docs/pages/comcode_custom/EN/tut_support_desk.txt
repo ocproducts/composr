@@ -27,7 +27,9 @@ Four different Composr systems may be used to provide such a support desk:
 [media width="150" description="Managing support ticket types" float="right"]data_custom/images/docs/tut_support_desk/support_ticket_types.png[/media]
 {!tickets:DOC_TICKETS}
 
-You can add/edit/delete support ticket types from Admin Zone > Setup > Support tickets.
+You can add/edit/delete support ticket types from:
+Admin Zone > Setup > Support tickets.
+You can delete a support ticket type from the bottom of its edit form.
 
 Support tickets are created simply by visiting the support ticket page, clicking to add a ticket, and filling in the appropriate details. Upon completion of this, an e-mail is sent to the staff, and the staff can then respond to the ticket as appropriate.
 
@@ -98,8 +100,10 @@ Staff will see all open support tickets when they visit the support ticket page,
 As described earlier, the forum is used to store the tickets.
 
 The ticket forum should not generally be used for making or managing support tickets. It is also generally configured as closed to regular users (i.e. staff-only).
-The tickets module is the primary interface for making or managing tickets.
-Advantages of using the tickets module include:
+
+The primary interface for making or managing tickets is the [tt]tickets[/tt] module ([tt]site:tickets[/tt] page-link, About > Support tickets on the default menus).
+
+Advantages of using the [tt]tickets[/tt] module include:
  - the ability to split replies into separate tickets
  - ticket assignment
  - ticket type filtering

@@ -87,6 +87,8 @@ In the form part of the screen there are the following fields:
  - a check-box to determine whether the link will be shown only if there is permission to actually view the page (slight efficiency hit)
  - options to automatically include Sitemap children (useful if you want to have deep menus that automatically expand as you add new content categories)
 
+You can also delete the menu from a button at the bottom.
+
 [title="2"]Entry points[/title]
 
 Entry points are used in the site-tree tool in the menu editor.

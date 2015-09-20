@@ -273,7 +273,7 @@ If you are linking to a specific page via a template or some XHTML within a Comc
 [code="Text"]
 href="{$PAGE_LINK*,site:news}"
 [/code]
-"news" is the name of the page being linked to, and "site" is the zone the "news" page is in.
+[tt]news[/tt] is the name of the page being linked to, and [tt]site[/tt] is the zone the [tt]news[/tt] page is in.
 You can usually identify page-links to use from the URL. In this case the URL would be something like:
  - [tt]http://<yourbaseurl>/site/index.php?page=news[/tt]
  - or, [tt]http://<yourbaseurl>/site/news.htm[/tt]

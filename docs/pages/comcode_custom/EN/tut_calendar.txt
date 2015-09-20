@@ -67,7 +67,7 @@ The calendar has 5 views:
 4) you can view a whole day
 5) you can view a specific event
 
-The views are a part of the calendar module
+The views are a part of the [tt]calendar[/tt] module
 ([tt]site:calendar[/tt] page-link,
 Social > Calendar on the default menus).
 [/surround]

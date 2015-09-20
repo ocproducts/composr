@@ -80,7 +80,7 @@ Any usergroup with the "Avoid banners" permission will not see banners. Super ad
 
 [surround]
 [media width="150" description="Viewing the status of a banner" float="left"]data_custom/images/docs/tut_banners/banners_view.png[/media]
-There is a facility for staff and banner submitters to view the status of their banner. This is via the banners module ([tt]site:banners[/tt] page-link, About > Banners on the default menus). Information about how much the banner has been viewed and clicked is shown, as well as the equivalent statistics for how the banners associated website (if there is one) has viewed and clicked the banner network.
+There is a facility for staff and banner submitters to view the status of their banner. This is via the [tt]banners[/tt] module ([tt]site:banners[/tt] page-link, About > Banners on the default menus). Information about how much the banner has been viewed and clicked is shown, as well as the equivalent statistics for how the banners associated website (if there is one) has viewed and clicked the banner network.
 
 The details shown may have important statistical significance. For example, a banner that is viewed a lot, but never clicked, may not be a 'profitable' one to have in the rotation (note however, that a simple banner view could impact a visitor, and thus it actually being clicked is not always a measure of the user impact).
 

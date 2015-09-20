@@ -54,7 +54,7 @@ You may order the fields, make some invisible, make some optional, and choose wh
 
 The first field in a catalogue is used as the title field for entries in that catalogue.
 
-You may also specify which fields may be used to search the catalogue (searching is performed with the regular Composr search module).
+You may also specify which fields may be used to search the catalogue (searching is performed with the regular Composr [tt]search[/tt] module).
 
 For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].
 
@@ -167,7 +167,7 @@ You can delete an entry from the bottom of its edit form.
 
 [title="2"]Viewing catalogues[/title]
 
-You view catalogues via the catalogues module ([tt]site:catalogues:index:<catalogue-name>[/tt] page-link gets you to a catalogue's index). Individual catalogue links are automatically added under Content on the default menus.
+You view catalogues via the [tt]catalogues[/tt] module ([tt]site:catalogues:index:<catalogue-name>[/tt] page-link gets you to a catalogue's index). Individual catalogue links are automatically added under Content on the default menus.
 [/surround]
 
 [title="2"]Permissions[/title]
@@ -308,7 +308,7 @@ The unofficial classified ads addon overrides the functionality of [tt]ce_last_m
 
 [title="2"]Searching catalogues[/title]
 
-The Composr search module provides special support for searching catalogues by matching against field values. You can choose which fields are searchable when you add them to the catalogue (or when you go back to edit).
+The Composr [tt]search[/tt] module provides special support for searching catalogues by matching against field values. You can choose which fields are searchable when you add them to the catalogue (or when you go back to edit).
 
 [title="2"]CSV import[/title]
 

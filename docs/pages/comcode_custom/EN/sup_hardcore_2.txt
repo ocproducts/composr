@@ -8,7 +8,7 @@ Welcome to the second of our series of addon making tutorials. If you haven't ye
 
 Today we're going to make a module that will allow you to track visitors progress through your website, for all those who enter your website with a special 'from' label in the URL (e.g. [tt]http://baseurl/?from=affiliate1[/tt]).
 
-We'll also keep tally of whether they visited the purchase module and whether they joined, to get an idea on how 'successful the visit was' from the webmaster's point of view.
+We'll also keep tally of whether they visited the [tt]purchase[/tt] module and whether they joined, to get an idea on how 'successful the visit was' from the webmaster's point of view.
 
 As with the previous tutorial, we'll avoid making things difficult for ourselves, and just write our code in English, without using templates. As we're making a module this time, we'll be implementing using a 'mini-module'.
 
