@@ -65,7 +65,7 @@ class Hook_addon_registry_testing_platform
      */
     public function get_copyright_attribution()
     {
-        return array();
+        return array('Marcus Baker', 'Jason Sweat', 'Travis Swicegood', 'Perrick Penet', 'Edward Z. Yang', 'ocProducts');
     }
 
     /**
@@ -75,7 +75,7 @@ class Hook_addon_registry_testing_platform
      */
     public function get_licence()
     {
-        return 'Licensed on the same terms as Composr';
+        return 'LGPL (SimpleTest), tests licensed on the same terms as Composr';
     }
 
     /**
