@@ -198,7 +198,7 @@ The server itself, has a file system, much like a desktop computer, and is usual
 
 Of course this is only a partial detailing of the directory structure, but the intent is to provide you with an overview of what is really happening on your server. Usually you will not be able to, using your control panel or SFTP/FTP, see outside of '/home/your-account-name/'. When you install Composr, you usually would place the quick installer or manual installer files inside '/home/your-account-name/httpdocs/'; this is the directory that becomes accessible at the base URL of your website.
 
-For instance, if your account on the server was associated with a domain name, 'mywebsite.com', then [tt]http://www.mywebsite.com/index.php[/tt] would be tied to the file system file, '/home/your-account-name/httpdocs/index.php' (often the 'www.' is removable, but not on all servers).
+For instance, if your account on the server was associated with a domain name, 'mywebsite.com', then [tt]http://mywebsite.com/index.php[/tt] would be tied to the file system file, '/home/your-account-name/httpdocs/index.php' (often the 'www.' is removable, but not on all servers).
 In addition, from your main FTP account, the same file would likely be '/httpdocs/index.php'.
 
 In other words, three views of the file system exist, according to context:

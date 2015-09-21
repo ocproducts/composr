@@ -32,6 +32,10 @@ class Hook_profiles_tabs_edit_settings
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (post_param_integer('delete', 0) == 1) {
+            return false; // So no form validation
+        }
+
         return (($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'assume_any_member')) || (has_privilege($member_id_viewing, 'member_maintenance')));
     }
 

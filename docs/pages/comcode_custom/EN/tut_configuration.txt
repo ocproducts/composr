@@ -198,7 +198,7 @@ In the event your hosting platform does not allow you access to CRON, there are 
  - EasyCron provide direct instructions for Composr, and free and paid plans: http://www.easycron.com/tutorials/how-to-set-up-cron-job-for-ocportal (actually the instructions are for ocPortal, but this is just the old name for Composr)
  - Other free options are http://www.mywebcron.com/ (up to every 5 minutes), http://www.setcronjob.com/ (up to every 5 minutes but the schedule needs to be re-set every week) and http://www.onlinecronjobs.com/ (up to 5 jobs twice a day).
 
-Simply sign up and  add the URL i.e. [tt]http://yourwebsiteaddress.com/data/cron_bridge.php[/tt] to the scheduler and set how often you want it to run.
+Simply sign up and  add the URL i.e. [tt]http://yourbaseurl/data/cron_bridge.php[/tt] to the scheduler and set how often you want it to run.
 [staff_note]We have since optimised things so this is commented out
 [title="3"]Caveats[/title]
 

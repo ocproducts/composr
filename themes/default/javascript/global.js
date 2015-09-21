@@ -1190,7 +1190,7 @@ function find_url_tab(hash)
 		}
 		else if ((tab.indexOf('__')!=-1) && (document.getElementById('g_'+tab.substr(0,tab.indexOf('__')))))
 		{
-			var old=window.location.hash;
+			var old=hash;
 			select_tab('g',tab.substr(0,tab.indexOf('__')));
 			window.location.hash=old;
 		}

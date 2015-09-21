@@ -6,7 +6,7 @@ Welcome to the second of our series of addon making tutorials. If you haven't ye
 
 [title="2"]Making a tracking module[/title]
 
-Today we're going to make a module that will allow you to track visitors progress through your website, for all those who enter your website with a special 'from' label in the URL (e.g. [tt]http://baseurl/?from=affiliate1[/tt]).
+Today we're going to make a module that will allow you to track visitors progress through your website, for all those who enter your website with a special 'from' label in the URL (e.g. [tt]http://yourbaseurl/?from=affiliate1[/tt]).
 
 We'll also keep tally of whether they visited the [tt]purchase[/tt] module and whether they joined, to get an idea on how 'successful the visit was' from the webmaster's point of view.
 
@@ -80,7 +80,7 @@ print_r($failure);
 [/code]
 
 [media width="150" description="Our mini-module in action on {$BRAND_BASE_URL}. Heavily censored to protect our and our visitors privacy ;)." float="right"]data_custom/images/docs/sup_hardcore_2/hardcore_censor.png[/media]
-We call up the mini-module by going to [tt]http://baseurl/adminzone/?page=admin_tracking[/tt], as we saved it as a page in the Admin Zone.
+We call up the mini-module by going to [tt]http://yourbaseurl/adminzone/?page=admin_tracking[/tt], as we saved it as a page in the Admin Zone.
 
 The mini-module is actually very simple -- mainly it just looks for all the hits to the website where a [tt]from[/tt] parameter was given, and then puts out all the URLs they visited since entering the site, by date, along with some other basic information. It also looks for whether each hit user joined or went to purchase and tallies it against each 'from' value it finds.
 

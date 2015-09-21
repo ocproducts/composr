@@ -61,7 +61,7 @@ Composr link alternation works by replacing simple patterns to local relative li
 A link [tt]mypage.htm[/tt] would go to the Composr [tt]:mypage[/tt] entry point.
 
 As Composr can only rewrite the simple links, the process of fixing broken links is often a matter of simplifying them. For example:
- - [tt]http://mybaseurl/mypage.htm[/tt] could not be fixed by Composr, because it is not a local link. Change it to [tt]mypage.htm[/tt].
+ - [tt]http://yourbaseurl/mypage.htm[/tt] could not be fixed by Composr, because it is not a local link. Change it to [tt]mypage.htm[/tt].
  - [tt]../mypage.htm[/tt] might be used from a page located in a subdirectory. Unfortunately Composr can't realistically recognise this, so it can't translate this link. In this case, you would need to replace the link with the proper Composr page-link.
 
 To clarify, the following linking situations confuse Composr:

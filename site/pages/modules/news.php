@@ -202,6 +202,7 @@ class Module_news
         $type = get_param_string('type', 'browse');
 
         require_lang('news');
+        require_code('news');
 
         inform_non_canonical_parameter('select');
         inform_non_canonical_parameter('select_and');
@@ -325,7 +326,7 @@ class Module_news
             // Category membership
             $news_cats = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NULL OR id=' . strval($myrow['news_category']));
             $news_cats = list_to_map('id', $news_cats);
-            $img = ($news_cats[$myrow['news_category']]['nc_img'] == '') ? '' : find_theme_image($news_cats[$myrow['news_category']]['nc_img']);
+            $img = get_news_category_image_url($news_cats[$myrow['news_category']]['nc_img']);
             if (is_null($img)) {
                 $img = '';
             }
@@ -389,7 +390,6 @@ class Module_news
     public function run()
     {
         require_code('feedback');
-        require_code('news');
         require_css('news');
 
         $type = get_param_string('type', 'browse');

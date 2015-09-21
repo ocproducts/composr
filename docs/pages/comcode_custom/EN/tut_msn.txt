@@ -69,7 +69,7 @@ You may share news by placing it on the central network site, and using the RSS 
 
 [title="2"]Banners[/title]
 
-To share banners across your network, simply add all banners to the central site, and place the URL to the central site's [tt]http://<baseurl>/banner.php[/tt] script as the only banner in the banner rotation for all the other M.S.N. sites. You may add additional banners to M.S.N. sites if you want to mix central banners with individual rotations.
+To share banners across your network, simply add all banners to the central site, and place the URL to the central site's [tt]http://yourbaseurl/banner.php[/tt] script as the only banner in the banner rotation for all the other M.S.N. sites. You may add additional banners to M.S.N. sites if you want to mix central banners with individual rotations.
 
 [title="2"]The staff system[/title]
 

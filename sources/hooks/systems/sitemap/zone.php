@@ -297,6 +297,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     $page_groupings[$page_grouping][] = $link;
                 }
             }
+            $pages_found[':' . get_zone_default_page('')] = true;
+            $pages_found[$zone . ':' . $zone_default_page] = true;
 
             // Any left-behind pages?
             // NB: Code largely repeated in page_grouping.php

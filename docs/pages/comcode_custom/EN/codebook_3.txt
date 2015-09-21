@@ -316,7 +316,7 @@ Composr's git repository contains the [tt]testing_platform[/tt] addon, which is 
 Writing new tests is really easy, just write a [tt]_tests/tests/unit_tests/whatever.php[/tt] file. Use the SimpleTest assert system to verify test results match expectations.
 If you are coding for core Composr, make sure the new test file is added to the [tt]sources_custom/hooks/systems/addon_registry/testing_platform.php[/tt] file (so that the [tt]testing_platform[/tt] addon will bundle your test).
 
-You can browse/run tests via [tt]http://yoursite/_tests[/tt].
+You can browse/run tests via [tt]http://yourbaseurl/_tests[/tt].
 
 Never install the testing platform on a live site, or at least if you do block public access to it via the web server configuration.
 
@@ -400,7 +400,7 @@ Values are like hidden configuration options. They are either hidden because the
 
 We have the following which are either unlikely to be useful, or potentially unstable or unpolished:
  - Integrations
-  - [tt]force_admin_auth[/tt] -- set this to '1' if you want any super-administrator to have to have some kind of authorisation-based login by redirecting them to [tt]http://base_url/admin_login/[/tt] which presumably you have configured to be a redirect-through that catches logins (Apache only)
+  - [tt]force_admin_auth[/tt] -- set this to '1' if you want any super-administrator to have to have some kind of authorisation-based login by redirecting them to [tt]http://yourbaseurl/admin_login/[/tt] which presumably you have configured to be a redirect-through that catches logins (Apache only)
   - [tt]no_password_hashing[/tt] -- set this to '1' if you want passwords to be stored as plain-text in the database (not recommended)
   - [tt]xhtml_strict[/tt] -- set this to '1' to do some magic to make Composr's output XHTML strict. This is slow and not really advisable as it will degrade the user experience if JavaScript is not available (new-window links would break)
   - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file

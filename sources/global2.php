@@ -1130,15 +1130,13 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
     $zones[] = 'data';
     $zones = array_merge($zones, find_all_zones());
     foreach ($zones as $zone) {
-        if ($zone != 'site') { // If not found, we assume in here
-            if (is_file(get_file_base() . '/' . $zone . '/' . $name . '.php')) {
-                $ret = get_base_url() . '/' . $zone . (($zone != '') ? '/' : '') . $name . '.php';
-                $FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code] = $ret;
-                if (function_exists('persistent_cache_set')) {
-                    persistent_cache_set('SCRIPT_PLACES', $FIND_SCRIPT_CACHE);
-                }
-                return $ret . $append;
+        if (is_file(get_file_base() . '/' . $zone . '/' . $name . '.php')) {
+            $ret = get_base_url() . '/' . $zone . (($zone != '') ? '/' : '') . $name . '.php';
+            $FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code] = $ret;
+            if (function_exists('persistent_cache_set')) {
+                persistent_cache_set('SCRIPT_PLACES', $FIND_SCRIPT_CACHE);
             }
+            return $ret . $append;
         }
     }
     $ret = get_base_url(($base_url_code == 0) ? null : ($base_url_code == 2)) . '/site/' . $name . '.php';

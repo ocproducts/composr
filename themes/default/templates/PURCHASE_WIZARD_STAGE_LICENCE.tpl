@@ -15,7 +15,7 @@
 
 	<p>
 		{+START,IF,{$JS_ON}}
-			<button onclick="disable_button_just_clicked(this); document.location='{$PAGE_LINK;*,:}'; return false;" class="buttons__no button_screen">{!I_DISAGREE}</button>
+			<button onclick="disable_button_just_clicked(this); window.location='{$PAGE_LINK;*,:}'; return false;" class="buttons__no button_screen">{!I_DISAGREE}</button>
 		{+END}
 
 		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__yes button_screen" type="submit" value="{!PROCEED}"{+START,IF,{$JS_ON}} disabled="disabled"{+END} id="proceed_button" />

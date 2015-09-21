@@ -311,12 +311,9 @@ class Block_main_news
                         $img_raw = $base_url . '/' . $img_raw;
                     }
                     require_code('images');
-                    $img = do_image_thumb($img_raw, $category, false);
+                    $img = $img_raw;
                 } else {
-                    $img_raw = ($news_cat_row['nc_img'] == '') ? '' : find_theme_image($news_cat_row['nc_img']);
-                    if (is_null($img_raw)) {
-                        $img_raw = '';
-                    }
+                    $img_raw = get_news_category_image_url($news_cat_row['nc_img']);
                     $img = $img_raw;
                 }
 

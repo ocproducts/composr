@@ -1311,6 +1311,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                         }
                     }
 
+                    $fields_keys = array_keys($fields);
+
                     $where_clause_or = '';
                     $where_clause_or_fields = '';
                     foreach ($all_fields as $field) {
@@ -1318,7 +1320,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             continue;
                         }
 
-                        if (($only_titles) && ($field !== current($raw_fields)) && ($field !== key($fields))) {
+                        if (($only_titles) && ($field !== current($raw_fields)) && ($field !== $fields_keys[0]) && (!isset($fields_keys[1]) || $fields_keys[0] !== '!' || $field !== $fields_keys[1])) {
                             break;
                         }
 
@@ -1350,10 +1352,13 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                         $where_clause_or .= preg_replace('#\?#', $where_clause_or_fields, $__where);
                     }
 
-                    if ($where_clause_and != '') {
-                        $where_clause_and .= ' ' . $boolean_operator . ' ';
+                    if ($where_clause_or != '') {
+                        if ($where_clause_and != '') {
+                            $where_clause_and .= ' ' . $boolean_operator . ' ';
+                        }
+
+                        $where_clause_and .= '(' . $where_clause_or . ')';
                     }
-                    $where_clause_and .= '(' . $where_clause_or . ')';
                 }
             }
             if ($disclude_where != '') {

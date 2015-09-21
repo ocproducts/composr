@@ -73,8 +73,8 @@ In your HTML the OpenGraph tags look similar to:
 [code="HTML"]
 <meta property="og:title" content="Example page" />
 <meta property="og:type" content="comcode_page" />
-<meta property="og:url" content="http://yourexamplesite/docs/index.php?page=tut_metadata" /><meta property="og:site_name" content="yourdomain.com" />
-<meta property="og:image" content="http://yourexamplesite/themes/default/images/EN/logo/standalone_logo.png" />
+<meta property="og:url" content="http://yourbaseurl/docs/index.php?page=tut_metadata" /><meta property="og:site_name" content="yourdomain.com" />
+<meta property="og:image" content="http://yourbaseurl/themes/default/images/EN/logo/standalone_logo.png" />
 <meta property="og:locale" content="en_GB" />
 [/code]
 
@@ -90,8 +90,8 @@ There are many different recommended sizes for Apple Web Clip images, for differ
 
 In your HTML the icon tags look similar to:
 [code="HTML"]
-<link rel="icon" href="http://yourexamplesite/themes/default/images/favicon.ico" type="image/x-icon" sizes="16x16 24x24 32x32 48x48" />
-<link rel="apple-touch-icon" href="http://yourexamplesite/themes/default/images/webclipicon.ico" sizes="120x120 144x144 152x152" /> 
+<link rel="icon" href="http://yourbaseurl/themes/default/images/favicon.ico" type="image/x-icon" sizes="16x16 24x24 32x32 48x48" />
+<link rel="apple-touch-icon" href="http://yourbaseurl/themes/default/images/webclipicon.ico" sizes="120x120 144x144 152x152" /> 
 [/code]
 
 [title="2"]Worked example - The site-wide OpenGraph image[/title]

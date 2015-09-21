@@ -261,8 +261,8 @@ To remove the possibility of search engines indexing the login screens of your A
 [code="htaccess"]
 User-agent: *
 Disallow: /adminzone/
-Sitemap: http://yourwebsite/data_custom/sitemaps/index.xml
-Sitemap: http://yourwebsite/data_custom/sitemaps/news_sitemap.xml
+Sitemap: http://yourbaseurl/data_custom/sitemaps/index.xml
+Sitemap: http://yourbaseurl/data_custom/sitemaps/news_sitemap.xml
 [/code]
 
 I also added a line there to say where your XML Sitemap is.

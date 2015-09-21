@@ -42,12 +42,11 @@ For example:
 	margin-{!en_right}: 0 !important; /* as would cause wrapping with the overflow hidden */
 	position: relative;
 	{!en_left}: -1px; /* In place of margin-right */
-	border-left: 0;
 }
 
 .menu_type__dropdown li.toplevel.menu_spacer {
 	height: 2.5em;
-	width: 4em;
+	width: 1em;
 	padding: 0.5em;
 	float: {!en_left};
 }
@@ -67,10 +66,6 @@ For example:
 	font-size: 0.8em;
 	display: inline-block;
 	margin-top: 4px;
-}
-
-.menu_type__dropdown li.toplevel.last a {
-	border-left: 1px solid {$GET,standard_border};
 }
 
 .menu_type__dropdown .toplevel_link a, .menu_type__dropdown .toplevel_link a:visited, .menu_type__dropdown .toplevel_link a:hover {

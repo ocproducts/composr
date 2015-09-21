@@ -1301,6 +1301,18 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     require_code('images');
 
+    // Remap theme image to URL if needed
+    if ($images_only) {
+        if ($theme_image_type !== null && get_option('allow_theme_image_selector') == '1') {
+            require_code('themes2');
+            $ids = get_all_image_ids_type($theme_image_type);
+
+            if (in_array($default, $ids)) {
+                $default = find_theme_image($default);
+            }
+        }
+    }
+
     // ---
 
     // Upload
@@ -1371,9 +1383,6 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     if ($images_only) {
         if ($theme_image_type !== null && get_option('allow_theme_image_selector') == '1') {
-            require_code('themes2');
-            $ids = get_all_image_ids_type($theme_image_type);
-
             if (count($ids) > 0) {
                 $field_choose = $set_name . '__theme_image';
 

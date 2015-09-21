@@ -130,7 +130,7 @@ Staff can view full post history: edits aren't secret from staff.
 There is a delete post button underneath each post.
 
 If somehow a corrupt post makes it through and obscures the delete button after it, you can manually delete (or edit) it from the edit URL:
-[tt]http://yoursite/forum/index.php?page=topics&type=edit_post&id=<postid>[/tt]
+[tt]http://yourbaseurl/forum/index.php?page=topics&type=edit_post&id=<postid>[/tt]
 You can find the post ID from above (before) the post in the topicview.
 
 [concepts

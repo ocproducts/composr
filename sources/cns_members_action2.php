@@ -1923,7 +1923,7 @@ function update_member_username_caching($member_id, $username)
         'f_posts/p_poster_name_if_guest/p_poster',
         'f_topics/t_cache_first_username/t_cache_first_member_id',
         'f_topics/t_cache_last_username/t_cache_last_member_id',
-        'sessions/cache_username/the_user',
+        'sessions/cache_username/member_id',
     );
     foreach ($to_fix as $fix) {
         list($table, $field, $updating_field) = explode('/', $fix, 3);

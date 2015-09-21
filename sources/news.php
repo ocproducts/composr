@@ -19,6 +19,27 @@
  */
 
 /**
+ * Find a news category image from a string that may have multiple interpretations.
+ *
+ * @param  string $nc_img URL / theme image code / blank
+ * @return URLPATH URL (or blank)
+ */
+function get_news_category_image_url($nc_img)
+{
+    if ($nc_img == '') {
+        $image = '';
+    } elseif (is_image($nc_img)) {
+        $image = $nc_img;
+    } else {
+        $image = find_theme_image($nc_img);
+        if (is_null($image)) {
+            $image = '';
+        }
+    }
+    return $image;
+}
+
+/**
  * Show a news entry box.
  *
  * @param  array $row The news row
@@ -62,9 +83,9 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
         if (url_is_local($img_raw)) {
             $img_raw = get_custom_base_url() . '/' . $img_raw;
         }
-        $img = do_image_thumb($img_raw, $category, false);
+        $img = $img_raw;
     } else {
-        $img_raw = find_theme_image($news_cat_row['nc_img']);
+        $img_raw = get_news_category_image_url($news_cat_row['nc_img']);
         if (is_null($img_raw)) {
             $img_raw = '';
         }
@@ -149,7 +170,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
     $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($num_entries)));
 
     // Image
-    $img = ($row['nc_img'] == '') ? '' : find_theme_image($row['nc_img']);
+    $img = get_news_category_image_url($row['nc_img']);
     if ($blogs === 1) {
         $_img = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($row['nc_owner']);
         if ($_img != '') {

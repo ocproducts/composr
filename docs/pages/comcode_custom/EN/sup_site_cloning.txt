@@ -23,7 +23,7 @@ While the steps may seem a bit long-winded and fiddly, they should be straight f
 
 STEP 1: Install a fresh copy of Composr. This will be your clone site. If you already have another Composr site installed that you want to re-use and make your clone site then ignore this step.
 
-STEP 2: Use the Composr upgrader tool ([tt]http://yoursite.com/upgrader.php[/tt]) to flush the caches of your master site. There is no need to close the site.
+STEP 2: Use the Composr upgrader tool ([tt]http://yourbaseurl/upgrader.php[/tt]) to flush the caches of your master site. There is no need to close the site.
 
 [box="What the shell?" width="25em" float="right"]
 When I say "ssh window", I'm referring to the use of a [b]Secure Shell[/b] console (terminal) application. Its the 'standard' secure tool/method of remote communication with a server.

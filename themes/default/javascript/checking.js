@@ -434,12 +434,6 @@ function check_field(the_element,the_form,for_preview)
 	// Class name
 	the_class=first_class_name(the_element.className);
 
-	// Deleting?
-	if ((!for_preview) && (the_element.name=='delete') && (((the_class=='input_radio') && (the_element.value!='0')) || (the_class=='input_tick')) && (the_element.checked))
-	{
-		return [false,the_element,0,true]; // Because we're deleting, errors do not matter
-	}
-
 	// Find whether field is required and value of it
 	if (the_element.type=='radio')
 	{
@@ -523,6 +517,12 @@ function check_field(the_element,the_form,for_preview)
 
 function check_form(the_form,for_preview)
 {
+	var delete_element=document.getElementById('delete');
+	if ((!for_preview) && (delete_element!=null) && (((first_class_name(delete_element.className)=='input_radio') && (the_element.value!='0')) || (first_class_name(delete_element.className)=='input_tick')) && (delete_element.checked))
+	{
+		return true;
+	}
+
 	var j,the_element,erroneous=false,total_file_size=0,alerted=false,error_element=null,check_result;
 	for (j=0;j<the_form.elements.length;j++)
 	{

@@ -115,7 +115,7 @@ class Module_notifications
             return $this->view();
         }
 
-        if ($type == 'browse') {
+        if ($type == 'overall') {
             return $this->overall();
         }
         if ($type == 'advanced') {
@@ -188,7 +188,7 @@ class Module_notifications
     }
 
     /**
-     * Show an overall notifications UI.
+     * Show an overall notifications settings UI.
      *
      * @return Tempcode The result of execution.
      */
@@ -205,7 +205,7 @@ class Module_notifications
     }
 
     /**
-     * Show an advanced notifications UI.
+     * Show an advanced notifications settings UI.
      *
      * @return Tempcode The result of execution.
      */

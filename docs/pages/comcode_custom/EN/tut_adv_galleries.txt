@@ -110,12 +110,12 @@ The tier that a member resides in is based on usergroup permissions with two pri
 [title="3"]Linking directly for a member to add to their own member gallery[/title]
 
 If you find the link to submit to a particular member gallery, you'll find it looks something like:
-[tt]http://baseurl/cms/index.php?page=cms_galleries&type=add&cat=member_13_foobar[/tt]
+[tt]http://yourbaseurl/cms/index.php?page=cms_galleries&type=add&cat=member_13_foobar[/tt]
 
 (this is for member #13's gallery under [tt]foobar[/tt])
 
 If you change the member ID to a question mark, it will work as a generic URL that you can give any member:
-[tt]http://baseurl/cms/index.php?page=cms_galleries&type=add&cat=member_?_foobar[/tt]
+[tt]http://yourbaseurl/cms/index.php?page=cms_galleries&type=add&cat=member_?_foobar[/tt]
 
 (Composr automatically will substitute the question mark with the ID of the current member)
 
@@ -123,7 +123,7 @@ If you change the member ID to a question mark, it will work as a generic URL th
 
 Composr RSS complies with Apple's podcast format.
 The podcast URL for a gallery is:
-[tt]http://baseurl/backend.php?mode=galleries&select=galleryname&type=rss&itunes=1[/tt]
+[tt]http://yourbaseurl/backend.php?mode=galleries&select=galleryname&type=rss&itunes=1[/tt]
 Reply [tt]baseurl[/tt] and [tt]galleryname[/tt] as appropriate.
 
 Note that the default advertised Atom feed will not work. Only RSS is supported by iTunes, and only the RSS feed is given the extra meta-data required. The [tt]&itunes=1[/tt] marker also tells Composr to supply an iTunes-friendly feed.

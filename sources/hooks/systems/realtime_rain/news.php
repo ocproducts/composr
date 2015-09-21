@@ -35,6 +35,8 @@ class Hook_realtime_rain_news
         $drops = array();
 
         if (has_actual_page_access(get_member(), 'news')) {
+            require_code('news');
+
             $rows = $GLOBALS['SITE_DB']->query('SELECT title,n.id,nc_img,submitter AS member_id,date_and_time AS timestamp,news_category FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news n LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_categories c ON c.id=n.news_category WHERE date_and_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
 
             foreach ($rows as $row) {
@@ -45,7 +47,7 @@ class Hook_realtime_rain_news
                 $timestamp = $row['timestamp'];
                 $member_id = $row['member_id'];
 
-                $image = ($row['nc_img'] == '') ? '' : find_theme_image($row['nc_img']);
+                $image = get_news_category_image_url($row['nc_img']);
 
                 $ticker_text = strip_comcode(get_translated_text($row['title']));
 

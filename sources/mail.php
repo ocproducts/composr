@@ -250,7 +250,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
     if (!in_array('attachment', $tags_to_preserve)) {
         $message_plain = preg_replace("#\[attachment[^\[\]]* description=\"([^\"]*)\"[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\#Usi", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
     }
     if (!in_array('media', $tags_to_preserve)) {
         $message_plain = preg_replace("#\[media=\"([^\"]*)\"[^\[\]]*\](.*)\[/media\]#Usi", '[url="\2"]\1[/url]', $message_plain);
@@ -302,7 +302,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
 
     if (!in_array('currency', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[currency\](.*)\[/currency\#Usi', get_option('currency') . ' \1', $message_plain);
+        $message_plain = preg_replace('#\[currency\](.*)\[/currency\]#Usi', get_option('currency') . ' \1', $message_plain);
         $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
     }
 

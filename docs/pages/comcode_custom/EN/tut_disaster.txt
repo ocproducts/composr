@@ -114,7 +114,7 @@ If you have associated an account with Facebook, you can remove it by doing a pa
 
 [title="2"]Problems with addons[/title]
 
-If you find an addon is crashing your site, the Safe Mode link ([tt]http://yoursite/index.php?keep_safe_mode=1[/tt]) can help. It should let you into your site to uninstall the addon causing the problem.
+If you find an addon is crashing your site, the Safe Mode link ([tt]http://yourbaseurl/index.php?keep_safe_mode=1[/tt]) can help. It should let you into your site to uninstall the addon causing the problem.
 
 The above requires for to be logged in at admin, which you may not be or be able to do. You can usually also uninstall an addon by examining the raw TAR file from the addon directory. Any files inside it should be deleted manually from your website.
 

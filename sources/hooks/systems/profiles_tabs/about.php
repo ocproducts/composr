@@ -181,6 +181,7 @@ class Hook_profiles_tabs_about
         // Custom fields
         $_custom_fields = cns_get_all_custom_fields_match_member($member_id_of, (($member_id_viewing != $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, (($member_id_viewing == $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null);
         $custom_fields = array();
+        $custom_fields_sections = array();
         require_code('encryption');
         $value = mixed();
         $fields_map = array();
@@ -198,8 +199,7 @@ class Hook_profiles_tabs_about
             }
 
             if ((get_option('show_empty_cpfs') == '1') || (((!is_object($value)) && ($value != '')) || ((is_object($value)) && (!$value->is_empty())))) {
-                $custom_fields[] = array(
-                    'NAME' => $name,
+                $custom_field = array(
                     'RAW_VALUE' => $value,
                     'VALUE' => $rendered_value,
                     'ENCRYPTED_VALUE' => $encrypted_value,
@@ -208,6 +208,22 @@ class Hook_profiles_tabs_about
                     'EDITABILITY' => $_value['EDITABILITY'],
                     'EDIT_TYPE' => $_value['EDIT_TYPE'],
                 );
+
+                if (strpos($name, ': ') !== false) {
+                    $parts = explode(': ', $name, 2);
+                    if (!isset($custom_fields_sections[$parts[0]])) {
+                        $custom_fields_sections[$parts[0]] = array('CUSTOM_FIELDS_SECTION' => array());
+                    }
+
+                    $custom_field['NAME'] = $parts[1];
+
+                    $custom_fields_sections[$parts[0]]['CUSTOM_FIELDS_SECTION'][] = $custom_field;
+                } else {
+                    $custom_field['NAME'] = $name;
+
+                    $custom_fields[] = $custom_field;
+                }
+
                 if ($name == do_lang('KEYWORDS')) {
                     $GLOBALS['SEO_KEYWORDS'] = is_object($value) ? $value->evaluate() : $value;
                 }
@@ -404,6 +420,7 @@ class Hook_profiles_tabs_about
                                                                'JOIN_DATE' => $join_date,
                                                                'JOIN_DATE_RAW' => strval($join_time),
                                                                'CUSTOM_FIELDS' => $custom_fields,
+                                                               'CUSTOM_FIELDS_SECTIONS' => $custom_fields_sections,
                                                                'ACTIONS_contact' => $actions['contact'],
                                                                'ACTIONS_profile' => $actions['profile'],
                                                                'ACTIONS_views' => $actions['views'],

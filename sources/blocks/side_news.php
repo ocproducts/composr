@@ -207,7 +207,7 @@ class Block_side_news
 
                 $content->attach(do_template('BLOCK_SIDE_NEWS_SUMMARY', array(
                     '_GUID' => 'f7bc5288680e68641ca94ca4a3111d4a',
-                    'IMG_URL' => ($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img'] == '') ? '' : find_theme_image($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img']),
+                    'IMG_URL' => get_news_category_image_url($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img']),
                     'AUTHOR' => $myrow['author'],
                     'ID' => strval($myrow['id']),
                     'SUBMITTER' => strval($myrow['submitter']),

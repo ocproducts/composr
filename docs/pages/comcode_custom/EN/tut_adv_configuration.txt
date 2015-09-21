@@ -70,7 +70,7 @@ To configure access permissions, you may edit the resource the permissions are f
 If your core configuration settings change, if you move servers for example, then Composr may cease to function. To ameliorate this, an Installation Options editor is provided that can reconfigure the [tt]_config.php[/tt] that stores core configuration settings, such as database access details.
 
 To launch the Installation Options editor, go to the Admin Zone > Setup > Configuration > Installation Options.
-If you are locked outside Composr, you will need to open up the [tt]http://yoursite/config_editor.php[/tt] URL manually.
+If you are locked outside Composr, you will need to open up the [tt]http://yourbaseurl/config_editor.php[/tt] URL manually.
 
 The password to enter the config editor is the password you specified during installation (the 'Master password'). If you have forgotten it, you will need to edit [tt]_config.php[/tt] by hand.
 

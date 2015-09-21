@@ -1,11 +1,11 @@
-<div class="comcode_page">
-	{+START,IF,{$NOR,{IS_PANEL},{BEING_INCLUDED}}}
-		{+START,IF_EMPTY,{$TRIM,{CONTENT}}}
-			<p class="nothing_here">{!NO_PAGE_OUTPUT}</p>
-		{+END}
+{+START,IF,{$NOR,{IS_PANEL},{BEING_INCLUDED}}}
+	{+START,IF_EMPTY,{$TRIM,{CONTENT}}}
+		<p class="nothing_here">{!NO_PAGE_OUTPUT}</p>
 	{+END}
+{+END}
 
-	{+START,IF,{$OR,{$NOT,{IS_PANEL}},{$IS_NON_EMPTY,{$TRIM,{CONTENT}}}}}
+{+START,IF,{$OR,{$NOT,{IS_PANEL}},{$IS_NON_EMPTY,{$TRIM,{CONTENT}}}}}
+	<div class="comcode_page">
 		{WARNING_DETAILS}
 
 		{$TRIM,{CONTENT}}
@@ -62,5 +62,5 @@
 				{+END}
 			{+END}
 		{+END}
-	{+END}
-</div>
+	</div>
+{+END}

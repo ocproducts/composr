@@ -166,6 +166,54 @@
 		</div>
 
 		{+START,IF,{VIEW_PROFILES}}
+			{+START,IF_PASSED,CUSTOM_FIELDS_SECTIONS}
+				{+START,LOOP,CUSTOM_FIELDS_SECTIONS}
+					<h2>{_loop_key*}</h2>
+
+					<div class="wide_table_wrap">
+						<table class="map_table wide_table cns_profile_fields">
+							{+START,IF,{$NOT,{$MOBILE}}}
+								<colgroup>
+									<col class="cns_profile_about_field_name_column" />
+									<col class="cns_profile_about_field_value_column" />
+								</colgroup>
+							{+END}
+
+							<tbody>
+								{+START,LOOP,CUSTOM_FIELDS_SECTION}
+									<tr id="cpf_{NAME|*}">
+										<th class="de_th">
+											{NAME*}:
+										</th>
+
+										<td>
+											<span>
+												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF_PASSED,EDITABILITY}
+														{$SET,edit_type,{EDIT_TYPE}}
+														{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+													{+END}
+													{+START,IF_NON_PASSED,EDITABILITY}
+														{VALUE}
+													{+END}
+												{+END}
+												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
+													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
+												{+END}
+												<!-- {$,Break out of non-terminated comments in CPF} -->
+											</span>
+										</td>
+									</tr>
+								{+END}
+							</tbody>
+						</table>
+					</div>
+				{+END}
+			{+END}
+		{+END}
+
+		{+START,IF,{VIEW_PROFILES}}
 			<h2>{!DETAILS}</h2>
 
 			<meta itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
@@ -294,7 +342,7 @@
 							{+START,IF_NON_EMPTY,{IP_ADDRESS}}
 								<tr>
 									<th class="de_th">{!IP_ADDRESS}:</th>
-									<td><a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},20,1,1}</a></td>
+									<td><a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}</a></td>
 								</tr>
 							{+END}
 						{+END}

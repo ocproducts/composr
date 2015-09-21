@@ -241,7 +241,7 @@ This is your first practical example of Tempcode, and perhaps the most common us
 
 To insert an image into your template, use Composr's image symbol: [tt]{$IMG,codename}[/tt]. Replace [tt]codename[/tt] with the image code for the image you want to use. This will turn into the image's URL. Be aware that this does not insert any HTML for you, so to use it fully:
 [code="HTML"]<img src="{$IMG*,under_construction_animated}" alt="Under Construction" title="Under Construction" />[/code]
-This would insert the image [tt]http://www.mywebsite.com/themes/default/images/under_construction_animated.png[/tt] into your page, as shown on the right.
+This would insert the image [tt]http://yourbaseurl/themes/default/images/under_construction_animated.png[/tt] into your page, as shown on the right.
 
 The advantage to using the Composr code instead of hand coding the image is two-fold. First, you can have different versions of theme images for different languages and themes. Secondly, if you ever move the image, you don't have to edit every page that ever used it to point to the new location. You can edit images from within the themes management screen (go to Admin Zone > Style > Themes).
 

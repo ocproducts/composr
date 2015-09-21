@@ -137,12 +137,12 @@ The default Comcode pages are...
 
 [surround]
 Like any page in Composr, a Comcode page is accessed by using:
-[tt]http://yourwebsite/<zone>/index.php?page=<page-name>[/tt]
+[tt]http://yourbaseurl/<zone>/index.php?page=<page-name>[/tt]
 
 Actually If you are using short URLs, then it may be something else (depending on which [page="_SEARCH:tut_short_urls"]URL scheme[/page] you use):
- - [tt]http://yourwebsite/<zone>/pg/<page-name>[/tt]
- - [tt]http://yourwebsite/<zone>/<page-name>.htm[/tt]
- - [tt]http://yourwebsite/<zone>/<page-name>[/tt]
+ - [tt]http://yourbaseurl/<zone>/pg/<page-name>[/tt]
+ - [tt]http://yourbaseurl/<zone>/<page-name>.htm[/tt]
+ - [tt]http://yourbaseurl/<zone>/<page-name>[/tt]
 [/surround]
 
 [title="2"]Adding a new page[/title]

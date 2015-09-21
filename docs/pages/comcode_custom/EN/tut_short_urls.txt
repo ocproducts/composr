@@ -40,23 +40,23 @@ The page-link is therefore:
 (I've assumed "Single public zone" is on, if that option is off then it would be [tt]site:members:view[/tt])
 
 If no URL scheme (Raw PHP-style URLs) is enabled then the URL generated would be:
-[tt]http://yourwebsite/index.php?page=members&type=view[/tt]
+[tt]http://yourbaseurl/index.php?page=members&type=view[/tt]
 
 If the URL scheme is "Use /pg/ to identify CMS pages":
-[tt]http://yourwebsite/pg/members/view[/tt]
+[tt]http://yourbaseurl/pg/members/view[/tt]
 
 If the URL scheme is "Use .htm to identify CMS pages":
-[tt]http://yourwebsite/members/view.htm[/tt]
+[tt]http://yourbaseurl/members/view.htm[/tt]
 
 If the URL scheme is "Very simple unadorned URLs":
-[tt]http://yourwebsite/members/view[/tt]
+[tt]http://yourbaseurl/members/view[/tt]
 
 For completeness, let's show what they would be if it was linking to member #3:
  - [tt]:members:view:3[/tt]
- - [tt]http://yourwebsite/index.php?page=members&type=view&id=3[/tt]
- - [tt]http://yourwebsite/pg/members/view/3[/tt]
- - [tt]http://yourwebsite/members/view/3.htm[/tt]
- - [tt]http://yourwebsite/members/view/3[/tt]
+ - [tt]http://yourbaseurl/index.php?page=members&type=view&id=3[/tt]
+ - [tt]http://yourbaseurl/pg/members/view/3[/tt]
+ - [tt]http://yourbaseurl/members/view/3.htm[/tt]
+ - [tt]http://yourbaseurl/members/view/3[/tt]
 (actually, depending on configuration, the number might be based on the username rather than the ID)
 
 [title="2"]Setup instructions[/title]
@@ -86,11 +86,11 @@ Before you may enable mod_rewrite support, you must enable it on the web server.
 Composr checks both that the [tt].htaccess[/tt] contains an instruction to enable rewrite rules, and that the sitemap page loads via a short URL.
 If the [tt].htaccess[/tt] is incorrect, in the wrong place, if the [tt]RewriteBase[/tt] line is wrong, or if somehow it is not working right for any other reason, this error could happen.
 
-A good manual debug tool would be to go to [tt]http://yoursite/sitemap.htm[/tt] and see what happens. If it won't load, debug your [tt].htaccess[/tt] and/or server settings, then try again to change the Composr configuration as above.
+A good manual debug tool would be to go to [tt]http://yourbaseurl/sitemap.htm[/tt] and see what happens. If it won't load, debug your [tt].htaccess[/tt] and/or server settings, then try again to change the Composr configuration as above.
 
 [title="4"]Debugging[/title]
 
-This section covers the case where the rewrite rules are not working on the server level. e.g. loading [tt]http://yoursite/sitemap.htm[/tt] fails.
+This section covers the case where the rewrite rules are not working on the server level. e.g. loading [tt]http://yourbaseurl/sitemap.htm[/tt] fails.
 
 A number of things can be wrong to stop the rules defined in [tt].htaccess[/tt] from working.
 
@@ -174,7 +174,7 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,U]
 
 4) Reset IIS
 
-5) Test a short URL (e.g. [tt]http://mybaseurl/site/pg/downloads[/tt]) -- if it doesn't load, you've got a IIRF/IIS configuration problem.
+5) Test a short URL (e.g. [tt]http://yourbaseurl/site/pg/downloads[/tt]) -- if it doesn't load, you've got a IIRF/IIS configuration problem.
 
 6) If things go wrong, you can disable short URLs via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
 
