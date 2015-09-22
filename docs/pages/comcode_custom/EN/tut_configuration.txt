@@ -23,6 +23,8 @@ You will see that the Admin Zone keeps reminding you to run the Setup Wizard, so
 
 [title="2"]The Setup Wizard[/title]
 
+[surround]
+[media width="150" description="The Setup Wizard" float="right"]data_custom/images/docs/tut_configuration/setup_wizard.png[/media]
 The Setup Wizard you help you configure the name of your website and other key details in a few easy guided steps.
 
 If you run the Setup Wizard, you may wonder later what it actually did, especially if you want to undo it.
@@ -33,6 +35,7 @@ The Setup Wizard can perform the following behind-the-scenes functions:
  - [b]Removing predefined content[/b]. Predefined content can be removed (e.g. default banners). Once this is removed you'd need to put it back manually, by adding it as you would any other content.
  - Placing [b]blocks[/b]. Blocks are dynamic features embedded directly into your pages/design. You can place/change blocks via the Zone Editor at Admin Zone > Structure > Block/panel layout (Zone Editor).
  - [b]Copying rules[/b]. You can edit the rules page manually from Content Management > Pages (Comcode pages).
+[/surround]
 
 [box="Important -- the Setup Wizard is usually a one-off process"]
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
@@ -141,6 +144,7 @@ The [tt]data/cron_bridge.php[/tt] file can either be run by passing the PHP file
 
 [title="3"]Specific advice for Linux[/title]
 
+[media width="150" description="Setting up CRON in the cPanel web hosting control panel (different control panels vary in their UI)" float="right"]data_custom/images/docs/tut_configuration/cron.png[/media]
 On Linux, the system level scheduler is 'Cron', and the process of adding a task is known as 'setting up a Cronjob'. Many web hosting control panels allow you to do this.
 
 The following command might work for a Composr installation in the [tt]/home/examplesite/htdocs[/tt] directory:

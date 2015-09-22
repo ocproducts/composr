@@ -43,6 +43,8 @@ At the same time, bear in mind that fixes to security holes are not always back-
 
 [title="2"]The upgrade process[/title]
 
+[media width="150" description="The upgrader" float="right"]data_custom/images/docs/tut_upgrade/upgrade.png[/media]
+[media width="150" description="Logging into the upgrader" float="right"]data_custom/images/docs/tut_upgrade/upgrade_login.png[/media]
 The upgrade process involves a number of stages (the upgrader will step you through this):[list="1"]
 [*]taking a full backup (just in case a problem occurs) -- better safe than sorry. This is also useful in case you overwrite files that you have edited: either due to these files being in locations with no override support, or due to changes being made without using the proper override mechanism
 [*]closing your website

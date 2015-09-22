@@ -227,6 +227,7 @@ As long as you have the newsletters addon installed, welcome emails will piggy-b
 
 [title="2"]Importing/exporting members[/title]
 
+[media width="150" description="Importing members from a CSV file" float="right"]data_custom/images/docs/tut_adv_members/member_import.png[/media]
 You can use [abbr="Comma-Separated-Values"]CSV[/abbr] files to put member data into your website, or to export it. There are many different reasons you might want to do this, but in simple terms, organisations often need to shuffle member data between different systems and this is a good/normal way to do it.
 
 [title="3"]Exporting[/title]

@@ -1,5 +1,6 @@
 [title sub="Written by Philip Withnall (ocProducts)"]Composr Tutorial: Activity statistics for your site (analytics)[/title]
 
+[media width="150" description="Lots of statistics types are available" float="right"]data_custom/images/docs/tut_statistics/statistics_icons.png[/media]
 {!stats:DOC_STATISTICS}
 
 [contents]decimal,lower-alpha[/contents]
@@ -16,16 +17,19 @@ Be aware that hits coming from the web server itself will be filtered from the s
 [media width="150" description="The message shown when installing geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_installing_geolocation_data.png[/media]
 [media width="150" description="The menu link to install geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_install_geolocation_data_link.png[/media]
 {!stats:DOC_INSTALL_GEOLOCATION_DATA}
+[/surround]
 
 [box="Important -- keep it going"]
 Do not disturb the geolocation data installation process. You will be informed when it is complete.
 [/box]
 
 Once the geo-location data is installed, all the extra statistics can be used.
-[/surround]
 
 [title="3"]Page view statistics[/title]
 
+[media width="150" description="Stats data for a particular page" float="right"]data_custom/images/docs/tut_statistics/statistics_page.png[/media]
+[media width="150" description="List of pages with stats data" float="right"]data_custom/images/docs/tut_statistics/statistics_page_views.png[/media]
+[media width="150" description="Overview stats" float="right"]data_custom/images/docs/tut_statistics/statistics_overview.png[/media]
 {!stats:DOC_PAGE_STATISTICS}
 
 [title="3"]Per-page breakdowns[/title]
@@ -73,12 +77,10 @@ There are two methods for revealing download trends to your visitors:
 
 [title="2"]Other statistics[/title]
 
-[surround]
 [media width="150" description="View statistics are shown for various forms of content" float="right"]data_custom/images/docs/tut_statistics/statistics_news_item_stats.png[/media]
 All content will automatically store download/view statistics as appropriate, which will usually be displayed on the respective entry screen.
 
 An example of this would be news entries: each news entry records how many times it is viewed, and displays this number on its view screen.
-[/surround]
 
 [title="2"]Conversr statistics[/title]
 
@@ -88,10 +90,12 @@ The following statistics screens exist to show [concept]Conversr[/concept] data:
 
 [title="2"]The statistics block[/title]
 
+[media width="150" description="The [tt]side_stats[/tt] block" float="right"]data_custom/images/docs/tut_statistics/side_stats.png[/media]
 The [tt]side_stats[/tt] block shows various figures that relate to your website's activity and archive size. The exact details shown are configurable (in the main Composr configuration) from quite a wide selection.
 
 [title="2"]Real-time analytics[/title]
 
+[media width="150" description="Real-time analytics" float="right"]data_custom/images/docs/tut_statistics/realtime_rain.png[/media]
 {!realtime_rain:DOC_REALTIME_RAIN}
 
 Access Real-time analytics from:

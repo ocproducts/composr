@@ -10,6 +10,8 @@ This is advanced functionality designed to be set up by experienced developers.
 
 [title="2"]The admin process[/title]
 
+[surround]
+[media width="150" description="Editing the aggregate type XML" float="right"]data_custom/images/docs/tut_aggregate_types/edit_types.png[/media]
 The administrator, looking to make use of aggregate content types, would follow the following two-step process:
 1) Define aggregate content types in XML, from Admin Zone > Structure > Aggregate content types > Edit XML definition.
 2) Add instances of aggregate content types, from Admin Zone > Structure > Aggregate content types > Add aggregate content type instance.
@@ -23,6 +25,7 @@ You can delete an aggregate content type from the bottom of its edit form.
 Aggregate content types are defined in XML in the [tt]data/xml_config/aggregate_types.xml[/tt] (overridden as [tt]data_custom/xml_config/aggregate_types.xml[/tt]).
 
 Here is an example of the definition of two aggregate content types: Course, and Country...
+[/surround]
 [code="XML"]
 <aggregateTypes>
     <aggregateType name="Course">
@@ -61,11 +64,15 @@ Here is an example of the definition of two aggregate content types: Course, and
 
 [title="3"]How the XML is applied when adding an instance[/title]
 
+[surround]
+[media width="150" description="Adding an instance" float="right"]data_custom/images/docs/tut_aggregate_types/instance_2.png[/media]
+[media width="150" description="Choosing an aggregate type to add an instance to" float="right"]data_custom/images/docs/tut_aggregate_types/instance_1.png[/media]
 For each resource rule (resource element) defined within the aggregate type we are creating an instance of...
 
 A match is first found against the label given in the subpath attribute of the resource element. If none is found, a new content item will be created under that subpath with the given label, defaulting resource options from the resource identified by the template attribute (if a template attribute is supplied).
 
 A label is not a repository filename, but rather it is generally what you would expect as human readable. What this actually relates to within Composr varies from content-type-to-content-type, but in most cases it is a Title field or a Name field.
+[/surround]
 
 For example, with:
 [code="XML"]

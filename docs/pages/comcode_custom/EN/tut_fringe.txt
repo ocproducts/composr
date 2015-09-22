@@ -6,6 +6,8 @@ This tutorial will explain and detail some of the fringe features of web technol
 
 [title="2"]Favicons[/title]
 
+[media width="150" description="The default webclipicon, viewing the multiple sizes within" float="right" width="179"]data_custom/images/docs/tut_fringe/webclipicon.png[/media]
+[media width="150" description="The default favicon, viewing the multiple sizes within" float="right" width="71"]data_custom/images/docs/tut_fringe/favicon.png[/media]
 Microsoft created a technology that allows websites to have their own little icons, for placement in the Favorites menu, and the web browser window icon. This technology has since been adopted for use by other web browsers.
 
 Favicons are supported in Composr, and to use one you just need to edit the [tt]favicon[/tt] theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
@@ -103,8 +105,8 @@ It is very common for the best modern designs to have content text built direct 
 
 This section describes the last approach. Frankly this is quite an obscure and rare thing to need to do, because of the power of CSS. However it does have its occasionally usefulness.
 
+[media width="150" description="The [tt]main_custom_gfx[/tt] with the example code to the left" float="right"]data_custom/images/docs/tut_fringe/main_custom_gfx.png[/media]
 Here is a simple example of a custom button:
-
 [code="Comcode"]
 [block="text_overlay" data="This is a test" img="button1"]main_custom_gfx[/block]
 [/code]

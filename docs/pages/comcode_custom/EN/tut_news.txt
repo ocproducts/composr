@@ -41,12 +41,14 @@ You can delete a news post from the bottom of its edit form.
 
 [title="2"]Adding, editing and deleting news categories[/title]
 
+[media width="150" description="Adding a category" float="right"]data_custom/images/docs/tut_news/news_add_category.png[/media]
 News categories are very easy to manage from Content Management > News.
 
 You can delete a news category from the bottom of its edit form.
 
 [title="2"]Viewing news[/title]
 
+[media width="150" description="Viewing news" float="right"]data_custom/images/docs/tut_news/news_view.png[/media]
 News can be accessed via the [tt]news[/tt] module ([tt]site:news[/tt] page-link, Content > News on the default menus).
 
 Typically sites will also make it available via placement of the [tt]main_news[/tt] block on the front page.
@@ -67,6 +69,7 @@ You may wish to use an 'Announcements' forum to make your news. If you wish to d
 
 [title="2"]Import from blogging systems[/title]
 
+[media width="150" description="Importing news" float="right"]data_custom/images/docs/tut_news/news_import.png[/media]
 You can import from any system that can export RSS files. We have extended support for the extra data that Wordpress and Blogger put into their exported RSS files.
 
 [title="3"]Wordpress import[/title]

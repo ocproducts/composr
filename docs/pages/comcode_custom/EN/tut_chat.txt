@@ -31,6 +31,7 @@ The options at the bottom of the chatroom page control how your messages appear 
 
 [title="3"]Instant Messaging[/title]
 
+[media width="150" description="The chat lobby with an IM open" float="right"]data_custom/images/docs/tut_chat/chat_lobby.png[/media]
 Instant Messaging (IM) conversations can be started just by clicking on a name from the friend list. To add a member to your friend list, just visit the member's profile and click the appropriate link ([concept]Conversr[/concept]-only) -- alternatively, you can type in usernames to add from the chat lobby. If you wish to start a conversation with multiple people, you may do so by ticking (checking) them and clicking the appropriate button. You can also tick (check) people and add them in to an existing conversation.
 There is also a configuration option that allows you to start IM conversations by clicking on usernames ("Clicking a username starts an IM"). Ordinarily this action would link to a member profile view screen, but for 'chat-based' websites, starting an IM may be more appropriate.
 

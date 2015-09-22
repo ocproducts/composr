@@ -113,6 +113,7 @@ Panel pages (by default) are Comcode pages that arrange blocks, some of which ma
 
 [title="4"]Boxes[/title]
 
+[media width="150" description="A box (created with Comcode in this case, but you can't tell)" float="right"]data_custom/images/docs/tut_structure/box.png[/media]
 Most of the default block templates put a box around the block to make things appear clear/regular. Most designers don't like the "boxy" look, however.
 
 If you'd like to make things more subtle, with headers and dividers, wrapping this Comcode around the block(s) automatically activates some overriding styling:
@@ -228,6 +229,8 @@ It is a good idea to have some awareness of the different kinds of structure Com
 
 [title="4"]Breadcrumbs[/title]
 
+[media width="150" description="Editing the breadcrumbs XML" float="right"]data_custom/images/docs/tut_structure/breadcrumbs_edit.png[/media]
+[media width="150" description="Sample breadcrumbs" float="right"]data_custom/images/docs/tut_structure/breadcrumbs.png[/media]
 The Sitemap system is not actually used for breadcrumbs, but the data is sourced from the same places in most cases. It may vary due to:
  - breadcrumb customisations
  - added process depth (for example, when running a wizard, the breadcrumbs may reflect your depth within that wizard)

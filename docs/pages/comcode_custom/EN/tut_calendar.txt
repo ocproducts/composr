@@ -89,6 +89,12 @@ You may also declare your 'interests', which marks you down for auto-reminding f
 From the screen-shots of the calendar views you can see how the recurrence pattern causes a gap where for one week in four, there is no shown event.
 [/surround]
 
+[title="3"]Block[/title]
+
+[surround]
+[media width="150" description="Upcoming events via the listing mode of the [tt]side_calendar[/tt] block" float="right"]data_custom/images/docs/tut_calendar/listing.png[/media]
+The [tt]side_calendar[/tt] block allows embedding of a mini-month view of the calendar, or a listing of upcoming events.
+
 [title="2"]Time-zone issues[/title]
 
 Special temporal events such as 'Daylight saving time', 'Leaps', 'Relativistic effects' and '4th dimensional wormholes' (joke) are not handled by the Composr calendar. It is probably better that they are not, because they would lead to extremely confusing situations. For example, for those with daylight saving time, there is an hour of the year that happens twice: instead of having a ambiguity for placement of events in that time, there will just be non-harmful anomalies as the server clock jumps in time.
@@ -97,8 +103,7 @@ Special temporal events such as 'Daylight saving time', 'Leaps', 'Relativistic e
 
 The Composr calendar is strongly tied to the Gregorian calendar, as well as the yyyy/mm/dd ISO standard for display of dates.
 Changing this is not really viable: the internals of the calendar are extremely complex, as dates and time are inherently extremely complex.
-
-[title="2"]Recurrence fixing[/title]
+[/surround][title="2"]Recurrence fixing[/title]
 
 [box="Important -- take a backup" width="25em" float="right"]
 It is advisable to take a database backup before fixing an event, just in case the process does not complete as you expect it to. The recurrence programming code in the calendar system is (has to be) extremely complex, and this is a place where a minor bug or user mistake could wreak havoc.

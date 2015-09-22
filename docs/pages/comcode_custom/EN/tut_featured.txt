@@ -139,6 +139,7 @@ If block caching is on, quotes will be rotated on a daily basis.
 
 [title="2"]Pulling out forum content[/title]
 
+[media width="150" description="The [tt]main_forum_topics[/tt] block" float="right"]data_custom/images/docs/tut_featured/featured_forum_topics_block.png[/media]
 There are 4 blocks for pulling out forum content:
 1) [tt]side_forum_news[/tt] -- show forum topics, in news-style, as a side block
 2) [tt]main_forum_news[/tt] -- show forum topics, in news-style, as a main block

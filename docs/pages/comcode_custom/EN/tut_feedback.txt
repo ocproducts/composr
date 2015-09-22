@@ -59,6 +59,9 @@ However, you can use the Commandr [tt]set_comment_forum[/tt] command to set it s
 
 [title="3"]The Messaging system[/title]
 
+[media width="150" description="Viewing a message" float="right"]data_custom/images/docs/tut_feedback/messaging_message.png[/media]
+[media width="150" description="List of messages" float="right"]data_custom/images/docs/tut_feedback/feedback_messaging_list.png[/media]
+[media width="150" description="The [tt]main_contact_us[/tt] block" float="right"]data_custom/images/docs/tut_feedback/feedback_contact_block.png[/media]
 If the [tt]staff_messaging[/tt] addon is installed, Composr also includes a contact block, [tt]main_contact_us[/tt], that allows you to have users leave messages that other users can't see. This is called the Message system.
 
 Any messages gathered will be e-mailed out to any staff who have notifications enabled for the particular usage of the block. Staff can set up their notifications by visiting the Comcode page where the block is placed.
@@ -159,14 +162,13 @@ As you can see, that's complex, so unless you have a spam problem here that your
 [title="2"]Polls[/title]
 
 [surround]
+[media width="150" description="The poll block, once a poll is chosen" float="right"]data_custom/images/docs/tut_feedback/feedback_poll.png[/media]
+[media width="150" description="Adding a poll" float="right"]data_custom/images/docs/tut_feedback/feedback_add_poll.png[/media]
 [media width="150" description="Initially there is no poll, so the poll block displays like this" float="right"]data_custom/images/docs/tut_feedback/feedback_no_poll.png[/media]
 {!polls:DOC_POLLS}
-
 Polls are managed from Content Management > Polls.
 You can delete a poll from the bottom of its edit form.
 
-[media width="150" description="Adding a poll" float="left"]data_custom/images/docs/tut_feedback/feedback_add_poll.png[/media]
-[media width="150" description="The poll block, once a poll is chosen" float="right"]data_custom/images/docs/tut_feedback/feedback_poll.png[/media]
 By default, the poll block is displayed on the front page (unless this was changed in the Setup Wizard), and set up to display whatever poll is currently selected from those that were added. On a fresh install, there is of course no poll yet, so a message about this is shown. When you add or edit a poll, you have the choice to select it as the current poll: the selection date is stored, and this allows Composr to display an archive of past polls.
 
 Past polls can be found from the [tt]polls[/tt] module ([tt]site:polls[/tt] page-link, Social > Polls on the default menus).

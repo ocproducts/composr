@@ -107,15 +107,23 @@ Staff can track which user made the post via clicking on the 'Guest' label and h
 
 [title="2"]Replying[/title]
 
+[surround]
+[media width="150" description="Quick reply" float="right"]data_custom/images/docs/tut_forums/forums_quick_reply.png[/media]
 Replies can either be made beneath the topic ("quick reply"), or via the full reply screen.
 
 If your users are confused by the quick reply function (for example, they miss the WYSIWYG), you can turn off the 'Use quick reply' privilege for them.
+[/surround]
 
 [title="2"]Topic polls[/title]
 
+[surround]
+[media width="150" description="Viewing a poll (post-voting)" float="right"]data_custom/images/docs/tut_forums/forums_poll_view_2.png[/media]
+[media width="150" description="Viewing a poll (pre-voting)" float="right"]data_custom/images/docs/tut_forums/forums_poll_view_1.png[/media]
+[media width="150" description="Adding a poll" float="right"]data_custom/images/docs/tut_forums/forums_poll_add.png[/media]
 Topics may have a poll attached to them (by any member) by default, so as to gauge opinion tied to a discussion. These polls are separate to the main Composr poll system, and have different options. Forum polls may only be used by members, and there are options to restrict:
  - viewing of poll results until the poll is 'un-blinded'
  - voting, such that that members must reply to the topic of the poll before they may vote in it
+[/surround]
 
 [title="2"]Editing posts[/title]
 

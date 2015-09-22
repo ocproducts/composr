@@ -60,6 +60,7 @@ It is recommended that at this point you go to edit your account settings and sw
 
 [title="3"]CSS[/title]
 
+[media width="150" description="The CSS editing screen" float="right"]data_custom/images/docs/tut_themes/themes_edit_css.png[/media]
 Editing the CSS is one of the most trivial of Composr's themeing abilities. You can edit it by clicking "Edit CSS" in the row for the theme of your choice. You will be prompted to edit a CSS file. The main ones that come with Composr are:
  - [tt]global.css[/tt]: This file contains most of the classes used throughout Composr. This is the file you'll be editing most of the time
  - [tt]no_cache.css[/tt]: These are classes that make use of Tempcode (for example, checking what browser is being used) to vary the style of the class
@@ -108,7 +109,7 @@ To get a list of all of the templates for a given page, choose the "tree" option
 
 The list is essentially a list of all of the templates used on that page. The ones that are nested underneath parents are templates that are used within those parents.
 
-[media width="150" description="The template editing page" float="right"]data_custom/images/docs/tut_themes/themes_edit_templates.png[/media]
+[media width="150" description="The template editing screen" float="right"]data_custom/images/docs/tut_themes/themes_edit_templates.png[/media]
 The entries on the list are individual templates. If you know which one you want to edit, you can simply click it, and you will be taken to a page where you can edit that template. You may also select multiple templates for editing; this is very advantageous as it allows you to do a group-preview of your changes before you save them.
 
 On this page, you will see a text field where you can edit the HTML for this template. Below it is a grayed-out version of the same template, containing the original in case you need to reference it.

@@ -1,12 +1,13 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Quizzes[/title]
 
-[media width="150" description="Adding a quiz" float="right"]data_custom/images/docs/tut_quizzes/quiz_add.png[/media]
+[media width="150" description="Viewing a quiz" float="right"]data_custom/images/docs/tut_quizzes/quiz_view.png[/media]
 {!quiz:DOC_QUIZZES}
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Managing quizzes[/title]
 
+[media width="150" description="Adding a quiz" float="right"]data_custom/images/docs/tut_quizzes/quiz_add.png[/media]
 Quizzes can be added/edited/deleted from Content Management > Quizzes.
 You can delete a quiz from the bottom of its edit form.
 

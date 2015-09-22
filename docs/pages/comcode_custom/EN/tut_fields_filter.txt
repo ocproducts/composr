@@ -9,6 +9,7 @@ The form field filter system can influence both form results, and the default va
 
 [title="2"]The config file structure[/title]
 
+[media width="150" description="Editing the XML" float="right"]data_custom/images/docs/tut_fields_filter/xml.png[/media]
 The config file is [tt]data/xml_config/fields.xml[/tt] and should be overridden to [tt]data_custom/xml_config/fields.xml[/tt]. You will see there are some default settings in that file, which are designed to be fairly innocuous. You should review the default settings as examples.
 
 You can also edit from:
