@@ -9,7 +9,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]short_trans[/title]
 
-{|
+{| 15em wide
 ! Title
 | A brief line of translatable/Comcode text
 |-
@@ -31,7 +31,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]short_trans_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple brief lines of translatable/Comcode text
 |-
@@ -57,7 +57,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]short_text[/title]
 
-{|
+{| 15em wide
 ! Title
 | A brief line of text (no Comcode support)
 |-
@@ -79,7 +79,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]short_text_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple brief lines of text (no Comcode support)
 |-
@@ -105,7 +105,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]long_trans[/title]
 
-{|
+{| 15em wide
 ! Title
 | A paragraph(s) of translatable/Comcode text
 |-
@@ -133,7 +133,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]long_text[/title]
 
-{|
+{| 15em wide
 ! Title
 | A paragraph(s) of text (no Comcode support)
 |-
@@ -163,7 +163,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]posting_field[/title]
 
-{|
+{| 15em wide
 ! Title
 | A paragraph(s) of Comcode, with attachment support
 |-
@@ -185,7 +185,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]codename[/title]
 
-{|
+{| 15em wide
 ! Title
 | A codename (short sequence of numbers and letters, no spaces)
 |-
@@ -208,7 +208,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]password[/title]
 
-{|
+{| 15em wide
 ! Title
 | A password (i.e. masked input)
 |-
@@ -230,7 +230,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]email[/title]
 
-{|
+{| 15em wide
 ! Title
 | An e-mail address
 |-
@@ -254,7 +254,7 @@ This tutorial describes all the different fields and their options.
 
 [title="3"]integer[/title]
 
-{|
+{| 15em wide
 ! Title
 | An integer (whole number, e.g. 5)
 |-
@@ -277,7 +277,7 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 
 [title="3"]float[/title]
 
-{|
+{| 15em wide
 ! Title
 | A float (decimal number, e.g. 3.2)
 |-
@@ -301,7 +301,7 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 
 [title="3"]list[/title]
 
-{|
+{| 15em wide
 ! Title
 | A value chosen from a list
 |-
@@ -345,7 +345,7 @@ The pathname relative to a [tt].csv[/tt] file (relative to base directory), if t
 
 [title="3"]list_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple values chosen from a list
 |-
@@ -385,7 +385,7 @@ The pathname relative to a [tt].csv[/tt] file (relative to base directory), if t
 
 [title="3"]tick[/title]
 
-{|
+{| 15em wide
 ! Title
 | Checkbox ('Yes' or 'No')
 |-
@@ -415,7 +415,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 
 [title="3"]upload[/title]
 
-{|
+{| 15em wide
 ! Title
 | An uploaded file
 |-
@@ -437,7 +437,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 
 [title="3"]upload_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple uploaded files
 |-
@@ -461,7 +461,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 
 [title="3"]picture[/title]
 
-{|
+{| 15em wide
 ! Title
 | An uploaded picture
 |-
@@ -485,7 +485,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 
 [title="3"]picture_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple uploaded pictures
 |-
@@ -509,7 +509,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 
 [title="3"]video[/title]
 
-{|
+{| 15em wide
 ! Title
 | An uploaded video
 |-
@@ -533,7 +533,7 @@ The first image-like field will be injected into screen meta-data (i.e. will com
 
 [title="3"]video_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple uploaded videos
 |-
@@ -558,7 +558,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]url[/title]
 
-{|
+{| 15em wide
 ! Title
 | An URL
 |-
@@ -580,7 +580,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]url_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple URLs
 |-
@@ -602,7 +602,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]page_link[/title]
 
-{|
+{| 15em wide
 ! Title
 | A page-link (i.e. in-site link)
 |-
@@ -624,7 +624,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]theme_image[/title]
 
-{|
+{| 15em wide
 ! Title
 | An image from the xxx directory of theme images
 |-
@@ -650,7 +650,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]guid[/title]
 
-{|
+{| 15em wide
 ! Title
 | A GUID (Globally-Unique Identifier)
 |-
@@ -674,7 +674,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]isbn[/title]
 
-{|
+{| 15em wide
 ! Title
 | ISBN code
 |-
@@ -696,7 +696,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]reference[/title]
 
-{|
+{| 15em wide
 ! Title
 | A reference to a catalogue entry in xxx catalogue
 |-
@@ -718,7 +718,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]reference_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple references to a catalogue entry in xxx catalogue
 |-
@@ -740,7 +740,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 [title="3"]content_link[/title]
 
-{|
+{| 15em wide
 ! Title
 | A link to an item of 'xxx' content
 |-
@@ -763,7 +763,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 
 [title="3"]content_link_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple links to an item of 'xxx' content
 |-
@@ -786,7 +786,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 
 [title="3"]member[/title]
 
-{|
+{| 15em wide
 ! Title
 | A member ID
 |-
@@ -808,7 +808,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 
 [title="3"]member_multi[/title]
 
-{|
+{| 15em wide
 ! Title
 | Multiple member IDs
 |-
@@ -830,7 +830,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 
 [title="3"]author[/title]
 
-{|
+{| 15em wide
 ! Title
 | An author configured on the system
 |-
@@ -854,7 +854,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 
 [title="3"]color[/title]
 
-{|
+{| 15em wide
 ! Title
 | A colour
 |-
@@ -877,7 +877,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 
 [title="3"]date[/title]
 
-{|
+{| 15em wide
 ! Title
 | A date/time
 |-
@@ -903,7 +903,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 
 [title="3"]just_date[/title]
 
-{|
+{| 15em wide
 ! Title
 | A date
 |-
@@ -929,7 +929,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 
 [title="3"]just_time[/title]
 
-{|
+{| 15em wide
 ! Title
 | A time
 |-
@@ -951,7 +951,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 
 [title="3"]tel[/title]
 
-{|
+{| 15em wide
 ! Title
 | A telephone number
 |-

@@ -16,7 +16,7 @@ One complicating factor is the URLs use. By-default, Composr uses standard PHP U
 [tt]site/index.php?page=downloads&type=view&id=3[/tt]
 for viewing a download.
 
-However, we do support a number of URL schemes, so potentially it could be something like:
+However, we do support a number of URL Schemes, so potentially it could be something like:
 [tt]site/downloads/view/3.htm[/tt]
 or:
 [tt]site/pg/downloads/view/3[/tt]
@@ -43,7 +43,7 @@ One of the code files is [tt]site.php[/tt]. This code file checks zone and page 
 
 When [tt]init__global2()[/tt] is finished, control pops back into the original [tt]index.php[/tt] file, which calls [tt]do_site()[/tt]. This proceeds to work out what page code to load (module, Comcode page, etc), and make Composr compose the page (putting it into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template etc), and finally output it. To learn more about how Composr composes pages from it's various elements, and how it decides what kinds of pages to load, see our [page="docs:tut_structure"]webmaster's structure tutorial[/page].
 
-We should also note our URL convention. Essentially we have up to 3 standard URL components: [tt]page[/tt], [tt]type[/tt], [tt]id[/tt]. [tt]page[/tt] identifies the Composr page to load (which can be any kind of page, it's found via a search process). [tt]type[/tt] and [tt]id[/tt] are specific to a particular module, but are a strong convention, and have special representation in the short URL schemes described above.
+We should also note our URL convention. Essentially we have up to 3 standard URL components: [tt]page[/tt], [tt]type[/tt], [tt]id[/tt]. [tt]page[/tt] identifies the Composr page to load (which can be any kind of page, it's found via a search process). [tt]type[/tt] and [tt]id[/tt] are specific to a particular module, but are a strong convention, and have special representation in the URL Schemes described above.
 
 For a diagram showing this process expressed a little differently, see our [url="bootstrap flow diagram"]{$BRAND_BASE_URL}/docs/flow.pdf[/url].
 

@@ -124,7 +124,7 @@ function _param_invalid($name, $ret, $posted)
 {
     // Invalid params can happen for many reasons:
     //  [/url] getting onto the end of URLs by bad URL extractors getting URLs out of Comcode
-    //  Spiders trying to ascend directory trees, and forcing index.php into the integer position of short URLs
+    //  Spiders trying to ascend directory trees, and forcing index.php into the integer position of URL Schemes
     //  Spiders that don't understand entity decoding
     //  People copying and pasting text shown after URLs as part of the URL itself
     //  New line characters getting pasted in (weird, but it's happened-- think might be some kind of screen reader browser)

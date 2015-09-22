@@ -35,11 +35,11 @@ We could change it to:
 /
 <a href="{URL*}&redirect={$PAGE_LINK&,site:news_thankyou}">Go somewhere</a>
 [/code]
-(depending on whether the URL contains an "?" already or not, which typically depends on your URL scheme)
+(depending on whether the URL contains an "?" already or not, which typically depends on your URL Scheme)
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+ - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
 
 {$SET,tutorial_tags,page_management,core_zone_editor,breadcrumbs,Structure and navigation,expert}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,Some advanced information about managing the structure and flow of a Composr website.}[block]main_tutorial_rating[/block]

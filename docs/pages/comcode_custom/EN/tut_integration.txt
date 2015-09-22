@@ -42,7 +42,7 @@ Imagine [tt]mypage.html[/tt] contains...
 
 To integrate this page as [tt]site:mypage[/tt], the following steps would need to be taken:
  - Strip down the file to only contain [tt]<img src="myimage.png" />[/tt].
- - Place [tt]myimage.png[/tt] in the [tt]site[/tt] directory (this assumes that 'short URLs' is turned off -- if you have short URLs enabled then it is best to just use absolute URLs instead)
+ - Place [tt]myimage.png[/tt] in the [tt]site[/tt] directory (this assumes that 'URL Schemes' are turned off -- if you have a URL Scheme enabled then it is best to just use absolute URLs instead)
  - Rename the file to [tt]mypage.htm[/tt] (HTML pages in Composr must end [tt].htm[/tt], not [tt].html[/tt] or anything else)
  - Place [tt]mypage.htm[/tt] in [tt]site/pages/html_custom/EN/[/tt]
 

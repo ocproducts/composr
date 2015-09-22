@@ -1212,10 +1212,28 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 $caption = str_replace($ratios_matches[0], '', $caption);
                                             }
 
+                                            $wide = false;
+                                            $column_sizes = array();
+                                            $caption_bits = explode(' ', $caption);
+                                            $caption = '';
+                                            foreach ($caption_bits as $caption_bit) {
+                                                if (($caption == '') && ($caption_bit == 'wide')) {
+                                                    $wide = true;
+                                                } elseif (($caption == '') && (preg_match('#^\d+(em|px)$#', $caption_bit) != 0)) {
+                                                    $column_sizes[] = $caption_bit;
+                                                } else {
+                                                    if ($caption != '') {
+                                                        $caption .= ' ';
+                                                    }
+                                                    $caption .= $caption_bit;
+                                                }
+                                            }
+
                                             $tag_output->attach(do_template('COMCODE_REAL_TABLE_START', array(
                                                 '_GUID' => '9fca9672b9d069a0c8a40ebc6e88602b',
-                                                'SUMMARY' => preg_replace('#(^|\s)wide($|\s)#', '', $caption),
-                                                'WIDE' => preg_replace('#(^|\s)wide($|\s)#', '', $caption) != $caption,
+                                                'SUMMARY' => $caption,
+                                                'WIDE' => $wide,
+                                                'COLUMN_SIZES' => $column_sizes,
                                                 'COLUMNED_TABLE' => (strpos($rows[0], '|') === false),
                                             )));
                                             $finished_thead = false;

@@ -115,7 +115,7 @@ class Module_admin_zones
         }
 
         if ($type == '_editor') {
-            $id = get_param_string('id', ''); // '' needed for short URLs
+            $id = get_param_string('id', ''); // '' needed for URL Schemes
             if ($id == '/') {
                 $id = '';
             }
@@ -826,7 +826,7 @@ class Module_admin_zones
     {
         require_lang('themes');
 
-        $zone = get_param_string('id', ''); // '' needed for short URLs
+        $zone = get_param_string('id', ''); // '' needed for URL Schemes
         if ($zone == '/') {
             $zone = '';
         }

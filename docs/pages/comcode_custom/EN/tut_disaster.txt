@@ -118,9 +118,9 @@ If you find an addon is crashing your site, the Safe Mode link ([tt]http://yourb
 
 The above requires for to be logged in at admin, which you may not be or be able to do. You can usually also uninstall an addon by examining the raw TAR file from the addon directory. Any files inside it should be deleted manually from your website.
 
-[title="2"]Disabling short URLs[/title]
+[title="2"]Disabling URL Schemes[/title]
 
-Short URLs are subject to your web host supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
+URL Schemes are subject to your web host supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
 You can use the [tt]config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]config_editor.php[/tt] script, login, look for the "Whether to block the short-URL (mod_rewrite)" option, set it to [tt]1[/tt], and then save the configuration.
 
 [title="2"]See also[/title]

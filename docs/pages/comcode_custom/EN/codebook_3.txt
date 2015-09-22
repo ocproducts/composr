@@ -546,13 +546,13 @@ The 'keep' parameters available are:
  - [tt]keep_memory_limit_test[/tt] -- set to a number of megabytes under 32 to reduce the memory limit to this value; useful for performance debugging
  - [tt]keep_no_chain[/tt] -- useful when working with the XML forum driver, tells it to not do reads from the configured chain database
  - [tt]keep_realtime_test[/tt] -- used for testing the realtime feature's display (it injects random data)
- - [tt]keep_simpleurls[/tt] -- disable short URLs
  - [tt]keep_wide[/tt] -- remove panels
  - [tt]keep_wide_high[/tt] -- remove panels, as well as the header and footer
  - [tt]keep_rating_test[/tt] -- set this to '1' if you are testing rating and don't want to be locked out for having already rated
  - [tt]keep_all_cpfs[/tt] -- set this to '1' if you want to edit bundled CPFs that aren't currently marked as editable
  - [tt]keep_oembed_cache[/tt] -- set this to '0' to disable the oembed URL cache temporarily, when debugging oembed endpoints
- - [tt]keep_no_short_url[/tt] -- set this to '1' to temporarily disable short URLs. This is useful for working out page-links/match-keys
+ - [tt]keep_urlmonikers[/tt] -- set to '0' to disable URL monikers
+ - [tt]keep_no_url_scheme[/tt] -- set this to '1' to temporarily disable URL Schemes. This is useful for working out page-links/match-keys
  - [tt]keep_force_open[/tt] -- set this to '1' if you want to ignore a [tt]closed.html[/tt] file and get to the website
  - [tt]keep_no_frames[/tt] -- set this to '1' to disable optional iframes / AJAX frame-simulation
  - [tt]keep_failover[/tt] -- set this to '1' or '0' to force failover mode to on or off

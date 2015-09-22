@@ -139,7 +139,7 @@ The default Comcode pages are...
 Like any page in Composr, a Comcode page is accessed by using:
 [tt]http://yourbaseurl/<zone>/index.php?page=<page-name>[/tt]
 
-Actually If you are using short URLs, then it may be something else (depending on which [page="_SEARCH:tut_short_urls"]URL scheme[/page] you use):
+Actually If you are using a URL Scheme, then it may be something else (depending on which [page="_SEARCH:tut_short_urls"]URL Scheme[/page] you use):
  - [tt]http://yourbaseurl/<zone>/pg/<page-name>[/tt]
  - [tt]http://yourbaseurl/<zone>/<page-name>.htm[/tt]
  - [tt]http://yourbaseurl/<zone>/<page-name>[/tt]
@@ -223,6 +223,6 @@ There may be cases where you don't want a Comcode page to appear in your Sitemap
  - [page="_SEARCH:tut_wysiwyg"]WYSIWYG editing[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
- - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+ - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
 
 {$SET,tutorial_tags,Pages,Content,core_comcode_pages,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to add new pages, using Comcode. It couldn't be simpler to do: Comcode pages almost look like plain text.}[block]main_tutorial_rating[/block]

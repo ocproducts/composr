@@ -375,7 +375,7 @@ function _fixup_protocolless_urls($in)
 /**
  * Convert a local URL to a page-link.
  *
- * @param  URLPATH $url The URL to convert. Note it may not be a short URL, and it must be based on the local base URL (else failure WILL occur).
+ * @param  URLPATH $url The URL to convert. Note it may not be a URL Scheme, and it must be based on the local base URL (else failure WILL occur).
  * @param  boolean $abs_only Whether to only convert absolute URLs. Turn this on if you're not sure what you're passing is a URL not and you want to be extra safe.
  * @param  boolean $perfect_only Whether to only allow perfect conversions.
  * @return string The page-link (blank: could not convert).
@@ -404,9 +404,6 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     }
 
     // Parse the URL
-    if ((strpos($url, '&') !== false) && (strpos($url, '?') === false)) {
-        $url = preg_replace('#&#', '?', $url, 1); // Old-style short URLs workl like this (no first ?, just &)
-    }
     $parsed_url = @parse_url($url);
     if ($parsed_url === false) {
         require_code('site');
@@ -426,7 +423,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     $attributes = array();
     $attributes['page'] = ''; // hopefully will get overwritten with a real one
 
-    // Convert short URL path info into extra implied attribute data
+    // Convert URL Scheme path info into extra implied attribute data
     require_code('url_remappings');
     $does_match = false;
     foreach (array('PG', 'HTM', 'SIMPLE') as $url_scheme) {

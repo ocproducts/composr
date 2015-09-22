@@ -459,7 +459,7 @@ function filter_naughty_harsh($in, $preg = false)
         return $in;
     }
     if (preg_match('#^[\w\-]*/#', $in) != 0) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE')); // Probably a relative URL underneath an SEO URL, should not really happen
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE')); // Probably a relative URL underneath a URL Scheme short URL, should not really happen
     }
 
     if ($preg) {

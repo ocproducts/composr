@@ -94,9 +94,9 @@ It is also worth understanding that page-links have a long-form and a short form
 
 If you do not want to hard-code what zone to use, you may specify either [tt]_SEARCH[/tt] or [tt]_SELF[/tt] as the zone name in the page-link. [tt]_SEARCH[/tt] will cause Composr to dynamically find the module involved, while [tt]_SELF[/tt] will use the same zone as the page-link is dynamically being interpreted in (e.g. If if it used on a menu in the site zone, [tt]_SELF[/tt] will be equivalent to [tt]site[/tt]).
 
-If you have a URL scheme enabled it can be hard to find out what the URL parameters to a screen are. If you go to [tt]http://yourbaseurl/index.php?keep_no_short_url=1[/tt] then all URLs shown will reveal the raw parameter values (this just happens for you, via the [tt]keep_no_short_url=1[/tt] you temporarily set in your address bar).
+If you have a URL Scheme enabled it can be hard to find out what the URL parameters to a screen are. If you go to [tt]http://yourbaseurl/index.php?keep_no_url_scheme=1[/tt] then all URLs shown will reveal the raw parameter values (this just happens for you, via the [tt]keep_no_url_scheme=1[/tt] you temporarily set in your address bar).
 
-For more information on how page-links are turned into URLs, see the [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page] tutorial. This tutorial also contains an example on how to link to the current logged in user's member profile (a common request), as a worked example of how page-links and URL schemes work.
+For more information on how page-links are turned into URLs, see the [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page] tutorial. This tutorial also contains an example on how to link to the current logged in user's member profile (a common request), as a worked example of how page-links and URL Schemes work.
 
 [title="3"]Panels and blocks[/title]
 
@@ -315,7 +315,7 @@ For example, you can change the front page to be in-line forums by:
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
  - [page="_SEARCH:tut_repository"]The Composr repository[/page]
- - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+ - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_adv_structure"]Advanced site structure and flow[/page]
 
 {$SET,tutorial_tags,page_management,core_zone_editor,breadcrumbs,Structure and navigation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An explanation of the Composr systems that together form the structure and navigation for Composr-powered websites.}[block]main_tutorial_rating[/block]

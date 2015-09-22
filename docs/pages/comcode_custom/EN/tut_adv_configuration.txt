@@ -85,7 +85,7 @@ You may use the config editor to:
  - Change the base-URL
  - Change forum and site database details
  - Change cookie details
- - Force 'short URLs' to be disabled, if you enabled it, but it failed to function correctly, locking you out of Composr
+ - Force 'URL Schemes' to be disabled, if you enabled it, but it failed to function correctly, locking you out of Composr
 
 [title="2"]Advanced page structure changes[/title]
 
@@ -99,7 +99,7 @@ It is recommended that you never move default Composr pages because it complicat
 
 [surround]
 [media width="150" description="Finding how to change your settings" float="right"]data_custom/images/docs/tut_adv_configuration/phpsettings.png[/media]
-You can try and get PHP and the web server to use an optimal configuration, via a special file named [tt].htaccess[/tt]. If you want the 'URL scheme' option to be enabled, this step is necessary.
+You can try and get PHP and the web server to use an optimal configuration, via a special file named [tt].htaccess[/tt]. If you want the 'URL Scheme' option to be enabled, this step is necessary.
 Note that the file may already exist, potentially for either of two reasons:
 1) It was already there from before Composr was installed.
 2) Composr's quick installer automatically created an optimal file for you.
@@ -138,6 +138,6 @@ The final step is to configure Composr to use the key pair to encrypt data. In t
  - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
  - [page="_SEARCH:tut_msn"]Creating sub-communities (and sub-sites)[/page]
  - [page="_SEARCH:tut_permissions"]Access Control and Privileges[/page]
- - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+ - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
 
 {$SET,tutorial_tags,core_configuration,apache_config_files,Configuration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting permissions. Search-Engine-Friendly URLs. Addons. Changing Installation Options.}[block]main_tutorial_rating[/block]

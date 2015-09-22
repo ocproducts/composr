@@ -311,7 +311,7 @@ return do_template('RESULTS_TABLE_SCREEN', array(
 [title="3"]Generating URLs[/title]
 
 In Composr we usually avoid ever hard-coding URLs to things. There are a number of reasons for this:
-1) We may have different SEO URL schemes that link to pages in very different ways
+1) We may have different URL Schemes that link to pages in very different ways
 2) We don't want to hard-code any assumptions about relative paths, as we may change URL/directory structure later and generally want code to be able to run in multiple URL contexts (i.e. code should work when executed from different parts of the site). We can't use relative URLs starting with "/" because the site may not necessarily be installed on the root of a domain name.
 3) We don't want to hard-code domain names into URLs either, so can't use plain absolute URLs. We need our code to run on development and test installs.
 4) We need things to go through the configuration layer, e.g. showing the correct theme image for the theme a user has active, or handling configured Composr page redirects

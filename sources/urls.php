@@ -298,7 +298,7 @@ function can_try_mod_rewrite($avoid_remap = false)
         return false;
     }
     $url_scheme = get_option('url_scheme');
-    return (($url_scheme != 'RAW') && (get_param_integer('keep_no_short_url', 0) == 0) && ((!array_key_exists('block_mod_rewrite', $GLOBALS['SITE_INFO'])) || ($GLOBALS['SITE_INFO']['block_mod_rewrite'] == '0')) && (!$avoid_remap)); // If we don't have the option on or are not using apache, return
+    return (($url_scheme != 'RAW') && (get_param_integer('keep_no_url_scheme', 0) == 0) && ((!array_key_exists('block_mod_rewrite', $GLOBALS['SITE_INFO'])) || ($GLOBALS['SITE_INFO']['block_mod_rewrite'] == '0')) && (!$avoid_remap)); // If we don't have the option on or are not using apache, return
 }
 
 /**
@@ -451,7 +451,7 @@ function url_monikers_enabled()
     if (!function_exists('get_option')) {
         return false;
     }
-    if (get_param_integer('keep_simpleurls', 0) == 1) {
+    if (get_param_integer('keep_urlmonikers', null) === 0) {
         return false;
     }
     if (get_option('url_monikers_enabled') != '1') {
@@ -672,7 +672,7 @@ function _handle_array_var_append($key, $val, &$vars)
  *
  * @param  ID_TEXT $zone_name The name of the zone for this
  * @param  array $vars A map of variables to include in our URL
- * @param  boolean $force_index_php Force inclusion of the index.php name into a short URL, so something may tack on extra parameters to the result here
+ * @param  boolean $force_index_php Force inclusion of the index.php name into a URL Scheme, so something may tack on extra parameters to the result here
  * @return ?URLPATH The improved URL (null: couldn't do anything)
  * @ignore
  */
@@ -1033,7 +1033,7 @@ function fixup_protocolless_urls($in)
 /**
  * Convert a local URL to a page-link.
  *
- * @param  URLPATH $url The URL to convert. Note it may not be a short URL, and it must be based on the local base URL (else failure WILL occur).
+ * @param  URLPATH $url The URL to convert. Note it may not be for a URL Scheme, and it must be based on the local base URL (else failure WILL occur).
  * @param  boolean $abs_only Whether to only convert absolute URLs. Turn this on if you're not sure what you're passing is a URL not and you want to be extra safe.
  * @param  boolean $perfect_only Whether to only allow perfect conversions.
  * @return string The page-link (blank: could not convert).
@@ -1161,7 +1161,7 @@ function find_id_moniker($url_parts, $zone)
             $url_parts['type'] = 'browse';
         }
         if ($url_parts['type'] === null) {
-            $url_parts['type'] = 'browse'; // NULL means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when SEO URLs are off, we know it cannot be for SEO URLs)
+            $url_parts['type'] = 'browse'; // NULL means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when URL Schemes are off, we know it cannot be for URL Schemes)
         }
 
         if (array_key_exists('id', $url_parts)) {

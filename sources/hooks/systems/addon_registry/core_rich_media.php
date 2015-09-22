@@ -1653,11 +1653,14 @@ class Hook_addon_registry_core_rich_media
     {
         $tag_output = new Tempcode();
 
+        $column_sizes = array();
+
         $tag_output->attach(do_lorem_template('COMCODE_REAL_TABLE_START', array(
             'SUMMARY' => lorem_phrase(),
             'CAPTION' => lorem_word(),
             'COLUMNED_TABLE' => false,
             'WIDE' => true,
+            'COLUMN_SIZES' => $column_sizes,
         )));
         foreach (placeholder_array(2) as $i => $table_row) {
             $map = array();

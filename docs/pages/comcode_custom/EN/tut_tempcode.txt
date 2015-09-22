@@ -671,7 +671,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SELF_URL,0,0,0,a=b}</td>
-			<td>Get URL to current screen. You don't need to give any parameters, but if you do: the first is whether to go to the website home page if you are at where you're at due to a form post, the second is whether to included posted parameters as parameters in the URL, the first is whether to avoid the short URL facility, and further parameters are additional URL parameters.</td>
+			<td>Get URL to current screen. You don't need to give any parameters, but if you do: the first is whether to go to the website home page if you are at where you're at due to a form post, the second is whether to included posted parameters as parameters in the URL, the first is whether to avoid the URL Scheme facility, and further parameters are additional URL parameters.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SELF_PAGE_LINK}</td>

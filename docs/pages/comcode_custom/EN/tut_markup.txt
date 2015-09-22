@@ -139,7 +139,7 @@ Composr itself provides the following protocols and languages...
 		</tr>
 		<tr>
 			<td>Page-links</td>
-			<td>A simple technology for generating link between pages, that compiles to HTTP URLs; page-links are local to a website (i.e. they can only work to generate links within a site), and are consistent regardless of the SEO URL scheme employed (Composr supports URL rewriting, which can make the appearance of final URLs vary considerably).</td>
+			<td>A simple technology for generating link between pages, that compiles to HTTP URLs; page-links are local to a website (i.e. they can only work to generate links within a site), and are consistent regardless of the URL Scheme employed (Composr supports URL rewriting, which can make the appearance of final URLs vary considerably).</td>
 		</tr>
 		<tr>
 			<td>[page="_SELF:tut_filtercode"]Filtercode[/page]</td>
@@ -168,7 +168,7 @@ They are constructed as follows:
  - [b]Protocol[/b]: For a web page, the protocol is always 'http' or 'https' (because the page is transferred via the HTTP(S) protocol).
  - [b]Port[/b]: The port is almost always '80' which is the default port. If the port is 80 then it is not written down (i.e. ":80" is actually not in the URL).
  - [b]Hostname[/b]: The server is either specified by a domain name or an IP address.
- - [b]Path[/b]: The path often relates to a file on the server, but does not have to: it is up to the web server how to treat it. For a Composr site the path usually points to a PHP file on the server (which the web server will recognise as being something it has to run, and relay the output), except if SEO URLs are on then it might go through a level of indirection (e.g. it looks to the visitor like it refers to an [tt].htm[/tt] file but actually is invisibly redirectly to go through a complex path involving the [tt]index.php[/tt]).
+ - [b]Path[/b]: The path often relates to a file on the server, but does not have to: it is up to the web server how to treat it. For a Composr site the path usually points to a PHP file on the server (which the web server will recognise as being something it has to run, and relay the output), except if a URL Scheme is on then it might go through a level of indirection (e.g. it looks to the visitor like it refers to an [tt].htm[/tt] file but actually is invisibly redirectly to go through a complex path involving the [tt]index.php[/tt]).
  - [b]Parameter(s)[/b]: There can be any number of parameters (including none). The first one has a "?" before it and subsequent ones have a "&" before it.
 
 Here is a real example:

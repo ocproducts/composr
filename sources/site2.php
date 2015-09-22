@@ -269,7 +269,7 @@ function page_not_found($codename, $zone)
 
     set_http_status_code('404');
 
-    // Maybe problem with SEO URLs
+    // Maybe problem with URL Schemes
     $url_scheme = get_option('url_scheme');
     if ((get_zone_name() == '') && ((($url_scheme == 'HTM') || ($url_scheme == 'SIMPLE'))) && (has_zone_access(get_member(), 'adminzone'))) {
         $self_url = get_self_url_easy();

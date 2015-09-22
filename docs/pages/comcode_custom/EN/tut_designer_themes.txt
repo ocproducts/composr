@@ -278,7 +278,7 @@ You can usually identify page-links to use from the URL. In this case the URL wo
  - [tt]http://yourbaseurl/site/index.php?page=news[/tt]
  - or, [tt]http://yourbaseurl/site/news.htm[/tt]
  - or, [tt]http://yourbaseurl/site/pg/news[/tt].
-You can see now one reason why we don't hard-code URLs in Composr! The URLs can be different, depending on what URL scheme is in use. Page-links also make it easier to use the same code on different domain names.
+You can see now one reason why we don't hard-code URLs in Composr! The URLs can be different, depending on what URL Scheme is in use. Page-links also make it easier to use the same code on different domain names.
 
 [title="3"]Escaping ([tt]*[/tt] to the right of variable names)[/title]
 

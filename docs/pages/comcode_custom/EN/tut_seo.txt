@@ -48,7 +48,7 @@ There are a number of techniques that will improve your site's search engine sta
  - Don't waste your time submitting to obscure search engines
  - Do not 'cheat' search engines by making pages with a lot of hidden words: search engines will penalise you for it
  - Make a lot of good written content, so search engines have more to index against. Of course, this will also add to the quality of your site
- - Use the short URL feature, as search engines will then see pages opened up with different parameters (to access different content) as separate. This means they are more likely to consider them separately
+ - Use the URL Schemes feature, as search engines will then see pages opened up with different parameters (to access different content) as separate. This means they are more likely to consider them separately
  - Use dedicated "landing pages" that you can link to from other websites. A landing page is just a normal page that you intend to point people to. For example, you might make an article landing page that is linked to from a directory of articles. The purpose is to give search engines something extra and real to index without distracting your primary visitor flow
 
 There are many rogues and companies out there that will promise unachievable things when it comes to getting high search engine rankings: a site that a user would not want to visit and respect, is not going to be able to abuse search engine ranking schemes easily. Our best advice for this is that you should focus on quality, not cheating the system: quality is easier, and cheating will usually end up working against you.
@@ -115,7 +115,7 @@ Of course, if you are seeing an error on a particular URL and you want that URL 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_short_urls"]URL schemes in Composr[/page]
+ - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
  - [url="Submit to Google"]http://www.google.com/addurl.html[/url]

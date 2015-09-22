@@ -388,9 +388,9 @@ This is because a number of them need to be provided by default, so that they ma
 
 This is available in the configuration. Please read our [page="_SEARCH:tut_configuration"]'Basic Configuration' tutorial[/page].
 
-[title="3"]I turned on short URLs, but they won't work, and now Composr links are all broken. How do I fix it?[/title]
+[title="3"]I turned on a URL Scheme, but they won't work, and now Composr links are all broken. How do I fix it?[/title]
 
-Use the [tt]config_editor.php[/tt] script to force short URLs to be off.
+Use the [tt]config_editor.php[/tt] script to force URL Schemes to be off.
 
 [title="3"]How do I move to another server?[/title]
 

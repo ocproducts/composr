@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: URL schemes in Composr[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: URL Schemes in Composr[/title]
 
 Composr supports short URLs. [i]Officially[/i] we only support them in Apache, but practically you can get them working on any web server.
 
@@ -14,11 +14,11 @@ Short URLs are enabled via the "URL Scheme" feature. In fact we have a number of
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]URL schemes[/title]
+[title="2"]URL Schemes[/title]
 
-Composr uses "page-links" for internal configuration instead of URLs because of how the URL scheme changes how URLs are structured. The URL scheme determines how a page-link is turned into a URL.
+Composr uses "page-links" for internal configuration instead of URLs because of how the URL Scheme changes how URLs are structured. The URL Scheme determines how a page-link is turned into a URL.
 
-The available URL schemes are:
+The available URL Schemes are:
  - Use /pg/ to identify CMS pages (e.g. [tt]/pg/start[/tt])
  - Use .htm to identify CMS pages (e.g. [tt]/start.htm[/tt])
  - Very simple unadorned URLs (e.g. [tt]/index.php?page=start[/tt])
@@ -31,24 +31,24 @@ The available URL schemes are:
 
 [title="3"]An example: linking to your own member profile[/title]
 
-Often site owners wish to link to the current logged in member's profile. It is not obvious how to create a generic link for this, and it is hard to give one to a webmaster because it depends upon their URL scheme (and base URL).
-We therefore will use this scenario of an example of how the URL would look in all the different URL schemes.
+Often site owners wish to link to the current logged in member's profile. It is not obvious how to create a generic link for this, and it is hard to give one to a webmaster because it depends upon their URL Scheme (and base URL).
+We therefore will use this scenario of an example of how the URL would look in all the different URL Schemes.
 
 Let's start with the page-link. If you don't supply an [tt]id[/tt] parameter to the [tt]view[/tt] screen of the [tt]members[/tt] module then it will automatically use the current member's ID (or show a login screen if it's a guest).
 The page-link is therefore:
 [tt]:members:view[/tt]
 (I've assumed "Single public zone" is on, if that option is off then it would be [tt]site:members:view[/tt])
 
-If no URL scheme (Raw PHP-style URLs) is enabled then the URL generated would be:
+If no URL Scheme (Raw PHP-style URLs) is enabled then the URL generated would be:
 [tt]http://yourbaseurl/index.php?page=members&type=view[/tt]
 
-If the URL scheme is "Use /pg/ to identify CMS pages":
+If the URL Scheme is "Use /pg/ to identify CMS pages":
 [tt]http://yourbaseurl/pg/members/view[/tt]
 
-If the URL scheme is "Use .htm to identify CMS pages":
+If the URL Scheme is "Use .htm to identify CMS pages":
 [tt]http://yourbaseurl/members/view.htm[/tt]
 
-If the URL scheme is "Very simple unadorned URLs":
+If the URL Scheme is "Very simple unadorned URLs":
 [tt]http://yourbaseurl/members/view[/tt]
 
 For completeness, let's show what they would be if it was linking to member #3:
@@ -61,7 +61,7 @@ For completeness, let's show what they would be if it was linking to member #3:
 
 [title="2"]Setup instructions[/title]
 
-Composr can also do short URLs on the following web-servers:
+Composr can also do URL Schemes on the following web-servers:
  - Apache (using [tt]mod_rewrite[/tt], and our rules in [tt]recommended.htaccess[/tt] -- details below)
  - Litespeed Server (as above, Litespeed simulates Apache)
  - IIS7 (due to the rules in our [tt]web.config[/tt])
@@ -73,7 +73,7 @@ Composr can also do short URLs on the following web-servers:
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_short_urls/apache.png[/media]
 Perform the following steps:
 1) If you haven't already got a working Composr [tt].htaccess[/tt] file (the quick installer may have made it for you automatically), rename [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt]. If your site gives errors after doing this, try [tt]plain.htaccess[/tt] instead.
-2) If things go wrong, you can disable short URLs via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
+2) If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
 3) Enable a URL Scheme from your site options (Admin Zone > Setup > Configuration > Site options > SEO).
 
 [title="4"]If it won't save[/title]
@@ -83,7 +83,7 @@ It is possible saving the configuration will result in an error like following:
 Before you may enable mod_rewrite support, you must enable it on the web server.
 [/quote]
 
-Composr checks both that the [tt].htaccess[/tt] contains an instruction to enable rewrite rules, and that the sitemap page loads via a short URL.
+Composr checks both that the [tt].htaccess[/tt] contains an instruction to enable rewrite rules, and that the sitemap page loads via a URL Scheme.
 If the [tt].htaccess[/tt] is incorrect, in the wrong place, if the [tt]RewriteBase[/tt] line is wrong, or if somehow it is not working right for any other reason, this error could happen.
 
 A good manual debug tool would be to go to [tt]http://yourbaseurl/sitemap.htm[/tt] and see what happens. If it won't load, debug your [tt].htaccess[/tt] and/or server settings, then try again to change the Composr configuration as above.
@@ -176,15 +176,15 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,U]
 
 5) Test a short URL (e.g. [tt]http://yourbaseurl/site/pg/downloads[/tt]) -- if it doesn't load, you've got a IIRF/IIS configuration problem.
 
-6) If things go wrong, you can disable short URLs via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
+6) If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
 
-[title="2"]Enabling a URL scheme retroactively[/title]
+[title="2"]Enabling a URL Scheme retroactively[/title]
 
-Enabling a URL scheme on an existing site will not break old URLs, those URLs will just redirect, and the canonical URL will be specified in the HTML header under a meta tag regardless.
-So don't think that changing the URL scheme is disasterous for your SEO.
+Enabling a URL Scheme on an existing site will not break old URLs, those URLs will just redirect, and the canonical URL will be specified in the HTML header under a meta tag regardless.
+So don't think that changing the URL Scheme is disasterous for your SEO.
 
 [concepts
- 1_key="Short URL"      1_value="A URL that points to content in a simpler, shorter, form. Also called a Quick URL' or an 'SEO URL'"
+ 1_key="URL Scheme"      1_value="A way to make URLs simpler than the default PHP URLs"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
