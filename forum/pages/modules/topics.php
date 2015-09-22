@@ -3402,7 +3402,7 @@ END;
             'HIDDEN' => $hidden_fields,
             'TITLE' => $title,
             'FIELDS' => $fields,
-            'TEXT' => '',
+            'TEXT'=> do_lang_tempcode('EDITING_TOPIC_NOT_POST'),
             'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,

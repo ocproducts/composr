@@ -108,7 +108,7 @@ class Block_main_custom_gfx
 
             $colour = imagecolorallocate($img, hexdec(substr($_color, 0, 2)), hexdec(substr($_color, 2, 2)), hexdec(substr($_color, 4, 2)));
 
-            $pos_y = intval(array_key_exists('y', $map) ? $map['y'] : '12');
+            $pos_y = intval(array_key_exists('y', $map) ? $map['y'] : '16');
 
             require_code('character_sets');
             $text = foxy_utf8_to_nce($map['data']);

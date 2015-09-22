@@ -243,9 +243,11 @@
 					{+END}
 
 					<div class="proceed_button buttons_group">
-						{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
-							<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
-						{+END}{+END}{+END}
+						{+START,IF,{$NOT,{$MOBILE}}}
+							{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
+								<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
+							{+END}{+END}{+END}
+						{+END}
 
 						{+START,IF_PASSED,MORE_URL}
 							{+START,IF,{$JS_ON}}

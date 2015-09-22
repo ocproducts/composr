@@ -215,6 +215,7 @@ function get_false_permissions()
         array('GENERAL_SETTINGS', 'remove_page_split'),
         array('GENERAL_SETTINGS', 'bypass_word_filter'),
         array('SUBMISSION', 'perform_keyword_check'),
+        array('SUBMISSION', 'have_personal_category'),
     );
 }
 
@@ -232,7 +233,6 @@ function get_true_permissions()
         array('SUBMISSION', 'submit_lowrange_content'),
         array('SUBMISSION', 'bypass_validation_lowrange_content'),
         array('SUBMISSION', 'set_own_author_profile'),
-        array('SUBMISSION', 'have_personal_category'),
         array('_FEEDBACK', 'rate'),
         array('_FEEDBACK', 'comment'),
         array('VOTE', 'vote_in_polls'),

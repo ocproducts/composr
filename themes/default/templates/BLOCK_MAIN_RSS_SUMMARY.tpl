@@ -1,7 +1,7 @@
 <div class="float_surrounder rss_summary">
 	{+START,IF,{$NOT,{$IN_STR,{CATEGORY},<}}}
 		{+START,IF_NON_EMPTY,{AUTHOR}}
-			<div class="newscat_img_author">
+			<div class="newscat_img newscat_img_author">
 				<div class="news_by">{AUTHOR}</div>
 			</div>
 		{+END}

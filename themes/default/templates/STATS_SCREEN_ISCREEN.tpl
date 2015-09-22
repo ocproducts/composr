@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF,{$NOT,{$ISSET,SVG_ONCE}}}
-	<p class="box">{!SVG_EXPLANATION}</p>
+	<div class="box"><p class="box_inner">{!SVG_EXPLANATION}</p></div>
 	{$SET,SVG_ONCE,1}
 {+END}
 

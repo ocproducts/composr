@@ -267,8 +267,16 @@ class Module_cms_calendar extends Standard_crud_module
                 form.onsubmit=function() {
                     if (form.elements['end_day'].selectedIndex!=0)
                     {
-                        var start=new Date(window.parseInt(form.elements['start_year'].value),window.parseInt(form.elements['start_month'].value)-1,window.parseInt(form.elements['start_day'].value),window.parseInt(form.elements['start_hour'].value),window.parseInt(form.elements['start_minute'].value));
-                        var end=new Date(window.parseInt(form.elements['end_year'].value),window.parseInt(form.elements['end_month'].value)-1,window.parseInt(form.elements['end_day'].value),window.parseInt(form.elements['end_hour'].value),window.parseInt(form.elements['end_minute'].value));
+                        var start_date,end_date;
+                        if (start_day)
+                        {
+                            start_date=new Date(window.parseInt(form.elements['start_year'].value),window.parseInt(form.elements['start_month'].value)-1,window.parseInt(form.elements['start_day'].value),window.parseInt(form.elements['start_hour'].value),window.parseInt(form.elements['start_minute'].value));
+                            end_date=new Date(window.parseInt(form.elements['end_year'].value),window.parseInt(form.elements['end_month'].value)-1,window.parseInt(form.elements['end_day'].value),window.parseInt(form.elements['end_hour'].value),window.parseInt(form.elements['end_minute'].value));
+                        } else
+                        {
+                            start_date=start.value;
+                            end_date=end.value;
+                        }
 
                         if (start>end)
                         {

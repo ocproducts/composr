@@ -1062,7 +1062,7 @@ class Module_admin_stats
                 do_lang('COUNT_TOTAL') => $value,
             );
 
-            $fields->attach(results_entry(array(is_null($page) ? make_string_tempcode(escape_html($url)) : hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), integer_format($value), false, true), false));
+            $fields->attach(results_entry(array(is_null($page) ? make_string_tempcode(escape_html($url)) : hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), integer_format($value)), false));
 
             $i++;
         }

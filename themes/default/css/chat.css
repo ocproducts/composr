@@ -235,7 +235,7 @@
 .chat_lobby_friends {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		float: {!en_left};
-		width: 16em;
+		width: 16.5em;
 	/*{+END}*/
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
