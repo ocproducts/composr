@@ -530,6 +530,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     public $permissions_require = 'cat_high';
     public $menu_label = 'BANNERS';
     public $no_blank_ids = false;
+    public $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module table function.

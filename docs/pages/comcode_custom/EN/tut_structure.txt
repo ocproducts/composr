@@ -227,10 +227,41 @@ Not everything in Composr comes from the Sitemap, although in most cases the dat
 
 It is a good idea to have some awareness of the different kinds of structure Composr will make use of.
 
-[title="4"]Breadcrumbs[/title]
+[title="4"]Breadcrumbs (advanced)[/title]
 
+[surround]
 [media width="150" description="Editing the breadcrumbs XML" float="right"]data_custom/images/docs/tut_structure/breadcrumbs_edit.png[/media]
 [media width="150" description="Sample breadcrumbs" float="right"]data_custom/images/docs/tut_structure/breadcrumbs.png[/media]
+Breadcrumbs are a kind of navigation mechanism used in websites to go to the upper levels (basically backwards) while navigating through a site. Composr supports breadcrumbs across the whole system.
+
+Composr has a fully customisable breadcrumbs navigation system. This is done using the breadcrumbs editor, which involves editing an XML file. Webmasters can edit the XML file from:
+Admin Zone > Structure > Breadcrumb overrides
+
+Webmasters can customise the existing breadcrumbs for a screen by adding a new entry to the XML file.
+
+For example...
+
+If you add a new gallery named [tt]example_distorted_gallery[/tt], there will be a default breadcrumbs to that particular gallery. We can change the parent links by adding the following code to the XML file:
+[code="XML"]
+ <substitution label="Distorted gallery" match_key="site:galleries:browse:example_distorted_gallery">
+     <link label="Our page">site:page_for_distorted_gallery</link>
+ </substitution>
+[/code]
+[/surround]
+
+[surround]
+[media width="150" description="Breadcrumbs after change" float="right"]data_custom/images/docs/tut_structure/breadcrumb_after.png[/media]
+[media width="150" description="Breadcrumbs before change" float="right"]data_custom/images/docs/tut_structure/breadcrumb_before.png[/media]
+What the XML means:
+ - The [tt]match_key[/tt] attribute represents the page-link to match against. This is where we're targeting our new set of parent links to, replacing the old set of parent links.
+ - The [tt]label[/tt] attribute in the "substitution" tag represents the label to give the matched page in the breadcrumbs ([tt]substitution[/tt] tag) or the inserted link ([tt]link[/tt] tag).
+ - The [tt]link[/tt] tag is used to specify all the different links which will show above the matched page (the parent links). The webmaster can give as many links as they need but we've just given one here.
+
+After saving customising the breadcrumbs, the updated breadcrumbs will be applied. See the screenshots for the before/after.
+[/surround]
+
+[title="5"]Implementation details (more advanced)[/title]
+
 The Sitemap system is not actually used for breadcrumbs, but the data is sourced from the same places in most cases. It may vary due to:
  - breadcrumb customisations
  - added process depth (for example, when running a wizard, the breadcrumbs may reflect your depth within that wizard)
@@ -239,9 +270,14 @@ We don't use the Sitemap for the breadcrumb generation because it is generated b
 
 [title="4"]URLs[/title]
 
-URLs are not primarily discussed in this tutorial, but they do form another kind of website structure.
+URLs form another kind of website structure.
 
-URLs to most content are customisable, so while it does tend to reflect the zone and page the content is in, it may be altered.
+URLs are not primarily discussed in this tutorial, but are covered in these tutorials:
+ - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page] (web technology in general)
+ - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page] (monikers)
+ - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page] (short URLs)
+
+URLs to most content are customisable (via editing of monikers), so while they do tend to reflect the zone and page the content is in, it may be altered.
 
 There are a number of different schemes for generating URL structures.
 

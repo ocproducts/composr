@@ -92,8 +92,9 @@ The [concept]Conversr[/concept] system has a powerful usergroup system.
 
 [title="3"]Ranks[/title]
 
-Members will be able to automatically enter usergroups on their rank ladder as they accumulate points.
-Their visible rank, and privileges change in accordance.
+Members will automatically enter usergroups on their rank ladder as they accumulate points. Specifically, the total points ever earned, as point spending does not impede raising through the ranks.
+
+Their visible rank, and privileges change in accordance to their new rank usergroups.
 
 Rank ladders are not formally codified. A member can be considered on a rank ladder if they are on a usergroup with any particular promotion path. Members may be on multiple ladders by being in multiple promotable usergroups. Usually a site will only have on rank ladder though.
 
@@ -102,7 +103,7 @@ Newbie --> Regular --> Local --> Old timer --> Local hero
 
 It is recommended that you leave all non-staff members such that their primary usergroup stays within this rank ladder, and use secondary usergroups for the purpose of placing them in sub-communities, and granting additional permissions (a member has the 'best' permission combination out of all the permissions granted to all of their usergroups). This keeps things consistent, allowing these members to have both your main rank and other usergroup memberships.
 
-You can attach your choice of rank image to any usergroup.
+You can attach your choice of rank image to any usergroup. A default set of images is supplied for the default rank ladder.
 
 The Setup Wizard has an option to remove the default rank ladder and have a simple 'Members' usergroup instead.
 

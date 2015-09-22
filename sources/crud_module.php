@@ -366,7 +366,7 @@ abstract class Standard_crud_module
                 $this->title = get_screen_title('MASS_DELETE');
             }
 
-            if ((method_exists($this, 'browse')) && ($type != 'browse')) {
+            if ((((method_exists($this, 'browse')) && ($type != 'browse')) || ((isset($this->is_chained_with_parent_browse)) && ($this->is_chained_with_parent_browse)))) {
                 if (($this->special_edit_frontend) && (($type == '_edit') || ($type == '_edit_category'))) {
                     breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode(is_null($this->menu_label) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE'))));
                 } else {

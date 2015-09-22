@@ -95,6 +95,9 @@ As with randomisation, this allows you to use the award system without actually 
 
 [title="2"]Using module screens as blocks[/title]
 
+[surround]
+[media width="150" description="Viewing our embedded module inside the news post" float="right"]data_custom/images/docs/tut_featured/featured_main_include_module_2.png[/media]
+[media width="150" description="Embedding a recommend module (you cannot see, but in this case I am adding it inside the body of a news post)" float="right"]data_custom/images/docs/tut_featured/featured_main_include_module.png[/media]
 While the [tt]main_content[/tt] block (see above) can show content within blocks, it is conceivable that you might want to display full module screens as if they were blocks. This is possible with the [tt]main_include_module[/tt] block.
 
 For example:
@@ -102,6 +105,11 @@ For example:
 [block="_SEARCH:topicview:browse:1" strip_title="1" only_if_permissions="0"]main_include_module[/block]
 [/code]
 would show Conversr topic #1 in a block, without running permission checks, and with the title removed.
+
+The first parameter is the page-link to what we are embedding, which in the above example was the [tt]topicview[/tt] module, in whatever zone it is in, the [tt]browse[/tt] screen of it, and ID [tt]1[/tt]. You can usually work out page-links from the URL once you understand them. Page-links are described in the [page="_SEARCH:tut_menus"]Customising what's on the menus tutorial[/page].
+
+In the screenshots on the right I have shown a quirky example where I am embedding the recommend page directly into a news post.
+[/surround]
 
 [title="2"]Image of the day[/title]
 

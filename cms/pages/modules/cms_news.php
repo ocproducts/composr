@@ -832,6 +832,7 @@ class Module_cms_news_cat extends Standard_crud_module
     public $table = 'news_categories';
     public $orderer = 'nc_title';
     public $title_is_multi_lang = true;
+    public $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module table function.

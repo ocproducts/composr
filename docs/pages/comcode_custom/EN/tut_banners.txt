@@ -79,7 +79,7 @@ Any usergroup with the "Avoid banners" permission will not see banners. Super ad
 [title="2"]Banner status[/title]
 
 [surround]
-[media width="150" description="Viewing the status of a banner" float="left"]data_custom/images/docs/tut_banners/banners_view.png[/media]
+[media width="150" description="Viewing the status of a banner" float="right"]data_custom/images/docs/tut_banners/banners_view.png[/media]
 There is a facility for staff and banner submitters to view the status of their banner. This is via the [tt]banners[/tt] module ([tt]site:banners[/tt] page-link, About > Banners on the default menus). Information about how much the banner has been viewed and clicked is shown, as well as the equivalent statistics for how the banners associated website (if there is one) has viewed and clicked the banner network.
 
 The details shown may have important statistical significance. For example, a banner that is viewed a lot, but never clicked, may not be a 'profitable' one to have in the rotation (note however, that a simple banner view could impact a visitor, and thus it actually being clicked is not always a measure of the user impact).
@@ -142,6 +142,70 @@ If banners won't show check:
 6) That the banner type your banner is in is displayed (by default only the default 'General' banners are displayed, in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template). See "Having multiple banner sets".
 7) The banner type has permissions for the viewer's usergroup.
 8) The "Community advert chance" configuration option is not set to zero.
+
+[title="2"]Banner waves[/title]
+
+In addition to normal banner display, you can also use the [tt]main_banner_wave[/tt] block to display all banners within a type as a single advertising block. This is useful for displaying a list of sponsors. An example of this block will be in the worked example that follows.
+
+[title="2"]Worked example: adding a square text banner[/title]
+
+Let's imagine we want to add a new banner rotation to a site: square banners.
+
+The first step is to define a new banner type...
+
+[surround]
+[media width="150" description="Adding the banner type" float="right"]data_custom/images/docs/tut_banners/example_banner_type.png[/media]
+Creating a new banner type:[list="1"]
+[*] Log in, go to the "Admin Zone" and select "Banners" in the "Content" section dropdown list. In the "Banners" page you should see the icon "Add banner type": select this, which will take you to banner type form.
+[*] The form will ask for some details. It is highly recommended that you always provide the dimensions as per [url="IAB guidelines"]http://www.iab.net/guidelines/508676/508767/displayguidelines[/url].
+Enter the following in the fields:[list="a"]
+[*] Name of the Banner type: [tt]square[/tt]
+[*] Tick (check) "Holds textual banners"
+[*] Set the dimensions to [tt]250[/tt]&times;[tt]250[/tt]
+[*] Set the Filesize to [tt]300[/tt]. Large files can cause your site to run slowly; however since we are creating a textual banner we have to enter the maximum characters the banner can have, and 300 seems a good number[/list]
+[*] Add the banner type after entering all the details by clicking "Add banner type"
+[/list]
+[/surround]
+
+[surround]
+[media width="150" description="Adding the banner" float="right"]data_custom/images/docs/tut_banners/example_banner_add.png[/media]
+Adding a new banner with the new type:
+1) If you're still on the screen asking you what to do next, click "Add banner". Otherwise go back to "Banners" page in the "Content" section, and select the "Add banner" icon.
+2) This will take you to a form again. Give a name to your new Banner, say [tt]SquareBanner[/tt]
+3) The next field is "Destination URL", meaning the link to a page or URL where the banner should link to when the user clicks on it. We'll leave it blank for our simple text banner
+4) Next is Banner type, select the newly created banner type "square"
+5) In the media you can upload an image for the banner, write some title text, or even write a code snippet directly. We will test with text since we created a textual banner.
+6) The text from the previous step is just the title text, so we need to put our main text into the "Description" field.
+7) The final section in the form provides various settings for determining banner display. The deployement agreement lets us choose whether the banner is a permanent banner which will be always displayed, or a campaign banner, or a default fallback banner meaning the banner displays only if there are no other banners available. We'll leave all the settings in this section alone as these settings are more advanced than we need.
+10) Save the banner via the "Add banner" button.
+
+
+Next we need to tie the banner into our layout. There are a couple of options:
+1) using a banner wave (the [tt]main_banner_wave[/tt] block)
+2) using a rotation (the [tt]{$BANNER}[/tt] symbol directly in a Comcode page or a template)
+[/surround][surround]
+[media width="150" description="Adding the wave block" float="right"]data_custom/images/docs/tut_banners/example_banner_wave.png[/media]
+Adding the new square banner using a banner wave:
+1) Navigate to the page where you want the banners to appear
+2) Click "edit this page" under the page
+3) Select where in the page you want the block to be
+4) Click the add block button (the red button in the editor toolbar)
+5) Select 'Banner wave'
+6) Choose the banner type (our square type)
+7) Choose the maximum number of banners you want to display. This is set to 100 by default which would show lots (if lots had been added); if you set this number lower than the number of banners you have uploaded then it will randomly shuffle the banners.
+8) Click "Use"
+9) Save the page via the "Save" button
+10) Observe the wave is added to the page now
+[/surround]
+
+Adding the new square banner using a rotation:
+1) Navigate to the page where you want the banners to appear
+2) Click "edit this page" under the page
+3) Select where in the page you want the block to be
+4) Paste in the following code: [tt]{$BANNER,square}[/tt]. This symbol invokes the internal banner code. "square" is passed as a string parameter which defines the type of banner.
+5) Save the page via the "Save" button
+6) Observe the banner is added to the page now
+(for a template steps 1-2 would be going to edit the appropriate template)
 
 [concepts
  1_key="Default banner"       1_value="A banner that is displayable at any time (i.e. both when campaign and permanent banners would be chosen for viewing), but is intended to have a low importance level such that it is shown when the system is low on banners"

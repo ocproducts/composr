@@ -1,0 +1,44 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: How to disable joining[/title]
+
+This tutorial explains how you can disable joining of your website. It also is a good example of how to use match-key error messages.
+
+[contents]decimal,lower-alpha[/contents]
+
+Composr can be customized to disable joining, but this is not a directly configurable option. Instead, webmasters can deny access to the [tt]join[/tt] page in their site.
+
+[surround]
+[media width="150" description="See now it does show guests cannot join" float="right"]data_custom/images/docs/sup_join_disabling/pte_guests.png[/media]
+[media width="150" description="Setting permissions in the Permissions Tree Editor" float="right"]data_custom/images/docs/sup_join_disabling/permissions.png[/media]
+Follow these steps to set the permissions:[list="1"]
+[*] Go to Admin Zone > Security > Permissions Tree Editor.
+[*] Select "Join". You can see a green circle next to "Module: join" since the list reflects Guests' permissions.
+[*] Then you can change the permission for each usergroup for this [tt]:join[/tt] page in the box given. Use the "+/-" button to select/deselect all the check boxes. Deselect all the check boxes.
+[*] Press the "Set" button to save the changes.
+[*] You will see a success message on the screen which you can dismiss.
+[*] You will see it has changed the colour of the circle displayed next to the "Join" to red, since Guest users cannot access the ":join" page now.
+[/list]
+[/surround]
+
+[surround]
+[media width="150" description="The error message" float="right"]data_custom/images/docs/sup_join_disabling/join_disabled.png[/media]
+[media width="150" description="Setting a custom error message" float="right"]data_custom/images/docs/sup_join_disabling/matchkey_denied.png[/media]
+Follow these steps to set a custom error message:[list="1"]
+[*] We can customise the access-denied error message displayed in the join page by going to:
+Admin Zone > Security > Match-key page restrictions.
+[*] Enter the page name ([tt]:join[/tt] in our case) in the "Match-key" box and a custom message in the "Message" box under the "Match-key permission-denied messages" heading.
+[*] Press the "Save" button to apply changes.
+[*] We can check this feature by going to:
+[tt]http://yourbaseurl/index.php?page=join&keep_su=Guest[/tt]
+(we are using [tt]keep_su[/tt] to masquerade as Guest, to avoid having to log out).
+[/list]
+[/surround]
+
+Now, the page will display your error message and a login screen.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_members"]Feedback and user interaction[/page]
+ - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
+ - [page="_SEARCH:tut_users"]People in their roles[/page]
+
+{$SET,tutorial_tags,Members,core_cns,Social,novice}{$SET,tutorial_add_date,Sep 2015}{$SET,tutorial_summary,This tutorial explains how you can disable joining of your website.}[block]main_tutorial_rating[/block]

@@ -8,15 +8,30 @@ This tutorial will explain and detail some of the fringe features of web technol
 
 [media width="150" description="The default webclipicon, viewing the multiple sizes within" float="right" width="179"]data_custom/images/docs/tut_fringe/webclipicon.png[/media]
 [media width="150" description="The default favicon, viewing the multiple sizes within" float="right" width="71"]data_custom/images/docs/tut_fringe/favicon.png[/media]
-Microsoft created a technology that allows websites to have their own little icons, for placement in the Favorites menu, and the web browser window icon. This technology has since been adopted for use by other web browsers.
+Microsoft created a technology that allows websites to have their own little icons, that has since been adopted by all major web browsers. These icons often show up (depending on the web browser):
+ - in the favorites/bookmarks menu
+ - as the web browser window icon
+ - as the browsing tab icon (next to the page's title on the tab)
+ - by the browser's address bar
+ - in the history browsing interface
+ - as a desktop icon
+ 
+Favicons are supported in Composr, and to use one you just need to edit the [tt]favicon[/tt] theme image.
 
-Favicons are supported in Composr, and to use one you just need to edit the [tt]favicon[/tt] theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
-
-The default icon actually contains multiple sizes:
+The default icon supplied with Composr actually contains multiple sizes:
  - 16&times;16 &ndash; Standard size for browsers
  - 24&times;24 &ndash; Internet Explorer 9+ pinned site size for user interface
  - 32&times;32 &ndash; Internet Explorer/Microsoft Edge new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
  - 48&times;48 &ndash; Windows site
+
+There are a number of online tools for creating favicon, namely X-Icon-Editor, favicon.cc, Faviconist, Genfavicon, etc. We'll avoid giving specific links because these tools come and go. We advise using a tool that can save multiple sizes like above.
+
+Editing the [tt]favicon[/tt] theme image:
+1) Go to Admin Zone > Style > Themes. This will take us to the Manage Themes screen.
+2) Next to each theme we have an 'edit' section and there we have an icon to 'manage theme images' which we need to click. Click the icon for the default theme and ignore the warning (the favicon is usually for the whole site regardless of theme, so is best put in the default theme).
+3) We are now lead to a screen containing a number of images grouped by category. We can see the images present and edit them by clicking the expand button placed alongside each category name. The favicon is available under the category given the same name as your site. Select the [tt]favicon[/tt] image.
+4) You are now lead to a screen "Edit theme image" and in that we can see the current image and the options for uploading new image. Click the "Upload" radio button then the Browse button, then attach your new icon file.
+5) Click "Save".
 
 [title="3"]Apple web clip icons[/title]
 

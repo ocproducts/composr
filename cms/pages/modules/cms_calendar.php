@@ -1356,6 +1356,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
     public $permissions_require = 'cat_high';
     public $permission_module = 'calendar';
     public $menu_label = 'CALENDAR';
+    public $is_chained_with_parent_browse = true;
 
     /**
      * Get Tempcode for a post template adding/editing form.

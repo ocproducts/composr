@@ -878,6 +878,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
     public $content_type = 'download_category';
     public $protect_first = 1;
     public $menu_label = 'SECTION_DOWNLOADS';
+    public $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module list function.
