@@ -157,6 +157,7 @@ class lang_test_set extends cms_test_case
             'routeable' => 'routable',
             'supercede' => 'supersede',
             'targetted' => 'targeted',
+            'targetting' => 'targeting',
             'fulfills' => 'fulfils',
             'progmatically' => 'programatically',
         );

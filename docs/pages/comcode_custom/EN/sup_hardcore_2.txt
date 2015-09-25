@@ -106,7 +106,7 @@ Make a mini-module of your own design, and release it as an addon.
 
 [title="2"]Points challenge[/title]
 
-60 compo.sr points will be given to any user that releases a working Composr addon that is likely useful to more than one person.
+60 {$BRAND_BASE_URL} points will be given to any user that releases a working Composr addon that is likely useful to more than one person.
 To claim your prize, post in the Addons forum and 'report post' with the phrase '60 points please' in your report.
 
 [title="2"]See also[/title]

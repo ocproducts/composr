@@ -37,7 +37,6 @@ function init__files()
         define('IGNORE_REVISION_FILES', 16);
         define('IGNORE_CUSTOM_ZONES', 32);
         define('IGNORE_CUSTOM_THEMES', 64);
-        define('IGNORE_NON_REGISTERED', 128);
         define('IGNORE_USER_CUSTOMISE', 256);
         define('IGNORE_NONBUNDLED_SCATTERED', 512);
         define('IGNORE_BUNDLED_VOLATILE', 1024);
@@ -348,13 +347,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     $ignore_filename_patterns = array( // Case insensitive; we'll use this only when we *need* directories that would match to be valid
     );
 
-    if (($bitmask & IGNORE_NON_REGISTERED) != 0) { // These aren't registered in any addon_registry hook, yet are bundled and in non-custom directories
-        $ignore_filenames_and_dir_names += array(
-            //'files.dat'=>'data', Actually is now (core.php)
-            //'files_previous.dat'=>'data', Actually is now (core.php)
-        );
-    }
-
     if (($bitmask & IGNORE_BUNDLED_VOLATILE) != 0) {
         $ignore_filenames_and_dir_names += array(
             // Bundled stuff that is not necessarily in a *_custom dir yet is volatile
@@ -496,6 +488,10 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         }
         if (preg_match('#^_tests(/|$)#', strtolower($filepath)) != 0) {
             return true; // Test set may have various temporary files buried within
+        }
+
+        if (preg_match('#^data_custom/sitemaps(/|$)#', strtolower($filepath)) != 0) {
+            return true; // Don't want sitemap files
         }
 
         static $addon_files = null;

@@ -120,7 +120,7 @@ The menu editor is covered in the [page="_SEARCH:tut_menus"]Customising what's o
 
 That said, Composr is actually pretty smart about caches. Often you'll find it has automatically realise when your caches need emptying. If you do need to empty caches manually, the cleanup tools can be accessed from Admin Zone > Tools > Website cleanup tools.
 
-The Installation Options editor may be accessed by the [tt]config_editor.php[/tt] script (located in your installation directory, opened up via calling its URL). It can also be accessed from Admin Zone > Setup > Configuration > Installation Options.
+The Installation Options editor may be accessed by the [tt]http://yourbaseurl/config_editor.php[/tt] script. It can also be accessed from Admin Zone > Setup > Configuration > Installation Options.
 
 To operate the script, you will need the master password that you specified at installation.
 [/surround]

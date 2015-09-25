@@ -77,7 +77,7 @@ mysql -uusername -ppassword database < filename.sql
 If you don't have shell access to import a database you'll probably end up using phpMyAdmin again to restore. However you will struggle to import large databases with this, as it is much more problematic restoring than backing up. You may therefore find this tool useful: http://www.ozerov.de/bigdump/.
 [/box]
 
-If the new database settings are different to the old ones, you will need to use the [tt]config_editor.php[/tt] script to update your Composr settings (or edit [tt]_config.php[/tt] by hand).
+If the new database settings are different to the old ones, you will need to use the [tt]http://yourbaseurl/config_editor.php[/tt] script to update your Composr settings (or edit [tt]_config.php[/tt] by hand).
 
 You may need to update the following settings:
  - [tt]db_site[/tt]
@@ -91,7 +91,7 @@ You may need to update the following settings:
 
 [title="2"]Changing URL[/title]
 
-If you are moving URLs, then you need to use the Installation Options editor (the [tt]config_editor.php[/tt] script) to change your base URL setting. Composr automatically will clear out your caches if it sees the base URL has changed.
+If you are moving URLs, then you need to use the Installation Options editor (the [tt]http://yourbaseurl/config_editor.php[/tt] script) to change your base URL setting. Composr automatically will clear out your caches if it sees the base URL has changed.
 
 [title="3"]Caches[/title]
 

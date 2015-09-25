@@ -1,12 +1,16 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a newsletter[/title]
 
+Composr has an inbuilt email newsletter system which will allow you to send out newsletters to subscribers and your members.
+
 {!newsletter:DOC_NEWSLETTER}
 
 Think carefully about how you wish to mix news, forum announcements or forum news, and newsletters for your site: in particular, you may wish to post more news than you send newsletters, or post to both news and newsletters, because news stays on your site in a permanent archive. You may also wish to prepare and use the same content for news as you do newsletters, so as to present a common message.
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Newsletters vs Memberships[/title]
+[title="2"]Basic targeting[/title]
+
+[title="3"]Newsletters vs Memberships[/title]
 
 Newsletter subscription is distinct from membership, in that a subscription is solely tied to an e-mail address, and there is no formal tie between a subscription and a member account, and vice versa. This said, the newsletter subscription has special support for sending out newsletters to usergroup members regardless of whether they have specifically subscribed to a newsletter (it only shows usergroups that have at least one member in them with a configured e-mail address).
 
@@ -25,9 +29,11 @@ You may have multiple newsletters in Composr, for each of which members may choo
 [title="2"]Newsletter signup[/title]
 
 [media width="150" description="Subscribing to the newsletter via the maintenance module" float="right"]data_custom/images/docs/tut_newsletter/newsletter_subscribe.png[/media]
+If you've decided to use subscribers then...
+
 You will typically invite people to join the newsletter via the [tt]main_newsletter_signup[/tt] block. They will be assigned a randomised maintenance password.
 
-You can also have people signup directly via the [tt]site:newsletter[/tt] module ("maintenance module"). They will choose their maintenance password.
+You can also have people signup directly via the [tt]site:newsletter[/tt] module ("maintenance module", About > Newsletter on the default menus). They will choose their maintenance password.
 
 The newsletter process has a mandatory e-mail confirmation step so as to stop people signing up others to the newsletter, which may be illegal in some jurisdictions and is at least a nuisance.
 
@@ -44,41 +50,92 @@ The maintenance module is a bit richer:
 
 The block sets only for a single newsletter, and does not support interest levels. The maintenance module can do for multiple newsletters at once, and does support interest levels. This difference between block and maintenance page is intentional, as the block is intended only for new signups to a specific newsletter, not for changing existing subscriptions.
 
+[title="3"]Manually unsubscribing a member[/title]
+
+The easiest way is to go to where members signup, and act on their behalf.
+
+To unsubscribe a member from a newsletter:
+1) Log in with your administrative account, if you haven't already got an admin login open
+2) Go to the [tt]newsletter[/tt] module ([tt]site:newsletter[/tt] page-link, About > Newsletter on the default menus)
+3) Enter the email address you wish to unsubscribe. Leave all other fields blank.
+4) If you have interest levels enabled: change "Subscription level for <newsletter name>" to "Not subscribed". If you do not have interest levels enabled, untick (uncheck) "Subscribe to <newsletter name>".
+5) Click "Join newsletter/Change settings"
+This works, even though the maintenance password was left blank, because Composr acknowledges your overriding administrative access.
+
+[title="3"]Blocking recipients (advanced)[/title]
+
+If you wish to create a list of e-mail addresses to never send to, you can do so by making an [tt]uploads/website_specific/newsletter_blocked.csv[/tt] file. Put each e-mail address on it's own line. A CSV file with a single column is the same thing as a simple text file with one entry per line, so it's really simple to edit, whichever way you wish to work. The filter works behind-the-scenes between you choosing to send out your newsletter, and Composr actually sending it. If you have the filter successfully in place then Composr will confirm this with an "You have a [tt]uploads/website_specific/newsletter_blocked.csv[/tt] file in place, blocking (number of addresses) e-mail addresses from receiving the newsletter." message on the newsletter authoring screen ("Send out issue").
+The block list is useful for situations such as:
+ - A previous send failed part-way-through for some reason, and you have a list of users you know it did get sent to already.
+ - You maintain a manual list of users who have unsubscribed and you are very careful to not send to them, even if someone re-subscribes them.
+ - You want to block a list of e-mail addresses you know belong to competitors.
+You may add additional columns to the CSV file, which will be ignored. You can use this for keeping notes, for example. If you do this make sure you save as a true CSV file (comma-separated) though, not a TSV file.
+
 [title="2"]Sending newsletters[/title]
 
-Newsletters are written in [page="_SEARCH:tut_comcode"]Comcode[/page] and can be edited using the [page="_SEARCH:tut_wysiwyg"]WYSIWYG editor[/page].
+[surround]
+[media width="150" description="Sending a new issue" float="right"]data_custom/images/docs/tut_newsletter/newsletter_new.png[/media]
+Send a new newsletter issue from:
+Admin Zone > Tools > Newsletter > Send fresh newsletter issue
 
-When you send a newsletter you choose where to send it. Usergroups/newsletters with no members (to be precise, no members that can receive emails) will not be shown as options.
+In the form you will need to primarily fill the subject line and body for the newsletter. Newsletters are written in [page="_SEARCH:tut_comcode"]Comcode[/page] and can be edited using the [page="_SEARCH:tut_wysiwyg"]WYSIWYG editor[/page].
 
-In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE.txt[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner. Also, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template. You also are likely to want to edit the [tt]MAIL.tpl[/tt] template, which defines how e-mails generally look. You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
-
-When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the CRON bridge scheduler enabled[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
+You need to choose where to send it to. Usergroups/newsletters with no members (to be precise, no members that can receive emails) will not be shown as options.
 
 Before your newsletter is sent, you have an opportunity to preview it, so you can ensure it is correct. Look at your preview carefully, as it is easy to make minor typographical or layout mistakes that would affect the professionalism portrayed in these bulk e-mails. You will also be e-mailed the newsletter during the preview stage so that you can perform the ultimate check.
 
 If you have [page="_SEARCH:tut_configuration"]the CRON bridge scheduler enabled[/page], once you proceed to send the e-mails to individual members will be put in 'drip' queue, and mails will be sent out on a cycle. This works around server limits and avoids overloading the server.
 
-[title="3"]Dual format e-mails[/title]
+[title="3"]Scheduling[/title]
+
+When composing your newsletter you will be given a choice to send it out at a scheduled time (if you have [page="_SEARCH:tut_configuration"]the CRON bridge scheduler enabled[/page]). This is particularly useful for companies that need to coordinate a marketing plan.
+[/surround]
+
+[title="3"]Dual format e-mails (advanced)[/title]
 
 [box="Be wary of WYSIWYG" width="25em" float="right"]
 You can use the WYSIWYG editor for making newsletters if you wish, but it is not advisable if "Support plain-text e-mails" is enabled, because plain-text readers will get some really ugly plain-text from it. If you make the newsletter using manual Comcode, the plain-text readers will see the Comcode, which is intrinsically easy to read.
 [/box]
 If the "Support plain-text e-mails" option is enabled (it's not by default) then newsletters are sent out in a dual format: both text and HTML. Most users will be able to read the HTML variant, as this is now by far the standard for common e-mail messages; however if they have this disabled, or an unusual e-mail client that cannot read HTML mails, then they will see the plain text version, which is your original Comcode.
 
-[title="2"]Sent newsletters[/title]
+[title="3"]Basic templating[/title]
 
-There is a newsletter archive available (from under Admin Zone > Tools > Newsletter > Newsletter archive), so that you may browse through past newsletters, to make sure you present a consistent image, and generally keep track of what has been sent out in bulk for professional reasons.
+In order to change the newsletter appearance, to something more pleasing, you may wish to edit the [tt]NEWSLETTER_DEFAULT_FCOMCODE.txt[/tt] template. This is a template that defines the default newsletter, and hence you may fill it with Comcode to surround your actual newsletter text, such as to format your newsletter mails in an attractive manner.
+
+Additionally, the US CAN-SPAM act and the UK-equivalent (and likely many other laws in various countries) require you to include a physical address in your mailings, so you should include this in the template.
+
+You also are likely to want to edit the [tt]MAIL.tpl[/tt] template, which defines how e-mails generally look.
+
+You will almost certainly want to edit these templates within the default theme, because if you are sending newsletters from the Admin Zone almost certainly the default theme will be the active theme when the newsletters are generated.
+
+Information on very advanced templating is provided further down in this tutorial.
 
 [title="2"]Automatic issues[/title]
 
-[media width="150" description="Sending an automatic issue" float="right"]data_custom/images/docs/tut_newsletter/newsletter_new.png[/media]
+[media width="150" description="Choosing and arranging content/categories" float="right"]data_custom/images/docs/tut_newsletter/automatic_2.png[/media]
+[media width="150" description="Basic parameters for an automatic issue" float="right"]data_custom/images/docs/tut_newsletter/automatic_1.png[/media]
 {!newsletter:DOC_WHATSNEW}
 
-Access this functionality from:
+[list="1"]
+[*] Access this functionality from:
 Admin Zone > Tools > Newsletter > Manage automatic issues
-You will find you can add/edit/delete automatic issues from here.
+You will find you can add (and edit/delete) automatic issues from here.
+[*] This will take you to a new screen to define some basic parameters. You can choose whether this will be a periodic automatic issue or just a one-off automatic issue. Configure as appropriate. Periodic automatic issues require the [page="_SEARCH:tut_configuration"]CRON bridge scheduler[/page] to be configured. Click "Next" when done.
+[*] You will be taken to a form that lets you pick what content to include. This consists of a number of lines referencing content and categories, and you must re-arrange/delete lines as appropriate. For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" option). If there are 300 or more, then it considers the content type too common to include and no items are shown. Click "Next" when done.
+[*] If you are sending a one-off then in the next step you get the opportunity to edit the newsletter before it is sent, to add additional information or otherwise customise existing information to make your newsletter is appropriate. For periodic automatic issues you can't do this, for obvious reasons. From now on the process is like sending a normal new issue -- you get to choose who to target to, see a preview, and confirm.
+[/list]
 
-For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" option). If there are 300 or more, then it considers the content type too common to include and no items are shown.
+[title="3"]Making media links link to content (advanced)[/title]
+
+If you want to make any media links within the newsletter point to the content resources rather than to the normal media locations (e.g. full-screen media views), then you can edit the [tt]NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE.txt[/tt] template as follows:
+[code="Comcode"]
+[title="3"]{NAME@}[/title]
+
+[surround]{+START,IF_PASSED,THUMBNAIL}[img float="right"]{$THUMBNAIL,{THUMBNAIL},170,,,,,,,1}[/img]{+END}{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}\{$SET,comcode__current_linking_context,{URL}\}{DESCRIPTION}\{$SET,comcode__current_linking_context,\}
+
+{+END}{+END}[url="{!VIEW#}"]{URL@}[/url][/surround]
+[/code]
+This does make the newsletter code look very messy when edited, however (not to the recipients though).
 
 [title="2"]Creating from news[/title]
 
@@ -94,25 +151,13 @@ This can be used in many ways, such as:
  - Picking out certain members from the newsletter list based on some kind of characteristic (you might use extra software to correlate this against another database in some way)
  - Migrating the subscriber list to another piece of dedicated newsletter software, or sending it to an expert newsletter design company for targeting
 
-You can also import from a CSV file. Composr is quite flexible in supporting different layouts-- it will try and auto-sense things.
+You can also import subscribers from a CSV file, or send a newsletter to a CSV file (this is done on the newsletter form). Composr is quite flexible in supporting different layouts of CSV file: it will try and auto-sense which columns are which.
 
 Note that if you are using interest levels, each set of users with a different interest level should be stored in a different CSV file, as when you import them they would all be imported to the same one.
 
 All these features are available under Admin Zone > Tools > Newsletter.
 
-[title="2"]Manually unsubscribing a member[/title]
-
-The easiest way is to go to where members signup, and act on their behalf.
-
-To unsubscribe a member from a newsletter:
-1) Log in with your administrative account, if you haven't already got an admin login open
-2) Go to the [tt]newsletter[/tt] module ([tt]site:newsletter[/tt] page-link, About > Newsletter on the default menus)
-3) Enter the email address you wish to unsubscribe. Leave all other fields blank.
-4) If you have interest levels enabled: change "Subscription level for <newsletter name>" to "Not subscribed". If you do not have interest levels enabled, untick (uncheck) "Subscribe to <newsletter name>".
-5) Click "Join newsletter/Change settings"
-This works, even though the maintenance password was left blank, because Composr acknowledges your overriding administrative access.
-
-[title="2"]Templated newsletters[/title]
+[title="2"]Detailed templating (advanced)[/title]
 
 Want to take things to the next level with your newsletters? You can create full HTML newsletters, with embedded unsubscribe links, using newsletter templating.
 
@@ -157,7 +202,7 @@ The vast majority of email applications have HTML capabilities nowadays, so you 
 This bit may confuse you: [tt]{+START,IF_NON_EMPTY,{forename}}{forename}{+END}{+START,IF_EMPTY,{forename}}{name}{+END}[/tt]
 It is saying "if the forename is available, use the forename, if the forename is not available, use the username".
 
-[title="2"]Bounce filtering[/title]
+[title="2"]Bounce filtering (advanced)[/title]
 
 There is a feature for removing newsletter subscribers that bounce e-mails (i.e. dead e-mail accounts). This stops noise coming back when you send out a newsletter, and increases the efficiency of future sends.
 
@@ -177,14 +222,9 @@ Composr will then show e-mail addresses found within e-mails in the selected fol
 
 If you proceed through, all ticked (checked) e-mails will be removed from the newsletter / have their "allow staff e-mail" member setting disabled.
 
-[title="2"]Blocking senders[/title]
+[title="2"]Newsletter archive[/title]
 
-If you wish to create a list of e-mail addresses to never send to, you can do so by making an [tt]uploads/website_specific/newsletter_blocked.csv[/tt] file. Put each e-mail address on it's own line. A CSV file with a single column is the same thing as a simple text file with one entry per line, so it's really simple to edit, whichever way you wish to work. The filter works behind-the-scenes between you choosing to send out your newsletter, and Composr actually sending it. If you have the filter successfully in place then Composr will confirm this with an "You have a [tt]uploads/website_specific/newsletter_blocked.csv[/tt] file in place, blocking (number of addresses) e-mail addresses from receiving the newsletter." message on the newsletter authoring screen ("Send out issue").
-The block list is useful for situations such as:
- - A previous send failed part-way-through for some reason, and you have a list of users you know it did get sent to already.
- - You maintain a manual list of users who have unsubscribed and you are very careful to not send to them, even if someone re-subscribes them.
- - You want to block a list of e-mail addresses you know belong to competitors.
-You may add additional columns to the CSV file, which will be ignored. You can use this for keeping notes, for example. If you do this make sure you save as a true CSV file (comma-separated) though, not a TSV file.
+There is a newsletter archive available (from under Admin Zone > Tools > Newsletter > Newsletter archive), so that you may browse through past newsletters, to make sure you present a consistent image, and generally keep track of what has been sent out in bulk for professional reasons.
 
 [title="2"]Welcome e-mails[/title]
 

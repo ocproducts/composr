@@ -77,29 +77,41 @@ The index screens are generally useful for two reasons:
 [surround]
 [media width="150" description="Vienna is a good free program for viewing feeds on the Mac" float="right"]data_custom/images/docs/tut_adv_news/adv_news_feedreader.png[/media]
 [media width="150" description="RSS/Atom are really XML formats, and look a bit like this" float="right"]data_custom/images/docs/tut_adv_news/adv_news_rss_xml.png[/media]
-[media width="150" description="Syndication links are displayed in the news block if the 'Visible RSS/Atom links' option is enabled" float="right"]data_custom/images/docs/tut_adv_news/adv_news_rss_1.png[/media]
-Composr supports the two main formats for syndication of news (and most other kinds of content) in clean XML format: 'Atom' and 'RSS'. These formats are simple representations of news that may be viewed using an external program such as 'Vienna' or 'Sputnik' or 'Feedly' (there are many programs), or incorporated onto another website.
+Feeds are very helpful -- they make sure that the content on your site becomes available to a much wider audience, beyond direct visitors to your website. It's a very widely used tool throughout the web.
+
+Composr supports the two main formats for syndication of news (and most other kinds of content) in clean XML format: 'Atom' and 'RSS'. These formats are simple representations of "news" that may be viewed using an external program such as 'Vienna' or 'Sputnik' or 'Feedly' (there are many programs), or incorporated onto another website. In reality it can be more than news, it fits anything that can match a similar title/author/body/category pattern (which is just about all content).
 
 RSS is more common than Atom, but Atom is a cleaner standardised format; practically speaking there is very little to set them apart.
+[/surround]
 
 [title="3"]Outbound[/title]
 
+[surround]
+[media width="150" description="Viewing the list of feeds a Composr site supports (the OPML) from [tt]backend.php[/tt]" float="right"]data_custom/images/docs/tut_adv_news/rss_list.png[/media]
+[media width="150" description="Syndication links are displayed in the news block if the 'Visible RSS/Atom links' option is enabled" float="right"]data_custom/images/docs/tut_adv_news/adv_news_rss_1.png[/media]
 Links/URLs to view the feeds are made available from:
-1) the web browsers auto-discovery mechanism (via HTML meta-data)
-2) the news blocks (disabled by default actually)
-
-If the news block is filtered (for a blog, for example) the URLs provided will open up the feed with the same filter.
-
-The URLs are not intended to be viewed directly, although we have used a technology called 'XSLT' to allow them to be displayed in the browser if desired; instead, they should be copied and pasted to real feed reader app.
+1) from the OPML list
+2) the web browsers auto-discovery mechanism (via HTML meta-data)
+3) the news blocks (disabled by default actually)
+4) [i]or you can work them out yourself[/i]
 
 To see all the feeds available from Composr (news is just the most typical usage for them), you may go to [tt]http://yourbaseurl/backend.php[/tt]: you will be presented with a screen that lists the feeds. The screen here is written in yet another language named OPML, and again made viewable in a web browser using XSLT.
 Alternatively, go to Admin Zone > Tools > RSS/Atom Feeds.
+
+The URLs are not intended to be viewed directly, although we have used a technology called 'XSLT' to allow them to be displayed in the browser if desired; instead, they should be copied and pasted to real feed reader app or otherwise used with some kind of RSS tool.
+
+If a news block is filtered (for a blog, for example) the URLs provided by it will open up the feed with the same filter.
+The filter is driven by [page="_SEARCH:tut_selectcode"]Selectcode[/page]. This is an example selecting all news from category #1:
+[tt]http://yourbaseurl/backend.php?type=RSS2&mode=news&days=30&max=100&filter=1[/tt]
+
+Note also how there is a [tt]days[/tt] parameter and a [tt]max[/tt] parameter for limiting results. These work in the obvious way.
 [/surround]
 
 [title="3"]Inbound[/title]
 
 [surround]
 [media width="150" description="Viewing an external RSS feed" float="right"]data_custom/images/docs/tut_adv_news/adv_news_rss_2.png[/media]
+[media width="150" description="Adding a [tt]main_rss[/tt] block via the Block construction assistant" float="right"]data_custom/images/docs/tut_adv_news/main_rss_add.png[/media]
 Composr itself provides two blocks that allow display of RSS and atom feeds in a news-like fashion (including feeds from other Composr sites, or any other site that provides them).
 
 The [page="_SEARCH:tut_comcode"]Comcode[/page] syntax you should use to place the main block in a page is as follows:

@@ -1,6 +1,8 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Tempcode programming[/title]
 
-Tempcode is Composr's template programming language. On the simplest level, it provides a substitution mechanism so that parameters and global symbols (like the current user's username, or the time) can be inserted into a template. It also serves as a complete programming language with a powerful set of control mechanisms.
+Tempcode is Composr's template programming language. On the simplest level, it provides a substitution mechanism so that parameters and global symbols (like the current user's username, or the time) can be inserted into a template.
+
+It also serves as a complete programming language with support for control structures, built-in core functions and variable substitutions.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -1796,14 +1798,14 @@ Note that you cannot use directives for symbol parameters because directives con
 </table>
 [/html]
 
-[title="2"]Examples[/title]
+[title="3"]Directive examples[/title]
 
 The most important directives are:
  - [tt]IF_NON_EMPTY[/tt]
  - [tt]IF_EMPTY[/tt]
  - [tt]IF[/tt]
 
-[title="3"]IF_NON_EMPTY[/title]
+[title="4"]IF_NON_EMPTY[/title]
 
 This directive is commonly used when a box or explanation needs placing around something, unless that something happens to be blank (empty).
 For example, the following is a fairly typical thing to see in a template:
@@ -1817,7 +1819,7 @@ For example, the following is a fairly typical thing to see in a template:
 The [tt]IF_NON_EMPTY[/tt] directive evaluates [tt]{DOWNLOADS}[/tt], to see if it is blank. If it is not blank, the contents of the directive is output, otherwise nothing happens.
 As you can see from this example, we need to check for emptiness so we don't show a boxed message about downloads that refers to nothingness.
 
-[title="3"]IF_EMPTY[/title]
+[title="4"]IF_EMPTY[/title]
 
 An alternative approach to the above example is to include a special message upon emptiness, rather than skipping over. We might do this if the content being displayed is critical and thus the emptiness must be explicitly acknowledged:
 [code="HTML"]
@@ -1852,7 +1854,7 @@ It's often useful to be a bit clever with the emptiness-checking directives. For
 
 In this example, the directive checks if the [tt]{DOWNLOADS}{IMAGES}[/tt] is blank, which is exactly the same as checking if they are both blank (because blank next to blank is still just blank).
 
-[title="3"]IF[/title]
+[title="4"]IF[/title]
 
 The 'IF' directive allows particular complex calculations to be done. For a simple example, we can replicate the trick in the last example in a more formal way:
 [code="HTML"]
@@ -1894,7 +1896,7 @@ Tempcode is extremely powerful, and hopefully now you can see how symbols, direc
 See [tt]tempcode_test.txt[/tt] for more examples on how to use symbols and directives.
 [/box]
 
-[title="3"]CASES[/title]
+[title="4"]CASES[/title]
 
 [code="Tempcode"]
 Capital city:
@@ -1952,6 +1954,230 @@ Example
 HTML attributes...
 [code="HTML"]
 <span x-tempcode-1="{+START,IF,{$MOBILE}}" class="mobile" x-tempcode-2="{+END}">Example</span>
+[/code]
+
+[title="2"]Detailed worked examples[/title]
+
+This section will provide real-world examples of using Tempcode. It goes into a minimal amount of PHP programming to provide a context for using a new template file and a context as to how Comcode pages, blocks, and templates, hold together. It explains things in terms of direct file editing rather than editing using the forms within Composr.
+
+If you are not comfortable with creating new code files you may want to glance over those parts. Ordinary themers would normally work by editing existing template files, or by placing Tempcode directly onto Comcode pages.
+
+[title="3"]Creating a new block[/title]
+
+Lets start by adding a new sample block to our front page so that we can test different examples of Tempcode. Go to the [tt]sources_custom/blocks[/tt] folder and create and add a new empty file named [tt]main_first_block.php[/tt].
+
+Now lets add something to our block file. Edit [tt]main_first_block.php[/tt] using your favorite text editor and add the following:
+
+[code="PHP"]
+<?php
+
+class Block_main_first_block
+{
+	function run()
+	{
+		return do_template('BLOCK_MAIN_FIRST_BLOCK',array());
+	}
+} 
+[/code]
+
+In this code we are simply creating a new class for our block and then defining the standard [tt]run()[/tt] method which is executed when the block is invoked. We are calling a template file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] in the [tt]run()[/tt] method using the [tt]do_template()[/tt] function. This tells the system to use this template file for our block. Our next step is creating a template file for the block.
+
+[title="3"]Creating a template file[/title]
+
+Go to the [tt]themes/default[/tt] folder. There you should find two main templates folder [tt]templates[/tt] and [tt]templates_custom[/tt]. The main [tt]templates[/tt] folder has all the pre-defined templates which the system is using already (&dagger;) so we don't have to make any changes there. The [tt]templates_custom[/tt] folder will have all the user defined templates or the customised templates, so our template file will go there. 
+Create a new blank file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] and save it in to [tt]templates_custom[/tt]. [tt].tpl[/tt] is the default extension we give to template files.
+
+&dagger; Actually this isn't quite true. The [tt]css[_custom][/tt], [tt]javascript[_custom][/tt] and [tt]text[_custom][/tt] folders also hold templates. Even CSS files are handled as templates in Composr.
+
+[title="3"]Adding the block to front page[/title]
+
+Now that we have the block and template file ready, lets add the block to our front page so that we can test the examples. To add a block to the front page we will have to make the changes in the comcode file [tt]start.txt[/tt] which contains all the blocks which show up on the front page. 
+[tt]start.txt[/tt] file is located in [tt]pages/comcode_custom/EN[/tt] (the same rule as templates applies here as well, i.e. the customised comcode files should go in to [tt]_custom[/tt] folder).
+
+[media width="150" description="Our empty box" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp1.png[/media]
+Edit [tt]start.txt[/tt] file using your text editor, and add this on the end:
+[code="Comcode"]
+[box="first block"][block]main_first_block[/block][/box] 
+[/code]
+
+This Comcode adds the block to our front page.
+
+The box defines the outer section of the block and the string parameter passed to it ("first block") will be placed in the title of our box. We could have instead done the box inside the template using Tempcode or direct HTML if we had chosen to, but we wanted to mix some extra Comcode in with our example too.
+
+The block tag includes our new block. Within the block tags we have provided the name of our new block, [tt]main_first_block[/tt].
+
+If you go to your front page now you should see that a new box has been added with the title "first block" on the top. The box is empty right now as we are yet to add any content to the [block's] template file,
+
+Now that we have a block set up on the front page, we can Test some Tempcode examples here by simply adding code to our template file ([tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt]).
+
+Let's proceed to our first example...
+
+[title="3"]Set randomisation example[/title]
+
+[media width="150" description="Set randomisation example" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp2.png[/media]
+This example demonstrates how a built-in Tempcode construct, the [tt]SET_RAND[/tt] symbol, can be used to randomly make a selection from given options.
+
+Go ahead and paste the following example code into our [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] file and reload the front page to see the results.
+
+[code="HTML"]
+<p style="color: {$SET_RAND,red,green,blue,#EE1167};">
+	I think you are a {$SET_RAND,lovely,beautiful,groovy} person.<br />
+	We randomly selected a word, and randomly picked a text colour.
+</p>
+[/code]
+
+(Caching should not be an issue as our test block has not defined any block caching, and (assume you haven't disabled it) the smart cache should detect the template has changed.)
+
+This would resolve to some HTML such as:
+[code="HTML"]
+<p style="color: green">
+	I think you are a groovy person.<br />
+	We randomly selected a word, and randomly picked a text colour.
+</p>
+[/code]
+
+[title="3"]Number randomisation example[/title]
+
+[media width="150" description="Number randomisation example. We had to refresh a few times to see this, because as expected it was empty 3/4 of the time." float="right"]data_custom/images/docs/tut_tempcode/poweroftemp6.png[/media]
+In this example we use the symbol [tt]RAND[/tt] which picks a random number between 0 and 32000 and the number is then passed to an [tt]IF[/tt] directive that checks if the number is less than 8000 using the [tt]LT[/tt] symbol. Go ahead and try this in the template file to see the results.
+
+[code="HTML"]
+{+START,IF,{$LT,{$RAND},8000}}
+	<p>
+		This shows 1/4 of the time. How does it work? RAND picks a random number between 0 and 32000, so the number will be less than 8000 1/4 of the time.
+	</p>
+{+END}
+[/code]
+
+[title="3"]Obfuscation example[/title]
+
+Tempcode is also equipped with security features such as obfuscating an e-mail, getting an obfuscated [tt]mailto:[/tt] string which makes it hard for e-mail scavengers to read it -- hence preventing spam.
+
+[code="HTML"]
+<p>
+    I want to let people {$OBFUSCATE,mailto:me@example.com}, but I don't want spam so I will confuse spam-bots.
+</p>
+[/code]
+
+[title="3"]Truncation example[/title]
+
+The [tt]TRUNCATE_LEFT[/tt] symbol can be used to trim data from the left, the [tt]TRUNCATE_RIGHT[/tt] symbol to do the same from right, and the [tt]TRUNCATE_SPREAD[/tt] symbol to keep an equal left/right portion.
+
+All the three functions have the same parameter order, which is as follows:
+[code="Tempcode"]
+{$TRUNCATE_LEFT, data, truncation length, optional binary value to show a tool tip, optional binary value for whether the input text is already in HTML format}
+[/code]
+
+[code="HTML"]
+<p>
+    {$TRUNCATE_LEFT,Sometimes you get data that is too long for your layout.,10,1,1}
+</p>
+[/code]
+
+[title="3"]Match-key example[/title]
+
+[media width="150" description="Match-key example, running from start page (nothing would be seen if we placed the block on another page)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp7.png[/media]
+We can use that to show a specific message only if a match-key is satisfied.
+
+A match-key is basically the same thing as a page-link. The only difference is that a match-key is used for matching and will also match any page-links with additional parameters not mentioned in the match-key -- i.e. the match is performed against the parameters in the match-key, all other parameters are ignored. As you are probably already comfortable with the term "page-link", we'll use that henceforth. 
+
+[code="HTML"]
+{+START,IF,{$MATCH_KEY_MATCH,site:start}}
+	<p>
+		I want this displayed only for the start page<br />
+		(the page-link means "'site' zone, 'start' page)
+	</p>
+{+END}
+[/code]
+
+You can test this next example in the [tt]DOWNLOAD_CATEGORY_SCREEN.tpl[/tt] file:
+[code="HTML"]
+{+START,IF,{$MATCH_KEY_MATCH,site:downloads:browse:3}}
+	<p>
+		Maybe I want to add this message to DOWNLOAD_CATEGORY_SCREEN.tpl but to only display if viewing download category 3.<br />
+		(the page-link means "'site' zone, 'downloads' page, 'browse' screen type, '3' ID)
+	</p>
+{+END}
+[/code]
+
+This is an alternative way of achieving the same result as above. We perform a string equality (using the [tt]EQ[/tt] symbol) on the [tt]id[/tt] parameter; if it is equal then the message will be displayed.
+
+[code="HTML"]
+{+START,IF,{$EQ,{$_GET,id},3}}
+	<p>
+		Or we could do it this way, given DOWNLOAD_CATEGORY_SCREEN.tpl is always under site:downloads:browse anyway, and the 'id' parameter is the only thing altering.
+	</p>
+{+END}
+[/code]
+
+[title="3"]User-agent detection example[/title]
+
+It's sometimes useful to know which browser is being used by the user to view the web page. We might have to make some tweaks specifically for browsers like Internet Explorer to ensure cross-browser compatibility -- or perhaps we want to give out messages to users to tell them to upgrade their browsers. Ideally we would never have to do this, but the world of web browsers is kind of the wild-west, and things are always advancing and changing.
+
+[code="HTML"]
+{+START,IF,{$BROWSER_MATCHES,ie}}
+	<p>
+		You're an Internet Explorer user.
+	</p>
+{+END}
+[/code]
+
+[title="3"]Admin check example[/title]
+
+[media width="150" description="Admin check example (we're logged in as admin so we do see it)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp3.png[/media]
+This example shows how we could display messages or alerts specifically for admins.
+
+[code="HTML"]
+{+START,IF,{$IS_ADMIN}}
+	<p>
+		Only admins see this.
+	</p>
+{+END}
+[/code]
+
+[title="3"]Group membership example[/title]
+
+This functionality is similar to the above [tt]IS_ADMIN[/tt], but it works by usergroup. If the member belongs to any of usergroups 1, 3, 4 or 5, then the message will be displayed.
+
+[media width="150" description="Group membership example (viewed from a test user in one of these usergroups)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp4.png[/media]
+[code="HTML"]
+{+START,IF,{$IS_IN_GROUP,1,3-5}}
+	<p>
+		Only members in groups 1/3/4/5 see this.
+	</p>
+{+END}
+[/code]
+
+(here we used [page="_SEARCH:tut_selectcode"]Selectcode[/page] to show how we can do a range)
+
+[title="3"]Thumbnail example[/title]
+
+This example is dynamically changing the image resolution of your avatar, using the [tt]THUMBNAIL[/tt] symbol and the [tt]AVATAR[/tt] sybmol. The second parameter of the [tt]THUMBNAIL[/tt] symbol defines the resolution we are generating.
+
+[code="HTML"]
+<img alt="Your avatar made into a really tiny thumbnail" title="Your avatar made into a really tiny thumbnail" src="{$THUMBNAIL*,{$AVATAR},20x20}" />
+[/code]
+
+[title="3"]Zebra striping example[/title]
+
+[media width="150" description="Zebra striping example" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp5.png[/media]
+This example shows some zebra striping, within a set of boxes put out by a loop.
+
+We can use loops within Tempcode using the [tt]LOOP[/tt] directive, and the loop variable can be fetched within the loop using the [tt]_loop_var[/tt] parameter.
+
+This example is not about loops; we just use loops as a way of putting out multiple boxes -- really we are trying to show how zebra striping can work. Zebra striping can also work between multiple attached instances of the same template, which is a far more common example, but would have been a bit harder for us to demonstrate via sample code.
+
+In this example, it loops from A to I and in the loop it uses the [tt]CYCLE[/tt] symbol to go through the parameters passed to it (two colours) in a sequence. The first loop iteration will result in a [tt]div[/tt] element with a background property set to the first value (i.e [tt]#EEE[/tt]) and [tt]_loop_var[/tt] will display the current loop value for that (i.e. A). Then it proceeds through the loop, but the cycle is repeating between just two values (our zebra stripes) even though the loop goes on for nine values.
+
+[code="HTML"]
+<div>
+	Zebra-striping by setting up a named cycle (we use the loop to simulate an arbitrary repeating situation to use the cycle within):
+	{+START,LOOP,A\,B\,C\,D\,E\,F\,G\,H\,I}
+		<div style="background: {$CYCLE,bgcol,#EEE,#AAA}">
+			{_loop_var}
+		</div>
+	{+END}
+</div>
 [/code]
 
 [title="2"]GUIDs[/title]

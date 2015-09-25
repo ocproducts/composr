@@ -179,7 +179,7 @@ function geolocate_ip($ip = null)
  * Get links and details related to a member.
  *
  * @param  MEMBER $member_id A member ID
- * @return array A tuple: links (Tempcode), details (Tempcode), number of unread inline personal posts or private topics
+ * @return array A tuple: links (Tempcode), eCommerce links (Tempcode), details (Tempcode), number of unread inline personal posts or private topics
  */
 function member_personal_links_and_details($member_id)
 {
@@ -190,6 +190,7 @@ function member_personal_links_and_details($member_id)
 
     $details = new Tempcode();
     $links = new Tempcode();
+    $links_ecommerce = new Tempcode();
 
     if (get_forum_type() != 'none') {
         // Post count
@@ -296,7 +297,7 @@ function member_personal_links_and_details($member_id)
             sort_maps_by($usergroup_subs, 's_cost');
             foreach ($usergroup_subs as $sub) {
                 $url = build_url(array('page' => 'purchase', 'type' => 'message', 'type_code' => 'USERGROUP' . strval($sub['id'])), get_module_zone('purchase'));
-                $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '5c4a1f300b37722e587fe2f608f1ee3a', 'NAME' => do_lang_tempcode('UPGRADE_TO', escape_html(get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']))), 'URL' => $url)));
+                $links_ecommerce->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '5c4a1f300b37722e587fe2f608f1ee3a', 'NAME' => do_lang_tempcode('UPGRADE_TO', escape_html(get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']))), 'URL' => $url)));
             }
         }
     }
@@ -340,7 +341,7 @@ function member_personal_links_and_details($member_id)
         $num_unread_pps = 0;
     }
 
-    $cache[$member_id] = array($links, $details, $num_unread_pps);
+    $cache[$member_id] = array($links, $links_ecommerce, $details, $num_unread_pps);
     return $cache[$member_id];
 }
 

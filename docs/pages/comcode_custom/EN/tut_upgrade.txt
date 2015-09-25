@@ -45,7 +45,14 @@ At the same time, bear in mind that fixes to security holes are not always back-
 
 [media width="150" description="The upgrader" float="right"]data_custom/images/docs/tut_upgrade/upgrade.png[/media]
 [media width="150" description="Logging into the upgrader" float="right"]data_custom/images/docs/tut_upgrade/upgrade_login.png[/media]
-The upgrade process involves a number of stages (the upgrader will step you through this):[list="1"]
+The upgrade process involves a number of stages (the upgrader will step you through this)...
+
+Pre-steps:[list="1"]
+[*] get to the upgrader, either via the upgrade link from the top-right of the Admin Zone dashboard, or going to [tt]http://yourbaseurl/upgrader.php[/tt]
+[*] log in to the upgrader using your master password (the one you set when you installed, different to your admin login) 
+[/list]
+
+Steps:[list="1"]
 [*]taking a full backup (just in case a problem occurs) -- better safe than sorry. This is also useful in case you overwrite files that you have edited: either due to these files being in locations with no override support, or due to changes being made without using the proper override mechanism
 [*]closing your website
  - the upgrader will make it easy for you to close your site using the Composr closed-site feature
@@ -72,12 +79,38 @@ Often browsers will cache CSS and JavaScript files, even when changed on the ser
 
 [title="2"]Assistance[/title]
 
-Upgrading is inherently complex, as it is close to programming in the sense that low-level changes are being made to the structure of the website. This is unfortunate but inevitable, and due to Composr's openly configurable and overridable (at the code level) nature, the developers would have an extremely hard time trying to automate the process beyond what the upgrade system (the stage launched by running [tt]upgrader.php[/tt]) already does.
+Upgrading is inherently complex, as it is close to programming in the sense that low-level changes are being made to the structure of the website. This is unfortunate but inevitable, and due to Composr's openly configurable and overridable (at the code level) nature, the developers would have an extremely hard time trying to automate the process beyond what the upgrade system (the stage launched by running [tt]http://yourbaseurl/upgrader.php[/tt]) already does.
 
 If you require assistance for an upgrade, consider the [page="site:support"]Experts by the hour[/page] service.
 
+[title="2"]The integrity checker[/title]
+
+[media width="150" description="Results" float="right"]data_custom/images/docs/tut_upgrade/integrity_2.png[/media]
+[media width="150" description="Finding the integrity checker" float="right"]data_custom/images/docs/tut_upgrade/integrity_1.png[/media]
+This section contains standalone details on using the integrity checker.
+
+Composr comes with a built-in "integrity checker" which can be used to repair a corrupted copy of Composr. Integrity checker is a part of the upgrader tool. The integrity checker can be used to find outdated and corrupt files in the Composr system. You can use this tool at any point, regardless of whether you have recently upgraded or not.
+
+You must provide the master password to access the Composr upgrade tool.
+
+The integrity checker is placed in the "Step 4" of the table under the "Upgrade steps" section in upgrader tools page.
+
+The integrity checker will display the following kinds of file (if any):
+ - Files that are actually missing and need uploading
+ - Newer or modified files
+ - Alien files (unrecognised files)
+
+If you want to prove to yourself how it works, create a random php file named [tt]testfile.php[/tt] in the [tt]sources[/tt] directory of Composr and run the integrity checker again. Now it will list the new [tt]testfile.php[/tt] file in the results.
+
+This is very useful for upgrading because it helps identify old files that need removing. Generally though it is useful to make sure unexpected files don't lay around within the system causing potential problems.
+
+The integrity checker has the ability to get rid of the alien files. Check (tick) the checkbox next to the file name and press the "Automatically handle those ticked (checked) – delete/move as needed" button placed below the list of files. The selected files will be deleted or in some rare cases moved.
+
+Obviously you should be careful deleting files, as there may be legitimate reasons you have put alien files there. The upgrader is smart enough to recognise files from old versions and automatically tick (check) those, leaving the ones totally unrecognised unticked (unchecked).
+
 [concepts
- 1_key="upgrader.php"   1_value="The script that manages the upgrading process"
+ 1_key="upgrader.php"        1_value="The script that manages the upgrading process"
+ 2_key="integrity checker"   2_value="Tool to find unexpected files in the Composr installation"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

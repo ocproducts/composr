@@ -12,7 +12,9 @@ If you need a quick data rescue, consider [page="site:support"]using ocProducts 
 
 [title="2"]Repairing a corrupted copy of Composr[/title]
 
-The upgrader tool (accessible via [tt]upgrader.php[/tt]) contains a very useful 'integrity checker' which can find out-dated and corrupt files. You can use this tool at any point, regardless of whether you have recently upgraded or not.
+The upgrader tool (accessible via [tt]http://yourbaseurl/upgrader.php[/tt]) contains a very useful 'integrity checker' which can find out-dated and corrupt files. You can use this tool at any point, regardless of whether you have recently upgraded or not.
+
+More details on the integrity checker are in the [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page] tutorial.
 
 [title="2"]Repairing corrupted MySQL tables[/title]
 
@@ -80,7 +82,7 @@ $SITE_INFO['admin_password'] = '...';
 [/code]
 Change the [tt]...[/tt] bit to the actual password you want. You don't need to encrypt it, just put it in exactly.
 
-You should then encrypt your password via changing the password within the [tt]/config_editor.php[/tt] script.
+You should then encrypt your password via changing the password within the [tt]http://yourbaseurl/config_editor.php[/tt] script.
 
 [title="2"]Unbanning an IP address[/title]
 
@@ -106,7 +108,7 @@ and then clear the Comcode page cache from Admin Zone > Tools > Cleanup tools.
 
 [title="2"]Changing Installation Options[/title]
 
-If your server base configuration has changed (such as your database password, for example) then you need to update Composr's [tt]_config.php[/tt] config file to reflect this. You can either do this directly, or you can do it via launching the [tt]config_editor.php[/tt] script installed at the base of your website (you will need your master password to do this).
+If your server base configuration has changed (such as your database password, for example) then you need to update Composr's [tt]_config.php[/tt] config file to reflect this. You can either do this directly, or you can do it via launching the [tt]http://yourbaseurl/config_editor.php[/tt] script installed at the base of your website (you will need your master password to do this).
 
 [title="2"]Removing Facebook from an account[/title]
 
@@ -121,7 +123,7 @@ The above requires for to be logged in at admin, which you may not be or be able
 [title="2"]Disabling URL Schemes[/title]
 
 URL Schemes are subject to your web host supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
-You can use the [tt]config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]config_editor.php[/tt] script, login, look for the "Whether to block the short-URL (mod_rewrite)" option, set it to [tt]1[/tt], and then save the configuration.
+You can use the [tt]http://yourbaseurl/config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]http://yourbaseurl/config_editor.php[/tt] script, login, look for the "Whether to block the short-URL (mod_rewrite)" option, set it to [tt]1[/tt], and then save the configuration.
 
 [title="2"]See also[/title]
 

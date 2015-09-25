@@ -134,10 +134,12 @@ class Hook_addon_registry_addon_publish
             'adminzone/pages/minimodules_custom/publish_addons_as_downloads.php',
             'adminzone/pages/minimodules_custom/build_addons.php',
             'adminzone/pages/minimodules_custom/admin_generate_adhoc_upgrade.php',
+            'adminzone/pages/minimodules_custom/tar_dump.php',
             'sources_custom/hooks/systems/page_groupings/addon_publish.php',
             'sources_custom/transifex.php',
             'data_custom/transifex_pull.php',
             'data_custom/transifex_push.php',
+            'data_custom/change_addon_bundling.php',
         );
     }
 }

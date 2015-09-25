@@ -23,7 +23,7 @@ Only one opcode cache can be used, and they often need to be manually compiled a
 
 For MySQL you can configure Composr to use persistent database connections. This is not recommended on shared hosting because it may annoy the web host, but if you have a dedicated server it will cut down load times as a new database connection does not need to be established.
 
-These are enabled through the "Installation Options" ([tt]config_editor.php[/tt]).
+These are enabled through the "Installation Options" ([tt]http://yourbaseurl/config_editor.php[/tt]).
 
 [title="2"]Composr caching[/title]
 
@@ -363,7 +363,7 @@ function master__sync_file_move($old, $new)
 }
 [/code]
 
-In order to implement replication, just change the [tt]db_site_host[/tt] and [tt]db_forums_host[/tt] values using [tt]config_editor.php[/tt] (or editing [tt]_config.php[/tt] by hand in a text editor) so that they contain a comma-separated list of host names. The first host in the list must be the master server. It is assumed that each server has equivalent credentials and database naming. Due to the master server being a bottleneck, it will never be picked as a read-access server in the randomisation process, unless there is only one slave.
+In order to implement replication, just change the [tt]db_site_host[/tt] and [tt]db_forums_host[/tt] values using [tt]http://yourbaseurl/config_editor.php[/tt] (or editing [tt]_config.php[/tt] by hand in a text editor) so that they contain a comma-separated list of host names. The first host in the list must be the master server. It is assumed that each server has equivalent credentials and database naming. Due to the master server being a bottleneck, it will never be picked as a read-access server in the randomisation process, unless there is only one slave.
 It is advised to not set replication for the Composr [tt]sessions[/tt] table, as this is highly volatile. Instead you should remove any display of 'users online' from your templates because if you're at the point of replication there will be too many to list anyway (and Composr will have realised this and stopped showing it consistently in many cases, to stop performance issues).
 
 Round-Robin DNS could be used to choose a frontend server from the farm randomly, or some other form of load balancing such as one based on a reverse proxy server.

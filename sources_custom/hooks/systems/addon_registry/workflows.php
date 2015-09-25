@@ -144,6 +144,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
             'cms/pages/modules_custom/cms_galleries.php',
             'adminzone/pages/modules_custom/admin_workflow.php',
             'sources_custom/workflows.php',
+            'sources_custom/workflows2.php',
             'sources_custom/galleries2.php',
             'sources_custom/form_templates.php',
             'sources_custom/hooks/systems/page_groupings/workflows.php',

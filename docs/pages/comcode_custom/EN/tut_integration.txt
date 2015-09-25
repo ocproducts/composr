@@ -188,6 +188,8 @@ There are two major problems with this approach:
 If you are trying to integrate a system that is non-interactive, and outputs all important information in either the RSS or Atom families of feed formats, you may be able to perform an integration by simply using the [tt]main_rss[/tt] block in combination with the feed URL (or if it is date based information, overlaying the feed URL onto the calendar).
 This form of integration is most appropriate for news and calendars, although other forms of information do sometimes fit it well.
 
+Use of RSS is documented in the [page="_SEARCH:tut_adv_news"]Advanced News tutorial[/page].
+
 [title="2"]Integrating JavaScript libraries[/title]
 
 There are a number of different techniques you can use.

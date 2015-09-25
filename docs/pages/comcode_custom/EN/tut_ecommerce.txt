@@ -221,6 +221,9 @@ However, we've designed it to be modular. In Composr another method of doing a t
 
 [surround]
 [media width="150" description="Adding a capability for a usergroup subscription" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_subscription.png[/media]
+[media width="150" description="A link to the payment gateway to purchase." float="right"]data_custom/images/docs/tut_ecommerce/upgrade_3.png[/media]
+[media width="150" description="The description of the usergroup subscription is shown. You'd normally put a more extensive description here, explaining why someone should upgrade." float="right"]data_custom/images/docs/tut_ecommerce/upgrade_2.png[/media]
+[media width="150" description="Link to upgrade via a usergroup subscription." float="right"]data_custom/images/docs/tut_ecommerce/upgrade.png[/media]
 Usergroup subscriptions are implemented on top of subscriptions.
 
 Usergroup subscriptions are only available if the forum system is [concept]Conversr[/concept].
@@ -230,7 +233,7 @@ Set up a usergroup description as follows:
 2) Assign additional access to this usergroup (or remove access from some of the other usergroups!).
 3) Go to Admin Zone > Setup > Usergroup subscription > Add usergroup subscription
 4) Fill in the form. Be aware that a '5' 'monthly' subscription means someone pays 'every 5 months'. It does not mean a subscription is paid every month and lasts for 5 months -- subscriptions last indefinitely until the user chooses to cancel them.
-5) Provide a path for members to visit the [tt]purchase[/tt] module so that they may activate their subscription, if one does not already exist (it does exist by default). By default this is possible via upgrade links shown in the logged-in box. You do also this via the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus).
+5) Provide a path for members to visit the [tt]purchase[/tt] module so that they may activate their subscription, if one does not already exist (it does exist by default). By default this is possible via upgrade links shown in the logged-in box as per the above screenshot. You do also this via the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus).
 
 You can add as many usergroup subscriptions as you like, even multiple to the same usergroup. For example, [by adding more subscriptions] you could make it cheaper to subscribe yearly than monthly.
 

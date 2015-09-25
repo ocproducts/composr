@@ -977,6 +977,7 @@ class Module_admin_newsletter extends Standard_crud_module
     public function whatsnew_2()
     {
         require_code('form_templates');
+        require_code('global4');
 
         if (function_exists('set_time_limit')) {
             @set_time_limit(180);
@@ -1058,6 +1059,8 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function whatsnew_3()
     {
+        require_code('global4');
+
         // Handle requested periodic "What's new" newsletter maintenance
         // =============================================================
 
@@ -1208,7 +1211,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
         $completed = do_template('NEWSLETTER_WHATSNEW_FCOMCODE', array('_GUID' => '20f6adc244b04d9e5206682ec4e0cc0f', 'CONTENT' => $_automatic), null, false, null, '.txt', 'text');
 
-        $completed = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => $completed, 'LANG' => $lang, 'SUBJECT' => ''));
+        $completed = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => $completed, 'LANG' => $lang, 'SUBJECT' => ''), null, false, null, '.txt', 'text');
 
         return $completed;
     }

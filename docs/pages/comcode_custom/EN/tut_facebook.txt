@@ -183,13 +183,13 @@ Note that Facebook does have minimum/maximum sizes and file-sizes for images. If
 
 This example shows how to change the topic syndication to use a custom theme image, rather than the [tt]icons/48x48/menu/social/forum/forums[/tt] theme image.
 
-1) Theme image...
+[list="1"]
+[*] Theme image...
 
 Add a theme image called [tt]opengraph_defaults/forums[/tt] to the default theme.
 
 Either do this via Composr's interface, or simpler just create a [tt]themes/default/images_custom/opengraph_defaults/[/tt] directory and upload a [tt]forums.png[/tt] file to it.
-
-2) Template...
+[*] Template...
 
 Edit the [tt]HTML_HEAD.tpl[/tt] template...
 
@@ -212,6 +212,7 @@ To:
 {+END}
 {+START,IF_EMPTY,{$META_DATA,image}}<meta property="og:image" content="{$IMG*,logo/trimmed_logo}" />{+END}
 [/code]
+[/list]
 
 Our new code detects if the OpenGraph image was set as [tt]icons/48x48/menu/social/forum/forums[/tt] and performs a substitution to our custom one.
 

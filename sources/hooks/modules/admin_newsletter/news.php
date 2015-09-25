@@ -74,7 +74,7 @@ class Hook_whatsnew_news
             list($privacy_join, $privacy_where) = get_privacy_where_clause('news', 'r', $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT title,news,news_article,id,date_and_time,submitter FROM ' . get_table_prefix() . 'news r LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $privacy_join . ' WHERE validated=1 AND date_and_time>' . strval($cutoff_time) . ' AND ((' . $or_list . ') OR (' . $or_list_2 . '))' . $privacy_where . ' ORDER BY date_and_time DESC', $max);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT title,news,news_article,id,date_and_time,submitter,news_image FROM ' . get_table_prefix() . 'news r LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $privacy_join . ' WHERE validated=1 AND date_and_time>' . strval($cutoff_time) . ' AND ((' . $or_list . ') OR (' . $or_list_2 . '))' . $privacy_where . ' ORDER BY date_and_time DESC', $max);
 
         if (count($rows) == $max) {
             return array();

@@ -420,7 +420,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]manualproc_mail[/tt] -- set this to '1' to debug problems with the PHP mail command (the PHP mail command won't relay error information from the sendmail process, this will replace it with something that does); it only works on servers that allow PHP process control
  - Used internally by Composr
   - [tt]cdn[/tt] -- this is used for storage of autodetected CDNs, prior to the config option for them being properly filled in
-  - [tt]brand_base_url[/tt] -- the base URL to the brand site (by default this is compo.sr but may be changed)
+  - [tt]brand_base_url[/tt] -- the base URL to the brand site (by default this is {$BRAND_BASE_URL} but may be changed)
   - [tt]rebrand_name[/tt] -- if Composr is called something else as far as the site staff are concerned, set the name here
   - [tt]rebrand_base_url[/tt] -- to change where branding URLs go to (e.g. the stub that is used when linking to documentation), set it here
   - [tt]company_name[/tt] -- if Composr is being rebranded to be 'made' by another company, set the name here (this has no effect of copyright of course, but ocProducts allows this)

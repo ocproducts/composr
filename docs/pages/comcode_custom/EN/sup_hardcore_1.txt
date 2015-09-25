@@ -13,7 +13,7 @@ At ocProducts we really want to encourage users of Composr to start making addon
 However, at the end of the day addon-making is in the hands of users -- while we can empower, we cannot write all the actual addons ourselves unless we can cover our costs. Therefore users who need addons need to 'carry the torch', promoting and being active in the Composr community. The more everyone puts in, the more everyone gets out -- Composr users together are stronger than ocProducts is.
 
 The 'Making an addon' series of tutorials are highly technical, intended for those who already know PHP programming and the basics of Composr's modularity. You can always go to web to search and learn it.
-If you have any questions or want to discuss solutions, we've created forums on the compo.sr website for each tutorial in this series. [b]Please[/b] ask questions there, even if they seem basic.
+If you have any questions or want to discuss solutions, we've created forums on the {$BRAND_BASE_URL} website for each tutorial in this series. [b]Please[/b] ask questions there, even if they seem basic.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -26,7 +26,7 @@ If you have any questions or want to discuss solutions, we've created forums on 
 Personally I develop Composr on my own computer under Windows. I have a PHP webserver setup and I manipulate files directly on my hard disk. I have caching disabled on my Composr install so that I don't have to mess around decaching when I change files directly.
 
 One of the most handy things about developing on the desktop is to be able to quickly run file contents searches in Windows to find out where stuff is done. Unfortunately though, by default Windows will not search inside most non-Microsoft file types unless you do some special set up. Here is a [url="guide to what to do"]http://www.howtogeek.com/99406/how-to-search-for-text-inside-of-any-file-using-windows-search/[/url] to fix this -- use the technique for the ".php", ".css" and ".tpl" file types.
-Once this is done you'll be able to quickly find things by opening up an explorer window and hitting F3.
+Once this is done you'll be able to quickly find things by opening up an Explorer window and hitting F3.
 Alternatively, you can use an alternate search tool such as [url="Agent Ransack"]http://www.mythicsoft.com/agentransack[/url], or an IDE that has a good "find in files" feature.
 [/surround]
 
@@ -110,7 +110,7 @@ The second is more adventurous and help you get used to using the database, whic
 
 [title="2"]Points challenge[/title]
 
-10 compo.sr points will be given to the first member to explain a yet-unexplained bug in this code...
+10 {$BRAND_BASE_URL} points will be given to the first member to explain a yet-unexplained bug in this code...
 [code="PHP"]
 $data = 'blahblah';
 $output = new Tempcode();

@@ -13,10 +13,28 @@ The Admin Zone is divided into sections, with links across the top-panel to allo
 [title="2"]Content Management Zone[/title]
 
 {!menus:DOC_CMS}
-
 [/surround]
 
 [title="2"]Admin Zone[/title]
+
+[title="3"]Search[/title]
+
+[media width="150" description="Search results" float="right"]data_custom/images/docs/tut_adminzone/search_results.png[/media]
+[media width="150" description="The search feature is under the Help icon" float="right"]data_custom/images/docs/tut_adminzone/search.png[/media]
+If you are ever wondering where something is in the Admin Zone you can try the search. The search is a very powerful tool that searches many different things, and supports alternative words people commonly use for the same things.
+
+Search results are displayed by section, for example:
+ - Configuration options
+ - Privileges
+ - Templates
+ - Administrative modules
+ - [i]and so on[/i]
+
+You can also restrict the search results to only show the results under a particular section by adding the keyword [tt]@sectionname[/tt] to the end of your search item in the search box. For example, if you want to search for footer-related settings under the configuration section only then you can use the  text [tt]footer @conf[/tt] as the search keyword in the search box. The [tt]sectionname[/tt] given just has to match a section name partially; which is why we were able to abbreviate to [tt]conf[/tt] in this example.
+
+There is a checkbox next to the search box, which opens the results into a new window/tab. This can be useful if you want to open up a search while also doing something else (such as finishing filling in a form).
+
+The search result page also allows you to easily run a separate search for the same search keywords on your website content, Composr documentation, and the {$BRAND_BASE_URL} forum.
 
 [surround]
 [title="3"]To-do list[/title]

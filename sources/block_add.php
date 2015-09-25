@@ -167,7 +167,7 @@ function block_helper_script()
 
             $usage = array_key_exists($block, $block_usage) ? $block_usage[$block] : array();
 
-            $block_meta[$block_title] = array(
+            $block_meta[$block_title . ': ' . $block] = array(
                 $this_block_type,
                 $usage,
                 $descriptiont,

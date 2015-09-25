@@ -880,11 +880,12 @@ class Hook_addon_registry_cns_forum
         require_lang('cns');
 
         $details = new Tempcode();
-        $links = new Tempcode();
         $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
             'KEY' => lorem_word(),
             'VALUE' => placeholder_number(),
         )));
+
+        $links = new Tempcode();
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array(
             'NAME' => lorem_word(),
             'URL' => placeholder_url(),
@@ -916,6 +917,7 @@ class Hook_addon_registry_cns_forum
             'NEW_POSTS' => placeholder_number(),
             'MAX_AVATAR_HEIGHT' => placeholder_number(),
             'LINKS' => $links,
+            'LINKS_ECOMMERCE' => $links,
             'DETAILS' => $details,
         ));
 

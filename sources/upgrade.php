@@ -531,7 +531,11 @@ function fu_link($url, $text, $disabled = false, $js = '')
     if (get_param_integer('keep_show_loading', 0) == 1) {
         $url .= '&keep_show_loading=1';
     }
-    return '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">' . $hidden . '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="buttons__proceed button_screen_item" type="submit" value="' . escape_html($text) . '" /></form>';
+    $class = 'buttons__proceed';
+    if ($text == do_lang('MORE_OPTIONS')) {
+        $class = 'buttons__back';
+    }
+    return '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">' . $hidden . '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button_screen_item" type="submit" value="' . escape_html($text) . '" /></form>';
 }
 
 /**
@@ -1010,20 +1014,20 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     if ($master_data === false) {
         $master_data = array();
     }
-    $hook_keys = array_keys($hooks);
     $hook_files = array();
-    foreach ($hook_keys as $hook) {
-        if (!isset($master_data['sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php'])) {
-            continue; // Old addon
+    foreach ($hooks as $hook => $hook_type) {
+        if ($hook_type != 'sources_custom') {
+            if (!isset($master_data['sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php'])) {
+                continue; // Old addon
+            }
         }
 
-        $path = get_custom_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+        $path = get_custom_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
         if (!file_exists($path)) {
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+            $path = get_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
         }
         $hook_files[$hook] = file_get_contents($path);
     }
-    unset($hook_keys);
 
     // Moved module handling
     if ($basic) {
@@ -1061,19 +1065,11 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     unset($hook_files);
     sort($files_to_check);
     foreach ($files_to_check as $file) {
-        if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
+        if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
             continue;
         }
 
-        if (preg_match('#^[^/]+\.tpl$#', $file) != 0) {
-            $real_file = 'themes/default/templates/' . $file;
-        } elseif (preg_match('#^[^/]+\.css$#', $file) != 0) {
-            $real_file = 'themes/default/css/' . $file;
-        } else {
-            $real_file = $file;
-        }
-
-        if ((!isset($master_data[$real_file])) && (strpos($real_file, '_custom') !== false)) {
+        if ((!isset($master_data[$file])) && (strpos($file, '_custom') !== false)) {
             continue; // These won't be in the manifest
         }
         if ($file == 'data/files.dat') {
@@ -1086,32 +1082,32 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             continue; // May be renamed
         }
 
-        $file_info = @$master_data[$real_file];
+        $file_info = @$master_data[$file];
 
-        if (!file_exists(get_file_base() . '/' . $real_file)) {
-            if (!in_array(get_file_base() . '/' . $real_file, $not_missing)) {
-                $outdated__missing_file_entirely .= '<li><kbd>' . escape_html($real_file) . '</kbd></li>';
-                $files_determined_to_upload[] = $real_file;
+        if (!file_exists(get_file_base() . '/' . $file)) {
+            if (!in_array(get_file_base() . '/' . $file, $not_missing)) {
+                $outdated__missing_file_entirely .= '<li><kbd>' . escape_html($file) . '</kbd></li>';
+                $files_determined_to_upload[] = $file;
             }
         } elseif (!is_null($file_info)) {
-            if (@filesize(get_file_base() . '/' . $real_file) > 1024 * 1024) {
+            if (@filesize(get_file_base() . '/' . $file) > 1024 * 1024) {
                 continue; // Too big, so special exception
             }
 
-            $file_contents = @file_get_contents(get_file_base() . '/' . $real_file);
+            $file_contents = @file_get_contents(get_file_base() . '/' . $file);
             if ($file_contents === false) {
                 continue;
             }
-            if (strpos($real_file, '/version.php') !== false) {
+            if (strpos($file, '/version.php') !== false) {
                 $file_contents = preg_replace('/\d{10}/', '', $file_contents);
             }
             $true_hash = sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $file_contents)));
             if ($true_hash != $file_info[0]) {
-                if (filemtime(get_file_base() . '/' . $real_file) < cms_version_time()) {
-                    $outdated__outdated_original .= '<li><kbd>' . escape_html($real_file) . '</kbd></li>'; //  [disk-hash: '.$true_hash.', required-hash: '.$file_info[0].']
-                    $files_determined_to_upload[] = $real_file;
+                if (filemtime(get_file_base() . '/' . $file) < cms_version_time()) {
+                    $outdated__outdated_original .= '<li><kbd>' . escape_html($file) . '</kbd></li>'; //  [disk-hash: '.$true_hash.', required-hash: '.$file_info[0].']
+                    $files_determined_to_upload[] = $file;
                 } else {
-                    $outdated__future_files .= '<li><kbd>' . escape_html($real_file) . '</kbd></li>';
+                    $outdated__future_files .= '<li><kbd>' . escape_html($file) . '</kbd></li>';
                 }
             }
         }
@@ -1207,7 +1203,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
                 $ret_str .= do_lang('WARNING_FILE_ADDON', $addon);
             }
             $ret_str .= '<p class="associated_details"><a href="#" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
-            $ret_str .= '<input class="buttons__proceed button_page" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
+            $ret_str .= '<input class="buttons__proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
             $ret_str .= '</div>';
         }
         $ret_str .= '</form>';
@@ -1239,7 +1235,7 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
     $dh = @opendir($dir);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_CUSTOM_THEMES | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
+            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_CUSTOM_THEMES | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
                 continue;
             }
 
@@ -1370,7 +1366,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
         sort($dir_files);
         foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_NON_REGISTERED)) {
+            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
                 continue;
             }
 

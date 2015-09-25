@@ -135,7 +135,7 @@ class Hook_addon_registry_webdav
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/TODO.php',
+            'sources_custom/hooks/systems/addon_registry/webdav.php',
             'sources_custom/sabredav/lib/Sabre/autoload.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/AbstractBasic.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/AbstractDigest.php',
@@ -144,6 +144,7 @@ class Hook_addon_registry_webdav
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/File.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Backend/PDO.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Auth/Plugin.php',
+            'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VTodo.php',
             'sources_custom/sabredav/lib/Sabre/DAV/Browser/assets/favicon.ico',
             'sources_custom/sabredav/lib/Sabre/DAV/Browser/assets/icons/addressbook.png',
             'sources_custom/sabredav/lib/Sabre/DAV/Browser/assets/icons/calendar.png',

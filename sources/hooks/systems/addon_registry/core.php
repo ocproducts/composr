@@ -765,6 +765,7 @@ class Hook_addon_registry_core
             'adminzone/pages/modules/admin.php',
             'themes/default/images/keyboard.png',
             'data_custom/sitemaps/index.html',
+            'data_custom/sitemaps/index.xml',
             'sources/sitemap.php',
             'sources/sitemap_ajax.php',
             'sources/sitemap_xml.php',
@@ -1736,39 +1737,43 @@ class Hook_addon_registry_core
     public function tpl_preview__block_side_personal_stats()
     {
         $details = new Tempcode();
-        $links = new Tempcode();
-
         $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
             'KEY' => lorem_word(),
             'VALUE' => placeholder_number(),
         )));
+        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
+            'KEY' => do_lang_tempcode('USERGROUP'),
+            'VALUE' => placeholder_link(),
+        )));
 
+        $links = new Tempcode();
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
             'NAME' => lorem_word_2(),
             'DESCRIPTION' => lorem_phrase(),
             'URL' => placeholder_url(),
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array(
             'NAME' => lorem_word(),
             'URL' => placeholder_url(),
             'REL' => 'me',
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LOGOUT', array(
             'NAME' => do_lang_tempcode('LOGOUT'),
             'URL' => placeholder_url(),
         )));
 
-        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
-            'KEY' => do_lang_tempcode('USERGROUP'),
-            'VALUE' => placeholder_link(),
+        $links_ecommerce = new Tempcode();
+        $links_ecommerce->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
+            'NAME' => lorem_word_2(),
+            'DESCRIPTION' => lorem_phrase(),
+            'URL' => placeholder_url(),
         )));
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS', array(
                 'AVATAR_URL' => placeholder_avatar(),
                 'LINKS' => $links,
+                'LINKS_ECOMMERCE' => $links_ecommerce,
                 'DETAILS' => $details,
                 'USERNAME' => lorem_word(),
             )), null, '', true)
@@ -1785,39 +1790,43 @@ class Hook_addon_registry_core
     public function tpl_preview__block_top_personal_stats()
     {
         $details = new Tempcode();
-        $links = new Tempcode();
-
         $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
             'KEY' => lorem_word(),
             'VALUE' => placeholder_number(),
         )));
+        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
+            'KEY' => do_lang_tempcode('USERGROUP'),
+            'VALUE' => placeholder_link(),
+        )));
 
+        $links = new Tempcode();
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
             'NAME' => lorem_word_2(),
             'DESCRIPTION' => lorem_phrase(),
             'URL' => placeholder_url(),
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array(
             'NAME' => lorem_word(),
             'URL' => placeholder_url(),
             'REL' => 'me',
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LOGOUT', array(
             'NAME' => do_lang_tempcode('LOGOUT'),
             'URL' => placeholder_url(),
         )));
 
-        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
-            'KEY' => do_lang_tempcode('USERGROUP'),
-            'VALUE' => placeholder_link(),
+        $links_ecommerce = new Tempcode();
+        $links_ecommerce->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
+            'NAME' => lorem_word_2(),
+            'DESCRIPTION' => lorem_phrase(),
+            'URL' => placeholder_url(),
         )));
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_TOP_PERSONAL_STATS', array(
                 'AVATAR_URL' => placeholder_avatar(),
                 'LINKS' => $links,
+                'LINKS_ECOMMERCE' => $links_ecommerce,
                 'DETAILS' => $details,
                 'USERNAME' => lorem_word(),
                 'MEMBER_ID' => placeholder_id(),

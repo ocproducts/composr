@@ -268,9 +268,6 @@ class Module_admin_cns_members
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '101063c817a45c10bca5c384e1f32bf1', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('OPTIONS'))));
         $fields->attach(form_input_tick(do_lang_tempcode('FORCE_TEMPORARY_PASSWORD'), do_lang_tempcode('DESCRIPTION_FORCE_TEMPORARY_PASSWORD'), 'temporary_password', false));
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1d9e2bd67953267a6ee85576e53874ec', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('OPTIONS'))));
-        $fields->attach(form_input_tick(do_lang_tempcode('FORCE_TEMPORARY_PASSWORD'), do_lang_tempcode('DESCRIPTION_FORCE_TEMPORARY_PASSWORD'), 'temporary_password', false));
-
         $text = do_lang_tempcode('_ENTER_PROFILE_DETAILS');
 
         $submit_name = do_lang_tempcode('ADD_MEMBER');

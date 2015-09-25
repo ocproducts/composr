@@ -115,7 +115,7 @@ If you find that some files underneath your install directory, often ones moved 
 
 [title="3"]The Composr installer[/title]
 
-Launch the installer by calling up [tt]http://yourbaseurl/install.php[/tt] in your web browser.
+Launch the installer by opening up [tt]http://yourbaseurl/install.php[/tt] in your web browser.
 Just run through the installer normally, and by the end you should have a working Composr installation.
 
 [concepts

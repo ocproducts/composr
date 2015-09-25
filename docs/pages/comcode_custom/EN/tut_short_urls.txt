@@ -73,7 +73,7 @@ Composr can also do URL Schemes on the following web-servers:
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_short_urls/apache.png[/media]
 Perform the following steps:
 1) If you haven't already got a working Composr [tt].htaccess[/tt] file (the quick installer may have made it for you automatically), rename [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt]. If your site gives errors after doing this, try [tt]plain.htaccess[/tt] instead.
-2) If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
+2) If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]http://yourbaseurl/config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
 3) Enable a URL Scheme from your site options (Admin Zone > Setup > Configuration > Site options > SEO).
 
 [title="4"]If it won't save[/title]
@@ -109,12 +109,10 @@ http://cheeso.members.winisp.net/IIRF.aspx
 
 [i]ocProducts cannot take responsibility or provide support for this feature. We're happy to answer questions, but fiddling with your web server is only for those in the know. It is best you try things out on a test website before your live one.[/i]
 
-To install IIRF:
-1) Copy [tt]IIRF.dll[/tt] into your [tt]Inetpub[/tt] folder
-
-2) In IIS manager add the dll as an ISAPI filter, but only to the website that runs Composr. This means that the IIRF plugin will only affect the Composr website, which is important because the IIRF configuration file is not modular -- if it were applied to all websites on the server, it could cause serious problems.
-
-3) Make an [tt]IirfGlobal.ini[/tt] file in your [tt]Inetpub[/tt] folder containing the following:
+To install IIRF:[list="1"]
+[*] Copy [tt]IIRF.dll[/tt] into your [tt]Inetpub[/tt] folder
+[*] In IIS manager add the dll as an ISAPI filter, but only to the website that runs Composr. This means that the IIRF plugin will only affect the Composr website, which is important because the IIRF configuration file is not modular -- if it were applied to all websites on the server, it could cause serious problems.
+[*] Make an [tt]IirfGlobal.ini[/tt] file in your [tt]Inetpub[/tt] folder containing the following:
 [staff_note]begin_rewrite_rules[/staff_note][code="htaccess"]
 # Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
 RewriteCond %{DOCUMENT_ROOT}/$1 -f [OR]
@@ -171,12 +169,10 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,U]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,U]
 #RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,U]
 [/code][staff_note]end_rewrite_rules[/staff_note]
-
-4) Reset IIS
-
-5) Test a short URL (e.g. [tt]http://yourbaseurl/site/pg/downloads[/tt]) -- if it doesn't load, you've got a IIRF/IIS configuration problem.
-
-6) If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
+[*] Reset IIS
+[*] Test a short URL (e.g. [tt]http://yourbaseurl/site/pg/downloads[/tt]) -- if it doesn't load, you've got a IIRF/IIS configuration problem.
+[*] If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]http://yourbaseurl/config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
+[/list]
 
 [title="2"]Enabling a URL Scheme retroactively[/title]
 

@@ -237,6 +237,7 @@ class Module_admin
             array('page', 'article', 'comcode'),
             array('entry', 'item', 'content', 'resource', 'submission'),
             array('category', 'node', 'section', 'repository', 'collection'),
+            array('directory', 'folder'),
             array('catalogue', 'database', 'classified', 'catalog', 'directory', 'schema', 'field'),
             array('speed', 'slow', 'fast', 'optimisation', 'performance', 'efficiency'),
             array('panel', 'sidebar', 'frame', 'bar', 'column'),

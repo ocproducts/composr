@@ -323,7 +323,7 @@ Make a feature change of your own design, and release it as an addon.
 
 [title="2"]Points challenge[/title]
 
-125 compo.sr points will be given to any user that releases a working Composr addon (which may be based off pre-existing Open Source code, made by anybody) so long as the addon contains at least 1000 lines of PHP code.
+125 {$BRAND_BASE_URL} points will be given to any user that releases a working Composr addon (which may be based off pre-existing Open Source code, made by anybody) so long as the addon contains at least 1000 lines of PHP code.
 
 To claim your prize, post in the Addons forum and 'report post' with the phrase '125 points please' in your report.
 
