@@ -75,7 +75,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         require_lang('cns_multi_moderations');
         require_css('cns_admin');
 
-        set_helper_panel_tutorial('tut_forum_helpdesk');
+        set_helper_panel_tutorial('tut_moderation');
 
         breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
 

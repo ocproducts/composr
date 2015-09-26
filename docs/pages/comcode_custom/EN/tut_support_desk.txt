@@ -1,7 +1,9 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a virtual support desk[/title]
 
 [media width="150" description="Configuring the support ticket and comment topic systems" float="right"]data_custom/images/docs/tut_support_desk/support_forum_config.png[/media]
-Composr can be used as an effective support desk tool. For those unfamiliar with the concept of a support desk, or who may not relate their personal needs to being an application of such, these are some common properties of a support desk system:
+Running an online support desk is something many companies will want to do. It allows customers to easily communicate via a website, suggesting new features, reporting bugs, or otherwise asking for support. Composr can be used as an effective support desk tool.
+
+For those unfamiliar with the features of a support desk, or who may not relate their personal needs to being an application of such, these are some common properties of a support desk system:
  - [b]Placement[/b]: the ability for issues to be placed, both by staff, and by the audience being supported
  - [b]Notification[/b]: notifications, for staff to be made aware of issues
  - [b]Categorisation[/b]: categorisation of issues
@@ -196,8 +198,6 @@ For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and 
 
 The Discussion Forum (our own Conversr, at least) is designed to be an extremely efficient multi-purpose working environment: forums are at their heart an interactive communication medium. There are also a number of special features, such as post templates, and multi moderations, that make the forums particularly appropriate for use to provide support.
 
-For more information on this, see the [page="_SEARCH:tut_forum_helpdesk"]Running a discussion-forum-based helpdesk tutorial[/page].
-
 [title="3"]Approach to support functions[/title]
 
 [html]
@@ -245,6 +245,27 @@ For more information on this, see the [page="_SEARCH:tut_forum_helpdesk"]Running
 	</tbody>
 </table>
 [/html]
+
+[title="3"]Post templates[/title]
+
+[surround]
+[media width="150" description="Adding a post template" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_add_post_template.png[/media]
+{!cns_post_templates:DOC_POST_TEMPLATES}
+
+[title="4"]Adding a post template[/title]
+
+To add a post template, just open up the 'Add post template' screen in the Admin Zone (Go to Admin Zone > Structure > Forums > Post Templates), and fill in the forms.
+You can delete a post template from the bottom of its edit form.
+
+Composr provides useful features such as limiting the use of a post template to certain forums, making the post template the default post in the specified forums, and limiting use of the template to members of a certain minimum status.
+[/surround]
+
+[title="4"]Using a post template[/title]
+
+[surround]
+[media width="150" description="The screen to select post templates for use in a post" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_using_post_template.png[/media]
+To use a post template, simply submit a new topic or post using the verbose posting form (i.e. not the quick-reply box). On this form, if any post templates are defined for the current forum, a post template drop-down list will appear. Using this list, you can select a post template to use. If a post template has been marked as the default post for the current forum, the post field will already contain that post template.
+[/surround]
 
 [title="2"]The Feedback system[/title]
 
@@ -312,13 +333,13 @@ Composr does not come with its own issue management database, but we have a non-
 [concepts
  1_key="support desk      1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
  2_key="support ticket"   2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
+ 3_key="Post template"    3_value="A pre-defined body of text that can be used as a template for new posts"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_mod"]Basic forum moderation[/page]
+ - [page="_SEARCH:tut_moderation"]Basic forum moderation[/page]
  - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
- - [page="_SEARCH:tut_forum_helpdesk"]Running a discussion-forum-based helpdesk[/page]
  - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]

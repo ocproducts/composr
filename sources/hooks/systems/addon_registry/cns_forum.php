@@ -62,9 +62,8 @@ class Hook_addon_registry_cns_forum
     {
         return array(
             'tut_forums',
-            'tut_forum_helpdesk',
             'tut_forum_tracking',
-            'tut_mod',
+            'tut_moderation',
             'tut_information',
         );
     }

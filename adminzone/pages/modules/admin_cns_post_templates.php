@@ -76,7 +76,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
         require_lang('cns_post_templates');
         require_css('cns_admin');
 
-        set_helper_panel_tutorial('tut_forum_helpdesk');
+        set_helper_panel_tutorial('tut_support_desk');
 
         breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
 

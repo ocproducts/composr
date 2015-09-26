@@ -97,7 +97,7 @@ These tools are:
 
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
- - [page="_SEARCH:tut_mod"]Basic forum moderation[/page]
+ - [page="_SEARCH:tut_moderation"]Basic forum moderation[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
