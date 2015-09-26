@@ -27,7 +27,7 @@ The default start page in the Welcome Zone, and the panels make use of blocks.
 [media width="150" description="Actual Comcode that references blocks (with WYSIWYG off, highlighting the add block button)" float="right"]data_custom/images/docs/tut_adv_comcode_pages/add_block_button.png[/media]
 At the time of writing Composr contains 75 blocks for you to use.
 
-The Add Block Assistant (available as a button above the editor) will help you add a block. It will:
+The block construction assistant (available as a button above the editor) will help you add a block. It will:
 1) show you what exact blocks are available (grouped by addon)
 2) provide a form for setting the block parameters
 3) let you preview
@@ -47,7 +47,7 @@ With some re-styling (changing CSS and/or templates), any visual assumptions abo
 
 [title="2"]Block code (advanced)[/title]
 
-[i]This section is only relevant if you don't want to use the Add Block Assistant or want to understand the Comcode produced.[/i]
+[i]This section is only relevant if you don't want to use the block construction assistant (if you prefer hand-coding) or otherwise wish to understand the Comcode produced.[/i]
 
 The Comcode to add blocks is easiest shown by example. If you log in to your site as your administrator member, and choose to edit the front page of the Welcome Zone, then you will see the page consists of Comcode: in particular, you will see (if you turn WYSIWYG off) that the [tt][block][/tt] tag is used many times in the page.
 

@@ -48,7 +48,7 @@ When you use Composr with LDAP, there are some necessary changes to how Composr 
  - Unless you allow it, joining on Composr will be disabled, in favour of only allowing new LDAP accounts to be seen. Composr assumes all LDAP account management is done elsewhere, and only employs read-only access to the LDAP data.
  - It is necessary to use the LDAP synchronisation module to choose which LDAP usergroups will be featured in Composr. This is done for reasons of cleanliness: often an LDAP database will consist of many cryptic usergroups that would look out-of-place on the portal. Do this from Admin Zone > Security > LDAP.
  - When an LDAP user logs in for the first time, Composr will ask for some supplementary information them (such as their e-mail address) in order to complete the Composr profile. This is because usually LDAP does not hold this data, but Composr requires it.
- - Passwords and user-names of LDAP users cannot be changed.
+ - Passwords and usernames of LDAP users cannot be changed.
  - LDAP users may not change their usergroup membership from within Composr.
  - The 'lost password' feature will not work for LDAP users.
 [/surround]

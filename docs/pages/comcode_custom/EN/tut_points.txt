@@ -68,6 +68,7 @@ The Point Store shop front is accessed via the [tt]pointstore[/tt] module ([tt]s
 
 Point Store inventory management is at:
 Admin Zone > Setup > Point Store inventory management
+Use this to set up those products which you can have multiple of (e-mail accounts, custom products, permission products).
 
 There is a module in the Admin Zone for sales list management at:
 Admin Zone > Audit > Point Store sales list management
@@ -88,8 +89,10 @@ On [concept]Conversr[/concept] sites, members can purchase to have a particular 
 
 Members can gamble points. On average, members lose out on points when they try and gamble them though.
 
-[title="3"]E-mail accounts[/title]
+[title="3"]E-mail accounts (advanced)[/title]
 
+[media width="150" description="Configuring pop3 accounts via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_pop3.png[/media]
+[media width="150" description="Configuring e-mail forwarders via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_forwarding.png[/media]
 What may be purchased:
  - POP3 email accounts, and upgrades
   - staff define which email domains members may purchase addresses on
@@ -97,6 +100,9 @@ What may be purchased:
  - email Forwarding accounts, and updates
   - staff define which email domains members may purchase addresses on
   - staff must set up the email accounts manually after they are purchased/upgrades
+
+These may be configured via the inventory management screen at:
+Admin Zone > Setup > Point Store inventory management
 
 If e-mail accounts are sold through the Point Store, Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the Point Store configuration defines 3 URLs that can be set according to your server.
 
@@ -134,13 +140,13 @@ The POP3 quota change address is:
 
 On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the purchasers name gets special highlighting within forum topics.
 
-[title="3"]Custom products[/title]
-
-Staff set up custom products by description and cost, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
-
 [title="3"]Permission products[/title]
 
+[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_permissions.png[/media]
 Staff can set up what permissions may be bought, how long they last for, and how much they cost.
+
+This is done via the inventory management screen at:
+Admin Zone > Setup > Point Store inventory management
 
 The different types of permission (product) are configured with settings as follows:
 
@@ -165,6 +171,13 @@ You will set &ldquo;The zone&rdquo; and &ldquo;The page&rdquo;.
 You will set &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
 
 Normally &ldquo;The category&rdquo; will be a numeric ID.
+
+[title="3"]Custom products[/title]
+
+[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_custom.png[/media]
+Staff set up custom products by description and cost, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
+This is done via the inventory management screen at:
+Admin Zone > Setup > Point Store inventory management
 
 [title="3"]Community billboard (non-bundled)[/title]
 

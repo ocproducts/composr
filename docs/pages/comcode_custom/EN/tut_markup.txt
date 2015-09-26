@@ -22,7 +22,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		<tr>
 			<td>[abbr="Transfer Control Protocol / Internet Protocol"]TCP/IP[/abbr]</td>
 			<td>This is the protocol for transmitting Internet data.</td>
-			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]IP addresses and tracing users tutorial[/page]).</td>
+			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users tutorial[/page]).</td>
 		</tr>
 		<tr>
 			<td>[abbr="HyperText Transfer Protocol"]HTTP[/abbr]</td>

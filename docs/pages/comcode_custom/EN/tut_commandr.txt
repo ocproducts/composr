@@ -61,7 +61,7 @@ One of the main features of Commandr is the fact that various facets of Composr 
 
 To use the repository, simply navigate around using the standard UNIX filesystem commands ([tt]cd[/tt], [tt]pwd[/tt], [tt]ls[/tt], etc.), and modify files in a similar fashion to change the appropriate behind-the-scenes value.
 
-To learn more about the filesystem, which is also used by other parts of Composr, see [page="_SEARCH:tut_repository"]the repository tutorial[/page].
+To learn more about the filesystem, which is also used by other parts of Composr, see the [page="_SEARCH:tut_repository"]The Composr repository tutorial[/page].
 
 [title="2"]Scripts[/title]
 

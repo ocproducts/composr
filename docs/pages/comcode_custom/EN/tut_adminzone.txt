@@ -93,7 +93,7 @@ The content review settings are shown on content add/edit forms.
 
  - [page="_SEARCH:tut_staff"]Coordination between staff and staff/members[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
- - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
  - [page="_SEARCH:tut_repository"]The Composr repository[/page]
 

@@ -78,7 +78,7 @@ I'm sure you know what a virtual shopping-cart is due to websites such as Amazon
 [title="3"]Community/social-networking sites[/title]
 
 Community sites provide features for interaction between users, such as:
- - member registration (to get a unique user-name and account)
+ - member registration (to get a unique username and account)
  - discussion forums
  - polls
  - chatrooms

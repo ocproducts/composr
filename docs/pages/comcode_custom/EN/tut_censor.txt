@@ -1,69 +1,85 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Dealing with annoying users[/title]
 
-Depending on your site policies (for a good discussion of this, see the [page="_SEARCH:tut_legal"]Legal and social responsibilities tutorial[/page]), you are likely to require some tools to help you maintain the policy. Some of these tools actively enforce your policy, some of them allow you to 'moderate' to maintain your own policy, and some of them provide punishment for users that abuse policy (such that they may be removed from causing further harm, or made an example of such that other users do not 'follow suit').
+Composr provides a number of ways to deal with the annoying users or the users who do not adhere to your site policies (for a good discussion of site policies see the [page="_SEARCH:tut_legal"]Legal and social responsibilities tutorial[/page]).
+
+Some of these tools actively enforce your policy, some of them allow you to 'moderate' to maintain your own policy, and some of them provide punishment for users that abuse policy (such that they may be removed from causing further harm, or made an example of such that other users do not 'follow suit').
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Tools that actively enforce your policy (Word filter and field filter)[/title]
+[title="2"]Active filters (word filter and field filter)[/title]
 
 [media width="150" description="Working with the word filter" float="right"]data_custom/images/docs/tut_censor/censor_word.png[/media]
 {!wordfilter:DOC_WORDFILTER}
 
-Access the word filter from Admin Zone > Security > Word filter.
+Access the word filter from:
+Admin Zone > Security > Word filter.
 
 The word filter makes no attempt to try and detect when users try to 'cheat it', as this would be a futile struggle: if users abuse the filter, then they are almost certainly knowingly that they are doing so, and thus setting themselves up for punishment.
 
 In addition to the word filter there is a more sophisticated filtering system, the [page="_SEARCH:tut_fields_filter"]The form field filter system[/page].
 
-[title="2"]Tools for moderation (Validation)[/title]
+[title="2"]Validation[/title]
 
-Composr, by default, will not allow most forms of non-trusted content to appear live on the website without validation by the staff. When a user that is not in a trusted usergroup posts content, then they will have no choice but to have it posted as non-validated, and a notification will be dispatched to the staff. The staff can then choose what to do with the content. There is also a module where staff can see all non-validated content, in case the notification was missed or disabled. This module is at:
+Composr, by default, will not allow most forms of non-trusted content to appear live on the website without validation by the staff. When a user that is not in a trusted usergroup posts content, then they will have no choice but to have it posted as non-validated, and a notification will be dispatched to the staff. The staff can then choose what to do with the content (as part of their "moderation" duties).
+
+There is a module where staff can see all non-validated content (in case the notification was missed or disabled):
 Admin Zone > Audit > Non-validated resources
 
 By default, the forum, the chatrooms, and Wiki+, are the main exceptions where validation is not required. This is because these are community orientated areas of the website, where instant posting is desirable.
 
 Naturally, privileged users may edit and delete any content on the system; by default, these privileged users are those in the staff usergroups. It is possible to configure Composr so that users may edit/delete their own content though, or even all content if you like.
 
+It's a common practice to use rank to automatically grant additional access, such as bypassing validation. Rank is discussed in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page].
+
 [title="2"]Content privacy[/title]
 
 Members may specify the privacy settings for content they post, if the [tt]content_privacy[/tt] addon is installed. For example, they may post an image and set it so only their friends may view it.
 
-[title="2"]Tools for punishment[/title]
+[title="2"]Warning/punishment[/title]
 
 [surround]
 [media width="150" description="Using the points system for punishment" float="right"]data_custom/images/docs/tut_censor/censor_point_in_right_direction.png[/media]
-[media width="150" description="Making a warning" float="right"]data_custom/images/docs/tut_censor/censor_make_warning.png[/media]
-[media width="150" description="A warning as displayed on the Account of a member" float="right"]data_custom/images/docs/tut_censor/censor_warning.png[/media]
 There are a number of ways to punish members who do not follow site policy (such as trolls), including:
- - Charging points to the member
- - Giving them a negative number of points (which might result in sustaining a reduced rank for a time, if you also moving them down to a lower ranking usergroup on the rank scale)
- - Banning them (either their user-name, or their IP address, or their ability to make submissions)
- - Moving them to a restricted usergroup (there's an inbuilt "Probation" feature to move them automatically into probation usergroup for a limited period of time)
- - 'Verbally' warning them, via a Private Topic
- - Giving them a formal warning
- - Reducing a member in rank
-
-Since Composr version 4, all the various punishment tools are made available on one screen (Conversr only). This screen can be accessed from members' post ("Punish member" button) or from any member-profile screen.
+ - Charging points to the member or giving them a negative number of points (which might result in sustaining a reduced rank for a time, if you also moving them down to a lower ranking usergroup on the rank scale). Points are primarily charged from a member's points profile (in Conversr this is a member profile tab, otherwise it's via the [tt]points[/tt] module).
+ - Banning them in various ways described under "Banning"
+ - Moving them to a restricted usergroup (there's an inbuilt "Probation" feature to move them automatically into probation usergroup for a limited period of time). This is done by editing their account settings.
+ - 'Verbally' (unofficially) warning them, via a Private Topic.
+ - Giving them a formal warning (read on).
 
 As all these methods work on members, but not users in general (i.e. not guest users), you may wish to consider making it a requirement for all users to join in order to participate on the website. In other words, you may wish to remove permission for guests to make submissions.
 [/surround]
 
-[title="2"]Probation[/title]
+[surround]
+[media width="150" description="A warning as displayed on the account of a member" float="right"]data_custom/images/docs/tut_censor/censor_warning.png[/media]
+[media width="150" description="Making a warning / potentially other punitive actions" float="right"]data_custom/images/docs/tut_censor/censor_make_warning.png[/media]
+[media width="150" description="Links for member warning/punishment from their profile" float="right"]data_custom/images/docs/tut_censor/member_links.png[/media]
+All the various punishment tools are brought together for convenience on one screen named "Add warning/punishment" (Conversr only). This screen is the only way to make warnings, but the other punitive actions can be carried out in other places also.
 
-The probation feature is designed to work via the punishment system. You could manually put a member into the probation usergroup, but it's not advisable because any secondary usergroups they are in may lead to extra undesirable privileges.
+This screen can be accessed from either:
+1) members' post ("Punish member" button)
+2) or, from any member-profile screen
+
+[title="3"]Probation[/title]
+
+The probation feature is designed to work via the punishment system. You could manually put a member into the probation usergroup, but it's not advisable because any secondary usergroups they are in may lead to extra undesirable privileges. The recommended method is to set the time until which they finish probation, either via editing their account or using the warn/punish form.
+
 If you use the punishment system to put a user in probation, Composr automatically returns their only usergroup as Probation, disregarding other settings until their probation expires. Their usergroups will continue to [i]display[/i] as normal, but from a permission point of view, they'll only be in the probations usergroup.
+[/surround]
 
-[title="2"]Banning[/title]
+[title="3"]Banning[/title]
 
-[media width="150" description="Banning a member" float="right"]data_custom/images/docs/tut_censor/censor_member.png[/media]
+[surround]
+[media width="150" description="Banning a member via editing their member account" float="right"]data_custom/images/docs/tut_censor/censor_member.png[/media]
 There are many methods for banning a Composr user:
- - banning member submission. This is useful if you only want to ban a member from making submissions, and not the whole site; it is done from the Action Logs module (accessed from Admin Zone > Audit > Action logs). This feature is also useful if you are not using [concept]Conversr[/concept], and want to ban a member in Composr, but not in the forum.
- - banning an IP address, or IP address range. {!submitban:DOC_IP_BAN}
- - banning a member via editing their member-profile. This is perhaps the most useful method of banning. Note that there is no way to prevent a user re-joining with a new username.
- - banning a member via changing their usergroup to one with virtually no privileges. This is useful if you want to reduce access in a highly customised fashion.
+ - [b]Banning a member[/b] via editing their member account. This is perhaps the most useful method of banning and shows them an error when they next log in telling them they've been banned. Note that there is no way to prevent a user re-joining with a new username.
+ - [b]Banning an IP address[/b], or IP address range. {!submitban:DOC_IP_BAN} More information about IP addresses is given in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users tutorial[/page].
+ - Banning a member via [b]changing their usergroup[/b] to one with virtually no privileges. This is useful if you want to reduce access in a highly customised fashion.
+ - [b]Banning member submission[/b]. This is useful if you only want to ban a member from making submissions, and not the whole site; it is done from the Action Logs module (accessed from Admin Zone > Audit > Action logs). This feature is also useful if you are not using [concept]Conversr[/concept], and want to ban a member in Composr, but not in the forum.
+[/surround]
 
 [title="2"]The Action Log (audit trails)[/title]
 
+[surround]
 {!actionlog:DOC_ACTIONLOG}
 
 [media width="150" description="Recent actions performed" float="right"]data_custom/images/docs/tut_censor/adminzone_recent_actions.png[/media]
@@ -79,6 +95,7 @@ There are also 'sort by' and 'show per page' options at the bottom of this modul
 
 Access the action log from:
 Admin Zone > Audit > Action logs (audit trail)
+[/surround]
 
 [title="2"]Post history[/title]
 
@@ -97,7 +114,7 @@ If you are using Conversr, then you may make use of the 'post history' feature. 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
  - [page="_SEARCH:tut_staff"]Coordination between staff and staff/members[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]

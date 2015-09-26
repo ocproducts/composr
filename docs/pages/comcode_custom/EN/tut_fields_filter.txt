@@ -1,21 +1,28 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: The form field filter system[/title]
 
-Composr provides an advanced feature for manipulating forms and the results of forms using filters without having to change the PHP code. By the end of this tutorial you will understand the enormous power this can give you.
-This features are intended for power-users, using an XML config file for defining the filters.
+Composr provides a powerful feature for filtering the user input data given through various forms in Composr without having to change the PHP code. The feature can also influence the default values displayed within form fields.
 
-The form field filter system can influence both form results, and the default values displayed within form fields.
+The webmaster can apply this feature via an XML config file that defines the filters.
+
+By the end of this tutorial you will understand the enormous power this can give you.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]The config file structure[/title]
 
 [media width="150" description="Editing the XML" float="right"]data_custom/images/docs/tut_fields_filter/xml.png[/media]
-The config file is [tt]data/xml_config/fields.xml[/tt] and should be overridden to [tt]data_custom/xml_config/fields.xml[/tt]. You will see there are some default settings in that file, which are designed to be fairly innocuous. You should review the default settings as examples.
+The config file is [tt]data/xml_config/fields.xml[/tt] and should be overridden to [tt]data_custom/xml_config/fields.xml[/tt]. You will see there are some default settings in that file, which are designed to be fairly innocuous examples. You can review the default settings as examples.
 
-You can also edit from:
+Composr has a special built-in editor just to edit this file so you don't have to manually go to the file to make the changes. This is available from:
 Admin Zone > Setup > Field filters
 
-The root XML tag for the config file is 'fieldRestrictions'. Otherwise, the config file mostly consists of restriction tags. Restriction tags (explained further down) can be placed directly beneath 'fieldRestrictions', but they may also be placed under the special [tt]qualify[/tt] and [tt]filter[/tt] tags. Furthermore, [tt]qualify[/tt] and [tt]filter[/tt] tags can be placed underneath themselves and each other to provide nestings of arbitrary complexity.
+The XML file contains the following types of XML tags:
+ - [tt]fieldRestrictions[/tt] tag
+ - [tt]qualify[/tt] tags
+ - [tt]filter[/tt] tags
+ - various restriction tags
+
+The root XML tag for the config file is [tt]fieldRestrictions[/tt]. Otherwise, the config file mostly consists of restriction tags. Restriction tags (explained further down) can be placed directly beneath [tt]fieldRestrictions[/tt], but they may also be placed under the special [tt]qualify[/tt] and [tt]filter[/tt] tags. Furthermore, [tt]qualify[/tt] and [tt]filter[/tt] tags can be placed underneath themselves and each other to provide nestings of arbitrary complexity.
 
 [title="2"]The [tt]qualify[/tt] and [tt]filter[/tt] tags[/title]
 
@@ -44,7 +51,7 @@ The following restriction tags are for manipulating form results:
 You may give each of these restriction tags an [tt]error[/tt] attribute, which will be used for the case when they trigger. If you do not provide a message a default will be used based upon the restriction involved.
 
 The following restriction tags are for both manipulating form results and also default form field values:
- - [tt]replace[/tt], replace the value of the attribute [tt]from[/tt] in the field value with the contents of the tag. This is useful if for example you renamed your product and you wanted people to stop using the old product name on your website.
+ - [tt]replace[/tt], replace the value of the attribute [tt]from[/tt] in the field value with the contents of the tag. This is useful if for example you renamed your product and you wanted people to stop using the old product name on your website. If you don't supply a [tt]from[/tt] attribute it replaces everything (see our default news titles example below).
  - [tt]removeShout[/tt], filter out shouting in the field value (ENTIRELY UPPER CASE FIELD VALUES). This is useful for making a forum appear more civil.
  - [tt]sentenceCase[/tt], make the field value sentence case.
  - [tt]titleCase[/tt], make the field value Title Case.
@@ -52,7 +59,39 @@ The following restriction tags are for both manipulating form results and also d
  - [tt]append[/tt], append something to the field value. This is useful if you want submissions from non-staff to be flagged with a disclaimer message.
  - [tt]prepend[/tt], prepend something to the field value.
 
-[title="2"]Extension[/title]
+[title="2"]Example: removing shouting from news[/title]
+
+The default [tt]fields.xml[/tt] has a mix of different examples. Here's one simple standalone example that would remove the shouting from news posts:
+[code="XML"]
+<fieldRestrictions>
+	<qualify pages="cms_news" types="_add" fields="title,post">
+		<removeShout />
+	</qualify>
+</fieldRestrictions>
+[/code]
+
+With this example posting [tt]TEST[/tt] in a news post title/body would result in it getting changed to [tt]Test[/tt].
+
+As you can see the [tt]qualify[/tt] tag defines:
+ - the [tt]cms_news[/tt] page in the [tt]pages[/tt] attribute
+ - the screen type that corresponds to a new news post that has just been submitted ([tt]_add[/tt])
+ - the particular form field names to apply the filter to
+Using [tt]qualify[/tt] tags we can therefore focus our filters sharply.
+
+[title="2"]Example: default news titles[/title]
+
+Here's one simple standalone example that would set the default title for all news posts to "Default title":
+[code="XML"]
+<fieldRestrictions>
+	<qualify pages="cms_news" types="add" fields="title">
+		<replace>Default title</replace>
+	</qualify>
+</fieldRestrictions>
+[/code]
+
+It works by applying itself to the type of the main form ([tt]add[/tt]) rather than the type of where forms are submitted to ([tt]_add[/tt]).
+
+[title="2"]Extension (advanced)[/title]
 
 The form field filter system is ripe for extension by programmers. It would not be hard for a programmer to add new filter attributes. For example, a filter could be added to allow filtering based on day of the week, or geographic location. We'd love to see innovative Composr modifications written around this kind of functionality (e.g. a modification to "only allow people to submit a quiz on Halloween from an iPhone").
 

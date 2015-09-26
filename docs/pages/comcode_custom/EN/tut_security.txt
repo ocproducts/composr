@@ -103,7 +103,7 @@ If you run a website with particularly privileged information, or security is cr
 The main issue with shared hosting, is that, unless either:
 [list="1"]
 [*]the environment for hosting accounts is restricted to being PHP-only, with safe-mode (which limits PHP and hence Composr in a negative way) or [tt]open_basedir[/tt] (which we advise) enabled
-[*]or, the server is set to run web scripts on different hosting accounts using the account holder user-names (suEXEC)
+[*]or, the server is set to run web scripts on different hosting accounts using the account holder usernames (suEXEC)
 [/list]
 then every web-server-created/writable file, and your database, is fully writable to by any other account holder.
 
@@ -458,7 +458,7 @@ If you have sensitive material that might be in a URL moniker, you should either
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
- - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
  - [url="http://www.robotstxt.org/robotstxt.html"]robots.txt help[/url]
 

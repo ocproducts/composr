@@ -36,7 +36,7 @@ No honest and competent company can guarantee their web application to be comple
  - have a written set of security standards that all developers comply with
  - have designed the Composr architecture to abstract away common security problems, such as 'SQL injections'
  - have written our code to pro-actively detect suspicious activity, alerting the user to it
- - have prepared a [page="_SEARCH:tut_security"]security tutorial[/page] giving a high level of technical detail on how to 'lock down' Composr beyond the high level of security provided by default
+ - have prepared a [page="_SEARCH:tut_security"]Security tutorial[/page] giving a high level of technical detail on how to 'lock down' Composr beyond the high level of security provided by default
 
 If there does turn out to be a security flaw in Composr, we will endeavour to fix it as quickly as we possibly can.
 
@@ -67,7 +67,7 @@ These significant new feature categories are often requested, but are unlikely t
 
 [title="3"]Is Composr available in (some language)?[/title]
 
-ocProducts does not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:182"]internationalisation forum[/page] for more information on specific languages and [page="forum:topicview:browse:1981"]check this topic if you would like to get involved with translation[/page] (please do!). We provide an [page="_SEARCH:tut_intl"]internationalisation tutorial[/page], and tools, to translate Composr, and Composr has excellent internationalisation support.
+ocProducts does not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:182"]internationalisation forum[/page] for more information on specific languages and [page="forum:topicview:browse:1981"]check this topic if you would like to get involved with translation[/page] (please do!). We provide an [page="_SEARCH:tut_intl"]Internationalisation tutorial[/page], and tools, to translate Composr, and Composr has excellent internationalisation support.
 
 [title="2"]Licensing and costs[/title]
 
@@ -179,11 +179,11 @@ We feel Linux is more suited for PHP purposes than Windows. Composr will work fi
 [title="3"]Do you recommend any web hosts / provide your own hosting?[/title]
 
 [url="Arvixe"]http://www.arvixe.com/5256-223-3-122.html[/url] is currently our recommended web host.
-Read about Composr's minimum requirements in our [page="_SEARCH:tut_web_hosting"]hosting tutorial[/page]. Composr is designed to run well on almost all web hosts.
+Read about Composr's minimum requirements in our [page="_SEARCH:tut_web_hosting"]Web hosting requirements tutorial[/page]. Composr is designed to run well on almost all web hosts.
 
 [title="3"]Does Composr support (some forum vendor and version)?[/title]
 
-Compatible forum software is listed in the [page="_SEARCH:tut_web_hosting"]web hosting requirements tutorial[/page], and any issues are listed in the [page="_SEARCH:tut_nuances"]nuances of forum integration tutorial[/page].
+Compatible forum software is listed in the [page="_SEARCH:tut_web_hosting"]Web hosting requirements tutorial[/page], and any issues are listed in the [page="_SEARCH:tut_nuances"]Nuances of forum integration tutorial[/page].
 
 [title="3"]Can you import this particular product?[/title]
 
@@ -445,7 +445,7 @@ Hold the mouse over it for a few seconds and an edit button will appear.
 
 [title="3"]A template is used in two aspects of the system, but I need it to work differently in each?[/title]
 
-Please read about the GUID feature in our [page="_SEARCH:tut_tempcode"]tempcode tutorial[/page].
+Please read about the GUID feature in our [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
 
 [b]Can I put PHP in templates?[/b]
 This is not supported for security and architectural reasons. We could have very easily allowed this, but it would mean that themes could essentially be distributed that delete files, for instance. Templates could still be abused, to steal password cookies, for example: but direct server attacks are less likely.

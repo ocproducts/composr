@@ -119,7 +119,7 @@ When members use the Conversr whisper feature to make inline-personal-posts, the
  - [page="_SEARCH:tut_admin"]Admin Zone overview[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
- - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_correspondance"]Correspondence between users[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
  - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]

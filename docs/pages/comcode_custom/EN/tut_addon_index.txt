@@ -975,7 +975,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Log/display security alerts.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_security">Security</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_trace">IP addresses and tracing users</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_security">Security</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_trace">Using IP addresses to trace users</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=securitylogging&amp;status_id=10">Link</a></td>
         </tr>

@@ -63,7 +63,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - If you make very heavy use of large and complex tooltips then you may want to consider loading these via AJAX. This will require some fairly advanced coding skills, but it may be worth doing. Look at the [tt]COMCODE_MEMBER.tpl[/tt] template for an example of AJAX tooltip code.
  - Disabling URL monikers can help with performance; however this will also impact SEO if you think your URL paths are key to that.
  - Block unwanted bots you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there
- - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]search tutorial[/page])
+ - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]Search tutorial[/page])
  - Enable the "Gzipped output" option.
 
 [title="2"]Persistent cache[/title]

@@ -8,7 +8,7 @@ This tutorial explains aspects of the Conversr member system.
 
 [title="2"]Default accounts after installation[/title]
 
-During installing Composr, there will be two user-names provided by default:
+During installing Composr, there will be two usernames provided by default:
 1) [tt]admin[/tt] (or whatever you changed it to during installation)
 2) [tt]test[/tt]
 
@@ -35,7 +35,7 @@ To join, users will have to agree to your rules, which are actually the same as 
 
 The form includes, if enabled in the configuration, a security image ([concept]CAPTCHA[/concept]) that they must enter a numeric code from. There is also an audio equivalent to the image. Users with special needs might have difficulty with CAPTCHA: therefore you may, on occasion, need to add a member manually from the Admin Zone, and give them the details personally. The purpose of CAPTCHA is to prevent 'bots' (computer programs usually designed to wreak some form of havoc) from joining your site and abusing it.
 
-There are a number of constraints on how fields may be filled in, and some of these are configurable from the main Admin Zone Configuration. For example, special characters are not allowed in user-names, and by default, any e-mail address may only be used for one account.
+There are a number of constraints on how fields may be filled in, and some of these are configurable from the main Admin Zone Configuration. For example, special characters are not allowed in usernames, and by default, any e-mail address may only be used for one account.
 
 Once the form is filled in successfully, an e-mail will be sent to the given e-mail address containing a link to activate the account (assuming the "Confirmation of member e-mail addresses" option has not been disabled). The purpose of this is to ensure that they are giving a real working e-mail address, and hence are contactable. If the e-mail never arrives for any joining user, the most likely situation is a fault with e-mail sending on the server: it is essential that Composr is connected to a working e-mail server, either by directly residing on it, or by setting up SMTP settings in the main Admin Zone Configuration (see the [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page] tutorial). Joining users must be patient for a few minutes, as e-mails can sometimes take a while to arrive.
 
@@ -100,7 +100,7 @@ However, if the "Restrict to one member per e-mail address" option is enabled th
 [title="2"]Profiles[/title]
 
 [media width="150" description="The member directory, where profiles may be accessed from" float="right"]data_custom/images/docs/tut_members/members_directory.png[/media]
-In Composr, the term 'profile' is used almost as a synonym for 'account'. Each member has a profile, which stores the settings for their account. There are countless areas in Composr that link to view a member profile, generally where a user-name is displayed in some form of context (for example, as the user who made a shout-box comment).
+In Composr, the term 'profile' is used almost as a synonym for 'account'. Each member has a profile, which stores the settings for their account. There are countless areas in Composr that link to view a member profile, generally where a username is displayed in some form of context (for example, as the user who made a shout-box comment).
 
 An alternative way to view a member profile is to select/search using the member directory.
 The directory is provided by the [tt]members[/tt] module ([tt]site:members[/tt] page-link, Social > Member directory on the default menus).
@@ -258,7 +258,7 @@ You have 3 options when it comes to assigning default avatars to members.
 [media width="150" description="Editing your/a member title" float="right"]data_custom/images/docs/tut_members/members_edit_title.png[/media]
 If members are in a usergroup with the 'May choose a custom title' privilege, they may give themselves a personal title. This overrides the title of their primary usergroup for the member.
 
-Titles are displayed alongside forum posts, in the section that is accessed by 'hovering over' their user-name.
+Titles are displayed alongside forum posts, in the section that is accessed by 'hovering over' their username.
 
 [title="3"]Deleting a member[/title]
 
@@ -303,7 +303,7 @@ Essentially member profiles contain a last request date (in the database), which
  - [page="_SEARCH:tut_correspondance"]Correspondence between users[/page]
  - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
- - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]

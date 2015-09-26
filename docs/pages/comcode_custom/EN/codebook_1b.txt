@@ -739,7 +739,7 @@ Always test a new importer and keep backups before actually running it on your d
 
 [title="3"]eCommerce[/title]
 
-For technical information about how eCommerce is achieved in Composr, including how products work, [page="docs:tut_ecommerce"]see the eCommerce tutorial[/page]. This tutorial goes into a lot of programming detail.
+For technical information about how eCommerce is achieved in Composr, including how products work, see the [page="docs:tut_ecommerce"]eCommerce tutorial[/page]. This tutorial goes into a lot of programming detail.
 
 For reference, the described eCommerce hooks have the following methods:
 [list]

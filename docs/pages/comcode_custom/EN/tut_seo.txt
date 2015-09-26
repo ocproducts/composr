@@ -73,7 +73,7 @@ To test your Sitemap is generating correctly, open up [tt]http://yourbaseurl/dat
 [box="Important note about Google"]
 For Google to accept the automated Sitemap submissions you need to first submit it via [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]. After you have done this, future automated submissions will go straight through. Google webmaster tools is a great tool in its own right to see how your website is performing on Google.
 
-Alternatively you can reference it in your [tt]robots.txt[/tt] file, as shown in the [page="_SEARCH:tut_security"]security tutorial[/page].
+Alternatively you can reference it in your [tt]robots.txt[/tt] file, as shown in the [page="_SEARCH:tut_security"]Security tutorial[/page].
 [/box]
 
 [title="2"]URL Monikers[/title]

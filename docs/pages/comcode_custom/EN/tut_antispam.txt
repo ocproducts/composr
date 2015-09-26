@@ -5,6 +5,8 @@ Attack by spam-bots can be a major problem for a website. Fortunately Composr pr
 This tutorial will go through the tools available, and our philosophy regarding them.
 The actual configuration options are under Admin Zone > Setup > Configuration > Security, and should be reasonably intuitive.
 
+This tutorial does not cover validation, which is covered in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]CAPTCHA[/title]
@@ -113,7 +115,7 @@ Once you've made your report hopefully someone can then tell you what case categ
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_trace"]IP addresses and tracing users[/page]
+ - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_mod"]Basic forum moderation[/page]

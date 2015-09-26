@@ -1,17 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Providing featured content[/title]
 
 [media width="150" description="The Admin Zone provides a list of tasks, including rotation of featured content" float="right"]data_custom/images/docs/tut_featured/featured_checklist.png[/media]
-There are a number of Composr systems that provide featured content, rather than archives of content, or actively worked-upon content. These systems are:
- - The award system
-  - Award holder display
-  - Randomisation display
-  - Content display
- - Image of the day
- - Random quotes
- - Polls (although these are covered in the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page])
- - Community billboard messages (although this is covered in the [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points tutorial[/page])
-
-This is a short tutorial briefly covering these systems, and featured content in general.
+There are a number of Composr systems that provide featured content, rather than archives of content, or just content with recent activity. This is a short tutorial briefly covering these systems, and featured content in general.
 
 Benefits of providing featured content include:
  - Giving your site a 'fresh' feeling, and a feeling that it is an active site
@@ -19,20 +9,19 @@ Benefits of providing featured content include:
  - Drawing users in, such that they regularly re-visit to see what new content is featured
  - Putting content in a prime position to draw attention to it, perhaps as a reward for the content creator, perhaps for its relevancy, or perhaps to recommend it
 
-The obvious disadvantage of non-randomised featured content is the effort that is taken to maintain it. The Admin Zone provides a tool on your front page to assist with this, but it will only be able to do so if you regularly check it.
+Many of these systems work via blocks. The block construction assistant will help you add a block, accessible from the 'Add block' button on the Comcode page editing screen. This is covered in much more detail in the [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks tutorial[/page].
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Awards[/title]
 
 The award/content systems allows you to select out content for featuring. It may be used in three ways:
-1) display of content assigned as the current holder of an award (via the [tt]main_awards[/tt] block, or by browsing the [tt]awards[/tt] page). An award must exist (create new awards in Admin Zone > Setup > Awards) before it can be assigned.
+1) display of content assigned as the current holder of an award (via the [tt]main_awards[/tt] block, or by browsing the [tt]awards[/tt] page).
 2) random display of content in any arbitrary categories (via the [tt]main_content[/tt] block) with full [concept]Selectcode support[/concept]. No award needs to exist for this, as assignment is done via block parameters.
 3) display of any arbitrary item of content (via the [tt]main_content[/tt] block). No award needs to exist for this, as assignment is done via block parameters.
 
-[media width="150" description="Making a download as holder of the default 'Download of the week' award" float="right"]data_custom/images/docs/tut_featured/featured_dotw.png[/media]
-[media width="150" description="A [tt]main_awards[/tt] block" float="right"]data_custom/images/docs/tut_featured/featured_award_block.png[/media]
-[media width="150" description="Making an award" float="right"]data_custom/images/docs/tut_featured/featured_award.png[/media]
+The obvious disadvantage of non-randomised featured content is the effort that is taken to maintain it. The Admin Zone provides a tool on your front page to assist with this, but it will only be able to do so if you regularly check it.
+
 You may use the award system with any of the following types of content:
  - Authors
  - Calendar events
@@ -57,33 +46,38 @@ You may use the award system with any of the following types of content:
 
 So, why are are these awards so useful? Well, we find users often come to us wanting to be able to feature different entries of the same thing on their front page. For example, a boating club might have a catalogue filled with different types of yacht, and want to be able to have them shown on the front page.
 
-You can manage award types from:
-Admin Zone > Setup > Top content (Awards)
-You can delete an award type from the bottom of its edit form.
-
 Keeping this yacht example, I will now explain each of the three ways that the award system may be used.
 
 [title="3"]Display of content assigned as the current holder of an award[/title]
 
+[media width="150" description="Making a download as holder of the default 'Download of the week' award" float="right"]data_custom/images/docs/tut_featured/featured_dotw.png[/media]
+[media width="150" description="A [tt]main_awards[/tt] block being viewed" float="right"]data_custom/images/docs/tut_featured/featured_award_block.png[/media]
+[media width="150" description="Adding a [tt]main_awards[/tt] block using the block construction assistant" float="right"]data_custom/images/docs/tut_featured/assistant.png[/media]
+[media width="150" description="Making an award type" float="right"]data_custom/images/docs/tut_featured/featured_award.png[/media]
+You can manage award types from:
+Admin Zone > Setup > Top content (Awards)
+You can delete an award type from the bottom of its edit form.
+
+When we add a new award type linked with a particular content type, adding or editing an item of that content type will have an option to assign award to it as current holder.
+
 If you wanted to choose a different yacht to display every week, for example, then you can just:[list="1"]
-[*] create a catalogue award (Admin Zone > Setup > Top content (Awards) > Add award type)
-[*] place the award block on the front page and set it to refer to the award you just made
-(the Block assistant will help you, accessible from the 'Add block' button on the Comcode page editing screen)
-[*] change the 'Yacht of the week' just by editing a yacht's catalogue entry (or when you add an entry, make it 'Yacht of the week' immediately)
+[*] Create a catalogue award via:
+Admin Zone > Setup > Top content (Awards) > Add award type
+[*] Place the award block on the front page, setting it to refer to the award you just made (the block construction assistant makes it very easy, providing a drop-down of award types for you to select from)
+[*] Change the 'Yacht of the week' just by editing a yacht's catalogue entry (or when you add an entry, make it 'Yacht of the week' immediately)
 [/list]
-(screenshots for these 3 steps are shown in the parent section above)
 
 Composr has one award that is pre-created for you as an example: Download Of The Week.
 
-Each award has its own archive, in the [tt]awards[/tt] module ([tt]site:awards[/tt] page-link, About > Top content (Awards) of the default menus). The archive is linked from the [tt]main_awards[/tt] block, but you could also add it to your menus if you wanted to.
+Each award has its own archive, in the [tt]awards[/tt] module ([tt]site:awards[/tt] page-link, About > Top content (Awards) of the default menus). The archive is linked from the [tt]main_awards[/tt] block also.
 
 [box="Assigning points"]
-You can configure the awards (when you add or edit the award itself) to carry a number of points. If you do this, the submitter of content given that award will be given some points, and that'll show up on their points profile.
+Optionally awards are tied in with the point system. You can configure the awards (when you add or edit the award itself) to carry a number of points. If you do this, the submitter of content given that award will be given some points, and that'll show up on their points profile.
 [/box]
 
 [title="3"]Arbitrary randomisation display[/title]
 
-If you do not want to go to the effort of creating an award and manually awarding content for it, then you can just use the [tt]main_content[/tt] block in randomisation mode. This is easy to setup, it's just a block parameter when you add that block. You get the choice of which categories you want to randomly display from by way of a [tt]select[/tt] block parameter (written in [concept]Selectcode support[/concept] syntax).
+If you do not want to go to the effort of creating an award and manually awarding content for it, then you can just use the [tt]main_content[/tt] block in randomisation mode . This is easy to setup, it's just a block parameter when you add that block. You get the choice of which categories you want to randomly display from by way of a [tt]select[/tt] block parameter (written in [page="_SEARCH:tut_selectcode"][concept]Selectcode support[/concept][/page] syntax).
 
 By doing this you use the award system without actually using an award.
 
@@ -91,9 +85,11 @@ By doing this you use the award system without actually using an award.
 
 If you want to display a specific item of content as you require, but without actually wrapping it up in an actual award, then you may use the [tt]main_content[/tt] block with parameters to specify exactly what item you wish to display.
 
+You will need to know how to work out your content IDs. Usually these can easily be found within the edit URLs for the content.
+
 As with randomisation, this allows you to use the award system without actually using an award.
 
-[title="2"]Using module screens as blocks[/title]
+[title="2"]Using module screens as blocks (advanced)[/title]
 
 [surround]
 [media width="150" description="Viewing our embedded module inside the news post" float="right"]data_custom/images/docs/tut_featured/featured_main_include_module_2.png[/media]
@@ -172,6 +168,10 @@ Hit counters may be placed via the [tt]main_count[/tt] block which you can add e
 Hit counters are considered very antiquated generally, but may be useful to you in some cases. Note that hits from bots, or repeat hits, are not filtered out.
 
 You may place as many independent hit counters as you like.
+
+[title="2"]Community billboard[/title]
+
+Community billboard messages are covered in the [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points tutorial[/page].
 
 [concepts
  1_key="IOTD"   1_value="[Image of the day]. An image and associated caption, generally shown on your front page, intended for regular changing"
