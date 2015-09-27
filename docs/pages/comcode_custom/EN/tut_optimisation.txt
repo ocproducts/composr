@@ -509,4 +509,4 @@ You effectively have to take it down, then get Amazon to shift over your hard di
  - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
  - https://www.woorank.com
 
-{$SET,tutorial_tags,Performance,textbased_persistent_caching,hphp_buildkit,Maintenance,Development,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr is very heavily optimised for high performance out-of-the-box, but here are some advanced performance tips.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Performance,textbased_persistent_caching,cloudinary,failover,hphp_buildkit,Maintenance,Development,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr is very heavily optimised for high performance out-of-the-box, but here are some advanced performance tips.}[block]main_tutorial_rating[/block]

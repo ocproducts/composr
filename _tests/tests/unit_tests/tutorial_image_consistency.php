@@ -82,8 +82,8 @@ class tutorial_image_consistency_test_set extends cms_test_case
     public function testNoMissingScreenshots()
     {
         $exceptions = array(
-            'install_step2_1.png',
-            'install_step3_1.png',
+            'tut_install/install_step2_1.png',
+            'tut_install/install_step3_1.png',
         );
 
         foreach (array_keys($this->images) as $x) {

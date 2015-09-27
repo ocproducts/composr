@@ -764,8 +764,6 @@ class Hook_addon_registry_core
             'adminzone/pages/modules/.htaccess',
             'adminzone/pages/modules/admin.php',
             'themes/default/images/keyboard.png',
-            'data_custom/sitemaps/index.html',
-            'data_custom/sitemaps/index.xml',
             'sources/sitemap.php',
             'sources/sitemap_ajax.php',
             'sources/sitemap_xml.php',

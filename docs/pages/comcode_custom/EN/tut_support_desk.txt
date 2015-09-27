@@ -342,4 +342,4 @@ Composr does not come with its own issue management database, but we have a non-
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]
 
-{$SET,tutorial_tags,Support,tickets,staff_messaging,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr can be used as an effective support desk tool. Find out what features to use for it.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Support,tickets,cns_post_templates,staff_messaging,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr can be used as an effective support desk tool. Find out what features to use for it.}[block]main_tutorial_rating[/block]

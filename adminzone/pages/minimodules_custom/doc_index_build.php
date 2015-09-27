@@ -144,6 +144,7 @@ $addon_index_file = file_get_contents($path);
 $marker = '[staff_note]Automatic code inserts after this[/staff_note]';
 $pos = strpos($addon_index_file, $marker);
 $addon_index_file = substr($addon_index_file, 0, $pos + strlen($marker)) . '[semihtml]' . str_replace(get_custom_base_url(), get_brand_base_url(), $out) . '[/semihtml]';
+$addon_index_file .= "\n\n" . '{$SET,tutorial_tags,Addon,Introduction,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,An index showing what addons are available, and linking to relevant tutorials.}[block]main_tutorial_rating[/block]';
 file_put_contents($path, $addon_index_file);
 fix_permissions($path);
 sync_file($path);

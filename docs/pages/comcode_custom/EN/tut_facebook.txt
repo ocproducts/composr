@@ -366,4 +366,4 @@ We may add additional functionality to the addon in the future, again mainly if 
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
  - [page="_SEARCH:tut_metadata"]Meta Data[/page]
 
-{$SET,tutorial_tags,facebook_support,activity_feed,Social,regular}{$SET,tutorial_add_date,Apr 2015}{$SET,tutorial_summary,Details of Composr Facebook support, particularly capabilities of the non-bundled Facebook Support addon.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,facebook_support,activity_feed,Addon,Social,regular}{$SET,tutorial_add_date,Apr 2015}{$SET,tutorial_summary,Details of Composr Facebook support, particularly capabilities of the non-bundled Facebook Support addon.}[block]main_tutorial_rating[/block]

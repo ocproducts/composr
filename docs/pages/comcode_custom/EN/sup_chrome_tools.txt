@@ -8,9 +8,9 @@ Chrome has an inspect element option in the browser tool to test live CSS change
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Accesssing the Chrome development tools[/title]
+[title="2"]Accessing the Chrome development tools[/title]
 
-To access the tools either right-click on the web page and select 'Inspect Element' option or select the Chrome menu and go to View --> Developer --> Developer Tools. The apparant developer window will have the following tabs: Element, Resources, Network, Sources, Timeline, Profiles, Audit, and Console. This tutorial will describe the most important features of each of the tabs.
+To access the tools either right-click on the web page and select 'Inspect Element' option or select the Chrome menu and go to View --> Developer --> Developer Tools. The apparent developer window will have the following tabs: Element, Resources, Network, Sources, Timeline, Profiles, Audit, and Console. This tutorial will describe the most important features of each of the tabs.
 
 [media thumb="1" width="940" framed="0"]data_custom/images/docs/sup_chrome_tools/1.png[/media]
 
@@ -87,7 +87,7 @@ The Metrics option at the styles pane will show a rectangular representation of 
 
 The Resources tab shows the communication between the web server and client browser. Here we can see all of the resources requested by the browser, the time taken to receive them from the browser, and the bandwidth used during the transfer. For accessing this functionality we will need to enable it for the page that we are viewing because running the resource tab affects the page performance it is disabled by default. The resources tab lets us examine the resources loaded in to the active page. It also lets us to interact with HTML5 Database, Local Storage, Cookies, etc, as shown in the screenshot below.
 
-[media thumb="1" width="940" framed="0"]data_custom/images/docs/sup_chrome_tools/10.png[/media]
+[media thumb="1" width="940" framed="0"]data_custom/images/docs/sup_chrome_tools/8.png[/media]
 
 You may want to load the Composr page with [tt]&keep_no_minify=1[/tt]/[tt]?keep_no_minify=1[/tt] so that the CSS and JavaScript resources show more clearly.
 
@@ -114,13 +114,13 @@ The Console tab is a place to:
 
 [title="2"]Audit (advanced)[/title]
 
-The Audit tab help us to perform the optimisation of the application. This tool can analyze a page as it loads and provide suggestions and optimisations for decreasing page load time and increase perceived (and real) responsiveness.
+The Audit tab help us to perform the optimisation of the application. This tool can analyse a page as it loads and provide suggestions and optimisations for decreasing page load time and increase perceived (and real) responsiveness.
 
 [media thumb="1" width="940" framed="0"]data_custom/images/docs/sup_chrome_tools/12.png[/media]
 
 [title="2"]Profiles (advanced)[/title]
 
-The Profiles tab helps us to capture and analyze the performance of JavaScript scripts of a page. For example, we can learn which functions take the most time to execute and zero in on exactly where to optimise. There we can select any type of profiling from the three options that are provided. The profiling options are:
+The Profiles tab helps us to capture and analyse the performance of JavaScript scripts of a page. For example, we can learn which functions take the most time to execute and zero in on exactly where to optimise. There we can select any type of profiling from the three options that are provided. The profiling options are:
  - [b]Collect JavaScript CPU Profile[/b]: CPU profile shows where the execution time spent in our page's JavaScript functions.
  - [b]Collect CSS selector profile[/b]: CSS selector profile shows how long the selector matching has taken in total and how many times a certain selector has matched DOM elements.
  - [b]Take Heap snapshot[/b]: Heap snapshot profiles shows memory distribution among our page's JavaScript objects and related DOM nodes.

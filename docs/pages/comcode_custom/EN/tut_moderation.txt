@@ -142,4 +142,4 @@ You may also use multi-moderations from the forum view screen, by selecting topi
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]
 
-{$SET,tutorial_tags,Forum,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial explains how to moderate topics and posts under Conversr, and how post approval works.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Forum,cns_multi_moderations,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial explains how to moderate topics and posts under Conversr, and how post approval works.}[block]main_tutorial_rating[/block]

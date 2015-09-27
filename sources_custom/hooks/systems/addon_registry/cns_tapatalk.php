@@ -233,7 +233,6 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_tapatalk',
             'tut_mobile',
         );
     }

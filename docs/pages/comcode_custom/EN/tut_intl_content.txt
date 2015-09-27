@@ -97,4 +97,4 @@ Any content which has not been translated yet will display in the original langu
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
  - [page="_SEARCH:tut_intl_users"]Changing the site language[/page]
 
-{$SET,tutorial_tags,Internationalisation,expert}{$SET,tutorial_add_date,Aug 2014}{$SET,tutorial_summary,Multi-language content translations within Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,core_language_editing,Internationalisation,expert}{$SET,tutorial_add_date,Aug 2014}{$SET,tutorial_summary,Multi-language content translations within Composr.}[block]main_tutorial_rating[/block]

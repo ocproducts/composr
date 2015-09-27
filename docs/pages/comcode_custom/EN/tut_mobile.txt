@@ -127,4 +127,4 @@ There is an official Composr addon (non-bundled) for implementing Tapatalk suppo
  - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
 
-{$SET,tutorial_tags,Mobile,Design & Themeing,CSS,regular,pinned}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,This tutorial explains both Composr's mobile mode and responsive design techniques.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Mobile,Design & Themeing,CSS,cns_tapatalk,regular,pinned}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,This tutorial explains both Composr's mobile mode and responsive design techniques.}[block]main_tutorial_rating[/block]

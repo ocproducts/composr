@@ -38,7 +38,7 @@
  * @copyright   Copyright (C) 2007+ Christoph Dorn
  * @author      Christoph Dorn <christoph@christophdorn.com>
  * @license     [MIT License](http://www.opensource.org/licenses/mit-license.php)
- * @package     FirePHPCore
+ * @package     core
  */
 
 if (!class_exists('FirePHP', false)) {
