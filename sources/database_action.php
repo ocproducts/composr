@@ -337,6 +337,10 @@ function delete_privilege($name)
  */
 function delete_attachments($type, $connection = null)
 {
+    if (get_option('attachment_cleanup') == '0') {
+        return;
+    }
+
     if (is_null($connection)) {
         $connection = $GLOBALS['SITE_DB'];
     }

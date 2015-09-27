@@ -143,7 +143,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     // Tidy out any attachment references to files that clearly are not here
     $comcode = preg_replace('#\[(attachment|attachment_safe)[^\]]*\]new_\d+\[/(attachment|attachment_safe)\]#', '', $comcode);
 
-    if (!$previewing_only) {
+    if ((!$previewing_only) && (get_option('attachment_cleanup') == '1')) {
         // Clear any de-referenced attachments
         foreach ($before as $ref) {
             if ((!in_array($ref['a_id'], $ids_present)) && (strpos($comcode, 'attachment.php?id=') === false) && (!multi_lang())) {

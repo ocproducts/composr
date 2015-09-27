@@ -66,6 +66,10 @@ function _delete_attachment($id, $connection)
  */
 function delete_comcode_attachments($type, $id, $connection = null)
 {
+    if (get_option('attachment_cleanup') == '0') {
+        return;
+    }
+
     if (is_null($connection)) {
         $connection = $GLOBALS['SITE_DB'];
     }

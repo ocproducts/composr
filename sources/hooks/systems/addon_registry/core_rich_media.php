@@ -266,6 +266,7 @@ class Hook_addon_registry_core_rich_media
             'sources/hooks/systems/comcode_link_handlers/.htaccess',
             'sources/hooks/systems/comcode_link_handlers/index.html',
             'sources/hooks/systems/preview/comcode_tag.php',
+            'sources/hooks/systems/config/attachment_cleanup.php',
             'sources/hooks/systems/config/attachment_default_height.php',
             'sources/hooks/systems/config/attachment_default_width.php',
             'sources/hooks/systems/config/simplified_attachments_ui.php',

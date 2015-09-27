@@ -388,8 +388,9 @@ Images can have thumbnails automatically generated and cached.
 
 [box="Be careful with copy & pasting"]
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
-You may copy and paste the attachment tag into any other area of Comcode, so as to re-use the attachment. Anyone with permission to access any of the attachment supporting content locations that the attachment is placed in will be able to view/download it. The attachment will remain in the system until all content that using it is edited to stop using it, or deleted.
+You may copy and paste the attachment tag into any other area of Comcode, so as to re-use the attachment. Anyone with permission to access any of the attachment supporting content locations that the attachment is placed in will be able to view/download it. The attachment will remain in the system if the "Attachment cleanup" option is off, or until all content that using it is edited to stop using it.
 
+If the "Attachment cleanup" option is on (by default it is off):
 Be careful when placing attachment tags in a Comcode spot that does not support attachments natively. This is supported, but the attachment will be deleted if its original content is deleted, as non-native Comcode spots have no way of recording that they have used it. In addition, if a viewer does not have access to the attachment's original content, they won't have access to your copy & pasted usage to a non-native Comcode spot.
 [/box]
 [/surround]
