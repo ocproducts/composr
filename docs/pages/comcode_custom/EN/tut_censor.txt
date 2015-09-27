@@ -29,7 +29,7 @@ By default, the forum, the chatrooms, and Wiki+, are the main exceptions where v
 
 Naturally, privileged users may edit and delete any content on the system; by default, these privileged users are those in the staff usergroups. It is possible to configure Composr so that users may edit/delete their own content though, or even all content if you like.
 
-It's a common practice to use rank to automatically grant additional access, such as bypassing validation. Rank is discussed in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page].
+It's a common practice to use rank to automatically grant additional access, such as bypassing validation. Rank is discussed in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page].
 
 [title="2"]Content privacy[/title]
 

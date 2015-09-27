@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Using Blocks[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Using blocks[/title]
 
 Composr provides features to allow Comcode pages to be very feature rich. This tutorial explains how you can add blocks to your pages. Blocks can be used to display dynamic data such as recent forum posts onto a page (i.e. embedding it within the flower of the wider page). It will give an example of how to add third-party widgets to a page. Finally it will also explain how Composr allows your website content to be organised using different methodologies.
 
@@ -128,6 +128,69 @@ Boxes are a visual convention in Composr. They are what they sound like.
 
 A block does not necessarily have any visual form. It could create a popup. It could hover over the site in a circle. It may take on the form of a greek goddess. In practice, however, a block almost always does actually put itself in a box in the default templates.
 
+[title="3"]Customising a block template, for different circumstances (advanced)[/title]
+
+Sometimes you need one block, to look different, in different contexts.
+
+The easiest way to do this is using the Tempcode [tt]SET[/tt] symbol.
+
+Let's set up a contrived situation just to make the explanation simple...
+
+Let's imagine on a Comcode page we are displaying the [tt]main_quotes[/tt] block twice, and it should look different each time. We could do it like this...
+
+[code="Comcode"]
+{$SET,main_quote_display_method,A}[block _="A"]main_quotes[/block]{$SET,main_quote_display_method,}
+{$SET,main_quote_display_method,B}[block _="B"]main_quotes[/block]{$SET,main_quote_display_method,}
+[/code]
+
+This puts a setting in a Tempcode variable called [tt]main_quote_display_method[/tt] to identify our "display method", and unsets it after the block is called. The pattern repeats for each display of the block.
+
+We had to do a little fudge with the [tt]_="A"[/tt] and [tt]_="B"[/tt] stuff. This is to stop Composr internally caching the block's displayed Tempcode into a single unit while it is generating the page. All we have done is set a non-existent parameter ([tt]_[/tt]) to a different value each time to cause Composr to not try and optimise things for us. We could have actually used any random parameter names and values, there's no real relationship with the values we stored in [tt]main_quote_display_method[/tt].
+
+And then alter the [tt]BLOCK_MAIN_QUOTES.tpl[/tt] template like...
+
+[code="HTML"]
+{$GET,main_quote_display_method}
+
+{+START,IF,{$EQ,{$GET,main_quote_display_method},A}}
+    <p>
+        <strong>Random quote:</strong> {CONTENT}
+    </p>
+{+END}
+
+{+START,IF,{$EQ,{$GET,main_quote_display_method},B}}
+    <p>
+        {CONTENT} (our random quote)
+    </p>
+{+END}
+
+{+START,IF,{$NEQ,{$GET,main_quote_display_method},A,B}}
+    <section class="box box___block_main_quotes"><div class="box_inner">
+        {+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
+
+        <blockquote class="quotes_block">
+            {CONTENT}
+        </blockquote>
+
+        {+START,IF_NON_EMPTY,{EDIT_URL}}
+            <ul class="horizontal_links associated_links_block_group">
+                <li>{EDIT_URL*}</li>
+            </ul>
+        {+END}
+    </div></section>
+{+END}
+[/code]
+
+We have latched onto the value of [tt]main_quote_display_method[/tt], providing different output if it has values [tt]A[/tt] or [tt]B[/tt], or the normal Tempcode for the template if it is neither [tt]A[/tt] nor [tt]B[/tt].
+
+That's it :).
+
+It's worth pointing out that there are some other similar approaches for similar situations:
+1) Using the [tt]MATCH_KEY_MATCH[/tt] or [tt]_GET[/tt] symbols to distinguish by URL parameter, if the different block layouts are for different URLs. This doesn't apply to the above example as in the above case the block is looking different within a single page. If it's looking different between different pages then this is a great approach.
+2) If the issue is with a shared template rather than a block, the [tt]_GUID[/tt] parameter is usually passed in different for each different place the template is used, so you can base logic around that value. GUIDs are explained in the [page="_SEARCH:tut_tempcode"]Tempcode Programming tutorial[/page].
+3) If the particular block supports template sets, you can differentiate based on this. For example, the menu block allows you to specify the 'type' of the menu, which determines which templates will be used. You can therefore invent your own new 'type' of menu and store the HTML for it in a new set of templates. Not much in Composr template sets though.
+4) Sometimes there is a particular template parameter value that you can tie your logic into. For example, if we are making the [tt]NEWS_BOX.tpl[/tt] template look a little different for a particular news category, we could latch on to the [tt]CATEGORY[/tt] parameter carrying the name of that news category.
+ 
 [title="2"]Third-party widgets[/title]
 
 Many websites provide widgets that you can embed.

@@ -17,9 +17,33 @@ Advanced configuration options include (but are not limited to):
 
 [title="2"]Addons[/title]
 
-Composr is split into a series of addons. All the addons are installed when you install Composr but it is recommended that you should remove any that aren't needed once you are familiar with the software. This is so as to make sure the non-required/unconfigured functionality doesn't accidentally get discovered by your visitors, and that any unnecessary complexity is removed. Less is more when it comes to good design, and if you ensure you have only the right set of features on your site then you can better tailor it for your visitors.
+[surround]
+[media width="150" description="Installing an imported addon. Seeing warnings is normal, they just inform you what risks installing the addon may carry." float="right"]data_custom/images/docs/tut_adv_configuration/addons_install.png[/media]
+[media width="150" description="Importing a non-bundled addon. We can import them direct from the {$BRAND_BASE_URL} server." float="right"]data_custom/images/docs/tut_adv_configuration/addons_import.png[/media]
+[media width="150" description="List of addons that are imported into the system (will be a mix of installed and non-installed)." float="right"]data_custom/images/docs/tut_adv_configuration/addons_list.png[/media]
+Composr is split into a series of addons.
 
-To uninstall addons go to Admin Zone > Structure > Addons. Any addons that are uninstalled will be archived so you can restore them later if you wish (although any data you created for the addons, such as entries, will be permanently lost).
+All the "bundled" addons are installed when you install Composr but it is recommended that you should remove any that aren't needed once you are familiar with the software. This is so as to make sure the non-required/unconfigured functionality doesn't accidentally get discovered by your visitors, and that any unnecessary complexity is removed. Less is more when it comes to good design, and if you ensure you have only the right set of features on your site then you can better tailor it for your visitors.
+
+To manage addons go to Admin Zone > Structure > Addons. Any addons that are uninstalled will be archived so you can restore them later if you wish (although any data you created for the addons, such as entries, will be permanently lost).
+
+There are also many non-bundled addons that you can install. Some of these are official and some of these are third-party. An addon may be non-bundled if any of the following hold true:
+ - It is not considered mainstream enough
+ - It ties into a third-party service that is not officially endorsed
+ - It has been written by a third-party, and not checked to ocProducts standards
+ - It is known to not fully conform to ocProducts standards but still is considered useful for some audiences
+In reality the developers make pragmatic decisions. For example, as PayPal is so mainstream and the PayPal driver has low overhead, PayPal support is bundled with Composr -- but as Facebook support is a much more expansive thing, Facebook support is in a non-bundled addon.
+
+Non-bundled addons are installed via the "Import non-bundled addon(s)" link at the bottom of the Addons screen. The process goes as follows:
+1) Head to Admin Zone > Structure > Addons
+2) Scroll to the bottom
+3) Click the "Import non-bundled addon(s)" link
+4) Browse to the addon file
+5) Click the "Import non-bundled addon(s)" button
+6) (The addon is now imported, but not installed)
+7) Review the warnings and click Proceed (to be honest unless you are a programmer doing a code-review the warnings will likely not mean much to you, but they are there for those capable of analysing it all)
+8) (The addon is now both imported and installed)
+[/surround]
 
 [title="2"]Permissions[/title]
 
@@ -33,6 +57,8 @@ Composr has two main types of permission:
 2) access permissions (for defining what may be viewed)
 
 Composr uses a "best of" permission system, meaning that a member has the best possible access that the combination of all usergroups that they are in could give them. The one exception to this is when permissions are overridden for a page/catalogue/category the user will be limited by the override even if only a subset of their usergroup set is overridden at that level.
+
+Setting permissions is described in detail in the [page="_SEARCH:tut_permissions"]Access Control and Privileges tutorial[/page].
 
 [title="3"]Privileges[/title]
 
@@ -67,12 +93,17 @@ To configure access permissions, you may edit the resource the permissions are f
 
 [title="2"]Installation Options[/title]
 
-If your core configuration settings change, if you move servers for example, then Composr may cease to function. To ameliorate this, an Installation Options editor is provided that can reconfigure the [tt]_config.php[/tt] that stores core configuration settings, such as database access details.
+[surround]
+[media width="150" description="Your Installation Options" float="right"]data_custom/images/docs/tut_adv_configuration/installation_options.png[/media]
+{!config:DOC_BASE_CONFIGURATION}
 
-To launch the Installation Options editor, go to the Admin Zone > Setup > Configuration > Installation Options.
-If you are locked outside Composr, you will need to open up the [tt]http://yourbaseurl/config_editor.php[/tt] URL manually.
+That said, Composr is actually pretty smart about caches. Often you'll find it has automatically realise when your caches need emptying. If you do need to empty caches manually, the cleanup tools can be accessed from Admin Zone > Tools > Website cleanup tools.
 
-The password to enter the config editor is the password you specified during installation (the 'Master password'). If you have forgotten it, you will need to edit [tt]_config.php[/tt] by hand.
+The Installation Options editor may be accessed by the [tt]http://yourbaseurl/config_editor.php[/tt] script.
+It can also be accessed from:
+Admin Zone > Setup > Configuration > Installation Options.
+
+To operate the script, you will need the master password that you specified at installation. If you have forgotten it, you will need to edit [tt]_config.php[/tt] by hand.
 
 [box="Note" width="25em" float="right"]
 If you change servers you will also need to set file permissions. Please read the advanced installation tutorial for details on this. If you upload new themes, you will need to set permissions on the [tt]templates_cached/<lang>[/tt] and [tt]*_custom[/tt] directories after uploading.
@@ -91,7 +122,7 @@ You may use the config editor to:
 
 You may delete, and move pages using the [concept]Sitemap editor[/concept].
 
-If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via [tt]page[/tt] tags) will become invalid, unless they were specified as being in the zone named [tt]_SEARCH[/tt] (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page]. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
+If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via [tt]page[/tt] tags) will become invalid, unless they were specified as being in the zone named [tt]_SEARCH[/tt] (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page]. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
 
 It is recommended that you never move default Composr pages because it complicates the upgrade process. Instead it is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
 
@@ -135,8 +166,8 @@ The final step is to configure Composr to use the key pair to encrypt data. In t
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_configuration"]Basic Configuration[/page]
- - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
- - [page="_SEARCH:tut_msn"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
+ - [page="_SEARCH:tut_msn"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_permissions"]Access Control and Privileges[/page]
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
 

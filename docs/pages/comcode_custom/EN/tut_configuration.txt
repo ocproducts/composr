@@ -112,19 +112,6 @@ You may wish to remove some of the links from the default menus on your installa
 The menu editor is covered in the [page="_SEARCH:tut_menus"]Customising what's on the menus tutorial[/page].
 [/surround]
 
-[title="2"]Installation Options (and caches)[/title]
-
-[surround]
-[media width="150" description="Your Installation Options" float="right"]data_custom/images/docs/tut_configuration/configuration_installation_options.png[/media]
-{!config:DOC_BASE_CONFIGURATION}
-
-That said, Composr is actually pretty smart about caches. Often you'll find it has automatically realise when your caches need emptying. If you do need to empty caches manually, the cleanup tools can be accessed from Admin Zone > Tools > Website cleanup tools.
-
-The Installation Options editor may be accessed by the [tt]http://yourbaseurl/config_editor.php[/tt] script. It can also be accessed from Admin Zone > Setup > Configuration > Installation Options.
-
-To operate the script, you will need the master password that you specified at installation.
-[/surround]
-
 [title="2"]Scheduling[/title]
 
 In order for aspects of Composr that support scheduling to work it is necessary to set up a system level scheduling task to run the [tt]data/cron_bridge.php[/tt] file on an every-minute basis. By doing this, you tie in the CRON bridge scheduler with the server's scheduler.

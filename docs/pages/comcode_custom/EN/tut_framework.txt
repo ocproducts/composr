@@ -156,7 +156,7 @@ In Composr it works as thus:
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 There is one important rule when it comes to programmatic alteration: you are not allowed to call [tt]non_overridded__init__<whatever>[/tt] from your [tt]init__<whatever>[/tt] function. You cannot do this because the PHP code containing that function has not been evaluated at that point and thus the function is not yet defined. If you try and do it then Composr will disable programmatic alteration and hence revert to the more basic 'Replacing/supplementing a file' technique. Composr will automatically call [tt]non_overridded__init__<whatever>[/tt] as soon as it becomes available so you do not need to copy&paste its contents to your own function. If you do not want [tt]non_overridded__init__<whatever>[/tt] to be automatically called then you need to rename it in your own init function so that Composr cannot find it.
 
-[title="2"]Addons[/title]
+[title="2"]Exporting addons[/title]
 
 [surround]
 [media width="150" description="Exporting an addon (2)" float="right"]data_custom/images/docs/tut_framework/framework_export_2.png[/media]

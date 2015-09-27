@@ -327,5 +327,11 @@ There is an option "Infinite scrolling" if you wish to enable infinite scrolling
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]
+ - [page="_SEARCH:tut_catalogues"]Catalogues[/page]
+ - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
+ - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
+ - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
+ - [page="_SEARCH:tut_wiki"]Custom structured content (via Wiki+)[/page]
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
 
 {$SET,tutorial_tags,wiki,cns_forum,news,downloads,core_comcode_pages,catalogues,Content,Pages,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details on different publishing features available in Composr, and their advantages/disadvantages.}[block]main_tutorial_rating[/block]

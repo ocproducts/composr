@@ -425,7 +425,7 @@ Note that the auto-save assumes that you are not switching browsers, as it store
 
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_emoticons"]The Composr emoticon system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_wysiwyg"]WYSIWYG editing[/page]

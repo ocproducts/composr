@@ -61,7 +61,6 @@ The following privileges impact Comcode permissions (referencing the tiers above
 	</tbody>
 </table>
 [/semihtml]
-
 [box]
 &dagger; There are two alternative security filters available in Composr:
 1) The whitelist filter. This is the most secure filter, and is used by default. It only allows certain HTML fragments to be used (fragments likely to be produced via usage of the WYSIWYG editor).
@@ -115,12 +114,59 @@ Your tag will be shown in your local copy of the Comcode tutorial, with your tit
 
 You can edit a tag from Admin Zone > Setup > Custom Comcode > Edit Custom Comcode tag.
 You can delete a tag from the bottom of its edit form.
+
+Note that Comcode is cached, and if you edit a tag after adding Comcode using it, it won't be updated until you edit that content (or the Comcode field pre-calculation cache is emptied).
 [/surround]
 
-[box="Tip" width="25em" float="right"]
+[box="Tip"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
 If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.
 [/box]
-Note that Comcode is cached, and if you edit a tag after adding Comcode using it, it won't be updated until you edit that content (or the Comcode field pre-calculation cache is emptied).
+
+[title="3"]Sophisticated example[/title]
+
+[surround="right float_separation"]
+[media width="150" description="Our tag in the WYSIWYG editor"]data_custom/images/docs/tut_adv_comcode/cct_example_2.png[/media]
+[media width="150" description="Display our tag"]data_custom/images/docs/tut_adv_comcode/cct_example_3.png[/media]
+[/surround]
+[media width="150" description="Adding our tag" float="right"]data_custom/images/docs/tut_adv_comcode/cct_example_1.png[/media]
+This is a simple example tag for showing reminders/advice to walkers, based on the month, with a given highlighter colour, and a name for the walking location...
+
+[b]Comcode tag[/b]:
+[tt]walking_reminders[/tt]
+
+[b]Title[/b]:
+[tt]Walking reminders[/tt]
+
+[b]Description[/b]:
+[tt]Show a walking reminder, tailored to the month.[/tt]
+
+[b]Parameters[/b]:
+[tt]color=red[/tt]
+
+[b]Replacement text[/b]:
+[code="HTML"]
+{+START,IF,{$EQ,{$FROM_TIMESTAMP,%b},Nov,Dec,Jan}}
+	Pack your <span style="color: {COLOR}">gloves</span>, a <span style="color: {COLOR}">hat</span>, and a thick <span style="color: {COLOR}">coat</span>, it'll be cold on the {CONTENT}.
+{+END}
+{+START,IF,{$EQ,{$FROM_TIMESTAMP,%b},Feb,Mar,Apr}}
+	Be careful of the <span style="color: {COLOR}">wildlife</span>, it's breeding season on {CONTENT}.
+{+END}
+{+START,IF,{$EQ,{$FROM_TIMESTAMP,%b},May,Jun,Jul}}
+	Bring plenty of <span style="color: {COLOR}">water</span>, it may be very hot on the {CONTENT}.
+{+END}
+{+START,IF,{$EQ,{$FROM_TIMESTAMP,%b},Aug,Sep,Oct}}
+	Wear good <span style="color: {COLOR}">shoes</span>, it may be slippy on the {CONTENT}.
+{+END}
+[/code]
+
+[b]Example[/b]:
+[code="Comcode"]
+[walking_reminders color="red"]moor[/walking_reminders]
+[/code]
+(Leave the checkboxes as the defaults)
+
+Use of Tempcode in this example allows us to do some computation when the tag displays.
 
 [title="2"]Semi-HTML[/title]
 
@@ -132,11 +178,18 @@ The [tt][semihtml][/tt] tag is also useful if you are writing some content that 
 
 Composr supports syntax highlighting via [url="GeSHi"]http://qbnz.com/highlighter/[/url]. This operates using the normal [tt]code[/tt] and [tt]codebox[/tt] tags, adding support for GeSHi highlighter codes to the [tt]param[/tt] attribute of the tags. We maintain a non-bundled GeSHi addon that provides the necessary files.
 
+If you want to know how it looks, just look at the code as displayed throughout this documentation.
+
 [title="2"]Comcode Menus (advanced)[/title]
 
+[surround="right float_separation"]
+[media width="150" description="The example in action"]data_custom/images/docs/tut_adv_comcode/comcode_menu.png[/media]
+[box="Tip" width="160"]
+You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.
+[/box]
+[/surround]
 Composr has had a dedicated menu editor, however you may also write menus in Comcode if you prefer. This method is likely to be preferred by users using a screen reader, as the whole menu is represented in a single readable text field.
 
-[media width="150" description="The example in action" float="right"]data_custom/images/docs/tut_adv_comcode/comcode_menu.png[/media]
 The menu tag takes a single parameter -- the codename assigned to the menu. Each menu should be assigned a different codename, and you may just make one up as you write the Comcode.
 
 It is important to be careful not to break the syntactic rules for the menu formation, the syntax is delicate. The menu is [b]only[/b] designed for organising links. You should not attempt to store other content in a Comcode menu tag.
@@ -155,14 +208,12 @@ Here is an example of a menu tag in action...
 [/menu]
 [/code]
 
-[box="Tip" width="25em" float="right"]
-You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.
-[/box]
 Like the list syntax, the menu syntax specifies a tree structure, and uses indentation to do it. Things within a section, including the definition of sub-sections, are indented from the section start line itself.
 
-The '-' means that a section is not expanded by default, while the '+' means that a section is. Those lines without a '+' or '-' are lines that are actually entries on the menu, and contain the caption of the entry, followed by ' = ', followed the the URL of the entry.
+The [tt]-[/tt] means that a section is not expanded by default, while the [tt]+[/tt] means that a section is. Those lines without a [tt]+[/tt] or [tt]-[/tt] are lines that are actually entries on the menu, and contain the caption of the entry, followed by [tt] = [/tt], followed the the URL of the entry.
 
-Menu entries are typed so that their indentation is equal to the indentation of the start of the section's title. i.e. one further depth of indentation from the section's '+' or '-'.
+Menu entries are typed so that their indentation is equal to the indentation of the start of the section's title.
+i.e. one further depth of indentation from the section's [tt]+[/tt] or [tt]-[/tt].
 
 [title="2"]Relationships with other languages, and design choices[/title]
 

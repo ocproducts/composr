@@ -318,7 +318,7 @@ function comcode_helper_script_step1()
 
     list($tag_list, $custom_tag_list) = _get_details_comcode_tags();
 
-    $title = get_screen_title('COMCODE_TAG');
+    $title = get_screen_title('COMCODE_TAGS');
     $keep = symbol_tempcode('KEEP');
     $comcode_groups = '';
     $groups = _get_group_tags();

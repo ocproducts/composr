@@ -148,7 +148,7 @@ To test access permissions and privileges, it's best to create a test member, or
 The 'su' feature allows an administrator to quickly and easily assume the identity of somebody else ("masquerade"), for whatever purposes he sees fit (and not needing to type in their password, or logout).
 
 To use 'su', simply enter the username of the member whose identity you would like to assume into the 'su' box (in the footer), and press the enter/return key. A new window will open, presenting the same screen as seen by the specified user.
-This works on the default theme. Custom themes may not have this in the theme footer. In that case you  can access it by putting [tt]&keep_su=<username>[/tt] or [tt]?keep_su=<username>[/tt] onto the end of the URL as appropriate (e.g. [tt]http://yourbaseurl/index.php?keep_su=test[/tt] to masquerade as the test user looking at your front page).
+This works on the default theme. Custom themes may not have this in the theme footer. In that case you  can access it by putting [tt]&keep_su=<username>[/tt]/[tt]?keep_su=<username>[/tt] onto the end of the URL as appropriate (e.g. [tt]http://yourbaseurl/index.php?keep_su=test[/tt] to masquerade as the test user looking at your front page).
 
 You can navigate around as the user, experiencing the site through his/her eyes (so to speak), as all the permissions are as they are for this normal user. This can easily and effectively be used to test out permissions changes to make sure they are as required.
 
@@ -207,6 +207,6 @@ Fortunately Composr has a special feature for this situation: go to Admin Zone >
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
- - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
 
 {$SET,tutorial_tags,Security,core_permission_management,Configuration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A detailed explanation of how you can configure permissions, how to test them, and how to manage them.}[block]main_tutorial_rating[/block]

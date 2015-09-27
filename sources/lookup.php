@@ -42,6 +42,8 @@ function lookup_member_page($member, &$name, &$id, &$ip)
         return array();
     }
 
+    require_code('type_sanitisation');
+
     if (is_numeric($member)) {
         // From member ID
         $name = $GLOBALS['FORUM_DRIVER']->get_username(intval($member));
@@ -49,6 +51,17 @@ function lookup_member_page($member, &$name, &$id, &$ip)
             return array();
         }
         $id = intval($member);
+        $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($id);
+        if (is_null($ip)) {
+            $ip = '127.0.0.1';
+        }
+    } elseif (is_email_address($member)) {
+        // From e-mail address
+        $id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($member);
+        $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
+        if (is_null($id)) {
+            return array();
+        }
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($id);
         if (is_null($ip)) {
             $ip = '127.0.0.1';

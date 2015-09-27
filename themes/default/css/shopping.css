@@ -5,6 +5,10 @@
 
 /* Cart screen */
 
+table.cart_table {
+	width: 100%;
+}
+
 table.cart_table td {
 	vertical-align: middle;
 }

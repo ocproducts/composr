@@ -168,7 +168,7 @@ Please see the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutor
 
 The default top menu in Composr 10+ is actually not in a panel at all, it's coded direct into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template.
 
-Your panel pages by default are just Comcode pages that use the block tag for arrangement of blocks, such as the managed menu block, [tt]menu[/tt]. Blocks are described in the [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks tutorial[/page], but basically, you can use any of the blocks that begin with the name [tt]side_[/tt] on your panel pages to add dynamic elements, as well as any Comcode (Comcode menus are actually created using the Comcode [tt]menu[/tt] tag). To edit a panel page, go to Admin Zone > Structure > Panel/layout editor (Zone editor).
+Your panel pages by default are just Comcode pages that use the block tag for arrangement of blocks, such as the managed menu block, [tt]menu[/tt]. Blocks are described in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page], but basically, you can use any of the blocks that begin with the name [tt]side_[/tt] on your panel pages to add dynamic elements, as well as any Comcode (Comcode menus are actually created using the Comcode [tt]menu[/tt] tag). To edit a panel page, go to Admin Zone > Structure > Panel/layout editor (Zone editor).
 
 Menus are not used by default in panels, as we use drop-down menus in the main site header. However, most of the menu types are designed for use in panels.
 
@@ -218,7 +218,7 @@ When you add a new branch to a managed menu, you can choose to include the Sitem
 
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
 
 {$SET,tutorial_tags,core_menus,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,All about Composr's menu system. Did you know you can set up and configure as many different levels of navigation as you like?}[block]main_tutorial_rating[/block]

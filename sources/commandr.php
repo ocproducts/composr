@@ -27,6 +27,7 @@ function init__commandr()
     require_lang('commandr');
     require_code('users_active_actions');
     require_code('commandr_fs');
+    require_code('xml');
 }
 
 /**
@@ -259,8 +260,6 @@ class Virtual_shell
      */
     public function output_xml()
     {
-        require_code('xml');
-
         if (count($this->parsed_input) < 1) {
             return false;
         }
@@ -283,7 +282,6 @@ class Virtual_shell
 
         // Make the HTML not use non-XML entities
         $html_bak = $this->output[STREAM_STDHTML];
-        require_code('xml');
         $this->output[STREAM_STDHTML] = convert_bad_entities($this->output[STREAM_STDHTML], get_charset());
 
         $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>

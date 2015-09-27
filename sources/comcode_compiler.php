@@ -1768,6 +1768,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                     $pos--;
                 } elseif (($next == '"') || (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;'))) {
+                    if (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;')) {
+                        $pos += 5;
+                    }
                     $status = CCP_IN_TAG_ATTRIBUTE_VALUE;
                     $current_attribute_value = '';
                 } elseif ($next != '') {
@@ -1798,6 +1801,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
             case CCP_IN_TAG_ATTRIBUTE_VALUE:
                 if (($next == '"') || (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;'))) {
+                    if (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;')) {
+                        $pos += 5;
+                    }
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                     if ((isset($attribute_map[$current_attribute_name])) && (!$lax)) {
                         return comcode_parse_error($preparse_mode, array('CCP_DUPLICATE_ATTRIBUTES', $current_attribute_name, $current_tag), $pos, $comcode, $check_only);

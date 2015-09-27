@@ -220,8 +220,16 @@ class Module_shopping
         require_lang('shopping');
         require_lang('catalogues');
 
+        $ecom_catalogue_count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array('c_ecommerce' => 1));
+        $ecom_catalogue = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_ecommerce' => 1));
+        $ecom_catalogue_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $ecom_catalogue));
+
         if ($type == 'browse') {
-            breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES'))));
+            if ($ecom_catalogue_count == 1) {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . $ecom_catalogue_id, do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE'))));
+            } else {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES'))));
+            }
 
             $this->title = get_screen_title('SHOPPING');
         }
@@ -239,7 +247,11 @@ class Module_shopping
         }
 
         if ($type == 'finish') {
-            breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
+            if ($ecom_catalogue_count == 1) {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . $ecom_catalogue_id, do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
+            } else {
+                breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
+            }
 
             $this->title = get_screen_title('_PURCHASE_FINISHED');
         }
@@ -420,9 +432,14 @@ class Module_shopping
             $proceed_box = new Tempcode();
         }
 
+        $ecom_catalogue_count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array('c_ecommerce' => 1));
         $ecom_catalogue = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_ecommerce' => 1));
-
-        $cont_shopping_url = is_null($ecom_catalogue) ? new Tempcode() : build_url(array('page' => 'catalogues', 'type' => 'category', 'catalogue_name' => $ecom_catalogue), get_module_zone('catalogues'));
+        $ecom_catalogue_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $ecom_catalogue));
+        if ($ecom_catalogue_count == 1) {
+            $cont_shopping_url = build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $ecom_catalogue_id), get_module_zone('catalogues'));
+        } else {
+            $cont_shopping_url = build_url(array('page' => 'catalogues', 'type' => 'browse', 'ecommerce' => 1), get_module_zone('catalogues'));
+        }
 
         // Product ID string for hidden field in Shopping cart
         $pro_ids_val = is_array($pro_ids) ? implode(',', $pro_ids) : '';

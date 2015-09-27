@@ -242,7 +242,7 @@ function load_html_edit(posting_form,ajax_copy)
 
 	if (typeof window.do_ajax_request=='undefined') return;
 	if (typeof window.merge_text_nodes=='undefined') return;
-	if (typeof window.CKEDITOR=='undefined') return;
+	if (typeof window.CKEDITOR=='undefined' || window.CKEDITOR==null) return;
 	if (!browser_matches('wysiwyg')) return;
 	if (!wysiwyg_on()) return;
 

@@ -141,7 +141,7 @@ Place the blocks as appropriate onto your:
 	[*]Comcode page: Top panel (if you have one on the design), [tt]:panel_top[/tt]
 	[*]Comcode page: Bottom panel (if you have one on the design), [tt]:panel_bottom[/tt]
 	[*][tt]GLOBAL_HTML_WRAP.tpl[/tt]: Often there will be blocks in the header, like search or login blocks. You can place these using Tempcode rather than Comcode like:
-[tt]{$BLOCK,block=<blockname>}[/tt]. The default template already shows this in some cases, and the [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks tutorial[/page] provides a section "Tempcode syntax". Similarly sometimes there is a menu in the footer, which can be placed like:
+[tt]{$BLOCK,block=<blockname>}[/tt]. The default template already shows this in some cases, and the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page] provides a section "Tempcode syntax". Similarly sometimes there is a menu in the footer, which can be placed like:
 [code="Tempcode"]{$BLOCK,block=menu,type=<menu-type>,param=<menu-name>}[/code]
 [/list]
 [/list]

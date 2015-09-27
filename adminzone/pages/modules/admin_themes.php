@@ -177,6 +177,9 @@ class Module_admin_themes
         }
 
         if ($type == '_edit_css') {
+            $theme = post_param_string('theme');
+            $file = post_param_string('file');
+ 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:edit_css:theme=' . $theme, do_lang_tempcode('CHOOSE_CSS')), array('_SELF:_SELF:_edit_css:file=' . $file, do_lang_tempcode('EDIT_CSS'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
 

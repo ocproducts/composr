@@ -1,6 +1,6 @@
 [media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites you'll likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
 [media width="150" description="Showing the default menu type in mobile mode" float="right"]data_custom/images/docs/tut_mobile/mobile_menu.png[/media]
-[title sub="Written by Salman Abbas (ocProducts), Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
 
 Composr has great support for mobile. You can design for mobile in two ways:
 1) Mobile mode
@@ -14,7 +14,7 @@ This tutorial explains which you might choose, and provides some guidance.
 
 Responsive design allows page layout to adapt to different browser sizes (i.e. different screen sizes, particularly between desktops, tablets, and smartphones). It is fun to test on a desktop machine -- on a responsive site you can resize your browser window and see major changes to how a page looks. Adaptability was always a consideration to some extent in web design, but responsive design takes it to a totally different level. Responsive design is based around "media queries", whereby the CSS author defines the browser width thresholds where different style rules will apply and the different rules for each. As a standard CSS technology there is nothing special Composr has to support to allow you to use it -- you can use it right away as long as you are comfortable writing CSS (which you need to be anyway if you are doing a major themeing effort).
 
-Mobile mode on the other hand works via serving different HTML based on whether the viewer is on a desktop/tablet machine compared to a smartphone. The choice between mobile and desktop mode is made by automatic analysis of the browser "user agent". The default theme also has a link in the footer to change what was autodetected.
+Mobile mode on the other hand works via serving different HTML based on whether the viewer is on a desktop/tablet machine compared to a smartphone. Composr supports QVGA mobile resolution for all frontend screens in mobile mode. The choice between mobile and desktop mode is made by automatic analysis of the browser "user agent". The default theme also has a link in the footer to change what was autodetected.
 
 [title="2"]Which is better?[/title]
 
@@ -40,6 +40,16 @@ Pros of mobile mode:
 If sites are relatively simple, giving content without a lot of features, and a good amount of design time is being put into the theme, we would recommend a responsive design. Also, magazine-style sites work really well as responsive designs.
 If sites have a lot of features through which interaction might happen, and you don't have a lot of time/experience for themeing and optimising it all, the mobile mode is a more efficient way of building out your site.
 
+[title="2"]Configuring mobile mode[/title]
+
+You can choose to enable mobile mode only on a per-page basis if your content/layout isn't fully compatible (most complex fixed width designs would have problems if a lot of attention is not given). Devices like iPhones automatically go into mobile mode, so you don't want it to load up mobile display settings and overlay them on content that doesn't work, as it can make a big mess.
+To activate the feature you need to put this in your [tt]themes/<themename>/theme.ini[/tt] file:
+[code="INI"]
+mobile_pages=forumview,topicview,topics,vforums
+[/code]
+This particular example enables mobile support just on the forum pages.
+On devices like iPhones or Android, it still works if mobile mode is not enabled, it just uses zoom. Mobile mode is much nicer of course.
+
 [title="2"]Mobile mode themeing[/title]
 
 You can use the Tempcode [tt]{$MOBILE}[/tt] symbol to make changes based on what mode things are running in:
@@ -58,7 +68,35 @@ If you do not want certain pages to use mobile mode at all then you can edit the
 
 [title="2"]Using responsive design techniques[/title]
 
-TODO
+Responsive design is straight-forward to implement for anyone familar with CSS. Rules are coded into the CSS under media queries such as:
+[code="CSS"]
+@media screen and (max-width:999px) {
+	* {
+		color: red !important;
+	}
+}
+[/code]
+This is a silly example that applies red text if the browser window is less than 1000 pixels wide.
+
+In practice you add rules targeting particular display widths to rearrange content appropriate to the particular viewport size.
+
+Responsive design is quite easy to test: you just resize the browser window up and down and see things immediately change.
+
+Typically responsive design will be done to target for:
+ - Smartphones (320px)
+ - Small tablets (640px)
+ - Large tablets (768px)
+ - Regular desktop windows, i.e. non-full-screen (990px, leaves 34px for scrollbars)
+ - Very large desktop windows (1200px or more)
+
+It is generally wise to start making things look good on smartphones, then tune things for the larger viewports. This is because:
+1) Smartphones are the most common device for casual browsing
+2) It is a better situation to have something blown up to a larger size (actually users often like this) then it is to have it not fitting on a mobile screen
+
+Composr's default theme supplies high-resolution icons for hi-dpi ("retina") displays using CSS media queries and [tt]srcset[/tt] in the HTML.
+This means evn if a design is blown up, the user will still benefit from higher fidelity graphics than the adjusted viewport may otherwise suggest.
+Infact, the very basis for hi-dpi displays is to operate like this -- the extra resolution is used for fidelity, not for cramming more in.
+When designs are blown up then the pixels referred to in CSS are not real pixels, they are proportional to the viewport that has been designed.
 
 [title="2"]General advice for designing on mobile[/title]
 

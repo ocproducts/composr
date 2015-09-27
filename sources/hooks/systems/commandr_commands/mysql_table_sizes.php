@@ -38,6 +38,8 @@ class Hook_commandr_command_mysql_table_sizes
         } else {
             require_code('files');
 
+            $out = '<div class="box box___commandr_box inline_block"><div class="box_inner"><div class="website_body">'; // XHTMLXHTML
+
             $db = $GLOBALS['SITE_DB'];
             require_code('files');
             $sizes = list_to_map('Name', $db->query('SHOW TABLE STATUS WHERE Name LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\''));
@@ -45,11 +47,12 @@ class Hook_commandr_command_mysql_table_sizes
                 $sizes[$key] = $vals['Data_length'] + $vals['Index_length'] - $vals['Data_free'];
             }
             asort($sizes);
-            $out = '';
             $out .= '<table class="results_table"><thead><tr><th>' . do_lang('NAME') . '</th><th>' . do_lang('SIZE') . '</th></tr></thead>';
+            $out .= '<tbody>';
             foreach ($sizes as $key => $val) {
                 $out .= '<tr><td>' . escape_html(preg_replace('#^' . preg_quote(get_table_prefix(), '#') . '#', '', $key)) . '</td><td>' . escape_html(clean_file_size($val)) . '</td></tr>';
             }
+            $out .= '</tbody>';
             $out .= '</table>';
 
             if (count($parameters) != 0) {
@@ -62,7 +65,7 @@ class Hook_commandr_command_mysql_table_sizes
                         $num_rows = $db->query_select_value($p, 'COUNT(*)');
                         if ($num_rows > 0) {
                             $row = $db->query_select($p, array('*'), null, '', 1, mt_rand(0, $num_rows - 1));
-                            $out .= '<table class="results_table">';
+                            $out .= '<table class="results_table"><tbody>';
                             $val = mixed();
                             foreach ($row[0] as $key => $val) {
                                 if (!is_string($val)) {
@@ -70,7 +73,7 @@ class Hook_commandr_command_mysql_table_sizes
                                 }
                                 $out .= '<tr><td>' . escape_html($key) . '</td><td>' . escape_html($val) . '</td></tr>';
                             }
-                            $out .= '</table>';
+                            $out .= '</tbody></table>';
                         } else {
                             $out .= '<p>' . do_lang('NONE') . '</p>';
                         }
@@ -79,6 +82,8 @@ class Hook_commandr_command_mysql_table_sizes
                     }
                 }
             }
+
+            $out .= '</div></div></div>';
 
             return array('', $out, '', '');
         }

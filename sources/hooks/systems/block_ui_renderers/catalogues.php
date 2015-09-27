@@ -35,6 +35,13 @@ class Hook_block_ui_renderers_catalogues
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (($parameter == 'param') && (in_array($block, array('main_contact_catalogues')))) {
+            require_code('catalogues');
+            $structured_list = create_selection_list_catalogues($default);
+
+            return form_input_list(titleify($parameter), escape_html($description), $parameter, $structured_list, null, false, false);
+        }
+
         if ((($default == '') || (is_numeric($default))) && ($parameter == 'param') && (in_array($block, array('main_cc_embed')))) {
             $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)');
             $num_categories_top = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('cc_parent_id' => null));
@@ -59,6 +66,7 @@ class Hook_block_ui_renderers_catalogues
                 return form_input_list(titleify($parameter), escape_html($description), $parameter, $structured_list, null, false, false);
             }
         }
+
         return null;
     }
 }

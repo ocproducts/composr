@@ -753,7 +753,7 @@ A little aside explanation about the XHTML class attribute is probably required 
 [code="HTML"]
 <div>
 	<span class="timestamp red">Warning received yesterday.</span>
-<p class="warning">I know you know that I've been messing with knowledge. However, I'd like you to forget that I know what you know, and that you don't know what I know. I know more about what you know that you could possibly ever know about my knowledge. My knowledge about your knowledge of what I know regarding now is secret, and I know that you know about the now and then of knowledge, new life, and gibberish.</p>
+	<p class="warning">I know you know that I've been messing with knowledge. However, I'd like you to forget that I know what you know, and that you don't know what I know. I know more about what you know that you could possibly ever know about my knowledge. My knowledge about your knowledge of what I know regarding now is secret, and I know that you know about the now and then of knowledge, new life, and gibberish.</p>
 </div>
 [/code]
 In that example, the [tt]<span>[/tt] tag has two CSS classes attached. However, it should be noted that when naming CSS classes, you should name them for their [i]function[/i], rather than for their [i]appearance[/i]. This is for maintenance considerations: if you name a class [tt]red[/tt], then change the colour to blue, you'd have to rename it, and change all the references to it, or leave it as a mess.
@@ -1173,5 +1173,6 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
  - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]
 
 {$SET,tutorial_tags,Web standards & Accessibility,core_webstandards,Design & Themeing,CSS,JavaScript,regular}{$SET,tutorial_add_date,May 2009}{$SET,tutorial_summary,This tutorial is an introduction to the main standard web technologies that Composr is built upon.}[block]main_tutorial_rating[/block]

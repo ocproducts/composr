@@ -83,7 +83,8 @@ You can also mark whole forums for notifications, by clicking the "monitor" butt
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
+ - [page="_SEARCH:tut_support_desk"]Running a virtual support desk[/page]
 
 {$SET,tutorial_tags,Forum,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,It can get hard to keep up with all the discussions if you've got an active community. See how Conversr can help.}[block]main_tutorial_rating[/block]

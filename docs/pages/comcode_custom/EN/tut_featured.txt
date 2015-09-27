@@ -9,7 +9,7 @@ Benefits of providing featured content include:
  - Drawing users in, such that they regularly re-visit to see what new content is featured
  - Putting content in a prime position to draw attention to it, perhaps as a reward for the content creator, perhaps for its relevancy, or perhaps to recommend it
 
-Many of these systems work via blocks. The block construction assistant will help you add a block, accessible from the 'Add block' button on the Comcode page editing screen. This is covered in much more detail in the [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks tutorial[/page].
+Many of these systems work via blocks. The block construction assistant will help you add a block, accessible from the 'Add block' button on the Comcode page editing screen. This is covered in much more detail in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page].
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -185,7 +185,7 @@ Community billboard messages are covered in the [page="_SEARCH:tut_points"]Creat
  - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]
  - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
  - [page="_SEARCH:tut_adv_galleries"]Providing galleries[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
 
 {$SET,tutorial_tags,iotds,random_quotes,polls,forum_blocks,counting_blocks,awards,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to pull out content from your website, and put it in a featured spot. There are a number of methods available.}[block]main_tutorial_rating[/block]

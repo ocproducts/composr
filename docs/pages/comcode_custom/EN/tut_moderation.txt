@@ -91,7 +91,7 @@ Whether members may moderate their own posts and topics depends on their privile
 
 Without the necessary permissions members will not be able to make topics and posts without them being initially marked as validated. If you have chosen to configure your forum like this then you will need to check all non-validated topics and posts for suitability of content, and choose to validate or delete them depending on this.
 
-More information about forum validation is presented in the [page="_SEARCH:tut_forums"]Organising discussion forums tutorial[/page].
+More information about forum validation is presented in the [page="_SEARCH:tut_forums"]Discussion forums tutorial[/page].
 
 [title="2"]Important posts[/title]
 
@@ -136,7 +136,7 @@ You may also use multi-moderations from the forum view screen, by selecting topi
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_forums"]Organising discussion forums[/page]
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
  - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]

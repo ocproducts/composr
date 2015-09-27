@@ -587,7 +587,7 @@ The parameters we add to the end of the image URL may seem incomprehensible, but
 
 [title="2"]Understanding PHP and its Types[/title]
 
-In this section we will learn about PHP's [i]type system[/i] and the [i]meaning[/i] of our programs. We won't directly build an ocPortal component here, but we will learn how to correctly handle different types of data which will be important as we progress.
+In this section we will learn about PHP's [i]type system[/i] and the [i]meaning[/i] of our programs. We won't directly build an Composr component here, but we will learn how to correctly handle different types of data which will be important as we progress.
 
 [title="3"]Semantics[/title]
 

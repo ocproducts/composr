@@ -59,6 +59,7 @@ However, you can use the Commandr [tt]set_comment_forum[/tt] command to set it s
 
 [title="3"]The Messaging system[/title]
 
+[surround]
 [media width="150" description="Viewing a message" float="right"]data_custom/images/docs/tut_feedback/messaging_message.png[/media]
 [media width="150" description="List of messages" float="right"]data_custom/images/docs/tut_feedback/feedback_messaging_list.png[/media]
 [media width="150" description="The [tt]main_contact_us[/tt] block" float="right"]data_custom/images/docs/tut_feedback/feedback_contact_block.png[/media]
@@ -68,13 +69,34 @@ Any messages gathered will be e-mailed out to any staff who have notifications e
 
 When staff are e-mailed they get a link to view the message, and discuss it between themselves. One member of staff may opt to take ownership over the message, which gives them the responsibility of actioning/implementing whatever it implies is required (e.g. if it is a suggestion, implementing that suggestion).
 
-You can browse the past message archive from Admin Zone > Audit > Messaging (Contact Us). Messages are actually stored via posts in a private staff forum, but accessing from the message archive is cleaner.
+You can browse the past message archive from:
+Admin Zone > Audit > Messaging (Contact Us)
+Messages are actually stored via posts in a private staff forum, but accessing from the message archive is cleaner.
+[/surround]
 
-[title="3"]Other contact blocks[/title]
+[title="3"]Catalogues contact form[/title]
 
-There are also:
- - [tt]main_contact_simple[/tt] (which relays direct to e-mail, avoiding any dealing with notifications and message management)
- - [tt]main_contact_catalogues[/tt] (which shows a form of custom fields coded into a catalogue)
+[surround="right float_separation"]
+[media width="170" description="Viewing the [tt]main_contact_catalogues[/tt] block"]data_custom/images/docs/tut_feedback/catalogue_block_3.png[/media]
+[media width="170" description="The [tt]main_contact_catalogues[/tt] block form"]data_custom/images/docs/tut_feedback/catalogue_block_2.png[/media]
+[media width="170" description="Choosing the [tt]main_contact_catalogues[/tt] block from the block construction assistant"]data_custom/images/docs/tut_feedback/catalogue_block_1.png[/media]
+[/surround]
+[media width="150" description="Adding a contact catalogue" float="right"]data_custom/images/docs/tut_feedback/catalogue_add.png[/media]
+The [tt]main_contact_catalogues[/tt] block shows a form of custom fields coded into a catalogue. This is great for creating complex contact forms.
+
+The process for using this block is as follows:
+1) Add a new catalogue, via Content Management > Catalogues > Add catalogue. Include whatever fields on the catalogue that you want on the contact form.
+2) (Don't add any entries or categories to the catalogue, that wouldn't serve any purpose)
+3) Go to add/edit the page where the block should go.
+4) Add the block to it in the normal way. When adding the block you are asked which catalogue to use.
+					
+[title="3"]Simple e-mail form[/title]
+
+There is also the [tt]main_contact_simple[/tt] block.
+
+This block relays direct to e-mail, avoiding any dealing with notifications and message management.
+
+This block looks very similar to the [tt]main_contact_us[/tt] block.
 
 [title="3"]Custom commenting forms (advanced)[/title]
 
@@ -191,7 +213,7 @@ Content usually has a "Staff notes" field, which can be used to put notes intend
  - [page="_SEARCH:tut_support_desk"]Running an on-line help desk with Composr[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_adv_news"]Advanced news[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_quizzes"]Quizzes[/page]
 
 {$SET,tutorial_tags,Feedback features,staff_messaging,core_feedback_features,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr helps you create a highly interactive site, with features for user interaction/feedback at your disposal.}[block]main_tutorial_rating[/block]

@@ -192,7 +192,6 @@ You will see we essentially have two kinds of ID here. There's an ID embedded in
 
 Custom product hooks that are selling many individually priced items related to a specific user will often have a [tt]get_products[/tt] function that lists a large number of items. There is a mechanism for [tt]get_products[/tt] to only list products matching a specific 'product name' / product title, for performance reasons. If you have 1000s of products (or more) and are linking to purchase from custom code then you should return no products unless a filter is requested, and then use that filter to determine what products to show.
 
-
 Composr basically flows like follows:
 1) User goes to the [tt]purchase[/tt] module in Composr, and selects a product. Alternatively some custom code or link may bypass this step and direct them deep into the [tt]purchase[/tt] module, i.e. to a known product.
 2) Product message is shown, if the hook defines a [tt]get_message[/tt] method.
@@ -212,7 +211,7 @@ Subscriptions and invoices have some custom handling. Subscriptions can also end
 
 Normally a transaction would go through via PayPal/WorldPay/SecPay. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
 However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
-1) access the manual transaction screen (Admin Zone > Usage menu > eCommerce link > Manual transaction).
+1) access the manual transaction screen (Admin Zone > Audit > eCommerce > Manual transaction).
 2) select the right product
 3) enter the correct ID number that the product will use to dispatch for this sale
 4) enter the sale amount that the product expects to be receiving (which you can leave blank for it to work this out itself).
@@ -229,7 +228,7 @@ Usergroup subscriptions are implemented on top of subscriptions.
 Usergroup subscriptions are only available if the forum system is [concept]Conversr[/concept].
 
 Set up a usergroup description as follows:
-1) Add a usergroup that members will be able to subscribe to. Make sure it is not 'Open membership', otherwise people could join it without paying.
+1) Add a usergroup that members will be able to subscribe to from Admin Zone > Security > Usergroups > Add usergroup. Make sure it is not 'Open membership', otherwise people could join it without paying.
 2) Assign additional access to this usergroup (or remove access from some of the other usergroups!).
 3) Go to Admin Zone > Setup > Usergroup subscription > Add usergroup subscription
 4) Fill in the form. Be aware that a '5' 'monthly' subscription means someone pays 'every 5 months'. It does not mean a subscription is paid every month and lasts for 5 months -- subscriptions last indefinitely until the user chooses to cancel them.
@@ -240,21 +239,33 @@ You can add as many usergroup subscriptions as you like, even multiple to the sa
 You can edit a usergroup subscription from:
 Admin Zone > Setup > Usergroup subscription > Edit usergroup subscription
 You can delete a usergroup subscription from the bottom of its edit form.
+
+You can manually put someone into a subscription using a "Manual transaction". If you do so, it is up to you to manually expire members if they cease payments. You can do this from:
+Admin Zone > Audit > eCommerce > View manual subscriptions
 [/surround]
 
 [title="2"]Invoices[/title]
 
+[surround]
 [media width="150" description="Invoicing a member" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_invoice.png[/media]
 Members may be invoiced by the staff. To do this, go to the Admin Zone > Audit > eCommerce > Create invoice.
 
-Members may view their invoicing history and staff may quickly locate unpaid invoices and invoices for which the work has not yet been fulfilled.
+Members may view their invoicing history via links in their member profiles.
+
+Staff may quickly locate unpaid invoices and invoices for which the work has not yet been fulfilled from:
+Admin Zone > Audit > eCommerce > Invoices
+[/surround]
 
 [title="2"]Online store[/title]
 
-The Composr online store works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]).
+The Composr online store works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
 
-You can access this catalogue for modifications, and adding products to, from Content Management > Products.
+The Composr store has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in it's own way but lacking the features needed for a wider website.
 
+[title="3"]Product fields[/title]
+
+[media width="150" description="Viewing a store product" float="right"]data_custom/images/docs/tut_ecommerce/product_view.png[/media]
+[media width="150" description="Adding a store product" float="right"]data_custom/images/docs/tut_ecommerce/product_add.png[/media]
 This catalogue has some hard-coded fields:
  - [b]Product title[/b] -- the product title / name
  - [b]Item code[/b] -- a code of your choice for the item, probably taken from your internal labelling system
@@ -263,37 +274,37 @@ This catalogue has some hard-coded fields:
  - [b]Stock level warning point[/b] -- the point at which you should be e-mailed if the stock level reaches
  - [b]Whether stock is being maintained[/b] -- whether you want stock control (as above)
  - [b]Tax rate[/b] -- the tax rate, a percentage chosen from a list (you may edit the catalogue to change what is shown in the list)
- - [b]Weight[/b] -- the items weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight
+ - [b]Weight[/b] -- the items weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
  - [b]Description[/b] -- a description for the item
 You may add additional fields, such as extra product images or specifications. However do [b]not[/b] re-order the original fields (or delete, or change the field type), as the system uses the order of these fields internally to know what they refer to. If you wish to change how they are shown do it via template editing.
 By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
 
-Once you are happy with your set of fields, you can add categories and entries to your catalogue. Once you have entries, and your eCommerce configuration is configured, users can start using your store. Point them to the catalogue to do their shopping, and from there they will be able to navigate to the shopping cart and finalise and pay for their order.
+[title="4"]Product options[/title]
 
-Be aware that once ordered, a catalogue entry shouldn't usually be deleted. You can unvalidate the entries instead. This is vital to your ledger integrity. There is an option to forcibly purge an item from the database and all past order history for it, but it's not usually recommended.
+A popular request is to be able to specify options when purchasing a product, such as size or colour.
+This would be a major task for us to implement, and complicate the system, so we are not currently planning to add it.
+There are, however, two workarounds:
+1) Simply add the different product options as separate products.
+2) If you are using PayPal a template edit can be used to let the PayPal buy button carry through an option selection. We have left an example in the [tt]ECOM_CART_BUTTON_VIA_PAYPAL.tpl[/tt] template. This workaround shifts the configuration burden over to being a template editing task, and shifts the administration burden onto PayPal's end.
+
+If you need more flexibility than this (perhaps many different product options for different kinds of product), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
+
+[title="3"]Categories and entries (i.e. the contents of your product catalogue)[/title]
+
+Once you are happy with your set of fields, you can add categories and entries to your catalogue. As this is exactly the same as adding entries to a normal catalogue, I'll refer you to the [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues) tutorial[/page].
+
+[title="4"]Deleting shopping cart items[/title]
+
+Be aware that once ordered, a catalogue entry shouldn't usually be deleted. You can unvalidate the entries instead (unselect 'Validated'), and/or move it into an archive category and/or set the stock to zero. This is vital to your ledger integrity. There is an option to forcibly purge an item from the database and all past order history for it, but it's not usually recommended.
+
+[title="3"]Store front[/title]
+
+[media width="150" description="Viewing the shopping cart" float="right"]data_custom/images/docs/tut_ecommerce/product_cart.png[/media]
+Once you have entries, and your eCommerce configuration is configured, users can start using your store from the products catalogue (Content > Products, on the default menus). From here they will be able to navigate to the shopping cart ([tt]site:shopping[/tt] page-link, Content > Shopping cart on the default menus) and finalise and pay for their order.
 
 You may customise the appearance of the store in the usual way of editing catalogue templates (the [tt]products[/tt] catalogue already has most of the templates overridden with eCommerce-tuned styles, so you do not need to worry about accidentally altering the look of non-eCommerce catalogues).
 
-From the catalogue you can add the item to the cart, and go to the cart ([tt]site:shopping[/tt] page-link, Content > Shopping cart on the default menus) to finalise and then pay for your order.
-
-When orders are purchased, an e-mail is sent out to the staff so they can fulfil the order, and the stock level is adjusted.
-Orders may be reviewed by the purchaser from their [tt]site:orders[/tt] module. Order status can be changed (e.g. to dispatched) from the Admin Zone.
-
-The Composr store has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in it's own way but lacking the features needed for a wider website.
-
-[title="3"]Deleting shopping cart items[/title]
-
-You can delete any catalogue entry that is not present in an order. If an entry is in an order, you have to unvalidate it instead (unselect 'Validated'), and/or move it into an archive category and/or set the stock to zero. However, if the order was not purchased and the order times out, you may then delete the entry.
-
-[title="3"]Advanced tax and shipping[/title]
-
-Tax and shipping calculations have intentionally been kept very simple, but programmers may extend them. We intentionally have architected the calculations to go through some simple common functions that you can override to addon additional behaviour if you need to.
-
-[title="3"]Shipping addresses[/title]
-
-Some custom profile fields are pre-installed to allow members to set their shipping address (instead of having to define it when they pay on the payment gateway). However by default these fields are not enabled, so you would need to edit them to enable 'Owner viewable' and 'Owner settable' for each field.
-
-[title="3"]Guests[/title]
+[title="4"]Guests[/title]
 
 Guests may make purchases, if they have the right Composr permissions.
 
@@ -307,15 +318,22 @@ We can't tie the purchases to IP addresses because often thousands of users can 
 
 If you think users may be making delayed purchases as guests, you may want to consider removing Guest permissions to the [tt]shopping[/tt] module, to force logins.
 
-[title="3"]Product options[/title]
+[title="3"]Handling orders[/title]
 
-A popular request is to be able to specify options when purchasing a product, such as size or colour.
-This would be a major task for us to implement, and complicate the system, so we are not currently planning to add it.
-There are, however, two workarounds:
-1) Simply add the different product options as separate products.
-2) If you are using PayPal a template edit can be used to let the PayPal buy button carry through an option selection. We have left an example in the [tt]ECOM_CART_BUTTON_VIA_PAYPAL.tpl[/tt] template. This workaround shifts the configuration burden over to being a template editing task, and shifts the administration burden onto PayPal's end.
+When orders are purchased, an e-mail is sent out to the staff so they can fulfil the order, and the stock level is adjusted.
 
-If you need more flexibility than this (perhaps many different product options for different kinds of product), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
+Orders may be reviewed by the purchaser from their [tt]orders[/tt] module (linked from their member profile)
+
+Order status can be changed (e.g. marked as dispatched) from:
+Audit > eCommerce > eCommerce orders
+
+[title="3"]Advanced tax and shipping[/title]
+
+Tax and shipping calculations have intentionally been kept very simple, but programmers may extend them. We intentionally have architected the calculations to go through some simple common functions that you can override to addon additional behaviour if you need to.
+
+[title="3"]Shipping addresses[/title]
+
+Some custom profile fields are pre-installed to allow members to set their shipping address (instead of having to define it when they pay on the payment gateway). However by default these fields are not enabled, so you would need to edit them to enable 'Owner viewable' and 'Owner settable' for each field.
 
 [title="2"]Currencies[/title]
 
@@ -328,14 +346,17 @@ The currency the website works in is defined in the configuration. If you use Pa
 Composr includes some basic accountancy charting support. This is not intended as a replacement for a proper accountancy system, but does serve as a very useful overview of finances and a record of activity.
 
 Composr can generate the following charts over a custom specified period:
- - Profit and loss account
- - Cash flow diagram
+ - Profit and loss account (Admin Zone > Audit > eCommerce > Profit/Loss account)
+ - Cash flow diagram (Admin Zone > Audit > eCommerce > Cash flow diagram)
 
 [box="Not for formal accounting purposes"]
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
 ocProducts does not accept any responsibility for the financial accounts of users of the Composr eCommerce system. Accountancy features are provided as an aid only and are not guaranteed to perform to match any legislative, tax, or accountancy conventions.
 [/box]
-[/surround]
+[/surround][title="2"]Logs[/title]
+
+Transaction logs can be viewed from:
+Admin Zone > Audit > eCommerce > Logs
 
 [title="2"]Payment system[/title]
 
@@ -356,7 +377,7 @@ Manual transactions may also be used to input transactions that are totally exte
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues)[/page]
- - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
 
 {$SET,tutorial_tags,eCommerce,Development,shopping,ecommerce,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Use the eCommerce system to sell things. Usergroup subscription and member invoicing are available out-of-the-box.}[block]main_tutorial_rating[/block]

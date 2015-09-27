@@ -138,7 +138,7 @@ You may wonder how to find IDs for use in filtering. The best way is to look at 
  - [page="_SEARCH:tut_fields_filter"]The form field filter system[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_filtercode"]Filtering using Filtercode syntax[/page]
 
 {$SET,tutorial_tags,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Selectcode is our language for saying what content you would like to be matched/selected. Learn how to use it.}[block]main_tutorial_rating[/block]

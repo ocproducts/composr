@@ -102,7 +102,7 @@ Here are the step by step instructions for selecting an appropriate image:
 1) Log in to Admin Zone, and you should see the dashboard
 2) Next, click or mouse-over on the 'Style' menu which is in the toolbar at the top just below the header
 3) Within the 'Style' selection you should see the 'Themes' icon, click on 'Themes'
-4) After this you will be taken to 'Manage Themes' page, where you would find the Theme of your current website and the default ocPortal theme 
+4) After this you will be taken to 'Manage Themes' page, where you would find the Theme of your current website and the default Composr theme 
 5) Look under your site theme, and in the options listed for it you should see a link for 'Manage theme images'; click this
 6) In the 'Manage theme images' page you should see a list of different types of images used in the website,  choose 'Logo' from this list which will expand to show all the logo images used in the website currently 
 7) Click on [tt]standalone_logo[/tt] and you'll be taken to a 'edit the image' page where you can simply upload a new file and scroll down towards the bottom of the page and hit 'Save'

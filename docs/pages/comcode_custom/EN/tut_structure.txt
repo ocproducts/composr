@@ -19,7 +19,7 @@ The default zones in Composr are for the following purposes:
 And if you are using Conversr, the following additional zones are usable:
  - [b]Forum[/b]: this is where the forum resides
 
-Some further information about zones is covered in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page].
+Some further information about zones is covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page].
 
 [title="2"]Pages[/title]
 
@@ -98,18 +98,57 @@ If you have a URL Scheme enabled it can be hard to find out what the URL paramet
 
 For more information on how page-links are turned into URLs, see the [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page] tutorial. This tutorial also contains an example on how to link to the current logged in user's member profile (a common request), as a worked example of how page-links and URL Schemes work.
 
-[title="3"]Panels and blocks[/title]
+[title="3"]Panels (and blocks)[/title]
 
-Panel pages rest around your main page, if they exist. Panel pages are nothing more than pages given special names in the same zone as the pages that they surround. The special names are:
+Panel pages rest around your main page. They are nothing more than pages given special names in the same zone as the pages that they surround.
+
+Panels are typically Comcode pages and are used to arrange blocks. Blocks inject dynamic functionality (such as a menu, a login box, a search box, etc): Composr has a large selection to choose from. Blocks are documented in the [page="_SELF:tut_comcode_pages"]Adding standalone pages of content (via Comcode pages) tutorial[/page].
+
+[title="4"]Display rules[/title]
+
+Panel pages won't show if:
+1) they don't exist
+2) they are empty
+3) they are left/right and [tt]&keep_wide=1[/tt]/[tt]&wide=1[/tt] is attached to the URL (i.e. these URL parameters disable panels)
+4) [tt]&keep_wide_high=1[/tt]/[tt]&wide_high=1[/tt] is attached to the URL (in this case the header and footer won't show either)
+
+[title="4"]The default theme's panel support[/title]
+
+The special names identifying the panels supported by the default theme are:
  - [tt]panel_left[/tt]
  - [tt]panel_right[/tt]
  - [tt]panel_top[/tt]
  - [tt]panel_bottom[/tt]
-The [tt]GLOBAL_HTML_WRAP.tpl[/tt] template defines how these panels fit together along with the main page. Templates are described in the next section.
 
-If [tt]&keep_wide=1[/tt]/[tt]&wide=1[/tt] is attached to the URL, the target page for any links will  not use any left/right panels. If [tt]&keep_wide_high=1[/tt]/[tt]&wide_high=1[/tt] is attached to the URL, the target page for any links will not use any left/right/top/bottom panels, and won't use the standard visual header or footer.
+The [tt]GLOBAL_HTML_WRAP.tpl[/tt] template defines how these panels fit together along with the main page, i.e. glues them in. Templates are described in the next section.
 
-Panel pages (by default) are Comcode pages that arrange blocks, some of which may be used to display menus. Blocks are described in the [page="_SELF:tut_comcode_pages"]Adding standalone pages of content (via Comcode pages) tutorial[/page], and are essentially dynamic sections of code (such as link menus, a login box, a search box, etc) that are pinpointed onto a Comcode page. Blocks may be inserted onto a Comcode page, and also into templates.
+[title="4"]Default panels[/title]
+
+A default Composr install contains the following panel pages:
+ - [tt]:panel_left[/tt]
+ - [tt]:panel_right[/tt]
+ - [tt]:panel_top[/tt]
+ - [tt]:panel_bottom[/tt]
+ - [tt]site:panel_left[/tt] (only applicable if the "Single public zone" configuration option is off)
+ - [tt]site:panel_right[/tt] (only applicable if the "Single public zone" configuration option is off)
+ - [tt]forum:panel_right[/tt]
+ - [tt]collaboration:panel_right[/tt]
+
+All zones are set up to share [tt]:panel_top[/tt] and [tt]:panel_bottom[/tt], due to some default transparent redirects set up under Admin Zone > Structure > Redirects.
+
+[tt]:panel_top[/tt] is actually blank by default. The top menu and so on actually comes in directly via blocks referenced in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template because we wanted tightly-defined layout for the default top blocks.
+
+[tt]:panel_bottom[/tt] places a bottom bar, but only on certain pages (the logic for this is coded up within the panel, so is customisable).
+
+[title="4"]Supreme flexibility[/title]
+
+I want to reiterate that the use of panels is fully configurable. Composr simply searches for the pages, respecting any configured redirects also.
+
+You may add panels not bundled, such as [tt]forum:panel_left[/tt] just by adding such a Comcode page to the system.
+
+You may add totally new panels by editing [tt]GLOBAL_HTML_WRAP.tpl[/tt] to reference them.
+
+If you are a programmer, note that they don't even need to be Comcode pages: you could write a PHP module if you wished.
 
 [title="4"]Boxes[/title]
 
@@ -237,7 +276,7 @@ Breadcrumbs are a kind of navigation mechanism used in websites to go to the upp
 Composr has a fully customisable breadcrumbs navigation system. This is done using the breadcrumbs editor, which involves editing an XML file. Webmasters can edit the XML file from:
 Admin Zone > Structure > Breadcrumb overrides
 
-Webmasters can customise the existing breadcrumbs for a screen by adding a new entry to the XML file.
+It allows you to extend/amend breadcrumb chains for a screen by adding a new entry to the XML file, with powerful wildcard matching (PHP regular expressions). It is, however, advanced functionality and requires a rudimentary understanding of XML and a strong understanding of Composr page-links.
 
 For example...
 
@@ -308,28 +347,9 @@ The main forms of navigation are:
  - The breadcrumbs; these are the links that allow you to navigate backwards along modules or site sections that support tree structures -- for example, if you were deep within the download system then breadcrumbs would be displayed allowing you to quickly go back to any of the categories underneath the category you are currently at, all the way back to the root category
  - Footer buttons and links; various buttons and links are placed into the footer, via the code in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template. These usually perform site-wide "utility" functions, a convention on many websites.
 
-[title="3"]Breadcrumbs (advanced)[/title]
-
-There is a breadcrumb override facility in the Admin Zone that allows you to change how breadcrumbs work.
-
-You can find it at Admin Zone > Structure > Breadcrumb overrides.
-
-It allows you to extend/amend breadcrumb chains, with powerful wildcard matching (PHP regular expressions). It is very useful if, for example, you want to show a gallery as existing underneath a download category. It is, however, advanced functionality and requires a rudimentary understanding of XML and a strong understanding of Composr page-links.
-
 [title="2"]Redirects and virtual roots[/title]
 
-Information about redirects and virtual roots is covered in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page]. These features are also relevant to structural management of your website.
-
-[title="3"]Switching out the front page (advanced)[/title]
-
-Here is an advanced example of using redirects to change site structure.
-
-Using a combination of changing a zones start page, page redirections, and zone/page access permissions, you may change the front page of your site to any of your choosing.
-
-For example, you can change the front page to be in-line forums by:
-1) editing the Welcome Zone to use 'forums' as the start page
-2) creating a page redirection from '':'[tt]forums[/tt]' --> '[tt]site[/tt]':'[tt]forums[/tt]' (because the 'forums' module isn't actually in the Welcome Zone)
-3) changing your [tt]site[/tt] zone access permissions to grant guest access.
+Information about redirects and virtual roots is covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page]. These features are also relevant to structural management of your website.
 
 [concepts
  1_key="Page-link"      1_value="A special syntax that is like 'a Composr URL' that is written in a simplified form, local, and not tied to PHP/Composr URL reality (so if Composr URLs start to look different, Page-links still work)"
@@ -344,12 +364,12 @@ For example, you can change the front page to be in-line forums by:
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_menus"]Customising what's on the menus[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_repository"]The Composr repository[/page]
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_adv_structure"]Advanced site structure and flow[/page]

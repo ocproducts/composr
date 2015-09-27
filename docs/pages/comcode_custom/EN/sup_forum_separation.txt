@@ -65,7 +65,7 @@ Do this via normal menu editing techniques.
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
- - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_menus"]Customising what's on the menus[/page]
 
 {$SET,tutorial_tags,redirects_editor,Structure and navigation,expert}{$SET,tutorial_add_date,April 2013}{$SET,tutorial_summary,How to set up separate forums for separate website zones.}[block]main_tutorial_rating[/block]

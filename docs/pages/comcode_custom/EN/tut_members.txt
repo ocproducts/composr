@@ -278,7 +278,7 @@ If the "Extended privacy option control" option is enabled then it can be set in
 
 [title="2"]Usergroups[/title]
 
-Usergroups (and clubs) are covered in the [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites) tutorial[/page].
+Usergroups (and clubs) are covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page].
 [/surround]
 
 [title="2"]Last visit dates[/title]
@@ -301,7 +301,7 @@ Essentially member profiles contain a last request date (in the database), which
  - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
  - [page="_SEARCH:tut_legal"]Legal and social issues[/page]
  - [page="_SEARCH:tut_correspondance"]Correspondence between users[/page]
- - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_censor"]Policing a community site[/page]

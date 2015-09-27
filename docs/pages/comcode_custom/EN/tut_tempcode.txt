@@ -2150,6 +2150,22 @@ This functionality is similar to the above [tt]IS_ADMIN[/tt], but it works by us
 
 (here we used [page="_SEARCH:tut_selectcode"]Selectcode[/page] to show how we can do a range)
 
+[title="3"]Guest check example[/title]
+
+This example shows different content to guests and non-guests:
+[code="HTML"]
+{+START,IF,{$IS_GUEST}}
+	<p>
+		Only guests see this.
+	</p>
+{+END}
+{+START,IF,{$NOT,{$IS_GUEST}}}
+	<p>
+		Only non-guests see this (you are {$USERNAME*}).
+	</p>
+{+END}
+[/code]
+
 [title="3"]Thumbnail example[/title]
 
 This example is dynamically changing the image resolution of your avatar, using the [tt]THUMBNAIL[/tt] symbol and the [tt]AVATAR[/tt] sybmol. The second parameter of the [tt]THUMBNAIL[/tt] symbol defines the resolution we are generating.

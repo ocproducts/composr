@@ -45,7 +45,7 @@ When making a new theme, it is wise to put good design tactics to use before beg
  - On the other hand, colors that contrast in a good way are encouraged. If you are able to pick multiple colors (usually not more than two) that compliment each other, it is wise to use these. This will allow you to separate important content through use of a color variation
 There are more design tips like this in books and across the Internet, if you are further interested.
 
-[title="2"]Technical aspect[/title]
+[title="3"]Technical aspect[/title]
 
 [media width="150" description="The link to add a theme" float="right"]data_custom/images/docs/tut_themes/manage_themes.png[/media]
 To create a new theme manually, go to Admin Zone > Style > Manage Themes, and you will find a link to do it. This will bring up a list of your current themes, which is probably just the "default" theme. We highly recommend creating a new theme and working within that, since if you accidentally make a mistake you can always fall back to the default theme.
@@ -61,7 +61,8 @@ It is recommended that at this point you go to edit your account settings and sw
 [title="3"]CSS[/title]
 
 [media width="150" description="The CSS editing screen" float="right"]data_custom/images/docs/tut_themes/themes_edit_css.png[/media]
-Editing the CSS is one of the most trivial of Composr's themeing abilities. You can edit it by clicking "Edit CSS" in the row for the theme of your choice. You will be prompted to edit a CSS file. The main ones that come with Composr are:
+[media width="150" description="Choosing a CSS file to edit" float="right"]data_custom/images/docs/tut_themes/themes_choose_css.png[/media]
+Editing the CSS is one of the most trivial, but most important, of Composr's themeing abilities. You can edit it by clicking "Edit CSS" in the row for the theme of your choice. You will be prompted to edit a CSS file. The main ones that come with Composr are:
  - [tt]global.css[/tt]: This file contains most of the classes used throughout Composr. This is the file you'll be editing most of the time
  - [tt]no_cache.css[/tt]: These are classes that make use of Tempcode (for example, checking what browser is being used) to vary the style of the class
  - [tt]cns.css[/tt]: These are a set of classes that are used within [concept]Conversr[/concept]
@@ -69,20 +70,31 @@ Editing the CSS is one of the most trivial of Composr's themeing abilities. You 
 
 The other CSS files are used in specific areas of the system.
 
-To edit a CSS file, click it from the list and click the submit button. This will bring you to a basic text editor with the CSS in it. You can change the CSS and click "Edit CSS" to update the CSS for this theme.
-
-At the bottom, there is also an "Switch to Advanced CSS" link. Clicking this will generate individual color pickers for each different color in your CSS file. Then you can go through and change the colors this way, then click the "Edit CSS" button at the bottom. This option is recommended for beginners.
-
+To edit a CSS file:[list="1"]
+[*] click it from the list
+[*] click the "Edit" button
+[*] change the CSS. For example, adding:
+[code="CSS"]
+body {
+	font-style: italic;
+}
+[/code]
+... would make all text italic (obviously a silly, but simple, example).
+[*] click "Edit CSS" to save
+[/list]
+[staff_note]Don't like this option, so don't promote it
+At the bottom, there is also an "Switch to Advanced CSS" link. Clicking this will generate individual color pickers for each different color in your CSS file. Then you can go through and change the colors this way, then click the "Edit CSS" button at the bottom.
+[/staff_note]
 You should be able to see your changes right away.
 
 [title="4"]Contextual CSS editing[/title]
 
 [media width="150" description="Page rendering tools in the footer" float="right"]data_custom/images/docs/tut_themes/rendering_tools.png[/media]
-You can edit CSS contextually, via the edit links in the Page Rendering Tools dropdown in the footer (assuming this still exists in your theme).
+You can edit CSS contextually, via the options in the Page Rendering Tools dropdown in the footer (assuming this still exists in your theme). All the CSS files used on the screen you are on will show as options in the dropdown list.
 
 The contextual editor allows you to make live changes, to preview on the fly, then save them.
 
-You may want to add [tt]?keep_no_minify=1[/tt] to the URL before using these tools as it will make the live previews more accurate. If you're not sure how, just go to [tt]http://yourbaseurl/index.php?keep_no_minify=1[/tt] and browse back to where you want to be. The Composr minification features will sometimes prevent the contextual editor from being able to interactively remove styles you remove in the CSS editor.
+You may want to add [tt]&keep_no_minify=1[/tt]/[tt]?keep_no_minify=1[/tt] to the URL before using these tools as it will make the live previews more accurate. If you're not sure how, just go to [tt]http://yourbaseurl/index.php?keep_no_minify=1[/tt] and browse back to where you want to be. The Composr minification features will sometimes prevent the contextual editor from being able to interactively remove styles you remove in the CSS editor.
 
 [title="4"]Debugging[/title]
 
@@ -118,7 +130,7 @@ You can simply modify the template here, and then click the "Edit Template" link
 
 There is also a section at the bottom allowing you to restore a previous version, if you have any.
 
-If you can't access this tree drop-down, there is a slightly less user-friendly alternative. If you add [tt]?keep_markers=1[/tt] or [tt]&keep_markers=1[/tt] to the end of your URL, click "Go" again, then click View > Source in your browser, you will be able to see the HTML markup for your page, with comments marking the beginning and end of each template. This is a great way to find a template if you know exactly which section of the page it's at.
+If you can't access this tree drop-down, there is a slightly less user-friendly alternative. If you add [tt]&keep_markers=1[/tt]/[tt]&keep_markers=1[/tt] to the end of your URL, click "Go" again, then click View > Source in your browser, you will be able to see the HTML markup for your page, with comments marking the beginning and end of each template. This is a great way to find a template if you know exactly which section of the page it's at.
 
 [code="HTML"]
 <!-- START-TEMPLATE=MENU_BRANCH_popup -->
@@ -160,43 +172,67 @@ It's a very useful feature.
 
 [title="3"]Images[/title]
 
-[media width="150" description="The \"Add Image\" screen" float="right"]data_custom/images/docs/tut_themes/themes_add_image.png[/media]
-Many of the links and buttons in Composr are created as images. If you wish to edit these images (or add new ones), you can do so via Composr's "Edit Images" interface.
+Many of the links and buttons in Composr are created as images ("theme images"). If you wish to edit these images (or add new ones), you can do so via Composr's "Edit Images" interface.
 
-To edit an image, go to the Admin Zone > Style > Themes, then choose the "Manage theme images" link for the theme of your choice. You will be taken to a screen with a dropdown list of every image currently in use. Choose an image, then click "Edit Image".
-Alternatively, for most images you can get straight to their editing screen by holding down the 'control', 'shift' and 'alt' keys together (Mac users: 'Command' + 'Option/Alt' + 'Shift') while clicking on the image.
+[title="4"]Editing theme images[/title]
 
-On this screen, you are shown the current version of this image in the top. You also have the opportunity to edit this image's name, location, or to upload a new image in its place.
+[media width="150" description="The \"edit theme image\" form" float="right"]data_custom/images/docs/tut_themes/edit_theme_image.png[/media]
+[media width="150" description="The \"edit theme image\" button appears after hovering some images for a few seconds" float="right"]data_custom/images/docs/tut_themes/button.png[/media]
+To edit a theme image, go to the Admin Zone > Style > Themes, then choose the "Edit theme images" link for the theme of your choice. You will be taken to a screen with a dropdown list of every image currently in use. Choose an image, then click "Edit Image".
 
-To add an image, go to Admin Zone > Style > Themes, then choose the "Manage theme images" link for the theme of your choice, as before. There is a link at the bottom, "Add theme image", which will take you to a screen allowing you to create a new theme image.
- - [b]Name[/b]: You can call this whatever you like, but we recommend putting in something based on the image's pathname. For example, the "delete" image in the folder [tt]themes/themename/images/page/delete[/tt], is currently titled [tt]page/delete.png[/tt]. This makes it easy to tell on first glance which folder an image is in, which in turn usually determines what style of image it is
- - [b]Upload[/b] or [b]URL[/b]: Choose one of these options to upload your image to your website. Use the upload field for files that currently exist on your computer, or use the URL option for an image that is already online somewhere
+Alternatively, for many images (larger ones using [tt]<img>[/tt] tags) you can get straight to their editing screen by hovering the mouse over the image and clicking the "Edit theme image" button that appears (see screenshot).
 
-[box="Power users"]
+On the edit theme image screen, you are shown the current version of this image in the top. You also have the opportunity to edit this image's name, location, or to upload a new image in its place.
+
+You can delete a theme image from the bottom of its edit form, if it's not a default theme image.
+
+[title="4"]Adding theme images[/title]
+
+To add a theme image, go to Admin Zone > Style > Themes, then choose the "Edit theme images" icon for the theme of your choice, as before. There is a button at the bottom, "Add theme image", which will take you to a screen allowing you to create a new theme image.
+
+You need to fill these fields:[list]
+[*] [b]Name[/b]: You can call this whatever you like, but we recommend putting in something based on the image's pathname. For example, the "sortablefield_asc" image in the folder [tt]themes/themename/images/results[/tt], is currently titled [tt]results/sortablefield_asc[/tt]. This makes it easy to tell on first glance which folder an image is in, which in turn usually determines what group of images it belongs in.
+[*] [b]Upload[/b] or [b]URL[/b]: Choose one of these options to upload your image to your website. Use the upload field for files that currently exist on your computer, or use the URL option for an image that is already online somewhere.
+[*] [b]Use for all themes[/b]...
+ - If you are adding a theme image that is [i]only relevant to your new theme[/i]: you [b]should not[/b] tick (check) this. For example, an image that is only referenced by one of your customised templates.
+ - If you are adding a theme image that potentially [i]could be used by any theme[/i]: you [b]should[/b] tick (check) this. For example, an image used on one of your menus (you can add such images by adding them with image codes that start [tt]icons/[/tt]).
+[/list]
+
+[surround="right float_separation"]
+[media width="150" description="The add theme image form" float="right"]data_custom/images/docs/tut_themes/add_image_2.png[/media]
+[media width="150" description="Finding the \"add theme image\" button" float="right"]data_custom/images/docs/tut_themes/add_image_1.png[/media]
+[/surround]
+This is a simple example:
+[list="1"]
+[*] Find or make a suitable image for your website. If you want to add a new background pattern for your website then you can find a suitable one from a public domain/creative commons tile graphic for your website.
+For this example we'll use [url="this background"]http://www.wpclipart.com/textures/background_tiles/hazy_background_tile.png[/url]. Download this file.
+[*] Go to Admin Zone > Style > Themes > Edit theme images (against your own theme).
+[*] Select the "Add theme image" button at the bottom of the screen, which will direct you to the add theme image form.
+[*] Fill the Codename for the image. For this example we'll use [tt]new_background[/tt].
+[*] Browse for the image file under the Image field.
+[*] Submit the form via the "Add theme image" button.
+[*] To apply the uploaded image to your website theme, you have to edit the CSS file.
+Go to Admin Zone > Style > Themes > Edit CSS (against your own theme).
+[*] [html]<div style="clear: right"></div>[/html][surround="right float_separation"]
+[media width="150" description="Our change in action" float="right"]data_custom/images/docs/tut_themes/add_image_5.png[/media]
+[media width="150" description="Edited CSS" float="right"]data_custom/images/docs/tut_themes/add_image_4.png[/media]
+[media width="150" description="Searching the CSS" float="right"]data_custom/images/docs/tut_themes/add_image_3.png[/media]
+[/surround]Select the [tt]global.css[/tt] file to edit (actually it's selected by default), and click the "Edit" button.
+[*] Find where [tt]outer_background[/tt] is used as a background property using either the browser's find feature or the find feature in the editor bar.
+[*] Change [tt]outer_background[/tt] to [tt]new_background[/tt] (our new theme image).
+[/list]
+
+(a more sane option would have been to directly edit the [tt]outer_background[/tt] theme image, but I wanted to give a simple example of a new theme image while doing only minimal CSS editing)
+
+[html]<div style="clear: right"></div>[/html]
+[box="Manually"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
 You can add new theme images by saving them directly into [tt]themes/yourtheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to the software itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools.
 [/box]
-
-If you are adding a theme image that is only relevant to your new theme, you should not tick "Use for all themes". For example, an image that is only referenced by one of your customised templates.
-
-If you are adding a theme image that potentially could be used by any theme, you should tick "Use for all themes". For example, an image used on one of your menus (you can add such images by adding them with image codes that start [tt]icons/[/tt]).
-
-You can delete a theme image from the bottom of its edit form.
-
+[html]<div style="clear: right"></div>[/html]
 [title="2"]Deleting themes[/title]
 
 You can delete a theme from the bottom of its edit form.
-
-[title="2"]Mobile support[/title]
-
-Composr supports QVGA mobile resolution for all frontend screens, and automated mobile device detection. Mobile mode can also be flipped manually via a footer link.
-
-You can choose to enable mobile mode only on a per-page basis if your content/layout isn't fully compatible (most complex fixed width designs would have problems if a lot of attention is not given). Devices like iPhones automatically go into mobile mode, so you don't want it to load up mobile display settings and overlay them on content that doesn't work, as it can make a big mess.
-To activate the feature you need to put this in your [tt]themes/<themename>/theme.ini[/tt] file:
-[code="INI"]
-mobile_pages=forumview,topicview,topics,vforums
-[/code]
-This particular example enables mobile support just on the forum pages.
-On devices like iPhones or Android, it still works if mobile mode is not enabled, it just uses zoom. Mobile mode is much nicer of course.
 
 [title="2"]Tips[/title]
 
@@ -230,5 +266,6 @@ For more tips, see [page="forum:topicview:browse:9553"]a walk-through guide[/pag
  - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:sup_making_a_theme"]Making a new theme[/page]
+ - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]
 
 {$SET,tutorial_tags,themewizard,core_themeing,core_primary_layout,core_html_abstractions,core_form_interfaces,core_abstract_interfaces,core_abstract_components,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Our key themeing tutorial - how to re-theme your site, by changing CSS, templates, and theme images.}[block]main_tutorial_rating[/block]

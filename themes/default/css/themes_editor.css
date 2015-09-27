@@ -78,6 +78,10 @@
 	max-width: 100%;
 }
 
+.theme_image_preview_wide {
+	max-width: 100%;
+}
+
 .css_editor_selector_tips {
 	width: 50%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}

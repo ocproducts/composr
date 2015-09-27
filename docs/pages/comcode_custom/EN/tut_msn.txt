@@ -349,6 +349,6 @@ Composr does not contain a way for individual sites to be set up automatically o
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_subcom"]Creating sub-communities (and sub-sites)[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
 
 {$SET,tutorial_tags,msn,Structure and navigation,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,You can link multiple installations, via a forum, into a 'multi-site-network'. Read more about it here.}[block]main_tutorial_rating[/block]

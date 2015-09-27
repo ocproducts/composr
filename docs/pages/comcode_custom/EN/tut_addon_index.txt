@@ -175,7 +175,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Clubs for members, each of which comes with a forum.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_subcom">Creating sub-communities (and sub-sites)</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_subcom">Tools for subsites and subcommunities</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_clubs&amp;status_id=10">Link</a></td>
         </tr>
@@ -205,7 +205,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>The Conversr forum- a modern advanced forum for members to interact on.</td>
             <!--<td>No</td>-->
             <td><kbd>polls</kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_forums">Organising discussion forums</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_forum_helpdesk">Running a discussion-forum-based helpdesk</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_forum_tracking">Keeping on track of busy forums</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_moderation">Basic forum moderation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_forums">Discussion forums</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_forum_helpdesk">Running a discussion-forum-based helpdesk</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_forum_tracking">Keeping on track of busy forums</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_moderation">Basic forum moderation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_forum&amp;status_id=10">Link</a></td>
         </tr>
@@ -425,7 +425,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Manage new pages on the website, known as Comcode pages.</td>
             <!--<td>Yes</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_comcode_pages">Adding standalone pages of content (via Comcode)</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_comcode_pages">Using Blocks</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_comcode_pages">Adding standalone pages of content (via Comcode)</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_comcode_pages">Using blocks</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_information">Choosing how to publish</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_comcode_pages&amp;status_id=10">Link</a></td>
         </tr>
@@ -945,7 +945,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>Manage redirects between pages.</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
-            <td><a href="http://compo.sr/docs10/index.php?page=tut_subcom">Creating sub-communities (and sub-sites)</a></td>
+            <td><a href="http://compo.sr/docs10/index.php?page=tut_subcom">Tools for subsites and subcommunities</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=redirects_editor&amp;status_id=10">Link</a></td>
         </tr>

@@ -66,9 +66,11 @@ class Block_main_news
      */
     public function run($map)
     {
-        require_lang('news');
         require_lang('cns');
+        require_lang('news');
         require_css('news');
+        require_code('news');
+        require_code('images');
 
         // Read in parameters
         $days = isset($map['param']) ? intval($map['param']) : 14;

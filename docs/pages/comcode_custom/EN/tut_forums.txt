@@ -1,8 +1,6 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Organising discussion forums[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Discussion forums[/title]
 
-This tutorial will explain how discussion forums work in [concept]Conversr[/concept], and how best to organise them.
-
-Conversr is sometimes abbreviated as CNS.
+This tutorial will explain how discussion forums work in [concept]Conversr[/concept] (sometimes abbreviated as CNS), and how best to organise them.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -24,7 +22,7 @@ The sub-forum system exists so that forums may be organised such that subjects a
 Add or edit forums from:
 Admin Zone > Structure > Forums
 
-You can delete a forums from the bottom of its edit form.
+You can delete a forum from the bottom of its edit form.
 
 [box="Flexibility"]
 While discussion forums are primarily meant for discussion, they may in-fact be used for the general purpose of conveying information.
@@ -157,6 +155,7 @@ You can find the post ID from above (before) the post in the topicview.
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_support_desk"]Running a virtual support desk[/page]
+ - [page="_SEARCH:tut_notifications"]Notifications[/page]
  - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
 
 {$SET,tutorial_tags,Forum,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial will explain how discussion forums work in Conversr, and how best to organise them.}[block]main_tutorial_rating[/block]

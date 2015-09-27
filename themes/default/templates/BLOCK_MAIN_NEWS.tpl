@@ -6,6 +6,10 @@
 				<h3>{TITLE}</h3>
 			{+END}{+END}
 
+			{+START,IF_EMPTY,{BRIEF}{CONTENT}}
+				<p class="nothing_here">{!NO_ENTRIES}</p>
+			{+END}
+
 			<div class="raw_ajax_grow_spot">
 				{CONTENT}
 
