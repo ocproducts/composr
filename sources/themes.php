@@ -197,7 +197,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         if ($path === null) {
             if (!$silent_fail) {
                 require_code('site');
-                attach_message(do_lang_tempcode('NO_SUCH_IMAGE', escape_html($id)), 'warn');
+                attach_message(do_lang_tempcode('NO_SUCH_THEME_IMAGE', escape_html($id)), 'warn');
             }
             if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
                 $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, '');
