@@ -221,10 +221,11 @@ class Module_pointstore
             $object->init();
             $tpls = $object->info();
             foreach ($tpls as $tpl) {
-                $item = do_template('POINTSTORE_ITEM', array('_GUID' => '1316f918b3c19331d5d8e55402a7ae45', 'ITEM' => $tpl));
-                $items->attach($item);
+                $items->attach($tpl);
             }
         }
+
+        // pop3/imap work from a single box so are handled here rather than in the hooks...
 
         if (get_option('is_on_forw_buy') == '1') {
             $forwarding_url = build_url(array('page' => '_SELF', 'type' => 'newforwarding', 'id' => 'forwarding'), '_SELF');
@@ -252,9 +253,10 @@ class Module_pointstore
         }
 
         if ((!$pointstore_mail_pop3_link->is_empty()) || (!$pointstore_mail_pop3_link->is_empty())) {
-            $mail_tpl = do_template('POINTSTORE_MAIL', array('_GUID' => '4a024f39a4065197b2268ecd2923b8d6', 'POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text');
-            $items->attach(do_template('POINTSTORE_ITEM', array('_GUID' => '815b00b651757d4052cb494ed6a8d926', 'ITEM' => $mail_tpl)));
+            $items->attach(do_template('POINTSTORE_MAIL', array('_GUID' => '4a024f39a4065197b2268ecd2923b8d6', 'POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text'));
         }
+
+        // --
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         return do_template('POINTSTORE_SCREEN', array('_GUID' => '1b66923dd1a3da6afb934a07909b8aa7', 'TITLE' => $this->title, 'ITEMS' => $items, 'POINTS_LEFT' => integer_format($points_left), 'USERNAME' => $username));

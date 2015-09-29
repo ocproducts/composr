@@ -254,12 +254,5 @@ function points_get_transactions($type, $member_id_of, $member_id_viewing)
 
         $out->attach(results_entry(array(escape_html($date), escape_html(integer_format($amount)), $_from_name, $_to_name, $reason), false));
     }
-    $out = results_table(do_lang_tempcode('_POINTS', escape_html($viewing_name)), $start, 'gift_start_' . $type, $max, 'gift_max_' . $type, $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'gift_sort_' . $type, null, null, null, 8, 'gfhfghtrhhjghgfhfgf', false, 'tab__points');
-
-    if ($type == 'to') {
-        $title = do_lang_tempcode('POINTS_TO');
-    } else {
-        $title = do_lang_tempcode('POINTS_FROM');
-    }
-    return do_template('POINTS_TRANSACTIONS_WRAP', array('_GUID' => 'f19e3eedeb0b8bf398251b24e8389723', 'CONTENT' => $out, 'TITLE' => $title));
+    return results_table(do_lang_tempcode('_POINTS', escape_html($viewing_name)), $start, 'gift_start_' . $type, $max, 'gift_max_' . $type, $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'gift_sort_' . $type, null, null, null, 8, 'gfhfghtrhhjghgfhfgf', false, 'tab__points');
 }

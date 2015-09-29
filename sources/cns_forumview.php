@@ -568,7 +568,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     if ($topic['emoticon'] != '') {
         $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON', array('_GUID' => 'dfbe0e4a11b3caa4d2da298ff23ca221', 'EMOTICON' => $topic['emoticon']));
     } else {
-        $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON_NONE');
+        $emoticon = new Tempcode();
     }
 
     if ((!is_null($topic['first_member_id'])) && (!is_guest($topic['first_member_id']))) {

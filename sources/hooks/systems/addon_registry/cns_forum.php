@@ -202,7 +202,6 @@ class Hook_addon_registry_cns_forum
             'themes/default/text/CNS_QUOTE_FCOMCODE.txt',
             'themes/default/templates/BLOCK_MAIN_BOTTOM_BAR.tpl',
             'themes/default/templates/CNS_FORUM_TOPIC_EMOTICON.tpl',
-            'themes/default/templates/CNS_FORUM_TOPIC_EMOTICON_NONE.tpl',
             'themes/default/templates/CNS_TOPIC_FIRST_UNREAD.tpl',
             'themes/default/templates/CNS_TOPIC_MARKER.tpl',
             'themes/default/templates/CNS_TOPIC_POLL.tpl',
@@ -377,7 +376,6 @@ class Hook_addon_registry_cns_forum
             'templates/CNS_FORUM_TOPIC_ROW_LINK.tpl' => 'cns_forum',
             'templates/CNS_FORUM_TOPIC_ROW_MODIFIER.tpl' => 'cns_forum',
             'templates/CNS_FORUM_TOPIC_EMOTICON.tpl' => 'cns_forum',
-            'templates/CNS_FORUM_TOPIC_EMOTICON_NONE.tpl' => 'cns_forum',
             'templates/CNS_PT_BETWEEN.tpl' => 'cns_forum',
             'templates/CNS_TOPIC_MARKER.tpl' => 'cns_forum',
             'templates/CNS_FORUM_TOPIC_ROW.tpl' => 'cns_forum',
@@ -1081,7 +1079,6 @@ class Hook_addon_registry_cns_forum
             $emoticon = do_lorem_template('CNS_FORUM_TOPIC_EMOTICON', array(
                 'EMOTICON' => 'cns_emoticons/constipated',
             ));
-            $emoticon->attach(do_lorem_template('CNS_FORUM_TOPIC_EMOTICON_NONE', array()));
 
             $b = do_lorem_template('CNS_USER_MEMBER', array(
                 'FIRST' => true,

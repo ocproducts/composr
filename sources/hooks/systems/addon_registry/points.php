@@ -132,7 +132,6 @@ class Hook_addon_registry_points
             'themes/default/templates/POINTS_SCREEN.tpl',
             'themes/default/templates/POINTS_SEARCH_SCREEN.tpl',
             'themes/default/templates/POINTS_SEARCH_RESULT.tpl',
-            'themes/default/templates/POINTS_TRANSACTIONS_WRAP.tpl',
             'themes/default/templates/POINTS_LEADER_BOARD.tpl',
             'themes/default/templates/POINTS_LEADER_BOARD_SCREEN.tpl',
             'themes/default/templates/POINTS_LEADER_BOARD_ROW.tpl',
@@ -179,7 +178,6 @@ class Hook_addon_registry_points
             'templates/POINTS_GIVE.tpl' => 'points_screen',
             'templates/POINTS_PROFILE.tpl' => 'points_screen',
             'templates/POINTS_SCREEN.tpl' => 'points_screen',
-            'templates/POINTS_TRANSACTIONS_WRAP.tpl' => 'points_screen'
         );
     }
 
@@ -284,20 +282,11 @@ class Hook_addon_registry_points
      */
     public function tpl_preview__points_screen()
     {
-        $chargelog_details = do_lorem_template('POINTS_TRANSACTIONS_WRAP', array(
-            'CONTENT' => placeholder_table(),
-            'TITLE' => lorem_phrase(),
-        ));
+        $chargelog_details = placeholder_table();
 
-        $from = do_lorem_template('POINTS_TRANSACTIONS_WRAP', array(
-            'CONTENT' => placeholder_table(),
-            'TITLE' => lorem_phrase(),
-        ));
+        $from = placeholder_table();
 
-        $to = do_lorem_template('POINTS_TRANSACTIONS_WRAP', array(
-            'CONTENT' => placeholder_table(),
-            'TITLE' => lorem_phrase(),
-        ));
+        $to = placeholder_table();
 
         $give_template = do_lorem_template('POINTS_GIVE', array(
             'GIVE_URL' => placeholder_url(),
