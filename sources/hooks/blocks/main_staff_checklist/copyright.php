@@ -44,8 +44,11 @@ class Hook_checklist_copyright
             return array(); // We want to forget about this check entry if it's done for the year
         }
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
+
         $url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), 'adminzone');
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'c65f89a7af3ce753fc7eada742891400', 'URL' => '', 'STATUS' => $_status, 'TASK' => urlise_lang(do_lang('NAG_COPYRIGHT_DATE'), $url)));
+
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'c65f89a7af3ce753fc7eada742891400', 'URL' => '', 'STATUS' => $_status, 'TASK' => do_lang_tempcode('NAG_COPYRIGHT_DATE', $url->evaluate()));
+
         return array(array($tpl, ($status == 0) ? -1 : 0, null, null));
     }
 }

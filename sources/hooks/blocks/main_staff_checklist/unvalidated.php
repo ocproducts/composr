@@ -31,6 +31,7 @@ class Hook_checklist_unvalidated
     public function run()
     {
         // Validate/delete submissions
+
         list($num_unvalidated_1, $num_unvalidated_2) = $this->get_num_unvalidated();
         if ($num_unvalidated_1 >= 1) {
             $status = 0;
@@ -38,14 +39,17 @@ class Hook_checklist_unvalidated
             $status = 1;
         }
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
+
         $url = build_url(array('page' => 'admin_unvalidated'), 'adminzone');
+
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
             '_GUID' => '48f2bc149dca356c8b6bd87092f70d3c',
             'URL' => '',
             'STATUS' => $_status,
-            'TASK' => urlise_lang(do_lang('NAG_VALIDATE'), $url),
+            'TASK' => do_lang_tempcode('NAG_VALIDATE', $url->evaluate()),
             'INFO' => do_lang_tempcode('UNVALIDATED_ENTRIES', escape_html(integer_format($num_unvalidated_1)), escape_html(integer_format($num_unvalidated_2))),
         ));
+
         return array(array($tpl, null, $num_unvalidated_1, null));
     }
 

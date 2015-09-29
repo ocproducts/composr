@@ -586,21 +586,6 @@ function require_all_open_lang_files($lang = null)
 }
 
 /**
- * URL'ise specially encoded text-acceptance language strings.
- *
- * @param  string $string The language string
- * @param  mixed $url The URL (either Tempcode or string)
- * @param  string $title The title of the hyperlink
- * @param  boolean $new_window Whether to use a new window
- * @return Tempcode The encoded version
- */
-function urlise_lang($string, $url, $title = '', $new_window = false)
-{
-    require_code('lang_urlise');
-    return _urlise_lang($string, $url, $title, $new_window);
-}
-
-/**
  * Stop some text being escapable by the Tempcode layer.
  *
  * @param  mixed $in Text

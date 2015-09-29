@@ -9,7 +9,7 @@
 
 	{+START,IF_NON_EMPTY,{MESSY_URL}}
 		<ul class="actions_list">
-			<li>{$URLISE_LANG,{!WEBSTANDARDS_MESSAGE},{MESSY_URL}}</li>
+			<li><a href="{MESSY_URL*}">{!WEBSTANDARDS_MESSAGE}</a></li>
 		</ul>
 	{+END}
 

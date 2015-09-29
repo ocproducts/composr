@@ -859,7 +859,7 @@ class Module_cms_comcode_pages
             '_GUID' => 'a42341a9a2de532cecdcfbecaff00a0f',
             'TITLE' => do_lang_tempcode('SEO'),
             'SECTION_HIDDEN' => true,
-            'HELP' => (get_option('show_docs') == '0') ? null : protect_from_escaping(symbol_tempcode('URLISE_LANG', array(do_lang('TUTORIAL_ON_THIS'), get_tutorial_url('tut_seo'), 'tut_seo', '1')))
+            'HELP' => (get_option('show_docs') === '0') ? null : do_lang_tempcode('TUTORIAL_ON_THIS', get_tutorial_url('tut_seo')),
         )));
         $fields2->attach(form_input_line_multi(do_lang_tempcode('KEYWORDS'), do_lang_tempcode('DESCRIPTION_META_KEYWORDS'), 'meta_keywords[]', array_map('trim', explode(',', preg_replace('#,+#', ',', $meta_keywords))), 0));
         $fields2->attach(form_input_line(do_lang_tempcode('META_DESCRIPTION'), do_lang_tempcode('DESCRIPTION_META_DESCRIPTION'), 'meta_description', $meta_description, false));

@@ -17,9 +17,9 @@
 		<h2>{!ACTIONS}</h2>
 
 		<ul>
-			<li>{$URLISE_LANG,{!WEBSTANDARDS_IGNORE},{IGNORE_URL}}</li>
-			<li>{$URLISE_LANG,{!WEBSTANDARDS_IGNORE_2},{IGNORE_URL_2}}</li>
-			<li>{$URLISE_LANG,{!WEBSTANDARDS_MESSAGE},{MESSY_URL}}</li>
+			<li><a href="{IGNORE_URL*}">{!WEBSTANDARDS_IGNORE}</a></li>
+			<li><a href="{IGNORE_URL_2*}">{!WEBSTANDARDS_IGNORE_2}</a></li>
+			<li><a href="{MESSY_URL*}">{!WEBSTANDARDS_MESSAGE}</a></li>
 		</ul>
 	{+END}
 

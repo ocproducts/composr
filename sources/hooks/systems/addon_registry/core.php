@@ -1112,7 +1112,6 @@ class Hook_addon_registry_core
             'sources/index.html',
             'sources/integrator.php',
             'sources/lang.php',
-            'sources/lang_urlise.php',
             'sources/lang_compile.php',
             'sources/lang2.php',
             'sources/lang3.php',
