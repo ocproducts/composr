@@ -122,7 +122,6 @@ class Hook_addon_registry_core_webstandards
             'lang/EN/webstandards.ini',
             'sources/webstandards.php',
             'sources/webstandards2.php',
-            'sources/hooks/systems/config/webstandards.php',
             'sources/hooks/systems/config/webstandards_compat.php',
             'sources/hooks/systems/config/webstandards_css.php',
             'sources/hooks/systems/config/webstandards_ext_files.php',

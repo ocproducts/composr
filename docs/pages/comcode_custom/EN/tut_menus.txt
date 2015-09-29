@@ -124,7 +124,7 @@ An example match-key list is [tt]_WILD:cms_downloads:type=add,_WILD:cms_gallerie
  - [tt]randomzone:cms_downloads:type=add[/tt]
  - [tt]:cms_downloads:type=add:wide=1[/tt]
  - [tt]cms:cms_galleries:type=edit[/tt]
- - [tt]adminzone:cms_galleries:type=edit:keep_no_webstandards_check=1[/tt]
+ - [tt]adminzone:cms_galleries:type=edit:foo=bar[/tt]
 
 It would not match URLs generated from the following page-links:
  - [tt]site:cms_galleries:type=add[/tt]

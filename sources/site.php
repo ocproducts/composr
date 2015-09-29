@@ -825,9 +825,9 @@ function do_site()
     }
 
     // Web Standards mode?
-    $no_webstandards_check = get_param_integer('keep_no_webstandards_check', get_param_integer('no_webstandards_check', 0));
+    $webstandards_check = get_param_integer('keep_webstandards_check', get_param_integer('webstandards_check', 0));
     $show_edit_links = get_param_integer('show_edit_links', 0);
-    $webstandards_mode = ((($GLOBALS['IS_ACTUALLY_ADMIN']) || ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()))) && (($special_page_type == 'code') || (($no_webstandards_check == 0) && (get_option('webstandards') == '1'))) && ($GLOBALS['REFRESH_URL'][0] == '') && ($show_edit_links == 0)); // Not a permission - a matter of performance
+    $webstandards_mode = ((($GLOBALS['IS_ACTUALLY_ADMIN']) || ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()))) && (($special_page_type == 'code') || (($webstandards_check == 1) && ($GLOBALS['REFRESH_URL'][0] == '') && ($show_edit_links == 0)); // Not a permission - a matter of performance
     if ($webstandards_mode) {
         $GLOBALS['OUTPUT_STREAMING'] = false;
     }

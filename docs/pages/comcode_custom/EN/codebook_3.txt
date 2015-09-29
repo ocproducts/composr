@@ -559,7 +559,7 @@ The 'keep' parameters available are:
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr
- - [tt]keep_no_webstandards_check[/tt] -- set this to '1' to force page webstandards checking to not occur
+ - [tt]keep_webstandards_check[/tt] -- set this to '1' to perform advanced output checking (for staff only), giving errors if technology guidelines are broken (such as XHTML5, CSS, and WCAG). If you enable this flag you will be informed of any accessibility problems on your website, but it severely effects performance as well as your administration experience.
  - [tt]keep_su[/tt] -- set this to a username or member ID when logged in as admin, to pretend to be that member. May choose the guest member ('Guest' on Conversr by default).
  - [tt]keep_theme_seed[/tt] -- set this to kiddie or random or a 6-character HTML colour code, to get dynamic themegen going for your page view (this is very slow, but fun!); you must be staff, with a confirmed session, for this to work
  - [tt]keep_theme_dark[/tt] -- used in conjunction with keep_theme_seed; set to '1' if it is a dark seed

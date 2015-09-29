@@ -688,8 +688,8 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
         } else {
             $messy_url = build_url(array('page' => '_SELF', 'special_page_type' => 'code', 'keep_markers' => 1), '_SELF', null, true);
         }
-        $ignore_url = build_url(array('page' => '_SELF', 'keep_no_webstandards_check' => 1), '_SELF', null, true);
-        $ignore_url_2 = build_url(array('page' => '_SELF', 'no_webstandards_check' => 1), '_SELF', null, true);
+        $ignore_url = build_url(array('page' => '_SELF', 'keep_webstandards_check' => 0), '_SELF', null, true);
+        $ignore_url_2 = build_url(array('page' => '_SELF', 'webstandards_check' => 0), '_SELF', null, true);
     } else {
         $messy_url = new Tempcode();
         $ignore_url = new Tempcode();

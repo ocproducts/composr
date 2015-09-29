@@ -1099,7 +1099,8 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 break;
 
             case 'select':
-                if ((isset($attributes['onchange'])) && (strpos($attributes['onchange'], 'form.submit()') !== false) && (strpos($attributes['onchange'], '/*guarded*/') === false) && ((get_option('webstandards') == '0') || (!has_js()))) {
+                $webstandards_check = get_param_integer('keep_webstandards_check', get_param_integer('webstandards_check', 0));
+                if ((isset($attributes['onchange'])) && (strpos($attributes['onchange'], 'form.submit()') !== false) && (strpos($attributes['onchange'], '/*guarded*/') === false) && (($webstandards_check == 0) || (!has_js()))) {
                     $errors[] = array('WCAG_AUTO_SUBMIT_LIST');
                 }
                 break;
