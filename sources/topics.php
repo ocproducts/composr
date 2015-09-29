@@ -1012,7 +1012,7 @@ class CMS_Topic
             $redirect = get_self_url(true, true);
             $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
             $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
-            $join_bits = do_template('JOIN_OR_LOGIN', array('_GUID' => '2d26dba6fa5e6b665fbbe3f436289f7b', 'LOGIN_URL' => $login_url, 'JOIN_URL' => $join_url));
+            $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url->evaluate()), escape_html(is_object($login_url) ? $login_url->evaluate() : $login_url));
         }
 
         $reviews_rating_criteria = array();
