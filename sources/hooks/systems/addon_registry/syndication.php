@@ -114,7 +114,7 @@ class Hook_addon_registry_syndication
             'themes/default/xml/OPML_WRAPPER.xml',
             'themes/default/xml/OPML_XSLT.xml',
             'backend.php',
-            'backend_cloud.php',
+            'data/backend_cloud.php',
             'sources/rss2.php',
             'sources/hooks/systems/rss/.htaccess',
             'sources/hooks/systems/rss/index.html',

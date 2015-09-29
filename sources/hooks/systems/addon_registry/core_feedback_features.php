@@ -114,7 +114,7 @@ class Hook_addon_registry_core_feedback_features
             'lang/EN/trackbacks.ini',
             'sources/hooks/systems/trackback/.htaccess',
             'sources/hooks/systems/trackback/index.html',
-            'trackback.php',
+            'data/trackback.php',
             'adminzone/pages/modules/admin_trackbacks.php',
             'sources/hooks/systems/addon_registry/core_feedback_features.php',
             'sources/hooks/systems/snippets/rating.php',

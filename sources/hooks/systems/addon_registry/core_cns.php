@@ -234,7 +234,7 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/CNS_VIEW_GROUP_MEMBER.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_MEMBER_PROSPECTIVE.tpl',
             'themes/default/templates/CNS_VIEW_GROUP_MEMBER_SECONDARY.tpl',
-            'approve_ip.php',
+            'data/approve_ip.php',
             'themes/default/images/cns_emoticons/birthday.png',
             'themes/default/images/cns_emoticons/angry.png',
             'themes/default/images/cns_emoticons/blink.gif',
