@@ -182,14 +182,6 @@ class Block_main_rss
                 $author = new Tempcode();
             }
 
-            // If we want to show in a tails arrangement (by default, we won't)
-            if (!$author->is_empty()) {
-                $tails = do_template('BLOCK_MAIN_RSS_LIST_FIRST', array('_GUID' => '5ce8a5f1fd8a9487c01b63e791618589', 'X' => $author));
-                $tails->attach(do_template('BLOCK_MAIN_RSS_LIST_LAST', array('_GUID' => 'f199850d1b76cc4a6774731e1f89762e', 'X' => $full_url)));
-            } else {
-                $tails = new Tempcode();
-            }
-
             if (array_key_exists('category', $item)) {
                 global $THEME_IMAGES_CACHE;
                 $cat = null;
@@ -223,7 +215,6 @@ class Block_main_rss
                 'NEWS_FULL' => $news_full,
                 'DATE' => array_key_exists('add_date', $item) ? $item['add_date'] : '',
                 'DATE_RAW' => array_key_exists('clean_add_date', $item) ? strval($item['clean_add_date']) : '',
-                'TAILS' => $tails,
                 'AUTHOR' => $author,
                 'CATEGORY' => $category,
                 'FULL_URL' => $full_url,
