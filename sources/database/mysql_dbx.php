@@ -208,7 +208,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
         }
 
         $sub = substr($query, 0, 4);
-        if ((is_object($results)) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'EXPL') || ($sub == 'DESC') || ($sub == 'SHOW'))) {
+        if ((is_object($results)) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'CHEC') || ($sub == 'EXPL') || ($sub == 'REPA') || ($sub == 'DESC') || ($sub == 'SHOW'))) {
             return $this->db_get_query_rows($results);
         }
 

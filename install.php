@@ -595,14 +595,25 @@ function step_3()
             continue; // If they only have experimental XML option, they'll choose it - we don't want that - we want them to get the error
         }
 
+        $selected = false;
+
+        if (($database == 'mysql') && (!function_exists('mysql_connect'))) {
+            continue;
+        }
         if (($database == 'mysqli') && (!function_exists('mysqli_connect'))) {
             continue;
         }
         if (($database == 'mysql_dbx') && (!function_exists('dbx_connect'))) {
             continue;
         }
-        if (($database == 'mysql') && (!function_exists('mysql_connect'))) {
-            continue;
+        if ($database == 'mysql') {
+            $selected = true;
+        }
+        if (($database == 'mysqli') && (!function_exists('mysql_connect'))) {
+            $selected = true;
+        }
+        if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
+            $selected = true;
         }
         if (($database == 'access') && (!function_exists('odbc_connect'))) {
             continue;
@@ -628,7 +639,7 @@ function step_3()
         } else {
             $mapped_name = $database;
         }
-        $tdatabase->attach(do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $database == 'mysql', 'DISABLED' => false, 'NAME' => $database, 'CLASS' => '', 'TEXT' => $mapped_name)));
+        $tdatabase->attach(do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $selected, 'DISABLED' => false, 'NAME' => $database, 'CLASS' => '', 'TEXT' => $mapped_name)));
 
         if ($database != 'xml') {
             $dbs_found++;

@@ -32,7 +32,7 @@ class Hook_cleanup_mysql
      */
     public function info()
     {
-        if (get_db_type() != 'mysql') {
+        if (substr(get_db_type(), 0, 5) != 'mysql') {
             return null;
         }
 
@@ -58,8 +58,9 @@ class Hook_cleanup_mysql
             $GLOBALS['SITE_DB']->connection_write = call_user_func_array(array($GLOBALS['SITE_DB']->static_ob, 'db_get_connection'), $GLOBALS['SITE_DB']->connection_write);
             _general_db_init();
         }
-        list($db, $db_name) = $GLOBALS['SITE_DB']->connection_write;
-        mysql_select_db($db_name, $db);
+        $db = $GLOBALS['SITE_DB']->connection_write;
+
+        $static_ob = $GLOBALS['SITE_DB']->static_ob;
 
         foreach ($tables as $table) {
             if ($table['m_table'] == 'sessions') {
@@ -69,20 +70,17 @@ class Hook_cleanup_mysql
             $table = get_table_prefix() . $table['m_table'];
 
             // Check/Repair
-            $result = mysql_query('CHECK TABLE ' . $table . ' FAST', $db);
-            echo mysql_error($db);
-            mysql_data_seek($result, mysql_num_rows($result) - 1);
-            $status_row = mysql_fetch_assoc($result);
+            $result = $static_ob->db_query('CHECK TABLE ' . $table . ' FAST', $db);
+            $status_row = end($result);
             if ($status_row['Msg_type'] != 'status') {
                 $out->attach(paragraph(do_lang_tempcode('TABLE_ERROR', escape_html($table), escape_html($status_row['Msg_type']), array(escape_html($status_row['Msg_text']))), 'dfsdgdsgfgd'));
-                $result2 = mysql_query('REPAIR TABLE ' . $table, $db);
-                mysql_data_seek($result2, mysql_num_rows($result2) - 1);
-                $status_row_2 = mysql_fetch_assoc($result2);
+                $result2 = $static_ob->db_query('REPAIR TABLE ' . $table, $db);
+                $status_row_2 = end($result2);
                 $out->attach(paragraph(do_lang_tempcode('TABLE_FIXED', escape_html($table), escape_html($status_row_2['Msg_type']), array(escape_html($status_row_2['Msg_text']))), 'dfsdfgdst4'));
             }
 
             // Optimise
-            mysql_unbuffered_query('OPTIMIZE TABLE ' . $table, $db);
+            $static_ob->db_query('OPTIMIZE TABLE ' . $table, $db);
         }
 
         return $out;

@@ -59,7 +59,7 @@ class Hook_cleanup_criticise_mysql_fields
      */
     public function info()
     {
-        if (get_db_type() != 'mysql') {
+        if (substr(get_db_type(), 0, 5) != 'mysql') {
             return null;
         }
 
@@ -93,6 +93,8 @@ class Hook_cleanup_criticise_mysql_fields
             if (substr($table, 0, strlen(get_table_prefix())) != get_table_prefix()) {
                 continue;
             }
+
+            // Find missing indexes...
 
             $indexes = list_to_map_2('Key_name', $GLOBALS['SITE_DB']->query('SHOW INDEXES FROM ' . $table));
             $columns = $GLOBALS['SITE_DB']->query('SHOW COLUMNS FROM ' . $table);
@@ -129,6 +131,8 @@ class Hook_cleanup_criticise_mysql_fields
                 }
                 $sql .= 'INSERT INTO ' . get_table_prefix() . 'db_meta_indices (i_table,i_name,i_fields) VALUES (\'' . db_escape_string($table) . '\',\'' . db_escape_string($name) . '\',\'' . db_escape_string($fields) . '\');' . "\n";
             }
+
+            // Find missing fields...
 
             if (!array_key_exists($table, $db_meta)) {
                 $db_table = array();
