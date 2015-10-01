@@ -1576,8 +1576,8 @@ function version_specific()
 
             // File replacements
             $reps = array(
-                '#cedi#' => 'wiki',
-                '#seedy#' => 'wiki',
+                '#([^\w])cedi([^\w])#' => '$1wiki$2',
+                '#([^\w])seedy([^\w])#' => '$1wiki$2',
                 '#ocPortal#' => 'Composr',
                 '#ocp_#' => 'cms_',
                 '#ocf_#' => 'cns_',
@@ -1612,8 +1612,9 @@ function perform_search_replace($reps)
 
     $langs = find_all_langs();
 
+    require_code('themes2');
     $themes = find_all_themes();
-    foreach ($themes as $theme) {
+    foreach (array_keys($themes) as $theme) {
         $target_dirs[] = 'themes/' . $theme . '/templates_custom';
         $target_dirs[] = 'themes/' . $theme . '/css_custom';
         $target_dirs[] = 'themes/' . $theme . '/text_custom';
@@ -1640,13 +1641,14 @@ function perform_search_replace($reps)
         if (is_dir($dir)) {
             $dh = opendir($dir);
             if ($dh !== false) {
-                while (($f = readdir($dir)) !== false) {
+                while (($f = readdir($dh)) !== false) {
                     $path = $dir . '/' . $f;
                     $contents = file_get_contents($path);
                     $contents_orig = $contents;
                     $contents = preg_replace(array_keys($reps), array_values($reps), $contents);
                     if ($contents != $contents_orig) {
                         file_put_contents($path, $contents);
+                        sync_file($path);
                     }
                 }
                 closedir($dh);

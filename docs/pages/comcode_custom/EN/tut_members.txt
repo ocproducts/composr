@@ -250,7 +250,7 @@ That's it, the new avatar set will be visible immediately.
 You have 3 options when it comes to assigning default avatars to members.
 
 1) [b]Design solution[/b]. In any template that uses an avatar, put in code to display a theme image of your choice when there is no avatar to display. I don't really recommend this unless you are very comfortable doing lots of template editing.
-2) [b]Configured default[/b]. You can add a default. Add a [tt]ocf_default_avatars/default[/tt] theme image.
+2) [b]Configured default[/b]. You can add a default. Add a [tt]cns_default_avatars/default[/tt] theme image.
 3) [b]Randomisation solution[/b]. There is a configuration option, "Assign random avatars", that you can enable.
 
 [title="3"]Edit title[/title]
