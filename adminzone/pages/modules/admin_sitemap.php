@@ -323,6 +323,9 @@ class Module_admin_sitemap
             if ((substr($key, 0, 6) == 'page__') && ($val === '1')) {
                 $page = substr($key, 6);
                 $page_details = _request_page($page, $zone, null, null, true);
+                if ($page_details === false) {
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                }
                 $pages[$page] = strtolower($page_details[0]);
             }
         }
@@ -489,6 +492,9 @@ class Module_admin_sitemap
             if ((substr($key, 0, 6) == 'page__') && ($val === '1')) {
                 $page = substr($key, 6);
                 $page_details = _request_page($page, $zone, null, null, true);
+                if ($page_details === false) {
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                }
                 $pages[$page] = strtolower($page_details[0]);
                 if (array_key_exists(3, $page_details)) {
                     $pages[$page] .= '/' . $page_details[3];

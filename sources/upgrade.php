@@ -1507,6 +1507,9 @@ function version_specific()
             }
             persistent_cache_delete('MODULES');
 
+            $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_type' => 'browse'), array('m_type' => 'misc'), '', 1);
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'activities SET a_language_string_code=REPLACE(a_language_string_code,\'ocf:\',\'cns:\') WHERE a_language_string_code LIKE \'ocf:%\'');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET cf_name=REPLACE(cf_name,\'ocp_\',\'cms_\') WHERE cf_name LIKE \'ocp_%\'');
             $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', 'ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', 'ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
@@ -1570,12 +1573,86 @@ function version_specific()
                     $GLOBALS['FORUM_DB']->promote_text_field_to_comcode('f_member_custom_fields', $db_field, 'mf_member_id');
                 }
             }
+
+            // File replacements
+            $reps = array(
+                '#cedi#' => 'wiki',
+                '#seedy#' => 'wiki',
+                '#ocPortal#' => 'Composr',
+                '#ocp_#' => 'cms_',
+                '#ocf_#' => 'cns_',
+                '# filter="#' => ' select="',
+                '# select="#' => ' filter="',
+                '#main_feedback#' => 'main_contact_us',
+                '#side_ocf_personal_topics#' => 'side_cns_private_topics',
+                '#side_stored_menu#' => 'menu',
+                '#side_root_galleries#' => 'side_galleries',
+                '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
+                '#\[attachment[^\[\]]*\]url__([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media]$1[/media]',
+            );
+            perform_search_replace($reps);
         }
 
         return true;
     }
 
     return false;
+}
+
+/**
+ * Perform a big search and replace.
+ *
+ * @param  array $reps Change from/to this
+ */
+function perform_search_replace($reps)
+{
+    // Find directories to do replacements in...
+
+    $target_dirs = array();
+
+    $langs = find_all_langs();
+
+    $themes = find_all_themes();
+    foreach ($themes as $theme) {
+        $target_dirs[] = 'themes/' . $theme . '/templates_custom';
+        $target_dirs[] = 'themes/' . $theme . '/css_custom';
+        $target_dirs[] = 'themes/' . $theme . '/text_custom';
+        $target_dirs[] = 'themes/' . $theme . '/xml_custom';
+        $target_dirs[] = 'themes/' . $theme . '/javascript_custom';
+    }
+
+    $target_dirs[] = 'text_custom';
+    foreach (array_keys($langs) as $lang) {
+        $target_dirs[] = 'text_custom/' . $lang;
+    }
+
+    $zones = find_all_zones();
+    foreach ($zones as $zone) {
+        foreach (array_keys($langs) as $lang) {
+            $target_dirs[] = $zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang;
+        }
+    }
+
+    // Do replacement...
+
+    foreach ($target_dirs as $_dir) {
+        $dir = get_custom_file_base() . '/' . $_dir;
+        if (is_dir($dir)) {
+            $dh = opendir($dir);
+            if ($dh !== false) {
+                while (($f = readdir($dir)) !== false) {
+                    $path = $dir . '/' . $f;
+                    $contents = file_get_contents($path);
+                    $contents_orig = $contents;
+                    $contents = preg_replace(array_keys($reps), array_values($reps), $contents);
+                    if ($contents != $contents_orig) {
+                        file_put_contents($path, $contents);
+                    }
+                }
+                closedir($dh);
+            }
+        }
+    }
 }
 
 /**

@@ -520,6 +520,9 @@ if (!GOOGLE_APPENGINE) {
     safe_ini_set('include_path', '');
     safe_ini_set('allow_url_fopen', '0');
 }
+if (!defined('E_DEPRECATED')) { // LEGACY
+    define('E_DEPRECATED', 0);
+}
 safe_ini_set('suhosin.executor.disable_emodifier', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.multiheader', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.disable_eval', '0');
@@ -576,6 +579,13 @@ global $SITE_INFO;
  */
 $SITE_INFO = array();
 @include($FILE_BASE . '/_config.php');
+if (count($SITE_INFO) == 0) {
+    // LEGACY
+    if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
+        @rename($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
+        @include($FILE_BASE . '/_config.php');
+    }
+}
 if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) || (filesize($FILE_BASE . '/_config.php') == 0)) {
         critical_error('INFO.PHP');
