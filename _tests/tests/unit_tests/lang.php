@@ -160,6 +160,7 @@ class lang_test_set extends cms_test_case
             'targetting' => 'targeting',
             'fulfills' => 'fulfils',
             'progmatically' => 'programatically',
+            'persistant' => 'persistent',
         );
         foreach ($common_spelling_mistakes as $from => $to) {
             if (stripos($string, $from) !== false) {
