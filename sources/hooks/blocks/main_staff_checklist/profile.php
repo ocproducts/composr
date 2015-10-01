@@ -43,9 +43,9 @@ class Hook_checklist_profile
 
         $_status = ($todo == 1) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 
-        $url = $GLOBALS['FORUM_DRIVER']->member_home_url(get_member());
+        $url = $GLOBALS['FORUM_DRIVER']->member_home_url(get_member(), true);
 
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '276b29a1dac30addf9459fd960a260cd', 'URL' => '', 'STATUS' => $_status, 'TASK' => do_lang_tempcode('NAG_SETUP_PROFILE', $url->evaluate()));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '276b29a1dac30addf9459fd960a260cd', 'URL' => '', 'STATUS' => $_status, 'TASK' => do_lang_tempcode('NAG_SETUP_PROFILE', $url->evaluate())));
 
         return array(array($tpl, null, $todo, null));
     }
