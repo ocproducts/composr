@@ -207,9 +207,8 @@ function get_members_viewing($page = null, $type = null, $id = null, $forum_laye
         return null;
     }
 
-    global $ZONE;
     if ($page === null) {
-        $page = get_param_string('page', $ZONE['zone_default_page']);
+        $page = get_page_name();
     }
     if ($type === null) {
         $type = get_param_string('type', '/');

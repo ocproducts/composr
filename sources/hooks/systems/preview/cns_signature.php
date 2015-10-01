@@ -34,7 +34,7 @@ class Hook_preview_cns_signature
 
         $member_id = get_param_integer('id', get_member());
 
-        $applies = (get_param_string('page', '') == 'members') && (post_param_string('signature', null) !== null);
+        $applies = (get_page_name() == 'members') && (post_param_string('signature', null) !== null);
         if ($applies) {
             require_code('cns_groups');
             $max_sig_length = cns_get_member_best_group_property($member_id, 'max_sig_length_comcode');

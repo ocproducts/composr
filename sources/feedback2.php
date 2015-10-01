@@ -94,7 +94,7 @@ function trackback_script()
 
     header('Content-type: text/xml');
 
-    $page = get_param_string('page');
+    $page = get_page_name();
     $id = get_param_integer('id');
     $mode = either_param_string('__mode', 'none');
 

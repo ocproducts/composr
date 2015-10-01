@@ -30,7 +30,7 @@ class Hook_preview_poll
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'cms_polls');
+        $applies = (get_page_name() == 'cms_polls');
         return array($applies, null, false);
     }
 

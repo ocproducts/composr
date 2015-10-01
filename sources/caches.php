@@ -78,7 +78,7 @@ function init__caches()
     global $SMART_CACHE, $RELATIVE_PATH;
     if (running_script('index') || running_script('iframe')) {
         $zone = $RELATIVE_PATH;
-        $page = get_page_name();
+        $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
         $screen = get_param_string('type', 'browse');
         $bucket_name = $zone . ':' . $page . ':' . $screen;
         if ($page != 'topicview' && $screen == 'browse') {

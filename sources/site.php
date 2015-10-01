@@ -815,7 +815,7 @@ function do_site()
         } else {
             $_done_sw_once = get_value('setupwizard_completed');
             $done_sw_once = !is_null($_done_sw_once);
-            if ((!$done_sw_once) && (get_param_string('page', '') != 'admin_setupwizard') && (has_actual_page_access(get_member(), 'admin_setupwizard'))) {
+            if ((!$done_sw_once) && (get_page_name() != 'admin_setupwizard') && (has_actual_page_access(get_member(), 'admin_setupwizard'))) {
                 require_lang('config');
                 $setupwizard_url = build_url(array('page' => 'admin_setupwizard'), get_module_zone('admin_setupwizard'));
                 $cancel_sw_url = get_self_url(false, true, array('cancel_sw_warn' => 1));
@@ -1238,7 +1238,6 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
- * @ignore
  */
 function _request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {

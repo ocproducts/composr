@@ -30,7 +30,7 @@ class Hook_preview_ticket
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'tickets');
+        $applies = (get_page_name() == 'tickets');
         return array($applies, 'cns_post', false, array('post'));
     }
 }

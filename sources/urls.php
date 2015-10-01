@@ -478,8 +478,10 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
 {
     global $HAS_KEEP_IN_URL_CACHE, $USE_REWRITE_PARAMS_CACHE, $BOT_TYPE_CACHE, $WHAT_IS_RUNNING_CACHE, $KNOWN_AJAX;
 
+    $has_page = isset($vars['page']);
+
     // Build up our URL base
-    $stub = get_base_url(is_page_https($zone_name, isset($vars['page']) ? $vars['page'] : ''), $zone_name);
+    $stub = get_base_url(is_page_https($zone_name, $has_page ? $vars['page'] : ''), $zone_name);
     $stub .= '/';
 
     if ((!isset($vars['id'])) && (isset($vars['type'])) && ($vars['type'] == 'browse')) {
@@ -576,6 +578,13 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         }
     }
 
+    // Apply dashes if needed
+    if ($has_page) {
+        if ((strpos($vars['page'], '_') !== false) && ($vars['page'] != '_SELF')) {
+            $vars['page'] = str_replace('_', '-', $vars['page']);
+        }
+    }
+
     // We either use mod_rewrite, or return a standard parameterisation
     if (($USE_REWRITE_PARAMS_CACHE === null) || ($avoid_remap)) {
         $use_rewrite_params = can_try_mod_rewrite($avoid_remap);
@@ -586,7 +595,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         $use_rewrite_params = $USE_REWRITE_PARAMS_CACHE;
     }
     $test_rewrite = null;
-    $self_page = ((!isset($vars['page'])) || ((function_exists('get_zone_name')) && (get_zone_name() == $zone_name) && (($vars['page'] == '_SELF') || ($vars['page'] == get_param_string('page', ''))))) && ((!isset($vars['type'])) || ($vars['type'] == get_param_string('type', 'browse'))) && ($hash != '#_top') && (!$KNOWN_AJAX);
+    $self_page = ((!$has_page) || ((function_exists('get_zone_name')) && (get_zone_name() == $zone_name) && (($vars['page'] == '_SELF') || ($vars['page'] == get_page_name())))) && ((!isset($vars['type'])) || ($vars['type'] == get_param_string('type', 'browse'))) && ($hash != '#_top') && (!$KNOWN_AJAX);
     if ($use_rewrite_params) {
         if ((!$self_page) || ($WHAT_IS_RUNNING_CACHE === 'index')) {
             $test_rewrite = _url_rewrite_params($zone_name, $vars, count($keep_actual) > 0);
@@ -606,7 +615,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
             unset($_vars['type']);
             $vars = array('type' => $vars['type']) + $_vars;
         }
-        if (isset($vars['page'])) {
+        if ($has_page) {
             $_vars = $vars;
             unset($_vars['page']);
             $vars = array('page' => $vars['page']) + $_vars;

@@ -309,7 +309,7 @@ function cron_bridge_script($caller)
 function iframe_script()
 {
     $zone = get_param_string('zone');
-    $page = get_param_string('page');
+    $page = get_page_name();
     $ajax = (get_param_integer('ajax', 0) == 1);
 
     process_url_monikers($page);

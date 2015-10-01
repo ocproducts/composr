@@ -353,7 +353,8 @@ function init__global2()
     }
 
     // G-zip?
-    if (!in_safe_mode() && get_param_string('page', '') != 'admin_config') {
+    $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
+    if (!in_safe_mode() && $page != 'admin_config') {
         safe_ini_set('zlib.output_compression', (get_option('gzip_output') == '1') ? '2048' : 'Off'); // 2KB buffer is based on capturing repetition while not breaking output streaming
     }
     safe_ini_set('zlib.output_compression_level', '2'); // Compression doesn't get much better after this, but performance drop

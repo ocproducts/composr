@@ -30,7 +30,7 @@ class Hook_preview_comcode_page
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'cms_comcode_pages');
+        $applies = (get_page_name() == 'cms_comcode_pages');
         return array($applies, 'comcode_page', false, array('post'));
     }
 

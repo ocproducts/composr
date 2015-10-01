@@ -50,7 +50,7 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
     }
 
     global $RELATIVE_PATH, $ZONE, $SELF_URL_CACHED;
-    $RELATIVE_PATH = ($new_zone == '_SEARCH') ? get_page_zone(get_param_string('page')) : $new_zone;
+    $RELATIVE_PATH = ($new_zone == '_SEARCH') ? get_page_zone(get_page_name()) : $new_zone;
     if ($new_zone != $old_zone) {
         $ZONE = null; // So zone details will have to reload
     }
@@ -493,8 +493,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
     }
 
+    $page = fix_page_name_dashing($zone, $attributes['page']);
+
     // Put it together
-    $page_link = $zone . ':' . $attributes['page'];
+    $page_link = $zone . ':' . $page;
     if (array_key_exists('type', $attributes)) {
         $page_link .= ':' . $attributes['type'];
     } elseif (array_key_exists('id', $attributes)) {
@@ -759,7 +761,7 @@ function _generate_moniker($moniker_src)
 
     $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker_src);
     $moniker = str_replace("'", '', $moniker);
-    $moniker = strtolower(preg_replace('#[^A-Za-z\d\_\-]#', '-', $moniker));
+    $moniker = strtolower(preg_replace('#[^A-Za-z\d\-]#', '-', $moniker));
     if (strlen($moniker) > $max_moniker_length) {
         $pos = strrpos(substr($moniker, 0, $max_moniker_length), '-');
         if (($pos === false) || ($pos < 12)) {

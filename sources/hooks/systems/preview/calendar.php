@@ -31,7 +31,7 @@ class Hook_preview_calendar
     public function applies()
     {
         require_code('uploads');
-        $applies = (get_param_string('page', '') == 'cms_calendar') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit')) && ((is_plupload()) || (count($_FILES) != 0));
+        $applies = (get_page_name() == 'cms_calendar') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit')) && ((is_plupload()) || (count($_FILES) != 0));
         return array($applies, 'calendar', false);
     }
 }

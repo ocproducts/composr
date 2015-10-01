@@ -30,7 +30,7 @@ class Hook_preview_news
      */
     public function applies()
     {
-        $applies = ((get_param_string('page', '') == 'cms_news') || (get_param_string('page', '') == 'cms_blogs')) && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
+        $applies = ((get_page_name() == 'cms_news') || (get_page_name() == 'cms_blogs')) && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, 'news', false);
     }
 

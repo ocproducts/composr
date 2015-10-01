@@ -30,7 +30,7 @@ class Hook_preview_cns_post
      */
     public function applies()
     {
-        $applies = ((get_param_string('page', '') == 'topics') && (in_array(get_param_string('type'), array('birthday', 'edit_post', 'new_post', 'edit_topic', 'new_pt', 'new_topic', 'multimod')))) || (get_param_string('page', '') == 'topicview');
+        $applies = ((get_page_name() == 'topics') && (in_array(get_param_string('type'), array('birthday', 'edit_post', 'new_post', 'edit_topic', 'new_pt', 'new_topic', 'multimod')))) || (get_page_name() == 'topicview');
         return array($applies, 'cns_post', true);
     }
 
@@ -91,7 +91,7 @@ class Hook_preview_cns_post
         if (strlen($post_title) > 120) {
             warn_exit(do_lang_tempcode('TITLE_TOO_LONG'));
         }
-        $unvalidated = ((post_param_integer('validated', 0) == 0) && (get_param_string('page', '') == 'topics')) ? do_lang_tempcode('UNVALIDATED') : new Tempcode();
+        $unvalidated = ((post_param_integer('validated', 0) == 0) && (get_page_name() == 'topics')) ? do_lang_tempcode('UNVALIDATED') : new Tempcode();
         $emphasis = new Tempcode();
         $intended_solely_for = post_param_string('intended_solely_for', null);
         if ($intended_solely_for == '') {

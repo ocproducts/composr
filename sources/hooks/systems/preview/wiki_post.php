@@ -30,7 +30,7 @@ class Hook_preview_wiki_post
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'wiki');
+        $applies = (get_page_name() == 'wiki');
         return array($applies, 'wiki_post', false);
     }
 

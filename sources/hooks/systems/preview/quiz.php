@@ -30,7 +30,7 @@ class Hook_preview_quiz
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'cms_quiz') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
+        $applies = (get_page_name() == 'cms_quiz') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, null, false);
     }
 

@@ -632,7 +632,7 @@ class Module_cms_comcode_pages
         }
 
         require_code('type_sanitisation');
-        if (!is_alphanumeric($file, true)) {
+        if ((!is_alphanumeric($file, true)) || (strpos($file, '-') !== false && strpos($file, '_') !== false)/*can't have both*/) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 

@@ -340,7 +340,7 @@ function fractional_edit_script()
     $_POST['fractional_edit'] = '1'; // FUDGE
 
     $zone = get_param_string('zone');
-    $page = get_param_string('page');
+    $page = get_page_name();
 
     global $SESSION_CONFIRMED_CACHE;
     if ((!$SESSION_CONFIRMED_CACHE) && ($GLOBALS['SITE_DB']->query_select_value('zones', 'zone_require_session', array('zone_name' => $zone)) == 1)) {
@@ -385,7 +385,7 @@ function change_detection_script()
 
     header('Content-type: text/plain; charset=' . get_charset());
 
-    $page = get_param_string('page');
+    $page = get_page_name();
 
     require_code('hooks/systems/change_detection/' . filter_naughty($page), true);
 
@@ -408,14 +408,14 @@ function edit_ping_script()
     $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE the_time<' . strval(time() - 200));
 
     $GLOBALS['SITE_DB']->query_delete('edit_pings', array(
-        'the_page' => get_param_string('page'),
+        'the_page' => get_page_name(),
         'the_type' => get_param_string('type'),
         'the_id' => get_param_string('id', false, true),
         'the_member' => get_member()
     ));
 
     $GLOBALS['SITE_DB']->query_insert('edit_pings', array(
-        'the_page' => get_param_string('page'),
+        'the_page' => get_page_name(),
         'the_type' => get_param_string('type'),
         'the_id' => get_param_string('id', false, true),
         'the_time' => time(),

@@ -444,7 +444,7 @@ function payment_form()
  */
 function get_order_tax_opt_out_status()
 {
-    if (get_param_string('page', '') == 'purchase') {
+    if (get_page_name() == 'purchase') {
         return 0;
     }    //Purchase module creates separate orders for every product, so optout status depending only on current value of checkbox.
 

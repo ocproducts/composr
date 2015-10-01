@@ -663,7 +663,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
     }
 
     if ($page === null) {
-        $page = get_page_name();
+        $page = str_replace('-', '_', get_param_string('page', '')); // Not get_page_name for bootstrap order reasons
     }
 
     global $SPAM_REMOVE_VALIDATION;

@@ -486,7 +486,7 @@ function cns_get_all_ldap_groups()
     $results = @ldap_search($LDAP_CONNECTION, group_search_qualifier() . get_option('ldap_base_dn'), 'objectclass=' . get_group_class(), array(group_property())); // We do ldap_search as Active Directory can be fussy when looking at large sets, like all members
     if ($results === false) {
         require_code('site');
-        attach_message(make_string_tempcode('LDAP: ' . is_null($LDAP_CONNECTION) ? do_lang('LDAP_DISABLED') : ldap_error($LDAP_CONNECTION)), 'warn');
+        attach_message(make_string_tempcode('LDAP: ' . (is_null($LDAP_CONNECTION) ? do_lang('LDAP_DISABLED') : ldap_error($LDAP_CONNECTION))), 'warn');
         if (get_param_integer('keep_ldap_debug', 0) == 1) {
             fatal_exit(ldap_error($LDAP_CONNECTION));
         }

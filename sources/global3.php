@@ -1396,7 +1396,9 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
 }
 
 /**
- * Get the name of the current page
+ * Get the name of the page in the URL (by convention: the current page).
+ * This works on the basis of the 'page' parameter and does not require index.php be the active script.
+ * It will do dash to underscore substitution as required.
  *
  * @return ID_TEXT The current page name
  */
@@ -1411,7 +1413,7 @@ function get_page_name()
         return 'unknown';
     }
     $GETTING_PAGE_NAME = true;
-    $page = get_param_string('page', '');
+    $page = get_param_string('page', '', true);
     if (strlen($page) > 80) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
@@ -1427,10 +1429,35 @@ function get_page_name()
     if (strpos($page, '..') !== false) {
         $page = filter_naughty($page);
     }
+    $page = fix_page_name_dashing(get_zone_name(), $page);
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
     }
     $GETTING_PAGE_NAME = false;
+    return $page;
+}
+
+/**
+ * Fix a page name that may have been given dashes for SEO reasons.
+ *
+ * @param  string $zone Zone.
+ * @param  string $page Page.
+ * @return The fixed page name.
+ */
+function fix_page_name_dashing($zone, $page)
+{
+    // Fix page-name dashes if needed
+    if (strpos($page, '-') !== false) {
+        require_code('site');
+        $test = _request_page($page, $zone);
+        if ($test === false) {
+            $_page = str_replace('-', '_', $page);
+            $test = _request_page($_page, $zone);
+            if ($test !== false) {
+                $page = $_page;
+            }
+        }
+    }
     return $page;
 }
 
