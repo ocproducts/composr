@@ -2,7 +2,7 @@
 	<div class="cns_profile_column">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
 			<div class="cns_member_profile_avatar">
-				<img src="{AVATAR_URL*}" alt="{!AVATAR}" />
+				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!AVATAR}" />
 			</div>
 		{+END}
 

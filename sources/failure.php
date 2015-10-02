@@ -1192,7 +1192,7 @@ function put_value_in_stack_trace($value)
     } catch (Exception $e) { // Can happen for SimpleXMLElement or PDO
         $_value = '...';
     }
-    return $_value;
+    return escape_html($_value);
 }
 
 /**

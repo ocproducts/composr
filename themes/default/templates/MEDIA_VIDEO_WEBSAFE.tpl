@@ -63,7 +63,7 @@
 {+END}
 {+START,IF,{$GET,raw_video}}
 	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{WIDTH*}" height="{HEIGHT*}" controls="controls">
-		<source src="{URL*}" type="{MIME_TYPE*}" />
+		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
 		<span>{DESCRIPTION}</span>
 	</video>
 {+END}

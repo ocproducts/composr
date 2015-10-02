@@ -880,8 +880,12 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>), but as a relative URL to domain name root</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$MAKE_URL_ABSOLUTE}</td>
+			<td>{$MAKE_URL_ABSOLUTE,someurl}</td>
 			<td>Take what may be a relative URL (relative to site base URL), and make sure it is an absolute URL</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ENSURE_PROTOCOL_SUITABILITY,someurl}</td>
+			<td>Make sure a URL is safe to embed in the current page if the current page is HTTPS, e.g. by proxying a non-HTTPS URL</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$IMG,bottom}</td>

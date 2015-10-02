@@ -79,7 +79,7 @@
 							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$PHOTO,{MEMBER_ID}}},{$IMG,no_image},{$PHOTO,{MEMBER_ID}}},{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width},,,,pad,both,FFFFFF00}}
 						{+END}
 
-						<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img alt="" src="{$GET*,image}" /></a>
+						<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img alt="" src="{$ENSURE_PROTOCOL_SUITABILITY*,{$GET,image}}" /></a>
 					</p>
 
 					<p>

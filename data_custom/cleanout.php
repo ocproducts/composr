@@ -528,6 +528,7 @@ function cleanup()
         $GLOBALS['SITE_DB']->query_delete('sms_log');
         $GLOBALS['SITE_DB']->query_delete('temp_block_permissions');
         $GLOBALS['SITE_DB']->query_delete('url_title_cache');
+        $GLOBALS['SITE_DB']->query_delete('urls_checked');
         $GLOBALS['SITE_DB']->query_delete('webstandards_checked_once');
         $GLOBALS['SITE_DB']->query_delete('cache');
         $GLOBALS['SITE_DB']->query_delete('banner_clicks');

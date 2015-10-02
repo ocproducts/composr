@@ -19,18 +19,14 @@
  */
 
 /**
- * Find the mime type for the given file extension. It does not take into account whether the file type has been white-listed or not, and returns a binary download mime type for any unknown extensions.
+ * Find available mime types.
  *
- * @param  string $extension The file extension (no dot)
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
- * @return string The MIME type
+ * @return array The MIME types
  */
-function get_mime_type($extension, $as_admin)
+function get_mime_types($as_admin)
 {
-    $extension = strtolower($extension);
-
     $mime_types = array(
-
         // Plain text
         '1st' => 'text/plain',
         'txt' => 'text/plain',
@@ -130,10 +126,29 @@ function get_mime_type($extension, $as_admin)
 
         // File sharing
         'torrent' => 'application/x-bittorrent',
+
+        // Misc data
+        'dat' => 'application/octet-stream',
     );
     if (file_exists(get_file_base() . '/data/jwplayer.flash.swf')) {
         $mime_types['flv'] = 'video/x-flv';
     }
+
+    return $mime_types;
+}
+
+/**
+ * Find the mime type for the given file extension. It does not take into account whether the file type has been white-listed or not, and returns a binary download mime type for any unknown extensions.
+ *
+ * @param  string $extension The file extension (no dot)
+ * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
+ * @return string The MIME type
+ */
+function get_mime_type($extension, $as_admin)
+{
+    $extension = strtolower($extension);
+
+    $mime_types = get_mime_types($ad_admin);
 
     if (array_key_exists($extension, $mime_types)) {
         return $mime_types[$extension];

@@ -12,7 +12,7 @@
 
 	<div class="webstandards_checker_off">
 		<embed id="{$GET*,player_id}" name="{$GET*,player_id}" type="audio/x-pn-realaudio"
-			src="{URL*}"
+			src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}"
 			autostart="false"
 			controls="ImageWindow,ControlPanel"
 			pluginspage="http://www.real.com"

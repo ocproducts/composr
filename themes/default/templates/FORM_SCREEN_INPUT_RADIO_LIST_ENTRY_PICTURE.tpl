@@ -10,7 +10,7 @@
 		{+END}
 	</div>
 	<div class="left">
-		<label for="{NAME*}_{VALUE|*}"><img src="{URL*}" alt="{!SELECT_IMAGE}: {$STRIP_TAGS,{PRETTY*}}" title="" /><br />
+		<label for="{NAME*}_{VALUE|*}"><img src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" alt="{!SELECT_IMAGE}: {$STRIP_TAGS,{PRETTY*}}" title="" /><br />
 		{URL*}</label>
 	</div>
 </div>

@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: curl_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -20,6 +22,7 @@
 
 /**
  * Script to make a nice textual image, vertical writing.
+ *
  * @ignore
  */
 function gd_text_script()
@@ -180,6 +183,7 @@ function gd_text_script()
 
 /**
  * Script to track clicks to external sites.
+ *
  * @ignore
  */
 function simple_tracker_script()
@@ -201,6 +205,7 @@ function simple_tracker_script()
 
 /**
  * Script to show previews of content being added/edited.
+ *
  * @ignore
  */
 function preview_script()
@@ -304,6 +309,7 @@ function cron_bridge_script($caller)
 
 /**
  * Script to handle iframe.
+ *
  * @ignore
  */
 function iframe_script()
@@ -368,6 +374,7 @@ function iframe_script()
 
 /**
  * Redirect the browser to where a page_link specifies.
+ *
  * @ignore
  */
 function page_link_redirect_script()
@@ -386,6 +393,7 @@ function page_link_redirect_script()
 
 /**
  * Outputs the page-link chooser popup.
+ *
  * @ignore
  */
 function page_link_chooser_script()
@@ -412,6 +420,7 @@ function page_link_chooser_script()
 
 /**
  * Shows an HTML page of all emoticons clickably.
+ *
  * @ignore
  */
 function emoticons_script()
@@ -473,6 +482,7 @@ function emoticons_script()
 
 /**
  * Allows conversion of a URL to a thumbnail via a simple script.
+ *
  * @ignore
  */
 function thumb_script()
@@ -509,6 +519,7 @@ function thumb_script()
 
 /**
  * Outputs a modal question dialog.
+ *
  * @ignore
  */
 function question_ui_script()
@@ -532,4 +543,66 @@ function question_ui_script()
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '8d72daa4c9f922656b190b643a6fe61d', 'TITLE' => escape_html($title), 'POPUP' => true, 'CONTENT' => $message));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
+}
+
+/**
+ * Proxy an external URL.
+ *
+ * @ignore
+ */
+function external_url_proxy_script()
+{
+    $url = get_param_string('url', false, true);
+
+    // Don't allow loops
+    if (strpos($url, 'external_url_proxy.php') !== false) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    // Don't allow non-HTTP(S)
+    if (preg_match('#^https?://#', $url) == 0) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    // No time-limits wanted
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(0);
+    }
+
+    // Can't add in compression
+    safe_ini_set('zlib.output_compression', 'Off');
+
+    // No ocProducts XSS filter
+    safe_ini_set('ocproducts.xss_detect', '0');
+
+    // Stream
+    $content_type = 'application/octet-stream';
+    $f = @fopen($url, 'rb');
+    if (isset($http_response_header)) {
+        // Work out appropriate content type (with restrictions)
+        require_code('mime_types');
+        $mime_types = array_flip(get_mime_types(false));
+        $matches = array();
+        foreach ($http_response_header as $header) {
+            if (preg_match('#^Content-Type:\s*(.*)\s*#i', $header, $matches) != 0) {
+                $content_type = $matches[1];
+            }
+        }
+        if (!isset($mime_types[$content_type])) {
+            $content_type = 'application/octet-stream';
+        }
+        header('Content-Type: ' . $content_type);
+
+        foreach ($http_response_header as $header) {
+            if (preg_match('#^Content-Type:\s*(.*)\s*#i', $header) == 0) {
+                header($header);
+            }
+        }
+    } else {
+        header('Content-Type: ' . $content_type);
+    }
+    if ($f !== false) {
+        fpassthru($f);
+        @fclose($f);
+    }
 }

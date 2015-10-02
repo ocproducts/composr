@@ -1304,3 +1304,68 @@ function extend_url(&$url, $append)
         $url .= ((strpos($url, '?') === false) ? '?' : '&') . $append;
     }
 }
+
+/**
+ * Ensure a URL can be embedded within our webpage context.
+ * Currently this means making sure if we're on an HTTPS page, everything is HTTPS.
+ *
+ * @param  string $url The URL to check.
+ * @return string $append The fixed URL.
+ */
+function ensure_protocol_suitability($url)
+{
+    if (!tacit_https()) { // Site not running HTTPS for this page
+        return $url;
+    }
+
+    if (strpos($url, '://') === false) { // Protocol-relative URL, relative URL, or some other URL handler that we can't make conclusions about
+        return $url;
+    }
+
+    if (substr($url, 0, 7) != 'http://') { // Already HTTPS
+        return $url;
+    }
+
+    $https_url = 'https://' . $url;
+
+    $https_exists = check_url_exists($https_url, 60 * 60 * 24 * 31);
+
+    if ($https_exists) {
+        return $https_url;
+    }
+
+    return find_script('external_url_proxy') . '?url=' . urlencode($url);
+}
+
+/**
+ * Check to see if a URL exists.
+ *
+ * @param  string $url The URL to check.
+ * @param  integer $test_freq_secs Cache must be newer than this many seconds.
+ * @return boolean Whether it does.
+ */
+function check_url_exists($url, $test_freq_secs)
+{
+    $test1 = $GLOBALS['SITE_DB']->query_select('urls_checked', array('url_check_time', 'url_exists'), array('url' => $url));
+
+    if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
+        $test2 = http_download_file($url, 0, false);
+        $exists = is_null($test2) ? 0 : 1;
+
+        if (!isset($test1[0])) {
+            $GLOBALS['SITE_DB']->query_delete('urls_checked', array(
+                'url' => $url,
+            ));
+        }
+
+        $GLOBALS['SITE_DB']->query_insert('urls_checked', array(
+            'url' => $url,
+            'url_exists' => $exists,
+            'url_check_time' => time(),
+        ));
+    } else {
+        $exists = $test1[0]['url_exists'];
+    }
+
+    return ($exists == 1);
+}

@@ -61,7 +61,7 @@ function check_input_field_string($name, &$val, $posted = false)
             }
 
             // Don't allow external redirections
-            if (!$posted) {
+            if (!$posted && !running_script('external_url_proxy')) {
                 $_val = str_replace('https://', 'http://', $val);
                 if (looks_like_url($_val)) {
                     $bus = array(

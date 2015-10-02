@@ -1,6 +1,6 @@
 <div class="chat_message{+START,IF,{OLD_MESSAGES}} chat_message_old{+END}">
 	{+START,IF_NON_EMPTY,{AVATAR_URL}}
-		<img class="chat_avatar" src="{AVATAR_URL*}" alt="{!AVATAR}" />
+		<img class="chat_avatar" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!AVATAR}" />
 	{+END}
 
 	{+START,IF,{$NOT,{SYSTEM_MESSAGE}}}

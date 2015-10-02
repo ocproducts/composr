@@ -36,7 +36,7 @@
 	{+START,IF,{$NOT,{$IS_NON_EMPTY,{AUTHOR_URL}}}}
 		<div class="newscat_img newscat_img_member">
 			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$AVATAR,{SUBMITTER}}}
-				<img src="{$AVATAR*,{SUBMITTER}}" title="{!AVATAR}" alt="{!AVATAR}" />
+				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{SUBMITTER}}}" title="{!AVATAR}" alt="{!AVATAR}" />
 			{+END}{+END}
 
 			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$CNS}}{+START,IF_NON_EMPTY,{$CNS_RANK_IMAGE,{SUBMITTER}}}

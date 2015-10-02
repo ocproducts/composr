@@ -13,7 +13,7 @@
 	</div>
 
 	<p class="media_box">
-		<img class="scale_down" alt="{!IMAGE}" src="{URL*}" itemprop="contentURL" />
+		<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 	</p>
 
 	{+START,IF_NON_EMPTY,{CAPTION}}

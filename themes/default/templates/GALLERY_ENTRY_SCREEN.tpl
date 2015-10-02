@@ -100,7 +100,7 @@
 
 	<div class="media_box">
 		{+START,IF_NON_PASSED,VIDEO}
-			<img class="scale_down" alt="{!IMAGE}" src="{URL*}" itemprop="contentURL" />
+			<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 		{+END}
 		{+START,IF_PASSED,VIDEO}
 			{+START,IF,{$GT,{$META_DATA,video:width},500}}

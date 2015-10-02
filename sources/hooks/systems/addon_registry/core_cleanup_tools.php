@@ -125,12 +125,12 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/templates.php',
             'sources/hooks/systems/cleanup/criticise_mysql_fields.php',
             'sources/hooks/systems/cleanup/page_backups.php',
+            'sources/hooks/systems/cleanup/tags.php',
+            'sources/hooks/systems/cleanup/urls.php',
+            'sources/hooks/systems/cleanup/self_learning.php',
             'sources/hooks/systems/tasks/find_broken_urls.php',
             'sources/hooks/systems/tasks/find_orphaned_lang_strings.php',
             'sources/hooks/systems/tasks/find_orphaned_uploads.php',
-            'sources/hooks/systems/cleanup/self_learning.php',
-            'sources/hooks/systems/cleanup/tags.php',
-
         );
     }
 

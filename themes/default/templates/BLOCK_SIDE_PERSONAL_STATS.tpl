@@ -2,7 +2,7 @@
 	<h3>{USERNAME*}</h3>
 
 	{+START,IF_NON_EMPTY,{AVATAR_URL}}
-		<div class="personal_stats_avatar"><img src="{AVATAR_URL*}" title="{!AVATAR}" alt="{!AVATAR}" /></div>
+		<div class="personal_stats_avatar"><img src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" title="{!AVATAR}" alt="{!AVATAR}" /></div>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{DETAILS}}

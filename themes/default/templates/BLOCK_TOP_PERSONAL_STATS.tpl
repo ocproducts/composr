@@ -1,7 +1,7 @@
 <div class="global_button_ref_point" id="top_personal_stats_rel" style="display: none">
 	<div class="box box_arrow box__block_top_personal_stats"><span></span><div class="box_inner"><div>
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
-			<div class="personal_stats_avatar"><img src="{AVATAR_URL*}" title="{!AVATAR}" alt="{!AVATAR}" /></div>
+			<div class="personal_stats_avatar"><img src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" title="{!AVATAR}" alt="{!AVATAR}" /></div>
 		{+END}
 
 		<h3>{USERNAME*}</h3>
