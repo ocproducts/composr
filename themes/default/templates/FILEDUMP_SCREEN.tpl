@@ -82,12 +82,6 @@
 
 			<input type="submit" value="{!PROCEED}" class="buttons__proceed button_micro" />
 		</div>
-
-		{+START,INCLUDE,NOTIFICATION_BUTTONS}
-			NOTIFICATIONS_TYPE=filedump
-			NOTIFICATIONS_ID={PLACE}
-			RIGHT=1
-		{+END}
 	</div>
 {+END}
 
@@ -153,6 +147,12 @@
 				{$GET,file_dump_footer,1}
 			</form>
 
+			{+START,INCLUDE,NOTIFICATION_BUTTONS}
+				NOTIFICATIONS_TYPE=filedump
+				NOTIFICATIONS_ID={PLACE}
+				RIGHT=1
+			{+END}
+
 			{+START,IF_NON_EMPTY,{PAGINATION_THUMBNAILS}}
 				<div class="float_surrounder force_margin">
 					{PAGINATION_THUMBNAILS}
@@ -179,6 +179,12 @@
 				{$SET,i,2}
 				{$GET,file_dump_footer,1}
 			</form>
+
+			{+START,INCLUDE,NOTIFICATION_BUTTONS}
+				NOTIFICATIONS_TYPE=filedump
+				NOTIFICATIONS_ID={PLACE}
+				RIGHT=1
+			{+END}
 
 			{+START,IF_NON_EMPTY,{PAGINATION_LISTING}}
 				<div class="float_surrounder force_margin">
@@ -250,7 +256,7 @@
 		1_ICON=menu/pages/help
 
 		{+START,IF,{$IS_ADMIN}}
-			2_URL={$PAGE_LINK,_SELF:_SELF:broken}
+			2_URL={$PAGE_LINK*,_SELF:_SELF:broken}
 			2_TITLE={!FIND_BROKEN_FILEDUMP_LINKS}
 			2_ICON=menu/adminzone/tools/cleanup
 		{+END}

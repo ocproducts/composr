@@ -328,6 +328,7 @@ class Hook_addon_registry_points
             'MULT_POINTS_WIKI_POSTING' => placeholder_number(),
             'MULT_POINTS_POSTING' => placeholder_number(),
             'MULT_POINTS_PER_DAY' => placeholder_number(),
+            'MULT_POINTS_VISITING' => placeholder_number(),
             'POINTS_CREDITS' => '', // From non-bundled addon
         ));
 

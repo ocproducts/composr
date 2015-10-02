@@ -9,7 +9,7 @@
 
 	{+START,IF_NON_EMPTY,{MESSY_URL}}
 		<ul class="actions_list">
-			<li><a href="{MESSY_URL*}">{!WEBSTANDARDS_MESSAGE}</a></li>
+			<li>{!WEBSTANDARDS_MESSAGE,{MESSY_URL*}}</li>
 		</ul>
 	{+END}
 

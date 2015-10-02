@@ -362,7 +362,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         }
     }
     if ($pass_id === null) {
-        $pass_id = strval(mt_rand(0, 32000)); // This is a unique ID that refers to this specific piece of comcode
+        $pass_id = strval(mt_rand(0, mt_getrandmax())); // This is a unique ID that refers to this specific piece of comcode
     }
     global $COMCODE_ATTACHMENTS;
     if (!array_key_exists($pass_id, $COMCODE_ATTACHMENTS)) {

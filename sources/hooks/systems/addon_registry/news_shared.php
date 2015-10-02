@@ -155,8 +155,8 @@ class Hook_addon_registry_news_shared
                 'CLOSED' => lorem_word(),
                 'FIRSTUSERNAME' => lorem_word(),
                 'LASTUSERNAME' => lorem_word(),
-                'FIRSTMEMBERID' => lorem_word(),
-                'LASTMEMBERID' => lorem_word(),
+                'FIRSTMEMBERID' => placeholder_random_id(),
+                'LASTMEMBERID' => placeholder_random_id(),
                 'DATE_RAW' => lorem_word(),
                 'GIVE_CONTEXT' => true,
             )), null, '', true)

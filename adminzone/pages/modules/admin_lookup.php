@@ -198,12 +198,12 @@ class Module_admin_lookup
                 foreach ($group as $row) {
                     $date = get_timezoned_date($row['date_and_time']);
                     $lookup_url = build_url(array('page' => '_SELF', 'param' => $row['ip']), '_SELF');
-                    $inner_ip_list->attach(do_template('LOOKUP_IP_LIST_ENTRY', array('_GUID' => '94a133f5f711bbf09100346661e3f7c9', 'UNIQID' => uniqid('', true), 'LOOKUP_URL' => $lookup_url, 'DATE' => $date, '_DATE' => strval($row['date_and_time']), 'IP' => $row['ip'], 'BANNED' => in_array($row['ip'], $all_banned))));
+                    $inner_ip_list->attach(do_template('LOOKUP_IP_LIST_ENTRY', array('_GUID' => '94a133f5f711bbf09100346661e3f7c9', 'LOOKUP_URL' => $lookup_url, 'DATE' => $date, '_DATE' => strval($row['date_and_time']), 'IP' => $row['ip'], 'BANNED' => in_array($row['ip'], $all_banned))));
                     if (in_array($row['ip'], $all_banned)) {
                         $one_sub_is_banned = true;
                     }
                 }
-                $ip_list->attach(do_template('LOOKUP_IP_LIST_GROUP', array('_GUID' => '10612a64654f3a75fca65d089e039e9a', 'OPEN_DEFAULT' => $one_sub_is_banned, 'UNIQID' => uniqid('', true), 'BANNED' => in_array($mask, $all_banned), 'MASK' => $mask, 'GROUP' => $inner_ip_list)));
+                $ip_list->attach(do_template('LOOKUP_IP_LIST_GROUP', array('_GUID' => '10612a64654f3a75fca65d089e039e9a', 'OPEN_DEFAULT' => $one_sub_is_banned, 'BANNED' => in_array($mask, $all_banned), 'MASK' => $mask, 'GROUP' => $inner_ip_list)));
             }
 
             $stats = get_stats_track($id, $ip, get_param_integer('start', 0), get_param_integer('max', 10), $sortable, $sort_order);

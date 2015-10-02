@@ -364,7 +364,6 @@ function _do_next_section($list, $title)
             '_GUID' => 'f39b6055d1127edb452595e7eeaf2f01',
             'AUTO_ADD' => $auto_add,
             'I' => strval($i),
-            'I2' => strval(mt_rand(0, 32000)) . '_' . strval($i),
             'NUM_SIBLINGS' => strval($num_siblings),
             'TARGET' => $target,
             'PICTURE' => $option,

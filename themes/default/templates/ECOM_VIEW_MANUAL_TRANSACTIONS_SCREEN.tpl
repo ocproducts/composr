@@ -5,7 +5,7 @@
 		<tr>
 			<th>{!SUBSCRIPTION}</th>
 			<th>{!MEMBER}</th>
-			<th>{!CUSTOM_EXPIRY_DATE}</th>
+			<th>{!EXPIRY_DATE}</th>
 			<th>{!CANCEL_MANUAL_SUBSCRIPTION}</th>
 		</tr>
 	</thead>

@@ -277,7 +277,10 @@ class Hook_addon_registry_core_abstract_interfaces
     public function tpl_preview__ajax_pagination()
     {
         return array(
-            lorem_globalise(do_lorem_template('AJAX_PAGINATION', array()), null, '', true)
+            do_lorem_template('AJAX_PAGINATION', array(
+                'BLOCK_PARAMS' => '',
+                'ALLOW_INFINITE_SCROLL' => '1',
+            ))
         );
     }
 
@@ -399,7 +402,7 @@ class Hook_addon_registry_core_abstract_interfaces
                 'URL' => placeholder_url(),
                 'NAME' => $value,
                 'DESCRIPTION' => lorem_paragraph_html(),
-                'COUNT' => placeholder_random(),
+                'COUNT' => placeholder_number(),
             )));
         }
 
@@ -624,7 +627,6 @@ class Hook_addon_registry_core_abstract_interfaces
             $option = $_option[0];
             $next_items->attach(do_lorem_template('DO_NEXT_ITEM', array(
                 'I' => strval($i),
-                'I2' => placeholder_random_id() . '_' . strval($i),
                 'TARGET' => null,
                 'PICTURE' => $option,
                 'DESCRIPTION' => lorem_phrase(),
@@ -887,7 +889,7 @@ class Hook_addon_registry_core_abstract_interfaces
 
         $results_table = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $order_entries,
             'MESSAGE' => '',
@@ -971,7 +973,7 @@ class Hook_addon_registry_core_abstract_interfaces
 
         $results_table = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $order_entries,
             'MESSAGE' => '',

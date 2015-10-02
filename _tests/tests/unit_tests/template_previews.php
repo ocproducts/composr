@@ -197,7 +197,11 @@ class template_previews_test_set extends cms_test_case
             $PANELS_CACHE = array();
             $out1 = render_screen_preview($template, $hook, $function);
             $_out1 = $out1->evaluate();
+            $_out1 = preg_replace('#\s*<script[^<>]*></script>\s*#', '', $_out1); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
+            $_out1 = preg_replace('#\s*<style[^<>]*>[^<>]*</style>\s*#', '', $_out1);
+            $_out1 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out1);
             restore_output_state();
+
             init__lorem();
             push_output_state();
             $LOADED_TPL_CACHE = array();
@@ -205,8 +209,13 @@ class template_previews_test_set extends cms_test_case
             $PANELS_CACHE = array();
             $out2 = render_screen_preview($template, $hook, $function);
             $_out2 = $out2->evaluate();
+            $_out2 = preg_replace('#\s*<script[^<>]*></script>\s*#', '', $_out2);
+            $_out2 = preg_replace('#\s*<style[^<>]*>[^<>]*</style>\s*#', '', $_out2);
+            $_out2 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out2);
             restore_output_state();
+
             $different = ($_out1 != $_out2);
+
             $this->assertFalse($different, 'Screen preview not same each time, ' . $function);
 
             if (!$different) {

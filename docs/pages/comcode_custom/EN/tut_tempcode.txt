@@ -281,7 +281,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$RAND}</td>
-			<td>A random number between 0 and 32000</td>
+			<td>A random number between 0 and 2147483647. You can also give an upper bound as a second parameter</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SET_RAND,a,b,c}</td>
@@ -293,7 +293,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$RESET_CYCLE,cyclename}</td>
-			<td>Reset a named cycle sequence.</td>
+			<td>Reset a named cycle sequence</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MAILTO}</td>
@@ -2035,12 +2035,12 @@ This would resolve to some HTML such as:
 [title="3"]Number randomisation example[/title]
 
 [media width="150" description="Number randomisation example. We had to refresh a few times to see this, because as expected it was empty 3/4 of the time." float="right"]data_custom/images/docs/tut_tempcode/poweroftemp6.png[/media]
-In this example we use the symbol [tt]RAND[/tt] which picks a random number between 0 and 32000 and the number is then passed to an [tt]IF[/tt] directive that checks if the number is less than 8000 using the [tt]LT[/tt] symbol. Go ahead and try this in the template file to see the results.
+In this example we use the symbol [tt]RAND[/tt] to pick a random number between 0 and 3 and the number. This number will then be passed to an [tt]IF[/tt] directive that checks if the number is less than 1 using the [tt]LT[/tt] symbol. Go ahead and try this in the template file to see the results.
 
 [code="HTML"]
-{+START,IF,{$LT,{$RAND},8000}}
+{+START,IF,{$LT,{$RAND,3},1}}
 	<p>
-		This shows 1/4 of the time. How does it work? RAND picks a random number between 0 and 32000, so the number will be less than 8000 1/4 of the time.
+		This shows 1/4 of the time. How does it work? RAND picks a random number between 0 and 3, so the number will be less than 1 1/4 of the time.
 	</p>
 {+END}
 [/code]

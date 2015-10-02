@@ -340,7 +340,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     if (!$confirm_if_enabled) {
         $skip_confirm = true;
     }
-    $validated_email_confirm_code = $skip_confirm ? '' : strval(mt_rand(1, 32000));
+    $validated_email_confirm_code = $skip_confirm ? '' : strval(mt_rand(1, mt_getrandmax()));
     $require_new_member_validation = get_option('require_new_member_validation') == '1';
     if (!$validate_if_enabled) {
         $require_new_member_validation = false;

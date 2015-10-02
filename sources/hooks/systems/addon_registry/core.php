@@ -1336,7 +1336,6 @@ class Hook_addon_registry_core
             'templates/FORUM_ATTACHMENT_IMAGE_THUMB.tpl' => 'forum_attachment_link',
             'templates/FORUM_ATTACHMENT_LINK.tpl' => 'forum_attachment_link',
             'text/tempcode_test.txt' => 'administrative__tempcode_test',
-            'templates/ADMIN_ZONE_SEARCH.tpl' => 'admin_zone_search',
             'templates/EMAIL_LOG_SCREEN.tpl' => 'email_log_screen',
             'templates/BLOCK_MAIN_CONTENT_FILTERING.tpl' => 'block_main_content_filtering',
             'templates/BLOCK_MAIN_CONTENT.tpl' => 'block_main_content',
@@ -1400,20 +1399,6 @@ class Hook_addon_registry_core
                 'START_PARAM' => 'x_start',
                 'MAX_PARAM' => 'x_max',
             )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__admin_zone_search()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('ADMIN_ZONE_SEARCH', array()), null, '', true)
         );
     }
 
@@ -1667,6 +1652,7 @@ class Hook_addon_registry_core
                 'PAGE' => lorem_phrase(),
                 'DID_MEAN' => lorem_word(),
                 'ADD_REDIRECT_URL' => placeholder_url(),
+                'SKIP_SITEMAP' => true,
             )), null, '', true)
         );
     }
@@ -1825,7 +1811,7 @@ class Hook_addon_registry_core
                 'DETAILS' => $details,
                 'USERNAME' => lorem_word(),
                 'MEMBER_ID' => placeholder_id(),
-            )), null, '', true)
+            )), null, '', false)
         );
     }
 
@@ -1919,7 +1905,7 @@ class Hook_addon_registry_core
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES', array(
                 'ROWS' => $rows,
-                'NUM_COLUMNS' => 1,
+                'NUM_COLUMNS' => '1',
             )), null, '', true)
         );
     }

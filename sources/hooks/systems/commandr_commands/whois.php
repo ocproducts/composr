@@ -71,7 +71,7 @@ class Hook_commandr_command_whois
             foreach ($rows as $row) {
                 $date = get_timezoned_date($row['date_and_time']);
                 $lookup_url = build_url(array('page' => '_SELF', 'param' => $row['ip']), '_SELF');
-                $ip_list->attach(do_template('LOOKUP_IP_LIST_ENTRY', array('_GUID' => '01e74a2a146dab9a407b23c40f4555ad', 'UNIQID' => uniqid('', true), 'LOOKUP_URL' => $lookup_url, 'DATE' => $date, '_DATE' => strval($row['date_and_time']), 'IP' => $row['ip'], 'BANNED' => in_array($row['ip'], $all_banned))));
+                $ip_list->attach(do_template('LOOKUP_IP_LIST_ENTRY', array('_GUID' => '01e74a2a146dab9a407b23c40f4555ad', 'LOOKUP_URL' => $lookup_url, 'DATE' => $date, '_DATE' => strval($row['date_and_time']), 'IP' => $row['ip'], 'BANNED' => in_array($row['ip'], $all_banned))));
             }
 
             $stats = get_stats_track($id, $ip, $start, $max, $sortable, $sort_order);

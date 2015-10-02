@@ -425,7 +425,6 @@ class Hook_addon_registry_commandr
     {
         return array(
             lorem_globalise(do_lorem_template('COMMANDR_EDIT', array(
-                'UNIQ_ID' => placeholder_random(),
                 'FILE' => lorem_phrase(),
                 'SUBMIT_URL' => placeholder_url(),
                 'FILE_CONTENTS' => lorem_sentence(),

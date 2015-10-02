@@ -50,7 +50,8 @@ class Hook_secpay
      */
     public function generate_trans_id()
     {
-        return md5(uniqid(strval((mt_rand(0, 32000))), true));
+        require_code('crypt');
+        return get_rand_password();
     }
 
     /**

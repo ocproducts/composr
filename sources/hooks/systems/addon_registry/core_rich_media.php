@@ -449,15 +449,15 @@ class Hook_addon_registry_core_rich_media
             $page[] = $v;
         }
         $content->attach(do_lorem_template('COMCODE_BIG_TABS_CONTROLLER', array(
-            'PASS_ID' => lorem_word(),
+            'PASS_ID' => placeholder_random_id(),
             'SWITCH_TIME' => '6000',
             'TABS' => $page,
         )));
 
         foreach ($page as $i => $v) {
             $content->attach(do_lorem_template('COMCODE_BIG_TABS_TAB', array(
-                'PASS_ID' => lorem_word() . strval($i),
-                'CONTENT' => lorem_paragraph() . placeholder_random(),
+                'PASS_ID' => placeholder_random_id() . strval($i),
+                'CONTENT' => lorem_paragraph() . strval($i),
                 'NAME' => $v,
                 'DEFAULT' => ($i == 0),
             )));
@@ -695,7 +695,6 @@ class Hook_addon_registry_core_rich_media
     {
         return array(
             lorem_globalise(do_lorem_template('COMCODE_OVERLAY', array(
-                'UNIQ_ID' => placeholder_id(),
                 'EMBED' => lorem_phrase(),
                 'ID' => placeholder_id(),
                 'X' => placeholder_number(),
@@ -738,7 +737,7 @@ class Hook_addon_registry_core_rich_media
         $section = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $section->attach(do_lorem_template('COMCODE_SECTION', array(
-                'PASS_ID' => lorem_word(),
+                'PASS_ID' => placeholder_random_id(),
                 'DEFAULT' => false,
                 'NAME' => strval($k + 1),
                 'CONTENT' => lorem_paragraph(),
@@ -746,7 +745,7 @@ class Hook_addon_registry_core_rich_media
         }
         $k++;
         $section->attach(do_lorem_template('COMCODE_SECTION', array(
-            'PASS_ID' => lorem_word(),
+            'PASS_ID' => placeholder_random_id(),
             'DEFAULT' => true,
             'NAME' => strval($k + 1),
             'CONTENT' => lorem_paragraph(),
@@ -757,7 +756,7 @@ class Hook_addon_registry_core_rich_media
         }
         $section->attach(do_lorem_template('COMCODE_SECTION_CONTROLLER', array(
             'SECTIONS' => $page,
-            'PASS_ID' => lorem_word(),
+            'PASS_ID' => placeholder_random_id(),
         )));
 
         return array(
@@ -1105,7 +1104,6 @@ class Hook_addon_registry_core_rich_media
         }
         return array(
             lorem_globalise(do_lorem_template('COMCODE_RANDOM', array(
-                'UNIQID' => placeholder_id(),
                 'FULL' => placeholder_number(),
                 'MAX' => '3',
                 'PARTS' => $part,
@@ -1128,7 +1126,6 @@ class Hook_addon_registry_core_rich_media
 
         return array(
             lorem_globalise(do_lorem_template('COMCODE_JUMPING', array(
-                'UNIQID' => placeholder_id(),
                 'FULL' => lorem_phrase(),
                 'TIME' => '1000',
                 'PARTS' => $part,
@@ -1147,7 +1144,6 @@ class Hook_addon_registry_core_rich_media
     {
         return array(
             lorem_globalise(do_lorem_template('COMCODE_TICKER', array(
-                'UNIQID' => placeholder_id(),
                 'SPEED' => '10',
                 'WIDTH' => '400',
                 'TEXT' => lorem_sentence_html(),
@@ -1385,7 +1381,6 @@ class Hook_addon_registry_core_rich_media
         $max_color = 'FF0044';
 
         $temp_tpl = do_lorem_template('COMCODE_SHOCKER', array(
-            'UNIQID' => placeholder_random(),
             'MIN_COLOR' => $min_color,
             'MAX_COLOR' => $max_color,
             'FULL' => implode(', ', $attributes),

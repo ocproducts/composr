@@ -279,18 +279,18 @@ class Hook_addon_registry_core_addon_management
             'ADDON_WARNING_OVERWRITE' => lorem_phrase(),
         ));
         $files = new Tempcode();
-        foreach (placeholder_array() as $val) {
+        foreach (placeholder_array() as $k => $val) {
             $files->attach(do_lorem_template('ADDON_INSTALL_FILES_WARNING', array(
                 'PATH' => lorem_phrase(),
                 'ABOUT' => do_lang_tempcode('ADDON_FILE_WILL_OVERWRITE'),
-                'I' => placeholder_random(),
+                'I' => strval($k),
             )));
         }
-        foreach (placeholder_array() as $val) {
+        foreach (placeholder_array() as $k => $val) {
             $files->attach(do_lorem_template('ADDON_INSTALL_FILES', array(
                 'PATH' => lorem_phrase(),
                 'ABOUT' => do_lang_tempcode('ADDON_FILE_NORMAL'),
-                'I' => placeholder_random(),
+                'I' => strval(count(placeholder_array()) + $k),
             )));
         }
         return array(

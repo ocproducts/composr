@@ -7,8 +7,8 @@
 		<div>
 			{+START,IF,{$EQ,{INPUT_FIELDS},1}}
 				<div class="constrain_field">
-					<label class="accessibility_hidden" for="search_content">{!SEARCH}</label>
-					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="search_content" name="content" value="" />
+					<label class="accessibility_hidden" for="main_search_content">{!SEARCH}</label>
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="main_search_content" name="content" value="" />
 				</div>
 			{+END}
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}

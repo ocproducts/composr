@@ -201,7 +201,7 @@ class Hook_addon_registry_tickets
                 'TITLE' => lorem_title(),
                 'MESSAGE' => lorem_phrase(),
                 'LINKS' => $links,
-                'TICKET_TYPE' => lorem_word(),
+                'TICKET_TYPE_ID' => placeholder_id(),
                 'NAME' => lorem_word_2(),
                 'SELECTED' => true,
                 'ADD_TICKET_URL' => placeholder_url(),

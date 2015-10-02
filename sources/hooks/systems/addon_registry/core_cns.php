@@ -521,7 +521,7 @@ class Hook_addon_registry_core_cns
         require_lang('dates');
         $fields = new Tempcode();
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_LINE', array(
             'MAXLENGTH' => '3',
             'TABINDEX' => placeholder_number(),
@@ -540,7 +540,7 @@ class Hook_addon_registry_core_cns
             'COMCODE' => '',
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_PASSWORD', array(
             'TABINDEX' => placeholder_number(),
             'REQUIRED' => '',
@@ -558,7 +558,7 @@ class Hook_addon_registry_core_cns
             'COMCODE' => '',
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_PASSWORD', array(
             'TABINDEX' => placeholder_number(),
             'REQUIRED' => '',
@@ -576,7 +576,7 @@ class Hook_addon_registry_core_cns
             'COMCODE' => '',
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_EMAIL', array(
             'TABINDEX' => placeholder_number(),
             'REQUIRED' => '',
@@ -599,7 +599,7 @@ class Hook_addon_registry_core_cns
             'THEME_ALSO_INCLUDE_PAGES' => false,
         )));
 
-        $name = lorem_word() . placeholder_random();
+        $name = placeholder_random_id();
         $timezone_list = new Tempcode();
         foreach (placeholder_array() as $key => $value) {
             $timezone_list->attach(do_lorem_template('CNS_AUTO_TIME_ZONE_ENTRY', array(
@@ -1107,7 +1107,7 @@ class Hook_addon_registry_core_cns
         //results_table
         $primary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $primary_members,
             'MESSAGE' => '',
@@ -1139,7 +1139,7 @@ class Hook_addon_registry_core_cns
         //results_table
         $secondary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $_secondary_members,
             'MESSAGE' => '',
@@ -1171,7 +1171,7 @@ class Hook_addon_registry_core_cns
         //results_table
         $prospective_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $_prospective_members,
             'MESSAGE' => '',

@@ -714,7 +714,7 @@ class Hook_addon_registry_ecommerce
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => placeholder_button(),
                 'INVOICE_TITLE' => lorem_phrase(),
-                'ID' => placeholder_id(),
+                'INVOICE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'TIME' => placeholder_date(),
                 'STATE' => lorem_word(),

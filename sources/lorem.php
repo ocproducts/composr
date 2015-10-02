@@ -539,7 +539,7 @@ function lorem_globalise($middle, $message = null, $type = '', $include_header_a
 
     global $LOREM_AVOID_GLOBALISE;
 
-    if (($LOREM_AVOID_GLOBALISE) || is_full_screen_template(null, $middle)) {
+    if (($LOREM_AVOID_GLOBALISE) || is_full_screen_template(null, $middle) || !$include_header_and_footer) {
         return $middle;
     }
 
@@ -714,7 +714,7 @@ function placeholder_pagination()
     ));
 
     return do_lorem_template('PAGINATION_WRAP', array(
-        'TEXT_ID' => lorem_phrase(),
+        'TEXT_ID' => placeholder_random_id(),
         'PER_PAGE' => $per_page,
         'PREVIOUS' => $previous,
         'CONTINUES_LEFT' => $continues,
@@ -939,9 +939,7 @@ function get_text_templates()
  */
 function is_plain_text_template($temp_name)
 {
-    return (
-    in_array($temp_name, get_text_templates())
-    );
+    return in_array($temp_name, get_text_templates());
 }
 
 /**

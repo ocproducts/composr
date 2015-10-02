@@ -355,8 +355,8 @@ class Hook_addon_registry_news
                 'CLOSED' => lorem_word(),
                 'FIRSTUSERNAME' => lorem_word(),
                 'LASTUSERNAME' => lorem_word(),
-                'FIRSTMEMBERID' => lorem_word(),
-                'LASTMEMBERID' => lorem_word(),
+                'FIRSTMEMBERID' => placeholder_random_id(),
+                'LASTMEMBERID' => placeholder_random_id(),
                 'DATE_RAW' => lorem_word(),
                 'GIVE_CONTEXT' => false,
                 'TAGS' => '',
@@ -499,7 +499,7 @@ class Hook_addon_registry_news
             $contents->attach(do_lorem_template('BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY', array(
                 'URL' => placeholder_url(),
                 'NAME' => lorem_phrase(),
-                'COUNT' => placeholder_random(),
+                'COUNT' => placeholder_number(),
             )));
         }
         return array(

@@ -850,7 +850,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => true,
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '1',
             'TEXT' => lorem_phrase(),
         )));
         $radios->attach(do_lorem_template('FORM_SCREEN_INPUT_RADIO_LIST_ENTRY', array(
@@ -858,7 +858,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => 'false',
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '2',
             'TEXT' => lorem_phrase(),
         )));
         $radios->attach(do_lorem_template('FORM_SCREEN_INPUT_RADIO_LIST_ENTRY', array(
@@ -866,7 +866,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => 'false',
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '3',
             'TEXT' => lorem_phrase(),
         )));
 
@@ -1707,7 +1707,7 @@ class Hook_addon_registry_core_form_interfaces
             'HIDDEN_FIELDS' => '',
             'PRETTY_NAME' => lorem_word(),
             'NAME' => placeholder_random_id(),
-            'TABINDEX_PF' => placeholder_random(),
+            'TABINDEX_PF' => placeholder_number(),
             'COMCODE_EDITOR' => placeholder_blank(),
             'COMCODE_EDITOR_SMALL' => placeholder_blank(),
             'CLASS' => lorem_word(),

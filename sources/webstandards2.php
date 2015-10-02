@@ -1070,7 +1070,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                         }
                     }
 
-                    if ((isset($attributes['size'])) && (isset($attributes['type'])) && (($attributes['type'] == 'week') || ($attributes['type'] == 'hidden')/* || ($attributes['type'] == 'color') Size would apply if browser is using non-HTML5 fallback*/ || ($attributes['type'] == 'month') || ($attributes['type'] == 'range') || ($attributes['type'] == 'radio') || ($attributes['type'] == 'checkbox') || ($attributes['type'] == 'number'))) {
+                    if ((isset($attributes['size'])) && (isset($attributes['type'])) && (($attributes['type'] == 'week') || ($attributes['type'] == 'hidden')/* || ($attributes['type'] == 'color') || ($attributes['type'] == 'number') Size would apply if browser is using non-HTML5 fallback*/ || ($attributes['type'] == 'month') || ($attributes['type'] == 'range') || ($attributes['type'] == 'radio') || ($attributes['type'] == 'checkbox'))) {
                         $errors[] = array('XHTML_NO_SIZE_FOR');
                     }
 

@@ -369,7 +369,7 @@ class Hook_addon_registry_core_menus
                         'TITLE' => lorem_phrase(),
                         'TYPE' => 'mobile',
                     )
-                ), null, '', true),
+                ), null, '', false),
         );
     }
 

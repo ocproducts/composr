@@ -567,7 +567,7 @@ class Hook_addon_registry_galleries
             }
             $out->attach(do_lorem_template('BLOCK_SIDE_GALLERIES_LINE', array('TITLE' => lorem_word(), 'URL' => placeholder_url())));
 
-            $content->attach(do_lorem_template('BLOCK_SIDE_GALLERIES_LINE_CONTAINER', array('ID' => placeholder_random(), 'CAPTION' => lorem_phrase(), 'CONTENTS' => $out)));
+            $content->attach(do_lorem_template('BLOCK_SIDE_GALLERIES_LINE_CONTAINER', array('ID' => placeholder_random_id(), 'CAPTION' => lorem_phrase(), 'CONTENTS' => $out)));
         }
 
         return array(
@@ -918,7 +918,7 @@ class Hook_addon_registry_galleries
             'NUM_VIDEOS' => lorem_word(),
             'NUM_IMAGES' => lorem_word(),
             'NUM_CHILDREN' => lorem_word(),
-            'ID' => lorem_word(),
+            'ID' => placeholder_random_id(),
             'LANG' => lorem_word(),
             'ADD_DATE_RAW' => placeholder_date_raw(),
             'ADD_DATE' => lorem_word(),

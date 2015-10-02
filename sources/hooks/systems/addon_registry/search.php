@@ -231,7 +231,7 @@ class Hook_addon_registry_search
                 'LIMIT_TO' => placeholder_array(),
                 'URL' => placeholder_url(),
                 'FULL_SEARCH_URL' => placeholder_url(),
-            )), null, '', true)
+            )), null, '', false)
         );
     }
 
@@ -325,7 +325,7 @@ class Hook_addon_registry_search
         $options = new Tempcode();
         foreach (placeholder_array() as $value) {
             $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array(
-                'NAME' => placeholder_random(),
+                'NAME' => placeholder_random_id(),
                 'DISPLAY' => lorem_phrase(),
                 'SPECIAL' => lorem_phrase(),
                 'CHECKED' => lorem_phrase(),
@@ -333,56 +333,56 @@ class Hook_addon_registry_search
         }
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_LIST', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => placeholder_options(),
             'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_TEXT', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => lorem_word(),
             'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_TICK', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => lorem_word(),
             'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_FLOAT', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => lorem_word(),
             'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_INTEGER', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => lorem_word(),
             'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_DATE', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => lorem_word(),
             'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_DATE', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => lorem_word(),
             'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_TIME', array(
-            'NAME' => placeholder_random(),
+            'NAME' => placeholder_random_id(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => lorem_word(),
             'CHECKED' => false,
@@ -402,7 +402,7 @@ class Hook_addon_registry_search
                 'CHECKED' => lorem_phrase(),
                 'OPTIONS_URL' => placeholder_url(),
                 'LANG' => lorem_phrase(),
-                'NAME' => placeholder_random(),
+                'NAME' => placeholder_random_id(),
             )));
         }
 

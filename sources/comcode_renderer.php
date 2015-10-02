@@ -112,7 +112,7 @@ function _apply_emoticons($text)
  */
 function do_emoticon($imgcode)
 {
-    $tpl = do_template($imgcode[0], array('UNIQID' => uniqid('', true), 'SRC' => $imgcode[1], 'EMOTICON' => $imgcode[2]));
+    $tpl = do_template($imgcode[0], array('SRC' => $imgcode[1], 'EMOTICON' => $imgcode[2]));
     return $tpl;
 }
 
@@ -617,7 +617,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $height = strval(array_key_exists('height', $attributes) ? intval($attributes['height']) : 300);
             $timein = strval(array_key_exists('timein', $attributes) ? intval($attributes['timein']) : 0);
             $timeout = strval(array_key_exists('timeout', $attributes) ? intval($attributes['timeout']) : -1);
-            $temp_tpl = do_template('COMCODE_OVERLAY', array('_GUID' => 'dfd0f7a72cc2bf6b613b28f8165a0034', 'UNIQ_ID' => 'a' . uniqid('', true), 'EMBED' => $embed, 'ID' => ($attributes['param'] != '') ? $attributes['param'] : ('rand' . uniqid('', true)), 'X' => $x, 'Y' => $y, 'WIDTH' => $width, 'HEIGHT' => $height, 'TIMEIN' => $timein, 'TIMEOUT' => $timeout));
+            $temp_tpl = do_template('COMCODE_OVERLAY', array('_GUID' => 'dfd0f7a72cc2bf6b613b28f8165a0034', 'EMBED' => $embed, 'ID' => ($attributes['param'] != '') ? $attributes['param'] : ('rand' . uniqid('', true)), 'X' => $x, 'Y' => $y, 'WIDTH' => $width, 'HEIGHT' => $height, 'TIMEIN' => $timein, 'TIMEOUT' => $timeout));
             break;
 
         case 'code':
@@ -1028,7 +1028,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_parts->attach(do_template('COMCODE_RANDOM_PART', array('_GUID' => '5fa49a916304f9caa0ddedeb01531142', 'NUM' => strval($num), 'VAL' => $val)));
             }
 
-            $temp_tpl = do_template('COMCODE_RANDOM', array('_GUID' => '9b77aaf593b12c763fb0c367fab415b6', 'UNIQID' => uniqid('', true), 'FULL' => $embed, 'MAX' => strval($max), 'PARTS' => $_parts));
+            $temp_tpl = do_template('COMCODE_RANDOM', array('_GUID' => '9b77aaf593b12c763fb0c367fab415b6', 'FULL' => $embed, 'MAX' => strval($max), 'PARTS' => $_parts));
             break;
 
         case 'jumping':
@@ -1041,7 +1041,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             $embed = $embed->evaluate();
-            $temp_tpl = do_template('COMCODE_JUMPING', array('_GUID' => '85e9f83ed134868436a7db7692f56047', 'UNIQID' => uniqid('', true), 'FULL' => implode(', ', $attributes), 'TIME' => strval($embed), 'PARTS' => $_parts));
+            $temp_tpl = do_template('COMCODE_JUMPING', array('_GUID' => '85e9f83ed134868436a7db7692f56047', 'FULL' => implode(', ', $attributes), 'TIME' => strval($embed), 'PARTS' => $_parts));
             break;
 
         case 'shocker':
@@ -1067,7 +1067,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             $embed = $embed->evaluate();
-            $temp_tpl = do_template('COMCODE_SHOCKER', array('_GUID' => 'd648de0a5e3b5f84d82d781f4964e04a', 'UNIQID' => uniqid('', true), 'MIN_COLOR' => $min_color, 'MAX_COLOR' => $max_color, 'FULL' => implode(', ', $attributes), 'TIME' => strval(intval($embed)), 'PARTS' => $_parts));
+            $temp_tpl = do_template('COMCODE_SHOCKER', array('_GUID' => 'd648de0a5e3b5f84d82d781f4964e04a', 'MIN_COLOR' => $min_color, 'MAX_COLOR' => $max_color, 'FULL' => implode(', ', $attributes), 'TIME' => strval(intval($embed)), 'PARTS' => $_parts));
             break;
 
         case 'ticker':
@@ -1076,7 +1076,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $width = '300';
             }
             $fspeed = array_key_exists('speed', $attributes) ? float_to_raw_string(floatval($attributes['speed'])) : '1';
-            $temp_tpl = do_template('COMCODE_TICKER', array('_GUID' => 'e48893cda61995261577f0556443c537', 'UNIQID' => uniqid('', true), 'SPEED' => $fspeed, 'WIDTH' => $width, 'TEXT' => $embed));
+            $temp_tpl = do_template('COMCODE_TICKER', array('_GUID' => 'e48893cda61995261577f0556443c537', 'SPEED' => $fspeed, 'WIDTH' => $width, 'TEXT' => $embed));
 
             break;
 

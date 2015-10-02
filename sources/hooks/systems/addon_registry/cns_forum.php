@@ -357,11 +357,11 @@ class Hook_addon_registry_cns_forum
     public function tpl_previews()
     {
         return array(
-            'templates/CNS_TOPIC_POST_AVATAR.tpl' => 'cns_topic_screen',
+            'templates/CNS_TOPIC_POST_AVATAR.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
             'templates/CNS_FORUM_TOPIC_WRAPPER.tpl' => 'cns_forum',
             'templates/CNS_EDIT_FORUM_SCREEN_GROUPING.tpl' => 'administrative__cns_edit_forum_screen',
-            'templates/CNS_USER_MEMBER.tpl' => 'cns_topic_screen',
-            'templates/CNS_MEMBER_BOX.tpl' => 'cns_topic_screen',
+            'templates/CNS_USER_MEMBER.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/CNS_MEMBER_BOX.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
             'templates/CNS_EDIT_FORUM_SCREEN_FORUM.tpl' => 'administrative__cns_edit_forum_screen',
             'templates/CNS_EDIT_FORUM_SCREEN.tpl' => 'administrative__cns_edit_forum_screen',
             'templates/CNS_HISTORY_POST.tpl' => 'administrative__cns_history_screen',
@@ -382,12 +382,12 @@ class Hook_addon_registry_cns_forum
             'templates/CNS_FORUM_TOPIC_LIST_LINE.tpl' => 'cns_forum_topic_list_line',
             'templates/CNS_FORUM_LIST_LINE.tpl' => 'cns_forum_list_line',
             'templates/CNS_FORUM_INTRO_QUESTION_POPUP.tpl' => 'cns_forum_intro_question_popup',
-            'templates/CNS_MEMBER_BOX_CUSTOM_FIELD.tpl' => 'cns_topic_screen',
-            'templates/CNS_POSTER_MEMBER.tpl' => 'cns_topic_screen',
-            'templates/CNS_GUEST_DETAILS.tpl' => 'cns_topic_screen',
+            'templates/CNS_MEMBER_BOX_CUSTOM_FIELD.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/CNS_POSTER_MEMBER.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/CNS_GUEST_DETAILS.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
             'templates/CNS_POSTER_GUEST.tpl' => 'cns_isolated_post',
-            'templates/CNS_TOPIC_POST_LAST_EDITED.tpl' => 'cns_topic_screen',
-            'templates/CNS_TOPIC_POST.tpl' => 'cns_topic_screen',
+            'templates/CNS_TOPIC_POST_LAST_EDITED.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/CNS_TOPIC_POST.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
             'templates/CNS_MEMBER_BAR.tpl' => 'block_main_member_bar_member',
             'templates/MEMBER_BAR_SEARCH.tpl' => 'block_main_member_bar_search',
             'templates/CNS_GUEST_BAR.tpl' => 'block_main_member_bar_guest',
@@ -407,14 +407,14 @@ class Hook_addon_registry_cns_forum
             'text/CNS_QUOTE_FCOMCODE.txt' => 'cns_quote_fcomcode',
             'templates/CNS_MEMBER_PT_RULES_SCREEN.tpl' => 'cns_member_pt_rules_screen',
             'templates/CNS_POSTING_SCREEN_POSTS.tpl' => 'cns_posting_screen_posts',
-            'templates/CNS_TOPIC_FIRST_UNREAD.tpl' => 'cns_topic_screen',
-            'templates/CNS_TOPIC_POLL_BUTTON.tpl' => 'cns_topic_screen',
+            'templates/CNS_TOPIC_FIRST_UNREAD.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/CNS_TOPIC_POLL_BUTTON.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
             'templates/CNS_TOPIC_POLL_ANSWER_RESULTS.tpl' => 'cns_topic_voted_wrap',
-            'templates/CNS_TOPIC_POLL_ANSWER.tpl' => 'cns_topic_screen',
-            'templates/CNS_TOPIC_POLL_ANSWER_RADIO.tpl' => 'cns_topic_screen',
-            'templates/CNS_TOPIC_POLL.tpl' => 'cns_topic_screen',
-            'templates/CNS_TOPIC_SCREEN.tpl' => 'cns_topic_screen',
-            'templates/NOTIFICATION_BUTTONS.tpl' => 'cns_topic_screen',
+            'templates/CNS_TOPIC_POLL_ANSWER.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/CNS_TOPIC_POLL_ANSWER_RADIO.tpl' => 'cns_topic_not_voted_radio_wrap',
+            'templates/CNS_TOPIC_POLL.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/CNS_TOPIC_SCREEN.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
+            'templates/NOTIFICATION_BUTTONS.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
             'templates/CNS_TOPIC_POLL_VIEW_RESULTS.tpl' => 'cns_topic_voted_wrap',
             'templates/CNS_PRIVATE_TOPIC_LINK.tpl' => 'cns_private_topic_link',
             'templates/CNS_PT_FILTERS.tpl' => 'cns_forum',
@@ -1106,7 +1106,7 @@ class Hook_addon_registry_cns_forum
                 'BREADCRUMBS' => placeholder_breadcrumbs(),
                 'RAW_TIME' => placeholder_date_raw(),
                 'UNREAD' => lorem_phrase(),
-                'ID' => placeholder_random(),
+                'ID' => placeholder_random_id(),
                 'FORUM_ID' => placeholder_id(),
                 'HOVER' => lorem_phrase(),
                 'PAGES' => lorem_phrase(),
@@ -1151,7 +1151,7 @@ class Hook_addon_registry_cns_forum
                 ));
 
                 $forums->attach(do_lorem_template('CNS_FORUM_IN_GROUPING', array(
-                    'ID' => placeholder_random(),
+                    'ID' => placeholder_random_id(),
                     'NEW_POST_OR_NOT' => placeholder_img_code('cns_general'),
                     'LANG_NEW_POST_OR_NOT' => lorem_word(),
                     'FORUM_NAME' => lorem_phrase(),
@@ -1171,7 +1171,7 @@ class Hook_addon_registry_cns_forum
             }
 
             $forum_groupings->attach(do_lorem_template('CNS_FORUM_GROUPING', array(
-                'GROUPING_ID' => placeholder_random(),
+                'GROUPING_ID' => placeholder_random_id(),
                 'EXPAND_TYPE' => 'expand',
                 'DISPLAY' => 'block',
                 'GROUPING_TITLE' => lorem_phrase(),
@@ -1487,9 +1487,21 @@ class Hook_addon_registry_cns_forum
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__cns_topic_screen()
+    public function tpl_preview__cns_topic_not_voted_checkboxes_wrap()
     {
-        return $this->_tpl_preview__cns_topic_screen();
+        return $this->_tpl_preview__cns_topic_screen(false, true);
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__cns_topic_not_voted_radio_wrap()
+    {
+        return $this->_tpl_preview__cns_topic_screen(false, false);
     }
 
     /**
@@ -1510,9 +1522,10 @@ class Hook_addon_registry_cns_forum
      * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
      *
      * @param  boolean $voted Whether to show for a has-voted-poll or not.
+     * @param  boolean $checkboxes Whether to show checkboxes (as oppose to radio buttons). Irrelevant if !$voted.
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function _tpl_preview__cns_topic_screen($voted = false)
+    public function _tpl_preview__cns_topic_screen($voted, $checkboxes)
     {
         require_css('cns');
 
@@ -1568,34 +1581,21 @@ class Hook_addon_registry_cns_forum
 
             if (!$voted) {
                 $answers = new Tempcode();
-                $answer_tpl = new Tempcode();
                 foreach (placeholder_array() as $_k => $_v) {
-                    $answer_tpl->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RADIO', array(
+                    $answers->attach(do_lorem_template($checkboxes ? 'CNS_TOPIC_POLL_ANSWER' : 'CNS_TOPIC_POLL_ANSWER_RADIO', array(
                         'REAL_BUTTON' => '',
-                        'ID' => placeholder_random(),
+                        'ID' => placeholder_random_id(),
                         'ANSWER' => lorem_phrase(),
-                        'I' => placeholder_random(),
+                        'I' => strval($_k),
                     )));
                 }
-                $answers->attach($answer_tpl);
-
-                $answer_tpl = new Tempcode();
-                foreach (placeholder_array() as $_k => $_v) {
-                    $answer_tpl->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER', array(
-                        'REAL_BUTTON' => '',
-                        'ID' => placeholder_random(),
-                        'ANSWER' => lorem_phrase(),
-                        'I' => placeholder_random(),
-                    )));
-                }
-                $answers->attach($answer_tpl);
 
                 $button = do_lorem_template('CNS_TOPIC_POLL_BUTTON', array(
                     'RESULTS_URL' => placeholder_url(),
                 ));
 
                 $poll->attach(do_lorem_template('CNS_TOPIC_POLL', array(
-                    'ID' => placeholder_random(),
+                    'ID' => placeholder_random_id(),
                     'NUM_CHOICES' => $num_choices,
                     'PRIVATE' => $private,
                     'QUESTION' => lorem_phrase(),
@@ -1608,36 +1608,32 @@ class Hook_addon_registry_cns_forum
                 )));
             } else {
                 $answers = new Tempcode();
-
-                $answer_tpl = new Tempcode();
-                $answer_tpl->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
-                    'ID' => placeholder_random(),
+                $answers->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
+                    'ID' => placeholder_random_id(),
                     'NUM_VOTES' => '10',
                     'WIDTH' => '30',
                     'ANSWER' => lorem_phrase(),
-                    'I' => placeholder_random(),
+                    'I' => '0',
                 )));
-                $answer_tpl->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
-                    'ID' => placeholder_random(),
+                $answers->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
+                    'ID' => placeholder_random_id(),
                     'NUM_VOTES' => '15',
                     'WIDTH' => '45',
                     'ANSWER' => lorem_phrase(),
-                    'I' => placeholder_random(),
+                    'I' => '1',
                 )));
-                $answer_tpl->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
-                    'ID' => placeholder_random(),
+                $answers->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
+                    'ID' => placeholder_random_id(),
                     'NUM_VOTES' => '20',
                     'WIDTH' => '60',
                     'ANSWER' => lorem_phrase(),
-                    'I' => placeholder_random(),
+                    'I' => '2',
                 )));
-
-                $answers->attach($answer_tpl);
 
                 $button = new Tempcode();
 
                 $poll->attach(do_lorem_template('CNS_TOPIC_POLL_VIEW_RESULTS', array(
-                    'ID' => placeholder_random(),
+                    'ID' => placeholder_random_id(),
                     'NUM_CHOICES' => $num_choices,
                     'PRIVATE' => $private,
                     'QUESTION' => lorem_phrase(),
@@ -1650,7 +1646,7 @@ class Hook_addon_registry_cns_forum
                 )));
             }
 
-            //buttons
+            // Buttons
             $buttons = new Tempcode();
             foreach (placeholder_array(1) as $_k => $_v) {
                 $buttons->attach(do_lorem_template('BUTTON_SCREEN', array(
@@ -1662,8 +1658,10 @@ class Hook_addon_registry_cns_forum
                 )));
             }
 
-            //posts
+            // Posts...
+
             $posts = new Tempcode();
+
             $first_unread = do_lorem_template('CNS_TOPIC_FIRST_UNREAD');
 
             $last_edited = do_lorem_template('CNS_TOPIC_POST_LAST_EDITED', array(
@@ -1680,6 +1678,7 @@ class Hook_addon_registry_cns_forum
             $poster_details = do_lorem_template('CNS_GUEST_DETAILS', array(
                 'CUSTOM_FIELDS' => $custom_fields,
             ));
+
             $poster_details_mem = do_lorem_template('CNS_MEMBER_BOX', array(
                 'AVATAR_URL' => placeholder_image_url(),
                 'ONLINE' => false,
@@ -1693,8 +1692,9 @@ class Hook_addon_registry_cns_forum
                 'CUSTOM_FIELDS_FULL' => lorem_phrase(),
                 'GIVE_CONTEXT' => false,
             ));
+
             $poster = do_lorem_template('CNS_POSTER_MEMBER', array(
-                'ID' => placeholder_random(),
+                'ID' => placeholder_random_id(),
                 'POSTER_DETAILS' => $poster_details_mem,
                 'PROFILE_URL' => placeholder_url(),
                 'POSTER_USERNAME' => lorem_word(),
@@ -1717,7 +1717,7 @@ class Hook_addon_registry_cns_forum
                 'IS_LEADER' => lorem_phrase(),
             ));
 
-            //buttons
+            // Buttons
             $buttons = new Tempcode();
             foreach (placeholder_array(1) as $_k => $_v) {
                 $buttons->attach(do_lorem_template('BUTTON_SCREEN_ITEM', array(
@@ -1731,11 +1731,11 @@ class Hook_addon_registry_cns_forum
             }
 
             $posts->attach(do_lorem_template('CNS_TOPIC_POST', array(
-                'ID' => placeholder_random(),
+                'ID' => placeholder_random_id(),
                 'GIVE_CONTEXT' => false,
-                'TOPIC_FIRST_POST_ID' => placeholder_random(),
+                'TOPIC_FIRST_POST_ID' => placeholder_random_id(),
                 'TOPIC_FIRST_POSTER' => lorem_phrase(),
-                'POST_ID' => placeholder_random(),
+                'POST_ID' => placeholder_random_id(),
                 'URL' => placeholder_url(),
                 'CLASS' => lorem_phrase(),
                 'EMPHASIS' => lorem_phrase(),
@@ -1760,7 +1760,7 @@ class Hook_addon_registry_cns_forum
             )));
         }
 
-        //buttons
+        // Buttons
         $buttons = new Tempcode();
         foreach (placeholder_array(1) as $k => $v) {
             $buttons->attach(do_lorem_template('BUTTON_SCREEN', array(
@@ -1792,7 +1792,7 @@ class Hook_addon_registry_cns_forum
             'BUTTON_SCREENS' => $buttons,
             'POSTS' => $posts,
             'MAY_CHANGE_MAX' => lorem_word(),
-            'LAST_POSTER' => placeholder_random(),
+            'LAST_POSTER' => placeholder_random_id(),
             'FORUM_ID' => placeholder_id(),
         ));
 
