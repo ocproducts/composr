@@ -1567,7 +1567,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
      * @param  ?ID_TEXT $name The catalogue name (null: n/a)
      * @return ?ID_TEXT The content type (null: none)
      */
-    function tied_to_content_type($name)
+    public function tied_to_content_type($name)
     {
         if (is_null($name)) {
             return null;
@@ -2178,7 +2178,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
                 array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
                 is_null($name) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
                 array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
-                is_null($name) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name), get_module_zone('catalogues')),do_lang('VIEW_CATALOGUE'))
+                is_null($name) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
             ),
             do_lang('MANAGE_CATALOGUES')
         );

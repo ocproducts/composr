@@ -755,7 +755,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
  * @param  ?AUTO_LINK $post_id Post ID (null: Use attachment ID)
  * @param  ?AUTO_LINK $attachment_id Attachment ID (null: Use post ID)
  * @param  boolean $non_image_only Only do non-image attachments (because image ones are shown as [img] tags separately). Can only be used if $attachment_id is null.
- * @param  string $content Write content changes here (null: Don't)
+ * @param  ?string $content Write content changes here (null: Don't)
  * @return array List of attachment details
  */
 function get_post_attachments($post_id, $attachment_id = null, $non_image_only = false, &$content = null)

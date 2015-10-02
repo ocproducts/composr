@@ -2790,9 +2790,10 @@ function pack($format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $
  * Parse a URL and return its components.
  *
  * @param  string $url The URL to parse.
- * @return ~array A map of details about the URL (false: URL cannot be parsed).
+ * @param  integer $component The component to get (-1 get all in an array).
+ * @return ~mixed A map of details about the URL (false: URL cannot be parsed).
  */
-function parse_url($url)
+function parse_url($url, $component = -1)
 {
     return array();
 }

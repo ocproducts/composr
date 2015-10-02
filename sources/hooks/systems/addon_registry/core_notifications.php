@@ -132,6 +132,7 @@ class Hook_addon_registry_core_notifications
             'sources/hooks/systems/config/notification_keep_days.php',
             'sources/hooks/systems/config/web_notifications_enabled.php',
             'sources/hooks/systems/config/notification_poll_frequency.php',
+            'sources/hooks/systems/config/notification_desktop_alerts.php',
             'data/notifications.php',
             'sources/blocks/top_notifications.php',
             'sources/hooks/systems/startup/notification_poller_init.php',

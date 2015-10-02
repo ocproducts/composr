@@ -489,6 +489,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         if (preg_match('#^_tests(/|$)#', strtolower($filepath)) != 0) {
             return true; // Test set may have various temporary files buried within
         }
+        if (preg_match('#^data_custom/ckeditor(/|$)#', strtolower($filepath)) != 0) {
+            return true; // Don't want development version of CKEditor
+        }
 
         if (preg_match('#^data_custom/sitemaps(/|$)#', strtolower($filepath)) != 0) {
             return true; // Don't want sitemap files

@@ -67,7 +67,7 @@ function download_gateway_script()
         require_lang('downloads');
         $title = get_screen_title('DOWNLOAD_GATEWAY', true, array(escape_html($name)));
         $tpl = do_template('DOWNLOAD_GATEWAY_SCREEN', array('TITLE' => $title, 'NAME' => $name, 'ID' => strval($id), 'DOWNLOAD_URL' => $download_url, 'URL' => $url));
-        $tpl_wrapped = globalise($tpl, null, '', true);
+        $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {
         header('Location:' . $download_url);

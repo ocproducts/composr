@@ -17,10 +17,10 @@ The persistent cache is implemented in 3 ways, and one of them is used, or none 
 3) via file writing (for testing only -- not 'concurrent' safe for use on live sites)
 
 The usage of the cache is very simple. You can:
- - read a named (nameable by any data structure, like an array) entry ([tt]persistant_cache_get[/tt])
- - write one named entry ([tt]persistant_cache_set[/tt])
- - delete one named entry ([tt]persistant_cache_delete[/tt])
- - delete them all ([tt]persistant_cache_empty[/tt])
+ - read a named (nameable by any data structure, like an array) entry ([tt]persistent_cache_get[/tt])
+ - write one named entry ([tt]persistent_cache_set[/tt])
+ - delete one named entry ([tt]persistent_cache_delete[/tt])
+ - delete them all ([tt]persistent_cache_empty[/tt])
 As you can see, each entry is given a name. The name identifies the data being cached. It can be a string, but usually it is actually an array, specifying a set of parameters that define what is being cached; usually the first entry in the array is a standard string to identify what's being cached, and the rest detail the situation the cache entry is valid for (e.g. a theme name the cache entry is built assuming, a list of usergroups the cache entry is valid for).
 
 There is a 'server' level cache, and a 'site' level cache. The programmer only needs to distinguish these on writes. The server level allows storage for access by all Composr installations of the same version (more efficient due to memory sharing). It is very rare that a server level cache may actually be done, due to the high configurability of individual sites.

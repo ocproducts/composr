@@ -353,7 +353,7 @@ function ticket_add_post($member, $ticket_id, $ticket_type_id, $title, $post, $t
     // Get the forum ID first
     $fid = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'forum_id', array('ticket_id' => $ticket_id));
     if (is_null($fid)) {
-        $fid = get_ticket_forum_id($member, ($ticket_type == -1) ? null : $ticket_type_id);
+        $fid = get_ticket_forum_id($member, ($ticket_type_id == -1) ? null : $ticket_type_id);
     }
 
     $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(

@@ -194,6 +194,9 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
  */
 function set_session_id($id, $guest_session = false)  // NB: Guests sessions can persist because they are more benign
 {
+    global $DID_CHANGE_SESSION_ID;
+    $DID_CHANGE_SESSION_ID = true;
+
     // If checking safe mode, can really get in a spin. Don't let it set a session cookie till we've completed startup properly.
     global $CHECKING_SAFEMODE;
     if (($CHECKING_SAFEMODE) && ($id == '')) {

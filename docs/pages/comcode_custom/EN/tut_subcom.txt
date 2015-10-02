@@ -21,6 +21,8 @@ The [concept]Conversr[/concept] system has a powerful usergroup system.
 
 {!cns:DOC_GROUPS}
 
+Usergroup(s) is commonly abbreviated to group(s).
+
 [title="3"]Ranks[/title]
 
 Members will automatically enter usergroups on their rank ladder as they accumulate points. Specifically, the total points ever earned, as point spending does not impede raising through the ranks.

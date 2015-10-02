@@ -1574,6 +1574,12 @@ function version_specific()
                 }
             }
 
+            // For old (and renamed) non-bundled addons
+            if ($GLOBALS['SITE_DB']->table_exists('bank')) {
+                $GLOBALS['SITE_DB']->alter_table_field('bank', 'divident', 'INTEGER', 'dividend');
+                rename_config_option('bank_divident', 'bank_dividend');
+            }
+
             // File replacements
             $reps = array(
                 '#([^\w])cedi([^\w])#' => '$1wiki$2',

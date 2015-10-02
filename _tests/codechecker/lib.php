@@ -174,7 +174,7 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = null)
             if ($stripped_path == 'exports') {
                 continue; // Would be covered by IGNORE_NONBUNDLED_SCATTERED, but we don't always have that
             }
-            if ((should_ignore_file($stripped_path, $bitmask, 0)) && (substr($stripped_path, 0, 8) != 'mobiquo/'/*We do not want to skip this even though it\'s a non-bundled addon*/)) {
+            if ((should_ignore_file($stripped_path, $bitmask, 0)) && (substr($stripped_path, 0, 8))) {
                 continue;
             }
 

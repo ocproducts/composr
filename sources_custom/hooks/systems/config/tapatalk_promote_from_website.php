@@ -34,7 +34,7 @@ class Hook_config_tapatalk_promote_from_website
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'ocf_tapatalk',
+            'addon' => 'cns_tapatalk',
         );
     }
 

@@ -74,7 +74,7 @@ function _hash_encode64($input, $count, &$itoa64)
  * @param  string $password To encode
  * @param  string $setting Encode settings in special format
  * @param  string $itoa64 Lookup table used internally
- * @return string The encoded output
+ * @return ~string The encoded output (false: error)
  * @ignore
  */
 function _hash_crypt_private($password, $setting, &$itoa64)
@@ -1331,7 +1331,11 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             return '';
         }
 
-        return _hash_crypt_private($data, $hash, $itoa64);
+        $test = _hash_crypt_private($data, $hash, $itoa64);
+        if ($test === false) {
+            return '';
+        }
+        return $test;
     }
 
     /**

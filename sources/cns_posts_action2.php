@@ -21,7 +21,7 @@
 /**
  * Get the poster name a Guest may have specified, after sanitising it.
  *
- * @param  boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it).
+ * @param  ?boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it).
  * @return string Poster name.
  */
 function cns_get_safe_specified_poster_name($is_required_field = null)

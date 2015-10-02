@@ -37,7 +37,7 @@ class Block_main_emoticon_codes
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array();
+        $info['parameters'] = array('num_columns');
         return $info;
     }
 

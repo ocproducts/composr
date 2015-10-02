@@ -97,6 +97,7 @@ class Module_login
     public $visible_now;
     public $username;
     public $feedback;
+    public $fields_to_not_relay;
 
     /**
      * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
@@ -106,6 +107,8 @@ class Module_login
     public function pre_run()
     {
         $type = get_param_string('type', 'browse');
+
+        $this->fields_to_not_relay = array('login_username', 'password', 'remember', 'login_invisible', 'redirect', 'session_id');
 
         if ($type == 'browse') {
             $this->title = get_screen_title('_LOGIN');
@@ -218,10 +221,13 @@ class Module_login
 
         // POST field relaying
         if (count($_FILES) == 0) { // Only if we don't have _FILES (which could never be relayed)
-            $passion->attach(build_keep_post_fields(array('redirect')));
+            $passion->attach(build_keep_post_fields($this->fields_to_not_relay));
             $redirect_passon = post_param_string('redirect', null);
             if (!is_null($redirect_passon)) {
                 $passion->attach(form_input_hidden('redirect_passon', $redirect_passon)); // redirect_passon is used when there are POST fields, as it says what the redirect will be on the post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
+            }
+            if (post_param_string('session_id', '') != '') {
+                $passion->attach(form_input_hidden('session_id', $GLOBALS['DID_CHANGE_SESSION_ID'] ? get_session_id() : post_param_string('session_id')));
             }
         }
 
@@ -269,10 +275,13 @@ class Module_login
                 $post = new Tempcode();
                 $refresh = new Tempcode();
             } else {
-                $post = build_keep_post_fields(array('login_username', 'password', 'remember', 'login_invisible', 'redirect'));
+                $post = build_keep_post_fields($this->fields_to_not_relay);
                 $redirect_passon = post_param_string('redirect_passon', null); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
                 if (!is_null($redirect_passon)) {
                     $post->attach(form_input_hidden('redirect', enforce_sessioned_url($redirect_passon)));
+                }
+                if (post_param_string('session_id', '') != '') {
+                    $post->attach(form_input_hidden('session_id', $GLOBALS['DID_CHANGE_SESSION_ID'] ? get_session_id() : post_param_string('session_id')));
                 }
                 $refresh = do_template('JS_REFRESH', array('_GUID' => 'c7d2f9e7a2cc637f3cf9ac4d1cf97eca', 'FORM_NAME' => 'redir_form'));
             }

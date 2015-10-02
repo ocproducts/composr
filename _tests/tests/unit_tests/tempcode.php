@@ -376,7 +376,7 @@ class Tempcode_test_set extends cms_test_case
 
 
 	<p>
-		IF_EMPTY false negative (Tempcode) (good)
+		IF_EMPTY false negative (tempcode) (good)
 	</p>
 
 

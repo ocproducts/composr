@@ -34,7 +34,7 @@ class Hook_config_mark_as_edited
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'ocf_tapatalk',
+            'addon' => 'cns_tapatalk',
         );
     }
 

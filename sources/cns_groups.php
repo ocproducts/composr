@@ -77,6 +77,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
  * Get a nice list for selection from the usergroups. Suitable for admin use only (does not check hidden status).
  *
  * @param  ?AUTO_LINK $it Usergroup selected by default (null: no specific default).
+ * @param  boolean $allow_guest_group Allow the guest usergroup to be in the list.
  * @return Tempcode The list.
  */
 function cns_create_selection_list_usergroups($it = null, $allow_guest_group = true)

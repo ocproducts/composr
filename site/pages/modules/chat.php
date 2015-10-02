@@ -627,7 +627,7 @@ class Module_chat
                 'private_message',
                 'invite'
             );
-            if (has_privilege(get_member(),'create_private_room')) {
+            if (has_privilege(get_member(), 'create_private_room')) {
                 $_buttons[] = 'new_room';
             }
             foreach ($_buttons as $button) {

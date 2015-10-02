@@ -336,7 +336,7 @@ function init__global2()
     @setlocale(LC_ALL, $locales);
     unset($locales);
 
-    // Check RBL's
+    // Check RBLs
     $spam_check_level = get_option('spam_check_level');
     if ($spam_check_level == 'EVERYTHING') {
         if (get_option('spam_block_lists') != '') {
@@ -455,11 +455,11 @@ function init__global2()
             $security_token_exceptions = get_option('security_token_exceptions') . "\nlogin";
             $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
             if (!in_array(get_page_name(), $_security_token_exceptions) && !in_array(get_zone_name() . ':', $_security_token_exceptions)) {
-                /*if (post_param_string('session_id', null) === null) {    TODO: This does not work well, tune it
+                if (post_param_string('session_id', null) === null) {
                     warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_2_HACK'));
                 } elseif (post_param_string('session_id') != get_session_id()) {
                     warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_3_HACK'));
-                }*/
+                }
             }
         }
     }

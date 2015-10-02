@@ -54,6 +54,8 @@ Each question details has:
 
 /**
  * Provide multi-screen (multi-form) decision trees.
+ *
+ * @package        core
  */
 class DecisionTree
 {

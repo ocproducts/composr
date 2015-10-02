@@ -96,6 +96,7 @@ class html_safe_lang_test_set extends cms_test_case
                             'TUTORIAL_ON_THIS',
                             'NO_PHP_FTP',
                             'NA_EM',
+                            'NO_RESET_ACCESS',
                             'QUERY_FAILED',
                             'HTTP_DOWNLOAD_NO_SERVER',
                             '_MEMBER_NO_EXIST',

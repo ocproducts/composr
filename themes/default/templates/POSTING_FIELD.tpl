@@ -75,10 +75,10 @@
 					<script>// <![CDATA[
 						if ((window.wysiwyg_on) && (wysiwyg_on()))
 						{
-							document.getElementById('{NAME;*}').readOnly=true; // Stop typing while it loads
+							document.getElementById('{NAME;/}').readOnly=true; // Stop typing while it loads
 							window.setTimeout(function() {
-								if (document.getElementById('{NAME;*}').value==document.getElementById('{NAME;*}').defaultValue)
-									document.getElementById('{NAME;*}').readOnly=false; // Too slow, maybe WYSIWYG failed due to some network issue
+								if (document.getElementById('{NAME;/}').value==document.getElementById('{NAME;/}').defaultValue)
+									document.getElementById('{NAME;/}').readOnly=false; // Too slow, maybe WYSIWYG failed due to some network issue
 							},3000);
 						}
 
@@ -96,7 +96,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$AND,{$CNS},{$JS_ON}}}}
 				<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
 					{+START,IF,{$AND,{$CNS},{$JS_ON}}}
-						<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
+						<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 					{+END}
 
 					{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}

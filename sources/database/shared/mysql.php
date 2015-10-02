@@ -237,7 +237,7 @@ class Database_super_mysql
             $charset = 'utf8';
         }
 
-        $query .= ' CHARACTER SET='.preg_replace('#\_.*$#','',$charset);
+        $query .= ' CHARACTER SET=' . preg_replace('#\_.*$#', '', $charset);
 
         $query .= ' ' . $type_key . '=' . $table_type . ';';
         $this->db_query($query, $db, null, null);

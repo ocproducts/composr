@@ -20,6 +20,8 @@
 
 /**
  * CRUD module (Create/Update/Delete), for operations on content types.
+ *
+ * @package        core
  */
 abstract class Standard_crud_module
 {

@@ -148,6 +148,7 @@ function display_alert(notification)
 	}
 
 	// Show desktop notification
+	/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
 	if (window.notify.isSupported)
 	{
 		var icon='{$IMG;,favicon}'.replace(/^https?:/,window.location.protocol);
@@ -175,6 +176,7 @@ function display_alert(notification)
 			window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere
 		}
 	}
+	/*{+END}*/
 
 	// Mark done
 	window.notifications_already_presented[id]=true;
@@ -271,6 +273,8 @@ function _toggle_messaging_box(event,name,hide)
 
 	return false;
 }
+
+/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
 
 /**
  * Copyright 2012 Tsvetan Tsvetkov
@@ -487,3 +491,5 @@ function _toggle_messaging_box(event,name,hide)
 		Object.seal(win.notify);
 	}
 }(window));
+
+/*{+END}*/

@@ -37,13 +37,8 @@ class cms_merge_test_set extends cms_test_case
             'bookable_supplement_for',
             'booking',
             'booking_supplement',
-            'cached_comcode_pages',
-            'cached_weather_codes',
-            'cache_on',
             'calendar_jobs',
             'captchas',
-            'catalogue_cat_treecache',
-            'catalogue_childcountcache',
             'chat_active',
             'chat_events',
             'chat_messages',
@@ -105,7 +100,6 @@ class cms_merge_test_set extends cms_test_case
             'trans_expecting',
             'tutorial_links',
             'url_id_monikers',
-            'url_title_cache',
             'webstandards_checked_once',
             'video_transcoding',
             'workflows',
@@ -116,6 +110,17 @@ class cms_merge_test_set extends cms_test_case
             'tutorials_external',
             'tutorials_external_tags',
             'tutorials_internal',
+            'w_attempts',
+            'w_attempts',
+            'w_inventory',
+            'w_itemdef',
+            'w_items',
+            'w_members',
+            'w_messages',
+            'w_portals',
+            'w_realms',
+            'w_rooms',
+            'w_travelhistory',
 
             // You should process orders before importing
             'shopping_cart',
@@ -135,7 +140,7 @@ class cms_merge_test_set extends cms_test_case
 
         $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
         foreach ($tables as $table) {
-            if (!in_array($table['m_table'], $non_core_tables)) {
+            if ((!in_array($table['m_table'], $non_core_tables)) && (strpos($table['m_table'], 'cache') === false)) {
                 $this->assertTrue(strpos($c, $table['m_table']) !== false, 'No import defined for ' . $table['m_table']);
             }
         }

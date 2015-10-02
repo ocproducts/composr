@@ -50,7 +50,7 @@ class Hook_config_simplified_attachments_ui
      */
     public function get_default()
     {
-        if (get_option('complex_uploader')=='0') {
+        if (get_option('complex_uploader') == '0') {
             return null;
         }
 

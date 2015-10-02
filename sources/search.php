@@ -31,6 +31,8 @@ function init__search()
 
 /**
  * Base class for catalogue search / custom content fields search.
+ *
+ * @package        search
  */
 abstract class FieldsSearchHook {
     /**

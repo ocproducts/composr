@@ -188,6 +188,8 @@ function find_sitemap_object($page_link)
 
 /**
  * Sitemap node type base class.
+ *
+ * @package        core
  */
 abstract class Hook_sitemap_base
 {
@@ -591,6 +593,8 @@ abstract class Hook_sitemap_base
 
 /**
  * Sitemap node type for content types.
+ *
+ * @package        core
  */
 abstract class Hook_sitemap_content extends Hook_sitemap_base
 {

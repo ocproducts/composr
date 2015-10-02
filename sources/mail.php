@@ -90,7 +90,7 @@ function _indent_callback($matches)
 function _title_callback($matches)
 {
     $symbol = '-';
-    if (strpos($matches[1], '1') !== false) {
+    if (strpos($matches[1], '1') !== false || $matches[1] == '') {
         $symbol = '=';
     }
     return $matches[2] . "\n" . str_repeat($symbol, strlen($matches[2]));
@@ -1338,7 +1338,26 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     }
     if (is_null($fields)) {
         $fields = array();
-        foreach (array_diff(array_keys($_POST), array('MAX_FILE_SIZE', 'perform_webstandards_check', '_validated', 'posting_ref_id', 'f_face', 'f_colour', 'f_size', 'x', 'y', 'name', 'subject', 'email', 'to_members_email', 'to_written_name', 'redirect', 'http_referer', md5(get_site_name().': antispam'))) as $key) {
+        $boring_fields = array(
+            'MAX_FILE_SIZE',
+            'perform_webstandards_check',
+            '_validated',
+            'posting_ref_id',
+            'f_face',
+            'f_colour',
+            'f_size',
+            'x',
+            'y',
+            'name',
+            'subject',
+            'email',
+            'to_members_email',
+            'to_written_name',
+            'redirect',
+            'http_referer',
+            md5(get_site_name() . ': antispam'),
+        );
+        foreach (array_diff(array_keys($_POST), $boring_fields) as $key) {
             $is_hidden = (strpos($key, 'hour') !== false) || (strpos($key, 'access_') !== false) || (strpos($key, 'minute') !== false) || (strpos($key, 'confirm') !== false) || (strpos($key, 'pre_f_') !== false) || (strpos($key, 'label_for__') !== false) || (strpos($key, 'wysiwyg_version_of_') !== false) || (strpos($key, 'is_wysiwyg') !== false) || (strpos($key, 'require__') !== false) || (strpos($key, 'tempcodecss__') !== false) || (strpos($key, 'comcode__') !== false) || (strpos($key, '_parsed') !== false) || (substr($key, 0, 1) == '_') || (substr($key, 0, 9) == 'hidFileID') || (substr($key, 0, 11) == 'hidFileName');
             if ($is_hidden) {
                 continue;

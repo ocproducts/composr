@@ -108,7 +108,7 @@ function approve_ip_script()
         $submit_name = do_lang_tempcode('PROCEED');
         $url = find_script('approve_ip') . $keep;
         $middle = do_template('FORM_SCREEN', array('_GUID' => 'd92ce4ec82dc709f920a4ce6760778de', 'TITLE' => $title, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'URL' => $url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
-        $echo = globalise($middle, null, '', true);
+        $echo = globalise($middle, null, '', true, true);
         $echo->evaluate_echo();
         exit();
     }
@@ -123,7 +123,7 @@ function approve_ip_script()
 
     $title = get_screen_title('CONFIRM');
     $middle = redirect_screen($title, get_base_url() . $keep, do_lang_tempcode('SUCCESS'));
-    $echo = globalise($middle, null, '', true);
+    $echo = globalise($middle, null, '', true, true);
     $echo->evaluate_echo();
     exit();
 }

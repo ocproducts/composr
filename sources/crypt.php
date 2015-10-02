@@ -140,7 +140,7 @@ function init__crypt()
 
             $ret = crypt($password, $hash);
 
-            if (!is_string($ret) || _crypt_strlen($ret) == 0 || _crypt_strlen($ret)!=$result_length) {
+            if (!is_string($ret) || _crypt_strlen($ret) == 0 || _crypt_strlen($ret) != $result_length) {
                 return false;
             }
 

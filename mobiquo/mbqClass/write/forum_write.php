@@ -31,10 +31,12 @@ class CMSForumWrite
             warn_exit(do_lang_tempcode('NOT_AS_GUEST'));
         }
 
+        require_code('config2');
+
         require_code('cns_forums_action2');
-        $_max_forum_detail = get_value('max_forum_detail');
-        set_value('max_forum_detail', '10000');
+        $_max_forum_detail = get_option('max_forum_detail');
+        set_option('max_forum_detail', '10000');
         cns_ping_forum_read_all($forum_id);
-        set_value('max_forum_detail', $_max_forum_detail);
+        set_option('max_forum_detail', $_max_forum_detail);
     }
 }
