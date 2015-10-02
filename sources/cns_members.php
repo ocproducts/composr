@@ -269,7 +269,8 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
                 $member_value = ''; // This is meant to be '' for blank, not new Tempcode()
             } else {
                 $member_value_raw = get_translated_text($member_mappings['field_' . strval($field_to_show['id'])], $GLOBALS['FORUM_DB']);
-                $member_value = get_translated_tempcode('f_member_custom_fields', $member_mappings, 'field_' . strval($field_to_show['id']), $GLOBALS['FORUM_DB']);
+                $member_mappings_copy = db_map_restrict($member_mappings, array('mf_member_id', 'field_' . strval($field_to_show['id'])));
+                $member_value = get_translated_tempcode('f_member_custom_fields', $member_mappings_copy, 'field_' . strval($field_to_show['id']), $GLOBALS['FORUM_DB']);
                 if ((is_object($member_value)) && ($member_value->is_empty())) {
                     $member_value = '';
                 }

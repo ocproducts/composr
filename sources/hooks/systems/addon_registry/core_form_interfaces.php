@@ -1760,7 +1760,6 @@ class Hook_addon_registry_core_form_interfaces
 
         $buttons = new Tempcode();
         $_buttons = array(
-            'img',
             'thumb',
             'url',
             'page',
@@ -1828,6 +1827,7 @@ class Hook_addon_registry_core_form_interfaces
                 'SPECIALISATION' => placeholder_fields(),
                 'SPECIALISATION2' => placeholder_fields(),
                 'REQUIRED' => true,
+                'SUPPORT_AUTOSAVE' => false,
             )), null, '', true)
         );
     }

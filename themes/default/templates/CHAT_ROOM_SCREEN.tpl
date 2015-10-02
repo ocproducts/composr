@@ -80,7 +80,7 @@
 
 				<div class="chat_font_option">
 					<p>
-						<label for="text_colour">{!CHAT_OPTIONS_TEXT_NAME}:</label>
+						<label for="font_name">{!CHAT_OPTIONS_TEXT_NAME}:</label>
 					</p>
 					<p>
 						<select onclick="this.onchange(event);" onchange="on_font_change(this);" id="font_name" name="font_name">
@@ -110,17 +110,17 @@
 					{+END}
 				{+END}
 			</ul>
-
-			<div class="force_margin">
-				{+START,INCLUDE,NOTIFICATION_BUTTONS}
-					NOTIFICATIONS_TYPE=member_entered_chatroom
-					NOTIFICATIONS_ID={CHATROOM_ID}
-					BREAK=1
-				{+END}
-			</div>
 		</div>
 	</div></div>
 </form>
+
+<div class="force_margin">
+	{+START,INCLUDE,NOTIFICATION_BUTTONS}
+		NOTIFICATIONS_TYPE=member_entered_chatroom
+		NOTIFICATIONS_ID={CHATROOM_ID}
+		BREAK=1
+	{+END}
+</div>
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'real_load',function() {

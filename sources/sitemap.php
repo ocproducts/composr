@@ -1124,6 +1124,10 @@ function get_root_comcode_pages($zone, $include_zone = false)
     if ($include_zone) {
         $page_links = array();
         foreach ($pages as $page => $page_type) {
+            if (is_integer($page)) {
+                $page = strval($page);
+            }
+
             $page_links[$zone . ':' . $page] = $page_type;
         }
         return $page_links;

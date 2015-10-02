@@ -444,7 +444,7 @@ function init__global2()
     if (count($_POST) > 0) {
         // Detect and deal with spammers that triggered the spam blackhole
         if (get_option('spam_blackhole_detection') == '1') {
-            $blackhole = post_param_string(md5(get_site_name() . ': antispam'), '');
+            $blackhole = post_param_string('y' . md5(get_site_name() . ': antispam'), '');
             if ($blackhole != '') {
                 log_hack_attack_and_exit('LAME_SPAM_HACK', '<blackhole>' . $blackhole . '</blackhole>');
             }

@@ -656,7 +656,6 @@ class Hook_addon_registry_chat
                 'CHATROOM_ID' => placeholder_number(),
                 'DEBUG' => '0',
                 'MESSAGES_PHP' => find_script('messages'),
-                'CHATCODE_HELP' => lorem_phrase(),
                 'CHATROOM_NAME' => lorem_word(),
                 'MICRO_BUTTONS' => $micro_buttons,
                 'BUTTONS' => $buttons,
@@ -671,8 +670,9 @@ class Hook_addon_registry_chat
                 'CONTENT' => lorem_phrase(),
                 'LINKS' => placeholder_array(),
                 'TEXT_COLOUR_DEFAULT' => lorem_word(),
-                'FONT_NAME_DEFAULT' => lorem_word(),
-                'COMCODE_HELP' => lorem_phrase(),
+                'FONT_NAME_DEFAULT' => 'Tahoma',
+                'CHATCODE_HELP' => placeholder_url(),
+                'COMCODE_HELP' => placeholder_url(),
             )), null, '', true)
         );
     }

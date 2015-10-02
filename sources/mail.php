@@ -90,10 +90,16 @@ function _indent_callback($matches)
 function _title_callback($matches)
 {
     $symbol = '-';
-    if (strpos($matches[1], '1') !== false || $matches[1] == '') {
+    if (strpos($matches[2], '1') !== false || $matches[2] == '') {
         $symbol = '=';
     }
-    return $matches[2] . "\n" . str_repeat($symbol, strlen($matches[2]));
+
+    $ret = $matches[1];
+    if (substr_count($matches[1], "\n") == 0) {
+        $ret .= "\n";
+    }
+    $ret .= $matches[3] . "\n" . str_repeat($symbol, strlen($matches[3]));
+    return $ret;
 }
 
 /**
@@ -316,7 +322,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
 
     if (!in_array('title', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\s*\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
+        $message_plain = preg_replace_callback('#(\s*)\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
     }
 
     if (!in_array('box', $tags_to_preserve)) {

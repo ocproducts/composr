@@ -4064,12 +4064,16 @@ function ecv_GT($lang, $escaped, $param)
  */
 function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
 {
-    if (get_option('spam_blackhole_detection') == '1') {
-        $field_name = md5(get_site_name() . ': antispam');
+    static $done_once = false;
+
+    if (get_option('spam_blackhole_detection') == '1' && !$done_once) {
+        $field_name = 'y' . md5(get_site_name() . ': antispam');
         $value = '<div id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></div>';
         if (!$GLOBALS['SEMI_DEV_MODE']) {
             $value .= '<script>// <' . '![CDATA[' . "\n" . 'var wrap=document.getElementById(\'' . escape_html($field_name) . '_wrap\'); wrap.parentNode.removeChild(wrap);' . "\n" . '//]]></script>';
         }
+
+        $done_once = true;
     }
 
     $security_token_exceptions = get_option('security_token_exceptions');

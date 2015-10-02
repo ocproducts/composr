@@ -360,6 +360,7 @@ class Hook_addon_registry_catalogues
             'FIELD_0' => lorem_word(),
             'GIVE_CONTEXT' => false,
         ));
+
         foreach (placeholder_array(2) as $v) {
             $entries->attach(do_lorem_template('CATALOGUE_CATEGORY_HEADING', array(
                 'LETTER' => lorem_phrase(),
