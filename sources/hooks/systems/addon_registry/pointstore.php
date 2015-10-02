@@ -369,8 +369,8 @@ class Hook_addon_registry_pointstore
     {
         require_css('forms');
 
-        $input = do_lorem_template('FORM_SCREEN_INPUT_INTEGER', array('TABINDEX' => placeholder_number(), 'REQUIRED' => '_required', 'NAME' => lorem_word(), 'DEFAULT' => lorem_word()));
-        $fields = do_lorem_template('FORM_SCREEN_FIELD', array('REQUIRED' => true, 'SKIP_LABEL' => false, 'NAME' => lorem_word(), 'PRETTY_NAME' => lorem_word(), 'DESCRIPTION' => lorem_sentence_html(), 'DESCRIPTION_SIDE' => '', 'INPUT' => $input, 'COMCODE' => ''));
+        $input = do_lorem_template('FORM_SCREEN_INPUT_INTEGER', array('TABINDEX' => placeholder_number(), 'REQUIRED' => '_required', 'NAME' => placeholder_random_id(), 'DEFAULT' => lorem_word()));
+        $fields = do_lorem_template('FORM_SCREEN_FIELD', array('REQUIRED' => true, 'SKIP_LABEL' => false, 'NAME' => placeholder_random_id(), 'PRETTY_NAME' => lorem_word(), 'DESCRIPTION' => lorem_sentence_html(), 'DESCRIPTION_SIDE' => '', 'INPUT' => $input, 'COMCODE' => ''));
 
         $text = do_lorem_template('POINTSTORE_QUOTA', array('POINTS_LEFT' => placeholder_number(), 'PRICE' => placeholder_number(), 'TOP_AMOUNT' => placeholder_number(), 'EMAIL' => lorem_word()));
 

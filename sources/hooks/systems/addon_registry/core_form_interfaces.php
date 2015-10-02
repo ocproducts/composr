@@ -922,7 +922,7 @@ class Hook_addon_registry_core_form_interfaces
             'DESCRIPTION' => lorem_sentence(),
             'TABINDEX' => placeholder_number(),
             '_REQUIRED' => '',
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'DEFAULT' => '',
         )));
 
@@ -1033,7 +1033,7 @@ class Hook_addon_registry_core_form_interfaces
         )));
 
         $_comcode = do_lorem_template('COMCODE_MESSAGE', array(
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'W' => '',
             'URL' => placeholder_url(),
         ));
@@ -1469,7 +1469,7 @@ class Hook_addon_registry_core_form_interfaces
         )));
 
         $hidden->attach(do_lorem_template('FORM_SCREEN_INPUT_HIDDEN', array(
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'VALUE' => lorem_word(),
         )));
 

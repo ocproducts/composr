@@ -1513,7 +1513,7 @@ class Hook_addon_registry_cns_forum
      */
     public function tpl_preview__cns_topic_voted_wrap()
     {
-        return $this->_tpl_preview__cns_topic_screen(true);
+        return $this->_tpl_preview__cns_topic_screen(true, false);
     }
 
     /**

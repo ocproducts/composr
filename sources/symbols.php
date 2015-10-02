@@ -3380,6 +3380,11 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
 {
     if (isset($param[0])) {
         $timestamp = (!empty($param[1])) ? intval($param[1]) : time();
+
+        if ($GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
+            $timestamp = intval(placeholder_date_raw());
+        }
+
         if ((!array_key_exists(2, $param)) || ($param[2] == '1')) {
             $timestamp = utctime_to_usertime($timestamp);
         }
@@ -3388,8 +3393,12 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
             $value = date($param[0], $timestamp);
         }
     } else {
-        $timestamp = time();
-        $value = strval($timestamp);
+        if ($GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
+            $value = placeholder_date_raw();
+        } else {
+            $timestamp = time();
+            $value = strval($timestamp);
+        }
     }
 
     if ($escaped != array()) {

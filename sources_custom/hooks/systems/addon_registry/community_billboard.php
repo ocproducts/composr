@@ -247,7 +247,7 @@ class Hook_addon_registry_community_billboard
         $input = do_lorem_template('FORM_SCREEN_INPUT_LIST', array(
             'TABINDEX' => '5',
             'REQUIRED' => '_required',
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'CONTENT' => $out,
             'INLINE_LIST' => true,
             'SIZE' => '9',
@@ -256,7 +256,7 @@ class Hook_addon_registry_community_billboard
             'REQUIRED' => true,
             'SKIP_LABEL' => false,
             'PRETTY_NAME' => lorem_word(),
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'DESCRIPTION' => lorem_sentence_html(),
             'DESCRIPTION_SIDE' => '',
             'INPUT' => $input,

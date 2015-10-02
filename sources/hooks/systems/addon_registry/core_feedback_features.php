@@ -445,7 +445,7 @@ class Hook_addon_registry_core_feedback_features
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
                 'EXCERPT' => '',
-                'NAME' => lorem_word(),
+                'NAME' => placeholder_id(),
             )));
         }
 

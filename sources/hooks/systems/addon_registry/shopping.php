@@ -455,7 +455,7 @@ class Hook_addon_registry_shopping
         foreach (placeholder_array() as $k => $v) {
             $selectors->attach(do_lorem_template('PAGINATION_SORTER', array(
                 'SELECTED' => '',
-                'NAME' => lorem_word(),
+                'NAME' => placeholder_id(),
                 'VALUE' => lorem_word(),
             )));
         }

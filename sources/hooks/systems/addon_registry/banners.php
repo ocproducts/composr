@@ -206,7 +206,7 @@ class Hook_addon_registry_banners
     {
         return array(
             lorem_globalise(do_lorem_template('BANNER_SHOW_CODE', array(
-                'NAME' => lorem_word(),
+                'NAME' => placeholder_random_id(),
                 'WIDTH' => placeholder_number(),
                 'HEIGHT' => placeholder_number(),
                 'TYPE' => lorem_word(),

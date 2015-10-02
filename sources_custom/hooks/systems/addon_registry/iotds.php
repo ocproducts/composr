@@ -304,7 +304,7 @@ class Hook_addon_registry_iotds
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
                 'EXCERPT' => lorem_paragraph(),
-                'NAME' => lorem_phrase(),
+                'NAME' => placeholder_id(),
             )));
         }
         $trackback_details = do_lorem_template('TRACKBACK_WRAPPER', array(
