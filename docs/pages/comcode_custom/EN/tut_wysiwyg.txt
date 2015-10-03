@@ -125,7 +125,7 @@ The HTML is treated to one of two possible security filters, depending on circum
 
 The white-list filter is subjected to those users who do not have the "Use Dangerous Comcode" permission, and blocks any HTML that is not known as safe. Users subjected to the white-list filter will find that some complex formatting may be lost.
 
-The black-list filter is subjected to the users who do have the "Subject to a more liberal HTML filter" permission, and will go to great lengths to try and strip any JavaScript from the HTML. There are no known problems with the black-list filter, but ocProducts can not accept any liability for the consequences of using it (although we have gone to great lengths to make the black-list filter very safe).
+The black-list filter is subjected to the users who do have the "Subject to a more liberal HTML filter" permission, and will go to great lengths to try and strip any JavaScript from the HTML. There are no known problems with the black-list filter, but the developers can not accept any liability for the consequences of using it (although we have gone to great lengths to make the black-list filter very safe).
 
 [title="3"]Cleanup[/title]
 
@@ -151,7 +151,7 @@ Additionally, the source-code view can be used to manually clean things up.
 
 [title="4"]Comcode conversion (advanced)[/title]
 
-It is the view of ocProducts that, where possible, content should be able to be hand-edited, and usable in different contexts (e.g. on mobile phones as well as on the web).
+It is the view of the developers that, where possible, content should be able to be hand-edited, and usable in different contexts (e.g. on mobile phones as well as on the web).
 
 You may choose to enable the Comcode conversion configuration option if you wish, but honestly we no longer like or recommend this option, as it can mangle any non-trivial styling. The rest of this section applies only if conversion is enabled...
 

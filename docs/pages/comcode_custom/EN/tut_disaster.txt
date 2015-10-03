@@ -70,7 +70,7 @@ $SITE_INFO['backdoor_ip'] = '12.34.56.78'; // Enable to a real IP address to for
 
 You will then be logged in as the first admin user there is. Additionally membership bans, probation, and flood control, will not apply when using the backdoor (so it is useful if your account was locked somehow, e.g. by a malicious other staff member).
 
-It should go without saying that you should only use this 'backdoor' for a short space of time and not disclose your IP address to third parties when doing it. ocProducts makes no claims to how secure this backdoor might be and you open it up entirely at your own risk.
+It should go without saying that you should only use this 'backdoor' for a short space of time and not disclose your IP address to third parties when doing it. The developers make no claims to how secure this backdoor might be and you open it up entirely at your own risk.
 
 [title="2"]Changing the master password[/title]
 

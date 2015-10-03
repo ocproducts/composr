@@ -730,7 +730,7 @@ A related problem is that some parts of Composr's API might assume that the FORU
 
 To learn how to write an importer consider copying an existing one (preferably one written for a product similar to the product you are importing) and adapting it. Work through the code function by function, adjusting field names and other code as appropriate.
 
-Sometimes data in software being imported has no use in Composr, or isn't quite compatible with how Composr does things. When ocProducts makes an importer we try to make a call in these situations as to how important the feature is:
+Sometimes data in software being imported has no use in Composr, or isn't quite compatible with how Composr does things. When the developers make an importer we try to make a call in these situations as to how important the feature is:
  - almost always it is fairly trivial (e.g. an option that does not exist in Composr as we'd use a template edit instead). In this case we would ignore the option.
  - sometimes a bit of clever code can convert the data into something useful.
  - if it is something that seems important, either a feature would need adding to Composr, or whoever has commissioned the importer would be consulted, or the issue would be documented. It shouldn't be ignored completely.

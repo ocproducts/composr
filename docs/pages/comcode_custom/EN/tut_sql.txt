@@ -56,7 +56,7 @@ phpMyAdmin supports very user friendly features to browse the database tables, a
 [media width="150" description="Typing in the SQL query to execute" float="right"]data_custom/images/docs/tut_sql/sql_2.png[/media]
 A query is a command, or a question, sent to a database in a special language called 'SQL' (which informally is interpreted as 'structured query language').
 
-To run a query, you need to click the 'SQL' tab once you have chosen a database to view/edit. You then type in the query. In phpMyAdmin, it is often easier to use the interface to make changes, rather than working out what query to type. Occasionally ocProducts might suggest a query that could help solve a problem, as it is easier for us to give the query, than to explain all the mouse-clicks required. The screen-shots shown an example for executing a query to delete an item of news.
+To run a query, you need to click the 'SQL' tab once you have chosen a database to view/edit. You then type in the query. In phpMyAdmin, it is often easier to use the interface to make changes, rather than working out what query to type. Occasionally the developers might suggest a query that could help solve a problem, as it is easier for us to give the query, than to explain all the mouse-clicks required. The screen-shots shown an example for executing a query to delete an item of news.
 
 SQL is beyond the scope of this tutorial, but basic queries fit one of the following structures...
 

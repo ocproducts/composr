@@ -139,6 +139,14 @@
 	</script>
 {+END}{+END}
 
+{$,Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent}
+{+START,IF,{$CONFIG_OPTION,cookie_notice}}
+	<script type="text/javascript">
+		window.cookieconsent_options={'message':'{!COOKIE_NOTICE;,{$SITE_NAME}}','dismiss':'{!INPUTSYSTEM_OK;}','learnMore':'{!READ_MORE;}','link':'{$PAGE_LINK;,:privacy}','theme':'dark-top'};
+	</script>
+	<script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
+{+END}
+
 {$,Detecting of Timezones and JavaScript support}
 <script>// <![CDATA[
 	{+START,IF,{$CONFIG_OPTION,detect_javascript}}

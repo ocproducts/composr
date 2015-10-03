@@ -1,14 +1,18 @@
 [title]Privacy policy[/title]
 
+[surround="spaced_list"]
 This website:
  - stores temporary cookies that are removed when you close the browser window, such as a user session identifier;{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} also cookies are used for the "remember me" feature;{+END}{+START,IF,{$CONFIG_OPTION,detect_javascript}} also cookies are used to detect if JavaScript is enabled;{+END}{+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}} also cookies are used to detect your time-zone;{+END}{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}} uses Google Analytics for analysing visitor trends and tracking the effectiveness of our advertisements;{+END}
  - stores cookies (yes/no) for remembering what things have been turned off/closed;
  - stores cookies for remembering font size;
- - stores cookies for improving the usability of engaging aspects such as the chatroom or forum (in particular, auto-saving of partly typed posts);
+ - stores cookies for improving the usability of engaging aspects such as the chatroom or forum (in particular, auto-saving of partially-typed posts);
  - stores other kinds of cookie that are mentioned before they are set;
  - logs basic information pertaining to your computer including your IP address, web browser name, and operating system;
  - stores other information that you explicitly enter, such as your account information, or forum posts;
  - if you are logged in, your member profile will update the publicly displayed time that you last visited (which will also be stored in a cookie), and you will show as online (unless you login as invisible).
+[/surround]
+
+If you wish to see what exact cookies are saved, or delete cookies, you may do so using [url="standard tools built into your web browser"]http://www.wikihow.com/View-Cookies[/url].
 
 We may occasionally send bulk emails about {$SITE_NAME}, or matters relating to {$SITE_SCOPE} to our members. We will not send bulk e-mails or allow others to send bulk e-mails, which we believe would be considered spam.
 

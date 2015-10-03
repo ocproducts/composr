@@ -28,7 +28,7 @@ There are a few different types of Composr 'page':
  - [b]Comcode pages[/b] -- these are textual pages, written in Comcode (described in another tutorial)
  - [b]Modules[/b] -- these are formal code-based pages
  - [b]HTML pages[/b] -- these are pages written in HTML, and rarely used except for caching purposes
- - [b]Mini-modules[/b] -- these are like modules, except much easier to write; ocProducts does not use them for core Composr code, as they do not have the same 'fluff' around them that we need to maintain our clean architecture, but most technical users are better off writing these (if any new modules at all!) than full modules
+ - [b]Mini-modules[/b] -- these are like modules, except much easier to write; the developers do not use them for core Composr code, as they do not have the same 'fluff' around them that we need to maintain our clean architecture, but most technical users are better off writing these (if any new modules at all!) than full modules
 
 A page/zone combination is accessed by URL and it is invisible to the user, and most elements of Composr itself, what kind of pages are being used for any given URL.
 

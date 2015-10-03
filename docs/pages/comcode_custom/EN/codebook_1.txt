@@ -842,7 +842,7 @@ When developing you'll probably want to start your development site afresh a few
 
 [title="3"]Programming/programmatic-interface Coding Standards[/title]
 
-ocProducts maintains a [url="checklist for standards"]{$BRAND_BASE_URL}/docs/standards-checklist.xls[/url]. These standards used to be listed in this Code Book, but there are now too many to clearly explain here, and we needed a document we could morph and use on a routine basis for quick review.
+The developers maintain a [url="checklist for standards"]{$BRAND_BASE_URL}/docs/standards-checklist.xls[/url]. These standards used to be listed in this Code Book, but there are now too many to clearly explain here, and we needed a document we could morph and use on a routine basis for quick review.
 
 Composr has a multi-faceted testing strategy as there is no perfect solution for testing (we have thought very long and hard to find one!). Our overall strategy currently involves 15 different approaches (update: most of these are now implemented via unit tests):
 1) Code Quality Checker, a lint (henceforth 'CQC')
@@ -861,7 +861,7 @@ Composr has a multi-faceted testing strategy as there is no perfect solution for
 14) Manual code reviews (via our aforementioned standards spreadsheet)
 15) Composr error mails
 
-As mentioned above, ocProducts uses an internally developed code quality checker tool (a lint, static code analysis) to scan code for violations of many coding standards, and find bugs. We also may use other tools internally, and our custom version of PHP designed to be very strict.
+As mentioned above, the developers maintain an internally developed code quality checker tool (a lint, static code analysis) to scan code for violations of many coding standards, and find bugs. We also may use other tools internally, and our custom version of PHP designed to be very strict.
 
 These tools may now be downloaded:
  - [url="Code Quality Checker"]{$BRAND_BASE_URL}/docs/codechecker.zip[/url] which requires a recent Java, and the command-line PHP interpreter -- [i]this is primarily maintained inside the Composr github repository[/i])
@@ -1002,7 +1002,7 @@ Parameters in URLs are separated by '&'. Keys and values and separated by '='. A
 
 [title="3"]Security[/title]
 
-Security is treated very seriously by ocProducts. We have implemented a number of abstractions and policies to keep Composr as secure as possible and it is crucial that developers understand security issues and our policies.
+Security is treated very seriously by the developers. We have implemented a number of abstractions and policies to keep Composr as secure as possible and it is crucial that developers understand security issues and our policies.
 
 Even admin-only sections should not have unintended exploitable behaviour. If a user is hosted in a restricted Composr-only environment, their software should not allow circumvention of current environment. Also, if a user exploits their way into somewhere they shouldn't be, it is best that that somewhere shouldn't allow them to exploit themselves into somewhere even worse... for example, if Composr's Admin Zone gets hacked, a user should not be able to get full PHP code execution access on a hosting account.
 
@@ -1085,7 +1085,7 @@ There are many important programming considerations that need to be applied in m
 
 Type strictness comes naturally in most traditional programming languages, but languages like PHP and JavaScript are 'weak typed' and automatically perform conversions on the fly. For simple systems this is good as it makes things quicker and easier, but for complex systems like Composr it poses a problem.
 
-As a strict rule we always use strict typing. The custom version of PHP ocProducts uses enforces this.
+As a strict rule we always use strict typing. The custom version of PHP the developers use enforces this.
 
 There are a number of advantages to strict typing:
  - Special tools can be written to scan code for errors, and these work much better if they are allowed to infer relationships via correct type information. Our own Code Quality Checker does this. For example, if we get parameter order wrong in a function call (e.g. to [tt]strpos[/tt]) the checker can identify that as the type signature of the function call does not match the type signature of the [tt]strpos[/tt] function.

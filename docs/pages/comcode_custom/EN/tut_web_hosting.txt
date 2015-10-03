@@ -47,7 +47,7 @@ Most companies competing on price may appear to be good if you compare features/
 [title="2"]Requirements and recommendations[/title]
 
 When choosing a web-host, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.
-If a random commercial [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting web-host was chosen, it is very likely that they would support these requirements: however ocProducts cannot be held accountable for incompatibilities with systems that do not.
+If a random commercial [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting web-host was chosen, it is very likely that they would support these requirements: however the developers cannot be held accountable for incompatibilities with systems that do not.
 
 The remainder of this section details Composr's requirements. If you have trouble ascertaining a web-hosts compliance, you may wish to contact them with this information.
 

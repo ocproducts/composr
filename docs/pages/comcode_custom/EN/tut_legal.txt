@@ -41,7 +41,7 @@ You may also wish to include your policy with respect to deletion of publicly su
 
 It is arguable that under discrimination laws, your website must satisfy the web-accessibility-initiative ([concept]WAI[/concept]), web content accessibility guidelines ([concept]WCAG[/concept]). Fortunately Composr complies to the highest level of accessibility under these guidelines (for [b]all[/b] interfaces: user and administrator), which is rare, as the vast majority of web applications are not close to complying with the lowest level of accessibility.
 
-As a site-maintainer however, there are accessibility guidelines that apply to content that ocProducts can not arrange-for on your behalf. Also, if you modify the default Composr templates, it is very easy to degrade the inbuilt accessibility.
+As a site-maintainer however, there are accessibility guidelines that apply to content that the developers can not arrange-for on your behalf. Also, if you modify the default Composr templates, it is very easy to degrade the inbuilt accessibility.
 
 For more information, see our accessibility tutorial.
 
@@ -78,7 +78,7 @@ It is likely that you will experience attempts to hack into your website by mali
 
 However, even with all this, there are two-hundred and sixty-thousand (at the time of writing) lines of code that could potentially contain vulnerabilities. You therefore should keep backups, and if you run a high profile website, know how to attempt to track down miscreants and subject them to legal action.
 
-If a vulnerability is found, ocProducts [page="site:free_tickets"]would like to know about it[/page], and will deal with it promptly and responsibly, for the sake of all our users.
+If a vulnerability is found, the developers [page="site:free_tickets"]would like to know about it[/page], and will deal with it promptly and responsibly, for the sake of all our users.
 
 It is also possible that miscreants will attempt to use your website as a vehicle for mischief directed at others. There are not many ways to do this, and we know of no ways to cause serious abuses, but you should keep it in mind that it may be possible, and consider adding a disclaimer into your legal page for it.
 

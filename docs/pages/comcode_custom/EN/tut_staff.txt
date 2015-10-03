@@ -60,7 +60,7 @@ Additionally, most content has an explicit 'staff notes' field for you to share 
 
 You may wish to intentionally not validate content, even when a staff member adds it. This provides an opportunity for another member of staff (perhaps monitoring the needs-validation notification type) to check the content is ready for publishing.
 
-Larger enterprises may require a more sophisticated workflow system. Composr has a non-bundled workflows addon, which provides a fully-managed process of multiple configurable approval steps for content (to different staff usergroups), before it goes live. The workflow system can be implemented for different content types, and is currently implemented for galleries out-of-the-box. Enterprise customers will want the system tuning for individual needs. If you require an advanced enterprise workflow system, you should enquire with ocProducts with your specific needs, and whatever system you require can be set up for you.
+Larger enterprises may require a more sophisticated workflow system. Composr has a non-bundled workflows addon, which provides a fully-managed process of multiple configurable approval steps for content (to different staff usergroups), before it goes live. The workflow system can be implemented for different content types, and is currently implemented for galleries out-of-the-box. Enterprise customers will want the system tuning for individual needs. If you require an advanced enterprise workflow system, you should enquire with ocProducts (or other third-party developers) with your specific needs, and whatever system you require can be set up for you.
 
 [title="3"]Reviews[/title]
 
@@ -89,7 +89,7 @@ There are a few angles to version control on a Composr site:
 3) You can make use of the popular [tt]git[/tt] tool (useful for enterprise users)
 
 On point '3':
-[tt]git[/tt] is a standard tool to use when making code changes, but not for database changes. However it is possible to use WebDAV in coordination with [tt]git[/tt] to manually do formal "commits" when changes are made to a website. If you are an enterprise interested in this functionality, you'll likely want to take on ocProducts as consultants to test/tune this functionality to your particular content needs, or set up an automated system if appropriate.
+[tt]git[/tt] is a standard tool to use when making code changes, but not for database changes. However it is possible to use WebDAV in coordination with [tt]git[/tt] to manually do formal "commits" when changes are made to a website. If you are an enterprise interested in this functionality, you'll likely want to take on a developer (such as ocProducts) as a consultant to test/tune this functionality to your particular content needs, or set up an automated system if appropriate.
 
 [title="2"]Post reporting[/title]
 

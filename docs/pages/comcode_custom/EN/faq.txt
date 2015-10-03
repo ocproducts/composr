@@ -52,7 +52,7 @@ As web standards are evolving and we often need to make use of ones that are not
 
 [title="3"]Will you implement (some feature)?[/title]
 
-ocProducts is very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
+The developers are very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
  - we need to integrate any changes into our long-term development roadmap, but this is always changing as the Internet (and economy) evolves very rapidly and priorities shift, and new ideas often make old ideas irrelevant
  - we need for us to design a clean product suitable for our wider user-base, which makes decisions on features almost impossible to do in advance because it requires multiple levels of design before we can be completely clear on how things might work, and how well they would in relation to other plans and wider goals
 Users who need a new feature should bear in mind that Composr is Open Source and thus third-parties may advance development, or we support feature sponsorship on our tracker. We therefore try to explain that Composr as it stands today is a solid reliable product, but if you require enhancements then you should take responsibility to budget or plan for this in terms of sponsoring or contributing (this is part of the spirit of Open Source -- it is free, but it requires community investment to move forward).
@@ -120,7 +120,7 @@ As a very rough guide, expect 10% of your needs to require bespoke programming b
 
 [title="3"]Who are ocProducts?[/title]
 
-We wrote the original Composr and maintain it, and we maintain the Composr website. We consider ourselves sponsors of the project and community, which is wider than any one organisation.
+ocProducts wrote the original Composr and maintain it, and we maintain the Composr website. ocProducts are sponsors of the project and community, which is wider than any one organisation.
 
 [title="3"]Can you write us a system that supports <insert-blank> specifications?[/title]
 

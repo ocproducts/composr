@@ -8,7 +8,7 @@
 
 [title="3"]Design/copy Coding Standards[/title]
 
-ocProducts maintains a [url="checklist for standards"]{$BRAND_BASE_URL}/docs/standards-checklist.xls[/url]. These standards used to be listed in this Code Book, but there are now too many to clearly explain here, and we needed a document we could morph and use on a routine basis for quick review.
+The developers maintain a [url="checklist for standards"]{$BRAND_BASE_URL}/docs/standards-checklist.xls[/url]. These standards used to be listed in this Code Book, but there are now too many to clearly explain here, and we needed a document we could morph and use on a routine basis for quick review.
 
 [title="3"]Standard language strings you can re-use[/title]
 

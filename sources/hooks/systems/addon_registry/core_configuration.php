@@ -230,6 +230,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/smtp_sockets_use.php',
             'sources/hooks/systems/config/smtp_sockets_username.php',
             'sources/hooks/systems/config/ssw.php',
+            'sources/hooks/systems/config/cookie_notice.php',
             'sources/hooks/systems/config/staff_address.php',
             'sources/hooks/systems/config/thumb_width.php',
             'sources/hooks/systems/config/unzip_cmd.php',

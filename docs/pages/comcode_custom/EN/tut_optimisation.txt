@@ -330,7 +330,7 @@ Be aware of these reasonable limits (unless you have dedicated programming resou
 
 If you have so much data (100's of GB, millions of records) that you can't house it in a single database server then you have a good kind of problem because clearly you are being incredibly successful.
 It's at this point that serious programming or database administration will need to happen to adapt Composr to your needs. MySQL does have support for 'sharding' that can happen transparently to Composr, where you could use multiple hard-disks together to serve a single database. However this is not the commodity hardware approach many people prefer.
-An alternative is to implement a No-SQL database driver into Composr. There is nothing stopping this happening so long as SQL is mapped to it. We have no out-of-the-box solution, but we do have full SQL parsing support in Composr for the intentionally-limited SQL base used by Composr (in the XML database driver) so have a lot of the technology needed to build the necessary translation layer. Practically speaking though this is a serious job, and at this point you are so huge you should be having a full-time team (hopefully from ocProducts, but that's your choice) dedicated to performance work.
+An alternative is to implement a No-SQL database driver into Composr. There is nothing stopping this happening so long as SQL is mapped to it. We have no out-of-the-box solution, but we do have full SQL parsing support in Composr for the intentionally-limited SQL base used by Composr (in the XML database driver) so have a lot of the technology needed to build the necessary translation layer. Practically speaking though this is a serious job, and at this point you are so huge you should be having a full-time team (perhaps ocProducts) dedicated to performance work.
 
 [title="2"]Server farms (custom)[/title]
 
@@ -370,7 +370,7 @@ Round-Robin DNS could be used to choose a frontend server from the farm randomly
 
 [title="3"]Geographic distribution of servers[/title]
 
-Some people with very ambitious goals want to have multiple servers dotted around the world. This requires some custom programming but ocProducts has studied the scenario and can role out solutions to clients if required. Our solution would involve priority-based geo-DNS resolution coupled with a reverse proxy server to also cover fail-over scenarios. The custom programming to implement this is in setting up the complex network infrastructure as well as implementing ID randomisation instead of key auto-incrementing to avoid conflicts (across distances replication can not be set to be instant).
+Some people with very ambitious goals want to have multiple servers dotted around the world. This requires some custom programming but the developers have studied the scenario and can role out solutions to clients if required. Our solution would involve priority-based geo-DNS resolution coupled with a reverse proxy server to also cover fail-over scenarios. The custom programming to implement this is in setting up the complex network infrastructure as well as implementing ID randomisation instead of key auto-incrementing to avoid conflicts (across distances replication can not be set to be instant).
 
 [title="3"]Content Delivery Networks[/title]
 

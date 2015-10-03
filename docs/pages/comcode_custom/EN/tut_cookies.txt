@@ -66,7 +66,12 @@ Cookies can only be read by the site that created them, or a site 'underneath' t
 
 When cookies were fairly new, there was a lot of controversy about their ability to track users browsing 'all around the web'. This is not really the case, due to sites only being able to read their own cookies; however, for affiliated companies, such as advertising companies, it is true that cookies could be placed in banners such that any site showing a banner could aid the banner company in tracking every website the banner viewer visited on their network. Therefore as more paranoid users may feel the need to disable their cookies, Composr does not require them: session details may be relayed by URL in Composr. The obvious disadvantage is that automatic login is not possible in this situation, and there is an additional disadvantage that JavaScript will be thought to be disabled, as Composr needs to use cookies to detect it. The first problem may be ameliorated by the web browser 'auto-fill' feature, which can be used to automatically remember how forms, such as login forms, were filled in.
 
-ocProducts recommends that users do have cookies enabled, but that they possibly disable 'third party cookies' if they are concerned about privacy so that advertisers can not track the advertising sites that they view.
+The developers recommend that users do have cookies enabled, but that they possibly disable 'third party cookies' if they are concerned about privacy so that advertisers can not track the advertising sites that they view.
+
+[title="2"]EU legislation[/title]
+
+The EU require tracking cookies be declared for organisations operating inside the EU.
+The Composr "Cookie notice" configuration option implements this. It isn't on by default because Composr's cookies are heavily minimised to what we consider reasonable compliance without special notice. However, use of something like Adsense strictly requires you enable the cookie notice.
 
 [title="2"]20 things you didn't know about cookies (for programmers)[/title]
 

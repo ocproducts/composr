@@ -202,7 +202,7 @@ For the community billboard to display, you must place the symbol code, [tt]{$CO
 
 [title="3"]Buildr (non-bundled)[/title]
 
-Buildr is a very large addon for Composr, made by ocProducts in a semi-official capacity. It is not included with the main release as it is totally inappropriate for non-community sites, and hence would be consider as 'bloat' (an excessive feature that gets in the way and causes undue complexity and confusion) by most.
+Buildr is a very large addon for Composr, made by the developers in a semi-official capacity. It is not included with the main release as it is totally inappropriate for non-community sites, and hence would be consider as 'bloat' (an excessive feature that gets in the way and causes undue complexity and confusion) by most.
 
 Buildr is essentially a game, where members may move in, interact with, and create, a limitless world of rooms, split across multiple themed 'realms'. It can be used to create puzzles, adventures, board games, simulations, and with imagination, many other things.
 

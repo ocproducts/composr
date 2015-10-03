@@ -107,7 +107,7 @@ If you're still stuck (i.e. you've determined [tt].htaccess[/tt] is being read, 
 You need to be a server administrator of your server, to install the free IIRF ISAPI module available from:
 http://cheeso.members.winisp.net/IIRF.aspx
 
-[i]ocProducts cannot take responsibility or provide support for this feature. We're happy to answer questions, but fiddling with your web server is only for those in the know. It is best you try things out on a test website before your live one.[/i]
+[i]The developers cannot take responsibility or provide support for this feature. We're happy to answer questions, but fiddling with your web server is only for those in the know. It is best you try things out on a test website before your live one.[/i]
 
 To install IIRF:[list="1"]
 [*] Copy [tt]IIRF.dll[/tt] into your [tt]Inetpub[/tt] folder

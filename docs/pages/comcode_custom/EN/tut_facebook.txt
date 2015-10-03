@@ -356,7 +356,7 @@ Composr integrations with services such as Facebook are ongoing projects. Facebo
 
 Facebook will e-mail out notices about changes in functionality and has a phased 'opt in' system before it forces everyone to update; we try and track these but usually they only affect a minority of Facebook apps and not Composr.
 
-If Facebook does change something to stop the addon working, ocProducts isn't necessarily going to guarantee to jump on changing our addon too; if Facebook integration is important to you be ready to help sponsor ongoing maintenance of the addon to ensure it is funded.
+If Facebook does change something to stop the addon working, the developers aren't necessarily going to guarantee to jump on changing our addon too; if Facebook integration is important to you be ready to help sponsor ongoing maintenance of the addon to ensure it is funded.
 
 We may add additional functionality to the addon in the future, again mainly if it is sponsored. There is plenty of scope to push further integration.
 

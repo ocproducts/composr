@@ -22,7 +22,7 @@ Enter the web directory:
 [code="Bash"]
 cd httpdocs
 [/code]
-Download the archive from ocProducts:
+Download the archive from the {$BRAND_BASE_URL} website:
 [code="Bash"]
 wget <url-to-composr-zip-file>
 [/code]
