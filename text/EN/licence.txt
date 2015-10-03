@@ -115,8 +115,8 @@ Third Party Materials
 
 This product includes:
  - Resources:
-  - Images partially derived from other sources, used under licence (some used under commercial license). Including:
-   - Images from CorelDRAW9(R) which are protected by the copyright laws of the US, Canada and elsewhere (used under commercial license).
+  - Images partially derived from other sources, used under licence (some used under commercial licence). Including:
+   - Images from CorelDRAW9(R) which are protected by the copyright laws of the US, Canada and elsewhere (used under commercial licence).
    - Some public domain backgrounds from http://www.repeatxy.com/
    - Emoticons and avatars, created for ocProducts by Dave Buckley (licensed as per Composr, mentioned here for crediting purposes only).
   - Bitstream fonts (BSD-like licence)
@@ -126,7 +126,7 @@ This product includes:
   - Diff (LGPL licence, ocProducts modifications also therefore are also licenced under the LGPL)
   - FirePHP (BSD-like licence)
   - SabreDAV (BSD-like licence)
-  - m-zip (Francesco M. Munafo', liberal custom license)
+  - m-zip (Francesco M. Munafo', liberal custom licence)
   - utf8tohtml implementation (from php.net comment by silverbeat, Creative Commons Attribution License)
   - mergesort implementation (from php.net comment by sreid, Creative Commons Attribution License)
   - GUID implementation (from php.net comment by Andrew Moore, Creative Commons Attribution License)
@@ -136,8 +136,8 @@ This product includes:
   - jsmin (MIT licence)
   - cssmin (MIT licence)
  - Frontend code used under licence:
-  - jQuery (MIT license)
-  - jQuery-UI (MIT license)
+  - jQuery (MIT licence)
+  - jQuery-UI (MIT licence)
   - Spectrum, a JS color selection widget (MIT licence)
   - Date polyfill (MIT licence)
   - Time polyfill (MIT licence)
@@ -150,7 +150,12 @@ This product includes:
   - EditArea code editor (BSD-like licence)
   - xsl_mopup.js (public domain)
   - JavaScript base-64 code (http://www.webtoolkit.info/, liberal custom licence)
-  - JW-Player (used under commercial license)
+  - JW-Player (used under commercial licence)
   - entities_to_unicode implementation (public domain)
   - Sew, autocomplete implementation (BSD-like licence / public domain)
   - Modernizr (MIT & BSD-like licences)
+  - Silktide Cookie consent (GPL licence, but remotely linked)
+
+Non-bundled addons will often have their own third party materials documented within the addon.
+
+A list of dependencies is maintained on the Composr tracker (http://compo.sr/tracker/view.php?id=651).
