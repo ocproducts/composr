@@ -289,7 +289,7 @@ class Module_chat
 
             $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'room_name', 'is_im', 'allow_list', 'allow_list_groups', 'disallow_list', 'disallow_list_groups', 'room_owner'), array('id' => $room_id), '', 1);
             if (!array_key_exists(0, $room_check)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
             }
             $this->room_row = $room_check[0];
             $this->room_name = $this->room_row['room_name'];
@@ -868,7 +868,7 @@ class Module_chat
     /**
      * Certain add/remove actions may be triggered by hyperlinks, but they need confirming because a link click should never constitute a state change.
      *
-     * @param  ID_TEXT $action The language code of our action
+     * @param  ID_TEXT $action The language string ID of our action
      * @param  string $param Parameter of action
      * @return ?Tempcode If a confirm page is being output, this is it (null: continue as before)
      */

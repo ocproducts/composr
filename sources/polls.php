@@ -146,7 +146,7 @@ function vote_in_poll($poll_id, $cast, $myrow = null, $member_id = null, $ip = n
     if (is_null($myrow)) {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $poll_id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $myrow = $rows[0];
     }

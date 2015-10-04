@@ -283,7 +283,7 @@ class Block_main_content
                     '_GUID' => ($guid != '') ? $guid : '12d8cdc62cd78480b83c8daaaa68b686',
                     'HIGH' => true,
                     'TITLE' => $title,
-                    'MESSAGE' => do_lang_tempcode('MISSING_RESOURCE'),
+                    'MESSAGE' => do_lang_tempcode('MISSING_RESOURCE', $content_type),
                     'ADD_NAME' => do_lang_tempcode('ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));
@@ -292,7 +292,7 @@ class Block_main_content
         }
 
         if ($award_content_row === null) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', $content_type));
         }
 
         $submit_url = str_replace('%21', $content_id, $submit_url);

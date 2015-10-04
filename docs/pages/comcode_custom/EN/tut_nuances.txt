@@ -69,7 +69,7 @@ It is very common for Composr users to install Composr with the forum base URL w
 
 The forum base URL should not include a script name -- it should be a URL-prefix to your forums. For example,
  - [tt]http://forums.example.com[/tt] would be okay
- - [tt]http://forums.example.com/index.php[/tt] would not have been correct, as the software won't be able to find emoticon image URLs by using this as a prefix (imagine [tt]http://forums.example.com/index.php/styles/emoticons/smile.png[/tt] -- clearly that would be wrong)
+ - [tt]http://forums.example.com/index.php[/tt] would not have been correct, as Composr won't be able to find emoticon image URLs by using this as a prefix (imagine [tt]http://forums.example.com/index.php/styles/emoticons/smile.png[/tt] -- clearly that would be wrong)
  - [tt]http://forums.example.com/[/tt] would work -- but the final slash is not required (we don't want to have double slashes in the generated URLs)
 
 [title="2"]Show forum within website[/title]

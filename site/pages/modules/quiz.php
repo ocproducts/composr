@@ -243,7 +243,7 @@ class Module_quiz
 
             $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $quiz_id), '', 1);
             if (!array_key_exists(0, $quizzes)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
             }
             $quiz = $quizzes[0];
 
@@ -309,7 +309,7 @@ class Module_quiz
 
             $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $quiz_id), '', 1);
             if (!array_key_exists(0, $quizzes)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
             }
             $quiz = $quizzes[0];
             $this->enforcement_checks($quiz);
@@ -505,7 +505,10 @@ class Module_quiz
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => 'fc690dedf8601cc456e011931dfec595', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => 'fc690dedf8601cc456e011931dfec595',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'quiz'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }

@@ -1604,6 +1604,18 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         $nice_label = $default;
     }
 
+    require_code('content');
+    $content_type = preg_replace('#^choose_#', '', $hook);
+    if ($content_type != '') {
+        $cma_ob = get_content_object($content_type);
+        if (!is_null($cma_ob)) {
+            $cma_info = $cma_ob->info();
+            if (isset($cma_info['parent_category_meta_aware_type'])) {
+                $content_type = $cma_info['parent_category_meta_aware_type'];
+            }
+        }
+    }
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
         '_GUID' => '21e9644eeac24356f38459ebe37f693a',
@@ -1619,6 +1631,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         'ROOT_ID' => is_null($root_id) ? '' : $root_id,
         'OPTIONS' => serialize($options),
         'DESCRIPTION' => $description,
+        'CONTENT_TYPE' => $content_type,
     ));
     return _form_input($name, $pretty_name, '', $input, $required, false, $tabindex);
 }

@@ -1846,9 +1846,9 @@ class Resource_fs_base
     */
 
     /**
-     * Find all translated strings for a language ID. This is used as an intermediate step in creating multi-language serialisations.
+     * Find all translated strings for a language string ID. This is used as an intermediate step in creating multi-language serialisations.
      *
-     * @param  AUTO_LINK $lang_id Language ID
+     * @param  AUTO_LINK $lang_id Language string ID
      * @param  object $db Database connection to look up from
      * @return array A map of language to the text in that language
      */

@@ -271,7 +271,7 @@ There is full support for auto-creation of usergroups and custom profile fields 
 i.e. Any column that does not correspond to an existing field will result in a new field being auto-created. Any referenced usergroup that does not correspond to an existing usergroup will result in the usergroup being auto-created.
 The importer will tell you when it does this.
 
-Note that the software will make reasonable/consistent choices if columns are missing or cells are left blank. A missing column implies the default value of a field will be used. A blank field implies blank (or the closest equivalent for that field type) should be used.
+Note that Composr will make reasonable/consistent choices if columns are missing or cells are left blank. A missing column implies the default value of a field will be used. A blank field implies blank (or the closest equivalent for that field type) should be used.
 
 Usergroups are referred to by name. You can put multiple usergroups in the usergroup column, separated by "/" (no spaces around this). The first usergroup provided is considered the primary usergroup. For example "A/B" puts someone in the usergroups named "A" and "B".
 

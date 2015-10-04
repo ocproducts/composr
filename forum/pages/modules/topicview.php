@@ -917,7 +917,10 @@ class Module_topicview
         }
 
         if (($topic_info['validated'] == 0) && (addon_installed('unvalidated'))) {
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => '313de370c1aeab9545c4bee4e35e7f84', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? '_UNVALIDATED_TEXT_NON_DIRECT' : '_UNVALIDATED_TEXT', do_lang('FORUM_TOPIC'))));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => '313de370c1aeab9545c4bee4e35e7f84',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'topic'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }

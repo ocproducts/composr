@@ -37,7 +37,7 @@ class Hook_task_download_gallery
 
         $gallery_rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('name' => $cat), '', 1);
         if (!array_key_exists(0, $gallery_rows)) {
-            return array(null, do_lang_tempcode('MISSING_RESOURCE'));
+            return array(null, do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
         }
         $gallery_row = $gallery_rows[0];
 

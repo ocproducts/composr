@@ -630,7 +630,7 @@ function delete_image($id, $delete_full = true)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
     }
     $title = $rows[0]['title'];
     $description = $rows[0]['description'];
@@ -1410,7 +1410,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
     $under_category_id = $parent_id;
     while (($under_category_id != '') && ($under_category_id != STRING_MAGIC_NULL)) {
         if ($name == $under_category_id) {
-            warn_exit(do_lang_tempcode('OWN_PARENT_ERROR'));
+            warn_exit(do_lang_tempcode('OWN_PARENT_ERROR', 'gallery'));
         }
         $_under_category_id = $GLOBALS['SITE_DB']->query_select_value('galleries', 'parent_id', array('name' => $under_category_id));
         if ($under_category_id == $_under_category_id) {
@@ -1462,7 +1462,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     $myrows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'description'), array('name' => $old_name), '', 1);
     if (!array_key_exists(0, $myrows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
     }
     $myrow = $myrows[0];
 
@@ -1548,12 +1548,12 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 function delete_gallery($name)
 {
     if ($name == '') {
-        warn_exit(do_lang_tempcode('NO_DELETE_ROOT'));
+        warn_exit(do_lang_tempcode('NO_DELETE_ROOT', 'gallery'));
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('name' => $name), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
     }
 
     require_code('files2');

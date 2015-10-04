@@ -609,7 +609,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         $_ticket_type_id = 1; // These will be returned by reference
         $posts = get_ticket_posts($existing_ticket, $_forum, $_topic_id, $_ticket_type_id);
         if (!is_array($posts)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
         $__title = do_lang('UNKNOWN');
         foreach ($posts as $ticket_post) {

@@ -314,7 +314,7 @@ class Module_cms_chat
         check_chatroom_access($room_id);
         $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $room_details[0];
         $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $room_id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
@@ -395,7 +395,7 @@ class Module_cms_chat
 
         $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $room_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $room_details[0];
         $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
@@ -446,7 +446,7 @@ class Module_cms_chat
 
         $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $room_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $room_details[0];
         $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
@@ -492,7 +492,7 @@ class Module_cms_chat
 
         $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $room_details[0];
         $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $room_id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
@@ -596,7 +596,7 @@ class Module_cms_chat
 
         $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $room_details[0];
         $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $room_id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
@@ -647,7 +647,7 @@ class Module_cms_chat
 
         $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $room_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $room_details[0];
         $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
@@ -682,7 +682,7 @@ class Module_cms_chat
 
             $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
             if (!array_key_exists(0, $room_details)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
             }
             $row = $room_details[0];
             $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $room_id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));
@@ -714,7 +714,7 @@ class Module_cms_chat
 
         $room_details = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $room_details[0];
         $has_mod_access = ((has_privilege(get_member(), 'edit_lowrange_content', 'cms_chat', array('chat', $room_id))) || ($row['room_owner'] == get_member()) && (has_privilege(get_member(), 'moderate_my_private_rooms')));

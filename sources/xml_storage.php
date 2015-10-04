@@ -192,7 +192,7 @@ function _export_xml_row($table, $row, $db_fields, $seo_type_code, $permissions_
         if ((strpos($field['m_type'], 'TRANS') !== false) && (multi_lang_content())) { // Translation layer integration.
             $inner .= get_translated_text_xml($row[$name], $name, $GLOBALS['SITE_DB']);
 
-            if (strpos($field['m_type'], '*') !== false) { // Special case if lang string forms key. We need to put in an extra attribute so we can bind an existing lang string code if it exists
+            if (strpos($field['m_type'], '*') !== false) { // Special case if language string forms key. We need to put in an extra attribute so we can bind an existing language string code if it exists
                 if ($field['m_type'] == '*AUTO') {
                     $auto_key_id = $field['m_name'];
                 }
@@ -561,7 +561,7 @@ function _import_xml_row($parsed, &$all_existing_data, $all_fields, $all_id_fiel
         $update = $same;
     }
 
-    // Collate lang string data
+    // Collate language string data
     foreach ($table[3] as $__) { // remaining attributes (encoded as child nodes)
         if (!is_array($__)) {
             continue;
@@ -695,7 +695,7 @@ function _import_xml_row($parsed, &$all_existing_data, $all_fields, $all_id_fiel
 /**
  * Get the XML for transferring a language string.
  *
- * @param  AUTO_LINK $id Language ID
+ * @param  AUTO_LINK $id Language string ID
  * @param  ID_TEXT $name The element name
  * @param  object $db Database connection
  * @return string XML (no root tag)
@@ -717,7 +717,7 @@ function get_translated_text_xml($id, $name, $db)
  *
  * @param  ID_TEXT $field_name The field name
  * @param  string $xml_data XML (with root tag), or just flat text if multi-lang-content is not on
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function insert_lang_xml($field_name, $xml_data)
 {
@@ -737,7 +737,7 @@ function insert_lang_xml($field_name, $xml_data)
 
     $id = mixed();
 
-    // Collate lang string data
+    // Collate language string data
     foreach ($this_children as $table) {
         foreach ($table[3] as $__) {
             if (!is_array($__)) {

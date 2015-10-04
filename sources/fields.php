@@ -33,7 +33,7 @@ function catalogue_file_script()
     $file = filter_naughty(get_param_string('file', false, true));
     $_full = get_custom_file_base() . '/uploads/catalogues/' . filter_naughty(rawurldecode($file));
     if (!file_exists($_full)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('FILE')));
     }
     $size = filesize($_full);
 

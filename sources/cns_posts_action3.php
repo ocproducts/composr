@@ -112,7 +112,7 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
 
     $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_topic_id', 'p_time', 'p_post', 'p_poster', 'p_cache_forum_id'), array('id' => $post_id));
     if (!array_key_exists(0, $post_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
     $_postdetails = $post_info[0]['p_post'];
     $post_owner = $post_info[0]['p_poster'];
@@ -230,7 +230,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     // Info about source
     $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_pt_from', 't_pt_to'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
     }
     $forum_id = $info[0]['t_forum_id'];
 
@@ -374,7 +374,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
     // Info about source
     $from_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id'), array('id' => $from_topic_id));
     if (!array_key_exists(0, $from_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
     }
     $from_forum_id = $from_info[0]['t_forum_id'];
 
@@ -434,7 +434,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
     // Info about destination
     $to_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id'), array('id' => $to_topic_id));
     if (!array_key_exists(0, $to_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
     }
     $to_forum_id = $to_info[0]['t_forum_id'];
 

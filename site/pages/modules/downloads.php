@@ -250,7 +250,7 @@ class Module_downloads
             // Get details
             $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('*'), array('id' => $category_id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen(get_screen_title('DOWNLOAD_CATEGORY'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('DOWNLOAD_CATEGORY'), do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
             }
             $category = $rows[0];
 
@@ -317,7 +317,7 @@ class Module_downloads
             // Load from database
             $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen(get_screen_title('SECTION_DOWNLOADS'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('SECTION_DOWNLOADS'), do_lang_tempcode('MISSING_RESOURCE', 'download'));
             }
             $myrow = $rows[0];
             set_feed_url('?mode=downloads&select=' . strval($myrow['category_id']));
@@ -541,6 +541,7 @@ class Module_downloads
             'TITLE' => $this->title,
             'SUBMIT_URL' => $submit_url,
             'ADD_CAT_URL' => $add_cat_url,
+            'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
             'EDIT_CAT_URL' => $edit_cat_url,
             'DESCRIPTION' => $description,
             'SUBCATEGORIES' => $subcategories,
@@ -639,6 +640,7 @@ class Module_downloads
             'TITLE' => $this->title,
             'SUBMIT_URL' => $submit_url,
             'ADD_CAT_URL' => $add_cat_url,
+            'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
             'EDIT_CAT_URL' => $edit_cat_url,
             'SUB_CATEGORIES' => $subcats,
         ));
@@ -689,7 +691,10 @@ class Module_downloads
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details->attach(do_template('WARNING_BOX', array('_GUID' => '5b1781b8fbb1ef9b8f47693afcff02b9', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT'))));
+            $warning_details->attach(do_template('WARNING_BOX', array(
+                '_GUID' => '5b1781b8fbb1ef9b8f47693afcff02b9',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'download'),
+            )));
         }
 
         // Cost warning

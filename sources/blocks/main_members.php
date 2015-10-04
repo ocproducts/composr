@@ -190,7 +190,7 @@ class Block_main_members
                 } else {
                     $group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_usergroup));
                     if (is_null($group_id)) {
-                        return paragraph(do_lang_tempcode('MISSING_RESOURCE'), 'red_alert');
+                        return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), 'red_alert');
                     }
                 }
                 if ($has_exists) {

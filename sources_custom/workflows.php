@@ -150,7 +150,7 @@ function get_submitter_of_workflow_content($content_id)
     $submitter = $GLOBALS['SITE_DB']->query_select('workflow_content', array('original_submitter'), array('id' => $content_id));
     if ($submitter == array()) {
         // Exit if we can't find the given resource
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'workflow_content->' . strval($content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html('workflow_content->' . strval($content_id))));
     }
     // Now extract the submitter (if there is one)
     return $submitter[0]['original_submitter'];
@@ -188,7 +188,7 @@ function get_workflow_form($workflow_content_id)
     // Check if this is a valid piece of content for a workflow
     $rows = $GLOBALS['SITE_DB']->query_select('workflow_content', array('*'), array('id' => $workflow_content_id), '', 1);
     if (count($rows) == 0) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', strval($workflow_content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($workflow_content_id)), do_lang_tempcode('WORKFLOW')));
     }
 
     $row = $rows[0];
@@ -201,7 +201,7 @@ function get_workflow_form($workflow_content_id)
     // Make sure there are some points to approve
     $approval_points = get_all_approval_points($relevant_workflow);
     if ($approval_points == array()) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', strval($workflow_content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($workflow_content_id)), do_lang_tempcode('WORKFLOW')));
     }
 
     /////////////////////////
@@ -619,7 +619,7 @@ function workflow_update_handler()
     // Grab lookup data from the workflows database
     $content_details = $GLOBALS['SITE_DB']->query_select('workflow_content', array('content_type', 'content_id'), array('id' => $content_id), '', 1);
     if ($content_details == array()) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'workflow_content->' . strval($content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html('workflow_content->' . strval($content_id))));
     }
 
     // Now use it to find this content's validation field...
@@ -646,7 +646,7 @@ function workflow_update_handler()
     if ($content_is_validated == array()) {
         $content_id = $content_details[0]['content_id'];
         $validated_field = $content_id->content_validated_field;
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', $content_table . '->' . $content_field . '->' . $validated_field));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($content_table . '->' . $content_field . '->' . $validated_field)));
     }
 
     // In order for content to go live all points must be approved

@@ -296,6 +296,7 @@ class Hook_addon_registry_downloads
                 'TITLE' => lorem_title(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'DESCRIPTION' => lorem_paragraph_html(),
                 'SUBCATEGORIES' => $subcategories,
@@ -351,6 +352,7 @@ class Hook_addon_registry_downloads
                 'TITLE' => lorem_title(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'SUB_CATEGORIES' => $subcats,
             )), null, '', true)

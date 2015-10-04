@@ -91,7 +91,7 @@ class Module_groups
             $map = has_privilege(get_member(), 'see_hidden_groups') ? array('id' => $id) : array('id' => $id, 'g_hidden' => 0);
             $groups = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), $map, '', 1);
             if (!array_key_exists(0, $groups)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
             }
             $group = $groups[0];
 
@@ -138,7 +138,7 @@ class Module_groups
                 } else { // Collaboration zone has a text link like this
                     $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_id));
                     if (is_null($id)) {
-                        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
                     }
                 }
                 if ($id == db_get_first_id()) {
@@ -699,7 +699,7 @@ class Module_groups
         } else { // Collaboration zone has a text link like this
             $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('f_description') => $_id));
             if (is_null($id)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
             }
         }
 

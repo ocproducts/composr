@@ -33,7 +33,7 @@ function get_ticket_details($ticket_id, $hard_error = true)
     $_comments = get_ticket_posts($ticket_id, $forum, $topic_id, $_ticket_type_id, 0, 1);
     if ((!is_array($_comments)) || (!array_key_exists(0, $_comments))) {
         if ($hard_error) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
 
         return null;

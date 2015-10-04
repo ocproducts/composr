@@ -42,6 +42,11 @@ class CMSAttachmentWrite
             $filekey .= '1';
         }
 
+        $urls = get_url('', $filekey, file_exists(get_custom_file_base() . '/uploads/avatars') ? 'uploads/avatars' : 'uploads/cns_avatars', 0, CMS_UPLOAD_IMAGE, false, '', '', false, true);
+        if ($urls[0] == '') {
+            warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
+        }
+
         if (url_is_local($urls[0])) {
             $filepath = get_file_base() . '/' . rawurldecode($urls[0]);
             $filesize = filesize($filepath);
@@ -157,7 +162,7 @@ class CMSAttachmentWrite
 
         $_post_comcode = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_post', array('id' => $post_id));
         if (is_null($_post_comcode)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
         $post_comcode = get_translated_text($_post_comcode);
         $post_comcode = preg_replace('#\n*\[attachment(_safe)?( [^\[\]]*)?\]' . strval($attachment_id) . '\[/attachment(_safe)?\]#U', '', $post_comcode);
@@ -167,7 +172,7 @@ class CMSAttachmentWrite
 
         $_attachment_info = $GLOBALS['SITE_DB']->query_select('attachments', array('a_url', 'a_thumb_url', 'a_member_id'), array('id' => $attachment_id), '', 1);
         if (!array_key_exists(0, $_attachment_info)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('_ATTACHMENT')));
         }
 
         $ref_where = array('a_id' => $attachment_id, 'r_referer_type' => $type);

@@ -1025,7 +1025,7 @@ abstract class Standard_crud_module
                     send_validation_request($this->doing, $this->table, $this->non_integer_id, $id, $edit_url);
                 }
 
-                $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED')));
+                $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED', $this->content_type)));
             }
             $submitter = get_member();
             if (method_exists($this, 'get_submitter')) {
@@ -1653,7 +1653,7 @@ abstract class Standard_crud_module
                         send_validation_request($this->doing, $this->table, $this->non_integer_id, $id, $edit_url);
                     }
 
-                    $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED')));
+                    $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED', $this->content_type)));
                 }
             }
         }

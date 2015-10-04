@@ -963,7 +963,7 @@ class Module_admin_addons
         require_code('form_templates');
         $field = form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true);
         $fields .= $field->evaluate();
-        $field = form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR'), 'author', $author, true);
+        $field = form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR', do_lang_tempcode('ADDON')), 'author', $author, true);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('ORGANISATION'), do_lang_tempcode('DESCRIPTION_ORGANISATION'), 'organisation', $organisation, false);
         $fields .= $field->evaluate();

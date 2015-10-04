@@ -33,7 +33,7 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
     $_old_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($old_forum_id);
     $_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_id);
     if (is_null($_forum_id)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
     }
 
     $default_comment_topic_forum = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('comments_forum_name'));
@@ -139,6 +139,7 @@ function trackback_script()
 /**
  * Get the Tempcode for the manipulation of the feedback fields for some content, if they are enabled in the Admin Zone.
  *
+ * @param  string $content_type The content type
  * @param  boolean $allow_rating Whether rating is currently/by-default allowed for this resource
  * @param  boolean $allow_comments Whether comments are currently/by-default allowed for this resource
  * @param  ?boolean $allow_trackbacks Whether trackbacks are currently/by-default allowed for this resource (null: this resource does not support trackbacks regardless)
@@ -151,7 +152,7 @@ function trackback_script()
  * @param  string $field_name_prefix Field name prefix
  * @return Tempcode The feedback editing fields
  */
-function feedback_fields($allow_rating, $allow_comments, $allow_trackbacks, $send_trackbacks, $notes, $allow_reviews = null, $default_off = false, $has_notes = true, $show_header = true, $field_name_prefix = '')
+function feedback_fields($content_type, $allow_rating, $allow_comments, $allow_trackbacks, $send_trackbacks, $notes, $allow_reviews = null, $default_off = false, $has_notes = true, $show_header = true, $field_name_prefix = '')
 {
     if (get_option('enable_feedback') == '0') {
         return new Tempcode();
@@ -159,29 +160,35 @@ function feedback_fields($allow_rating, $allow_comments, $allow_trackbacks, $sen
 
     require_code('feedback');
     require_code('form_templates');
+
     $fields = new Tempcode();
+
     if (($send_trackbacks) && (get_option('is_on_trackbacks') == '1')) {
         require_lang('trackbacks');
         $fields->attach(form_input_line(do_lang_tempcode('SEND_TRACKBACKS'), do_lang_tempcode('DESCRIPTION_SEND_TRACKBACKS'), $field_name_prefix . 'send_trackbacks', get_param_string('trackback', ''), false));
     }
+
     if (get_option('is_on_rating') == '1') {
-        $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_RATING'), do_lang_tempcode('DESCRIPTION_ALLOW_RATING'), $field_name_prefix . 'allow_rating', $allow_rating));
+        $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_RATING'), do_lang_tempcode('DESCRIPTION_ALLOW_RATING', $content_type), $field_name_prefix . 'allow_rating', $allow_rating));
     }
+
     if (get_option('is_on_comments') == '1') {
         if (!is_null($allow_reviews)) {
             $choices = new Tempcode();
             $choices->attach(form_input_list_entry('0', !$allow_comments && !$allow_reviews, do_lang('NO')));
             $choices->attach(form_input_list_entry('1', $allow_comments && !$allow_reviews, do_lang('ALLOW_COMMENTS_ONLY')));
             $choices->attach(form_input_list_entry('2', $allow_reviews, do_lang('ALLOW_REVIEWS')));
-            $fields->attach(form_input_list(do_lang_tempcode('ALLOW_COMMENTS'), do_lang_tempcode('DESCRIPTION_ALLOW_COMMENTS'), $field_name_prefix . 'allow_comments', $choices, null, false, false));
+            $fields->attach(form_input_list(do_lang_tempcode('ALLOW_COMMENTS'), do_lang_tempcode('DESCRIPTION_ALLOW_COMMENTS', $content_type), $field_name_prefix . 'allow_comments', $choices, null, false, false));
         } else {
-            $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_COMMENTS'), do_lang_tempcode('DESCRIPTION_ALLOW_COMMENTS'), $field_name_prefix . 'allow_comments', $allow_comments));
+            $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_COMMENTS'), do_lang_tempcode('DESCRIPTION_ALLOW_COMMENTS', $content_type), $field_name_prefix . 'allow_comments', $allow_comments));
         }
     }
+
     if ((get_option('is_on_trackbacks') == '1') && (!is_null($allow_trackbacks))) {
         require_lang('trackbacks');
-        $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_TRACKBACKS'), do_lang_tempcode('DESCRIPTION_ALLOW_TRACKBACKS'), $field_name_prefix . 'allow_trackbacks', $allow_trackbacks));
+        $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_TRACKBACKS'), do_lang_tempcode('DESCRIPTION_ALLOW_TRACKBACKS', $content_type), $field_name_prefix . 'allow_trackbacks', $allow_trackbacks));
     }
+
     if ((get_option('enable_staff_notes') == '1') && ($has_notes)) {
         $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), $field_name_prefix . 'notes', $notes, false));
     }

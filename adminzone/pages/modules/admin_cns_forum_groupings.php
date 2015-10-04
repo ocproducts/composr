@@ -202,7 +202,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
 
         $m = $GLOBALS['FORUM_DB']->query_select('f_forum_groupings', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $m)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum_grouping'));
         }
         $r = $m[0];
 

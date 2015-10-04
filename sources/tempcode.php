@@ -576,7 +576,7 @@ function apply_tempcode_escaping_inline($escaped, $value)
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specifed language code
+ * This will create a new Tempcode object that is containing a single specifed language string ID
  *
  * @param  ID_TEXT $lang_string The ID of the language string to use
  * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
@@ -984,7 +984,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 if ($REQUEST_BLOCK_NEST_LEVEL > 40) { // 100 caused xdebug error, but Composr will have some overhead in both error handler and other code to get to here. We want xdebug error to not show, but of course to provide the same benefits as that error.
                     $REQUEST_BLOCK_NEST_LEVEL = 0;
                     $BLOCKS_CACHE[serialize($param)] = do_lang_tempcode('INTERNAL_ERROR');
-                    attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', is_string($param[0]) ? $param[0] : 'block'), 'warn');
+                    attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html(is_string($param[0]) ? $param[0] : 'block'), escape_html(do_lang('BLOCK'))), 'warn');
                     return;
                 }
 

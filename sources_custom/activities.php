@@ -250,7 +250,7 @@ function render_activity($row, $use_inside_cms = true)
         $extra_lang_string_params
     ));
 
-    // Lang string may not use all params, so add extras on if were unused
+    // Language string may not use all params, so add extras on if were unused
     for ($i = 1; $i <= 3; $i++) {
         if ((strpos($row['a_language_string_code'], '_UNTYPED') === false) && (strpos($test, '{1}') === false) && (strpos($test, '{2}') === false) && (strpos($test, '{3}') === false) && ($row['a_label_' . strval($i)] != '')) {
             if (!$message->is_empty()) {

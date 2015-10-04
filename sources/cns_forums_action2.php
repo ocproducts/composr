@@ -66,7 +66,7 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
 
     $title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'c_title', array('id' => $forum_grouping_id));
     if (is_null($title)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum_grouping'));
     }
 
     $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_forum_grouping_id' => $target_forum_grouping_id), array('f_forum_grouping_id' => $forum_grouping_id));
@@ -119,7 +119,7 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
 
     $forum_info = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $forum_id), '', 1);
     if (!array_key_exists(0, $forum_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
     }
     $old_parent = $forum_info[0]['f_parent_forum'];
     $old_name = $forum_info[0]['f_name'];
@@ -214,7 +214,7 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
 
     $forum_info = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $forum_id), '', 1);
     if (!array_key_exists(0, $forum_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
     }
     delete_lang($forum_info[0]['f_description'], $GLOBALS['FORUM_DB']);
     delete_lang($forum_info[0]['f_intro_question'], $GLOBALS['FORUM_DB']);
@@ -309,7 +309,7 @@ function cns_ensure_forum_grouping_exists($forum_grouping_id)
 {
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('id' => $forum_grouping_id));
     if (is_null($test)) {
-        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', strval($forum_grouping_id)));
+        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($forum_grouping_id)), 'forum_grouping'));
     }
 }
 

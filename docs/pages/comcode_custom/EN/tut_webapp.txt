@@ -251,7 +251,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Options for you</em></p>
 		</td>
 		<td>
-			<p>Use a product such as Composr. Depending on needs and experience, employ specialists in the software (such as the makers themselves) to get the website installed and customised.</p>
+			<p>Use a product such as Composr. Depending on needs and experience, employ specialists in Composr (such as ocProducts themselves) to get the website installed and customised.</p>
 		</td>
 	</tr>
 	<tr>
@@ -297,7 +297,7 @@ CMS systems are becoming more sophisticated and all-encompassing, with support f
 			<p><em>Options for you</em></p>
 		</td>
 		<td>
-			<p>Find an appropriate product. Depending on your experience, you may wish to employ specialists in the software (such as the makers themselves) to get the product installed and customised.</p>
+			<p>Find an appropriate product. Depending on your experience, you may wish to employ specialists in Composr (such as ocProducts themselves) to get the product installed and customised.</p>
 		</td>
 	</tr>
 	<tr>
@@ -543,7 +543,7 @@ Composr provides the best of all the main competing kinds of system, seamlessly 
  - there are very few bugs (we fix all bugs as they are reported, there is no database of "known issues" for Composr)
  - the documentation is very thorough
  - the terminology is consistent
- - the software is modular, meaning you can uninstall large parts of it if you feel them unnecessary for your website
+ - Composr is modular, meaning you can uninstall large parts of it if you feel them unnecessary for your website
  - design principles are common throughout the system
  - the source code is easily editable for those with programming experience, with thorough code documentation
  - you do not need to mess around with individual files on your server to configure functionality: everything has a live interface as a part of the system itself

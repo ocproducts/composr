@@ -162,7 +162,7 @@ class Module_admin_lang
             return $this->set_lang_code();
         }
         if ($type == '_code2') {
-            return $this->set_lang_code_2(); // This is a lang string setter called from an external source. Strings may be from many different files
+            return $this->set_lang_code_2(); // This is a language string setter called from an external source. Strings may be from many different files
         }
 
         return new Tempcode();
@@ -649,7 +649,7 @@ class Module_admin_lang
         // Get some stuff
         $for_lang = get_lang_file_map($lang, $lang_file);
         $for_base_lang = get_lang_file_map($base_lang, $lang_file, true);
-        $descriptions = get_lang_file_descriptions($base_lang, $lang_file);
+        $descriptions = get_lang_file_section($base_lang, $lang_file);
 
         // Make our translation page
         $lines = '';
@@ -720,7 +720,7 @@ class Module_admin_lang
     }
 
     /**
-     * Convert a standard language code to a google code.
+     * Convert a standard language codename to a google code.
      *
      * @param  LANGUAGE_NAME $in The code to convert
      * @return string The converted code (or blank if none can be found)
@@ -749,7 +749,8 @@ class Module_admin_lang
 
         $for_base_lang = get_lang_file_map(fallback_lang(), $lang_file, true);
         $for_base_lang_2 = get_lang_file_map($lang, $lang_file, false);
-        $descriptions = get_lang_file_descriptions(fallback_lang(), $lang_file);
+        $descriptions = get_lang_file_section(fallback_lang(), $lang_file);
+        $runtime_processing = get_lang_file_section(fallback_lang(), $lang_file, 'runtime_processing');
 
         if ((count($_POST) == 0) && (strtolower(cms_srv('REQUEST_METHOD')) != 'post')) {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
@@ -776,7 +777,16 @@ class Module_admin_lang
         }
         fwrite($myfile, "[descriptions]\n");
         foreach ($descriptions as $key => $description) {
-            fwrite($myfile, $key . '=' . $description . "\n");
+            if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            }
+        }
+        fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+        fwrite($myfile, "[runtime_processing]\n");
+        foreach ($runtime_processing as $key => $flag) {
+            if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            }
         }
         fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
         fwrite($myfile, "[strings]\n");
@@ -830,7 +840,8 @@ class Module_admin_lang
         foreach (array_keys($lang_files) as $lang_file) {
             $for_base_lang = get_lang_file_map(fallback_lang(), $lang_file, true);
             $for_base_lang_2 = get_lang_file_map($lang, $lang_file, false);
-            $descriptions = get_lang_file_descriptions(fallback_lang(), $lang_file);
+            $descriptions = get_lang_file_section(fallback_lang(), $lang_file);
+            $runtime_processing = get_lang_file_section(fallback_lang(), $lang_file, 'runtime_processing');
 
             $out = '';
 
@@ -862,6 +873,14 @@ class Module_admin_lang
                         warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                     }
                 }
+                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+                fwrite($myfile, "[runtime_processing]\n");
+                foreach ($runtime_processing as $key => $flag) {
+                    if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    }
+                }
+                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 fwrite($myfile, "\n[strings]\n");
                 fwrite($myfile, $out);
                 @flock($myfile, LOCK_UN);

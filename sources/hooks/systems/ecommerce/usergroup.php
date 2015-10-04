@@ -237,7 +237,7 @@ class Hook_ecommerce_usergroup
         $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
         $sub = $db->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $sub)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP')));
         }
 
         $ret = get_translated_tempcode('f_usergroup_subs', $sub[0], 's_description', $db);

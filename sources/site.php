@@ -1097,7 +1097,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     $REQUEST_PAGE_NEST_LEVEL++;
     if ($REQUEST_PAGE_NEST_LEVEL > 20) {
         $REQUEST_PAGE_NEST_LEVEL = 0;
-        attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', $codename), 'warn');
+        attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html($codename), escape_html(do_lang('PAGE'))), 'warn');
         return null;
     }
 
@@ -1897,7 +1897,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
 
     // Cut off broken recursion
     if ($PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] == $the_page) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($the_page)));
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($the_page), 'comcode_page'));
     }
 
     // Our point in the chain

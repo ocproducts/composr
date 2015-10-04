@@ -159,7 +159,7 @@ function menu_management_script()
  * @param  SHORT_TEXT $url The URL (in entry point form).
  * @param  BINARY $expanded Whether it is an expanded branch.
  * @param  BINARY $check_permissions Whether people who may not view the entry point do not see the link.
- * @param  boolean $dereference_caption Whether the caption is a language code.
+ * @param  boolean $dereference_caption Whether the caption is a language string.
  * @param  SHORT_TEXT $caption_long The tooltip (blank: none).
  * @param  BINARY $new_window Whether the link will open in a new window.
  * @param  ID_TEXT $theme_image_code The theme image code.
@@ -328,7 +328,7 @@ function delete_menu_item($id)
  */
 function delete_menu($menu_id)
 {
-    // Get language codes currently used
+    // Get language strings currently used
     $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
     // Erase old stuff

@@ -440,7 +440,7 @@ class Module_admin_menus
 
             $orderings = array_keys($ids);
 
-            // Get language codes currently used
+            // Get language strings currently used
             $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
             // Now, process everything on the root
@@ -484,7 +484,7 @@ class Module_admin_menus
      * @param  integer $id The ID of the menu item (i.e. what it is referenced as in POST)
      * @param  array $ids The map of IDs on the menu (ID=>parent)
      * @param  ?integer $parent The ID of the parent branch (null: no parent)
-     * @param  array $old_menu_bits The map of menu id=>string language IDs employed by items before the edit
+     * @param  array $old_menu_bits The map of menu id=>string language string IDs employed by items before the edit
      * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
      */
     public function add_menu_item($menu, $id, &$ids, $parent, &$old_menu_bits, &$order)

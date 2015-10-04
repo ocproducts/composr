@@ -406,7 +406,7 @@ function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_pe
         if (is_null($row)) {
             $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('g_owner'), array('name' => $gallery_name));
             if (!isset($rows[0])) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
             }
             $row = $rows[0];
         }
@@ -602,7 +602,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
     if (is_null($gallery_info)) {
         $_gallery_info = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'is_member_synched', 'accept_images', 'accept_videos'), array('name' => $gallery), '', 1);
         if (!array_key_exists(0, $_gallery_info)) {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html('gallery:' . $gallery)));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($gallery), 'gallery'));
         }
         $gallery_info = $_gallery_info[0];
     }
@@ -869,7 +869,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         $category_rows = $GLOBALS['SITE_DB']->query_select('galleries', array('parent_id', 'fullname'), array('name' => $gallery), '', 1);
         if (!array_key_exists(0, $category_rows)) {
             return array();
-        }//fatal_exit(do_lang_tempcode('CAT_NOT_FOUND',escape_html($gallery)));
+        }//fatal_exit(do_lang_tempcode('CAT_NOT_FOUND',escape_html($gallery), 'gallery'));
         $PT_PAIR_CACHE_G[$gallery] = $category_rows[0];
     }
 
@@ -881,7 +881,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
     }
 
     if ($PT_PAIR_CACHE_G[$gallery]['parent_id'] == $gallery) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($gallery)));
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($gallery), 'gallery'));
     }
 
     if ((get_option('personal_under_members') == '1') && (get_forum_type() == 'cns')) {

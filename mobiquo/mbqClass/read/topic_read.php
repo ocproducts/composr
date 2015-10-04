@@ -126,7 +126,7 @@ class CMSTopicRead
                 return array(
                     0,
                     array(),
-                    do_lang('MISSING_RESOURCE'),
+                    do_lang('MISSING_RESOURCE', 'forum'),
                     0,
                     0,
                     array(

@@ -685,6 +685,12 @@ class Module_cms_comcode_pages
                 $contents = file_get_contents($file_base . '/' . $restore_from);
                 @flock($tmp, LOCK_UN);
                 fclose($tmp);
+
+                if (strpos($restore_from, '_custom/') === false) {
+                    global $LANG_FILTER_OB;
+                    $contents = $LANG_FILTER_OB->compile_time(null, $contents);
+                }
+
                 if (is_null(get_param_string('restore_from', null))) {
                     $comcode_page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $file), '', 1);
                     if (array_key_exists(0, $comcode_page_rows)) {
@@ -838,7 +844,7 @@ class Module_cms_comcode_pages
         }
         if (has_bypass_validation_comcode_page_permission($zone)) {
             if (addon_installed('unvalidated')) {
-                $fields2->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated));
+                $fields2->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'comcode_page'), 'validated', $validated));
             }
         }
 
@@ -853,7 +859,7 @@ class Module_cms_comcode_pages
         }
         $fields2->attach(form_input_tick(do_lang_tempcode('SHOW_AS_EDITED'), do_lang_tempcode('DESCRIPTION_SHOW_AS_EDITED'), 'show_as_edit', $show_as_edit));
 
-        $fields2->attach(form_input_integer(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_ORDER'), 'order', $order, true));
+        $fields2->attach(form_input_integer(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_ORDER', 'catalogue_category', 'catalogue_entry'), 'order', $order, true));
 
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
             '_GUID' => 'a42341a9a2de532cecdcfbecaff00a0f',
@@ -1031,7 +1037,7 @@ class Module_cms_comcode_pages
                 send_validation_request('COMCODE_PAGE_EDIT', 'comcode_pages', true, $zone . ':' . $new_file, $edit_url);
             }
         }
-        $completion_text = ($validated == 0) ? do_lang_tempcode('SUBMIT_UNVALIDATED') : do_lang_tempcode('SUCCESS');
+        $completion_text = ($validated == 0) ? do_lang_tempcode('SUBMIT_UNVALIDATED', 'comcode_page') : do_lang_tempcode('SUCCESS');
         $url = post_param_string('redirect', '');
         if ($url != '') {
             return redirect_screen($this->title, $url, $completion_text);

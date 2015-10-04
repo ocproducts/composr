@@ -85,7 +85,7 @@ class Block_main_cc_embed
         // Pick up details about category
         $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $categories)) {
-            return do_lang_tempcode('MISSING_RESOURCE');
+            return do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category');
         }
         $category = $categories[0];
 

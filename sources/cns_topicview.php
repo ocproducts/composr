@@ -33,7 +33,7 @@ function find_post_id_url($post_id)
 
     $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
     if (is_null($id)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
 
     // What page is it on?
@@ -275,7 +275,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         }
         $_topic_info = $GLOBALS['FORUM_DB']->query_select($table, $select, array('t.id' => $topic_id), '', 1);
         if (!array_key_exists(0, $_topic_info)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
         $topic_info = $_topic_info[0];
 

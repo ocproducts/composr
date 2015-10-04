@@ -181,7 +181,7 @@ class Hook_task_download_member_csv
             $wider = '';
             foreach ($parts as $part) {
                 switch (substr($part, 0, 1)) {
-                    case '*': // lang string
+                    case '*': // language string
                         $at = get_translated_text($m[substr($part, 1)], $GLOBALS['FORUM_DB']);
                         break;
 

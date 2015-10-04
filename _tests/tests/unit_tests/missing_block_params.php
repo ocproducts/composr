@@ -71,7 +71,7 @@ class missing_block_params_test_set extends cms_test_case
             }
         }
         foreach ($need as $i => $x) {
-            $this->assertTrue(false, 'Missing lang string: ' . $x);
+            $this->assertTrue(false, 'Missing language string: ' . $x);
         }
     }
 

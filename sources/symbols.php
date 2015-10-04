@@ -514,7 +514,7 @@ function ecv($lang, $escaped, $type, $name, $param)
     $value = $dle ? do_lang($name, $a, $b, $c, $lang, false) : escape_html($name . ':' . (($a !== null) ? $a : '') . ',' . (($b !== null) ? $b : ''));
     if ($value === null) {
         require_code('site');
-        attach_message(do_lang_tempcode('MISSING_LANG_ENTRY', escape_html($name)), 'warn');
+        attach_message(do_lang_tempcode('MISSING_LANG_STRING', escape_html($name)), 'warn');
 
         $value = '';
         if ($GLOBALS['XSS_DETECT']) {
@@ -523,7 +523,7 @@ function ecv($lang, $escaped, $type, $name, $param)
         return $value;
     }
     if ($escaped != array() && $escaped != array(ENTITY_ESCAPED)) {
-        apply_tempcode_escaping(array_diff($escaped, array(ENTITY_ESCAPED)), $value); // Escape but without ENTITY_ESCAPED because we don't do that on lang strings
+        apply_tempcode_escaping(array_diff($escaped, array(ENTITY_ESCAPED)), $value); // Escape but without ENTITY_ESCAPED because we don't do that on language strings
     } elseif ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
     }
@@ -4323,7 +4323,7 @@ function ecv_EXTEND_URL($lang, $escaped, $param)
  */
 function ecv_ENSURE_PROTOCOL_SUITABILITY($lang, $escaped, $param)
 {
-    $url = ensure_protocol_suitability(isset($param[0]) ? $param[0] : '');
+    $value = ensure_protocol_suitability(isset($param[0]) ? $param[0] : '');
 
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);

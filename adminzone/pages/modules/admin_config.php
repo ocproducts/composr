@@ -413,7 +413,7 @@ class Module_admin_config
             foreach ($rows as $myrow) {
                 $name = $myrow['name']; // Can't get from array key, as sorting nuked it
 
-                // Lang strings
+                // Language strings
                 $human_name = do_lang_tempcode($myrow['human_name']);
                 $_explanation = do_lang($myrow['explanation'], null, null, null, null, false);
                 if (is_null($_explanation)) {

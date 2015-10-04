@@ -335,7 +335,7 @@ class Module_admin_awards extends Standard_crud_module
     {
         $m = $GLOBALS['SITE_DB']->query_select('award_types', array('*'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $m)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'award_type'));
         }
         $r = $m[0];
 

@@ -290,7 +290,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
 
     $text_eval = is_object($text) ? $text->evaluate() : $text;
 
-    if ($text_eval == do_lang('MISSING_RESOURCE')) {
+    if (strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) {
         set_http_status_code('404');
         if (cms_srv('HTTP_REFERER') != '') {
             relay_error_notification($text_eval . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
@@ -382,7 +382,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
             if (!headers_sent()) {
                 set_http_status_code('400');
             }
-        } elseif (($text_eval == do_lang('MISSING_RESOURCE')) || ($text_eval == do_lang('MEMBER_NO_EXIST'))) {
+        } elseif ((strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) || ($text_eval == do_lang('MEMBER_NO_EXIST'))) {
             if (!headers_sent()) {
                 set_http_status_code('404');
             }
@@ -503,7 +503,7 @@ function ip_cidr_check($ip, $cidr)
 /**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
- * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string codename
+ * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
  * @param  SHORT_TEXT $reason_param_a A parameter for the hack attack language string (this should be based on a unique ID, preferably)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting

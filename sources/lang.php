@@ -20,6 +20,15 @@
 
 /*EXTRA FUNCTIONS: levenshtein*/
 
+/*
+Terminology:
+
+Language codename --> A particular pack's codename, e.g. EN
+Language file --> A .ini file
+Language string ID --> A particular string within a .ini file, e.g. MISSING_RESOURCE
+Language string --> A more general word and can *either* refer to a string within a .ini file ("code") *or* a translation within the database
+*/
+
 /**
  * Standard code module initialisation function.
  * @ignore
@@ -80,6 +89,15 @@ function init__lang()
         }
     }
 
+    global $LANG_FILTER_OB, $LANG_RUNTIME_PROCESSING;
+    if (((is_file(get_file_base() . '/sources/lang_filter_' . user_lang() . '.php')) || (is_file(get_file_base() . '/sources_custom/lang_filter_' . user_lang() . '.php'))) && (!in_safe_mode())) {
+        require_code('lang_filter_' . user_lang());
+        $LANG_FILTER_OB = object_factory('LangFilter_' . user_lang());
+    } else {
+        $LANG_FILTER_OB = new LangFilter();
+    }
+    lang_load_runtime_processing();
+
     require_lang('critical_error');
     require_lang('global');
 
@@ -92,20 +110,41 @@ function init__lang()
 // ====
 
 /**
- * Get the human-readable form of a language ID, or a language entry from a language INI file.
+ * Load language processing data.
+ */
+function lang_load_runtime_processing()
+{
+    global $LANG_RUNTIME_PROCESSING;
+    if (function_exists('persistent_cache_get')) {
+        $LANG_RUNTIME_PROCESSING = persistent_cache_get('LANG_RUNTIME_PROCESSING');
+    }
+    if ($LANG_RUNTIME_PROCESSING === null) {
+        $path = get_custom_file_base() . '/caches/lang/_runtime_processing.lcd';
+        if (is_file($path)) {
+            $LANG_RUNTIME_PROCESSING = unserialize(file_get_contents($path));
+        } else {
+            require_code('lang_compile');
+            $LANG_RUNTIME_PROCESSING = get_lang_file_section(user_lang(), null, 'runtime_processing');
+            @file_put_contents($path, serialize($LANG_RUNTIME_PROCESSING));
+        }
+    }
+}
+
+/**
+ * Get the human-readable form of a language string ID.
  * Further documentation: https://www.youtube.com/watch?v=rinz9Avvq6A
  *
- * @param  ID_TEXT $codename The language ID
- * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
- * @param  ?mixed $token2 The second token [string or Tempcode] (replaces {2}) (null: none)
- * @param  ?mixed $token3 The third token (replaces {3}). May be an array of [of string], to allow any number of additional args (null: none)
+ * @param  ID_TEXT $codename The language string ID
+ * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
+ * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
+ * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */
-function do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $lang = null, $require_result = true)
+function do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3 = null, $lang = null, $require_result = true)
 {
-    return _do_lang($codename, $token1, $token2, $token3, $lang, $require_result);
+    return _do_lang($codename, $parameter1, $parameter2, $parameter3, $lang, $require_result);
 }
 
 /**
@@ -204,7 +243,7 @@ function user_lang()
 }
 
 /**
- * Get the closest fit language code to what the browser is requesting.
+ * Get the closest fit language codename to what the browser is requesting.
  *
  * @return ?LANGUAGE_NAME The closest-fit language to what the browser wants (null: browser doesn't ask)
  */
@@ -542,13 +581,13 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
 }
 
 /**
- * Convert the specified language codename to the default content, and return the language key.
+ * Convert the specified language string ID to the default content, and return the language key.
  *
  * @param  ID_TEXT $field_name The field name
- * @param  ID_TEXT $code The language codename
+ * @param  ID_TEXT $code The language string ID
  * @param  boolean $comcode Whether the given codes value is to be parsed as Comcode
  * @param  integer $level The level of importance this language string holds
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function lang_code_to_default_content($field_name, $code, $comcode = false, $level = 2)
 {
@@ -597,20 +636,20 @@ function protect_from_escaping($in)
 }
 
 /**
- * Get the human-readable form of a language ID, or a language entry from a language INI file.
+ * Get the human-readable form of a language string ID.
  *
- * @param  ID_TEXT $codename The language ID
- * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
- * @param  ?mixed $token2 The second token [string or Tempcode] (replaces {2}) (null: none)
- * @param  ?mixed $token3 The third token (replaces {3}). May be an array of [of string], to allow any number of additional args (null: none)
+ * @param  ID_TEXT $codename The language string ID
+ * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
+ * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
+ * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  * @ignore
  */
-function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $lang = null, $require_result = true)
+function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3 = null, $lang = null, $require_result = true)
 {
-    global $LANGUAGE_STRINGS_CACHE, $USER_LANG_CACHED, $RECORD_LANG_STRINGS, $XSS_DETECT, $PAGE_CACHE_LANG_LOADED, $PAGE_CACHE_LAZY_LOAD, $SMART_CACHE, $PAGE_CACHE_LANGS_REQUESTED, $LANG_REQUESTED_LANG;
+    global $LANGUAGE_STRINGS_CACHE, $USER_LANG_CACHED, $RECORD_LANG_STRINGS, $XSS_DETECT, $PAGE_CACHE_LANG_LOADED, $PAGE_CACHE_LAZY_LOAD, $SMART_CACHE, $PAGE_CACHE_LANGS_REQUESTED, $LANG_REQUESTED_LANG, $LANG_FILTER_OB, $LANG_RUNTIME_PROCESSING;
 
     if ($lang === null) {
         $lang = ($USER_LANG_CACHED === null) ? user_lang() : $USER_LANG_CACHED;
@@ -654,7 +693,7 @@ function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $la
                     unset($LANG_REQUESTED_LANG[$that_lang][$that_codename]);
                     require_lang($that_codename, $that_lang, null, true);
                 }
-                $ret = _do_lang($codename, $token1, $token2, $token3, $lang, $require_result);
+                $ret = _do_lang($codename, $parameter1, $parameter2, $parameter3, $lang, $require_result);
                 if ($ret === null) {
                     $PAGE_CACHE_LANG_LOADED[$lang][$codename] = null;
                     if ($SMART_CACHE !== null) {
@@ -674,7 +713,7 @@ function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $la
 
     if ((!isset($LANGUAGE_STRINGS_CACHE[$lang][$codename])) && (($require_result) || (!isset($LANGUAGE_STRINGS_CACHE[$lang])) || (!array_key_exists($codename, $LANGUAGE_STRINGS_CACHE[$lang])))) {
         if ($lang != fallback_lang()) {
-            $ret = do_lang($codename, $token1, $token2, $token3, fallback_lang(), $require_result);
+            $ret = do_lang($codename, $parameter1, $parameter2, $parameter3, fallback_lang(), $require_result);
 
             if ((!isset($PAGE_CACHE_LANG_LOADED[$lang][$codename])) && (isset($PAGE_CACHE_LANG_LOADED[fallback_lang()][$codename]))) {
                 $PAGE_CACHE_LANG_LOADED[$lang][$codename] = $ret; // Will have been cached into fallback_lang() from the nested do_lang call, we need to copy it into our cache bucket for this language
@@ -689,7 +728,7 @@ function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $la
                 global $USER_LANG_LOOP, $REQUIRE_LANG_LOOP;
                 //print_r(debug_backtrace());
                 if ($USER_LANG_LOOP) {
-                    critical_error('RELAY', 'Missing language code: ' . escape_html($codename) . '. This language code is required to produce error messages, and thus a critical error was prompted by the non-ability to show less-critical error messages. It is likely the source language files (lang/' . fallback_lang() . '/*.ini) for Composr on this website have been corrupted.');
+                    critical_error('RELAY', 'Missing language string ID: ' . escape_html($codename) . '. This language string ID is required to produce error messages, and thus a critical error was prompted by the non-ability to show less-critical error messages. It is likely the source language files (lang/' . fallback_lang() . '/*.ini) for Composr on this website have been corrupted.');
                 }
                 if ($REQUIRE_LANG_LOOP >= 2) {
                     return ''; // Probably failing to load global.ini, so just output with some text missing
@@ -698,7 +737,7 @@ function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $la
                 erase_cached_language();
 
                 require_code('site');
-                attach_message(do_lang_tempcode('MISSING_LANG_ENTRY', escape_html($codename)), 'warn');
+                attach_message(do_lang_tempcode('MISSING_LANG_STRING', escape_html($codename)), 'warn');
                 return '';
             } else {
                 if ($SMART_CACHE !== null) {
@@ -719,17 +758,16 @@ function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $la
 
     // Put in parameters
     static $non_plural_non_vowel = array('1', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z', '{'/*for no-op param usage*/);
-    $looked_up = $LANGUAGE_STRINGS_CACHE[$lang][$codename];
-    if ($looked_up === null) {
+    $out = $LANGUAGE_STRINGS_CACHE[$lang][$codename];
+    if ($out === null) {
         return null; // Learning cache pool has told us this string definitely does not exist
     }
-    $out = str_replace('\n', "\n", $looked_up);
     $plural_or_vowel_check = strpos($out, '|') !== false;
     if ($XSS_DETECT) {
         ocp_mark_as_escaped($out);
     }
-    if ($token1 !== null) {
-        if (((isset($token1->codename)/*faster than is_object*/) && ($token2 === null)) || (($token2 !== null) && (isset($token2->codename)/*faster than is_object*/))) { // Tempcode only supported in first two
+    if ($parameter1 !== null) {
+        if (((isset($parameter1->codename)/*faster than is_object*/) && ($parameter2 === null)) || (($parameter2 !== null) && (isset($parameter2->codename)/*faster than is_object*/))) { // Tempcode only supported in first two
             $bits = preg_split('#\{\d[^\}]*\}#', $out, 2, PREG_SPLIT_OFFSET_CAPTURE);
 
             $ret = new Tempcode();
@@ -742,77 +780,88 @@ function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $la
 
                 if ($at != 0) {
                     if ($out[$at - 2] == '1') {
-                        $ret->attach($token1);
+                        $ret->attach($parameter1);
                     } elseif ($out[$at - 2] == '2') {
-                        $ret->attach($token2);
+                        $ret->attach($parameter2);
                     } elseif (($plural_or_vowel_check) && (substr($out[$at - 2], 0, 2) == '1|')) {
                         $exploded = explode('|', $out[$at - 2]);
-                        $_token = $token1->evaluate();
-                        $_token_denum = str_replace(',', '', $_token);
-                        $ret->attach((in_array(is_numeric($_token_denum) ? $_token_denum : cms_mb_strtolower(cms_mb_substr($_token, 0, 1)), $non_plural_non_vowel)) ? $exploded[1] : $exploded[2]);
+                        $_parameter = $parameter1->evaluate();
+                        $_parameter_denum = str_replace(',', '', $_parameter);
+                        $ret->attach((in_array(is_numeric($_parameter_denum) ? $_parameter_denum : cms_mb_strtolower(cms_mb_substr($_parameter, 0, 1)), $non_plural_non_vowel)) ? $exploded[1] : $exploded[2]);
                     } elseif (($plural_or_vowel_check) && (substr($out[$at - 2], 0, 2) == '2|')) {
                         $exploded = explode('|', $out[$at - 2]);
-                        $_token = $token2->evaluate();
-                        $_token_denum = str_replace(',', '', $_token);
-                        $ret->attach((in_array(is_numeric($_token_denum) ? $_token_denum : cms_mb_strtolower(cms_mb_substr($_token, 0, 1)), $non_plural_non_vowel)) ? $exploded[1] : $exploded[2]);
+                        $_parameter = $parameter2->evaluate();
+                        $_parameter_denum = str_replace(',', '', $_parameter);
+                        $ret->attach((in_array(is_numeric($_parameter_denum) ? $_parameter_denum : cms_mb_strtolower(cms_mb_substr($_parameter, 0, 1)), $non_plural_non_vowel)) ? $exploded[1] : $exploded[2]);
                     }
                 }
                 $ret->attach($bit[0]);
             }
 
-            return $ret;
-        } elseif ($token1 !== null) {
-            $kg = !has_solemnly_declared(I_UNDERSTAND_XSS);
-            if ($kg) {
-                kid_gloves_html_escaping_singular($token1);
+            if (isset($LANG_RUNTIME_PROCESSING[$codename])) {
+                $flag = $LANG_RUNTIME_PROCESSING[$codename];
+                $parameters = array($parameter1, $parameter2);
+                if (is_array($parameter3)) {
+                    $parameters = array_merge($parameters, $parameter3);
+                } else {
+                    $parameters[] = $parameter3;
+                }
+                $ret = protect_from_escaping($LANG_FILTER_OB->run_time($codename, $ret->evaluate(), $flag, $parameters));
             }
 
-            $out = str_replace('{1}', $token1, $out);
-            if ($plural_or_vowel_check) {
-                $_token_denum = str_replace(',', '', $token1);
-                $out = preg_replace('#\{1\|(.*)\|(.*)\}#U', (in_array(is_numeric($_token_denum) ? $_token_denum : cms_mb_strtolower(cms_mb_substr($token1, 0, 1)), $non_plural_non_vowel)) ? '\\1' : '\\2', $out);
+            return $ret;
+        } elseif ($parameter1 !== null) {
+            $kg = !has_solemnly_declared(I_UNDERSTAND_XSS);
+            if ($kg) {
+                kid_gloves_html_escaping_singular($parameter1);
             }
-            if (($XSS_DETECT) && (ocp_is_escaped($token1))) {
+
+            $out = str_replace('{1}', $parameter1, $out);
+            if ($plural_or_vowel_check) {
+                $_parameter_denum = str_replace(',', '', $parameter1);
+                $out = preg_replace('#\{1\|(.*)\|(.*)\}#U', (in_array(is_numeric($_parameter_denum) ? $_parameter_denum : cms_mb_strtolower(cms_mb_substr($parameter1, 0, 1)), $non_plural_non_vowel)) ? '\\1' : '\\2', $out);
+            }
+            if (($XSS_DETECT) && (ocp_is_escaped($parameter1))) {
                 ocp_mark_as_escaped($out);
             }
         }
 
-        if ($token2 !== null) {
+        if ($parameter2 !== null) {
             if ($kg) {
-                kid_gloves_html_escaping_singular($token2);
+                kid_gloves_html_escaping_singular($parameter2);
             }
 
             if ($XSS_DETECT) {
                 $escaped = ocp_is_escaped($out);
             }
-            $out = str_replace('{2}', $token2, $out);
+            $out = str_replace('{2}', $parameter2, $out);
             if ($plural_or_vowel_check) {
-                $_token_denum = str_replace(',', '', $token2);
-                $out = preg_replace('#\{2\|(.*)\|(.*)\}#U', (in_array(is_numeric($_token_denum) ? $_token_denum : cms_mb_strtolower(cms_mb_substr($token2, 0, 1)), $non_plural_non_vowel)) ? '\\1' : '\\2', $out);
+                $_parameter_denum = str_replace(',', '', $parameter2);
+                $out = preg_replace('#\{2\|(.*)\|(.*)\}#U', (in_array(is_numeric($_parameter_denum) ? $_parameter_denum : cms_mb_strtolower(cms_mb_substr($parameter2, 0, 1)), $non_plural_non_vowel)) ? '\\1' : '\\2', $out);
             }
-            if (($XSS_DETECT) && (ocp_is_escaped($token2)) && ($escaped)) {
+            if (($XSS_DETECT) && (ocp_is_escaped($parameter2)) && ($escaped)) {
                 ocp_mark_as_escaped($out);
             }
 
-            if ($token3 !== null) {
+            if ($parameter3 !== null) {
                 $i = 3;
-                if (!is_array($token3)) {
-                    $token3 = array($token3);
+                if (!is_array($parameter3)) {
+                    $parameter3 = array($parameter3);
                 }
-                foreach ($token3 as $token) {
+                foreach ($parameter3 as $parameter) {
                     if ($kg) {
-                        kid_gloves_html_escaping_singular($token);
+                        kid_gloves_html_escaping_singular($parameter);
                     }
 
                     if ($XSS_DETECT) {
                         $escaped = ocp_is_escaped($out);
                     }
-                    $out = str_replace('{' . strval($i) . '}', $token, $out);
+                    $out = str_replace('{' . strval($i) . '}', $parameter, $out);
                     if ($plural_or_vowel_check) {
-                        $_token_denum = str_replace(',', '', $token);
-                        $out = preg_replace('#\{' . strval($i) . '\|(.*)\|(.*)\}#U', (in_array(is_numeric($_token_denum) ? $_token_denum : cms_mb_strtolower(cms_mb_substr($token, 0, 1)), $non_plural_non_vowel)) ? '\\1' : '\\2', $out);
+                        $_parameter_denum = str_replace(',', '', $parameter);
+                        $out = preg_replace('#\{' . strval($i) . '\|(.*)\|(.*)\}#U', (in_array(is_numeric($_parameter_denum) ? $_parameter_denum : cms_mb_strtolower(cms_mb_substr($parameter, 0, 1)), $non_plural_non_vowel)) ? '\\1' : '\\2', $out);
                     }
-                    if (($XSS_DETECT) && (ocp_is_escaped($token)) && ($escaped)) {
+                    if (($XSS_DETECT) && (ocp_is_escaped($parameter)) && ($escaped)) {
                         ocp_mark_as_escaped($out);
                     }
                     $i++;
@@ -820,6 +869,18 @@ function _do_lang($codename, $token1 = null, $token2 = null, $token3 = null, $la
             }
         }
     }
+
+    if (isset($LANG_RUNTIME_PROCESSING[$codename])) {
+        $flag = $LANG_RUNTIME_PROCESSING[$codename];
+        $parameters = array($parameter1, $parameter2);
+        if (is_array($parameter3)) {
+            $parameters = array_merge($parameters, $parameter3);
+        } else {
+            $parameters[] = $parameter3;
+        }
+        $out = $LANG_FILTER_OB->run_time($codename, $out, $flag, $parameters);
+    }
+
     return $out;
 }
 
@@ -853,7 +914,7 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
 // =======
 
 /**
- * Insert a Comcode language entry into the translation table, and returns the ID.
+ * Insert a Comcode language string into the translation table, and returns the ID.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  string $text The text
@@ -861,11 +922,11 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
  * @set    1 2 3 4
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
- * @param  ?string $pass_id The special identifier for this lang code on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?integer $wrap_pos Comcode parser wrap position (null: no wrapping)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
  * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function insert_lang_comcode($field_name, $text, $level, $connection = null, $insert_as_admin = false, $pass_id = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
 {
@@ -877,7 +938,7 @@ function insert_lang_comcode($field_name, $text, $level, $connection = null, $in
 }
 
 /**
- * Insert a language entry into the translation table, and returns the ID.
+ * Insert a language string into the translation table, and returns the ID.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  string $text The text
@@ -885,15 +946,15 @@ function insert_lang_comcode($field_name, $text, $level, $connection = null, $in
  * @set    1 2 3 4
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
- * @param  ?integer $id The ID to use for the language entry (null: work out next available)
+ * @param  ?integer $id The ID to use for the language string (null: work out next available)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
- * @param  ?string $pass_id The special identifier for this lang code on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?string $text_parsed Assembled Tempcode portion (null: work it out)
  * @param  ?integer $wrap_pos Comcode parser wrap position (null: no wrapping)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
  * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function insert_lang($field_name, $text, $level, $connection = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
 {
@@ -902,16 +963,16 @@ function insert_lang($field_name, $text, $level, $connection = null, $comcode = 
 }
 
 /**
- * Remap the specified Comcode language ID, and return the ID again - the ID isn't changed.
+ * Remap the specified Comcode language string ID, and return the ID again - the ID isn't changed.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  mixed $id The ID (if multi-lang-content on), or the string itself
  * @param  string $text The text to remap to
  * @param  ?object $connection The database connection to use (null: standard site connection)
- * @param  ?string $pass_id The special identifier for this lang code on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $source_user The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function lang_remap_comcode($field_name, $id, $text, $connection = null, $pass_id = null, $source_user = null, $as_admin = false)
 {
@@ -919,18 +980,18 @@ function lang_remap_comcode($field_name, $id, $text, $connection = null, $pass_i
 }
 
 /**
- * Remap the specified language ID, and return the ID again - the ID isn't changed.
+ * Remap the specified language string ID, and return the ID again - the ID isn't changed.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  mixed $id The ID (if multi-lang-content on), or the string itself
  * @param  string $text The text to remap to
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
- * @param  ?string $pass_id The special identifier for this lang code on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $source_user The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
  * @param  boolean $backup_string Whether to backup the language string before changing it
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function lang_remap($field_name, $id, $text, $connection = null, $comcode = false, $pass_id = null, $source_user = null, $as_admin = false, $backup_string = false)
 {
@@ -939,7 +1000,7 @@ function lang_remap($field_name, $id, $text, $connection = null, $comcode = fals
 }
 
 /**
- * Delete the specified language entry from the translation table.
+ * Delete the specified language string from the translation table.
  *
  * @param  integer $id The ID
  * @param  ?object $connection The database connection to use (null: standard site connection)
@@ -966,7 +1027,7 @@ function delete_lang($id, $connection = null)
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
- * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
+ * @param  boolean $as_admin Whether to force as_admin, even if the language string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
  * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
@@ -989,7 +1050,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $conne
 }
 
 /**
- * This function is an offshoot of get_translated_text, it instead returns parsed Comcode that is linked to the specified language ID.
+ * This function is an offshoot of get_translated_text, it instead returns parsed Comcode that is linked to the specified language string ID.
  *
  * @param  ID_TEXT $table The table name
  * @param  array $row The table row. Must not have aspects of other tables in it (i.e. joins). Pre-filter using 'db_map_restrict' if required
@@ -997,7 +1058,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $conne
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
- * @param  boolean $as_admin Whether to force as_admin, even if the lang string isn't stored against an admin (designed for Comcode page caching)
+ * @param  boolean $as_admin Whether to force as_admin, even if the language string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
  * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
@@ -1113,7 +1174,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
 }
 
 /**
- * Try to return the human-readable version of the language ID, passed in as $entry.
+ * Try to return the human-readable version of the language string ID, passed in as $entry.
  *
  * @param  mixed $entry The ID (if multi-lang-content on), or the string itself
  * @param  ?object $connection The database connection to use (null: standard site connection)
@@ -1231,4 +1292,38 @@ function get_ordinal_suffix($index)
         $abbreviation = $ends[$index % 10];
     }
     return $abbreviation;
+}
+
+/**
+ * Do filtering for a language pack. This is the base class that doesn't actually do anything.
+ *
+ * @package        core
+ */
+class LangFilter
+{
+    /**
+     * Do a compile-time filter.
+     *
+     * @param  ?string $key Language string ID (null: not a language string)
+     * @param  string $value String value
+     * @return string The suffix
+     */
+    public function compile_time($key, $value)
+    {
+        return $value;
+    }
+
+    /**
+     * Do a run-time filter. Only happens for strings marked for processing with a flag.
+     *
+     * @param  string $key Language string ID
+     * @param  string $value Language string value
+     * @param  string $flag Flag value assigned to the string
+     * @param  array $parameters The parameters
+     * @return string The suffix
+     */
+    public function run_time($key, $value, $flag, $parameters)
+    {
+        return $value;
+    }
 }

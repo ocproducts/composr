@@ -182,7 +182,7 @@ class Module_admin_chat extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $row = $rows[0];
 

@@ -532,7 +532,7 @@ class Module_admin_quiz
 
         $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $row['q_quiz']), '', 1);
         if (!array_key_exists(0, $quizzes)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
         }
         $quiz = $quizzes[0];
 

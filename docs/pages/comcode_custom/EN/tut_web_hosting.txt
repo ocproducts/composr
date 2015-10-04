@@ -72,6 +72,7 @@ Composr requires:
  - That the web server is not overloaded with too many users, or has very poor performance
  - That the web server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback')
  - Connectivity to a mail server (SMTP) so that outgoing email can be sent out to the staff email address or the addresses of individual members
+ - The install directory does not contain the text "_custom" in it
 (*) Other database software may work, but is not supported
 
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/tip.png[/media]
@@ -96,7 +97,7 @@ If you do not have the PHP FTP extension, then you will need either:[list="a"]
 If you want automatic thumbnail generation and transcoding you need a server with FFMPEG on it. It must be accessible via PHP either via the PHP extension (thumbnails only, not transcoding), or the ability for [tt]shell_exec[/tt] to run from PHP (both thumbnails and transcoding).
 It is best, however, to transcode manually off-line/off-server to avoid resource over-use.
 
-Do not try and install Composr on an ad-sponsored free web host. The banners and tracking they inject will interfere with the mechanisms of the software.
+Do not try and install Composr on an ad-sponsored free web host. The banners and tracking they inject will interfere with the mechanisms of Composr.
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension is required.
 

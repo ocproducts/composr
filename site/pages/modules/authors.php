@@ -116,7 +116,7 @@ class Module_authors
                 global $EXTRA_HEAD;
                 $EXTRA_HEAD->attach('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
             }
 
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());

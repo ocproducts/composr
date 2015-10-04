@@ -197,7 +197,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
         return $addon_info;
     }
 
-    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ADDON')));
 }
 
 /**

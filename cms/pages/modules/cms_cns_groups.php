@@ -245,7 +245,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     {
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), array('id' => intval($id), 'g_is_private_club' => 1));
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
         }
         $myrow = $rows[0];
 

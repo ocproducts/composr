@@ -324,7 +324,7 @@ class Module_admin_sitemap
                 $page = substr($key, 6);
                 $page_details = _request_page($page, $zone, null, null, true);
                 if ($page_details === false) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('PAGE')));
                 }
                 $pages[$page] = strtolower($page_details[0]);
             }
@@ -493,7 +493,7 @@ class Module_admin_sitemap
                 $page = substr($key, 6);
                 $page_details = _request_page($page, $zone, null, null, true);
                 if ($page_details === false) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('PAGE')));
                 }
                 $pages[$page] = strtolower($page_details[0]);
                 if (array_key_exists(3, $page_details)) {

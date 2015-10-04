@@ -273,7 +273,7 @@ class Module_cms_polls extends Standard_crud_module
 
         // Meta data
         require_code('feedback2');
-        $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
+        $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
         $fields->attach(meta_data_get_fields('poll', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
@@ -309,7 +309,7 @@ class Module_cms_polls extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => intval($id)));
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $myrow = $rows[0];
 
@@ -404,7 +404,7 @@ class Module_cms_polls extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('is_current', 'submitter', 'num_options'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $is_current = $rows[0]['is_current'];
         $submitter = $rows[0]['submitter'];
@@ -500,7 +500,7 @@ class Module_cms_polls extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('is_current', 'submitter'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
         }
         $is_current = $rows[0]['is_current'];
         $submitter = $rows[0]['submitter'];

@@ -49,7 +49,7 @@ class Hook_choose_download
                 $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('category') => $id));
             }
             if (is_null($_id)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
             }
             $id = strval($_id);
         }

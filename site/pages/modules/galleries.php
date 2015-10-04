@@ -305,7 +305,7 @@ class Module_galleries
                     }
                 }
                 if (!array_key_exists(0, $gallery_rows)) {
-                    return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE'));
+                    return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
                 }
                 $myrow = $gallery_rows[0];
                 $myrow['is_member_synched'] = 0;
@@ -394,7 +394,7 @@ class Module_galleries
             // Pic up some info
             $rows = $GLOBALS['SITE_DB']->query_select($type . 's', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE', $type));
             }
             $myrow = $rows[0];
             $cat = $myrow['cat'];
@@ -741,7 +741,10 @@ class Module_galleries
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => '5500ce574232db1e1577b3d69bbc0d6d', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => '5500ce574232db1e1577b3d69bbc0d6d',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'gallery'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }
@@ -758,7 +761,7 @@ class Module_galleries
                     }
                     $rows = $GLOBALS['SITE_DB']->query_select('videos', array('*'), $map, '', 1);
                     if (!array_key_exists(0, $rows)) {
-                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'warn'));
+                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'video'), 'warn');
                         break;
                     }
                     $row = $rows[0];
@@ -817,7 +820,7 @@ class Module_galleries
                     }
                     $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, '', 1);
                     if (!array_key_exists(0, $rows)) {
-                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'warn'));
+                        attach_message(do_lang_tempcode('MISSING_RESOURCE', 'image'), 'warn');
                         break;
                     }
                     $row = $rows[0];
@@ -1140,7 +1143,10 @@ class Module_galleries
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => 'c32faacba974e648a67e5e91ffd3d8e5', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => 'c32faacba974e648a67e5e91ffd3d8e5',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'image'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }
@@ -1255,7 +1261,10 @@ class Module_galleries
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => 'b32faacba974e648a67e5e91ffd3d8e5', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => 'b32faacba974e648a67e5e91ffd3d8e5',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'video'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }

@@ -22,8 +22,8 @@
  * Add a custom Comcode tag.
  *
  * @param  ID_TEXT $tag Tag name.
- * @param  mixed $title Tag title (string, or language ID).
- * @param  mixed $description Tag description (string, or language ID).
+ * @param  mixed $title Tag title (string, or language string ID).
+ * @param  mixed $description Tag description (string, or language string ID).
  * @param  LONG_TEXT $replace Tag replacement text.
  * @param  LONG_TEXT $example Tag example.
  * @param  SHORT_TEXT $parameters Tag parameters.
@@ -90,8 +90,8 @@ function add_custom_comcode_tag($tag, $title, $description, $replace, $example, 
  *
  * @param  ID_TEXT $old_tag Current tag name.
  * @param  ID_TEXT $tag New tag name.
- * @param  SHORT_TEXT $title Tag title (string, or language ID).
- * @param  LONG_TEXT $description Tag description (string, or language ID).
+ * @param  SHORT_TEXT $title Tag title (string, or language string ID).
+ * @param  LONG_TEXT $description Tag description (string, or language string ID).
  * @param  LONG_TEXT $replace Tag replacement text.
  * @param  LONG_TEXT $example Tag example.
  * @param  SHORT_TEXT $parameters Tag parameters.
@@ -126,7 +126,7 @@ function edit_custom_comcode_tag($old_tag, $tag, $title, $description, $replace,
 
     $old = $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_title', 'tag_description'), array('tag_tag' => $old_tag), '', 1);
     if (!array_key_exists(0, $old)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'custom_comcode_tag'));
     }
     $_title = $old[0]['tag_title'];
     $_description = $old[0]['tag_description'];
@@ -164,7 +164,7 @@ function delete_custom_comcode_tag($tag)
 {
     $old = $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_title', 'tag_description'), array('tag_tag' => $tag), '', 1);
     if (!array_key_exists(0, $old)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'custom_comcode_tag'));
     }
     $_title = $old[0]['tag_title'];
     $_description = $old[0]['tag_description'];

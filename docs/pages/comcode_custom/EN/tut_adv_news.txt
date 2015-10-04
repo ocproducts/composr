@@ -70,7 +70,7 @@ There are also category index screens. The menu editor can find the entry-points
 
 The index screens are generally useful for two reasons:
 1) If you want to direct users to see a list of categories/blogs
-2) If you want something to help you generate our the links to individual categories/blogs. Follow through from these and you will find URLs to specific categories/blogs (i.e. filtered versions of the news archive). Maybe you had thought the software could only show blogs on a member profile tab: not true :).
+2) If you want something to help you generate our the links to individual categories/blogs. Follow through from these and you will find URLs to specific categories/blogs (i.e. filtered versions of the news archive). Maybe you had thought Composr could only show blogs on a member profile tab: not true :).
 
 [title="2"]Feeds[/title]
 
@@ -147,7 +147,7 @@ Trackbacks are an advanced standard-based blogging feature, that allow a link to
 Trackbacks work as follows:
 1) The original article has a 'trackback' link written into the HTML
 2) When a blogger decides to write an article based upon the original article, they inform their software of the source article they are citing
-3) The software loads up the trackback link so as to inform the original article of the new one.
+3) Composr loads up the trackback link so as to inform the original article of the new one.
 4) The original article then can display a list of articles that lead on from it, along with other features such as comments.
 
 Composr can send trackbacks for news and receive them for almost any kind of content.

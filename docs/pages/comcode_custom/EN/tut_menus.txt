@@ -95,7 +95,7 @@ Entry points are used in the site-tree tool in the menu editor.
 
 Entry points are basically Composr links that are robust to changes in your website and are of the syntax, [tt]<zone>:<page>[:<param>=<val>...][/tt]. In other words, they all have at least a zone and a page, and may also specify additional parameters: for example, [tt]site:downloads:type=add[/tt] is the entry point to add a download. If you do not want to hard-code what zone a page is in (perhaps because you might move it in the future), you may specify [tt]_SEARCH[/tt] (do a search, which is slightly inefficient) or [tt]_SELF[/tt] (the zone the menu is being displayed in).
 
-Entry points are the subset of all "page-links" that point to specific parts of the software, rather than some content that you have added. Page-links are described in full in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
+Entry points are the subset of all "page-links" that point to specific parts of Composr, rather than some content that you have added. Page-links are described in full in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
 
 Don't worry too much about entry point syntax as Composr will automatically convert any local URLs that you paste into the menu editor's URL field.
 

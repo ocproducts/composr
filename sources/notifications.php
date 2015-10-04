@@ -449,7 +449,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
 
     if (_notification_setting_available(A_INSTANT_SMS, $to_member_id)) {
         if (($setting & A_INSTANT_SMS) != 0) {
-            $wrapped_message = do_lang('NOTIFICATION_SMS_COMPLETE_WRAP', $subject, $message_to_send); // Lang string may be modified to include {2}, but would cost more. Default just has {1}.
+            $wrapped_message = do_lang('NOTIFICATION_SMS_COMPLETE_WRAP', $subject, $message_to_send); // Language string ID may be modified to include {2}, but would cost more. Default just has {1}.
 
             require_code('sms');
             $successes = sms_wrap($wrapped_message, array($to_member_id));

@@ -70,7 +70,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
             }
         }
         if (addon_installed('unvalidated')) {
-            $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1));
+            $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'banner'), 'validated', $validated == 1));
         }
     }
 
@@ -150,7 +150,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $url_pa
     // Check according to banner type
     $_banner_type_rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('*'), array('id' => $b_type), '', 1);
     if (!array_key_exists(0, $_banner_type_rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner_type'));
     }
     $banner_type_row = $_banner_type_rows[0];
     if ($banner_type_row['t_is_textual'] == 0) {
@@ -434,7 +434,7 @@ function delete_banner($name)
 {
     $caption = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'caption', array('name' => $name));
     if (is_null($caption)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
     }
 
     if (addon_installed('catalogues')) {

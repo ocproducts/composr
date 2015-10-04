@@ -248,7 +248,7 @@ class CMSPmRead
         $msg_details = $GLOBALS['FORUM_DB']->query_select($table, $select, $where, '', 1);
 
         if (!isset($msg_details[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
 
         $post_row = $msg_details[0];

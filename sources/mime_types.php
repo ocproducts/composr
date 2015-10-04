@@ -148,7 +148,7 @@ function get_mime_type($extension, $as_admin)
 {
     $extension = strtolower($extension);
 
-    $mime_types = get_mime_types($ad_admin);
+    $mime_types = get_mime_types($as_admin);
 
     if (array_key_exists($extension, $mime_types)) {
         return $mime_types[$extension];

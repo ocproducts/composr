@@ -219,7 +219,7 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
         } else {
             $_forum_details = $GLOBALS['FORUM_DB']->query_select('f_forums', array('f_order_sub_alpha'), array('id' => $base_forum), '', 1);
             if (!array_key_exists(0, $_forum_details)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
             }
             $forum_details = $_forum_details[0];
         }

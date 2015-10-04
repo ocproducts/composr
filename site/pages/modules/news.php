@@ -274,7 +274,7 @@ class Module_news
             // Load from database
             $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen(get_screen_title('NEWS'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('NEWS'), do_lang_tempcode('MISSING_RESOURCE', 'news'));
             }
             $myrow = $rows[0];
 
@@ -589,7 +589,10 @@ class Module_news
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => '5fd82328dc2ac9695dc25646237065b0', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => '5fd82328dc2ac9695dc25646237065b0',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'news'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }

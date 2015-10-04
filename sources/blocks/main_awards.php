@@ -75,7 +75,7 @@ class Block_main_awards
 
         $_award_type_row = $GLOBALS['SITE_DB']->query_select('award_types', array('*'), array('id' => $award), '', 1);
         if (!array_key_exists(0, $_award_type_row)) {
-            return do_lang_tempcode('MISSING_RESOURCE');
+            return do_lang_tempcode('MISSING_RESOURCE', 'award_type');
         }
         $award_type_row = $_award_type_row[0];
         $award_title = get_translated_text($award_type_row['a_title']);

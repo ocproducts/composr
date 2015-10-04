@@ -577,7 +577,7 @@ class Module_admin_themes
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
-        $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR_THEME'), 'author', $author, true));
+        $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR_THEME', do_lang_tempcode('THEME')), 'author', $author, true));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_WIDE'), do_lang_tempcode('DESCRIPTION_SUPPORTS_WIDE'), 'supports_wide', $supports_wide == 1));
         $fields->attach(form_input_line(do_lang_tempcode('MOBILE_PAGES'), do_lang_tempcode('DESCRIPTION_MOBILE_PAGES'), 'mobile_pages', $mobile_pages, false));
         if ($name != 'default') {
@@ -1859,7 +1859,7 @@ class Module_admin_themes
      * Helper function to get Tempcode for insertion of symbols.
      *
      * @param  array $array A list of pairs (symbol name,arity)
-     * @param  string $stub The "stub" that determines what language codes to lookup for the given symbols, and generally, the collective naming strategy
+     * @param  string $stub The "stub" that determines what language strings to lookup for the given symbols, and generally, the collective naming strategy
      * @param  string $id The ID of the actual template editor we are working with
      * @return Tempcode The Tempcode
      */

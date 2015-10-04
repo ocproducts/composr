@@ -118,7 +118,7 @@ function get_page_warning_details($zone, $codename, $edit_url)
     if ((!has_privilege(get_member(), 'jump_to_unvalidated')) && (addon_installed('unvalidated'))) {
         access_denied('PRIVILEGE', 'jump_to_unvalidated');
     }
-    $uv_warning = do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? '_UNVALIDATED_TEXT_NON_DIRECT' : '_UNVALIDATED_TEXT', do_lang('PAGE')); // Wear sun cream
+    $uv_warning = do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'comcode_page'); // Wear sun cream
     if (!$edit_url->is_empty()) {
         $menu_links = $GLOBALS['SITE_DB']->query('SELECT DISTINCT i_menu FROM ' . get_table_prefix() . 'menu_items WHERE ' . db_string_equal_to('i_url', $zone . ':' . $codename) . ' OR ' . db_string_equal_to('i_url', '_SEARCH:' . $codename));
         if (count($menu_links) != 0) {
@@ -130,7 +130,7 @@ function get_page_warning_details($zone, $codename, $edit_url)
                 $menu_edit_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu_link['i_menu']), get_module_zone('admin_menus'));
                 $menu_items_linking->attach(hyperlink($menu_edit_url, $menu_link['i_menu'], false, true));
             }
-            $uv_warning = do_lang_tempcode('UNVALIDATED_TEXT_STAFF', $menu_items_linking);
+            $uv_warning = do_lang_tempcode('UNVALIDATED_TEXT_STAFF', $menu_items_linking, 'comcode_page');
         }
     }
     $warning_details->attach(do_template('WARNING_BOX', array('_GUID' => 'ee79289f87986bcb916a5f1810a25330', 'WARNING' => $uv_warning)));
@@ -309,7 +309,7 @@ function page_not_found($codename, $zone)
     require_code('global4');
     if ((cms_srv('HTTP_REFERER') != '') && (!handle_has_checked_recently('request-' . $zone . ':' . $codename))) {
         require_code('failure');
-        relay_error_notification(do_lang('_MISSING_RESOURCE', $zone . ':' . $codename) . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_page');
+        relay_error_notification(do_lang('_MISSING_RESOURCE', $zone . ':' . $codename, do_lang('PAGE')) . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_page');
     }
 
     $title = get_screen_title('ERROR_OCCURRED');
@@ -345,6 +345,10 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     $tmp = fopen($file_base . '/' . $string, 'rb');
     @flock($tmp, LOCK_SH);
     $comcode = file_get_contents($file_base . '/' . $string);
+    if (strpos($string, '_custom/') === false) {
+        global $LANG_FILTER_OB;
+        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+    }
     apply_comcode_page_substitutions($comcode);
     $comcode = fix_bad_unicode($comcode);
     @flock($tmp, LOCK_UN);
@@ -499,6 +503,10 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
     $_comcode_page_row = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $codename), '', 1);
 
     $comcode = file_get_contents($file_base . '/' . $string);
+    if (strpos($string, '_custom/') === false) {
+        global $LANG_FILTER_OB;
+        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+    }
     apply_comcode_page_substitutions($comcode);
 
     global $LAX_COMCODE;

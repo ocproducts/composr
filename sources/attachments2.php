@@ -444,7 +444,7 @@ function _check_attachment_count()
 }
 
 /**
- * Insert some Comcode content that may contain attachments, and return the language ID.
+ * Insert some Comcode content that may contain attachments, and return the language string ID.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  integer $level The level of importance this language string holds
@@ -455,7 +455,7 @@ function _check_attachment_count()
  * @param  ?object $connection The database connection to use (null: standard site connection)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?MEMBER $for_member The member to use for ownership permissions (null: current member)
- * @return array The language ID save fields
+ * @return array The language string ID save fields
  */
 function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id, $connection = null, $insert_as_admin = false, $for_member = null)
 {

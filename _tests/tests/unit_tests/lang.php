@@ -39,7 +39,7 @@ class lang_test_set extends cms_test_case
             }
 
             $input = array();
-            _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, null, false);
+            _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, 'strings', false);
 
             foreach ($input as $key => $string) {
                 $this->check($file, $key, $string, $verbose);

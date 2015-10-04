@@ -163,7 +163,7 @@ class CMSPtWrite
 
         $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_pt_from', 't_pt_to', 't_pt_from_category', 't_pt_to_category'), array('id' => $topic_id), '', 1);
         if (!isset($topic_info[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
 
         if ($topic_info[0]['t_pt_from'] == get_member()) {

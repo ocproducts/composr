@@ -27,7 +27,7 @@ class Module_warnings extends Standard_crud_module
 {
     public $lang_type = 'WARNING';
     public $select_name = 'SUBMITTER';
-    public $select_name_description = 'DESCRIPTION_SUBMITTER';
+    public $select_name_description = '';
     public $redirect_type = '!';
     public $menu_label = 'MODULE_TRANS_NAME_warnings';
     public $table = 'f_warnings';

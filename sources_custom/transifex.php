@@ -71,7 +71,7 @@ function push_to_transifex()
     }
 
     // Find language string descriptions
-    $descriptions = get_lang_file_descriptions(fallback_lang());
+    $descriptions = get_lang_file_section(fallback_lang());
 
     // Create project if it does not already exist
     $args = array(

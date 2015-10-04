@@ -84,7 +84,7 @@ function get_quote_post_func($raw_params)
     list($quote_title, $quote_content) = $post_object->get_quote_post($post_ids);
 
     if ($quote_content == '') {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', $params[0]));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', $params[0], 'post'));
     }
 
     $response = mobiquo_val(array(
@@ -242,7 +242,7 @@ function get_thread_by_post_func($raw_params)
 
     $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
     if (is_null($topic_id)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
 
     // What page is it on?

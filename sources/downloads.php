@@ -37,7 +37,7 @@ function download_licence_script()
 
     $rows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_licence'));
     }
     $licence_title = $rows[0]['l_title'];
     $licence_text = $rows[0]['l_text'];
@@ -428,7 +428,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
     if (is_null($category_info)) {
         $_category_info = $GLOBALS['SITE_DB']->query_select('download_categories', array('*'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $_category_info)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
         }
         $category_info = $_category_info[0];
     }
@@ -535,7 +535,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
     if (!array_key_exists($category_id, $PT_PAIR_CACHE_D)) {
         $category_rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('parent_id', 'category'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $category_rows)) {
-            warn_exit(do_lang_tempcode('CAT_NOT_FOUND', strval($category_id)));
+            warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'download_category'));
         }
         $PT_PAIR_CACHE_D[$category_id] = $category_rows[0];
     }
@@ -547,7 +547,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
     }
 
     if ($PT_PAIR_CACHE_D[$category_id]['parent_id'] == $category_id) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', strval($category_id)));
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id)), 'download_category'));
     }
 
     $below = download_breadcrumbs($PT_PAIR_CACHE_D[$category_id]['parent_id'], $root, false, $zone, $attach_to_url_filter);

@@ -87,8 +87,8 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
  *
  * @sets_output_state
  *
- * @param  mixed $title The title to use (usually, a language string code, see below)
- * @param  boolean $dereference_lang Whether the given title is actually a language string code, and hence gets dereferenced
+ * @param  mixed $title The title to use (usually, a language string ID, see below)
+ * @param  boolean $dereference_lang Whether the given title is actually a language string ID, and hence gets dereferenced
  * @param  ?array $params Parameters sent to the language string (null: none)
  * @param  ?Tempcode $user_online_title Separate title to put into the 'currently viewing' data (null: use $title)
  * @param  ?array $awards Awards to say this has won (null: none)

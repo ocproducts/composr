@@ -365,7 +365,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     {
         $m = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('*'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $m)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post_template'));
         }
         $r = $m[0];
 

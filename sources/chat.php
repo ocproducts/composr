@@ -138,7 +138,7 @@ function messages_script()
         $room_id = get_param_integer('room_id');
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room_row = $room_check[0];
         if (!check_chatroom_access($room_row, true, null, true)) {
@@ -230,7 +230,7 @@ function messages_script()
         }
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room_row = $room_check[0];
         if (!check_chatroom_access($room_row, true, null, true)) {
@@ -399,7 +399,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
 
         if (!array_key_exists(0, $room_check)) {
             // This room doesn't exist
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room_row = $room_check[0];
         if (!check_chatroom_access($room_row, true)) {
@@ -429,7 +429,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
     if (is_null($room_check)) {
         $room_check = $GLOBALS['SITE_DB']->query('SELECT id,is_im,c_welcome,allow_list_groups,disallow_list_groups,allow_list,disallow_list,room_owner FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval(get_member()) . '%') . '\'');
         if (!isset($room_check[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room_row = $room_check[0];
     }
@@ -679,7 +679,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
 
     if (!array_key_exists(0, $room_check)) {
         // This room doesn't exist
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
     }
     $room_row = $room_check[0];
     if (!check_chatroom_access($room_row, true)) {
@@ -1114,7 +1114,7 @@ function chat_get_all_rooms()
  * @param  ?integer $finish The datetime stamp to stop gathering messages at (null: current time)
  * @param  ?integer $uptoid The lowest message ID to return (null: no special lowest number)
  * @param  ?ID_TEXT $zone The zone the chat module is in (null: find it)
- * @param  ?AUTO_LINK $entering_room The language ID for the "entering room" message (null: not entering the room)
+ * @param  ?AUTO_LINK $entering_room The language string ID for the "entering room" message (null: not entering the room)
  * @param  boolean $return_my_messages Return the current user's messages?
  * @param  boolean $return_system_messages Return system messages
  * @return array An array of all the messages collected according to the search criteria
@@ -1537,7 +1537,7 @@ function check_chatroom_access($room, $ret = false, $member_id = null, $must_be_
     if (!is_array($room)) {
         $_room = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room), '', 1);
         if (!array_key_exists(0, $_room)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
         $room = $_room[0];
     }

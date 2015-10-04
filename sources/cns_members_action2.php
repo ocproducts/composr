@@ -1342,7 +1342,7 @@ function cns_delete_custom_field($id)
 
     $info = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('cf_name', 'cf_description'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'cpf'));
     }
     $_name = $info[0]['cf_name'];
     $_description = $info[0]['cf_description'];
@@ -1727,7 +1727,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
                 $from_file = http_download_file($stub . $avatar_url, 1024 * 1024 * 4/*reasonable limit*/, false);
             }
             if (is_null($from_file)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('URL')));
             }
             $source = @imagecreatefromstring($from_file);
             if ($source === false) {

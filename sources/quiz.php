@@ -195,7 +195,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
     if (is_null($quiz_id)) {
         $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $quiz_id), '', 1);
         if (!array_key_exists(0, $quizzes)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
         }
         $quiz = $quizzes[0];
     }

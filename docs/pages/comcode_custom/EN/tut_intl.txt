@@ -118,6 +118,8 @@ Usually the naming follows the pattern of [tt]X[/tt] for the config option name 
 
 You may see the phrase "The software" come up a lot. We use this phase because of how we support debranding in Composr. A web design studio may have renamed the product to some other name to increase their own brand-strength. We therefore try and make the language strings generic where possible.
 
+The EN language pack automatically replaces this with the configured brand name.
+
 [title="4"]Phrase variants[/title]
 
 We sometimes have multiple versions of strings, using underscores to differentiate them (e.g. [tt]FOO[/tt] vs [tt]_FOO[/tt]).
@@ -182,7 +184,7 @@ utf-8 works on the principle that characters may use more than one byte. The ASC
 [media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/tut_intl/intl_trans_choose.png[/media]
 {!lang:DOC_TRANSLATE}
 
-You can reach the language editor from Admin Zone > Style > Translate/re-phrase the software.
+You can reach the language editor from Admin Zone > Style > Translate/re-phrase Composr.
 
 [b]We recommend doing translations via Transifex instead[/b]. See the "Collaborative translations on Transifex" section.
 [/surround]
@@ -191,7 +193,7 @@ You can reach the language editor from Admin Zone > Style > Translate/re-phrase 
 
 Many users like to translate stuff just on the public part of their own website. There is an option to change the language strings that you see on a page from the page footer which really helps you speed translation up. Specifically:
 1) In the footer there is a drop down menu which is only visible to Admins. This is titled "Select page rendering tool" as standard, although it may not be visible on custom themes or could have been translated. If you are not using the default Composr theme then you can enable the default theme temporarily by adding [tt]&keep_theme=default[/tt] to the end of the website address (actually it's [tt]?keep_theme=default[/tt] if there's no [tt]?[/tt] already in the URL you're at).
-2) Choose "Translate/Re-Phrase the software" from this menu and the language you want to translate to.
+2) Choose "Translate/Re-Phrase Composr" from this menu and the language you want to translate to.
 
 This will take you to the page which displays the language strings which are used on the current page.
 

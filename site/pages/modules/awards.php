@@ -90,7 +90,7 @@ class Module_awards
             $id = get_param_integer('id');
             $_award_type_row = $GLOBALS['SITE_DB']->query_select('award_types', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $_award_type_row)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'award_type'));
             }
             $award_type_row = $_award_type_row[0];
             require_code('content');

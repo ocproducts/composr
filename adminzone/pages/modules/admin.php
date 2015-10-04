@@ -474,8 +474,8 @@ class Module_admin
         }
 
         // Stemming, if available (needs Stemmer class like http://www.chuggnutt.com/stemmer-source.php which we can't redistribute due to it being GPL not LGPL)
-        if (((is_file(get_file_base() . '/sources/stemmer_' . user_lang() . '.php')) || (is_file(get_file_base() . '/sources_custom/stemmer_' . user_lang() . '.php'))) && (!in_safe_mode())) {
-            require_code('stemmer_' . user_lang());
+        if (((is_file(get_file_base() . '/sources/lang_stemmer_' . user_lang() . '.php')) || (is_file(get_file_base() . '/sources_custom/stemmer_' . user_lang() . '.php'))) && (!in_safe_mode())) {
+            require_code('lang_stemmer_' . user_lang());
             $stemmer = object_factory('Stemmer_' . user_lang());
             foreach ($keywords as $i => $keyword_group) {
                 $_keyword_group = $keyword_group;
@@ -1100,7 +1100,7 @@ class Module_admin
             global $LANGUAGE_STRINGS_CACHE;
             $lang_file_contents = array();
             $lang_found = array();
-            foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $n => $n_value) { // Search all lang strings (we loaded all earlier with require_all_lang)
+            foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $n => $n_value) { // Search all language strings (we loaded all earlier with require_all_lang)
                 if (($this->_keyword_match($n)) || ($this->_keyword_match($n_value))) {
                     $lang_found[$n] = $n_value;
                     if (count($lang_found) > 100) {

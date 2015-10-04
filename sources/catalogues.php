@@ -58,7 +58,7 @@ function load_catalogue_row($catalogue_name, $fail_ok = false)
             if ($fail_ok) {
                 return null;
             }
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
         }
         $catalogues_cache[$catalogue_name] = $catalogue_rows[0];
     }
@@ -1426,7 +1426,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
     if ($category_details === null && $category_id !== null) {
         $_category_details = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_title'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $_category_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
         $category_details = $_category_details[0];
     }
@@ -1438,7 +1438,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
     $children = array();
     $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
     if ($is_tree === null) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'catalogue:' . escape_html($catalogue_name)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($catalogue_name), 'catalogue'));
     }
     if ($category_id !== null) {
         $children[0]['id'] = $category_id;
@@ -1668,13 +1668,13 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
         if (!array_key_exists($category_id, $PT_PAIR_CACHE)) {
             $category_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $category_id), '', 1);
             if (!array_key_exists(0, $category_rows)) {
-                fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id))));
+                fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'));
             }
             $PT_PAIR_CACHE[$category_id] = $category_rows[0];
         }
 
         if ($PT_PAIR_CACHE[$category_id]['cc_parent_id'] == $category_id) {
-            fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id))));
+            fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id)), 'catalogue_category'));
         }
     }
 
@@ -1760,13 +1760,13 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
 
     $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $entries)) {
-        return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+        return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
     }
     $entry = $entries[0];
 
     $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $entry['cc_id']), '', 1);
     if (!array_key_exists(0, $categories)) {
-        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', strval($entry['cc_id'])));
+        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($entry['cc_id'])), 'catalogue_category'));
     }
     $category = $categories[0];
     require_code('site');
@@ -1808,7 +1808,10 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
             access_denied('PRIVILEGE', 'jump_to_unvalidated');
         }
 
-        $map['WARNINGS'] = do_template('WARNING_BOX', array('_GUID' => 'bf604859a572ca53e969bec3d91f9cfb', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+        $map['WARNINGS'] = do_template('WARNING_BOX', array(
+            '_GUID' => 'bf604859a572ca53e969bec3d91f9cfb',
+            'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'catalogue_entry'),
+        ));
     } else {
         $map['WARNINGS'] = '';
     }

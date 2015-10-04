@@ -79,7 +79,7 @@ function edit_news_category($id, $title, $img, $notes, $owner)
 {
     $myrows = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title', 'nc_img', 'notes'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $myrows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news_category'));
     }
     $myrow = $myrows[0];
 
@@ -148,7 +148,7 @@ function delete_news_category($id)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title', 'nc_img'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news_category'));
     }
     $myrow = $rows[0];
 
@@ -639,7 +639,7 @@ function delete_news($id)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
     }
     $title = $rows[0]['title'];
     $news = $rows[0]['news'];

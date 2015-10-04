@@ -253,7 +253,7 @@ class Module_cms_catalogues extends Standard_crud_module
             $extra_map_2 = array('id' => $catalogue_name);
             $cat_rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_title', 'c_description'), array('c_name' => $catalogue_name), '', 1);
             if (!array_key_exists(0, $cat_rows)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
             }
             $cat_title = $cat_rows[0]['c_title'];
         }
@@ -458,7 +458,7 @@ class Module_cms_catalogues extends Standard_crud_module
                 $category_id = get_param_integer('category_id_suggest', null); // Less forceful than 'category_id', as may be changed even with 'no_confirm_url_spec_cats' on
             }
 
-            $fields->attach(form_input_tree_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_CATEGORY_TREE'), 'category_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name, 'addable_filter' => true), true, is_null($category_id) ? '' : strval($category_id)));
+            $fields->attach(form_input_tree_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_CATEGORY_TREE', 'catalogue_category'), 'category_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name, 'addable_filter' => true), true, is_null($category_id) ? '' : strval($category_id)));
         }
 
         // Special fields
@@ -556,7 +556,7 @@ class Module_cms_catalogues extends Standard_crud_module
                 if (count($field_groups) != 1) {
                     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '17e83c2d6412bddc12ac1873f9ec6092', 'TITLE' => do_lang_tempcode('SETTINGS'))));
                 }
-                $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1));
+                $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'catalogue_entry'), 'validated', $validated == 1));
             }
         }
 
@@ -564,7 +564,7 @@ class Module_cms_catalogues extends Standard_crud_module
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         require_code('feedback2');
-        $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
+        $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
         $fields->attach(meta_data_get_fields('catalogue_entry', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
@@ -621,7 +621,7 @@ class Module_cms_catalogues extends Standard_crud_module
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => $id));
         if (is_null($temp)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
         return strval($temp);
     }
@@ -650,13 +650,13 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $myrows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $myrows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
         $myrow = $myrows[0];
 
         $catalogue_name = $myrow['c_name'];
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         return $this->get_form_fields($catalogue_name, $myrow['cc_id'], $myrow['ce_validated'], $myrow['notes'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $id);
@@ -712,7 +712,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $category_id));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
 
         $map = $this->get_set_field_map($catalogue_name, get_member());
@@ -788,7 +788,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $category_id));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
         $map = $this->get_set_field_map($catalogue_name, $submitter, $id);
 
@@ -874,7 +874,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => $id));
         if (is_null($category_id)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         actual_delete_catalogue_entry($id);
@@ -1020,7 +1020,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         require_code('feedback2');
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically(1, 1, 1);
-        $fields->attach(feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, '', $allow_comments == 2, false, false));
+        $fields->attach(feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, '', $allow_comments == 2, false, false));
 
         return do_template('FORM_SCREEN', array('_GUID' => '0ad5a822bccb3de8e53fcc47594eb404', 'TITLE' => $this->title, 'JAVASCRIPT' => $javascript, 'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
     }
@@ -1263,15 +1263,15 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
 
-        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('DESCRIPTION_REPRESENTATIVE_IMAGE'), $hidden, 'image', null, false, $rep_image));
+        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('DESCRIPTION_REPRESENTATIVE_IMAGE', 'catalogue_category'), $hidden, 'image', null, false, $rep_image));
 
         // Is the catalogue a tree?
         $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
         if (is_null($is_tree)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
         }
         if (($is_tree == 1) && (!is_null($parent_id))) {
-            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT'), 'parent_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), true, ((is_null($parent_id)) || ($parent_id == -1)) ? '' : strval($parent_id)));
+            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'catalogue_category'), 'parent_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), true, ((is_null($parent_id)) || ($parent_id == -1)) ? '' : strval($parent_id)));
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '745236e628a4d3da5355f07874433600', 'SECTION_HIDDEN' => is_null($move_target), 'TITLE' => do_lang_tempcode('CLASSIFIED_ADS'))));
@@ -1308,7 +1308,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     {
         $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'c_name', array('id' => intval($id)));
         if (is_null($c_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
         return $c_name;
     }
@@ -1327,7 +1327,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
         $myrow = $rows[0];
 
@@ -1415,7 +1415,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $category_id));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
 
         $title = post_param_string('title');
@@ -1470,7 +1470,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $id));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
 
         actual_delete_catalogue_category(intval($id));
@@ -1740,7 +1740,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         for ($i = 0; $i < $num_fields_to_show; $i++) {
             $order_list->attach(form_input_list_entry(strval($i), $i == $order, integer_format($i + 1) . (($i == 0 && substr(get_param_string('id', ''), 0, 1) != '_') ? do_lang('NEW_FIELD_TITLE') : '')));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FIELD_ORDER_CLEVER'), $prefix . 'order', $order_list));
+        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FIELD_ORDER_CLEVER', do_lang_tempcode('CATALOGUE_FIELD')), $prefix . 'order', $order_list));
 
         // Defines order?
         $radios = form_input_radio_entry($prefix . 'defines_order', '0', $defines_order == 0, do_lang_tempcode('NO'));
@@ -1772,7 +1772,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array('c_name' => $catalogue_name), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
         }
         $myrow = $rows[0];
 
@@ -1965,7 +1965,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
         $was_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $old_name));
         if (is_null($was_tree)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
         }
         $is_tree = post_param_integer('is_tree', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 

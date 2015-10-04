@@ -1945,8 +1945,8 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
 /**
  * Log an action
  *
- * @param  ID_TEXT $type The type of activity just carried out (a lang string)
- * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. id) (null: none)
+ * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
+ * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. D) (null: none)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none)
  */
 function log_it($type, $a = null, $b = null)

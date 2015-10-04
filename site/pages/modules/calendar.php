@@ -292,7 +292,7 @@ class Module_calendar
             // Read row
             $rows = $GLOBALS['SITE_DB']->query_select('calendar_events e LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON t.id=e.e_type', array('*'), array('e.id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
             }
             $event = $rows[0];
 
@@ -1449,7 +1449,10 @@ class Module_calendar
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details->attach(do_template('WARNING_BOX', array('_GUID' => '332faacba974e648a67e5e91ffd3d8e5', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT'))));
+            $warning_details->attach(do_template('WARNING_BOX', array(
+                '_GUID' => '332faacba974e648a67e5e91ffd3d8e5',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'event'),
+            )));
         }
 
         $just_event_row = db_map_restrict($event, array('id', 'e_content'));
@@ -1609,7 +1612,7 @@ class Module_calendar
         check_privilege('view_calendar');
         $rows = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
         }
         $event = $rows[0];
         if ($event['e_member_calendar'] !== get_member()) {

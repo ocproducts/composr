@@ -77,7 +77,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
 
     $_group_info = $GLOBALS['FORUM_DB']->query_select('f_groups', array('g_name', 'g_title', 'g_rank_image'), array('id' => $group_id), '', 1);
     if (!array_key_exists(0, $_group_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
     $_name = $_group_info[0]['g_name'];
     $_title = $_group_info[0]['g_title'];
@@ -205,7 +205,7 @@ function cns_delete_group($group_id, $target_group = null)
 
     $_group_info = $GLOBALS['FORUM_DB']->query_select('f_groups', array('g_name', 'g_title', 'g_rank_image'), array('id' => $group_id), '', 1);
     if (!array_key_exists(0, $_group_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
     $_name = $_group_info[0]['g_name'];
     $_title = $_group_info[0]['g_title'];
@@ -268,7 +268,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
 
     $group_info = $GLOBALS['FORUM_DB']->query_select('f_groups', array('g_name', 'g_group_leader'), array('id' => $group_id), '', 1);
     if (!array_key_exists(0, $group_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 
     if (is_null($member_id)) {
@@ -375,7 +375,7 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
 
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_is_presented_at_install', array('id' => $id));
     if (is_null($test)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 
     if ($validated == 1) {

@@ -220,7 +220,7 @@ function wiki_edit_post($id, $message, $validated, $member = null, $page_id = nu
 
     $rows = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_post'));
     }
     $myrow = $rows[0];
     $original_poster = $myrow['member_id'];
@@ -423,7 +423,7 @@ function wiki_edit_page($id, $title, $description, $notes, $hide_posts, $meta_ke
 
     $pages = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $pages)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
     }
     $page = $pages[0];
     $_description = $page['description'];
@@ -494,7 +494,7 @@ function wiki_delete_page($id)
     } while (array_key_exists(0, $posts));
     $pages = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $pages)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
     }
     $page = $pages[0];
     $_description = $page['description'];
@@ -595,7 +595,7 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
         } else {
             if (is_null($current_title)) {
                 $_current_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => $id));
-                $current_title = is_null($_current_title) ? do_lang('MISSING_RESOURCE') : get_translated_text($_current_title);
+                $current_title = is_null($_current_title) ? do_lang('MISSING_RESOURCE', 'wiki_page') : get_translated_text($_current_title);
             }
             if ($final_link) {
                 $segments[] = array($page_link, $current_title);
@@ -814,7 +814,7 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
     if (is_null($page_details)) {
         $_page_details = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $page_id), '', 1);
         if (!array_key_exists(0, $_page_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
         }
         $page_details = $_page_details[0];
     }

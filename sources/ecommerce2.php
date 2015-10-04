@@ -110,7 +110,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
 
     $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'usergroup_subscription'));
     }
     $myrow = $rows[0];
 
@@ -212,7 +212,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
     $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'usergroup_subscription'));
     }
     $myrow = $rows[0];
     $new_group = $myrow['s_group_id'];

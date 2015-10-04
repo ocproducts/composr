@@ -208,7 +208,7 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
             1
         );
         if (!isset($_details[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
         $details = $_details[0];
     }
@@ -462,7 +462,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
         $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t ON t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
         if (!isset($post_rows[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
 
         $post_row = $post_rows[0];
@@ -557,7 +557,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         $content = prepare_post_for_tapatalk($post_row, $return_html);
     }
 
-    $attachments = get_post_attachments($post_id, null, true, $contentorum);
+    $attachments = get_post_attachments($post_id, null, true, $content);
 
     if (($behaviour_modifiers & RENDER_POST_SEARCH) == 0) {
         $arr += array(
@@ -941,7 +941,7 @@ function report_post($post_id, $reason = '')
 
     $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t on t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
     if (!isset($post_info[0])) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
 
     if (!has_post_access($post_id, null, $post_info[0])) {

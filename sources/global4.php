@@ -414,8 +414,8 @@ function cms_mb_chunk_split($str, $len = 76, $glue = "\r\n", $force = false)
 /**
  * Prevent double submission, by reference to recent matching admin log entries by the current member.
  *
- * @param  ID_TEXT $type The type of activity just carried out (a lang string)
- * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. id) (null: none / cannot match against)
+ * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
+ * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. ID) (null: none / cannot match against)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none / cannot match against)
  */
 function prevent_double_submit($type, $a = null, $b = null)
@@ -462,8 +462,8 @@ function prevent_double_submit($type, $a = null, $b = null)
 /**
  * Log an action.
  *
- * @param  ID_TEXT $type The type of activity just carried out (a lang string)
- * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. id) (null: none)
+ * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
+ * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. ID) (null: none)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none)
  * @ignore
  */

@@ -130,7 +130,7 @@ class CMSPmWrite
                 }
                 $post_details = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
                 if (!isset($post_details[0])) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
                 }
                 if (!has_post_access($post_id, null, $post_details[0])) {
                     continue;
@@ -183,7 +183,7 @@ class CMSPmWrite
 
         $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
         if (is_null($topic_id)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
 
         cns_delete_posts_topic($topic_id, array($post_id), do_lang('REASON_TAPATALK_DELETING_POSTS')); // NB: Checks perms implicitly

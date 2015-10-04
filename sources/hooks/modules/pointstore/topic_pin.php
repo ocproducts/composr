@@ -200,7 +200,7 @@ class Hook_pointstore_topic_pin
         if (get_forum_type() == 'cns') {
             $currently_pinned = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_pinned', array('id' => $topic_id));
             if (is_null($currently_pinned)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
             }
             if ($currently_pinned == 1) {
                 return warn_screen($title, do_lang_tempcode('TOPIC_PINNED_ALREADY'));

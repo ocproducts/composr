@@ -363,7 +363,7 @@ function delete_attachments($type, $connection = null)
 }
 
 /**
- * Deletes all language codes linked to by the specified table and attribute identifiers, if they exist.
+ * Deletes all language strings linked to by the specified table and attribute identifiers, if they exist.
  *
  * @param  ID_TEXT $table The table
  * @param  array $attrs The attributes

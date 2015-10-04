@@ -279,7 +279,7 @@ class Module_admin_zones
         // Zone editing stuff
         $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array('zone_name' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'zone'));
         }
         $row = $rows[0];
         $header_text = get_translated_text($row['zone_header_text'], null, $lang);
@@ -353,6 +353,12 @@ class Module_admin_zones
                     $comcode = file_get_contents($fullpath);
                     @flock($tmp, LOCK_UN);
                     fclose($tmp);
+
+                    if (strpos($fullpath, '_custom/') === false) {
+                        global $LANG_FILTER_OB;
+                        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+                    }
+
                     $default_parsed = comcode_to_tempcode($comcode, null, false, null, null, null, true);
                 } else {
                     $comcode = '';
@@ -833,7 +839,7 @@ class Module_admin_zones
 
         $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array('zone_name' => $zone), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'zone'));
         }
         $row = $rows[0];
 

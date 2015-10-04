@@ -722,7 +722,7 @@ This code finds all modules/search hooks, then loops over the list of hook names
 4) calls the [tt]info[/tt] function on the hook, loading it's results in [tt]$info[/tt]. Again, this is an assumption via a convention for these kinds of hooks, that they will have an [tt]info[/tt] function that behaves in a certain way. From this particular example (search hook) our [tt]info[/tt] function will return us an array structure of details about what the hook can do, and later the code will determine whether to put an 'advanced' search link in for the hook according to whether it supports advanced searches or not (I haven't shown that code here for conciseness).
 
 (*1) Not quite. Hook files of the same kind might be in [tt]sources/hooks/<something>/<somethingelse>[/tt] and also [tt]sources_custom/hooks/<something>/<somethingelse>[/tt].
-This is because you place custom files in [tt]sources_custom[/tt] so that they are easily identified as such. It is very common in the case of hooks, if you're adding a new hook to the software.
+This is because you place custom files in [tt]sources_custom[/tt] so that they are easily identified as such. It is very common in the case of hooks, if you're adding a new hook to Composr.
 
 (*2) The Conversr [tt]members[/tt] module does member searching, but does not use the search hooks. This search is separate and hard-coded. There is still a search hook for member searching for the [tt]search[/tt] module to use though.
 You can generally tell what the hook is used by by it's file path. For example hooks in [tt]sources/hooks/modules/search[/tt] are for the [tt]search[/tt] module.

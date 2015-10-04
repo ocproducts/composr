@@ -174,7 +174,7 @@ function delete_author($author)
         delete_lang($rows[0]['skills']);
         $GLOBALS['SITE_DB']->query_delete('authors', array('author' => $author), '', 1);
     } else {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
     }
 
     if (addon_installed('catalogues')) {

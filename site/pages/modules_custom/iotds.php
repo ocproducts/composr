@@ -140,7 +140,7 @@ class Module_iotds
             // Fetch details
             $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen($this->title, do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen($this->title, do_lang_tempcode('MISSING_RESOURCE', 'iotd'));
             }
             $myrow = $rows[0];
             $url = $myrow['url'];

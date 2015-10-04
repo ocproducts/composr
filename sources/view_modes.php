@@ -342,9 +342,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         global $RECORDED_LANG_STRINGS;
         require_lang('lang');
         require_code('form_templates');
-        require_code('lang2');
+        require_code('lang_compile');
         $fields = new Tempcode();
-        $descriptions = get_lang_file_descriptions(fallback_lang());
+        $descriptions = get_lang_file_section(fallback_lang());
         foreach (array_keys($RECORDED_LANG_STRINGS) as $key) {
             $value_found = do_lang($key, null, null, null, null, false);
             $description = array_key_exists($key, $descriptions) ? make_string_tempcode($descriptions[$key]) : new Tempcode();

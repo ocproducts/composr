@@ -310,7 +310,7 @@ class Module_cms_galleries extends Standard_crud_module
         if (substr($cat, 0, 7) != 'member_') {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $cat));
             if (is_null($test)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
             }
         }
 
@@ -335,7 +335,7 @@ class Module_cms_galleries extends Standard_crud_module
         }
         // Feedback
         require_code('feedback2');
-        $fields->attach(feedback_fields(true, true, true, false, ''));
+        $fields->attach(feedback_fields($this->content_type, true, true, true, false, ''));
         // Privacy
         if (addon_installed('content_privacy')) {
             require_code('content_privacy2');
@@ -405,7 +405,7 @@ class Module_cms_galleries extends Standard_crud_module
                 $fields_2->attach(form_input_radio(do_lang_tempcode('ACTION'), '', 'type', $radios, true));
                 // Feedback
                 require_code('feedback2');
-                $fields_2->attach(feedback_fields(true, true, true, false, '', null, false, true, true, 'ss_'));
+                $fields_2->attach(feedback_fields($this->content_type, true, true, true, false, '', null, false, true, true, 'ss_'));
 
                 $form2 = do_template('FORM', array('_GUID' => '79c9fd4f29197460f08443bf2ffdf8b2', 'SECONDARY_FORM' => true, 'TABINDEX' => strval(get_form_field_tabindex()), 'FIELDS' => $fields_2, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'URL' => $add_url, 'TEXT' => '', 'HIDDEN' => $hidden_2));
             } else {
@@ -999,7 +999,7 @@ class Module_cms_galleries extends Standard_crud_module
                 }
                 return $limit;
             }
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
         }
         if (($gallery[0]['accept_images'] == 0) || ($gallery[0]['is_member_synched'] == 1)) {
             warn_exit(do_lang_tempcode(($gallery[0]['accept_images'] == 1) ? 'ERROR_NOT_ACCEPT_CONTAINER' : 'ERROR_NOT_ACCEPT_IMAGES'));
@@ -1119,7 +1119,7 @@ class Module_cms_galleries extends Standard_crud_module
             }
         }
         if (has_some_cat_privilege(get_member(), 'bypass_validation_' . $this->permissions_require . 'range_content', null, $this->permissions_cat_require)) {
-            $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1));
+            $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'image'), 'validated', $validated == 1));
         }
 
         $do_watermark = ($this->has_at_least_one_watermark($cat)) && (function_exists('imagetypes'));
@@ -1139,7 +1139,7 @@ class Module_cms_galleries extends Standard_crud_module
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         if (get_option('gallery_feedback_fields') == '1') {
             require_code('feedback2');
-            $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
+            $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
         } else {
             $hidden->attach(form_input_hidden('allow_rating', strval($allow_rating)));
             $hidden->attach(form_input_hidden('allow_comments', strval($allow_comments)));
@@ -1191,7 +1191,7 @@ class Module_cms_galleries extends Standard_crud_module
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'cat', array('id' => $id));
         if (is_null($temp)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
         }
         return $temp;
     }
@@ -1208,7 +1208,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
         }
         $myrow = $rows[0];
         $description = get_translated_text($myrow['description']);
@@ -1472,7 +1472,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 }
                 return $limit;
             }
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
         }
         if (($gallery[0]['accept_videos'] == 0) || ($gallery[0]['is_member_synched'] == 1)) {
             warn_exit(do_lang_tempcode(($gallery[0]['accept_videos'] == 1) ? 'ERROR_NOT_ACCEPT_CONTAINER' : 'ERROR_NOT_ACCEPT_VIDEOS'));
@@ -1678,7 +1678,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $validated_field = new Tempcode();
         if (has_some_cat_privilege(get_member(), 'bypass_validation_' . $this->permissions_require . 'range_content', null, $this->permissions_cat_require)) {
             if (addon_installed('unvalidated')) {
-                $validated_field = form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1);
+                $validated_field = form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'video'), 'validated', $validated == 1);
             }
         }
 
@@ -1707,7 +1707,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         if (get_option('gallery_feedback_fields') == '1') {
             require_code('feedback2');
-            $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
+            $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
         } else {
             $hidden->attach(form_input_hidden('allow_rating', strval($allow_rating)));
             $hidden->attach(form_input_hidden('allow_comments', strval($allow_comments)));
@@ -1759,7 +1759,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'cat', array('id' => $id));
         if (is_null($temp)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
         }
         return $temp;
     }
@@ -1776,7 +1776,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('videos', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
         }
         $myrow = $rows[0];
         $description = get_translated_text($myrow['description']);
@@ -2130,7 +2130,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                         $parent_gallery_title = get_translated_text($_parent_gallery_title);
                     }
                 }
-                $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT'), 'parent_id', null, 'choose_gallery', array('filter' => 'only_conventional_galleries', 'addable_filter' => true/*HACKHACK: A little naughty, but it encodes roughly what we want and doesn't hurt staff; we have separate enable/disable images/videos settings in galleries, so permissions for adding entries can reasonably be a base requirement for permissions for adding categories*/, 'purity' => true), true, $parent_id, false, null, false, $parent_gallery_title));
+                $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'gallery'), 'parent_id', null, 'choose_gallery', array('filter' => 'only_conventional_galleries', 'addable_filter' => true/*HACKHACK: A little naughty, but it encodes roughly what we want and doesn't hurt staff; we have separate enable/disable images/videos settings in galleries, so permissions for adding entries can reasonably be a base requirement for permissions for adding categories*/, 'purity' => true), true, $parent_id, false, null, false, $parent_gallery_title));
             } else {
                 $hidden->attach(form_input_hidden('parent_id', $parent_id));
             }
@@ -2158,7 +2158,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                 $fields->attach(form_input_upload_multi_source(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('DESCRIPTION_REPRESENTATIVE_IMAGE_GALLERY'), $hidden, 'image', null, false, $rep_image));
             }
             if ($request_member_synced) {
-                $fields->attach(form_input_tick(do_lang_tempcode('IS_MEMBER_SYNCHED'), do_lang_tempcode('DESCRIPTION_IS_MEMBER_SYNCHED_GALLERY'), 'is_member_synched', $is_member_synched == 1));
+                $fields->attach(form_input_tick(do_lang_tempcode('IS_MEMBER_SYNCHED', 'gallery'), do_lang_tempcode('DESCRIPTION_IS_MEMBER_SYNCHED_GALLERY', 'gallery'), 'is_member_synched', $is_member_synched == 1));
             }
         }
 
@@ -2184,7 +2184,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $seo_fields = seo_get_fields($this->seo_type, ($name == '') ? null : $name, false);
         if (get_option('gallery_feedback_fields') == '1') {
             require_code('feedback2');
-            $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, null, false, $notes, $allow_comments == 2, true, true, false);
+            $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, null, false, $notes, $allow_comments == 2, true, true, false);
         } else {
             $hidden->attach(form_input_hidden('allow_rating', strval($allow_rating)));
             $hidden->attach(form_input_hidden('allow_comments', strval($allow_comments)));
@@ -2226,7 +2226,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('name' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
         }
         $myrow = $rows[0];
 

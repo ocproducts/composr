@@ -85,6 +85,12 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
     @flock($tmp, LOCK_UN);
     fclose($tmp);
     $in = unixify_line_format($in);
+
+    if (strpos($path, '_custom/') === false) {
+        global $LANG_FILTER_OB;
+        $in = $LANG_FILTER_OB->compile_time(null, $in);
+    }
+
     return $in;
 }
 

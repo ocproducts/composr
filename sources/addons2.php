@@ -796,7 +796,7 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
     // Look in the tar
     require_code('tar');
     if (!file_exists($full)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ADDON')));
     }
     $tar = tar_open($full, 'rb');
     $directory = tar_get_directory($tar);

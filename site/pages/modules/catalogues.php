@@ -560,7 +560,7 @@ class Module_catalogues
             // Get category
             $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $categories)) {
-                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
             }
             $category = $categories[0];
 
@@ -669,7 +669,7 @@ class Module_catalogues
 
             $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $categories)) {
-                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
             }
             $category = $categories[0];
 
@@ -834,6 +834,7 @@ class Module_catalogues
             'CATALOGUE' => $catalogue_name, // Not an official PAGINATION_SCREEN parameter, but could be useful
             'CONTENT' => $content,
             'ADD_CAT_URL' => $add_cat_url,
+            'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
             'EDIT_URL' => $edit_url,
             'EDIT_LABEL' => do_lang_tempcode('EDIT_CATALOGUE'),
         ));
@@ -942,6 +943,7 @@ class Module_catalogues
                 'CATALOGUE' => $catalogue_name,
                 'ADD_ENTRY_URL' => $add_link,
                 'ADD_CAT_URL' => $add_cat_url,
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => $edit_cat_url,
                 'EDIT_CATALOGUE_URL' => $edit_catalogue_url,
                 'ENTRIES' => $category_buildup,
@@ -1058,6 +1060,7 @@ class Module_catalogues
             'CATALOGUE' => $catalogue_name,
             'ADD_ENTRY_URL' => $add_link,
             'ADD_CAT_URL' => $add_cat_url,
+            'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
             'EDIT_CAT_URL' => $edit_cat_url,
             'EDIT_CATALOGUE_URL' => $edit_catalogue_url,
             'ENTRIES' => $entries,

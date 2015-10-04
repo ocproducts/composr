@@ -389,7 +389,7 @@ class Module_cms_banners extends Standard_crud_module
     {
         $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array('name' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
         }
         $myrow = $rows[0];
 
@@ -455,7 +455,7 @@ class Module_cms_banners extends Standard_crud_module
     {
         $orig_submitter = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'submitter', array('name' => $id));
         if (is_null($orig_submitter)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
         }
 
         $b_type = post_param_string('b_type');
@@ -631,7 +631,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     {
         $m = $GLOBALS['SITE_DB']->query_select('banner_types', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $m)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner_type'));
         }
         $r = $m[0];
 

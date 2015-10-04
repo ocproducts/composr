@@ -372,7 +372,7 @@ class Module_cms_quiz extends Standard_crud_module
 
         $myrows = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $myrows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
         }
         $myrow = $myrows[0];
 

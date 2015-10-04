@@ -32,7 +32,7 @@ class CMSUserRead
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
         if (is_null($username)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
         $user_type = 'normal';

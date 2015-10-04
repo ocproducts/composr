@@ -226,7 +226,7 @@ class Hook_ecommerce_catalogue_items
         $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
 
         if (!array_key_exists(0, $entries)) {
-            return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+            return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $entry = $entries[0];
@@ -256,7 +256,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $pid));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $product_det = get_catalogue_entry_field_values($catalogue_name, $pid, null, null, true);
@@ -437,7 +437,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry['product_id']));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $image = $this->get_product_image($catalogue_name, $entry['product_id']);

@@ -119,7 +119,7 @@ function adminzone_extended_breadcrumbs()
                             $page_link = build_page_link(array('page' => 'admin', 'type' => $i[0]), 'adminzone');
                         }
 
-                        $title = do_lang_tempcode(strtoupper($i[0])); // The lang string version of the page grouping we found our current module was in
+                        $title = do_lang_tempcode(strtoupper($i[0])); // The language string ID version of the page grouping we found our current module was in
 
                         $breadcrumbs[] = array($page_link, $title);
 

@@ -53,7 +53,7 @@ class Hook_preview_banner
         $is_upload = is_plupload() || (array_key_exists($file_param_name, $_FILES)) && (array_key_exists('tmp_name', $_FILES[$file_param_name]) && (is_uploaded_file($_FILES[$file_param_name]['tmp_name'])));
         $_banner_type_rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('*'), array('id' => post_param_string('b_type')), '', 1);
         if (!array_key_exists(0, $_banner_type_rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner_type'));
         }
         $banner_type_row = $_banner_type_rows[0];
         if ($banner_type_row['t_is_textual'] == 0) {

@@ -241,6 +241,16 @@ class Module_search
             }
             $url = build_url($url_map, '_SELF', null, false, true);
 
+            require_code('content');
+            $content_type = convert_composr_type_codes('search_hook', $id, 'content_type');
+            if ($content_type != '') {
+                $cma_ob = get_content_object($content_type);
+                $cma_info = $cma_ob->info();
+                if (isset($info['parent_category_meta_aware_type'])) {
+                    $content_type = $info['parent_category_meta_aware_type'];
+                }
+            }
+
             require_code('hooks/modules/search/' . filter_naughty_harsh($id), true);
             $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
             $info = $ob->info();
@@ -302,6 +312,7 @@ class Module_search
                     'ROOT_ID' => '',
                     'OPTIONS' => serialize($ajax_options),
                     'DESCRIPTION' => '',
+                    'CONTENT_TYPE' => $content_type,
                 ));
             } else {
                 $ajax = false;

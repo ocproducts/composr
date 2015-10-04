@@ -21,7 +21,7 @@
 /**
  * Edit a language string direct from something saved into the code.
  *
- * @param  ID_TEXT $codename The language ID
+ * @param  ID_TEXT $codename The language string ID
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  */
 function inline_language_editing($codename, $lang)
@@ -119,9 +119,9 @@ function get_lang_files($lang = null)
 }
 
 /**
- * Search the database to find human-readable names for language IDs.
+ * Search the database to find human-readable names for language string IDs.
  *
- * @param  array $ids The language IDs (array of AUTO_LINK)
+ * @param  array $ids The language string IDs (array of AUTO_LINK)
  * @return array Human readable names (List of string against same IDs in input array or null for orphan strings)
  */
 function find_lang_content_names($ids)
@@ -267,41 +267,3 @@ function lookup_language_full_name($code)
     }
     return isset($LANGS_MAP_CACHE[$code]) ? $LANGS_MAP_CACHE[$code] : $code;
 }
-
-/**
- * Get an array of all the INI description entries in the specified language.
- *
- * @param  LANGUAGE_NAME $lang The language
- * @param  ?ID_TEXT $file The language file (null: all non-custom language files)
- * @return array The language descriptions
- */
-function get_lang_file_descriptions($lang, $file = null)
-{
-    if (is_null($file)) {
-        $dh = opendir(get_file_base() . '/lang/' . $lang);
-        $descriptions = array();
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.ini') {
-                $descriptions = array_merge($descriptions, get_lang_file_descriptions($lang, basename($f, '.ini')));
-            }
-        }
-        return $descriptions;
-    }
-
-    $a = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
-    if ((get_custom_file_base() != get_file_base()) && (!is_file($a))) {
-        $a = get_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
-    }
-
-    $b = (is_file($a)) ? $a : get_file_base() . '/lang/' . $lang . '/' . $file . '.ini';
-
-    if (!is_file($b)) {
-        $b = get_file_base() . '/lang/' . fallback_lang() . '/' . $file . '.ini';
-    }
-
-    $target = array();
-    require_code('lang_compile');
-    _get_lang_file_map($b, $target, true);
-    return $target;
-}
-

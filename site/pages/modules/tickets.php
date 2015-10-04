@@ -491,7 +491,7 @@ class Module_tickets
                 $_comments = get_ticket_posts($id, $forum, $topic_id, $_ticket_type_id, $start, $num_to_show_limit);
                 $_comments_all = get_ticket_posts($id, $forum, $topic_id, $_ticket_type_id);
                 if ((!is_array($_comments)) || (!array_key_exists(0, $_comments))) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
                 }
 
                 $ticket_title = $_comments[0]['title'];
@@ -514,7 +514,7 @@ class Module_tickets
             $staff_details = new Tempcode();
             if (!$new) {
                 if (is_null($_comments)) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
                 }
                 if (has_privilege(get_member(), 'support_operator')) {
                     $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic_id, get_option('ticket_forum_name'), true);
@@ -1167,7 +1167,7 @@ class Module_tickets
         $_ticket_type_id = 1; // These will be returned by reference
         $_comments_all = get_ticket_posts($from, $forum, $topic_id, $_ticket_type_id);
         if (count($_comments_all) == 0) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
         foreach ($_comments_all as $comment) {
             ticket_add_post($comment['member'], $to, $_ticket_type_id, $comment['title'], $comment['message_comcode'], $home_url, isset($comment['staff_only']) && $comment['staff_only'], $comment['date']);

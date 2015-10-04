@@ -3,7 +3,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 // Prepare for synonyms
-require_code('stemmer_' . user_lang());
+require_code('lang_stemmer_' . user_lang());
 $stemmer = object_factory('Stemmer_' . user_lang());
 require_code('adminzone/pages/modules/admin.php');
 $admin = object_factory('Module_admin');

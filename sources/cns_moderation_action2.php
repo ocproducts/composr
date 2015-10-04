@@ -89,7 +89,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
 {
     $topic_details = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_cache_first_title', 't_cache_first_post_id'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $topic_details)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'multi_moderation'));
     }
     $from = $topic_details[0]['t_forum_id'];
     if (!cns_may_perform_multi_moderation($from)) {
@@ -98,7 +98,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
 
     $mm = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('*'), array('id' => $id));
     if (!array_key_exists(0, $mm)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'multi_moderation'));
     }
 
     require_code('selectcode');
