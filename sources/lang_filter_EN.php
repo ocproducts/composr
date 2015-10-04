@@ -214,6 +214,7 @@ class LangFilter_EN extends LangFilter
         if ($is_american) {
             $value = str_replace('sation', 'zation', $value);
             $value = str_replace('sable', 'zable', $value);
+            $value = str_replace('dizable', 'disable', $value); // Exception, put this back
             $value = str_replace('sational', 'zational', $value);
 
             $remapping = $this->make_uncle_sam_happy;
