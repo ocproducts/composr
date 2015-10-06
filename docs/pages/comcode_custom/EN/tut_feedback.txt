@@ -195,7 +195,12 @@ By default, the poll block is displayed on the front page (unless this was chang
 
 Past polls can be found from the [tt]polls[/tt] module ([tt]site:polls[/tt] page-link, Social > Polls on the default menus).
 
-Members can only vote once in a poll. Guests may only vote once. IP addresses as well as member IDs are used to see who has previously voted. If a user chooses to view poll results before voting, they forfeit their vote. Once Composr has decided a user cannot vote (again), that user will only see the results whenever they see that poll.
+Members can only vote once in a poll. Guests may only vote once. IP addresses as well as member IDs are used to see who has previously voted. If a user chooses to view poll results before voting, they forfeit their vote. Once Composr has decided a user cannot vote (again), that user will always/only see the results whenever they see that poll.
+
+If you can't vote remember:
+1) You can only vote once.
+3) Double-vote prevention is IP-tied as well as member-tied. If you test across multiple accounts it will count together.
+3) Clicking "view results" acts as a forfeit, counts as a vote.
 
 Any numbers of different polls may be shown on your website if you choose to select them using poll ID number as a block parameter, rather than relying on the standard selection mechanism (click the "Add Block" button when editing a Comcode page if you'd like help placing [tt]main_poll[/tt] blocks).
 [/surround]
@@ -216,4 +221,4 @@ Content usually has a "Staff notes" field, which can be used to put notes intend
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_quizzes"]Quizzes[/page]
 
-{$SET,tutorial_tags,Feedback features,staff_messaging,core_feedback_features,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr helps you create a highly interactive site, with features for user interaction/feedback at your disposal.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Feedback features,staff_messaging,core_feedback_features,polls,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr helps you create a highly interactive site, with features for user interaction/feedback at your disposal.}[block]main_tutorial_rating[/block]

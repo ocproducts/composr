@@ -36,21 +36,20 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
         $url = $url->evaluate();
     }
 
-    if (is_null($text)) {
-        $text = do_lang_tempcode('_REDIRECTING');
+    global $ATTACHED_MESSAGES_RAW;
+    $special_page_type = get_param_string('special_page_type', 'view');
+
+    foreach ($ATTACHED_MESSAGES_RAW as $message) {
+        $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
+            'r_session_id' => get_session_id(),
+            'r_message' => is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]),
+            'r_type' => $message[1],
+            'r_time' => time(),
+        ));
     }
 
-    global $FORCE_META_REFRESH, $ATTACHED_MESSAGES_RAW;
-    $special_page_type = get_param_string('special_page_type', 'view');
-    if (($special_page_type == 'view') && (!headers_sent()) && (!$FORCE_META_REFRESH)) {
-        foreach ($ATTACHED_MESSAGES_RAW as $message) {
-            $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
-                'r_session_id' => get_session_id(),
-                'r_message' => is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]),
-                'r_type' => $message[1],
-                'r_time' => time(),
-            ));
-        }
+    // Even if we have $FORCE_META_REFRESH we want to relay $text if provided --- our delay is zero so it won't be read in time by most users
+    if (!is_null($text)) {
         $_message = is_object($text) ? $text->evaluate() : escape_html($text);
         if ($_message != '' && $_message != do_lang('_REDIRECTING')) {
             $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
@@ -60,18 +59,22 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
                 'r_time' => time(),
             ));
         }
+    }
 
-        if (!$intermediary_hop) {
-            $hash_pos = strpos($url, '#');
-            if ($hash_pos !== false) {
-                $hash_bit = substr($url, $hash_pos);
-                $url = substr($url, 0, $hash_pos);
-            } else {
-                $hash_bit = '';
-            }
-            extend_url($url, 'redirected=1');
-            $url .= $hash_bit;
+    if (!$intermediary_hop) {
+        $hash_pos = strpos($url, '#');
+        if ($hash_pos !== false) {
+            $hash_bit = substr($url, $hash_pos);
+            $url = substr($url, 0, $hash_pos);
+        } else {
+            $hash_bit = '';
         }
+        extend_url($url, 'redirected=1');
+        $url .= $hash_bit;
+    }
+
+    if (is_null($text)) {
+        $text = do_lang_tempcode('_REDIRECTING');
     }
 
     require_code('site2');

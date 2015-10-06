@@ -149,6 +149,7 @@ class lang_test_set extends cms_test_case
             'adhoc' => 'ad hoc',
             'yness' => 'iness',
             'overidden' => 'overridden',
+            'overide' => 'override',
             'nieve' => 'naive',
             'in-situe' => 'in-situ',
             'infact' => 'in fact',

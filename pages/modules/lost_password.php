@@ -372,6 +372,7 @@ class Module_lost_password
 
             $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit__settings');
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            $GLOBALS['FORCE_META_REFRESH'] = true; // To fix IE8 bug
             return redirect_screen($this->title, $redirect_url, do_lang_tempcode('YOU_HAVE_TEMPORARY_PASSWORD', escape_html($username)));
         }
 

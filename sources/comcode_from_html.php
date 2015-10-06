@@ -456,17 +456,19 @@ function semihtml_to_comcode($semihtml, $force = false)
         if (($count == 0) && (strpos($semihtml, '<h1') === false)) {
             return ($semihtml == '') ? '' : ('[html]' . $semihtml . '[/html]');
         }
-        $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
-        if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
-            if ($semihtml != '') {
-                $semihtml = '[html]' . $semihtml . '[/html]';
+        if (strpos($semihtml, 'data:') === false) {
+            $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
+            if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
+                if ($semihtml != '') {
+                    $semihtml = '[html]' . $semihtml . '[/html]';
+                }
+                $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
+                $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
+                $semihtml = str_replace('[attachment', '[/html][semihtml][attachment', str_replace('[/attachment]', '[/attachment][/semihtml][html]', $semihtml));
+                $semihtml = str_replace('[/html][html]', '', $semihtml);
+                $semihtml = str_replace('[html][/html]', '', $semihtml);
+                return $semihtml;
             }
-            $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
-            $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
-            $semihtml = str_replace('[attachment', '[/html][semihtml][attachment', str_replace('[/attachment]', '[/attachment][/semihtml][html]', $semihtml));
-            $semihtml = str_replace('[/html][html]', '', $semihtml);
-            $semihtml = str_replace('[html][/html]', '', $semihtml);
-            return $semihtml;
         }
         if ($semihtml != '') {
             $semihtml = '[semihtml]' . $semihtml . '[/semihtml]';

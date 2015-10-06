@@ -705,11 +705,16 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('group', $id, array('submitter'));
 
+        $is_super_admin = post_param_integer('is_super_admin', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+        if (($is_super_admin == 0) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'g_is_super_admin', array('id' => intval($id))) == 1) && ($GLOBALS['SITE_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_super_admin' => 1)) == 1)) {
+            warn_exit(do_lang_tempcode('NO_SUICIDAL_SUPER_ADMIN_REMOVAL'));
+        }
+
         cns_edit_group(
             intval($id),
             post_param_string('name'),
             post_param_integer('is_default', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
-            post_param_integer('is_super_admin', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            $is_super_admin,
             post_param_integer('is_super_moderator', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_string('title', STRING_MAGIC_NULL),
             $rank_img,

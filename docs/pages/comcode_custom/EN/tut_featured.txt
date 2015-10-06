@@ -188,4 +188,4 @@ Community billboard messages are covered in the [page="_SEARCH:tut_points"]Creat
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
 
-{$SET,tutorial_tags,iotds,random_quotes,polls,forum_blocks,counting_blocks,awards,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to pull out content from your website, and put it in a featured spot. There are a number of methods available.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,iotds,random_quotes,forum_blocks,counting_blocks,awards,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to pull out content from your website, and put it in a featured spot. There are a number of methods available.}[block]main_tutorial_rating[/block]
