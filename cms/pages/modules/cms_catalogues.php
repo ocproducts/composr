@@ -1641,15 +1641,6 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             }
             $fields->attach(form_input_list(do_lang_tempcode('DISPLAY_TYPE'), do_lang_tempcode('DESCRIPTION_DISPLAY_TYPE'), 'display_type', $display_types));
 
-            if (addon_installed('shopping')) {
-                if ($ecommerce == 1) {
-                    if (get_forum_type() != 'cns') {
-                        warn_exit(do_lang_tempcode('NO_CNS'));
-                    }
-                }
-
-                $fields->attach(form_input_tick(do_lang_tempcode('CAT_ECOMMERCE'), do_lang_tempcode('DESCRIPTION_CAT_ECOMMERCE'), 'ecommerce', $ecommerce == 1));
-            }
             $fields->attach(form_input_tick(do_lang_tempcode('IS_TREE'), do_lang_tempcode('DESCRIPTION_IS_TREE'), 'is_tree', $is_tree == 1));
             if ($name == '') {
                 $fields->attach(form_input_line(do_lang_tempcode('AUTO_FILL'), do_lang_tempcode('DESCRIPTION_AUTO_FILL'), 'auto_fill', '', false, null, 10000));
@@ -1659,6 +1650,16 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
             if ($complex_rename) {
                 $fields->attach($catalogue_name_field);
+            }
+
+            if (addon_installed('shopping')) {
+                if ($ecommerce == 1) {
+                    if (get_forum_type() != 'cns') {
+                        warn_exit(do_lang_tempcode('NO_CNS'));
+                    }
+                }
+
+                $fields->attach(form_input_tick(do_lang_tempcode('CAT_ECOMMERCE'), do_lang_tempcode('DESCRIPTION_CAT_ECOMMERCE'), 'ecommerce', $ecommerce == 1));
             }
 
             if (get_option('enable_staff_notes') == '1') {

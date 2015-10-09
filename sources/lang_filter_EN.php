@@ -210,7 +210,7 @@ class LangFilter_EN extends LangFilter
     public function compile_time($key, $value)
     {
         // American <> British
-        $is_american = (get_option('yeehaw') == '1');
+        $is_american = (!function_exists('get_option')) || (get_option('yeehaw') == '1');
         if ($is_american) {
             $value = str_replace('sation', 'zation', $value);
             $value = str_replace('sable', 'zable', $value);

@@ -519,9 +519,6 @@ class Module_tutorials
                 ));
             }
         }
-
-        require_code('tutorials_arvixe');
-        import_tutorials_from_arvixe();
     }
 
     /**

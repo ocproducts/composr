@@ -2402,122 +2402,163 @@ function handle_self_referencing_embedment()
     if (array_key_exists('type', $_GET)) {
         $type = $_GET['type'];
 
-        if ($type == 'ajax_ftp_details') {
-            header('Content-Type: text/plain');
+        switch ($type) {
+            case 'test_blank_result':
+                exit();
 
-            if (!function_exists('ftp_connect')) {
-                echo do_lang('NO_PHP_FTP');
-                exit();
-            }
-            $conn = false;
-            $domain = trim(get_param_string('ftp_domain'));
-            $port = 21;
-            if (strpos($domain, ':') !== false) {
-                list($domain, $_port) = explode(':', $domain, 2);
-                $port = intval($_port);
-            }
-            if (function_exists('ftp_ssl_connect')) {
-                $conn = @ftp_ssl_connect($domain, $port);
-            }
-            $ssl = ($conn !== false);
-            $username = get_param_string('ftp_username');
-            $password = get_param_string('ftp_password');
-            $ssl = ($conn !== false);
-            if (($ssl) && (!@ftp_login($conn, $username, $password))) {
-                $conn = false;
-                $ssl = false;
-            }
-            if ($conn === false) {
-                $conn = ftp_connect($domain, $port);
-            }
-            if ($conn === false) {
-                echo do_lang('NO_FTP_CONNECT');
-                exit();
-            }
-            if ((!$ssl) && (!@ftp_login($conn, $username, $password))) {
-                echo do_lang('NO_FTP_LOGIN', @strval($php_errormsg));
-                ftp_close($conn);
-                exit();
-            }
-            $ftp_folder = get_param_string('ftp_folder');
-            if (substr($ftp_folder, -1) != '/') {
-                $ftp_folder .= '/';
-            }
-            if (!@ftp_chdir($conn, $ftp_folder)) {
-                echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '1');
-                ftp_close($conn);
-                exit();
-            }
-            $files = @ftp_nlist($conn, '.');
-            if ($files === false) { // :(. Weird bug on some systems
-                $files = array();
-                if (@ftp_rename($conn, 'install.php', 'install.php')) {
-                    $files = array('install.php', 'data.cms');
+            case 'ajax_ftp_details':
+                header('Content-Type: text/plain');
+
+                if (!function_exists('ftp_connect')) {
+                    echo do_lang('NO_PHP_FTP');
+                    exit();
                 }
-            }
-            if (!in_array('install.php', $files)) {
-                echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '2');
-            }
-            ftp_close($conn);
-
-            exit();
-        }
-        if ($type == 'ajax_db_details') {
-            header('Content-Type: text/plain');
-            global $SITE_INFO;
-            if (!isset($SITE_INFO)) {
-                $SITE_INFO = array();
-            }
-            $SITE_INFO['db_type'] = get_param_string('db_type');
-            require_code('database');
-            if (get_param_string('db_site') == '') {
-                $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
-            } else {
-                $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
-            }
-            $connection = &$db->connection_write;
-            if (count($connection) > 4) { // Okay, we can't be lazy anymore
-                call_user_func_array(array($db->static_ob, 'db_get_connection'), $connection);
-            }
-
-            exit();
-        }
-        if ($type == 'logo') {
-            header('Content-type: image/png');
-            if (!file_exists(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png')) {
-                $out = file_array_get('themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png');
-                echo $out;
-            } else {
-                print(file_get_contents(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png'));
+                $conn = false;
+                $domain = trim(get_param_string('ftp_domain'));
+                $port = 21;
+                if (strpos($domain, ':') !== false) {
+                    list($domain, $_port) = explode(':', $domain, 2);
+                    $port = intval($_port);
+                }
+                if (function_exists('ftp_ssl_connect')) {
+                    $conn = @ftp_ssl_connect($domain, $port);
+                }
+                $ssl = ($conn !== false);
+                $username = get_param_string('ftp_username');
+                $password = get_param_string('ftp_password');
+                $ssl = ($conn !== false);
+                if (($ssl) && (!@ftp_login($conn, $username, $password))) {
+                    $conn = false;
+                    $ssl = false;
+                }
+                if ($conn === false) {
+                    $conn = ftp_connect($domain, $port);
+                }
+                if ($conn === false) {
+                    echo do_lang('NO_FTP_CONNECT');
+                    exit();
+                }
+                if ((!$ssl) && (!@ftp_login($conn, $username, $password))) {
+                    echo do_lang('NO_FTP_LOGIN', @strval($php_errormsg));
+                    ftp_close($conn);
+                    exit();
+                }
+                $ftp_folder = get_param_string('ftp_folder');
+                if (substr($ftp_folder, -1) != '/') {
+                    $ftp_folder .= '/';
+                }
+                if (!@ftp_chdir($conn, $ftp_folder)) {
+                    echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '1');
+                    ftp_close($conn);
+                    exit();
+                }
+                $files = @ftp_nlist($conn, '.');
+                if ($files === false) { // :(. Weird bug on some systems
+                    $files = array();
+                    if (@ftp_rename($conn, 'install.php', 'install.php')) {
+                        $files = array('install.php', 'data.cms');
+                    }
+                }
+                if (!in_array('install.php', $files)) {
+                    echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '2');
+                }
+                ftp_close($conn);
                 exit();
-            }
 
-            exit();
-        }
-        if ($type == 'contract') {
-            header('Content-type: image/png');
-            if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/contract.png')) {
-                $out = file_array_get('themes/default/images/1x/trays/contract.png');
-                echo $out;
-            } else {
-                print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/contract.png'));
+            case 'ajax_db_details':
+                header('Content-Type: text/plain');
+                global $SITE_INFO;
+                if (!isset($SITE_INFO)) {
+                    $SITE_INFO = array();
+                }
+                $SITE_INFO['db_type'] = get_param_string('db_type');
+                require_code('database');
+                if (get_param_string('db_site') == '') {
+                    $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
+                } else {
+                    $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
+                }
+                $connection = &$db->connection_write;
+                if (count($connection) > 4) { // Okay, we can't be lazy anymore
+                    call_user_func_array(array($db->static_ob, 'db_get_connection'), $connection);
+                }
                 exit();
-            }
 
-            exit();
-        }
-        if ($type == 'expand') {
-            header('Content-type: image/png');
-            if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/expand.png')) {
-                $out = file_array_get('themes/default/images/1x/trays/expand.png');
-                echo $out;
-            } else {
-                print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/expand.png'));
+            case 'logo':
+                header('Content-type: image/png');
+                if (!file_exists(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png')) {
+                    $out = file_array_get('themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png');
+                    echo $out;
+                } else {
+                    print(file_get_contents(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png'));
+                    exit();
+                }
                 exit();
-            }
 
-            exit();
+            case 'contract':
+                header('Content-type: image/png');
+                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/contract.png')) {
+                    $out = file_array_get('themes/default/images/1x/trays/contract.png');
+                    echo $out;
+                } else {
+                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/contract.png'));
+                    exit();
+                }
+                exit();
+
+            case 'expand':
+                header('Content-type: image/png');
+                if (!file_exists(get_file_base() . '/themes/default/images/1x/trays/expand.png')) {
+                    $out = file_array_get('themes/default/images/1x/trays/expand.png');
+                    echo $out;
+                } else {
+                    print(file_get_contents(get_file_base() . '/themes/default/images/1x/trays/expand.png'));
+                    exit();
+                }
+                exit();
+
+            case 'css':
+            case 'css_2'/*So colours are parsed initially*/:
+                header('Content-Type: text/css');
+
+                $output = '';
+
+                $css_files = array('global', 'forms');
+                foreach ($css_files as $css_file) {
+                    if (!file_exists(get_file_base() . '/themes/default/css/' . $css_file . '.css')) {
+                        $file = file_array_get('themes/default/css/' . $css_file . '.css');
+                    } else {
+                        $file = file_get_contents(get_file_base() . '/themes/default/css/' . $css_file . '.css');
+                    }
+                    $file = preg_replace('#\{\$IMG;?\,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.png', $file);
+
+                    require_code('tempcode_compiler');
+                    $css = template_to_tempcode($file, 0, false, '');
+                    $output .= $css->evaluate();
+                }
+
+                if ($type == 'css') {
+                    print($output);
+                    exit();
+                } else {
+                    header('Content-Type: text/css');
+                    if (!file_exists(get_file_base() . '/themes/default/css/install.css')) {
+                        $file = file_array_get('themes/default/css/install.css');
+                    } else {
+                        $file = file_get_contents(get_file_base() . '/themes/default/css/install.css');
+                    }
+                    $file = preg_replace('#\{\$IMG\,([^,\}\']+)\}#', 'themes/default/images/${1}.png', $file);
+
+                    require_code('tempcode_compiler');
+                    $css = template_to_tempcode($file, 0, false, '');
+                    $output = $css->evaluate();
+
+                    print($output);
+                    exit();
+                }
+                break;
         }
+
         if (substr($type, 0, 15) == 'themes/default/') {
             header('Content-type: image/png');
             if (!file_exists(get_file_base() . '/' . $type)) {
@@ -2528,46 +2569,6 @@ function handle_self_referencing_embedment()
                 exit();
             }
 
-            exit();
-        }
-        if (($type == 'css') || ($type == 'css_2')/*So colours are parsed initially*/) {
-            header('Content-Type: text/css');
-
-            $output = '';
-
-            $css_files = array('global', 'forms');
-            foreach ($css_files as $css_file) {
-                if (!file_exists(get_file_base() . '/themes/default/css/' . $css_file . '.css')) {
-                    $file = file_array_get('themes/default/css/' . $css_file . '.css');
-                } else {
-                    $file = file_get_contents(get_file_base() . '/themes/default/css/' . $css_file . '.css');
-                }
-                $file = preg_replace('#\{\$IMG;?\,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.png', $file);
-
-                require_code('tempcode_compiler');
-                $css = template_to_tempcode($file, 0, false, '');
-                $output .= $css->evaluate();
-            }
-
-            if ($type == 'css') {
-                print($output);
-                exit();
-            }
-        }
-        if ($type == 'css_2') {
-            header('Content-Type: text/css');
-            if (!file_exists(get_file_base() . '/themes/default/css/install.css')) {
-                $file = file_array_get('themes/default/css/install.css');
-            } else {
-                $file = file_get_contents(get_file_base() . '/themes/default/css/install.css');
-            }
-            $file = preg_replace('#\{\$IMG\,([^,\}\']+)\}#', 'themes/default/images/${1}.png', $file);
-
-            require_code('tempcode_compiler');
-            $css = template_to_tempcode($file, 0, false, '');
-            $output = $css->evaluate();
-
-            print($output);
             exit();
         }
 

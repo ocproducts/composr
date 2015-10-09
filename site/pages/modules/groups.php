@@ -558,7 +558,7 @@ class Module_groups
         }
 
         // To apply
-        $my_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member());
+        $my_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, false);
         if (is_guest()) {
             $apply_url = new Tempcode();
             $apply_text = new Tempcode();
@@ -724,7 +724,7 @@ class Module_groups
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
         }
 
-        $test = $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id);
+        $test = $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id, false, false);
         if (in_array($id, $test)) {
             warn_exit(do_lang_tempcode('ALREADY_IN_GROUP'));
         }

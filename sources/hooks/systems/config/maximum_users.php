@@ -50,6 +50,6 @@ class Hook_config_maximum_users
      */
     public function get_default()
     {
-        return '100';
+        return '400';
     }
 }

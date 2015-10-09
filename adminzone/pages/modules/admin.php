@@ -233,7 +233,7 @@ class Module_admin
             array('display', 'render', 'view'),
             array('gallery', 'album', 'galleries', 'podcast', 'multimedia'),
             array('audit', 'log', 'usage'),
-            array('download', 'file', 'document', 'publication'),
+            array('download', 'file', 'document', 'publication', 'library'),
             array('page', 'article', 'comcode'),
             array('entry', 'item', 'content', 'resource', 'submission'),
             array('category', 'node', 'section', 'repository', 'collection'),
