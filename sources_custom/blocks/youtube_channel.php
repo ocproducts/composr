@@ -374,7 +374,7 @@ class Block_youtube_channel
                     //  5 => low res, last frame - "2"
                     //  6 => default image, standard res 640x480 - "sddefault"
                     //  7 => middle of vid, max res - 1280x720 - "maxresdefault"
-                    //set base url for thumbnails to use for thumbnails that are no longer returned by API call
+                    //set base URL for thumbnails to use for thumbnails that are no longer returned by API call
                     $base_thumb_url = dirname($thumbnails->default->url) . '/';
                     // Pre-define thumbimg array first, then set elements and ignore errors for thumbnails that don't exist
                     $thumbimg = array(array('url' => '', 'width' => '120', 'height' => '90'),

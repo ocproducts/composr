@@ -1,6 +1,5 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Explaining the Composr Quiz Module[/title]
 
-[media width="150" description="Doing an example quiz" float="right"]data_custom/images/docs/sup_explaining_the_composr_quiz_module/08d0ad3462393c69f00ae696c2579161.jpg[/media]
 Quizzes in Composr have multiple purposes as they can be used for collecting data or as a fun quiz. They can also be used as part of a giveaway or as a competition and are really useful as part of a community to help foster engagement on your site.
 
 Specifically...
@@ -11,6 +10,7 @@ Competitions are similar to tests, but a winner may be drawn from those who gave
 
 [title="2"]Formatting Composr Quiz questions[/title]
 
+[media width="150" description="Doing an example quiz" float="right"]data_custom/images/docs/sup_explaining_the_composr_quiz_module/08d0ad3462393c69f00ae696c2579161.jpg[/media]
 [media width="150" description="Add quiz form" float="right"]data_custom/images/docs/sup_explaining_the_composr_quiz_module/6aa1f8897b481960baa0177d65e6ebce.jpg[/media]
 Formatting the quiz questions for a Composr quiz is quite simple. You have an open text box to fill in your questions. The first line is the question, and anything on the subsequent lines is classed as the answers for multiple choice questions. After the answer you need to leave a full blank row to separate each question. There is an example in the image of the different types of questions.
 
@@ -27,14 +27,14 @@ Adding [tt][REQUIRED][/tt] after a question makes the user answer that question 
 
 The remaining options on the form include:
 [list]
-[*] Validated -- Whether the quiz is live and available to users of your site
-[*] Completion percentage -- How greater percentage of the answers must be correct to be classed as completing the quiz correctly.
-[*] Text to show at the start of the quiz -- a large text box for text which will appear at the beginning of the quiz
-[*] Text to show at Quiz completion -- This is a text box for some text which will be shown upon completing the quiz
-[*] Number of winners -- When selecting a competition this is how many winners there will be
-[*] Text shown on quiz failure -- Text which will be shown if the competition is failed
-[*] Advanced -- these options deal with how often someone can complete the quiz, how many site points they will get for completing it when the quiz is open and closed
-[*] SEO options
+[*] [b]Validated[/b] -- Whether the quiz is live and available to users of your site
+[*] [b]Completion percentage[/b] -- How greater percentage of the answers must be correct to be classed as completing the quiz correctly.
+[*] [b]Text to show at the start of the quiz[/b] -- a large text box for text which will appear at the beginning of the quiz
+[*] [b]Text to show at Quiz completion[/b] -- This is a text box for some text which will be shown upon completing the quiz
+[*] [b]Number of winners[/b] -- When selecting a competition this is how many winners there will be
+[*] [b]Text shown on quiz failure[/b] -- Text which will be shown if the competition is failed
+[*] [b]Advanced[/b] -- these options deal with how often someone can complete the quiz, how many site points they will get for completing it when the quiz is open and closed
+[*] [b]SEO options[/b]
 [/list]
 Once you have filled this in you can preview the quiz or click the Add quiz button.
 

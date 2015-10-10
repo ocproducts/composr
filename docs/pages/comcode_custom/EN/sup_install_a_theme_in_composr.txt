@@ -30,9 +30,9 @@ You may want to browse the themes and comments from the compo.sr website before 
 [*] Choose the Themes icon
 [/list]
 
+[media width="150" description="Theme options under Manage themes" float="right"]data_custom/images/docs/sup_install_a_theme_in_composr/1378b0c954bf8a84c9cdb50c1dd21ed1.jpg[/media]
 Your installed theme should appear in the list of available themes. Use the preview option to check how the theme will look if you put it as the live theme. If you are happy click "Change theme settings / Make Live".
 
-[media width="150" description="Theme options under Manage themes" float="right"]data_custom/images/docs/sup_install_a_theme_in_composr/1378b0c954bf8a84c9cdb50c1dd21ed1.jpg[/media]
 This page gives some information about the theme including who originally created the theme. To make this the live theme you need to scroll to the Actions section and select the checkbox next to "Use theme on all Zones" and select Change theme settings. On this page you can also change a range of permissions relating to the theme such as which usergroups can see the theme and also which pages will render a mobile version of the site.
 
 Once you have put the theme live check through your site pages to make sure everything is displayed as you want it to. I find it useful to have the Admin Zone open in one tab and the live site in another so I can quickly change any settings I need to when making changes to my Composr websites.

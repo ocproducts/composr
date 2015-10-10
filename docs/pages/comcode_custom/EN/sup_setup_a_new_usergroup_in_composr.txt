@@ -22,32 +22,33 @@ I thought it would be useful to go through the adding a usergroup form in a litt
 The first box is quite straightforward and is the name of the new usergroup. The next section is titled Advanced and has three options.
 
 [list]
-[*] Title -- If you fill in this box then the user will display this as their title if this is their primary usergroup and they have not set their own custom title.
-[*] Usergroup Leader -- This option allows you to set someone to be able to add and remove members from the group. This option is useful if you have a site with a lot of users and you want to give a trusted member some responsibilities without making them a full administrator.
-[*] Order -- this is the order that the usergroup will appear in any list of usergroups. The usergroup which is set as number 1 appears first.
+[*] [b]Title[/b] -- If you fill in this box then the user will display this as their title if this is their primary usergroup and they have not set their own custom title.
+[*] [b]Usergroup Leader[/b] -- This option allows you to set someone to be able to add and remove members from the group. This option is useful if you have a site with a lot of users and you want to give a trusted member some responsibilities without making them a full administrator.
+[*] [b]Order[/b] -- this is the order that the usergroup will appear in any list of usergroups. The usergroup which is set as number 1 appears first.
 [/list]
 
 [title="2"]Joining section[/title]
 
 This section has three quite important options in some circumstances. These options are:
 [list]
-[*] Initial primary usergroup -- this option basically means that if a new person joins your site then this will be their primary usergroup. You may choose to use this if you created new members group for example which may have reduced capabilities or need to have posts manually verified by a moderator at first until you are sure they are real member and not a spammer for example.
-[*] Automatic secondary group -- similar to the first option but adds new members as members of this group but as a secondary usergroup alongside their primary group.
-[*] Open Membership -- This is whether anyone can join the usergroup or whether they have to apply to join. If you are creating a members group for subscription payers you will not want to tick this option.
+[*] [b]Initial primary usergroup[/b] -- this option basically means that if a new person joins your site then this will be their primary usergroup. You may choose to use this if you created new members group for example which may have reduced capabilities or need to have posts manually verified by a moderator at first until you are sure they are real member and not a spammer for example.
+[*] [b]Automatic secondary group[/b] -- similar to the first option but adds new members as members of this group but as a secondary usergroup alongside their primary group.
+[*] [b]Open Membership[/b] -- This is whether anyone can join the usergroup or whether they have to apply to join. If you are creating a members group for subscription payers you will not want to tick this option.
 [/list]
 
 [title="2"]Rank[/title]
 
+[surround]
 [media width="150" description="Usergroup form (2)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/be101f026eff427dcec4345620a62d78.png[/media]
 The next section has two options; the first allows you to set a rank image for members of this usergroup. This section also allows you to set whether or not the rank image only appears for primary members of this group.
-
 [title="2"]Benefits[/title]
 
 The Benefits section of the usergroup form allows you to set whether the usergroup is classed as a super administrator which has access to everything. This section also has an option to set usergroup members as super moderators which means you will give the usergroup some moderator abilities and they will appear on the staff section of the website.
+[/surround]
 
 [title="2"]Security[/title]
 
-[media width="150" description="Usergroup form (3)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/ccf7c11a6a8ca8fb83b9e2ccfab60320.png[/media]
+[surround][media width="150" description="Usergroup form (3)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/ccf7c11a6a8ca8fb83b9e2ccfab60320.png[/media]
 The security section of the form allows you to set the usergroup as a hidden group. A hidden usergroup will not show up on the usergroups list unless the user has a permission to see hidden usergroups. You can also set an option here to check if a user is the real user if they log in from a different IP address to one they have used before.
 
 [title="2"]Restrictions[/title]
@@ -58,9 +59,7 @@ In this section you have 5 options which you can set for the user. These options
 [*] The maximum amount of data a user can upload in megabytes
 [*] The maximum width and height in pixels the users avatar can be
 [*] The maximum number of characters a user can use in a post
-[/list]
-
-[title="2"]Flood Control[/title]
+[/list][/surround][title="2"]Flood Control[/title]
 
 [media width="150" description="Usergroup form (4)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/41d897275dbbca81c37e38568a3efe81.png[/media]
 The two options in this section allow you to set the number of section members of this usergroup have to wait between either opening up a new page and also making a new post. As a default these are both set to zero.

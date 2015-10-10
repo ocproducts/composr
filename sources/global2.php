@@ -1149,7 +1149,7 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our installation).
+ * Get the base URL (the minimum fully qualified URL to our installation).
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @param  ?ID_TEXT $zone_for The zone the link is for (null: root zone)
@@ -1247,7 +1247,7 @@ function get_base_url($https = null, $zone_for = null)
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our personal data installation). For a shared install, or a GAE-install, this is different to the base-url.
+ * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install, or a GAE-install, this is different to the base-url.
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @return URLPATH The base-url

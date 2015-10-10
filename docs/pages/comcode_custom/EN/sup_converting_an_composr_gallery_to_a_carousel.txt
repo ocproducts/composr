@@ -1,19 +1,19 @@
 [title sub="Written by Steve Jarvis and Chris Graham, Sponsored by Arvixe hosting"]Composr Supplementary: Converting a Composr Gallery to a Carousel[/title]
 
-[media width="150" description="The main_gallery_embed block in the Block construction assistant" float="right"]data_custom/images/docs/sup_converting_an_composr_gallery_to_a_carousel/b9161f6050c814dc6c6acc965e77d7ba.jpg[/media]
+[media width="150" description="The [tt]main_gallery_embed[/tt] block in the Block construction assistant" float="right"]data_custom/images/docs/sup_converting_an_composr_gallery_to_a_carousel/b9161f6050c814dc6c6acc965e77d7ba.jpg[/media]
 A task which I do on most sites I build with Composr is to add a carousel interface to my galleries. Thankfully in Composr this is a simple task which doesn't require any programming knowledge.
 
 All you need to do to display a carousel gallery on one of your pages is to add the [tt]main_gallery_embed[/tt] with a [tt]guid[/tt] parameter of [tt]carousel[/tt].
 
 If you are using the Block construction assistant you will need to fill in the form which has the following options:
 [list]
-[*] Param -- Choose the Gallery you wish to display from the dropdown list
-[*] Select -- You can choose to only display specifically numbered photo's or if you leave it blank it will display all of them
-[*] Videos -- If there are videos in the gallery you can choose specific videos to display
-[*] Max -- the maximum number of entries to display
-[*] Title -- The Title of the block
-[*] Sort -- Which order do you want the pictures to display. This could be things like date ascending, highest rating first, random etc
-[*] Days -- If you have a gallery which has new items added you may choose to only display photo's added in the last X number of days
+[*] [b]Param[/b] -- Choose the Gallery you wish to display from the dropdown list
+[*] [b]Select[/b] -- You can choose to only display specifically numbered photo's or if you leave it blank it will display all of them
+[*] [b]Videos[/b] -- If there are videos in the gallery you can choose specific videos to display
+[*] [b]Max[/b] -- the maximum number of entries to display
+[*] [b]Title[/b] -- The Title of the block
+[*] [b]Sort[/b] -- Which order do you want the pictures to display. This could be things like date ascending, highest rating first, random etc
+[*] [b]Days[/b] -- If you have a gallery which has new items added you may choose to only display photo's added in the last X number of days
 [/list]
 
 Then you need to expand the advanced block parameters, and set the GUID value. It has to be exactly [tt]carousel[/tt].

@@ -22,16 +22,16 @@ The addon is suitable for some cases, but not all, as there is still some functi
 
 Navigate to the Content section and Choose Bookings from the menu where you have 4 pairs of options and a link to the Calendar. These four pairs of options are:
 [list]
-[*] Add or edit a bookable date region -- This is where you will set and edit which dates can be booked as well as what can be booked and how much it costs.
-[*] Add or edit a bookable supplement -- This is where you can add specific supplements for a booking type. This might be a peak time of the day for example, if you have 1 hour slots and want to add the standard price for each slot as $10 per slot but the slots 5pm-6pm and 6pm-7pm should be $15 you can set a $5 for those 2 categories without needing to add spare bookable regions.[list]
+[*] [b]Add or edit a bookable date region[/b] -- This is where you will set and edit which dates can be booked as well as what can be booked and how much it costs.
+[*] [b]Add or edit a bookable supplement[/b] -- This is where you can add specific supplements for a booking type. This might be a peak time of the day for example, if you have 1 hour slots and want to add the standard price for each slot as $10 per slot but the slots 5pm-6pm and 6pm-7pm should be $15 you can set a $5 for those 2 categories without needing to add spare bookable regions.[list]
 [*] You can also use this for discounts if you set the supplement as a minus for example if you offer OAP tickets or have a low traffic time of the day which should be cheaper.[/list]
-[*] Add or edit bookable blackout region -- Add a set of dates you want to block from being booked. For example if your date region runs the whole of summer but you have 2 days where you are closed you can just add a blackout date region for the 2 days.
-[*] Add or edit a booking -- Here you can manually add or edit a booking to your system.
+[*] [b]Add or edit bookable blackout region[/b] -- Add a set of dates you want to block from being booked. For example if your date region runs the whole of summer but you have 2 days where you are closed you can just add a blackout date region for the 2 days.
+[*] [b]Add or edit a booking[/b] -- Here you can manually add or edit a booking to your system.
 [/list]
 
 [title="2"]Displaying the booking addon on your page[/title]
 
-[media width="150" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/6eca0eda959b9f31460837642db0c1a0.jpg[/media]
+[media width="150" float="right" description="Making a booking"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/6eca0eda959b9f31460837642db0c1a0.jpg[/media]
 To make use of the booking addon you will need to link your site visitors to it. Depending on your options, the URL of the booking addon will be something like:
 [list]
 [*] [tt]http://yourbaseurl/site/index.php?page=booking[/tt]
@@ -94,7 +94,7 @@ A bookable blackout is a date range where one of your bookables cannot be booked
 
 The form for the bookable blackouts is 4 simple options. The first 2 are the first and last date for the blackout region. The third option is a text field giving you a chance to give an explanation why the dates are not bookable. The last option is which bookable regions the blackout applies to.
 
-[media width="150" description="add a booking" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/a53352de44dfaeee69fb8a1a8fbbf099.jpg[/media]
+[media width="150" description="Add a booking" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/a53352de44dfaeee69fb8a1a8fbbf099.jpg[/media]
 [title="2"]Add or Edit a booking[/title]
 
 You can manually add or edit a booking to allow you to use the system as a central room management tool for example. You will need to choose which bookable region you want to add a booking for and then fill in the very straight forward form with the customers details, when they want to book from and to and any notes for the booking.

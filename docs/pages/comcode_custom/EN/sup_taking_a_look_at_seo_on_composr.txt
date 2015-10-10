@@ -14,7 +14,7 @@ The first set of options you need to go through can be found in Admin Zone > Set
 
 [title="2"]Advanced section[/title]
 
-In the advanced section of this page there is the option to set a URL scheme. If you choose the "Use .htm to identify CMS pages" scheme then I recommend you read this tutorial I wrote on the subject to make sure you don't break your site: [page="_SEARCH:sup_set_up_short_urls_in_composr"]How to set up short URL's in Composr[/page]
+In the advanced section of this page there is the option to set a URL scheme. If you choose the "Use .htm to identify CMS pages" scheme then I recommend you read this tutorial I wrote on the subject to make sure you don't break your site: [page="_SEARCH:sup_set_up_short_urls_in_composr"]How to set up short URLs in Composr[/page]
 
 [title="2"]Adding News or new content[/title]
 

@@ -13,9 +13,9 @@ This will take you to the backup screen. If you have completed backups before th
 
 This is how much of your site you want to backup. You have three options to choose from which are:
 [list]
-[*] Full Backup -- This will backup all of your website files and database. If you have not run a backup before or recently I recommend completing a full backup. This may take a significant amount of time depending on how big your site is.
-[*] Incremental Backup -- If you have previously completed a full backup this will only backup the files which have changed since the last backup was completed.
-[*] Database backup only -- This will just backup the database for your website but not any of the files such as pages.
+[*] [b]Full Backup[/b] -- This will backup all of your website files and database. If you have not run a backup before or recently I recommend completing a full backup. This may take a significant amount of time depending on how big your site is.
+[*] [b]Incremental Backup[/b] -- If you have previously completed a full backup this will only backup the files which have changed since the last backup was completed.
+[*] [b]Database backup only[/b] -- This will just backup the database for your website but not any of the files such as pages.
 [/list]
 
 [title="2"]Maximum file size[/title]

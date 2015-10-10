@@ -7,11 +7,11 @@ While e-marketing has taken more of a backseat in recent years to social media, 
 
 The first option is to be able to send out a newsletter in the same way you would if you used an external program. Just like using an external system, the more technical knowledge you have regarding HTML and CSS then the nicer your e-mail will look.
 
-[media width="150" description="Newsletter form in Composr" float="right"]data_custom/images/docs/sup_sending_email_newsletters_in_composr_part_1/d9eb956e96f606c8e9a516dc9bc0ed57.png[/media]
 The great thing about this system for websites who only send out intermittent e-mails such as an update once in a while then this option is extremely useful. It's also very easy to use and if you have the content already written it's a quick process.
 
 Firstly go to Admin Zone > Tools > Newsletter > Send fresh newsletter issue. This will take you to the straightforward form to fill in.
 
+[media width="150" description="Newsletter form in Composr" float="right"]data_custom/images/docs/sup_sending_email_newsletters_in_composr_part_1/d9eb956e96f606c8e9a516dc9bc0ed57.png[/media]
 The first option is the subject of the newsletter which will identify the e-mail when you come back to it, and this will also be displayed to the recipient. The next section of the form is the main message box where you will fill in all of your content. If you are building a custom design for this e-mail and haven't already built a new template through the system you can build an e-mail using HTML. To be able to do this you will need to disable the WYSIWYG editor which is found next to the Message heading above the input box. This option is within the red square on the attached image.
 
 It is worth noting that the standard format for the e-mail will include a site logo at the top of the e-mail above any text or code which you input into this area. If you don't wish this to appear you will need to build a new mail template or edit the existing one. This is outside the scope of this tutorial. If you wish to upload a custom logo you need to edit the [tt]logo/standalone_logo_logo[/tt] file in the Manage theme images section for your theme.

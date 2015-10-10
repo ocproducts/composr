@@ -17,15 +17,15 @@ The image below is how the edit page screen will look like if you have the WYSIW
 Once you click the edit block button you will be taken to the Block construction assistant screen. I'll go through what each of the options are in turn.
 
 [list]
-[*] Param -- This is the default number of days the block will look for news within. You can set this to any number you like and it will select news from that number of days unless there isn't any news from that date range. If there is no news or if you set this option to 0 it will use the settings from the Fallback options below.
-[*] Member Based -- This is whether the block will display a member byline instead of the usual author byline
-[*] Select -- You can select to display news or blogs from all of your categories or limit it to just a few specific categories.
-[*] Multiplier -- If you have set a number of days in the Param section above and there is news from that date range. The Multiplier is the ratio of how many full posts to post title links. As standard it is set to 0.5 which will show half as full posts and half as title links.
-[*] Fallback Full -- If you set the Param to 0 above or Composr doesn't find any posts in the date range it will use the Fallback full and Fallback archive options. Fallback full is how many full posts or snippets the block will display.
-[*] Fallback Archive -- The fallback archive is how many post links will be displayed below the full posts above.
-[*] Blogs -- You can choose to Show either News only (set to 0), Blogs only (Set to 1) or both (set to -1).
-[*] Title -- This is the title you want the block to have.
-[*] Show in full -- If this checkbox is selected your site will display the full posts rather than a snippet of the article and a link to the full article. If you are using your site as a blog you might want to select this.
+[*] [b]Param[/b] -- This is the default number of days the block will look for news within. You can set this to any number you like and it will select news from that number of days unless there isn't any news from that date range. If there is no news or if you set this option to 0 it will use the settings from the Fallback options below.
+[*] [b]Member Based[/b] -- This is whether the block will display a member byline instead of the usual author byline
+[*] [b]Select[/b] -- You can select to display news or blogs from all of your categories or limit it to just a few specific categories.
+[*] [b]Multiplier[/b] -- If you have set a number of days in the Param section above and there is news from that date range. The Multiplier is the ratio of how many full posts to post title links. As standard it is set to 0.5 which will show half as full posts and half as title links.
+[*] [b]Fallback Full[/b] -- If you set the Param to 0 above or Composr doesn't find any posts in the date range it will use the Fallback full and Fallback archive options. Fallback full is how many full posts or snippets the block will display.
+[*] [b]Fallback Archive[/b] -- The fallback archive is how many post links will be displayed below the full posts above.
+[*] [b]Blogs[/b] -- You can choose to Show either News only (set to 0), Blogs only (Set to 1) or both (set to -1).
+[*] [b]Title[/b] -- This is the title you want the block to have.
+[*] [b]Show in full[/b] -- If this checkbox is selected your site will display the full posts rather than a snippet of the article and a link to the full article. If you are using your site as a blog you might want to select this.
 [/list]
 
 The screen will look like this:

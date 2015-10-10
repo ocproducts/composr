@@ -31,16 +31,18 @@ The two blocks are now added to the Block construction assistant.
 
 [title="2"]Setting up the main activities block[/title]
 
-[media width="150" description="The main_activities block in the Block construction assistant" float="right"]data_custom/images/docs/sup_adding_an_activity_feed_to_your_composr_website/ec3f75e25894405dc063cedbb45badfe.png[/media]
+[surround]
+[media width="150" description="The [tt]main_activities[/tt] block in the Block construction assistant" float="right"]data_custom/images/docs/sup_adding_an_activity_feed_to_your_composr_website/ec3f75e25894405dc063cedbb45badfe.png[/media]
 There are six main fields you can fill in when adding this block to a page. These are:
 [list]
-[*] Max -- The maximum number of activities which will be displayed. This defaults to 10
-[*] Param -- This is the title of the block which you want to display on your site
-[*] Member -- Can be left blank but can be used to display activities only from certain members
-[*] Mode -- A choice of display types from all activities, only activities from some members stated above or activities from the stated members friends
-[*] Grow -- whether you want the list to grow and become longer as more activities are added
-[*] Refresh time -- How often you want to check for new activities. You may want to set this to longer if your server has usage limits.
+[*] [b]Max[/b] -- The maximum number of activities which will be displayed. This defaults to 10
+[*] [b]Param[/b] -- This is the title of the block which you want to display on your site
+[*] [b]Member[/b] -- Can be left blank but can be used to display activities only from certain members
+[*] [b]Mode[/b] -- A choice of display types from all activities, only activities from some members stated above or activities from the stated members friends
+[*] [b]Grow[/b] -- whether you want the list to grow and become longer as more activities are added
+[*] [b]Refresh time[/b] -- How often you want to check for new activities. You may want to set this to longer if your server has usage limits.
 [/list]
+[/surround]
 
 [title="2"]Adding an update your status block to a Composr page[/title]
 

@@ -27,15 +27,15 @@ If you are using the Block construction assistant you can add a block in the nor
 [/code]
 
 [list]
-[*] Pages -- This is the names of the slides which you will use in your slider. I will cover how to edit these further down.
-[*] Width -- The width of the slider. This defaults to 100% of the available space.
-[*] Height -- This defaults to blank.
-[*] Buttons -- Whether you want buttons for users to control the slider to be visible.
-[*] Delay -- How long will the slider delay before moving on.
-[*] Speed -- How fast will the transition happen.
-[*] Keypresses -- Can the slider be controlled by keypresses rather than clicking.
-[*] Slider ID -- The name of this slider if you have multiple sliders on the same page you will have to make sure you give them different names.
-[*] Bg Colour -- The background colour of the slider.
+[*] [b]Pages[/b] -- This is the names of the slides which you will use in your slider. I will cover how to edit these further down.
+[*] [b]Width[/b] -- The width of the slider. This defaults to 100% of the available space.
+[*] [b]Height[/b] -- This defaults to blank.
+[*] [b]Buttons[/b] -- Whether you want buttons for users to control the slider to be visible.
+[*] [b]Delay[/b] -- How long will the slider delay before moving on.
+[*] [b]Speed[/b] -- How fast will the transition happen.
+[*] [b]Keypresses[/b] -- Can the slider be controlled by keypresses rather than clicking.
+[*] [b]Slider ID[/b] -- The name of this slider if you have multiple sliders on the same page you will have to make sure you give them different names.
+[*] [b]Bg Colour[/b] -- The background colour of the slider.
 [/list]
 
 [title="2"]Editing the slides[/title]

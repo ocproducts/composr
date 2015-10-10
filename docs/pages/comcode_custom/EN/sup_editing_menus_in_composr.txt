@@ -16,9 +16,9 @@ You could for example have the primary navigation dedicated to the subject zones
 
 Begin by adding a first branch. It's considered good practice to add the first link as a link back to the home page. Once you click on the Caption to give it a name you will be shown some more options which are:
 [list]
-[*] Link -- where the menu item goes to
-[*] Options -- whether the item opens in a new window and whether Composr will hide menu items where a user doesn't have permission to view them. This is useful as it means you can have a Staff section linked from the main navigation which will only appear to those who can view it
-[*] Branch type -- This is set as page as standard which means you won't be able to set sub branches. There is also contracted and expanded branch which will both allow you to add sub sections to the primary navigation items
+[*] [b]Link[/b] -- where the menu item goes to
+[*] [b]Options[/b] -- whether the item opens in a new window and whether Composr will hide menu items where a user doesn't have permission to view them. This is useful as it means you can have a Staff section linked from the main navigation which will only appear to those who can view it
+[*] [b]Branch type[/b] -- This is set as page as standard which means you won't be able to set sub branches. There is also contracted and expanded branch which will both allow you to add sub sections to the primary navigation items
 [/list]
 
 There is also an Advanced section which allows you to set tooltips when the menu item is hovered over, set menu images for the menu item and set match key restrictions.

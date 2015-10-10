@@ -34,7 +34,7 @@ $rewrite_rules = array(
     // Traditional Composr form, /pg/
 
     array(
-        'PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base url might conflict',
+        'PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base URL might conflict',
         array(
             array('^([^=]*)pg/s/([^\&\?]*)/index\.php$', '$1index.php\?page=wiki&id=$2', array('L', 'QSA'), true),
         ),
@@ -74,7 +74,7 @@ $rewrite_rules = array(
     // New-style Composr form, .htm
 
     array(
-        'HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base url might conflict',
+        'HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base URL might conflict',
         array(
             array('^(' . $zone_list . ')/s/([^\&\?]*)\.htm$', '$1/index.php\?page=wiki&id=$2', array('L', 'QSA'), true),
             array('^s/([^\&\?]*)\.htm$', 'index\.php\?page=wiki&id=$1', array('L', 'QSA'), true),
@@ -96,7 +96,7 @@ $rewrite_rules = array(
     // New-style Composr form, simple
 
     array(
-        'SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base url might conflict',
+        'SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn\'t shorten them too much, or the actual zone or base URL might conflict',
         array(
             array('^(' . $zone_list . ')/s/([^\&\?]*)$', '$1/index.php\?page=wiki&id=$2', array('L', 'QSA'), false),
             array('^s/([^\&\?]*)$', 'index\.php\?page=wiki&id=$1', array('L', 'QSA'), false),

@@ -246,9 +246,10 @@ function get_lang_file_map($lang, $file, $non_custom = false)
  * @param  array $entries The currently loaded language map
  * @param  string $section The section to get
  * @param  boolean $given_whole_file Whether $b is in fact not a path, but the actual file contents
+ * @param  boolean $apply_filter Apply the language pack filter
  * @ignore
  */
-function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false)
+function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false, $apply_filter = true)
 {
     if (!$given_whole_file) {
         if (!file_exists($b)) {
@@ -352,7 +353,9 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
             if (isset($parts[1])) {
                 $key = $parts[0];
                 $value = rtrim(str_replace('\n', "\n", $parts[1]), $nl);
-                $value = $LANG_FILTER_OB->compile_time($key, $value);
+                if ($apply_filter) {
+                    $value = $LANG_FILTER_OB->compile_time($key, $value);
+                }
                 $entries[$key] = $value;
             }
         }

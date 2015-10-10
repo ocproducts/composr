@@ -1,9 +1,9 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Security in Composr[/title]
 
-[media width="150" description="Security options in Composr" float="right"]data_custom/images/docs/sup_security_in_composr/e53f650ddf69d937e2fe111dd9c5d254.png[/media]
+[media width="150" description="Security modules in Composr" float="right"]data_custom/images/docs/sup_security_in_composr/e53f650ddf69d937e2fe111dd9c5d254.png[/media]
 The inbuilt security of Composr is one of its strongest features. This ranges from many inbuilt features to the close integration of features using the same very high coding standards.
 
-When building any website based on a content management system, the security of the system and of the website is one of the paramount concerns. Ensuring your website is secure is one of the most important things you should do when planning your website. Composr has many elements built in to help make your website as secure as possible.
+When building any website based on a content management system, the security of the system and of the website is one of the paramount concerns. Ensuring your website is secure is one of the most important things you should do when planning your website. Composr has many elements built-in to help make your website as secure as possible.
 
 Some of the key security features include:
 [list]

@@ -52,16 +52,16 @@ You can either add the block using the Block construction assistant in which cas
 
 You can change these options to suit your own Catalogue. The parameters you can add are:
 [list]
-[*] Title -- the title of the block
-[*] Description -- a description of the block
-[*] Latfield -- This is a required field and must have the same name as the field you have put the latitude coordinates in when creating the catalogue
-[*] Longfield -- This is a required field and must have the same name as the field you have put the longitude coordinates in when creating the catalogue
-[*] Catalogue -- A required field and should be the codename of the catalogue you have created
-[*] Width -- the width of the block, This will default to 100%
-[*] Height -- the height of the box which will default to 300px
-[*] Zoom -- A number between 1 and 17, the higher the number the more zoomed in the map will start at.
-[*] Latitude -- The Latitude coordinates where you want the center of the map to be when first loaded.
-[*] Longitude -- The Longitude coordinates where you want the center of the map to be when first loaded.
+[*] [b]Title[/b] -- the title of the block
+[*] [b]Description[/b] -- a description of the block
+[*] [b]Latfield[/b] -- This is a required field and must have the same name as the field you have put the latitude coordinates in when creating the catalogue
+[*] [b]Longfield[/b] -- This is a required field and must have the same name as the field you have put the longitude coordinates in when creating the catalogue
+[*] [b]Catalogue[/b] -- A required field and should be the codename of the catalogue you have created
+[*] [b]Width[/b] -- the width of the block, This will default to 100%
+[*] [b]Height[/b] -- the height of the box which will default to 300px
+[*] [b]Zoom[/b] -- A number between 1 and 17, the higher the number the more zoomed in the map will start at.
+[*] [b]Latitude[/b] -- The Latitude coordinates where you want the center of the map to be when first loaded.
+[*] [b]Longitude[/b] -- The Longitude coordinates where you want the center of the map to be when first loaded.
 [/list]
 You should note that the preview of this page will not work for this block so I recommend creating the page not attached to a live site and making sure it works before you link it to your live site.
 

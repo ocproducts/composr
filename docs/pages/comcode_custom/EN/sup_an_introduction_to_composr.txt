@@ -23,12 +23,12 @@ There is a huge amount of bundled addons which make up the most common component
 [*] Support for paid memberships and subscriptions
 [*] Image of the day and the ability to showcase specific content easily or display random content automatically
 [*] Support for multi-site networks
-[*] Chat rooms, shout-boxes and instant messaging across your site
+[*] Chatrooms, shout-boxes and instant messaging across your site
 [*] Community features including allowing guest submission
 [*] A theme wizard allowing you to change the base colour of your theme in less than a minute
 [*] Support for rich media presentation
 [*] Built in template and CSS editor
-[*] Support for short URL's XML sitemaps and a range of other tools to aid your Search Engine optimisation
+[*] Support for short URLs, XML sitemaps and a range of other tools to aid your Search Engine optimisation
 [*] Fantastic security including CAPTCHA images
 [*] Full web standards support
 [*] Inbuilt support for sending e-mail newsletters to your members

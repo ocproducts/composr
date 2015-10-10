@@ -50,10 +50,10 @@ In this process you will need to make sure you set the permissions accordingly.
 
 If this zone is going to be just for site staff members and your newly created usergroup, you have to make sure the other usergroups do not have access to the forum. You can untick (uncheck) the view access box against all of the usergroups who you do not wish to be able to see this forum. For those who do have access to see the new forum, you need to set the level of access they have. There are four basic levels of access:
 [list]
-[*] Read only -- where a usergroup will be able to read the posts in the forum but not reply. You may choose this if your new forum is not private but you want only select members to be able to post in it. An example of this may be an announcements forum.
-[*] Add/Post/Submit -- this allows the usergroup to be able to post and add new threads but each will need to be validated by a moderator before they go live.
-[*] Unvetted self add/Edit -- this allows the usergroup to be able to add posts and them appear without needing to be validated first.
-[*] Administrate/moderate -- this allows the usergroup to be able to moderate any posts within the new forum.
+[*] [b]Read only[/b] -- where a usergroup will be able to read the posts in the forum but not reply. You may choose this if your new forum is not private but you want only select members to be able to post in it. An example of this may be an announcements forum.
+[*] [b]Add/Post/Submit[/b] -- this allows the usergroup to be able to post and add new threads but each will need to be validated by a moderator before they go live.
+[*] [b]Unvetted self add/Edit[/b] -- this allows the usergroup to be able to add posts and them appear without needing to be validated first.
+[*] [b]Administrate/moderate[/b] -- this allows the usergroup to be able to moderate any posts within the new forum.
 [/list]
 Once you have filled in the permissions for all of the groups that have view access you can add the forum as normal.
 

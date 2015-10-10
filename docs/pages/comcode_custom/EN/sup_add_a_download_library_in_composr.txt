@@ -1,6 +1,6 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Build a Download Library in Composr[/title]
 
-[media width="150" float="right"]data_custom/images/docs/sup_add_a_download_library_in_composr/0d184ecf0a75af9faf384c369d8b1625.png[/media]
+[media width="150" float="right" description="Viewing the download link and meta details for a published download"]data_custom/images/docs/sup_add_a_download_library_in_composr/0d184ecf0a75af9faf384c369d8b1625.png[/media]
 Composr offers a fully equipped and well-rounded system for uploading your files and sharing them with your website visitors. Being able to add files to your pages for users to download rather than adding the file by FTP and linking the file allows you more freedom and makes the process easier for everybody.
 
 The system comes with all of the features you would expect which include:

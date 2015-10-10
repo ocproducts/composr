@@ -1,5 +1,6 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Setting Up a New Composr Forum[/title]
 
+[surround]
 [media width="150" description="Composr forum" float="right"]data_custom/images/docs/sup_setting_up_a_new_composr_forum/58f0c14238520080101db3e8785848a9.png[/media]
 One of Composr's core features is the forum. While forum usage might be on the wane in some areas due to the prevalence of Social Media, forums are and continue to be a key feature within Composr, and a large part of many online communities.
 
@@ -7,11 +8,12 @@ Composr forums include many of the common forum features found within other well
 
 Unlike many other forums or CMS which can either have a content management system- like software tacked on, or a forum module added to the main CMS, you can be sure that both CMS and Forum seamlessly flows from one to the other on a Composr website. Composr forums have a comprehensive set of options.
 
-[media width="150" description="Forum admin screen" float="right"]data_custom/images/docs/sup_setting_up_a_new_composr_forum/b99d7968db37c8f2ce92e47fa1649768.png[/media]
 This is a 'how to' tutorial for some of the most common forum administration tasks.
+[/surround]
 
 [title="2"]Adding a new forum category ("grouping")[/title]
 
+[media width="150" description="Forum admin screen" float="right"]data_custom/images/docs/sup_setting_up_a_new_composr_forum/b99d7968db37c8f2ce92e47fa1649768.png[/media]
 The basic forum has two forum groupings set up as standard, which are General and Staff. "General" includes a general discussion section and a forum which houses all of the comment topics from content elsewhere on the site. The "Staff" section is a private section of the forums for staff to use and also is where things like reported posts and support tickets appear.
 
 To add a new forum, navigate your way to the forum admin screen which can be found at Admin Zone > Structure > Forums. From here click "Add forum grouping" and fill in the online form which includes the name of the grouping and a description. You can also choose whether the grouping is expanded by default. Once you have added the grouping, the software will take you to a follow-up admin screen comprising of many of the most common tasks such as adding a new forum to your new grouping.

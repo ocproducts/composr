@@ -860,7 +860,7 @@ class SimplePage {
     }
 
     /**
-     *    Sets the base url for the page.
+     *    Sets the base URL for the page.
      *    @param SimpleTag $tag    Base URL for page.
      *    @access protected
      */

@@ -1,14 +1,14 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Add Shoutboxes to Composr[/title]
 
 [media width="150" description="Shoutbox block options" float="right"]data_custom/images/docs/sup_add_shoutboxes_to_composr/b26649fcbe9c9b88151e0ec84e3812f5.png[/media]
-A shoutbox is a popular addition to many community websites and is very easy to add as long as you have the chat room addon installed in your Composr website. The shoutbox addon is primarily designed to be a side block which means it was originally designed to work best in one of your website side panels.
+A shoutbox is a popular addition to many community websites and is very easy to add as long as you have the chatroom addon installed in your Composr website. The shoutbox addon is primarily designed to be a side block which means it was originally designed to work best in one of your website side panels.
 
-Of course this doesn't mean you cannot use it in on a normal page as all of Composr's Comcode/information blocks can be used anywhere on your site where you choose to display them. When you add your shoutbox it will default to using the general chat chat-room. If you have multiple different chat-rooms on different subjects and different zones on varied subjects you could have a different shoutbox for each subject. To be able to do this you will need to create a new chat room for each subject and also create a new zone for each subject. There are two tutorials for this:
+Of course this doesn't mean you cannot use it in on a normal page as all of Composr's Comcode/information blocks can be used anywhere on your site where you choose to display them. When you add your shoutbox it will default to using the general chat chat-room. If you have multiple different chat-rooms on different subjects and different zones on varied subjects you could have a different shoutbox for each subject. To be able to do this you will need to create a new chatroom for each subject and also create a new zone for each subject. There are two tutorials for this:
 [list]
 [*] [page="_SEARCH:add_a_new_zone_in_composr"]How to add a new Zone[/page]
 [*] [page="_SEARCH:add_a_chatroom_to_composr"]How to add a new Chat-room[/page]
 [/list]
-Once you have the chat room which you want to add the shout box to. You can now follow this very simple process to add a shoutbox to your website.
+Once you have the chatroom which you want to add the shout box to. You can now follow this very simple process to add a shoutbox to your website.
 
 [title="2"]Adding a shoutbox[/title]
 
@@ -18,7 +18,7 @@ Once you have the chat room which you want to add the shout box to. You can now 
 [*] Edit the page.
 [*] Choose the Block construction assistant (the red icon above the editor).
 [*] Choose Shout Box ([tt]side_shoutbox[/tt]).
-[*] Choose which chat room you want the shoutbox messages to appear in.
+[*] Choose which chatroom you want the shoutbox messages to appear in.
 [*] Choose how many messages you want to appear in the shout box.
 [*] Preview and if you are happy you can click use and the block will be added to your page. An example of the preview is shown below.
 [*] Click 'Save' to save the page with your shoutbox included.

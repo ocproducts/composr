@@ -1,6 +1,5 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Adding Banners to Your Composr Website[/title]
 
-[media width="150" description="Add Composr banner type" float="right"]data_custom/images/docs/sup_adding_banners_to_your_composr_website/b2e4b1d7a1dbb7f74ec7ad656d998e8f.jpg[/media]
 Banners make up a key part of many websites and Composr has a banner system which allows you to display a number of banners in any of your site panels, regular pages, or templates.
 
 In this tutorial we will cover adding to a page (or panel -- which is a kind of page), not templates. We will do it using the [tt]main_banner_wave[/tt] block, which displays all banners added within a banner type as one continual set.
@@ -9,19 +8,22 @@ This is a three step process to be able to add banners to your site which includ
 
 [title="2"]Creating a banner type[/title]
 
+[surround]
+[media width="150" description="Add Composr banner type" float="right"]data_custom/images/docs/sup_adding_banners_to_your_composr_website/b2e4b1d7a1dbb7f74ec7ad656d998e8f.jpg[/media]
 The first step is to create a banner type. There is a standard type which is 728&times;90 pixels which is a leaderboard banner. If you want to add any other type of banner, for example a tower banner for a side panel or a square banner, you will need to create a new banner type. To do this you need to:
 [list="1"]
 [*] Go to the Admin Zone
 [*] Navigation to the Content section of the Admin Zone menu
 [*] Choose the Banners icon
 [*] Choose the Add banner type icon
-[*] Once you get to the banner type form you need to fill in the form which includes[list]
+[*] Once you get to the banner type form you need to fill in the form which includes:[list]
 [*] Giving the banner type a name
 [*] Choose whether the banner will be text style or not
 [*] Give the banner type a height and width
 [*] Choose the max file size the banners can have. This is important as large files can cause your site to run slowly
 [/list]
 [/list]
+[/surround]
 
 [title="2"]Uploading a banner to your new type[/title]
 

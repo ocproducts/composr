@@ -5,13 +5,13 @@ I've previously written about [page="_SEARCH:sup_setup_a_new_usergroup_in_compos
 
 Composr boasts a detailed section to edit all of the privileges associated to all of your usergroups. This is titled "Global Privileges" and can be found in the Security section of the Admin Zone. Once you arrive on the first global privileges screen you are shown a menu of different sections you can tailor the permissions in. These include:
 [list]
-[*] Submission -- Deals with what areas each usergroup can submit content to
-[*] General settings -- covers a range of settings such as bypassing post flood control among others
-[*] Members, Usergroups and forums -- Covers a range of options such as the right to delete their own account and close their own topics
-[*] Staff actions -- Covers whether users can access the site when closed and which staff notifications they see
-[*] Comcode -- Which usergroups can use various Comcode options
-[*] Feedback -- Whether users can comment or rate content
-[*] Points -- Who can give points and who can they give them to
+[*] [b]Submission[/b] -- Deals with what areas each usergroup can submit content to
+[*] [b]General settings[/b] -- covers a range of settings such as bypassing post flood control among others
+[*] [b]Members, Usergroups and forums[/b] -- Covers a range of options such as the right to delete their own account and close their own topics
+[*] [b]Staff actions[/b] -- Covers whether users can access the site when closed and which staff notifications they see
+[*] [b]Comcode[/b] -- Which usergroups can use various Comcode options
+[*] [b]Feedback[/b] -- Whether users can comment or rate content
+[*] [b]Points[/b] -- Who can give points and who can they give them to
 [/list]
 [media width="150" description="Setting privileges" float="right"]data_custom/images/docs/sup_editing_site_wide_permissions_in_composr/83d33d7280975dd2bd12b1c710241a93.jpg[/media]
 There are a number of other sections which deal with specifics such as Polls, Banners and Newsletters but the majority of the options are in the first list of options. Many of the options are extremely straight forward in what they refer to. However in the Submission settings there are "Submit low-impact (low visibility) content" and "Submit mid-impact (medium visibility) content" which can be confusing if you don't have knowledge of the system.
