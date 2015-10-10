@@ -1,0 +1,78 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Finding Your Way Around the Composr Admin Zone Part 1[/title]
+
+One of Composr's biggest strengths is its large amount of features. However, to a new user the Admin Zone may initially look a little overwhelming. This tutorial is a brief look at the different screens to help you find your way around when you have installed a new Composr website. I'm not going to go into great detail for every single option within the Admin Zone or you will end up reading a 10,000 word essay! This tutorial is to show you where the most common options are.
+
+[title="2"]The Dashboard Screen[/title]
+
+[media width="150" description="Composr Admin Zone Checklist" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/51450ad2199cca376519a1e96103ed32.png[/media]
+When the Admin Zone initially opens, you will be presented with the Dashboard screen. The Dashboard screen is a quick overview of your website. On this, you can set a number of reminders to help you keep on top of the necessary regular tasks you need to do to keep your website running smoothly.
+
+When you have a new install like the one in the attached image, there are a number of tasks added for you to work through to get your site ready to go live. Regular tasks on this list include items such as adding news or blog posts, changing the polls and choosing the image of the day. Depending on your site make up some of these may not be used and they can be removed from the list.
+
+You can also add specific tasks to remind you to do certain things and there are a number of custom tasks to help ease you through the process of setting up your site such as submitting your site to Google and adding content to your site. Underneath this section there is a list of all the activity on your site so you can quickly see the most recent interactions and below this section you can add other competitor sites to give you an overview of their site.
+
+In the right hand column, the first item is the status of the software and an update if any new versions have been released. This is followed by any posts in the staff forum if it is being used. The next three items are tips relating to the software which can be left or dismissed, a section to add notes and news relating to the software. The final section is a list of useful links to software and websites which you might need in the process of setting up your website.
+
+[title="2"]The Audit section[/title]
+
+The Audit section is probably one you won't use that often for your site, at least in the first stages. This section deals with a range of options from the error log on the site to potential security reports. There is also the information relating to quizzes and your quiz winners if you use it. I'll go into more detail about this section in another tutorial.
+
+[title="2"]The Security section[/title]
+
+[media width="150" description="Composr Admin Zone security section" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/e47c5e81b3a9668c5e9fa4e6fbebade2.png[/media]
+Depending on if you are going to allow others to add content, you may want to configure the word filter before you open up your site. Also in this section you have very detailed controls for your site permissions. If you are going to restrict the site to just yourself as site admin you may not need to change very much in this section. Composr utilises high built in security as standard. However, you also have the ability to ban users by IP address if you have any issues with members.
+
+[title="2"]The Setup section[/title]
+
+[media width="150" description="Composr Admin Zone setup section" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/a58fbe428b321e332ef57e10278bddc6.png[/media]
+It is very likely that the first place you will need to visit is the setup section. I would recommend running through the setup wizard before doing anything else, as this will help you quickly configure the basic site. You can also choose a range of site types which will reconfigure your site to some common website types. For example, if you are planning to use Composr for a blog you can choose the blog option and the software will remove some of the features you may not need.
+
+The first page also includes space to input your site's keywords, header text and description. On this page you can also add your Google analytics ID if you have set this up. The second page gives you the choice to remove a lot of the Composr features which you might not want to use or you can leave them all turned on.
+
+Going through this wizard will save you a lot of configuration time including setting one of three levels of strictness for your site rules when other users sign up. The site rules can also be changed on this process and you will be taken to the theme wizard which we will cover more in another tutorial.
+
+Also in the setup section is the main configuration section where you can change a whole host of options relating to your site from Administrative to Accessibility options. Block options which are the elements of each page (e.g. news blocks, RSS feeds etc) can be configured within this area. There are also Privacy options, Forum options and Security options. Site options within this section covers a lot of things such as opening and closing the site, staff e-mail addresses, SEO related options and notifications.
+
+The last option on this list is the installation options where you can change settings such as database settings. I strongly advise against changing any options in this section unless you are sure of what you are doing as it is possible to completely break your site!
+
+Also under the setup section you can add Custom Comcode tags. Comcode is used for adding and configuring blocks of information on your site. Custom Comcode is often used to make embedding videos from YouTube or Facebook quicker and easier than using the normal embed code (actually that's built into Composr nowadays just by pasting the URL, but you get the point).
+
+[title="2"]The Structure section[/title]
+
+[media width="150" description="Composr Admin Zone structure section" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/3b1a3795f7ad21c858d0de7d0d67900a.png[/media]
+Your site is made up of pages and panels within zones. To explain this simply a Zone is a particular section of your site. You may decide your site has 4 different main sections which deal with different subjects and need different information on the side panes. Each zone has its own set of pages and panels. Each page can have any number of different panels which will depend on how you style your website. The most common of these are left and right which can be used to display related data such as latest forum posts on a subject or a section related sub menu.
+
+Within the structure section you can configure all of the main sections of your site from zones to panels and pages.
+
+The Structure section also houses the configuration of your forums and chat rooms if you are using these on your site.
+
+[title="2"]The Style section[/title]
+
+[media width="150" description="Composr Admin Zone style section" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/fbe4af1db2a14fe667e670c04cd2a52a.png[/media]
+The style section is used to define how your site appears to its visitors. Within this section there is a Logo Wizard where you can create a logo using a simple process if you do not already have a logo.
+
+One part of this section which you will need to use if you are planning to create your own website style is the Themes section. In this sub section you can control all parts of your theme including the templates that make up the site, the CSS, the images and the theme options. Another very useful tool is the theme wizard which you can use to make very quick changes to the basic colour scheme of your site to set the main colour scheme before working on the rest of the theme.
+
+[title="2"]The Tools section[/title]
+
+[media width="150" description="Composr Admin Zone tools section" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/f2c4013ba5e5f2f338b107399cd3236e.png[/media]
+The tools section is home to several sections which may be extremely useful to you as administrator of your site or may be not needed at all. This section includes Composr's newsletter section where you can create and send regular newsletters to your site's members. This section also has a code editor and Composr's inbuilt upgrader.
+
+One part of this section you will likely use more than any other is the members section where you can administrate all of your members details from sending welcome e-mails to adding or editing member details. You can also download a CSV file of all of your members, or import them from elsewhere. This section also has a link to managing your site's usergroups.
+
+The final three things I want to mention are the Website clean-up tools to keep your site running smoothly, links to a wide range of RSS and atom feeds for your site and Commandr which is an in built command line environment.
+
+[title="2"]The Content section[/title]
+
+[media width="150" description="Composr Admin Zone content section" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/96bb497086de6923a85cd28697914704.png[/media]
+Probably the most commonly used section of your site's administration will be the content section. This actually is its own zone, even though it ties in seamlessly with the Admin Zone. Within this section you can check and add any type of content for your site from news posts and articles to image and video galleries. The poll can be controlled from here as well as quizzes, chat rooms and your site calendar.
+
+In this section you also have a link to all of the pages on your site and the ability to add new ones. From here you can control your downloads directory and your file library. For most sites many of these options won't be used, but having all of them in one section makes administering your site very easy.
+
+[title="2"]Help[/title]
+
+The last part of the menu is a link to the Documents section of the main Composr website which includes a range of tutorials (like this one!) including basic installation and more advanced tasks. I suggest exploring this section of the Composr site and familiarising yourself with the different sections of your own sites Admin Zone before jumping in at the deep end!
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Introduction,Administration,Configuration,Content,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,One of Composr's biggest strengths is its large amount of features. However, to a new user the Admin Zone may initially look a little overwhelming. This tutorial is a brief walk through it.}[block]main_tutorial_rating[/block]

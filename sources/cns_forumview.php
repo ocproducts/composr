@@ -56,8 +56,8 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
 
         if ((array_key_exists('question', $details)) && (is_null(get_bot_type()))) {
             // Was there a question answering attempt?
-            $answer = post_param_string('answer', '-1#');
-            if ($answer != '-1#') {
+            $answer = post_param_string('answer', null);
+            if ($answer !== null) {
                 if (strtolower(trim($answer)) == strtolower(trim($details['answer']))) { // They got it right
                     if (!is_guest()) {
                         $GLOBALS['FORUM_DB']->query_insert('f_forum_intro_member', array('i_forum_id' => $id, 'i_member_id' => get_member()));

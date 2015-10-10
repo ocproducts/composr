@@ -1,0 +1,30 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Stopping Spammers in Composr[/title]
+
+[media width="150" description="Configuration options" float="right"]data_custom/images/docs/sup_stopping_spammers_in_composr/41d5492eee8bc0536ebb464f4a4e3d7a.jpg[/media]
+One thing every website has to contend with eventually will be stopping spammers from making your users' life a misery by constantly posting content or creating loads of work which you need to clean up. I wanted to go through some of the options you have to help make this a lot easier and how to save yourself a lot of time and hassle in the long run.
+
+[title="2"]CAPTCHA options in Composr[/title]
+
+One of the key components in stopping spammers is to make use of the CAPTCHA settings built in to Composr. In most cases the Composr CAPTCHA which is made from CSS and is difficult for bots to break through should be turned on by default. To check or to turn this option on you can find the options in Admin Zone > Setup > Configuration > Security options, the CAPTCHA options group.
+
+To make sure the CAPTCHA is turned on you can find the "Use CAPTCHA" option in the first section on this page.
+
+If the option is not enabled you should enable it now to make the CAPTCHA images made using CSS and harder to crack.
+
+There is an option in this section directly related to the CAPTCHA and that is whether users are only allowed one attempt for each CAPTCHA before it is replaced with a new image.
+
+You can turn on extra noise on the CAPTCHA forms. Adding noise makes it more difficult for spammers but makes the CAPTCHA forms more difficult to read.
+
+You can turn on a CAPTCHA for feedback forms. I usually turn this on as it helps stop you getting more spam in this area.
+
+[title="2"]More Anti-Spammer options[/title]
+
+There is also support for [url="http://www.stopforumspam.com/"]http://www.stopforumspam.com/[/url], [url="http://dnsbl.tornevall.org/"]http://dnsbl.tornevall.org/[/url] and [url="http://www.projecthoneypot.org/account_login.php"]http://www.projecthoneypot.org/[/url] all of which can help in the constant battle against spammers.
+
+[title="2"]Creating an entry level user[/title]
+
+Another option you have is to create a Usergroup which requires all of their actions to be validated by a moderator before they appear on site. The benefit of this is it should stop your users from seeing any spam whatsoever on your site. On the flip side it creates more work for you and your moderators who will need to validate far more content.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Security,Configuration,novice}{$SET,tutorial_add_date,Apr 2014}{$SET,tutorial_summary,One thing every website has to contend with eventually will be stopping spammers from making your user's life a misery. This tutorial goes over some features within Composr.}[block]main_tutorial_rating[/block]

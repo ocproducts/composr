@@ -1,0 +1,35 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Backing up your Composr Installation[/title]
+
+[media width="150" description="Composr backup" float="right"]data_custom/images/docs/sup_backing_up_your_composr_installation/3684c16497aa5a2dd3d5b6969f24a1c7.png[/media]
+A task which you should not overlook is backing up your Composr website. Should anything happen to your website without a backup, it can result in a loss of a huge amount of data. How often you need to run a backup will vary depending on how busy your site is and how many posts are made.
+
+We should stress that the best way to back up your site is through your web hosting control panel's options, if it has them, because this can do a more reliable job than a mere web app can do. Using Composr's own backup system is a last resort if you don't have better options and it has problems on some web hosts.
+
+You can usually find a reminder to backup your site on the Admin Zone front page which will remind you to backup your site if it's not been done for a while. You can also go to Admin Zone > Tools > Backups.
+
+This will take you to the backup screen. If you have completed backups before they will be listed at the top of the page. Below this there are four sections which you need to fill in. These sections are:
+
+[title="2"]Type of backup[/title]
+
+This is how much of your site you want to backup. You have three options to choose from which are:
+[list]
+[*] Full Backup -- This will backup all of your website files and database. If you have not run a backup before or recently I recommend completing a full backup. This may take a significant amount of time depending on how big your site is.
+[*] Incremental Backup -- If you have previously completed a full backup this will only backup the files which have changed since the last backup was completed.
+[*] Database backup only -- This will just backup the database for your website but not any of the files such as pages.
+[/list]
+
+[title="2"]Maximum file size[/title]
+
+The maximum file size is the largest file you want to allow the system to backup. If you have some large files containing pages with lots of images on for example this may cause some files to be quite large and you may want to exclude them to save time and space. However note that if they are excluded and something does happen those files will be lost unless they were included in an earlier backup.
+
+[title="2"]Scheduled time[/title]
+
+You can set a scheduled time when you want the backup to take place. This will only work if you have CRON running but it gives you the option of running the backup at a quieter traffic time fort your site.
+
+[title="2"]Days between backups[/title]
+
+If you have set a scheduled time you can automatically tell Composr to complete backups for you. Again this will depend on how busy your site is. You might want to run one full backup and set it to run once a month and also have incremental backups running every few days so nothing is lost.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Maintenance,backup,Installation,novice}{$SET,tutorial_add_date,Sep 2014}{$SET,tutorial_summary,A task which you should not overlook is backing up your Composr website. Should anything happen to your website without a backup, it can result in a loss of a huge amount of data.}[block]main_tutorial_rating[/block]

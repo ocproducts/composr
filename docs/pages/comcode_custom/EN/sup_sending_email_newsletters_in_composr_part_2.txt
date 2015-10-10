@@ -1,0 +1,22 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Sending E-mail Newsletters in Composr Part 2[/title]
+
+[media width="150" description="Setting content for a periodic newsletter in Composr" float="right"]data_custom/images/docs/sup_sending_email_newsletters_in_composr_part_2/e4de1fef69c64aeab7efa38e2e7aad48.png[/media]
+This is part 2 of how to send an e-mail newsletter through the Composr system. This part deals with the automated content creation for your e-mail newsletters. Part one dealt with building a custom e-mail with fresh content to send to your website members and this tutorial deals with importing the content which you have already added to your Composr website. If you have not read [page="_SEARCH:sup_sending_email_newsletters_in_composr_part_1"]part one[/page] yet, I recommend reading that part first.
+
+[title="2"]Sending an auto update content summary e-mail[/title]
+
+The second type of e-mail newsletter in Composr is an automatic update which will pull in content or links to content which you have added to your Composr website. First you will need to return to the manage newsletter screen of your Admin Zone and choose the "Manage automatic issues" option.
+
+This type of newsletter is different to the one above because it pulls in content from your website and works really well as a general update e-mail. It can be a quick way to update your members of new news and items which they may have missed. The first stage of the process is the form in the attached image and begins with setting a cut-off date. This will allow you to pick a date which you want to include content since. The date you input will determine when the e-mail will pull content from. The next option allows you to choose whether to include full articles or just links to the content. If you have a lot of content I recommend not using this or the e-mail will be very long!
+
+The third section is where you will choose the sections of your site which you want to include content from. You can select as many or as few of these as you like but please bear in mind that the more you select the longer your e-mail will be for your users to read. I believe it is better to only select a few key sections to help keep the focus of the content you want to share.
+
+The last option on this screen allows you to choose whether this will be a periodic e-mail or a one-off. Once you click 'Next' you will be taken to a form similar to the form in part 1 of this tutorial. The big difference is the content section will be pre-populated with the content which you selected earlier. If you have chosen many different sections you will be able to see how long the e-mail is. This part gives you the opportunity to edit or remove content from the e-mail, write a custom introduction or make any other changes.
+
+Fill in the rest of the form as you would have for part 1 and then click Preview. As before, the preview will give you both HTML and plain text versions of your e-mail. If everything is ok click 'Proceed' to send your e-mail.
+
+There are benefits to both types of these e-mails and at times you may choose to make use of both types. On occasions you may just want to send a quick update to your site members informing them of some news and at other times you may want to choose to send them a general update.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Newsletters,newsletter,Newsletters,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,This is part 2 of how to send an e-mail newsletter through the Composr system. This part deals with the automated content creation for your e-mail newsletters.}[block]main_tutorial_rating[/block]

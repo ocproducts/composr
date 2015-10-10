@@ -61,7 +61,7 @@ class Hook_addon_registry_polls
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_featured',
+            'tut_feedback',
         );
     }
 

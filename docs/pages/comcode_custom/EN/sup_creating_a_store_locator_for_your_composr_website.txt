@@ -1,0 +1,70 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Creating a Store Locator for Your Composr Website[/title]
+
+[media width="150" description="Catalogue field type choices" float="right"]data_custom/images/docs/sup_creating_a_store_locator_for_your_composr_website/dd7a698ac9d7b71854c6c3fa11676a8b.jpg[/media]
+Composr has a huge number of possibilities available via its impressive choice of built in features. On top of the inbuilt features there is also a great range of additional optional features created by both the Composr team and other community members. One of these is DataMappr which makes adding a store locator to your website a simple process. A store locator is very useful for any retail business.
+
+[title="2"]Setting up the catalogue of stores[/title]
+
+The first part of this is to set up a catalogue within your install which will include all of the information relating to your stores and the positioning data for each store. To be able to fill in the data you will need to know both the longitude and latitude coordinates of each store. To find this you can use this free website. [url="http://itouchmap.com/latlong.html"]http://itouchmap.com/latlong.html[/url].
+
+I will go through the minimum for creating a new catalogue for your store locator. You can add as many fields to the information as you like but there are too many field option types to cover in this tutorial!
+
+[title="2"]Creating your catalogue[/title]
+
+[media width="150" description="Adding your Store information (filling in a catalogue entry)" float="right"]data_custom/images/docs/sup_creating_a_store_locator_for_your_composr_website/e2ef09e73f1202b4c3b3556b1d4c049c.jpg[/media]
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Content section of the Admin Zone menu
+[*] Choose the Catalogues icon
+[*] Choose the Add catalogue icon
+[*] Give the catalogue a name -- for this version I have called it "stores" and used the same for the catalogue codename.
+[*] In the name box for field 1 call it "Store name"
+[*] Leave the setting as a brief line of text and to display in category views
+[*] On field 2 give it the title "Store information"
+[*] Set field 2 as multiple lines of text either with or without Comcode support. This is so you can fill in the information for the store
+[*] Leave the settings for field 2 as a brief line of text and to display in category views
+[*] For fields 3 and 4 these are the latitude and longitude fields for your stores. They should have one field for "Latitude" and one for "Longitude" and you probably want to untick (uncheck) the options to show on the catalogue list and also for in search.
+[*] Click the Add catalogue button once you are happy with all of the fields you have added.
+[/list]
+You now need to add entries for all of your stores including the Latitude and Longitude fields
+
+[title="2"]Adding the module to your install and placing the store locator on a page[/title]
+
+The next part of the process is installing the addon and placing the block on the relevant page. To do this you need to:
+[list="1"]
+[*] Go to the Admin Zone˙
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Addons icon
+[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Click Download and choose the Information display category
+[*] Choose DataMappr
+[*] Scroll down and click the "Import non-bundled addon(s)" button
+[*] Click Proceed etc until it is installed
+[/list]
+
+Navigate to the page where you want the store locator to appear.
+
+You can either add the block using the Block construction assistant in which case you need the block [tt]main_google_map[/tt] or you can add the block manually in which case the code will look something like:
+[media width="150" description="Store locater box" float="right"]data_custom/images/docs/sup_creating_a_store_locator_for_your_composr_website/10cb8d619f53eb42fc1cd409461ba04a.jpg[/media]
+[code="Comcode"]
+[block title="store locator" description="This is a Store Locator" latfield="Latitude" longfield="Longitude" catalogue="stores" width="100%" height="400px" zoom="6" latitude=" 53.417436" longitude -1.358185"]main_google_map[/block]
+[/code]
+
+You can change these options to suit your own Catalogue. The parameters you can add are:
+[list]
+[*] Title -- the title of the block
+[*] Description -- a description of the block
+[*] Latfield -- This is a required field and must have the same name as the field you have put the latitude coordinates in when creating the catalogue
+[*] Longfield -- This is a required field and must have the same name as the field you have put the longitude coordinates in when creating the catalogue
+[*] Catalogue -- A required field and should be the codename of the catalogue you have created
+[*] Width -- the width of the block, This will default to 100%
+[*] Height -- the height of the box which will default to 300px
+[*] Zoom -- A number between 1 and 17, the higher the number the more zoomed in the map will start at.
+[*] Latitude -- The Latitude coordinates where you want the center of the map to be when first loaded.
+[*] Longitude -- The Longitude coordinates where you want the center of the map to be when first loaded.
+[/list]
+You should note that the preview of this page will not work for this block so I recommend creating the page not attached to a live site and making sure it works before you link it to your live site.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,eCommerce,Third Party Integration,Catalogues,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,A store locator is very useful for any retail business. This tutorial shows how to create one using catalogues.}[block]main_tutorial_rating[/block]

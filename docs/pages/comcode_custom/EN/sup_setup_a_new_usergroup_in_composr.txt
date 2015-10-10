@@ -1,0 +1,74 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Setup a New Usergroup in Composr[/title]
+
+[media width="150" description="Usergroup form (1)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/e2be9cb2b752024ea3e7c383a0d7a985.png[/media]
+Depending on the make-up of your Composr site there is a likelihood that you may need to create a new Composr usergroup for your members. There are a few popular reasons why you may choose to do this such as creating a new rank on a community based site or creating a private members group. It's a quite simple process to create a new usergroup which I will detail below.
+
+[title="2"]Creating a new usergroup in Composr, a step by step process[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Tools Section of the Admin Zone menu
+[*] Choose the Members icon
+[*] Choose the Usergroups icon (this can also be found under the Security section of the Admin Zone menu)
+[*] Click Add Usergroup
+[*] Fill in the form, take care to make sure you fill in all of the sections correctly
+[*] Click the Add usergroup button
+[/list]
+
+[title="2"]The Add usergroup form in detail[/title]
+
+I thought it would be useful to go through the adding a usergroup form in a little detail explaining the different options that you have in this section. The form is split into several sections with each one having a different set of options.
+
+The first box is quite straightforward and is the name of the new usergroup. The next section is titled Advanced and has three options.
+
+[list]
+[*] Title -- If you fill in this box then the user will display this as their title if this is their primary usergroup and they have not set their own custom title.
+[*] Usergroup Leader -- This option allows you to set someone to be able to add and remove members from the group. This option is useful if you have a site with a lot of users and you want to give a trusted member some responsibilities without making them a full administrator.
+[*] Order -- this is the order that the usergroup will appear in any list of usergroups. The usergroup which is set as number 1 appears first.
+[/list]
+
+[title="2"]Joining section[/title]
+
+This section has three quite important options in some circumstances. These options are:
+[list]
+[*] Initial primary usergroup -- this option basically means that if a new person joins your site then this will be their primary usergroup. You may choose to use this if you created new members group for example which may have reduced capabilities or need to have posts manually verified by a moderator at first until you are sure they are real member and not a spammer for example.
+[*] Automatic secondary group -- similar to the first option but adds new members as members of this group but as a secondary usergroup alongside their primary group.
+[*] Open Membership -- This is whether anyone can join the usergroup or whether they have to apply to join. If you are creating a members group for subscription payers you will not want to tick this option.
+[/list]
+
+[title="2"]Rank[/title]
+
+[media width="150" description="Usergroup form (2)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/be101f026eff427dcec4345620a62d78.png[/media]
+The next section has two options; the first allows you to set a rank image for members of this usergroup. This section also allows you to set whether or not the rank image only appears for primary members of this group.
+
+[title="2"]Benefits[/title]
+
+The Benefits section of the usergroup form allows you to set whether the usergroup is classed as a super administrator which has access to everything. This section also has an option to set usergroup members as super moderators which means you will give the usergroup some moderator abilities and they will appear on the staff section of the website.
+
+[title="2"]Security[/title]
+
+[media width="150" description="Usergroup form (3)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/ccf7c11a6a8ca8fb83b9e2ccfab60320.png[/media]
+The security section of the form allows you to set the usergroup as a hidden group. A hidden usergroup will not show up on the usergroups list unless the user has a permission to see hidden usergroups. You can also set an option here to check if a user is the real user if they log in from a different IP address to one they have used before.
+
+[title="2"]Restrictions[/title]
+
+In this section you have 5 options which you can set for the user. These options include:
+[list]
+[*] The maximum number of attachments the user can add to any post
+[*] The maximum amount of data a user can upload in megabytes
+[*] The maximum width and height in pixels the users avatar can be
+[*] The maximum number of characters a user can use in a post
+[/list]
+
+[title="2"]Flood Control[/title]
+
+[media width="150" description="Usergroup form (4)" float="right"]data_custom/images/docs/sup_setup_a_new_usergroup_in_composr/41d897275dbbca81c37e38568a3efe81.png[/media]
+The two options in this section allow you to set the number of section members of this usergroup have to wait between either opening up a new page and also making a new post. As a default these are both set to zero.
+
+[title="2"]Actions[/title]
+
+The final section allows you to copy all of the members from one existing users group to this new usergroup and you can also choose to copy the permissions from an existing usergroup. The second option is if you want to create a new members group which has just a few differences to another usergroup but the other usergroup needs to stay as it is.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Members,Social,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Depending on the make-up of your Composr site there is a likelihood that you may need to create a new Composr usergroup for your members.}[block]main_tutorial_rating[/block]

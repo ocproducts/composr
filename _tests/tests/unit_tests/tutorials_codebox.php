@@ -30,8 +30,8 @@ class tutorials_codebox_test_set extends cms_test_case
             if (substr($f, -4) == '.txt') {
                 $contents = file_get_contents($path . '/' . $f);
 
-                $this->assertTrue(strpos($contents, '[code]') === false, 'Has non-specified [code]-tag language in' . $f);
-                $this->assertTrue(strpos($contents, '[codebox]') === false, 'Has non-specified [codebox]-tag language in' . $f);
+                $this->assertTrue(strpos($contents, '[code]') === false, 'Has non-specified [code]-tag language in ' . $f);
+                $this->assertTrue(strpos($contents, '[codebox]') === false, 'Has non-specified [codebox]-tag language in ' . $f);
             }
         }
     }

@@ -1,0 +1,31 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Set a Recurring Event in Composr[/title]
+
+[media width="150" float="right"]data_custom/images/docs/sup_set_a_recurring_event_in_composr/2ec7ba1cc450963586f8dcdaae3bc137.png[/media]
+Composr has an inbuilt calendar system which is quite straight forward to use. The calendar system also allows for repeat event and for quite complex recurrence sequences. This tutorial is designed to step by step you through the process of setting up a recurrence.
+
+[title="2"]Setting up a repeating event in Composr[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Content section of the Admin Zone menu
+[*] Choose the Calendar icon
+[*] Choose the Add event icon
+[*] Fill in all of the relevant information for your event
+[*] Expand the recurrence section
+[/list]
+
+[media width="150" description="Setting recurrence details (1)" float="right"]data_custom/images/docs/sup_set_a_recurring_event_in_composr/5319130308aee3edc16f491a9c1d1795.png[/media]
+Within this section there are a number of different options you can use. In the first part of this section there are some commonly used options which include Daily, Weekly, Monthly and Yearly. You must choose one of these options initially then tailor the rest of the options if you require a different set of recurrences.
+
+In the recurrence pattern you can specify more detailed recurrences such as repeating only on week days or on every other day. You can also set to repeats every three months by using different strings of 1s and 0s. For example to repeats on weekdays you can use the pattern 1111100 -- the 1's will add the event on the first 5 days then miss the next 2 days then the pattern will start again.
+
+If you wanted a pattern for every third month you would choose monthly and then choose a pattern 100 which would make the event appear the first month then miss the next 2. Choosing Daily and then a pattern of 10 would add the event every other day.
+
+Recurrences specify the number of times the event will re-occur. If you leave this section blank the event will continue to re-occur. The next option is a choice to separate each recurrence so each even has its own set of comments or choose to keep all of the comments as one comment topic.
+
+[media width="150" description="Setting recurrence details (2)" float="right"]data_custom/images/docs/sup_set_a_recurring_event_in_composr/b366d4e8e4c4cb0f6a72b390ca3b8098.png[/media]
+The final option here is if you choose monthly you gain extra options which will be determined by the initial date you entered for the first event. You can for example set the recurrence to be a specific day of the month i.e. the 21[sup]st[/sup] of every month. The other options are the same number of days from the end of the month as the initial date and two more options which are the third day of the month i.e. the third Saturday or the second last Saturday of the month.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Calendar,Content,calendar,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,Composr has an inbuilt calendar system which is quite straight forward to use. The calendar system also allows for repeat event and for quite complex recurrence sequences.}[block]main_tutorial_rating[/block]

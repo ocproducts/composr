@@ -1,0 +1,43 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Explaining the Composr Quiz Module[/title]
+
+[media width="150" description="Doing an example quiz" float="right"]data_custom/images/docs/sup_explaining_the_composr_quiz_module/08d0ad3462393c69f00ae696c2579161.jpg[/media]
+Quizzes in Composr have multiple purposes as they can be used for collecting data or as a fun quiz. They can also be used as part of a giveaway or as a competition and are really useful as part of a community to help foster engagement on your site.
+
+Specifically...
+
+There are three types of Quizzes in Composr. These are Survey, Test and Competition. Surveys are intended for data collection and are not markable, which means the participants will not get a score or result at the end. With 'tests' users can have right or wrong answers, and will either pass or fail the test. Tests are often made as multiple choice.
+
+Competitions are similar to tests, but a winner may be drawn from those who gave the best answers. This might be used as a giveaway on your site for something. Giving something away with the condition a user fills in a form can be a way used by many sites to collect user data and e-mail addresses for marketing purposes. If you are collecting e-mail addresses for marketing you MUST make sure you explain that by filling in the form they are agreeing to have e-mails sent to them.
+
+[title="2"]Formatting Composr Quiz questions[/title]
+
+[media width="150" description="Add quiz form" float="right"]data_custom/images/docs/sup_explaining_the_composr_quiz_module/6aa1f8897b481960baa0177d65e6ebce.jpg[/media]
+Formatting the quiz questions for a Composr quiz is quite simple. You have an open text box to fill in your questions. The first line is the question, and anything on the subsequent lines is classed as the answers for multiple choice questions. After the answer you need to leave a full blank row to separate each question. There is an example in the image of the different types of questions.
+
+If you add [tt][*][/tt] after an answer Composr classes that as the correct answer which will enable it to mark a Test and let users know if they are right or wrong and whether they have passed or failed the test.
+
+If you are collecting data you can just have a question followed by a blank row which will give a normal sized answer box. If you add [tt][LONG][/tt] after a question it will leave a large text box which allows for more detailed responses.
+
+Adding [tt][REQUIRED][/tt] after a question makes the user answer that question before they can submit the quiz. If you want to use an image as part of a question or answer you need to use the Image Comcode within the question line (it all has to stay on one line though!). This will look something like this:
+[code="Comcode"]
+[img]IMAGEURL[/img]
+[/code]
+
+[title="2"]More Quiz options[/title]
+
+The remaining options on the form include:
+[list]
+[*] Validated -- Whether the quiz is live and available to users of your site
+[*] Completion percentage -- How greater percentage of the answers must be correct to be classed as completing the quiz correctly.
+[*] Text to show at the start of the quiz -- a large text box for text which will appear at the beginning of the quiz
+[*] Text to show at Quiz completion -- This is a text box for some text which will be shown upon completing the quiz
+[*] Number of winners -- When selecting a competition this is how many winners there will be
+[*] Text shown on quiz failure -- Text which will be shown if the competition is failed
+[*] Advanced -- these options deal with how often someone can complete the quiz, how many site points they will get for completing it when the quiz is open and closed
+[*] SEO options
+[/list]
+Once you have filled this in you can preview the quiz or click the Add quiz button.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Content,Feedback features,novice}{$SET,tutorial_add_date,Jul 2014}{$SET,tutorial_summary,Quizzes in Composr have multiple purposes. For example, collecting data, fun, giveaways and competitions.}[block]main_tutorial_rating[/block]

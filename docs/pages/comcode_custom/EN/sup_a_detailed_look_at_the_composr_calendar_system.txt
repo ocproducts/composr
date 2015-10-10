@@ -1,0 +1,47 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: A Detailed Look at the Composr Calendar System[/title]
+
+[media width="150" float="right"]data_custom/images/docs/sup_a_detailed_look_at_the_composr_calendar_system/ff3fd3210c6203e28031557498b92a49.png[/media]
+I thought it would be beneficial to go through the calendar options which are included within Composr. The Calendar in Composr has a wide range of different options which can be used for a wide range of purposes. As you can create many different event types, it allows you to use this for just about any purpose from displaying a list of fixtures for a sports club, a range of tour dates for a band or even a personal diary.
+
+To find the Calendar options in Composr you will need to:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Content section of the Admin Zone menu
+[*] Choose the Calendar icon
+[/list]
+
+In this section you have 7 main options which are:
+[list]
+[*] Add and edit an event type
+[*] Add and edit an event
+[*] Import an iCal export file
+[*] Export your events to an iCal file
+[*] Choose the custom fields for events
+[/list]
+
+Composr can support as many event types as you wish to have. When you first install your Composr website there will be a range of event types set up including Anniversary, Appointment, Birthday and more.
+
+If you wish to add a new event type you will need to make sure you have an icon for the new category and with the standard styling these will need to be 28&times;28 pixels.
+
+You can also set permissions for each event type for each usergroup you have.
+
+Another feature is to add custom fields for any events which you add. These fields can be set using the same field types and requirements as fields added to a catalogue. For example they can be simple text boxes or they can validate to be a number or e-mail address. They can also be set to be a single or multi select choice lists.
+
+[title="2"]Adding an event[/title]
+
+[media width="150" description="Add an event form" float="right"]data_custom/images/docs/sup_a_detailed_look_at_the_composr_calendar_system/e09738906e7828fc1c82ca46bd7aec2d.png[/media]
+The first section of the adding an event screen covers the basics of the calendar such as setting the date and time for the start and end of the event. There are options for the title of the event and the event type. You can also set whether the event is validated (showing as live) and whether the event is an all-day event.
+
+The next section of the add event screen is a large text area where you can include as much or as little information about the event as possible. This section also supports Composr Comcode and you can also attach images or files in the normal way.
+
+The Advanced section allows you to set the timezone for the event and whether you want Composr to convert the time of the event for other timezones. You can also set whether the event is shared content with the calendar or is for a personal diary as well as setting the priority of the event.
+
+I will cover the [page="_SEARCH:sup_set_a_recurring_event_in_composr"]recurrences section in more detail in another tutorial[/page].
+
+The next section deals with setting reminders both for the person creating the event and also set automatic reminders for specific usergroups. You can also set how many hours before the event the reminder is sent.
+
+The last two sections deal with allowing users to leave comments and ratings for the event and also the Search engine optimisation tagging.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Calendar,Content,calendar,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,The Calendar in Composr has a wide range of different options which can be used for a wide range of purposes. As you can create many different event types, it allows you to use this for just about any purpose from displaying a list of fixtures for a sports club, a range of tour dates for a band or even a personal diary.}[block]main_tutorial_rating[/block]

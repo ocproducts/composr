@@ -1,0 +1,42 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Install a Theme in Composr[/title]
+
+[media width="150" description="Browsing through contributed themes on compo.sr" float="right"]data_custom/images/docs/sup_install_a_theme_in_composr/6841cbb6631964ec480f959050484f25.jpg[/media]
+Depending on the purpose of your site, you have a number of options in regard to changing the look and feel of your website. There is the Theme Wizard that makes changes to the colour scheme of the default theme or you can manually edit the HTML and CSS.
+
+Another option is to install one of the themes which have been created by the Composr community members. As a community driven and open source CMS, Composr has had a number of themes created and released free of charge by the community of users. You can choose to install one of these themes in to your Composr website.
+
+[title="2"]Installing a theme in Composr[/title]
+
+You may want to browse the themes and comments from the compo.sr website before actually going to install the theme. You can do this through the [url="addons directory"]http://compo.sr/downloads/browse/addons.htm[/url].
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Style section of your Admin Zone
+[*] Choose the Themes icon
+[*] Scroll to the bottom of the page and choose 'Import an addon'
+[*] (You can also get to this page by going to the Structure section and choosing Addons and then Import non-bundled addon(s))
+[*] Select the download section and expand the Themes category
+[*] Select the theme you wish to import. You can hover over the options to see a preview of the theme and find more information on the theme
+[*] When you have chosen a theme, click the "Import non-bundled addon(s)" button
+[*] Check over the list of files which will be added or updated and make sure nothing will break any manual changes you have made to the content management system code
+[*] Once you are happy click the Proceed button
+[/list]
+
+[title="2"]Activating the installed theme[/title]
+
+[list]
+[*] Go to the Admin Zone
+[*] Navigate to the Style section of your Admin Zone
+[*] Choose the Themes icon
+[/list]
+
+Your installed theme should appear in the list of available themes. Use the preview option to check how the theme will look if you put it as the live theme. If you are happy click "Change theme settings / Make Live".
+
+[media width="150" description="Theme options under Manage themes" float="right"]data_custom/images/docs/sup_install_a_theme_in_composr/1378b0c954bf8a84c9cdb50c1dd21ed1.jpg[/media]
+This page gives some information about the theme including who originally created the theme. To make this the live theme you need to scroll to the Actions section and select the checkbox next to "Use theme on all Zones" and select Change theme settings. On this page you can also change a range of permissions relating to the theme such as which usergroups can see the theme and also which pages will render a mobile version of the site.
+
+Once you have put the theme live check through your site pages to make sure everything is displayed as you want it to. I find it useful to have the Admin Zone open in one tab and the live site in another so I can quickly change any settings I need to when making changes to my Composr websites.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Design & Themeing,novice}{$SET,tutorial_add_date,Feb 2014}{$SET,tutorial_summary,This tutorial shows how to install a third party theme on your website.}[block]main_tutorial_rating[/block]

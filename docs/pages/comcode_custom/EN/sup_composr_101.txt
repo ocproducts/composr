@@ -1,0 +1,134 @@
+[title sub="Written by Jim Davidson, Sponsored by Arvixe hosting"]Composr Supplementary: Composr 101 with Arvixe hosting[/title]
+
+Composr is a very comprehensive Content management system &ldquo;CMS&rdquo; That can be set up and used by just about anyone.
+
+(This tutorial was written when Composr was still called ocPortal. It has since been partially updated.)
+
+[title="2"]Is Composr right for you?[/title]
+
+It's a fantastic CMS that allows you easily build the infrastructure for a vibrant web sites including Community sites, straight forward blog based, Portfolio and gallery sites, Information/brochure sites and finally you can even create an online store or a combination of all. If that's your aim then yes Composr is the right product for you.
+
+[title="2"]Free Trial[/title]
+
+It costs you nothing to try out Composr. You can set up a 30 day demo account with Arvixe web hosting. Why? Well you have 30 days completely free Composr optimised hosting to get used to working with Composr. Any work you do is saved and should you wish to purchase hosting its one click away.
+
+[title="3"]Try out Composr with Arvixe[/title]
+
+It's very simple to set up your demo.
+
+[url="http://www.arvixe.com/9034-223-3-122.html" target="_blank"][media description="Composr free demo" thumb="0"]data_custom/images/docs/sup_composr_101/c39ff1c3e5a27fd34fe5ce06d6246036.png[/media][/url]
+
+[box="Note"]
+The username will be used for the name of your demo site.
+
+My user name was &ldquo;ocptutor&rdquo; therefore my demo site can be found at
+
+[url="http://ocptutor.ocportal.arvixe.com/"]http://ocptutor.ocportal.arvixe.com/[/url]
+[/box]
+
+[media description="Composr demo site" thumb="0"]data_custom/images/docs/sup_composr_101/8140649df759280fe2588f4fce756d89.png[/media]
+
+Obviously we have nothing to look at except the bare bones of your fledgling site. So let's log in and start building your site.
+
+Log in to your site using the default username &ldquo;admin&rdquo; and the password you used to set up your trial account.
+
+[media description="Composr" thumb="0"]data_custom/images/docs/sup_composr_101/775aa299d62878afb51bf7574045f913.png[/media]
+
+Next click on your profile icon, then the &ldquo;Admin Zone&rdquo; link. You will see the Admin Status page which includes a To do list, but for now let's concentrate on the basic site set up.
+
+[media description="Composr Admin Zone" thumb="0"]data_custom/images/docs/sup_composr_101/c310a17711df345f4af529951578767f.png[/media]
+
+Hover your mouse over the &ldquo;Setup&rdquo; link and a drop down menu will appear. Click on the &ldquo;Setup Wizard&rdquo; link. From here we can start to piece our site together.
+
+[media description="Composr setup wizard step 1" thumb="0"]data_custom/images/docs/sup_composr_101/cf478a8d1a6e386bdcd1e5cf10aa2eb5.png[/media]
+
+The step by step wizard is broken down into 10 sections so go-ahead and click on the proceed button. Read the splash page of step 2 and proceed onwards again.
+
+[media description="Composr setup wizard step 3" thumb="0"]data_custom/images/docs/sup_composr_101/2b41a00bffccd815b349cde0ce968ed9.png[/media]
+
+Step 3 as seen above is where the magic starts to happen, you can now start to configure your web site. Whilst you can choose to skip this step, I fully recommend that you don't as this section includes setting up meta information which is crucial for search engine optimisation and can be the difference between your site being found on search engines or not.
+
+[title="2"]Install Profile[/title]
+
+Install profile options are:
+[list]
+[*] Community
+[*] Blog
+[*] Portfolio/gallery site
+[*] Information/brochure site
+[*] Online store
+[/list]
+I want to build a community web site, so I will select community. Don't worry if your requirements are for another type of install profile just set up what you need.
+
+The form is quite long but take your time. I have listed the form fields below with a brief explanation of what's required.
+
+[title="2"]Site Name[/title]
+
+The default here is My Composr -- It is most likely that the site name will be the same as your domain name, change accordingly.
+
+[title="2"]Description[/title]
+
+This appears beside your site name in search engine results for any content pages that don't have their own descriptions/summaries. Make sure that you describe your web site as fully as possible in 2 or 3 lines of text.
+
+[title="2"]Site Scope[/title]
+
+The scope (topic) of your site. This should be a very short phrase that may be embedded within a sentence. For example, a site involving chocolate might choose 'chocolate' as the scope. The software may then use the scope in a larger sentence, for example "We hope that this is the best site for chocolate on the Internet.".
+
+[title="2"]Header Text[/title]
+
+Appears across all site pages and will most likely be your domain name or a tag line.
+
+[title="2"]Site Copyright[/title]
+
+What you put on your web site you should own, this applies to text and images. Having a site copyright helps protect your content. Just edit the My Composr text again you would probably use your domain name.
+
+[title="2"]Staff E-mail Address[/title]
+
+While most messages are sent as notifications to the admin account's own e-mail, the staff e-mail address is used in a few places so set something reasonable for this.
+
+[title="2"]Keywords[/title]
+
+Important for search engine optimisation! Use words that are key to your site content separated by a comma and a space.
+
+[title="2"]Google Analytics Web Property ID[/title]
+
+This is not in the scope of this tutorial, but for now let it be known that Google provide a free service that allows you to see how many visitors your site gets, what pages were looked at and much, much more information. If you already have Google Analytics then go ahead and enter your web ID here.
+
+[title="2"]Fixed-width[/title]
+
+By default, the checkbox is checked. For now let's leave it that way.
+
+Finally you can chose to show or hide the Composr logo.
+
+[title="2"]Click the Proceed Button[/title]
+
+At this point click through to step 9 I would suggest you leave all the default values as they are, either by clicking &ldquo;Skip this step&rdquo; or the &ldquo;Proceed&rdquo; button. On step 9 you can opt to have a closed site or open it up to the public. By going public, viewers of your pages can see everything warts and all. In my case I want this but you may want to keep the site closed for now. Untick (Uncheck) the checkbox if you want to go public!
+
+[title="2"]Step 10[/title].
+
+[media description="Composr Setup Wizard concluded" thumb="0"]data_custom/images/docs/sup_composr_101/4347a329b0d59da1c1254e7d71e8ed19.png[/media]
+
+The final step offers you four options for now let's click &ldquo;Go to main website&rdquo; You can see my screen shot below and yours should be very similar.
+
+[media description="Viewing our site" thumb="0"]data_custom/images/docs/sup_composr_101/51934dffa0cf629cb2005adcffbe8329.png[/media]
+
+Apart from the text content, nothing on the face of it has changed. However, Composr has created the basis for my community web site as we can see if I click on &ldquo;Social&rdquo;
+
+[media description="Viewing our forum" thumb="0"]data_custom/images/docs/sup_composr_101/2348c1d2b598c623c981d7c39ffe34f8.png[/media]
+
+Composr has created the following for us:
+[list]
+[*] Forums
+[*] Rules page
+[*] Member list
+[*] User groups
+[*] Chat lobby
+[*] Point Store
+[*] Personal profiles
+[/list]
+
+It's easy to see from this initial install just how powerful and flexible Composr is, however the initial install includes so much more than listed above and I will work my way through these in other tutorials.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Introduction,novice}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,Composr is a very comprehensive Content management system "CMS" That can be set up and used by just about anyone. I'll go over some of the basics of setup.}[block]main_tutorial_rating[/block]

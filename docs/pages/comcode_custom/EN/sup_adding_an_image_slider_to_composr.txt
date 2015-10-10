@@ -1,0 +1,49 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Adding an Image Slider to Composr[/title]
+
+[media width="150" description="Unslider" float="right"]data_custom/images/docs/sup_adding_an_image_slider_to_composr/a2c951921f40c37a7451e94648bda624.png[/media]
+Many websites now make use of sliders to convey information to their visitors. It's incredibly common especially in the world of eCommerce as it allows several items to be displayed in the same space while sliding between them. To achieve this in Composr it is just a case of needing to install a specific addon. The addon is titled Unslider and is simple to set up and use which I will go into below.
+
+[title="2"]Installing the Unslider addon in Composr[/title]
+
+To install this addon:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Addons icon
+[*] Scroll down and click "Import non bundled addon(s)"
+[*] Click Download and choose the Graphical category
+[*] Choose Unslider
+[*] Scroll down and click the "Import non-bundled addon(s)" button
+[*] The next screen will show you which files will be updated as the addon is installed. It is important you check this list carefully if you have changed any templates on your site or any of the other coding. There should only be around 5 or 6 files for this addon
+[*] Once you are happy click the Proceed button
+[/list]
+
+[title="2"]Adding the slider to your page[/title]
+
+If you are using the Block construction assistant you can add a block in the normal way and you will need to scroll down until you see the block called [tt]main_unslider[/tt]. If you are adding the code manually you can use this example and tailor it to your needs.
+
+[code="Comcode"]
+[block pages="slide1,slide2,slide3,slide4,slide5,slide6" width="100%" height="350px" buttons="1" delay="3000" speed="500" keypresses="0"]main_unslider[/block]
+[/code]
+
+[list]
+[*] Pages -- This is the names of the slides which you will use in your slider. I will cover how to edit these further down.
+[*] Width -- The width of the slider. This defaults to 100% of the available space.
+[*] Height -- This defaults to blank.
+[*] Buttons -- Whether you want buttons for users to control the slider to be visible.
+[*] Delay -- How long will the slider delay before moving on.
+[*] Speed -- How fast will the transition happen.
+[*] Keypresses -- Can the slider be controlled by keypresses rather than clicking.
+[*] Slider ID -- The name of this slider if you have multiple sliders on the same page you will have to make sure you give them different names.
+[*] Bg Colour -- The background colour of the slider.
+[/list]
+
+[title="2"]Editing the slides[/title]
+
+To edit the Comcode page which make up the slides for the slider you need to edit the individual Comcode pages which have been created. To find these go to the content section of the Admin Zone. Choose Pages and look for pages titled [tt]_unslider_slide1[/tt] etc. If you have called your slides something other than [tt]slide1[/tt], [tt]slide2[/tt], etc. you will need to create new pages with the names set accordingly.
+
+You edit these pages as you would a normal page on your website.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Structure and navigation,Content,novice}{$SET,tutorial_add_date,Sep 2014}{$SET,tutorial_summary,Many websites now make use of sliders to convey information to their visitors. It's incredibly common especially in the world of eCommerce as it allows several items to be displayed neatly together.}[block]main_tutorial_rating[/block]

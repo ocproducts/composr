@@ -1,0 +1,32 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Setting Up a Map of Your Composr User's Locations[/title]
+
+[media width="150" description="Member map" float="right"]data_custom/images/docs/sup_setting_up_a_map_of_your_composr_users_locations/41b4f04ecba1fcb62cefc6da2e694f6e.jpg[/media]
+Something I have been asked to add on a few occasions for community based forums is a map of the site user's locations. For a larger community this can be a chance to show the variety in locations of their members. Composr has an addon created specifically for this purpose. To add a map of your Users locations there are a few steps to follow:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Addons icon
+[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Click Download and choose the Information display category
+[*] Choose UserMappr
+[*] Scroll down and click the "Import non-bundled addon(s)" button
+[*] Click Proceed if none of the files will make any changes to files you have edited yourself
+[/list]
+
+Now your map addon for this is fully installed, I recommend adding your location on your profile so when you add the content block to a page you will be able to see if it is working correctly. To be able to do this you need to know your latitude and longitude coordinates. A simple website to find these is: [url="http://itouchmap.com/latlong.html"]http://itouchmap.com/latlong.html[/url]. Once you have the latitude and longitude go to your profile page on your website and click the edit tab.
+
+Once you are on the account edit screen choose the profile sub-tab at the top of the screen. Scroll down to two new fields which have been added called latitude and longitude. Input your coordinates and click to save.
+
+[media width="150" description="Longitude and latitude fields" float="right"]data_custom/images/docs/sup_setting_up_a_map_of_your_composr_users_locations/36431db678a1f9ea24fbe0f862f561e8.png[/media]
+If you are creating a new page on which to display the user map, you will need to create this next, or if you are adding it to an existing page, you need to go to that page and edit it. You can add the information block for this map in exactly the same way you would add any other information block to your website which is by clicking the "add block" icon (if you are using the WYSIWYG editor is on the third line near the right hand side of the icons and looks like a red square).
+
+On the add block screen scroll down until you see the block title called:
+"Display's a Google map with user locations marked by markers. ([tt][b][u]main_google_map_users[/u][/b][/tt])"
+
+Choose this block and fill in the screen accordingly i.e. title etc. I usually make the map a voluntary feature and untick (uncheck) the Geolocate User option which will locate where users are and add the data to their profile. You can also choose the size of the map which will appear and choose to center the map around the markers which are added. If you choose this latter option the map may look a bit strange where it is centred until you have a few entries.
+
+You can now preview the block or click "Use" and Composr will add it to your page. Click save on the page you are editing and the map should now appear.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Third Party Integration,Members,novice}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,This tutorial explains how to add a map of user's locations to your website.}[block]main_tutorial_rating[/block]

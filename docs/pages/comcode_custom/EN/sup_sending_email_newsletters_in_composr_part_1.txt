@@ -1,0 +1,35 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Sending E-mail Newsletters in Composr Part 1[/title]
+
+[media width="150" description="Newsletter administration icons in Composr" float="right"]data_custom/images/docs/sup_sending_email_newsletters_in_composr_part_1/cdb6183ff5a84b607f3680621ba8c408.png[/media]
+While e-marketing has taken more of a backseat in recent years to social media, it is still an important part of any digital marketing mix. Composr has an inbuilt e-mail newsletter system which will allow you to send out either custom built newsletters or an automatic newsletter based on the content you have added to your website. This article will be split into two tutorials as there is quite a lot of information, and it makes it easier to digest and find the relevant information. This tutorial deals with manually created e-mails and the second tutorial deals with e-mails which have the content automatically generated from content posted on your website already.
+
+[title="2"]Sending out a custom built Newsletter in Composr[/title]
+
+The first option is to be able to send out a newsletter in the same way you would if you used an external program. Just like using an external system, the more technical knowledge you have regarding HTML and CSS then the nicer your e-mail will look.
+
+[media width="150" description="Newsletter form in Composr" float="right"]data_custom/images/docs/sup_sending_email_newsletters_in_composr_part_1/d9eb956e96f606c8e9a516dc9bc0ed57.png[/media]
+The great thing about this system for websites who only send out intermittent e-mails such as an update once in a while then this option is extremely useful. It's also very easy to use and if you have the content already written it's a quick process.
+
+Firstly go to Admin Zone > Tools > Newsletter > Send fresh newsletter issue. This will take you to the straightforward form to fill in.
+
+The first option is the subject of the newsletter which will identify the e-mail when you come back to it, and this will also be displayed to the recipient. The next section of the form is the main message box where you will fill in all of your content. If you are building a custom design for this e-mail and haven't already built a new template through the system you can build an e-mail using HTML. To be able to do this you will need to disable the WYSIWYG editor which is found next to the Message heading above the input box. This option is within the red square on the attached image.
+
+It is worth noting that the standard format for the e-mail will include a site logo at the top of the e-mail above any text or code which you input into this area. If you don't wish this to appear you will need to build a new mail template or edit the existing one. This is outside the scope of this tutorial. If you wish to upload a custom logo you need to edit the [tt]logo/standalone_logo_logo[/tt] file in the Manage theme images section for your theme.
+
+Below the main text box are options to set a delayed time to deliver your e-mail at a set time. This is useful if you write an e-mail in the evening but want it to be delivered during peak traffic hours for example. This will require you to set up Cron for your site or the timer will not work. I have previously written a tutorial for [page="_SEARCH:sup_setting_timed_content_for_composr_and_your_arvixe_web_hosting"]setting up timed content for Composr[/page] which I recommend reading if you are planning to delay the delivery time of your e-mail.
+
+The next two boxes deal with the display e-mail and name which the recipient will see. It goes without saying the return e-mail address must be correct and a genuine e-mail address. The 'from' name is the name you wish the recipient to see in their inbox.
+
+The next option is a checkbox to allow you to only send HTML versions and not a plain text version. If your layout is very complex then this is a recommended option as the plain text version may look odd.
+
+The next option is a Priority level which will be displayed to the recipient if their e-mail software supports this.
+
+The next section allows you to choose which usergroups you wish to send the e-mail to. This could be the entire site member list to a limited group or perhaps a staff only e-mail. This section also allows you to upload a CSV file of users to send the e-mail to.
+
+The last option before previewing the e-mail is which template you wish to use. In most cases there will only be one option here, unless you have created more mail templates. Once you have completed all of the form you can preview how the e-mail will look in both HTML and plain text format. If the e-mail looks okay then you can click Proceed to dispatch the e-mail to those members you selected.
+
+[page="_SEARCH:sup_sending_email_newsletters_in_composr_part_2"]Part two[/page] of this tutorial will discuss sending automated and periodic e-mails through the Composr e-mail system.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Newsletters,newsletter,Newsletters,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Composr has an inbuilt e-mail newsletter system. While e-marketing has taken more of a backseat in recent years to social media, it is still an important part of any digital marketing mix.}[block]main_tutorial_rating[/block]

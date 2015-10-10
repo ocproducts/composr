@@ -1,0 +1,58 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Build a Download Library in Composr[/title]
+
+[media width="150" float="right"]data_custom/images/docs/sup_add_a_download_library_in_composr/0d184ecf0a75af9faf384c369d8b1625.png[/media]
+Composr offers a fully equipped and well-rounded system for uploading your files and sharing them with your website visitors. Being able to add files to your pages for users to download rather than adding the file by FTP and linking the file allows you more freedom and makes the process easier for everybody.
+
+The system comes with all of the features you would expect which include:
+[list]
+[*] A tree structure for creating sub-sections
+[*] Ability to upload files and also get a file from a URL
+[*] Assign authors to downloads so you can find other files by the same author
+[*] The ability to limit downloads of files by using Composr's point system to "sell" the downloads
+[*] Protection to stop users leeching your files
+[*] Allows for comments and rating for files
+[*] Assign Licenses to files which users must agree to before being able to download the file
+[*] Attach a representative image for the file
+[*] Basic support for file versioning
+[/list]
+
+Adding a file in Composr for download is a simple process and the following step by step process will guide you through that process.
+
+[title="2"]How to add files to a download category[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Content section of the Admin Zone menu
+[*] Choose the Downloads icon
+[*] (If you haven't already created a category go to Add category and do that first)
+[*] Choose the Add download icon
+[*] Give your download a name which makes it easy to understand what the file is
+[*] Choose the category the file will be uploaded to
+[*] In the next section click Upload and select the file you want to upload
+[*] Add any notes or information which is necessary in the description field
+[*] You can upload an image to represent the file if you like below the description field
+[*] If required fill in the additional information
+[*] Add any notes for staff and choose whether you want to allow users to rate the file in the Feedback and notes section
+[*] Fill in the Search engine optimisation information
+[*] If you are using the awards system you can choose whether to give the download an award
+[*] Click the Add download button
+[*] Repeat from step 5 for all the downloads you have for this category
+[/list]
+
+[title="2"]How to link files to your pages[/title]
+
+The downloads system is linked to the default menus.
+
+You can also use a block to display downloads on your website. Blocks can be added to your Comcode pages via the Block construction assistant.
+Possibilities include:
+[list]
+[*] A listing of the most popular downloads from the ratings given to them from your website visitors
+[*] Embed a specific category onto your page
+[*] List the most recently added downloads
+[*] List all of the available downloads listed in order of the most time downloads order
+[/list]
+All these are via the [tt]main_multi_content[/tt] block, which is highly configurable.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Content,Downloads,downloads,novice}{$SET,tutorial_add_date,Nov 2013}{$SET,tutorial_summary,Composr offers a fully equipped and well-rounded system for uploading your files and sharing them to your website visitors.}[block]main_tutorial_rating[/block]

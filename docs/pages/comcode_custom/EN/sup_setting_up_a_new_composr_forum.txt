@@ -1,0 +1,59 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Setting Up a New Composr Forum[/title]
+
+[media width="150" description="Composr forum" float="right"]data_custom/images/docs/sup_setting_up_a_new_composr_forum/58f0c14238520080101db3e8785848a9.png[/media]
+One of Composr's core features is the forum. While forum usage might be on the wane in some areas due to the prevalence of Social Media, forums are and continue to be a key feature within Composr, and a large part of many online communities.
+
+Composr forums include many of the common forum features found within other well-known forum systems such as phpBB, SMF and vBulletin. Like most forums, Composr forums utilise a tree structure. A huge benefit of Composr's forum is the complete integrated nature of the forum and the main website software.
+
+Unlike many other forums or CMS which can either have a content management system- like software tacked on, or a forum module added to the main CMS, you can be sure that both CMS and Forum seamlessly flows from one to the other on a Composr website. Composr forums have a comprehensive set of options.
+
+[media width="150" description="Forum admin screen" float="right"]data_custom/images/docs/sup_setting_up_a_new_composr_forum/b99d7968db37c8f2ce92e47fa1649768.png[/media]
+This is a 'how to' tutorial for some of the most common forum administration tasks.
+
+[title="2"]Adding a new forum category ("grouping")[/title]
+
+The basic forum has two forum groupings set up as standard, which are General and Staff. "General" includes a general discussion section and a forum which houses all of the comment topics from content elsewhere on the site. The "Staff" section is a private section of the forums for staff to use and also is where things like reported posts and support tickets appear.
+
+To add a new forum, navigate your way to the forum admin screen which can be found at Admin Zone > Structure > Forums. From here click "Add forum grouping" and fill in the online form which includes the name of the grouping and a description. You can also choose whether the grouping is expanded by default. Once you have added the grouping, the software will take you to a follow-up admin screen comprising of many of the most common tasks such as adding a new forum to your new grouping.
+
+[title="2"]Adding a new forum[/title]
+
+You can add a new forum from Admin Zone > Structure > Forums > Add forum. The Add new forum form is split into three sections. There is a general section which you need to complete, an advanced section and a permissions section.
+
+The General section includes options such as the Name of the forum and a description. You also need to choose in which grouping the forum will appear, and if the forum is a sub-forum of another forum you have already created. If the forum is not a sub-forum choose the "Forum home" as the parent.
+
+The Advanced section can be left unedited or you can edit this section as required. The advanced section includes options to:
+[list]
+[*] Turn off the normal incremental adding to the users post count in this section
+[*] Make the sub-forums order alphabetically if you do not want to do this manually
+[*] Set an introduction question and answer to make sure the user has read the forum rules
+[*] Choose how the topics are ordered and whether you want to use a tree structure to the topics
+[/list]
+
+The Permissions section allows you to give various usergroups different permissions within this forum such as making member of a usergroup a moderator of this forum. By default this will use the standard forum permissions set.
+
+Once this is complete you can click on the "Add forum" button.
+
+[title="2"]Re-ordering your forums[/title]
+
+To re-order your forums, go to Admin Zone > Structure > Forums > Edit forum. From here you can access the edit screen for each forum and also re-order your forum groups and individual forums.
+
+To re-order the grouping so a new grouping appears at the top, you can change the numbers which appear on the blue bar next to each forum grouping name. To re-order the forums within a grouping, simply change the numbers in the drop-downs as required next to each forum that you want to re-order.
+
+Once you have the forums ordered as you like click "Re-order forums".
+
+[title="2"]Performing basic moderation tasks[/title]
+
+[media width="150" description="Composr forum moderation" float="right"]data_custom/images/docs/sup_setting_up_a_new_composr_forum/2158da2e04f24337f8c08a2321185a3e.png[/media]
+Composr forums offer extremely easy access to the most common forum moderation tasks. Within each individual forum there is a link to the most common moderation tasks such as:
+[list]
+[*] Pinning or unpinning the topics
+[*] Marking topics read or unread
+[*] Moving or deleting topics
+[*] Opening and closing topics
+[/list]
+To activate any of these options simply select the checkbox to the right hand side of each thread, choose the moderation option you want and click Proceed. In some cases you will be taken to another screen which allows you to add a reason why an action is being done so other staff are aware.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Forum,Social,Forum,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,One of Composr's core features is the forum. Composr forums include many of the common forum features found within other well-known forum systems. This tutorial covers the basics.}[block]main_tutorial_rating[/block]

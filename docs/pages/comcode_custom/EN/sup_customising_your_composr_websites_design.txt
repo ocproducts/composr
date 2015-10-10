@@ -1,0 +1,45 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Customising Your Composr Website's Design[/title]
+
+How knowledgeable you are in CSS and HTML will determine how detailed a customisation you will be able to make. This tutorial aims to make it easier to find your way around the files you need to edit.
+
+[title="2"]The Theme Wizard[/title]
+
+[media width="150" description="Composr theme wizard" float="right"]data_custom/images/docs/sup_customising_your_composr_websites_design/13fcdc8b191c7abad8b5a613b9fcc229.png[/media]
+I will start in the most sensible place to begin and that is with the theme wizard which is built in to Composr. After logging in to the Admin Zone, go to the Style screen and choose the Themes option. Once you arrive on the page you should see a table of options for the default theme and if you haven't made any theme changes yet this should be the only theme installed.
+
+Scroll down the page a little and click the Theme Wizard link. Your first task will be to give your theme a name and then choose the seed color for the theme. The seed color determines all of the colors on your basic theme from the color of menus to the color of links. This doesn't mean everything will be that color but will be a variation of that base color which compliments the theme.
+
+To do this you can either use the sliders which are available or input a HTML color code which will look something like [tt]#232246[/tt]. The next option is for you to choose between equations or HSV Shift. This is a choice between setting the colors for each element via some clever automated maths, and just simply re-tinting the a theme. The former is the normal one to use, the latter is useful for custom themes that don't have good theme wizard support in them.
+
+Next you choose whether you are making a dark based theme or not. By this I mean whether you intend to have the main body of your site using a dark color and light coloured text on top of it.
+
+The final option on this page is a choice whether to edit the main CSS files or create smaller versions which overwrite certain elements. By creating one main set of CSS, it will be easier to find the elements to change. However, a smaller set which overwrites the original elements will be easier to modify when the software is upgraded.
+
+After you click Proceed you will be taken to a preview of your site with the new colors and you can either choose to return back to the color seed selection screen to make changes to the seed color or accept the changes. If you choose to proceed you can then use the theme on all zones. In many cases you will choose this, but if you are working on a new design while your site is live you will want to untick (uncheck) this option.
+
+[title="2"]Main theme options[/title]
+
+When you return to the themes page you will find yourself looking at both the original default theme and a set of options for your new theme as shown in the screenshot below.
+
+[media description="Composr theme options" thumb="0"]data_custom/images/docs/sup_customising_your_composr_websites_design/50ac1daa2ff0466144544b2e5131a270.png[/media]
+
+The first part of this table includes information about your new theme such as its name and the seed color you have used. There are other options for seeing previews of your site and previews of each template used in the site. These previews allow you to easily see how each element of your website make-up will look before making them live. You can also export your theme from here if you plan to allow others to use the theme.
+
+The next section icon leads you to the edit theme screen which allows you to make changes to the theme name, the code name of the theme and other options relating to your overall theme. This section also houses the ability to specify which pages are compatible with the Composr mobile mode (smartphone mode).
+
+[media width="150" description="Page rendering (contextual) options in the site footer" float="right"]data_custom/images/docs/sup_customising_your_composr_websites_design/afe31d9f4337eb03893618764d23dac5.png[/media]
+The third cell is the link to edit the CSS of your theme. Behind this option is a list of all the CSS files which are used within your theme which can be edited. The most common choice here will be [tt]global.css[/tt] as this houses the most commonly used CSS elements. To help you find the correct element on your live theme there is an option in the admin dropdown box at the bottom of the standard theme called a contextual CSS editor. Once this is chosen a new window will open up and as you hover over elements on your live site each CSS element will be highlighted on the new screen.
+
+This feature is completely unique to Composr and offers an extremely powerful theming tool. By using this tool you can quickly see what areas you need to edit to make your site appear just as you want it to. An extra benefit is you can also see which other areas of the site your changes might affect. Obviously I can't tell you exactly what to change as you will want your site to be representative of your ideas.
+
+[media width="150" description="Composr CSS choice screen" float="right"]data_custom/images/docs/sup_customising_your_composr_websites_design/567de6f8400484095462e262c19d2e08.png[/media]
+The next cell relates to the editing the templates of your website theme. Like the CSS page, you will be presented with a list menu of all of the templates which are used with your site. Some of these will affect just one content block and others will affect large portions of your site's structure.
+
+[media width="150" description="Composr theme image chooser" float="right"]data_custom/images/docs/sup_customising_your_composr_websites_design/5c94dbeb90a34b742e0709fefa0cd37a.png[/media]
+The final section relates to all of the images which make up your theme. These are separated in to sections such as logo images and general images e.g the favicon and apple icon. From here you can quickly edit and update the various theme images which make up your site.
+
+From the above you can see Composr's themes can be pretty complex, but the developers have spent time making and refining these really powerful theme design features which you won't find in any other Open Source CMS. If you just want a different color and a few minor changes to the default theme then Composr offers you the theme wizard to achieve this in a matter of seconds. If you want to make a massive conversion of the software you have all of the tools at your disposal to be able to efficiently find the individual elements you need to change.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Design & Themeing,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,How knowledgeable you are in CSS and HTML will determine how detailed a customisation you will be able to make. This tutorial aims to make it easier to find your way around the files you need to edit.}[block]main_tutorial_rating[/block]

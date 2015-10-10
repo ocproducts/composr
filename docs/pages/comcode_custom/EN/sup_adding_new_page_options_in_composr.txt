@@ -1,0 +1,35 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Adding New Page Options in Composr[/title]
+
+[media width="150" description="Adding a new page in Composr" float="right"]data_custom/images/docs/sup_adding_new_page_options_in_composr/cfa67582aa27e434f94dd87342c3d05a.jpg[/media]
+Adding a new page is one of the most common tasks you will need to do with any website. This process is quite simple but I want to go through all of the options you have when creating a new page to make sure you don't miss anything.
+
+There are three ways you can go to add a new page to your Composr website. First we will show the normal full way, then two shortcuts.
+
+[title="2"]Adding a page via the content section[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Content section of the Admin Zone menu
+[*] Choose the "Pages (Comcode pages)" icon (you can view and edit any of the existing pages from this screen too)
+[*] In the box titled New at the bottom give your new page a name and click Add. If you want to add the page to a different zone than the main welcome zone you need to include the zone name and page name separated by a colon in the new page name box. This will look something like [tt]ZoneA:NewPage[/tt]
+[*] Fill in the page information you want to add and add any information blocks you want to appear on the page. You can [page="_SEARCH:sup_how_to_add_an_information_block_to_composr"]add an information block[/page] in the same way you would normally through the red square icon. Use blocks to display news pulled from elsewhere or a poll or any of the other useful blocks included in Composr as standard.
+[*] Choose if you want the page to be a subpage of another page within the zone.
+[*] Fill in the Search engine optimisation information including any Keywords/phrases and the page description.
+[*] Tweak the page permissions if you need to for example you can make the page hidden from guests
+[*] Click Preview
+[*] If you are happy click Add Comcode page
+[/list]
+
+[title="2"]Quickly adding child pages[/title]
+
+When you are adding a page as a subpage of another page, you can go to the bottom of the parent page and click the "Add child page" option.
+
+This option is only shown if the page you are adding under has got the [tt]main_comcode_page_children[/tt] block on it (which is placed there by default for new pages).
+
+[title="2"]Going to the URL and adding the missing page[/title]
+
+If you manually open up a URL like [tt]http://yourbaseurl/index.php?page=some_page_name[/tt] then Composr will invite you to add the missing page.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Structure and navigation,Content,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,Adding a new page is one of the most common tasks you will need to do with any website. This process is quite simple and explained in this tutorial.}[block]main_tutorial_rating[/block]

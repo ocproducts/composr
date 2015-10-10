@@ -1,0 +1,37 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Set Up a Workflow in Composr[/title]
+
+[media width="150" description="Adding a new workflow" float="right"]data_custom/images/docs/sup_set_up_a_workflow_in_composr/305f3284473e0a9f8afba50c2401539d.png[/media]
+For larger enterprises and companies the ability to have multiple levels of sign off for website content can be important. The Composr workflow addon handles this, although currently by default the addon only affects galleries (extensions can be made by a programmer to allow it to be used for all content types).
+
+The workflow addon for Composr extends the standard yes/no validation system which is included in Composr as standard. This is incredibly useful if you need to have different heads of department sign off different elements of content. If you just need the content to be signed off by one of a group of people than the normal validation system will work for you.
+
+A workflow contains an ordered list of 'approval levels', such as 'design' or 'spelling', and each of these has a list of usergroups which have permission to approve it. The workflow system allows you to sign off your section and pass the content along to the next group which requires sign off. You can reject the content and require it to be edited by the original submitter.
+
+New content will enter the workflow unless otherwise specified and will pass along the chain until it is fully signed off by all levels.
+
+[title="2"]How to set up the workflow in Composr[/title]
+
+First you need to make sure the unvalidated system has not been uninstalled. This system is automatically installed but may have been uninstalled. If it is not installed, install this from Admin Zone > Structure > Addons.
+
+[media width="150" description="The workflows addon" float="right"]data_custom/images/docs/sup_set_up_a_workflow_in_composr/8705f92d256c0b166f2fb99385f3d25e.png[/media]
+To install the Workflows addon:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Addons icon
+[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Click Download and choose the New Features category
+[*] Choose Workflow
+[*] Scroll down and click the "Import non-bundled addon(s)" button
+[*] Check the list of files to make sure it will not overwrite any of the files you have manually edited
+[*] Click Proceed when you are happy
+[/list]
+
+Workflows should now be installed but will need to be configured. To do this you will need to go to Admin Zone > Content > Workflows, which will allow you to either define a new workflow or edit an existing workflow.
+
+[media width="150" description="Setting approvals on the workflow's level 1" float="right"]data_custom/images/docs/sup_set_up_a_workflow_in_composr/ad5913f2b21e4083d3dc8b33e88a119d.png[/media]
+On the next screen you can set which of your usergroups can authorise each of the different levels which you have created. You will probably want to make sure your admins group can authorise all of the levels. You can create as many different levels as you require.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Collaboration,Content,novice}{$SET,tutorial_add_date,Nov 2013}{$SET,tutorial_summary,For larger enterprises and companies the ability to have multiple levels of sign off for website content can be important. This is covered by the workflows addon (which out-of-the-box supports only galleries, but is extendible.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,37 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Setting Up Classified Ads on Composr[/title]
+
+[media width="150" description="Setting up classified ad pricing" float="right"]data_custom/images/docs/sup_setting_up_classified_ads_on_composr/77d7920b7c1578ad26210409b518b9fe.jpg[/media]
+Depending on the purpose behind your Composr website, it may be you will want to generate revenue from your site. This could be just enough to cover running costs. It may be that you want to generate even more money than just covering costs. One way you could do this is by setting up classified ads on your site.
+
+The classified ads addon works by allowing you to set costs for someone to be able to add an advert within one of your catalogues. By using Composr's catalogues it completely allows you to tailor the adverts you want to sell. For example a site selling cars will want to have a completely different structure to one selling furniture or services. The benefit of different catalogues is you can have multiple sections dedicated to different types of ads. Once you have set up the catalogues you need to install the classified ads addon.
+
+[title="2"]Installing the classified ads addon in Composr[/title]
+
+To install this addon:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Addons icon
+[*] Scroll down to and click "Import non bundled addon(s)"
+[*] Click Download and choose the New Features category
+[*] Choose Classified Ads
+[*] Scroll down and click the "Import non-bundled addon(s)" button
+[*] The next screen will show you which files will be update as the addon is installed. It is important you check this list carefully if you have changed any templates on your site or any of the other coding. There should only be around 5 or 6 files for this addon
+[*] Once you are happy click the Proceed button
+[/list]
+
+Now that the addon is installed you will need to set up the pricing to advertise on your site. This is very simple to do. Navigate to Admin Zone > Setup > Classified pricing.
+
+For each pricing option you need to set 4 different elements. You need to choose:
+[list]
+[*] The catalogue you want to add the pricing for
+[*] The number of days the ad will run for
+[*] The title for the pricing option
+[*] The cost of buying the ad
+[/list]
+
+Now your users should have the option to buy ads in your catalogues!
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Catalogues,eCommerce,Content,novice}{$SET,tutorial_add_date,Jun 2014}{$SET,tutorial_summary,Depending on the purpose behind your Composr website, it may be you will want to generate revenue from your site. Classified ads is one way to do this.}[block]main_tutorial_rating[/block]

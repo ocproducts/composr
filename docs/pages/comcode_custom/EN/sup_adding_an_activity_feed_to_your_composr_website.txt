@@ -1,0 +1,72 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Adding an Activity Feed to your Composr Website[/title]
+
+[media width="150" description="Activity feed" float="right"]data_custom/images/docs/sup_adding_an_activity_feed_to_your_composr_website/5f3cffdcb87391fefa9fb791afc602bb.jpg[/media]
+While social media has in some senses replaced many functions of traditional community or forum based websites, there is still a case for a separate community based site. I personally am an advocate of a synergy between social media and a community based website. In any large group of people you will have some who don't want to use social media and some who will not want to sign up to another website. Composr boasts several addons which will help bridge the worlds. For example there are addons that let users sign in using OpenID or Facebook login.
+
+There are a range of core and additional features in Composr which social media users will be familiar with. This tutorial deals with the Composr Activity feed addon which will be very familiar to most users of popular social media sites.
+
+The activity feed addon for Composr is designed for you to be able to display a list of all the activities which are happening on your site.
+
+The addon comes as two main blocks. One of which displays the site activities ([tt]main_activities[/tt]) and one which allows you to post new activities ([tt]main_activities_state[/tt]). There are a number of configurable options for the [tt]main_activities[/tt] block and it can be used to display a range of activities configured and limited to all activities or those from specific members. These blocks will be added to member profiles by default but can also be added to other pages.
+
+If the chat feature is installed onto your site, &ldquo;status" posts can be restricted to show only for friends.
+
+If you have the Facebook or Twitter addons installed, then the system can syndicate out activities to the user's Twitter and Facebook followers too.
+
+[title="2"]Installing the activity feed addon[/title]
+
+Obviously the first thing you will need to do to utilise the Activity feed block is to install the addon. To do this:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Addons icon
+[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Click Download and choose the New Features category
+[*] Choose Activity feed
+[*] Scroll down and click the "Import non-bundled addon(s)" button
+[*] The next screen shows all of the files which will be edited or installed. Check this list carefully if you have manually edited files to make sure nothing is being overwritten which will break your site. If you are happy you can click Proceed.
+[/list]
+
+The two blocks are now added to the Block construction assistant.
+
+[title="2"]Setting up the main activities block[/title]
+
+[media width="150" description="The main_activities block in the Block construction assistant" float="right"]data_custom/images/docs/sup_adding_an_activity_feed_to_your_composr_website/ec3f75e25894405dc063cedbb45badfe.png[/media]
+There are six main fields you can fill in when adding this block to a page. These are:
+[list]
+[*] Max -- The maximum number of activities which will be displayed. This defaults to 10
+[*] Param -- This is the title of the block which you want to display on your site
+[*] Member -- Can be left blank but can be used to display activities only from certain members
+[*] Mode -- A choice of display types from all activities, only activities from some members stated above or activities from the stated members friends
+[*] Grow -- whether you want the list to grow and become longer as more activities are added
+[*] Refresh time -- How often you want to check for new activities. You may want to set this to longer if your server has usage limits.
+[/list]
+
+[title="2"]Adding an update your status block to a Composr page[/title]
+
+[media width="150" description="Doing a status update" float="right"]data_custom/images/docs/sup_adding_an_activity_feed_to_your_composr_website/d5e85597404052bffa53e8e97d41f912.png[/media]
+The main activities state block is added in the same way you add a block and only has one main configurable option which is to give the block a title.
+That said, you probably won't want to bother as by default it already is added onto a tab in each member's own profile. That tab also shows activities for that particular member.
+
+[title="3"]Manual Comcode[/title]
+
+You can of course use the Block construction assistant but if you wish to add the block manually for any reason an example of the code can be found below:
+[code="Comcode"]
+[block="Activities" max="10" grow="0" mode="all"]main_activities[/block]
+[/code]
+
+This will display a block with the title Activities and will contain the last 10 activities. Any old activities will fall off the bottom of the block once more are added beyond the original 10 (grow="0") and there is no filtering on what is shown. (mode="all").
+
+[title="2"]Adding the Status update block to a page[/title]
+
+To manually add the status update block you can use the following code or the Block construction assistant
+
+[code="Comcode"]
+[block="Update your status"]main_activities_state[/block]
+[/code]
+
+This will add a status update block with the title "Update your status".
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Social,novice}{$SET,tutorial_add_date,May 2014}{$SET,tutorial_summary,There are a range of core and additional features in Composr which social media users will be familiar with. This tutorial deals with the Composr Activity feed addon which will be very familiar to most users of popular social media sites.}[block]main_tutorial_rating[/block]

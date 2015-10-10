@@ -1,0 +1,61 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Adding Banners to Your Composr Website[/title]
+
+[media width="150" description="Add Composr banner type" float="right"]data_custom/images/docs/sup_adding_banners_to_your_composr_website/b2e4b1d7a1dbb7f74ec7ad656d998e8f.jpg[/media]
+Banners make up a key part of many websites and Composr has a banner system which allows you to display a number of banners in any of your site panels, regular pages, or templates.
+
+In this tutorial we will cover adding to a page (or panel -- which is a kind of page), not templates. We will do it using the [tt]main_banner_wave[/tt] block, which displays all banners added within a banner type as one continual set.
+
+This is a three step process to be able to add banners to your site which includes creating a banner type, adding a banner and then attaching the banners to your page.
+
+[title="2"]Creating a banner type[/title]
+
+The first step is to create a banner type. There is a standard type which is 728&times;90 pixels which is a leaderboard banner. If you want to add any other type of banner, for example a tower banner for a side panel or a square banner, you will need to create a new banner type. To do this you need to:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigation to the Content section of the Admin Zone menu
+[*] Choose the Banners icon
+[*] Choose the Add banner type icon
+[*] Once you get to the banner type form you need to fill in the form which includes[list]
+[*] Giving the banner type a name
+[*] Choose whether the banner will be text style or not
+[*] Give the banner type a height and width
+[*] Choose the max file size the banners can have. This is important as large files can cause your site to run slowly
+[/list]
+[/list]
+
+[title="2"]Uploading a banner to your new type[/title]
+
+[media width="150" description="Adding a banner in Composr" float="right"]data_custom/images/docs/sup_adding_banners_to_your_composr_website/468978b250a738acda2212a578ec9160.jpg[/media]
+After you have added your new banner type you will need to add a banner to your new type before choosing where to display it on your site. To do this you will need to:
+[list="1"]
+[*] Go to Admin Zone > Content > Banners > Add banner
+[*] Give your new banner a name
+[*] Choose where the banner will link to when clicked
+[*] Choose the banner type the banner will fit in to from the drop down
+[/list]
+There are options for who the banner owner is which by default should have your username in there. There is a notes section and whether the banner is validated, i.e. is the banner is live or to be used later on.
+
+The next section goes through the process of uploading the banner image and the options for if you are using a banner image which is already uploaded elsewhere. There is a box for trigger text if you have enabled this when you added your banner type. There is also a box for HTML/PHP if you have external banner code which you want to display.
+
+The final section deals with what type the banner is. You can choose whether the banner is a permanent banner which will stay live all the time and you can also choose whether the banner is a campaign banner or a default fall back banner if there are no others to display.
+
+The courtesy hits option is how many times the banner can be clicked before it is withdrawn from being used. You can also choose how important the banner is, so when you have a lot of banners this determines how often it will randomly appear. If you only have a few banners they will display more often.
+
+The last option is the expiry date for a banner which will only display until this date. This is useful for campaigns which only last a certain amount of time. You can now click add banner. You will need to repeat the process as many times as you have banners to upload before moving on to displaying the banners on the site.
+
+[title="2"]Adding the new banners to your site[/title]
+
+[media width="150" description="Viewing the banners" float="right"]data_custom/images/docs/sup_adding_banners_to_your_composr_website/9f58a75a98ab10d9e096cba2ab51a8fd.jpg[/media]
+[list="1"]
+[*] Navigate to the zone where you want the banners to appear
+[*] Click the edit link for the panel where you want the banners to appear on for example the left panel (or it its a regular page, edit that page)
+[*] Open the Block construction assistant (the red box icon) and scroll down to the Banner wave block and select it
+[*] Choose the banner type you want to display
+[*] Choose the maximum number of banners you want to display. This is set to 100 which will be very long. If you set this number lower than the number of banners you have uploaded it will randomly display the banners based on how important you set them in the previous process.
+[*] Click Use and then save the panel (or page) you have edited.
+[/list]
+Your banners should now display.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Banners,eCommerce,Banners,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,Banners make up a key part of many websites and Composr has a banner system which allows you to display a number of banners in any of your site panels.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,29 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Web Standards in Composr[/title]
+
+An important part of Composr is the strength in which it follows web standards, and has led the way in several areas, including being the first large CMS system to fully support Dublin core since 2009. Composr was the first to offer full ATAG accessibility support for the authoring tools built into the system, and also the first CMS to support Schema.org Microdata as standard, which was implemented shortly after the announcement of the standard.
+
+The main Composr community has its own section dedicated to developing the usability for visually impaired users and has been developed over a number of versions to make Composr one of if not the most usable for visually impaired users as standard.
+
+Composr has a stated vision of standards compliance including the key features which many users use on a regular basis which are also built with web standards in mind. Composr complies with web standards in four key areas which include Web, Accessibility and internationalisation data and feeds and Microdata.
+
+[title="2"]Web Standards[/title]
+
+Composr's web standards support includes elements such as HTML and CSS standards but also includes other elements such as Opensearch to help aid the interoperability of the search results. The web standards support also includes for Scalable vector graphics (SVG) and Document Object Model (DOM) as well as others
+
+[title="2"]Accessibility[/title]
+
+Composr really comes into its own with its support in the Accessibility. Composr offers full WCAG 1 and 2 support to AAA standards and as mentioned above fully supports ATAG authoring tool standards. There is also support for WAI-ARIA which governs the way to make interactive web content and Web applications more accessible to people with disabilities. Composr also supports the UK government recommendations for Access key support.
+
+[title="2"]Data and Feeds[/title]
+
+Composr offers extensive support for a wide range of Data and feeds which are commonly used around the web and this helps ensure excellent interoperability. Data and feed standards support includes XML, RSS 2.0, Atom and iCalendar for linking your on-site calendar with other software. There are also implementations for for SQL, LDAP 3, XSL transformations and Outline Processor Markup Language (OPML).
+
+[title="2"]Metadata[/title]
+
+In addition to Schema.org and Dublin Core which has been mentioned above, Composr also supports Facebook's Open Graph, hCalendar, hCard and numerous rel tags such as nofollow.
+
+On top of these standards listed above, more details of compliance standards can be found on the [url="http://compo.sr/vision.htm"]Composr website[/url]. Also, Composr Core which extends Dublin core to incorporate some social media functionality.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Web standards & Accessibility,Internationalisation,novice}{$SET,tutorial_add_date,Sep 2013}{$SET,tutorial_summary,We go over some of the web standards Composr supports.}[block]main_tutorial_rating[/block]
