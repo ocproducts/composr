@@ -121,7 +121,7 @@ Scroll to the bottom of the page and click Add Custom Profile Field.
 
 As you can see from the screenshot, Composr allows you to quickly create complex forms that force users to enter information thus creating a stronger community.
 
-[media thumb="0" description="View the finished signup form"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/39cb04d2b6a53fc054e5d8efa7410808.png[/media]
+[media thumb="1" width="900" description="View the finished signup form"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/39cb04d2b6a53fc054e5d8efa7410808.png[/media]
 
 Additionally, you can stipulate who will see the member information.
 
