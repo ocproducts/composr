@@ -26,7 +26,7 @@ class Block_youtube_channel
         $info['version'] = 11;
         $info['locked'] = false;
         $info['update_require_upgrade'] = 1;
-        $info['parameters'] = array('name', 'api_key', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'orderby', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
+        $info['parameters'] = array('name', 'api_key', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
         return $info;
     }
 
@@ -72,7 +72,6 @@ class Block_youtube_channel
         $channel_templatestyle = 'BLOCK_YOUTUBE_CHANNEL_STYLE' . $channel_tempstyle;
         $channel_startvideo = array_key_exists('start_video', $map) ? $map['start_video'] : '1';
         $channel_maxvideos = array_key_exists('max_videos', $map) ? $map['max_videos'] : '25';
-        $channel_orderby = array_key_exists('orderby', $map) ? $map['orderby'] : '1';
         $channel_showplayer = array_key_exists('show_player', $map) ? $map['show_player'] : '1';
         $channel_embedallowed = array_key_exists('embed_allowed', $map) ? $map['embed_allowed'] : '1';
         $channel_playeralign = strtolower(array_key_exists('player_align', $map) ? $map['player_align'] : 'center');
@@ -112,10 +111,6 @@ class Block_youtube_channel
         }
         if ($channel_startvideo < 1 || $channel_startvideo > 50) {
             $channel_startvideo = 1;
-        }
-        //channel_orderby is left in for backward compatibility, but this is not available for the playlistItems.list API call in the new YouTube API v3
-        if ($channel_orderby < 1 || $channel_orderby > 3) {
-            $channel_orderby = 1;
         }
         if ($channel_showplayer < 0 || $channel_showplayer + $channel_maxvideos > 50) {
             $channel_showplayer = 50;
@@ -522,7 +517,6 @@ function block_youtube_channel__cache_on($map)
 {
     return array(array_key_exists('max_videos', $map) ? intval($map['max_videos']) : 25,
                  array_key_exists('start_video', $map) ? intval($map['start_video']) : 1,
-                 array_key_exists('orderby', $map) ? intval($map['orderby']) : 1,
                  array_key_exists('embed_player', $map) ? intval($map['embed_player']) : 1,
                  array_key_exists('show_player', $map) ? intval($map['show_player']) : 1,
                  array_key_exists('style', $map) ? intval($map['style']) : 1,
