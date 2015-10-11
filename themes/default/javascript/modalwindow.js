@@ -856,6 +856,8 @@ function ModalWindow()
 
 					container.appendChild(iframe);
 
+					animate_frame_load(iframe,'overlay_iframe',50);
+
 					window.setTimeout(function() { _this.add_event(_this.box_wrapper,'click',_this.clickout_finished); },1000);
 
 					this.add_event(iframe,'load',function() {

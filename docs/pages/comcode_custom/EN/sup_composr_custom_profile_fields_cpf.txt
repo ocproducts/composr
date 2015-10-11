@@ -31,8 +31,6 @@ We simply want to collect &ldquo;Location&rdquo; data so we can leave the &ldquo
 
 By far the best time to collect data is when the member joins your community so it's a good idea to check Show on the join form, it's also most likely that you want to collect this information so go ahead and check the Required Field checkbox too.
 
-[media thumb="0" description="Check for required field and show on the join form"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/9ccc7b2cc2d35921c9ee519afe5143c2.png[/media]
-
 Scroll to the bottom of the page and click to save.
 
 [title="2"]Dogs Name[/title]
@@ -52,8 +50,6 @@ Once again the type of information we want to collect is a simple string of text
 [media thumb="0" description="What type of information to collect"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/bb879ca888842e0524ddb4d9d71b0d2f.png[/media]
 
 Make sure you check required field and show on the join form.
-
-[media thumb="0" description="Set fields -- required and show on join form"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/4fd84ed62555fe56f2f4c46c39d3c900.png[/media]
 
 Scroll to the bottom of the form and click Add Custom Profile Field.
 
@@ -109,7 +105,7 @@ Click &ldquo;Add a Custom Profile Field&rdquo;
 
 Give it a &ldquo;Name&rdquo; -- &ldquo;Dogs gender&rdquo; and a description -- &ldquo;What sex is your dog?&rdquo;
 
-There are only two options (Male/Female); so let's use radio buttons in our joining form. For &ldquo;Type&rdquo; select &ldquo;A value chosen from a set of radio buttons&rdquo;.
+There are only two options (Male/Female); so let's use radio buttons in our joining form. For &ldquo;Type&rdquo; select &ldquo;A value chosen from a list&rdquo; and set the Field options to &ldquo;widget=radio&rdquo;.
 
 In the &ldquo;Default value&rdquo; type our two options [tt]Male|Female[/tt]. Don't forget to use the pipe separator.
 
@@ -121,7 +117,7 @@ Scroll to the bottom of the page and click Add Custom Profile Field.
 
 As you can see from the screenshot, Composr allows you to quickly create complex forms that force users to enter information thus creating a stronger community.
 
-[media thumb="1" width="900" description="View the finished signup form"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/39cb04d2b6a53fc054e5d8efa7410808.png[/media]
+[media thumb="0" description="View the finished signup form"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/39cb04d2b6a53fc054e5d8efa7410808.png[/media]
 
 Additionally, you can stipulate who will see the member information.
 

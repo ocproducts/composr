@@ -564,7 +564,8 @@ class Module_cms_wiki
         require_code('form_templates');
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
-        require_code('form_templates');
+        require_javascript('tree_list');
+
         $fields = new Tempcode();
         $fields->attach(form_input_text(do_lang_tempcode('CHILD_PAGES'), new Tempcode(), 'children', $children, false, null, true));
         $form = do_template('FORM', array('_GUID' => 'b908438ccfc9be6166cf7c5c81d5de8b', 'FIELDS' => $fields, 'URL' => $post_url, 'HIDDEN' => '', 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE'), 'SUPPORT_AUTOSAVE' => true));

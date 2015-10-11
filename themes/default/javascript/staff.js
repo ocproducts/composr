@@ -204,7 +204,7 @@ function local_page_caching(html)
 
 function contextual_css_edit()
 {
-	var spt=document.getElementById('special_page_type'),css_option,i,l,sheet;
+	var spt=document.getElementById('spacer_1'),css_option,i,l,sheet;
 	if (!spt) return;
 	var possibilities=find_css_sheets(window);
 	for (i=0;i<possibilities.length;i++)
@@ -217,7 +217,7 @@ function contextual_css_edit()
 			css_option.value=sheet+'.css';
 			css_option.id='opt_for_sheet_'+sheet;
 			if (find_active_selectors(sheet,window).length!=0)
-				spt.options[spt.options.length-1].parentNode.insertBefore(css_option,spt.options[spt.options.length-1]);
+				spt.appendChild(css_option);
 		}
 	}
 }

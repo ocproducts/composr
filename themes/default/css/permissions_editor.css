@@ -7,6 +7,14 @@
 	width: 3em;
 }
 
+.privileges .permission_field_name_column {
+	width: 25em;
+}
+
+.privileges th {
+	text-align: {!en_left};
+}
+
 .privileges td {
 	text-align: {!en_right};
 	vertical-align: middle;

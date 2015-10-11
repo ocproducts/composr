@@ -292,6 +292,8 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
                 }
                 if ($url_moniker != '') {
                     $url_moniker .= '/' . preg_replace('#^.*:#', '', $content_id);
+                } else {
+                    $url_moniker = null;
                 }
             } else {
                 $url_moniker = null;

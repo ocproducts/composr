@@ -6,7 +6,7 @@ There are so many ways to do so many things in Composr but knowing the quick rou
 
 Give the sub-forum a name and description leave grouping as General but in this case for the parent I want to select Composr templates because my sub-forum will be the child of this forum.
 
-[media thumb="1" width="900" description="Adding a sub-forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/f7cb8423f1b08dd908a73f26f14268e0.png[/media]
+[media thumb="1" description="Adding a sub-forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/f7cb8423f1b08dd908a73f26f14268e0.png[/media]
 
 [title="2"]Advanced settings[/title]
 
@@ -26,7 +26,7 @@ An interesting setting and I can see a use for it. I may not have time to respon
 
 Type in your text and ask your user to accept the conditions. In my case I ask the user to type YES to proceed. When a user first visits this part of the forum, they will have to type in [tt]YES[/tt].
 
-[media thumb="1" width="900" description="Adding an introductory question"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/470afb81ba8d30ec3bfc4ac2e7b7f45b.png[/media]
+[media thumb="1" description="Adding an introductory question"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/470afb81ba8d30ec3bfc4ac2e7b7f45b.png[/media]
 
 Ignoring everything else scroll down the page and click &ldquo;Add forum&rdquo;
 
@@ -34,15 +34,15 @@ Composr takes care of adding the sub-forum to your forum tree structure. It is p
 
 If you view the page for the first time the alert will show and users cannot proceed until they provide an answer to the question.
 
-[media thumb="1" width="900" description="Preview introductory question"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/ab2ef192aa7a47ed01e1e430057f74b5.png[/media]
+[media thumb="1" description="Preview introductory question"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/ab2ef192aa7a47ed01e1e430057f74b5.png[/media]
 
 Once the user has read the text and typed the answer, they will be able to see the forum.
 
-[media thumb="1" width="900" description="Viewing the sub-forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/dc8f52acbb69609dec15a0917bcf4267.png[/media]
+[media thumb="1" description="Viewing the sub-forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/dc8f52acbb69609dec15a0917bcf4267.png[/media]
 
 [title="2"]Showing the sub-forum[/title]
 
-[media thumb="1" width="900" description="Showing sub-forum under the main forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/d3b7b2f5169b53c7a9811916982030c7.png[/media]
+[media thumb="1" description="Showing sub-forum under the main forum"]data_custom/images/docs/sup_add_a_sub_forum_to_your_composr_forum/d3b7b2f5169b53c7a9811916982030c7.png[/media]
 
 By now, you should be well on your way to creating a great forum and the start of your community!
 

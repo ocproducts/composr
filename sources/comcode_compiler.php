@@ -116,7 +116,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
             return WYSIWYG_COMCODE__HTML;
         }
 
-        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (($attributes === null) || (array_diff(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
+        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (($attributes === null) || (array_intersect(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
             return WYSIWYG_COMCODE__HTML;
         }
     }

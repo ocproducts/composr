@@ -91,7 +91,7 @@ function get_staff_actions_list()
             if ($started_opt_group) {
                 $staff_actions .= '</optgroup>';
             }
-            $staff_actions .= '<optgroup label="' . (isset($text->codename)/*faster than is_object*/ ? $text->evaluate() : escape_html($text)) . '">';
+            $staff_actions .= '<optgroup id="' . escape_html($name) . '" label="' . (isset($text->codename)/*faster than is_object*/ ? $text->evaluate() : escape_html($text)) . '">';
             $started_opt_group = true;
             continue;
         }

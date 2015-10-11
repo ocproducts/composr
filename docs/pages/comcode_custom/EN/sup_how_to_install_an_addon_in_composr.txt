@@ -27,7 +27,6 @@ I wanted to talk about some of the non-bundled addons for Composr which I instal
 
 [b]Facebook[/b] and [b]Twitter support[/b] -- Allow your users to log in with Facebook and Twitter. For a site where you are asking user to sign up the Facebook addon is a must. There are a lot of draws on people's time and making it easier for users to sign up to your site the more likely they will sign up and interact with your Composr site.
 
-[media width="150" description="The getid3 addon at work" float="right"]data_custom/images/docs/sup_how_to_install_an_addon_in_composr/36a04289ae05a78386e70f56a160adf6.png[/media]
 [b]Getid3[/b] -- Getid3 is an addon which you won't need for every site but for sites where videos will be uploaded it can be invaluable. The Getid3 addon will automatically detect the width, height and length of video files when they are uploaded to the gallery.
 
 [b]Downloads follow up e-mails[/b] -- This addon adds follow-up e-mail functionality to the Composr Downloads module. If your site makes use of the downloads module this allows you to solicit feedback to enable you to improve what's offered where a user may not have left any before.

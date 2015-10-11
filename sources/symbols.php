@@ -1666,7 +1666,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
             $_displayed_title = $DISPLAYED_TITLE->evaluate();
         }
         if (($DISPLAYED_TITLE !== null) && (strip_tags($_displayed_title) != '')) {
-            $value = strip_html($_displayed_title);
+            $value = strip_html(preg_replace('#<a[^<>]*>.*</a>#U', '', $_displayed_title)); // The regexp is to remove possible FRACTIONAL_EDIT.tpl link
         } else {
             if ($ZONE !== null) {
                 $value = get_translated_text($ZONE['zone_header_text']);

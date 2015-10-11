@@ -13,9 +13,9 @@ I also wanted it so that you could not view the main forum pages any more.
 [title="2"]Basic outline[/title]
 
 The forum pages (modules) in Composr are:
- - forumview
- - topicview
- - topics
+ - [tt]forumview[/tt]
+ - [tt]topicview[/tt]
+ - [tt]topics[/tt]
 These are located in the forum zone.
 
 What I had to do was set up transparent redirects and virtual-root the forum modules for each of my zones. This gives the look to the user that the forum pages run separately. In actuality they do not run separately, but it is an effective illusion.

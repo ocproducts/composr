@@ -13,7 +13,7 @@ To set up the cron job you need to fill in all of the options. Depending on how 
 
 If you want the cron to run very minute put "*" in all of the boxes or choose the every 1 minute option in the common settings.
 
-[media width="150" description="Addin the Cronjob" float="right"]data_custom/images/docs/sup_setting_timed_content_for_composr_and_your_arvixe_web_hosting/12b04614d68047cd137a544f6a7574db.png[/media]
+[media width="150" description="Adding the Cronjob" float="right"]data_custom/images/docs/sup_setting_timed_content_for_composr_and_your_arvixe_web_hosting/12b04614d68047cd137a544f6a7574db.png[/media]
 The last part of this section of the tutorial is filling in the command box. In this box you need to tell cron to call the file which will tell Composr to check for scheduled content. In Composr the file is [tt]cron_bridge.php[/tt] and it is located in the data directory. So the command line will look something like this:
 [code="Bash"]
 php /home/ACCOUNTNAME/public_html/data/cron_bridge.php

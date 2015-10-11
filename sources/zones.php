@@ -372,9 +372,10 @@ function load_redirect_cache()
  * @param  ?string $dir2 The special subcategorisation of page we are looking for (e.g. 'EN' for a Comcode page) (null: none)
  * @param  string $ftype The file extension for the page type
  * @param  boolean $error Whether Composr should bomb out if the page was not found
+ * @param  boolean $check_redirects Whether to check against redirects
  * @return ?ID_TEXT The zone the page is in (null: not found)
  */
-function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype = 'php', $error = true)
+function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype = 'php', $error = true, $check_redirects = true)
 {
     $_zone = get_zone_name();
     $zone = $_zone;
@@ -404,7 +405,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
         }
     }
 
-    $check_redirects = (get_value('no_priority_redirects') !== '1');
+    $check_redirects = $check_redirects && (get_value('no_priority_redirects') !== '1');
 
     global $REDIRECT_CACHE;
     if ($check_redirects && $REDIRECT_CACHE === null) {

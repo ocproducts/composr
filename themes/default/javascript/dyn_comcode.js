@@ -58,7 +58,7 @@ function initialise_image_fader_html(data,v,k)
 function initialise_image_fader_image(data,v,k,mill,total)
 {
 	var period_in_msecs=50;
-	increment=3;
+	var increment=3;
 	if (period_in_msecs*100/increment>mill)
 	{
 		period_in_msecs=mill*increment/100;

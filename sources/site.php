@@ -825,8 +825,12 @@ function do_site()
     }
 
     // Warning if dev-mode is on
-    if ($GLOBALS['DEV_MODE']) {
-        attach_message(do_lang_tempcode('DEV_MODE_ON'), 'notice');
+    if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_hide_dev_mode_message', 0) == 0)) {
+        static $done_message = false;
+        if (!$done_message) {
+            attach_message(do_lang_tempcode('DEV_MODE_ON'), 'notice');
+            $done_message = true;
+        }
     }
 
     // Web Standards mode?

@@ -861,9 +861,10 @@ function catalogue_entries_manual_sort($fields, &$entries, $order_by, $direction
  * @param  boolean $breadcrumbs_details Whether to grab the breadcrumbs details
  * @param  ?integer $order_by Field index to order by (null: none)
  * @param  ?array $_breadcrumbs Write breadcrumbs into here (null: don't bother)
+ * @param  boolean $force_view_all Whether to render everything
  * @return array A map of information relating to the entry. The map contains 'FIELDS' (Tempcode for all accumulated fields), 'FIELD_x' (for each field x applying to the entry), STAFF_DETAILS, COMMENT_DETAILS, RATING_DETAILS, VIEW_URL, BREADCRUMBS
  */
-function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root = null, $fields = null, $only_fields = null, $feedback_details = false, $breadcrumbs_details = false, $order_by = null, &$_breadcrumbs = null)
+function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root = null, $fields = null, $only_fields = null, $feedback_details = false, $breadcrumbs_details = false, $order_by = null, &$_breadcrumbs = null, $force_view_all = false)
 {
     $id = $entry['id'];
     $all_visible = true;
@@ -933,7 +934,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         }
 
         // If the field should be shown, show it
-        if (($view_type == 'PAGE') || (($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH'))) {
+        if (($view_type == 'PAGE') || (($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH')) || ($force_view_all)) {
             // Different ways of accessing the main field value, and pure version of it
             $field_name = get_translated_text($field['cf_name']);
             //$map['FIELDNAME_'.$str_i]=$field_name;
@@ -956,7 +957,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
             $map['_FIELD_' . $str_id . '_PURE'] = &$map['FIELD_' . $str_i . '_PURE'];
 
             if (($field['cf_visible'] == 1) || ($i == 0)) {
-                if ((!$no_catalogue_field_assembly) || (!$feedback_details/*no feedback details implies wants all field data*/)) {
+                if ((!$no_catalogue_field_assembly) || (!$feedback_details/*no feedback details implies wants all field data*/) || ($force_view_all)) {
                     $f = array('ENTRYID' => strval($id), 'CATALOGUE' => $catalogue_name, 'TYPE' => $field['cf_type'], 'FIELD' => $field_name, 'FIELDID' => $str_i, '_FIELDID' => $str_id, 'FIELDTYPE' => $field_type, 'VALUE_PLAIN' => $ev, 'VALUE' => $use_ev);
                     if (!$no_catalogue_field_assembly_fieldmaps__this) {
                         if ((!$no_catalogue_field_assembly_fieldmaps) || (!$feedback_details/*no feedback details implies wants all field data [as is a category view]*/)) {

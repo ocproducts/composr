@@ -115,9 +115,9 @@
 			{+END}
 
 			{+START,IF,{$EQ,{DISPLAY_MODE},boxes}}
-				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} class="box"><div class="box_inner">
+				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}><div class="box"><div class="box_inner">
 					{BOX}
-				</div></div>
+				</div></div></div>
 
 				{+START,IF,{BREAK}}
 					<br />

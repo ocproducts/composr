@@ -243,17 +243,15 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
     foreach ($fields_to_show as $i => $field_to_show) {
         $member_value = $member_mappings['field_' . strval($field_to_show['id'])];
         if (!is_string($member_value)) {
-            if ($member_value === null) {
-                $member_value = '';
-            } elseif (is_float($member_value)) {
+            if (is_float($member_value)) {
                 $member_value = float_to_raw_string($member_value);
-            } else {
+            } elseif (!is_null($member_value)) {
                 $member_value = strval($member_value);
             }
         }
 
         // Decrypt the value if appropriate
-        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1)) {
+        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && (!is_null($member_value))) {
             require_code('encryption');
             if ((is_encryption_enabled()) && (post_param_string('decrypt', null) !== null)) {
                 $member_value = decrypt_data($member_value, post_param_string('decrypt'));
@@ -264,7 +262,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         list(, , $storage_type) = $ob->get_field_value_row_bits($field_to_show);
 
         if ($storage_type == 'short_trans' || $storage_type == 'long_trans') {
-            if (($member_value === null) || ($member_value == '0')) {
+            if (($member_value === null) || ((multi_lang_content()) && ($member_value == '0'))) {
                 $member_value_raw = '';
                 $member_value = ''; // This is meant to be '' for blank, not new Tempcode()
             } else {
@@ -276,6 +274,9 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
                 }
             }
         } else {
+            if ($member_value === null) {
+                $member_value = '';
+            }
             $member_value_raw = $member_value;
         }
 

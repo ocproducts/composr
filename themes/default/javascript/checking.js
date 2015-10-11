@@ -305,7 +305,7 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 	if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements))
 	{
 		window.setInterval(window.trigger_resize,500);  /* In case its running in an iframe itself */
-		animate_frame_load(pf,'preview_iframe',50);
+		illustrate_frame_load(pf,'preview_iframe',50);
 	}
 
 	disable_buttons_just_clicked(document.getElementsByTagName('input'));

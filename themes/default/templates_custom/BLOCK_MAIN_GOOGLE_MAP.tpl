@@ -137,7 +137,9 @@
 //]]></script>
 
 <section class="box box___block_main_google_map"><div class="box_inner">
-	<h3>{TITLE*}</h3>
+	{+START,IF_NON_EMPTY,{TITLE}}
+		<h3>{TITLE*}</h3>
+	{+END}
 
 	<div id="{DIV_ID*}" style="width:{WIDTH}; height:{HEIGHT}"></div>
 </div></section>

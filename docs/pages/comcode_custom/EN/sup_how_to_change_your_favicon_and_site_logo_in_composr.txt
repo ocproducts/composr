@@ -19,7 +19,7 @@ Actually the above was a simplification: nowadays favicons come in many sizes, a
 [*] Choose the Themes icon
 [*] Scroll to the theme you currently have live on your site
 [*] Choose Edit theme images
-[*] Choose General
+[*] Choose the section named after your site
 [*] Scroll down to Favicon and click on it
 [*] Choose and upload your image and click the save button
 [*] Check your Favicon is appearing correctly in the tab which displays your website

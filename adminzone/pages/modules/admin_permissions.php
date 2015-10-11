@@ -213,9 +213,9 @@ class Module_admin_permissions
                 $this->title = get_screen_title('PRIVILEGES');
             } else {
                 breadcrumb_set_parents(array(array('_SELF:_SELF:privileges', do_lang_tempcode('PRIVILEGES'))));
+                breadcrumb_set_self(do_lang_tempcode($p_section));
 
                 $this->title = get_screen_title('_PRIVILEGES', true, array(do_lang_tempcode($p_section)));
-                breadcrumb_set_self($p_section);
             }
         }
 
@@ -226,6 +226,7 @@ class Module_admin_permissions
             }
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:privileges', do_lang_tempcode('PRIVILEGES'))));
+            breadcrumb_set_self(do_lang_tempcode($p_section));
 
             $this->title = get_screen_title('PRIVILEGES');
         }

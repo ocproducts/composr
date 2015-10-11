@@ -1,6 +1,7 @@
 [title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Creating a Store Locator for Your Composr Website[/title]
 
-[media width="150" description="Catalogue field type choices" float="right"]data_custom/images/docs/sup_creating_a_store_locator_for_your_composr_website/dd7a698ac9d7b71854c6c3fa11676a8b.jpg[/media]
+[surround]
+[media width="150" description="Adding our Catalogue" float="right" thumb="1"]data_custom/images/docs/sup_creating_a_store_locator_for_your_composr_website/dd7a698ac9d7b71854c6c3fa11676a8b.png[/media]
 Composr has a huge number of possibilities available via its impressive choice of built in features. On top of the inbuilt features there is also a great range of additional optional features created by both the Composr team and other community members. One of these is DataMappr which makes adding a store locator to your website a simple process. A store locator is very useful for any retail business.
 
 [title="2"]Setting up the catalogue of stores[/title]
@@ -23,7 +24,7 @@ I will go through the minimum for creating a new catalogue for your store locato
 [*] On field 2 give it the title "Store information"
 [*] Set field 2 as multiple lines of text either with or without Comcode support. This is so you can fill in the information for the store
 [*] Leave the settings for field 2 as a brief line of text and to display in category views
-[*] For fields 3 and 4 these are the latitude and longitude fields for your stores. They should have one field for "Latitude" and one for "Longitude" and you probably want to untick (uncheck) the options to show on the catalogue list and also for in search.
+[*] For fields 3 and 4 these are the latitude and longitude fields for your stores. They should have one field for "Latitude" and one for "Longitude" and you probably want to untick (uncheck) the options to show on the category-views and also for in search.
 [*] Click the Add catalogue button once you are happy with all of the fields you have added.
 [/list]
 You now need to add entries for all of your stores including the Latitude and Longitude fields
@@ -43,7 +44,7 @@ The next part of the process is installing the addon and placing the block on th
 [/list]
 
 Navigate to the page where you want the store locator to appear.
-
+[/surround]
 You can either add the block using the Block construction assistant in which case you need the block [tt]main_google_map[/tt] or you can add the block manually in which case the code will look something like:
 [media width="150" description="Store locater box" float="right"]data_custom/images/docs/sup_creating_a_store_locator_for_your_composr_website/10cb8d619f53eb42fc1cd409461ba04a.jpg[/media]
 [code="Comcode"]

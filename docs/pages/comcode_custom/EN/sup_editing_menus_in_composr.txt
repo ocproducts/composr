@@ -23,11 +23,11 @@ Begin by adding a first branch. It's considered good practice to add the first l
 
 There is also an Advanced section which allows you to set tooltips when the menu item is hovered over, set menu images for the menu item and set match key restrictions.
 
+[media width="150" description="Choosing links from the Sitemap" float="right"]data_custom/images/docs/sup_editing_menus_in_composr/e4887d7c4a51e36c25ba6e827a0c6001.jpg[/media]
 To choose where the link is going you can either add a manual URL, add a manual page-link, or use the tree structure to select a link.
 
 For example to manually set a page-link to the start page in the [tt]music[/tt] zone we would enter [tt]music:start[/tt]. A [tt]news[/tt] page within the [tt]music[/tt] zone would be [tt]music:news[/tt]. To link to the Home page you can just use a colon ([tt]:[/tt]).
 
-[media width="150" description="Choosing links from the Sitemap" float="right"]data_custom/images/docs/sup_editing_menus_in_composr/e4887d7c4a51e36c25ba6e827a0c6001.jpg[/media]
 It is easiest though just to use the tree structure on the right of the page to select where the link should go to.
 
 Set the Options whether it opens in a new window and whether permissions should be checked. I tend to use the Check permissions option on most menu items in case I make a zone private in future as it will stop me having to edit the menu again.

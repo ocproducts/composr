@@ -2126,6 +2126,8 @@ class Module_admin_themes
             return $lang;
         }
 
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+
         $theme = get_param_string('theme', '');
         if ($theme == '') {
             return $this->choose_theme($this->title, true);

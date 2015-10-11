@@ -57,7 +57,7 @@ RewriteRule ^(site|forum|adminzone|cms|collaboration|ZONEA|ZONEB|ZONEC)/([^/\&\?
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
-[/code[
+[/code]
 You need to make sure every zone you have is added to the code or they will no longer work. Now test your zones to make sure they work ok. If there are any issues you can rename your [tt].htaccess[/tt] file within your FTP to return to your previous state.
 
 [box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]

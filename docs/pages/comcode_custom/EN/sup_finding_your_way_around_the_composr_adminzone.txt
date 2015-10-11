@@ -4,6 +4,7 @@ One of Composr's biggest strengths is its large amount of features. However, to 
 
 [title="2"]The Dashboard Screen[/title]
 
+[surround]
 [media width="150" description="Composr Admin Zone Checklist" float="right"]data_custom/images/docs/sup_finding_your_way_around_the_composr_adminzone/51450ad2199cca376519a1e96103ed32.png[/media]
 When the Admin Zone initially opens, you will be presented with the Dashboard screen. The Dashboard screen is a quick overview of your website. On this, you can set a number of reminders to help you keep on top of the necessary regular tasks you need to do to keep your website running smoothly.
 
@@ -16,6 +17,7 @@ In the right hand column, the first item is the status of the software and an up
 [title="2"]The Audit section[/title]
 
 The Audit section is probably one you won't use that often for your site, at least in the first stages. This section deals with a range of options from the error log on the site to potential security reports. There is also the information relating to quizzes and your quiz winners if you use it. I'll go into more detail about this section in another tutorial.
+[/surround]
 
 [title="2"]The Security section[/title]
 

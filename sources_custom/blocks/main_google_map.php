@@ -196,7 +196,8 @@ class Block_main_google_map
 
             // Make marker data JavaScript-friendly
             foreach ($entries_to_show as $i => $entry_row) {
-                $details = get_catalogue_entry_map($entry_row, $catalogue_row, 'CATEGORY', $catalogue_name, null/*,$only_fields*/);
+                $breadcrumbs = null;
+                $details = get_catalogue_entry_map($entry_row, $catalogue_row, 'CATEGORY', $catalogue_name, null, null, null, false, false, null, $breadcrumbs, true);
 
                 $latitude = $details[$_latitude_key];
                 $longitude = $details[$_longitude_key];

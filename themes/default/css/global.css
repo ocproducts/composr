@@ -578,7 +578,10 @@ header h1 {
 	padding: 2em 3em;
 	margin-bottom: 3em;
 	position: relative;
-	left: -0.8em;
+	left: -0.8em; /* So is flush to borders, undoes page padding */
+}
+#wysiwyg_editor .hero_section {
+	left: 0;
 }
 .hero_section h1 {
 	font-size: 2.6em;
@@ -590,7 +593,7 @@ header h1 {
 .hero_section * {
 	margin-top: 0;
 }
-.hero_section .hero_button a:visited, .hero_section .hero_button a:link, .hero_section .hero_button a:active, .hero_section .hero_button a:hover {
+.hero_section .hero_button a:visited, .hero_section .hero_button a:link, .hero_section .hero_button a:active, .hero_section .hero_button a:hover, .hero_section .hero_button a.user_link:link, .hero_section .hero_button a.user_link:active, .hero_section .hero_button a.user_link:hover {
 	text-decoration: none;
 	padding: 0.5em !important;
 	background-image: none !important; /* Will be overridden below if linear-gradient supported by browser */
@@ -1916,6 +1919,9 @@ table.scrollable_inside {
 	border-spacing: 0;
 	margin: 1em 0;
 }
+.lined_up_boxes .results_table {
+	margin-top: 0;
+}
 .wide_table_wrap>.results_table {
 	margin: 0; /* As overflow would cause margin doubling */
 }
@@ -2074,23 +2080,21 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	color: {$GET,a.link} !important;
 	text-decoration: underline !important;
 }
-.tooltip_fields {
+.tooltip .tooltip_fields {
 	font-size: 0.85em;
 	display: inline-block;
 	border-spacing: 0;
 }
-.tooltip_fields table {
+.tooltip .tooltip_fields table {
 	border-collapse: collapse;
 }
-.tooltip_fields th {
+.tooltip .tooltip_fields th {
 	border-right: 1px solid {$GET,dark_border};
 	font-weight: bold !important;
 	padding-right: 1em;
-}
-.tooltip .tooltip_fields th {
 	white-space: nowrap;
 }
-.tooltip_fields td {
+.tooltip .tooltip_fields td {
 	padding-left: 1em;
 	min-width: 18em;
 }
@@ -3163,7 +3167,7 @@ input.magic_image_edit_link {
 	background-image: none !important;
 }
 
-.button_micro, .button_screen, .button_screen_item, .hero_section .hero_button a {
+.button_micro, .button_screen, .button_screen_item, .hero_section .hero_button a, body .hero_section .hero_button>a.user_link {
 	display: inline-block;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	border: 1px solid {$GET,dark_border};

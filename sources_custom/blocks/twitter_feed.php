@@ -58,6 +58,8 @@ class Block_twitter_feed
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        safe_ini_set('ocproducts.type_strictness', '0');
+
         // Set up variables from parameters
         $api_key = array_key_exists('consumer_key', $map) ? $map['consumer_key'] : '';
         $api_secret = array_key_exists('consumer_secret', $map) ? $map['consumer_secret'] : '';
@@ -81,13 +83,13 @@ class Block_twitter_feed
             $twitter_tempstyle = '_' . $twitter_tempstyle;
         }
         $twitter_templatestyle = 'BLOCK_TWITTER_FEED_STYLE' . $twitter_tempstyle;
-        $twitter_maxstatuses = array_key_exists('max_statuses', $map) ? $map['max_statuses'] : '10';
-        $twitter_showprofileimage = array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1';
-        $twitter_followbuttonsize = array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1';
-        $twitter_style = array_key_exists('style', $map) ? $map['style'] : '1';
+        $twitter_maxstatuses = array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10;
+        $twitter_showprofileimage = array_key_exists('show_profile_image', $map) ? intval($map['show_profile_image']) : 1;
+        $twitter_followbuttonsize = array_key_exists('follow_button_size', $map) ? intval($map['follow_button_size']) : 1;
+        $twitter_style = array_key_exists('style', $map) ? intval($map['style']) : 1;
         $twitter_url = 'http://www.twitter.com/' . $twitter_name;
-        $twitter_logocolorparam = array_key_exists('twitter_logo_color', $map) ? $map['twitter_logo_color'] : '1';
-        $twitter_logosizeparam = array_key_exists('twitter_logo_size', $map) ? $map['twitter_logo_size'] : '2';
+        $twitter_logocolorparam = array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1;
+        $twitter_logosizeparam = array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2;
         $twitter_error = '';
 
         // Sanitize the input - be sure some key values are in range

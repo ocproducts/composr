@@ -30,7 +30,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     public $protect_first = 1;
     public $archive_entry_point = '_SEARCH:forumview';
     public $archive_label = 'SECTION_FORUMS';
-    public $view_entry_point = '_SEARCH:forumview:_ID';
+    public $view_entry_point = '_SEARCH:forumview:id=_ID';
     public $special_edit_frontend = true;
     public $privilege_page = 'topics';
     public $permission_module = 'forums';
@@ -546,7 +546,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_integer('position'), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('order'), post_param_integer('is_threaded', 0)));
 
-        set_url_moniker('forum', strval($id));
+        set_url_moniker('forum', $id);
 
         // Warning if there is full access to this forum, but not to the parent
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();

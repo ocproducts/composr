@@ -1,6 +1,6 @@
 <script src="http://www.google.com/jsapi"></script>
 <script>// <![CDATA[
-	var marker,map;
+	var marker,map,last_point;
 	function google_map_users_initialize()
 	{
 		marker=new google.maps.Marker();
@@ -38,9 +38,8 @@
 		{+END}
 
 		{$,Save into hidden fields}
-		var lastPoint;
 		google.maps.event.addListener(map, 'mousemove', function(point) {
-			lastPoint=point.latLng;
+			last_point=point.latLng;
 		});
 		google.maps.event.addListener(map, 'click', _place_marker);
 		google.maps.event.addListener(marker, 'click', _place_marker);
@@ -48,9 +47,9 @@
 
 	function _place_marker()
 	{
-		document.getElementById('{NAME;/}_latitude').value=lastPoint.lat();
-		document.getElementById('{NAME;/}_longitude').value=lastPoint.lng();
-		place_marker(lastPoint.lat(),lastPoint.lng());
+		document.getElementById('{NAME;/}_latitude').value=last_point.lat();
+		document.getElementById('{NAME;/}_longitude').value=last_point.lng();
+		place_marker(last_point.lat(),last_point.lng());
 		marker.setMap(map);
 	}
 

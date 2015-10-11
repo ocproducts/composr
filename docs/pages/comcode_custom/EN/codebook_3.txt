@@ -505,6 +505,7 @@ We have the following which are either unlikely to be useful, or potentially uns
 The 'keep' parameters available are:
  - [tt]keep_cache[/tt] -- set to '1' to temporarily enable caching or '0' to temporarily disable. You can also use [tt]cache[/tt] so it works on a per-page basis, with the exception of this not affecting the template and language caching.
  - [tt]keep_no_dev_mode[/tt] -- set to '1' to disable development mode (which only runs if you're working out of a subversion repository anyway)
+ - [tt]keep_hide_dev_mode_message[/tt] -- set to '1' if you don't want the "Dev-mode is on" message to show if dev-mode is on (maybe you're taking screenshots?)
  - [tt]keep_no_ext_check[/tt] -- set to '1' to force the webstandards checker to not check dependency files
  - [tt]keep_force_htaccess[/tt] -- set to '1' to force the Conversr login to go via htauth in precedence over other login methods (e.g. login cookies, sessions)
  - [tt]keep_textonly[/tt] -- set to '1' if the 'text only' stylesheet is to be used

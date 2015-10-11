@@ -139,7 +139,7 @@ class Block_main_news
 
         // Filtercode
         if ($filter != '') {
-            require_code('filter');
+            require_code('filtercode');
             $content_type = 'news';
             list($filter_extra_select, $filter_extra_join, $filter_extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filter), $content_type, '');
             $extra_select_sql = implode('', $filter_extra_select);

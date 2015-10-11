@@ -40,12 +40,15 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
     $special_page_type = get_param_string('special_page_type', 'view');
 
     foreach ($ATTACHED_MESSAGES_RAW as $message) {
-        $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
-            'r_session_id' => get_session_id(),
-            'r_message' => is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]),
-            'r_type' => $message[1],
-            'r_time' => time(),
-        ));
+        $_message = is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]);
+        if ($_message != '' && $_message != do_lang('_REDIRECTING')) {
+            $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
+                'r_session_id' => get_session_id(),
+                'r_message' => $_message,
+                'r_type' => $message[1],
+                'r_time' => time(),
+            ));
+        }
     }
 
     // Even if we have $FORCE_META_REFRESH we want to relay $text if provided --- our delay is zero so it won't be read in time by most users
