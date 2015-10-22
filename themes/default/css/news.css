@@ -127,15 +127,3 @@
 	bottom: 0;
 	position: absolute;
 }
-
-/*
-=========================
-=======Print rules=======
-=========================
-*/
-
-@media print {
-	#news_archive_link {
-		display: none;
-	}
-}

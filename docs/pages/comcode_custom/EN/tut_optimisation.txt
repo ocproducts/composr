@@ -233,9 +233,14 @@ If getting Composr search to work well does not seem feasible, there is a simple
 
 If you have outgrown normal shared hosting / a single VPS or server, you can do a cloud deployment of Composr, and there are a few options:
 1) Composr runs perfectly on Rackspace Cloud Sites hosting, where you can set up quite large instances (we have been told that behind-the-scenes there is database replication, to share database load).
-2) You can run on Amazon Cloud Server Instances (or pretty much any cloud service that supports custom images, or PHP). There is a Composr Bitnami image for easy installation on Amazon's infrastructure. Bitnami also provide their own Amazon-based hosting service. If you want to use multiple instances you will need to set up your own MySQL replication and file-synching, but Composr does have support for it (see "Server farms"). There are some solutions to auto-scale out cloud instances, although many companies handle it manually.
+2) You can run on Amazon EC2 Instances (or pretty much any cloud service that supports custom images, or PHP). There is a Composr Bitnami image for easy installation on Amazon's infrastructure. Bitnami also provide their own Amazon-based hosting service. If you want to use multiple instances you will need to set up your own MySQL replication and file-synching, but Composr does have support for it (see "Server farms"). There are some solutions to auto-scale out cloud instances, although many companies handle it manually.
 3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this, and you could use HHVM for great performance. This is similar to Facebook's infrastructure and a very challenging option, but perhaps the best from a huge-scale cost perspective.
 4) You can use Google App Engine, to get automated scaling, with a tradeoff that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine tutorial[/page]. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
+
+[title="3"]Amazon EC2[/title]
+
+Composr does quite a lot of disk space when checking for installed files, etc (much more than a traditional hard-coded custom application would need to do).
+Because of this we recommend using 'magnetic' rather than 'SSD' storage, because SSD storage on Amazon's infrastructure has extremely very low IOPS allowances (presumably so that their internal bandwidth is used for very-fast burst reads/writes from/to fast SSD rather than more regular reads/writes).
 
 [title="2"]Other optimisations[/title]
 

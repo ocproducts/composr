@@ -73,6 +73,13 @@ WCAG cannot be met by scanning alone. In particular, some manual checks are requ
  - Ensure that all information conveyed with color is also available without color, for example from context or markup.
  - <blockquote> not used for non-quoting
 
+CSS
+---
+
+Useful checks we don't do that other tools may do:
+ - Warning if 'display' and 'float' used together ('display' would be ignored in most contexts) (REASON: it might be used to undo something like display:none inherited from somewhere else)
+This is a useful tool that does more checks: http://www.dirtymarkup.com/
+
 Spellcheck
 ----------
 
@@ -172,6 +179,8 @@ Relationship with Composr
 --------------------------
 
 Some files, such as phpstub.php, and webstandards_js_lint.php, come from Composr. Composr contains the latest versions of these files, the CQC is updated separately as required.
+
+Update: As of the time of writing we have decided just to fully integrate the CQC as a component of Composr, as we want to streamline development and do more-opinionated checks. Quality standards chosen and enforced are very Composr-centric now.
 
 PHP: handling of return values
 ------------------------------

@@ -768,8 +768,7 @@ hr.cns_sig_barrier {
 	.box___block_main_bottom_bar,
 	.box__members_viewing,
 	.cns_buttons_screen,
-	.cns_topic_marker,
-	.cns_member_signature .comcode_hide {
+	.cns_topic_marker {
 		display: none;
 	}
 }

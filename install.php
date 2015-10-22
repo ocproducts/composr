@@ -1199,8 +1199,9 @@ function step_5()
         require_code('comcode');
         require_code('themes');
 
-        $log->attach(step_5_checks());
+        $log->attach(step_5_checks_a());
         $log->attach(step_5_write_config());
+        $log->attach(step_5_checks_b());
         $log->attach(step_5_uninstall());
         $log->attach(step_5_core());
         include_cns();
@@ -1534,7 +1535,7 @@ function step_5_ftp()
  *
  * @return Tempcode Progress report / UI
  */
-function step_5_checks()
+function step_5_checks_a()
 {
     $log = new Tempcode();
 
@@ -1566,6 +1567,31 @@ function step_5_checks()
     }
 
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'e2daeaa9060623786decb008289068da', 'SOMETHING' => do_lang_tempcode('FILE_PERM_GOOD'))));
+
+    return $log;
+}
+
+/**
+ * Fifth installation step: sanity checks (after config written).
+ *
+ * @return Tempcode Progress report / UI
+ */
+function step_5_checks_b()
+{
+    $log = new Tempcode();
+
+    // MySQL check (could not be checked earlier due to lack of active connection)
+    $hooks = find_all_hooks('systems', 'checks');
+    foreach (array_keys($hooks) as $hook) {
+        if ($hook == 'mysql') {
+            require_code('hooks/systems/checks/' . filter_naughty($hook));
+            $ob = object_factory('Hook_check_' . $hook);
+            $warning = $ob->run();
+            foreach ($warning as $_warning) {
+                $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('SOMETHING' => do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)))));
+            }
+        }
+    }
 
     return $log;
 }

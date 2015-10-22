@@ -30,6 +30,10 @@ function cns_list_multi_moderations($forum_id)
         return array();
     }
 
+    if (is_null($forum_id)) {
+        return array();
+    }
+
     $rows = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('*'), null, 'ORDER BY ' . $GLOBALS['FORUM_DB']->translate_field_ref('mm_name'));
     $out = array();
     if (count($rows) == 0) {

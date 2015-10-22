@@ -172,7 +172,7 @@ tt, kbd, samp {
 	font-size: 1.15em;
 }
 
-abbr, acronym {
+abbr {
 	border-bottom: 1px dotted; /* For Safari, which does not have it by default */
 }
 
@@ -1876,11 +1876,6 @@ table.scrollable_inside {
 	table-layout: fixed; /* For permission setting stuff that can scroll off */
 }
 
-.centered_table_contents th, .centered_table_contents td {
-	vertical-align: middle;
-	text-align: center;
-}
-
 .wide_table_wrap {
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -2156,7 +2151,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_launcher .first-child {
 	border-left: 1px solid {$GET,standard_border};
 }
-.pagination a:hover, .results_launcher a:hover, .pagination a.button_depressed {
+.pagination a:hover, .results_launcher a:hover {
 	background-color: {$GET,area_hover_2_background} !important;
 }
 
