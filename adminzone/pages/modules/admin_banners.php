@@ -164,7 +164,7 @@ class Module_admin_banners
             $views_to = ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to'])));
 
             if ($myrow['views_to'] != 0) {
-                $click_through = protect_from_escaping(escape_html(integer_format(intval(round(100.0 * ($myrow['hits_to'] / $myrow['views_to'])))) . '%'));
+                $click_through = protect_from_escaping(escape_html(float_format(round(100.0 * ($myrow['hits_to'] / $myrow['views_to']))) . '%'));
             } else {
                 $click_through = do_lang_tempcode('NA_EM');
             }

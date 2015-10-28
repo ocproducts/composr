@@ -1277,7 +1277,7 @@ function imagealphablending($image, $blendmode)
  * @param  integer $red Red component (0-255).
  * @param  integer $green Green component (0-255).
  * @param  integer $blue Blue component (0-255).
- * @return integer Combined colour identifier.
+ * @return ~integer Combined colour identifier (false: could not allocate).
  */
 function imagecolorallocate($image, $red, $green, $blue)
 {

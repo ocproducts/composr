@@ -107,6 +107,8 @@ function _symbol_thumbnail($param)
     // option: An extra option if desired. If type is "pad" then this can be a hex colour for the padding
     // only_make_smaller: Whether to avoid growing small images to fit (smaller images are better for the Web). One of 0 (false) or 1 (true)
 	if (!empty($param[0])) {
+        disable_php_memory_limit();
+
         $only_make_smaller = isset($param[8]) ? ($param[8] == '1') : false;
         $orig_url = $param[0]; // Source for thumbnail generation
         if (url_is_local($orig_url)) {

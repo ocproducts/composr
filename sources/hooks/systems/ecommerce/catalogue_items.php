@@ -465,12 +465,12 @@ class Hook_ecommerce_catalogue_items
                 array(
                     $product_image,
                     $product_link,
-                    $currency . escape_html(float_format(round($entry["price"], 2))),
+                    $currency . escape_html(float_format($entry['price'], 2)),
                     $edit_qnty,
                     $currency . escape_html(float_format($order_price)),
-                    $currency . escape_html(float_format(round($total_tax, 2))),
-                    $currency . escape_html(float_format(round($total_shipping, 2))),
-                    $currency . escape_html(float_format(round($price, 2))),
+                    $currency . escape_html(float_format($total_tax, 2)),
+                    $currency . escape_html(float_format($total_shipping, 2)),
+                    $currency . escape_html(float_format($price, 2)),
                     $del_item
                 ), false, $tpl_set
             )

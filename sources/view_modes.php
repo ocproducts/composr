@@ -957,7 +957,7 @@ function attach_message_memory_usage(&$messages_bottom)
         $messages_bottom->attach(do_template('MESSAGE', array(
             '_GUID' => 'd605c0d111742a8cd2d4ef270a1e5fe1',
             'TYPE' => 'inform',
-            'MESSAGE' => do_lang_tempcode('MEMORY_USAGE', escape_html(float_format(round(floatval($memory_usage) / 1024.0 / 1024.0, 2)))),
+            'MESSAGE' => do_lang_tempcode('MEMORY_USAGE', escape_html(float_format(floatval($memory_usage) / 1024.0 / 1024.0, 2))),
         )));
     }
 }

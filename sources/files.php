@@ -115,19 +115,19 @@ function clean_file_size($bytes)
         return strval(intval(round(floatval($bytes) / 1024.0 / 1024.0 / 1024.0))) . ' GB';
     }
     if (floatval($bytes) > 1024.0 * 1024.0 * 1024.0) {
-        return float_format(round(floatval($bytes) / 1024.0 / 1024.0 / 1024.0, 2)) . ' GB';
+        return float_format(floatval($bytes) / 1024.0 / 1024.0 / 1024.0, 2) . ' GB';
     }
     if (floatval($bytes) > 2.0 * 1024.0 * 1024.0) {
         return strval(intval(round(floatval($bytes) / 1024.0 / 1024.0))) . ' MB';
     }
     if (floatval($bytes) > 1024.0 * 1024.0) {
-        return float_format(round(floatval($bytes) / 1024.0 / 1024.0, 2)) . ' MB';
+        return float_format(floatval($bytes) / 1024.0 / 1024.0, 2) . ' MB';
     }
     if (floatval($bytes) > 2.0 * 1024.0) {
         return strval(intval(round(floatval($bytes) / 1024.0))) . ' KB';
     }
     if (floatval($bytes) > 1024.0) {
-        return float_format(round(floatval($bytes) / 1024.0, 2)) . ' KB';
+        return float_format(floatval($bytes) / 1024.0, 2) . ' KB';
     }
     return strval($bytes) . ' Bytes';
 }

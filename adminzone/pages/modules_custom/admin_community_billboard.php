@@ -207,7 +207,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id']));
 
             $activation_time = $row['activation_time'];
-            $days = is_null($activation_time) ? '' : float_format(round((time() - $activation_time) / 60 / 60 / 24, 3));
+            $days = is_null($activation_time) ? '' : float_format(floatval(time() - $activation_time) / 60.0 / 60.0 / 24.0, 3);
 
             $fields->attach(results_entry(array(protect_from_escaping(get_translated_tempcode('community_billboard', $row, 'the_message')), integer_format($row['days']), get_timezoned_date($row['order_time']), ($row['active_now'] == 1) ? $days : do_lang_tempcode('NA_EM'), $username, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }

@@ -215,6 +215,28 @@ Adding the new square banner using a rotation:
  5_key="Banner"               5_value="An advertising banner"
 ]Concepts[/concepts]
 
+[title="2"]Suggested advertisers[/title]
+
+Here are some ideas of where to source ads from:
+ - Contextual CPC/CPM-style advertising
+  - Google adsense
+  - Bing ads
+ - Paid Placement
+  - BuySellAds
+  - Commission Junction
+  - Avantlink
+  - Google adsense
+ - Affiliate advertising (networks)
+  - Commission Junction
+  - Avantlink
+  - Rakuten
+  - Linkshare
+  - Shareasale
+  - Clickbank
+ - Affiliate advertising (direct)
+   - Amazon
+ - Your own "advertise here" banner, directly attracting advertisers to contact you
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points[/page]

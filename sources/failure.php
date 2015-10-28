@@ -1029,7 +1029,9 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
         (strpos($text, 'Search: Operations error') === false) && // LDAP error, misconfiguration
+        (strpos($text, 'Can\'t contact LDAP server') === false) && // LDAP error, network issue
         (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free web hosts
+        (strpos($text, 'failed with: Connection refused') === false) && // Memcache error
         (strpos($text, 'data/commandr.php') === false) &&
         (strpos($text, '.less problem') === false) &&
         (strpos($text, '/mini') === false) &&
@@ -1059,6 +1061,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Incorrect string value') === false) &&
         (strpos($text, 'Can\'t create/write to file') === false) &&  // MySQL
         (strpos($text, 'Error writing file') === false) && // E.g. cannot PHP create a temporary file
+        (strpos($text, 'possibly out of free disk space') === false) && 
         (strpos($text, 'Illegal mix of collations') === false) &&
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
         (strpos($text, 'connect to') === false) &&

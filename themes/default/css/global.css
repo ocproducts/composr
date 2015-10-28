@@ -3744,6 +3744,7 @@ a.tab, a.tab:visited, a.tab:hover {
 	height: 23px;
 	text-align: center;
 	cursor: pointer;
+	line-height: 1em;
 	{$BETA_CSS_PROPERTY,opacity: 0.6;}
 	/*{+START,IF,{$MOBILE}}*/
 		min-width: 85px; /* Allows 3 per row, neat alignment */

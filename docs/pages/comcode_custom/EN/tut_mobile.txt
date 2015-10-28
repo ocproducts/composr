@@ -48,7 +48,20 @@ To activate the feature you need to put this in your [tt]themes/<themename>/them
 mobile_pages=forumview,topicview,topics,vforums
 [/code]
 This particular example enables mobile support just on the forum pages.
-On devices like iPhones or Android, it still works if mobile mode is not enabled, it just uses zoom. Mobile mode is much nicer of course.
+
+On devices like iPhones or Android, desktop mode still works, it just uses zoom like any website not optimised for mobile would. Mobile mode is much nicer of course.
+
+[title="3"]Advanced[/title]
+
+You can also use regular expressions. If the expression passes, then mobile mode will be used. For example:
+[code="INI"]
+mobile_pages=#:(?!.*(foo|bar)).*$#
+[/code]
+This will make all pages use mobile-mode except 'foo' and 'bar' in any zone.
+It's a complex example. It's not front-bound (no [tt]^[/tt] at the start) hence why any zone works.
+The black-listed pages are specified within a single "negative forward assertion".
+
+Any regular expression will work, this is just an example. Composr recognises a regular expression by the surrounding [tt]#[/tt] symbols.
 
 [title="2"]Mobile mode themeing[/title]
 
@@ -121,6 +134,11 @@ There is an official Composr addon (non-bundled) for implementing Tapatalk suppo
 [concepts
  1_key="Responsive design"   1_value="A powerful technique to allow web page layout to reflow for devices of different sizes."
 ]Concepts[/concepts]
+
+[title="2"]Smart app banners[/title]
+
+If you have an iPhone app too, you can promote that up using [url="smart app banners"]https://developer.apple.com/library/prerelease/ios/documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html[/url].
+It's not specifically a Composr feature, but can be enabled via putting the appropriate tag into your [tt]HTML_HEAD.tpl[/tt] template.
 
 [title="2"]See also[/title]
 

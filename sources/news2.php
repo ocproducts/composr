@@ -308,6 +308,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     $id = $GLOBALS['SITE_DB']->query_insert('news', $map, true);
 
     if (!is_null($news_categories)) {
+        $news_categories = array_unique($news_categories);
         foreach ($news_categories as $i => $value) {
             if ((is_null($value)) && (!$already_created_personal_category)) {
                 $map = array(

@@ -24,6 +24,7 @@ global3.php contains further support functions, which are shared between the ins
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__global3()
@@ -2260,8 +2261,10 @@ function is_mobile($user_agent = null, $truth = false)
     }
 
     if ((!function_exists('get_option')) || (get_option('mobile_support') == '0')) {
-        $IS_MOBILE_CACHE = false;
-        $IS_MOBILE_TRUTH_CACHE = false;
+        if (function_exists('get_option')) {
+            $IS_MOBILE_CACHE = false;
+            $IS_MOBILE_TRUTH_CACHE = false;
+        }
         return false;
     }
 
@@ -2275,9 +2278,18 @@ function is_mobile($user_agent = null, $truth = false)
         if (is_file($ini_path)) {
             require_code('files');
             $details = better_parse_ini_file($ini_path);
-            if ((!empty($details['mobile_pages'])) && (preg_match('#(^|,)\s*' . preg_quote(get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) && (preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0)) {
-                $IS_MOBILE_CACHE = false;
-                return false;
+            if (!empty($details['mobile_pages'])) {
+                if (substr($details['mobile_pages'], 0, 1) == '#' && substr($details['mobile_pages'], -1) == '#') {
+                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . get_page_name()) == 0) {
+                        $IS_MOBILE_CACHE = false;
+                        return false;
+                    }
+                } else {
+                    if (preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_zone_name() . ':' . get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0) {
+                        $IS_MOBILE_CACHE = false;
+                        return false;
+                    }
+                }
             }
         }
     }
@@ -2285,11 +2297,15 @@ function is_mobile($user_agent = null, $truth = false)
     if (!$user_agent_given) {
         $val = get_param_integer('keep_mobile', null);
         if ($val !== null) {
+            $result = ($val == 1);
             if (isset($GLOBALS['FORUM_DRIVER'])) {
-                $IS_MOBILE_CACHE = ($val == 1);
+                if ($truth) {
+                    $IS_MOBILE_TRUTH_CACHE = $result;
+                } else {
+                    $IS_MOBILE_CACHE = $result;
+                }
             }
-            $IS_MOBILE_TRUTH_CACHE = $IS_MOBILE_CACHE;
-            return $IS_MOBILE_CACHE;
+            return $result;
         }
     }
 
@@ -2338,8 +2354,11 @@ function is_mobile($user_agent = null, $truth = false)
     $result = (preg_match('/(' . implode('|', $browsers) . ')/i', $user_agent) != 0) && (preg_match('/(' . implode('|', $exceptions) . ')/i', $user_agent) == 0);
     if (!$user_agent_given) {
         if (isset($GLOBALS['FORUM_DRIVER'])) {
-            $IS_MOBILE_CACHE = $result;
-            $IS_MOBILE_CACHE_TRUTH_CACHE = $IS_MOBILE_CACHE;
+            if ($truth) {
+                $IS_MOBILE_TRUTH_CACHE = $result;
+            } else {
+                $IS_MOBILE_CACHE = $result;
+            }
         }
     }
     return $result;

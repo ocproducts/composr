@@ -80,7 +80,7 @@ foreach (array_keys($themes) as $theme) {
                 ) {
                     $contents = file_get_contents($dir . '/' . $f);
 
-                    if (substr($f, -4) != '.css') {
+                    if (substr($f, -4) != '.css' || !$do_checks) {
                         $non_css_contents .= $contents;
                     }
 
@@ -140,7 +140,7 @@ foreach (array_keys($themes) as $theme) {
 
         ksort($selectors);
         foreach (array_keys($selectors) as $selector) {
-            if (strpos($non_css_contents, $selector) === false) {
+            if (strpos($non_css_contents, $selector) === false && preg_match('#^(page|zone)_running_#', $selector) == 0) {
                 echo '<br />Possibly unused CSS selector: ' . escape_html($selector);
             }
         }

@@ -448,7 +448,7 @@ class Module_banners
         }
 
         if ($myrow['views_to'] != 0) {
-            $click_through = protect_from_escaping(escape_html(float_format(round(100.0 * ($myrow['hits_to'] / $myrow['views_to'])))));
+            $click_through = protect_from_escaping(escape_html(float_format(round(100.0 * ($myrow['hits_to'] / $myrow['views_to']))) . '%'));
         } else {
             $click_through = do_lang_tempcode('NA_EM');
         }
