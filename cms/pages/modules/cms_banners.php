@@ -482,7 +482,7 @@ class Module_cms_banners extends Standard_crud_module
         }
 
         if (addon_installed('content_reviews')) {
-            content_review_set('banner', $this->id, $id);
+            content_review_set('banner', $new_id, $id);
         }
     }
 
@@ -690,7 +690,7 @@ class Module_cms_banners_cat extends Standard_crud_module
         $this->new_id = post_param_string('new_id');
 
         if (addon_installed('content_reviews')) {
-            content_review_set('banner_type', $this->new_id, $id);
+            content_review_set('banner_type', $new_id, $id);
         }
 
         return do_lang_tempcode('ADD_BANNER_TEMPLATING');

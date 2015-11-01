@@ -48,14 +48,16 @@ To integrate this page as [tt]site:mypage[/tt], the following steps would need t
 
 [title="3"]The magical way[/title]
 
-Composr can actually handle most things for you if you want to defer control to it:
- - Copy any [tt].htm[/tt] files into the [tt]pages/html_custom/EN/[/tt] directory ([tt].html[/tt] files should be renamed to [tt].htm[/tt] files)
-  - [i]Unless[/i] the file is meant to be located in a subdirectory and Composr has a zone with the same name as that subdirectory. In this case, you'd place it in the equivalent directory of that zone so that Composr can better automatically rewrite any links to the page:
-	- For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named [tt]example[/tt]. Put the file in [tt]example/pages/html_custom/EN/[/tt]
-	- If the directories go more than one level deep, Composr will translate [tt]/[/tt] to [tt]_[/tt] when matching against a zone name (e.g. [tt]site/more[/tt] would be considered a zone named [tt]site_more[/tt])
- - Copy any non-.htm files (images, etc) into [tt]uploads/website_specific[/tt]
- - Your pages should then show up as normal Composr entry-points in the menu editor
- - Go through the pages in Composr to find any broken links and adjust them so that they work. Composr can't perfectly fix your links for you every-time, but it does do a pretty good job. Read on for more information how link rewriting works.
+Composr can actually handle most things for you if you want to defer control to it:[list="1"]
+[*] Copy any [tt].htm[/tt] files into the [tt]pages/html_custom/EN/[/tt] directory ([tt].html[/tt] files should be renamed to [tt].htm[/tt] files)[list]
+ [*][i]Unless[/i] the file is meant to be located in a subdirectory and Composr has a zone with the same name as that subdirectory. In this case, you'd place it in the equivalent directory of that zone so that Composr can better automatically rewrite any links to the page:[list]
+  [*] For example, don't upload [tt]pages/html_custom/EN/example/test.htm[/tt] if you have a zone named [tt]example[/tt]. Put the file in [tt]example/pages/html_custom/EN/[/tt]
+  [*] If the directories go more than one level deep, Composr will translate [tt]/[/tt] to [tt]_[/tt] when matching against a zone name (e.g. [tt]site/more[/tt] would be considered a zone named [tt]site_more[/tt])
+[/list][/list]
+[*] Copy any non-.htm files (images, etc) into [tt]uploads/website_specific[/tt]
+[*] Your pages should then show up as normal Composr entry-points in the menu editor
+[*] Go through the pages in Composr to find any broken links and adjust them so that they work. Composr can't perfectly fix your links for you every-time, but it does do a pretty good job. Read on for more information how link rewriting works.
+[/list]
 
 Composr link alternation works by replacing simple patterns to local relative links. For example, a link [tt]site/mypage.htm[/tt] would go to the Composr [tt]site:mypage[/tt] entry point. If the [tt]mypage.htm[/tt] file had been correctly copied to [tt]pages/html_custom/EN/[/tt] then Composr would actually load it up as intended.
 A link [tt]mypage.htm[/tt] would go to the Composr [tt]:mypage[/tt] entry point.

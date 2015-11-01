@@ -91,11 +91,11 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     }
     fwrite($myfile, $sheet);
     @flock($myfile, LOCK_UN);
-    fclose($myfile);
-    fix_permissions($temp_file);
 
     // Load up as Tempcode
     $_sheet = _css_compile($destination_theme, $destination_theme, $css_file . '__tmp_copy', $temp_file, false);
+    fclose($myfile);
+    fix_permissions($temp_file);
     @unlink($temp_file);
     sync_file($temp_file);
     $sheet = $_sheet[1];

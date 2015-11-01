@@ -329,8 +329,8 @@ The more downwards a room gets, the higher the Y number gets. (-1, -2,-3,-4,-5, 
 [title="3"]How to delete your room[/title]
 
 If you wish to remove your room for any reason, the task is simple.
- - Go to the room in question and enter it.
- - Scroll down and click on delete room.
+1) Go to the room in question and enter it.
+2) Scroll down and click on delete room.
 
 [b]Before[/b] Confirming the process, you must know that if you created a unique item, the item copy will be removed as well, but the item itself remains in the database so you can make a copy of said item somewhere else if you need to.
 

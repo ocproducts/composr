@@ -19,7 +19,13 @@ If you only ever e-mail members, it is better to ask them to join target usergro
 [title="3"]Multiple newsletters and Interest levels[/title]
 
 [surround]
-Composr newsletters support a concept of 'interest levels', which you can use to control sending of information, such that only subscribers with sufficient interest in your site get the most trivial newsletters, and all subscribers get the most critical newsletters.
+Composr newsletters support a concept of 'interest levels' which you can use to restrict newsletter receipt based on the level of interest the subscriber has.
+The subscriber sets interest as one of:
+ - Any and all updates
+ - Interesting updates
+ - Important updates
+ - Critical updates only
+Using this you can ensure that everyone gets critical updates while ensuring less interested users do not feel spammed by less important mailings.
 
 You may have multiple newsletters in Composr, for each of which members may choose to subscribe with an interest level of their choosing.
 
@@ -213,10 +219,10 @@ The removal process also removes the "allow staff e-mails" setting from members 
 For this tool to work, you must have the PHP IMAP extension on your server.
 
 You should manually move anything sent to your website e-mail address that looks like a bounce e-mail into a new bounces folder, and then run the tool upon that folder:
- - Go to Admin Zone > Tools > Newsletter
- - Select the "Bounce filter" icon.
- - Enter your server IMAP details.
- - Select your bounces folder (if Composr can see one that matches the word "bounce", it will be auto-selected). Note that if you select a folder with too many e-mail messages in (i.e. something that doesn't just contain bounce e-mails) then Composr could give you an error due to running out of memory
+1) Go to Admin Zone > Tools > Newsletter.
+2) Select the "Bounce filter" icon.
+3) Enter your server IMAP details.
+4) Select your bounces folder (if Composr can see one that matches the word "bounce", it will be auto-selected). Note that if you select a folder with too many e-mail messages in (i.e. something that doesn't just contain bounce e-mails) then Composr could give you an error due to running out of memory
 
 Composr will then show e-mail addresses found within e-mails in the selected folder, where it can find a matching newsletter/member account for an e-mail address. Any e-mail address attached to an e-mail that looks like a bounce e-mail will be auto-ticked (auto-checked). If you are confident the IMAP folder only contained bounces, you can tick (check) the remaining addresses.
 

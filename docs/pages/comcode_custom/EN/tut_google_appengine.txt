@@ -296,21 +296,21 @@ You could do an upgrade two ways...
 [title="4"]Fully local upgrade (simplest, longest)[/title]
 
 Go through this process:
- - Close the live site temporarily
- - Export the live Cloud Database and import it into your development machine
- - Perform the upgrade on your development machine
- - Do a code deploy
- - Copy the Cloud database back to live
- - Re-open the live site
+1) Close the live site temporarily
+2) Export the live Cloud Database and import it into your development machine
+3) Perform the upgrade on your development machine
+4) Do a code deploy
+5) Copy the Cloud database back to live
+6) Re-open the live site
 
 [title="4"]Split upgrade[/title]
 
 Go through this process:
- - Perform the upgrade on your development machine
- - Close the live site temporarily
- - Do a code deploy
- - Go into the upgrader on live, and perform all the steps except the file transfer one (as you have just done that when you re-deployed)
- - Re-open the live site
+1) Perform the upgrade on your development machine
+2) Close the live site temporarily
+3) Do a code deploy
+4) Go into the upgrader on live, and perform all the steps except the file transfer one (as you have just done that when you re-deployed)
+5) Re-open the live site
 
 [title="2"]Configuration considerations[/title]
 

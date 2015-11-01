@@ -23,8 +23,6 @@ You can delete a download category from the bottom of its edit form.
 [media width="150" description="Adding a download" float="right"]data_custom/images/docs/tut_downloads/downloads_add.png[/media]
 Manage downloads from Content Management > Downloads.
 
-You can delete a download from the bottom of its edit form.
-
 [title="3"]Upload vs URL[/title]
 
 When you add a download you have a choice as to whether to specify a URL or to attach a file. There are other options actually, explained in more detail in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads tutorial[/page].
@@ -70,6 +68,8 @@ We understand how important it is for users to be able to navigate fast around a
 [media width="150" description="Deletion options are presented on the edit screen, as is the standard in Composr" float="right"]data_custom/images/docs/tut_downloads/downloads_deletion.png[/media]
 [media width="150" description="Editing a download" float="right"]data_custom/images/docs/tut_downloads/downloads_edit_file.png[/media]
 When you edit a download, you get a choice to replace the file.
+
+You can delete a download from the bottom of its edit form.
 
 When deleting a download you get the option to leave the actual file on the server. This is something you will rarely want to do, as it is best to just let Composr manage the files inside your upload directories; however it is useful in the rare case that you added a second download to use the URL of the download about to be deleted.
 

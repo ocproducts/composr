@@ -44,15 +44,32 @@ You can find help information about any command by simply using the command's [t
 
 [title="2"]PHP code[/title]
 
+[surround]
 [media thumb="0" description="Running a simple PHP command" float="right"]data_custom/images/docs/tut_commandr/php.png[/media]
 PHP can be entered and executed by Commandr, simply by prefixing the code to be executed with a colon (":"). The returned data will be displayed as best as possible (its type will be determined and outputted as appropriate). Multiple PHP commands may be executed (separated by semi-colons, as per normal PHP code).
 For example:
 [code="Commandr"]
 :echo "Hello"; echo " World.";
 [/code]
+[/surround]
 
-Commandr will attempt to store variables and included files between command requests (using a cookie) to make it possible to execute command sequences without having to put them all on one line.
-There is a memory limit of 4k for this, to avoid causing slow downs in requests and hitting maximum cookie size limits.
+[title="3"]Storage[/title]
+
+[surround]
+[box="Storage limit" width="25em" float="right"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+There is a memory limit of 4Kb for variable storage, to avoid causing slow downs in requests and hitting maximum cookie size limits.
+[/box]
+Commandr will attempt to store:
+1) variables
+2) included code
+3) included language files
+...between command requests.
+
+This makes it possible to execute command sequences without having to put them all on one line.
+
+It is implemented using cookies.
+[/surround]
 
 [title="2"]SQL queries[/title]
 
@@ -67,7 +84,9 @@ You are allowed to do non-read queries, such as INSERTs and DELETEs, but you'll 
 
 [title="2"]The filesystem[/title]
 
-One of the main features of Commandr is the fact that various facets of Composr can be manipulated through a virtual filesystem, known as the Composr Repository (aka Commandr-fs). There are many different kinds of directory tied into the filesystem and it is quite simple to write more as hooks if you know how to program.
+One of the main features of Commandr is the fact that various facets of Composr can be manipulated through a virtual filesystem, known as the Composr Repository (aka Commandr-fs). There are many different kinds of directory tied into the filesystem, representing different parts of the Composr system.
+
+It is quite simple to write more as hooks if you know how to program.
 
 To use the repository, simply navigate around using the standard UNIX filesystem commands ([tt]cd[/tt], [tt]pwd[/tt], [tt]ls[/tt], etc.), and modify files in a similar fashion to change the appropriate behind-the-scenes value.
 
@@ -75,11 +94,11 @@ To learn more about the filesystem, which is also used by other parts of Composr
 
 [title="2"]Running from a normal operating system command prompt[/title]
 
-Commandr can tie directly into your operating system shell. For example, on Linux you can start it up with:
+Commandr can be loaded up directly from your operating system shell. For example, on Linux you can start it up with this command:
 [code="Bash"]
 php data/commandr.php
 [/code]
-It is primarily designed for use from an HTML interface, so things like the text file editor will not work, but generally it will work as expected.
+Commandr is primarily designed for use from an HTML interface (i.e. within Composr), so things like the text file editor will not work. Most things do work though.
 
 [title="2"]Example commands[/title]
 

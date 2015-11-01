@@ -94,6 +94,14 @@ To stop Composr becoming bloated/over-complex, there is no configurable granular
 
 However, you may come into a situation where you do want some granularity. A nice workaround is to have a staff account with a gmail address, and use gmail forwarding rules to forward to others based upon subject line. Then deny regular staff the "May listen to notifications intended for staff" privilege.
 
+[title="2"]Digests[/title]
+
+Digest e-mails provide combined summaries of activity.
+
+It is possible digest e-mails could become very long. In this case, Composr would struggle to parse their Comcode. Composr therefore implements a 100kb limit per digest.
+
+Members are informed if the limit is exceeded (while still given the subjects of each digest item). The member may then choose to change their settings to something more manageable (such as more regular, or smaller, digests).
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]

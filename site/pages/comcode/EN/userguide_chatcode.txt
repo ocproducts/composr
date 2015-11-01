@@ -1,11 +1,11 @@
 [title]Chatcode help[/title]
 
-Chatcode allows you to do more advanced things with the chat system than would normally be possible.
+Chatcode allows you to do some advanced things via coded embedded within your messages.
 You may also use any inline [page="_SEARCH:userguide_comcode"]comcode tags[/page] you please in the chat system.
 
 [title="2"]Private Messages[/title]
 
-Private messages can be inline, and due to the way that they are handled, you may have as many different private messages -- each to different or identical users -- as you want in every chat message. You may also put non-private text in-between the private messages, which will get displayed to everyone.
+Private messages are inline, and due to the way that they are handled, you may have as many different private messages -- each to different or identical users -- as you want in every chat message. You may also put non-private text in-between the private messages, which will get displayed to everyone.
 
 Please note that staff may view private messages if they so choose to. For this reason, it is not advisable to put information of a sensitive nature, such as passwords, into a private message.
 
@@ -13,7 +13,7 @@ Please note that staff may view private messages if they so choose to. For this 
 
 [title="2"]Bots[/title]
 
-You can send messages (commands) to the website itself, and any other bots we might have installed on our site. The bot will respond automatically to your commands, following it's programming.
+You can send messages (commands) to the website itself, and any other bots we might have installed on our site. The bot will respond automatically to your commands, following its programming.
 To do this, just send a private message to 'bot'. We suggest you start with a message of 'help' which is a command that will cause all bots to identify themselves and the commands that they support.
 
 [semihtml]<table class="map_table wide_table"><tr><td>[code="Comcode"][private="bot"]help[/private][/code]</td></tr></table>[/semihtml]
