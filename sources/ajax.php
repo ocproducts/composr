@@ -22,6 +22,7 @@
 
 /**
  * Prepare to inject COR headers.
+ *
  * @ignore
  */
 function cor_prepare()
@@ -51,6 +52,7 @@ function cor_prepare()
 
 /**
  * Script to generate a Flash crossdomain file.
+ *
  * @ignore
  */
 function crossdomain_script()
@@ -78,6 +80,7 @@ function crossdomain_script()
 
 /**
  * AJAX script for checking if a new username is valid.
+ *
  * @ignore
  */
 function username_check_script()
@@ -106,6 +109,7 @@ function username_check_script()
 
 /**
  * AJAX script for checking if a username exists.
+ *
  * @ignore
  */
 function username_exists_script()
@@ -123,6 +127,7 @@ function username_exists_script()
 
 /**
  * AJAX script for allowing username/author/search-terms home-in.
+ *
  * @ignore
  */
 function namelike_script()
@@ -203,14 +208,16 @@ function namelike_script()
                     echo '<option value="' . escape_html($name) . '" displayname="" />';
                 }
             } else {
-                $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15);
-                if ((count($likea) == 15) && (addon_installed('chat')) && (!is_guest())) {
-                    $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15, true); // Limit to friends, if possible
-                }
+                if ((!addon_installed('authors')) || ($special != 'author') || ($GLOBALS['FORUM_DRIVER']->get_members() < 5000)) {
+                    $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15);
+                    if ((count($likea) == 15) && (addon_installed('chat')) && (!is_guest())) {
+                        $likea = $GLOBALS['FORUM_DRIVER']->get_matching_members($id . '%', 15, true); // Limit to friends, if possible
+                    }
 
-                foreach ($likea as $l) {
-                    if (count($names) < 15) {
-                        $names[$GLOBALS['FORUM_DRIVER']->mrow_id($l)] = $GLOBALS['FORUM_DRIVER']->mrow_username($l);
+                    foreach ($likea as $l) {
+                        if (count($names) < 15) {
+                            $names[$GLOBALS['FORUM_DRIVER']->mrow_id($l)] = $GLOBALS['FORUM_DRIVER']->mrow_username($l);
+                        }
                     }
                 }
 
@@ -229,6 +236,7 @@ function namelike_script()
 
 /**
  * AJAX script for finding out privileges for the queried resource.
+ *
  * @ignore
  */
 function find_permissions_script()
@@ -267,6 +275,7 @@ function find_permissions_script()
 
 /**
  * AJAX script to store an autosave.
+ *
  * @ignore
  */
 function store_autosave()
@@ -291,6 +300,7 @@ function store_autosave()
 
 /**
  * AJAX script to retrieve an autosave.
+ *
  * @ignore
  */
 function retrieve_autosave()
@@ -329,6 +339,7 @@ function retrieve_autosave()
 
 /**
  * AJAX script to make a fractional edit to some data.
+ *
  * @ignore
  */
 function fractional_edit_script()
@@ -377,6 +388,7 @@ function fractional_edit_script()
 
 /**
  * AJAX script to tell if data has been changed.
+ *
  * @ignore
  */
 function change_detection_script()
@@ -397,6 +409,7 @@ function change_detection_script()
 
 /**
  * AJAX script for recording that something is currently being edited.
+ *
  * @ignore
  */
 function edit_ping_script()
@@ -427,6 +440,7 @@ function edit_ping_script()
 
 /**
  * AJAX script for dynamically extended selection tree.
+ *
  * @ignore
  */
 function ajax_tree_script()
@@ -473,6 +487,7 @@ function ajax_tree_script()
 
 /**
  * AJAX script for confirming a session is active.
+ *
  * @ignore
  */
 function confirm_session_script()
@@ -491,6 +506,7 @@ function confirm_session_script()
 
 /**
  * AJAX script for getting the text of a template, as used by a certain theme.
+ *
  * @ignore
  */
 function load_template_script()
@@ -524,6 +540,7 @@ function load_template_script()
 
 /**
  * AJAX script for dynamic inclusion of CSS.
+ *
  * @ignore
  */
 function sheet_script()
@@ -539,6 +556,7 @@ function sheet_script()
 
 /**
  * AJAX script for dynamic inclusion of XHTML snippets.
+ *
  * @ignore
  */
 function snippet_script()

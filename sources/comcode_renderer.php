@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__comcode_renderer()
@@ -2305,6 +2306,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
  * @param  integer $base The level to start from
  * @param  integer $the_level The level we are at in the recursion
  * @return Tempcode The TOC node.
+ *
  * @ignore
  */
 function _do_contents_level($tree_structure, $list_types, $base, $the_level = 0)

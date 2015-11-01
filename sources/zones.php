@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__zones()
@@ -160,6 +161,7 @@ function i_solemnly_declare($declarations)
 
 /**
  * Enter a new security scope (i.e. a custom block or module).
+ *
  * @ignore
  */
 function _solemnly_enter()
@@ -182,6 +184,7 @@ function _solemnly_enter()
  * Leave the most recent security scope (i.e. a custom block or module).
  *
  * @param  ?string $out Output to filter, if I_UNDERSTAND_XSS is not set (null: nothing to filter).
+ *
  * @ignore
  */
 function _solemnly_leave(&$out = null)

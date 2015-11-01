@@ -410,6 +410,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
 
 /**
  * Check that not too many attachments have been uploaded for the member submitting.
+ *
  * @ignore
  */
 function _check_attachment_count()

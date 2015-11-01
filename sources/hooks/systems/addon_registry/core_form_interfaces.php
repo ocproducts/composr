@@ -1829,6 +1829,7 @@ class Hook_addon_registry_core_form_interfaces
                 'SPECIALISATION2' => placeholder_fields(),
                 'REQUIRED' => true,
                 'SUPPORT_AUTOSAVE' => false,
+                'DESCRIPTION' => lorem_paragraph(),
             )), null, '', true)
         );
     }

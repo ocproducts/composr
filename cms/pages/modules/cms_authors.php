@@ -246,42 +246,45 @@ class Module_cms_authors
         }
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR_URL'), do_lang_tempcode('DESCRIPTION_AUTHOR_URL'), 'url', $url, false));
         $fields->attach(form_input_line_comcode(do_lang_tempcode('SKILLS'), do_lang_tempcode('DESCRIPTION_SKILLS'), 'skills', $skills, false));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_MEMBER_DESCRIPTION'), 'description', $description, false));
+
+        $specialisation2 = new Tempcode();
 
         if (has_privilege(get_member(), 'edit_midrange_content', 'cms_authors')) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b18ab131f72a024039eaa92814f0f4a9', 'SECTION_HIDDEN' => !is_null($handle), 'TITLE' => do_lang_tempcode('ADVANCED'))));
-            $fields->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', is_null($handle) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle)), false));
+            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b18ab131f72a024039eaa92814f0f4a9', 'SECTION_HIDDEN' => !is_null($handle), 'TITLE' => do_lang_tempcode('ADVANCED'))));
+            $specialisation2->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', is_null($handle) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle)), false));
         } else {
             $hidden->attach(form_input_hidden('member_id', strval($handle)));
         }
 
         require_code('fields');
         if (has_tied_catalogue('author')) {
-            append_form_custom_fields('author', $author, $fields, $hidden);
+            append_form_custom_fields('author', $author, $specialisation2, $hidden);
         }
 
         require_code('seo2');
-        $fields->attach(seo_get_fields('authors', $author));
+        $specialisation2->attach(seo_get_fields('authors', $author));
 
         // Awards?
         if (addon_installed('awards')) {
             require_code('awards');
-            $fields->attach(get_award_fields('author', $author));
+            $specialisation2->attach(get_award_fields('author', $author));
         }
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
-            $fields->attach(content_review_get_fields('author', $author));
+            $specialisation2->attach(content_review_get_fields('author', $author));
         }
 
         if ($may_delete) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '8a83b3253a6452c90e92699d629b9d03', 'TITLE' => do_lang_tempcode('ACTIONS'))));
-            $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '8a83b3253a6452c90e92699d629b9d03', 'TITLE' => do_lang_tempcode('ACTIONS'))));
+            $specialisation2->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
         }
 
         url_default_parameters__disable();
 
-        return do_template('FORM_SCREEN', array('_GUID' => '1d71c934e3e23fe394f5611191089630', 'PREVIEW' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+        $posting_form = get_posting_form($submit_name, 'buttons__save', $description, $post_url, $hidden, $fields, do_lang_tempcode('DESCRIPTION'), '', $specialisation2, null, null, null, false, true, do_lang_tempcode('DESCRIPTION_MEMBER_DESCRIPTION'));
+
+        return do_template('POSTING_SCREEN', array('_GUID' => '1d71c934e3e23fe394f5611191089630', 'TITLE' => $title, 'POSTING_FORM' => $posting_form));
     }
 
     /**
@@ -334,7 +337,7 @@ class Module_cms_authors
 
             $meta_data = actual_meta_data_get_fields('author', null);
 
-            add_author($author, $url, $member_id, post_param_string('description'), post_param_string('skills'), post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
+            add_author($author, $url, $member_id, post_param_string('post'), post_param_string('skills'), post_param_string('meta_keywords', ''), post_param_string('meta_description', ''));
 
             set_url_moniker('author', strval($author));
 

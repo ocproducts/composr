@@ -192,6 +192,7 @@ class Module_banners
                 'c_banner_id' => 'ID_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('banner_clicks', 'clicker_ip', array('c_ip_address'));
+            $GLOBALS['SITE_DB']->create_index('banner_clicks', 'c_banner_id', array('c_banner_id'));
 
             add_privilege('BANNERS', 'banner_free', false);
         }
@@ -315,6 +316,9 @@ class Module_banners
         if ($type == 'view') {
             return $this->view_banner();
         }
+        if ($type == 'reset') {
+            return $this->reset_banner();
+        }
 
         return new Tempcode();
     }
@@ -435,6 +439,8 @@ class Module_banners
             check_privilege('view_anyones_banner_stats');
         }
 
+        // Banner details table...
+
         switch ($myrow['the_type']) {
             case BANNER_PERMANENT:
                 $type = do_lang_tempcode('BANNER_PERMANENT');
@@ -447,10 +453,14 @@ class Module_banners
                 break;
         }
 
-        if ($myrow['views_to'] != 0) {
-            $click_through = protect_from_escaping(escape_html(float_format(round(100.0 * ($myrow['hits_to'] / $myrow['views_to']))) . '%'));
+        if ($myrow['site_url'] == '') {
+            $click_through = do_lang_tempcode('CANT_TRACK');
         } else {
-            $click_through = do_lang_tempcode('NA_EM');
+            if ($myrow['views_to'] != 0) {
+                $click_through = protect_from_escaping(escape_html(float_format(round(100.0 * ($myrow['hits_to'] / $myrow['views_to']))) . '%'));
+            } else {
+                $click_through = do_lang_tempcode('NA_EM');
+            }
         }
 
         $has_banner_network = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)') != 0.0;
@@ -461,6 +471,8 @@ class Module_banners
         if ($myrow['b_type'] != '') {
             $fields->attach(map_table_field(do_lang_tempcode('BANNER_TYPE'), $myrow['b_type']));
         }
+
+        $fields->attach(map_table_field(do_lang_tempcode('ADD_DATE'), get_timezoned_date($myrow['add_date'])));
         $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
         if ($has_banner_network) {
@@ -482,13 +494,108 @@ class Module_banners
             $edit_url = build_url(array('page' => 'cms_banners', 'type' => '_edit', 'id' => $source), get_module_zone('cms_banners'));
         }
 
+        // Results table...
+
+        if ($myrow['site_url'] != '') {
+            require_lang('dates');
+
+            require_code('templates_results_table');
+
+            $current_ordering = get_param('sort', 'month ASC');
+            if (strpos($current_ordering, ' ') === false) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
+            $sortables = array(
+                'day' => do_lang_tempcode('DAY'),
+                'month' => do_lang_tempcode('MONTH'),
+            );
+            if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
+                log_hack_attack_and_exit('ORDERBY_HACK');
+            }
+            global $NON_CANONICAL_PARAMS;
+            $NON_CANONICAL_PARAMS[] = 'sort';
+
+            $hr = array(
+                do_lang_tempcode('DATE'),
+                do_lang_tempcode('BANNER_HITSTO'),
+            );
+            $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
+
+            $max = get_param_integer('max', 50);
+            $start = get_param_integer('start', 0);
+            $rows = $GLOBALS['SITE_DB']->query_select('banner_clicks', array('c_date_and_time'), array('c_banner_id' => $source), 'ORDER BY c_date_and_time ' . $sort_order, 10000);
+            $tally_sets = array();
+            foreach ($rows as $row) {
+                if ($sortable == 'day') {
+                    $period = get_timezoned_date($row['c_date_and_time'], false);
+                } else {
+                    $period = locale_filter(cms_strftime('%B %Y', $row['c_date_and_time']));
+                }
+
+                if (!isset($tally_sets[$period])) {
+                    $tally_sets[$period] = 0;
+                }
+                $tally_sets[$period]++;
+            }
+
+            $fields = new Tempcode();
+            foreach ($tally_sets as $period => $hits) {
+                $fr = array(
+                    $period,
+                    integer_format($hits),
+                );
+
+                $fields->attach(results_entry($fr, true));
+            }
+
+            $results_table = results_table(do_lang('BANNER_HITSTO'), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', count($tally_sets), $header_row, $fields, $sortables, $sortable, $sort_order);
+        } else {
+            $results_table = new Tempcode();
+        }
+
+        // Reset feature...
+
+        $reset_url = new Tempcode();
+        if (has_actual_page_access(get_member(), 'admin_banners')) {
+            $reset_url = build_url(array('page' => '_SELF', 'type' => 'reset', 'source' => $source), '_SELF');
+        }
+
+        // ---
+
         return do_template('BANNER_VIEW_SCREEN', array(
             '_GUID' => 'ed923ae0682c6ed679c0efda688c49ea',
             'TITLE' => $this->title,
             'EDIT_URL' => $edit_url,
             'MAP_TABLE' => $map_table,
             'BANNER' => $banner,
+            'RESULTS_TABLE' => $results_table,
+            'RESET_URL' => $reset_url,
             'NAME' => $source,
         ));
+    }
+
+    /**
+     * The actualiser to reset a banner.
+     *
+     * @return Tempcode The UI
+     */
+    function reset_banner()
+    {
+        $title = get_screen_title('RESET_BANNER_STATS');
+
+        post_param('confirm'); // Just to confirm it is a POST request, i.e. not a CSRF
+
+        $source = get_param('source');
+
+        if (!has_actual_page_access(get_member(), 'admin_banners')) {
+            access_denied('I_ERROR');
+        }
+
+        $GLOBALS['SITE_DB']->query_delete('banner_clicks', array('c_banner_id' => $source));
+        $GLOBALS['SITE_DB']->query_update('banners', array('hits_from' => 0, 'hits_to' => 0, 'views_from' => 0, 'views_to' => 0), array('name' => $source), '', 1);
+
+        $url = build_url(array('page' => '_SELF', 'type' => 'view', 'source' => $source), '_SELF');
+        return redirect_screen($title, $url, do_lang_tempcode('SUCCESS'));
     }
 }

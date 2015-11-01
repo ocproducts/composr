@@ -546,6 +546,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
  * @param  string $html The text to perform on.
  * @param  integer $desired_length Desired (nieve) substring length.
  * @return boolean Whether to keep continuing.
+ *
  * @ignore
  */
 function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length)
@@ -600,6 +601,7 @@ function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolera
  * @param  integer $desired_length Desired (nieve) substring length.
  * @param  boolean $testing_ahead Whether this is a cursory look-ahead rather than a byte-by-byte callback (therefore skip fine-grained checks which would interfere with a cursory result).
  * @return boolean Whether to keep continuing.
+ *
  * @ignore
  */
 function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length, $testing_ahead = false)

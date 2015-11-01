@@ -24,6 +24,7 @@ Here is the code used to extract phpdoc style function comments  from PHP code.
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__php()

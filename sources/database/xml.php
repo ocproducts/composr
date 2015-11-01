@@ -57,6 +57,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__database__xml()

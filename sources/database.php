@@ -22,6 +22,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__database()
@@ -108,6 +109,7 @@ function multi_lang_content()
 
 /**
  * Called once our DB connection becomes active.
+ *
  * @ignore
  */
 function _general_db_init()

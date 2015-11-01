@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__banners()
@@ -120,7 +121,20 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         $type = get_param_string('type', '');
     }
 
-    if ($type == 'click') {
+    if ($type == 'image_proxy') {
+        $dest = get_param('dest');
+
+        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_to=(views_to+1) WHERE ' . db_string_equal_to('name', $dest), 1);
+
+        $img_url = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'img_url', array('name' => $dest));
+        if (empty($img_url)) {
+            $img_url = find_theme_image('blank');
+        }
+        if (url_is_local($img_url)) {
+            $img_url = get_custom_base_url() . '/' . $img_url;
+        }
+        header('Location: ' . $img_url);
+    } elseif ($type == 'click') {
         // Input parameters
         if ($source === null) {
             $source = get_param_string('source', '');

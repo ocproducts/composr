@@ -365,6 +365,8 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
         if (addon_installed('catalogues')) {
             update_catalogue_content_ref('banner', $old_name, $name);
         }
+
+        $GLOBALS['SITE_DB']->query_update('banner_clicks', array('c_banner_id' => $name), array('c_banner_id' => $old_name));
     }
 
     if (is_null($edit_time)) {
@@ -440,6 +442,8 @@ function delete_banner($name)
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('banner', $name, '');
     }
+
+    $GLOBALS['SITE_DB']->query_delete('banner_clicks', array('c_banner_id' => $name));
 
     delete_lang($caption);
 

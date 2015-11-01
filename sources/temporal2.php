@@ -37,6 +37,7 @@ function make_nice_timezone_name($in)
  * Get a list of timezones.
  *
  * @return array Timezone (map between boring-style and human-readable name). Sorted in offset order then likelihood orde.
+ *
  * @ignore
  */
 function _get_timezone_list()

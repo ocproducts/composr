@@ -28,6 +28,7 @@
  * @param  ?string $type The protocol (null: autodetect).
  * @set pop3 pop3s imap imaps
  * @return string Connection string.
+ *
  * @ignore
  */
 function _imap_server_spec($server, $port, $type = null)
@@ -241,6 +242,7 @@ function find_mail_bounces($server, $port, $folder, $username, $password, $since
  * @param  boolean $bounces_only Only find bounces (otherwise will find anything).
  * @param  ?TIME $since Only find bounces since this date (null: no limit). This is approximate, we will actually look from a bit further back to compensate for possible timezone differences.
  * @return array Bounces (a map between email address and details of the bounce).
+ *
  * @ignore
  */
 function _find_mail_bounces($server, $port, $folder, $username, $password, $bounces_only = true, $since = null)

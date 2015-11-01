@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__tempcode()
@@ -935,7 +936,15 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     );
                 }
             }
-            break;
+            return;
+
+        case 'SET_TITLE':
+            $param = $seq_part[3];
+
+            if (array_key_exists(0, $param)) {
+                get_screen_title(is_object($param[0]) ? $param[0]->evaluate() : $param[0], false);
+            }
+            return;
 
         case 'SET':
             $param = $seq_part[3];
@@ -1277,6 +1286,7 @@ class Tempcode
                                 case 'JS_TEMPCODE':
                                 case 'CSS_TEMPCODE':
                                 case 'SET':
+                                case 'SET_TITLE':
                                 case 'BLOCK':
                                 case 'PAGE_LINK':
                                 case 'LOAD_PAGE':
@@ -1420,7 +1430,8 @@ class Tempcode
             }
             $generator_num++;
 
-            $myfunc = 'string_attach_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/;
+            $myfunc = 'string_attach_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/
+            ;
             $funcdef = "\$tpl_funcs['$myfunc']=\"echo \\\"" . php_addslashes_twice($attach) . "\\\";\";\n";
             $this->code_to_preexecute[$myfunc] = $funcdef;
             $end[] = array($myfunc, array(), TC_KNOWN, '', '');
@@ -2033,6 +2044,7 @@ function recall_named_function($id, $parameters, $code)
  *
  * @param  PATH $filepath The filename of the file to include.
  * @return mixed Success status or returned value.
+ *
  * @ignore
  */
 function tempcode_include($filepath)

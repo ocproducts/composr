@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__comcode_compiler()
@@ -1900,6 +1901,7 @@ function in_tag_stack($tag_stack, $tags)
  * @param  integer $len The length of the Comcode
  * @param  LONG_TEXT $comcode The Comcode being parsed
  * @return array A tuple of new parser settings.
+ *
  * @ignore
  */
 function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $pos, $comcode_dangerous, $comcode_dangerous_html, $in_separate_parse_section, $in_html, $in_semihtml, $close, &$len, &$comcode)
@@ -2002,6 +2004,7 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
  * @param  string $list_type List-type code
  * @set    ul a 1
  * @return array The output needed to close the lists, and the new list indentation (always zero). Done like this so we can use 'list' to set both at once in the main parser.
+ *
  * @ignore
  */
 function _close_open_lists($list_indent, $list_type)

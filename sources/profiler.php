@@ -34,6 +34,7 @@ data_custom/profiling--<memberID>.<timestamp>.<uniqid>--<requestTimeInSeconds>.l
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__profiler()
@@ -200,6 +201,7 @@ function _cms_profile_log_line($line)
 
 /**
  * Finish the profiler (automatically run at script termination).
+ *
  * @ignore
  */
 function _cms_profiler_script_end()
@@ -242,6 +244,7 @@ function _cms_profiler_script_end()
 
 /**
  * Add in generic logging lines to the profiling log (background/context information). Assumes Linux.
+ *
  * @ignore
  */
 function _cms_profiler_generic_logging()

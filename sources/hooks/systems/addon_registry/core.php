@@ -686,19 +686,19 @@ class Hook_addon_registry_core
             'themes/default/javascript/jquery.js',
             'themes/default/javascript/jquery_ui.js',
             'themes/default/images/jquery_ui/index.html',
-        	'themes/default/images/jquery_ui/ui-bg_flat_0_aaaaaa_40x100.png',
-        	'themes/default/images/jquery_ui/ui-bg_flat_75_ffffff_40x100.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_55_fbf9ee_1x400.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_75_dadada_1x400.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_75_e6e6e6_1x400.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_95_fef1ec_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_flat_0_aaaaaa_40x100.png',
+            'themes/default/images/jquery_ui/ui-bg_flat_75_ffffff_40x100.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_55_fbf9ee_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_75_dadada_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_75_e6e6e6_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_95_fef1ec_1x400.png',
             'themes/default/images/jquery_ui/ui-bg_glass_65_ffffff_1x400.png',
             'themes/default/images/jquery_ui/ui-icons_222222_256x240.png',
-        	'themes/default/images/jquery_ui/ui-bg_highlight-soft_75_cccccc_1x100.png',
-        	'themes/default/images/jquery_ui/ui-icons_2e83ff_256x240.png',
-        	'themes/default/images/jquery_ui/ui-icons_454545_256x240.png',
-        	'themes/default/images/jquery_ui/ui-icons_888888_256x240.png',
-        	'themes/default/images/jquery_ui/ui-icons_cd0a0a_256x240.png',
+            'themes/default/images/jquery_ui/ui-bg_highlight-soft_75_cccccc_1x100.png',
+            'themes/default/images/jquery_ui/ui-icons_2e83ff_256x240.png',
+            'themes/default/images/jquery_ui/ui-icons_454545_256x240.png',
+            'themes/default/images/jquery_ui/ui-icons_888888_256x240.png',
+            'themes/default/images/jquery_ui/ui-icons_cd0a0a_256x240.png',
             'themes/default/css/jquery_ui.css',
             'themes/default/javascript/global.js',
             'themes/default/javascript/ajax.js',
@@ -1260,6 +1260,9 @@ class Hook_addon_registry_core
             'themes/default/images/EN/2x/index.html',
             'themes/default/images/icons/16x16/index.html',
             'sources/persistent_caching/.htaccess',
+            'sources/deep_clean.php',
+            'sources/hooks/systems/symbols/DEEP_CLEAN.php',
+            'sources/hooks/modules/admin_occle_commands/deep_clean.php',
 
             // Admin theme
             'themes/admin/css/index.html',
@@ -1899,9 +1902,9 @@ class Hook_addon_registry_core
             if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) {
                 $rows->attach(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array(
                     'COLUMNS' => array(array(
-                        'CODE' => $code,
-                        'TPL' => do_emoticon($imgcode),
-                    )),
+                                           'CODE' => $code,
+                                           'TPL' => do_emoticon($imgcode),
+                                       )),
                 )));
             }
         }

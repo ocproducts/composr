@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__menus()
@@ -198,12 +199,15 @@ function _build_sitemap_menu($menu)
 
         $node = retrieve_sitemap_node(
             $page_link,
-            /*$callback=*/null,
+            /*$callback=*/
+            null,
             $valid_node_types,
             $child_cutoff,
             $max_recurse_depth,
-            /*$options=*/$options,
-            /*$zone=*/'_SEARCH',
+            /*$options=*/
+            $options,
+            /*$zone=*/
+            '_SEARCH',
             SITEMAP_GATHER_DESCRIPTION | SITEMAP_GATHER_IMAGE
         );
 
@@ -549,28 +553,8 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             $sym_pos = mixed();
             $sym_pos = strpos($_url, '{$');
             if ($sym_pos !== false) { // Specially encoded $ symbols
-                $len = strlen($_url);
-                $prev = 0;
-                do {
-                    $p_len = $sym_pos + 1;
-                    $balance = 1;
-                    while (($p_len < $len) && ($balance != 0)) {
-                        if ($_url[$p_len] == '{') {
-                            $balance++;
-                        } elseif ($_url[$p_len] == '}') {
-                            $balance--;
-                        }
-                        $p_len++;
-                    }
-
-                    $url->attach(substr($_url, $prev, $sym_pos - $prev));
-                    $_ret = new Tempcode();
-                    $_ret->parse_from($_url, $sym_pos, $p_len);
-                    $_url->attach($_ret);
-                    $prev = $p_len;
-                    $sym_pos = strpos($_url, '{$', $sym_pos + 1);
-                } while ($sym_pos !== false);
-                $url->attach(substr($_url, $prev));
+                require_code('tempcode_compiler');
+                $url = template_to_tempcode($url);
             } else {
                 $url = make_string_tempcode($_url);
             }

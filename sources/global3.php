@@ -249,6 +249,7 @@ function http_download_file($url, $byte_limit = null, $trigger_error = true, $no
  *
  * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
  * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state.
+ *
  * @ignore
  */
 function _load_blank_output_state($just_tempcode = false, $true_blank = false)

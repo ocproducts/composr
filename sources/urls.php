@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__urls()
@@ -472,6 +473,7 @@ function url_monikers_enabled()
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none).
  * @return string The URL in string format.
+ *
  * @ignore
  */
 function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')

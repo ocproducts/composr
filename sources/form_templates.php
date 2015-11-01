@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__form_templates()
@@ -301,9 +302,10 @@ function get_attachments($posting_field_name)
  * @param  boolean $avoid_wysiwyg Whether to avoid WYSIWYG mode
  * @param  boolean $support_autosave Whether to support auto-save
  * @param  boolean $specialisation2_hidden Whether to support auto-save
+ * @param  mixed $description A description for this input field
  * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false)
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
 {
     require_lang('javascript');
     require_javascript('posting');
@@ -380,6 +382,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         'SPECIALISATION2' => $specialisation2,
         'SPECIALISATION2_HIDDEN' => $specialisation2_hidden,
         'SUPPORT_AUTOSAVE' => $support_autosave,
+        'DESCRIPTION' => $description,
     ));
 }
 

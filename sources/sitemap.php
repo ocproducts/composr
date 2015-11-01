@@ -39,6 +39,7 @@ Node structure includes the following special data for menu rendering:
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__sitemap()
@@ -1194,6 +1195,7 @@ function create_selection_list($root_page_link, $under_only = false, $default = 
  * @param  ?mixed $filter_func Filter function for limiting what rows will be included (null: none).
  * @param  integer $depth Recursion depth.
  * @return string Compound list.
+ *
  * @ignore
  */
 function _create_selection_list(&$out, $node, $default, $valid_selectable_content_types, $check_permissions_against, $check_permissions_for, $only_owned, $use_compound_list, $filter_func, $depth = 0)

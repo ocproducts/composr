@@ -181,8 +181,7 @@ class Module_cms_galleries extends Standard_crud_module
                 if (!is_null($remaining)) {
                     $this->alt_crud_module->add_text->attach(paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', escape_html(integer_format($remaining)))));
                 }
-            }
-            elseif (strpos($type, '_category') === false) { // Image
+            } elseif (strpos($type, '_category') === false) { // Image
                 $remaining = $this->check_images_allowed($cat, true);
                 if (!is_null($remaining)) {
                     $this->add_text = paragraph(do_lang_tempcode('X_ENTRIES_REMAINING', escape_html(integer_format($remaining))));
@@ -1058,6 +1057,8 @@ class Module_cms_galleries extends Standard_crud_module
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
+        $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)', array('accept_images' => 1));
+
         if ($adding) {
             $cat = get_param_string('cat', '');
         }
@@ -1100,7 +1101,12 @@ class Module_cms_galleries extends Standard_crud_module
             if (empty($root_cat) && $GLOBALS['SITE_DB']->query_select_value('galleries', 'accept_images', array('name' => 'root')) == 0) {
                 $root_cat = 'root'; // Don't show 'root' itself
             }
-            $fields->attach(form_input_tree_list(do_lang_tempcode('GALLERY'), do_lang_tempcode('DESCRIPTION_GALLERY'), 'cat', $root_cat, 'choose_gallery', $filters, true, $cat, false, null, false, $gallery_title));
+            if ($num_galleries == 1) {
+                $cat = $GLOBALS['SITE_DB']->query_select_value('galleries', 'name', array('accept_images' => 1));
+                $hidden->attach(form_input_hidden('cat', $cat));
+            } else {
+                $fields->attach(form_input_tree_list(do_lang_tempcode('GALLERY'), do_lang_tempcode('DESCRIPTION_GALLERY'), 'cat', $root_cat, 'choose_gallery', $filters, true, $cat, false, null, false, $gallery_title));
+            }
         } else {
             $hidden->attach(form_input_hidden('cat', $cat));
         }
@@ -1623,6 +1629,8 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
         $no_thumb_needed = (get_option('ffmpeg_path') != '') || (class_exists('ffmpeg_movie'));
 
+        $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)', array('accept_videos' => 1));
+
         if ($cat == '') {
             $cat = get_param_string('cat', '');
         }
@@ -1659,7 +1667,12 @@ class Module_cms_galleries_alt extends Standard_crud_module
             if (empty($root_cat) && $GLOBALS['SITE_DB']->query_select_value('galleries', 'accept_videos', array('name' => 'root')) == 0) {
                 $root_cat = 'root'; // Don't show 'root' itself
             }
-            $fields->attach(form_input_tree_list(do_lang_tempcode('GALLERY'), do_lang_tempcode('DESCRIPTION_GALLERY'), 'cat', $root_cat, 'choose_gallery', $filters, true, $cat, false, null, false, $gallery_title));
+            if ($num_galleries == 1) {
+                $cat = $GLOBALS['SITE_DB']->query_select_value('galleries', 'name', array('accept_videos' => 1));
+                $hidden->attach(form_input_hidden('cat', $cat));
+            } else {
+                $fields->attach(form_input_tree_list(do_lang_tempcode('GALLERY'), do_lang_tempcode('DESCRIPTION_GALLERY'), 'cat', $root_cat, 'choose_gallery', $filters, true, $cat, false, null, false, $gallery_title));
+            }
         } else {
             $hidden->attach(form_input_hidden('cat', $cat));
         }

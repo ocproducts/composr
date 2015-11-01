@@ -31,6 +31,7 @@ Also see:
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__developer_tools()

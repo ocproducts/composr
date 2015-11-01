@@ -22,6 +22,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__tempcode_compiler()

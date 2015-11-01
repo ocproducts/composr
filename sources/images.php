@@ -106,7 +106,7 @@ function _symbol_thumbnail($param)
     // where: If padding or cropping, specifies where to crop or pad. One of "start", "end", "both", "start_if_vertical", "end_if_vertical", "start_if_horizontal", or "end_if_vhorizontal"
     // option: An extra option if desired. If type is "pad" then this can be a hex colour for the padding
     // only_make_smaller: Whether to avoid growing small images to fit (smaller images are better for the Web). One of 0 (false) or 1 (true)
-	if (!empty($param[0])) {
+    if (!empty($param[0])) {
         disable_php_memory_limit();
 
         $only_make_smaller = isset($param[8]) ? ($param[8] == '1') : false;
@@ -660,6 +660,8 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         unset($from_file);
     }
 
+    $source = remove_white_edges($source);
+
     // Derive actual width x height, for the given maximum box (maintain aspect ratio)
     // ===============================================================================
     $sx = imagesx($source);
@@ -1059,6 +1061,10 @@ function adjust_pic_orientation($img, $exif)
                 $src_height = $height;
 
                 $imgdest = imagecreatetruecolor($width, $height);
+                imagealphablending($imgdest, false);
+                if (function_exists('imagesavealpha')) {
+                    imagesavealpha($imgdest, true);
+                }
 
                 if (imagecopyresampled($imgdest, $img, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height)) {
                     imagedestroy($img);
@@ -1070,6 +1076,89 @@ function adjust_pic_orientation($img, $exif)
         }
     }
     return array($img, false);
+}
+
+/**
+ * Remove white/transparent edges from an image.
+ *
+ * @param  resource $img GD image resource
+ * @return resource Trimmed image
+ */
+function remove_white_edges($img)
+{
+    $width = imagesx($img);
+    $height = imagesy($img);
+
+    // From top
+    $remove_from_top = 0;
+    for ($y = 0; $y < $height; $y++) {
+        for ($x = 0; $x < $width; $x++) {
+            $color = imagecolorat($img, $x, $y);
+            if ($color != 0) {
+                break 2;
+            }
+        }
+        $remove_from_top++;
+    }
+
+    // From bottom
+    $remove_from_bottom = 0;
+    for ($y = $height - 1; $y >= 0; $y--) {
+        for ($x = 0; $x < $width; $x++) {
+            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
+                break 2;
+            }
+        }
+        $remove_from_bottom++;
+    }
+
+    // From left
+    $remove_from_left = 0;
+    for ($x = 0; $x < $width; $x++) {
+        for ($y = 0; $y < $height; $y++) {
+            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
+                break 2;
+            }
+        }
+        $remove_from_left++;
+    }
+
+    // From right
+    $remove_from_right = 0;
+    for ($x = $width - 1; $x >= 0; $x--) {
+        for ($y = 0; $y < $height; $y++) {
+            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
+                break 2;
+            }
+        }
+        $remove_from_right++;
+    }
+
+    // Any changes?
+    if ($remove_from_top + $remove_from_bottom + $remove_from_left + $remove_from_right == 0 || $remove_from_left == $width || $remove_from_top == $height) {
+        return $img;
+    }
+
+    // Do trimming...
+
+    $target_width = $width - $remove_from_left - $remove_from_right;
+    $target_height = $height - $remove_from_top - $remove_from_bottom;
+
+    $imgdest = imagecreatetruecolor($target_width, $target_height);
+    imagealphablending($imgdest, false);
+    if (function_exists('imagesavealpha')) {
+        imagesavealpha($imgdest, true);
+    }
+
+    if (imagecopyresampled($imgdest, $img, 0, 0, $remove_from_left, $remove_from_top, $target_width, $target_height, $target_width, $target_height)) {
+        imagedestroy($img);
+        $img = $imgdest;
+    }
+
+    return $img;
 }
 
 /**

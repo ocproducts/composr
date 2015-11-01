@@ -22,6 +22,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__symbols()
@@ -31,17 +32,18 @@ function init__symbols()
     $PAGES_CACHE = array();
     $PANELS_CACHE = array();
     $PREPROCESSABLE_SYMBOLS = array(
-        'PAGE_LINK' => 1,
-        'SET' => 1,
-        'BLOCK' => 1,
-        'FACILITATE_AJAX_BLOCK_CALL' => 1,
-        'REQUIRE_JAVASCRIPT' => 1,
-        'REQUIRE_CSS' => 1,
-        'LOAD_PANEL' => 1,
-        'JS_TEMPCODE' => 1,
-        'CSS_TEMPCODE' => 1,
-        'LOAD_PAGE' => 1,
-        'FRACTIONAL_EDITABLE' => 1,
+        'PAGE_LINK' => true,
+        'SET' => true,
+        'BLOCK' => true,
+        'FACILITATE_AJAX_BLOCK_CALL' => true,
+        'REQUIRE_JAVASCRIPT' => true,
+        'REQUIRE_CSS' => true,
+        'LOAD_PANEL' => true,
+        'JS_TEMPCODE' => true,
+        'CSS_TEMPCODE' => true,
+        'LOAD_PAGE' => true,
+        'FRACTIONAL_EDITABLE' => true,
+        'PAGE_TITLE' => true,
     );
     $EXTRA_SYMBOLS = null;
     $CANONICAL_URL = null;
@@ -532,6 +534,7 @@ function ecv($lang, $escaped, $type, $name, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -584,6 +587,7 @@ function ecv_PAGE_LINK($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -598,6 +602,7 @@ function ecv_SET_NOPREEVAL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -631,6 +636,7 @@ function ecv_SET($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -679,6 +685,7 @@ function ecv_GET($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -702,6 +709,7 @@ function ecv_HAS_ACTUAL_PAGE_ACCESS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -728,6 +736,7 @@ function ecv_TERNARY($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -758,6 +767,7 @@ function ecv_IMG($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -778,6 +788,7 @@ function ecv_IMG_WIDTH($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -798,6 +809,7 @@ function ecv_IMG_HEIGHT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -816,6 +828,7 @@ function ecv_($lang, $escaped, $param) // A Tempcode comment
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -848,6 +861,7 @@ function ecv_REFRESH($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -888,6 +902,7 @@ function ecv_FEEDS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1023,6 +1038,7 @@ function ecv_META_DATA($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1081,6 +1097,7 @@ function keep_symbol($param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1115,6 +1132,7 @@ function ecv_BROWSER($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1152,6 +1170,7 @@ function ecv_REQUIRE_JAVASCRIPT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1210,6 +1229,7 @@ function ecv_FACILITATE_AJAX_BLOCK_CALL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1236,6 +1256,7 @@ function ecv__GET($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1277,6 +1298,7 @@ function ecv_STRIP_TAGS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1296,6 +1318,7 @@ function ecv_TRUNCATE_LEFT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1422,6 +1445,7 @@ function symbol_truncator($param, $type, $tooltip_if_truncated = null)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1449,6 +1473,7 @@ function ecv_PARAGRAPH($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1477,6 +1502,7 @@ function ecv_COMMA_LIST_GET($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1500,6 +1526,7 @@ function ecv_IS_EMPTY($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1523,6 +1550,7 @@ function ecv_IS_NON_EMPTY($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1549,6 +1577,7 @@ function ecv_CDN_FILTER($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1585,6 +1614,7 @@ function ecv_LOAD_PANEL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1610,6 +1640,7 @@ function ecv_JS_ON($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1629,6 +1660,7 @@ function ecv_ZONE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1648,6 +1680,7 @@ function ecv_PAGE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1696,6 +1729,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1725,6 +1759,7 @@ function ecv_CANONICAL_URL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1744,6 +1779,7 @@ function ecv_SHOW_HEADER($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1763,6 +1799,7 @@ function ecv_SHOW_FOOTER($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1782,6 +1819,7 @@ function ecv_WIDE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1801,6 +1839,7 @@ function ecv_WIDE_HIGH($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1820,6 +1859,7 @@ function ecv_LOGO_URL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1845,6 +1885,7 @@ function ecv_HELPER_PANEL_TUTORIAL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1867,6 +1908,7 @@ function ecv_HELPER_PANEL_TEXT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1893,6 +1935,7 @@ function ecv_MESSAGES_TOP($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1925,6 +1968,7 @@ function ecv_MESSAGES_BOTTOM($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1951,6 +1995,7 @@ function ecv_LATE_MESSAGES($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1974,6 +2019,7 @@ function ecv_BREADCRUMBS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -1996,6 +2042,7 @@ function ecv_HAS_SU($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2026,6 +2073,7 @@ function ecv_STAFF_ACTIONS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2120,6 +2168,7 @@ function cms_trim($text, $try_hard = true)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2175,6 +2224,7 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2223,6 +2273,7 @@ function ecv_BANNER($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2242,6 +2293,7 @@ function ecv_AVATAR($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2265,6 +2317,7 @@ function ecv_IS_GUEST($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2289,6 +2342,7 @@ function ecv_MEMBER($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2311,6 +2365,7 @@ function ecv_REQUIRE_CSS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2330,6 +2385,7 @@ function ecv_IS_HTTPAUTH_LOGIN($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2356,6 +2412,7 @@ function ecv_MEMBER_PROFILE_URL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2379,6 +2436,7 @@ function ecv_USERNAME($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2405,6 +2463,7 @@ function ecv_DISPLAYED_USERNAME($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2447,6 +2506,7 @@ function ecv_CYCLE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2467,6 +2527,7 @@ function ecv_THUMBNAIL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2528,6 +2589,7 @@ function ecv_IS_IN_GROUP($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2551,6 +2613,7 @@ function ecv_IS_STAFF($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2574,6 +2637,7 @@ function ecv_IS_ADMIN($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2600,6 +2664,7 @@ function ecv_PHOTO($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2639,6 +2704,7 @@ function ecv_CNS_RANK_IMAGE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2674,6 +2740,7 @@ function ecv_URL_FOR_GET_FORM($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2705,6 +2772,7 @@ function ecv_HIDDENS_FOR_GET_FORM($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2729,6 +2797,7 @@ function ecv_NOTIFICATIONS_ENABLED($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2757,6 +2826,7 @@ function ecv_NOTIFICATIONS_AVAILABLE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2787,6 +2857,7 @@ function ecv_MAKE_RELATIVE_DATE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2820,6 +2891,7 @@ function ecv_LOAD_PAGE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2843,6 +2915,7 @@ function ecv_RUNNING_SCRIPT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2870,6 +2943,7 @@ function ecv_MATCH_KEY_MATCH($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2923,6 +2997,7 @@ function ecv_BLOCK($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2954,6 +3029,7 @@ function ecv_FORCE_PREVIEWS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2975,6 +3051,7 @@ function ecv_PREVIEW_URL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -2994,6 +3071,7 @@ function ecv_HIDE_HELP_PANEL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3016,6 +3094,7 @@ function ecv_FIND_SCRIPT_NOHTTP($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3042,6 +3121,7 @@ function ecv_FIND_SCRIPT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3065,6 +3145,7 @@ function ecv_CSS_TEMPCODE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3088,6 +3169,7 @@ function ecv_JS_TEMPCODE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3108,6 +3190,7 @@ function ecv_PAGE_TITLE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3135,6 +3218,7 @@ function ecv_EXTRA_HEAD($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3167,6 +3251,7 @@ function ecv_EXTRA_FOOT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3193,6 +3278,7 @@ function ecv_RAND($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3226,6 +3312,7 @@ function ecv_SET_RAND($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3245,6 +3332,7 @@ function ecv_MEMBER_EMAIL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3268,6 +3356,7 @@ function ecv_HAS_PRIVILEGE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3291,6 +3380,7 @@ function ecv_HAS_ZONE_ACCESS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3322,6 +3412,7 @@ function ecv_HAS_DELETE_PERMISSION($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3346,6 +3437,7 @@ function ecv_DATE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3369,6 +3461,7 @@ function ecv_TIME($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3409,6 +3502,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3428,6 +3522,7 @@ function ecv_DEV_MODE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3458,6 +3553,7 @@ function ecv_BROWSER_MATCHES($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3484,6 +3580,7 @@ function ecv_INIT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3511,6 +3608,7 @@ function ecv_INC($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3546,6 +3644,7 @@ function ecv_PREG_REPLACE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3569,6 +3668,7 @@ function ecv_MAX($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3592,6 +3692,7 @@ function ecv_MIN($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3615,6 +3716,7 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3642,6 +3744,7 @@ function ecv_DIV($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3669,6 +3772,7 @@ function ecv_LCASE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3699,6 +3803,7 @@ function ecv__POST($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3729,6 +3834,7 @@ function ecv_REPLACE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3764,6 +3870,7 @@ function ecv_IN_STR($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3787,6 +3894,7 @@ function ecv_SUBSTR_COUNT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3813,6 +3921,7 @@ function ecv_SUBSTR($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3845,6 +3954,7 @@ function ecv_ALTERNATOR_TRUNCATED($lang, $escaped, $param) // Alternate values a
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3880,6 +3990,7 @@ function ecv_EQ($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3914,6 +4025,7 @@ function ecv_NEQ($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3937,6 +4049,7 @@ function ecv_NOT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3964,6 +4077,7 @@ function ecv_OR($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -3991,6 +4105,7 @@ function ecv_AND($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4016,6 +4131,7 @@ function ecv_NOR($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4041,6 +4157,7 @@ function ecv_NAND($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4064,6 +4181,7 @@ function ecv_GT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4104,6 +4222,7 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4168,6 +4287,7 @@ function ecv_HONEYPOT_LINK($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4211,6 +4331,7 @@ function ecv_COMMENT_COUNT($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4250,6 +4371,7 @@ function ecv_SELF_URL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4279,6 +4401,7 @@ function ecv_REVIEW_STATUS($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4293,6 +4416,7 @@ function ecv__POSTED($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
@@ -4314,6 +4438,7 @@ function ecv_EXTEND_URL($lang, $escaped, $param)
 
 /**
  * Evaluate a particular Tempcode symbol.
+ *
  * @ignore
  *
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).

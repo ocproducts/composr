@@ -22,6 +22,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__global2()
@@ -664,6 +665,7 @@ function load_user_stuff()
 
 /**
  * Composr error catcher for fatal versions. This is hooked in only on PHP5.2 as error_get_last() only works on these versions.
+ *
  * @ignore
  */
 function catch_fatal_errors()
@@ -1342,6 +1344,11 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
     }
     if ($ret !== null) {
         $ret = unixify_line_format($ret, null, $html);
+
+        if (post_param_integer($name . '_download_associated_media', 0) == 1) {
+            require_code('comcode_cleanup');
+            download_associated_media($ret);
+        }
     }
 
     if ((isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] == '1') && ($conv_from_wysiwyg)) {

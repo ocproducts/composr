@@ -22,6 +22,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__files2()
@@ -170,6 +171,7 @@ function cms_get_temp_dir()
  *
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
+ *
  * @ignore
  */
 function _cms_tempnam($prefix)

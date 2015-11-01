@@ -496,6 +496,8 @@ class Hook_addon_registry_banners
                 'MAP_TABLE' => lorem_phrase(),
                 'BANNER' => lorem_phrase(),
                 'NAME' => placeholder_id(),
+                'RESULTS_TABLE' => placeholder_table(),
+                'RESET_URL' => placeholder_url(),
             )), null, '', true)
         );
     }

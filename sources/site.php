@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__site()
@@ -97,7 +98,7 @@ function init__site()
     }
 
     // Detect bad access domain
-    if (!running_script('webdav')/*we may want to allow WebDAV to run on a different domain*/) {
+    if (running_script('index')) {
         global $SITE_INFO;
         $access_host = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
         if (($access_host != '') && ((isset($_SERVER['HTTP_HOST'])) || (isset($_ENV['HTTP_HOST']))) && (!$GLOBALS['EXTERNAL_CALL'])) {
@@ -1753,7 +1754,8 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         if ((($codename == 'panel_left') || ($codename == 'panel_right')) && (has_js()) && (has_actual_page_access(get_member(), 'admin_zones'))) {
             $edit_url = build_url(array('page' => 'admin_zones', 'type' => '_editor', 'id' => get_zone_name(), 'redirect' => $redirect), get_module_zone('admin_zones'));
         } else {
-            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */'redirect' => $redirect), get_module_zone('cms_comcode_pages'));
+            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */
+                                        'redirect' => $redirect), get_module_zone('cms_comcode_pages'));
         }
     } else {
         $edit_url = new Tempcode();

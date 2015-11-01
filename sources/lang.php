@@ -31,6 +31,7 @@ Language string --> A more general word and can *either* refer to a string withi
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__lang()
@@ -645,6 +646,7 @@ function protect_from_escaping($in)
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
+ *
  * @ignore
  */
 function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3 = null, $lang = null, $require_result = true)

@@ -38,6 +38,7 @@ Any notifications are CC'd to the configured CC email address (if there is one).
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__notifications()

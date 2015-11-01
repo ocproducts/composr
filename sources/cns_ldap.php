@@ -34,6 +34,7 @@ When looping over results, we always have to skip non-numeric keys, which are fo
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__cns_ldap()

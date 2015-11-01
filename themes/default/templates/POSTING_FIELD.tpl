@@ -93,20 +93,33 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
-			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$AND,{$CNS},{$JS_ON}}}}
-				<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
-					{+START,IF,{$AND,{$CNS},{$JS_ON}}}
-						<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
-					{+END}
+			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
+				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$AND,{$CNS},{$JS_ON}}}}
+					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
+						{+START,IF,{$AND,{$CNS},{$JS_ON}}}
+							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
+						{+END}
 
-					{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}
-						{EMOTICON_CHOOSER}
-					{+END}
-				</div>
-			{+END}{+END}
+						{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}
+							{EMOTICON_CHOOSER}
+						{+END}
+					</div>
+				{+END}{+END}
+			{+END}
+		{+END}
 
+		{+START,IF,{$NOT,{$MATCH_KEY_MATCH,cms}}}
 			{+START,IF_PASSED,POST_COMMENT}
 				<p class="posting_rules">{!USE_WEBSITE_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
+			{+END}
+		{+END}
+
+		{+START,IF,{$MATCH_KEY_MATCH,cms}}
+			{+START,IF,{$VALUE_OPTION,download_associated_media}}
+				<p class="vertical_alignment">
+					<label for="{NAME*}_download_associated_media">{!comcode:DOWNLOAD_ASSOCIATED_MEDIA}</label>
+					<input title="{!comcode:DESCRIPTION_DOWNLOAD_ASSOCIATED_MEDIA}" checked="checked" type="checkbox" name="{NAME*}_download_associated_media" id="{NAME*}_download_associated_media" value="1" />
+				</p>
 			{+END}
 		{+END}
 

@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__input_filter()
@@ -373,6 +374,9 @@ function filter_form_field_default($name, $val)
                                 $val = str_replace($attributes['from'], $attributes['embed'], $val);
                             }
                             break;
+                        case 'deepclean':
+                            require_code('deep_clean');
+                            $val = deep_clean($val, isset($attributes['title']) ? $attributes['title'] : '');
                         case 'removeshout':
                             $val = preg_replace_callback('#[^a-z]*[A-Z]{4}[^a-z]*#', 'deshout_callback', $val);
                             break;

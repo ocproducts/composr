@@ -20,6 +20,7 @@
 
 /**
  * Standard code module initialisation function.
+ *
  * @ignore
  */
 function init__captcha()
@@ -304,6 +305,7 @@ function check_captcha($code_entered, $regenerate_on_error = true)
 
 /**
  * Delete current CAPTCHA.
+ *
  * @ignore
  */
 function _cleanout_captcha()

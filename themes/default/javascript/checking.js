@@ -487,7 +487,7 @@ function check_field(the_element,the_form,for_preview)
 			error_msg='{!NOT_FLOAT;^}'.replace('\{1}',my_value);
 		}
 
-		// shim for HTML5 regexp patterns
+		// Shim for HTML5 regexp patterns
 		if (the_element.getAttribute('pattern'))
 		{
 			if ((my_value!='') && (!my_value.match(new RegExp(the_element.getAttribute('pattern')))))
