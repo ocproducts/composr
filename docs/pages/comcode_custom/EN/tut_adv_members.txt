@@ -235,6 +235,10 @@ You can use [abbr="Comma-Separated-Values"]CSV[/abbr] files to put member data i
 This is very easy. Just go to...
 Admin Zone > Tools > Members > Download member spreadsheet (CSV)
 
+There are a number of advanced filtering options you can use. Programmers can extend the export system to include "presets" for these options.
+
+The non-bundled [tt]excel_support[/tt] addon allows you to add XLS export support.
+
 [title="3"]Loading into spreadsheet software[/title]
 
 Composr will correctly include all data in a robust way, however spreadsheet packages may default some imported cells as numeric, which will not have any representation for leading zeros.

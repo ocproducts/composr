@@ -155,6 +155,8 @@ class Module_admin_cns_members
         if ($type == 'download_csv' || $type == '_download_csv') {
             $this->title = get_screen_title('DOWNLOAD_MEMBER_CSV');
 
+            set_helper_panel_text(comcode_lang_string('DOC_DOWNLOAD_MEMBER_CSV'));
+
             $GLOBALS['OUTPUT_STREAMING'] = false; // Too complex to do a pre_run for this properly
         }
 
@@ -593,19 +595,105 @@ class Module_admin_cns_members
     {
         require_code('form_templates');
 
-        require_lang('cns');
-
         $hidden = new Tempcode();
-
         $fields = new Tempcode();
-        handle_max_file_size($hidden);
+
+        $javascript = '';
+
+        // Contents (preset / detailed specification)...
+
+        //$fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',array('SECTION_HIDDEN'=>false,'TITLE'=>do_lang_tempcode('CONTENTS'))));
+
+        $presets = method_exists($this, '_get_export_presets') ? $this->_get_export_presets() : array();
+        if ($presets != array()) {
+            $preset_radios = new Tempcode();
+            $preset_radios->attach(form_input_radio_entry('preset', '', true, do_lang_tempcode('NA_EM')));
+            foreach (array_keys($presets) as $preset) {
+                $preset_radios->attach(form_input_radio_entry('preset', $preset, false));
+            }
+            $fields->attach(form_input_radio(do_lang_tempcode('PRESET'), '', 'preset', $preset_radios, false));
+
+            $javascript .= "
+					var form=document.getElementById('filename').form;
+
+					var crf=function(event) {
+						var preset=radio_value(form.elements['preset']);
+						if (preset=='')
+						{
+							form.elements['fields_to_use'].disabled=false;
+							form.elements['order_by'].disabled=false;
+							form.elements['usergroups'].disabled=false;
+
+							form.elements['filename'].value=form.elements['filename'].defaultValue;
+						} else
+						{
+							form.elements['fields_to_use'].disabled=true;
+							form.elements['order_by'].disabled=true;
+							form.elements['usergroups'].disabled=true;
+
+							form.elements['filename'].value=form.elements['filename'].defaultValue.replace(/^" . strtolower(do_lang('MEMBERS')) . "-/,preset+'-');
+						}
+					};
+					crf();
+					for (var i=0;i<form.elements['preset'].length;i++) form.elements['preset'][i].onclick=crf;
+				";
+        }
+
+        // Option to filter by whether members allow e-mails
         $fields->attach(form_input_tick(do_lang_tempcode('FILTER_BY_ALLOW'), do_lang_tempcode('DESCRIPTION_FILTER_BY_ALLOW'), 'filter_by_allow', get_param_integer('filter_by_allow', 0) == 1));
+
+        // Select fields
+        $fields_to_use = new Tempcode();
+        require_code('cns_members_action2');
+        list($headings) = member_get_csv_headings_extended();
+        foreach ($headings as $field_label => $field_name) {
+            $fields_to_use->attach(form_input_list_entry($field_label, true));
+        }
+        $fields->attach(form_input_multi_list(do_lang_tempcode('COLUMNS'), do_lang_tempcode('SELECT_COLUMNS_TO_INCLUDE'), 'fields_to_use', $fields_to_use, null, 10, true));
+
+        // Order by
+        $fields_to_order_by = new Tempcode();
+        foreach ($headings as $field_label => $field_name) {
+            $fields_to_order_by->attach(form_input_list_entry($field_label, $field_name == 'id'));
+        }
+        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('MEMBER_EXPORT_ORDER'), 'order_by', $fields_to_order_by, null, false, true));
+
+        // Usergroups
+        $groups = cns_create_selection_list_usergroups();
+        $fields->attach(form_input_multi_list(do_lang_tempcode('USERGROUPS'), do_lang_tempcode('SELECT_USERGROUPS_TO_FILTER'), 'usergroups', $groups, null, 10, false));
+
+        // Filename...
+
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('FILENAME'))));
+
+        // File name
+        $filename = strtolower(do_lang('MEMBERS')) . '-' . date('Y-m-d');
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), '', 'filename', $filename, true));
+
+        // File type
+        $_file_types = array('csv');
+        if (addon_installed('excel_support')) {
+            $_file_types[] = 'xls';
+            $_file_types[] = 'xlsx';
+            $_file_types[] = 'html';
+
+            if (is_dir(get_file_base() . '/sources_custom/tcpdf') || is_dir(get_file_base() . '/sources_custom/dompdf') || is_dir(get_file_base() . '/sources_custom/mpdf')) {
+                $_file_types[] = 'pdf';
+            }
+        }
+        $file_types = new Tempcode();
+        foreach ($_file_types as $file_type) {
+            $file_types->attach(form_input_radio_entry('extension', $file_type, ($file_type == 'csv'), strtoupper($file_type)));
+        }
+        $fields->attach(form_input_radio(do_lang_tempcode('TYPE'), '', 'extension', $file_types, true));
+
+        // ...
 
         $submit_name = do_lang_tempcode('DOWNLOAD_MEMBER_CSV');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_download_csv'), '_SELF');
         $text = '';
 
-        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'JAVASCRIPT' => $javascript));
     }
 
     /**
@@ -615,8 +703,15 @@ class Module_admin_cns_members
      */
     public function _download_csv()
     {
+        $filter_by_allow = post_param_integer('filter_by_allow', 0);
+        $extension = post_param_string('extension');
+        $preset = post_param_string('preset', '');
+        $fields_to_use = isset($_POST['fields_to_use']) ? $_POST['fields_to_use'] : array();
+        $usergroups = isset($_POST['usergroups']) ? $_POST['usergroups'] : array();
+        $order_by = post_param_string('order_by');
+
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'download_member_csv', array(post_param_integer('filter_by_allow', 0) == 1));
+        return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'download_member_csv', array($filter_by_allow == 1, $extension, $preset, $fields_to_use, $usergroups, $order_by, $order_by));
     }
 
     /**
@@ -627,8 +722,6 @@ class Module_admin_cns_members
     public function import_csv()
     {
         require_code('form_templates');
-
-        require_lang('cns');
 
         $hidden = new Tempcode();
 

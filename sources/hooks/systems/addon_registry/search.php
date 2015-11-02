@@ -120,6 +120,7 @@ class Hook_addon_registry_search
             'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN.tpl',
             'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION.tpl',
             'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_LIST.tpl',
+            'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_MULTI_LIST.tpl',
             'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TEXT.tpl',
             'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TICK.tpl',
             'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_FLOAT.tpl',
@@ -168,6 +169,7 @@ class Hook_addon_registry_search
             'templates/SEARCH_DOMAINS.tpl' => 'search_form_screen',
             'templates/SEARCH_FORM_SCREEN.tpl' => 'search_form_screen',
             'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_LIST.tpl' => 'search_form_screen',
+            'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_MULTI_LIST.tpl' => 'search_form_screen',
             'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TEXT.tpl' => 'search_form_screen',
             'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TICK.tpl' => 'search_form_screen',
             'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_FLOAT.tpl' => 'search_form_screen',
@@ -337,6 +339,13 @@ class Hook_addon_registry_search
             'DISPLAY' => lorem_word(),
             'SPECIAL' => placeholder_options(),
             'CHECKED' => false,
+        )));
+
+        $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_MULTI_LIST', array(
+            'NAME' => placeholder_random(),
+            'DISPLAY' => lorem_word(),
+            'SPECIAL' => placeholder_options(),
+            'CHECKED' => false
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_TEXT', array(

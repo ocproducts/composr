@@ -34,6 +34,44 @@ function init__cns_members_action2()
  *
  * @return array A map of heading information (human name to field name/encoding details)
  */
+function member_get_csv_headings_extended()
+{
+    // Read CPFs
+    $cpfs = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_name'), null, 'ORDER BY cf_order'));
+
+    // Headings
+    $headings = member_get_csv_headings();
+    foreach ($cpfs as $i => $c) { // CPFs take precedence over normal fields of the same name
+        $cpfs[$i]['_cf_name'] = get_translated_text($c['cf_name'], $GLOBALS['FORUM_DB']);
+        $headings[$cpfs[$i]['_cf_name']] = $i;
+    }
+
+    // Subscription types
+    $subscription_types = array();
+    if (addon_installed('ecommerce')) {
+        require_lang('ecommerce');
+
+        $usergroup_subscription_rows = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('id', 's_title'));
+        foreach ($usergroup_subscription_rows as $usergroup_subscription_row) {
+            $item_name = get_translated_text($usergroup_subscription_row['s_title']);
+            $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_START_TIME') . ')'] = null;
+            $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_START_TIME') . ')'] = null;
+            $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_END_TIME') . ')'] = null;
+            $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_EXPIRY_TIME') . ')'] = null;
+            $headings[$item_name . ' (' . do_lang('PAYMENT_GATEWAY') . ')'] = null;
+            $headings[$item_name . ' (' . do_lang('STATUS') . ')'] = null;
+            $subscription_types['USERGROUP' . strval($usergroup_subscription_row['id'])] = $item_name;
+        }
+    }
+
+    return array($headings, $cpfs, $subscription_types);
+}
+
+/**
+ * Get field mapping data for CSV import/export.
+ *
+ * @return array A map of heading information (human name to field name/encoding details)
+ */
 function member_get_csv_headings()
 {
     $headings = array(

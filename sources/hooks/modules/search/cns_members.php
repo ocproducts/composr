@@ -110,16 +110,17 @@ class Hook_search_cns_members
             $map = null;
         }
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map, 'ORDER BY g_order');
-        $groups = form_input_list_entry('', true, '---');
+        $groups = form_input_list_entry('', false, '---');
         $default_group = get_param_string('option__user_group', '');
         $group_titles = array();
+        $bits = explode(',', $default_group);
         foreach ($rows as $row) {
             $name = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 
             if ($row['id'] == db_get_first_id()) {
                 continue;
             }
-            $groups->attach(form_input_list_entry(strval($row['id']), strval($row['id']) == $default_group, $name));
+            $groups->attach(form_input_list_entry(strval($row['id']), in_array(strval($row['id']), $bits), $name));
             $group_titles[$row['id']] = $name;
         }
         if (strpos($default_group, ',') !== false) {
@@ -133,7 +134,7 @@ class Hook_search_cns_members
             }
             $groups->attach(form_input_list_entry(strval($default_group), true, do_lang_tempcode('USERGROUP_SEARCH_COMBO', escape_html($combination))));
         }
-        $fields[] = array('NAME' => '_user_group', 'DISPLAY' => do_lang_tempcode('USERGROUP'), 'TYPE' => '_LIST', 'SPECIAL' => $groups);
+        $fields[] = array('NAME' => '_user_group', 'DISPLAY' => do_lang_tempcode('USERGROUP'), 'TYPE' => '_MULTI_LIST', 'SPECIAL' => $groups);
         return $fields;
     }
 
