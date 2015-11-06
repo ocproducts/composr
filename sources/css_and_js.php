@@ -84,7 +84,8 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     }
 
     // Copy to tmp file
-    $temp_file = get_custom_file_base() . '/themes/' . $destination_theme . '/css_custom/' . basename($fullpath, '.css') . '__tmp_copy.css';
+    $tmp_filename = $css_file . '__tmp_copy_' . uniqid('', true);
+    $temp_file = get_custom_file_base() . '/themes/' . $destination_theme . '/css_custom/' . $tmp_filename . '.css';
     $myfile = @fopen($temp_file, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($temp_file);
     @flock($myfile, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
@@ -94,7 +95,7 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     @flock($myfile, LOCK_UN);
 
     // Load up as Tempcode
-    $_sheet = _css_compile($destination_theme, $destination_theme, $css_file . '__tmp_copy', $temp_file, false);
+    $_sheet = _css_compile($destination_theme, $destination_theme, $tmp_filename, $temp_file, false);
     fclose($myfile);
     fix_permissions($temp_file);
     @unlink($temp_file);
@@ -240,7 +241,7 @@ function css_compile($active_theme, $theme, $c, $fullpath, $css_cache_path, $min
             $global_fullpath = get_file_base() . '/themes/' . $d_theme . $found[1] . 'global' . $found[2];
         }
 
-		if (strpos(file_get_contents($global_fullpath), '{$THEME_WIZARD_COLOR,') !== false) {
+        if (strpos(file_get_contents($global_fullpath), '{$THEME_WIZARD_COLOR,') !== false) {
             require_code('tempcode_compiler');
             $temp = template_to_tempcode(file_get_contents($global_fullpath), 0, false, $c, $active_theme, user_lang());
             $temp->evaluate(); // We just need it to evaluate, not do anything with it

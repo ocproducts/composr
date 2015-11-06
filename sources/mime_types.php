@@ -49,7 +49,11 @@ function get_mime_types($as_admin)
         'mdb' => 'application/x-msaccess',
         'xls' => 'application/vnd.ms-excel',
         'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'docb' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'docm' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'xlsb' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'xlsm' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 
         // iWork
         'pages' => 'application/x-iwork-pages-sffpages',
@@ -64,6 +68,8 @@ function get_mime_types($as_admin)
         // Presentations/Animations/3D
         'ppt' => 'application/powerpoint',
         'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'pptb' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'pptm' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         'svg' => $as_admin ? 'image/svg+xml' : 'application/octet-stream',
         'wrl' => 'model/vrml',
         'vrml' => 'model/vrml',

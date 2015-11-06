@@ -30,9 +30,9 @@ function init__cns_members_action2()
 }
 
 /**
- * Get field mapping data for CSV import/export.
+ * Get extended field mapping data for CSV import/export.
  *
- * @return array A map of heading information (human name to field name/encoding details)
+ * @return array Triple: headings, CPFs, subscription type data
  */
 function member_get_csv_headings_extended()
 {

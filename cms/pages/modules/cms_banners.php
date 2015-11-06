@@ -121,6 +121,10 @@ class Module_cms_banners extends Standard_crud_module
             return $this->browse();
         }
 
+        if ($type == 'export_csv') {
+            return $this->export_csv();
+        }
+
         $this->javascript = '
             document.getElementById("importancemodulus").onkeyup=function() {
                 var _im_here=document.getElementById("im_here");
@@ -196,6 +200,7 @@ class Module_cms_banners extends Standard_crud_module
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_BANNER_TYPE')) : null,
                 has_privilege(get_member(), 'submit_midrange_content', 'cms_banners') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_BANNER')) : null,
                 has_privilege(get_member(), 'edit_own_midrange_content', 'cms_banners') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_BANNER')) : null,
+                array('menu/_generic_admin/export', array('_SELF', array('type' => 'export_csv'), '_SELF'), do_lang('EXPORT_CSV_BANNERS')),
             ),
             do_lang('MANAGE_BANNERS')
         );
@@ -510,6 +515,118 @@ class Module_cms_banners extends Standard_crud_module
     public function do_next_manager($title, $description, $id)
     {
         return $this->cat_crud_module->_do_next_manager($title, $description, $id, $this->donext_type);
+    }
+
+    /**
+     * The actualiser to export a banners CSV.
+     *
+     * @return Tempcode The UI
+     */
+    public function export_csv()
+    {
+        $csv_rows = array();
+
+        $has_banner_network = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)') != 0.0;
+
+        $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_banners') ? null : get_member();
+        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), is_null($only_owned) ? null : array('submitter' => $only_owned), 'ORDER BY name');
+
+        $has_title_text = false;
+        $has_caption = false;
+        $has_deployment_agreement = false;
+        foreach ($rows as $row) {
+            if ($row['b_title_text'] != '') {
+                $has_title_text = true;
+            }
+            if (get_translated_text($row['caption']) != '') {
+                $has_caption = true;
+            }
+            if ($row['the_type'] != BANNER_PERMANENT) {
+                $has_deployment_agreement = true;
+            }
+        }
+
+        foreach ($rows as $row) {
+            $csv_row = array();
+
+            // Basic details...
+
+            $csv_row[do_lang('CODENAME')] = $row['name'];
+
+            $csv_row[do_lang('_BANNER_TYPE')] = ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'];
+
+            if ($has_title_text) {
+                $csv_row[do_lang('BANNER_TITLE_TEXT')] = $row['b_title_text'];
+            }
+
+            if ($has_caption) {
+                $csv_row[do_lang('DESCRIPTION')] = get_translated_text($row['caption']);
+            }
+
+            $csv_row[do_lang('IMAGE')] = (url_is_local($row['img_url']) ? (get_custom_base_url() . '/') : '') . $row['img_url'];
+
+            $csv_row[do_lang('DESTINATION_URL')] = $row['site_url'];
+
+            // Basic stats...
+
+            if ($has_banner_network) {
+                $csv_row[strip_tags(do_lang('BANNER_HITSFROM'))] = integer_format($row['hits_from']);
+                $csv_row[strip_tags(do_lang('BANNER_VIEWSFROM'))] = integer_format($row['views_from']);
+            }
+            $csv_row[strip_tags(do_lang('BANNER_HITSTO'))] = ($row['site_url'] == '') ? strip_tags(do_lang('CANT_TRACK')) : integer_format($row['hits_to']);
+            $csv_row[strip_tags(do_lang('BANNER_VIEWSTO'))] = ($row['site_url'] == '') ? strip_tags(do_lang('CANT_TRACK')) : integer_format($row['views_to']);
+
+            if ($row['views_to'] != 0) {
+                $click_through = float_format(100.0 * (floatval($row['hits_to']) / floatval($row['views_to'])));
+            } else {
+                $click_through = do_lang('NA');
+            }
+            $csv_row[strip_tags(do_lang('BANNER_CLICKTHROUGH'))] = ($row['site_url'] == '') ? strip_tags(do_lang('CANT_TRACK')) : $click_through;
+
+            // Display determination details...
+
+            if ($has_deployment_agreement) {
+                $deployment_agreement = '';
+                $campaign_remaining = '';
+                switch ($row['the_type']) {
+                    case BANNER_PERMANENT:
+                        $deployment_agreement = do_lang('BANNER_PERMANENT');
+                        $campaign_remaining = integer_format($row['campaign_remaining']);
+                        break;
+                    case BANNER_CAMPAIGN:
+                        $deployment_agreement = do_lang('BANNER_CAMPAIGN');
+                        break;
+                    case BANNER_DEFAULT:
+                        $deployment_agreement = do_lang('BANNER_DEFAULT');
+                        break;
+                }
+                $csv_row[do_lang('DEPLOYMENT_AGREEMENT')] = $deployment_agreement;
+
+                $csv_row[do_lang('HITS_ALLOCATED')] = $campaign_remaining;
+            }
+
+            $csv_row[do_lang('IMPORTANCE_MODULUS')] = strval($row['importance_modulus']);
+
+            $csv_row[do_lang('EXPIRY_DATE')] = is_null($row['expiry_date']) ? do_lang('NA') : get_timezoned_date($row['expiry_date']);
+
+            if (addon_installed('unvalidated')) {
+                $csv_row[do_lang('VALIDATED')] = ($row['validated'] == 1) ? do_lang('YES') : do_lang('NO');
+            }
+
+            // Meta details...
+
+            $csv_row[do_lang('SUBMITTER')] = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
+
+            $csv_row[do_lang('ADDED')] = get_timezoned_date($row['add_date']);
+            $csv_row[do_lang('EDITED')] = is_null($row['edit_date']) ? '' : date('Y-m-d', $row['edit_date']);
+
+            $csv_rows[] = $csv_row;
+        }
+
+        require_code('files2');
+        make_csv($csv_rows, 'banners.csv');
+
+        return new Tempcode();
     }
 }
 
