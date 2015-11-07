@@ -31,17 +31,17 @@ class Hook_check_mysql_version
     public function run()
     {
         $warning = array();
-        if (isset($GLOBALS['SITE_DB']->static_ob[0])) {
-            if (function_exists('mysqli_get_server_version')) {
-                $version = @mysqli_get_server_version($GLOBALS['SITE_DB']->static_ob[0]);
+        if (isset($GLOBALS['SITE_DB']->connection_read[0])) {
+            if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
+                $version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
                 if ($version !== false) {
                     $x = float_to_raw_string(floatval($version) / 10000.0);
                     if (version_compare($x, '4.1.0', '<')) {
                         $warning[] = do_lang_tempcode('MYSQL_TOO_OLD');
                     }
                 }
-            } elseif (function_exists('mysql_get_server_info')) {
-                $version = @mysql_get_server_info($GLOBALS['SITE_DB']->static_ob[0]);
+            } elseif (function_exists('mysql_get_server_info') && get_db_type() == 'mysql') {
+                $version = @mysql_get_server_info($GLOBALS['SITE_DB']->connection_read[0]);
                 if ($version !== false) {
                     if (version_compare($version, '4.1.0', '<')) {
                         $warning[] = do_lang_tempcode('MYSQL_TOO_OLD');

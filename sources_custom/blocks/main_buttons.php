@@ -83,7 +83,7 @@ class Block_main_buttons
 
         require_code('banners3');
 
-        //create default banners, if they don't exist
+        // Create default banners, if they don't exist
         add_banner_quiet('composr', 'data_custom/images/causes/composr.gif', brand_name(), brand_name(), 0, get_brand_base_url() . '/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('firefox', 'data_custom/images/causes/firefox.gif', 'Firefox', 'Firefox', 0, 'http://www.mozilla.com/firefox/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('w3cxhtml', 'data_custom/images/causes/w3c-xhtml.gif', 'W3C XHTML', 'W3C XHTML', 0, 'http://www.w3.org/MarkUp/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
@@ -98,7 +98,6 @@ class Block_main_buttons
         add_banner_quiet('helptheaged', 'data_custom/images/causes/helptheaged.gif', 'HelpTheAged', 'HelpTheAged', 0, 'http://www.helptheaged.org.uk/en-gb', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('nspcc', 'data_custom/images/causes/nspcc.gif', 'NSPCC', 'NSPCC', 0, 'http://www.nspcc.org.uk/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('oxfam', 'data_custom/images/causes/oxfam.gif', 'Oxfam', 'Oxfam', 0, 'http://www.oxfam.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        add_banner_quiet('bringdownie6', 'data_custom/images/causes/bringdownie6.gif', 'BringDownIE6', 'BringDownIE6', 0, 'http://www.bringdownie6.com', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('cnd', 'data_custom/images/causes/cnd.gif', 'CND', 'CND', 0, 'http://www.cnduk.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('amnestyinternational', 'data_custom/images/causes/amnestyinternational.gif', 'Amnesty International', 'Amnesty International', 0, 'http://www.amnesty.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('bhf', 'data_custom/images/causes/bhf.gif', 'British Heart Foundation', 'British Heart Foundation', 0, 'http://www.bhf.org.uk/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);

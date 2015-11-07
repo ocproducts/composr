@@ -36,15 +36,16 @@ function init__banners()
  * @param  ?ID_TEXT $b_type The banner type needed (null: don't care)
  * @param  boolean $do_type_join If we want the banner type row joined in
  * @param  ?string $banner_to_avoid Do not show this specific banner (null: none to not show)
+ * @param  ?string $b_region Region to show for (null: auto-detect)
  * @return string Banner selection SQL
  */
-function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avoid = null)
+function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avoid = null, $b_region = null)
 {
-    if (addon_installed('stats')) {
-        require_code('global4');
-        $b_region = geolocate_ip();
-    } else {
-        $b_region = null;
+    if (is_null($b_region)) {
+        if (addon_installed('stats')) {
+            require_code('global4');
+            $b_region = get_param_string('keep_country', geolocate_ip());
+        }
     }
 
     $sql = 'SELECT * FROM ' . get_table_prefix() . 'banners b';
@@ -147,9 +148,10 @@ function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $
  * @param  ?string $source The banner advertisor who is actively displaying the banner (calling up this function) and hence is rewarded (null: get from URL param) (blank: our own site)
  * @param  ?integer $width The width (null: standard for banner type)
  * @param  ?integer $height The height (null: standard for banner type)
+ * @param  ?string $b_region Region to show for (null: auto-detect)
  * @return ?Tempcode Result (null: we weren't asked to return the result)
  */
-function banners_script($ret = false, $type = null, $dest = null, $b_type = null, $source = null, $width = null, $height = null)
+function banners_script($ret = false, $type = null, $dest = null, $b_type = null, $source = null, $width = null, $height = null, $b_region = null)
 {
     require_code('images');
     require_lang('banners');
@@ -268,7 +270,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if ($dest != '') {
             $myquery = 'SELECT * FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_equal_to('name', $dest);
         } else {
-            $myquery = banner_select_sql($b_type, false, $source);
+            $myquery = banner_select_sql($b_type, false, $source, $b_region);
         }
 
         // Run Query

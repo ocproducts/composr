@@ -220,6 +220,7 @@ class Hook_addon_registry_excel_support
             'sources_custom/spout/tests/resources/xlsx/two_sheets_with_inline_strings.xlsx',
             'sources_custom/spout/tests/resources/xlsx/two_sheets_with_shared_strings.xlsx',
             'sources_custom/files2.php',
+            'sources_custom/files_spout.php',
         );
     }
 }

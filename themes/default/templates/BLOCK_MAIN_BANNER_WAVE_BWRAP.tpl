@@ -1,3 +1,9 @@
-<div class="banner_wrap">
+{+START,IF,{$EQ,{MAX},1}}
 	{BANNER}
-</div>
+{+END}
+
+{+START,IF,{$NEQ,{MAX},1}}
+	<div class="banner_wrap">
+		{BANNER}
+	</div>
+{+END}
