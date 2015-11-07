@@ -70,7 +70,7 @@ class Block_main_topsites
         require_lang('banners');
 
         $b_type = $map['param'];
-        $myquery = 'SELECT * FROM ' . get_table_prefix() . 'banners WHERE validated=1 AND ' . db_string_equal_to('b_type', $b_type) . ' AND (expiry_date IS NULL OR expiry_date>' . strval(time()) . ') ORDER BY hits_from+hits_to DESC';
+        $myquery = banner_select_sql($b_type) . ' ORDER BY hits_from+hits_to DESC';
         $_banners = $GLOBALS['SITE_DB']->query($myquery, 200);
         $assemble = new Tempcode();
 

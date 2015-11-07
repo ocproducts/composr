@@ -57,7 +57,7 @@ class banners_test_set extends cms_test_case
 
     public function testAddbanner()
     {
-        add_banner($this->banner_name, get_brand_base_url() . '/themes/default/images/EN/logo/standalone_logo.png', 'Good morning', 'Welcome', '', 10, get_brand_base_url(), 3, 'test notes', 1, 1329153480, get_member(), 1, $this->banner_type);
+        add_banner($this->banner_name, get_brand_base_url() . '/themes/default/images/EN/logo/standalone_logo.png', 'Good morning', 'Welcome', '', 10, get_brand_base_url(), 3, 'test notes', BANNER_PERMANENT, 1329153480, get_member(), 1, $this->banner_type);
 
         //make sure the banner is created with given name
         $this->assertTrue(get_brand_base_url() . '/themes/default/images/EN/logo/standalone_logo.png' == $GLOBALS['FORUM_DB']->query_select_value('banners', 'img_url', array('name' => $this->banner_name)));

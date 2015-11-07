@@ -848,6 +848,8 @@ class Hook_cms_merge
                     $submitter,
                     $row['validated'],
                     $row['b_type'],
+                    $db->table_exists('banner_types') ? collapse_1d_complexity('b_type', $db->query_select('banners_types', array('b_type'), array('name' => $row['name']))) : array(),
+                    $db->table_exists('banners_regions') ? collapse_1d_complexity('b_region', $db->query_select('banners_regions', array('b_region'), array('name' => $row['name']))) : array(),
                     $row['add_date'],
                     $row['hits_from'],
                     $row['hits_to'],

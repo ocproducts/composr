@@ -21,7 +21,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 				{$,The banner}
 				{+START,IF,{$NOT,{$MOBILE}}}
-					{$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
+					{$SET-,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
 					{+START,IF_NON_EMPTY,{$GET,BANNER}}
 						<div class="global_banner">{$GET,BANNER}</div>
 					{+END}

@@ -137,7 +137,7 @@ class Block_main_buttons
         require_code('banners');
 
         $b_type = $map['param'];
-        $myquery = 'SELECT * FROM ' . get_table_prefix() . 'banners WHERE ((((the_type<>1) OR ((campaign_remaining>0) AND ((expiry_date IS NULL) or (expiry_date>' . strval(time()) . ')))) AND ' . db_string_not_equal_to('name', '') . ')) AND validated=1 AND ' . db_string_equal_to('b_type', $b_type) . ' ORDER BY name';
+        $myquery = banner_select_sql($b_type) . ' ORDER BY name';
         $banners = $GLOBALS['SITE_DB']->query($myquery, 200/*Just in case of ridiculous numbers*/);
         $assemble = new Tempcode();
 

@@ -214,7 +214,7 @@ class Hook_pointstore_banners
         $this->handle_has_banner_already();
 
         check_banner();
-        add_banner($name, $image_url, '', $caption, $direct_code, intval(get_option('initial_banner_hits')), $site_url, 3, $notes, 1, null, get_member(), 0);
+        add_banner($name, $image_url, '', $caption, $direct_code, intval(get_option('initial_banner_hits')), $site_url, 3, $notes, BANNER_PERMANENT, null, get_member(), 0);
         $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'banner', 'details' => $name, 'details2' => ''));
         require_code('points2');
         charge_member(get_member(), $cost, do_lang('ADD_BANNER'));

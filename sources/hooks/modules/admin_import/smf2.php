@@ -1716,6 +1716,7 @@ class Hook_smf2
      */
     public function import_banners($db, $table_prefix, $file_base)
     {
+        require_code('banners');
         require_code('banners2');
 
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ads', null, null, true);
@@ -1726,7 +1727,7 @@ class Hook_smf2
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $row['NAME']));
             if (is_null($test)) {
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-                add_banner(fix_id($row['NAME']), '', '', $row['NAME'], stripslashes($row['CONTENT']), null, '', 1, '', 1, null, $submitter, $row['show_topofpage'], '', time(), 0, $row['HITS'], 0, $row['HITS'], null);
+                add_banner(fix_id($row['NAME']), '', '', $row['NAME'], stripslashes($row['CONTENT']), null, '', 1, '', BANNER_PERMANENT, null, $submitter, $row['show_topofpage'], '', array(), array(), time(), 0, $row['HITS'], 0, $row['HITS'], null);
             }
         }
     }

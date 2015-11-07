@@ -136,7 +136,6 @@ class Hook_addon_registry_locations
             'data_custom/locations/index.html',
             'data_custom/locations/sources.zip',
             'data_custom/locations/readme.txt',
-            'sources_custom/locations.php',
             'sources_custom/locations_install.php',
             'sources_custom/locations_geopositioning.php',
             'sources_custom/locations/uk.php',

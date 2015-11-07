@@ -1293,7 +1293,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
-                                        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'banners b LEFT JOIN ' . get_table_prefix() . 'banner_types t ON b.b_type=t.id WHERE t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', ''), null, null, true);
+                                        require_code('banners');
+                                        $banner_sql = banner_select_sql(null, true);
+                                        $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
+                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, null, true);
                                         if (!is_null($rows)) {
                                             // Filter out what we don't have permission for
                                             if (get_option('use_banner_permissions', true) == '1') {
@@ -1330,7 +1333,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 if (strtolower(substr($comcode, $pos - 1, strlen($ad_trigger))) == strtolower($ad_trigger)) {
                                                     $just_banner_row = db_map_restrict($ad_bits, array('name', 'caption'));
 
-                                                    require_code('banners');
                                                     if ($GLOBALS['XSS_DETECT']) {
                                                         ocp_mark_as_escaped($continuation);
                                                     }

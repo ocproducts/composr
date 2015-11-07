@@ -30,11 +30,13 @@
 	</div>
 {+END}
 
-<script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
-		$("#{NAME#/}").select2({
-			dropdownAutoWidth: true,
-			containerCssClass: 'wide_field'
+{+START,IF,{$EQ,{SIZE},5}}
+	<script>// <![CDATA[
+		add_event_listener_abstract(window,'load',function() {
+			$("#{NAME#/}").select2({
+				dropdownAutoWidth: true,
+				containerCssClass: 'wide_field'
+			});
 		});
-	});
-//]]></script>
+	//]]></script>
+{+END}

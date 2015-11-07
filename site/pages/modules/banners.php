@@ -35,7 +35,7 @@ class Module_banners
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['locked'] = true;
         $info['update_require_upgrade'] = 1;
         return $info;
@@ -207,6 +207,18 @@ class Module_banners
         if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
             add_privilege('BANNERS', 'use_html_banner', false);
             add_privilege('BANNERS', 'use_php_banner', false, true);
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {
+            $GLOBALS['SITE_DB']->create_table('banners_types', array(
+                'name' => '*ID_TEXT',
+                'b_type' => '*ID_TEXT',
+            ));
+
+            $GLOBALS['SITE_DB']->create_table('banners_regions', array(
+                'name' => '*ID_TEXT',
+                'b_region' => '*ID_TEXT',
+            ));
         }
     }
 
@@ -468,13 +480,22 @@ class Module_banners
         $fields = new Tempcode();
         require_code('templates_map_table');
         $fields->attach(map_table_field(do_lang_tempcode('TYPE'), $type));
-        if ($myrow['b_type'] != '') {
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_TYPE'), $myrow['b_type']));
+
+        $fields->attach(map_table_field(do_lang_tempcode('BANNER_TYPE'), ($myrow['b_type'] == '') ? do_lang('GENERAL') : $myrow['b_type']));
+
+        $banner_types = implode(', ', collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $myrow['name']))));
+        $fields->attach(map_table_field(do_lang_tempcode('SECONDARY_CATEGORIES'), ($banner_types == '') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html($banner_types))));
+
+        if (addon_installed('stats')) {
+            $banners_regions = implode(', ', collapse_1d_complexity('b_region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('b_region'), array('name' => $myrow['name']))));
+            $fields->attach(map_table_field(do_lang_tempcode('BANNER_REGIONS'), ($banners_regions == '') ? do_lang_tempcode('ALL_EM') : protect_from_escaping(escape_html($banners_regions))));
         }
 
         $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date($myrow['add_date'])));
+
         $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
+
         if ($has_banner_network) {
             $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSFROM'), escape_html(integer_format($myrow['hits_from'])), false, 'hits_from'));
             $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSFROM'), escape_html(integer_format($myrow['views_from'])), false, 'views_from'));
@@ -482,6 +503,7 @@ class Module_banners
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_HITSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['hits_to']))), false, 'hits_to'));
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_VIEWSTO'), ($myrow['site_url'] == '') ? do_lang_tempcode('CANT_TRACK') : protect_from_escaping(escape_html(integer_format($myrow['views_to']))), false, 'views_to'));
         $fields->attach(map_table_field(do_lang_tempcode('BANNER_CLICKTHROUGH'), $click_through));
+
         $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['submitter']);
         $fields->attach(map_table_field(do_lang_tempcode('SUBMITTER'), $username, true));
 
@@ -501,7 +523,7 @@ class Module_banners
 
             require_code('templates_results_table');
 
-            $current_ordering = get_param('sort', 'month ASC');
+            $current_ordering = get_param_string('sort', 'month ASC');
             if (strpos($current_ordering, ' ') === false) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
@@ -580,13 +602,13 @@ class Module_banners
      *
      * @return Tempcode The UI
      */
-    function reset_banner()
+    public function reset_banner()
     {
         $title = get_screen_title('RESET_BANNER_STATS');
 
-        post_param('confirm'); // Just to confirm it is a POST request, i.e. not a CSRF
+        post_param_string('confirm'); // Just to confirm it is a POST request, i.e. not a CSRF
 
-        $source = get_param('source');
+        $source = get_param_string('source');
 
         if (!has_actual_page_access(get_member(), 'admin_banners')) {
             access_denied('I_ERROR');

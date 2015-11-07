@@ -338,16 +338,18 @@ class Module_cms_banners extends Standard_crud_module
      * @param  ?MEMBER $submitter The banners submitter (null: current member)
      * @param  BINARY $validated Whether the banner has been validated
      * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
+     * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
+     * @param  ?array $b_regions The banner regions (empty: not region-limited) (null: same as empty)
      * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
      * @return array Bits
      */
-    public function get_form_fields($name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 0, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $title_text = '')
+    public function get_form_fields($name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 0, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = null, $b_regions = null, $title_text = '')
     {
         if ($b_type == '') {
             $b_type = get_param_string('b_type', '');
         }
 
-        list($fields, $_javascript) = get_banner_form_fields(false, $name, $image_url, $site_url, $caption, $direct_code, $notes, $importancemodulus, $campaignremaining, $the_type, $expiry_date, $submitter, $validated, $b_type, $title_text);
+        list($fields, $_javascript) = get_banner_form_fields(false, $name, $image_url, $site_url, $caption, $direct_code, $notes, $importancemodulus, $campaignremaining, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $b_regions, $title_text);
         $this->javascript .= $_javascript;
 
         $fields->attach(meta_data_get_fields('banner', $name));
@@ -398,7 +400,11 @@ class Module_cms_banners extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        return $this->get_form_fields($id, $myrow['img_url'], $myrow['site_url'], get_translated_text($myrow['caption']), $myrow['b_direct_code'], $myrow['notes'], $myrow['importance_modulus'], $myrow['campaign_remaining'], $myrow['the_type'], $myrow['expiry_date'], $myrow['submitter'], $myrow['validated'], $myrow['b_type'], $myrow['b_title_text']);
+        $b_types = collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $id)));
+
+        $b_regions = collapse_1d_complexity('b_region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('b_region'), array('name' => $id)));
+
+        return $this->get_form_fields($id, $myrow['img_url'], $myrow['site_url'], get_translated_text($myrow['caption']), $myrow['b_direct_code'], $myrow['notes'], $myrow['importance_modulus'], $myrow['campaign_remaining'], $myrow['the_type'], $myrow['expiry_date'], $myrow['submitter'], $myrow['validated'], $myrow['b_type'], $b_types, $b_regions, $myrow['b_title_text']);
     }
 
     /**
@@ -419,16 +425,17 @@ class Module_cms_banners extends Standard_crud_module
         $expiry_date = get_input_date('expiry_date');
         $validated = post_param_integer('validated', 0);
         $b_type = post_param_string('b_type');
-
+        $b_types = isset($_POST['b_types']) ? $_POST['b_types'] : array();
+        $b_regions = isset($_POST['b_regions']) ? $_POST['b_regions'] : array();
         $title_text = post_param_string('title_text', '');
-        $b_type = post_param_string('b_type');
+
         $this->donext_type = $b_type;
 
-        list($url, $title_text) = check_banner($title_text, $direct_code, $b_type);
+        list($url, $title_text) = check_banner($title_text, $direct_code, $b_type, $b_types);
 
         $meta_data = actual_meta_data_get_fields('banner', null);
 
-        add_banner($name, $url, $title_text, $caption, $direct_code, $campaignremaining, $siteurl, $importancemodulus, $notes, $the_type, $expiry_date, $meta_data['submitter'], $validated, $b_type, $meta_data['add_time'], 0, 0, 0, 0, $meta_data['edit_time']);
+        add_banner($name, $url, $title_text, $caption, $direct_code, $campaignremaining, $siteurl, $importancemodulus, $notes, $the_type, $expiry_date, $meta_data['submitter'], $validated, $b_type, $b_types, $b_regions, $meta_data['add_time'], 0, 0, 0, 0, $meta_data['edit_time']);
 
         $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
         if (array_key_exists(0, $_banner_type_row)) {
@@ -463,22 +470,22 @@ class Module_cms_banners extends Standard_crud_module
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
         }
 
-        $b_type = post_param_string('b_type');
-
         $title_text = post_param_string('title_text', '');
         $direct_code = post_param_string('direct_code', '');
+        $validated = post_param_integer('validated', 0);
         $b_type = post_param_string('b_type');
+        $b_types = isset($_POST['b_types']) ? $_POST['b_types'] : array();
+        $b_regions = isset($_POST['b_regions']) ? $_POST['b_regions'] : array();
+
         $this->donext_type = $b_type;
 
         list($url, $title_text) = check_banner($title_text, $direct_code, $b_type);
-
-        $validated = post_param_integer('validated', 0);
 
         $new_id = post_param_string('name');
 
         $meta_data = actual_meta_data_get_fields('banner', $id, null, $new_id);
 
-        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), get_input_date('expiry_date'), $meta_data['submitter'], $validated, $b_type, $meta_data['edit_time'], $meta_data['add_time'], true);
+        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), get_input_date('expiry_date'), $meta_data['submitter'], $validated, $b_type, $b_types, $b_regions, $meta_data['edit_time'], $meta_data['add_time'], true);
 
         $this->new_id = post_param_string('name');
 
@@ -553,7 +560,10 @@ class Module_cms_banners extends Standard_crud_module
 
             $csv_row[do_lang('CODENAME')] = $row['name'];
 
-            $csv_row[do_lang('_BANNER_TYPE')] = ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'];
+            $csv_row[do_lang('BANNER_TYPE')] = ($row['b_type'] == '') ? do_lang('GENERAL') : $row['b_type'];
+
+            $banner_types = implode(', ', collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $row['name']))));
+            $csv_row[do_lang('SECONDARY_CATEGORIES')] = $banner_types;
 
             if ($has_title_text) {
                 $csv_row[do_lang('BANNER_TITLE_TEXT')] = $row['b_title_text'];
@@ -606,6 +616,11 @@ class Module_cms_banners extends Standard_crud_module
             }
 
             $csv_row[do_lang('IMPORTANCE_MODULUS')] = strval($row['importance_modulus']);
+
+            if (addon_installed('stats')) {
+                $banners_regions = implode(', ', collapse_1d_complexity('b_region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('b_region'), array('name' => $row['name']))));
+                $csv_row[do_lang('BANNER_REGIONS')] = $banners_regions;
+            }
 
             $csv_row[do_lang('EXPIRY_DATE')] = is_null($row['expiry_date']) ? do_lang('NA') : get_timezoned_date($row['expiry_date']);
 

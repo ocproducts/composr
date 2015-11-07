@@ -237,7 +237,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 /* Particular input types */
 
 .form_table .form_table_field_input select {
-	max-width: 18em;
+	width: auto;
 }
 
 .upload_field_msg {
