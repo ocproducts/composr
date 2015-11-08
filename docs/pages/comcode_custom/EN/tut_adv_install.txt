@@ -150,6 +150,7 @@ Set the following to [b]777[/b]: (full directory permissions)
 
 Set the following to [b]666[/b]: (full read/write permissions)
  - [tt]data_custom/errorlog.php[/tt]
+ - [tt]data_custom/firewall_rules.txt[/tt]
  - [tt]data_custom/functions.dat[/tt]
  - [tt]data_custom/modules/chat/chat_last_msg.dat[/tt]
  - [tt]data_custom/modules/chat/chat_last_event.dat[/tt]

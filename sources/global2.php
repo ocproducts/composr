@@ -1394,7 +1394,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
- * @param  boolean $no_security Whether to skip the security check
+ * @param  boolean $no_security Whether to skip the security check. Does not currently do anything
  * @return ?string The parameter value (null: missing)
  */
 function get_param_string($name, $default = false, $no_security = false)

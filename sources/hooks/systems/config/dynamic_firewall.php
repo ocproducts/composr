@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_configuration
+ * @package    core
  */
 
 /**
  * Hook class.
  */
-class Hook_config_brute_force_threshold
+class Hook_config_dynamic_firewall
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,15 @@ class Hook_config_brute_force_threshold
     public function get_details()
     {
         return array(
-            'human_name' => 'BRUTE_FORCE_THRESHOLD',
-            'type' => 'integer',
-            'category' => 'SECURITY',
-            'group' => 'GENERAL',
-            'explanation' => 'CONFIG_OPTION_brute_force_threshold',
+            'human_name' => 'DYNAMIC_FIREWALL',
+            'type' => 'tick',
+            'category' => 'BLOCKS',
+            'group' => 'PERSONAL_BLOCK',
+            'explanation' => 'CONFIG_OPTION_dynamic_firewall',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
 
-            'addon' => 'core_configuration',
+            'addon' => 'core',
         );
     }
 
@@ -51,6 +50,6 @@ class Hook_config_brute_force_threshold
      */
     public function get_default()
     {
-        return '30';
+        return '1';
     }
 }

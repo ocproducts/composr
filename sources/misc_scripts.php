@@ -464,7 +464,7 @@ function emoticons_script()
         }
 
         $code_esc = $myrow['e_code'];
-        $current_row->attach(do_template('CNS_EMOTICON_CELL', array('_GUID' => 'ddb838e6fa296df41299c8758db92f8d', 'COLS' => strval($cols), 'FIELD_NAME' => get_param_string('field_name', 'post'), 'CODE_ESC' => $code_esc, 'THEME_IMG_CODE' => $myrow['e_theme_img_code'], 'CODE' => $myrow['e_code'])));
+        $current_row->attach(do_template('CNS_EMOTICON_CELL', array('_GUID' => 'ddb838e6fa296df41299c8758db92f8d', 'COLS' => strval($cols), 'FIELD_NAME' => filter_naughty_harsh(get_param_string('field_name', 'post')), 'CODE_ESC' => $code_esc, 'THEME_IMG_CODE' => $myrow['e_theme_img_code'], 'CODE' => $myrow['e_code'])));
     }
     if (!$current_row->is_empty()) {
         $content->attach(do_template('CNS_EMOTICON_ROW', array('_GUID' => 'd13e74f7febc560dc5fc241dc7914a03', 'CELLS' => $current_row)));

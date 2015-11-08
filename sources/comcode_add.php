@@ -940,7 +940,7 @@ function comcode_helper_script_step3()
     require_javascript('posting');
     require_javascript('editing');
 
-    $field_name = get_param_string('field_name');
+    $field_name = filter_naughty_harsh(get_param_string('field_name'));
     $tag = post_param_string('tag');
     $title = get_screen_title('_COMCODE_HELPER', true, array(escape_html($tag)));
 

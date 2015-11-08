@@ -181,6 +181,8 @@ If banners won't show check:
 
 In addition to normal banner display, you can also use the [tt]main_banner_wave[/tt] block to display all banners within a type as a single advertising block. This is useful for displaying a list of sponsors. An example of this block will be in the worked example that follows.
 
+You can also use the [tt]main_banner_wave[/tt] block for displaying individual banners of your choosing, by limiting it to one specific banner within the block options.
+
 [title="2"]Worked example: adding a square text banner[/title]
 
 Let's imagine we want to add a new banner rotation to a site: square banners.

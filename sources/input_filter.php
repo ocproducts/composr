@@ -53,33 +53,31 @@ function check_input_field_string($name, &$val, $posted = false)
     // Security check for known URL fields. Check for specific things, plus we know we can be pickier in general
     $is_url = ($name == 'from') || ($name == 'preview_url') || ($name == 'redirect') || ($name == 'redirect_passon') || ($name == 'url');
     if ($is_url) {
-        if ($is_url) {
-            if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) != 0) {
-                if ($name == 'page') {
-                    $_GET[$name] = '';
-                } // Stop loops
-                log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
-            }
+        if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) != 0) {
+            if ($name == 'page') {
+                $_GET[$name] = '';
+            } // Stop loops
+            log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
+        }
 
-            // Don't allow external redirections
-            if (!$posted && !running_script('external_url_proxy')) {
-                $_val = str_replace('https://', 'http://', $val);
-                if (looks_like_url($_val)) {
-                    $bus = array(
-                        get_base_url(false),
-                        get_forum_base_url(),
-                        'http://ocportal.com/',
-                    );
-                    $ok = false;
-                    foreach ($bus as $bu) {
-                        if (substr($_val, 0, strlen($bu)) == $bu) {
-                            $ok = true;
-                            break;
-                        }
+        // Don't allow external redirections
+        if (!$posted && !running_script('external_url_proxy')) {
+            $_val = str_replace('https://', 'http://', $val);
+            if (looks_like_url($_val)) {
+                $bus = array(
+                    get_base_url(false),
+                    get_forum_base_url(),
+                    'http://ocportal.com/',
+                );
+                $ok = false;
+                foreach ($bus as $bu) {
+                    if (substr($_val, 0, strlen($bu)) == $bu) {
+                        $ok = true;
+                        break;
                     }
-                    if (!$ok) {
-                        $val = get_base_url(false);
-                    }
+                }
+                if (!$ok) {
+                    $val = get_base_url(false);
                 }
             }
         }
@@ -93,11 +91,12 @@ function check_input_field_string($name, &$val, $posted = false)
         }
 
         // Additional checks for non-privileged users
-        if (function_exists('has_privilege') && $name != 'page'/*Too early in boot if 'page'*/) {
-            if (!has_privilege(get_member(), 'unfiltered_input') || $GLOBALS['FORCE_INPUT_FILTER_FOR_ALL']) {
+        if ((function_exists('has_privilege') || !$posted) && $name != 'page'/*Too early in boot if 'page'*/) {
+            if (!has_privilege(get_member(), 'unfiltered_input') || $GLOBALS['FORCE_INPUT_FILTER_FOR_ALL'] || !$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/) {
                 hard_filter_input_data__html($val);
                 hard_filter_input_data__filesystem($val);
             }
+            @hard_filter_input_data__dynamic_firewall($name, $val); // @'d to stop any internal errors taking stuff down
         }
     }
 }
@@ -179,6 +178,33 @@ function hard_filter_input_data__filesystem(&$val)
     foreach ($nastiest_path_signals as $signal) {
         if (preg_match('#' . $signal . '#', $val, $matches) != 0) {
             $val = str_replace($matches[0], str_replace('.', '&#46;', $matches[0]), $val); // Break the paths
+        }
+    }
+}
+
+/**
+ * Filter data according to the dynamic firewall.
+ *
+ * @param  string $name The name of the parameter
+ * @param  string $val The value retrieved
+ */
+function hard_filter_input_data__dynamic_firewall($name, &$val)
+{
+    $rules_path = get_custom_file_base() . '/data_custom/firewall_rules.txt';
+    if (is_file($rules_path)) {
+        $rules = file($rules_path);
+        foreach ($rules as $rule) {
+            $parts = explode('=', $rule, 2);
+            if (count($parts) == 2) {
+                list($check_name, $check_val) = $parts;
+                $check_name_is_regexp = (isset($check_name[0]) && $check_name[0] == '#' && $check_name[strlen($check_name) - 1] == '#');
+                $check_val_is_regexp = (isset($check_val[0]) && $check_val[0] == '#' && $check_val[strlen($check_val) - 1] == '#');
+                if ($check_name_is_regexp && preg_match($check_name, $name) != 0 || !$check_name_is_regexp && $check_name == $name) {
+                    if ($check_val_is_regexp && preg_match($check_val, $val) == 0 || !$check_val_is_regexp && $check_val != $val) {
+                        $val = 'filtered';
+                    }
+                }
+            }
         }
     }
 }

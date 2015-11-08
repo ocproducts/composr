@@ -470,7 +470,7 @@ function block_helper_script()
         require_javascript('posting');
         require_javascript('editing');
 
-        $field_name = get_param_string('field_name');
+        $field_name = filter_naughty_harsh(get_param_string('field_name'));
 
         $bparameters = '';
         $bparameters_tempcode = '';

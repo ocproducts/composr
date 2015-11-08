@@ -1,7 +1,7 @@
 {TPL}
 
 <div class="buttons_group">
-	<a class="buttons__choose button_screen_item" onclick="do_attachment('{FIELD_NAME;}','{ID;}','{DESCRIPTION;}'); if (typeof window.faux_close!='undefined') faux_close(); else window.close(); return false;" href="#"><span>{!CHOOSE}</span></a>
+	<a class="buttons__choose button_screen_item" onclick="do_attachment('{FIELD_NAME;*}','{ID;*}','{DESCRIPTION;*}'); if (typeof window.faux_close!='undefined') faux_close(); else window.close(); return false;" href="#"><span>{!CHOOSE}</span></a>
 
 	{+START,IF,{MAY_DELETE}}
 		<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}">

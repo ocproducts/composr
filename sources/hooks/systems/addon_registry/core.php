@@ -504,6 +504,8 @@ class Hook_addon_registry_core
             'lang/EN/encryption.ini',
             'sources/locations.php',
             'sources/hooks/systems/cron/git_autopull.php',
+            'sources/hooks/systems/cron/dynamic_firewall.php',
+            'data_custom/firewall_rules.txt',
             'sources/hooks/systems/cron/group_member_timeouts.php',
             'sources/group_member_timeouts.php',
             'adminzone/pages/modules/admin_group_member_timeouts.php',

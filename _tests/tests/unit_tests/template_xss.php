@@ -23,7 +23,7 @@ class template_xss_test_set extends cms_test_case
         parent::setUp();
     }
 
-    public function testQuoteBreakout() // See http://css.dzone.com/articles/xss-still-tricky
+    public function testHTMLCDataBreakout() // See http://css.dzone.com/articles/xss-still-tricky
     {
         $templates = array();
         $paths = array(
@@ -37,32 +37,10 @@ class template_xss_test_set extends cms_test_case
                     $file = file_get_contents($path . '/' . $f);
                     $file_orig = $file;
 
-                    $matches = array();
-
-                    // Strip parameters inside symbols, language strings and Tempcode portions
-                    do {
-                        $num_matches = preg_match('#\{[\$\!\+]#', $file, $matches, PREG_OFFSET_CAPTURE);
-                        if ($num_matches != 0) {
-                            $posa = $matches[0][1];
-                            $pos = $posa;
-                            $balance = 0;
-                            do {
-                                if (!isset($file[$pos])) {
-                                    break;
-                                }
-                                $char = $file[$pos];
-                                if ($char == '{') {
-                                    $balance++;
-                                } elseif ($char == '}') {
-                                    $balance--;
-                                }
-                                $pos++;
-                            } while ($balance != 0);
-                            $file = str_replace(substr($file, $posa, $pos - $posa), '', $file);
-                        }
-                    } while ($num_matches > 0);
+                    $file = $this->stripDownTemplate($file);
 
                     // Search
+                    $matches = array();
                     $num_matches = preg_match_all('#\{(\w+)([*=;\#~^\'&.@+-]*)\}#U', $file, $matches);
                     $params_found = array();
                     for ($i = 0; $i < $num_matches; $i++) {
@@ -72,13 +50,68 @@ class template_xss_test_set extends cms_test_case
                     foreach ($params_found as $match => $matches) {
                         $matches2 = array();
                         if (preg_match('#<script[^<>]*>(?:(?!</script>).)*(?<!\\\\)' . preg_quote($match, '#') . '(?:(?!</script>)).*</script>#Us', $file, $matches2) != 0) {
-                            $this->assertTrue(false, 'Unsafe embedded JavaScript parameter (' . $match . ') in ' . $f);
+                            $this->assertTrue(false, 'Unsafe embedded parameter within JavaScript block, needing "/" escaper (' . $match . ') in ' . $f);
 
                             if (get_param_integer('save', 0) == 1) {
                                 $file_orig = str_replace($match, '{' . $matches[1][$i] . $matches[2][$i] . '/' . '}', $file_orig);
                                 file_put_contents($path . '/' . $f, $file_orig);
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private function stripDownTemplate($file)
+    {
+        // Strip parameters inside symbols, language strings and Tempcode portions
+        do {
+            $num_matches = preg_match('#\{[\$\!\+]#', $file, $matches, PREG_OFFSET_CAPTURE);
+            if ($num_matches != 0) {
+                $posa = $matches[0][1];
+                $pos = $posa;
+                $balance = 0;
+                do {
+                    if (!isset($file[$pos])) {
+                        break;
+                    }
+                    $char = $file[$pos];
+                    if ($char == '{') {
+                        $balance++;
+                    } elseif ($char == '}') {
+                        $balance--;
+                    }
+                    $pos++;
+                } while ($balance != 0);
+                $file = str_replace(substr($file, $posa, $pos - $posa), '', $file);
+            }
+        } while ($num_matches > 0);
+        return $file;
+    }
+
+    public function testHTMLAttributeBreakout()
+    {
+        $templates = array();
+        $paths = array(
+            get_file_base() . '/themes/default/templates',
+            get_file_base() . '/themes/default/templates_custom',
+        );
+        foreach ($paths as $path) {
+            $dh = opendir($path);
+            while (($f = readdir($dh)) !== false) {
+                if (strtolower(substr($f, -4)) == '.tpl') {
+                    $file = file_get_contents($path . '/' . $f);
+                    $file_orig = $file;
+
+                    $file = $this->stripDownTemplate($file);
+
+                    // Search
+                    $matches = array();
+                    $num_matches = preg_match_all('#\s\w+="[^"]*\{(\w+)[^\|\w\'=%"`\{\}\*]\}#Us', $file, $matches);
+                    for ($i = 0; $i < $num_matches; $i++) {
+                        $match = $matches[1][$i];
+                        $this->assertTrue(false, 'Unsafe embedded parameter within HTML attribute, needing "*" escaper (' . $match . ') in ' . $f); // To stop HTML script tag breaking out of "escaped" quotes, due to working on higher level of the parser
                     }
                 }
             }

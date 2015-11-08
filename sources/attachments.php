@@ -361,7 +361,7 @@ function attachment_popup_script()
         $list->attach(form_input_list_entry(strval($member_id), $member_id == $member_now, $username));
     }
 
-    $field_name = get_param_string('field_name', 'post');
+    $field_name = filter_naughty_harsh(get_param_string('field_name', 'post'));
     $post_url = get_self_url();
 
     $rows = $connection->query_select('attachments', array('*'), array('a_member_id' => $member_now));

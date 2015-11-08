@@ -209,6 +209,7 @@ It's not advertised in the interface, but it is possible for a user to join a cl
  1_key=".htaccess"                         1_value="A file used by the Apache web server to set configuration options that apply to the directory (and sub-directories thereof-) that the file is contained in"
  2_key="Main Admin Zone Configuration"     2_value="The 'Configuration' module of the Admin Zone"
  3_key="Installation Options"              3_value="The Installation Options for low-level settings such as database settings, available from config_editor.php"
+ 4_key="CRON bridge scheduler"             4_value="Composr's scheduler system, tying CRON to Composr's scheduled tasks so that they may be launched"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

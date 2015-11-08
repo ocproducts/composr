@@ -1720,6 +1720,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
             $value = '';
         }
     }
+    $value = trim($value);
 
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);
