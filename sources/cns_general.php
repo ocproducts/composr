@@ -185,7 +185,7 @@ function get_member_title($member_id)
 }
 
 /**
- * Get a usergroup colour based on it's ID number.
+ * Get a usergroup colour based on its ID number.
  *
  * @param  GROUP $gid ID number.
  * @return string Colour.

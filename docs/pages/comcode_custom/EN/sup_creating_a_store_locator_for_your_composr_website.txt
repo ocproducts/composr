@@ -36,7 +36,7 @@ The next part of the process is installing the addon and placing the block on th
 [*] Go to the Admin Zone˙
 [*] Navigate to the Structure section of the Admin Zone menu
 [*] Choose the Addons icon
-[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Scroll down and choose "Import non-bundled addon(s)"
 [*] Click Download and choose the Information display category
 [*] Choose DataMappr
 [*] Scroll down and click the "Import non-bundled addon(s)" button

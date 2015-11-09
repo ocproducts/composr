@@ -113,7 +113,7 @@ The code quality checker has been an essential and very successful part of our p
  - identifying areas that need special manual checking for security
  - [i]dozens of other things[/i]
 
-The downside to the checker is that it will not let you use weak-typing, and it will force all PHP functions you use to be explicitly laid out according to their typing properties. This is because if weak-type checking is allowed in PHP, it is literally impossible to properly check the code for a whole range of problems - for example, it is impossible to check if function parameters are passed in an incorrect order (which is extremely useful for the case of a function having it's arguments changed, and somewhere a call to it accidentally not updated).
+The downside to the checker is that it will not let you use weak-typing, and it will force all PHP functions you use to be explicitly laid out according to their typing properties. This is because if weak-type checking is allowed in PHP, it is literally impossible to properly check the code for a whole range of problems - for example, it is impossible to check if function parameters are passed in an incorrect order (which is extremely useful for the case of a function having its arguments changed, and somewhere a call to it accidentally not updated).
 Zend (the makers of PHP) also have a code checker in their Zend Studio package, but it does not do the type checking that ours does, and is closed-source and hence we could not tailor it to Composr).
 
 Certain aspects of the PHP language have been left out of the subset supported by the checker. This is because either:
@@ -130,7 +130,7 @@ The skipped aspects are:
  - clone (REASON: PHP5+)
  - try catch throw (REASON: PHP5+)
  - if..endif (etc) style (REASON: bad style)
- - non functional style of include include_once require require_once print unset empty isset declare exit die (REASON: bad style)
+ - non-functional style of include include_once require require_once print unset empty isset declare exit die (REASON: bad style)
  - certain duplicated cast identifiers (REASON: bad style)
  - written AND or OR or XOR (REASON: bad style)
  - unused variable check imperfect for loops (REASON: can't check)
@@ -144,7 +144,7 @@ The PHP checker is very much set up to enforce compatibility across different PH
  - gd2
  - ftp
  - gzip
- - xml (this is no longer an extension in-fact)
+ - xml (this is no longer an extension in fact)
 For all of these, you should use function_exists at some point before using these function sets.
 For other functions you can use function_exists too. The checker is smart about function_exists, but not very smart. You can do:
 function_exists('foo')?foo():bar()

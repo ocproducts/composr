@@ -12,7 +12,7 @@ Composr provides multiple ways to get files into the download system, each appro
 
 [title="3"]Uploading via web-form[/title]
 
-The easiest way to add a file for a download is by attaching the file to the web-form, when the details of the download are defined. This is the most popular way, and is usually appropriate, however there are some major draw-backs (that are a result of the method, and not the fault of Composr):
+The easiest way to add a file for a download is by attaching the file to the web-form, when the details of the download are defined. This is the most popular way, and is usually appropriate, however there are some major drawbacks (that are a result of the method, and not the fault of Composr):
  - Users with unreliable connections will not be able to resume the upload if it fails, and sometimes, it is hard to see if the upload has failed, or is just being slow
  - As far as we know none of the common web browsers show a progress monitor for the upload
  - PHP server settings often severely limit the maximum file size that may be uploaded
@@ -20,7 +20,7 @@ The easiest way to add a file for a download is by attaching the file to the web
 [title="3"]Uploading, and then referencing the URL[/title]
 
 If a file is too large to comfortably upload by web-form, users with FTP or SFTP/SCP access to the server may wish to upload it using this, and then provide the 'Add download' form with an equivalent HTTP URL (or the direct FTP URL) to the location they upload to.
-The draw-backs with this method are:
+The drawbacks with this method are:
  - It is less convenient than attaching directly
  - FTP/SFTP/SCP access is required and for obvious security reasons, these details are rarely given freely. Note that there is no restriction on actually uploading the file to your website's own server, so people may reference separate web space: but this leaves the download database integrity at the mercy of this secondary web space
  - The file is not contained in Composr, and thus cannot be managed by it (for example, deleted when the download is deleted)
@@ -29,8 +29,8 @@ The draw-backs with this method are:
 [title="3"]Batch adding from an FTP server[/title]
 
 [media width="150" description="The FTP downloads screen" float="right"]data_custom/images/docs/tut_adv_downloads/adv_downloads_ftp_downloads.png[/media]
-Composr includes a feature that allows staff to batch add files that are on an FTP server, into Composr, by FTP URL. This is particularly useful for adding large batches of downloads, where immediately making custom download descriptions available is not necessary.
-The draw-backs with this method are:
+Composr includes a feature that allows staff to batch add files that are on an FTP server, into Composr, by FTP URL. By batch add, we mean adding large numbers of downloads in one go. This is particularly useful for adding large batches of downloads, where immediately making custom download descriptions available is not necessary.
+The drawbacks with this method are:
  - Attractive descriptions have to be added separately
  - Only staff may perform this
  - The file is not contained in Composr, and thus cannot be managed by it (for example, deleted when the download is deleted)
@@ -39,16 +39,20 @@ The draw-backs with this method are:
 
 Composr also includes a feature that allows staff to batch add files from a directory on the web server. For this to work, the directory must be accessible by URL.
 
-The draw-backs with this method are:
+The drawbacks with this method are:
  - Attractive descriptions have to be added separately
  - Only staff may perform this
  - The file is not contained in Composr, and thus cannot be managed by it (for example, deleted when the download is deleted)
 
 [title="2"]Outmoding[/title]
 
-When a download in the download database has a new version released, either as a direct upgrade, or by some other means (such as being bundled in a wider package), the old download may be marked as 'outmoded' by the newer one.
+When a download in the download database has a new version released, either as a direct upgrade, or by some other means (such as being bundled into a newer and wider package), the old download may be marked as 'outmoded' by the newer one.
 
-To do this, you need to edit the old download such that the outmode field is set to refer to the new one. When then viewed, the old download will provide a clear link to the new one.
+'Outmoded' isn't a word everyone understands. Outmoded means "superseded" or "obsoleted".
+
+To outmode a download, you need to edit the download (the original, older, download) such that the outmode field is set to refer to the newer one. When then viewed, the old download will provide a clear link to the new one.
+
+The older download has now been 'outmoded' by the newer one.
 
 [title="2"]Selling downloads[/title]
 

@@ -466,7 +466,7 @@ function cns_member_validate_into_group($group_id, $prospective_member_id, $decl
 /**
  * Copy permissions relating to one, to another.
  *
- * @param  GROUP $to The that is having it's permissions replaced.
+ * @param  GROUP $to The that is having its permissions replaced.
  * @param  GROUP $from The that the permissions are being drawn from.
  */
 function cns_group_absorb_privileges_of($to, $from)
@@ -480,7 +480,7 @@ function cns_group_absorb_privileges_of($to, $from)
 /**
  * Helper function, for copy permissions relating to one, to another.
  *
- * @param  GROUP $to The that is having it's permissions replaced.
+ * @param  GROUP $to The that is having its permissions replaced.
  * @param  GROUP $from The that the permissions are being drawn from.
  * @param  ID_TEXT $table The table holding the permissions.
  * @param  ID_TEXT $id The name of the field in the table that holds the ID.

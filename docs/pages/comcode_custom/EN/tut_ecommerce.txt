@@ -135,7 +135,7 @@ Documentation for other Payment gateways is provided in notes at the top of the 
 All supported payment gateways provide a test mode, which is turned on from the Admin Zone Configuration. Test mode allows you to make purchases from your website using the full eCommerce architecture of Composr and the payment gateway, except no money will actually be charged (it's a simulation mode) -- the ideal way to test your setup without risking real money.
 
 To prevent purchases being made by real people that you don't receive real money for, only members in a usergroup with the 'Access eCommerce system when in test mode' permission may purchase when test mode is enabled ("Purchasing is temporarily offline for maintenance. It should be back online within 24 hours: please try again later." will be seen by others). You have two supported testing choices:
-1) Enable this permission for all usergroups and test the eCommerce when the website is closed (using the SU feature)
+1) Enable this permission for all usergroups and test the eCommerce when the website is closed (using the SU feature, see the [page="_SEARCH:tut_permissions"]Testing access and privileges[/page] tutorial, Access control and privileges section)
 2) Test the eCommerce from your own admin account
 
 For PayPal test mode goes through the [url="PayPal sandbox"]https://developer.paypal.com/[/url]. Sign up on the sandbox (this is your test account for making the sale), log in, and create a test user (this is your test account for purchasing).
@@ -210,7 +210,8 @@ Subscriptions and invoices have some custom handling. Subscriptions can also end
 [title="3"]Manual transactions[/title]
 
 Normally a transaction would go through via PayPal/WorldPay/SecPay. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
-However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
+
+However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction from the Admin Zone; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
 1) access the manual transaction screen (Admin Zone > Audit > eCommerce > Manual transaction).
 2) select the right product
 3) enter the correct ID number that the product will use to dispatch for this sale
@@ -260,7 +261,7 @@ Admin Zone > Audit > eCommerce > Invoices
 
 The Composr online store works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
 
-The Composr store has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in it's own way but lacking the features needed for a wider website.
+The Composr store has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
 
 [title="3"]Product fields[/title]
 
@@ -276,8 +277,11 @@ This catalogue has some hard-coded fields:
  - [b]Tax rate[/b] -- the tax rate, a percentage chosen from a list (you may edit the catalogue to change what is shown in the list)
  - [b]Weight[/b] -- the items weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
  - [b]Description[/b] -- a description for the item
-You may add additional fields, such as extra product images or specifications. However do [b]not[/b] re-order the original fields (or delete, or change the field type), as the system uses the order of these fields internally to know what they refer to. If you wish to change how they are shown do it via template editing.
+
 By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
+
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
+You may add additional fields, such as extra product images or specifications. However do [b]not[/b] re-order the original fields (or delete, or change the field type), as the system uses the order of these fields internally to know what they refer to. If you wish to change how they are shown do it via template editing.
 
 [title="4"]Product options[/title]
 
@@ -295,6 +299,7 @@ Once you are happy with your set of fields, you can add categories and entries t
 
 [title="4"]Deleting shopping cart items[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 Be aware that once ordered, a catalogue entry shouldn't usually be deleted. You can unvalidate the entries instead (unselect 'Validated'), and/or move it into an archive category and/or set the stock to zero. This is vital to your ledger integrity. There is an option to forcibly purge an item from the database and all past order history for it, but it's not usually recommended.
 
 [title="3"]Store front[/title]
@@ -306,7 +311,7 @@ You may customise the appearance of the store in the usual way of editing catalo
 
 [title="4"]Guests[/title]
 
-Guests may make purchases, if they have the right Composr permissions.
+Guests may make purchases, if they have the right Composr permissions (to the [tt]catalogues[/tt] module, the [tt]products[/tt] catalogue, and the [tt]shopping[/tt] module).
 
 Guest users have no member ID, so Composr will store the order against their 'session ID' instead. Session IDs work using cookies, secured against the user's IP address. The session can be lost in many circumstances:
  - if the user has their browser set to empty cookies when closed
@@ -333,7 +338,10 @@ Tax and shipping calculations have intentionally been kept very simple, but prog
 
 [title="3"]Shipping addresses[/title]
 
-Some custom profile fields are pre-installed to allow members to set their shipping address (instead of having to define it when they pay on the payment gateway). However by default these fields are not enabled, so you would need to edit them to enable 'Owner viewable' and 'Owner settable' for each field.
+Some custom profile fields are pre-installed to allow members to set their shipping address in their regular profile settings (instead of having to define it each time when they pay on the payment gateway). However by default these fields are not enabled, so you would need to edit them to enable 'Owner viewable' and 'Owner settable' for each field.
+
+You can find and edit the fields from:
+Admin Zone > Tools > Members > Custom Profile Fields > Edit Custom Profile Field
 
 [title="2"]Currencies[/title]
 

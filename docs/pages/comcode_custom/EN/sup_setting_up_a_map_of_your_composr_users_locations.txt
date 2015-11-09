@@ -6,7 +6,7 @@ Something I have been asked to add on a few occasions for community based forums
 [*] Go to the Admin Zone
 [*] Navigate to the Structure section of the Admin Zone menu
 [*] Choose the Addons icon
-[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Scroll down and choose "Import non-bundled addon(s)"
 [*] Click Download and choose the Information display category
 [*] Choose UserMappr
 [*] Scroll down and click the "Import non-bundled addon(s)" button

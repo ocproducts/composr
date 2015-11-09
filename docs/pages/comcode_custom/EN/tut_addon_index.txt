@@ -752,7 +752,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td><img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Installer<br />(<kbd>installer</kbd>)</td>
-            <td>The installer files (can be removed immediately after installing; in-fact Composr makes you remove install.php manually).</td>
+            <td>The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).</td>
             <!--<td>No</td>-->
             <td><kbd></kbd></td>
             <td><a href="http://compo.sr/docs10/index.php?page=tut_install">Basic Installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_adv_install">Advanced installation</a><br /><br /><a href="http://compo.sr/docs10/index.php?page=tut_chmod">Linux file permissions</a></td>

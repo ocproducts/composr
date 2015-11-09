@@ -93,6 +93,8 @@ Members can gamble points. On average, members lose out on points when they try 
 
 [media width="150" description="Configuring pop3 accounts via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_pop3.png[/media]
 [media width="150" description="Configuring e-mail forwarders via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_forwarding.png[/media]
+By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
+
 What may be purchased:
  - POP3 email accounts, and upgrades
   - staff define which email domains members may purchase addresses on

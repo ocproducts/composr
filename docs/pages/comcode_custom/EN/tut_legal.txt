@@ -43,7 +43,7 @@ It is arguable that under discrimination laws, your website must satisfy the web
 
 As a site-maintainer however, there are accessibility guidelines that apply to content that the developers can not arrange-for on your behalf. Also, if you modify the default Composr templates, it is very easy to degrade the inbuilt accessibility.
 
-For more information, see our accessibility tutorial.
+For more information, see the [page="_SEARCH:tut_accessibility"]accessibility tutorial[/page].
 
 [title="3"]Sales[/title]
 
@@ -57,10 +57,22 @@ Unless you disclaim liability, you may be liable for problems caused directly or
 
 Please note that it is not usually possible to disclaim liability for everything that might affect you.
 
-[title="3"]Illegal content[/title]
+[title="3"]Intellectual property[/title]
 
-As you need to avoid liability (unless you want it) for damage to 'persons', you also need to avoid getting into a position where you are held legally liable for the hosting of illegal content. It is unlikely you can fully disclaim responsibility for content on your site: although many 'warez' and 'file sharing' websites (perhaps, laughably) claim a defence like this, it is very shaky legal ground, and you should not let yourself get into such a position.
-Perhaps the best way to tackle this problem is a three-pronged approach:
+You could be at risk of liability for harm caused to third-parties, particular in the areas of intellectual property.
+
+Specifically:
+ - Copyright infringement (unauthorised distribution of copyright-protected works)
+ - Trademark infringement
+ - Trade secrets
+ - State-banned material, such as secret documents, or terrorist manuals
+
+Your responsibilities:
+ - You need to make sure you don't make any direct infringements yourself
+ - You need to make reasonable efforts to take down illegal content posted by users as you become aware of it. You are protected under "safe harbour" laws, but only if you do take reasonable measures to comply when you know of issues.
+ - You must be reasonable. You can't set up a site for 'warez' or 'file sharing', knowing that it is primarily being used for illegal content then hide behind the safe harbour laws. You can't claim fair use (e.g. parody) for large amounts of material that is clearly being distributed for direct usage.
+
+Perhaps the best way to tackle content policing is a three-pronged approach:
 1) Perform cursory checks to make sure submitted data is not illegal
 2) Add member rules that prohibit uploading of illegal content
 3) Disclaim liability for such content (while this would likely not work if your website became littered with illegal content, it is perhaps more defensible for exceptions)
@@ -71,6 +83,10 @@ You may wish to add to your legal page that you disclaim liability for mis-use o
 [title="3"]Discussion of illegal activities[/title]
 
 The advice for illegal content generally applies to the discussion of illegal activities also. There is, however, a fine line between discussing the merits of illegal activity and the incitement of it: this is very likely to be an issue on any active community, and you will need to consider how you will deal with it.
+
+[title="3"]Libel[/title]
+
+The advice for illegal content generally applies to the discussion of libel (defamation) also.
 
 [title="3"]Computer mis-use[/title]
 

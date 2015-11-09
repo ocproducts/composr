@@ -216,7 +216,7 @@ To:
 
 Our new code detects if the OpenGraph image was set as [tt]icons/48x48/menu/social/forum/forums[/tt] and performs a substitution to our custom one.
 
-Our change won't reflect on Facebook for existing syndications until Facebook refreshes it's caching. But eventually it will, i.e. it will work retroactively.
+Our change won't reflect on Facebook for existing syndications until Facebook refreshes its caching. But eventually it will, i.e. it will work retroactively.
 
 [title="2"]Logging in using Facebook[/title]
 

@@ -49,11 +49,11 @@ You can develop your static design before working with Composr, just like you wo
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 Make sure you have followed these guidelines:
 [list]
-	[*][b]Modular float clearance[/b]: Don't use the CSS [tt]clear[/tt] property, because it interferes with how Composr handles it's 3-column layout and other default styling. Contain floats in a box using something like [tt]overflow: hidden;[/tt].
+	[*][b]Modular float clearance[/b]: Don't use the CSS [tt]clear[/tt] property, because it interferes with how Composr handles its 3-column layout and other default styling. Contain floats in a box using something like [tt]overflow: hidden;[/tt].
 	[*][b]Flexible height[/b]: Avoid setting CSS [tt]height[/tt]s wherever possible. If you set heights then if people increase their font size then it's likely text will overflow and look awful. There's rarely a true reason to set a height anyway: if you need to clear floats, use the technique described above.
 	[*][b]Flexible width[/b]: Do not assign [tt]width[/tt]s or [tt]height[/tt]s or [tt]min-width[/tt]s or [tt]min-height[/tt]s unless necessary (e.g. to make sure you align with a background's size). It makes it very hard to adapt designs later if the spacings change.
 	[*][b]Flexible layout[/b]: Do not use [tt]float[/tt]s on every block in the layout. There are much better ways to solve these problems without resorting to continuous use of floats (which introduce many other kinds of problem). An exception is if you are using a grid system.
-	[*][b]No CSS resets[/b]: Do not use a CSS reset: Composr does not use a CSS reset in it's default templates so you would need to re-theme all Composr screens to re-apply default spacings if you used a CSS reset. If you must use a CSS reset then it will need adjusting to be scoped beneath a particular position(s) in the DOM tree.
+	[*][b]No CSS resets[/b]: Do not use a CSS reset: Composr does not use a CSS reset in its default templates so you would need to re-theme all Composr screens to re-apply default spacings if you used a CSS reset. If you must use a CSS reset then it will need adjusting to be scoped beneath a particular position(s) in the DOM tree.
 	[*][b]Target styles precisely[/b]: Similarly, don't apply overly-broad styles thinking you'll undo them for any case that does not match -- any broadly defined style must be a very general one, because you won't want to add dozens of exceptions back in to cater for the pre-coded HTML usage that Composr has in its myriad of templates
 	[*][b]Sensible font size[/b]: Make sure the default font size is sensible for the main content area. You will not be able to individually specify the font size of each text block on the final theme as there will be a lot of layout that comes from default Composr templates and you won't have time to give them all individual consideration.
 	[*][b]Plenty of content space[/b]: It's not a good idea to make your main content area too thin, because default Composr templates will assume that they have at least about 600 pixels.
@@ -376,7 +376,7 @@ You probably don't want to hard-code sets of page-links into templates for theme
  - [b]embossed[/b]: a vertical menu, that makes each link look like a button, well-suited for tablets.
  - [b]popup[/b]: a vertical menu, with pop-outs (the vertical equivalent of a drop-down menu).
  - [b]select[/b]: a simple XHTML [tt]<select>[/tt] based navigation menu.
-The menu layout types are distinguished by their templates. Each menu type has it's own set of templates that includes the name of the menu layout type. The template naming pattern would be [tt]MENU_<layouttype>.tpl[/tt], [tt]MENU_BRANCH_<layouttype>.tpl[/tt] and [tt]MENU_SPACER_<layouttype>.tpl[/tt]. You can create a new menu layout type just by making a new set of templates (using an existing set as a base), but this is virtually never necessary: it is often easiest just to customise one of the default sets.
+The menu layout types are distinguished by their templates. Each menu type has its own set of templates that includes the name of the menu layout type. The template naming pattern would be [tt]MENU_<layouttype>.tpl[/tt], [tt]MENU_BRANCH_<layouttype>.tpl[/tt] and [tt]MENU_SPACER_<layouttype>.tpl[/tt]. You can create a new menu layout type just by making a new set of templates (using an existing set as a base), but this is virtually never necessary: it is often easiest just to customise one of the default sets.
 
 You can have as many menus of each layout type as you like. They are placed using the [tt]menu[/tt] block.
 [code="Tempcode"]
@@ -443,6 +443,7 @@ Often designs will show the login box via a template instead, usually when it ne
 If you want to simulate what it looks like when you are logged out you can do it without logging out put [tt]&keep_su=Guest[/tt] on the end of the URL (or [tt]?keep_su=Guest[/tt] if you don't have a '?' symbol in the URL you're at).
 This technique is very useful because you can have one tab showing what a logged in user sees, and one tab showing what a non-logged-in user sees (a "Guest") -- you avoid having to login/logout all the time to do testing.
 [tt]Guest[/tt] can be substituted for any username, so long as you are logged in as an administrator initially.
+For more information on the SU feature, see the [page="_SEARCH:tut_permissions"]Testing access and privileges[/page] tutorial, Access control and privileges section.
 
 [title="3"]Social media buttons[/title]
 

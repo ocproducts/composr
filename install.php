@@ -2823,7 +2823,7 @@ function test_htaccess($conn)
     $clauses = array();
 
     $clauses[] = <<<END
-# Disable inaccurate security scanning (Composr has it's own)
+# Disable inaccurate security scanning (Composr has its own)
 <IfModule mod_security.c>
 SecFilterEngine Off
 SecFilterScanPOST Off
@@ -2974,7 +2974,7 @@ END;
 
     $clauses[] = <<<END
 order allow,deny
-# IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with it's own DB-based banning - this makes DOS/hack attack prevention stronger)
+# IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with its own DB-based banning - this makes DOS/hack attack prevention stronger)
 # deny from xxx.xx.x.x (leave this comment here!)
 allow from all
 END;

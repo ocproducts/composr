@@ -402,7 +402,7 @@ global \$SITE_INFO;
 }
 
 /**
- * Cause the E-mail server to reload it's database.
+ * Cause the E-mail server to reload its database.
  */
 function reset_aliases()
 {

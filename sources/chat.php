@@ -988,7 +988,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
         'text_colour' => get_option('chat_default_post_colour'),
         'font_name' => get_option('chat_default_post_font'),
     );
-    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null/*,$wrap_pos*/); // Can't wrap system messages, the Comcode parser won't know 'private' is a real tag so will wrap inside it's definition
+    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null/*,$wrap_pos*/); // Can't wrap system messages, the Comcode parser won't know 'private' is a real tag so will wrap inside its definition
     $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
     $myfile = @fopen(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', 'wb') or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
     fwrite($myfile, strval($message_id));
@@ -1527,7 +1527,7 @@ function parse_allow_list_input($_allow)
 /**
  * Check whether a member has access to the chatroom.
  *
- * @param  mixed $room The row of the chat room to check for access OR it's ID (AUTO_LINK)
+ * @param  mixed $room The row of the chat room to check for access OR its ID (AUTO_LINK)
  * @param  boolean $ret Whether to return false if there is no access (as opposed to bombing out)
  * @param  ?MEMBER $member_id The member to check as (null: current member)
  * @param  boolean $must_be_explicit Whether to also ensure for $member_id having explicit access

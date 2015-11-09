@@ -12,7 +12,7 @@ To install this addon:
 [*] Go to the Admin Zone
 [*] Navigate to the Structure section of the Admin Zone menu
 [*] Choose the Addons icon
-[*] Scroll down to and click "Import non bundled addon(s)"
+[*] Scroll down to and click "Import non-bundled addon(s)"
 [*] Click Download and choose the New Features category
 [*] Choose Classified Ads
 [*] Scroll down and click the "Import non-bundled addon(s)" button

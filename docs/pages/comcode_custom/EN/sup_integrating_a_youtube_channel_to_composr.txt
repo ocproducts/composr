@@ -7,7 +7,7 @@ Composr offers an non-bundled addon to be able to display videos from a specific
 [*] Go to the Admin Zone
 [*] Navigate to the Structure section of the Admin Zone menu
 [*] Choose the Addons icon
-[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Scroll down and choose "Import non-bundled addon(s)"
 [*] Expand the Third party integration category
 [*] Choose YouTube
 [*] Click the "Import non-bundled addon(s)" button

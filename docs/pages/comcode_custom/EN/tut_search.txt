@@ -106,7 +106,7 @@ By default OpenSearch is configured (via the [tt]HTML_HEAD.tpl[/tt] template) to
 
 If you have very large database tables due to very large amounts of content, or having large amounts of content on a multi-language site, you may experience slow-down doing some searches.
 
-In-fact, the slow-down will cause read locks which prevent writes to those tables. Composr is designed to generally function without database write access, but it's not a good situation to have.
+In fact, the slow-down will cause read locks which prevent writes to those tables. Composr is designed to generally function without database write access, but it's not a good situation to have.
 
 This is a problem that MySQL has with fulltext search. It is not specific to Composr in any way but is worth us documenting.
 

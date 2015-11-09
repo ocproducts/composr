@@ -11,7 +11,7 @@ The addon is suitable for some cases, but not all, as there is still some functi
 [*] Go to the Admin Zone
 [*] Navigate to the Structure section of the Admin Zone menu
 [*] Choose the Addons icon
-[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Scroll down and choose "Import non-bundled addon(s)"
 [*] Click Download and choose the Development category
 [*] Choose Bookings
 [*] Scroll down and click the "Import non-bundled addon(s)" button

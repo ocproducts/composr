@@ -334,7 +334,7 @@ We have the PSD files (requires Adobe Photoshop or compatible software) for many
 [title="4"]WYSIWYG editor[/title]
 
 Composr uses a third-party WYSIWYG editor &ndash; CKEditor.
-It has it's own translations which should automatically be linked to your own by the standard ISO language name.
+It has its own translations which should automatically be linked to your own by the standard ISO language name.
 
 [title="4"]Template/CSS editor[/title]
 

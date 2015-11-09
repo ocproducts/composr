@@ -126,7 +126,7 @@ function resizeEmbeddedFrame()
 [/html]
 [/code]
 
-The draw-back on relying on this auto-resizing method is that it is somewhat computationally intensive on users' web browsers (doing a check twice a second). It is likely that users will not notice, however. When Composr does its own iframes it actually ties in a bit of code to anything that would change the frame height, to make it resize on demand, rather than routine checking -- but this is not really very easy to do if you are working with someone else's code.
+The drawback on relying on this auto-resizing method is that it is somewhat computationally intensive on users' web browsers (doing a check twice a second). It is likely that users will not notice, however. When Composr does its own iframes it actually ties in a bit of code to anything that would change the frame height, to make it resize on demand, rather than routine checking -- but this is not really very easy to do if you are working with someone else's code.
 
 [title="3"]Naturally[/title]
 
@@ -219,7 +219,7 @@ This way, the JavaScript code can be overridden within themes, optimised by Comp
 We'll assume the JavaScript file is [tt]example.js[/tt].
 
 Copy the [tt]example.js[/tt] file to [tt]themes/default/javascript_custom/example.js[/tt].
-If there is both a minified (compressed) and non-minified version, use the non-minified version. Composr does it's own minification automatically, and it's better you be able to read the JavaScript code properly. Additional this way is it less likely the Tempcode parser will accidentally try and interpret parts of the code as Tempcode constructs.
+If there is both a minified (compressed) and non-minified version, use the non-minified version. Composr does its own minification automatically, and it's better you be able to read the JavaScript code properly. Additional this way is it less likely the Tempcode parser will accidentally try and interpret parts of the code as Tempcode constructs.
 
 You may wish to edit the file to include this at the top:
 [code="CSS"]
@@ -312,7 +312,7 @@ This way, the CSS can be overridden within themes, optimised by Composr, and gen
 We'll assume the CSS file is [tt]example.css[/tt].
 
 Copy the [tt]example.css[/tt] file to [tt]themes/default/css_custom/example.css[/tt].
-If there is both a minified (compressed) and non-minified version, use the non-minified version. Composr does it's own minification automatically, and it's better you be able to read the CSS code properly.
+If there is both a minified (compressed) and non-minified version, use the non-minified version. Composr does its own minification automatically, and it's better you be able to read the CSS code properly.
 
 If you want to include the CSS library from PHP code, do:
 [code="PHP"]

@@ -10,7 +10,7 @@ To install the addons:
 [*] Go to the Admin Zone
 [*] Navigate to the Structure section of the Admin Zone menu
 [*] Choose the Addons icon
-[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Scroll down and choose "Import non-bundled addon(s)"
 [*] Expand the Third party integration category
 [*] Choose the Twitter support addon and click Install.
 [*] On the next page you will be shown a list of files which will be changed as part of the installation. If you are happy that no files you have changed will be affected click Proceed.

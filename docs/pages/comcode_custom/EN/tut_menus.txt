@@ -166,7 +166,7 @@ To resolve this you will need to turn off the caching for the block by adding a 
 [media width="150" description="Links to edit a panel page (via the Zone Editor) and to edit managed menus" float="right"]data_custom/images/docs/tut_menus/menus_edit_links.png[/media]
 Please see the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial for more information on panel pages. This section is only intended to provide a brief orientation to help further clarify the panel/menu relationship. Basically panel pages are pages beginning with the name [tt]panel_[/tt] in the zone of the page being viewed.
 
-The default top menu in Composr 10+ is actually not in a panel at all, it's coded direct into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template.
+The default top menu in Composr 10+ is actually not in a panel at all, it's coded directly into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template.
 
 Your panel pages by default are just Comcode pages that use the block tag for arrangement of blocks, such as the managed menu block, [tt]menu[/tt]. Blocks are described in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page], but basically, you can use any of the blocks that begin with the name [tt]side_[/tt] on your panel pages to add dynamic elements, as well as any Comcode (Comcode menus are actually created using the Comcode [tt]menu[/tt] tag). To edit a panel page, go to Admin Zone > Structure > Panel/layout editor (Zone editor).
 

@@ -504,6 +504,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_catalogues/catalogues_edit.png',
             'data_custom/images/docs/tut_catalogues/catalogues_view_entry.png',
             'data_custom/images/docs/tut_catalogues/catalogues_view_index.png',
+            'data_custom/images/docs/tut_catalogues/template_change.png',
             'data_custom/images/docs/tut_censor/adminzone_recent_actions.png',
             'data_custom/images/docs/tut_censor/censor_make_warning.png',
             'data_custom/images/docs/tut_censor/censor_member.png',

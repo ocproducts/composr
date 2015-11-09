@@ -348,7 +348,7 @@ function create_selection_list_zones($sel = null, $no_go = null, $reorder = null
 /**
  * Get a zone chooser interface.
  *
- * @param  boolean $inline Whether the zone chooser will be shown inline to something else (as opposed to providing it's own borderings)
+ * @param  boolean $inline Whether the zone chooser will be shown inline to something else (as opposed to providing its own borderings)
  * @param  ?array $no_go A list of zone to not put into the list (null: none to skip)
  * @param  ?array $reorder A reordering (null: no reordering)
  * @return Tempcode The zone chooser

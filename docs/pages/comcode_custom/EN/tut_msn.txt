@@ -333,7 +333,7 @@ sites/www/uploads/website_specific
 
 Composr internally differentiates between the "base URL"/"base directory" and the "custom base URL"/"custom base directory", so as to know when to load shared files, and when to load custom ones that relate to a specific site.
 
-In addition, each site must have a database of it's own:
+In addition, each site must have a database of its own:
  - This should be named the same as the normal site database is named, except with a suffix or an underscore followed by the username (e.g. [tt]examplesite_someuser[/tt]).
  - The database username should be formed by taking the normal site database username and then suffixing with an underscore and then the username, and then generating the MD5 hash of that, and then taking the first 16 characters. This is intentionally obfuscated, to make it slightly harder to hack.
  - The database password should be the same as for the normal database.

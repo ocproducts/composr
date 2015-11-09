@@ -338,7 +338,7 @@ suhosin.sql.multiselect=off
 suhosin.upload.remove_binary=off
 
 
-; Sandbox Composr to it's own directory
+; Sandbox Composr to its own directory
 ; open_basedir=/tmp:/home/blah/public_html/composr/		Customise this line for your server, or leave it commented out
 [/codebox]
 

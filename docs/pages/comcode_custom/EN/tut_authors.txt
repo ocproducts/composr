@@ -19,7 +19,7 @@ To define a profile for another author, it is first necessary to add some author
 [media width="150" description="Viewing an author profile" float="left"]data_custom/images/docs/tut_authors/authors_view.png[/media]
 Links are placed on author-supporting content view pages to view details of the content author, as well as in the Conversr member profile of a member with a bound author profile.
 
-The 'view an author' screen will display the author profile, as well as downloads that they have been recorded as having authored.
+The 'view an author' screen will display the author profile, as well as downloads that they are set as the author of.
 [/surround]
 
 [title="2"]Merging authors[/title]

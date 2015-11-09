@@ -69,7 +69,7 @@ You can delete a Custom Profile Field from the bottom of its edit form.
 There are a number of custom profile field options that you may set that allow CPFs to function for a number of different purposes, including:
  - Storing hidden details on member (for example, a list of rule infractions, such as to aid decisions on cumulative punishment)
  - Allowing members to specify details about themselves (for example, their occupation)
- - Forcing members to specify certain additional details (for example, on a forum for staff of a company, you could make members enter their job role, so as to reduce the chance of a non employee from joining and remaining an active member)
+ - Forcing members to specify certain additional details (for example, on a forum for staff of a company, you could make members enter their job role, so as to reduce the chance of a non-employee from joining and remaining an active member)
  - Allowing members of a certain sub-communities (via their usergroup) to specify details appropriate to that sub-community (for example, those in the 'Football' usergroup of a school discussion forum could specify the position they play, while those in the 'Music' usergroup could specify the instrument they play).
 
 For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].

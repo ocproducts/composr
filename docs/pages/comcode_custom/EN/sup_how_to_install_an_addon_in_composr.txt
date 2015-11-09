@@ -42,7 +42,7 @@ To install a new addon you need to follow this simple process:
 [*] Go to the Admin Zone
 [*] Navigate to the Structure section of the Admin Zone menu
 [*] Choose the Addons icon
-[*] Scroll down and choose "Import non bundled addon(s)"
+[*] Scroll down and choose "Import non-bundled addon(s)"
 [*] Choose either to upload a file which you have downloaded from the Composr website or click the Download option.
 [*] Choose the addon you want to install. If you are using the download option you can hover over each addon name to see a description of the addon.
 [*] Click the "Import non-bundled addon(s)" button at the bottom of the screen.

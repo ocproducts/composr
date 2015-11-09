@@ -17,7 +17,7 @@ Wiki+ consists of a pages which may include a page description and any number of
 
 When Wiki+ is installed for the first time, there will be a predefined page called Wiki+ Home.
 
-Pages may also contain a list of pages that are 'underneath' the page; however, a page can be underneath any number of pages, as the Wiki+ hierarchy is loosely defined (technically it is a node based network rather than a real tree structure). When pages are accessed from different paths, the path to the page as it has been accessed is displayed, so that back-tracking is easier, and that the user does not get confused by the path suddenly changing when they enter a 'child' page.
+Pages may also contain a list of pages that are 'underneath' the page; however, a page can be underneath any number of pages, as the Wiki+ tree is loosely defined (technically it is a node based network rather than a real tree structure). When pages are accessed from different paths, the path to the page as it has been accessed is displayed, so that back-tracking is easier, and that the user does not get confused by the path suddenly changing when they enter a 'child' page.
 
 If you do not choose to develop a tree structure then Wiki+ navigation will be much like the navigation of a wiki -- Comcode has special wiki-like support for making quick links between Wiki+ pages just by writing [tt][[pagename]][/tt].
 
@@ -45,13 +45,16 @@ There is an obvious 'Edit tree' button to edit the tree structure visible when y
 
 When on a page you can then easily edit that page from the obvious button. You can delete a page from the bottom of its edit form. 
 
-The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ hierarchy.
+The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ tree.
 
 In a typical setup, staff are given access to modify the Wiki+ tree, while ordinary users rely on the Comcode syntax to create new inline links. Whether ordinary users are given access to add new pages can vary substantially between deployments, depending heavily on what role Wiki+ is being used for.
 
 [title="3"]Orphaned pages[/title]
 
+Orphaned pages are pages that are not linked into the tree. In other words, they cannot be found via tree navigation starting from the root Wiki+ page.
+
 Orphaned pages should not be perceived as a bad thing. It's fine to have pages not linked into the tree structure, if you're linking to them in the typical wiki-code style syntax ([tt][[page name]][/tt]). Comcode has subsumed that part of wiki-code.
+
 It's a choice you have. You can link in both ways, one way, or the other way.
 
 [title="2"]Making, editing, and deleting posts[/title]
@@ -75,10 +78,6 @@ As Wiki+ is (by default) open to posting by any user, you may feel it is necessa
 
 It is possible to provide greater open-access to Wiki+, so that anyone may edit all page details and navigation, in the same way that they may do so on a wiki. If you wish to enable the permissions for this (Admin Zone > Security > Privileges > Wiki+) then you will likely want to make use of the page history feature to revert unwanted changes, as well as Composr's site-wide tracing and moderation abilities.
 
-[title="2"]Expanding images[/title]
-
-On a Wiki+ page with a lot of thumb-nailed images, you may wish to click the expand buttons to expand the thumbnails to display the full-size images, so that you don't need to click on them all to view them at their native resolution. You may either enlarge all images within a single post, or enlarge every image on the page.
-
 [title="2"]Viewing the complete tree structure[/title]
 
 Please note that when you do this you view with guest access -- so some pages may be missing from the view.
@@ -88,7 +87,7 @@ Please note that when you do this you view with guest access -- so some pages ma
 You can see the edits a page has gone through via the revision history on the edit screen of a page. Changes are shown in a tooltip, plus you can revert to earlier versions.
 
 [concepts
- 1_key="Wiki+"   1_value="A collaborative hierarchical database system in Composr"
+ 1_key="Wiki+"   1_value="A collaborative tree-structured database system in Composr"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

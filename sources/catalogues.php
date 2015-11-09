@@ -1331,7 +1331,8 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
     }
-    $out = new Tempcode();
+
+    $catalogues = array();
     foreach ($rows as $row) {
         if (substr($row['c_name'], 0, 1) == '_') {
             continue;
@@ -1346,9 +1347,16 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
         }
 
         if (($row['c_ecommerce'] == 0) || (addon_installed('shopping'))) {
-            $selected = ($row['c_name'] == $it);
-            $out->attach(form_input_list_entry($row['c_name'], $selected, get_translated_text($row['c_title'])));
+            $catalogues[$row['c_name']] = get_translated_text($row['c_title']);
         }
+    }
+
+    asort($catalogues);
+
+    $out = new Tempcode();
+    foreach ($catalogues as $name => $title) {
+        $selected = ($name == $it);
+        $out->attach(form_input_list_entry($name, $selected, get_translated_text($title)));
     }
 
     return $out;

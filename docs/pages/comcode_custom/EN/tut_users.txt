@@ -27,19 +27,19 @@ This short tutorial aims simply to clarify what all these terms to relate to, an
 			<td>This is a vague term used when nothing needs to be known about someone.</td>
 		</tr>
 		<tr>
-			<td>User</td>
-			<td>A user is an identifiable visitor to your website. However they are not necessarily a member. To identify a user, their session ID or IP address must be used: both are temporary/transitory, and thus for some actions, being a member is required.</td>
-			<td>By using this term, we imply the visitor has a purpose on the site, rather than just 'passing in the night'.</td>
-		</tr>
-		<tr>
 			<td>Member</td>
-			<td>A member has an account (aka a profile), meaning they have specifically joined. Because they have an account, they have a member-ID (a number) and a username.</td>
+			<td>A member has an account, meaning they have specifically joined. Because they have an account, they have a member-ID (a number) and a username.</td>
 			<td>By using this term, we imply the user has joined and logged in, and thus is very distinguishable, via their member-ID. It is always preferable for people to be logged-in members, for reliable association.</td>
 		</tr>
 		<tr>
 			<td>Guest</td>
 			<td>A user who is not logged in. All guests share the same member-ID: that of someone who is not a real member (usually '1', depending on the forum driver and database driver).</td>
 			<td>By using this term, we imply a user is not logged in. For example, we reference that guests do not receive points: the reason being, there is no known account to associate the points to. Code might associate stuff with the guest account, but this should never be anything that needs to have a distinguished user (like a point transfer).</td>
+		</tr>
+		<tr>
+			<td>User</td>
+			<td>A user is an identifiable visitor to your website. However they are not necessarily a member, they could be a guest. To identify a user, their session ID or IP address must be used: both are temporary/transitory, and thus for some actions, being a member is required.</td>
+			<td>By using this term, we imply the visitor has a purpose on the site, rather than just 'passing in the night'.</td>
 		</tr>
 		<tr>
 			<td>Author</td>

@@ -12,7 +12,7 @@ This tutorial focuses on IP addresses. A member-focused view is taken in the [pa
 [box="Find your IP address" width="25em"]
 Computers often have more than one [concept]IP address[/concept] (one for each 'network interface', such as a network card or modem).
 
-If you want to find your own IP address, as Composr sees it, hold the mouse over the 'Account' link in the top bar or use a [url="third-party IP address reporting website"]http://www.myipaddress.com[/url].
+If you want to find your own IP address, as Composr sees it, hold the mouse over the 'Account' icon (person icon) in the top bar to find a tooltip containing the IP address -- or use a [url="third-party IP address reporting website"]http://www.myipaddress.com[/url].
 [/box]
 
 [box="Finding network settings" width="25em"]
@@ -20,14 +20,16 @@ To find out about your network settings on Windows, type [tt]ipconfig /all[/tt] 
 On Linux or Mac, type [tt]ifconfig[/tt].
 [/box]
 [/surround]
-[media width="150" description="[url=\"DNSstuff\"]]http://www.dnsstuff.com[/url] is a very useful website for looking into technical Internet related issues" float="right"]data_custom/images/docs/tut_trace/trace_dnsstuff.png[/media]
+[media width="150" description="[url=\"DNSstuff\"]http://www.dnsstuff.com[/url] is a very useful website for looking into technical Internet related issues" float="right"]data_custom/images/docs/tut_trace/trace_dnsstuff.png[/media]
 To trace users, you need to identify the computer performing the malicious action: unfortunately (from this perspective), the Internet is largely anonymous and decentralised, and without any clear legal authority to turn to. To some extent, a computer on the Internet can be identified by virtue of its 'IP address' (Internet Protocol address).
 
-An IP address is a 4 byte piece of data (typically, although the newer 6 byte standard has been forthcoming thing for many years now),represented usually in a human readable form of 4 numbers (0-255) separated by dots. There are a number of different sources of IP addresses, however the decentralisation of the system can lead to abuse; these sources are:
- - [concept]ISP[/concept] (Internet service provider) assigned IP addresses, via DHCP (dynamic host configuration protocol). These are provided to computers when they, or their Internet router, sign on to the Internet via an ISP). This is the most usual situation, and as these change, it can not be relied upon that a user will keep their address; however, addresses usually are similar, and can be 'wildcarded' by the Composr IP ban feature. It is possible other users might at some point get that address, even though it is not very likely: if you place a ban on a wide range of addresses, such as [tt]14.*.*.*[/tt], you are increasing the likelihood of a conflict to a dangerously high percentage, especially if an IP address belongs to a popular ISP
- - ISP (Internet service provider) assigned fixed IP addresses. Some ISPs provide these, often at additional cost
- - Local network IP address [tt]10.0.*.*[/tt] or [tt]192.168.*.*[/tt] type (non-routable [can't travel across the Internet] and open for anyone's local usage as it does not need to assigned by any authority, which means that something odd is happening if you find one of these)
- - Localhost IP address, [tt]127.0.0.1[/tt]. If you see this, then the request came from the server, or the IP address was added to the Composr database arbitrarily by some code because the true one was not known (often importers do this)
+An IP address is a 4 byte piece of data (typically, although the newer 6 byte standard has been forthcoming thing for many years now), represented usually in a human readable form of 4 numbers (0-255) separated by dots.
+
+There are a number of different sources of IP addresses, however the decentralisation of the system can lead to abuse; these sources are:
+ - [concept]ISP[/concept] (Internet service provider) assigned IP addresses, via [acronym="Dynamic host configuration protocol"]DHCP[/acronym]. There is no specific pattern to these addresses. These are provided to computers when they, or their Internet router, sign on to the Internet via an ISP). This is the most usual source of IP addresses, and as these change, it can not be relied upon that a user will retain the same address for long; however, addresses usually are similar, and can be 'wildcarded' by the Composr IP ban feature. It is possible other users might at some point get that address, even though it is not very likely: if you place a ban on a wide range of addresses, such as [tt]14.*.*.*[/tt], you are increasing the likelihood of a conflict to a dangerously high percentage, especially if an IP address belongs to a popular ISP.
+ - ISP (Internet service provider) assigned fixed IP addresses. Some ISPs provide these, often at additional cost. There is no specific pattern to these addresses.
+ - Local network IP address [tt]10.0.*.*[/tt] or [tt]192.168.*.*[/tt] type (non-routable [can't travel across the Internet] and open for anyone's local usage as it does not need to assigned by any authority, which means that something odd is happening if you find one of these).
+ - Localhost IP address, [tt]127.0.0.1[/tt]. If you see this, then the request came from the server, or the IP address was added to the Composr database arbitrarily by some code because the true one was not known (often importers do this).
 
 [box="Finding a domain's IP address" width="25em" float="right"]
 To find out what your computer thinks the IP address of an Internet server is, type:
@@ -49,7 +51,7 @@ Composr tracks IP addresses in a number of ways:
 
 Composr provides modules (screenshots below) for working with the collected data, and settings:
  - The 'Investigate user' module is the main tool for finding information about an IP address (access it from Admin Zone > Tools > Members > Investigate user)
- - The 'Action Logs' module (access it from the Admin Zone > Audit > Actions logs) can be used to quickly find out information from a submit that wasn't immediately available (for example, if a user submitted something without being logged-in and hence was not identified, but if by an IP address scan, they were in-fact identifiable). The module can also be used to ban or unban a submitter, based on both member (prevents the member submitting again) and IP address (prevents the IP address being used to access the site)
+ - The 'Action Logs' module (access it from the Admin Zone > Audit > Actions logs) can be used to quickly find out information from a submit that wasn't immediately available (for example, if a user submitted something without being logged-in and hence was not identified, but if by an IP address scan, they were in fact identifiable). The module can also be used to ban or unban a submitter, based on both member (prevents the member submitting again) and IP address (prevents the IP address being used to access the site)
  - The 'Banned IP addresses' (access it from Admin Zone > Security > Banned IP addresses) module can be used to enter IP addresses for banning, along with free-form notes
 
 [surround]

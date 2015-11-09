@@ -26,7 +26,7 @@ As you can see, each entry is given a name. The name identifies the data being c
 There is a 'server' level cache, and a 'site' level cache. The programmer only needs to distinguish these on writes. The server level allows storage for access by all Composr installations of the same version (more efficient due to memory sharing). It is very rare that a server level cache may actually be done, due to the high configurability of individual sites.
 
 Some tips/guidelines for usage:
- - delete the entry on writes that affect it, and attempt to load the entry on reads, and put it when it was not in the cache on a read and we had to do a full calculation; do not bother caching when new data is written, as it's code that will give a tiny performance increase due to the relatively rare situation
+ - delete the entry on writes that affect it, and attempt to load the entry on reads, and put it when it was not in the cache on a read and we had to do a full calculation; do not bother caching when new data is written, as its code that will give a tiny performance increase due to the relatively rare situation
  - remember to cache against theme where appropriate (i.e. do not assume all users will use the same theme by caching theme-tainted data without using the theme name as part of the cache identifier)
  - use the server server cache when appropriate (when things are known to be relevant to all installs and when there is no site-specific aspects to the data) and never when not
  - where possible put user-specific stuff in templates as symbols rather than parameters, so that they may be cached so as not to depend on users (symbols 'survive' the cache and get reinterpreted after cache extraction). If you can't do this, and the data does contain user-specific data, you'll need to cache against each user, and that is very inefficient
@@ -37,7 +37,7 @@ Some tips/guidelines for usage:
  - don't cache non-featured stuff that could stay in the cache forever but relatively rarely get used (even if a gallery is viewed on every page view, this is not justification to cache all 100 of them: but we could cache the current IOTD block): memory is finite, do not waste it
  - remember that it is not just one site per server, usually -- we want to increase the number of users the server can take on average, not individual sites: memory is finite
  - you must assume the cache might never remember a thing even if it is on -- things get chucked out to make space, don't assume anything
- - don't assume the persistent cache exists (due to it's non reliability for long term storage): if something is really important to be cached, Composr should have a dependable cache to do it
+ - don't assume the persistent cache exists (due to its non-reliability for long term storage): if something is really important to be cached, Composr should have a dependable cache to do it
  - remember that it is okay if things keep getting lost from the cache -- if something is re-made every 5 minutes (the default TTL), then that means it persists for potentially hundreds/thousands of requests: a regeneration rate of 0.3% is hardly bad is it? Of course, if we are on a server with many sites, so things get re-generated after hardly being used, this is non-optimal: but we would not have had the memory to store it all anyway!
 
 [title="3"]Core APIs[/title]
@@ -496,7 +496,7 @@ The core Composr staff usually debug via just putting temporary bits of code in,
 @ob_end_flush(); @print(gettype($var)."\n"); @var_dump($var); flush(); exit();
 [/code]
 
-You don't need all that code all the time, but if you don't use "[tt]exit[/tt]" then you do need "[tt]ob_end_flush[/tt]". This is because Composr uses an "output buffer" for it's Tempcode system, and by default any output you do will get written into an arbitrary point in the Tempcode tree -- often never to be seen at all!
+You don't need all that code all the time, but if you don't use "[tt]exit[/tt]" then you do need "[tt]ob_end_flush[/tt]". This is because Composr uses an "output buffer" for its Tempcode system, and by default any output you do will get written into an arbitrary point in the Tempcode tree -- often never to be seen at all!
 
 In fact, rather than the ugly code above that just dumps information into the output stream, you can do something a lot fancier:
 [code="PHP"]
@@ -641,7 +641,7 @@ We have established the following design goals (in no particular order):
 
 Forum/member integration, done using a forum driver, allows Composr to integrate with an existing forum/member system in a number of ways. One of the biggest is so that you don't need to separately log in to both systems. Composr also uses the forum's members and usergroups, and stores/reads posts from the forum. Forum/member integration is achieved via forum drivers.
 
-Composr always uses one forum driver. The user picks a forum driver when the install and the default is the 'Conversr' driver which actually allows Composr to use it's own inbuilt forum (Conversr).
+Composr always uses one forum driver. The user picks a forum driver when the install and the default is the 'Conversr' driver which actually allows Composr to use its own inbuilt forum (Conversr).
 
 Generally ocProduct's advises people not to use forum/member integration, but rather to use the inbuilt Conversr forum instead (and therefore the 'Conversr' driver). This is because it's much cleaner just to have one piece of software. This said, people often have valid reasons for avoiding a migration.
 If one wishes to use Conversr but currently uses a different forum/member-system, then importing is the answer. If one doesn't care about Conversr but currently uses a different forum/member-system, then a forum driver is the answer.
@@ -670,7 +670,7 @@ Stuff that is not an Conversr feature but uses the forum, has to go through the 
 
 A forum driver works via a [tt]sources/forum/*.php[/tt] file. A forum driver is basically an implementation to a standardised interface, and is accessed from ocPortal via [tt]$GLOBALS['FORUM_DRIVER'][/tt]. There's not a lot to say about this, as there are so many existing forum drivers in Composr to look-at/refer-to and they all follow a pattern. The API is mature and simple.
 
-To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in it's [tt]forum_type[/tt] option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member IDs are group IDs) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it while you debug it -- then install again from scratch using your new forum driver from the offset.
+To make a new forum driver just copy an existing one and give it a new filename corresponding to the software being imported. To use the driver the [tt]_config.php[/tt] file will need to reference the stub of the filename you chose in its [tt]forum_type[/tt] option. You shouldn't switch forum drivers on a real Composr site because it breaks foreign key references in Composr tables (member IDs are group IDs) -- but you can do it when developing. It's probably best to install Composr using Conversr, write your new forum driver and switch to it while you debug it -- then install again from scratch using your new forum driver from the offset.
 
 [title="4"]Writing an importer[/title]
 
@@ -698,7 +698,7 @@ The importer-file consists of an object that defines:
  - feature-import functions, which are named according to the code-names of the import features listed within the info data structure (import_<feature>). The object only needs to define feature-import functions for those features it can import.
  - any other miscellaneous functions that the importer may use internally (sometimes importers have their own unique situations where moderately complex conversion of data between representation schemes is required, and support functions are often useful to keep the code tidy)
 
-The import system mainly provides a workflow via it's GUI, and the actual API is relatively light-weight (although the whole Composr API is available to importers). The workflow is as follows:
+The import system mainly provides a workflow via its GUI, and the actual API is relatively light-weight (although the whole Composr API is available to importers). The workflow is as follows:
  - Finds which importer to use (options available correspond to what hooks are on the file system)
  - Finds an import session to continue, or starts a new session (described below)
  - Gets path details for the system being imported
@@ -708,7 +708,7 @@ At the last stage the feature functions are called. The import functions themsel
 
 If you need to import a feature for which no import code exists yet then you'll need to define it. They are defined by hook files in sources/hooks/modules/admin_import_types. Each hook file has a function that returns a mapping between import codes and the language string identifiers that label them. e.g. the 'filedump' code is defined in [tt]sources/hooks/modules/admin_import_types/filedump.php[/tt] and is set to be labelled to the user with the language string 'FILEDUMP'. If you need to create a new import code put it in the most appropriate hook file that already exists (probably [tt]cns_forum.php[/tt]). Try and re-use an existing language string if one exists, otherwise create one in lang/EN/import.ini.
 
-Often special Composr API parameters are used to disable cache-regeneration and input-sanitisation-checks, to allow for a smoother and more error-free import. For example, if you're adding a topic in an importer you don't want to check poster permissions, so the [tt]cns_add_topic[/tt] function has parameters to disable it's internal-checks.
+Often special Composr API parameters are used to disable cache-regeneration and input-sanitisation-checks, to allow for a smoother and more error-free import. For example, if you're adding a topic in an importer you don't want to check poster permissions, so the [tt]cns_add_topic[/tt] function has parameters to disable its internal-checks.
 
 The importer system uses a concept of 'import sessions'. These are built on top of the Composr login sessions, and are an important feature in allowing you to merge multiple sites into Composr: they keep the progress and "ID remap table" from each import separate. The "choose your session" interface exists so that if your Composr session is lost, you can still resume a previous import.
 
@@ -720,7 +720,7 @@ One problem with importers that import members is that almost always passwords a
 2) The member must be imported with a reference code representing the hashing scheme to use (the cns_make_member function supports passing this in)
 
 A common mistake when writing importers is with HTML entities. Some software stores some fields as HTML (albeit taglessly -- just with the entities), while Composr never does. You need to decode any HTML fields using [tt]html_entity_decode[/tt] before passing them into the Composr API, like "[tt]html_entity_decode($field_value,ENT_QUOTES,get_charset())[/tt]".
-If you are unsure how software stores it's data, enter test data that uses various quotation mark symbols, so that it will jump out at you when you view the raw database.
+If you are unsure how software stores its data, enter test data that uses various quotation mark symbols, so that it will jump out at you when you view the raw database.
 
 There is a very complex situation for non-forum importers that use forum-driver functions during import, in order to find data to associate with database records they are creating. For example, an importer for a simple download system which stores 'usernames' of download-submitters, might wish to try to bind these usernames to actual user-IDs, using the forum-database that Composr normally uses. However, by default the forum-database is tied to the local-Conversr-install during installation, as when forum data is imported, this Conversr database is required (as this is where the information will be piped to). Therefore there are two import API functions that allow switching to and from local and M.S.N. Conversr installations:
 1) [tt]cns_over_local[/tt] (this sets Composr to use the local Conversr for the FORUM_DB object)
@@ -754,8 +754,8 @@ Valid product types are:
 6) [tt]PRODUCT_CATALOGUE[/tt] (a shopping cart product) -- you are very unlikely to need this one
 7) [tt]PRODUCT_ORDERS[/tt] (a full shopping cart order) -- you are very unlikely to need this one
 [*][tt]get_needed_fields[/tt] -- This function will return field Tempcode, for inclusion in a purchase form.
-[*][tt]set_needed_fields[/tt] -- This function processes the data entered from the purchase form (get_needed_fields), or if there was no purchase form it may act on URL parameters that might be present. Often this function is used to save data into the database prior to purchase (after purchase the data would then be retrieved/processed/marked-active). You can assume this function always runs in a screen after get_needed_fields, and therefore you can use the normal functions like post_param_string to read in the data. This function returns the purchase-ID, which henceforth is used to refer to the sale (and thus, retrieve it's data). The purchase-ID is often a database key, for the case of a row being added -- but also often it instead is more implicit (e.g. a member ID, or a chosen codename).
-[*][tt]get_identifier_manual_field_inputter[/tt] -- This optional function (often not used) will return field Tempcode for allowing an administrator to select an identifier when manually triggering a purchase. Often identifiers are automatically worked out (in-fact, often they are member IDs of the purchasers), so this method allows a more user-friendly open selection for the identifier for the case where the identifier likely is not auto-computable (i.e. when the administrator is purchasing on behalf of a third-party).
+[*][tt]set_needed_fields[/tt] -- This function processes the data entered from the purchase form (get_needed_fields), or if there was no purchase form it may act on URL parameters that might be present. Often this function is used to save data into the database prior to purchase (after purchase the data would then be retrieved/processed/marked-active). You can assume this function always runs in a screen after get_needed_fields, and therefore you can use the normal functions like post_param_string to read in the data. This function returns the purchase-ID, which henceforth is used to refer to the sale (and thus, retrieve its data). The purchase-ID is often a database key, for the case of a row being added -- but also often it instead is more implicit (e.g. a member ID, or a chosen codename).
+[*][tt]get_identifier_manual_field_inputter[/tt] -- This optional function (often not used) will return field Tempcode for allowing an administrator to select an identifier when manually triggering a purchase. Often identifiers are automatically worked out (in fact, often they are member IDs of the purchasers), so this method allows a more user-friendly open selection for the identifier for the case where the identifier likely is not auto-computable (i.e. when the administrator is purchasing on behalf of a third-party).
 [*][tt]get_agreement[/tt] -- This function will return license text to be approved by the buyer. Some product do not need license agreements and hence do not need this method.
 [*][tt]get_message[/tt] -- This function gets a message that will be displayed inside the purchase wizard. Often a very general description of the hook's products will be shown from here.
 [*][tt]is_available[/tt] -- This function returns the status of product: whether it is available or not. For example, often products are not available to Guests (because there is no member ID to save a purchase against), or a product may not be available due to it being out of stock.
@@ -791,7 +791,7 @@ Note the distinction between overriding for a page, and for overriding for a per
 
 Privileges are checked and set purely through the permissions API ([tt]has_privilege[/tt]), using permission-modules (e.g. [tt]downloads[/tt]) and identifiers (e.g. '3'). There are no hooks needed, just:
  - the name of the privilege
- - the name of the page that controls it's overridden value (if there is one, e.g. [tt]cms_downloads[/tt])
+ - the name of the page that controls its overridden value (if there is one, e.g. [tt]cms_downloads[/tt])
  - the combination of permission-module and identifier (if it can be overridden per-category)
 
 View permissions are checked using the [tt]has_category_access[/tt] function, or other similar functions if zone or page view permissions are being checked.
@@ -947,7 +947,7 @@ $trackback_details = get_trackbacks('<your_chosen_feedback_module_name>', strval
 [/code]
 (the above advice is currently out-dated, the parameters required by the API have changed, and there is a new function, [tt]embed_feedback_systems[/tt], that encapsulates all of the above)
 
-In the main template call to display your content on it's own screen...
+In the main template call to display your content on its own screen...
 [code="PHP"]
 'TRACKBACK_DETAILS' => $trackback_details,
 'RATING_DETAILS' => $rating_details,
@@ -1008,7 +1008,7 @@ CRUD modules define the following standard methods:
 
 Often they also define the following:
  - [tt]edit[/tt], If the auto-generated "choose what to edit" screen needs customising.
- - [tt]create_selection_list_ajax_tree[/tt], If we are using tree list control in edit page, we need to define [tt]create_selection_list_ajax_tree[/tt] function in our module. That tree list is using for selecting the editable data. We need to give the name of an [tt]systems/ajax_tree[/tt] hook file which create the data for tree list to the Composr [tt]form_input_tree_list[/tt] function. The hook file will return XML data for the tree list and the built-in Composr AJAX functions (called up by [tt]form_input_tree_list[/tt]) will receive that data and fill it in tree list. In every node expansion in the tree list another AJAX request is generated to expand the particular node's ID. The AJAX script will find the child data for that parent ID and return it's child data.
+ - [tt]create_selection_list_ajax_tree[/tt], If we are using tree list control in edit page, we need to define [tt]create_selection_list_ajax_tree[/tt] function in our module. That tree list is using for selecting the editable data. We need to give the name of an [tt]systems/ajax_tree[/tt] hook file which create the data for tree list to the Composr [tt]form_input_tree_list[/tt] function. The hook file will return XML data for the tree list and the built-in Composr AJAX functions (called up by [tt]form_input_tree_list[/tt]) will receive that data and fill it in tree list. In every node expansion in the tree list another AJAX request is generated to expand the particular node's ID. The AJAX script will find the child data for that parent ID and return its child data.
  - [tt]get_submitter[/tt], If there is a complex calculation required for who submitted a resource (required for the purposes of permission checking).
  - [tt]do_next_manager[/tt], If the standard do-next results screen is too basic (e.g. if extra icons are needed).
  - [tt]browse[/tt], The function to show the screen when the module is loaded up. If we do not define this, [tt]browse[/tt] acts the same as [tt]add[/tt]. If you define a [tt]browse[/tt] method (which many CRUD modules do do) then you must call it yourself from your [tt]run_start[/tt] method. Often [tt]browse[/tt] methods are used with do-next-manager interfaces, to provide a front end for choosing different options.

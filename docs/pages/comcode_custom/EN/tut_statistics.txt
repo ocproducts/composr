@@ -16,7 +16,7 @@ Be aware that hits coming from the web server itself will be filtered from the s
 [surround]
 [media width="150" description="The message shown when installing geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_installing_geolocation_data.png[/media]
 [media width="150" description="The menu link to install geolocation data" float="right"]data_custom/images/docs/tut_statistics/statistics_install_geolocation_data_link.png[/media]
-{!stats:DOC_INSTALL_GEOLOCATION_DATA}
+{!stats:DOC_INSTALL_GEOLOCATION_DATA} To do this, you simply go to Admin Zone > Audit > Site statistics. The resulting page will automatically refresh many times so that it can easily install all the required data.
 [/surround]
 
 [box="Important -- keep it going"]
@@ -101,7 +101,7 @@ The [tt]side_stats[/tt] block shows various figures that relate to your website'
 Access Real-time analytics from:
 Admin Zone > Audit > What's happening now (RTR)
 
-It is a good way to visualise how people are using the site. This works best when the site has multiple online users performing options, but you can rewind the clock to a time when you know this was happening.
+It is a good way to visualise how people are using the site. This works best when the site has multiple online users performing options, but you can move the timeline back to when stuff was happening previously (i.e. view activity from a historic viewpoint).
 
 [title="2"]Google Analytics[/title]
 

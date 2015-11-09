@@ -4,7 +4,7 @@ You may easily add new pages of information to Composr by making a 'Comcode page
 
 A Comcode page is a page in the system that you can edit either via a [concept]WYSIWYG[/concept] editor, or a very simple [concept]mark-up language[/concept] called Comcode, or a combination of both.
 
-This documentation is written using Comcode in-fact.
+This documentation is written using Comcode in fact.
 
 If you want to write a page without any special formatting, you can just type it out in plain-text, and this will usually be valid Comcode and display as you would expect it to. You can then add 'tags' to identify things such as titles and links.
 

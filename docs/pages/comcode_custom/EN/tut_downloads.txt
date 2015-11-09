@@ -11,7 +11,7 @@ In the download system, downloads are placed in categories, and categories toget
 
 This tree principle applies to many areas of Composr: we strive to standardise things across our product to make things as consistent (hence, easy) as possible.
 
-Download categories may have 'representative images'. When you are viewing a link to a category from it's parent category, the representative image will be included.
+Download categories may have 'representative images'. When you are viewing a link to a category from its parent category, the representative image will be included.
 
 Manage download categories from Content Management > Downloads.
 You can delete a download category from the bottom of its edit form.

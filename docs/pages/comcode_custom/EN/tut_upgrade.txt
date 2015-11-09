@@ -56,7 +56,7 @@ Steps:[list="1"]
 [*]taking a full backup (just in case a problem occurs) -- better safe than sorry. This is also useful in case you overwrite files that you have edited: either due to these files being in locations with no override support, or due to changes being made without using the proper override mechanism
 [*]closing your website
  - the upgrader will make it easy for you to close your site using the Composr closed-site feature
- - however, for non-patch upgrades your website may return errors until the full upgrade process is complete, so you may wish to place your own [tt]closed.html[/tt] file on the server that shows a standalone closed-site screen. Composr will redirect to that file for all page requests for as long as it exists on your server (so it does not need to load it's database or templating system)
+ - however, for non-patch upgrades your website may return errors until the full upgrade process is complete, so you may wish to place your own [tt]closed.html[/tt] file on the server that shows a standalone closed-site screen. Composr will redirect to that file for all page requests for as long as it exists on your server (so it does not need to load its database or templating system)
 [*]transferring new/updated files (this will copy your customised upgrade file between {$BRAND_BASE_URL} and your server, and then extract it)
  - if your server's connection to the {$BRAND_BASE_URL} server is slow, you could download the [tt]TAR[/tt] file yourself, upload it to your own server, and then use that copy's URL in step 3
  - on modern server environments the extraction happens in a separated framed process, so that if timeouts occur it can't leave your website in an inconsistent state

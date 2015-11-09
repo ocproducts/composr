@@ -40,7 +40,7 @@ The default meta-filesystems are as follows, and are all mounted as subdirectori
  - [tt]root[/tt]: A listing of the Composr installation directory, taking source code overrides into account (featuring automatically overriding when files are edited)
  - [tt]var[/tt]: Structured website resources/content, separated by resource type on level 1, with category structure as further folders (generally-speaking), and entries as files
 
-The [tt]var[/tt] meta-filesystem is perhaps the most interesting because if Webdav is installed, you can use this to import/export/copy resources/content into and between websites using your normal desktop file manager. This is extremely useful. In actuality, [tt]var[/tt] is not actually a meta-filesystem in it's own right, each directory underneath it is actually implemented as a separate meta-filesystem.
+The [tt]var[/tt] meta-filesystem is perhaps the most interesting because if Webdav is installed, you can use this to import/export/copy resources/content into and between websites using your normal desktop file manager. This is extremely useful. In actuality, [tt]var[/tt] is not actually a meta-filesystem in its own right, each directory underneath it is actually implemented as a separate meta-filesystem.
 
 [title="2"]WebDAV[/title]
 

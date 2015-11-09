@@ -160,7 +160,7 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
  * Get the symbol for a currency.
  *
  * @param  ID_TEXT $currency The currency.
- * @return array A pair: The symbol, and whether the symbol is okay to use on it's own (as it is the accepted default for the symbol).
+ * @return array A pair: The symbol, and whether the symbol is okay to use on its own (as it is the accepted default for the symbol).
  */
 function get_currency_symbol($currency)
 {

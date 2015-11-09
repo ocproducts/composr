@@ -5,7 +5,7 @@ A task which you should not overlook is backing up your Composr website. Should 
 
 We should stress that the best way to back up your site is through your web hosting control panel's options, if it has them, because this can do a more reliable job than a mere web app can do. Using Composr's own backup system is a last resort if you don't have better options and it has problems on some web hosts.
 
-You can usually find a reminder to backup your site on the Admin Zone front page which will remind you to backup your site if it's not been done for a while. You can also go to Admin Zone > Tools > Backups.
+You can usually find a reminder to backup your site on the Admin Zone front page which will remind you to backup your site if it has not been done for a while. You can also go to Admin Zone > Tools > Backups.
 
 This will take you to the backup screen. If you have completed backups before they will be listed at the top of the page. Below this there are four sections which you need to fill in. These sections are:
 

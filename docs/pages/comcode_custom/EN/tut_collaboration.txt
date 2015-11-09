@@ -2,7 +2,7 @@
 
 Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool. Many of these features are, by default, pooled together and placed in the 'Collaboration Zone', a Composr zone available, by default, only to staff and Super-Members (if the latter group exists).
 
-A Super-Member is a member who is not staff, but is granted additional access based on their need to access collaborative resources. There is no hard-coded concept of a Super-Member in Composr but the default configuration for the Collaboration Zone is to grant access only to staff and the 'Super Members' usergroup.
+A Super-Member is a member who is not staff, but is granted additional access based on their need to access collaborative resources. There is no hard-coded concept of a Super-Member in Composr but the default configuration for the Collaboration Zone is to grant access only to staff and the 'Super Members' usergroup. You may configure access however you desire.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -33,7 +33,9 @@ The File/Media library has two main purposes:
 1) Sharing media with the staff team, for use in content
 2) A general shared drive for collaborators
 
-You can get a browser to embed items from the File/Media library. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the [tt]media[/tt] tag.
+There is no pre-determined organisational scheme to the library. However, members may decide by convention to store personal directories under names matching their usernames.
+
+You may wish to embed library files into some other content, such as a news article. You can use a file selector for this. Go to add a new Comcode tag (from the button in the WYSIWYG editor / above the text-area) and select the [tt]media[/tt] tag.
 [/surround]
 
 [box="Important -- Security"]

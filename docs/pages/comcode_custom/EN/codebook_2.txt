@@ -89,7 +89,7 @@ If you are adding features to the standard Composr, you must make use of Theme W
 As a standard Composr uses 32-bit PNG files over other image types, unless:
  - animation is required ([tt].gif[/tt] used instead)
  - background image transparency is required (8-bit [tt].png[/tt] used instead)
- - where the image needs to be given a size different to it's natural dimensions ([tt].gif[/tt] used instead)
+ - where the image needs to be given a size different to its natural dimensions ([tt].gif[/tt] used instead)
 
 We use PNG files as they have the added advantage that they can be 'alpha-blended' for smooth, blended, visuals.
 

@@ -38,7 +38,7 @@ For example:
 
 .menu_type__dropdown li.toplevel.last {
 	float: none !important; /* so it eats all space remaining */
-	overflow: hidden; /* so it is shunted against it's left-hand neighbours without overlapping */
+	overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
 	margin-{!en_right}: 0 !important; /* as would cause wrapping with the overflow hidden */
 	position: relative;
 	{!en_left}: -1px; /* In place of margin-right */

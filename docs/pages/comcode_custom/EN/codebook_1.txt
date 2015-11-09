@@ -41,7 +41,7 @@ Next [tt]init__global2()[/tt] runs, as this is the standard initialisation funct
 
 One of the code files is [tt]site.php[/tt]. This code file checks zone and page permissions for the user, and will also be used to generate the main page view.
 
-When [tt]init__global2()[/tt] is finished, control pops back into the original [tt]index.php[/tt] file, which calls [tt]do_site()[/tt]. This proceeds to work out what page code to load (module, Comcode page, etc), and make Composr compose the page (putting it into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template etc), and finally output it. To learn more about how Composr composes pages from it's various elements, and how it decides what kinds of pages to load, see our [page="docs:tut_structure"]Composr site structure[/page].
+When [tt]init__global2()[/tt] is finished, control pops back into the original [tt]index.php[/tt] file, which calls [tt]do_site()[/tt]. This proceeds to work out what page code to load (module, Comcode page, etc), and make Composr compose the page (putting it into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template etc), and finally output it. To learn more about how Composr composes pages from its various elements, and how it decides what kinds of pages to load, see our [page="docs:tut_structure"]Composr site structure[/page].
 
 We should also note our URL convention. Essentially we have up to 3 standard URL components: [tt]page[/tt], [tt]type[/tt], [tt]id[/tt]. [tt]page[/tt] identifies the Composr page to load (which can be any kind of page, it's found via a search process). [tt]type[/tt] and [tt]id[/tt] are specific to a particular module, but are a strong convention, and have special representation in the URL Schemes described above.
 
@@ -319,7 +319,7 @@ If a field type has "*" in front of the name, then it will form the primary key.
 
 The field types (apart from the AUTO and various string types) may have a "?" put in front of them (E.g. "?INTEGER"). This indicates that the value may be null.
 
-Composr minimises it's use of database features, in order to increase portability. We intentionally do not use the following database features:
+Composr minimises its use of database features, in order to increase portability. We intentionally do not use the following database features:
  - stored procedures
  - transactions
  - default field values
@@ -337,7 +337,7 @@ Database indexes are created using the [tt]create_index[/tt] function of a datab
 3) A list of fields to include in the index
 (Indexes provide important speed improvements if you routinely look-up data from tables using fields other than the primary key)
 
-One important thing to understand at this point is that Composr supports multi-language content at it's core. This means that any resources that are defined need to be able to define their human-readable strings via the [tt]translate[/tt] table rather than directly. As of Composr 10, by default multi-language content is not enabled, but the code needs to support it anyway. This is the purpose behind the [tt]transtext[/tt] and [tt]transline[/tt] configuration option, as well as the 'SHORT_TRANS'/'LONG_TRANS'/'SHORT_TRANS__COMCODE'/'LONG_TRANS__COMCODE' field-type-identifiers.
+One important thing to understand at this point is that Composr supports multi-language content at its core. This means that any resources that are defined need to be able to define their human-readable strings via the [tt]translate[/tt] table rather than directly. As of Composr 10, by default multi-language content is not enabled, but the code needs to support it anyway. This is the purpose behind the [tt]transtext[/tt] and [tt]transline[/tt] configuration option, as well as the 'SHORT_TRANS'/'LONG_TRANS'/'SHORT_TRANS__COMCODE'/'LONG_TRANS__COMCODE' field-type-identifiers.
 
 If you store data in tables using 'SHORT/LONG_TRANS[__COMCODE]' you retrieve that data via calling the [tt]get_translated_text[/tt] function upon the database field value.
 
@@ -719,7 +719,7 @@ This code finds all modules/search hooks, then loops over the list of hook names
 1) loads up the code file for the hook
 2) instantiates the object in the hook using Composr's [tt]object_factory[/tt] function (which it can do because it assumes a class naming convention for all of these kind of hooks)
 3) checks to see if the object instantiated okay, and if it didn't, continue to the next loop iteration. The true parameter to [tt]object_factory[/tt] will prevent Composr automatically failing if it can not create an object and instead make it return [tt]null[/tt]. We do this in case users accidentally upload some other kind of PHP file to the hook directory: if we didn't check for the error here, it'd have caused a stack dump as it wouldn't contain the class we needed.
-4) calls the [tt]info[/tt] function on the hook, loading it's results in [tt]$info[/tt]. Again, this is an assumption via a convention for these kinds of hooks, that they will have an [tt]info[/tt] function that behaves in a certain way. From this particular example (search hook) our [tt]info[/tt] function will return us an array structure of details about what the hook can do, and later the code will determine whether to put an 'advanced' search link in for the hook according to whether it supports advanced searches or not (I haven't shown that code here for conciseness).
+4) calls the [tt]info[/tt] function on the hook, loading its results in [tt]$info[/tt]. Again, this is an assumption via a convention for these kinds of hooks, that they will have an [tt]info[/tt] function that behaves in a certain way. From this particular example (search hook) our [tt]info[/tt] function will return us an array structure of details about what the hook can do, and later the code will determine whether to put an 'advanced' search link in for the hook according to whether it supports advanced searches or not (I haven't shown that code here for conciseness).
 
 (*1) Not quite. Hook files of the same kind might be in [tt]sources/hooks/<something>/<somethingelse>[/tt] and also [tt]sources_custom/hooks/<something>/<somethingelse>[/tt].
 This is because you place custom files in [tt]sources_custom[/tt] so that they are easily identified as such. It is very common in the case of hooks, if you're adding a new hook to Composr.
@@ -813,7 +813,7 @@ In Composr content types are implemented via a lot of different files. The best 
  - [tt]sources_custom/hooks/modules/admin_import_types/iotds.php[/tt] -- This is an importer hook, it's not very interesting and you are very unlikely to need to write one.
  - [tt]sources_custom/hooks/modules/admin_setupwizard/iotds.php[/tt] -- This is a Setup Wizard hook, and this particular hook allows the Setup Wizard to place the IOTD block automatically on the website (Setup Wizard hooks can do various things, this is just one example of what a Setup Wizard hook can do). You are very unlikely to need to write one of these hooks.
  - [tt]sources_custom/hooks/modules/search/iotds.php[/tt] -- This is a search hook, to allow IOTDs to be searchable from the Composr [tt]search[/tt] module.
- - [tt]sources_custom/hooks/systems/content_meta_aware/iotd.php[/tt] -- This hook is used to provide the search-engine-friendly URLs for IOTDs. It specifies the details Composr needs to be able to automatically generate URL keywords and tie them into ID numbers. In the future it is likely Composr will use this kind of hook for more things, and can generally be considered as a way for a content type to declare/define some of it's properties.
+ - [tt]sources_custom/hooks/systems/content_meta_aware/iotd.php[/tt] -- This hook is used to provide the search-engine-friendly URLs for IOTDs. It specifies the details Composr needs to be able to automatically generate URL keywords and tie them into ID numbers. In the future it is likely Composr will use this kind of hook for more things, and can generally be considered as a way for a content type to declare/define some of its properties.
  - [tt]sources_custom/hooks/systems/page_groupings/iotds.php[/tt] -- This hook places IOTD icons in the Admin Zone/CMS Zone do-next menus.
  - [tt]sources_custom/hooks/systems/preview/iotd.php[/tt] -- This hook allows IOTDs to have user-friendly previews from the add/edit form. It provides a method to scan to see if you are trying to preview an IOTD, and another method to generate a preview from the data passed to the preview script via the POST environment.
  - [tt]sources_custom/hooks/systems/rss/iotds.php[/tt] -- This hook provides an RSS feed for IOTDs.
@@ -832,13 +832,13 @@ In Composr content types are implemented via a lot of different files. The best 
 
 In Composr we need to program modules so that they auto-create database structure and database contents. Even if working direct for a single client, it is best that modules be constructed like this as it eases development (it's easy to set up different development sites for example).
 
-If creating, for example, some kind of property website, it would be best to pre-populate location tables in the installation code of the new key module that uses them. The default [tt]catalogues[/tt] module does a similar thing, with it's creation of some default catalogues.
+If creating, for example, some kind of property website, it would be best to pre-populate location tables in the installation code of the new key module that uses them. The default [tt]catalogues[/tt] module does a similar thing, with its creation of some default catalogues.
 
-It is natural that you won't get your database code right first time. When developing you probably do not want to have to manually alter the database and code separately each time a non-minor change is made, although of course you can do. Instead you can reinstall the module from the Admin Zone. Go to Admin Zone > Setup > Addons, then you'll find a link for module management under there. If you find you can't uninstall/reinstall/install your module, you coded it as 'locked' (in the info method) and you probably shouldn't have.
+It is natural that you won't get your database code right first time. When developing you probably do not want to have to manually alter the database and code separately each time a non-minor change is made, although of course you can do. Instead you can reinstall the module from the Admin Zone. Go to Admin Zone > Structure > Addons, then you'll find a link for module management under there. If you find you can't uninstall/reinstall/install your module, you coded it as 'locked' (in the info method) and you probably shouldn't have.
 
 If you find stack traces are generated by module management then some of your code is probably faulty. It might not be the same code as you expect (module management probes various different files), but look closely and you will probably find the error.
 
-When developing you'll probably want to start your development site afresh a few times to test your code in different configurations, or to wipe test data. If you develop on a server that is not reachable from the public web, you can leave the installer in place so long as you have a blank file named [tt]install_ok[/tt] in the base directory. This is better than having to move or rename the install.php file because if you do that you risk messing up it's versioning, especially if you work out of a source code control system.
+When developing you'll probably want to start your development site afresh a few times to test your code in different configurations, or to wipe test data. If you develop on a server that is not reachable from the public web, you can leave the installer in place so long as you have a blank file named [tt]install_ok[/tt] in the base directory. This is better than having to move or rename the install.php file because if you do that you risk messing up its versioning, especially if you work out of a source code control system.
 
 [title="3"]Programming/programmatic-interface Coding Standards[/title]
 
@@ -1077,7 +1077,7 @@ On a similar note, when using user-input with the PHP [tt]preg_replace[/tt] func
 There are many important programming considerations that need to be applied in most projects, including Composr. This section discussions some of them:
  - If you are using an editable field as a foreign key in some way (e.g. you have an editable codename field, and you reference that codename in another table to link things to it), then remember:
   - if the field is renamed then anything referencing it will also need to be updated to reference the new name. Composr can't do this automatically due to limitations in MySQL.
-  - any key will obviously need to have it's uniqueness maintained, so remember upon adding and renaming you must check that a new name will not cause a conflict
+  - any key will obviously need to have its uniqueness maintained, so remember upon adding and renaming you must check that a new name will not cause a conflict
  - Whenever you use a foreign key, you should make sure that anything dependent on it is fixed should the referenced row be deleted. This might involve deleting such dependent rows, or updating them to reference a different key. There is one exception in Composr: key integrity for member rows is not maintained for practical reasons. This means that you can never assume in Composr that a member ID stored somewhere (e.g. as a submitter) is still valid.
  - Check for possible error values, especially when working with files. For example, if you're writing to a file, what if you run out of disk quota? What if an uploaded file is corrupt? Composr should handle such situations gracefully.
 
@@ -1178,8 +1178,8 @@ $secondary_groups = array_map('intval', explode(',', $row['additionalGroups']));
 Be aware that Tempcode only supports these data types as template parameters:
  - more Tempcode
  - strings
- - booleans (which are converted to strings as '1' or '0', which is what Tempcode uses for it's boolean logic)
- - arrays (but only for use by special directives -- referencing an array as a normal parameter will only return it's size)
+ - booleans (which are converted to strings as '1' or '0', which is what Tempcode uses for its boolean logic)
+ - arrays (but only for use by special directives -- referencing an array as a normal parameter will only return its size)
 It intentionally does not support integers or floats, so these must be converted to strings manually when passed through, using [tt]strval[/tt] (machine-read integers), [tt]integer_format[/tt] (human-read integers), [tt]float_to_raw_string[/tt] (machine-read floats), or [tt]float_format[/tt] (human-read floats).
 
 [title="3"]Do-next-manager interfaces[/title]

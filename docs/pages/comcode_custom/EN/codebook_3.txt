@@ -359,7 +359,7 @@ Other very useful logs:
  - The web server's own access log; look carefully in it and you are likely to see things like HTTP response codes (e.g. 500 means Internal Server Error)
  - Any [tt]errorlog[/tt] files the web server may leave behind (native PHP error logs, which may or may not be enabled)
 Correlate times and IP addresses to get a model of what happened.
-Also the Compsor 'SU' (switch user) feature can be very useful for testing under different users without having to know their passwords.
+Also the Compsor 'SU' feature (see the [page="_SEARCH:tut_permissions"]Testing access and privileges[/page] tutorial, Access control and privileges section) can be very useful for testing under different users without having to know their passwords.
 
 If it is acceptable to debug code on a live server, putting [tt]exit[/tt] and [tt]var_dump[/tt] commands to only run for your own IP address can be useful ([tt]if (get_ip_address()=='...') { ... }[/tt]). This is not recommended for a high-traffic site though, you're likely to make an occasional mistake that'll get spotted. So for this case, you'll just have to clone the database back to a development server and test like that.
 
@@ -411,7 +411,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]disable_iconv[/tt] -- set this to '1' if your iconv extension causes PHP to crash
   - [tt]disable_mbstring[/tt] -- set this to '1' if your mbstring extension causes PHP to crash
   - [tt]prefer_curl[/tt] -- set this to '1' if the server requires you to not use network sockets directly from PHP and instead use the CuRL extension (although if you need this it is likely you actually need to just configure the proxy server options instead)
-  - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about it's memory limit
+  - [tt]real_memory_available_mb[/tt] -- set this to the number of MB GD should consider available for image generation, if PHP is lying about its memory limit
   - [tt]http_faux_loopback[/tt] -- a regular expression of URLs that may be accessed via direct filesystem reading rather than HTTP loopback. Be very careful with this, as it could seriously harm security. It can improve performance however. Some poor web hosts may also require it (we've only seen one though). It does support PHP scripts, which are given special treatment, via passing through the [tt]php-cgi[/tt] interpreter (file uploads and POST requests not supported). Set via a command such as: [code="Commandr"]:set_value('http_faux_loopback','^'.preg_quote(get_base_url(),'#').'.*\.(php|jpg|jpeg|png|gif|htm|html|ico|txt|css|js|cur|tar|gz|mp3|mp4|m4v|mpg|mpeg|pdf|svg|swf|ttf|woff|wav|zip|xsd|xsl|xml|webm)\??');[/code]
   - [tt]base64_emails[/tt] -- set this to '1' if you want base64 emails to be used. These are more robust (PHP's wordwrapping, which we use to make non-base-64 emails compliant, can be buggy) but some servers do not like them or consider them very slightly more spammy
   - [tt]cloudflare_workaround[/tt] -- set this to '1' if you need to fix the IP address of requests marked as coming from CloudFlare. It reduces security.
@@ -434,7 +434,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]agency_email_address[/tt] -- set this to a secondary e-mail address where you would like all error e-mails to go (the primary one being the staff address). Only set this if you are an agency and want to receive error e-mails in addition/instead of your client
  - For back-end developers
   - [tt]textmate[/tt] -- set this to '1' if you are developing on a local machine and use the Apple Mac TextMate editor. It will cause TextMate editing links to come up in stack traces
-  - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and it's short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials)
+  - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and its short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials)
   - [tt]git_autopull[/tt] -- set this to '1' if git changes should automatically be pulled every minute (less frequently if the CRON interval is longer). Assumes a suEXEC-like server and a git deployment and working [tt]shell_exec[/tt]
  - Low-level tuning
   - [tt]force_guest_names[/tt] -- set to '1' if Guest forum users must enter a name that is not 'Guest'
@@ -605,7 +605,7 @@ However, if you're making a website for somebody else it is is important to bear
 
 Here are some hints:
  - You might want to use the debranding feature, Admin Zone > Style > Debranding
- - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify it's interface to compensate.
+ - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify its interface to compensate.
  - If you have to hand code a Comcode page with HTML then include the following hint in it: [tt]{$,page hint: no_smart_conversion}[/tt]. This will stop the WYSIWYG editor trying to convert the HTML back into Comcode, which can mess up hand-crafted markup and CSS (normally WYSIWYG only guarantees to preserve style/structure created within itself).
  - If for some reason you don't want the WYSIWYG editor to run for a page (e.g. if it has a Google ad on, that can cause the editor to malfunction) then include the following hint in it: [tt]{$,page hint: no_wysiwyg}[/tt]
  - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (http://seoclass.org/canonical-redirects-htaccess-and-seo) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
@@ -720,7 +720,7 @@ All default parameters are flagged as 'non-canonical' to search engines, so that
 
 [title="3"]Overriding files[/title]
 
-If you change an original Composr file for a client project you must save it into the [tt]_custom[/tt] equivalent of it's original directory. E.g. if you change [tt]site/pages/modules/calendar.php[/tt] you need to save into [tt]site/pages/modules_custom/calendar.php[/tt]. Otherwise if the client ever upgrades their website chances are all the customisations you've made would be lost when a newer version of the original file is placed.
+If you change an original Composr file for a client project you must save it into the [tt]_custom[/tt] equivalent of its original directory. E.g. if you change [tt]site/pages/modules/calendar.php[/tt] you need to save into [tt]site/pages/modules_custom/calendar.php[/tt]. Otherwise if the client ever upgrades their website chances are all the customisations you've made would be lost when a newer version of the original file is placed.
 
 This said, It's best to avoid completely overriding default files if possible, so that any bug fixes from upgrades are more likely to work. Composr provides some techniques so you can override just stuff you want to change rather than a whole file.
 This is explained in the [page="docs:tut_framework"]The Composr programming framework[/page] tutorial (there are two techniques: replacing/supplementing, and programmatic alternation).

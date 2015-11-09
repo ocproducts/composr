@@ -407,7 +407,7 @@ There is a special script ([tt]rootkit_detection.php[/tt]) that will help detect
 There is nothing stopping you using HTTP authentication served by your web server on top of the website if you want some extra security. 
 For example, it is possible to use HTTP Authentication to deny access to the whole of Composr to anyone without a pre-allocated HTTP-Auth password. For more information on this, see 'related topics'.
 
-However, you should let requests from the web server itself through that without needing to authenticate so that it can read it's own URLs (otherwise you could have some problems, such as security errors when editing theme images).
+However, you should let requests from the web server itself through that without needing to authenticate so that it can read its own URLs (otherwise you could have some problems, such as security errors when editing theme images).
 
 [title="2"]Have you been hacked?[/title]
 

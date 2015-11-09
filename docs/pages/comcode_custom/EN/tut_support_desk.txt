@@ -270,7 +270,7 @@ To use a post template, simply submit a new topic or post using the verbose post
 [media width="150" description="The feedback commenting system in action" float="right"]data_custom/images/docs/tut_support_desk/support_feedback.png[/media]
 Most forms of Composr content support commenting, via the feedback system. For example, if enabled for a download, and in Composr, the download may have an attached discussion. This discussion is actually stored on the forum in a comment topic.
 
-The advantage of the feedback system over the Discussion Forums is simply that the discussion is attached directly to actual content. For most forms of content, these discussions are unlikely to be classifiable as 'support', but the download system in particular may contain questions and answers relating to the download itself.
+The advantage of the feedback system over the Discussion Forums is simply that the discussion is attached directly to actual content. For example, comments posted on a download may contain questions and answers relating to the download itself -- very simple and convenient for users.
 
 To use the feedback commenting system, you must not be using the [tt]none[/tt] forum driver, and you must have created the comment topic forum that is referenced in the Composr configuration (for [concept]Conversr[/concept] it's auto-created).
 

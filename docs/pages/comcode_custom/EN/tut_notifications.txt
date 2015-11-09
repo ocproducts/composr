@@ -51,7 +51,7 @@ You may wish to see what notification e-mails are being sent out.
 
 The best way to debug notifications is to view the e-mail log, from Admin Zone > Audit > E-mail queue/log. You can see exactly what e-mails were sent out.
 
-To see if someone is set up for notifications on some content, use the SU feature (switch user) to pretend to be them. You will see their settings reflected in the interface.
+To see if someone is set up for notifications on some content, use the SU feature (see the [page="_SEARCH:tut_permissions"]Testing access and privileges[/page] tutorial, Access control and privileges section) to pretend to be them. You will see their settings reflected in the interface.
 
 There's a config option, "Carbon-copy e-mail address". This address receives a copy of most e-mails the system sends out.
 Note that it will only CC a notification e-mail to this address once, not once per notification.

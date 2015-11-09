@@ -78,6 +78,11 @@ class lang_test_set extends cms_test_case
             }
         }
 
+        // Bad use of it's. Imperfect test, but would rather have it anyway due to the prevalence of these mistakes. People can expand contractions to workaround.
+        if (preg_match('#it\'s (own|permission|id |definition|filename|contents|run|database|parent|child|cach|interface|use |various|result|properties)#', $string) != 0) {
+            $this->assertTrue(false, 'The phrase "it\'s own" was used in ' . $file . '. This should be changed to "its own". There could be more infractions that we could not auto-detect.');
+        }
+
         // Hyphen wanted (we want our canonical way)
         if ((stripos($string, 'email') !== false) && (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) {
             $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. This should be changed to \'e-mail\'.');
@@ -153,6 +158,7 @@ class lang_test_set extends cms_test_case
             'nieve' => 'naive',
             'in-situe' => 'in-situ',
             'infact' => 'in fact',
+            'in-fact' => 'in fact',
             'conveniant' => 'convenient',
             'conveniance' => 'convenience',
             'routeable' => 'routable',

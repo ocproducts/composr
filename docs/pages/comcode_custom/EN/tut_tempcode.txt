@@ -1728,7 +1728,7 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>IF_PASSED_AND_TRUE/IF_NON_PASSED_OR_FALSE</td>
-			<td>Find if a named parameter was passed and it's truth state (useful for robust optional boolean parameters that default to false)</td>
+			<td>Find if a named parameter was passed and its truth state (useful for robust optional boolean parameters that default to false)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>IF_EMPTY/IF_NON_EMPTY</td>

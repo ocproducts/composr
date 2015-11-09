@@ -1025,7 +1025,7 @@ The correct way to achieve the indentation effect would be to use CSS as follows
 </div>
 [/code]
 
-Preferably, the CSS information would be moved into it's own named class, with the properties stored in the [tt]global.css[/tt] styled sheet (so that they may be easily edited at a later date, or overridden if the user has their own specially designed 'override' style sheet), but this is not nearly as critical as the misuse of markup.
+Preferably, the CSS information would be moved into its own named class, with the properties stored in the [tt]global.css[/tt] styled sheet (so that they may be easily edited at a later date, or overridden if the user has their own specially designed 'override' style sheet), but this is not nearly as critical as the misuse of markup.
 
 [title="3"]Confusing text[/title]
 
@@ -1095,7 +1095,7 @@ This is an example of a table that has not been marked up in an accessible fashi
 [/code]
 
 If visually scanned, it is obvious how this table is laid out. However, non-visual user agents would read out each data cell with equal prominence and the user would need to build up an understand of it themselves based on this raw 'linearised' stream of information; this is especially problematic when data tables and layout tables are mixed without any distinguishing marks.
-If properly marked-up, the user would get an understand with greater ease. While this might seem a minor issue, it is in-fact very important because it lowers the burden for a user who is likely to have many other problems that are less avoidable.
+If properly marked-up, the user would get an understand with greater ease. While this might seem a minor issue, it is in fact very important because it lowers the burden for a user who is likely to have many other problems that are less avoidable.
 
 A properly marked-up version, using Composr conventions, would look as follows:
 

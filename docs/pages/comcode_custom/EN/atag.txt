@@ -146,7 +146,7 @@ This is considered a core part of our WCAG compliance.
 An individual check must be associated with each requirement in the content type benchmark document (i.e. not blanket statements such as "does the content meet all the requirements"). 
 [/quote]
 
-The Composr webstandards checker will check all criteria, although some are non pragmatically verifiable and hence the checks for these provide information rather than error reports.
+The Composr webstandards checker will check all criteria, although some are non-pragmatically verifiable and hence the checks for these provide information rather than error reports.
 
 [quote="ATAG checkpoint"]
 For checks that are associated with a type of element (e.g. img), each element instance must be individually identified as potential accessibility problems. For checks that are relevant across multiple elements (e.g. consistent navigation, etc.) or apply to most or all elements (e.g. background color contrast, reading level, etc.), the entire span of elements must be identified as potential accessibility problems, up to the entire content if applicable.
