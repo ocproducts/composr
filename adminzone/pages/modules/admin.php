@@ -280,6 +280,7 @@ class Module_admin
             array('survey', 'quiz', 'competition', 'test', 'questionnaire'),
             array('swf', 'flash'),
             array('friend', 'buddy', 'follower'),
+            array('like', 'love', 'rate'),
             array('subscribe', 'subscription'),
             array('attach', 'embed'),
             array('smf', 'simple machines forum'),
