@@ -757,7 +757,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$GEOLOCATE,12.45.67.89}</td>
-			<td>Find the/a user's ISO country-code (optionally takes an IP address, otherwise defaults to current user's IP). Requires the stats addon to be installed, and for the geolocation data to have been installed into the database (via the stats addon in the Admin Zone)</td>
+			<td>Find the/a user's ISO country-code (optionally takes an IP address, otherwise defaults to current user's IP). Requires the stats addon to be installed, and for the geolocation data to have been installed into the database (usually this is automatic)</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$FORCE_PREVIEWS}</td>

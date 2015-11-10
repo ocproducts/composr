@@ -100,6 +100,18 @@ class Module_admin_stats
                 'end_num' => 'UINTEGER',
                 'country' => 'SHORT_TEXT'
             ));
+
+            require_code('crypt');
+            $secure_ref = produce_salt();
+            $id = $GLOBALS['SITE_DB']->query_insert('task_queue', array(
+                't_title' => do_lang('INSTALL_GEOLOCATION_DATA'),
+                't_hook' => 'install_geolocation_data',
+                't_args' => serialize(array()),
+                't_member_id' => get_member(),
+                't_secure_ref' => $secure_ref, // Used like a temporary password to initiate the task
+                't_send_notification' => 0,
+                't_locked' => 0,
+            ), true);
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
@@ -139,8 +151,13 @@ class Module_admin_stats
             'page' => array('PAGES_STATISTICS', 'menu/adminzone/audit/statistics/page_views'),
             'load_times' => array('LOAD_TIMES', 'menu/adminzone/audit/statistics/load_times'),
             'clear' => array('CLEAR_STATISTICS', 'menu/adminzone/audit/statistics/clear_stats'),
-            'install_data' => array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate'),
         );
+
+        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
+        if ($test == 0) {
+            $ret['install_data'] = array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate');
+        }
+
         $hooks = find_all_hooks('modules', 'admin_stats');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/modules/admin_stats/' . filter_naughty_harsh($hook));
@@ -153,6 +170,7 @@ class Module_admin_stats
                 $ret += $info[0];
             }
         }
+
         return $ret;
     }
 
@@ -306,7 +324,7 @@ class Module_admin_stats
     public function browse()
     {
         require_code('templates_donext');
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
+
         $actions = array(
             array('menu/adminzone/audit/statistics/statistics', array('_SELF', array('type' => 'overview'), '_SELF'), do_lang('OVERVIEW_STATISTICS'), 'DESCRIPTION_OVERVIEW_STATISTICS'),
             array('menu/adminzone/audit/statistics/page_views', array('_SELF', array('type' => 'page'), '_SELF'), do_lang('PAGES_STATISTICS'), 'DOC_PAGE_STATISTICS'),
@@ -316,6 +334,7 @@ class Module_admin_stats
             array('menu/adminzone/audit/statistics/top_referrers', array('_SELF', array('type' => 'referrers'), '_SELF'), do_lang('TOP_REFERRERS'), 'DOC_TOP_REFERRERS'),
             array('menu/adminzone/audit/statistics/top_keywords', array('_SELF', array('type' => 'keywords'), '_SELF'), do_lang('TOP_SEARCH_KEYWORDS'), 'DOC_TOP_SEARCH_KEYWORDS'),
         );
+
         $hooks = find_all_hooks('modules', 'admin_stats');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/modules/admin_stats/' . filter_naughty_harsh($hook));
@@ -328,10 +347,14 @@ class Module_admin_stats
                 $actions = array_merge($actions, array($info[1]));
             }
         }
+
+        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
         if ($test == 0) {
             $actions[] = array('menu/adminzone/audit/statistics/geolocate', array('_SELF', array('type' => 'install_data'), '_SELF'), do_lang('INSTALL_GEOLOCATION_DATA'), 'DOC_INSTALL_GEOLOCATION_DATA');
         }
+
         $actions[] = array('menu/adminzone/audit/statistics/clear_stats', array('_SELF', array('type' => 'clear'), '_SELF'), do_lang('CLEAR_STATISTICS'), do_lang_tempcode('DESCRIPTION_CLEAR_STATISTICS'));
+
         return do_next_manager(get_screen_title('SITE_STATISTICS'), comcode_lang_string('DOC_STATISTICS'),
             $actions,
             do_lang('SITE_STATISTICS')
@@ -1511,70 +1534,8 @@ class Module_admin_stats
      */
     public function install_geolocation_data()
     {
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
-
-        $last = 104295 - 1; // Index of the last line in the IP_Country.txt file
-
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($test >= $last) {
-            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-            return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
-        }
-
-        // We need to read in IP_Country.txt, line-by-line, for x lines
-        $lines = get_param_integer('lines', 2000);
-        $position = get_param_integer('position', 0);
-        $i = 0;
-
-        if ($position == 0) {
-            $GLOBALS['SITE_DB']->query_delete('ip_country');
-        }
-
-        $path = get_file_base() . '/data/modules/admin_stats/IP_Country.txt';
-        $file = @fopen($path, GOOGLE_APPENGINE ? 'rb' : 'rt');
-        if ($file === false) {
-            warn_exit(do_lang_tempcode('READ_ERROR', escape_html($path)));
-        }
-        $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
-        while ((!feof($file)) && ($i < ($position + $lines))) {
-            $data = fgets($file, 1024);
-            if ($data === false) {
-                continue;
-            }
-            if ($i >= $position) {
-                if ($data !== false) {
-                    $_data = explode(',', $data);
-                    if (count($_data) == 3) {
-                        $to_insert['begin_num'][] = $_data[0]; // FUDGE. Intentionally passes in as strings, to workaround problem in PHP integer sizes (can't store unsigned data type)
-                        $to_insert['end_num'][] = $_data[1];
-                        $to_insert['country'][] = substr($_data[2], 0, 2);
-
-                        if (count($to_insert['begin_num']) == 100) {
-                            $GLOBALS['SITE_DB']->query_insert('ip_country', $to_insert);
-                            $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
-                        }
-                    }
-                }
-            }
-
-            $i++;
-        }
-        fclose($file);
-        fix_permissions($path);
-        if (count($to_insert['begin_num']) != 0) {
-            $GLOBALS['SITE_DB']->query_insert('ip_country', $to_insert);
-        }
-
-        if ($i >= $last) {
-            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-            return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
-        }
-
-        global $FORCE_META_REFRESH;
-        $FORCE_META_REFRESH = true;
-        require_code('site2');
-        assign_refresh(build_url(array('page' => '_SELF', 'type' => 'install_data', 'lines' => $lines, 'position' => $position + $lines), 'adminzone'), ($position == 0) ? 1.0 : 0.0);
-        return inform_screen($this->title, do_lang_tempcode('INSTALLING_GEOLOCATION_DATA'));
+        require_code('tasks');
+        return call_user_func_array__long_task(do_lang('INSTALL_GEOLOCATION_DATA'), $this->title, 'install_geolocation_data');
     }
 
     /**

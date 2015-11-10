@@ -145,6 +145,7 @@ class Hook_addon_registry_stats
             'sources/hooks/systems/cleanup/stats.php',
             'sources/svg.php',
             'sources/hooks/systems/config/bot_stats.php',
+            'sources/hooks/systems/tasks/install_geolocation_data.php',
         );
     }
 

@@ -96,7 +96,8 @@ Any usergroup with the "Avoid banners" permission will not see banners. Super ad
 [title="2"]Geocoding[/title]
 
 An advanced option available for banners is to specify what countries it is targeted to. Only users from those countries will see the banner.
-This requires that the [tt]stats[/tt] addon be installed, and the geolocation data be set up (from Admin Zone > Audit > Site statistics > Install geolocation data).
+This requires that the [tt]stats[/tt] addon be installed, and the geolocation data be set up.
+Usually geolocation data is installed automatically, but if necessary you can force it (from Admin Zone > Audit > Site statistics > Install geolocation data).
 
 [title="2"]Banner status[/title]
 
