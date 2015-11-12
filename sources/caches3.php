@@ -372,7 +372,7 @@ function erase_theme_images_cache()
     foreach ($paths as $path) {
         if ($path['path'] == '') {
             $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
-        } elseif (preg_match('#^themes/[^/]+/images_custom/+' . preg_quote($path['id'], '#') . '\.#', $path['path']) != 0) {
+        } elseif (preg_match('#^themes/[^/]+/images_custom/#', $path['path']) != 0) {
             if ((!file_exists(get_custom_file_base() . '/' . $path['path'])) && (!file_exists(get_file_base() . '/' . $path['path']))) {
                 $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
             }

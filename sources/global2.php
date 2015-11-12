@@ -1372,7 +1372,12 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
     require_code('input_filter');
 
     if ((!$GLOBALS['BOOTSTRAPPING']) && (!$GLOBALS['MICRO_AJAX_BOOTUP'])) {
-        check_posted_field($name, $ret);
+        if ($ret !== $default) {
+            check_posted_field($name, $ret);
+        }
+
+        // Custom fields.xml filter system
+        $ret = filter_form_field_default($name, $ret);
     }
 
     if ($ret === $default) {
@@ -1519,7 +1524,12 @@ function post_param_integer($name, $default = false)
     $ret = __param($_POST, $name, ($default === false) ? $default : (($default === null) ? '' : strval($default)), true, true);
 
     if ((!$GLOBALS['BOOTSTRAPPING']) && (!$GLOBALS['MICRO_AJAX_BOOTUP'])) {
-        check_posted_field($name, $ret);
+        if ($ret !== $default) {
+            check_posted_field($name, $ret);
+        }
+
+        // Custom fields.xml filter system
+        $ret = filter_form_field_default($name, $ret);
     }
 
     if (($default === null) && ($ret === '')) {

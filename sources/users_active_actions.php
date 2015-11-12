@@ -362,7 +362,7 @@ function set_invisibility($make_invisible = true)
  */
 function cms_setcookie($name, $value, $session = false, $http_only = false, $days = null)
 {
-    /*if (($GLOBALS['DEV_MODE']) && (running_script('index')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {    Annoying, and non-cookie support is very well tested by now
+    /*if (($GLOBALS['DEV_MODE']) && (running_script('index')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0) && ($name != 'has_referers')) {    Annoying, and non-cookie support is very well tested by now
         return true;
     }*/
 

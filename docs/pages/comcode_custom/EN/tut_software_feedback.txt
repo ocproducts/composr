@@ -74,6 +74,10 @@ The "correct" place is the [url="tracker"]http://compo.sr/tracker[/url]. However
 
 The developers don't promise to check the forum, so if you don't get a reply to a bug after about a week then you should go to post on the tracker, but not getting a reply on the forum has been rare in the past.
 
+[title="2"]Reporting security problems[/title]
+
+If reporting a security hole (or suspected hole), make sure the tracker issue is reported as [i]private[/i]. Immediate public disclosure (before an official response can be prepared) is not responsible and will reflect negatively on your reputation.
+
 [title="2"]Reporting performance problems[/title]
 
 On shared hosting it is always possible that a webhost can come along and say you are using too much resource.

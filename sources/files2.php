@@ -1060,8 +1060,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
                                                 curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
-                                            //curl_setopt($ch,CURLOPT_SSLVERSION,6);
-                                            curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                            if (defined('CURL_SSLVERSION_TLSv1')) {
+                                                curl_setopt($ch,CURLOPT_SSLVERSION,CURL_SSLVERSION_TLSv1);
+                                            } else {
+                                                curl_setopt($ch,CURLOPT_SSL_CIPHER_LIST,'TLSv1');
+                                            }
                                             //if (!$no_redirect) @curl_setopt($ch,CURLOPT_FOLLOWLOCATION,true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
@@ -1637,7 +1640,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         return _detect_character_encoding($input);
     } else {
         // PHP streams method
-        if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && (is_null($post_params)) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
+        if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
             $timeout_before = @ini_get('default_socket_timeout');

@@ -102,43 +102,64 @@ function check_input_field_string($name, &$val, $posted = false)
 }
 
 /**
- * Check a posted field isn't 'evil'.
+ * Check a posted field isn't part of a malicious CSRF attack via referer checking (we do more checks for post fields than get fields).
  *
  * @param  string $name The name of the parameter
  * @param  string $val The value retrieved
  */
 function check_posted_field($name, $val)
 {
-    if (strtolower(cms_srv('REQUEST_METHOD')) == 'post') {
-        // Check referer
-        $true_referer = (substr(cms_srv('HTTP_REFERER'), 0, 7) == 'http://') || (substr(cms_srv('HTTP_REFERER'), 0, 8) == 'https://');
-        $canonical_referer = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', preg_replace('#:\d+#', '', str_replace('https://', 'http://', str_replace('www.', '', cms_srv('HTTP_REFERER'))))); // Just the domain
-        $canonical_baseurl = preg_replace('#^(\w+://[^/]+/).*$#', '${1}', preg_replace('#:\d+#', '', str_replace('https://', 'http://', str_replace('www.', '', get_base_url())))); // Just the domain
-        if (($true_referer) && (substr(strtolower($canonical_referer), 0, strlen($canonical_baseurl)) != strtolower($canonical_baseurl)) && (!is_guest())) {
-            if (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible'))) {
-                $allowed_partners = get_allowed_partner_sites();
+    $evil = false;
 
-                $found = false;
-                foreach ($allowed_partners as $partner) {
-                    if (trim($partner) == '') {
-                        continue;
-                    }
+    $referer = cms_srv('HTTP_REFERER');
 
-                    if (strpos(cms_srv('HTTP_REFERER'), '://' . trim($partner) . '/') !== false && strpos(cms_srv('HTTP_REFERER'), '://' . trim($partner) . ':') !== false) {
-                        $found = true;
-                        break;
+    $is_true_referer = (substr($referer, 0, 7) == 'http://') || (substr($referer, 0, 8) == 'https://');
+
+    if ($is_true_referer) {
+        cms_setcookie('has_referers', '1'); // So we know for later requests that "blank" means a malicious external request (from third-party HTTPS URL, or a local file being executed)
+    }
+
+    if ((strtolower(cms_srv('REQUEST_METHOD')) == 'post') && (!is_guest())) {
+        if ($is_true_referer) {
+            $canonical_referer_domain = strip_url_to_representative_domain($referer);
+            $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
+            if ($canonical_referer_domain != $canonical_baseurl_domain) {
+                if (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible'))) {
+                    $allowed_partners = get_allowed_partner_sites();
+                    $found = false;
+                    foreach ($allowed_partners as $partner) {
+                        $partner = trim($partner);
+
+                        if (($partner != '') && ($canonical_referer_domain == $partner)) {
+                            $found = true;
+                            break;
+                        }
                     }
-                }
-                if (!$found) {
-                    $_POST = array(); // To stop loops
-                    warn_exit(do_lang_tempcode('EVIL_POSTED_FORM_HACK', escape_html(cms_srv('HTTP_REFERER')), escape_html($name)));
+                    if (!$found) {
+                        $evil = true;
+                    }
                 }
             }
+        } elseif (cms_admirecookie('has_referers') === '1') {
+            $evil = true;
         }
     }
 
-    // Custom fields.xml filter system
-    $val = filter_form_field_default($name, $val);
+    if ($evil) {
+        $_POST = array(); // To stop loops
+        log_hack_attack_and_exit('EVIL_POSTED_FORM_HACK', $referer);
+    }
+}
+
+/**
+ * Convert a full URL to a domain name we will consider this a trust on.
+ *
+ * @param  URLPATH $url The URL
+ * @return string The domain
+ */
+function strip_url_to_representative_domain($url)
+{
+    return preg_replace('#^www\.#', '', strtolower(parse_url($url, PHP_URL_HOST)));
 }
 
 /**
