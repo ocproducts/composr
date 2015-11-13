@@ -264,6 +264,8 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
     $categories = new Tempcode();
     $add_cat = true;
 
+    $may_blog = has_privilege(get_member(), 'have_personal_category', 'cms_news');
+
     foreach ($_cats as $cat) {
         if ($cat['nc_owner'] == get_member()) {
             $add_cat = false;
@@ -272,15 +274,23 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         if (!has_category_access(get_member(), 'news', strval($cat['n_id']))) {
             continue;
         }
-        if (($addable_filter) && (!has_submit_permission('high', get_member(), get_ip_address(), 'cms_news', array('news', $cat['n_id'])))) {
-            continue;
+        if ($addable_filter) {
+            if ($cat['nc_owner'] !== get_member()) {
+                if (!has_submit_permission('high', get_member(), get_ip_address(), 'cms_news', array('news', $cat['id']))) {
+                    continue;
+                }
+            } else {
+                if (!$may_blog) {
+                    continue;
+                }
+            }
         }
 
         if (is_null($cat['nc_owner'])) {
             $li = form_input_list_entry(strval($cat['n_id']), ($it != array(null)) && in_array($cat['n_id'], $it), $cat['nice_title'] . ' (#' . strval($cat['n_id']) . ')');
             $categories->attach($li);
         } else {
-            if ((((!is_null($cat['nc_owner'])) && (has_privilege(get_member(), 'can_submit_to_others_categories'))) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
+            if ((((!is_null($cat['nc_owner'])) && ($may_blog)) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
                 $categories->attach(form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY',$GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'],true))*/ . ' (#' . strval($cat['n_id']) . ')'));
             }
         }
