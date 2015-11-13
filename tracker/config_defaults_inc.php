@@ -2180,7 +2180,7 @@
 	 * access level needed to report a bug
 	 * @global int $g_report_bug_threshold
 	 */
-	$g_report_bug_threshold			= REPORTER;
+	$g_report_bug_threshold			= ANYBODY;
 
 	/**
 	 * access level needed to update bugs (i.e., the update_bug_page)
@@ -2286,13 +2286,13 @@
 	 *			$g_allow_reporter_upload
 	 * @global int $g_upload_bug_file_threshold
 	 */
-	$g_upload_bug_file_threshold	= REPORTER;
+	$g_upload_bug_file_threshold	= ANYBODY;
 
 	/**
 	 * Add bugnote threshold
 	 * @global int $g_add_bugnote_threshold
 	 */
-	$g_add_bugnote_threshold = REPORTER;
+	$g_add_bugnote_threshold = ANYBODY;
 
 	/**
 	 * Update bugnote threshold (if the bugnote is not your own)
@@ -2394,7 +2394,7 @@
 	 * Threshold needed to set the view status while reporting a bug or a bug note.
 	 * @global int $g_set_view_status_threshold
 	 */
-	$g_set_view_status_threshold = REPORTER;
+	$g_set_view_status_threshold = ANYBODY;
 
 	/**
 	 * Threshold needed to update the view status while updating a bug or a bug note.
@@ -3514,7 +3514,7 @@
 	 * Access level required to attach tags to a bug
 	 * @global int $g_tag_attach_threshold
 	 */
-	$g_tag_attach_threshold = REPORTER;
+	$g_tag_attach_threshold = ANYBODY;
 
 	/**
 	 * Access level required to detach tags from a bug

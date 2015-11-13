@@ -778,6 +778,10 @@ function bug_ensure_exists( $p_bug_id ) {
  * @access public
  */
 function bug_is_user_reporter( $p_bug_id, $p_user_id ) {
+	if ($p_user_id == 1) {
+		return false;
+	}
+
 	if( bug_get_field( $p_bug_id, 'reporter_id' ) == $p_user_id ) {
 		return true;
 	} else {
@@ -793,6 +797,10 @@ function bug_is_user_reporter( $p_bug_id, $p_user_id ) {
  * @access public
  */
 function bug_is_user_handler( $p_bug_id, $p_user_id ) {
+	if ($p_user_id == 1) {
+		return false;
+	}
+
 	if( bug_get_field( $p_bug_id, 'handler_id' ) == $p_user_id ) {
 		return true;
 	} else {
