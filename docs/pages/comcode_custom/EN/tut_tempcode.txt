@@ -599,7 +599,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 </table>
 [/html]
 
-[title="3"]eCommerce[/title]
+[title="3"]Locations / Currencies[/title]
 
 [html]
 <table class="columned_table results_table wide_table autosized_table">
@@ -618,6 +618,22 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		<tr style="background: #DDFFDD">
 			<td>{$CURRENCY_SYMBOL}</td>
 			<td>Get the nice currency symbol for the site's default currency</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COUNTRY}</td>
+			<td>Find the current user's country</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COUNTRY_CODE_TO_NAME,UK}</td>
+			<td>Convert an ISO country code to a written country name</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COUNTRY_NAME_TO_CODE,United Kingdom}</td>
+			<td>Convert a written country name to an ISO country code</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$REGION}</td>
+			<td>Find the current user's region (usually the same as the country, but may be customised within Composr to be more-specific)</td>
 		</tr>
 	</tbody>
 </table>

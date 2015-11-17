@@ -1247,69 +1247,6 @@ function ecv2_CSS_DIMENSION_REDUCE($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
-function ecv2_CURRENCY($lang, $escaped, $param)
-{
-    $value = '';
-    if ($GLOBALS['XSS_DETECT']) {
-        ocp_mark_as_escaped($value);
-    }
-
-    if (addon_installed('ecommerce')) {
-        if (isset($param[0])) {
-            require_code('currency');
-            $value = currency_convert(floatval(str_replace(',', '', $param[0])), ((isset($param[1])) && ($param[1] != '')) ? $param[1] : get_option('currency'), ((isset($param[2])) && ($param[2] != '')) ? $param[2] : null, ((isset($param[3])) && ($param[3] == '1')));
-            if (is_null($value)) {
-                $value = do_lang('INTERNAL_ERROR');
-            }
-        } else {
-            $value = get_option('currency');
-        }
-    }
-
-    if ($escaped != array()) {
-        apply_tempcode_escaping($escaped, $value);
-    }
-    return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
- */
-function ecv2_CURRENCY_SYMBOL($lang, $escaped, $param)
-{
-    $value = '';
-    if ($GLOBALS['XSS_DETECT']) {
-        ocp_mark_as_escaped($value);
-    }
-
-    if (addon_installed('ecommerce')) {
-        require_code('ecommerce');
-        $value = ecommerce_get_currency_symbol(isset($param[0]) ? $param[0] : null);
-    }
-
-    if ($escaped != array()) {
-        apply_tempcode_escaping($escaped, $value);
-    }
-    return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
- */
 function ecv2_CURRENTLY_INVISIBLE($lang, $escaped, $param)
 {
     $value = is_invisible() ? '1' : '0';
