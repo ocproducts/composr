@@ -31,6 +31,8 @@ class Hook_symbol_COUNTRY
      */
     public function run($param)
     {
+        require_code('locations');
+
         $value = get_country();
 
         return $value;

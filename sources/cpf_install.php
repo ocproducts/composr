@@ -91,7 +91,11 @@ function install_address_fields()
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, 0, 0, 1, 0, '', 'short_text');
 
     require_code('locations');
-    $countries = '|' . implode('|', array_keys(find_countries()));
+    $countries = '';
+    $_countries = find_countries();
+    foreach ($_countries as $code => $name) {
+        $countries .= '|' . $code . '=' . $name;
+    }
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 100, 0, 0, 1, 0, '', 'list', 0, $countries);
 }
 

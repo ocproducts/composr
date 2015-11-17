@@ -56,6 +56,8 @@ function get_currency()
             $currency = null;
         }
         if (is_null($currency)) {
+            require_code('locations');
+
             $country = get_country();
             if (is_null($country)) {
                 $currency = get_option('currency');

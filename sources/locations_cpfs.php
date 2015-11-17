@@ -51,6 +51,7 @@ function autofill_geo_cpfs($member_id = null) {
  */
 function _autofill_geo_cpfs($row) {
     require_code('cns_members');
+    require_code('locations');
     require_code('locations_geocoding');
 
     $latitude_field = find_cms_cpf_field_id('cms_latitude');

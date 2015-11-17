@@ -116,6 +116,7 @@ function check_posted_field($name, $val)
     $is_true_referer = (substr($referer, 0, 7) == 'http://') || (substr($referer, 0, 8) == 'https://');
 
     if ($is_true_referer) {
+        require_code('users_active_actions');
         cms_setcookie('has_referers', '1'); // So we know for later requests that "blank" means a malicious external request (from third-party HTTPS URL, or a local file being executed)
     }
 

@@ -31,6 +31,8 @@ class Hook_symbol_REGION
      */
     public function run($param)
     {
+        require_code('locations');
+
         $value = get_region();
 
         return $value;

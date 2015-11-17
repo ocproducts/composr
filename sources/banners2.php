@@ -131,19 +131,10 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
     $fields->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), '', 'b_types', create_selection_list_banner_types($b_types)));
 
-    if (addon_installed('stats')) {
+    if (get_option('filter_regions') == '1') {
         require_code('locations');
-        $continents_and_countries = find_continents_and_countries();
-
-        $list_groups = new Tempcode();
-        foreach ($continents_and_countries as $continent => $countries) {
-            $list = new Tempcode();
-            foreach ($countries as $country_code => $country_name) {
-                $list->attach(form_input_list_entry($country_code, in_array($country_code, $b_regions), $country_name));
-            }
-            $list_groups->attach(form_input_list_group($continent, $list));
-        }
-        $fields->attach(form_input_multi_list(do_lang_tempcode('BANNER_REGIONS'), do_lang_tempcode('DESCRIPTION_BANNER_REGIONS'), 'b_regions', $list_groups, null, 30));
+        $list_groups = create_region_selection_list($b_regions);
+        $fields->attach(form_input_multi_list(do_lang_tempcode('FILTER_REGIONS'), do_lang_tempcode('DESCRIPTION_FILTER_REGIONS'), 'b_regions', $list_groups, null, 30));
     }
 
     $javascript = '

@@ -8,66 +8,102 @@
 */
 
 /**
- * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
- * @copyright  ocProducts Ltd
- * @package    locations
+ * Get a map betweeen regions and possible states.
+ *
+ * @return array Map: region=>list of states
  */
-
-function state_code_to_state_name($code)
+function get_region_structure_US()
 {
-    $map = array(
-        'AL' => 'Alabama',
-        'AK' => 'Alaska ',
-        'AZ' => 'Arizona',
-        'AR' => 'Arkansas',
-        'CA' => 'California',
-        'CO' => 'Colorado',
-        'CT' => 'Connecticut',
-        'DE' => 'Delaware',
-        'DC' => 'D.C.',
-        'FL' => 'Florida',
-        'GA' => 'Georgia',
-        'HI' => 'Hawaii',
-        'ID' => 'Idaho',
-        'IL' => 'Illinois',
-        'IN' => 'Indiana',
-        'IA' => 'Iowa',
-        'KS' => 'Kansas',
-        'KY' => 'Kentucky',
-        'LA' => 'Louisiana',
-        'ME' => 'Maine',
-        'MD' => 'Maryland',
-        'MA' => 'Massachusetts',
-        'MI' => 'Michigan',
-        'MN' => 'Minnesota',
-        'MS' => 'Mississippi',
-        'MO' => 'Missouri',
-        'MT' => 'Montana',
-        'NE' => 'Nebraska',
-        'NV' => 'Nevada',
-        'NH' => 'New Hampshire',
-        'NJ' => 'New Jersey',
-        'NM' => 'New Mexico',
-        'NY' => 'New York',
-        'NC' => 'North Carolina',
-        'ND' => 'North Dakota',
-        'OH' => 'Ohio',
-        'OK' => 'Oklahoma',
-        'OR' => 'Oregon',
-        'PA' => 'Pennsylvania',
-        'RI' => 'Rhode Island',
-        'SC' => 'South Carolina',
-        'SD' => 'South Dakota',
-        'TN' => 'Tennessee',
-        'TX' => 'Texas',
-        'UT' => 'Utah',
-        'VT' => 'Vermont',
-        'VA' => 'Virginia',
-        'WA' => 'Washington',
-        'WV' => 'West Virginia',
-        'WI' => 'Wisconsin',
-        'WY' => 'Wyoming',
-    );
+    return array(
+        'Northeast' => array(
+            'CT' => 'Connecticut',
+            'ME' => 'Maine',
+            'MA' => 'Massachusetts',
+            'NH' => 'New Hampshire',
+            'NJ' => 'New Jersey',
+            'NY' => 'New York',
+            'PA' => 'Pennsylvania',
+            'RI' => 'Rhode Island',
+            'VT' => 'Vermont',
+        ),
 
-    return array_key_exists($code, $map) ? $map[$code] : null;
+        'Midwest' => array(
+            'IL' => 'Illinois',
+            'IN' => 'Indiana',
+            'IA' => 'Iowa',
+            'KS' => 'Kansas',
+            'MI' => 'Michigan',
+            'MN' => 'Minnesota',
+            'MO' => 'Missouri',
+            'NE' => 'Nebraska',
+            'ND' => 'North Dakota',
+            'OH' => 'Ohio',
+            'SD' => 'South Dakota',
+            'WI' => 'Wisconsin',
+        ),
+
+        'South' => array(
+            'AL' => 'Alabama',
+            'AR' => 'Arkansas',
+            'DC' => 'D.C.',
+            'DE' => 'Delaware',
+            'FL' => 'Florida',
+            'GA' => 'Georgia',
+            'KY' => 'Kentucky',
+            'LA' => 'Louisiana',
+            'MD' => 'Maryland',
+            'MS' => 'Mississippi',
+            'NC' => 'North Carolina',
+            'OK' => 'Oklahoma',
+            'SC' => 'South Carolina',
+            'TN' => 'Tennessee',
+            'TX' => 'Texas',
+            'VA' => 'Virginia',
+            'WV' => 'West Virginia',
+        ),
+
+        'West' => array(
+            'AK' => 'Alaska ',
+            'AZ' => 'Arizona',
+            'CA' => 'California',
+            'CO' => 'Colorado',
+            'HI' => 'Hawaii',
+            'ID' => 'Idaho',
+            'MT' => 'Montana',
+            'NV' => 'Nevada',
+            'NM' => 'New Mexico',
+            'OR' => 'Oregon',
+            'UT' => 'Utah',
+            'WA' => 'Washington',
+            'WY' => 'Wyoming',
+        ),
+    );
+}
+
+function state_code_to_state_name_US($code)
+{
+    $structure = get_region_structure_US();
+
+    foreach ($structure as $region) {
+        if (isset($region[$code])) {
+            return $region[$code];
+        }
+    }
+
+    return null;
+}
+
+function get_states_US()
+{
+    $structure = get_region_structure_US();
+
+    $states = array();
+
+    foreach ($structure as $region) {
+        $states += $region;
+    }
+
+    asort($states);
+
+    return $states;
 }

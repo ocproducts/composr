@@ -41,28 +41,36 @@ function init__banners()
  */
 function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avoid = null, $b_region = null)
 {
-    if (is_null($b_region)) {
-        $b_region = get_region();
-    }
-
     $sql = 'SELECT * FROM ' . get_table_prefix() . 'banners b';
     if ($do_type_join) {
         $sql .= ' LEFT JOIN ' . get_table_prefix() . 'banners_types t ON b.b_type=t.id';
     }
     $sql .= ' WHERE ';
+
     $sql .= '(the_type<>' . strval(BANNER_CAMPAIGN) . ' OR ((campaign_remaining>0) AND ((expiry_date IS NULL) OR (expiry_date>' . strval(time()) . '))))';
+
     if (!is_null($b_type)) {
         $sql .= ' AND (' . db_string_equal_to('b_type', $b_type) . ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'banners_types bt WHERE b.name=bt.name AND ' . db_string_equal_to('bt.b_type', $b_type) . '))';
+    }
+
+    if (is_null($b_region)) {
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $b_region = get_region();
+        }
     }
     if (!is_null($b_region)) {
         $sql .= ' AND (NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'banners_regions br WHERE b.name=br.name) OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'banners_regions br WHERE b.name=br.name AND ' . db_string_equal_to('br.b_region', $b_region) . '))';
     }
+
     if (!is_null($banner_to_avoid)) {
         $sql .= ' AND ' . db_string_not_equal_to('name', $banner_to_avoid);
     }
+
     if (addon_installed('unvalidated')) {
         $sql .= ' AND validated=1';
     }
+
     return $sql;
 }
 

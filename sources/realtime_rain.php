@@ -133,6 +133,8 @@ function rain_get_country_image($ip_address)
         return '';
     }
 
+    require_code('locations');
+
     $country = geolocate_ip($ip_address);
     if (is_null($country)) {
         return '';

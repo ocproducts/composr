@@ -398,12 +398,118 @@ function find_country_name_from_iso($iso)
     }
 
     global $COUNTRY_LIST;
-    foreach ($COUNTRY_LIST as $countries) {
-        if (isset($countries[$iso])) {
-            $cache[$iso] = $countries[$iso];
-            return $countries[$iso];
+    foreach ($COUNTRY_LIST as $continent) {
+        if (isset($continent[$iso])) {
+            $cache[$iso] = $continent[$iso];
+            return $continent[$iso];
         }
     }
 
     return null;
+}
+
+/**
+ * Get a nice, formatted XHTML list of regions
+ *
+ * @param  ?array $regions The currently selected regions (null: none selected)
+ * @return Tempcode The list of regions
+ */
+function create_region_selection_list($regions = null)
+{
+    require_code('locations');
+    $continents_and_countries = find_continents_and_countries();
+
+    $list_groups = new Tempcode();
+    foreach ($continents_and_countries as $continent => $countries) {
+        $list = new Tempcode();
+        foreach ($countries as $country_code => $country_name) {
+            $list->attach(form_input_list_entry($country_code, in_array($country_code, $regions), $country_name));
+        }
+        $list_groups->attach(form_input_list_group($continent, $list));
+    }
+    return $list_groups;
+}
+
+/**
+ * Find the active region for the current user.
+ * Function likely to be overridden if a region scheme more complex than ISO countries is in use. E.g. to detect via considering state CPF also.
+ *
+ * @return ?string The active region (null: none found, unfiltered)
+ */
+function get_region()
+{
+    $region = get_param_string('keep_region', null);
+    if ($region !== null) {
+        if ($region == '') {
+            return null;
+        }
+        return $region;
+    }
+
+    return get_country();
+}
+
+/**
+ * Find the active ISO country for the current user.
+ *
+ * @return ?string The active region (null: none found, unfiltered)
+ */
+function get_country()
+{
+    $country = get_param_string('keep_country', null);
+    if ($country !== null) {
+        if ($country == '') {
+            return null;
+        }
+        return $country;
+    }
+
+    if (!is_guest()) {
+        $country = get_cms_cpf('country');
+        if (!empty($country)) {
+            return $country;
+        }
+    }
+
+    if (addon_installed('stats')) {
+        $country = geolocate_ip();
+        if ($country !== null) {
+            return $country;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Find the country an IP address long is located in
+ *
+ * @param  ?IP $ip The IP to geolocate (null: current user's IP)
+ * @return ?string The country initials (null: unknown)
+ */
+function geolocate_ip($ip = null)
+{
+    if (is_null($ip)) {
+        $ip = get_ip_address();
+    }
+
+    if (!addon_installed('stats')) {
+        return null;
+    }
+
+    $long_ip = ip2long($ip);
+    if ($long_ip === false) {
+        return null; // No IP6 support
+    }
+
+    $query = 'SELECT * FROM ' . get_table_prefix() . 'ip_country WHERE begin_num<=' . sprintf('%u', $long_ip) . ' AND end_num>=' . sprintf('%u', $long_ip);
+    $results = $GLOBALS['SITE_DB']->query($query);
+
+    if (!array_key_exists(0, $results)) {
+        return null;
+    } elseif (!is_null($results[0]['country'])) {
+        return $results[0]['country'];
+    } else {
+        return null;
+    }
 }

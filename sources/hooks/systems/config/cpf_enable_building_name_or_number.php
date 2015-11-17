@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_cpf_enable_building_name_of_number
+class Hook_config_cpf_enable_building_name_or_number
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_cpf_enable_building_name_of_number
     public function get_details()
     {
         return array(
-            'human_name' => 'CPF_ENABLE_BUILDING_NAME_OF_NUMBER',
+            'human_name' => 'CPF_ENABLE_BUILDING_NAME_OR_NUMBER',
             'type' => 'tick',
             'category' => 'FORUMS',
             'group' => 'SPECIAL_CPF_TO_SHOW',
-            'explanation' => 'CONFIG_OPTION_cpf_enable_building_name_of_number',
+            'explanation' => 'CONFIG_OPTION_cpf_enable_building_name_or_number',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
