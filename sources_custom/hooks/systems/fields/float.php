@@ -95,7 +95,7 @@ class Hook_fields_float
     {
         require_lang('google_map');
         $_cf_name = get_translated_text($field['cf_name']);
-        if (($_cf_name == do_lang('LATITUDE_FIELD_NAME')) || ($_cf_name == do_lang('LONGITUDE_FIELD_NAME'))) {
+        if (($_cf_name == do_lang('LATITUDE_FIELD_NAME')) || ($_cf_name == do_lang('LONGITUDE_FIELD_NAME')) || ($_cf_name == 'cms_latitude') || ($_cf_name == 'cms_longitude')) {
             if (is_object($ev)) {
                 if ($ev->evaluate() == do_lang('NA_EM')) {
                     return ''; // Cleanup noisy data
@@ -147,7 +147,7 @@ class Hook_fields_float
 
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
 
-        if ($_cf_name == do_lang('LONGITUDE_FIELD_NAME')) { // Assumes there is a Latitude field too, although not critical
+        if ($_cf_name == do_lang('LONGITUDE_FIELD_NAME') || $_cf_name == 'cms_longitude') { // Assumes there is a Latitude field too, although not critical
             $pretty_name = $_cf_name;
             $description = $_cf_description;
             $required = $field['cf_required'] == 1;
@@ -204,10 +204,11 @@ class Hook_fields_float
         $id = $field['id'];
         $tmp_name = 'field_' . strval($id);
         $default = STRING_MAGIC_NULL;
-        if (get_translated_text($field['cf_name']) == do_lang('LATITUDE_FIELD_NAME')) {
+        $_cf_name = get_translated_text($field['cf_name']);
+        if ($_cf_name == do_lang('LATITUDE_FIELD_NAME') || $_cf_name == 'cms_latitude') {
             $default = post_param_string('latitude', STRING_MAGIC_NULL);
         }
-        if (get_translated_text($field['cf_name']) == do_lang('LONGITUDE_FIELD_NAME')) {
+        if ($_cf_name == do_lang('LONGITUDE_FIELD_NAME') || $_cf_name == 'cms_longitude') {
             $default = post_param_string('longitude', STRING_MAGIC_NULL);
         }
 

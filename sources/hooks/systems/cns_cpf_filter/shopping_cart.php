@@ -30,9 +30,7 @@ class Hook_cns_cpf_filter_shopping_cart
      */
     public function to_enable()
     {
-        $cpf = array();
-
         // Contact details
-        return array('firstname' => true, 'lastname' => true, 'building_name_or_number' => true, 'state' => true, 'country' => true, 'post_code' => true, 'city' => true);
+        return array('firstname' => true, 'lastname' => true, 'building_name_or_number' => true, 'city' => true/*Too specific to force on, may be done via config instead, 'county' => true, 'state' => true*/, 'country' => true, 'post_code' => true);
     }
 }

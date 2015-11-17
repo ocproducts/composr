@@ -3080,3 +3080,76 @@ function cms_profile_end_for($identifier, $specifics = null)
     require_code('profiler');
     _cms_profile_end_for($identifier, $specifics);
 }
+
+/**
+ * Find the active region for the current user.
+ * Function likely to be overridden if a region scheme more complex than ISO countries is in use. E.g. to detect via considering state CPF also.
+ *
+ * @return ?string The active region (null: none found, unfiltered)
+ */
+function get_region()
+{
+    return get_param_string('keep_region', get_country());
+}
+
+/**
+ * Find the active ISO country for the current user.
+ *
+ * @return ?string The active region (null: none found, unfiltered)
+ */
+function get_country()
+{
+    $b_region = get_param_string('keep_country', null);
+    if ($b_region !== null) {
+        return $b_region;
+    }
+
+    if (!is_guest()) {
+        $b_region = get_cms_cpf('country');
+        if (!empty($b_region)) {
+            return $b_region;
+        }
+    }
+
+    if (addon_installed('stats')) {
+        $b_region = geolocate_ip();
+        if ($b_region !== null) {
+            return $b_region;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Find the country an IP address long is located in
+ *
+ * @param  ?IP $ip The IP to geolocate (null: current user's IP)
+ * @return ?string The country initials (null: unknown)
+ */
+function geolocate_ip($ip = null)
+{
+    if (is_null($ip)) {
+        $ip = get_ip_address();
+    }
+
+    if (!addon_installed('stats')) {
+        return null;
+    }
+
+    $long_ip = ip2long($ip);
+    if ($long_ip === false) {
+        return null; // No IP6 support
+    }
+
+    $query = 'SELECT * FROM ' . get_table_prefix() . 'ip_country WHERE begin_num<=' . sprintf('%u', $long_ip) . ' AND end_num>=' . sprintf('%u', $long_ip);
+    $results = $GLOBALS['SITE_DB']->query($query);
+
+    if (!array_key_exists(0, $results)) {
+        return null;
+    } elseif (!is_null($results[0]['country'])) {
+        return $results[0]['country'];
+    } else {
+        return null;
+    }
+}

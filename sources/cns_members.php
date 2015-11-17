@@ -372,12 +372,18 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
  */
 function find_cpf_field_id($title)
 {
+    static $cache = array();
+    if (array_key_exists($title, $cache)) {
+        return $cache[$title];
+    }
     $fields_to_show = cns_get_all_custom_fields_match(null);
     foreach ($fields_to_show as $field_to_show) {
         if ($field_to_show['trans_name'] == $title) {
+            $cache[$title] = $field_to_show['id'];
             return $field_to_show['id'];
         }
     }
+    $cache[$title] = null;
     return null;
 }
 

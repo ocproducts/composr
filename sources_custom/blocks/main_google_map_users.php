@@ -33,15 +33,6 @@ class Block_main_google_map_users
     }
 
     /**
-     * Uninstall the block.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('latitude');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('longitude');
-    }
-
-    /**
      * Install the block.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -49,9 +40,8 @@ class Block_main_google_map_users
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        //add cpf
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('latitude', 100, 0, 1, 1, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('longitude', 100, 0, 1, 1, 0, '', 'short_text');
+        require_code('cpf_install');
+        install_gps_fields();
     }
 
     /**

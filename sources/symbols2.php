@@ -1812,7 +1812,6 @@ function ecv2_FORUM_CONTEXT($lang, $escaped, $param)
  */
 function ecv2_GEOLOCATE($lang, $escaped, $param)
 {
-    require_code('global4');
     $value = geolocate_ip(isset($param[0]) ? $param[0] : null);
 
     if ($escaped != array()) {

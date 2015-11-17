@@ -2321,8 +2321,10 @@ function step_10_forum_stuff()
     $forum_type = post_param_string('forum_type');
 
     if ($forum_type != 'none') {
-        require_lang('cns');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 20, 1, 0, 1, 0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text');
+        require_code('cpf_install');
+        install_address_fields();
+        install_name_fields();
+        install_mobile_phone_field();
 
         $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'efdbb0cbc46520fe767c6292465751a1', 'SOMETHING' => do_lang_tempcode('CREATED_CUSTOM_PROFILE_FIELDS'))));
     }

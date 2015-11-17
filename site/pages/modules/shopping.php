@@ -53,14 +53,6 @@ class Module_shopping
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_addresses');
 
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'shopping'));
-
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('firstname');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('lastname');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('building_name_or_number');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('city');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('state');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('post_code');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('country');
     }
 
     /**
@@ -150,26 +142,6 @@ class Module_shopping
                                                                                  'last_name' => 'SHORT_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_addresses', 'order_id', array('order_id'));
-
-            // CPFs for ecommerce purchase (may also be used by other things, so we will store in our generic format)...
-
-            require_lang('shopping');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('firstname', 20, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('lastname', 20, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('building_name_or_number', 100, 1, 0, 0, 0, '', 'long_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 20, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 1, 0, 0, 0, '', 'short_text');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, 1, 0, 0, 0, '', 'short_text');
-            require_code('currency');
-            $currencies = get_currency_map();
-            $_countries = array();
-            foreach ($currencies as $c) {
-                $_countries = array_merge($_countries, $c);
-            }
-            $_countries = array_unique($_countries);
-            sort($_countries);
-            $countries = '|' . implode('|', $_countries);
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 100, 1, 0, 0, 0, '', 'list', 0, $countries);
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {

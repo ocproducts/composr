@@ -554,7 +554,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             $sym_pos = strpos($_url, '{$');
             if ($sym_pos !== false) { // Specially encoded $ symbols
                 require_code('tempcode_compiler');
-                $url = template_to_tempcode($url);
+                $url = template_to_tempcode($url->evaluate());
             } else {
                 $url = make_string_tempcode($_url);
             }
@@ -641,6 +641,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
 
         // To do with children
         'CHILDREN' => $children,
+        'NUM_CHILDREN' => strval($num),
         'DISPLAY' => $display,
 
         // Useful contextual information

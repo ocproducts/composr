@@ -144,39 +144,6 @@ function make_xhtml_strict($global)
 }
 
 /**
- * Find the country an IP address long is located in
- *
- * @param  ?IP $ip The IP to geolocate (null: current user's IP)
- * @return ?string The country initials (null: unknown)
- */
-function geolocate_ip($ip = null)
-{
-    if (is_null($ip)) {
-        $ip = get_ip_address();
-    }
-
-    if (!addon_installed('stats')) {
-        return null;
-    }
-
-    $long_ip = ip2long($ip);
-    if ($long_ip === false) {
-        return null; // No IP6 support
-    }
-
-    $query = 'SELECT * FROM ' . get_table_prefix() . 'ip_country WHERE begin_num<=' . sprintf('%u', $long_ip) . ' AND end_num>=' . sprintf('%u', $long_ip);
-    $results = $GLOBALS['SITE_DB']->query($query);
-
-    if (!array_key_exists(0, $results)) {
-        return null;
-    } elseif (!is_null($results[0]['country'])) {
-        return $results[0]['country'];
-    } else {
-        return null;
-    }
-}
-
-/**
  * Get links and details related to a member.
  *
  * @param  MEMBER $member_id A member ID

@@ -42,10 +42,7 @@ function init__banners()
 function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avoid = null, $b_region = null)
 {
     if (is_null($b_region)) {
-        if (addon_installed('stats')) {
-            require_code('global4');
-            $b_region = get_param_string('keep_country', geolocate_ip());
-        }
+        $b_region = get_region();
     }
 
     $sql = 'SELECT * FROM ' . get_table_prefix() . 'banners b';

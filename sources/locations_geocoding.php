@@ -108,6 +108,7 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
  * @param  string $url_params What to add into the URL
  * @param  ?Tempcode $error_msg Error message (written by reference) (null: not returned)
  * @return ?array Geocode results (null: error)
+ * @ignore
  */
 function _google_geocode($url_params, &$error_msg = null)
 {

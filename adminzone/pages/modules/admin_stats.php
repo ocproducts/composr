@@ -1323,7 +1323,6 @@ class Module_admin_stats
                 $regions = array();
                 $data = array();
                 $degrees = 360 / count($rows);
-                require_code('global4');
                 foreach ($rows as $value) {
                     $region = geolocate_ip($value['ip']);
                     if ((is_null($region)) || ($region == '')) {

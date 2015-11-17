@@ -432,10 +432,10 @@ function load_software_chat(event)
 	var url='https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
 	if (typeof window.cms_username!='undefined' && window.cms_username!='admin')
 	{
-		url+=window.encodeURIComponent(window.cms_username);
+		url+=window.encodeURIComponent(window.cms_username.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
 	} else
 	{
-		url+=window.encodeURIComponent('{$SITE_NAME;}'.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/,''));
+		url+=window.encodeURIComponent('{$SITE_NAME;}'.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
 	}
 	url+='#composrcms';
 	var html=' \
