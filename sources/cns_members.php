@@ -388,6 +388,29 @@ function find_cpf_field_id($title)
 }
 
 /**
+ * Get the ID for a CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
+ *
+ * @param  SHORT_TEXT $title The title.
+ * @return ?AUTO_LINK The ID (null: could not find).
+ */
+function find_cms_cpf_field_id($title)
+{
+    static $cache = array();
+    if (array_key_exists($title, $cache)) {
+        return $cache[$title];
+    }
+    $fields_to_show = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, 1);
+    foreach ($fields_to_show as $field_to_show) {
+        if ($field_to_show['trans_name'] == $title) {
+            $cache[$title] = $field_to_show['id'];
+            return $field_to_show['id'];
+        }
+    }
+    $cache[$title] = null;
+    return null;
+}
+
+/**
  * Returns a list of all field values for user. Doesn't take translation into account. Doesn't take anything permissive into account.
  *
  * @param  MEMBER $member_id The member.

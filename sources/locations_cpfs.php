@@ -34,7 +34,7 @@ function autofill_geo_cpfs($member_id = null) {
     $max = 100;
     do
     {
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields f', array('f.*', 'm.id', 'm_ip_address'), $where, 'ORDER BY mf_member_id', $max, $start);
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields f JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m ON m.id=f.mf_member_id', array('f.*', 'm.id', 'm_ip_address'), $where, 'ORDER BY mf_member_id', $max, $start);
         foreach ($rows as $row) {
             _autofill_geo_cpfs($row);
         }
@@ -53,15 +53,15 @@ function _autofill_geo_cpfs($row) {
     require_code('cns_members');
     require_code('locations_geocoding');
 
-    $latitude_field = find_cpf_field_id('cms_latitude');
-    $longitude_field = find_cpf_field_id('cms_longitude');
+    $latitude_field = find_cms_cpf_field_id('cms_latitude');
+    $longitude_field = find_cms_cpf_field_id('cms_longitude');
 
-    $building_name_or_number_field = find_cpf_field_id('cms_building_name_or_number');
-    $city_field = find_cpf_field_id('cms_city');
-    $county_field = find_cpf_field_id('cms_county');
-    $state_field = find_cpf_field_id('cms_state');
-    $post_code_field = find_cpf_field_id('cms_post_code');
-    $country_field = find_cpf_field_id('cms_country');
+    $building_name_or_number_field = find_cms_cpf_field_id('cms_building_name_or_number');
+    $city_field = find_cms_cpf_field_id('cms_city');
+    $county_field = find_cms_cpf_field_id('cms_county');
+    $state_field = find_cms_cpf_field_id('cms_state');
+    $post_code_field = find_cms_cpf_field_id('cms_post_code');
+    $country_field = find_cms_cpf_field_id('cms_country');
 
     $has_building_name_or_number = (!is_null($building_name_or_number_field)) && (!empty($row['field_' . strval($building_name_or_number_field)]));
     $has_city = (!is_null($city_field)) && (!empty($row['field_' . strval($city_field)]));
@@ -78,6 +78,7 @@ function _autofill_geo_cpfs($row) {
 
     $changes = array();
 
+    // GPS from address
     if (!$has_latitude || !$has_longitude) {
         if ($has_address) {
             $address_components = array();
@@ -113,6 +114,7 @@ function _autofill_geo_cpfs($row) {
         }
     }
 
+    // Address from GPS (or IP)
     if (!$has_city || !$has_county || !$has_state || !$has_country) {
         if ($has_gps) {
             $latitude = $row['field_' . strval($latitude_field)];
@@ -143,6 +145,7 @@ function _autofill_geo_cpfs($row) {
         }
     }
 
+    // Save
     if (!empty($changes)) {
         $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $changes, array('mf_member_id' => $row['mf_member_id']), '', 1);
     }
