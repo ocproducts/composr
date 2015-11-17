@@ -5,7 +5,7 @@
         {+START,BOX,@{USER_SCREEN_NAME} Twitter Profile Details,,accordion,tray_open,,,}
             <table width="100%">
                 <tr>
-                    {+START,IF,{$EQ,{SHOW_PROFILE_IMAGE},1}}
+                    {+START,IF,{SHOW_PROFILE_IMAGE}}
                     <td style="text-align: center" width="56">
                         &nbsp;<img src="{USER_PROFILE_IMG_URL}" />&nbsp;
                     </td>

@@ -36,7 +36,7 @@
                                 <td>
                                     <table width="100%">
                                         <tr>
-                                            {+START,IF,{$EQ,{SHOW_PROFILE_IMAGE},1}}
+                                            {+START,IF,{SHOW_PROFILE_IMAGE}}
                                                 <td style="text-align: center; width: 56px">
                                                     &nbsp;<img src="{USER_PROFILE_IMG_URL}" />&nbsp;
                                                 </td>
@@ -52,7 +52,7 @@
                                                             <a href="{USER_PAGE_URL}" target="_blank">@{USER_SCREEN_NAME}</a>
                                                         </td>
                                                         <td style="text-align: right">
-                                                            {+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},1}}
+                                                            {+START,IF,{FOLLOW_BUTTON_SIZE}}
                                                                 {FOLLOW_BUTTON_NORMAL}
                                                             {+END}
                                                             {+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},2}}
@@ -98,7 +98,7 @@
         {+START,IF,{$EQ,{STYLE},3}}
             <table width="100%" border="0" cellpadding="0" cellspacing="4">
                 <tr>
-                    {+START,IF,{$EQ,{SHOW_PROFILE_IMAGE},1}}
+                    {+START,IF,{SHOW_PROFILE_IMAGE}}
                         <td style="vertical-align: middle; text-align: center; width: 56px">
                             <img src="{USER_PROFILE_IMG_URL}" />
                         </td>

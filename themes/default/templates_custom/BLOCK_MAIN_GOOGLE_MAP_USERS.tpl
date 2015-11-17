@@ -1,5 +1,5 @@
 <script src="http://www.google.com/jsapi"></script>
-{+START,IF,{$EQ,{CLUSTER},1}}
+{+START,IF,{CLUSTER}}
 	<script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js"></script>
 {+END}
 <script>// <![CDATA[
@@ -55,16 +55,16 @@
 			add_data_point(data[i],bounds,markers,info_window,map);
 		}
 
-		{+START,IF,{$EQ,{CLUSTER},1}}
+		{+START,IF,{CLUSTER}}
 			var markerCluster=new MarkerClusterer(map,markers);
 		{+END}
 
 		{$,Fit the map around the markers, but only if we want the map centered.}
-		{+START,IF,{$EQ,{CENTER},1}}
+		{+START,IF,{CENTER}}
 			map.fitBounds(bounds);
 		{+END}
 
-		{+START,IF,{$EQ,{GEOLOCATE_USER},1}}
+		{+START,IF,{GEOLOCATE_USER}}
 			{+START,IF_NON_EMPTY,{SET_COORD_URL}}
 				{$,Geolocation for current member to get stored onto the map}
 				if (typeof navigator.geolocation!='undefined')
@@ -113,10 +113,10 @@
 
 		var marker=new google.maps.Marker(marker_options);
 
-		{+START,IF,{$EQ,{CLUSTER},1}}
+		{+START,IF,{CLUSTER}}
 			markers.push(marker);
 		{+END}
-		{+START,IF,{$NEQ,{CLUSTER},1}}
+		{+START,IF,{$NOT,{CLUSTER}}}
 			marker.setMap(map);
 		{+END}
 
