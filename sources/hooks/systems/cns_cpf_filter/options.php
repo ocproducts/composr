@@ -36,8 +36,8 @@ class Hook_cns_cpf_filter_options
             $cpf = array_merge($cpf, array('mobile_phone_number' => true));
         }
 
-        if (get_option('cpf_enable_building_name_or_number') == '1') {
-            $cpf = array_merge($cpf, array('building_name_or_number' => true));
+        if (get_option('cpf_enable_street_address') == '1') {
+            $cpf = array_merge($cpf, array('street_address' => true));
         }
 
         if (get_option('cpf_enable_state') == '1') {

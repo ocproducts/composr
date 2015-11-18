@@ -74,7 +74,7 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
 
     $r = $result['results'][0];
 
-    $building_name_or_number = null;
+    $street_address = null;
     $city = null;
     $county = null;
     $state = null;
@@ -88,16 +88,16 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
 
     foreach ($r['address_components'] as $component) {
         if (in_array('street_address', $component['types'])) {
-            $building_name_or_number = $component['long_name'];
+            $street_address = $component['long_name'];
         } else {
             if (in_array('street_number', $component['types'])) {
-                $building_name_or_number = $component['long_name'];
+                $street_address = $component['long_name'];
             }
             if (in_array('route', $component['types'])) {
-                if ($building_name_or_number != '') {
-                    $building_name_or_number .= ' ';
+                if ($street_address != '') {
+                    $street_address .= ' ';
                 }
-                $building_name_or_number .= $component['long_name'];
+                $street_address .= $component['long_name'];
             }
         }
         if (in_array('locality', $component['types'])) {
@@ -117,7 +117,7 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
         }
     }
 
-    return array($r['formatted_address'], $building_name_or_number, $city, $county, $state, $post_code, $country);
+    return array($r['formatted_address'], $street_address, $city, $county, $state, $post_code, $country);
 }
 
 /**

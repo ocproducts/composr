@@ -206,7 +206,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/max_download_size.php',
             'sources/hooks/systems/config/maximum_users.php',
             'sources/hooks/systems/config/stats_when_closed.php',
-            'sources/hooks/systems/config/cpf_enable_building_name_or_number.php',
+            'sources/hooks/systems/config/cpf_enable_street_address.php',
             'sources/hooks/systems/config/cpf_enable_city.php',
             'sources/hooks/systems/config/cpf_enable_country.php',
             'sources/hooks/systems/config/cpf_enable_name.php',

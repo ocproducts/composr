@@ -62,7 +62,7 @@ class Hook_paypal
         if (!is_guest()) {
             $user_details['first_name'] = get_cms_cpf('firstname');
             $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('building_name_or_number');
+            $user_details['address1'] = get_cms_cpf('street_address');
             $user_details['city'] = get_cms_cpf('city');
             $user_details['state'] = get_cms_cpf('state');
             $user_details['zip'] = get_cms_cpf('post_code');
@@ -368,7 +368,7 @@ class Hook_paypal
         if (!is_guest()) {
             $user_details['first_name'] = get_cms_cpf('firstname');
             $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('building_name_or_number');
+            $user_details['address1'] = get_cms_cpf('street_address');
             $user_details['city'] = get_cms_cpf('city');
             $user_details['state'] = get_cms_cpf('state');
             $user_details['zip'] = get_cms_cpf('post_code');

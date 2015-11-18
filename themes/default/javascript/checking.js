@@ -1250,7 +1250,7 @@ function geolocate_address_fields()
 		{
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var fields=[
-					'{!cns:SPECIAL_CPF__cms_building_name_or_number;}',
+					'{!cns:SPECIAL_CPF__cms_street_address;}',
 					'{!cns:SPECIAL_CPF__cms_city;}',
 					'{!cns:SPECIAL_CPF__cms_county;}',
 					'{!cns:SPECIAL_CPF__cms_state;}',

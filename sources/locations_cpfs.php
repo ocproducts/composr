@@ -57,14 +57,14 @@ function _autofill_geo_cpfs($row) {
     $latitude_field = find_cms_cpf_field_id('cms_latitude');
     $longitude_field = find_cms_cpf_field_id('cms_longitude');
 
-    $building_name_or_number_field = find_cms_cpf_field_id('cms_building_name_or_number');
+    $street_address_field = find_cms_cpf_field_id('cms_street_address');
     $city_field = find_cms_cpf_field_id('cms_city');
     $county_field = find_cms_cpf_field_id('cms_county');
     $state_field = find_cms_cpf_field_id('cms_state');
     $post_code_field = find_cms_cpf_field_id('cms_post_code');
     $country_field = find_cms_cpf_field_id('cms_country');
 
-    $has_building_name_or_number = (!is_null($building_name_or_number_field)) && (!empty($row['field_' . strval($building_name_or_number_field)]));
+    $has_street_address = (!is_null($street_address_field)) && (!empty($row['field_' . strval($street_address_field)]));
     $has_city = (!is_null($city_field)) && (!empty($row['field_' . strval($city_field)]));
     $has_county = (!is_null($county_field)) && (!empty($row['field_' . strval($county_field)]));
     $has_state = (!is_null($state_field)) && (!empty($row['field_' . strval($state_field)]));
@@ -83,8 +83,8 @@ function _autofill_geo_cpfs($row) {
     if (!$has_latitude || !$has_longitude) {
         if ($has_address) {
             $address_components = array();
-            if ($has_building_name_or_number) {
-                $address_components[] = $row['field_' . strval($building_name_or_number_field)];
+            if ($has_street_address) {
+                $address_components[] = $row['field_' . strval($street_address_field)];
             }
             if ($has_city) {
                 $address_components[] = $row['field_' . strval($city_field)];

@@ -128,7 +128,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     // Shipping address fields
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_firstname'), '', 'first_name', get_cms_cpf('firstname'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_lastname'), '', 'last_name', get_cms_cpf('last_name'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_building_name_or_number'), '', 'address1', get_cms_cpf('building_name_or_number'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_street_address'), '', 'address1', get_cms_cpf('street_address'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_city'), '', 'city', get_cms_cpf('city'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_state'), '', 'zip', get_cms_cpf('state'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_post_code'), '', 'zip', get_cms_cpf('post_code'), true));

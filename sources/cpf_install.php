@@ -68,7 +68,7 @@ function install_name_fields()
  */
 function uninstall_address_fields()
 {
-    $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('building_name_or_number');
+    $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('street_address');
     $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('city');
     $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('county');
     $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('state');
@@ -84,7 +84,7 @@ function install_address_fields()
 {
     require_lang('cns');
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('building_name_or_number', 100, 0, 0, 1, 0, '', 'long_text'); // street address
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('street_address', 100, 0, 0, 1, 0, '', 'long_text'); // street address
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 40, 0, 0, 1, 0, '', 'short_text');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 40, 0, 0, 1, 0, '', 'short_text');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 0, 0, 1, 0, '', 'short_text');
