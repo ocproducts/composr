@@ -136,6 +136,8 @@ class Hook_addon_registry_world_regions
             'sources_custom/locations/index.html',
             'sources_custom/locations/uk.php',
             'sources_custom/locations/us.php',
+            'sources_custom/hooks/systems/symbols/STATE_CODE_TO_NAME.php',
+            'sources_custom/hooks/systems/symbols/STATE_NAME_TO_CODE.php',
         );
     }
 }

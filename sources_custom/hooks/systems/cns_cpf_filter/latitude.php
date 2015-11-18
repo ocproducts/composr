@@ -25,7 +25,6 @@ class Hook_cns_cpf_filter_latitude
      */
     public function to_enable()
     {
-        require_lang('google_map_users');
         $cpf = array();
         $cpf['latitude'] = true;
         $cpf['longitude'] = true;

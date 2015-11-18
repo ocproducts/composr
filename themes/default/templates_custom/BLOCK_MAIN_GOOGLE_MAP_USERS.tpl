@@ -73,8 +73,8 @@
 					{
 						navigator.geolocation.getCurrentPosition(function(position) {
 							do_ajax_request('{SET_COORD_URL;/}'+position.coords.latitude+'_'+position.coords.longitude+keep_stub(),function() {});
-							var initialLocation=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-							map.setCenter(initialLocation);
+							var initial_location=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+							map.setCenter(initial_location);
 
 							add_data_point(['{$USERNAME;/,{$MEMBER},1}',position.coords.latitude,position.coords.longitude,''],bounds,markers,info_window,map);
 						});
@@ -137,7 +137,7 @@
 		})(marker,data_point[0])); {$,These are the args passed to the dynamic function above.}
 	}
 
-	google.load('maps','3',{callback: google_map_users_initialize,other_params:'sensor=true'{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
+	google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 //]]></script>
 
 <section class="box box___block_main_google_map_users"><div class="box_inner">

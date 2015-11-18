@@ -32,10 +32,10 @@
 		});
 
 		{$,Show marker for current position}
-		{+START,IF,{$OR,{$NEQ,{LATITUDE},0,},{REQUIRED}}}
+		{+START,IF_NON_EMPTY,{LATITUDE}}
 			place_marker({$?,{$IS_EMPTY,{LATITUDE`}},0,{LATITUDE`}},{$?,{$IS_EMPTY,{LONGITUDE`}},0,{LONGITUDE`}});
-			marker.setMap(map);
 		{+END}
+		marker.setMap(map);
 
 		{$,Save into hidden fields}
 		google.maps.event.addListener(map, 'mousemove', function(point) {
@@ -57,19 +57,43 @@
 	{
 		var latLng=new google.maps.LatLng(latitude,longitude);
 		marker.setPosition(latLng);
+		map.setZoom(12);
 	}
 
-	google.load('maps', '3',  {callback: google_map_users_initialize, other_params:'sensor=false'});
+	function geolocate_user_for_map_field()
+	{
+		if (typeof navigator.geolocation!='undefined')
+		{
+			try
+			{
+				navigator.geolocation.getCurrentPosition(function(position) {
+					var initial_location=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+
+					map.setCenter(initial_location);
+
+					place_marker(position.coords.latitude,position.coords.longitude)
+
+					document.getElementById('{NAME;/}_latitude').value=position.coords.latitude;
+					document.getElementById('{NAME;/}_longitude').value=position.coords.longitude;
+				});
+			}
+			catch (e) {}
+		}
+	}
+
+	google.load('maps', '3',  {callback: google_map_users_initialize, other_params:''});
 //]]></script>
 
 <div id="map_position_{NAME*}" style="width:100%; height:300px"></div>
 
 <label for="{NAME*}_latitude">
-	Latitude
+	{!LATITUDE}
 	<input onchange="place_marker(this.form.elements['latitude'].value,this.form.elements['longitude'].value);" type="number" step="any"{+START,IF,{REQUIRED}} class="hidden_required"{+END} id="{NAME*}_latitude" name="latitude" value="{LATITUDE*}" />
 </label>
 
 <label for="{NAME*}_longitude">
-	Longitude
+	{!LONGITUDE}
 	<input onchange="place_marker(this.form.elements['latitude'].value,this.form.elements['longitude'].value);" type="number" step="any"{+START,IF,{REQUIRED}} class="hidden_required"{+END} id="{NAME*}_longitude" name="longitude" value="{LONGITUDE*}" />
 </label>
+
+<input class="button_micro buttons__search" type="button" value="{!FIND_ME}" onclick="geolocate_user_for_map_field(); return false;" />

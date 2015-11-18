@@ -1240,3 +1240,57 @@ function assign_radio_deletion_confirm(name)
 		}
 	}
 }
+
+/* Geolocation for address fields */
+function geolocate_address_fields()
+{
+	if (typeof navigator.geolocation!='undefined')
+	{
+		try
+		{
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var fields=[
+					'{!cns:SPECIAL_CPF__cms_building_name_or_number;}',
+					'{!cns:SPECIAL_CPF__cms_city;}',
+					'{!cns:SPECIAL_CPF__cms_county;}',
+					'{!cns:SPECIAL_CPF__cms_state;}',
+					'{!cns:SPECIAL_CPF__cms_post_code;}',
+					'{!cns:SPECIAL_CPF__cms_country;}'
+				];
+
+				var geocode_url='{$FIND_SCRIPT;,geocode}';
+				geocode_url+='?latitude='+window.encodeURIComponent(position.coords.latitude)+'&longitude='+window.encodeURIComponent(position.coords.longitude);
+				geocode_url+=keep_stub();
+
+				do_ajax_request(geocode_url,function(ajax_result) {
+					var parsed=JSON.parse(ajax_result.responseText);
+					if (parsed===null) return;
+					var labels=document.getElementsByTagName('label'),label,field_name,field;
+					for (var i=0;i<labels.length;i++)
+					{
+						label=get_inner_html(labels[i]);
+						for (var j=0;j<fields.length;j++)
+						{
+							if (parsed[j+1]!==null && fields[j].replace(/^.*: /,'')==label)
+							{
+								field_name=labels[i].getAttribute('for');
+								field=document.getElementById(field_name);
+								if (field.nodeName.toLowerCase()=='select')
+								{
+									field.value=parsed[j+1];
+									if (typeof $(field).select2!='undefined') {
+										$(field).trigger('change');
+									}
+								} else
+								{
+									field.value=parsed[j+1];
+								}
+							}
+						}
+					}
+				});
+			});
+		}
+		catch (e) {}
+	}
+}

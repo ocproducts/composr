@@ -453,7 +453,7 @@ function init__global2()
 
         // Check security token, if necessary
         if (running_script('index') || running_script('iframe')) {
-            $security_token_exceptions = get_option('security_token_exceptions') . "\nlogin";
+            $security_token_exceptions = get_option('security_token_exceptions') . "\nlogin\njoin";
             $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
             if (!in_array(get_page_name(), $_security_token_exceptions) && !in_array(get_zone_name() . ':', $_security_token_exceptions)) {
                 if (post_param_string('session_id', null) === null) {

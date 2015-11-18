@@ -44,6 +44,7 @@ class Block_main_google_map
 
         require_code('catalogues');
         require_lang('google_map');
+        require_lang('locations');
 
         // Set up config/defaults
         if (!isset($map['title'])) {

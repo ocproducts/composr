@@ -13,15 +13,9 @@
 */
 
 /**
- * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
- * @copyright  ocProducts Ltd
- * @package    core
- */
-
-/**
  * Hook class.
  */
-class Hook_symbol_COUNTRY_NAME_TO_CODE
+class Hook_symbol_STATE_CODE_TO_NAME
 {
     /**
      * Run function for symbol hooks. Searches for tasks to perform.
@@ -33,9 +27,9 @@ class Hook_symbol_COUNTRY_NAME_TO_CODE
     {
         $value = '';
 
-        if (isset($param[0])) {
-        	require_code('locations');
-        	$value = find_iso_country_from_name($param[0]);
+        if (!empty($param[0])) {
+        	require_code('locations/us');
+        	$value = find_state_name_from_code_US($param[0]);
         }
 
         return $value;

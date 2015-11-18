@@ -516,6 +516,7 @@ class Hook_addon_registry_core
             'sources/hooks/systems/symbols/CURRENCY.php',
             'sources/hooks/systems/symbols/REGION.php',
             'lang/EN/locations.ini',
+            'data/geocode.php',
             'sources/hooks/systems/cron/git_autopull.php',
             'sources/hooks/systems/cron/dynamic_firewall.php',
             'data_custom/firewall_rules.txt',

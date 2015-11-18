@@ -336,7 +336,16 @@ function transcode_remaining_locations()
                 } elseif ($type == 'yahoo') {
                     $url = 'http://where.yahooapis.com/geocode?q=' . urlencode($lstring) . '&appid=dj0yJmk9N0x3TTdPaDNvdElCJmQ9WVdrOWFGWjVOa3hzTldFbWNHbzlNVFU0TXpBMU9EWTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mNg--';
                 } elseif ($type == 'google') {
-                    $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring) . '&sensor=false';
+                    $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
+                    $key = get_option('google_geocode_api_key');
+                    /*if ($key == '') { Actually, does work
+                        $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
+                        return null;
+                    }*/
+                    $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
+                    if ($key != '') {
+                        $url .= '&key=' . urlencode($key);
+                    }
                 } else {
                     exit('unknown type');
                 }

@@ -55,9 +55,18 @@ safe_ini_set('ocproducts.xss_detect', '0');
 $lstring = get_param_string('lstring', null);
 if (!is_null($lstring)) {
 
-    $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring) . '&sensor=false';
+    $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
     if (isset($_COOKIE['google_bias'])) {
         $url .= '&region=' . urlencode($_COOKIE['google_bias']);
+    }
+    $key = get_option('google_geocode_api_key');
+    /*if ($key == '') { Actually, does work
+        $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
+        return null;
+    }*/
+    $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
+    if ($key != '') {
+        $url .= '&key=' . urlencode($key);
     }
     $result = http_download_file($url);
     $matches = array();
@@ -78,9 +87,18 @@ if (!is_null($lstring)) {
 } else {
 
     if (get_param_integer('use_google', 0) == 1) {
-        $url = 'http://maps.googleapis.com/maps/api/geocode/xml?latlng=' . urlencode(get_param_string('latitude')) . ',' . urlencode(get_param_string('longitude')) . '&sensor=false';
+        $url = 'http://maps.googleapis.com/maps/api/geocode/xml?latlng=' . urlencode(get_param_string('latitude')) . ',' . urlencode(get_param_string('longitude'));
         if (isset($_COOKIE['google_bias'])) {
             $url .= '&region=' . urlencode($_COOKIE['google_bias']);
+        }
+        $key = get_option('google_geocode_api_key');
+        /*if ($key == '') { Actually, does work
+            $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
+            return null;
+        }*/
+        $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
+        if ($key != '') {
+            $url .= '&key=' . urlencode($key);
         }
         $result = http_download_file($url);
         $matches = array();

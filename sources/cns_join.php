@@ -80,6 +80,8 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     url_default_parameters__disable();
     $hidden->attach($_hidden);
 
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
+
     if ($intro_message_if_enabled) {
         $forum_id = get_option('intro_forum_id');
         if ($forum_id != '') {
@@ -294,7 +296,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $primary_group = get_first_default_group();
     }
 
-    $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, 0, true);
+    $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, null, true);
     if (is_null($actual_custom_fields)) {
         $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     }

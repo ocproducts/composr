@@ -95,7 +95,7 @@ class Hook_fields_float
     {
         require_lang('google_map');
         $_cf_name = get_translated_text($field['cf_name']);
-        if (($_cf_name == do_lang('LATITUDE_FIELD_NAME')) || ($_cf_name == do_lang('LONGITUDE_FIELD_NAME')) || ($_cf_name == 'cms_latitude') || ($_cf_name == 'cms_longitude')) {
+        if (($_cf_name == do_lang('LATITUDE')) || ($_cf_name == do_lang('LONGITUDE')) || ($_cf_name == 'cms_latitude') || ($_cf_name == 'cms_longitude')) {
             if (is_object($ev)) {
                 if ($ev->evaluate() == do_lang('NA_EM')) {
                     return ''; // Cleanup noisy data
@@ -139,7 +139,7 @@ class Hook_fields_float
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        require_lang('google_map');
+        require_lang('locations');
 
         if ($actual_value === do_lang('NA')) {
             $actual_value = null;
@@ -147,26 +147,27 @@ class Hook_fields_float
 
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
 
-        if ($_cf_name == do_lang('LONGITUDE_FIELD_NAME') || $_cf_name == 'cms_longitude') { // Assumes there is a Latitude field too, although not critical
+        if ($_cf_name == do_lang('LONGITUDE') || $_cf_name == 'cms_longitude') { // Assumes there is a Latitude field too, although not critical
             $pretty_name = $_cf_name;
             $description = $_cf_description;
             $required = $field['cf_required'] == 1;
 
-            $latitude = '0';
-            $longitude = '0';
+            $latitude = '';
+            $longitude = '';
 
-            if ((isset($actual_value)) && ($actual_value != '') && ($actual_value != do_lang('NA'))) {
-                $longitude = float_to_raw_string(floatval($actual_value), 10);
-            }
             global $LATITUDE;
             if ((isset($LATITUDE)) && ($LATITUDE != '') && ($LATITUDE != do_lang('NA'))) {
-                $latitude = float_to_raw_string(floatval($LATITUDE), 10);
+                $latitude = float_to_raw_string(floatval($LATITUDE), 10, true);
+            }
+            if ((isset($actual_value)) && ($actual_value != '') && ($actual_value != do_lang('NA'))) {
+                $longitude = float_to_raw_string(floatval($actual_value), 10, true);
             }
 
-            if ($latitude == '0.0000000000') {
+            // To stop it crashing
+            if ($latitude == '' && $longitude != '') {
                 $latitude = '0';
             }
-            if ($longitude == '0.0000000000') {
+            if ($latitude != '' && $longitude == '') {
                 $longitude = '0';
             }
 
@@ -179,7 +180,7 @@ class Hook_fields_float
             return _form_input($input_name, do_lang_tempcode($lang_string), '', $input, $required, false);
         }
 
-        if ($_cf_name == do_lang('LATITUDE_FIELD_NAME')) { // Assumes there is a Longitude field too
+        if ($_cf_name == do_lang('LATITUDE')) { // Assumes there is a Longitude field too
             global $LATITUDE;
             $LATITUDE = $actual_value; // Store for when Longitude field is rendered - critical, else won't be entered
             return new Tempcode();
@@ -199,16 +200,16 @@ class Hook_fields_float
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
-        require_lang('google_map');
+        require_lang('locations');
 
         $id = $field['id'];
         $tmp_name = 'field_' . strval($id);
         $default = STRING_MAGIC_NULL;
         $_cf_name = get_translated_text($field['cf_name']);
-        if ($_cf_name == do_lang('LATITUDE_FIELD_NAME') || $_cf_name == 'cms_latitude') {
+        if ($_cf_name == do_lang('LATITUDE') || $_cf_name == 'cms_latitude') {
             $default = post_param_string('latitude', STRING_MAGIC_NULL);
         }
-        if ($_cf_name == do_lang('LONGITUDE_FIELD_NAME') || $_cf_name == 'cms_longitude') {
+        if ($_cf_name == do_lang('LONGITUDE') || $_cf_name == 'cms_longitude') {
             $default = post_param_string('longitude', STRING_MAGIC_NULL);
         }
 

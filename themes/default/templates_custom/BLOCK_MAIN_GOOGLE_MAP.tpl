@@ -133,7 +133,7 @@
 			\});
 		}
 	}
-	google.load('maps','3',{callback: google_map_initialize,other_params:'sensor=true'{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
+	google.load('maps','3',{callback: google_map_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 //]]></script>
 
 <section class="box box___block_main_google_map"><div class="box_inner">

@@ -123,7 +123,7 @@ function _autofill_geo_cpfs($row) {
 
             $address_parts = reverse_geocode($latitude, $longitude);
             if (!is_null($address_parts)) {
-                list(, $city, $county, $state, $country) = $address_parts;
+                list(, , $city, $county, $state, , $country) = $address_parts;
                 if (!$has_city && !empty($city)) {
                     $changes['field_' . strval($city_field)] = $city;
                 }

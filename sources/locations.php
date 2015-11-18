@@ -358,12 +358,12 @@ function find_continent($country)
 }
 
 /**
- * Find the country name of an ISO country code.
+ * Find the ISO country code from a country name.
  *
- * @param  string $country ISO country code
- * @return ?string Country name (null: not found)
+ * @param  string $iso Country name
+ * @return ?string ISO country code (null: not found)
  */
-function find_iso_country_name($country)
+function find_iso_country_from_name($country)
 {
     static $cache = array();
 
@@ -384,10 +384,10 @@ function find_iso_country_name($country)
 }
 
 /**
- * Find the ISO country code from a country name.
+ * Find the country name of an ISO country code.
  *
- * @param  string $iso Country name
- * @return ?string ISO country code (null: not found)
+ * @param  string $country ISO country code
+ * @return ?string Country name (null: not found)
  */
 function find_country_name_from_iso($iso)
 {

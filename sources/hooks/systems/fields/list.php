@@ -135,7 +135,7 @@ class Hook_fields_list
             if ($default == '') {
                 $list = array();
             } else {
-                if (substr_count($default, '|') == substr_count($default, '=')) {
+                if (substr_count($default, '|') + 1 == substr_count($default, '=')) {
                     foreach (explode('|', $default) as $l) {
                         list($l, $written) = explode('=', $l);
                         $list[$l] = $written;

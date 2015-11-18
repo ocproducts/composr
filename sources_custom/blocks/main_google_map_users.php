@@ -56,6 +56,7 @@ class Block_main_google_map_users
 
         require_javascript('ajax');
         require_lang('google_map_users');
+        require_lang('locations');
 
         // Set up config/defaults
         $geolocate_user = array_key_exists('geolocate_user', $map) ? $map['geolocate_user'] : '1';

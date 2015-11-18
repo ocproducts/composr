@@ -9,7 +9,10 @@ function init__cns_join($in = null)
     } else {
         $extra_code = '$hidden->attach(get_referrer_field(false));';
     }
-    $in = str_replace('list($fields, $_hidden) = cns_get_member_fields(true, null, $groups);', 'list($fields, $_hidden) = cns_get_member_fields(true, null, $groups); ' . $extra_code, $in);
+
+    $from = '$fields->attach(do_template(\'FORM_SCREEN_FIELD_SPACER\', array(\'_GUID\' => \'a8197832e4467b08e953535202235501\', \'TITLE\' => do_lang_tempcode(\'SPECIAL_REGISTRATION_FIELDS\'))));';
+
+    $in = str_replace($from, $from . ' ' . $extra_code, $in);
 
     // Better referral detection, and proper qualification management
     $in = str_replace("\$GLOBALS['FORUM_DB']->query_update('f_invites', array('i_taken' => 1), array('i_email_address' => \$email_address, 'i_taken' => 0) ,'', 1);", 'set_from_referrer_field();', $in);

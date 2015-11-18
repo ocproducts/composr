@@ -80,13 +80,27 @@ function get_region_structure_US()
     );
 }
 
-function state_code_to_state_name_US($code)
+function find_state_name_from_code_US($code)
 {
     $structure = get_region_structure_US();
 
     foreach ($structure as $region) {
         if (isset($region[$code])) {
             return $region[$code];
+        }
+    }
+
+    return null;
+}
+
+function find_state_code_from_name_US($name)
+{
+    $structure = get_region_structure_US();
+
+    foreach ($structure as $region) {
+        $code = array_search($name, $region);
+        if ($code !== false) {
+            return $code;
         }
     }
 

@@ -57,7 +57,7 @@ function geocode($location, &$error_msg = null)
  * @param  float $latitude Latitude
  * @param  float $longitude Longitude
  * @param  ?Tempcode $error_msg Error message (written by reference) (null: not returned)
- * @return ?array A tuple: Formatted address, City, County, State, Country (null: error)
+ * @return ?array A tuple: Formatted address, Street Address, City, County, State, Zip/Postcode, Country (null: error)
  */
 function reverse_geocode($latitude, $longitude, &$error_msg = null)
 {
@@ -74,9 +74,11 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
 
     $r = $result['results'][0];
 
+    $building_name_or_number = null;
     $city = null;
     $county = null;
     $state = null;
+    $post_code = null;
     $country = null;
 
     if (!isset($r['formatted_address'])) {
@@ -85,6 +87,19 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
     }
 
     foreach ($r['address_components'] as $component) {
+        if (in_array('street_address', $component['types'])) {
+            $building_name_or_number = $component['long_name'];
+        } else {
+            if (in_array('street_number', $component['types'])) {
+                $building_name_or_number = $component['long_name'];
+            }
+            if (in_array('route', $component['types'])) {
+                if ($building_name_or_number != '') {
+                    $building_name_or_number .= ' ';
+                }
+                $building_name_or_number .= $component['long_name'];
+            }
+        }
         if (in_array('locality', $component['types'])) {
             $city = $component['long_name'];
         }
@@ -94,12 +109,15 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
         if (in_array('administrative_area_level_1', $component['types'])) {
             $state = $component['short_name'];
         }
+        if (in_array('postal_code', $component['types'])) {
+            $post_code = $component['short_name'];
+        }
         if (in_array('country', $component['types'])) {
             $country = $component['short_name'];
         }
     }
 
-    return array($r['formatted_address'], $city, $county, $state, $country);
+    return array($r['formatted_address'], $building_name_or_number, $city, $county, $state, $post_code, $country);
 }
 
 /**

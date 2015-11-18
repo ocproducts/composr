@@ -266,7 +266,7 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
     $allow_emails = post_param_integer('allow_emails', 0); // For default privacy, default off
     $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0); // For default privacy, default off
     require_code('cns_groups');
-    $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, null, null, null, 0, true);
+    $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, null, null, null, null, true);
     $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     foreach ($actual_custom_fields as $key => $val) {
         if ($val == STRING_MAGIC_NULL) {
@@ -380,12 +380,15 @@ function cns_get_member_fields($mini_mode = true, $member_id = null, $groups = n
 {
     $fields = new Tempcode();
     $hidden = new Tempcode();
+
     list($_fields, $_hidden) = cns_get_member_fields_settings($mini_mode, $member_id, $groups, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $primary_group, $username, $is_perm_banned, $special_type, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until);
     $fields->attach($_fields);
     $hidden->attach($_hidden);
+
     if (!$mini_mode) {
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '14205f6bf83c469a1404d24967d7b6f6', 'TITLE' => do_lang_tempcode('PROFILE'))));
     }
+
     list($_fields, $_hidden) = cns_get_member_fields_profile($mini_mode, $member_id, $groups, $custom_fields);
     $fields->attach($_fields);
     $hidden->attach($_hidden);
@@ -521,7 +524,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         }
     }
 
-    // Email privacy
+    // E-mail privacy
     if ($doing_email_option) {
         $field_title = do_lang_tempcode('ALLOW_EMAILS');
         if (cns_field_editable('email', $special_type)) {
@@ -725,10 +728,10 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         ($mini_mode || (is_null($member_id)) || ($member_id == get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // public view
         ($mini_mode || (is_null($member_id)) || ($member_id != get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // owner view
         ($mini_mode || (is_null($member_id)) || ($member_id != get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // owner set
-        null,
-        null,
-        null,
-        0,
+        null, // required
+        null, // show in posts
+        null, // show in post previews
+        null, // special start
         $mini_mode ? true : null // show on join form
     );
     $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
