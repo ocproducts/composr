@@ -156,7 +156,7 @@ class Forum_driver_cns extends Forum_driver_base
      * Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).
      *
      * @param  string $name The name of the new custom field
-     * @param  integer $length The length of the new custom field
+     * @param  integer $length The length of the new custom field (ignored for Conversr, $type used instead)
      * @param  BINARY $locked Whether the field is locked
      * @param  BINARY $viewable Whether the field is for viewing
      * @param  BINARY $settable Whether the field is for setting

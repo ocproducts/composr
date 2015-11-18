@@ -283,9 +283,10 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         $_fields .= $field;
 
         if ((!multi_lang_content()) && (substr($index_name, 0, 1) != '#')) {
-            global $TABLE_LANG_FIELDS_CACHE;
-            if (isset($TABLE_LANG_FIELDS_CACHE[$table_name][$field])) {
-                $_fields .= '(255)';
+            $_field = preg_replace('#\(.*\)$#', '', $field);
+            $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $_field));
+            if (($db_type !== null) && (strpos($db_type, 'SHORT_') !== false)) {
+                $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
             }
         }
 

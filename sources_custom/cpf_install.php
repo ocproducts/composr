@@ -16,8 +16,8 @@ function install_address_fields()
     require_lang('cns');
 
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('building_name_or_number', 100, 0, 0, 1, 0, '', 'long_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 20, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 20, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 40, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 40, 0, 0, 1, 0, '', 'short_text');
 
     require_code('locations/us');
     $states = '=(Outside USA)';
@@ -25,7 +25,7 @@ function install_address_fields()
     foreach ($_states as $code => $name) {
         $states .= '|' . $code . '=' . $name;
     }
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 0, 0, 1, 0, '', 'list', 0, $states);
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 2, 0, 0, 1, 0, '', 'list', 0, $states);
 
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, 0, 0, 1, 0, '', 'short_text');
 
@@ -33,7 +33,10 @@ function install_address_fields()
     $countries = '';
     $_countries = find_countries();
     foreach ($_countries as $code => $name) {
-        $countries .= '|' . $code . '=' . $name;
+        if ($countries != '') {
+            $countries .= '|';
+        }
+        $countries .= $code . '=' . $name;
     }
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 100, 0, 0, 1, 0, '', 'list', 0, $countries);
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, 0, 0, 1, 0, '', 'list', 0, $countries);
 }
