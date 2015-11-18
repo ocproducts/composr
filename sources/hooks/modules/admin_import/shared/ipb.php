@@ -336,7 +336,7 @@ class Hook_ipb_base
                 if (array_key_exists(0, $rows2)) {
                     $row2 = $rows2[0];
 
-                    $custom_fields[cns_make_boiler_custom_field('SELF_DESCRIPTION')] = @html_entity_decode($row2['bio'], ENT_QUOTES, get_charset());
+                    $custom_fields[cns_make_boiler_custom_field('about')] = @html_entity_decode($row2['bio'], ENT_QUOTES, get_charset());
                     $notes = $row2['notes'];
 
                     if (either_param_string('importer') == 'ipb2') {

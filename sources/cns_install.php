@@ -373,7 +373,7 @@ function install_cns($upgrade_from = null)
             'mf_member_id' => '*MEMBER'
         ));
 
-        cns_make_boiler_custom_field('SELF_DESCRIPTION');
+        cns_make_boiler_custom_field('about');
         //cns_make_boiler_custom_field('im_jabber'); Old-school, although XMPP is still popular for some, so we won't remove entirely
         cns_make_boiler_custom_field('im_skype');
         cns_make_boiler_custom_field('sn_facebook');

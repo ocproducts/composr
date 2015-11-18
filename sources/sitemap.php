@@ -977,8 +977,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                         $start = 0;
                         do {
                             $rows = $cma_entry_info['connection']->query_select($table, array('*'), $where, $extra_where_entries . $privacy_where . (is_null($explicit_order_by_entries) ? '' : (' ORDER BY ' . $explicit_order_by_entries)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
-                            $child_page = ($cma_entry_info['module'] == $cma_info['module']) ? $page : $cma_entry_info['module']/*assumed in same zone*/
-                            ;
+                            $child_page = ($cma_entry_info['module'] == $cma_info['module']) ? $page : $cma_entry_info['module']; // assumed in same zone
                             foreach ($rows as $child_row) {
                                 $child_page_link = $zone . ':' . $child_page . ':' . $child_hook_ob->screen_type . ':' . ($cma_entry_info['id_field_numeric'] ? strval($child_row[$cma_entry_info['id_field']]) : $child_row[$cma_entry_info['id_field']]);
                                 $child_node = $child_hook_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $child_row);

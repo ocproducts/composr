@@ -214,10 +214,10 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
     }
 
     /**
-     * Set a custom profile fields value. It should not be called directly.
+     * Set a custom profile field's value, if the custom field exists. Only works on specially-named (titled) fields.
      *
      * @param  MEMBER $member The member ID
-     * @param  string $field The field name
+     * @param  string $field The field name (e.g. "firstname" for the CPF with a title of "cms_firstname")
      * @param  string $value The value
      */
     public function set_custom_field($member, $field, $value)

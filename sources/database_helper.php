@@ -115,8 +115,7 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
             $key_size += $data_sizes[$field];
         }
         if (!isset($data_sizes[$field])) {
-            $data_sizes[$field] = 10/*10=arbitrary default*/
-            ;
+            $data_sizes[$field] = 10; // 10=arbitrary default
         }
         $total_size += $data_sizes[$field];
         if ($key) {

@@ -1271,8 +1271,10 @@ function geolocate_address_fields()
 						label=get_inner_html(labels[i]);
 						for (var j=0;j<fields.length;j++)
 						{
-							if (parsed[j+1]!==null && fields[j].replace(/^.*: /,'')==label)
+							if (fields[j].replace(/^.*: /,'')==label)
 							{
+								if (parsed[j+1]===null) parsed[j+1]='';
+
 								field_name=labels[i].getAttribute('for');
 								field=document.getElementById(field_name);
 								if (field.nodeName.toLowerCase()=='select')

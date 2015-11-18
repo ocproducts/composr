@@ -324,6 +324,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
         $row['field_' . strval($field_num)] = $value;
     }
+    require_code('locations_cpfs');
+    autofill_geo_cpfs();
 
     // Set custom field row
     $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_default'));

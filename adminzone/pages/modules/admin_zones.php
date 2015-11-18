@@ -411,8 +411,7 @@ class Module_admin_zones
             $is_panel = (substr($for, 0, 6) == 'panel_');
 
             require_code('zones3');
-            $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode() /*not simple so leave field out*/
-            ;
+            $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode(); // not simple so leave field out
 
             $editor[$for] = static_evaluate_tempcode(do_template('ZONE_EDITOR_PANEL', array(
                 '_GUID' => 'f32ac84fe18b90497acd4afa27698bf0',

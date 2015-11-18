@@ -31,10 +31,12 @@ function create_region_selection_list($regions = null)
                 foreach (get_region_structure_US() as $usa_region => $usa_states) {
                     $usa_region_list = new Tempcode();
                     foreach ($usa_states as $usa_state_code => $usa_state_name) {
-                        $usa_region_list->attach(form_input_list_entry($usa_state_code, in_array($usa_state_code, $regions), $usa_state_name));
+                        $usa_region_list->attach(form_input_list_entry('US_' . $usa_state_code, in_array('US_' . $usa_state_code, $regions), $usa_state_name));
                     }
                     $list_groups->attach(form_input_list_group($continent . ' \\ ' . $country_name . ' \\ ' . $usa_region, $usa_region_list));
                 }
+
+                $list->attach(form_input_list_entry($country_code, in_array($country_code, $regions), $country_name . ' (unknown state)'));
             } else {
                 $list->attach(form_input_list_entry($country_code, in_array($country_code, $regions), $country_name));
             }
@@ -68,7 +70,7 @@ function get_region()
         if (!is_guest()) {
             $state = get_cms_cpf('state');
             if (!empty($state)) {
-                return $state;
+                return 'US_' . $state;
             }
         }
         return $region;

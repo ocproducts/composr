@@ -77,7 +77,7 @@ function handle_facebook_connection_login($current_logged_in_member)
         return $current_logged_in_member;
     }
     try {
-        $details = $FACEBOOK_CONNECT->api('/me');
+        $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,bio,website,currency,first_name,last_name,gender,location,hometown'));
     } catch (Exception $e) {
         return $current_logged_in_member;
     }
@@ -129,9 +129,11 @@ function handle_facebook_connection_login($current_logged_in_member)
     $dob_year = mixed();
     if ($dob != '') {
         $_dob = explode('/', $dob);
-        $dob_day = intval($_dob[1]);
-        $dob_month = intval($_dob[0]);
-        $dob_year = intval($_dob[2]);
+        if (count($_dob) == 3) {
+            $dob_day = intval($_dob[1]);
+            $dob_month = intval($_dob[0]);
+            $dob_year = intval($_dob[2]);
+        }
     }
 
     // See if they have logged in before - i.e. have a synched account
@@ -266,12 +268,57 @@ function handle_facebook_connection_login($current_logged_in_member)
                 check_stopforumspam(post_param_string('username', $username), $email_address);
             }
 
-            $username = post_param_string('username', $username)/*user may have customised username*/
-            ;
+            $username = post_param_string('username', $username);//user may have customised username
             if ((count($_custom_fields) != 0) && (get_value('no_finish_profile') !== '1')) {// Was not auto-generated, so needs to be checked
                 cns_check_name_valid($username, null, null);
             }
             $member_id = cns_member_external_linker($username, $facebook_uid, 'facebook', false, $email_address, $dob_day, $dob_month, $dob_year, $timezone, $language, $avatar_url, $photo_url, $photo_thumb_url);
+
+            // Custom profile fields should be filled, as possible
+            $changes = array();
+            $mappings = array(
+                'about' => do_lang('DEFAULT_CPF_about_NAME'),
+                'bio' => do_lang('DEFAULT_CPF_interests_NAME'),
+                'website' => do_lang('DEFAULT_CPF_website_NAME'),
+                'currency' => 'cms_currency',
+                'first_name' => 'cms_firstname',
+                'last_name' => 'cms_lastname',
+                'gender' => do_lang('DEFAULT_CPF_gender_NAME'),
+            );
+            foreach ($mappings as $facebook_field => $composr_field_title) {
+                if (!empty($details[$facebook_field])) {
+                    $composr_field_id = find_cms_cpf_field_id($composr_field_title);
+                    if (!is_null($composr_field_id)) {
+                        $changes['field_' . strval($composr_field_id)] = $details[$facebook_field];
+                    }
+                }
+            }
+            $facebook_field = 'location'; // Could also be 'hometown', but tends to get left outdated
+            if (!empty($details[$facebook_field])) {
+                try {
+                    $details3 = $FACEBOOK_CONNECT->api('/' . $details[$facebook_field], array('fields' => 'location'));
+
+                    $mappings = array(
+                        'latitude' => 'cms_latitude',
+                        'longitude' => 'cms_longitude',
+                        'city' => 'cms_city',
+                        'state' => 'cms_state',
+                        'country' => 'cms_country',
+                    );
+                    foreach ($mappings as $facebook_field => $composr_field_title) {
+                        if (!empty($details3[$facebook_field])) {
+                            $composr_field_id = find_cms_cpf_field_id($composr_field_title);
+                            if (!is_null($composr_field_id)) {
+                                $changes['field_' . strval($composr_field_id)] = $details3[$facebook_field];
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                }
+            }
+            if (!empty($changes)) {
+                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $changes, array('mf_member_id' => $member_id), '', 1);
+            }
         }
     }
 

@@ -3,7 +3,7 @@
 
 	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
 		{+START,IF_EMPTY,{$FB_CONNECT_UID}}
-			<div class="fb-login-button" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div>
+			<div class="fb-login-button" data-scope="email,user_birthday,user_about_me,user_hometown,user_location,user_website{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div>
 		{+END}
 	{+END}
 {+END}

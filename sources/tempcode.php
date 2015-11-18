@@ -1430,8 +1430,7 @@ class Tempcode
             }
             $generator_num++;
 
-            $myfunc = 'string_attach_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/
-            ;
+            $myfunc = 'string_attach_' . $generator_base . '_' . strval($generator_num);/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/
             $funcdef = "\$tpl_funcs['$myfunc']=\"echo \\\"" . php_addslashes_twice($attach) . "\\\";\";\n";
             $this->code_to_preexecute[$myfunc] = $funcdef;
             $end[] = array($myfunc, array(), TC_KNOWN, '', '');

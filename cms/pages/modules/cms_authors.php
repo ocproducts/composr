@@ -213,8 +213,8 @@ class Module_cms_authors
                 require_code('cns_members');
                 require_lang('cns');
                 $info = cns_get_all_custom_fields_match_member(get_member());
-                if (array_key_exists(do_lang('DEFAULT_CPF_SELF_DESCRIPTION_NAME'), $info)) {
-                    $_description = $info[do_lang('DEFAULT_CPF_SELF_DESCRIPTION_NAME')]['RENDERED'];
+                if (array_key_exists(do_lang('DEFAULT_CPF_about_NAME'), $info)) {
+                    $_description = $info[do_lang('DEFAULT_CPF_about_NAME')]['RENDERED'];
                     if (is_object($_description)) {
                         $description = $_description->evaluate();
                     } else {

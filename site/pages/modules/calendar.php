@@ -1409,8 +1409,7 @@ class Module_calendar
             }
 
             $month = do_template('CALENDAR_YEAR_MONTH', array('_GUID' => '58c9f4cc04186dce6e7ea3dd8ec9269b', 'ENTRIES' => $_entries));
-            $months .= $month->evaluate()/*FUDGE*/
-            ;
+            $months .= $month->evaluate(); // XHTMLXHTML
         }
 
         $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => 'month', 'id' => $explode[0] . '-' . strval($i - 3)));

@@ -101,8 +101,7 @@ function multi_lang_content()
     global $HAS_MULTI_LANG_CONTENT;
     if ($HAS_MULTI_LANG_CONTENT === null) {
         global $SITE_INFO;
-        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true/*for LEGACY reasons*/
-        ;
+        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true; // For legacy reasons
     }
     return $HAS_MULTI_LANG_CONTENT;
 }

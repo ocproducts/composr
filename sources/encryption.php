@@ -168,8 +168,7 @@ function decrypt_data($data, $passphrase)
     $maxlength = strlen($data);
     $decryption_keyfile = file_get_contents(get_option('decryption_key'));
     if (strpos($decryption_keyfile, 'AES') === false) {
-        $maxlength = 128/*1024 bit key assumption*/
-        ;
+        $maxlength = 128; // 1024 bit key assumption
     } elseif (strpos($decryption_keyfile, 'AES-256') !== false) {
         $maxlength = 256;
     } elseif (strpos($decryption_keyfile, 'AES-512') !== false) {
