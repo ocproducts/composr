@@ -227,6 +227,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             'member_calendar' => 'member',
             'add_date' => 'TIME',
             'edit_date' => '?TIME',
+            'regions' => 'LONG_TEXT',
         );
     }
 
@@ -314,8 +315,10 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $edit_time = $this->_default_property_int_null($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+        $_regions = $this->_default_property_str($properties, 'regions');
+        $regions = ($_regions == '') ? array() : explode(',', $_regions);
 
-        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $views, $add_time, $edit_time, null, $meta_keywords, $meta_description);
+        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $views, $add_time, $edit_time, null, $meta_keywords, $meta_description, $regions);
         return strval($id);
     }
 
@@ -371,6 +374,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             'member_calendar' => $row['e_member_calendar'],
             'add_date' => $row['e_add_date'],
             'edit_date' => $row['e_edit_date'],
+            'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => strval($row['id'])))),
         );
     }
 
@@ -448,8 +452,10 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $edit_time = $this->_default_property_int_null($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+        $_regions = $this->_default_property_str($properties, 'regions');
+        $regions = ($_regions == '') ? array() : explode(',', $_regions);
 
-        edit_calendar_event(intval($resource_id), $type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, true);
+        edit_calendar_event(intval($resource_id), $type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, $regions, true);
 
         return $resource_id;
     }

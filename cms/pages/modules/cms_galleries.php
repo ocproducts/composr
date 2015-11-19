@@ -1050,14 +1050,16 @@ class Module_cms_galleries extends Standard_crud_module
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
      * @param  ?BINARY $allow_trackbacks Whether trackbacks are allowed (null: decide statistically, based on existing choices)
      * @param  LONG_TEXT $notes Notes for the image
-     * @param  boolean $adding Whether this form will be used for adding a new image
+     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $adding = true)
+    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $regions = null)
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
         $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)', array('accept_images' => 1));
+
+        $adding = is_null($id);
 
         if ($adding) {
             $cat = get_param_string('cat', '');
@@ -1138,6 +1140,11 @@ class Module_cms_galleries extends Standard_crud_module
             if ($do_rep_image) {
                 $fields->attach(form_input_tick(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('_DESCRIPTION_REPRESENTATIVE_IMAGE'), 'rep_image', false));
             }
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $fields->attach(form_input_regions($regions));
         }
 
         // Meta data
@@ -1237,7 +1244,9 @@ class Module_cms_galleries extends Standard_crud_module
             }
         }
 
-        $ret = $this->get_form_fields($id, get_translated_text($myrow['title']), $cat, $description, $myrow['url'], $myrow['thumb_url'], $validated, $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], false);
+        $regions = collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'image', 'content_id' => strval($id))));
+
+        $ret = $this->get_form_fields($id, get_translated_text($myrow['title']), $cat, $description, $myrow['url'], $myrow['thumb_url'], $validated, $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $regions);
 
         $ret[2] = $delete_fields;
         $ret[3] = '';
@@ -1282,7 +1291,9 @@ class Module_cms_galleries extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('image', null);
 
-        $id = add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views']);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        $id = add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], null, '', '', $regions);
 
         set_url_moniker('image', strval($id));
 
@@ -1387,7 +1398,9 @@ class Module_cms_galleries extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('image', strval($id));
 
-        edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], true);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
 
         if ((!fractional_edit()) && (has_edit_permission('cat_mid', get_member(), get_member_id_from_gallery_name($cat), 'cms_galleries', array('galleries', $cat))) && (post_param_integer('rep_image', 0) == 1)) {
             $GLOBALS['SITE_DB']->query_update('galleries', array('rep_image' => $thumb_url), array('name' => $cat), '', 1);
@@ -1621,9 +1634,10 @@ class Module_cms_galleries_alt extends Standard_crud_module
      * @param  ?integer $video_length The length of the video (null: not yet added, so not yet known)
      * @param  ?integer $video_width The width of the video (null: not yet added, so not yet known)
      * @param  ?integer $video_height The height of the video (null: not yet added, so not yet known)
+     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $video_length = null, $video_width = null, $video_height = null)
+    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $video_length = null, $video_width = null, $video_height = null, $regions = null)
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -1713,6 +1727,11 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $fields->attach(form_input_dimensions(do_lang_tempcode('DIMENSIONS'), do_lang_tempcode('DESCRIPTION_VIDEO_DIMENSIONS'), 'video_width', 'video_height', $video_width, $video_height, false));
         if (!$no_thumb_needed) {
             $fields->attach($validated_field);
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $fields->attach(form_input_regions($regions));
         }
 
         // Meta data
@@ -1813,7 +1832,9 @@ class Module_cms_galleries_alt extends Standard_crud_module
             }
         }
 
-        $ret = $this->get_form_fields($id, get_translated_text($myrow['title']), $cat, $description, $url, $myrow['thumb_url'], $validated, $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $myrow['video_length'], $myrow['video_width'], $myrow['video_height']);
+        $regions = collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'video', 'content_id' => strval($id))));
+
+        $ret = $this->get_form_fields($id, get_translated_text($myrow['title']), $cat, $description, $url, $myrow['thumb_url'], $validated, $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $myrow['video_length'], $myrow['video_width'], $myrow['video_height'], $regions);
 
         $ret[2] = $delete_fields;
         $ret[3] = '';
@@ -1875,7 +1896,9 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('video', null);
 
-        $id = add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views']);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        $id = add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_data['submitter'], $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], null, '', '', $regions);
 
         set_url_moniker('video', strval($id));
 
@@ -1998,7 +2021,9 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('video', strval($id));
 
-        edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], true);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, post_param_string('meta_keywords', ''), post_param_string('meta_description', ''), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
 
         if (addon_installed('content_reviews')) {
             content_review_set('video', strval($id));

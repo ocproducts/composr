@@ -123,6 +123,10 @@ class Hook_search_calendar extends FieldsSearchHook
         } else {
             $privacy_join = '';
         }
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $where_clause .= sql_region_filter('event', 'r.id');
+        }
         $where_clause .= ' AND ';
         $where_clause .= '(e_member_calendar IS NULL'; // Not a privacy thing, more of a relevance thing
         if (!is_guest()) {

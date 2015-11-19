@@ -29,7 +29,7 @@ function get_referrer_field($visible)
     $known_referrer = get_param_string('keep_referrer', '');
     if ($known_referrer != '') {
         if (is_numeric($known_referrer)) {
-            $known_referrer = $GLOBALS['FORUM_DRIVER']->get_username($known_referrer);
+            $known_referrer = $GLOBALS['FORUM_DRIVER']->get_username(intval($known_referrer));
             if (is_null($known_referrer)) {
                 $known_referrer = '';
             }

@@ -253,7 +253,6 @@ function get_relation_map()
         'banners.b_type' => 'banner_types.id',
         'banners_types.b_type' => 'banner_types.id',
         'banners_types.b_name' => 'banners.name',
-        'banners_regions.b_name' => 'banners.name',
         'galleries.parent_id' => 'galleries.name',
         'galleries.g_owner' => 'f_members.id',
         'images.cat' => 'galleries.name',

@@ -265,7 +265,7 @@ class Module_cms_calendar extends Standard_crud_module
 
                 form.old_submit=form.onsubmit;
                 form.onsubmit=function() {
-                    if (form.elements['end_day'].selectedIndex!=0)
+                    if (typeof form.elements['end_day']!='undefined' && form.elements['end_day'].selectedIndex!=0 || typeof form.elements['end']!='undefined' && form.elements['end'].value!='')
                     {
                         var start_date,end_date;
                         if (start_day)
@@ -278,7 +278,7 @@ class Module_cms_calendar extends Standard_crud_module
                             end_date=end.value;
                         }
 
-                        if (start>end)
+                        if (start_date>end_date)
                         {
                             window.fauxmodal_alert('" . php_addslashes(do_lang('EVENT_CANNOT_AROUND')) . "');
                             return false;
@@ -454,9 +454,10 @@ class Module_cms_calendar extends Standard_crud_module
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
      * @param  ?BINARY $allow_trackbacks Whether trackbacks are allowed (null: decide statistically, based on existing choices)
      * @param  LONG_TEXT $notes Notes
+     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
      * @return array A tuple of: (fields, hidden-fields, delete-fields, edit-text, whether all delete fields are specified, posting form text, more fields)
      */
-    public function get_form_fields($id = null, $type = null, $start_year = null, $start_month = null, $start_day = null, $start_monthly_spec_type = 'day_of_month', $start_hour = null, $start_minute = null, $title = '', $content = '', $recurrence = 'none', $recurrences = null, $seg_recurrences = 0, $priority = 3, $end_year = null, $end_month = null, $end_day = null, $end_monthly_spec_type = 'day_of_month', $end_hour = null, $end_minute = null, $timezone = null, $do_timezone_conv = 0, $member_calendar = null, $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '')
+    public function get_form_fields($id = null, $type = null, $start_year = null, $start_month = null, $start_day = null, $start_monthly_spec_type = 'day_of_month', $start_hour = null, $start_minute = null, $title = '', $content = '', $recurrence = 'none', $recurrences = null, $seg_recurrences = 0, $priority = 3, $end_year = null, $end_month = null, $end_day = null, $end_monthly_spec_type = 'day_of_month', $end_hour = null, $end_minute = null, $timezone = null, $do_timezone_conv = 0, $member_calendar = null, $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $regions = null)
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -583,6 +584,11 @@ class Module_cms_calendar extends Standard_crud_module
         } else {
             $hidden->attach(form_input_hidden('timezone', $timezone));
             $hidden->attach(form_input_hidden('do_timezone_conv', strval($do_timezone_conv)));
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $fields2->attach(form_input_regions($regions));
         }
 
         // Recurrence
@@ -846,8 +852,12 @@ class Module_cms_calendar extends Standard_crud_module
         $parsed = get_translated_tempcode('calendar_events', $myrow, 'e_content');
 
         check_edit_permission(($myrow['e_member_calendar'] === null) ? 'mid' : 'low', $myrow['e_submitter']);
+
         $content = get_translated_text($myrow['e_content']);
-        $fields = $this->get_form_fields($myrow['id'], $myrow['e_type'], $myrow['e_start_year'], $myrow['e_start_month'], $myrow['e_start_day'], $myrow['e_start_monthly_spec_type'], $myrow['e_start_hour'], $myrow['e_start_minute'], get_translated_text($myrow['e_title']), $content, $myrow['e_recurrence'], $myrow['e_recurrences'], $myrow['e_seg_recurrences'], $myrow['e_priority'], $myrow['e_end_year'], $myrow['e_end_month'], $myrow['e_end_day'], $myrow['e_end_monthly_spec_type'], $myrow['e_end_hour'], $myrow['e_end_minute'], $myrow['e_timezone'], $myrow['e_do_timezone_conv'], $myrow['e_member_calendar'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes']);
+
+        $regions = collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => $id)));
+
+        $fields = $this->get_form_fields($myrow['id'], $myrow['e_type'], $myrow['e_start_year'], $myrow['e_start_month'], $myrow['e_start_day'], $myrow['e_start_monthly_spec_type'], $myrow['e_start_hour'], $myrow['e_start_minute'], get_translated_text($myrow['e_title']), $content, $myrow['e_recurrence'], $myrow['e_recurrences'], $myrow['e_seg_recurrences'], $myrow['e_priority'], $myrow['e_end_year'], $myrow['e_end_month'], $myrow['e_end_day'], $myrow['e_end_monthly_spec_type'], $myrow['e_end_hour'], $myrow['e_end_minute'], $myrow['e_timezone'], $myrow['e_do_timezone_conv'], $myrow['e_member_calendar'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $regions);
 
         if (has_delete_permission('low', get_member(), $myrow['e_submitter'], 'cms_calendar')) {
             $radios = form_input_radio_entry('delete', '0', true, do_lang_tempcode('EDIT'));
@@ -895,7 +905,9 @@ class Module_cms_calendar extends Standard_crud_module
         }
         */
 
-        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['views'], $meta_data['add_time'], $meta_data['edit_time']);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['submitter'], $meta_data['views'], $meta_data['add_time'], $meta_data['edit_time'], null, '', '', $regions);
 
         set_url_moniker('event', strval($id));
 
@@ -1197,7 +1209,9 @@ class Module_cms_calendar extends Standard_crud_module
             $_description = do_lang_tempcode('SUCCESS');
         }
 
-        edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], true);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
 
         if (!fractional_edit()) {
             regenerate_event_reminder_jobs($id);

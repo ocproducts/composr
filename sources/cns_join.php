@@ -296,7 +296,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $primary_group = get_first_default_group();
     }
 
-    $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, null, true);
+    $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, 0, true);
     if (is_null($actual_custom_fields)) {
         $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     }

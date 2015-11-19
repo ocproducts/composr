@@ -65,6 +65,11 @@ function output_ical()
         $where .= $privacy_where;
     }
 
+    if (get_option('filter_regions') == '1') {
+        require_code('locations');
+        $where .= sql_region_filter('event', 'r.id');
+    }
+
     if (!is_null($filter)) {
         if ($where != '') {
             $where .= ' AND ';

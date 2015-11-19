@@ -319,7 +319,7 @@ function do_lang_tempcode($x, $a = null, $b = null, $c = null)
 {
     global $PARSED;
     if (!isset($PARSED)) {
-        $temp = file_get_contents(dirname(__FILE__) . '/../../lang_custom/EN/phpdoc.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/webstandards.ini');
+        $temp = file_get_contents(dirname(__FILE__) . '/../../lang_custom/EN/phpdoc.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/webstandards.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/global.ini');
         $temp_2 = explode("\n", $temp);
         $PARSED = array();
         foreach ($temp_2 as $p) {

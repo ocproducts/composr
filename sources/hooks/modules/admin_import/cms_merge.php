@@ -849,7 +849,7 @@ class Hook_cms_merge
                     $row['validated'],
                     $row['b_type'],
                     $db->table_exists('banner_types') ? collapse_1d_complexity('b_type', $db->query_select('banners_types', array('b_type'), array('name' => $row['name']))) : array(),
-                    $db->table_exists('banners_regions') ? collapse_1d_complexity('b_region', $db->query_select('banners_regions', array('b_region'), array('name' => $row['name']))) : array(),
+                    $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $row['name']))) : array(),
                     $row['add_date'],
                     $row['hits_from'],
                     $row['hits_to'],
@@ -1119,7 +1119,10 @@ class Hook_cms_merge
             if (is_null($main_news_category)) {
                 $main_news_category = db_get_first_id();
             }
-            $id_new = add_news($this->get_lang_string($db, $row['title']), $this->get_lang_string($db, $row['news']), $row['author'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $this->get_lang_string($db, $row['news_article']), $main_news_category, $news_category, $row['date_and_time'], $submitter, $row['news_views'], $row['edit_date'], $id, (isset($row['news_image'])) ? $row['news_image'] : $row['news_image']);
+
+            $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($row['id'])))) : array();
+
+            $id_new = add_news($this->get_lang_string($db, $row['title']), $this->get_lang_string($db, $row['news']), $row['author'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $this->get_lang_string($db, $row['news_article']), $main_news_category, $news_category, $row['date_and_time'], $submitter, $row['news_views'], $row['edit_date'], $id, (isset($row['news_image'])) ? $row['news_image'] : $row['news_image'], '', '', $regions);
 
             $this->_import_content_privacy($db, 'news', strval($row['id']), strval($id_new));
 
@@ -1405,7 +1408,10 @@ class Hook_cms_merge
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
-            $id_new = add_image(array_key_exists('title', $row) ? $row['title'] : '', $row['cat'], $this->get_lang_string($db, array_key_exists('description', $row) ? $row['description'] : $row['comments']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['add_date'], $row['edit_date'], $row['image_views'], $id);
+
+            $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'image', 'content_id' => strval($row['id'])))) : array();
+
+            $id_new = add_image(array_key_exists('title', $row) ? $row['title'] : '', $row['cat'], $this->get_lang_string($db, array_key_exists('description', $row) ? $row['description'] : $row['comments']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['add_date'], $row['edit_date'], $row['image_views'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'image', strval($row['id']), strval($id_new));
 
@@ -1427,7 +1433,10 @@ class Hook_cms_merge
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
-            $id_new = add_video(array_key_exists('title', $row) ? $row['title'] : '', $row['cat'], $this->get_lang_string($db, array_key_exists('description', $row) ? $row['description'] : $row['comments']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['video_length'], $row['video_width'], $row['video_height'], $submitter, $row['add_date'], $row['edit_date'], $row['video_views'], $id);
+
+            $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'video', 'content_id' => strval($row['id'])))) : array();
+
+            $id_new = add_video(array_key_exists('title', $row) ? $row['title'] : '', $row['cat'], $this->get_lang_string($db, array_key_exists('description', $row) ? $row['description'] : $row['comments']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['video_length'], $row['video_width'], $row['video_height'], $submitter, $row['add_date'], $row['edit_date'], $row['video_views'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'video', strval($row['id']), strval($id_new));
 
@@ -1778,7 +1787,10 @@ class Hook_cms_merge
                 $row['allow_trackbacks'] = 1;
             }
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
-            $id_new = add_calendar_event($type, $row['e_recurrence'], $row['e_recurrences'], array_key_exists('e_seg_recurrences', $row) ? $row['e_seg_recurrences'] : 0, $this->get_lang_string($db, $row['e_title']), $this->get_lang_string($db, $row['e_content']), $row['e_priority'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], array_key_exists('e_start_monthly_spec_type', $row) ? $row['e_start_monthly_spec_type'] : 'day_of_month', $row['e_start_hour'], $row['e_start_minute'], $row['e_end_year'], $row['e_end_month'], $row['e_end_day'], array_key_exists('e_end_monthly_spec_type', $row) ? $row['e_end_monthly_spec_type'] : 'day_of_month', $row['e_end_hour'], $row['e_end_minute'], array_key_exists('e_timezone', $row) ? $row['e_timezone'] : null, array_key_exists('e_do_timezone_conv', $row) ? $row['e_do_timezone_conv'] : 1, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $member_calendar, $row['e_views'], $row['e_add_date'], $row['e_edit_date'], $id);
+
+            $regions = $db->table_exists('content_regions') ? collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => strval($row['id'])))) : array();
+
+            $id_new = add_calendar_event($type, $row['e_recurrence'], $row['e_recurrences'], array_key_exists('e_seg_recurrences', $row) ? $row['e_seg_recurrences'] : 0, $this->get_lang_string($db, $row['e_title']), $this->get_lang_string($db, $row['e_content']), $row['e_priority'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], array_key_exists('e_start_monthly_spec_type', $row) ? $row['e_start_monthly_spec_type'] : 'day_of_month', $row['e_start_hour'], $row['e_start_minute'], $row['e_end_year'], $row['e_end_month'], $row['e_end_day'], array_key_exists('e_end_monthly_spec_type', $row) ? $row['e_end_monthly_spec_type'] : 'day_of_month', $row['e_end_hour'], $row['e_end_minute'], array_key_exists('e_timezone', $row) ? $row['e_timezone'] : null, array_key_exists('e_do_timezone_conv', $row) ? $row['e_do_timezone_conv'] : 1, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $member_calendar, $row['e_views'], $row['e_add_date'], $row['e_edit_date'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'event', strval($row['id']), strval($id_new));
 

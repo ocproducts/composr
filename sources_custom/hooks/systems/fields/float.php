@@ -93,7 +93,8 @@ class Hook_fields_float
      */
     public function render_field_value($field, $ev)
     {
-        require_lang('google_map');
+        require_lang('locations');
+
         $_cf_name = get_translated_text($field['cf_name']);
         if (($_cf_name == do_lang('LATITUDE')) || ($_cf_name == do_lang('LONGITUDE')) || ($_cf_name == 'cms_latitude') || ($_cf_name == 'cms_longitude')) {
             if (is_object($ev)) {

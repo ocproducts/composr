@@ -26,6 +26,8 @@
  */
 function get_news_category_image_url($nc_img)
 {
+    require_code('images');
+
     if ($nc_img == '') {
         $image = '';
     } elseif (is_image($nc_img)) {
@@ -228,13 +230,17 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         $where = 'WHERE 1=1';
     }
     if (!is_null($updated_since)) {
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('news', 'n', $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            list($extra_join, $extra_where) = get_privacy_where_clause('news', 'n', $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
-        $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'news n LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $privacy_join . ' WHERE validated=1 AND date_and_time>' . strval($updated_since) . $privacy_where . ')';
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('news', 'n.id');
+        }
+        $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'news n LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $extra_join . ' WHERE validated=1 AND date_and_time>' . strval($updated_since) . $extra_where . ')';
     }
     $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY id');
     if ($count > 500) { // Uh oh, loads, need to limit things more

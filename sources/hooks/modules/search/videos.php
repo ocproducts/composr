@@ -157,6 +157,11 @@ class Hook_search_videos extends FieldsSearchHook
             $where_clause .= $privacy_where;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $where_clause .= sql_region_filter('video', 'r.id');
+        }
+
         $table = 'videos r';
         $trans_fields = array('' => '', 'r.description' => 'LONG_TRANS__COMCODE', 'r.title' => 'SHORT_TRANS');
         $nontrans_fields = array();

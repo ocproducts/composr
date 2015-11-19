@@ -58,10 +58,14 @@
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @return AUTO_LINK The ID of the event
  */
-function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year = null, $end_month = null, $end_day = null, $end_monthly_spec_type = 'day_of_month', $end_hour = null, $end_minute = null, $timezone = null, $do_timezone_conv = 1, $member_calendar = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $submitter = null, $views = 0, $add_time = null, $edit_time = null, $id = null, $meta_keywords = '', $meta_description = '')
+function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year = null, $end_month = null, $end_day = null, $end_monthly_spec_type = 'day_of_month', $end_hour = null, $end_minute = null, $timezone = null, $do_timezone_conv = 1, $member_calendar = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $submitter = null, $views = 0, $add_time = null, $edit_time = null, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($submitter)) {
         $submitter = get_member();
     }
@@ -131,6 +135,10 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
 
     require_code('attachments2');
     $GLOBALS['SITE_DB']->query_update('calendar_events', insert_lang_comcode_attachments('e_content', 3, $content, 'calendar', strval($id)), array('id' => $id), '', 1);
+
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'event', 'content_id' => strval($id), 'region' => $region));
+    }
 
     require_code('seo2');
     if (($meta_keywords == '') && ($meta_description == '')) {
@@ -229,10 +237,14 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
  */
-function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
+function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -316,6 +328,11 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
 
     $GLOBALS['SITE_DB']->query_update('calendar_events', $update_map, array('id' => $id), '', 1);
 
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'event', 'content_id' => strval($id)));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'event', 'content_id' => strval($id), 'region' => $region));
+    }
+
     $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'), null, false, false, true);
 
     if ($just_validated) {
@@ -397,8 +414,9 @@ function delete_calendar_event($id)
     require_code('seo2');
     seo_meta_erase_storage('event', strval($id));
 
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'events', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'events', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'events', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'events', 'trackback_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'event', 'content_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'events_' . strval($id));
 

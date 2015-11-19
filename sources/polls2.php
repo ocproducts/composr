@@ -293,8 +293,8 @@ function delete_poll($id)
         delete_lang($rows[0]['option' . strval($i)]);
     }
 
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'polls', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'polls', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'polls', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'polls', 'trackback_for_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'polls_' . strval($id));
 

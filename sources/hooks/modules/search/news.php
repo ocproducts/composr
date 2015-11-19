@@ -161,6 +161,11 @@ class Hook_search_news extends FieldsSearchHook
             $where_clause .= $privacy_where;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $where_clause .= sql_region_filter('news', 'r.id');
+        }
+
         $table = 'news r';
         $trans_fields = array('r.title' => 'SHORT_TRANS__COMCODE', 'r.news' => 'LONG_TRANS__COMCODE', 'r.news_article' => 'LONG_TRANS__COMCODE');
         $nontrans_fields = array();

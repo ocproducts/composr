@@ -225,15 +225,19 @@ function delete_news_category($id)
  * @param  URLPATH $image URL to the image for the news entry (blank: use cat image)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @return AUTO_LINK The ID of the news just added
  */
-function add_news($title, $news, $author = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $news_article = '', $main_news_category = null, $news_categories = null, $time = null, $submitter = null, $views = 0, $edit_date = null, $id = null, $image = '', $meta_keywords = '', $meta_description = '')
+function add_news($title, $news, $author = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $news_article = '', $main_news_category = null, $news_categories = null, $time = null, $submitter = null, $views = 0, $edit_date = null, $id = null, $image = '', $meta_keywords = '', $meta_description = '', $regions = null)
 {
     if (is_null($author)) {
         $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
     }
     if (is_null($news_categories)) {
         $news_categories = array();
+    }
+    if (is_null($regions)) {
+        $regions = array();
     }
     if (is_null($time)) {
         $time = time();
@@ -340,6 +344,10 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
 
     require_code('attachments2');
     $GLOBALS['SITE_DB']->query_update('news', insert_lang_comcode_attachments('news_article', 2, $news_article, 'news', strval($id)), array('id' => $id), '', 1);
+
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'news', 'content_id' => strval($id), 'region' => $region));
+    }
 
     log_it('ADD_NEWS', strval($id), $title);
 
@@ -478,10 +486,14 @@ function send_rss_ping($show_errors = true)
  * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
  */
-function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_categories, $meta_keywords, $meta_description, $image, $add_time = null, $edit_time = null, $views = null, $submitter = null, $null_is_literal = false)
+function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_categories, $meta_keywords, $meta_description, $image, $add_time = null, $edit_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -544,6 +556,11 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
         foreach ($news_categories as $value) {
             $GLOBALS['SITE_DB']->query_insert('news_category_entries', array('news_entry' => $id, 'news_entry_category' => $value));
         }
+    }
+
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'news', 'content_id' => strval($id)));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'news', 'content_id' => strval($id), 'region' => $region));
     }
 
     log_it('EDIT_NEWS', strval($id), $title);
@@ -654,8 +671,9 @@ function delete_news($id)
     $GLOBALS['SITE_DB']->query_delete('news', array('id' => $id), '', 1);
     $GLOBALS['SITE_DB']->query_delete('news_category_entries', array('news_entry' => $id));
 
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'news', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'news', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'news', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'news', 'trackback_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'news', 'content_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'news_' . strval($id));
 

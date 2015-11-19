@@ -15,6 +15,10 @@
  */
 function create_region_selection_list($regions = null)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
+
     require_code('locations/us');
 
     require_code('locations');

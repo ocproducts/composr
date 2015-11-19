@@ -231,7 +231,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             'expiry_date' => '?TIME',
             'validated' => 'BINARY',
             'b_types' => 'LONG_TEXT',
-            'b_regions' => 'LONG_TEXT',
+            'regions' => 'LONG_TEXT',
             'hits_from' => 'INTEGER',
             'hits_to' => 'INTEGER',
             'views_from' => 'INTEGER',
@@ -291,8 +291,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $b_type = $category;
         $_b_types = $this->_default_property_str($properties, 'b_types');
         $b_types = ($_b_types == '') ? array() : explode(',', $_b_types);
-        $_b_regions = $this->_default_property_str($properties, 'b_regions');
-        $b_regions = ($_b_regions == '') ? array() : explode(',', $_b_regions);
+        $_regions = $this->_default_property_str($properties, 'regions');
+        $regions = ($_regions == '') ? array() : explode(',', $_regions);
         $notes = $this->_default_property_str($properties, 'notes');
         $time = $this->_default_property_int_null($properties, 'add_date');
         $hits_from = $this->_default_property_int($properties, 'hits_from');
@@ -300,7 +300,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $views_from = $this->_default_property_int($properties, 'views_from');
         $views_to = $this->_default_property_int($properties, 'views_to');
         $edit_date = $this->_default_property_int_null($properties, 'edit_date');
-        $name = add_banner($name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $b_regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
+        $name = add_banner($name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
         return $name;
     }
 
@@ -334,7 +334,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             'expiry_date' => $row['expiry_date'],
             'validated' => $row['validated'],
             'b_types' => collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $row['name']))),
-            'b_regions' => collapse_1d_complexity('b_region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('b_region'), array('name' => $row['name']))),
+            'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $row['name']))),
             'hits_from' => $row['hits_from'],
             'hits_to' => $row['hits_to'],
             'views_from' => $row['views_from'],
@@ -384,8 +384,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $b_type = $category;
         $_b_types = $this->_default_property_str($properties, 'b_types');
         $b_types = ($_b_types == '') ? array() : explode(',', $_b_types);
-        $_b_regions = $this->_default_property_str($properties, 'b_regions');
-        $b_regions = ($_b_regions == '') ? array() : explode(',', $_b_regions);
+        $_regions = $this->_default_property_str($properties, 'regions');
+        $regions = ($_regions == '') ? array() : explode(',', $_regions);
         $add_time = $this->_default_property_int_null($properties, 'add_date');
         $hits_from = $this->_default_property_int($properties, 'hits_from');
         $hits_to = $this->_default_property_int($properties, 'hits_to');
@@ -393,7 +393,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $views_to = $this->_default_property_int($properties, 'views_to');
         $edit_date = $this->_default_property_int_null($properties, 'edit_date');
 
-        $name = edit_banner($resource_id, $name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $b_regions, $edit_date, $add_time, true, true);
+        $name = edit_banner($resource_id, $name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
 
         return $resource_id;
     }

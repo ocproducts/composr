@@ -415,13 +415,17 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @return AUTO_LINK The ID of the new entry
  */
-function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '')
+function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
     require_code('global4');
     prevent_double_submit('ADD_IMAGE', null, $title);
 
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($submitter)) {
         $submitter = get_member();
     }
@@ -452,6 +456,10 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('images', $map, true);
+
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'image', 'content_id' => strval($id), 'region' => $region));
+    }
 
     log_it('ADD_IMAGE', strval($id), $title);
 
@@ -518,10 +526,14 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
  */
-function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
+function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -574,6 +586,11 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
     }
 
     $GLOBALS['SITE_DB']->query_update('images', $update_map, array('id' => $id), '', 1);
+
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'image', 'content_id' => strval($id)));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'image', 'content_id' => strval($id), 'region' => $region));
+    }
 
     $self_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
 
@@ -652,8 +669,9 @@ function delete_image($id, $delete_full = true)
 
     // Delete from database
     $GLOBALS['SITE_DB']->query_delete('images', array('id' => $id), '', 1);
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'images', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'images', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'images', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'images', 'trackback_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'image', 'content_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'images_' . strval($id));
 
@@ -861,13 +879,17 @@ function create_video_thumb($src_url, $expected_output_path = null)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @return AUTO_LINK The ID of the new entry
  */
-function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '')
+function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
     require_code('global4');
     prevent_double_submit('ADD_VIDEO', null, $title);
 
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($submitter)) {
         $submitter = get_member();
     }
@@ -901,6 +923,10 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('videos', $map, true);
+
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'video', 'content_id' => strval($id), 'region' => $region));
+    }
 
     require_code('transcoding');
     transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
@@ -979,10 +1005,14 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
  */
-function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
+function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
+    if (is_null($regions)) {
+        $regions = array();
+    }
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -1037,6 +1067,11 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
     }
 
     $GLOBALS['SITE_DB']->query_update('videos', $update_map, array('id' => $id), '', 1);
+
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'video', 'content_id' => strval($id)));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'video', 'content_id' => strval($id), 'region' => $region));
+    }
 
     require_code('transcoding');
     transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
@@ -1101,7 +1136,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
  */
 function delete_video($id, $delete_full = true)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'description', 'cat'), array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'description', 'cat'), array('id' => $id), '', 1);
     $title = $rows[0]['title'];
     $description = $rows[0]['description'];
     $cat = $rows[0]['cat'];
@@ -1121,8 +1156,9 @@ function delete_video($id, $delete_full = true)
 
     // Delete from database
     $GLOBALS['SITE_DB']->query_delete('videos', array('id' => $id), '', 1);
-    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'videos', 'rating_for_id' => $id));
-    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'videos', 'trackback_for_id' => $id));
+    $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'videos', 'rating_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'videos', 'trackback_for_id' => strval($id)));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'video', 'content_id' => strval($id)));
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'videos_' . strval($id));
 

@@ -360,7 +360,7 @@ function find_continent($country)
 /**
  * Find the ISO country code from a country name.
  *
- * @param  string $iso Country name
+ * @param  string $country Country name
  * @return ?string ISO country code (null: not found)
  */
 function find_iso_country_from_name($country)
@@ -386,7 +386,7 @@ function find_iso_country_from_name($country)
 /**
  * Find the country name of an ISO country code.
  *
- * @param  string $country ISO country code
+ * @param  string $iso ISO country code
  * @return ?string Country name (null: not found)
  */
 function find_country_name_from_iso($iso)
@@ -512,4 +512,41 @@ function geolocate_ip($ip = null)
     } else {
         return null;
     }
+}
+
+/**
+ * Get a region inputter
+ *
+ * @param  ?array $regions The currently selected regions (null: none selected)
+ * @return Tempcode The region inputter
+ */
+function form_input_regions($regions = null)
+{
+    require_code('form_templates');
+    $list_groups = create_region_selection_list($regions);
+    return form_input_multi_list(do_lang_tempcode('FILTER_REGIONS'), do_lang_tempcode('DESCRIPTION_FILTER_REGIONS'), 'regions', $list_groups, null, 30);
+}
+
+/**
+ * Get SQL to add to wider SQL query, for region filtering
+ *
+ * @param  string $content_type The content type
+ * @param  string $field_name_to_join Field name for content ID in table being connected to
+ * @param  ?string $region Region to show for (null: auto-detect)
+ * @return string SQL
+ */
+function sql_region_filter($content_type, $field_name_to_join, $region = null)
+{
+    if (is_null($region)) {
+        $region = get_region();
+    }
+    if (is_null($region)) {
+    	return '';
+    }
+    $ret = ' AND (';
+    $ret .= 'NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_regions cr WHERE ' . $field_name_to_join . '=cr.content_id AND ' . db_string_equal_to('content_type', $content_type) . ')';
+    $ret .= ' OR ';
+    $ret .= 'EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_regions cr WHERE ' . $field_name_to_join . '=cr.content_id AND ' . db_string_equal_to('cr.region', $region) . ' AND ' . db_string_equal_to('content_type', $content_type) . ')';
+    $ret .= ')';
+    return $ret;
 }

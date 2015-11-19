@@ -214,11 +214,6 @@ class Module_banners
                 'name' => '*ID_TEXT',
                 'b_type' => '*ID_TEXT',
             ));
-
-            $GLOBALS['SITE_DB']->create_table('banners_regions', array(
-                'name' => '*ID_TEXT',
-                'b_region' => '*ID_TEXT',
-            ));
         }
     }
 
@@ -487,7 +482,7 @@ class Module_banners
         $fields->attach(map_table_field(do_lang_tempcode('SECONDARY_CATEGORIES'), ($banner_types == '') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html($banner_types))));
 
         if (addon_installed('stats')) {
-            $banners_regions = implode(', ', collapse_1d_complexity('b_region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('b_region'), array('name' => $myrow['name']))));
+            $banners_regions = implode(', ', collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('region'), array('name' => $myrow['name']))));
             $fields->attach(map_table_field(do_lang_tempcode('BANNER_REGIONS'), ($banners_regions == '') ? do_lang_tempcode('ALL_EM') : protect_from_escaping(escape_html($banners_regions))));
         }
 

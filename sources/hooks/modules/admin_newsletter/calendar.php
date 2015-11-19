@@ -65,14 +65,19 @@ class Hook_whatsnew_calendar
         require_code('selectcode');
         $or_list = selectcode_to_sqlfragment($filter, 'e_type');
 
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('event', 'e', $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            list($extra_join, $extra_where) = get_privacy_where_clause('event', 'e', $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e ' . $privacy_join . ' WHERE e_add_date>' . strval($cutoff_time) . ' AND e_member_calendar IS NULL AND (' . $or_list . ')' . $privacy_where . ' ORDER BY e_add_date DESC', $max);
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('event', 'r.id');
+        }
+
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e ' . $extra_join . ' WHERE e_add_date>' . strval($cutoff_time) . ' AND e_member_calendar IS NULL AND (' . $or_list . ')' . $extra_where . ' ORDER BY e_add_date DESC', $max);
         if (count($rows) == $max) {
             return array();
         }

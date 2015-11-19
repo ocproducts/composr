@@ -707,6 +707,12 @@ class Module_galleries
             $extra_where_video .= $privacy_where_video;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
+        }
+
         if ($probe_type == 'first') {
             $where = db_string_equal_to('cat', $cat);
             if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
@@ -1384,6 +1390,12 @@ class Module_galleries
             $extra_join_video .= $privacy_join_video;
             $extra_where_image .= $privacy_where_image;
             $extra_where_video .= $privacy_where_video;
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
         }
 
         $total_images = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'images r' . $join . $extra_join_image . ' WHERE ' . $where_images . $extra_where_image, false, true);

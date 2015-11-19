@@ -39,17 +39,17 @@
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
  * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
- * @param  ?array $b_regions The banner regions (empty: not region-limited) (null: same as empty)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
  * @return array A pair: The input field Tempcode, JavaScript code
  */
-function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = null, $b_regions = null, $title_text = '')
+function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = null, $regions = null, $title_text = '')
 {
     if (is_null($b_types)) {
         $b_types = array();
     }
-    if (is_null($b_regions)) {
-        $b_regions = array();
+    if (is_null($regions)) {
+        $regions = array();
     }
 
     require_code('images');
@@ -127,14 +127,13 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
     $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_EXPIRY_DATE'), 'expiry_date', false, is_null($expiry_date), true, $expiry_date, 2));
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($b_regions))));
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('ADVANCED'), 'SECTION_HIDDEN' => empty($b_types) && empty($regions))));
 
     $fields->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), '', 'b_types', create_selection_list_banner_types($b_types)));
 
     if (get_option('filter_regions') == '1') {
         require_code('locations');
-        $list_groups = create_region_selection_list($b_regions);
-        $fields->attach(form_input_multi_list(do_lang_tempcode('FILTER_REGIONS'), do_lang_tempcode('DESCRIPTION_FILTER_REGIONS'), 'b_regions', $list_groups, null, 30));
+        $fields->attach(form_input_regions($regions));
     }
 
     $javascript = '
@@ -289,7 +288,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
  * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
- * @param  ?array $b_regions The banner regions (empty: not region-limited) (null: same as empty)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  ?TIME $time The time the banner was added (null: now)
  * @param  integer $hits_from The number of return hits from this banners site
  * @param  integer $hits_to The number of banner hits to this banners site
@@ -299,13 +298,13 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $b_types = null, $b_regions = null, $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
+function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $b_types = null, $regions = null, $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
 {
     if (is_null($b_types)) {
         $b_types = array();
     }
-    if (is_null($b_regions)) {
-        $b_regions = array();
+    if (is_null($regions)) {
+        $regions = array();
     }
 
     if (is_null($campaignremaining)) {
@@ -359,8 +358,8 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
         $GLOBALS['SITE_DB']->query_insert('banners_types', array('name' => $name, 'b_type' => $b_type_sup));
     }
 
-    foreach ($b_regions as $b_region) {
-        $GLOBALS['SITE_DB']->query_insert('banners_regions', array('name' => $name, 'b_region' => $b_region));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'banner', 'content_id' => $name, 'region' => $region));
     }
 
     decache('main_banner_wave');
@@ -401,20 +400,20 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
  * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
- * @param  ?array $b_regions The banner regions (empty: not region-limited) (null: same as empty)
+ * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
  * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to NULL)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  boolean $null_is_literal Determines whether some NULLs passed mean 'use a default' or literally mean 'set to NULL'
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types = null, $b_regions = null, $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
+function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types = null, $regions = null, $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
 {
     if (is_null($b_types)) {
         $b_types = array();
     }
-    if (is_null($b_regions)) {
-        $b_regions = array();
+    if (is_null($regions)) {
+        $regions = array();
     }
 
     if ($old_name != $name) {
@@ -435,7 +434,6 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
     }
 
     $GLOBALS['SITE_DB']->query_delete('banners_types', array('name' => $old_name));
-    $GLOBALS['SITE_DB']->query_delete('banners_regions', array('name' => $old_name));
 
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
@@ -491,8 +489,9 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
         $GLOBALS['SITE_DB']->query_insert('banners_types', array('name' => $name, 'b_type' => $b_type_sup));
     }
 
-    foreach ($b_regions as $b_region) {
-        $GLOBALS['SITE_DB']->query_insert('banners_regions', array('name' => $name, 'b_region' => $b_region));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'banner', 'content_id' => $old_name));
+    foreach ($regions as $region) {
+        $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'banner', 'content_id' => $name, 'region' => $region));
     }
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -532,7 +531,7 @@ function delete_banner($name)
     $GLOBALS['SITE_DB']->query_delete('banners', array('name' => $name), '', 1);
 
     $GLOBALS['SITE_DB']->query_delete('banners_types', array('name' => $name));
-    $GLOBALS['SITE_DB']->query_delete('banners_regions', array('name' => $name));
+    $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'banner', 'content_id' => $name));
 
     log_it('DELETE_BANNER', $name, get_translated_text($caption));
 

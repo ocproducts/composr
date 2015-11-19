@@ -463,13 +463,17 @@ function create_selection_list_event_types($it = null, $updated_since = null)
     $type_list = new Tempcode();
     $where = '1=1';
     if (!is_null($updated_since)) {
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('event', 'e', $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            list($extra_join, $extra_where) = get_privacy_where_clause('event', 'e', $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
-        $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'calendar_events e' . $privacy_join . ' WHERE validated=1 AND e_add_date>' . strval($updated_since) . $privacy_where . ')';
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('event', 'e.id');
+        }
+        $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'calendar_events e' . $extra_join . ' WHERE validated=1 AND e_add_date>' . strval($updated_since) . $extra_where . ')';
     }
     $types = $GLOBALS['SITE_DB']->query('SELECT id,t_title FROM ' . get_table_prefix() . 'calendar_types WHERE ' . $where, null, null, false, true);
     $first_type = null;
@@ -639,6 +643,10 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
             require_code('content_privacy');
             list($privacy_join, $privacy_where) = get_privacy_where_clause('event', 'e', $auth_member_id, 'e.e_member_calendar=' . strval($auth_member_id));
             $where .= $privacy_where;
+            if (get_option('filter_regions') == '1') {
+                require_code('locations');
+                $where .= sql_region_filter('event', 'e.id');
+            }
         }
     }
     if ($private === 1) {

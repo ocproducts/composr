@@ -159,6 +159,12 @@ class Block_main_gallery_embed
             $extra_where_video .= $privacy_where_video;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
+        }
+
         // Get rows
         if ($do_pagination) {
             $total_images = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*)' . $extra_filter_sql . ' FROM ' . get_table_prefix() . 'images r' . $extra_join_sql . $extra_join_image . ' WHERE ' . $cat_select . $where_sup . $extra_where_image, false, true);

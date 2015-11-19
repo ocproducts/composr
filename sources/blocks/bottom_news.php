@@ -112,6 +112,11 @@ class Block_bottom_news
             $q_filter .= $privacy_where;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $q_filter .= sql_region_filter('news', 'p.id');
+        }
+
         $news = $GLOBALS['SITE_DB']->query('SELECT p.* FROM ' . get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id' . $join . ' WHERE ' . $q_filter . ' AND validated=1 ORDER BY date_and_time DESC', $max, null, false, true);
 
         $_postdetailss = array();

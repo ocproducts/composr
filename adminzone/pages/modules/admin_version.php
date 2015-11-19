@@ -86,6 +86,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('email_bounces');
         $GLOBALS['SITE_DB']->drop_table_if_exists('sitemap_cache');
         $GLOBALS['SITE_DB']->drop_table_if_exists('urls_checked');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
 
         /*$zones=find_all_zones(true);    We don't want to get rid of on-disk data when reinstalling
         require_code('files');
@@ -878,6 +879,12 @@ class Module_admin_version
                 'url_check_time' => 'TIME',
             ));
             $GLOBALS['SITE_DB']->create_index('urls_checked', 'url', array('url(200)'));
+
+            $GLOBALS['SITE_DB']->create_table('content_regions', array(
+                'content_type' => '*ID_TEXT',
+                'content_id' => '*ID_TEXT',
+                'region' => '*ID_TEXT',
+            ));
         }
     }
 

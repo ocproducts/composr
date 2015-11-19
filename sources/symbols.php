@@ -2258,9 +2258,9 @@ function ecv_BANNER($lang, $escaped, $param)
             if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) { // Normal operation
                 $width = empty($param[1]) ? null : intval($param[1]);
                 $height = empty($param[2]) ? null : intval($param[2]);
-                $b_region = isset($param[3]) ? intval($param[3]) : null;
-                $name = isset($param[4]) ? intval($param[4]) : null;
-                $_value = banners_script(true, '', $name, $b_type, '', $width, $height, $b_region);
+                $region = isset($param[3]) ? $param[3] : null;
+                $name = isset($param[4]) ? $param[4] : null;
+                $_value = banners_script(true, '', $name, $b_type, '', $width, $height, $region);
                 $value = $_value->evaluate();
             } else { // Been told to behave statically
                 $value = 'Banner goes here';

@@ -1100,7 +1100,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 break;
 
             case 'select':
-                $webstandards_check = get_param_integer('keep_webstandards_check', get_param_integer('webstandards_check', 0));
+                $webstandards_check = function_exists('get_param_integer') ? get_param_integer('keep_webstandards_check', get_param_integer('webstandards_check', 0)) : 0;
                 if ((isset($attributes['onchange'])) && (strpos($attributes['onchange'], 'form.submit()') !== false) && (strpos($attributes['onchange'], '/*guarded*/') === false) && (($webstandards_check == 0) || (!has_js()))) {
                     $errors[] = array('WCAG_AUTO_SUBMIT_LIST');
                 }

@@ -297,9 +297,10 @@ class Module_cms_news extends Standard_crud_module
      * @param  LONG_TEXT $notes Notes for the video
      * @param  URLPATH $image URL to the image for the news entry (blank: use cat image)
      * @param  ?array $scheduled Scheduled go-live time (null: N/A)
+     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
      * @return array A tuple of lots of info (fields, hidden fields, trailing fields, tabindex for posting form)
      */
-    public function get_form_fields($id = null, $main_news_category = null, $news_category = null, $title = '', $news = '', $author = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $send_trackbacks = 1, $notes = '', $image = '', $scheduled = null)
+    public function get_form_fields($id = null, $main_news_category = null, $news_category = null, $title = '', $news = '', $author = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $send_trackbacks = 1, $notes = '', $image = '', $scheduled = null, $regions = null)
     {
         if (is_null($id)) {
             // Cloning support
@@ -386,6 +387,11 @@ class Module_cms_news extends Standard_crud_module
         $fields2->attach(form_input_text_comcode(do_lang_tempcode('NEWS_SUMMARY'), do_lang_tempcode('DESCRIPTION_NEWS_SUMMARY'), 'news', $news, false));
 
         $fields2->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), do_lang_tempcode('DESCRIPTION_SECONDARY_CATEGORIES', 'news'), 'news_category', $cats2));
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $fields2->attach(form_input_regions($regions));
+        }
 
         $hidden = new Tempcode();
 
@@ -494,7 +500,9 @@ class Module_cms_news extends Standard_crud_module
             $scheduled = null;
         }
 
-        $ret = $this->get_form_fields($id, $cat, $categories, get_translated_text($myrow['title']), get_translated_text($myrow['news']), $myrow['author'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], 0, $myrow['notes'], $myrow['news_image'], $scheduled);
+        $regions = collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($id))));
+
+        $ret = $this->get_form_fields($id, $cat, $categories, get_translated_text($myrow['title']), get_translated_text($myrow['news']), $myrow['author'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], 0, $myrow['notes'], $myrow['news_image'], $scheduled, $regions);
 
         $ret[2] = new Tempcode();
         $ret[3] = '';
@@ -537,7 +545,7 @@ class Module_cms_news extends Standard_crud_module
         $notes = post_param_string('notes', '');
 
         require_code('themes2');
-        $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
+        $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
 
         $schedule = get_input_date('schedule');
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times')) && (!is_null($schedule)) && ($schedule > time())) {
@@ -555,7 +563,9 @@ class Module_cms_news extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('news', null);
 
-        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $url);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_data['add_time'], $meta_data['submitter'], $meta_data['views'], null, null, $image, '', '', $regions);
 
         set_url_moniker('news', strval($id));
 
@@ -642,9 +652,9 @@ class Module_cms_news extends Standard_crud_module
 
         if (!fractional_edit()) {
             require_code('themes2');
-            $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
+            $image = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
         } else {
-            $url = STRING_MAGIC_NULL;
+            $image = STRING_MAGIC_NULL;
         }
 
         $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'nc_owner', array('id' => $main_news_category)); // if_there in case somehow category setting corrupted
@@ -706,7 +716,9 @@ class Module_cms_news extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('news', strval($id));
 
-        edit_news($id, $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], true);
+        $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
+
+        edit_news($id, $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $image, $meta_data['add_time'], $meta_data['edit_time'], $meta_data['views'], $meta_data['submitter'], $regions, true);
 
         if (addon_installed('content_reviews')) {
             content_review_set('news', strval($id));

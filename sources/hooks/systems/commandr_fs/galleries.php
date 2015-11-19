@@ -287,6 +287,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             'submitter' => 'member',
             'add_date' => 'TIME',
             'edit_date' => '?TIME',
+            'regions' => 'LONG_TEXT',
         );
     }
 
@@ -356,6 +357,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
+        $_regions = $this->_default_property_str($properties, 'regions');
+        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+
         require_code('images');
         if ((((is_image($url)) || ($url == '')) && ((!array_key_exists('video_length', $properties)) || ($properties['video_length'] == '')) || ($force_type === 'image')) && ($force_type !== 'video')) {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'images', 1);
@@ -367,7 +371,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 return false;
             }
 
-            $id = add_image($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description);
+            $id = add_image($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description, $regions);
         } else {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'videos', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'videos', 1);
@@ -388,7 +392,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 $video_height = 576;
             }
 
-            $id = add_video($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description);
+            $id = add_video($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description, $regions);
         }
 
         return strval($id);
@@ -428,6 +432,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             'submitter' => $row['submitter'],
             'add_date' => $row['add_date'],
             'edit_date' => $row['edit_date'],
+            'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => $resource_type, 'content_id' => strval($row['id'])))),
         );
         if ($resource_type == 'video') {
             $ret += array(
@@ -480,6 +485,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
+        $_regions = $this->_default_property_str($properties, 'regions');
+        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+
         if ($resource_type == 'image') {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'images', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'images', 1);
@@ -490,7 +498,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 return false;
             }
 
-            edit_image(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, true);
+            edit_image(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $regions, true);
         } else {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'videos', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'videos', 1);
@@ -511,7 +519,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 $video_height = 576;
             }
 
-            edit_video(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, true);
+            edit_video(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $regions, true);
         }
 
         return $resource_id;
