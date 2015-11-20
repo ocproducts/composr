@@ -101,13 +101,15 @@ class Module_admin_stats
                 'country' => 'SHORT_TEXT'
             ));
 
+            require_lang('stats');
+
             require_code('crypt');
             $secure_ref = produce_salt();
             $id = $GLOBALS['SITE_DB']->query_insert('task_queue', array(
                 't_title' => do_lang('INSTALL_GEOLOCATION_DATA'),
                 't_hook' => 'install_geolocation_data',
                 't_args' => serialize(array()),
-                't_member_id' => get_member(),
+                't_member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
                 't_secure_ref' => $secure_ref, // Used like a temporary password to initiate the task
                 't_send_notification' => 0,
                 't_locked' => 0,

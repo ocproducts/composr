@@ -47,6 +47,7 @@ class Module_banners
     public function uninstall()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('banners');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('banners_types');
         $GLOBALS['SITE_DB']->drop_table_if_exists('banner_types');
         $GLOBALS['SITE_DB']->drop_table_if_exists('banner_clicks');
 

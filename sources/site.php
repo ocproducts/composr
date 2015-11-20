@@ -123,13 +123,15 @@ function init__site()
 
     // Bulk advance loading
     global $SMART_CACHE;
-    $_comcode_pages_needed = $SMART_CACHE->get('comcode_pages_needed');
-    if ($_comcode_pages_needed !== null) {
-        $comcode_pages_needed = array();
-        foreach ($_comcode_pages_needed as $_comcode_page_needed => $_) {
-            $comcode_pages_needed[] = unserialize($_comcode_page_needed);
+    if (isset($SMART_CACHE)) {
+        $_comcode_pages_needed = $SMART_CACHE->get('comcode_pages_needed');
+        if ($_comcode_pages_needed !== null) {
+            $comcode_pages_needed = array();
+            foreach ($_comcode_pages_needed as $_comcode_page_needed => $_) {
+                $comcode_pages_needed[] = unserialize($_comcode_page_needed);
+            }
+            _load_comcodes_page_from_cache($comcode_pages_needed);
         }
-        _load_comcodes_page_from_cache($comcode_pages_needed);
     }
 }
 
