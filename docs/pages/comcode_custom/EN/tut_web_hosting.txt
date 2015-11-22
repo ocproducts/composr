@@ -213,7 +213,9 @@ In other words, three views of the file system exist, according to context:
 
 As previously mentioned, this file system is merely illustrative. Different servers use different conventions; for example [tt]httpdocs[/tt] is often [tt]public_html[/tt] or [tt]www[/tt].
 
-[title="2"]Server security (advanced)[/title]
+[title="2"]Server security[/title]
+
+(Optimal configuration advice is provided in the [page="_SEARCH:tut_security"]Security tutorial[/page] -- we just cover some practical implications of configuration here)
 
 There are two ways that web hosts may use to manage web application on the server:
 1) Shared user

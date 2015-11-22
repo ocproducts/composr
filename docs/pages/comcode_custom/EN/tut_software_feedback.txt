@@ -276,9 +276,19 @@ As well as 'yes' vs 'no', there are the matters of strategy and of release manag
 [media width="150" float="right"]data_custom/images/docs/tut_software_feedback/feature_workflow.png[/media]
 Each major Composr release usually hosts a wide range of new features, but also concentrates development on one particular overall objective. Typically we do this because we want to do something big and the only way to do it is to make a 'release mission'.
 
-This said, feature sponsorships necessarily take precedence over internal strategy by the developers.
+Considerations for a feature include:
+ - whether it matches the overarching mission
+ - perceived importance overall
+ - complexity / needed skills
+ - scheduling
 
-[title="4"]Release management[/title]
+This said, things don't always get planned smoothly:
+ - Feature sponsorships necessarily take precedence over internal strategy by the developers
+ - Plans often change due to unforeseen changes in the web landscape
+ - Users making us aware of a major problem we were not previously aware of
+ - 'eureka' features that are so good it's worth changing plans to include
+
+[title="4"]Risk management[/title]
 
 In patch releases we typically only fix bugs. However on some occasion we do fix oversights which we consider to:
  - be at least moderately annoying
@@ -290,7 +300,6 @@ Most features introduce risk in a number of areas, and all features are subject 
  - there is quite a large risk if we change the database structure, due to complexities of upgrading.
  - there is large incompatibility if we add to the CSS, because it means people's customised themes get busted.
 It is best that risk and incompatibility is managed in bulk, in major releases.
-valent to having a product roadmap). Features can be directly sponsored from the tracker.
 
 [title="3"]Rules of thumb[/title] 
 

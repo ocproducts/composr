@@ -1,0 +1,59 @@
+[title sub="Written by Chris Graham"]Composr Supplementary: How to approach complex projects[/title]
+
+Something I see quite regularly in the Composr community is people "going it alone" on pretty complicated IT projects that go beyond standard features and assumptions.
+
+Often people don't realise their website project is actually quite a complex software development project.
+
+To be frank, most of the time it is probably a mistake to go it alone. [acronym title="Do It Yourself"]DIY[/acronym] is admirable, ambition is admirable, initiative is admirable, and Composr is awesome-powerful -- but building IT systems has never been easy, and content management systems aren't a magic bullet that can allow arbitrary complexity with just clicks and plumbing code. Even professional developers struggle to make efficient and user-friendly systems.
+
+The value proposition of Composr is that it will do a large proportion of you want virtually for free. But, very rarely 100%. You can have forums, chat rooms, databases, newsletters, a wiki, member accounts, permissions, all set up with clicks, so that's enormous value to you. But, creating arbitrary complex websites on only available (pre-existing) functionality is less feasible.
+
+Expect to be able to create a social network with a tonne of features. Don't expect for complex projects to be able to replace the need for database designers, systems analysts, programmers, and graphic designers (and possibly project managers, and copywriters, and SEOs).
+
+Let's imagine you want to build a custom site which is going to tell the user comprehensive information about wildlife surveys on the island of Jersey. You have "animals" and "sightings", both current and historic, with over 100k records, and you have cross-linkage.
+
+The approach many people have is "let's build a catalogue for animals, and a catalogue for sightings, and customise the templating and add a search form".
+
+However, the reality is you'll going to come across things you haven't thought of, and you've already started your project with an assumption of "this is easy, and I am going to do it myself". You might not even have thought much about that basic assumption, but it's a dangerous one, and a bad precedent to start a project on.
+
+The truth is, [url="there is a lot to know about database design"]http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=database+design[/url]. There are all kinds of theoretical concepts, and practical requirements of how to optimise querying by using indexes and optimising queries. Catalogues are built on the simple idea of viewable and content manageable entries on a website, and there's basic support for field relationships, but that's a long way from a full database system, and it's a long way from a professional database designer properly optimising things.
+
+Trust me, any of the successful complex database systems you've seen on existing websites were built by a professional team.
+
+Consider this quandary:
+You've built a basic catalogue, and imported 100k records into it, and you decide you need a more customised editing interface than a sequential list of field inputs. At this point you've worked hard to get going, but you've something that has a rather complex implementation (catalogues are pretty complicated internally in order to support the flexibility and automation), with a rather simplistic user interface. Even if you decide to hire a programmer to finish things off, it's going to be hard for them as the basic underlying structure will not be efficient for custom coding. The programmer may insist on throwing out current achievements and starting again with something more appropriate.
+(I know I've just talked about catalogues being flexible, then said a situation where they're not. You have a tonne of options to control how a catalogue is built, but full control of a user-input form is always going to have to be a coding-level task.)
+
+So, what I would advise is at the start of any complicated project, really question how you're going to approach it. Here are some key questions you should have answers to:
+1) How popular is this expected to be?
+2) Am I willing to learn programming myself?
+3) Am I over-complicating things, is there a simpler way?
+
+Your answer to the first question effectively should define financing. When you start a complex project, you should be thinking about the return on investment, even if it's a non-profit project. Is the emotional return worth it? How much will it cost in money or time, compared to how much people are going to benefit from the project?
+
+If the return on investment seems poor, you should really be thinking about how you could just do something simpler.
+If the return on investment is good, you should be thinking about getting an investor(s). It might not be money, it might be recruiting passionate volunteers who share your goals. In this scenario you are being a leader and manager, rather than a lone-wolf. The lone-wolf model doesn't scale, especially nowadays on the mature web.
+
+My over-arching point is, starting with the assumption of going it alone on a complex IT project, is probably not a good idea. You're just setting yourself up for pain. You may well be digging yourself into a deep hole without realising it.
+
+The second question is pretty obvious. If you want to do something complex, do you want to learn programming, or hire a programmer? As described above, you'll probably need a programmer for at least part of it. Learning programming could be a great thing, it'll improve your career prospects, it's fun, it's rewarding -- but there's no denying that it's hard and time-consuming and takes a particular kind of mind.
+
+And third, it may well be things can be vastly simplified. Going back to my wildlife survey example, do we even need a database front-end on the website? Why not just use the downloads addon to have a spreadsheet or Microsoft Access database on the site? Why not just link to a Google Docs spreadsheet? Maybe you can link to a full screen HTML file that contains a table? Maybe there's even a pre-existing tool that can export a Microsoft Access database to a network of hyperlinked HTML files out there. Sometimes things may be a lot simpler if you just try and reign things in to a much simpler and more standard use-case. It comes down to, does the example really need 100k fully content managed entries each supporting comments and ratings, or is the really requirement just to get data out there?
+
+So, based on your thought, you probably will reach one of these conclusions:
+a) Project is quite straight-forward, I really can do it alone (great!)
+b) Project is complex, but actually it doesn't need to be, and demand is very niche anyway -- I can vastly simplify
+c) Project is complex, and demand is high -- I want to learn programming
+d) Project is complex, and demand is high -- I want to hire a programmer
+e) Project is complex, but fortunately aligns perfectly with standard features, the limitations and assumptions and architecture are not being pushed (really check this is true, but if it is, great!)
+
+Then, before you start the project, I highly recommend writing a proper set of documents for the project. This may include a business plan, a financial plan, a sitemap, wireframes of each screen, user role analysis, documented user stories & journeys, database structure, and so on. It is much better to get things nailed down in writing rather than diving straight into it. Good up-front analysis can help you avoid many mistakes further along, and can be shown to other people to review and get feedback.
+
+I hope I haven't crushed too many people's dreams. I want to re-iterate that Composr is probably the best CMS system out there for massively reducing cost. It's just very commonly people use that as rope for hanging themselves, and I want to save people needless pain.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
+ - [page="_SEARCH:sup_pricing"]Project pricing[/page]
+
+{$SET,tutorial_tags,Advice & Guidance,Opinion,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A sensible process for deciding how to approach complex web projects.}[block]main_tutorial_rating[/block]

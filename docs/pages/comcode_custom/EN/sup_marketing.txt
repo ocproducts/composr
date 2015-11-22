@@ -1,0 +1,66 @@
+[title sub="Written by Chris Graham"]Composr Supplementary: Introduction to marketing[/title]
+
+This is one particular tutorial that I wish I had access to 10 years ago. Marketing is quite a vast subject, there's a great deal to know, but most books out there either only really touch the surface or they get overly academic. In this tutorial I'll give an overview of how to go about marketing, with a particular emphasis on the personal side of things. It should be interesting to people starting a business but without significant marketing experience.
+
+[title="2"]Promotional techniques[/title]
+
+First, let's look at what different kinds of marketing there are:[list]
+[*]([b]General) Marketing[/b]: Marketing is aligning your business to the market, by presenting your business in the right way (in established markets), or by guiding the formation of the market (in emerging markets). It's a broad discipline, from the initial market research needed for a business plan, to developing a brand, to finding ways to fit/align a business into the market, to ongoing efforts to build new relationships for getting customers.[/*]
+[*][b]Advertising[/b]: Advertising is putting a message out there for people in the market to see, and getting customers as a result of that. There are two main types of advertising (typically most adverts will actually be some balance between these extremes):[list]
+[*][b]Brand advertising[/b]: Brand advertising is where you advertise your brand image, so that people build up a positive association with your company. Pure brand advertising makes no attempt to sell, but rather builds a desirability and awareness. For example, a car advert might show a business man driving a sports car around a mountainous terrain, giving the impression that that particular car represents the owners wealth and adventurous nature. In this example you can see the brand advertising is not just working on the buyer, it's also working on people associated to the buyer, setting up a situation where they can essentially buy into an image to impress their friends (in this case).[/*]
+[*][b]Direct response:[/b] This is where the advert has a "call to action", usually trying to persuade someone to buy a product or service.[/*][/list][/*]
+[*][b]Direct sales[/b]: This is where a salesman sells something directly to a buyer, via a one-on-one pitch.[/*]
+[*][b]Public Relations/Press Relations[/b]: PR is essentially where a company writes stories that it sends out to journalists, in the hope of getting free exposure.[/*]
+[/list]
+As you can see, we actually have 5 complete disciplines here. Often you will hear all these things referred to as marketing, but in larger organisations the roles are split up. The roles aren't really that distinct though because there are a lot of marketing techniques that cut across these categories.
+
+I'm not going to even try and write a guide to marketing, but what I am trying to do is to create some sign posts so you can start reading up yourself. The problem for new people is that there are so many techniques, but they only work in certain situations. For example, here are 5 different techniques:[list]
+[*][b]Guerilla marketing[/b]. Guerilla marketing is when you basically find innovative and cheeky ways to push your product, such as standing outside a competitors shop with a placard or paying a busker to sing about your product. These techniques can work well, but they are inherently hard to scale, and won't work for a prestigious or serious brand.[/*]
+[*][b]Direct mail[/b]. Direct mail typically works well for something with quite a high conversion rate that can easily be given a special offer, like pizza delivery, but is not such a good idea for something with a very low margin (like a website) or something that is very niche (it would probably be better to try and advertise in a trade publication).[/*]
+[*][b]Cold calling[/b]. Cold calling works quite well if you are selling something universal like cheaper utility bills, but not so well if you are selling something very specific like a holiday to Greece. Again, it won't work for something with a very low margin.[/*]
+[*][b]Partnerships[/b]. Partnerships are a very smart way to do business. For example, an Indian takeaway and a pizza restaurant might do a deal to stock each other's leaflets  --  they likely share a customer base, but the customers will be seeking diversity so they are not in so much competition for it to be a bad idea. With our product, Composr, we are available on a high percentage of web hosts: the web host gets the power of Composr for their customers, and we get more exposure. However, for many upstart businesses it is very hard to make a partnership work: established businesses won't want to invest in a partnership or confuse their users, so it can be a bit of a non-starter.[/*]
+[*][b]Special offers[/b]. Special offers work well for consumer items, but serious business people tend to be more sophisticated in purchasing things, so it often doesn't work so well for business-to-business sales.[/*]
+[/list]
+So, when you do your business planning for a new business, I'd advise you find out as many different marketing techniques you can (unless of course you have a few sure-fire ones already available worked out), and then be very critical and try and think them through to see which are likely to actually work for your particular circumstances. The reason I say this is there are so many people out there telling you about the potential of their great technique, but they don't remember that not everything will work for every particular business.
+
+[title="2"]Market analysis[/title]
+
+It is vital that you understand your customer:[list]
+[*]Work out exactly who your customers are in a very real sense. You need to know that these people actually exist, what they do, and how many of them there are.[/*]
+[*]Find how these customers make the particular decisions that you will be trying to influence. Consider these customers as they are, not as you think they should be. You need to strategise for their actual behaviours, not the behaviours you think you would have if you were in their position.[/*]
+[*]Find out what media these customers consume. For example, what websites they frequent for professional news. This will tell you where to target your PR work (it's very easy to send press releases and articles to the wrong places, where possibly the only people reading are just your own competitors).[/*]
+[*]Find how to reach these customers.[/*]
+[/list]
+Speaking personally, as a programmer I think in abstracts. One of the biggest marketing mistakes I have made myself in the past is assuming that people exist in the world with a spectrum of jobs, a spectrum of interests, a spectrum of personality types, and a spectrum of skills. That kind of thinking is utterly erroneous: in the real world people cluster around specific roles and interests, and the vast majority of people sit on those clusters. When I look at my own behaviours I see I so often don't sit in these clusters, and I think that this is true for many entrepreneurs, but an entrepreneur has to understand that they are the exception to the rule and not to imagine all their customers think as fluidly as they are able to.
+
+[title="2"]Get out there[/title]
+
+There's a common phrase "build it and they will come", and it is horribly wrong. It only applies in the rare case where you are first to market with something that people have been looking really hard to find but hasn't yet been available. Most businesses do not fulfil a need that is both consciously known and previously unsatisfiable.
+
+It's really important to be (or employ, or co-opt) a bit of an extrovert, to be regularly out there promoting your company, and to have the common touch to ensure you can fully relate and influence uninformed outsiders. People you want to work with who are outside your industry are usually too busy to learn anything about it for themselves, so they will rely on you to introduce them to it. As a rule, people don't go out of their way to research things on their own unless they feel a compelling need and don't have anyone to go ask.
+
+Getting out there should be at the heart of your marketing plan, even if you run an online business. It applies just as well to your behaviour online as well as offline, you can certainly initiate effective business relationships via email, Skype, blogs, Twitter, and so on. The key point is that you have to be continually connecting to other people and building up business relationships, because it won't realistically happen just through putting up a description on a website.
+
+Remember though, while it is a strategically important thing to do, it should not be thought of as a direct marketing exercise. Deep down you need to want to help other people and enjoy interacting with them just as much as you want to get important contacts and gain customers. If you have good relationships, it's amazing how much can come easily to you.
+
+[title="2"]Personality types[/title]
+
+You should read up on the [url="http://en.wikipedia.org/wiki/Interaction_Styles" target="_blank"]different personality types[/url]. It is important to really have a good understanding how different people can think.
+
+For example, when selling our web services we find that some people are very design orientated, some people are very feature orientated, some people are very relationship orientated, and some people are very process orientated. Some people like to research what they are buying and step through carefully on their own, some people need to more or less be led through the purchase process.
+
+I wouldn't go so far as to say you need to work out what particularly personality type people are, but you need to appreciate that what you care about is not necessarily what others will, and try and accommodate for all the different possible expectations. Often you will be shocked how people could not care less about what really matters to you on a deep moral level, but care a great deal on something you personally thought was a bit of a detail.
+
+[title="2"]Summary[/title]
+
+In summary, take the following into account when preparing a business plan:[list]
+[*]Work out exactly who the customer is, and how to interact with them[/*]
+[*]Ensure that the market is large enough, and that you can reach it and compete in it[/*]
+[*]Work out what marketing techniques to use in your business[/*]
+[*]Employ extrovertism[/*]
+[*]Take into account that people aren't all like you, and might think very differently: make your business appeal to all personality types[/*]
+[/list]
+
+(I kind of wrote this tutorial backwards, because I wanted to define terminology and the different techniques before I got into too much detail  --  you should of course study and confirm the market before you decide how to do your promotions)
+
+{$SET,tutorial_tags,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,An overview of how to go about marketing, with a particular emphasis on the personal side of things. For people starting a business but without significant marketing experience.}[block]main_tutorial_rating[/block]

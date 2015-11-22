@@ -29,6 +29,8 @@ Composr offers many powerful features that aren't to be found built-in to any co
 
 To read more about Composr's extensive features, see our [page="site:features"]features page[/page].
 
+More importantly, however, is how we integrate functionality. If you look at other CMSs you may be surprised how difficult simple things can be. For example, take any popular CMS, and look to see how you would implement gallery functionality with support for discussing videos on an integrated forum -- you are likely to find there is no way to do it without programming.
+
 [title="3"]How secure is Composr?[/title]
 
 No honest and competent company can guarantee their web application to be completely secure. To make Composr as secure as possible, we:
@@ -52,7 +54,7 @@ As web standards are evolving and we often need to make use of ones that are not
 
 [title="3"]Will you implement (some feature)?[/title]
 
-The developers are very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
+The developers are very open to new ideas and we are very fortunate in that we regularly get new ideas directly from our users. Ideas are organised in public view on our [url="feature tracker"]{$BRAND_BASE_URL}/tracker/[/url]. We regret that there are [page="_SEARCH:tut_software_feedback"]a variety of unavoidable reasons[/page] that prevent us from confirming acceptance of suggestions or providing a public road-map:
  - we need to integrate any changes into our long-term development roadmap, but this is always changing as the Internet (and economy) evolves very rapidly and priorities shift, and new ideas often make old ideas irrelevant
  - we need for us to design a clean product suitable for our wider user-base, which makes decisions on features almost impossible to do in advance because it requires multiple levels of design before we can be completely clear on how things might work, and how well they would in relation to other plans and wider goals
 Users who need a new feature should bear in mind that Composr is Open Source and thus third-parties may advance development, or we support feature sponsorship on our tracker. We therefore try to explain that Composr as it stands today is a solid reliable product, but if you require enhancements then you should take responsibility to budget or plan for this in terms of sponsoring or contributing (this is part of the spirit of Open Source -- it is free, but it requires community investment to move forward).
@@ -74,13 +76,19 @@ ocProducts does not officially get involved in the translation of Composr. Pleas
 [html]<div></div><a id="oss"></a>[/html][title="3"]How much does Composr cost?[/title]
 Composr is completely free under an OSI-approved Open Source licence (the Common Public Attribution License). There are no restrictions on usage, and we don't keep away any 'pro' features from our users. There is no requirement to display our logo or copyright notices on your website, we don't want to box people in from a design and marketing perspective either.
 
-The team has always been very pro Open Source. Given that software can be easily copied and therefore the value of Composr can be distributed across the world effortlessly, we think we have a social responsibility to take advantage of this and therefore structure our business in a way that can work with it. Software has such great potential to empower individuals from all walks of life, so we believe wherever possible companies shouldn't put the brakes on it by restricting the way things can be used via economic levies.
+The team has always been very fanatical about Open Source. There are 2 big reasons:
+1) Given that software can be easily copied and therefore the value of Composr can be distributed across the world effortlessly, we think we have a social responsibility to take advantage of this and therefore structure our business in a way that can work with it. Software has such great potential to empower individuals from all walks of life, so we believe wherever possible companies shouldn't put the brakes on it by restricting the way things can be used via economic levies.
+2) We feel it is important that customers have full access to the code of what they pay for, so they aren't locked into a single company whose circumstances, availability, offerings, and pricings, could change drastically over time.
 
-We have structured our business so that ocProducts makes money from commercial projects, support, and implementing new functionality. We also encourage people outside our company to contribute to Composr, as a community project. Code is hosted on [url="GitHub"]/github[/url], commit access is available by request (after showing some skill and sincerity, e.g. by releasing a public addon). Coding standards are [url="defined in a spreadsheet"]/docs/standards-checklist.xls[/url]. The founders of ocProducts Ltd originally created Composr and are fanatical about Open Source -- we do our best to make our company a commercial backer to the community project.
+We have structured our business so that ocProducts makes money from commercial projects, support, and implementing new functionality. We also encourage people outside our company to contribute to Composr, as a community project. Code is hosted on [url="GitHub"]/github[/url], commit access is available by request (after showing some skill and sincerity, e.g. by releasing a public addon). Coding standards are [url="defined in a spreadsheet"]/docs/standards-checklist.xls[/url]. The founders of ocProducts Ltd originally created Composr -- we do our best to make our company a commercial backer to the community project.
+
+Note that "reducing cost" should not be considered a primary benefit of Open Source. Cost often will be lower with Open Source, but people [i]do[/i] expect to be paid competitively for their work.
 
 [title="3"]How does it create value when software is given away for free, specifically?[/title]
 
 The developers feel it is important that all organisations are able to benefit from our technology, including organisations such as small social enterprises that may not be able to pay, or web service providers who may build innovative services on top of our infrastructure. Innovation often happens on the fringes, where companies don't necessarily have any budgets, and we consider it the ethical thing to promote this, and allow people to stand on the shoulders of giants (who we have done ourselves, via use of PHP, and Linux).
+
+Things like Cloud Computing could not exist without the Open Source foundations that allow software to be leveraged without constant onerous contractual negotiations and unfeasibly high costs.
 
 [title="3"]Any down-sides of free software?[/title]
 
@@ -104,7 +112,7 @@ There are huge risks with commercial and/or closed-source solutions, and these r
 
 This is a bit like asking how much a home costs. You could live in a tent, an apartment, a house, or a mansion. At the very bottom end, you'll find people can put together something in a few hours, but it'll be very poorly designed, generic, and simple. At the high end, you'll get large web companies investing millions of dollars in development each year.
 
-To start a new successful 'web property' (i.e. something for a medium-to-large business), you'll probably want a highly-experienced/qualified team working with a range of skills over a scale of months or years (at least one designer, copywriter, developer, SEO, marketer, PR agent, and user testers); some of these roles can be shared, and some take less time than others. Usually it will be in the range of $10,000-$200,000, with post-launch maintenance costs of $500-$5000 per month.
+To start a new successful 'web property' (i.e. something for a medium-to-large business), you'll probably want a highly-experienced/qualified team working with a range of skills over a scale of months or years (at least one designer, copywriter, developer, SEO, marketer, PR agent, and user testers); some of these roles can be shared, and some take less time than others. Usually it will be in the range of $10,000-$200,000, with post-launch maintenance costs of $500-$5000 per month. We go into a lot of detail in our [page="_SEARCH:sup_pricing"]Project pricing tutorial[/page].
 
 [title="3"]Can I make something without a budget?[/title]
 
@@ -134,18 +142,6 @@ Yes, please [page="site:support"]contact us[/page].
 
 Composr is a British (in fact, English) company, so spelling is in British English.
 
-[title="3"]The ocProducts development services are expensive aren't they?[/title]
-
-(We acknowledge this answer is very anglo-centric)
-
-The cost of developing complex websites does surprise some people, considering much of the software is free &ndash; but we are proud that we are actually a lot cheaper than the real competition, and our software provides substantial savings in the amount of time it takes to develop a complex site. Some people have an understanding of prices based on how the web was 10 years ago, when sites did a lot less and looked a lot worse, but over the years prices have risen in line with expectations (here's a [url="nice pricing explanation"]http://www.bigclick.com.au/blog/2009/04/05/is-web-development-expensive/[/url]).
-Professional service fees are calculated based on [page="forum:topicview:browse:10111"]what we've learnt through years in business[/page], or in other words, it's what has to be charged to remain a viable business (it's very competitive out there).
-Generally there are [url="3 brackets of professional fee"]http://www.howmuchdoesawebsitecost.com/[/url]:
- - Companies. Here you get proper project management, a much stronger guarantee of quality work (e.g. a range of standards and quality management), a company with proper insurance, a range of staff who are well trained and work well together as a team, coverage for if staff are sick or on holiday, a proper infrastructure (revision control, backups, legally licensed development software, proper communication tools, etc), and particular expertise and reputation in the area of work. This is where ocProducts sits, and our fees are [url="lower than the average"]http://www.jboye.com/blogpost/are-you-paying-competitive-hourly-rates/[/url]. Most of our competitors actually hide their fees because they are higher and they want to trap you (just to try and find how much other CMS companies charge per hour without contacting a salesman). In fact, also most competing products to Composr also are commercial, and they hide their prices too -- but $5,000 would be on the low-end for a basic license for a middle-tier commercial CMS equivalent to Composr.
- - Freelancers. Freelancers will typically charge about 1/2 what companies charge, but don't have most of the above advantages, and you may be surprised that they can often take twice as long to get things done due to the lack of support structure for them to work in. There are some excellent freelancers out there (in fact you may be one of them -- full respect to you if you are!), but a lot of mediocre and poor ones too. A lot of low quoting companies are really freelancers that have invested in a corporate image.
- - Offshoring. Offshore developers typically will charge about 1/5 of what American/European companies charge, which is quite striking; you often won't realise it, but whenever you see a company out there quoting really low prices it is likely because the company has just one part-time non-skilled person working in Europe/America, and otherwise it is entirely offshore. In our expertise offshore development requires a [i]lot[/i] of work on first developing clear project specifications (which is a professional skill in itself, that is a key part of software engineering degrees), takes about 3 times longer than in-house development (due to complexity of communication), and then requires a lot of work to correct quality problems such as spelling (English is not likely the programmers native language) and design issues (outsourced programmers rarely work in teams, so have no exposure to designers -- and without design experience, the technical mind of the programmer is reflected by a very 'functional' result). There are also often [url="serious cultural problems"]http://www.lessonsoffailure.com/developers/real-reason-outsourcing-fails/[/url]. At ocProducts we do use offshore development ourselves to some degree (which is why we are able to keep Composr free and still remain on the bottom end for company fees), but it has taken us years to get to the point where we have the infrastructure/relationships/processes/training-materials to work around the aforementioned problems (it still takes multiples of the hours we can quote), and we place full responsibility with highly trained UK/US staff who oversee everything and can correct/take-over things at any point should it be needed.
-We acknowledge that most people don't have thousands of pounds/dollars to spend on web developers (in fact, we have a corporate responsibility policy of [page="forum:topicview:browse:10111"]not letting users bankrupt themselves[/page]), so we try and foster a strong ecosystem for Open Source development, and we give out all our developer documentation freely.
-
 [title="3"]How can I make a donation?[/title]
 
 As we're a company we don't really accept direct donations, but you can sponsor features on the [url="tracker"]{$BRAND_BASE_URL}/tracker/[/url].
@@ -170,16 +166,13 @@ Composr is extremely compatible with different server configurations, tuned to w
 
 [title="3"]What are the host requirements for Composr?[/title]
 
-Please see the [page="_SEARCH:tut_web_hosting"]'Web Hosting' tutorial[/page].
+Read about Composr's minimum requirements in our [page="_SEARCH:tut_web_hosting"]Web hosting requirements tutorial[/page]. Composr is designed to run well on almost all web hosts.
+
+We don't have a recommended host at this time.
 
 [title="3"]Do you recommend Windows or Linux servers?[/title]
 
-We feel Linux is more suited for PHP purposes than Windows. Composr will work fine on Windows, however setting file permissions remotely can be very tricky and non-standard between different Windows servers.
-
-[title="3"]Do you recommend any web hosts / provide your own hosting?[/title]
-
-[url="Arvixe"]http://www.arvixe.com/5256-223-3-122.html[/url] is currently our recommended web host.
-Read about Composr's minimum requirements in our [page="_SEARCH:tut_web_hosting"]Web hosting requirements tutorial[/page]. Composr is designed to run well on almost all web hosts.
+We feel Linux is more suited for PHP purposes than Windows. Composr will work fine on Windows, however setting file permissions remotely can be very tricky and non-standard between different Windows servers. So: Linux by default, but Windows if you already have a Windows architecture.
 
 [title="3"]Does Composr support (some forum vendor and version)?[/title]
 
@@ -364,10 +357,6 @@ The [tt]from[/tt] address (different to the 'reply address' you see when you cli
 
 [title="2"]Common usage queries[/title]
 
-[title="3"]How do I change the header text (title bar text) away from 'A site about Composr-?'?[/title]
-
-In order to change the Composr header text that is shown in page titles, you must choose to edit zones from the Admin Zone. This is because header text is defined on a per-zone basis, rather than globally. To change the text regular visitors see, edit the Welcome and Site Zones.
-
 [title="3"]What are catalogues?[/title]
 
 Catalogues holds structured records of data. The system is extremely powerful, as the staff can create new catalogues with any structure of their choosing. The default FAQ page on a Composr install is a catalogue.
@@ -429,6 +418,17 @@ This is a common misunderstanding. It is actually the documented PHP best practi
 
 We do use a lot of OOP in Composr, but a lot of the general library code is not in classes. Some programmers will strongly disagree with this way of coding, but it is done for performance reasons and productivity reasons. For a number of reasons, heavy use of OOP adds performance costs to a dynamic language like PHP (code parse time, memory usage, and execution time). Software like the Linux kernel or Wordpress don't use much OOP at all, and are wildly successful. We go into more detail about the reasonings behind these conscious engineering decisions in the Code Book.
 
+[title="3"]How can I automatically install hotfixes?[/title]
+
+Hotfixes are not supposed to be installed unless you really need them.
+
+Some rough figures:
+We perhaps change 200 things with each patch release, and perhaps make 30 hotfixes, and expect individual users may need to install perhaps 2 of those hotfixes.
+
+On the tracker issues it says "These hotfixes are not necessarily reliable or well supported", which is the truth. We don't necessarily spend more than 2 minutes testing out a hotfix. We don't go testing out how different combinations of them might interact. We don't know how they might interact with different combinations of addons people may have installed. We don't run through our test suite. And, we don't particularly want to be trying to debug issues for non-versioned versions of Composr. They are just there as a band-aid for people with immediate issues.
+
+So, please don't go installing all of them, it'll hurt you more than it will help you, and it's not expected. Just install a hotfix if you are being affected by a specific issue and keep up with the official patch releases.
+
 [title="2"]Themes/Appearance[/title]
 
 [title="3"]How do I change (some aspect of Composr's appearance)?[/title]
@@ -477,17 +477,6 @@ If you [i]don't[/i] have the WYSIWYG editor enabled:
 
 If you have the WYSIWYG editor enabled:
 [indent]There is a button on the editor's toolbar to toggle HTML source viewing mode. When inside the HTML source viewing mode you can paste in your HTML directly.[/indent]
-
-[title="3"]How can I automatically install hotfixes?[/title]
-
-Hotfixes are not supposed to be installed unless you really need them.
-
-Some rough figures:
-We perhaps change 200 things with each patch release, and perhaps make 30 hotfixes, and expect individual users may need to install perhaps 2 of those hotfixes.
-
-On the tracker issues it says "These hotfixes are not necessarily reliable or well supported", which is the truth. We don't necessarily spend more than 2 minutes testing out a hotfix. We don't go testing out how different combinations of them might interact. We don't know how they might interact with different combinations of addons people may have installed. We don't run through our test suite. And, we don't particularly want to be trying to debug issues for non-versioned versions of Composr. They are just there as a band-aid for people with immediate issues.
-
-So, please don't go installing all of them, it'll hurt you more than it will help you, and it's not expected. Just install a hotfix if you are being affected by a specific issue and keep up with the official patch releases.
 
 [title="3"]Why are [tt]em[/tt] units used rather than [tt]pt[/tt] units?[/title]
 

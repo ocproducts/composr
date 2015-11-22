@@ -152,6 +152,29 @@ You can find the post ID from above (before) the post in the topicview.
 10_key="home forum"         10_value="The forum at the root of the forum tree structure"
 ]Concepts[/concepts]
 
+[title="2"]Conversr versus other forum software[/title]
+
+Conversr was designed to be a powerful forum in its own right.
+
+Here are some features we have in Conversr that are mostly unique across forum software:
+ - Blind polls (results hidden until voting ends)
+ - Private topics, rather than primitive private messages
+ - Inline private posts (private messages embedded in public forum topics, so people can make private remarks to each other)
+ - Forum introduction questions (a much more general concept than the silly 'password protected' forums, which duplicate what usergroup permissions are for)
+ - True tree structure for forum, and cascading topics that can show as pinned just for a subtree (e.g. have a pinned topic under all the 'Games' forums, but not under the 'Politics' forums)
+ - Sinking topics (the opposite of pinning)
+ - Reported post forum (so moderators can discuss reported posts as part of their normal forum workflow, rather than them being stored elsewhere)
+ - Clubs (so members can create their own usergroups and forums)
+ - Javascript overlay for profile info next to posts, rather than having repetitive information placed everywhere
+ - Integrated moderation function (no separate modcp needed)
+ - Post history (so you can see if people edited old posts in a debate for example)
+ - Welcome messages (so you can define a series of mailings to welcome new members)
+ - Important posts (a moderator can highlight a post in a topic to make a clear point)
+ - Post templates (so the forum can be used like a help desk)
+ - Integrated rank/usergroup system (because having rank and usergroup separate just gets confusing)
+
+Since the time of Conversr's development, standalone forums have actually reduced a lot in popularity, for the same reasons that we decided tight integration was the way to go -- a consistent user experience across a whole website is the way to go, instead of having community features mostly siloed off on some separate piece of software. That ended up being called 'Web 2.0' and then 'Social media', but it basically is what Composr's philosophy always has been: an interactive and integrated cross-website experience. However most "new forums", written from scratch to provide this tight integration, are cut down in functionality and lack a lot of really important features, whilst we've matched and raised the functionality at the same time as properly integrating it. This is one thing we're quite proud of about with Composr: we don't just throw away proven functionality to create the new, we embrace established concepts and build industry innovations right into the core of it all.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_support_desk"]Running a virtual support desk[/page]
