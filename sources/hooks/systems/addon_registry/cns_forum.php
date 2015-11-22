@@ -338,6 +338,7 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/config/is_on_topic_emoticons.php',
             'sources/hooks/systems/config/is_on_post_titles.php',
             'sources/hooks/systems/config/is_on_anonymous_posts.php',
+            'sources/hooks/systems/config/force_guest_names.php',
             'sources/hooks/systems/config/forced_preview_option.php',
             'sources/hooks/systems/config/forum_posts_per_page.php',
             'sources/hooks/systems/config/forum_topics_per_page.php',

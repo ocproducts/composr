@@ -27,10 +27,10 @@
 function cns_get_safe_specified_poster_name($is_required_field = null)
 {
     if ($is_required_field === null) {
-        $is_required_field = (get_value('force_guest_names') === '1');
+        $is_required_field = (get_option('force_guest_names') === '1');
     }
 
-    if ((get_value('force_guest_names') === '1') && (is_guest())) {
+    if ((get_option('force_guest_names') === '1') && (is_guest())) {
         $poster_name_if_guest = post_param_string('poster_name_if_guest');
     } else {
         $poster_name_if_guest = post_param_string('poster_name_if_guest', null);
