@@ -642,7 +642,9 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 
             // Probation
             if (has_privilege(get_member(), 'probate_members')) {
-                $fields->attach(form_input_date(do_lang_tempcode('ON_PROBATION_UNTIL'), do_lang_tempcode('DESCRIPTION_ON_PROBATION_UNTIL'), 'on_probation_until', false, is_null($on_probation_until) || $on_probation_until <= time(), true, $on_probation_until, 2));
+                if ((!is_null($member_id)) && ($member_id != get_member())) { // Can't put someone new on probation, and can't put yourself on probation
+                    $fields->attach(form_input_date(do_lang_tempcode('ON_PROBATION_UNTIL'), do_lang_tempcode('DESCRIPTION_ON_PROBATION_UNTIL'), 'on_probation_until', false, is_null($on_probation_until) || $on_probation_until <= time(), true, $on_probation_until, 2));
+                }
             }
 
             // Primary usergroup
