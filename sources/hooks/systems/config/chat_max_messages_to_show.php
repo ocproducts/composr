@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_chat_transitory_alert_time
+class Hook_config_chat_max_messages_to_show
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_chat_transitory_alert_time
     public function get_details()
     {
         return array(
-            'human_name' => 'CHAT_TRANSITORY_ALERT_TIME',
+            'human_name' => 'CHAT_MAX_MESSAGES_TO_SHOW',
             'type' => 'integer',
             'category' => 'FEATURE',
             'group' => 'SECTION_CHAT',
-            'explanation' => 'CONFIG_OPTION_chat_transitory_alert_time',
+            'explanation' => 'CONFIG_OPTION_chat_max_messages_to_show',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
@@ -50,6 +50,6 @@ class Hook_config_chat_transitory_alert_time
      */
     public function get_default()
     {
-        return '7000';
+        return '50';
     }
 }

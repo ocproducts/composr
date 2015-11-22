@@ -32,9 +32,8 @@ function init__chat()
     $EFFECT_SETTINGS_ROWS = null;
 
     if (!defined('CHAT_ACTIVITY_PRUNE')) {
-        define('CHAT_ACTIVITY_PRUNE', 25); // NB: This define is duplicated in chat_poller.php for performance
-        define('CHAT_BACKLOG_TIME', 60 * 5); // 5 minutes of messages if you enter an existing room
-        define('CHAT_EVENT_PRUNE', 60 * 60 * 24);
+        define('CHAT_ACTIVITY_PRUNE', 25); // How many seconds before doing database cleanup operations. NB: This define is duplicated in chat_poller.php for performance
+        define('CHAT_EVENT_PRUNE', 60 * 60 * 24); // How many seconds to keep event messages for
     }
 }
 
@@ -440,11 +439,9 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
 
     if (!$backlog) {
         $from_id = $message_id;
-    } else {
-        $start = time() - CHAT_BACKLOG_TIME;
     }
 
-    $messages = ($room_id == -2) ? array() : chat_get_room_content($room_id, $room_check, 20, false, false, $start, null, $from_id, null, $welcome, true, get_param_integer('no_reenter_message', 0) == 0);
+    $messages = ($room_id == -2) ? array() : chat_get_room_content($room_id, $room_check, intval(get_option('chat_max_messages_to_show')), false, false, $start, null, $from_id, null, $welcome, true, get_param_integer('no_reenter_message', 0) == 0);
     $stored_id = (array_key_exists(0, $messages)) ? $messages[0]['id'] : null;
 
     $messages_output = '';
@@ -747,7 +744,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
     if ($message == '') {
         $return = '0';
     } else {
-        if (chat_post_message($room_id, $message, $font, $colour, 60)) {
+        if (chat_post_message($room_id, $message, $font, $colour)) {
             $return = '1';
         } else {
             $return = '0';
@@ -1102,14 +1099,13 @@ function chat_get_all_rooms()
 }
 
 /**
- * Get a multidimensional array of the content of the specified chatroom. It automatically parses for Comcode, chatcode, banned words, emoticons, and uses complex logic to decide whether or not to show each message; based upon who the member is, the message content, and other such inputs.
- * If you set the $dereference flag, all the messages will be dereferenced for you, and if you set the $downloading flag, the array is returned in a format appropriate for things like downloading the chat logs.
- * $start and $finish are used to cutoff the number of messages returned, based on their posting date and time, and the $uptoid variable is used to make the function only return the messages newer than the ID specified.
+ * Get a multidimensional array of the content of the specified chatroom.
+ * It automatically parses for Comcode, chatcode, banned words, emoticons, and uses complex logic to decide whether or not to show each message; based upon who the member is, the message content, and other such inputs.
  *
  * @param  AUTO_LINK $room_id The room ID (-1 for IM)
  * @param  array $_rooms Rooms database rows that we'll need
- * @param  ?integer $cutoff The maximum number of messages to be returned (null: no maximum)
- * @param  boolean $dereference Whether to dereference the returned messages
+ * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
+ * @param  boolean $dereference Whether to dereference the returned messages (i.e. lookup the language strings)
  * @param  boolean $downloading Whether to return the messages in a downloadeable format (using the templates for log downloading)
  * @param  ?integer $start The datetime stamp to start gathering messages from (null: all)
  * @param  ?integer $finish The datetime stamp to stop gathering messages at (null: current time)
@@ -1120,7 +1116,7 @@ function chat_get_all_rooms()
  * @param  boolean $return_system_messages Return system messages
  * @return array An array of all the messages collected according to the search criteria
  */
-function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference = false, $downloading = false, $start = null, $finish = null, $uptoid = null, $zone = null, $entering_room = null, $return_my_messages = true, $return_system_messages = true)
+function chat_get_room_content($room_id, $_rooms, $max_messages = null, $dereference = false, $downloading = false, $start = null, $finish = null, $uptoid = null, $zone = null, $entering_room = null, $return_my_messages = true, $return_system_messages = true)
 {
     if (is_null($zone)) {
         $zone = get_module_zone('chat');
@@ -1225,13 +1221,13 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
         }
         $query .= (($where == '') ? '' : ' WHERE ' . $where) . ' ORDER BY date_and_time DESC,id DESC';
         global $TABLE_LANG_FIELDS_CACHE;
-        $rows = $GLOBALS['SITE_DB']->query($query, $cutoff, null, false, false, array_key_exists('chat_messages', $TABLE_LANG_FIELDS_CACHE) ? $TABLE_LANG_FIELDS_CACHE['chat_messages'] : array());
+        $rows = $GLOBALS['SITE_DB']->query($query, $max_messages, null, false, false, array_key_exists('chat_messages', $TABLE_LANG_FIELDS_CACHE) ? $TABLE_LANG_FIELDS_CACHE['chat_messages'] : array());
     } else {
         $where_array = array('room_id' => $room_id);
         if (!$return_system_messages) {
             $where_array['system_message'] = 0;
         }
-        $rows = $GLOBALS['SITE_DB']->query_select('chat_messages', array('*'), $where_array, 'ORDER BY date_and_time DESC,id DESC', $cutoff);
+        $rows = $GLOBALS['SITE_DB']->query_select('chat_messages', array('*'), $where_array, 'ORDER BY date_and_time DESC,id DESC', $max_messages);
     }
     $rows = array_reverse($rows);
 
@@ -1260,7 +1256,7 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
                 $pm_matches = array();
                 if (preg_match_all('#\[' . $tag . '=&quot;([^&]*)&quot;\]([^\[]*)\[/' . $tag . '\]#', $text, $pm_matches) != 0) { // The quotes will have been escaped to put into HTML; thus &quot;
                     foreach (array_keys($pm_matches[0]) as $key) {
-                        $returns = _deal_with_chatcode_tags($text, $tag, $pm_matches[1][$key], $pm_matches[2][$key], $rows[$i]['username'], $cutoff, $zone, $rows[$i]['room_id'], $rows[$i]['system_message']);
+                        $returns = _deal_with_chatcode_tags($text, $tag, $pm_matches[1][$key], $pm_matches[2][$key], $rows[$i]['username'], $max_messages, $zone, $rows[$i]['room_id'], $rows[$i]['system_message']);
 
                         $pm_message_deleted = ($returns['pm_message_deleted']);
                         if ($pm_message_deleted) {
@@ -1294,18 +1290,18 @@ function chat_get_room_content($room_id, $_rooms, $cutoff = null, $dereference =
  * @param  string $pm_user 1st param
  * @param  string $pm_message 2nd param
  * @param  SHORT_TEXT $username The username of who made this chatcode
- * @param  ?integer $cutoff The maximum number of messages to be returned (null: no maximum)
+ * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
  * @param  ID_TEXT $zone The zone that our chat module is in
  * @param  AUTO_LINK $room_id The room ID the message is in
  * @param  BINARY $system_message Whether this is within a system message
  * @return array A pair: whether the message was deleted, and the new text of the message
  * @ignore
  */
-function _deal_with_chatcode_tags($text, $tag, $pm_user, $pm_message, $username, $cutoff, $zone, $room_id, $system_message)
+function _deal_with_chatcode_tags($text, $tag, $pm_user, $pm_message, $username, $max_messages, $zone, $room_id, $system_message)
 {
     switch ($tag) {
         case 'newroom':
-            return _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $cutoff);
+            return _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $max_messages);
         case 'invite':
             return _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zone);
         case 'private':
@@ -1425,11 +1421,11 @@ function _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zo
  * @param  string $pm_message Comma-separated list of members to allow in
  * @param  SHORT_TEXT $username The username of who made this chatcode
  * @param  string $text The text we are using
- * @param  ?integer $cutoff The maximum number of messages to be returned (null: no maximum)
+ * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
  * @return array A pair: whether the message was deleted, and the new text of the message
  * @ignore
  */
-function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $cutoff)
+function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $max_messages)
 {
     $pm_message_deleted = false;
     if (!has_privilege(get_member(), 'create_private_room')) {
@@ -1439,7 +1435,7 @@ function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $c
     // This deals with the [newroom="roomname"]allowlist[/newroom] tag
     // We need to send invitations to all the people on the allow list
     // Create the room if it hasn't already been created
-    $_row = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('room_name' => $pm_user), '', $cutoff);
+    $_row = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('room_name' => $pm_user), '', $max_messages);
     if (!array_key_exists(0, $_row)) {
         $new_room_id = $GLOBALS['SITE_DB']->query_insert('chat_rooms', array('is_im' => 0, 'room_name' => $pm_user, 'room_owner' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($username), 'allow_list' => parse_allow_list_input($pm_message), 'disallow_list' => '', 'allow_list_groups' => '', 'disallow_list_groups' => '', 'room_language' => user_lang()) + insert_lang('c_welcome', '', 3), true);
         $rooms = chat_get_all_rooms();
