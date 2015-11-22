@@ -118,6 +118,13 @@ class Module_report_content
     {
         require_code('form_templates');
 
+        require_code('cns_forums');
+
+        $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
+        if (is_null($forum_id)) {
+            warn_exit(do_lang_tempcode('cns:NO_REPORTED_POST_FORUM'));
+        }
+
         $url = get_param_string('url', false, true);
         $content_type = get_param_string('content_type'); // Equates to a content_meta_aware hook
         $content_id = get_param_string('content_id');
@@ -157,7 +164,7 @@ class Module_report_content
         $specialisation = new Tempcode();
         if (!is_guest()) {
             $options = array();
-            if (get_option('is_on_anonymous_posts') == '1') {
+            if (cns_forum_allows_anonymous_posts($forum_id)) {
                 $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
             }
             $specialisation = form_input_various_ticks($options, '');
@@ -215,9 +222,6 @@ class Module_report_content
 
         // Create reported post...
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
-        if (is_null($forum_id)) {
-            warn_exit(do_lang_tempcode('cns:NO_REPORTED_POST_FORUM'));
-        }
         // See if post already reported...
         $post = post_param_string('post');
         $anonymous = post_param_integer('anonymous', 0);

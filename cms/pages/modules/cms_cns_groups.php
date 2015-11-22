@@ -303,7 +303,8 @@ class Module_cms_cns_groups extends Standard_crud_module
             }
         }
         $is_threaded = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_is_threaded', array('id' => $forum));
-        $forum_id = cns_make_forum($name, do_lang('FORUM_FOR_CLUB', $name), $cat, $access_mapping, $forum, 1, 1, 0, '', '', '', 'last_post', $is_threaded);
+        $allows_anonymous_posts = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_allows_anonymous_posts', array('id' => $forum));
+        $forum_id = cns_make_forum($name, do_lang('FORUM_FOR_CLUB', $name), $cat, $access_mapping, $forum, 1, 1, 0, '', '', '', 'last_post', $is_threaded, $allows_anonymous_posts);
         $this->_set_permissions($id, $forum_id);
 
         require_code('cns_groups_action2');

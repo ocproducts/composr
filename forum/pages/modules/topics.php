@@ -1657,7 +1657,7 @@ class Module_topics
                     $options[] = array(do_lang_tempcode('SKIP_SIGNATURE'), 'skip_sig', false, do_lang_tempcode('DESCRIPTION_SKIP_SIGNATURE'));
                 }
             }
-            if (get_option('is_on_anonymous_posts') == '1') {
+            if (cns_forum_allows_anonymous_posts($forum_id)) {
                 $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
             }
         }
@@ -1910,7 +1910,7 @@ class Module_topics
                     $options[] = array(do_lang_tempcode('SKIP_SIGNATURE'), 'skip_sig', false, do_lang_tempcode('DESCRIPTION_SKIP_SIGNATURE'));
                 }
             }
-            if (get_option('is_on_anonymous_posts') == '1') {
+            if (cns_forum_allows_anonymous_posts($forum_id)) {
                 $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
             }
         }
@@ -2102,10 +2102,15 @@ class Module_topics
 
         url_default_parameters__enable();
 
+        $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
+        if (is_null($forum_id)) {
+            warn_exit(do_lang_tempcode('cns:NO_REPORTED_POST_FORUM'));
+        }
+
         $hidden_fields = new Tempcode();
         if (!is_guest()) {
             $options = array();
-            if (get_option('is_on_anonymous_posts') == '1') {
+            if (cns_forum_allows_anonymous_posts($forum_id)) {
                 $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
             }
             $specialisation = form_input_various_ticks($options, '');
@@ -2262,6 +2267,14 @@ class Module_topics
             $meta_data = actual_meta_data_get_fields('topic', null, array('submitter', 'add_time', 'edit_time'));
 
             if ($forum_id == -1) { // New Private Topic
+                if ($anonymous == 1) {
+                    if (cns_forum_allows_anonymous_posts(null)) {
+                        $poster_name_if_guest = null;
+                    } else {
+                        $anonymous = 0;
+                    }
+                }
+
                 $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), get_member(), $member_id, true, $meta_data['views']);
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } elseif ($forum_id == -2) { // New reported post topic
@@ -2272,6 +2285,14 @@ class Module_topics
                 $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
                 if (is_null($forum_id)) {
                     warn_exit(do_lang_tempcode('NO_REPORTED_POST_FORUM'));
+                }
+
+                if ($anonymous == 1) {
+                    if (cns_forum_allows_anonymous_posts($forum_id)) {
+                        $poster_name_if_guest = null;
+                    } else {
+                        $anonymous = 0;
+                    }
                 }
 
                 // See if post already reported...
@@ -2289,6 +2310,14 @@ class Module_topics
 
                 $is_reported_post = true;
             } else { // New topic
+                if ($anonymous == 1) {
+                    if (cns_forum_allows_anonymous_posts($forum_id)) {
+                        $poster_name_if_guest = null;
+                    } else {
+                        $anonymous = 0;
+                    }
+                }
+
                 $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $meta_data['views']);
                 $_title = get_screen_title('ADD_TOPIC');
 

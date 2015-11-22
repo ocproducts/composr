@@ -190,9 +190,10 @@ class Module_admin_cns_forums extends Standard_crud_module
      * @param  SHORT_TEXT $redirection Redirection code (blank implies a normal forum, not a redirector)
      * @param  ID_TEXT $order The order the topics are shown in, by default.
      * @param  BINARY $is_threaded Whether the forum is threaded.
+     * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($id = null, $name = '', $description = '', $forum_grouping_id = null, $parent_forum = null, $position = null, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0)
+    public function get_form_fields($id = null, $name = '', $description = '', $forum_grouping_id = null, $parent_forum = null, $position = null, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 1)
     {
         if (is_null($forum_grouping_id)) {
             $forum_grouping_id = get_param_integer('forum_grouping_id', db_get_first_id());
@@ -234,7 +235,8 @@ class Module_admin_cns_forums extends Standard_crud_module
         $list->attach(form_input_list_entry('title', $order == 'title', do_lang_tempcode('FORUM_ORDER_BY_TITLE')));
         $fields->attach(form_input_list(do_lang_tempcode('TOPIC_ORDER'), do_lang_tempcode('DESCRIPTION_TOPIC_ORDER'), 'order', $list));
         $fields->attach(form_input_tick(do_lang_tempcode('IS_THREADED'), do_lang_tempcode('DESCRIPTION_IS_THREADED'), 'is_threaded', $is_threaded == 1));
-
+        $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
+    
         $fields->attach(meta_data_get_fields('forum', is_null($id) ? null : strval($id)));
 
         if (addon_installed('content_reviews')) {
@@ -516,7 +518,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         }
         $r = $m[0];
 
-        $fields = $this->get_form_fields($r['id'], $r['f_name'], get_translated_text($r['f_description'], $GLOBALS['FORUM_DB']), $r['f_forum_grouping_id'], $r['f_parent_forum'], $r['f_position'], $r['f_post_count_increment'], $r['f_order_sub_alpha'], get_translated_text($r['f_intro_question'], $GLOBALS['FORUM_DB']), $r['f_intro_answer'], $r['f_redirection'], $r['f_order'], $r['f_is_threaded']);
+        $fields = $this->get_form_fields($r['id'], $r['f_name'], get_translated_text($r['f_description'], $GLOBALS['FORUM_DB']), $r['f_forum_grouping_id'], $r['f_parent_forum'], $r['f_position'], $r['f_post_count_increment'], $r['f_order_sub_alpha'], get_translated_text($r['f_intro_question'], $GLOBALS['FORUM_DB']), $r['f_intro_answer'], $r['f_redirection'], $r['f_order'], $r['f_is_threaded'], $r['f_allows_anonymous_posts']);
 
         $delete_fields = new Tempcode();
         if (intval($id) != db_get_first_id()) {
@@ -544,7 +546,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('forum', null);
 
-        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_integer('position'), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('order'), post_param_integer('is_threaded', 0)));
+        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_integer('position'), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
 
         set_url_moniker('forum', $id);
 
@@ -603,7 +605,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     {
         $meta_data = actual_meta_data_get_fields('forum', $id);
 
-        cns_edit_forum(intval($id), post_param_string('name'), post_param_string('description', STRING_MAGIC_NULL), post_param_integer('forum_grouping_id', INTEGER_MAGIC_NULL), post_param_integer('parent_forum', INTEGER_MAGIC_NULL), post_param_integer('position', INTEGER_MAGIC_NULL), post_param_integer('post_count_increment', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_string('intro_question', STRING_MAGIC_NULL), post_param_string('intro_answer', STRING_MAGIC_NULL), post_param_string('redirection', STRING_MAGIC_NULL), post_param_string('order', STRING_MAGIC_NULL), post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('reset_intro_acceptance', 0) == 1);
+        cns_edit_forum(intval($id), post_param_string('name'), post_param_string('description', STRING_MAGIC_NULL), post_param_integer('forum_grouping_id', INTEGER_MAGIC_NULL), post_param_integer('parent_forum', INTEGER_MAGIC_NULL), post_param_integer('position', INTEGER_MAGIC_NULL), post_param_integer('post_count_increment', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_string('intro_question', STRING_MAGIC_NULL), post_param_string('intro_answer', STRING_MAGIC_NULL), post_param_string('redirection', STRING_MAGIC_NULL), post_param_string('order', STRING_MAGIC_NULL), post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('allows_anonymous_posts', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('reset_intro_acceptance', 0) == 1);
 
         if (!fractional_edit()) {
             require_code('cns_groups2');

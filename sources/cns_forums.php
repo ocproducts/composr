@@ -361,3 +361,17 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
 
     return $out;
 }
+
+/**
+ * Whether a forum supports anonymous posts.
+ *
+ * @param  ?AUTO_LINK $forum_id The ID of the forum (null: private topics).
+ * @return boolean Whether it does.
+ */
+function cns_forum_allows_anonymous_posts($forum_id)
+{
+    if (is_null($forum_id)) {
+        return (get_option('is_on_anonymous_posts') == '1');
+    }
+    return ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_allows_anonymous_posts', array('id' => $forum_id)) === 1);
+}

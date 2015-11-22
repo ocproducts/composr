@@ -249,6 +249,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->drop_table_if_exists('f_topic_tracking');
     }
     if ((is_null($upgrade_from)) || ($upgrade_from < 10.0)) {
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('allows_anonymous_posts')));
+
         $GLOBALS['FORUM_DB']->create_table('f_group_join_log', array(
             'id' => '*AUTO',
             'member_id' => 'MEMBER',
@@ -638,6 +640,7 @@ function install_cns($upgrade_from = null)
             'f_redirection' => 'SHORT_TEXT',
             'f_order' => 'ID_TEXT',
             'f_is_threaded' => 'BINARY',
+            'f_allows_anonymous_posts' => 'BINARY',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'cache_num_posts', array('f_cache_num_posts')); // Used to find active forums
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'subforum_parenting', array('f_parent_forum'));

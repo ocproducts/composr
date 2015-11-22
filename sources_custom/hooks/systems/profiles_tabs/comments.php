@@ -54,8 +54,13 @@ class Hook_profiles_tabs_comments
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
         if (is_null($forum_id)) {
             require_code('cns_forums_action');
+
             $forum_grouping_id = $GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'MIN(id)');
-            $forum_id = cns_make_forum($forum_name, '', $forum_grouping_id, array(), db_get_first_id()/*parent*/, 20/*position*/, 1, 1, '', '', '', 'last_post', 1/*is threaded*/);
+
+            $val = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'AVG(f_allows_anonymous_posts)');
+            $allows_anonymous_posts = is_null($val) ? 1 : intval(round($val));
+
+            $forum_id = cns_make_forum($forum_name, '', $forum_grouping_id, array(), db_get_first_id()/*parent*/, 20/*position*/, 1, 1, '', '', '', 'last_post', 1/*is threaded*/, $allows_anonymous_posts);
         }
 
         // The member who 'owns' the tab should be receiving notifications
