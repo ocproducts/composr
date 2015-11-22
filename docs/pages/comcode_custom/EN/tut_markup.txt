@@ -1106,6 +1106,9 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://w3.org
  - http://caniuse.com/
  - https://status.modern.ie/
+ - http://webdesign.about.com/
+ - https://www.udemy.com/how-to-become-a-web-developer-from-scratch
+ - https://teamtreehouse.com/
 
 [title="3"]XHTML tools/references[/title]
 
@@ -1123,25 +1126,43 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://www.yourhtmlsource.com/
  - http://www.html.net/
  - http://www.tizag.com/
- - http://www.w3schools.com/xhtml/default.asp
+ - http://www.w3schools.com/css/default.asp
+ - http://www.blooberry.com/indexdot/css/propindex/all.htm
  - http://www.westciv.com/style_master/house/index.html
- - http://www.eskimo.com/~bloo/indexdot/css/index.html
  - http://www.alistapart.com/
+ - http://enjoycss.com/start/
+ - http://www.skybound.ca/
+ - http://www.layerstyles.org/builder.html
+ - http://foundation.zurb.com/
+ - http://getbootstrap.com/
+ - http://engineering.appfolio.com/2012/11/16/css-architecture/
 
 [title="3"]JavaScript tools/references[/title]
 
  - http://www.tizag.com/
  - http://javascriptkit.com/
- - http://www.mozilla.org/docs/dom/technote/tn-dom-table/
- - http://www.quirksmode.org/js/
+ - https://developer.mozilla.org/en-US/docs/Web/JavaScript
  - http://www.devguru.com/technologies/javascript/home.asp
  - http://www.w3schools.com/js/default.asp
  - http://www.w3schools.com/htmldom/default.asp
  - http://www.w3schools.com/dhtml/default.asp
  - http://www.w3schools.com/dom/default.asp
- - http://www.adaptivepath.com/publications/essays/archives/000385.php
- - http://www.mozilla.org/docs/dom/domref/dom_shortIX.html
+ - https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+
+Some cool effects:
  - http://www.smashingmagazine.com/2008/09/11/75-really-useful-javascript-techniques/
+ - http://www.turnjs.com/
+ - http://www.chartjs.org/
+ - http://git.aaronlumsden.com/progression/
+ - http://inorganik.github.io/countUp.js/
+ - http://www.zachleat.com/web/bigtext-makes-text-big/
+ - http://freqdec.github.io/slabText/
+ - http://tympanus.net/Tutorials/3DHoverEffects/
+ - http://isotope.metafizzy.co/
+
+[title="2"]Miscellaneous[/title]
+
+ - http://uitest.com/
 
 [concepts
  1_key="XML"                  1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"

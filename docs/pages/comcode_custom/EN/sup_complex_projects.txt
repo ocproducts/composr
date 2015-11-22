@@ -53,6 +53,7 @@ I hope I haven't crushed too many people's dreams. I want to re-iterate that Com
 
 [title="2"]See also[/title]
 
+ - http://caseysoftware.com/blog/so-you-want-to-build-an-app
  - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
  - [page="_SEARCH:sup_pricing"]Project pricing[/page]
 
