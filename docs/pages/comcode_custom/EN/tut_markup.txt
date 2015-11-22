@@ -1148,6 +1148,7 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://www.w3schools.com/dhtml/default.asp
  - http://www.w3schools.com/dom/default.asp
  - https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+ - https://jquery.com/
 
 Some cool effects:
  - http://www.smashingmagazine.com/2008/09/11/75-really-useful-javascript-techniques/
