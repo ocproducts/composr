@@ -11,7 +11,7 @@ var last_timestamp=0;
 var last_event_id=-1;
 var message_checking=false;
 var no_im_html='';
-var picker,picker_node,text_colour;
+var text_colour;
 var opened_popups={};
 var load_from_room_id=null;
 var already_received_room_invites={};
@@ -117,9 +117,6 @@ function hex_to_dec(number)
 
 function update_picker_colour()
 {
-	window.picker.setValue([hex_to_dec(window.text_colour.value.substr(1,2)),hex_to_dec(window.text_colour.value.substr(3,2)),hex_to_dec(window.text_colour.value.substr(5,2))],false);
-	window.picker_node.style.left=find_pos_x(window.text_colour)+'px';
-	window.picker_node.style.top=(find_pos_y(window.text_colour)+25)+'px';
 }
 
 function chat_on_rgb_change(o)

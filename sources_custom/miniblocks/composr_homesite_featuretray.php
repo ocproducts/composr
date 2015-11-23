@@ -114,6 +114,7 @@ $featuretree = array(
                 array('Show different banners to different usergroups'),
                 array('Track banner performance'),
                 array('Use the banner system to display whole sets of sponsor logos'),
+                array('Geotargetting'),
             ),
         ),
         'search' => array(
@@ -287,6 +288,7 @@ $featuretree = array(
                 array('Priority flagging'),
                 array('Programmers can even use the calendar to schedule website cronjobs'),
                 array('<abbr title="Really Simple Syndication">RSS</abbr> and Atom support', 'Export support, but also support for overlaying news feeds onto the calendar'),
+                array('Geotargetting'),
             ),
         ),
         'news' => array(
@@ -303,6 +305,7 @@ $featuretree = array(
                 array('Multiple ways to integrate news into your website'),
                 array('Import from RSS feeds <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of News" href="http://shareddemo.composr.info/cms/index.php?page=cms_news"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Easily syndicate to Facebook and Twitter'),
+                array('Geotargetting'),
             ),
         ),
         'quizzes' => array(
@@ -331,6 +334,7 @@ $featuretree = array(
                 array('Automatic thumbnail generation'),
                 array('Import and export easily', 'With <kbd>.zip</kbd> and metadata support'),
                 array('Optional watermarking', 'To guard against thieving swines ;)'),
+                array('Geotargetting'),
             ),
         ),
         'downloads' => array(

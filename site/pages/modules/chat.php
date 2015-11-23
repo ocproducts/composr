@@ -612,6 +612,7 @@ class Module_chat
             //'url', Bloat
             'thumb',
             //'email', Bloat
+            'quote',
             'code',
             'hide'
         );

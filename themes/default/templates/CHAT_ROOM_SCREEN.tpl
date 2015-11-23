@@ -60,6 +60,8 @@
 </p></div>
 
 <form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window" onsubmit="return check_chat_options(this);" method="post" action="{OPTIONS_URL*}">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div class="box box___chat_screen_options box_prominent"><div class="box_inner">
 		<h2>{!OPTIONS}</h2>
 
@@ -74,7 +76,7 @@
 						<label for="text_colour">{!CHAT_OPTIONS_COLOUR_NAME}:</label>
 					</p>
 					<p>
-						<input size="10" maxlength="7" class="input_line_required" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}{TEXT_COLOUR_DEFAULT*}{+END}" onchange="if (this.form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) { this.style.color=this.value; document.getElementById('colour').value=this.value; update_picker_colour(); }" />
+						<input size="10" maxlength="7" class="input_line_required" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}#{TEXT_COLOUR_DEFAULT*}{+END}" onchange="if (this.form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) { this.style.color=this.value; document.getElementById('colour').value=this.value; update_picker_colour(); }" />
 					</p>
 				</div>
 

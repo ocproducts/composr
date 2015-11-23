@@ -266,7 +266,7 @@ function do_input_code(field_name)
 
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
-	insert_textbox_wrapping(post,'codebox','');
+	insert_textbox_wrapping(post,(post.name=='message')?'tt':'codebox','');
 }
 
 function do_input_quote(field_name)
@@ -413,7 +413,7 @@ function do_input_hide(field_name)
 						element=ensure_true_id(element,field_name);
 						if (vb)
 						{
-							insert_textbox(element,'<hide><hideTitle>'+va+'</hideTitle>'+escape_html(vb)+'</hide>');
+							insert_textbox(element,'[hide=\"'+escape_comcode(va)+'\"]'+escape_comcode(vb)+'[/hide]');
 						}
 					},
 					'{!comcode:INPUT_COMCODE_hide;^}'
@@ -428,7 +428,7 @@ function do_input_thumb(field_name,va)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 
-	if (typeof window.start_simplified_upload!='undefined')
+	if (typeof window.start_simplified_upload!='undefined' && document.getElementById(field_name).name!='message')
 	{
 		var test=start_simplified_upload(field_name);
 		if (test) return;
@@ -441,8 +441,10 @@ function do_input_thumb(field_name,va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}');
-				return do_input_thumb(field_name,va);
+				window.fauxmodal_alert('{!NOT_A_URL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va)
@@ -450,7 +452,7 @@ function do_input_thumb(field_name,va)
 				generate_question_ui(
 					'{!THUMB_OR_IMG_2;^}',
 					{buttons__thumbnail: '{!THUMBNAIL;^}',buttons__fullsize: '{!IMAGE;^}'},
-					'{!_ATTACHMENT;^}',
+					'{!comcode:INPUT_COMCODE_img;^}',
 					null,
 					function(vb)
 					{
@@ -473,8 +475,7 @@ function do_input_thumb(field_name,va)
 							},
 							'{!comcode:INPUT_COMCODE_img;^}'
 						);
-					},
-					'{!comcode:INPUT_COMCODE_img;^}'
+					}
 				);
 			}
 		},
@@ -516,8 +517,10 @@ function do_input_url(field_name,va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}');
-				return do_input_url(field_name,va);
+				window.fauxmodal_alert('{!NOT_A_URL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va!==null)
@@ -621,8 +624,10 @@ function do_input_email(field_name,va)
 		{
 			if ((va!=null) && (va.indexOf('@')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_EMAIL;^}');
-				return do_input_email(field_name,va);
+				window.fauxmodal_alert('{!NOT_A_EMAIL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va!==null)

@@ -56,8 +56,8 @@ Chatcode allows users to do some advanced things via coded embedded within messa
 Documentation for Chatcode (including example commands) is provided in the "Chatcode help" page within your own Composr site, but in summary users can:
 1) [b]Send private messages[/b]. Embed messages targeted toward specific members within your wider public message.
 2) [b]Talk to bots[/b]. Send messages directly to bots coded up to respond only to direct messages.
-3) [b]Send room invitations[/b]. Invitations act in much the same way as private messages, apart from the fact that they can be sent to multiple people at once, and their display format is designed specifically for displaying a link to a chatroom -- it displays a fixed message, and a link. Invitations should not be used in conjunction with IM conversations -- they are intended only for inviting people active in chatrooms in to other chatrooms.
-4) [b]Create new rooms[/b]. The room that you create will belong to the message poster, and only people on the allow list and message poster will be allowed into it. All the people on the allow list will automatically have invitations to enter the new room sent to them.
+3) [b]Send room invitations[/b] (advanced). Invitations act in much the same way as private messages, apart from the fact that they can be sent to multiple people at once, and their display format is designed specifically for displaying a link to a chatroom -- it displays a fixed message, and a link. Invitations should not be used in conjunction with IM conversations -- they are intended only for inviting people active in chatrooms in to other chatrooms.
+4) [b]Create new rooms[/b] (advanced). The room that you create will belong to the message poster, and only people on the allow list and message poster will be allowed into it. All the people on the allow list will automatically have invitations to enter the new room sent to them.
 
 [title="2"]Blocking[/title]
 

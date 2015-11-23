@@ -1,7 +1,7 @@
 [title]Chatcode help[/title]
 
 Chatcode allows you to do some advanced things via coded embedded within your messages.
-You may also use any inline [page="_SEARCH:userguide_comcode"]comcode tags[/page] you please in the chat system.
+You may also use any inline [page="_SEARCH:userguide_comcode"]Comcode[/page] you please in the chat system.
 
 [title="2"]Private Messages[/title]
 

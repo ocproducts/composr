@@ -133,6 +133,7 @@ class Hook_addon_registry_psds
             'sources_custom/hooks/systems/addon_registry/psds.php',
             'data_custom/images/psds/blank_emoticon.png',
             'data_custom/images/psds/chatcode.psd',
+            'data_custom/images/psds/whisper.psd',
             'data_custom/images/psds/comcode.psd',
             'data_custom/images/psds/dark_emoticons/blink.gif',
             'data_custom/images/psds/dark_emoticons/devil.gif',

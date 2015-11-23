@@ -540,7 +540,7 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 		}
 
 		// Pick a random number from 0 to sizeof($liarray)-1
-		mt_srand ((float) microtime() * 1000000);
+		mt_srand ((int) microtime() * 1000000);
 		$lirandom= mt_rand(0,(sizeof($liarray)-1));
 
 
