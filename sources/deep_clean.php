@@ -67,14 +67,14 @@ function deep_clean($d, $heading = '')
 
     // Deep trim
     if ($is_html) {
-        $d = ocp_trim($d, true);
+        $d = cms_trim($d, true);
     } else {
         $d = trim($d);
     }
 
     // Uppercase -> Title Case
     if ((preg_match('#[a-z]#', $d) == 0) && (strpos($d, ' ') !== false)) {
-        $d = ocp_mb_ucwords($d);
+        $d = cms_mb_ucwords($d);
     }
 
     // Strip white backgrounds
@@ -84,7 +84,7 @@ function deep_clean($d, $heading = '')
 
     // Convert indented "paragraphs" via nbsp into real paragraphs
     if ($is_html) {
-        $d = preg_replace('#(<br[^<>]*>|<p( [^<>]*)?'.'>|<div( [^<>]*)?'.'>)\s*(&nbsp;)+#i', '$1', $d);
+        $d = preg_replace('#(<br[^<>]*>|<p( [^<>]*)?' . '>|<div( [^<>]*)?' . '>)\s*(&nbsp;)+#i', '$1', $d);
     }
 
     if ($is_html) {

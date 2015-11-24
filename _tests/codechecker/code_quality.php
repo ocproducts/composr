@@ -980,6 +980,9 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     if (($c[1][0] == 'CALL_DIRECT') && (strpos($c[1][1], '_exists') !== false) && (isset($c[1][2][$operand_pos])) && ($c[1][2][$operand_pos][0] == 'LITERAL') && ($c[1][2][$operand_pos][1][0] == 'STRING')) {
                         $temp_function_guard .= ',' . $c[1][2][$operand_pos][1][1] . ',';
                     }
+                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1], '_exists') !== false) && (isset($c[1][1][2][$operand_pos])) && ($c[1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][2][$operand_pos][1][0] == 'STRING')) {
+                        $temp_function_guard .= ',' . $c[1][1][2][$operand_pos][1][1] . ',';
+                    }
                     if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'BRACKETED') && ($c[1][1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1][1], '_exists') !== false) && (isset($c[1][1][1][2][$operand_pos])) && ($c[1][1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][1][2][$operand_pos][1][0] == 'STRING')) {
                         $temp_function_guard .= ',' . $c[1][1][1][2][$operand_pos][1][1] . ',';
                     }
@@ -1002,6 +1005,9 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     }
                     if (($c[1][0] == 'CALL_DIRECT') && (strpos($c[1][1], '_exists') !== false) && (isset($c[1][2][$operand_pos])) && ($c[1][2][$operand_pos][0] == 'LITERAL') && ($c[1][2][$operand_pos][1][0] == 'STRING')) {
                         $temp_function_guard .= ',' . $c[1][2][$operand_pos][1][1] . ',';
+                    }
+                    if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1], '_exists') !== false) && (isset($c[1][1][2][$operand_pos])) && ($c[1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][2][$operand_pos][1][0] == 'STRING')) {
+                        $temp_function_guard .= ',' . $c[1][1][2][$operand_pos][1][1] . ',';
                     }
                     if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][1][0] == 'BRACKETED') && ($c[1][1][1][0] == 'CALL_DIRECT') && (strpos($c[1][1][1][1], '_exists') !== false) && (isset($c[1][1][1][2][$operand_pos])) && ($c[1][1][1][2][$operand_pos][0] == 'LITERAL') && ($c[1][1][1][2][$operand_pos][1][0] == 'STRING')) {
                         $temp_function_guard .= ',' . $c[1][1][1][2][$operand_pos][1][1] . ',';

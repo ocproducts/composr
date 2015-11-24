@@ -100,6 +100,7 @@ class cms_merge_test_set extends cms_test_case
             'trans_expecting',
             'tutorial_links',
             'url_id_monikers',
+            'urls_checked',
             'webstandards_checked_once',
             'video_transcoding',
             'workflows',

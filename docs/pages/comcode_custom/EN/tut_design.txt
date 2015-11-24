@@ -172,13 +172,13 @@ The web page must not take or track anything relating to browsing it. Otherwise 
 All these experts are making great points, but are taking them to extremes. Therefore it's important to give them all consideration in the design. We can't just follow their advice though, because there are loads of conflicts -- the art of tradeoff is our tool.
 
 Let's consider a few of those conflicts:
- - The privacy and community advocates could argue forever, as they have completely opposing points of view. Privacy is to keep things secret, whilst community is to express.
- - Accountants and artists could certainly argue over the financial incentive to the art. Artists naturally think in terms of elegance, whilst for an accountant, art serves a specific need and serves, with a certain effectiveness, to generate revenue that outweighs it's investment.
- - Artists and usability consultants could argue over the purpose of art. A usability consultant would see it as something to stimulate understanding, whilst a pure artist would see it as something that might even be intended to stimulate confusion.
- - SEO and salesmen would argue over the language used. SEO would wish to write for a search engine, whilst a salesman would want absolute control over the wording to carefully place a trail of exact thoughts into the readers head.
+ - The privacy and community advocates could argue forever, as they have completely opposing points of view. Privacy is to keep things secret, while community is to express.
+ - Accountants and artists could certainly argue over the financial incentive to the art. Artists naturally think in terms of elegance, while for an accountant, art serves a specific need and serves, with a certain effectiveness, to generate revenue that outweighs it's investment.
+ - Artists and usability consultants could argue over the purpose of art. A usability consultant would see it as something to stimulate understanding, while a pure artist would see it as something that might even be intended to stimulate confusion.
+ - SEO and salesmen would argue over the language used. SEO would wish to write for a search engine, while a salesman would want absolute control over the wording to carefully place a trail of exact thoughts into the readers head.
  - (and I could go on for a long time here)
 
-A good designer/engineer understands all factors relating to their subject, and takes everything on board, with some expertise in all of it, and then creates a design that balances multiple design factors whilst simultaneously pushing overall excellence and innovation.
+A good designer/engineer understands all factors relating to their subject, and takes everything on board, with some expertise in all of it, and then creates a design that balances multiple design factors while simultaneously pushing overall excellence and innovation.
 
 [title="2"]Prioritisation[/title]
 

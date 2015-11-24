@@ -93,4 +93,4 @@ The market adapts to innovations such as Composr. The expectations from your web
  - [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page]
  - [page="_SEARCH:sup_pricing"]Project pricing[/page]
 
-{$SET,tutorial_tags,Advice & Guidance,Opinion,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,The importance of simplifying and aligning requirements, in order to kickstart a seemingly complex project.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,The importance of simplifying and aligning requirements, in order to kickstart a seemingly complex project.}[block]main_tutorial_rating[/block]

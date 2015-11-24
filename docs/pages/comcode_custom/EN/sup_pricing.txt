@@ -21,9 +21,9 @@ There are eight main kinds of web design company, ordered roughly by price:[list
 [*][b]Consultant[/b]: for complex projects, often an external consultant is called in, who will recommend multiple other companies to do an implementation together (often one of them being a commercial CMS vendor).[/*]
 [/list][/*]
 [*][b]Companies[/b]:[list]
-[*][b]Web design service[/b]: a company doing very simple web implementations very cheaply in a matter of hours; often an IT or PR company will offer this amongst their range of services.[/*]
+[*][b]Web design service[/b]: a company doing very simple web implementations very cheaply in a matter of hours; often an IT or PR company will offer this among their range of services.[/*]
 [*][b]Specialist web design company/creative agency[/b]: a company specialising in implementing custom designs, but not new programming.[/*]
-[*][b]Web development company[/b]: a company specialising in implementing new code for sophisticated web sites, but not particularly attractive ones.[/*]
+[*][b]Web development company[/b]: a company specialising in implementing new code for sophisticated websites, but not particularly attractive ones.[/*]
 [*][b]Web design and development company[/b]: a company that has the skills of a specialist web design company and web development company ([i]this is what ocProducts is[/i]).[/*]
 [*][b]Full service marketing/creative agency[/b]: a company that provides the full range of marketing services, including web design, but also PR, print advertising, market research, TV adverts, and other services. The advantage to a full service agency is you get a single company that can integrate all your marketing, but the disadvantage is the expense of the extra levels of management (which will include some [i]very[/i] highly paid senior people), and the chance for miscommunication and misunderstanding between those levels.[/*]
 [/list][/*]
@@ -38,7 +38,7 @@ Here's the main differentiators:
 
 The [page="_SEARCH:sup_choosing_a_developer"]Choosing a software company for your project tutorial[/page] gives some useful information on how to assess a company, including whether to use an offshore company or not.
 
-Often companies needing a web site will avoid web design companies entirely and go for one of the following approaches:[list]
+Often companies needing a website will avoid web design companies entirely and go for one of the following approaches:[list]
 [*]Set something quick and simple up on a service like Google Sites.[/*]
 [*]Build internally using a CMS and a template. This tends to happen when there's an internal stakeholder in the client company who has a particular technical flair, so it's a bit of an exception.[/*]
 [*]Set up a CMS internally, then use support services to get the more complex stuff done. Truth be told, it's fairly rare for this to happen because usually a client makes an upfront decision on whether to do something entirely themselves, or to hire someone else to do it all; people rarely go half and half.[/*]
@@ -181,4 +181,4 @@ Note that some of these may be out-dated by now.
  - [page="_SEARCH:sup_developer_relationships"]Maintaining a good agency relationship[/page]
  - [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page]
 
-{$SET,tutorial_tags,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,An honest and detailed look at how much professional websites typically cost.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Business Development,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,An honest and detailed look at how much professional websites typically cost.}[block]main_tutorial_rating[/block]

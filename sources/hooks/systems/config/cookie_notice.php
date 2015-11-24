@@ -31,7 +31,7 @@ class Hook_config_cookie_notice
     public function get_details()
     {
         return array(
-            'human_name' => 'COOKIE_NOTICE',
+            'human_name' => 'COOKIE_NOTICE_OPTION',
             'type' => 'tick',
             'category' => 'PRIVACY',
             'group' => 'GENERAL',

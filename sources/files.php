@@ -241,7 +241,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'php.ini' => '.*',
                                              '.htpasswd' => '.*',
                                              'iirf.ini' => '',
-                                             'text/robots.txt' => '',
+                                             'robots.txt' => 'text',
                                              'favicon.ico' => '', // Not used for Composr, but default path for other scripts on server
                                              '400.shtml' => '',
                                              '500.shtml' => '',

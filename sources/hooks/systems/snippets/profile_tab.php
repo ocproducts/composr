@@ -68,7 +68,7 @@ class Hook_snippet_profile_tab
             $out->attach($eval);
             $out->attach(symbol_tempcode('JS_TEMPCODE', array('footer')));
 
-            call_user_func_array('set_execution_context',$former_context);
+            call_user_func_array('set_execution_context', $former_context);
 
             return $out;
         }
@@ -88,7 +88,7 @@ class Hook_snippet_profile_tab
             return $out;
         }
 
-        call_user_func_array('set_execution_context',$former_context);
+        call_user_func_array('set_execution_context', $former_context);
 
         return do_template('INLINE_WIP_MESSAGE', array('_GUID' => 'aae58043638dac785405a42e9578202b', 'MESSAGE' => do_lang_tempcode('INTERNAL_ERROR')));
     }

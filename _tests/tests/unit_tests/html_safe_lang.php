@@ -107,6 +107,12 @@ class html_safe_lang_test_set extends cms_test_case
                             'WRITE_ERROR_CREATE',
                             'WRITE_ERROR',
                             'DESCRIPTION_I_AGREE_RULES',
+                            'BANNER_VIEWSFROM',
+                            'BANNER_VIEWSTO',
+                            'BANNER_HITSFROM',
+                            'BANNER_HITSTO',
+                            'CANT_TRACK',
+                            'BANNER_CLICKTHROUGH',
         );
 
         $result = array_keys(array_intersect_key($LANGUAGE_LITERAL, $LANGUAGE_HTML));

@@ -21,4 +21,4 @@ For software testing I recommend using [url="Try My UI"]http://www.trymyui.com/[
 
 It's fairly easy to find resolutions once you know the real issues that will impact adoption.
 
-{$SET,tutorial_tags,Advice & Guidance,Opinion,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A look at how users do and do not report feedback, and how this should affect your decision making.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Opinion,Business Development,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A look at how users do and do not report feedback, and how this should affect your decision making.}[block]main_tutorial_rating[/block]

@@ -107,7 +107,7 @@ class modularisation_test_set extends cms_test_case
                 $this->assertTrue(false, 'Addon files missing / not in main distribution / referenced twice... \'sources/hooks/systems/addon_registry/' . $section_name . '.php\',');
             }
             foreach ($section as $file) {
-                if (($file != '_notes_') && ($file != '_requires_') && ($file != 'data_custom/execute_temp.php')) {
+                if (($file != '_notes_') && ($file != '_requires_') && ($file != 'data_custom/execute_temp.php') && ($file != 'data_custom/firewall_rules.txt')) {
                     $this->assertTrue(false, 'Addon files missing / not in main distribution / referenced twice... \'' . htmlentities($file) . '\',');
                 }
             }

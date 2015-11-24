@@ -32,4 +32,4 @@ I hope this didn't come across too one-sided, but here's for ensuring that clien
  - [page="_SEARCH:sup_project_management"]Project Management[/page]
  - [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page]
 
-{$SET,tutorial_tags,Advice & Guidance,Opinion,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,How to be a good client and not drive your web designer insane.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Business Development,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,How to be a good client and not drive your web designer insane.}[block]main_tutorial_rating[/block]

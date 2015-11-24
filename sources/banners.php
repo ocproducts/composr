@@ -541,7 +541,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
 /**
  * Get a list of banners.
  *
- * @param  ?AUTO_LINK $it The ID of the banner selected by default (null: no specific default)
+ * @param  ?ID_TEXT $it The ID of the banner selected by default (null: no specific default)
  * @param  ?MEMBER $only_owned Only show banners owned by the member (null: no such restriction)
  * @return Tempcode The list
  */

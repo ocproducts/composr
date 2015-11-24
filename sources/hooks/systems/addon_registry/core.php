@@ -508,7 +508,6 @@ class Hook_addon_registry_core
             'sources/locations_geocoding.php',
             'sources/locations_cpfs.php',
             'sources/hooks/systems/cns_cpf_filter/options.php',
-            'sources/locations_cpfs.php',
             'sources/cpf_install.php',
             'sources/hooks/systems/symbols/COUNTRY.php',
             'sources/hooks/systems/symbols/COUNTRY_CODE_TO_NAME.php',
@@ -1279,7 +1278,6 @@ class Hook_addon_registry_core
             'sources/persistent_caching/.htaccess',
             'sources/deep_clean.php',
             'sources/hooks/systems/symbols/DEEP_CLEAN.php',
-            'sources/hooks/modules/admin_occle_commands/deep_clean.php',
 
             // Admin theme
             'themes/admin/css/index.html',

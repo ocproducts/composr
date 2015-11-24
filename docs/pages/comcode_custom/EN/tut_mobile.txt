@@ -145,7 +145,7 @@ You can either set a viewport width in pixels, or set it to 'device-width' if yo
 
 This is the code Composr now uses in [tt]HTML_HEAD.tpl[/tt]:
 
-[code]
+[code="Tempcode"]
 {$,iPhone/Android/etc should know they have an optimised design heading to them}
 {+START,IF,{$MOBILE}}
 	{+START,IF,{$NOT,{$_GET,overlay}}}
@@ -169,7 +169,7 @@ In Composr, mobile mode is used for smartphones. Tablets do not use mobile mobil
 
 I'm going to simplify things down a bit for my explanation, removing the stuff in our code about overlays. It's not worth the added confusion.
 
-[code]
+[code="Tempcode"]
 {$,iPhone/Android/etc should know they have an optimised design heading to them}
 {+START,IF,{$MOBILE}}
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />

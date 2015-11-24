@@ -6,7 +6,7 @@ Often people don't realise their website project is actually quite a complex sof
 
 To be frank, most of the time it is probably a mistake to go it alone. [acronym title="Do It Yourself"]DIY[/acronym] is admirable, ambition is admirable, initiative is admirable, and Composr is awesome-powerful -- but building IT systems has never been easy, and content management systems aren't a magic bullet that can allow arbitrary complexity with just clicks and plumbing code. Even professional developers struggle to make efficient and user-friendly systems.
 
-The value proposition of Composr is that it will do a large proportion of you want virtually for free. But, very rarely 100%. You can have forums, chat rooms, databases, newsletters, a wiki, member accounts, permissions, all set up with clicks, so that's enormous value to you. But, creating arbitrary complex websites on only available (pre-existing) functionality is less feasible.
+The value proposition of Composr is that it will do a large proportion of you want virtually for free. But, very rarely 100%. You can have forums, chatrooms, databases, newsletters, a wiki, member accounts, permissions, all set up with clicks, so that's enormous value to you. But, creating arbitrary complex websites on only available (pre-existing) functionality is less feasible.
 
 Expect to be able to create a social network with a tonne of features. Don't expect for complex projects to be able to replace the need for database designers, systems analysts, programmers, and graphic designers (and possibly project managers, and copywriters, and SEOs).
 
@@ -57,4 +57,4 @@ I hope I haven't crushed too many people's dreams. I want to re-iterate that Com
  - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
  - [page="_SEARCH:sup_pricing"]Project pricing[/page]
 
-{$SET,tutorial_tags,Advice & Guidance,Opinion,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A sensible process for deciding how to approach complex web projects.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Business Development,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A sensible process for deciding how to approach complex web projects.}[block]main_tutorial_rating[/block]

@@ -210,6 +210,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/primary_paypal_email.php',
             'sources/hooks/systems/config/max_ip_addresses_per_subscriber.php',
             'sources/hooks/systems/notifications/ip_address_sharing.php',
+            'sources/hooks/systems/symbols/CURRENCY_SYMBOL.php',
         );
     }
 

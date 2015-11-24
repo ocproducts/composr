@@ -1093,8 +1093,8 @@ function remove_white_edges($img)
     $remove_from_top = 0;
     for ($y = 0; $y < $height; $y++) {
         for ($x = 0; $x < $width; $x++) {
-            $color = imagecolorat($img, $x, $y);
-            if ($color != 0) {
+            $_color = imagecolorat($img, $x, $y);
+            if ($_color != 0) {
                 break 2;
             }
         }

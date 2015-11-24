@@ -25,4 +25,4 @@ This is definitely the kind of process you need if you are targeting consumers. 
 
 I should of course note that some people make snap decisions that aren't superficial: by seeking recommendations. That is another topic of its own though.
 
-{$SET,tutorial_tags,Advice & Guidance,Opinion,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A marketing primer: recognising the impatience of the modern customer.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Business Development,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A marketing primer: recognising the impatience of the modern customer.}[block]main_tutorial_rating[/block]

@@ -137,12 +137,14 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
         require_code('attachments2');
         require_code('attachments3');
 
-        $GLOBALS['SITE_DB']->query_update('authors', array(
+        $map = array(
             'url' => $url,
             'member_id' => $member_id,
-            'description' => update_lang_comcode_attachments($_description, $description, 'author', $author, null, false, $forum_handle),
             'skills' => lang_remap('skills', $_skills, $skills),
-        ), array('author' => $author), '', 1);
+        );
+        $map += update_lang_comcode_attachments('description', $_description, $description, 'author', $author, null, false, $member_id);
+
+        $GLOBALS['SITE_DB']->query_update('authors', $map, array('author' => $author), '', 1);
     } else {
         require_code('attachments2');
 
@@ -151,7 +153,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
             'url' => $url,
             'member_id' => $member_id,
         );
-        $map += insert_lang_comcode_attachments(3, $description, 'description', 'author', $author);
+        $map += insert_lang_comcode_attachments('description', 3, $description, 'author', $author, null, false, $member_id);
         $map += insert_lang_comcode('skills', $skills, 3);
         $GLOBALS['SITE_DB']->query_insert('authors', $map);
 

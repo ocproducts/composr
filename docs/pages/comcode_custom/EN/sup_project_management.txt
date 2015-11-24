@@ -54,4 +54,4 @@ I hope this tutorial gave some insight into how to manage a project, and was use
  - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
  - [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page]
 
-{$SET,tutorial_tags,Advice & Guidance,Opinion,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,Advice for managing projects correctly from the start, for both agencies and clients.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,Advice for managing projects correctly from the start, for both agencies and clients.}[block]main_tutorial_rating[/block]

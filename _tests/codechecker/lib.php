@@ -214,6 +214,7 @@ function die_error($system, $pos, $line, $message)
 function warn_error($system, $pos, $line, $message)
 {
     global $FILENAME;
+    @touch(get_file_base() . '/' . $FILENAME); // So CQC can sort by mtime and find it easily
     echo 'WARNING "' . $FILENAME . '" ' . $line . ' ' . $pos . ' ' . 'PHP: ' . $message . cnl();
 }
 

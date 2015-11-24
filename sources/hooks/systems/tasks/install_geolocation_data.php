@@ -70,5 +70,5 @@ class Hook_task_install_geolocation_data
         }
 
         return null;
-     }
+    }
 }
