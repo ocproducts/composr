@@ -309,7 +309,7 @@ If you would like to create a formal catalogue, head over to Content Management 
 
 If you'd like to add to Wiki+, you can choose it from your menus of your main website and begin to edit the tree structure to create new pages, and then edit them and post within them, as required. You should read the [page="_SELF:tut_wiki"]Wiki+ tutorial[/page] for more information.
 
-If you desire integration of an existing system into your website and are not a developer yourself, you should [page="site:support"]contact ocProducts[/page] or some other developer.
+If you desire integration of an existing system into your website and are not a developer yourself, commercial developers are available for such work.
 
 [title="3"]Adding images[/title]
 

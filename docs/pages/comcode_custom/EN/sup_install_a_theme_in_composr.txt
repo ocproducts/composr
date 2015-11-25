@@ -7,7 +7,7 @@ Another option is to install one of the themes which have been created by the Co
 
 [title="2"]Installing a theme in Composr[/title]
 
-You may want to browse the themes and comments from the compo.sr website before actually going to install the theme. You can do this through the [url="addons directory"]http://compo.sr/downloads/browse/addons.htm[/url].
+You may want to browse the themes and comments from the compo.sr website before actually going to install the theme. You can do this through the [page="site:downloads:browse:addons"]addons directory[/page].
 
 [list="1"]
 [*] Go to the Admin Zone

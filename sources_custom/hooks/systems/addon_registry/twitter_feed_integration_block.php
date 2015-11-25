@@ -85,7 +85,7 @@ class Hook_addon_registry_twitter_feed_integration_block
      */
     public function get_description()
     {
-        return 'Integrate your Twitter feed into your web site, via a block. Full documentation at: http://compo.sr/forum/topicview/browse/addons/twitter-feed_4.htm';
+        return 'Integrate your Twitter feed into your web site, via a block.';
     }
 
     /**

@@ -50,6 +50,6 @@ class Hook_config_cpf_enable_country
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

@@ -150,7 +150,7 @@ If you wish to integrate an existing forum into Composr, rather than use our own
  - Burning Board 2.0/2.2/Lite
  - Simple Machine Forum 1.0/1.1
  - WowBB 1.7
-If your forum is not on the list, we may be able to add support via our [page="site:support"]Experts by the hour[/page] service.
+If your forum is not on the list, commercial developers are available to add support.
 
 Please note that many 'forum systems' are referred to as 'bulletin boards', and that a 'forum' within 'forums' is often referred to as a 'board'. We consistently use the terms 'discussion forums', 'forums' and 'forum' to describe these.
 

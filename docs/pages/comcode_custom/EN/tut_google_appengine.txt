@@ -22,7 +22,7 @@ This tutorial explains how the Composr GAE support works.
 [title="2"]Limitations[/title]
 
 The following are known limitations with GAE:
- - Individual non-bundled Composr addons, or third party frameworks, may or may not work. The Composr development tools can scan for most issues but generally most programmers will not be developing with App Engine's constraints in mind. ocProducts can bring non-bundled addons up to scratch in most cases, under our development services. If possible/ideally we might try and contribute improvements back into "upstream" to the actual project, but sometimes we may feel it better to just fork our own version of the project.
+ - Individual non-bundled Composr addons, or third party frameworks, may or may not work. The Composr development tools can scan for most issues but generally most programmers will not be developing with App Engine's constraints in mind. Most commercial developers will be happy to bring non-bundled third-party addons up to scratch. If possible/ideally we might try and contribute improvements back into "upstream" to the actual project, but sometimes we may feel it better to just fork our own version of the project.
  - The comments above extend to other applications you may wish to integrate. You need to be comfortable of their compatibility, or that you will get them updated, or that you will run them on another server.
  - LDAP will not work (LDAP would typically be used on a local corporate network anyway).
  - There is a 32MB upload limit, which means uploading large files is not realistic. This could be worked around, [url="with investment"]http://compo.sr/tracker/view.php?id=1426[/url].

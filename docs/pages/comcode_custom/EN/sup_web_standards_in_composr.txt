@@ -23,7 +23,7 @@ Composr offers extensive support for a wide range of Data and feeds which are co
 
 In addition to Schema.org and Dublin Core which has been mentioned above, Composr also supports Facebook's Open Graph, hCalendar, hCard and numerous rel tags such as nofollow.
 
-On top of these standards listed above, more details of compliance standards can be found on the [url="http://compo.sr/vision.htm"]Composr website[/url]. Also, Composr Core which extends Dublin core to incorporate some social media functionality.
+On top of these standards listed above, more details of compliance standards can be found on the [page=":vision"]Composr website[/page]. Also, Composr Core which extends Dublin core to incorporate some social media functionality.
 
 [box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
 

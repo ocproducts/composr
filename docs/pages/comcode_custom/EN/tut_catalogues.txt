@@ -23,9 +23,8 @@ Catalogues are initially defined by the fields in them. 'Categories' are then ma
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
 In some way we give you enough rope to hang yourself with via catalogues. In most cases, catalogues are great, but if you're not creating a pretty simple set of records you'll probably want a programmer.
 
-For a more detailed discussion, see this blog post:
-http://compo.sr/site/news/view/chris_grahams_blog/delivering-innovation.htm TODO
-I also highly advise reading the [page="site:anti_features"]what Composr is not[/page] page which tries to spell out the practical realities of how to work with Composr (or any CMS really).
+For a more detailed discussion, see the [page="_SEARCH:sup_complex_projects"]How to approach complex projects tutorial[/page].
+I also highly advise reading the [page=":antifeatures"]what Composr is not[/page] page which tries to spell out the practical realities of how to work with Composr (or any CMS really).
 
 There are loads of features within the catalogue system, and there are more we could add to give yet further power that could be sponsored. Just proceed with caution, considering the cases laid out below.
 

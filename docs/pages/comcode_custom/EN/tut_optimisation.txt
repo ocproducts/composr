@@ -2,7 +2,7 @@
 
 Composr is very heavily optimised so that pages load as quickly as possible. This tutorial will provide information on techniques and issues for increasing throughput, so that your site may support more visitors. Some of these techniques are programmer-level in complexity.
 
-If you have need to be able to take particularly high load, considering getting [page="site:support"]the support of the experts[/page].
+If you have need to be able to take particularly high load, commercial developers are available for custom tuning.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -335,7 +335,7 @@ Be aware of these reasonable limits (unless you have dedicated programming resou
 
 If you have so much data (100's of GB, millions of records) that you can't house it in a single database server then you have a good kind of problem because clearly you are being incredibly successful.
 It's at this point that serious programming or database administration will need to happen to adapt Composr to your needs. MySQL does have support for 'sharding' that can happen transparently to Composr, where you could use multiple hard-disks together to serve a single database. However this is not the commodity hardware approach many people prefer.
-An alternative is to implement a No-SQL database driver into Composr. There is nothing stopping this happening so long as SQL is mapped to it. We have no out-of-the-box solution, but we do have full SQL parsing support in Composr for the intentionally-limited SQL base used by Composr (in the XML database driver) so have a lot of the technology needed to build the necessary translation layer. Practically speaking though this is a serious job, and at this point you are so huge you should be having a full-time team (perhaps ocProducts) dedicated to performance work.
+An alternative is to implement a No-SQL database driver into Composr. There is nothing stopping this happening so long as SQL is mapped to it. We have no out-of-the-box solution, but we do have full SQL parsing support in Composr for the intentionally-limited SQL base used by Composr (in the XML database driver) so have a lot of the technology needed to build the necessary translation layer. Practically speaking though this is a serious job, and at this point you are so huge you should be having a full-time team dedicated to performance work.
 
 [title="2"]Server farms (custom)[/title]
 

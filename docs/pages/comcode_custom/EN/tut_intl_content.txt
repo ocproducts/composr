@@ -85,7 +85,7 @@ In Composr almost [i]everything[/i] (*) can be translated, but obviously you wou
 
 [surround]
 [media width="150" description="The [tt]side_language[/tt] block" float="right"]data_custom/images/docs/tut_intl_content/side_language.png[/media]
-You will want a way to be able to give your site visitors the option to view your website in their choice of language. You can easily achieve this by adding a ready made block on one of the side panels ([i]assuming your web designer has not done this already -- if you are an ocProducts client and have discussed internationalisation, it almost certainly is already built into your web design[/i]). The code for this is:
+You will want a way to be able to give your site visitors the option to view your website in their choice of language. You can easily achieve this by adding a ready made block on one of the side panels ([i]assuming your web designer has not done this already[/i]). The code for this is:
 [code="Comcode"]
 [block]side_language[/block]
 [/code]

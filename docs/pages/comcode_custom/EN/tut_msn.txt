@@ -340,7 +340,7 @@ In addition, each site must have a database of its own:
 
 For the server configuration side of things you need to configure Apache to accept all page requests to a single IP address regardless of domain name, and set up a "wildcard DNS" entry -- which is just a normal subdomain entry to that IP address, except a '*' is in place of the normal subdomain name.
 
-Composr does not contain a way for individual sites to be set up automatically out-of-the-box, but ocProducts have in the past set up code for clients to do this; for example, via an eCommerce product. In these scenarios it is common to create the new sites automatically be extracting a TAR file to create the [tt]sites/whateveruser[/tt] directory automatically, and also importing an SQL file into the new correctly-named database; together the TAR and SQL would form a template for each new site.
+Composr does not contain a way for individual sites to be set up automatically out-of-the-box, but developers have in the past set up code for clients to do this; for example, via an eCommerce product. In these scenarios it is common to create the new sites automatically be extracting a TAR file to create the [tt]sites/whateveruser[/tt] directory automatically, and also importing an SQL file into the new correctly-named database; together the TAR and SQL would form a template for each new site.
 
 [concepts
  1_key="M.S.N."        1_value="A multi-site-network: a network of Composr sites that share a member community. Composr provides special features that are designed for such a situation"

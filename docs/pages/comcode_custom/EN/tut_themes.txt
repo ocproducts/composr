@@ -17,6 +17,13 @@ The HTML is a different matter. Composr's HTML is split up into small sections, 
 
 At this time, there are over 1,000 templates that make up Composr and all of its addons. This may seem like a daunting number at first, but usually you'll find that you only need to edit a few of the major ones to achieve a new overall look that you desire.
 
+[box="Important -- don't confuse the word template"]
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
+Some people use the word template to refer to a downloadable generic static website that can be customised into a real final site.
+
+When we use the word template in Composr we do not mean this, we strictly mean an individual component file that gets composed together with other templates to build the output.
+[/box]
+
 [title="2"]Cheating: the Theme Wizard[/title]
 
 [media width="150" description="The Theme Wizard" float="right"]data_custom/images/docs/tut_themes/themewizard.png[/media]
@@ -246,15 +253,20 @@ You can delete a theme from the bottom of its edit form.
 7) If you are choosing a template to edit manually from the full list but you know the name of the template, you can quickly get to it by typing rather than scrolling. Just click one of the entries in the list, and then type "dash-space-template-name", and most browsers will jump straight to it
 8) Remember to test how your e-mails look as well as your screens
 9) The font-size changer assumes you will use em-based (i.e. relative) sizing for all styles. The font sizer works by setting a larger base font size. The default theme sizes almost everything relatively (using [tt]em[/tt]), so a larger base font size has an effect that cascades through everything. If you change styles to [tt]pt[/tt] or [tt]px[/tt] then that is absolute and hence the cascade will be stopped at that point.
+10) Don't forget to make a favicon
+11) Don't forget to consider how your website looks when printed
+12) If you want to exhaustively test your theme for third-party use, the screen previews feature will really help
+13) If you are more comfortable copying individual files and editing them within your favourite text editor, this may well be a better approach than using the inbuilt template and CSS editors -- especially if you are a developer
+14) If you get stuck or make a mistake, don't feel bad -- this happens to the best developers too
 
-For more tips, see [page="forum:topicview:browse:9553"]a walk-through guide[/page] on our forum. TODO
+Many more tips and points of guidance are included in the [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design tutorial[/page].
 
 [concepts
- 1_key="Theme"   1_value="Your theme is the sum of your CSS, images, and templates, which work together to create the style and layout for your site."
- 2_key="CSS" 2_value="Your CSS is the element of your theme that specifically controls the colours and styles on your site, and has limited layout functionality"
- 3_key="Templates" 3_value="The templates on your site are individual HTML files that chain together to create the final HTML used on your site."
- 4_key="Images" 4_value="Images are used throughout your site, in the form of buttons, backgrounds, emoticons, and more."
- 5_key="Tempcode" 5_value="Tempcode is a set of symbols, parameters, and directives to help you edit your templates. These include the $IMG symbol."]Concepts[/concepts]
+ 1_key="Theme"      1_value="Your theme is the sum of your CSS, images, and templates, which work together to create the style and layout for your site."
+ 2_key="CSS"        2_value="Your CSS is the element of your theme that specifically controls the colours and styles on your site, and has limited layout functionality"
+ 3_key="Templates"  3_value="The templates on your site are individual HTML files that chain together to create the final HTML used on your site."
+ 4_key="Images"     4_value="Images are used throughout your site, in the form of buttons, backgrounds, emoticons, and more."
+ 5_key="Tempcode"   5_value="Tempcode is a set of symbols, parameters, and directives to help you edit your templates. These include the $IMG symbol."]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

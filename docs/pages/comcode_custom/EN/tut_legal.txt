@@ -94,7 +94,7 @@ It is likely that you will experience attempts to hack into your website by mali
 
 However, even with all this, there are two-hundred and sixty-thousand (at the time of writing) lines of code that could potentially contain vulnerabilities. You therefore should keep backups, and if you run a high profile website, know how to attempt to track down miscreants and subject them to legal action.
 
-If a vulnerability is found, the developers [page="site:free_tickets"]would like to know about it[/page], and will deal with it promptly and responsibly, for the sake of all our users.
+If a vulnerability is found, the developers [page="_SEARCH:tut_software_feedback"]would like to know about it[/page], and will deal with it promptly and responsibly, for the sake of all our users.
 
 It is also possible that miscreants will attempt to use your website as a vehicle for mischief directed at others. There are not many ways to do this, and we know of no ways to cause serious abuses, but you should keep it in mind that it may be possible, and consider adding a disclaimer into your legal page for it.
 

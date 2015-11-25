@@ -30,7 +30,7 @@ A Composr website automatically customises the user interface based upon the lan
 
 The core development team really want Composr to be widely used by people in any language, but does not get involved in maintaining or developing individual translations (other than the standard English) due to a lack of language-specific knowledge and resources. Instead we maintain documentation and architecture, to empower contributors and help automate delivery, and we grant necessary access to translators.
 
-If you have any feedback on how translation can be easier then please report it in the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url]. An example bit of feedback to report might be if the exact grammatical context of an English language string is not clear (i.e. ambiguous), and you want us to add a description for that string. Another example is if a string is formulated in such a way that it is impossible for you to translate with grammatical correctness.
+If you have any feedback on how translation can be easier then please report it in the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page]. An example bit of feedback to report might be if the exact grammatical context of an English language string is not clear (i.e. ambiguous), and you want us to add a description for that string. Another example is if a string is formulated in such a way that it is impossible for you to translate with grammatical correctness.
 
 Internationalisation can be difficult and time consuming if someone has not already worked on a translation for your language. We therefore recommend that you try to plan ahead and bring together a team from your country to make translations go faster.
 
@@ -219,17 +219,17 @@ The process is as follows:
 4) Choose the version of Composr you have installed (if you're not sure, it will say on the front page of the Admin Zone). Transifex calls this the 'project'.
 5) Choose your language.
 6) Click "Join team"
-7) (Wait until the team join request has been accepted -- it is a good idea to introduce yourself on the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url] so we know who you are)
+7) (Wait until the team join request has been accepted -- it is a good idea to introduce yourself on the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] so we know who you are)
 8) Start translating individual resources (language files)
 
 The strings are split across about 100 core resources/files; often it works well to work with other people, each doing different files. The files are actually marked by priority -- the high priority or urgent priority ones are core, while files for non-bundled addons are marked normal priorities. Most users will want to ignore the non-bundled addons files. Don't feel compelled to do it all for 'completeness'.
 
 Notes about specific language strings are automatically made available within Transifex.
 
-To coordinate with other translators use the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url]. We suggest you have one main topic per language, and keep editing the first post of that topic to provide basic details such as policies, translator names, and translation status.
+To coordinate with other translators use the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page]. We suggest you have one main topic per language, and keep editing the first post of that topic to provide basic details such as policies, translator names, and translation status.
 Please try and respect the translators who have worked before you, and negotiate to a common translation standard. For example, you may need to agree on the use of formal/informal grammar within the translation to ensure everything is consistent. If you have suggestions, or are the first major translator, make them known on the forum. We have team approval turned on, i.e. you have to apply to join the translation team. The only reason for this is so that we can protect existing translators from problems caused by newbies diving right in. Generally we expect to approve all requests, unless there's already a strong language maintainer making quick progress on that language and not wanting to share the task.
 
-Transifex is not being used for things other than language strings (within language files), such as theme images, and page templates. However for the great majority of sites, translating the language strings is enough. If you want to distribute translations for page templates etc, you can do so in the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url].
+Transifex is not being used for things other than language strings (within language files), such as theme images, and page templates. However for the great majority of sites, translating the language strings is enough. If you want to distribute translations for page templates etc, you can do so in the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page].
 
 [title="3"]Speeding up translation[/title]
 

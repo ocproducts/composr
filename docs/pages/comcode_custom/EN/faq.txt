@@ -69,7 +69,7 @@ These significant new feature categories are often requested, but are unlikely t
 
 [title="3"]Is Composr available in (some language)?[/title]
 
-ocProducts does not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:182"]internationalisation forum[/page] for more information on specific languages and [page="forum:topicview:browse:1981"]check this topic if you would like to get involved with translation[/page] (please do!). We provide an [page="_SEARCH:tut_intl"]Internationalisation tutorial[/page], and tools, to translate Composr, and Composr has excellent internationalisation support.
+The developers do not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] for more information on specific languages and if you would like to get involved with translation (please do!). We provide an [page="_SEARCH:tut_intl"]Internationalisation tutorial[/page], and tools, to translate Composr, and Composr has excellent internationalisation support.
 
 [title="2"]Licensing and costs[/title]
 
@@ -128,7 +128,11 @@ As a very rough guide, expect 10% of your needs to require bespoke programming b
 
 [title="3"]Who are ocProducts?[/title]
 
-ocProducts wrote the original Composr and maintain it, and we maintain the Composr website. ocProducts are sponsors of the project and community, which is wider than any one organisation.
+ocProducts is a business, founded by a group of people fanatic about enabling people to have great websites, for a lower investment than is typical in the web development industry today. We started Composr (originally named ocPortal) before even considering making a business of it -- we're really passionate about it, and we always have been. To the founders, the ocProducts business is a tool that allows us to keep doing it full time, now that we're older and have to keep money coming in.
+
+ocProducts maintains the Composr website and are sponsors of the project and community (the community being wider than any one organisation).
+
+ocProducts has a tendency towards innovative, open, and collaborative practices, including around how business is conducted. We try and make ourselves approachable, rather than filtering all contact, handing out robo-responses, funneling and segmenting everybody, and residing in an ivory tower.
 
 [title="3"]Can you write us a system that supports <insert-blank> specifications?[/title]
 
@@ -136,7 +140,7 @@ We almost always can (commercially). Please contact us with details.
 
 [title="3"]Is ocProducts available to perform some custom work for me?[/title]
 
-Yes, please [page="site:support"]contact us[/page].
+Depending on availability, and budget, yes. [page="site:support"]Contact us[/page] and we will provide guidance, and likely either put you in touch with a local developer, or work towards providing a quote for ocProducts to perform the work.
 
 [title="3"]Why is your spelling so terrible?[/title]
 
@@ -497,6 +501,6 @@ If you want to place a block, use the 'Add block' button you see while editing C
 [title="3"]Do you have another question?[/title]
 
 Please first check the documentation, and if there is no obvious answer, post your question on our public forums so anyone can answer.
-If you need an answer from an ocProducts employee, we have a commercial support scheme called "Experts by the hour".
+If you need an answer from an ocProducts employee, we have a commercial support scheme.
 
 {$SET,tutorial_tags,Introduction,novice,pinned}{$SET,tutorial_add_date,Dec 2004}{$SET,tutorial_summary,Frequently Asked Questions about Composr.}[block]main_tutorial_rating[/block]
