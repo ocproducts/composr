@@ -587,7 +587,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         'ip' => $ip,
     );
     $ip_ban_todo = null;
-    if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0')) {
+    if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip))))) {
         // Test we're not banning a good bot
         $se_ip_lists = array(
             // NB: We're using Coral Cache (nyud.net)

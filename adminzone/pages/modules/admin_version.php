@@ -77,6 +77,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('notifications_enabled');
         $GLOBALS['SITE_DB']->drop_table_if_exists('digestives_tin');
         $GLOBALS['SITE_DB']->drop_table_if_exists('digestives_consumed');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('unbannable_ip');
         $GLOBALS['SITE_DB']->drop_table_if_exists('alternative_ids');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_privacy');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_primary__members');
@@ -448,7 +449,7 @@ class Module_admin_version
 
         if ((!is_null($upgrade_from)) && ($upgrade_from == 14)) {
             $GLOBALS['SITE_DB']->alter_table_field('digestives_tin', 'd_from_member_id', '?MEMBER');
-        }
+         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 14)) {
             $GLOBALS['SITE_DB']->create_table('temp_block_permissions', array(
@@ -884,6 +885,11 @@ class Module_admin_version
                 'content_type' => '*ID_TEXT',
                 'content_id' => '*ID_TEXT',
                 'region' => '*ID_TEXT',
+            ));
+
+            $GLOBALS['SITE_DB']->create_table('unbannable_ip',array(
+                'ip'=>'*IP',
+                'note'=>'SHORT_TEXT',
             ));
         }
     }
