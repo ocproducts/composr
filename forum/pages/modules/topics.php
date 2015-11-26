@@ -2438,6 +2438,21 @@ END;
         require_code('content2');
         $meta_data = actual_meta_data_get_fields('post', null);
 
+        // Substitution of support operator for tickets, if required
+        if (!is_null($forum_id)) {
+            if (addon_installed('tickets')) {
+                require_code('tickets');
+                if (is_ticket_forum($forum_id)) {
+                    if ($meta_data['submitter'] === null || $meta_data['submitter'] == get_member()) {
+                        $meta_data['submitter'] = get_active_support_user();
+                        if ($poster_name_if_guest == $GLOBALS['FORUM_DRIVER']->get_username(get_member())) {
+                            $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($meta_data['submitter']);
+                        }
+                    }
+                }
+            }
+        }
+
         $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $meta_data['add_time'], $meta_data['submitter'], $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, $sunk, null, $anonymous == 1, $forum_id == -1 || is_null($forum_id), $forum_id == -1 || is_null($forum_id), false, $parent_id);
 
         set_url_moniker('post', strval($post_id));

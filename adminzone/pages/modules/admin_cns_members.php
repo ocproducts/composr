@@ -295,9 +295,9 @@ class Module_admin_cns_members
                 warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
             }
 
-            $dob_day = -1;
-            $dob_month = -1;
-            $dob_year = -1;
+            $dob_day = null;
+            $dob_month = null;
+            $dob_year = null;
         }
         $reveal_age = post_param_integer('reveal_age', 0);
         $timezone = post_param_string('timezone', get_site_timezone());

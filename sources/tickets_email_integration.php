@@ -620,6 +620,6 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         }
 
         // Send email (to staff & to confirm receipt to $member_id)
-        send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, -1, $member_id, true);
+        send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, null, $member_id, true);
     }
 }

@@ -66,6 +66,8 @@ function password_censor($auto = false, $display = true, $days_ago = 30)
 
 function _password_censor($text, $scan_type = 1, $explicit_only = false)
 {
+    $original_text = $text;
+
     if (($explicit_only) || (strpos($text, '[self_destruct') !== false) || (strpos($text, '[encrypt') !== false)) { // Explicit control, Comcode writer knows what they're doing
         if ($scan_type != PASSWORD_CENSOR__PRE_SCAN) {
             $matches = array();
@@ -92,7 +94,7 @@ function _password_censor($text, $scan_type = 1, $explicit_only = false)
     } else { // Try and detect things to censor
         if ($scan_type != PASSWORD_CENSOR__PRE_SCAN) {
             $matches = array();
-            $num_matches = preg_match_all('#(^|[^\w])([^\s]{5,30})#', $text, $matches);
+            $num_matches = preg_match_all('#(^|[^\w])([^\s"\'=]{5,30})#', $text, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $m = $matches[2][$i];
 

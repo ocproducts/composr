@@ -73,11 +73,6 @@
 					2_TITLE={!STAFF_NEW_TICKET_AS,{USERNAME}}
 					2_ICON=buttons/add_ticket
 				{+END}
-				{+START,IF_PASSED,SUPPORT_OPERATOR_URL}
-					3_URL={SUPPORT_OPERATOR_URL*}
-					3_TITLE={!SUPPORT_ACCOUNT_SWITCH}
-					3_ICON=menu/site_meta/user_actions/login
-				{+END}
 			{+END}
 		{+END}
 	{+END}
