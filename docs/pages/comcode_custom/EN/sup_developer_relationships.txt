@@ -4,7 +4,7 @@ Any good relationship is a two-way thing, [page="_SEARCH:sup_choosing_a_develope
 
 Sometimes it might seem like web designers are pricey or that they generate too many bugs, but it's a really hard industry to work in and extremely fast-paced and competitive. There are many levels of painstaking work that go into making a modern website, involving a wide set of technical and design skills in an environment that requires sophisticated project management techniques to bring a project to completion on time and on budget. Often clients don't realise this and think that our tools are as simple as using something like Microsoft Publisher, but unfortunately given the amount of interactivity, the level of fidelity, and the requirement for a lot of flexibility, typically every tiny visual detail ends up having to be hand written in various programming languages from scratch.
 
-This tutorial contains our top 11 techniques that you hopefully [i]won't use[/i] to drive your web designer completely insane!
+This tutorial contains our top 12 techniques that you hopefully [i]won't use[/i] to drive your web designer completely insane!
 
 [list="1"]
 [*]Send a 'Request for proposal' document to the web design company that will take two working days for the web designer to write a proposal for, but don't tell them that actually you have a number of pre-decided and inflexible assessment criteria that they will never be able to pass on (such as a particular company location, or very high historical revenues on their company accounts).[/*]
@@ -24,6 +24,8 @@ This tutorial contains our top 11 techniques that you hopefully [i]won't use[/i]
 [*]Expect your web designer to be available on weekends or evenings. Or generally expect very fast responses (such as immediate phone support) during a period where you're not paying for a dedicated developer service.[/*]
 
 [*]Offer payment-in-kind rather than cash-money. For example, suggest payment via advertising, mentions on mailing lists, commissions, deferred payments, or skill exchanges. A web developers operating margins are typically quite slim, so a developer would expect a business client to use something like a bank loan to fund their enterprise, rather than the developer taking on the risk for their new project as if they were themselves investors.[/*]
+
+[*]Claim you must be given discounts because your project is very important to the world but you can't afford the costs. On a project you need to either be able to fully self-fund (which is increasingly infeasible), find commercial investors, find investors who are existing players in the public/private/charity sectors, or accept your project as a labour of love done by passionate like-minded people. There are many projects in the world that could exist but can't due to not getting a return on investment, and this serves as a signal to take another approach or find a different creative outlet, because being able to get a return is quite fundamental to how the world works. Nobody has a responsibility to subsidise anybody else's dreams, and not wanting to make a project "commercial" or being too nervous to talk to investors, shouldn't be an excuse to force someone to be underpaid.[/*]
 
 [*]For an ongoing project don't follow established processes for submitting feedback or requests, and don't follow a system of prioritisation. For anything you want doing immediately phone up and insist it is top priority and must be done immediately.[/*]
 

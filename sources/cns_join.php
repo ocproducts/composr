@@ -265,9 +265,9 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
         }
 
-        $dob_day = -1;
-        $dob_month = -1;
-        $dob_year = -1;
+        $dob_day = null;
+        $dob_month = null;
+        $dob_year = null;
     }
     $reveal_age = post_param_integer('reveal_age', 0);
 

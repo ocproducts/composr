@@ -423,7 +423,7 @@ function create_region_selection_list($regions = null)
     foreach ($continents_and_countries as $continent => $countries) {
         $list = new Tempcode();
         foreach ($countries as $country_code => $country_name) {
-            $list->attach(form_input_list_entry($country_code, in_array($country_code, $regions), $country_name));
+            $list->attach(form_input_list_entry($country_code, !is_null($regions) && in_array($country_code, $regions), $country_name));
         }
         $list_groups->attach(form_input_list_group($continent, $list));
     }

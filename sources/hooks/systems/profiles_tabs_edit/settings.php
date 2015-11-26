@@ -165,9 +165,9 @@ class Hook_profiles_tabs_edit_settings
                     warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
                 }
 
-                $dob_day = -1;
-                $dob_month = -1;
-                $dob_year = -1;
+                $dob_day = null;
+                $dob_month = null;
+                $dob_year = null;
             }
 
             cns_edit_member($member_id_of, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $actual_custom_fields, $theme, post_param_integer('reveal_age', 0), $views_signatures, $auto_monitor_contrib_content, post_param_string('language', null), post_param_integer('allow_emails', 0), post_param_integer('allow_emails_from_staff', 0), $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until);

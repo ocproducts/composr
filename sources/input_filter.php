@@ -329,9 +329,10 @@ function hard_filter_input_data__html(&$val)
  *
  * @param  string $name The name of the parameter
  * @param  ?string $val The current value of the parameter (null: none)
+ * @param  boolean $live Whether it is running live rather than from some hard-coded value
  * @return string The filtered value of the parameter
  */
-function filter_form_field_default($name, $val)
+function filter_form_field_default($name, $val, $live = false)
 {
     // Read in a default parameter from the GET environment, if this feature is enabled.
     global $URL_DEFAULT_PARAMETERS_ENABLED;
@@ -364,25 +365,29 @@ function filter_form_field_default($name, $val)
 
                     switch (strtolower($restriction)) {
                         case 'minlength':
-                            if (strlen($val) < intval($attributes['embed'])) {
+                            if ($live && strlen($val) < intval($attributes['embed'])) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_TOO_SHORT', escape_html($name), strval(intval($attributes['embed']))));
                             }
                             break;
+
                         case 'maxlength':
-                            if (strlen($val) > intval($attributes['embed'])) {
+                            if ($live && strlen($val) > intval($attributes['embed'])) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_TOO_LONG', escape_html($name), strval(intval($attributes['embed']))));
                             }
                             break;
+
                         case 'shun':
-                            if (simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']), true)) {
+                            if ($live && simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']), true)) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_SHUNNED', escape_html($name)));
                             }
                             break;
+
                         case 'pattern':
-                            if (preg_match('#' . str_replace('#', '\#', $attributes['embed']) . '#', $val) == 0) {
+                            if ($live && preg_match('#' . str_replace('#', '\#', $attributes['embed']) . '#', $val) == 0) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_PATTERN_FAIL', escape_html($name), escape_html($attributes['embed'])));
                             }
                             break;
+
                         case 'possibilityset':
                             $values = explode(',', $attributes['embed']);
                             $found = false;
@@ -393,14 +398,18 @@ function filter_form_field_default($name, $val)
                             }
                             $secretive = (array_key_exists('secretive', $attributes) && ($attributes['secretive'] == '1'));
                             if (!$found) {
-                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode($secretive ? 'FXML_FIELD_NOT_IN_SET_SECRETIVE' : 'FXML_FIELD_NOT_IN_SET', escape_html($name), escape_html($attributes['embed'])));
+                                if ($live) {
+                                    warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode($secretive ? 'FXML_FIELD_NOT_IN_SET_SECRETIVE' : 'FXML_FIELD_NOT_IN_SET', escape_html($name), escape_html($attributes['embed'])));
+                                }
                             }
                             break;
+
                         case 'disallowedsubstring':
-                            if (simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']))) {
+                            if ($live && simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']))) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_SHUNNED_SUBSTRING', escape_html($name), escape_html($attributes['embed'])));
                             }
                             break;
+
                         case 'disallowedword':
                             if (addon_installed('wordfilter')) {
                                 global $WORDS_TO_FILTER_CACHE;
@@ -410,11 +419,12 @@ function filter_form_field_default($name, $val)
                                 check_word_filter($val, $name, false, true, false);
                                 $WORDS_TO_FILTER_CACHE = $temp_remember;
                             } else {
-                                if (strpos($val, $attributes['embed']) !== false) {
+                                if ($live && strpos($val, $attributes['embed']) !== false) {
                                     warn_exit_wordfilter($name, do_lang_tempcode('WORD_FILTER_YOU', escape_html($attributes['embed']))); // In soviet Russia, words filter you
                                 }
                             }
                             break;
+
                         case 'replace':
                             if (!array_key_exists('from', $attributes)) {
                                 $val = $attributes['embed'];
@@ -422,12 +432,16 @@ function filter_form_field_default($name, $val)
                                 $val = str_replace($attributes['from'], $attributes['embed'], $val);
                             }
                             break;
+
                         case 'deepclean':
                             require_code('deep_clean');
                             $val = deep_clean($val, isset($attributes['title']) ? $attributes['title'] : '');
+                            break;
+
                         case 'removeshout':
                             $val = preg_replace_callback('#[^a-z]*[A-Z]{4}[^a-z]*#', 'deshout_callback', $val);
                             break;
+
                         case 'sentencecase':
                             if (strlen($val) != 0) {
                                 $val = strtolower($val);
@@ -435,14 +449,17 @@ function filter_form_field_default($name, $val)
                                 $val = preg_replace_callback('#[\.\!\?]\s+[a-z]#m', 'make_sentence_case_callback', $val);
                             }
                             break;
+
                         case 'titlecase':
                             $val = ucwords(strtolower($val));
                             break;
+
                         case 'prepend':
                             if (substr($val, 0, strlen($attributes['embed'])) != $attributes['embed']) {
                                 $val = $attributes['embed'] . $val;
                             }
                             break;
+
                         case 'append':
                             if (substr($val, -strlen($attributes['embed'])) != $attributes['embed']) {
                                 $val .= $attributes['embed'];

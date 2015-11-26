@@ -1377,7 +1377,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         }
 
         // Custom fields.xml filter system
-        $ret = filter_form_field_default($name, $ret);
+        $ret = filter_form_field_default($name, $ret, true);
     }
 
     if ($ret === $default) {
@@ -1529,7 +1529,7 @@ function post_param_integer($name, $default = false)
         }
 
         // Custom fields.xml filter system
-        $ret = filter_form_field_default($name, $ret);
+        $ret = filter_form_field_default($name, $ret, true);
     }
 
     if (($default === null) && ($ret === '')) {

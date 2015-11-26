@@ -384,8 +384,8 @@ class Module_admin_zones
                 $comcode_editor = get_comcode_editor($field_name);
             } else {
                 $settings = null;
-                $button = 'block';
                 $comcode_editor = new Tempcode();
+                $button = 'block';
                 $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '0acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
                 $button = 'comcode';
                 $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
@@ -403,6 +403,11 @@ class Module_admin_zones
                         $_preview = $new;
                         $_preview .= do_lang('BROKEN_XHTML_FIXED');
                     }
+                }
+
+
+                if ($GLOBALS['XSS_DETECT']) {
+                    ocp_mark_as_escaped($_preview);
                 }
             } else {
                 $_preview = null;

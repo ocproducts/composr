@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    galleries
+ * @package    tickets
  */
 
 /**
  * Hook class.
  */
-class Hook_config_gallery_media_title_required
+class Hook_config_ticket_auto_assign
 {
     /**
      * Gets the details relating to the config option.
@@ -31,15 +31,15 @@ class Hook_config_gallery_media_title_required
     public function get_details()
     {
         return array(
-            'human_name' => 'GALLERY_MEDIA_TITLE_REQUIRED',
+            'human_name' => 'TICKET_AUTO_ASSIGN',
             'type' => 'tick',
             'category' => 'FEATURE',
-            'group' => 'GALLERIES',
-            'explanation' => 'CONFIG_OPTION_gallery_media_title_required',
+            'group' => 'SUPPORT_TICKETS_MAIL',
+            'explanation' => 'CONFIG_OPTION_ticket_auto_assign',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'galleries',
+            'addon' => 'tickets',
         );
     }
 
@@ -50,6 +50,6 @@ class Hook_config_gallery_media_title_required
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

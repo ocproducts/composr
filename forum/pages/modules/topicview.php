@@ -355,8 +355,8 @@ class Module_topicview
                     $buttons = cns_render_post_buttons($topic_info, $_postdetails, $may_reply);
                 }
 
-                if (isset($poster_details_cache[$_postdetails['poster']])) { // The cache avoids a lot of potentially duplicated Tempcode structure
-                    list($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature) = $poster_details_cache[$_postdetails['poster']];
+                if (isset($poster_details_cache[$_postdetails['poster']][$_postdetails['poster_username']])) { // The cache avoids a lot of potentially duplicated Tempcode structure
+                    list($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature) = $poster_details_cache[$_postdetails['poster']][$_postdetails['poster_username']];
                 } else {
                     // User online status
                     $poster_online = mixed();
@@ -427,7 +427,7 @@ class Module_topicview
                         $signature = $_postdetails['signature'];
                     }
 
-                    $poster_details_cache[$_postdetails['poster']] = array($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature);
+                    $poster_details_cache[$_postdetails['poster']][$_postdetails['poster_username']] = array($poster_online, $post_avatar, $rank_images, $poster_details, $poster, $signature);
                 }
 
                 $post_title = $_postdetails['title'];

@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    galleries
+ * @package    tickets
  */
 
 /**
  * Hook class.
  */
-class Hook_config_gallery_media_title_required
+class Hook_config_support_operator
 {
     /**
      * Gets the details relating to the config option.
@@ -31,15 +31,15 @@ class Hook_config_gallery_media_title_required
     public function get_details()
     {
         return array(
-            'human_name' => 'GALLERY_MEDIA_TITLE_REQUIRED',
-            'type' => 'tick',
+            'human_name' => 'SUPPORT_OPERATOR',
+            'type' => 'username',
             'category' => 'FEATURE',
-            'group' => 'GALLERIES',
-            'explanation' => 'CONFIG_OPTION_gallery_media_title_required',
+            'group' => 'SUPPORT_TICKETS_MAIL',
+            'explanation' => 'CONFIG_OPTION_support_operator',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'galleries',
+            'addon' => 'tickets',
         );
     }
 
@@ -50,6 +50,10 @@ class Hook_config_gallery_media_title_required
      */
     public function get_default()
     {
-        return '1';
+        $test = do_lang('SUPPORT_OPERATOR');
+        if (is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($test))) {
+            return '';
+        }
+        return $test;
     }
 }

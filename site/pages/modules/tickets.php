@@ -120,10 +120,10 @@ class Module_tickets
                     'cache_lead_time' => null,
                 );
                 $map += insert_lang('ticket_type_name', do_lang($ticket_type_name), 1);
-                $GLOBALS['SITE_DB']->query_insert('ticket_types', $map);
+                $ticket_type_id = $GLOBALS['SITE_DB']->query_insert('ticket_types', $map, true);
 
                 foreach (array_keys($groups) as $id) {
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'tickets', 'category_name' => do_lang($ticket_type_name), 'group_id' => $id));
+                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'tickets', 'category_name' => strval($ticket_type_id), 'group_id' => $id));
                 }
             }
 
@@ -661,12 +661,6 @@ class Module_tickets
             }
             $add_ticket_url = build_url($map, '_SELF');
 
-            // Link to jump over to support operator
-            $support_operator_url = mixed();
-            if ((has_privilege(get_member(), 'assume_any_member')) && (!is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username(do_lang('SUPPORT_ACCOUNT')))) && ($GLOBALS['FORUM_DRIVER']->get_username(get_member()) != do_lang('SUPPORT_ACCOUNT'))) {
-                $support_operator_url = get_self_url(false, false, array('keep_su' => do_lang('SUPPORT_ACCOUNT')));
-            }
-
             // Link to edit ticket subject/type
             $edit_url = mixed();
             if (!$new) {
@@ -723,7 +717,6 @@ class Module_tickets
                 'OTHER_TICKETS' => $other_tickets,
                 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner),
                 'TICKET_TYPE_ID' => is_null($ticket_type_id) ? null : strval($ticket_type_id),
-                'SUPPORT_OPERATOR_URL' => $support_operator_url,
                 'PING_URL' => $ping_url,
                 'WARNING_DETAILS' => $warning_details,
                 'NEW' => $new,
@@ -803,7 +796,7 @@ class Module_tickets
             warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'post'));
         }
 
-        $ticket_type_id = post_param_integer('ticket_type_id', -1);
+        $ticket_type_id = post_param_integer('ticket_type_id', null);
         check_ticket_access($id);
 
         $staff_only = post_param_integer('staff_only', 0) == 1;
@@ -812,7 +805,7 @@ class Module_tickets
         $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $id, 'redirect' => null), '_SELF', null, false, true, true);
         $home_url = $_home_url->evaluate();
         $email = '';
-        if ($ticket_type_id != -1) { // New ticket
+        if ($ticket_type_id !== null) { // New ticket
             $ticket_type_details = get_ticket_type($ticket_type_id);
 
             if (!has_category_access(get_member(), 'tickets', strval($ticket_type_id))) {
@@ -848,10 +841,10 @@ class Module_tickets
                 enforce_captcha();
             }
         }
-        ticket_add_post(get_member(), $id, $ticket_type_id, $_title, $post, $home_url, $staff_only);
+        ticket_add_post(null, $id, $ticket_type_id, $_title, $post, $home_url, $staff_only);
 
         // Auto-monitor
-        if (has_privilege(get_member(), 'support_operator')) {
+        if (has_privilege(get_member(), 'support_operator') && get_option('ticket_auto_assign') == '1') {
             require_code('notifications');
             enable_notifications('ticket_assigned_staff', $id);
         }
@@ -864,7 +857,7 @@ class Module_tickets
             if ($email == '') {
                 $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
             }
-            send_ticket_email($id, $__title, $post, $home_url, $email, $ticket_type_id, get_member());
+            send_ticket_email($id, $__title, $post, $home_url, $email, $ticket_type_id, null);
         }
 
         // Close ticket, if requested
@@ -1207,9 +1200,9 @@ class Module_tickets
         $home_url = $_home_url->evaluate();
         $merge_title = do_lang('TICKETS_MERGED_TITLE');
         $merge_post = do_lang('TICKETS_MERGED_POST', $to_title);
-        ticket_add_post(get_member(), $from, $_ticket_type_id, $merge_title, $merge_post, $home_url, false);
+        ticket_add_post(null, $from, $_ticket_type_id, $merge_title, $merge_post, $home_url, false);
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($_comments_all[0]['member']);
-        send_ticket_email($from, $merge_title, $merge_post, $home_url, $email, -1, get_member());
+        send_ticket_email($from, $merge_title, $merge_post, $home_url, $email, null, null);
 
         // Closed old ticket
         if (get_forum_type() == 'cns') {
