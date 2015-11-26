@@ -249,8 +249,6 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->drop_table_if_exists('f_topic_tracking');
     }
     if ((is_null($upgrade_from)) || ($upgrade_from < 10.0)) {
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('allows_anonymous_posts')));
-
         $GLOBALS['FORUM_DB']->create_table('f_group_join_log', array(
             'id' => '*AUTO',
             'member_id' => 'MEMBER',
@@ -327,6 +325,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio,custom_values=yes'), array('cf_type' => 'combo'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
+
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('allows_anonymous_posts')));
     }
 
     // If we have the forum installed to this db already, leave
