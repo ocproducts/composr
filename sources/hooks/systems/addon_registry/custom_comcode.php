@@ -115,14 +115,18 @@ class Hook_addon_registry_custom_comcode
             'sources/blocks/main_custom_comcode_tags.php',
             'sources/hooks/systems/page_groupings/custom_comcode.php',
             'sources/hooks/blocks/main_custom_gfx/index.html',
+            'sources_custom/hooks/blocks/main_custom_gfx/index.html',
             'sources/hooks/blocks/main_custom_gfx/text_overlay.php',
             'sources/hooks/blocks/main_custom_gfx/.htaccess',
+            'sources_custom/hooks/blocks/main_custom_gfx/.htaccess',
             'themes/default/images/button1.png',
             'themes/default/images/button2.png',
             'sources/blocks/main_custom_gfx.php',
             'sources/hooks/blocks/main_custom_gfx/rollover_button.php',
             'sources/hooks/systems/comcode/.htaccess',
+            'sources_custom/hooks/systems/comcode/.htaccess',
             'sources/hooks/systems/comcode/index.html',
+            'sources_custom/hooks/systems/comcode/index.html',
             'sources/hooks/systems/commandr_fs/custom_comcode_tags.php',
         );
     }

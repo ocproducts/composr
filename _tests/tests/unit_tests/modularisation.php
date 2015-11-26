@@ -123,7 +123,7 @@ class modularisation_test_set extends cms_test_case
         $full_dir = get_file_base() . '/' . $dir;
         $dh = opendir($full_dir);
         while (($file = readdir($dh)) !== false) {
-            if (should_ignore_file($dir . $file, IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_SCATTERED | IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_BUNDLED_VOLATILE | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+            if (should_ignore_file($dir . $file, IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
                 continue;
             }
 

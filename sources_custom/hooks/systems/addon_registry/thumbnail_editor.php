@@ -137,8 +137,6 @@ class Hook_addon_registry_thumbnail_editor
             'sources_custom/hooks/systems/addon_registry/thumbnail_editor.php',
             'themes/default/templates_custom/MEDIA_IMAGE_WEBSAFE.tpl',
             'sources_custom/hooks/systems/cleanup/image_thumbs.php',
-            'sources_custom/hooks/systems/cleanup/index.html',
-            'sources_custom/hooks/systems/cleanup/.htaccess',
             'data_custom/upload-crop/upload_crop_v1.2.php',
             'data_custom/upload-crop/js/jquery.imgareaselect.min.js',
             'data_custom/upload-crop/js/jquery-pack.js',

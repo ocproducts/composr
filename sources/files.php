@@ -38,11 +38,11 @@ function init__files()
         define('IGNORE_REVISION_FILES', 16);
         define('IGNORE_CUSTOM_ZONES', 32);
         define('IGNORE_CUSTOM_THEMES', 64);
-        define('IGNORE_USER_CUSTOMISE', 256);
-        define('IGNORE_NONBUNDLED_SCATTERED', 512);
+        define('IGNORE_USER_CUSTOMISE', 256); // This is more specific than IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS
+        define('IGNORE_NONBUNDLED_SCATTERED', 512); // This is fairly specific stuff that we know we need to skip, not a broad skip pattern and not listing all non-bundled addon files
         define('IGNORE_BUNDLED_VOLATILE', 1024);
         define('IGNORE_BUNDLED_UNSHIPPED_VOLATILE', 2048);
-        define('IGNORE_UPLOADS', 8192);
+        define('IGNORE_UPLOADS', 8192); // More specific than IGNORE_CUSTOM_DIR_GROWN_CONTENTS, except it does skip .htaccess/index.html under uploads too
         define('IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS', 16384);
         define('IGNORE_CUSTOM_DIR_GROWN_CONTENTS', 32768);
     }
@@ -419,8 +419,10 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
             array('(?!index\.html$)(?!\.htaccess$).*', 'themes/default/images_custom'), // We don't want deep images_custom directories either
             array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/chat'), // Various chat data files
             array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
             array('(?!pre_transcoding$)(?!index.html$)(?!\.htaccess$).*', 'uploads/.*'), // Uploads
+            array('(?!index\.html$)(?!\.htaccess$).*', '.*/(comcode|html)_custom/.*'), // Comcode pages
             array('.*', 'exports/builds/.*'),
         ));
     }

@@ -138,7 +138,6 @@ This is based on the work of Martin Conte Mac Donell (OpenID-realselector) and M
         return array(
             'sources_custom/hooks/systems/addon_registry/openid.php',
             'sources_custom/hooks/systems/login_providers/openid.php',
-            'sources_custom/hooks/systems/login_providers/index.html',
             'sources_custom/miniblocks/openid.php',
             'sources_custom/openid.php',
             'sources_custom/users.php',

@@ -40,7 +40,7 @@ class standard_dir_files_test_set extends cms_test_case
 
         if (($dh = opendir($dir)) !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+                if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS, 0)) {
                     continue;
                 }
 
@@ -53,13 +53,40 @@ class standard_dir_files_test_set extends cms_test_case
         }
 
         if ($contents > 0) {
-            if ((!file_exists($dir . '/index.php')) && (!file_exists($dir . '/index.html')) && (strpos($dir, 'ckeditor') === false) && (strpos($dir, 'areaedit') === false) && (strpos($dir, 'personal_dicts') === false)) {
+            if ((!file_exists($dir . '/index.php')) && (!file_exists($dir . '/index.html')) && (strpos($dir, 'ckeditor') === false) && (strpos($dir, 'personal_dicts') === false)) {
                 $this->assertTrue(false, 'touch "' . $dir . '/index.html" ; git add -f "' . $dir . '/index.html"');
             }
 
             if ((!file_exists($dir . DIRECTORY_SEPARATOR . '.htaccess')) && (!file_exists($dir . '/index.php')) && (!file_exists($dir . '/html_custom')) && (!file_exists($dir . '/EN')) && (strpos($dir, 'ckeditor') === false) && (strpos($dir, 'uploads') === false) && (preg_match('#/data(/|$|\_)#', $dir) == 0) && (strpos($dir, 'themes') === false) && (strpos($dir, 'exports') === false)) {
                 $this->assertTrue(false, 'cp "' . get_file_base() . '/sources/.htaccess" "' . $dir . '/.htaccess" ; git add "' . $dir . '/.htaccess"');
             }
+        }
+    }
+
+    public function testParallelHookDirs()
+    {
+        foreach (array('systems', 'blocks', 'modules') as $dir) {
+            $a = array();
+            $dh = opendir(get_file_base() . '/sources/hooks/' . $dir);
+            while (($f = readdir($dh)) !== false) {
+                $a[] = $f;
+            }
+            closedir($dh);
+            sort($a);
+
+            $b = array();
+            $dh = opendir(get_file_base() . '/sources_custom/hooks/' . $dir);
+            while (($f = readdir($dh)) !== false) {
+                $b[] = $f;
+            }
+            closedir($dh);
+            sort($b);
+
+            $diff = array_diff($a, $b);
+            $this->assertTrue(count($diff) == 0, 'Missing in sources/' . $dir . ': ' . serialize($diff));
+
+            $diff = array_diff($b, $a);
+            $this->assertTrue(count($diff) == 0, 'Missing in sources_custom/' . $dir . ': ' . serialize($diff));
         }
     }
 
