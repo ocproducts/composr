@@ -326,7 +326,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
 
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('allows_anonymous_posts')));
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('is_on_anonymous_posts')));
     }
 
     // If we have the forum installed to this db already, leave
