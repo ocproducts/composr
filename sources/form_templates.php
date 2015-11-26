@@ -318,6 +318,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $tabindex = get_form_field_tabindex($tabindex);
 
     $post = filter_form_field_default(is_object($submit_name) ? $submit_name->evaluate() : $submit_name, $post);
+    $required = filter_form_field_required('post', $required);
 
     check_suhosin_request_size(strlen($post));
 
@@ -480,6 +481,24 @@ function wysiwyg_on()
 }
 
 /**
+ * Find if a form field is required via fields.xml filters.
+ *
+ * @param  ID_TEXT $name The codename for this field
+ * @param  boolean $required Whether it is required by default
+ * @return boolean Whether it is required
+ */
+function filter_form_field_required($name, $required)
+{
+    if (!$required) {
+        $minlength = get_field_restrict_property('minlength', $name);
+        if ((!empty($minlength)) && (intval($minlength) > 0)) {
+            $required = true;
+        }
+    }
+    return $required;
+}
+
+/**
  * Get the value of a scoped field restriction property. Returns "first-found".
  *
  * @param  string $property The name of the property
@@ -504,8 +523,8 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
             if (simulated_wildcard_match($field, trim($__r), true)) {
                 foreach ($_restrictions as $bits) {
                     list($restriction, $attributes) = $bits;
-                    if (strtolower($restriction) == strtolower($field)) {
-                        return $bits['embed'];
+                    if (strtolower($restriction) == strtolower($property)) {
+                        return $bits[1]['embed'];
                     }
                 }
             }
@@ -539,6 +558,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -574,6 +594,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -604,6 +625,7 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -631,6 +653,7 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax');
     require_javascript('ajax_people_lists');
@@ -664,6 +687,7 @@ function form_input_author($pretty_name, $description, $name, $default, $require
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax');
     require_javascript('ajax_people_lists');
@@ -704,6 +728,7 @@ function form_input_email($pretty_name, $description, $name, $default, $required
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -738,6 +763,7 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -795,6 +821,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -829,6 +856,12 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default_array[0] = filter_form_field_default($name, array_key_exists(0, $default_array) ? $default_array[0] : '');
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -889,6 +922,12 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default_array[0] = filter_form_field_default($name, array_key_exists(0, $default_array) ? $default_array[0] : '');
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -929,6 +968,13 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
     require_javascript('ajax_people_lists');
 
     $tabindex = get_form_field_tabindex($tabindex);
+
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -978,6 +1024,7 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -1029,6 +1076,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
     $default_parsed = new Tempcode();
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -1090,6 +1138,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -1154,6 +1203,7 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -2005,6 +2055,8 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
     $default_day = mixed();
     $default_year = mixed();
 
+    $required = filter_form_field_required($name, $required);
+
     if ((is_array($default_time)) && ($default_time[4] < 1970) && (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963')) { // Some systems can't do negative timestamps. Actually the maximum negative integer size is also an issue
         list($default_minute, $default_hour, $default_month, $default_day, $default_year) = $default_time;
         if (is_null($default_minute)) {
@@ -2116,6 +2168,8 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
     $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
     $default = ($_default == '') ? null : intval($_default);
 
+    $required = filter_form_field_required($name, $required);
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_INTEGER', array('_GUID' => 'da09e21f329f300f71dd4dd518cb6242', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : strval($default)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
@@ -2172,6 +2226,8 @@ function form_input_float($pretty_name, $description, $name, $default, $required
 
     $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
     $default = ($_default == '') ? null : floatval($_default);
+
+    $required = filter_form_field_required($name, $required);
 
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_FLOAT', array('_GUID' => '6db802ae840bfe7e87881f95c79133c4', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : float_to_raw_string($default, 10, true)));
