@@ -1337,6 +1337,7 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
 function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = false)
 {
     $alien = '';
+    $alien_count = 0;
     $addon = '';
 
     require_code('files');
@@ -1429,12 +1430,13 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
                     if (!$raw) {
                         $file_html .= '<input ' . $disabled . $checked . 'type="checkbox" name="' . uniqid('', true) . '" value="delete:' . escape_html($rela . $file) . '" /> ';
                     }
-                    $file_html .= '<kbd>' . escape_html($rela . $file) . '</kbd></li>';
+                    $file_html .= '<kbd>' . escape_html($rela . $file) . '</kbd></li>' . "\n";
                     if (array_key_exists($rela . $file, $addon_files)) {
                         $addon .= $file_html;
                     } else {
-                        if (strlen($alien) <= 100000) {// Reasonable limit
+                        if ($alien_count <= 10000) {// Reasonable limit
                             $alien .= $file_html;
+                            $alien_count++;
                         }
                     }
                 }
@@ -1442,8 +1444,8 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
     }
 
-    if (strlen($alien) > 100000) {
-        $alien = ''; // Reasonable limit
+    if ($alien_count > 10000) {// Reasonable limit
+        $alien = '';
     }
 
     return array($alien, $addon);

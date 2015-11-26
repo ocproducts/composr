@@ -168,7 +168,7 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = null)
 
             $bitmask = IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_BUNDLED_VOLATILE;
             if ($no_custom) {
-                $bitmask = $bitmask | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_NONBUNDLED_SCATTERED;
+                $bitmask = $bitmask | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_SCATTERED;
             }
             $stripped_path = preg_replace('#^' . preg_quote($COMPOSR_PATH . '/', '#') . '#', '', $dir . '/') . $file;
             if ($stripped_path == 'exports') {

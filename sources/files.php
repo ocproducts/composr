@@ -31,8 +31,8 @@ function init__files()
 
         define('IGNORE_DEFAULTS', 0);
         // -
-        define('IGNORE_ACCESS_CONTROLLERS', 1);
-        define('IGNORE_CUSTOM_DIR_CONTENTS', 2);
+        define('IGNORE_NON_EN_SCATTERED_LANGS', 1);
+        define('IGNORE_ACCESS_CONTROLLERS', 2);
         define('IGNORE_HIDDEN_FILES', 4);
         define('IGNORE_EDITFROM_FILES', 8);
         define('IGNORE_REVISION_FILES', 16);
@@ -42,8 +42,9 @@ function init__files()
         define('IGNORE_NONBUNDLED_SCATTERED', 512);
         define('IGNORE_BUNDLED_VOLATILE', 1024);
         define('IGNORE_BUNDLED_UNSHIPPED_VOLATILE', 2048);
-        define('IGNORE_NON_EN_SCATTERED_LANGS', 4096);
         define('IGNORE_UPLOADS', 8192);
+        define('IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS', 16384);
+        define('IGNORE_CUSTOM_DIR_GROWN_CONTENTS', 32768);
     }
 }
 
@@ -378,7 +379,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                           ) + $ignore_filenames_and_dir_names; // Done in this order as we are overriding .htaccess to block everywhere (by default blocks root only). PHP has weird array merge precedence rules.
     }
 
-    if (($bitmask & IGNORE_USER_CUSTOMISE) != 0) { // Ignores directories that user override files go in, not code or uploads (which IGNORE_CUSTOM_DIR_CONTENTS would cover): stuff edited through frontend to override bundled files
+    if (($bitmask & IGNORE_USER_CUSTOMISE) != 0) { // Ignores directories that user override files go in, not code or uploads (which IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS would cover): stuff edited through frontend to override bundled files
         $ignore_filenames_and_dir_names += array(
             'comcode_custom' => '.*',
             'html_custom' => '.*',
@@ -400,7 +401,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         );
     }
 
-    if (($bitmask & IGNORE_CUSTOM_DIR_CONTENTS) != 0) { // Ignore all override directories, for both users and addons
+    if (($bitmask & IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS) != 0) { // Ignore all override directories, for both users and addons
         if (($dir == 'data_custom') && (in_array($filename, array('errorlog.php', 'execute_temp.php', 'functions.dat')))) {
             // These are allowed, as they are volatile yet bundled. Use IGNORE_BUNDLED_VOLATILE if you don't want them.
         } else {
@@ -410,13 +411,18 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
                 //'.*\_custom'=>'.*', Let it find them, but work on the contents
                 array('(?!index\.html$)(?!\.htaccess$).*', 'sources_custom/[^/]*'), // We don't want deep sources_custom directories either
-                array('(?!index\.html$)(?!\.htaccess$).*', 'themes/default/images_custom'), // We don't want deep images_custom directories either
-                array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
-                array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
-                array('(?!pre_transcoding$)(?!index.html$)(?!\.htaccess$).*', 'uploads/.*'), // Uploads
-                array('.*', 'exports/builds/.*'),
             ));
         }
+    }
+
+    if (($bitmask & IGNORE_CUSTOM_DIR_GROWN_CONTENTS) != 0) { // Ignore all override directories, for both users and addons
+        $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
+            array('(?!index\.html$)(?!\.htaccess$).*', 'themes/default/images_custom'), // We don't want deep images_custom directories either
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
+            array('(?!pre_transcoding$)(?!index.html$)(?!\.htaccess$).*', 'uploads/.*'), // Uploads
+            array('.*', 'exports/builds/.*'),
+        ));
     }
 
     if (($bitmask & IGNORE_UPLOADS) != 0) {

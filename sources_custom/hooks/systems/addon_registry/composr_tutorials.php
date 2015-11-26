@@ -300,6 +300,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/sup_customising_your_composr_websites_design/567de6f8400484095462e262c19d2e08.png',
             'data_custom/images/docs/sup_customising_your_composr_websites_design/5c94dbeb90a34b742e0709fefa0cd37a.png',
             'data_custom/images/docs/sup_customising_your_composr_websites_design/afe31d9f4337eb03893618764d23dac5.png',
+            'data_custom/images/docs/sup_web_standards_in_composr/preview.png',
             'data_custom/images/docs/sup_database_enums/sup_database_enums_1.png',
             'data_custom/images/docs/sup_database_enums/sup_database_enums_2.png',
             'data_custom/images/docs/sup_database_enums/sup_database_enums_3.png',

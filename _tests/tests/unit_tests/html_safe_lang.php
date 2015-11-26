@@ -139,7 +139,7 @@ class html_safe_lang_test_set extends cms_test_case
         global $FILE2;
         if (($dh = opendir($dir)) !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_CONTENTS))) {
+                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                     if (is_file($dir . '/' . $file)) {
                         if (substr($file, -4, 4) == '.' . $ext) {
                             $FILE2 = $dir . '/' . $file;
