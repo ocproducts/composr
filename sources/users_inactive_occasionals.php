@@ -337,12 +337,12 @@ function try_httpauth_login()
             }
 
             @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
-            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_option('windows_auth_is_enabled') != '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();
             exit();
         } else {
-            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_option('windows_auth_is_enabled') != '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
         }
     }
 

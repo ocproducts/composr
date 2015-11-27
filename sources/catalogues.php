@@ -1356,7 +1356,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
     $out = new Tempcode();
     foreach ($catalogues as $name => $title) {
         $selected = ($name == $it);
-        $out->attach(form_input_list_entry($name, $selected, get_translated_text($title)));
+        $out->attach(form_input_list_entry($name, $selected, $title));
     }
 
     return $out;

@@ -2,11 +2,6 @@
 	{HIDDEN}
 
 	<div>
-		<input type="hidden" name="default_lang" value="{LANG*}" />
-		<input name="db_type" type="hidden" value="{DB_TYPE*}" />
-		<input name="forum_type" type="hidden" value="{FORUM_TYPE*}" />
-		<input name="board_path" type="hidden" value="{BOARD_PATH*}" />
-
 		<div class="installer_main_min">
 			{MESSAGE}
 

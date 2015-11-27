@@ -150,7 +150,6 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/allow_theme_image_selector.php',
             'sources/hooks/systems/config/infinite_scrolling.php',
             'sources/hooks/systems/config/check_broken_urls.php',
-            'sources/hooks/systems/config/windows_auth_is_enabled.php',
             'sources/hooks/systems/config/google_analytics.php',
             'sources/hooks/systems/config/show_personal_sub_links.php',
             'sources/hooks/systems/config/show_content_tagging.php',

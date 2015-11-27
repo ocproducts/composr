@@ -514,10 +514,6 @@ function ip_cidr_check($ip, $cidr)
  */
 function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b = '', $silent = false, $instant_ban = false)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(4);
-    }
-
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 

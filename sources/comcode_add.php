@@ -438,6 +438,7 @@ function comcode_helper_script_step2()
                             $default = $matches[1];
                         }
                     }
+
                     $descriptiont = preg_replace('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $descriptiont);
 
                     if ($GLOBALS['XSS_DETECT']) {
@@ -502,8 +503,11 @@ function comcode_helper_script_step2()
         $params = ($_params['tag_parameters'] == '') ? array() : explode(',', $_params['tag_parameters']);
         foreach ($params as $param) {
             $description = new Tempcode();
-            $fields->attach(form_input_line(preg_replace('#=.*$#', '', titleify($param)), protect_from_escaping($description), preg_replace('#=.*$#', '', $param), preg_replace('#^.*=#U', '', $param), false));
+            $name = preg_replace('#=.*$#', '', $param);
+            $default = (strpos($param, '=') === false) ? '' : preg_replace('#^.*=#U', '', $param);
+            $fields->attach(form_input_line(titleify($name), protect_from_escaping($description), $name, $default, false));
         }
+
         $tag_description = new Tempcode();
         $tag_description->attach(escape_html(is_integer($_params['tag_description']) ? get_translated_text($_params['tag_description']) : $_params['tag_description']));
         $tag_description->attach(paragraph(escape_html(is_integer($_params['tag_example']) ? get_translated_text($_params['tag_example']) : $_params['tag_example'])));
@@ -920,9 +924,12 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
 page=URL
 page=URL';
         }
-        $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED');
+        $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED', null, null, null, null, false);
+        if (is_null($descriptiont)) {
+            $descriptiont = '';
+        }
         $descriptiont = trim(str_replace(do_lang('BLOCK_IND_SUPPORTS_COMCODE'), '', $descriptiont));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_EMBED')), 'tag_contents', $default_embed, true, null, true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, true, null, true));
     } else {
         return false;
     }
