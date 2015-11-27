@@ -117,7 +117,9 @@ class Hook_addon_registry_realtime_rain
             'lang/EN/realtime_rain.ini',
             'themes/default/images/realtime_rain/index.html',
             'sources/hooks/systems/realtime_rain/.htaccess',
+            'sources_custom/hooks/systems/realtime_rain/.htaccess',
             'sources/hooks/systems/realtime_rain/index.html',
+            'sources_custom/hooks/systems/realtime_rain/index.html',
             'sources/hooks/systems/addon_registry/realtime_rain.php',
             'sources/hooks/systems/config/bottom_show_realtime_rain_button.php',
 

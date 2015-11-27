@@ -155,7 +155,7 @@ When creating new gifts please only use images which are free to use, we suggest
             'themes/default/templates_custom/POINTSTORE_GIFTR.tpl',
             'themes/default/templates_custom/POINTSTORE_GIFTR_GIFTS.tpl',
             'themes/default/templates_custom/CNS_MEMBER_SCREEN_GIFTS_WRAP.tpl',
-            'themes/default/css/gifts.css',
+            'themes/default/css_custom/gifts.css',
             'uploads/giftr_addon/index.html',
             'uploads/giftr_addon/2a kiss.jpg',
             'uploads/giftr_addon/2Football_(soccer).gif',

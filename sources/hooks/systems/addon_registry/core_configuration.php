@@ -278,7 +278,9 @@ class Hook_addon_registry_core_configuration
             'adminzone/pages/modules/admin_config.php',
             'lang/EN/config.ini',
             'sources/hooks/systems/config/.htaccess',
+            'sources_custom/hooks/systems/config/.htaccess',
             'sources/hooks/systems/config/index.html',
+            'sources_custom/hooks/systems/config/index.html',
             'themes/default/templates/XML_CONFIG_SCREEN.tpl',
         );
     }

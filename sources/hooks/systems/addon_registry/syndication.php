@@ -117,7 +117,9 @@ class Hook_addon_registry_syndication
             'data/backend_cloud.php',
             'sources/rss2.php',
             'sources/hooks/systems/rss/.htaccess',
+            'sources_custom/hooks/systems/rss/.htaccess',
             'sources/hooks/systems/rss/index.html',
+            'sources_custom/hooks/systems/rss/index.html',
             'sources/hooks/systems/non_active_urls/news_rss_cloud.php',
         );
     }

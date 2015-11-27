@@ -146,7 +146,6 @@ class Hook_addon_registry_gallery_syndication
             'sources_custom/gallery_syndication.php',
             'sources_custom/hooks/modules/video_syndication/vimeo.php',
             'sources_custom/hooks/modules/video_syndication/youtube.php',
-            'sources_custom/hooks/modules/video_syndication/index.html',
             'sources_custom/hooks/systems/cron/gallery_syndication.php',
             'sources_custom/hooks/systems/page_groupings/gallery_syndication.php',
             'sources_custom/oauth.php',
