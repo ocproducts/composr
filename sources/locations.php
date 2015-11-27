@@ -502,6 +502,10 @@ function geolocate_ip($ip = null)
         return null; // No IP6 support
     }
 
+    if (running_script('install')) {
+        return null;
+    }
+
     $query = 'SELECT * FROM ' . get_table_prefix() . 'ip_country WHERE begin_num<=' . sprintf('%u', $long_ip) . ' AND end_num>=' . sprintf('%u', $long_ip);
     $results = $GLOBALS['SITE_DB']->query($query);
 
