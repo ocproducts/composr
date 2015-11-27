@@ -335,12 +335,10 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             }
         }
 
-        require_lang('comcode');
-        $title = do_lang_tempcode('_SEARCH_RESULT_COMCODE_PAGE', escape_html($page));
+        $title = $page;
         global $LAST_COMCODE_PARSED_TITLE;
-
         if ($LAST_COMCODE_PARSED_TITLE != '') {
-            $title = do_lang_tempcode('_SEARCH_RESULT_COMCODE_PAGE_NICE', escape_html($LAST_COMCODE_PARSED_TITLE));
+            $title = $LAST_COMCODE_PARSED_TITLE;
         }
 
         $breadcrumbs = breadcrumb_segments_to_tempcode(comcode_breadcrumbs($page, $zone));

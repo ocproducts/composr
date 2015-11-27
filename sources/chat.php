@@ -394,6 +394,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
     require_lang('submitban');
 
     $room_check = null;
+    $room_row = null;
     if ($room_id >= 0) {
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
 
@@ -407,15 +408,12 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
         }
         $welcome = ((array_key_exists(get_member(), get_chatters_in_room($room_id))) || (!$backlog) || (get_param_integer('no_reenter_message', 0) == 1)) ? null : $room_row['c_welcome'];
     } else {
+        $room_check = $GLOBALS['SITE_DB']->query('SELECT id,is_im,c_welcome,allow_list_groups,disallow_list_groups,allow_list,disallow_list,room_owner FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval(get_member()) . '%') . '\'');
+
         $welcome = null;
     }
-    if ($room_id >= 0) {
-        $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id));
-        if (array_key_exists(0, $room_check)) {
-            $room_row = $room_check[0];
-            chat_room_prune($room_id);
-        }
-    } elseif ($room_id != -2) {
+
+    if ($room_id != -2) { // Some room(s) at least, so do some cleanup
         // Note that *we are still here*
         if ($room_id == -1) {
             $GLOBALS['SITE_DB']->query_update('chat_active', array('date_and_time' => time()), array('member_id' => get_member()));
@@ -424,14 +422,6 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
             $GLOBALS['SITE_DB']->query_insert('chat_active', array('member_id' => get_member(), 'date_and_time' => time(), 'room_id' => $room_id));
         }
         chat_room_prune(-1);
-    }
-
-    if (is_null($room_check)) {
-        $room_check = $GLOBALS['SITE_DB']->query('SELECT id,is_im,c_welcome,allow_list_groups,disallow_list_groups,allow_list,disallow_list,room_owner FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval(get_member()) . '%') . '\'');
-        if (!isset($room_check[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
-        }
-        $room_row = $room_check[0];
     }
 
     $from_id = null;
@@ -449,7 +439,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
         $edit_url = new Tempcode();
         $chat_ban_url = new Tempcode();
         $chat_unban_url = new Tempcode();
-        if ((!is_null($room_check)) && (array_key_exists(0, $room_check))) {
+        if ((!is_null($room_check)) && (!is_null($room_row)) && (array_key_exists(0, $room_check))) {
             $moderator = is_chat_moderator($_message['member_id'], $room_id, $room_row['room_owner']);
             $edit_url = build_url(array('page' => 'cms_chat', 'type' => 'edit', 'id' => $_message['id'], 'room_id' => $_message['room_id']), get_module_zone('cms_chat'));
             if (has_privilege(get_member(), 'ban_chatters_from_rooms')) {

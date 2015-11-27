@@ -1605,7 +1605,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	margin: 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
-	margin-top: -2px;
+	margin-top: -2px !important;
 }
 .toggleable_tray_button img {
 	width: 20px;
@@ -2216,7 +2216,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_launcher a:visited,
 .results_launcher a:hover,
 .results_launcher span {
-	padding: 2px {$?,{$MOBILE},10,4}px !important;
+	padding: 2px {$?,{$MOBILE},10,6}px !important;
 }
 
 .results_launcher {

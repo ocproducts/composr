@@ -181,7 +181,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
     $banner_type_row = $_banner_type_rows[0];
 
     // Check banner types all match up
-    if (!is_null($b_types)) {
+    if (!empty($b_types)) {
         $sql = 'SELECT * FROM ' . get_table_prefix() . 'banner_types WHERE id IN (\'' . implode('\',\'', $b_types) . '\')';
         $sql .= ' AND (t_image_width<>' . strval($banner_type_row['t_image_width']) . ' OR t_image_height<>' . strval($banner_type_row['t_image_height']) . ' OR t_is_textual<>' . strval($banner_type_row['t_is_textual']) . ')';
         $test = $GLOBALS['SITE_DB']->query($sql);
