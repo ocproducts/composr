@@ -11,11 +11,11 @@ Git too complex? Very understandable, in which case you can ask a developer to h
 [title="2"]Adding your tutorial[/title]
 
 [list="1"]
-[*] Set up git. You'll need to install Composr also.
+[*] Set up git. You'll need to pull and install Composr from the git repository, so you have a working site to write into.
 
 [*] You'll find the tutorials are all written as Comcode pages in [tt]docs/pages/comcode_custom/EN[/tt].
 
-[*] There's a concept of "supplementary" documentation. This doesn't primary documentation, but rather provides additional perspectives or specific techniques. The supplementary tutorials are named [tt]sup_whatever.txt[/tt]. We strictly use only lowercase characters, and underscores rather than spaces.
+[*] There's a concept of "supplementary" documentation. This isn't primary documentation, but rather provides additional perspectives or specific techniques. The supplementary tutorials are named [tt]sup_whatever.txt[/tt]. We strictly use only lowercase characters, and underscores rather than spaces.
 
 [*] If you have images, they'll be in a new directory you create [tt]data_custom/images/docs/<TUTORIAL_BASE_FILENAME>[/tt]. E.g. [tt]data_custom/images/docs/sup_whatever[/tt].
 
