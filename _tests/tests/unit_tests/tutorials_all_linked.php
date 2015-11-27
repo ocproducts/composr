@@ -117,7 +117,8 @@ class tutorials_all_linked_test_set extends cms_test_case
                     continue;
                 }
 
-                $c = file_get_contents($path . '/' . $f);
+                $c = remove_code_block_contents(file_get_contents($path . '/' . $f));
+
                 $this->assertTrue(strpos($c, '{$SET,tutorial_add_date,') !== false, $f . ' has no defined add date');
                 $this->assertTrue(strpos($c, '[block]main_tutorial_rating[/block]') !== false, $f . ' has no rating block');
                 if (preg_match('#^sup\_#', $f) == 0 && substr_count($c, '[title="2"') > 1 && strpos($f, 'codebook') === false) {

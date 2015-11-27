@@ -262,7 +262,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
         }
 
         $tutorial_path = get_custom_file_base() . '/docs/pages/comcode_custom/EN/' . $tutorial_name . '.txt';
-        $c = file_get_contents($tutorial_path);
+        $c = remove_code_block_contents(file_get_contents($tutorial_path));
         $matches = array();
 
         if (preg_match('#\[title sub="Written by ([^"]*)"\]([^\[\]]*)\[/title\]#', $c, $matches) != 0) {
@@ -390,4 +390,11 @@ function _find_tutorial_image_for_tag($tag)
     $tag = str_replace('&', 'and', $tag);
     $tag = strtolower($tag);
     return $tag;
+}
+
+function remove_code_block_contents($code)
+{
+    $code = preg_replace('#(\[code=[^\[\]]*\]).*(\[/code\])#Us', '$1$2', $code);
+    $code = preg_replace('#(\[codebox=[^\[\]]*\]).*(\[/codebox\])#Us', '$1$2', $code);
+    return $code;
 }

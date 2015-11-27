@@ -24,6 +24,7 @@ class tutorial_image_consistency_test_set extends cms_test_case
     public function setUp()
     {
         require_code('images');
+        require_code('tutorials');
 
         $this->images = array();
         $path = get_file_base() . '/data_custom/images/docs';
@@ -54,7 +55,7 @@ class tutorial_image_consistency_test_set extends cms_test_case
         $dh = opendir($path);
         while (($f = readdir($dh)) !== false) {
             if (substr($f, -4) == '.txt') {
-                $contents = file_get_contents($path . '/' . $f);
+                $contents = remove_code_block_contents(file_get_contents($path . '/' . $f));
 
                 $matches = array();
                 $num_matches = preg_match_all('#data_custom/images/docs/([^"\'\s]*\.(gif|jpg|jpeg|png))#', $contents, $matches);
