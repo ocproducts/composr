@@ -64,7 +64,7 @@ Gift points are useless unless spent, so the only advantage to hoarding them is 
 
 When a member buys something from the Point Store, the staff are informed of it via e-mail of appropriate details.
 
-The Point Store shop front is accessed via the [tt]pointstore[/tt] module ([tt]site:pointstore[/tt] page-link, Social > Point-store on the default menus)
+The Point Store shop front is accessed via the [tt]pointstore[/tt] module ([tt]site:pointstore[/tt] page-link, Social > Point Store on the default menus)
 
 Point Store inventory management is at:
 Admin Zone > Setup > Point Store inventory management

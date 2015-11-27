@@ -98,6 +98,9 @@ class lang_test_set extends cms_test_case
         if (stripos($string, 'add-on') !== false) {
             $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
         }
+        if (stripos($string, 'point-store') !== false) {
+            $this->assertTrue(false, 'The word \'point-store\' was used in ' . $file . '. This should be changed to \'Point Store\'.');
+        }
         if (stripos($string, 'user-group') !== false) {
             $this->assertTrue(false, 'The term \'user-group\' was used in ' . $file . '. This should be changed to \'usergroup\'.');
         }
