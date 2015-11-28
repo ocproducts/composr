@@ -203,10 +203,6 @@ class Module_admin_cns_forums extends Standard_crud_module
             $parent_forum = get_param_integer('parent_forum', null);
         }
 
-        if (is_null($position)) {
-            $position = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'MAX(f_position)') + 1;
-        }
-
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
@@ -217,11 +213,9 @@ class Module_admin_cns_forums extends Standard_crud_module
         if ((is_null($id)) || ((!is_null($id)) && ($id != db_get_first_id()))) {
             $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT_FORUM'), 'parent_forum', null, 'choose_forum', array(), true, is_null($parent_forum) ? '' : strval($parent_forum)));
         }
-        if ($GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)') > 300) {
-            $fields->attach(form_input_integer(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FORUM_ORDER'), 'position', $position, true));
-        } else {
-            $hidden->attach(form_input_hidden('position', strval($position)));
-        }
+
+        require_code('content2');
+        $fields->attach(get_order_field('forum', null, $position, null, null, 'position', do_lang_tempcode('DESCRIPTION_FORUM_ORDER')));
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'cb47ed06695dc2cd99211772fe4c5643', 'SECTION_HIDDEN' => $post_count_increment == 1 && $order_sub_alpha == 0 && ($intro_question == '') && ($intro_answer == '') && ($redirection == '') && ($order == 'last_post'), 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields->attach(form_input_tick(do_lang_tempcode('POST_COUNT_INCREMENT'), do_lang_tempcode('DESCRIPTION_POST_COUNT_INCREMENT'), 'post_count_increment', $post_count_increment == 1));

@@ -63,6 +63,7 @@ class Hook_resource_meta_aware_cpf
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => 'cf_order',
             'submitter_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,

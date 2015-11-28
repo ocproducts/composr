@@ -69,6 +69,7 @@ class Hook_content_meta_aware_forum
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => 'f_position',
             'submitter_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,

@@ -65,6 +65,7 @@ class Hook_content_meta_aware_comcode_page
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => 'p_order',
             'submitter_field' => 'p_submitter',
             'add_time_field' => 'p_add_date',
             'edit_time_field' => 'p_edit_date',

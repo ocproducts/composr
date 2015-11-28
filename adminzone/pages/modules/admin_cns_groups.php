@@ -225,16 +225,9 @@ class Module_admin_cns_groups extends Standard_crud_module
         $fields->attach(form_input_username(do_lang_tempcode('GROUP_LEADER'), do_lang_tempcode('DESCRIPTION_GROUP_LEADER'), 'group_leader', $group_leader, false));
 
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
-        $orderlist = new Tempcode();
-        $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-        $num_groups = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', ($group_count > 200) ? array('g_is_private_club' => 0) : null);
-        if (is_null($id)) {
-            $num_groups++;
-        }
-        for ($i = 0; $i < $num_groups; $i++) {
-            $orderlist->attach(form_input_list_entry(strval($i), (($i === $order) || ((is_null($id)) && ($i == $num_groups - 1))), integer_format($i + 1)));
-        }
-        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('USERGROUP_DISPLAY_ORDER_DESCRIPTION'), 'order', $orderlist));
+
+        require_code('content2');
+        $fields->attach(get_order_field('group', null, $order));
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4d72d054883ede5250a3c3e03d27d18c', 'TITLE' => do_lang_tempcode('JOINING'))));
         if ((is_null($id)) || ($id != db_get_first_id())) {

@@ -205,26 +205,15 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
 
         $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
+
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_ON_JOIN_FORM'), do_lang_tempcode('DESCRIPTION_SHOW_ON_JOIN_FORM'), 'show_on_join_form', $show_on_join_form == 1));
-        $orderlist = new Tempcode();
-        $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
-        if ($name == '') {
-            $num_cpfs++;
-        }
-        $selected_one = false;
-        for ($i = 0; $i < (is_null($order) ? $num_cpfs : max($num_cpfs, $order)); $i++) {
-            $selected = (($i === $order) || (($name == '') && ($i == $num_cpfs - 1)));
-            if ($selected) {
-                $selected_one = true;
-            }
-            $orderlist->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
-        }
-        if (!$selected_one) {
-            $orderlist->attach(form_input_list_entry(strval($order), true, integer_format($order + 1)));
-        }
-        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FIELD_ORDER', 'cpf'), 'order', $orderlist));
+
+        require_code('content2');
+        $fields->attach(get_order_field('cpf', null, $order, null, null));
+
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POSTS'), 'show_in_posts', $show_in_posts == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
+
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
         if ($locked == 0) {
             $groups = new Tempcode();

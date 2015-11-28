@@ -70,6 +70,7 @@ class Hook_content_meta_aware_group
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => 'g_order',
             'submitter_field' => 'g_group_leader',
             'add_time_field' => null,
             'edit_time_field' => null,

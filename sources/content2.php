@@ -31,6 +31,79 @@ function init__content2()
 }
 
 /**
+ * Get an order inputter.
+ *
+ * @param  ID_TEXT $entry_type The type of resource being ordered
+ * @param  ?ID_TEXT $category_type The type of resource being ordered within (null: no categories involved)
+ * @param  ?integer $current_order The current order (null: new, so add to end)
+ * @param  ?integer $max Maximum order field (null: work out from content type meta-data)
+ * @param  ?integer $total Number of entries, alternative to supplying $max (null: work out from content type meta-data)
+ * @param  ID_TEXT $order_field The POST field to save under
+ * @param  ?Tempcode $description Description for field input (null: {!ORDER})
+ * @return Tempcode Ordering field
+ */
+function get_order_field($entry_type, $category_type, $current_order, $max = null, $total = null, $order_field = 'order', $description = null)
+{
+    if ((!is_null($max)) && (!is_null($total))) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    $new = is_null($current_order);
+
+    $min = 0;
+
+    if (is_null($max) || is_null($total)) {
+        require_code('content');
+        $ob = get_content_object($entry_type);
+        $info = $ob->info();
+
+        $order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
+
+        if (is_null($max)) {
+            $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $order_field . ')');
+            if (is_null($max)) {
+                $max = 0;
+            }
+        }
+
+        if (is_null($total)) {
+            $total = $info['connection']->query_select_value($info['table'], 'COUNT(' . $order_field . ')');
+        }
+    }
+
+    if ($total > $max) {
+        // Need to make sure there's always enough slots to pick from
+        $max = $total - 1;
+    }
+
+    if ($new) {
+        $max++; // Space for new one on end
+        $current_order = $max;
+    }
+
+    if (is_null($description)) {
+        if (is_null($category_type)) {
+            $description = do_lang_tempcode('DESCRIPTION_ORDER_NO_CATS', $entry_type);
+        } else {
+            $description = do_lang_tempcode('DESCRIPTION_ORDER', $entry_type, $category_type);
+        }
+    }
+
+    if ($max > 100) {
+        // Too much for a list, so do a typed integer input
+        return form_input_integer(do_lang_tempcode('ORDER'), $description, $order_field, $current_order, true);
+    }
+
+    // List input
+    $order_list = new Tempcode();
+    for ($i = $min; $i <= $max; $i++) {
+        $selected = ($i === $current_order);
+        $order_list->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
+    }
+    return form_input_list(do_lang_tempcode('ORDER'), $description, $order_field, $order_list);
+}
+
+/**
  * Get template fields to insert into a form page, for manipulation of meta data.
  *
  * @param  ID_TEXT $content_type The type of resource (e.g. download)

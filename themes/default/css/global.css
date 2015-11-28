@@ -301,6 +301,9 @@ td, th.de_th {
 	font-weight: normal;
 	border: 0;
 }
+table[border="1"] td, table[border="1"] th.de_th { /* To make WYSIWYG easier */
+	border: 1px solid;
+}
 th.de_th {
 	background-color: transparent;
 	background-image: none;

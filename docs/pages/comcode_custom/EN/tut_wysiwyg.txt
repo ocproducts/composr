@@ -64,6 +64,19 @@ You can solve this a number of ways...
 4) Use the "Paste as plain text" button in the WYSIWYG editor
 The final option is usually the most sensible one, but for the sake of thoroughness, I wanted to expound on different approaches users take.
 
+[title="2"]Tables[/title]
+
+By default Composr does not show table borders (&dagger;). This is to make things very plain by default, and also so that WYSIWYG-edited tables can be used for laying things out spatially in columns.
+Using tables for layout is not ideal (professional web developers use CSS techniques), but if it's only within some content it won't harm your SEO.
+
+&dagger; Actually within the editor table borders are shown as dotted, via specific styling rule for this. This is just so you can see what you are editing.
+
+You can set the border when you add the table in CKEditor, or when you edit the table properties. You can also edit the cell spacing and cell padding from here.
+
+If you set a border of "1" then Composr makes sure that borders between cells become visible again, rather than it only being a border around the whole table. This is done via a special rule within our default CSS file.
+
+Another technique you can use is to edit the HTML source within the editor. You can removing the default border/spacing/padding/width/style that CKEditor added, and use [tt]class="results_table"[/tt] instead. This will activate some of Composr's default styling for visually attractive tables.
+
 [title="2"]Embedding files[/title]
 
 There are currently 6 ways to get images (and other files) into the WYSIWYG editor:

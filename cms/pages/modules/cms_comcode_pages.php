@@ -859,7 +859,8 @@ class Module_cms_comcode_pages
         }
         $fields2->attach(form_input_tick(do_lang_tempcode('SHOW_AS_EDITED'), do_lang_tempcode('DESCRIPTION_SHOW_AS_EDITED'), 'show_as_edit', $show_as_edit));
 
-        $fields2->attach(form_input_integer(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_ORDER', 'catalogue_category', 'catalogue_entry'), 'order', $order, true));
+        require_code('content2');
+        $fields->attach(get_order_field('comcode_page', 'zone', $order));
 
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
             '_GUID' => 'a42341a9a2de532cecdcfbecaff00a0f',
