@@ -69,7 +69,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
         }
 
         if (is_null($total)) {
-            $total = $info['connection']->query_select_value($info['table'], 'COUNT(' . $order_field . ')');
+            $total = $info['connection']->query_select_value($info['table'], 'COUNT(*)');
         }
     }
 
