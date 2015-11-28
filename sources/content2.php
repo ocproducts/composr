@@ -46,31 +46,25 @@ function init__content2()
  */
 function get_order_field($entry_type, $category_type, $current_order, $max = null, $total = null, $order_field = 'order', $description = null)
 {
-    if ((!is_null($max)) && (!is_null($total))) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
-    }
-
     $new = is_null($current_order);
 
     $min = 0;
 
-    if (is_null($max) || is_null($total)) {
-        require_code('content');
-        $ob = get_content_object($entry_type);
-        $info = $ob->info();
+    require_code('content');
+    $ob = get_content_object($entry_type);
+    $info = $ob->info();
 
-        $order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
+    $order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
 
+    if (is_null($max)) {
+        $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $order_field . ')', null, 'WHERE ' . $order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
         if (is_null($max)) {
-            $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $order_field . ')', null, 'WHERE ' . $order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
-            if (is_null($max)) {
-                $max = 0;
-            }
+            $max = 0;
         }
+    }
 
-        if (is_null($total)) {
-            $total = $info['connection']->query_select_value($info['table'], 'COUNT(*)');
-        }
+    if (is_null($total)) {
+        $total = $info['connection']->query_select_value($info['table'], 'COUNT(*)');
     }
 
     if ($total > $max) {
