@@ -208,7 +208,6 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_ON_JOIN_FORM'), do_lang_tempcode('DESCRIPTION_SHOW_ON_JOIN_FORM'), 'show_on_join_form', $show_on_join_form == 1));
 
-        require_code('content2');
         $fields->attach(get_order_field('cpf', null, $order, null, null));
 
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POSTS'), 'show_in_posts', $show_in_posts == 1));
@@ -399,7 +398,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $row_cf_order = 0;
         $table = get_table_prefix() . 'f_custom_fields';
         if ($start_order > $end_order) {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($end_order) . ' AND ' . strval($start_order) . ' ORDER BY cf_order ASC');
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($end_order) . ' AND ' . strval($start_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
             foreach ($rows as $row) {
                 $row_cf_order = $row['cf_order'];
                 if ($row_cf_order == $end_order) {
@@ -409,7 +408,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                 }
             }
         } else {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($start_order) . ' AND ' . strval($end_order) . ' ORDER BY cf_order ASC');
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($start_order) . ' AND ' . strval($end_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
             foreach ($rows as $row) {
                 $row_cf_order = $row['cf_order'];
                 if ($row_cf_order == $end_order) {
@@ -494,7 +493,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_integer('required', 0),
             post_param_integer('show_in_posts', 0),
             post_param_integer('show_in_post_previews', 0),
-            post_param_integer('order'), $only_group,
+            get_param_order_field(),
+            $only_group,
             post_param_integer('show_on_join_form', 0),
             post_param_string('options'),
             false
@@ -522,7 +522,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_integer('required', 0),
             post_param_integer('show_in_posts', 0),
             post_param_integer('show_in_post_previews', 0),
-            post_param_integer('order'),
+            get_param_order_field(),
             $only_group,
             post_param_string('type'),
             post_param_integer('show_on_join_form', 0),

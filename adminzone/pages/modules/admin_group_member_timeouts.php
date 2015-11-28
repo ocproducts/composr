@@ -118,7 +118,7 @@ class Module_admin_group_member_timeouts
         if (get_forum_type() == 'cns') {
             $num_usergroups = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
             if ($num_usergroups > 50) {
-                $_usergroups = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs s JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=s.s_group_id', array('g.id', 'g.g_name'), null, 'ORDER BY g_order', 1);
+                $_usergroups = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs s JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=s.s_group_id', array('g.id', 'g.g_name'), null, 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'), 1);
                 $usergroups = array();
                 foreach ($_usergroups as $g) {
                     $usergroups[$g['id']] = get_translated_text($g['g_name'], $GLOBALS['FORUM_DB']);

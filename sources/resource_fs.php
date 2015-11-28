@@ -2100,7 +2100,7 @@ class Resource_fs_base
         if (!is_null($catalogue_entry_id)) {
             $special_fields = get_catalogue_entry_field_values('_' . $type, $catalogue_entry_id);
         } else {
-            $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order');
+            $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         }
 
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
@@ -2138,7 +2138,7 @@ class Resource_fs_base
         require_code('catalogues');
 
         // Get field values
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         $map = array();
         require_code('fields');
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));

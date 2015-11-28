@@ -242,7 +242,7 @@ class Module_groups
             $sql .= ' OR g.id=' . strval($g_id);
         }
         $sql .= ')';
-        $sql .= ' ORDER BY g_order,id';
+        $sql .= ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
         $groups = $GLOBALS['FORUM_DB']->query($sql);
 
         foreach ($groups as $g_id => $row) {
@@ -422,7 +422,7 @@ class Module_groups
         }
         $sql .= ' AND g.id<>' . strval(db_get_first_id());
         $sql .= ')';
-        $sql .= ' ORDER BY g_order,id';
+        $sql .= ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
         $_others = $GLOBALS['FORUM_DB']->query($sql, $max, $start);
         $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there(str_replace('SELECT * ', 'SELECT COUNT(*) ', $sql));
         $has_images = false;

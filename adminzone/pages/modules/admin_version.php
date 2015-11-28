@@ -313,6 +313,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_submitter', array('p_submitter'));
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_add_date', array('p_add_date'));
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_validated', array('p_validated'));
+            $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_order', array('p_order'));
 
             $GLOBALS['SITE_DB']->create_table('cached_comcode_pages', array(
                 'the_zone' => '*ID_TEXT',
@@ -449,7 +450,7 @@ class Module_admin_version
 
         if ((!is_null($upgrade_from)) && ($upgrade_from == 14)) {
             $GLOBALS['SITE_DB']->alter_table_field('digestives_tin', 'd_from_member_id', '?MEMBER');
-         }
+        }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 14)) {
             $GLOBALS['SITE_DB']->create_table('temp_block_permissions', array(
@@ -887,7 +888,7 @@ class Module_admin_version
                 'region' => '*ID_TEXT',
             ));
 
-            $GLOBALS['SITE_DB']->create_table('unbannable_ip',array(
+            $GLOBALS['SITE_DB']->create_table('unbannable_ip', array(
                 'ip'=>'*IP',
                 'note'=>'SHORT_TEXT',
             ));

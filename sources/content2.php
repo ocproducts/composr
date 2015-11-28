@@ -28,6 +28,8 @@ function init__content2()
     define('META_DATA_HEADER_NO', 0);
     define('META_DATA_HEADER_YES', 1);
     define('META_DATA_HEADER_FORCE', 2);
+
+    define('ORDER_AUTOMATED_CRITERIA', 2147483647); // lowest order, shared for all who care not about order, so other SQL ordering criterias take precedence
 }
 
 /**
@@ -60,7 +62,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
         $order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
 
         if (is_null($max)) {
-            $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $order_field . ')');
+            $max = $info['connection']->query_select_value($info['table'], 'MAX(' . $order_field . ')', null, 'WHERE ' . $order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
             if (is_null($max)) {
                 $max = 0;
             }
@@ -77,8 +79,14 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
     }
 
     if ($new) {
-        $max++; // Space for new one on end
-        $current_order = $max;
+        $test = $info['connection']->query_select_value($info['table'], 'COUNT(' . $order_field . ')', null, 'WHERE ' . $order_field . '=' . strval(ORDER_AUTOMATED_CRITERIA));
+
+        if ($test > 0) {
+            $current_order = ORDER_AUTOMATED_CRITERIA; // Ah, we are already in the habit of automated ordering here
+        } else {
+            $max++; // Space for new one on end
+            $current_order = $max;
+        }
     }
 
     if (is_null($description)) {
@@ -91,7 +99,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
 
     if ($max > 100) {
         // Too much for a list, so do a typed integer input
-        return form_input_integer(do_lang_tempcode('ORDER'), $description, $order_field, $current_order, true);
+        return form_input_integer(do_lang_tempcode('ORDER'), $description, $order_field, $current_order, false);
     }
 
     // List input
@@ -100,7 +108,23 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
         $selected = ($i === $current_order);
         $order_list->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
     }
+    $order_list->attach(form_input_list_entry('', $current_order == ORDER_AUTOMATED_CRITERIA, do_lang_tempcode('ORDER_AUTOMATED_CRITERIA')));
     return form_input_list(do_lang_tempcode('ORDER'), $description, $order_field, $order_list);
+}
+
+/**
+ * Get submitted order value.
+ *
+ * @param  ID_TEXT $order_field The POST field
+ * @return integer The order value
+ */
+function get_param_order_field($order_field = 'order')
+{
+    $ret = post_param_integer($order_field, null);
+    if (is_null($ret)) {
+        $ret = ORDER_AUTOMATED_CRITERIA;
+    }
+    return $ret;
 }
 
 /**

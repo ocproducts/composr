@@ -155,7 +155,7 @@ class Module_join
         $url = build_url($map, '_SELF');
 
         $group_select = new Tempcode();
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_default'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order');
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_default'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
         if (count($rows) > 1) {
             foreach ($rows as $group) {
                 if (get_param_integer('usergroup', -1) == -1) {

@@ -193,7 +193,7 @@ class CMSForumRead
         if ($order_sub_alpha) {
             $query .= ' ORDER BY f_name';
         } else {
-            $query .= ' ORDER BY f_position,id';
+            $query .= ' ORDER BY f_position,f_name';
         }
         return (get_allowed_forum_sql() == '') ? array() : $GLOBALS['FORUM_DB']->query($query);
     }

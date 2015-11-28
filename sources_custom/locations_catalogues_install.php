@@ -451,7 +451,7 @@ function create_catalogue_category_tree($catalogue_name = 'places', $country = n
     // Create root nodes under catalogue root
     static $fields = null;
     if ($fields === null) {
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
     }
     static $first_cat = null;
     if ($first_cat === null) {
@@ -597,7 +597,7 @@ function recalculate_bounding_long_lat($category)
 {
     static $fields = null;
     if (is_null($fields)) {
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
     }
 
     $min_latitude = mixed();

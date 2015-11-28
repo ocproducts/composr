@@ -37,7 +37,7 @@ function init__cns_members_action2()
 function member_get_csv_headings_extended()
 {
     // Read CPFs
-    $cpfs = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_name'), null, 'ORDER BY cf_order'));
+    $cpfs = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_name'), null, 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name')));
 
     // Headings
     $headings = member_get_csv_headings();
@@ -622,7 +622,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 
         // Prepare list of usergroups, if maybe we are gonna let (a) usergroup-change field(s)
         $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_hidden', 'g_open_membership'), ($group_count > 200) ? array('g_is_private_club' => 0) : null, 'ORDER BY g_order');
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_hidden', 'g_open_membership'), ($group_count > 200) ? array('g_is_private_club' => 0) : null, 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
         $_groups = new Tempcode();
         $default_primary_group = get_first_default_group();
         $current_primary_group = null;

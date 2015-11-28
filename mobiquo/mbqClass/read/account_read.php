@@ -93,7 +93,7 @@ class CMSAccountRead
             'f_custom_fields',
             array('id', 'cf_name', 'cf_description', 'cf_type', 'cf_default'),
             array('cf_show_on_join_form' => 1, 'cf_required' => 1),
-            'ORDER BY cf_order'
+            'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name')
         );
         foreach ($_custom_register_fields as $_custom_register_field) {
             $name = get_translated_text($_custom_register_field['cf_name'], $GLOBALS['FORUM_DB']);

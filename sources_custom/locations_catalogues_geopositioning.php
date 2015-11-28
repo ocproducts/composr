@@ -43,7 +43,7 @@ function fix_geoposition($lstring, $category_id)
         $latitude = floatval($matches[1]);
         $longitude = floatval($matches[2]);
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         require_code('content');
         require_code('fields');
         $assocated_catalogue_entry_id = get_bound_content_entry('catalogue_category', strval($category_id));

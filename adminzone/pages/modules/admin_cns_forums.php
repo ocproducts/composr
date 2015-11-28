@@ -214,7 +214,6 @@ class Module_admin_cns_forums extends Standard_crud_module
             $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT_FORUM'), 'parent_forum', null, 'choose_forum', array(), true, is_null($parent_forum) ? '' : strval($parent_forum)));
         }
 
-        require_code('content2');
         $fields->attach(get_order_field('forum', null, $position, null, null, 'position', do_lang_tempcode('DESCRIPTION_FORUM_ORDER')));
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'cb47ed06695dc2cd99211772fe4c5643', 'SECTION_HIDDEN' => $post_count_increment == 1 && $order_sub_alpha == 0 && ($intro_question == '') && ($intro_answer == '') && ($redirection == '') && ($order == 'last_post'), 'TITLE' => do_lang_tempcode('ADVANCED'))));
@@ -540,7 +539,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('forum', null);
 
-        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_integer('position'), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
+        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, get_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
 
         set_url_moniker('forum', $id);
 
@@ -599,7 +598,24 @@ class Module_admin_cns_forums extends Standard_crud_module
     {
         $meta_data = actual_meta_data_get_fields('forum', $id);
 
-        cns_edit_forum(intval($id), post_param_string('name'), post_param_string('description', STRING_MAGIC_NULL), post_param_integer('forum_grouping_id', INTEGER_MAGIC_NULL), post_param_integer('parent_forum', INTEGER_MAGIC_NULL), post_param_integer('position', INTEGER_MAGIC_NULL), post_param_integer('post_count_increment', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_string('intro_question', STRING_MAGIC_NULL), post_param_string('intro_answer', STRING_MAGIC_NULL), post_param_string('redirection', STRING_MAGIC_NULL), post_param_string('order', STRING_MAGIC_NULL), post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('allows_anonymous_posts', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('reset_intro_acceptance', 0) == 1);
+        cns_edit_forum(
+            intval($id),
+            post_param_string('name'),
+            post_param_string('description', STRING_MAGIC_NULL),
+            post_param_integer('forum_grouping_id', INTEGER_MAGIC_NULL),
+            post_param_integer('parent_forum', INTEGER_MAGIC_NULL),
+            fractional_edit() ? INTEGER_MAGIC_NULL : get_param_order_field(),
+            post_param_integer('post_count_increment',
+            fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_string('intro_question', STRING_MAGIC_NULL),
+            post_param_string('intro_answer', STRING_MAGIC_NULL),
+            post_param_string('redirection', STRING_MAGIC_NULL),
+            post_param_string('order', STRING_MAGIC_NULL),
+            post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('allows_anonymous_posts', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('reset_intro_acceptance', 0) == 1
+        );
 
         if (!fractional_edit()) {
             require_code('cns_groups2');

@@ -109,7 +109,7 @@ class Hook_search_cns_members
         if ($map == array()) {
             $map = null;
         }
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map, 'ORDER BY g_order');
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map, 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
         $groups = form_input_list_entry('', false, '---');
         $default_group = get_param_string('option__user_group', '');
         $group_titles = array();

@@ -530,7 +530,7 @@ class FirePHP {
      */
     public static function getInstance($autoCreate = false)
     {
-        if ($autoCreate === true && empty(self::$instance)) {
+        if ($autoCreate === true && !isset(self::$instance)) {
             self::init();
         }
         return self::$instance;

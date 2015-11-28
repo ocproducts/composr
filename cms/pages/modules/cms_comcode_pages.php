@@ -84,6 +84,8 @@ class Module_cms_comcode_pages
 
         require_lang('zones');
 
+        require_code('content2');
+
         inform_non_canonical_parameter('parent_page');
 
         set_helper_panel_tutorial('tut_comcode_pages');
@@ -859,7 +861,6 @@ class Module_cms_comcode_pages
         }
         $fields2->attach(form_input_tick(do_lang_tempcode('SHOW_AS_EDITED'), do_lang_tempcode('DESCRIPTION_SHOW_AS_EDITED'), 'show_as_edit', $show_as_edit));
 
-        require_code('content2');
         $fields->attach(get_order_field('comcode_page', 'zone', $order));
 
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
@@ -877,7 +878,6 @@ class Module_cms_comcode_pages
             $fields2->attach(get_award_fields('comcode_page', $zone . ':' . $file));
         }
 
-        require_code('content2');
         $fields2->attach(meta_data_get_fields('comcode_page', ($page_link == '') ? null : $page_link));
 
         if (addon_installed('content_reviews')) {
@@ -955,10 +955,9 @@ class Module_cms_comcode_pages
             $validated = 0;
         }
         $parent_page = post_param_string('parent_page', '');
-        $order = post_param_integer('order');
+        $order = get_param_order_field();
         $show_as_edit = post_param_integer('show_as_edit', 0);
         $text_raw = post_param_string('post');
-        require_code('content2');
         $meta_data = actual_meta_data_get_fields('comcode_page', $zone . ':' . $file, null, $new_file);
 
         // Handle attachments
