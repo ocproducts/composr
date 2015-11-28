@@ -1820,12 +1820,25 @@ hr.spaced_rule {
 .left.float_separation {
 	margin-{!en_right}: 1em;
 }
-
 .right {
 	float: {!en_right};
 }
 .right.float_separation, .inline.spaced {
 	margin-{!en_left}: 1em;
+}
+@media screen and (max-width:800px) {
+	.left.responsive {
+		float: none;
+	}
+	.left.responsive.float_separation {
+		margin-{!en_right}: 0;
+	}
+	.right.responsive {
+		float: none;
+	}
+	.right.responsive.float_separation {
+		margin-{!en_left}: 0;
+	}
 }
 
 .inline_lined_up {

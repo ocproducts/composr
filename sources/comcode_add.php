@@ -53,7 +53,7 @@ function _get_details_comcode_tags()
         'center' => array(),
         'right' => array(),
         'abbr' => array('param'),
-        'box' => array('float', 'width', 'type', 'options', 'param'),
+        'box' => array('param', 'float', 'width', 'type', 'class', 'options', 'meta', 'links'),
         'quote' => array('param', 'saidless', 'cite'),
         'cite' => array(),
         'samp' => array(),
@@ -277,6 +277,8 @@ function _get_non_wysiwyg_tags()
         'post',
         'topic',
         'attachment',
+
+        'box', // Has extra parameters that the WYSIWYG button can't inject
     );
 
     return $ret;

@@ -1224,12 +1224,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         case 'box':
             $width = array_key_exists('width', $attributes) ? comcode_to_tempcode($attributes['width'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member) : make_string_tempcode('auto');
             $type = array_key_exists('type', $attributes) ? $attributes['type'] : '';
+            $class = array_key_exists('class', $attributes) ? $attributes['class'] : '';
             $options = array_key_exists('options', $attributes) ? $attributes['options'] : '';
             $meta = ($comcode_dangerous && isset($attributes['meta'])) ? $attributes['meta'] : ''; // Insecure, unneeded here
             $links = ($comcode_dangerous && isset($attributes['links'])) ? $attributes['links'] : ''; // Insecure, unneeded here
             $converted_title = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $connection, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
 
-            $temp_tpl = directive_tempcode('BOX', $embed, array($converted_title, make_string_tempcode($type), $width, make_string_tempcode($options), make_string_tempcode($meta), make_string_tempcode($links)));
+            $temp_tpl = directive_tempcode('BOX', $embed, array($converted_title, make_string_tempcode($type), $width, make_string_tempcode($options), make_string_tempcode($meta), make_string_tempcode($links), new Tempcode(), make_string_tempcode($class)));
             if (isset($attributes['float'])) {
                 $temp_tpl = do_template('FLOATER', array('_GUID' => '54e8fc9ec1e16cfc5c8824e22f1e8745', 'FLOAT' => $attributes['float'], 'CONTENT' => $temp_tpl));
             }

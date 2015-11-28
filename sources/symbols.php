@@ -323,7 +323,8 @@ function ecv($lang, $escaped, $type, $name, $param)
                 $meta = isset($param[5]) ? $param[4]->evaluate() : '';
                 $links = isset($param[6]) ? $param[5]->evaluate() : '';
                 $top_links = isset($param[7]) ? $param[6]->evaluate() : '';
-                $tmp = put_in_standard_box(array_pop($param), $title, $box_type, $width, $options, $meta, $links, $top_links);
+                $class = isset($param[8]) ? $param[7]->evaluate() : '';
+                $tmp = put_in_standard_box(array_pop($param), $title, $box_type, $width, $options, $meta, $links, $top_links, $class);
                 $value = $tmp->evaluate();
                 break;
 

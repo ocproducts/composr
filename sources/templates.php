@@ -44,9 +44,10 @@ function init__templates()
  * @param  string $meta '|' separated list of meta information (key|value|key|value|...)
  * @param  string $links '|' separated list of link information (linkhtml|...)
  * @param  string $top_links Link to be added to the header of the box
+ * @param  string $class CSS class to use
  * @return Tempcode The contents, put inside a standard box, according to the other parameters
  */
-function put_in_standard_box($content, $title = '', $type = 'default', $width = '', $options = '', $meta = '', $links = '', $top_links = '')
+function put_in_standard_box($content, $title = '', $type = 'default', $width = '', $options = '', $meta = '', $links = '', $top_links = '', $class = '')
 {
     if ($type == '') {
         $type = 'default';
@@ -80,7 +81,11 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
         $width = strval(intval($width)) . 'px';
     }
 
-    return do_template('STANDARDBOX_' . filter_naughty($type), array('WIDTH' => $width, 'CONTENT' => $content, 'LINKS' => $_links, 'META' => $_meta, 'OPTIONS' => $_options, 'TITLE' => $title, 'TOP_LINKS' => $top_links), null, true);
+    if ($class == '') {
+        $class = null;
+    }
+
+    return do_template('STANDARDBOX_' . filter_naughty($type), array('WIDTH' => $width, 'CONTENT' => $content, 'LINKS' => $_links, 'META' => $_meta, 'OPTIONS' => $_options, 'TITLE' => $title, 'TOP_LINKS' => $top_links, 'CLASS' => $class), null, true);
 }
 
 /**
