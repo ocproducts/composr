@@ -1,6 +1,7 @@
-[title="1"]Donate[/title]
+[title]Donate[/title]
 
 There are significant ongoing costs in keeping {$SITE_NAME} running and moving forward. If you feel you can assist by donating money it would be much appreciated.
+
 
 [semihtml]
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

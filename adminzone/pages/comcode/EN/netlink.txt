@@ -1,4 +1,4 @@
-[title="1"]Partner sites[/title]
+[title]Partner sites[/title]
 
 This page is used to configure the the list of partner links exported by this website, as used by {$BRAND_NAME*} [tt]side_network[/tt] block. This is a feature designed to make it easy for you to centrally manage one set of partner links, and display them on all partner sites.
 

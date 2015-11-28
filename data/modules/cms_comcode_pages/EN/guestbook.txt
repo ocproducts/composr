@@ -1,4 +1,4 @@
-[title="1"]Guestbook[/title]
+[title]Guestbook[/title]
 
 Please leave us a comment in our guestbook :).
 

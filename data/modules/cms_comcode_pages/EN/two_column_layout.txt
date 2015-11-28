@@ -1,4 +1,4 @@
-[title="1"]Two Column Layout[/title]
+[title]Two Column Layout[/title]
 
 [semihtml]
 [surround="fp_col_blocks_wrap"]

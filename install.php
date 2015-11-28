@@ -866,7 +866,7 @@ function step_4()
     $master_password = '';
     $options->attach(make_option(do_lang_tempcode('MASTER_PASSWORD'), example('', 'CHOOSE_MASTER_PASSWORD'), 'master_password', $master_password, true));
     require_lang('config');
-    $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'allow_reports_default', 1));
+    $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'send_error_emails_ocproducts', 1));
     $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', 0));
     $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'f051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     $hidden->attach(form_input_hidden('self_learning_cache', '1'));
@@ -1652,7 +1652,7 @@ if (!function_exists(\'git_repos\')) {
             'cns_admin_password_confirm',
 
             'clear_existing_forums_on_install',
-            'allow_reports_default',
+            'send_error_emails_ocproducts',
             'board_path',
             'confirm',
             'email',
@@ -2165,6 +2165,8 @@ function step_7()
             }
         }
     }
+
+    set_option('send_error_emails_ocproducts', strval(post_param_integer('send_error_emails_ocproducts', 0)));
 
     require_code('addons2');
     $addons = find_all_hooks('systems', 'addon_registry');

@@ -1,4 +1,4 @@
-[title="1"]Press Release (a template guide)[/title]
+[title]Press Release (a template guide)[/title]
 
 [title="2"]Foo and Bar announce merger[/title]
 

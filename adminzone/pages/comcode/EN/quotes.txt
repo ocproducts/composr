@@ -1,4 +1,4 @@
-[title="1"]Edit quotes[/title]
+[title]Edit quotes[/title]
 
 These quotes are the default quotes fed into the [tt]main_quotes[/tt] block, which is a block designed to show a random quote from the selection defined.
 Place each new quote on a separate line.

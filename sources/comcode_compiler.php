@@ -106,7 +106,7 @@ function init__comcode_compiler()
  */
 function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
 {
-    global $BUTTON_EDITED_TAGS, $TEXTUAL_TAGS_WYSIWYG, $BLOCK_TAGS, $REVERSIBLE_TAGS;
+    global $BUTTON_EDITED_TAGS, $TEXTUAL_TAGS_WYSIWYG, $BLOCK_TAGS, $REVERSIBLE_TAGS, $CODE_TAGS;
 
     $_button_edited_tags = $BUTTON_EDITED_TAGS;
 
@@ -137,6 +137,10 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null)
     }
     if ($is_button_edited_tag) {
         return WYSIWYG_COMCODE__BUTTON;
+    }
+
+    if (isset($CODE_TAGS[$tag])) {
+        return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
     }
 
     if ((isset($TEXTUAL_TAGS_WYSIWYG[$tag])) && (isset($BLOCK_TAGS[$tag]))) {
@@ -196,6 +200,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
 
         case WYSIWYG_COMCODE__XML_BLOCK:
         case WYSIWYG_COMCODE__XML_INLINE:
+        case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
             $params_html = '';
             foreach ($attributes as $key => $val) {
                 if (is_integer($key)) {
@@ -212,7 +217,11 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $out .= '&#8203;';
             }
             $out .= '<comcode-' . escape_html($tag) . $params_html . '>';
-            $out .= $embed->evaluate();
+            if ($method == WYSIWYG_COMCODE__XML_BLOCK_ESCAPED) {
+                $out .= escape_html($embed->evaluate());
+            } else {
+                $out .= $embed->evaluate();
+            }
             $out .= '</comcode-' . escape_html($tag) . '>';
             if ($method == WYSIWYG_COMCODE__XML_INLINE) {
                 $out .= '&#8203;';

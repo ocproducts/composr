@@ -79,7 +79,7 @@ class _installer_test_set extends cms_test_case
                 'table_prefix' => 'cms_unit_test_',
                 'admin_password' => '',
                 'admin_password_confirm' => '',
-                'allow_reports_default' => '1',
+                'send_error_emails_ocproducts' => '1',
                 'admin_username' => 'admin',
                 'cns_admin_password' => '',
                 'cns_admin_password_confirm' => '',

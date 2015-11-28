@@ -708,8 +708,15 @@ class Module_cms_comcode_pages
                 $new = true;
             }
 
-            if (($new) && (get_option('is_on_comcode_page_children') == '1') && (has_privilege(get_member(), 'comcode_dangerous'))) {
-                $contents .= "[title]" . $file . "[/title]\n\n\n\n" . '[block]main_comcode_page_children[/block]';
+            if ($new) {
+                if (strpos($contents, '[title') === false) {
+                    $contents = '[title]' . $file . '[/title]' . "\n\n" . $contents;
+                    $contents .= "\n\n" . '[block]main_comcode_page_children[/block]';
+                }
+
+                if ((get_option('is_on_comcode_page_children') == '1') && (has_privilege(get_member(), 'comcode_dangerous'))) {
+                    $contents .= "\n\n" . '[block]main_comcode_page_children[/block]';
+                }
             }
 
             // Pre-process default pages with Tempcode, to make easier to understand
@@ -861,7 +868,7 @@ class Module_cms_comcode_pages
         }
         $fields2->attach(form_input_tick(do_lang_tempcode('SHOW_AS_EDITED'), do_lang_tempcode('DESCRIPTION_SHOW_AS_EDITED'), 'show_as_edit', $show_as_edit));
 
-        $fields->attach(get_order_field('comcode_page', 'zone', $order));
+        $fields2->attach(get_order_field('comcode_page', 'zone', $order));
 
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
             '_GUID' => 'a42341a9a2de532cecdcfbecaff00a0f',

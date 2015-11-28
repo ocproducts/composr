@@ -84,9 +84,9 @@ class Block_main_staff_checklist
                 '[page="adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL_LOGO') . '[/page]',
                 '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_P3P') . '"]http://www.p3pwiz.com/[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]http://www.google.com/addurl/[/url]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/webmaster/SubmitSitePage.aspx[/url]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/toolbox/submit-site-url[/url]',
                 '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="http://www.compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
                 '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'helping_out'), 'site') . '[/url]',
             );

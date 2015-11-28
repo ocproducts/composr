@@ -1,4 +1,4 @@
-[title="1"]Keyboard shortcuts[/title]
+[title]Keyboard shortcuts[/title]
 
 These are the key shortcuts that will work on {$SITE_NAME}.
 
