@@ -463,15 +463,20 @@ class Block_main_multi_content
                         }
                         $sort_order = preg_replace('#^.* #', '', $sort);
 
+                        $sql = 'SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ';
+                        if (isset($info['order_field'])) {
+                            $sql .= 'r.' . $info['order_field'] . ' ' . $sort_order . ',';
+                        }
                         if ((array_key_exists('title_field', $info)) && (strpos($info['title_field'], ':') === false)) {
                             if ($info['title_field_dereference']) {
-                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ' . $sort_order, $max, $start, false, true, $lang_fields);
+                                $sql .= $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ' . $sort_order;
                             } else {
-                                $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['title_field'] . ' ' . $sort_order, $max, $start, false, true, $lang_fields);
+                                $sql .= 'r.' . $info['title_field'] . ' ' . $sort_order;
                             }
                         } else {
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $first_id_field . ' ' . $sort_order, $max, $start, false, true, $lang_fields);
+                            $sql .= 'r.' . $first_id_field . ' ' . $sort_order;
                         }
+                        $rows = $info['connection']->query($sql, $max, $start, false, true, $lang_fields);
                         break;
                     default: // Some manual order
                         $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
