@@ -547,7 +547,7 @@ class Module_cms_comcode_pages
                 protect_from_escaping($zone_hyperlink),
                 $page_hyperlink,
                 //protect_from_escaping(do_template('COMCODE_TELETYPE', array('_GUID' => 'bf4dbed562e189c84aa33c17d06c2791', 'CONTENT' => preg_replace('#([\w\d\_]{22})#', '${1} ', escape_html($wrappable_page_link))))),
-                is_null($table_row['order']) ? '' : strval($table_row['order']),
+                (is_null($table_row['order']) || $table_row['order'] == ORDER_AUTOMATED_CRITERIA) ? '' : strval($table_row['order']),
                 $table_row['parent_page'],
                 //$username,  Save space
                 //$add_date,

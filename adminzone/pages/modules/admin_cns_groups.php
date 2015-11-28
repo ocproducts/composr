@@ -441,15 +441,15 @@ class Module_admin_cns_groups extends Standard_crud_module
             $orderlist = new Tempcode();
             $selected_one = false;
             $order = $row['g_order'];
-            for ($i = 0; $i < max(count($rows), $order); $i++) {
+            for ($i = 0; $i < max(count($rows), $order, 200); $i++) {
                 $selected = ($i === $order);
                 if ($selected) {
                     $selected_one = true;
                 }
-                $orderlist->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
+                $orderlist->attach(form_input_list_entry(strval($i), $selected, strval($i + 1)));
             }
             if (!$selected_one) {
-                $orderlist->attach(form_input_list_entry(strval($order), true, integer_format($order + 1)));
+                $orderlist->attach(form_input_list_entry(strval($order), true, ($order == ORDER_AUTOMATED_CRITERIA) ? do_lang('NA') : strval($order + 1)));
             }
             $ordererx = protect_from_escaping(do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '034e9c56038caa68874dece1174700e3', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['id']), 'LIST' => $orderlist)));
 

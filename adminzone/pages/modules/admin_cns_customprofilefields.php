@@ -340,15 +340,15 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
             $selected_one = false;
             $order = $row['cf_order'];
-            for ($i = 0; $i < max($num_cpfs, $order); $i++) {
+            for ($i = 0; $i < max($num_cpfs, $order, 200); $i++) {
                 $selected = ($i === $order);
                 if ($selected) {
                     $selected_one = true;
                 }
-                $orderlist->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
+                $orderlist->attach(form_input_list_entry(strval($i), $selected, strval($i + 1)));
             }
             if (!$selected_one) {
-                $orderlist->attach(form_input_list_entry(strval($order), true, integer_format($order + 1)));
+                $orderlist->attach(form_input_list_entry(strval($order), true, ($order == ORDER_AUTOMATED_CRITERIA) ? do_lang('NA') : strval($order + 1)));
             }
             $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $orderlist));
 
