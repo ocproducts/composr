@@ -208,7 +208,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_ON_JOIN_FORM'), do_lang_tempcode('DESCRIPTION_SHOW_ON_JOIN_FORM'), 'show_on_join_form', $show_on_join_form == 1));
 
-        $fields->attach(get_order_field('cpf', null, $order, null, null));
+        $fields->attach(get_order_field('cpf', null, $order));
 
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POSTS'), 'show_in_posts', $show_in_posts == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
