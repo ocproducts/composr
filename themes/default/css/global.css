@@ -1839,6 +1839,9 @@ hr.spaced_rule {
 	.right.responsive.float_separation {
 		margin-{!en_left}: 0;
 	}
+	.responsive>.box {
+		width: auto !important;
+	}
 }
 
 .inline_lined_up {
