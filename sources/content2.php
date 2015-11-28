@@ -112,7 +112,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
  * @param  ID_TEXT $order_field The POST field
  * @return integer The order value
  */
-function get_param_order_field($order_field = 'order')
+function post_param_order_field($order_field = 'order')
 {
     $ret = post_param_integer($order_field, null);
     if (is_null($ret)) {
@@ -308,7 +308,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
     $add_time = mixed();
     $add_time_field = in_array('add_time', $fields_to_skip) ? null : $info['add_time_field'];
     if (!is_null($add_time_field)) {
-        $add_time = get_input_date('meta_add_time');
+        $add_time = post_param_date('meta_add_time');
         if (is_null($add_time)) {
             if (is_null($content_id)) {
                 $add_time = time();
@@ -321,7 +321,7 @@ function actual_meta_data_get_fields($content_type, $content_id, $fields_to_skip
     $edit_time = mixed();
     $edit_time_field = in_array('edit_time', $fields_to_skip) ? null : $info['edit_time_field'];
     if (!is_null($edit_time_field)) {
-        $edit_time = get_input_date('meta_edit_time');
+        $edit_time = post_param_date('meta_edit_time');
         if (is_null($edit_time)) {
             if (is_null($content_id)) {
                 $edit_time = null; // No edit time

@@ -422,7 +422,7 @@ class Module_cms_banners extends Standard_crud_module
         $importancemodulus = post_param_integer('importancemodulus', 3);
         $notes = post_param_string('notes', '');
         $the_type = post_param_integer('the_type', 1);
-        $expiry_date = get_input_date('expiry_date');
+        $expiry_date = post_param_date('expiry_date');
         $validated = post_param_integer('validated', 0);
         $b_type = post_param_string('b_type');
         $b_types = isset($_POST['b_types']) ? $_POST['b_types'] : array();
@@ -485,7 +485,7 @@ class Module_cms_banners extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('banner', $id, null, $new_id);
 
-        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), get_input_date('expiry_date'), $meta_data['submitter'], $validated, $b_type, $b_types, $regions, $meta_data['edit_time'], $meta_data['add_time'], true);
+        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $meta_data['submitter'], $validated, $b_type, $b_types, $regions, $meta_data['edit_time'], $meta_data['add_time'], true);
 
         $this->new_id = post_param_string('name');
 

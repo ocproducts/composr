@@ -2005,7 +2005,7 @@ function form_input_date__scheduler($pretty_name, $description, $name, $required
 }
 
 /**
- * Get the Tempcode for a date input. Use get_input_date to read the result.
+ * Get the Tempcode for a date input. Use post_param_date to read the result.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field

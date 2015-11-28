@@ -53,8 +53,8 @@ class Hook_admin_stats_search
 
             return $ob->get_between($title);
         }
-        $time_start = get_input_date('time_start', true);
-        $time_end = get_input_date('time_end', true);
+        $time_start = post_param_date('time_start', true);
+        $time_end = post_param_date('time_end', true);
         if (!is_null($time_end)) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }

@@ -447,7 +447,7 @@ class Module_cms_blogs extends Standard_crud_module
         require_code('themes2');
         $url = resize_rep_image(post_param_image('image', 'uploads/repimages', 'newscats', false));
 
-        $schedule = get_input_date('schedule');
+        $schedule = post_param_date('schedule');
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times')) && (!is_null($schedule)) && ($schedule > time())) {
             $validated = 0;
         } else {
@@ -539,7 +539,7 @@ class Module_cms_blogs extends Standard_crud_module
             check_privilege('can_submit_to_others_categories', array('news', $main_news_category), null, 'cms_news');
         }
 
-        $schedule = get_input_date('schedule');
+        $schedule = post_param_date('schedule');
 
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
             require_code('calendar2');

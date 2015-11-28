@@ -41,7 +41,7 @@ function read_filtercode_parameter_from_env($field_name, $field_type = null)
     }
 
     if (($field_type == 'date') || ($field_type == 'time')) {
-        $_default_value = get_input_date('filter_' . $field_name, true);
+        $_default_value = post_param_date('filter_' . $field_name, true);
         $default_value = ($_default_value === null) ? '' : strval($_default_value);
     } elseif ($field_type == 'list_multi') {
         $default_value = array_key_exists('filter_' . $field_name, $env) ? implode(',', $env['filter_' . $field_name]) : '';

@@ -660,7 +660,7 @@ class Module_warnings extends Standard_crud_module
         // Topic silencing
         $silence_from_topic = post_param_integer('topic_id', null);
         if (!is_null($silence_from_topic)) {
-            $_silence_from_topic = get_input_date('silence_from_topic');
+            $_silence_from_topic = post_param_date('silence_from_topic');
             $GLOBALS['SITE_DB']->query_delete('member_privileges', array(
                 'member_id' => $member_id,
                 'privilege' => 'submit_lowrange_content',
@@ -705,7 +705,7 @@ class Module_warnings extends Standard_crud_module
                 'module_the_name' => 'forums',
                 'category_name' => strval($silence_from_forum),
             ));
-            $_silence_from_forum = get_input_date('silence_from_forum');
+            $_silence_from_forum = post_param_date('silence_from_forum');
 
             require_code('cns_general_action2');
             cns_mod_log_it('SILENCE_FROM_FORUM', strval($member_id), strval($silence_from_forum));

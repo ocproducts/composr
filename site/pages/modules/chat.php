@@ -1105,8 +1105,8 @@ class Module_chat
      */
     public function _chat_download_logs()
     {
-        $start_date_and_time = get_input_date('start', true);
-        $finish_date_and_time = get_input_date('finish', true);
+        $start_date_and_time = post_param_date('start', true);
+        $finish_date_and_time = post_param_date('finish', true);
 
         $room = get_param_integer('room_name');
 

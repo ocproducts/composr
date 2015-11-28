@@ -112,17 +112,17 @@ function get_booking_request_from_form()
 
         $quantity = post_param_integer('bookable_' . strval($bookable_id) . '_quantity', 0);
         if ($quantity > 0) {
-            $start = get_input_date('bookable_' . strval($bookable_id) . '_date_from');
+            $start = post_param_date('bookable_' . strval($bookable_id) . '_date_from');
             if (is_null($start)) {
-                $start = get_input_date('bookable_date_from');
+                $start = post_param_date('bookable_date_from');
             }
             $start_day = intval(date('d', $start));
             $start_month = intval(date('m', $start));
             $start_year = intval(date('Y', $start));
             if ($bookable['dates_are_ranges'] == 1) {
-                $end = get_input_date('bookable_' . strval($bookable_id) . '_date_to');
+                $end = post_param_date('bookable_' . strval($bookable_id) . '_date_to');
                 if (is_null($end)) {
-                    $end = get_input_date('bookable_date_to');
+                    $end = post_param_date('bookable_date_to');
                 }
                 $end_day = intval(date('d', $end));
                 $end_month = intval(date('m', $end));

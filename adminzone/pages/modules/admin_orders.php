@@ -729,8 +729,8 @@ class Module_admin_orders
     {
         require_code('shopping');
 
-        $start_date = get_input_date('start_date', true);
-        $end_date = get_input_date('end_date', true);
+        $start_date = post_param_date('start_date', true);
+        $end_date = post_param_date('end_date', true);
         $order_status = post_param_string('order_status');
 
         $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';

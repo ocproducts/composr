@@ -189,7 +189,7 @@ class Module_admin_group_member_timeouts
                 $old_group_id = post_param_integer('gmt_old_group_id_' . $matches[1], null);
                 $group_id = post_param_integer('gmt_group_id_' . $matches[1], null);
                 $username = post_param_string('gmt_username_' . $matches[1], '');
-                $time = get_input_date('gmt_time_' . $matches[1]);
+                $time = post_param_date('gmt_time_' . $matches[1]);
 
                 $this->_save_group_member_timeout($old_group_id, $group_id, $username, $time);
             }
@@ -199,7 +199,7 @@ class Module_admin_group_member_timeouts
 
         $group_id = post_param_integer('gmt_group_id_new', null);
         $username = post_param_string('gmt_username_new', '');
-        $time = get_input_date('gmt_time_new');
+        $time = post_param_date('gmt_time_new');
 
         if ((!is_null($group_id)) && ($username != '') && (!is_null($time))) {
             $this->_save_group_member_timeout(null, $group_id, $username, $time);

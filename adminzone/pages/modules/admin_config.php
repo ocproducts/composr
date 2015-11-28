@@ -701,7 +701,7 @@ class Module_admin_config
             if ($myrow['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif ($myrow['type'] == 'date') {
-                $date_value = get_input_date($name);
+                $date_value = post_param_date($name);
                 $value = is_null($date_value) ? '' : strval($date_value);
             } elseif ((($myrow['type'] == 'forum') || ($myrow['type'] == '?forum')) && (get_forum_type() == 'cns')) {
                 $value = post_param_string($name);

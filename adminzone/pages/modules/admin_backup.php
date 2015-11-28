@@ -304,7 +304,7 @@ class Module_admin_backup
         }
 
         if (addon_installed('calendar')) {
-            $schedule = get_input_date('schedule');
+            $schedule = post_param_date('schedule');
             if (!is_null($schedule)) {
                 set_value('backup_schedule_time', strval($schedule));
                 set_value('backup_recurrance_days', strval(post_param_integer('recurrance_days', 0)));

@@ -282,7 +282,7 @@ function _get_timezone_list()
  * @param  boolean $get_also Whether to allow over get parameters also
  * @return array The date/time components
  */
-function get_input_date_components($stub, $year = null, $month = null, $day = null, $get_also = false)
+function post_param_date_components($stub, $year = null, $month = null, $day = null, $get_also = false)
 {
     $default_ret = array($year, $month, $day, 0, 0);
 
@@ -389,11 +389,11 @@ function get_input_date_components($stub, $year = null, $month = null, $day = nu
  * @return ?TIME The timestamp of the date (null: no input date was chosen)
  * @ignore
  */
-function _get_input_date($stub, $get_also = false, $do_timezone_conversion = true)
+function _post_param_date($stub, $get_also = false, $do_timezone_conversion = true)
 {
     $timezone = post_param_string('timezone', get_users_timezone());
 
-    list($year, $month, $day, $hour, $minute) = get_input_date_components($stub, null, null, null, $get_also);
+    list($year, $month, $day, $hour, $minute) = post_param_date_components($stub, null, null, null, $get_also);
     if (is_null($year)) {
         return null;
     }

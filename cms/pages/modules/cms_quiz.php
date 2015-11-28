@@ -409,8 +409,8 @@ class Module_cms_quiz extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $open_time = get_input_date('open_time');
-        $close_time = get_input_date('close_time');
+        $open_time = post_param_date('open_time');
+        $close_time = post_param_date('close_time');
 
         $validated = post_param_integer('validated', 0);
 
@@ -471,8 +471,8 @@ class Module_cms_quiz extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $open_time = fractional_edit() ? INTEGER_MAGIC_NULL : get_input_date('open_time');
-        $close_time = fractional_edit() ? INTEGER_MAGIC_NULL : get_input_date('close_time');
+        $open_time = fractional_edit() ? INTEGER_MAGIC_NULL : post_param_date('open_time');
+        $close_time = fractional_edit() ? INTEGER_MAGIC_NULL : post_param_date('close_time');
 
         $_tied_newsletter = post_param_string('tied_newsletter', '');
         $tied_newsletter = ($_tied_newsletter == '') ? null : intval($_tied_newsletter);

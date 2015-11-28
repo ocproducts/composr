@@ -289,7 +289,7 @@ class Module_admin_cns_members
         $password = trim(post_param_string('password'));
         $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
         require_code('temporal2');
-        list($dob_year, $dob_month, $dob_day) = get_input_date_components('dob');
+        list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
         if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
             if (member_field_is_required(null, 'dob', null, null)) {
                 warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));

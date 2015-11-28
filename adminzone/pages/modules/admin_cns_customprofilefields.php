@@ -493,7 +493,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_integer('required', 0),
             post_param_integer('show_in_posts', 0),
             post_param_integer('show_in_post_previews', 0),
-            get_param_order_field(),
+            post_param_order_field(),
             $only_group,
             post_param_integer('show_on_join_form', 0),
             post_param_string('options'),
@@ -522,7 +522,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_integer('required', 0),
             post_param_integer('show_in_posts', 0),
             post_param_integer('show_in_post_previews', 0),
-            get_param_order_field(),
+            post_param_order_field(),
             $only_group,
             post_param_string('type'),
             post_param_integer('show_on_join_form', 0),
@@ -593,9 +593,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     public function _stats()
     {
         $f_name = 'field_' . strval(get_param_integer('id'));
-        $_a = get_input_date('start');
+        $_a = post_param_date('start');
         $a = is_null($_a) ? '1=1' : ('m_join_time>' . strval($_a));
-        $_b = get_input_date('end');
+        $_b = post_param_date('end');
         $b = is_null($_b) ? '1=1' : ('m_join_time<' . strval($_b));
         $members_in_range = $GLOBALS['FORUM_DB']->query('SELECT ' . $f_name . ',COUNT(' . $f_name . ') AS cnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f ON m.id=f.mf_member_id WHERE ' . $a . ' AND ' . $b . ' GROUP BY ' . $f_name . ' ORDER BY cnt', 300/*reasonable limit*/);
         if (count($members_in_range) == 300) {

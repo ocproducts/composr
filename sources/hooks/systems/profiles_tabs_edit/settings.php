@@ -115,7 +115,7 @@ class Hook_profiles_tabs_edit_settings
                 }
                 $highlighted_name = post_param_integer('highlighted_name', 0);
                 if (has_privilege($member_id_viewing, 'probate_members')) {
-                    $on_probation_until = get_input_date('on_probation_until');
+                    $on_probation_until = post_param_date('on_probation_until');
 
                     $current__on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_on_probation_until');
                     if (((is_null($on_probation_until)) || ($on_probation_until <= time())) && ($current__on_probation_until > time())) {
@@ -159,7 +159,7 @@ class Hook_profiles_tabs_edit_settings
             }
 
             require_code('temporal2');
-            list($dob_year, $dob_month, $dob_day) = get_input_date_components('dob');
+            list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
             if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
                 if (member_field_is_required($member_id_of, 'dob', null, $member_id_viewing)) {
                     warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));

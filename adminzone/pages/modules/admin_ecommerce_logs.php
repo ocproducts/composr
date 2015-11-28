@@ -427,7 +427,7 @@ class Module_admin_ecommerce_logs
         $purchase_id = post_param_string('purchase_id', '');
         $memo = post_param_string('memo');
         $mc_gross = post_param_string('amount', '');
-        $custom_expiry = get_input_date('cexpiry');
+        $custom_expiry = post_param_date('cexpiry');
 
         $object = find_product($type_code);
         $products = $object->get_products(true);
@@ -645,7 +645,7 @@ class Module_admin_ecommerce_logs
      */
     public function cash_flow()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }
@@ -664,7 +664,7 @@ class Module_admin_ecommerce_logs
      */
     public function profit_loss()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }

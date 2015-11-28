@@ -399,10 +399,10 @@ function get_timezoned_time($timestamp, $avoid_contextual_dates = false, $member
  * @param  boolean $do_timezone_conversion Whether to do timezone conversion
  * @return ?TIME The timestamp of the date (null: no input date was chosen)
  */
-function get_input_date($stub, $get_also = false, $do_timezone_conversion = true)
+function post_param_date($stub, $get_also = false, $do_timezone_conversion = true)
 {
     require_code('temporal2');
-    return _get_input_date($stub, $get_also, $do_timezone_conversion);
+    return _post_param_date($stub, $get_also, $do_timezone_conversion);
 }
 
 /**

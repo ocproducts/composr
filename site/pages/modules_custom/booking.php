@@ -441,16 +441,16 @@ class Module_booking
     public function _read_chosen_bookable_settings($bookable)
     {
         $quantity = post_param_integer('bookable_' . strval($bookable['id']) . '_quantity', 0);
-        $date_from = get_input_date('bookable_' . strval($bookable['id']) . '_date_from');
+        $date_from = post_param_date('bookable_' . strval($bookable['id']) . '_date_from');
         if (is_null($date_from)) {
-            $date_from = get_input_date('bookable_date_from'); // allow to be specified for whole form (the norm actually)
+            $date_from = post_param_date('bookable_date_from'); // allow to be specified for whole form (the norm actually)
         }
         if (is_null($date_from)) {
             $date_from = time();
         }
-        $date_to = get_input_date('bookable_' . strval($bookable['id']) . '_date_to');
+        $date_to = post_param_date('bookable_' . strval($bookable['id']) . '_date_to');
         if (is_null($date_to)) {
-            $date_to = get_input_date('bookable_date_to'); // allow to be specified for whole form (the norm actually); may still be null, if ranges not being used
+            $date_to = post_param_date('bookable_date_to'); // allow to be specified for whole form (the norm actually); may still be null, if ranges not being used
         }
         if (is_null($date_to)) {
             $date_to = $date_from;

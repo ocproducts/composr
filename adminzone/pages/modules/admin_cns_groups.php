@@ -638,7 +638,7 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('group', null, array('submitter'));
 
-        $id = cns_make_group(post_param_string('name'), post_param_integer('is_default', 0), post_param_integer('is_super_admin', 0), post_param_integer('is_super_moderator', 0), post_param_string('title', ''), $rank_img, $promotion_target, $promotion_threshold, $group_leader, post_param_integer('flood_control_submit_secs'), post_param_integer('flood_control_access_secs'), post_param_integer('max_daily_upload_mb'), post_param_integer('max_attachments_per_post'), post_param_integer('max_avatar_width', 100), post_param_integer('max_avatar_height', 100), post_param_integer('max_post_length_comcode'), post_param_integer('max_sig_length_comcode', 10000), post_param_integer('gift_points_base', 0), post_param_integer('gift_points_per_day', 0), post_param_integer('enquire_on_new_ips', 0), post_param_integer('is_presented_at_install', 0), post_param_integer('hidden', 0), get_param_order_field(), post_param_integer('rank_image_pri_only', 0), post_param_integer('open_membership', 0), post_param_integer('is_private_club', 0));
+        $id = cns_make_group(post_param_string('name'), post_param_integer('is_default', 0), post_param_integer('is_super_admin', 0), post_param_integer('is_super_moderator', 0), post_param_string('title', ''), $rank_img, $promotion_target, $promotion_threshold, $group_leader, post_param_integer('flood_control_submit_secs'), post_param_integer('flood_control_access_secs'), post_param_integer('max_daily_upload_mb'), post_param_integer('max_attachments_per_post'), post_param_integer('max_avatar_width', 100), post_param_integer('max_avatar_height', 100), post_param_integer('max_post_length_comcode'), post_param_integer('max_sig_length_comcode', 10000), post_param_integer('gift_points_base', 0), post_param_integer('gift_points_per_day', 0), post_param_integer('enquire_on_new_ips', 0), post_param_integer('is_presented_at_install', 0), post_param_integer('hidden', 0), post_param_order_field(), post_param_integer('rank_image_pri_only', 0), post_param_integer('open_membership', 0), post_param_integer('is_private_club', 0));
 
         set_url_moniker('group', strval($id));
 
@@ -726,7 +726,7 @@ class Module_admin_cns_groups extends Standard_crud_module
             post_param_integer('enquire_on_new_ips', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('is_presented_at_install', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('hidden', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
-            fractional_edit() ? INTEGER_MAGIC_NULL : get_param_order_field(),
+            fractional_edit() ? INTEGER_MAGIC_NULL : post_param_order_field(),
             post_param_integer('rank_image_pri_only', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('open_membership', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('is_private_club', fractional_edit() ? INTEGER_MAGIC_NULL : 0)

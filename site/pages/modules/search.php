@@ -423,8 +423,8 @@ class Module_search
         $cutoff_to_year = mixed();
 
         if (get_option('search_with_date_range') == '1') {
-            $cutoff_from = get_input_date('cutoff_from', true);
-            $cutoff_to = get_input_date('cutoff_to', true);
+            $cutoff_from = post_param_date('cutoff_from', true);
+            $cutoff_to = post_param_date('cutoff_to', true);
             if (is_null($cutoff_from) && is_null($cutoff_to)) {
                 $cutoff = null;
             } else {

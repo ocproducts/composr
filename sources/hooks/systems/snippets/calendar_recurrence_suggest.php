@@ -32,7 +32,7 @@ class Hook_snippet_calendar_recurrence_suggest
     {
         require_code('calendar');
 
-        $date = get_input_date('date', true, false);
+        $date = post_param_date('date', true, false);
 
         $day_of_month = intval(gmdate('d', $date));
         $month = intval(gmdate('m', $date));

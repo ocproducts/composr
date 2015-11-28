@@ -2326,7 +2326,7 @@ class Module_topics
 :\$GLOBALS['FORUM_DB']->query_update('f_topics',array('t_cache_first_time'=>time(),'t_validated'=>1),array('id'=>{$_topic_id}),'',1);
 END;
 
-                $schedule = get_input_date('schedule');
+                $schedule = post_param_date('schedule');
 
                 if ((!is_null($schedule)) && (addon_installed('calendar'))) {
                     require_code('calendar');
@@ -2388,7 +2388,7 @@ END;
                 $open = post_param_integer('open', 0);
                 $topic_validated = post_param_integer('topic_validated', 0);
                 $to = post_param_integer('to', null);
-                $schedule = get_input_date('schedule');
+                $schedule = post_param_date('schedule');
 
                 if ((!is_null($schedule)) && (addon_installed('calendar'))) {
                     $_intended_solely_for = is_null($intended_solely_for) ? 'null' : strval($intended_solely_for);

@@ -955,7 +955,7 @@ class Module_cms_comcode_pages
             $validated = 0;
         }
         $parent_page = post_param_string('parent_page', '');
-        $order = get_param_order_field();
+        $order = post_param_order_field();
         $show_as_edit = post_param_integer('show_as_edit', 0);
         $text_raw = post_param_string('post');
         $meta_data = actual_meta_data_get_fields('comcode_page', $zone . ':' . $file, null, $new_file);

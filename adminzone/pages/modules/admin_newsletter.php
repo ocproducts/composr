@@ -988,7 +988,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $lang = choose_language($this->title);
 
-        $cutoff_time = get_input_date('cutoff');
+        $cutoff_time = post_param_date('cutoff');
 
         $chosen_categories = '';
 
@@ -1091,7 +1091,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $lang = choose_language($this->title);
 
-        $cutoff_time = get_input_date('cutoff');
+        $cutoff_time = post_param_date('cutoff');
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories');
         $message = $this->_generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
@@ -1620,7 +1620,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $extra_post_data['make_periodic'] = '1';
 
             // Re-generate preview from latest chosen_categories
-            $message = $this->_generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, get_input_date('cutoff'));
+            $message = $this->_generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
         }
 
         $address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
@@ -1780,7 +1780,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         if (addon_installed('calendar')) {
-            $schedule = get_input_date('schedule');
+            $schedule = post_param_date('schedule');
             if (!is_null($schedule)) {
                 require_code('calendar');
                 require_code('calendar2');

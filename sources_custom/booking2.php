@@ -214,8 +214,8 @@ function delete_booking($id)
  */
 function get_bookable_details_from_form()
 {
-    $active_from = get_input_date('active_from');
-    $active_to = get_input_date('active_to');
+    $active_from = post_param_date('active_from');
+    $active_to = post_param_date('active_to');
     if (!is_null($active_to)) {
         if ($active_to < $active_from) {
             warn_exit(do_lang_tempcode('DATE_AROUND'));
@@ -329,8 +329,8 @@ function get_bookable_blacked_details_from_form()
     }
     $bookables = array_map('intval', $_POST['bookables']);
 
-    $blacked_from = get_input_date('blacked_from');
-    $blacked_to = get_input_date('blacked_to');
+    $blacked_from = post_param_date('blacked_from');
+    $blacked_to = post_param_date('blacked_to');
 
     if ($blacked_to < $blacked_from) {
         warn_exit(do_lang_tempcode('DATE_AROUND'));

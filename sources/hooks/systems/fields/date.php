@@ -75,13 +75,13 @@ class Hook_fields_date
     {
         $range_search = (option_value_from_field_array($field, 'range_search', 'off') == 'on');
         if ($range_search) {
-            $_from = get_input_date('option_' . strval($field['id']) . '_from', true, false);
+            $_from = post_param_date('option_' . strval($field['id']) . '_from', true, false);
             $from = '';
             if (!is_null($_from)) {
                 $from = date('Y-m-d H:i', $_from);
             }
 
-            $_to = get_input_date('option_' . strval($field['id']) . '_to', true, false);
+            $_to = post_param_date('option_' . strval($field['id']) . '_to', true, false);
             $to = '';
             if (!is_null($_to)) {
                 $to = date('Y-m-d H:i', $_to);
@@ -90,7 +90,7 @@ class Hook_fields_date
             return $from . ';' . $to;
         }
 
-        $filter = get_input_date('option_' . strval($field['id']), true);
+        $filter = post_param_date('option_' . strval($field['id']), true);
         return is_null($filter) ? '' : date('Y-m-d H:i', $filter);
     }
 
@@ -231,7 +231,7 @@ class Hook_fields_date
         $stub = 'field_' . strval($id);
 
         require_code('temporal2');
-        list($year, $month, $day, $hour, $minute) = get_input_date_components($stub);
+        list($year, $month, $day, $hour, $minute) = post_param_date_components($stub);
         if (is_null($year)) {
             return $editing ? STRING_MAGIC_NULL : '';
         }

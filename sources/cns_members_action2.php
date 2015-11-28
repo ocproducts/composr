@@ -252,7 +252,7 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
     // Read in data
     $email_address = trim(post_param_string('email_address', $email_address));
     require_code('temporal2');
-    list($dob_year, $dob_month, $dob_day) = get_input_date_components('dob', $dob_year, $dob_month, $dob_day);
+    list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob', $dob_year, $dob_month, $dob_day);
     $reveal_age = post_param_integer('reveal_age', 0); // For default privacy, default off
     require_code('temporal');
     if (is_null($timezone)) {

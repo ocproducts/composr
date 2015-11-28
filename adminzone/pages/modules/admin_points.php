@@ -167,7 +167,7 @@ class Module_admin_points
      */
     public function points_export()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }
