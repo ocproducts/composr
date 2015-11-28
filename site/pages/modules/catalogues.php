@@ -113,6 +113,7 @@ class Module_catalogues
                 'cc_move_target' => '?AUTO_LINK',
                 'cc_move_days_lower' => 'INTEGER',
                 'cc_move_days_higher' => 'INTEGER',
+                'cc_order' => 'INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'catstoclean', array('cc_move_target'));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cataloguefind', array('c_name'));
@@ -414,6 +415,7 @@ class Module_catalogues
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', '#cat_cat_search__combined', array('cc_title', 'cc_description'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
 
             add_privilege('SEARCH', 'autocomplete_keyword_catalogue_category', false);
             add_privilege('SEARCH', 'autocomplete_title_catalogue_category', false);
@@ -424,6 +426,9 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
 
             $GLOBALS['SITE_DB']->add_table_field('catalogues', 'c_default_review_freq', '?INTEGER', null);
+
+            require_code('content2');
+            $GLOBALS['SITE_DB']->add_table_field('catalogue_categories', 'cc_order', 'INTEGER', ORDER_AUTOMATED_CRITERIA);
 
             $GLOBALS['SITE_DB']->add_table_field('catalogue_fields', 'cf_options', 'SHORT_TEXT');
 
@@ -798,13 +803,12 @@ class Module_catalogues
         if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > 1000) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
-        $rows_subcategories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cc_add_date');
-        foreach ($rows_subcategories as $i => $subcategory) { // Dereference language
-            $rows_subcategories[$i]['cc_title_lookup'] = get_translated_text($subcategory['cc_title']);
-        }
-        if (get_value('cc_sort_date__' . $catalogue_name) !== '1') {
-            sort_maps_by($rows_subcategories, 'cc_title_lookup');
-        }
+        $rows_subcategories = $GLOBALS['SITE_DB']->query_select(
+            'catalogue_categories',
+            array('*'),
+            array('c_name' => $catalogue_name),
+            'ORDER BY cc_order,' . ((get_value('cc_sort_date__' . $catalogue_name) === '1') ? 'cc_add_date' : $GLOBALS['SITE_DB']->translate_field_ref('cc_title'))
+        );
 
         // Render categories
         // Not done via main_multi_content block due to need for custom query

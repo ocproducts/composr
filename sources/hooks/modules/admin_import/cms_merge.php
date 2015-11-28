@@ -2141,7 +2141,7 @@ class Hook_cms_merge
 
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
             $rep_image = array_key_exists('cc_rep_image', $row) ? $row['cc_rep_image'] : '';
-            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], is_null($row['cc_parent_id']) ? null : -$row['cc_parent_id'], $rep_image, array_key_exists('cc_move_days_lower', $row) ? $row['cc_move_days_lower'] : 30, array_key_exists('cc_move_days_higher', $row) ? $row['cc_move_days_higher'] : 60, array_key_exists('cc_move_target', $row) ? $row['cc_move_target'] : null, $row['cc_add_date'], $id);
+            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], is_null($row['cc_parent_id']) ? null : -$row['cc_parent_id'], $rep_image, array_key_exists('cc_move_days_lower', $row) ? $row['cc_move_days_lower'] : 30, array_key_exists('cc_move_days_higher', $row) ? $row['cc_move_days_higher'] : 60, array_key_exists('cc_move_target', $row) ? $row['cc_move_target'] : null, isset($row['cc_order']) ? $row['cc_order'] : null, $row['cc_add_date'], $id);
 
             import_id_remap_put('catalogue_category', strval($row['id']), $id_new);
         }

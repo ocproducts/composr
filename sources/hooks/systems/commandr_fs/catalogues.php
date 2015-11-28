@@ -164,6 +164,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                        'move_days_lower' => '?INTEGER',
                        'move_days_higher' => '?INTEGER',
                        'move_target' => '?catalogue_category',
+                       'order' => 'INTEGER',
                        'meta_keywords' => 'LONG_TRANS',
                        'meta_description' => 'LONG_TRANS',
                        'add_date' => 'TIME',
@@ -291,11 +292,12 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $move_days_lower = $this->_default_property_int($properties, 'move_days_lower');
         $move_days_higher = $this->_default_property_int($properties, 'move_days_higher');
         $move_target = $this->_default_property_int_null($properties, 'move_target');
+        $order = $this->_default_property_int($properties, 'order');
         $add_date = $this->_default_property_int_null($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description);
+        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $order, $move_target, $add_date, $meta_keywords, $meta_description);
     }
 
     /**
@@ -317,9 +319,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             if ($_properties === false) {
                 return false;
             }
-            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description) = $_properties;
+            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description) = $_properties;
 
-            $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, null, $meta_keywords, $meta_description);
+            $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, null, $meta_keywords, $meta_description);
 
             $this->_custom_fields_save('catalogue_category', strval($id), $properties);
 
@@ -396,6 +398,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 'move_days_lower' => $row['cc_move_days_lower'],
                 'move_days_higher' => $row['cc_move_days_higher'],
                 'move_target' => $row['cc_move_target'],
+                'order' => $row['cc_order'],
                 'meta_keywords' => $meta_keywords,
                 'meta_description' => $meta_description,
                 'add_date' => $row['cc_add_date'],
@@ -523,9 +526,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             if ($_properties === false) {
                 return false;
             }
-            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description) = $_properties;
+            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description) = $_properties;
 
-            actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $catalogue_name);
+            actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $catalogue_name);
 
             $this->_custom_fields_save('catalogue_category', $resource_id, $properties);
         }

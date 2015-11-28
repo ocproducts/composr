@@ -48,7 +48,7 @@ class Hook_block_ui_renderers_catalogues
             if (($num_categories_top < 300) && ((!$has_default) || ($num_categories < 300))) { // catalogue category
                 $list = new Tempcode();
                 $structured_list = new Tempcode();
-                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title', 'c_name'), ($num_categories >= 300) ? array('cc_parent_id' => null) : null, 'ORDER BY c_name,id');
+                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title', 'c_name'), ($num_categories >= 300) ? array('cc_parent_id' => null) : null, 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'));
                 $last_cat = mixed();
                 foreach ($categories as $cat) {
                     if ((is_null($last_cat)) || ($cat['c_name'] != $last_cat)) {

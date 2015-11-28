@@ -1378,9 +1378,9 @@ function create_selection_list_catalogue_category_tree($catalogue_name, $it = nu
     }
 
     $tree = array();
-    $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY id DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
+    $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
     if (count($temp_rows) == intval(get_option('general_safety_listing_limit'))) {
-        attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__RECENT_ONLY', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
+        attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
     }
     foreach ($temp_rows as $row) {
         $category_id = $row['id'];
@@ -1462,16 +1462,12 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
     }
 
     // Children of this category
-    $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => $category_id), 'ORDER BY id DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
-    foreach ($rows as $i => $child) {
-        $rows[$i]['_cc_title'] = get_translated_text($child['cc_title']);
-    }
+    $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => $category_id), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
     if (get_page_name() == 'cms_catalogues') {
         if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
-            attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__RECENT_ONLY', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
+            attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
         }
     }
-    sort_maps_by($rows, '_cc_title');
     $no_root = !array_key_exists(0, $children);
     if (!$no_root) {
         $children[0]['child_count'] = count($rows);
@@ -1555,10 +1551,10 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
             return array();
         }
         if ($is_tree == 0) {
-            $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY id DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
+            $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
             if (get_page_name() == 'cms_catalogues') {
                 if (count($temp_rows) == intval(get_option('general_safety_listing_limit'))) {
-                    attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__RECENT_ONLY', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
+                    attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
                 }
             }
             $children = array();
@@ -1568,7 +1564,7 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
             return $children;
         }
 
-        $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY id', 1);
+        $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), 1);
         if (!array_key_exists(0, $temp_rows)) {
             return array();
         }
@@ -1634,13 +1630,9 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
     $children[0]['child_count'] = count($rows);
     $breadcrumbs .= ' > ';
     if ($levels !== 0) {
-        foreach ($rows as $i => $child) {
-            $rows[$i]['_cc_title'] = get_translated_text($child['cc_title']);
-        }
-        sort_maps_by($rows, '_cc_title');
         foreach ($rows as $child) {
             $child_id = $child['id'];
-            $child_title = $child['_cc_title'];
+            $child_title = get_translated_text($child['cc_title']);
             $child_breadcrumbs = $breadcrumbs;
 
             $child_children = get_catalogue_entries_tree($catalogue_name, $submitter, $child_id, $child_breadcrumbs, $child_title, ($levels === null) ? null : ($levels - 1), $editable_filter);

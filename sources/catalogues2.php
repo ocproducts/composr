@@ -490,13 +490,14 @@ function actual_delete_catalogue_field($id)
  * @param  integer $move_days_lower The number of days before expiry (lower limit)
  * @param  integer $move_days_higher The number of days before expiry (higher limit)
  * @param  ?AUTO_LINK $move_target The expiry category (null: do not expire)
+ * @param  ?integer $order The order (null: automatic)
  * @param  ?TIME $add_date The add time (null: now)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
  * @return AUTO_LINK The ID of the new category
  */
-function actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $add_date = null, $id = null, $meta_keywords = '', $meta_description = '')
+function actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $order = null, $add_date = null, $id = null, $meta_keywords = '', $meta_description = '')
 {
     if (is_null($add_date)) {
         $add_date = time();
@@ -507,10 +508,21 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
         prevent_double_submit('ADD_CATALOGUE_CATEGORY', null, $title);
     }
 
+    if (is_null($order)) {
+        $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name));
+        if (is_null($order)) {
+            $order = 0;
+        } else
+        {
+            $order++;
+        }
+    }
+
     $map = array(
         'cc_move_days_lower' => $move_days_lower,
         'cc_move_days_higher' => $move_days_higher,
         'cc_move_target' => $move_target,
+        'cc_order' => $order,
         'rep_image' => $rep_image,
         'cc_add_date' => $add_date,
         'c_name' => $catalogue_name,
@@ -695,10 +707,11 @@ function calculate_category_child_count_cache($cat_id, $recursive_updates = true
  * @param  integer $move_days_lower The number of days before expiry (lower limit)
  * @param  integer $move_days_higher The number of days before expiry (higher limit)
  * @param  ?AUTO_LINK $move_target The expiry category (null: do not expire)
+ * @param  integer $order The order
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?ID_TEXT $c_name The catalogue name (null: do not change)
  */
-function actual_edit_catalogue_category($id, $title, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_time = null, $c_name = null)
+function actual_edit_catalogue_category($id, $title, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_time = null, $c_name = null)
 {
     $under_category_id = $parent_id;
     while ((!is_null($under_category_id)) && ($under_category_id != INTEGER_MAGIC_NULL)) {
@@ -726,6 +739,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
         'cc_move_days_lower' => $move_days_lower,
         'cc_move_days_higher' => $move_days_higher,
         'cc_move_target' => $move_target,
+        'cc_order' => $order,
         'cc_notes' => $notes,
         'cc_parent_id' => $parent_id,
     );

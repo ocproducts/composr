@@ -1168,13 +1168,14 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
         $sortables = array(
             'cc_title' => do_lang_tempcode('TITLE'),
+            'cc_order' => do_lang_tempcode('ORDER'),
             'cc_add_date' => do_lang_tempcode('ADDED'),
         );
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $fh = array(do_lang_tempcode('TITLE'), do_lang_tempcode('ADDED'));
+        $fh = array(do_lang_tempcode('TITLE'), do_lang_tempcode('ADDED'), do_lang_tempcode('ORDER'));
         $fh[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -1191,6 +1192,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             $fr = array();
             $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $row['id']), get_module_zone('catalogues')), get_translated_text($row['cc_title']), false, true));
             $fr[] = get_timezoned_date($row['cc_add_date']);
+            $fr[] = ($row['cc_order'] == ORDER_AUTOMATED_CRITERIA) ? do_lang_tempcode('NA_EM') : make_string_tempcode(strval($row['cc_order']));
             $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($fr, true));
@@ -1236,9 +1238,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
      * @param  integer $move_days_lower The number of days before expiry (lower limit)
      * @param  integer $move_days_higher The number of days before expiry (higher limit)
      * @param  ?AUTO_LINK $move_target The expiry category (null: do not expire)
+     * @param  integer $order The order
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($catalogue_name = null, $title = '', $description = '', $notes = '', $parent_id = -1, $id = null, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null)
+    public function get_form_fields($catalogue_name = null, $title = '', $description = '', $notes = '', $parent_id = -1, $id = null, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $order = null)
     {
         if (is_null($catalogue_name)) {
             $catalogue_name = get_param_string('catalogue_name', is_null($id) ? false : $GLOBALS['SITE_DB']->query_select_value('catalogues_categories', 'c_name', array('id' => $id)));
@@ -1273,6 +1276,13 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         if (($is_tree == 1) && (!is_null($parent_id))) {
             $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'catalogue_category'), 'parent_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), true, ((is_null($parent_id)) || ($parent_id == -1)) ? '' : strval($parent_id)));
         }
+
+        $max = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name), 'AND cc_order<>' . strval(ORDER_AUTOMATED_CRITERIA));
+        if (is_null($max)) {
+            $max = 0;
+        }
+        $total = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name));
+        $fields->attach(get_order_field('catalogue_category', null, $order, $max, $total));
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '745236e628a4d3da5355f07874433600', 'SECTION_HIDDEN' => is_null($move_target), 'TITLE' => do_lang_tempcode('CLASSIFIED_ADS'))));
         $list = new Tempcode();
@@ -1384,7 +1394,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('catalogue_category', null);
 
-        $category_id = actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $meta_data['add_time']);
+        $category_id = actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, get_param_order_field(), $meta_data['add_time']);
 
         set_url_moniker('catalogue_category', strval($category_id));
 
@@ -1444,7 +1454,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $meta_data = actual_meta_data_get_fields('catalogue_category', strval($category_id));
 
-        actual_edit_catalogue_category($category_id, $title, $description, $notes, $parent_id, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $rep_image, $move_days_lower, $move_days_higher, $move_target, $meta_data['add_time']);
+        actual_edit_catalogue_category($category_id, $title, $description, $notes, $parent_id, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $rep_image, $move_days_lower, $move_days_higher, $move_target, fractional_edit() ? INTEGER_MAGIC_NULL : get_param_order_field(), $meta_data['add_time']);
         if (!fractional_edit()) {
             if (get_value('disable_cat_cat_perms') !== '1') {
                 $this->set_permissions(strval($category_id));
