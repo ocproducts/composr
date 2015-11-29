@@ -318,7 +318,7 @@ function _notification_setting_available($setting, $member_id = null)
         case A_DAILY_EMAIL_DIGEST:
         case A_WEEKLY_EMAIL_DIGEST:
         case A_MONTHLY_EMAIL_DIGEST:
-            $system_wide = (cron_installed());
+            $system_wide = (cron_installed()) && (get_option('notification_enable_digests') == '1');
             if ($system_wide && !is_null($member_id)) {
                 $for_member = ($GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id) != '');
             }
@@ -339,7 +339,7 @@ function _notification_setting_available($setting, $member_id = null)
             }
             break;
         case A_INSTANT_PT:
-            $system_wide = (get_forum_type() == 'cns') && (addon_installed('cns_forum'));
+            $system_wide = (get_forum_type() == 'cns') && (addon_installed('cns_forum')) && (get_option('notification_enable_private_topics') == '1');
             if ($system_wide && !is_null($member_id)) {
                 require_code('permissions');
                 $for_member = has_privilege($member_id, 'use_pt');
