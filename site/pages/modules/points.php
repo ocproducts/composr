@@ -332,7 +332,7 @@ class Module_points
             if ($trans_type == 'gift') {
                 $anonymous = post_param_integer('anonymous', 0);
                 $viewer_gift_points_available = get_gift_points_to_give($member_id_viewing);
-                //$viewer_gift_points_used=get_gift_points_used($member_id_viewing);
+                //$viewer_gift_points_used = get_gift_points_used($member_id_viewing);
 
                 if (($viewer_gift_points_available < $amount) && (!has_privilege($member_id_viewing, 'have_negative_gift_points'))) { // Validate we have enough for this, and add to usage
                     $message = do_lang_tempcode('PE_LACKING_GIFT_POINTS');
@@ -347,13 +347,11 @@ class Module_points
 
                     // Randomised gifts
                     $gift_reward_chance = intval(get_option('gift_reward_chance'));
-                    if (mt_rand(0, 100) < $gift_reward_chance) {
-                        $gift_reward_amount = intval(get_option('gift_reward_amount'));
+                    $gift_reward_amount = intval(get_option('gift_reward_amount'));
+                    if (mt_rand(0, 100) < $gift_reward_chance && floatval($gift_reward_chance) / 100.0 * $gift_reward_amount >= floatval($amount)) {
+                        system_gift_transfer(do_lang('_PR_LUCKY'), $gift_reward_amount, $member_id_viewing, $anonymous == 0/*if original transaction anonymous we can't log this, otherwise could be worked out via some cross-checking*/);
 
-                        $message = do_lang_tempcode('PR_LUCKY');
-                        $_current_gift = point_info($member_id_viewing);
-                        $current_gift = array_key_exists('points_gained_given', $_current_gift) ? $_current_gift['points_gained_given'] : 0;
-                        $GLOBALS['FORUM_DRIVER']->set_custom_field($member_id_viewing, 'points_gained_given', $current_gift + $gift_reward_amount);
+                        $message = do_lang_tempcode('PR_LUCKY', escape_html(integer_format($gift_reward_amount)));
                     } else {
                         $message = do_lang_tempcode('PR_NORMAL');
                     }

@@ -1538,20 +1538,10 @@ abstract class Standard_crud_module
             if ((!is_null($date_and_time)) && (addon_installed('points'))) {
                 $reverse = post_param_integer('reverse_point_transaction', 0);
                 if ($reverse == 1) {
-                    $points_test = $GLOBALS['SITE_DB']->query_select('gifts', array('*'), array('date_and_time' => $date_and_time, 'gift_to' => $submitter, 'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
+                    $points_test = $GLOBALS['SITE_DB']->query_select('gifts', array('id'), array('date_and_time' => $date_and_time, 'gift_to' => $submitter, 'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
                     if (array_key_exists(0, $points_test)) {
-                        $amount = $points_test[0]['amount'];
-                        $sender_id = $points_test[0]['gift_from'];
-                        $recipient_id = $points_test[0]['gift_to'];
-                        $GLOBALS['SITE_DB']->query_delete('gifts', array('id' => $points_test[0]['id']), '', 1);
-                        if (!is_guest($sender_id)) {
-                            $_sender_gift_points_used = point_info($sender_id);
-                            $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
-                            $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
-                        }
-                        require_code('points');
-                        $temp_points = point_info($recipient_id);
-                        $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
+                        require_code('points2');
+                        reverse_point_gift_transaction($points_test[0]['id']);
                     }
                 }
             }

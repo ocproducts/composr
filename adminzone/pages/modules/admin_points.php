@@ -273,14 +273,8 @@ class Module_admin_points
             return do_template('CONFIRM_SCREEN', array('_GUID' => 'd3d654c7dcffb353638d08b53697488b', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'URL' => get_self_url(false, false, array('confirm' => 1)), 'FIELDS' => build_keep_post_fields()));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('gifts', array('id' => $id), '', 1);
-        if (!is_guest($sender_id)) {
-            $_sender_gift_points_used = point_info($sender_id);
-            $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
-            $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
-        }
-        $temp_points = point_info($recipient_id);
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
+        require_code('points2');
+        reverse_point_gift_transaction($id);
 
         // Show it worked / Refresh
         $url = get_param_string('redirect', null);
