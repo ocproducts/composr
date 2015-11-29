@@ -1095,7 +1095,8 @@ function do_block($codename, $map = null, $ttl = null)
                     if (!$DO_NOT_CACHE_THIS) {
                         require_code('caches2');
                         if ((isset($map['quick_cache'])) && ($map['quick_cache'] == '1')/* && (has_cookies())*/) {
-                            $cache = make_string_tempcode(preg_replace('#((\?)|(&(amp;)?))keep\_[^="]*=[^&"]*#', '\2', $cache->evaluate()));
+                            $stripped = preg_replace('#((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*#', '\2', $cache->evaluate()); // Remove contextual URL parameters for neutrality within quick cache
+                            $cache = make_string_tempcode($stripped);
                         }
                         require_code('temporal');
                         $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
