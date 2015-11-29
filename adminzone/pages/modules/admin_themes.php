@@ -2120,6 +2120,7 @@ class Module_admin_themes
         if (function_exists('set_time_limit')) {
             @set_time_limit(300);
         }
+        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
 
         $lang = choose_language($this->title, true, true);
         if (is_object($lang)) {
@@ -2314,6 +2315,7 @@ class Module_admin_themes
         if (function_exists('set_time_limit')) {
             @set_time_limit(120);
         }
+        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
 
         require_code('lorem');
 

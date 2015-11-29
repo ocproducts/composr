@@ -154,6 +154,7 @@ class Module_admin_cns_ldap
         if (function_exists('set_time_limit')) {
             @set_time_limit(0);
         }
+        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
 
         $start = 0;
         do {

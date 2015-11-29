@@ -609,6 +609,8 @@ function enable_notifications($notification_code, $notification_category, $membe
         return;
     }
 
+    $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+
     if (is_null($setting)) {
         $ob = _get_notification_ob_for_code($notification_code);
         if (is_null($ob)) {
@@ -618,9 +620,17 @@ function enable_notifications($notification_code, $notification_category, $membe
         if (!_notification_setting_available($setting, $member_id)) {
             $setting = _find_member_statistical_notification_type($member_id);
         }
+    } else {
+        // Check there is actually something to do here (when saving notifications tab usually everything will be still the same)
+        $test = $db->query_select_value_if_there('notifications_enabled', 'l_setting', array(
+            'l_member_id' => $member_id,
+            'l_notification_code' => substr($notification_code, 0, 80),
+            'l_code_category' => is_null($notification_category) ? '' : $notification_category,
+        ));
+        if ($test === $setting) {
+            return;
+        }
     }
-
-    $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
     $db->query_delete('notifications_enabled', array(
         'l_member_id' => $member_id,

@@ -827,6 +827,7 @@ class Module_admin_setupwizard
         if (function_exists('set_time_limit')) {
             @set_time_limit(600);
         }
+        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
 
         require_code('config2');
         require_code('themes2');

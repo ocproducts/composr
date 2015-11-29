@@ -272,6 +272,8 @@ class Module_admin_stats
 
         if (get_param_integer('csv', 0) == 1) {
             require_code('files2');
+        } else {
+            echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
         }
 
         $type = get_param_string('type', 'browse');

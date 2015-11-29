@@ -67,6 +67,7 @@ function composr_cleanup($caches = null)
             @set_time_limit(0);
         }
     }
+    echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
     $messages = new Tempcode();
     $hooks = find_all_hooks('systems', 'cleanup');
     if ((array_key_exists('cns', $hooks)) && (array_key_exists('cns_topics', $hooks))) {

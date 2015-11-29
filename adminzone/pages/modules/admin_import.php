@@ -536,6 +536,7 @@ class Module_admin_import
             @set_time_limit($refresh_time);
             safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
+        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
         header('Content-type: text/html; charset=' . get_charset());
         safe_ini_set('log_errors', '0');
         global $I_REFRESH_URL;

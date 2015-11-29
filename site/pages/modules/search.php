@@ -182,6 +182,7 @@ class Module_search
         if (function_exists('set_time_limit')) {
             @set_time_limit(15); // We really don't want to let it thrash the DB too long
         }
+        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
 
         $type = get_param_string('type', 'browse');
         if (($type == 'browse') || ($type == 'results')) {

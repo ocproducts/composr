@@ -81,6 +81,10 @@ class Hook_profiles_tabs_edit
             @set_time_limit(60); // Raise time limit, as can be slow
         }
 
+        if (count($_POST) > 0) {
+            echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+        }
+
         $tabs = array();
 
         $hooks = find_all_hooks('systems', 'profiles_tabs_edit');
