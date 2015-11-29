@@ -63,7 +63,6 @@ class Module_staff
     {
         $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('sites');
         $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('role');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('fullname');
     }
 
     /**
@@ -75,8 +74,7 @@ class Module_staff
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         $GLOBALS['FORUM_DRIVER']->install_create_custom_field('sites', 255, 1, 0, 0, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('role', 100, 1, 0, 1, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('fullname', 100, 1, 0, 1, 0, '', 'short_text');
+        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('role', 100, 0, 0, 1, 0, '', 'short_text');
     }
 
     public $title;
@@ -196,7 +194,7 @@ class Module_staff
         }
         $id = $GLOBALS['FORUM_DRIVER']->mrow_id($row_staff);
 
-        $_real_name = get_cms_cpf('fullname', $id);
+        $_real_name = trim(get_cms_cpf('firstname', $id) . ' ' . get_cms_cpf('lastname', $id));
         if ($_real_name == '') {
             $real_name = do_lang_tempcode('_UNKNOWN'); // Null should not happen, but sometimes things corrupt
         } else {

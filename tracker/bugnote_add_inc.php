@@ -46,7 +46,7 @@
 		<?php echo lang_get( 'bugnote' ) ?>
 	</td>
 	<td width="75%">
-		<textarea name="bugnote_text" cols="80" rows="10"></textarea>
+		<textarea onclick="this.name='bugnote_text';" name="spammer_bugnote_text" cols="80" rows="10"></textarea>
 	</td>
 </tr>
 <?php if ( access_has_bug_level( config_get( 'private_bugnote_threshold' ), $f_bug_id ) ) { ?>

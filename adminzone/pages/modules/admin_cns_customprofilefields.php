@@ -183,25 +183,34 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         require_code('encryption');
         require_lang('fields');
 
-        if ($locked == 0) {
+        if (substr($name, 0, 4) != 'cms_') {
             $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
         } else {
             $hidden->attach(form_input_hidden('name', $name));
+            attach_message(do_lang_tempcode('INBUILT_CPF_LANG_STRING', escape_html($name)));
         }
 
         $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
-        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_DEFAULT_VALUE_CPF'), 'default', $default, false, null, 10000));
+        if ($locked == 0) {
+            $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_DEFAULT_VALUE_CPF'), 'default', $default, false, null, 10000));
+        } else {
+            $hidden->attach(form_input_hidden('default', $default));
+        }
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_VIEW'), do_lang_tempcode('DESCRIPTION_OWNER_VIEW'), 'owner_view', $owner_view == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_SET'), do_lang_tempcode('DESCRIPTION_OWNER_SET'), 'owner_set', $owner_set == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('PUBLIC_VIEW'), do_lang_tempcode('DESCRIPTION_PUBLIC_VIEW'), 'public_view', $public_view == 1));
-        if ((is_encryption_enabled()) && ($name == '')) {
+        if (($locked == 0) && (is_encryption_enabled()) && ($name == '')) {
             require_lang('encryption');
             $fields->attach(form_input_tick(do_lang_tempcode('ENCRYPTED'), do_lang_tempcode('DESCRIPTION_ENCRYPTED'), 'encrypted', $encrypted == 1));
         }
 
         require_code('fields');
         $type_list = create_selection_list_field_type($type, $name != '');
-        $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_FIELD_TYPE'), 'type', $type_list));
+        if ($locked == 0) {
+            $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_FIELD_TYPE'), 'type', $type_list));
+        } else {
+            $hidden->attach(form_input_hidden('type', $type));
+        }
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
 
         $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));

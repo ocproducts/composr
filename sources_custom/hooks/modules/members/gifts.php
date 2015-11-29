@@ -14,10 +14,10 @@
 class Hook_members_gifts
 {
     /**
-     * Find member-related links to inject.
+     * Find member-related links to inject to details section of the about tab of the member profile.
      *
-     * @param  MEMBER $member_id The ID of the member we are getting link hooks for
-     * @return array List of lists of tuples for results (by link section). Each tuple is: type,title,url
+     * @param  MEMBER $member_id The ID of the member we are getting links for
+     * @return array List of pairs: title to value.
      */
     public function run($member_id)
     {

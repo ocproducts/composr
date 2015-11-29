@@ -119,7 +119,8 @@ class Hook_profiles_tabs_about
             $modules[] = (!addon_installed('cns_forum')) ? null : array('contact', do_lang_tempcode('ADD_PRIVATE_TOPIC'), build_url(array('page' => 'topics', 'type' => 'new_pt', 'id' => $member_id_of), get_module_zone('topics')), 'buttons/send', 'reply');
         }
         $extra_sections = array();
-        $info_details = array();
+        $extra_info_details = array();
+        $extra_tracking_details = array();
         $hooks = find_all_hooks('modules', 'members');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/modules/members/' . filter_naughty_harsh($hook));
@@ -133,7 +134,11 @@ class Hook_profiles_tabs_about
             }
             if (method_exists($object, 'get_info_details')) {
                 $hook_result = $object->get_info_details($member_id_of);
-                $info_details = array_merge($info_details, $hook_result);
+                $extra_info_details = array_merge($extra_info_details, $hook_result);
+            }
+            if (method_exists($object, 'get_tracking_details')) {
+                $hook_result = $object->get_tracking_details($member_id_of);
+                $extra_tracking_details = array_merge($extra_tracking_details, $hook_result);
             }
             if (method_exists($object, 'get_sections')) {
                 $hook_result = $object->get_sections($member_id_of);
@@ -149,7 +154,6 @@ class Hook_profiles_tabs_about
         require_lang('menus');
         $sections = array('contact' => do_lang_tempcode('CONTACT'), 'profile' => do_lang_tempcode('EDIT_PROFILE'), 'views' => do_lang_tempcode('ACCOUNT'), 'audit' => do_lang_tempcode('AUDIT'), 'content' => do_lang_tempcode('CONTENT'));
         $actions = array();
-
         sort_maps_by($modules, 1);
         foreach ($sections as $section_code => $section_title) {
             $links = new Tempcode();
@@ -268,7 +272,9 @@ class Hook_profiles_tabs_about
         $post_count = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_cache_num_posts');
         $best_post_fraction = ($post_count == 0) ? do_lang_tempcode('NA_EM') : make_string_tempcode(integer_format(100 * $best_yet_forum / $post_count));
         $most_active_forum = is_null($best_yet_forum) ? new Tempcode() : do_lang_tempcode('_MOST_ACTIVE_FORUM', $most_active_forum, make_string_tempcode(integer_format($best_yet_forum)), array($best_post_fraction));
-        $time_for_them_raw = tz_time(time(), get_users_timezone($member_id_of));
+        $users_timezone = get_users_timezone($member_id_of);
+        require_code('temporal2');
+        $time_for_them_raw = tz_time(time(), $users_timezone);
         $time_for_them = get_timezoned_time(time(), true, $member_id_of);
 
         $banned = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_is_perm_banned') == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
@@ -398,6 +404,8 @@ class Hook_profiles_tabs_about
                                                                'MOST_ACTIVE_FORUM' => $most_active_forum,
                                                                'TIME_FOR_THEM' => $time_for_them,
                                                                'TIME_FOR_THEM_RAW' => strval($time_for_them_raw),
+                                                               'USERS_TIMEZONE' => make_nice_timezone_name($users_timezone),
+                                                               'USERS_TIMEZONE_RAW' => $users_timezone,
                                                                'SUBMIT_DAYS_AGO' => integer_format($submit_days_ago),
                                                                'SUBMIT_TIME_RAW' => strval($last_submit_time),
                                                                'LAST_VISIT_TIME_RAW' => strval($last_visit_time),
@@ -431,7 +439,8 @@ class Hook_profiles_tabs_about
                                                                'SECONDARY_GROUPS' => $secondary_groups,
                                                                'VIEW_PROFILES' => $member_id_viewing == $member_id_of || has_privilege($member_id_viewing, 'view_profiles'),
                                                                'ON_PROBATION' => $on_probation,
-                                                               'EXTRA_INFO_DETAILS' => $info_details,
+                                                               'EXTRA_INFO_DETAILS' => $extra_info_details,
+                                                               'EXTRA_TRACKING_DETAILS' => $extra_tracking_details,
                                                                'EXTRA_SECTIONS' => $extra_sections,
                                                                'VIEWS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_profile_views')),
                                                                'TOTAL_SESSIONS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_total_sessions')),

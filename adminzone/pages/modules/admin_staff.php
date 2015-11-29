@@ -151,9 +151,7 @@ class Module_admin_staff
             $id = $GLOBALS['FORUM_DRIVER']->mrow_id($row_staff);
             $username = $GLOBALS['FORUM_DRIVER']->mrow_username($row_staff);
             $role = get_cms_cpf('role', $id);
-            $fullname = get_cms_cpf('fullname', $id);
 
-            $fields = form_input_line(do_lang_tempcode('REALNAME'), '', 'fullname_' . strval($id), $fullname, false);
             $fields->attach(form_input_line(do_lang_tempcode('ROLE'), do_lang_tempcode('DESCRIPTION_ROLE'), 'role_' . strval($id), $role, false));
 
             if (get_option('is_on_staff_filter') == '1') {
@@ -194,7 +192,7 @@ class Module_admin_staff
             if (substr($key, 0, 6) == 'staff_') {
                 $id = intval($val); // e.g. $key=staff_2, $val=2  - so could also say $id=intval(substr($key,6));
 
-                $this->_staff_edit($id, post_param_string('role_' . strval($id)), post_param_string('fullname_' . strval($id)));
+                $this->_staff_edit($id, post_param_string('role_' . strval($id)));
 
                 if ((post_param_integer('remove_' . strval($id), 0) == 1) && (get_option('is_on_staff_filter') == '1')) {
                     $this->_staff_remove($id);
@@ -214,12 +212,10 @@ class Module_admin_staff
      *
      * @param  MEMBER $id The member ID of the staff being edited
      * @param  SHORT_TEXT $role The role of the staff member
-     * @param  SHORT_TEXT $fullname The full-name of the staff member
      */
-    public function _staff_edit($id, $role, $fullname)
+    public function _staff_edit($id, $role)
     {
         $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'role', $role);
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'fullname', $fullname);
 
         log_it('EDIT_STAFF', strval($id));
     }

@@ -30,8 +30,6 @@ class Hook_cns_cpf_filter_notifications
      */
     public function to_enable()
     {
-        $cpf = array(/*'smart_topic_notification' => true */); // Actually, don't make this editable
-
-        return $cpf;
+        return array('smart_topic_notification' => true);
     }
 }

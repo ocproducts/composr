@@ -1,5 +1,5 @@
 <section class="box box___block_side_personal_stats"><div class="box_inner">
-	<h3>{USERNAME*}</h3>
+	<h3>{$DISPLAYED_USERNAME*,{USERNAME}}</h3>
 
 	{+START,IF_NON_EMPTY,{AVATAR_URL}}
 		<div class="personal_stats_avatar"><img src="{AVATAR_URL*}" title="{!AVATAR}" alt="{!AVATAR}" /></div>

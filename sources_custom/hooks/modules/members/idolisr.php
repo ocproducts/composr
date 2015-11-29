@@ -14,12 +14,12 @@
 class Hook_members_idolisr
 {
     /**
-     * Find member-related links to inject.
+     * Find member-related links to inject to details section of the about tab of the member profile.
      *
-     * @param  MEMBER $member_id The ID of the member we are getting link hooks for
-     * @return array List of lists of tuples for results (by link section). Each tuple is: type,title,url
+     * @param  MEMBER $member_id The ID of the member we are getting links for
+     * @return array List of pairs: title to value.
      */
-    public function get_info_details($member_id)
+    public function get_tracking_details($member_id)
     {
         $topics_opened = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)', array('t_cache_first_member_id' => $member_id));
         $num_replies = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(DISTINCT p_topic_id)', array('p_poster' => $member_id)) - $topics_opened;

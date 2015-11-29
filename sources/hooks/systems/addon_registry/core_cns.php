@@ -965,6 +965,10 @@ class Hook_addon_registry_core_cns
             'CLUBS' => lorem_phrase(),
             'VIEWS' => placeholder_number(),
             'TOTAL_SESSIONS' => placeholder_number(),
+            'EXTRA_INFO_DETAILS' => array(),
+            'EXTRA_TRACKING_DETAILS' => array(),
+            'USERS_TIMEZONE' => lorem_word(),
+            'USERS_TIMEZONE_RAW' => lorem_word(),
         ));
         $tabs[] = array(
             'TAB_CODE' => placeholder_id() . '0',
