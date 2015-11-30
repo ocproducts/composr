@@ -35,6 +35,8 @@ class Hook_cns_cpf_filter_staff_filter
         if (($SITE_INFO['forum_type'] != 'cns') || (get_db_forums() != get_db_site()) || ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix())) {
             $cpf['role'] = true;
             $cpf['sites'] = true;
+            $cpf['firstname'] = true;
+            $cpf['lastname'] = true;
         }
         return $cpf;
     }
