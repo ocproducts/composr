@@ -75,6 +75,7 @@ class Hook_secpay
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
             'e_amount' => float_to_raw_string($amount),
+            'e_currency' => $currency,
             'e_ip_address' => get_ip_address(),
             'e_session_id' => get_session_id(),
             'e_time' => time(),
@@ -160,6 +161,7 @@ class Hook_secpay
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
             'e_amount' => float_to_raw_string($amount),
+            'e_currency' => $currency,
             'e_ip_address' => get_ip_address(),
             'e_session_id' => get_session_id(),
             'e_time' => time(),
@@ -249,6 +251,7 @@ class Hook_secpay
      * @param  SHORT_TEXT $name Cardholder name.
      * @param  SHORT_TEXT $card_number Card number.
      * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  ID_TEXT $currency The currency
      * @param  SHORT_TEXT $expiry_date Card Expiry date.
      * @param  integer $issue_number Card Issue number.
      * @param  SHORT_TEXT $start_date Card Start date.
@@ -260,7 +263,7 @@ class Hook_secpay
      * @set    d w m y
      * @return array A tuple: success (boolean), trans-ID (string), message (string), raw message (string).
      */
-    public function do_transaction($trans_id, $name, $card_number, $amount, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length = null, $length_units = null)
+    public function do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length = null, $length_units = null)
     {
         if (is_null($trans_id)) {
             $trans_id = $this->generate_trans_id();
@@ -268,7 +271,7 @@ class Hook_secpay
         $username = $this->_get_username();
         $password_2 = get_option('vpn_password');
         $digest = md5($trans_id . strval($amount) . get_option('ipn_password'));
-        $options = 'currency=' . get_option('currency') . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($cv2));
+        $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($cv2));
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
         }
@@ -403,7 +406,6 @@ class Hook_secpay
         $memo = '';
         $mc_gross = post_param_string('amount');
         $mc_currency = post_param_string('currency', ''); // May be blank for subscription
-        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
         // Validate
         $hash = post_param_string('hash');

@@ -79,12 +79,13 @@ function ecommerce_get_currency_symbol($currency = null)
  * @param  ID_TEXT $purchase_id The purchase ID
  * @param  SHORT_TEXT $item_name The item name
  * @param  SHORT_TEXT $amount The amount
+ * @param  ID_TEXT $currency The currency
  * @param  ?integer $length The length (null: not a subscription)
  * @param  ID_TEXT $length_units The length units
  * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
  * @return array A pair: The form fields, Hidden fields
  */
-function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $length, $length_units, $via = null)
+function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $currency, $length, $length_units, $via = null)
 {
     if (is_null($via)) {
         $via = get_option('payment_gateway');
@@ -104,6 +105,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_amount' => $amount,
+        'e_currency' => $currency,
         'e_member_id' => get_member(),
         'e_ip_address' => get_ip_address(),
         'e_session_id' => get_session_id(),
@@ -483,7 +485,8 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name), $is_subscription);
         }
     }
-    if ($mc_currency != get_option('currency')) {
+    $expected_currency = isset($found[5]) ? $found[5] : get_option('currency');
+    if ($mc_currency != $expected_currency) {
         if (($payment_status != 'SCancelled') && ($via != 'manual')) {
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY'));
         }

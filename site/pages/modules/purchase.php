@@ -74,6 +74,7 @@ class Module_purchase
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
                 'e_amount' => 'SHORT_TEXT',
+                'e_currency' => 'ID_TEXT',
                 'e_ip_address' => 'IP',
                 'e_session_id' => 'ID_TEXT',
                 'e_time' => 'TIME',
@@ -115,6 +116,8 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'linked', 'ID_TEXT', 't_parent_txn_id');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'item', 'SHORT_TEXT', 't_type_code');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
+
+            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
         }
@@ -270,7 +273,7 @@ class Module_purchase
 
             if ($wizard_supported && $is_available) {
                 require_code('currency');
-                $currency = get_option('currency');
+                $currency = isset($details[5]) ? $details[5] : get_option('currency');
                 $price = currency_convert(floatval($details[1]), $currency, null, true);
 
                 $description = $details[4];
@@ -413,6 +416,7 @@ class Module_purchase
         $temp = $object->get_products(true, $type_code);
         $price = $temp[$type_code][1];
         $item_name = $temp[$type_code][4];
+        $currency = isset($temp[$type_code][5]) ? $temp[$type_code][5] : get_option('currency');
 
         if (method_exists($object, 'set_needed_fields')) {
             $purchase_id = $object->set_needed_fields($type_code);
@@ -460,12 +464,11 @@ class Module_purchase
             $payment_status = 'Completed';
             $reason_code = '';
             $pending_reason = '';
-            $mc_currency = get_option('currency');
             $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
             $parent_txn_id = '';
             $memo = 'Free';
             $mc_gross = '';
-            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
+            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
             return inform_screen($this->title, do_lang_tempcode('FREE_PURCHASE'));
         }
 
@@ -485,16 +488,16 @@ class Module_purchase
 
         if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
             if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, get_option('currency'), $via);
+                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $via);
             } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), get_option('currency'), $via);
+                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $via);
             }
             $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
             $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
             $result = do_template($tpl, array(
                 'LOGOS' => $logos,
                 'TRANSACTION_BUTTON' => $transaction_button,
-                'CURRENCY' => get_option('currency'),
+                'CURRENCY' => $currency,
                 'ITEM_NAME' => $item_name,
                 'TITLE' => $this->title,
                 'LENGTH' => is_null($length) ? '' : strval($length),
@@ -508,7 +511,7 @@ class Module_purchase
                 warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
             }
 
-            list($fields, $hidden) = get_transaction_form_fields(null, $purchase_id, $item_name, float_to_raw_string($price), ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '', $via);
+            list($fields, $hidden) = get_transaction_form_fields(null, $purchase_id, $item_name, float_to_raw_string($price), $currency, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '', $via);
 
             $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish'), '_SELF');
 
@@ -545,6 +548,7 @@ class Module_purchase
                 $amount = $transaction_row['e_amount'];
                 $length = $transaction_row['e_length'];
                 $length_units = $transaction_row['e_length_units'];
+                $currency = $transaction_row['e_currency'];
 
                 $name = post_param_string('name');
                 $card_number = post_param_string('card_number');
@@ -554,17 +558,17 @@ class Module_purchase
                 $card_type = post_param_string('card_type');
                 $cv2 = post_param_string('cv2');
 
-                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
+                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
                 if (($success) || (!is_null($length))) {
                     $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';
-                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, get_option('currency'), $trans_id, '', is_null($length) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
+                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', is_null($length) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
                 }
 
                 if ($success) {
                     $member_id = $transaction_row['e_member_id'];
                     require_code('notifications');
-                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), get_option('currency'), get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
                 }
             }
 

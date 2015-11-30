@@ -586,6 +586,7 @@ class Module_shopping
                 $amount = $transaction_row['e_amount'];
                 $length = $transaction_row['e_length'];
                 $length_units = $transaction_row['e_length_units'];
+                $currency = $transaction_row['e_currency'];
 
                 $name = post_param_string('name');
                 $card_number = post_param_string('card_number');
@@ -595,7 +596,7 @@ class Module_shopping
                 $card_type = post_param_string('card_type');
                 $cv2 = post_param_string('cv2');
 
-                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
+                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
                 if (($success) || (!is_null($length))) {
                     $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';

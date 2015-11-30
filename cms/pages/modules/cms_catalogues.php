@@ -1238,7 +1238,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
      * @param  integer $move_days_lower The number of days before expiry (lower limit)
      * @param  integer $move_days_higher The number of days before expiry (higher limit)
      * @param  ?AUTO_LINK $move_target The expiry category (null: do not expire)
-     * @param  integer $order The order
+     * @param  ?integer $order The order (null: auto-calculate, for new category)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
     public function get_form_fields($catalogue_name = null, $title = '', $description = '', $notes = '', $parent_id = -1, $id = null, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $order = null)

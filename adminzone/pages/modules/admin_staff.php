@@ -152,6 +152,8 @@ class Module_admin_staff
             $username = $GLOBALS['FORUM_DRIVER']->mrow_username($row_staff);
             $role = get_cms_cpf('role', $id);
 
+            $fields = new Tempcode();
+
             $fields->attach(form_input_line(do_lang_tempcode('ROLE'), do_lang_tempcode('DESCRIPTION_ROLE'), 'role_' . strval($id), $role, false));
 
             if (get_option('is_on_staff_filter') == '1') {

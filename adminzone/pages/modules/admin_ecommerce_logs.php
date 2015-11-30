@@ -341,8 +341,10 @@ class Module_admin_ecommerce_logs
                 $label = $details[4];
                 $label .= ' (' . escape_html($type_code);
 
+                $currency = isset($details[5]) ? $details[5] : get_option('currency');
+
                 if ($details[1] !== null) {
-                    $label .= ', ' . ecommerce_get_currency_symbol() . escape_html(is_float($details[1]) ? float_to_raw_string($details[1], 2) : $details[1]);
+                    $label .= ', ' . escape_html(is_float($details[1]) ? float_to_raw_string($details[1], 2) : $details[1] . ' (' . $currency . ')');
                 }
                 $label .= ')';
                 $list->attach(form_input_list_entry($type_code, do_lang('CUSTOM_PRODUCT_' . $type_code, null, null, null, null, false) === get_param_string('type_code', null), protect_from_escaping($label)));
@@ -428,16 +430,19 @@ class Module_admin_ecommerce_logs
         $memo = post_param_string('memo');
         $mc_gross = post_param_string('amount', '');
         $custom_expiry = post_param_date('cexpiry');
+        $mc_currency = get_option('currency');
 
         $object = find_product($type_code);
         $products = $object->get_products(true);
         if ($mc_gross == '') {
             $mc_gross = $products[$type_code][1];
+            if (isset($products[$type_code][5])) {
+                $mc_currency = $products[$type_code][5];
+            }
         }
         $payment_status = 'Completed';
         $reason_code = '';
         $pending_reason = '';
-        $mc_currency = get_option('currency');
         $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
         $parent_txn_id = '';
 
