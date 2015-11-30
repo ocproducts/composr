@@ -333,7 +333,7 @@ class Module_admin_addons
         if (function_exists('set_time_limit')) {
             @set_time_limit(180); // So it can scan inside addons
         }
-        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+        send_http_output_ping();
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
@@ -578,7 +578,7 @@ class Module_admin_addons
         if (function_exists('set_time_limit')) {
             @set_time_limit(0);
         }
-        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+        send_http_output_ping();
 
         require_code('abstract_file_manager');
         force_have_afm_details();

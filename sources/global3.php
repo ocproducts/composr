@@ -3080,3 +3080,12 @@ function cms_profile_end_for($identifier, $specifics = null)
     require_code('profiler');
     _cms_profile_end_for($identifier, $specifics);
 }
+
+/**
+ * Put out some benign HTTP output.
+ * FastCGI seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+ */
+function send_http_output_ping()
+{
+    echo ' ';
+}

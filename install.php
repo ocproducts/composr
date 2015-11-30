@@ -90,8 +90,6 @@ if (($shl === false) || ($shl == '') || ($shl == '0')) {
     safe_ini_set('memory_limit', $shl);
 }
 
-echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
-
 // Tunnel into some Composr code we can use
 require_code('critical_errors');
 require_code('permissions');
@@ -111,6 +109,10 @@ require_code('urls');
 require_code('zones');
 require_code('comcode');
 require_code('themes');
+
+if (!array_key_exists('type', $_GET)) {
+    send_http_output_ping();
+}
 
 global $CACHE_TEMPLATES;
 if (is_writable(get_file_base() . '/themes/default/templates_cached/' . user_lang())) {

@@ -128,7 +128,7 @@ class Module_admin_email_log
         if (function_exists('set_time_limit')) {
             @set_time_limit(60);
         }
-        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+        send_http_output_ping();
 
         // Put errors into table
         $start = get_param_integer('start', 0);

@@ -82,7 +82,7 @@ class Hook_profiles_tabs_edit
         }
 
         if (count($_POST) > 0) {
-            echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+            send_http_output_ping();
         }
 
         $tabs = array();

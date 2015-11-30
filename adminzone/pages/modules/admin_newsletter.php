@@ -982,7 +982,7 @@ class Module_admin_newsletter extends Standard_crud_module
         if (function_exists('set_time_limit')) {
             @set_time_limit(180);
         }
-        echo ' '; // HACKHACK: IIS seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+        send_http_output_ping();
         disable_php_memory_limit();
 
         $fields = new Tempcode();
