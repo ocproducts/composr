@@ -483,8 +483,8 @@ class Module_banners
         $fields->attach(map_table_field(do_lang_tempcode('SECONDARY_CATEGORIES'), ($banner_types == '') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html($banner_types))));
 
         if (addon_installed('stats')) {
-            $banners_regions = implode(', ', collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('region'), array('name' => $myrow['name']))));
-            $fields->attach(map_table_field(do_lang_tempcode('BANNER_REGIONS'), ($banners_regions == '') ? do_lang_tempcode('ALL_EM') : protect_from_escaping(escape_html($banners_regions))));
+            $banners_regions = implode(', ', collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $myrow['name']))));
+            $fields->attach(map_table_field(do_lang_tempcode('FILTER_REGIONS'), ($banners_regions == '') ? do_lang_tempcode('ALL_EM') : protect_from_escaping(escape_html($banners_regions))));
         }
 
         $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date($myrow['add_date'])));

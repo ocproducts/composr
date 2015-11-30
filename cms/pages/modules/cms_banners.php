@@ -618,8 +618,8 @@ class Module_cms_banners extends Standard_crud_module
             $csv_row[do_lang('IMPORTANCE_MODULUS')] = strval($row['importance_modulus']);
 
             if (addon_installed('stats')) {
-                $banners_regions = implode(', ', collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('banners_regions', array('region'), array('name' => $row['name']))));
-                $csv_row[do_lang('BANNER_REGIONS')] = $banners_regions;
+                $banners_regions = implode(', ', collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $row['name']))));
+                $csv_row[do_lang('FILTER_REGIONS')] = $banners_regions;
             }
 
             $csv_row[do_lang('EXPIRY_DATE')] = is_null($row['expiry_date']) ? do_lang('NA') : get_timezoned_date($row['expiry_date']);
