@@ -2,7 +2,7 @@
 	<h3>{TITLE*}</h3>
 
 	<form role="search" title="{TITLE*}" onsubmit="if (typeof this.elements['content']=='undefined') { disable_button_just_clicked(this); return true; } if (check_field_for_blankness(this.elements['content'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{$URL_FOR_GET_FORM*,{URL}}" method="get">
-		{$HIDDENS_FOR_GET_FORM,{URL}}
+		{$HIDDENS_FOR_GET_FORM,{URL},content}
 
 		<div>
 			{+START,IF,{$EQ,{INPUT_FIELDS},1}}
@@ -13,19 +13,20 @@
 			{+END}
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}
 				{+START,LOOP,INPUT_FIELDS}
-					<div class="wide_table_wrap"><table class="map_table autosized_table wide_table search_field_table">
-						<tbody>
-							<tr>
-								<th class="de_th">
-									{_loop_var*}
-								</th>
-								<td>
-									<label class="accessibility_hidden" for="search_{_loop_key*}">{_loop_var*}</label>
-									<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255"{+START,IF,{$EQ,{_loop_key},content}} onkeyup="update_ajax_search_list(this,event);"{+END} type="text" id="search_{_loop_key*}" name="{_loop_key*}" value="" />
-								</td>
-							</tr>
-						</tbody>
-					</table></div>
+					{+START,IF_EMPTY,{INPUT}}
+						<div class="search_option float_surrounder">
+							<label for="search_{_loop_key*}">{LABEL*}:</label><br />
+							{+START,IF,{$EQ,{_loop_key},content}}
+								<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" onkeyup="update_ajax_search_list(this,event);" type="text" id="search_{_loop_key*}" name="content" value="{$_GET*,content}" />
+							{+END}
+							{+START,IF,{$NEQ,{_loop_key},content}}
+								<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" type="text" id="search_{_loop_key*}" name="option_{_loop_key*}" value="{$_GET*,option_{_loop_key}}" />
+							{+END}
+						</div>
+					{+END}
+					{+START,IF_NON_EMPTY,{INPUT}}
+						{INPUT}
+					{+END}
 				{+END}
 			{+END}
 

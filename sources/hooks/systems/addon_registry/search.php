@@ -194,7 +194,7 @@ class Hook_addon_registry_search
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_SEARCH', array(
                 'TITLE' => lorem_phrase(),
-                'INPUT_FIELDS' => placeholder_array(),
+                'INPUT_FIELDS' => array('a' => array('LABEL' => lorem_phrase(), 'INPUT' => '')),
                 'EXTRA' => placeholder_array(),
                 'SORT' => lorem_phrase(),
                 'AUTHOR' => lorem_phrase(),

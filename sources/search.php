@@ -35,7 +35,8 @@ function init__search()
  *
  * @package        search
  */
-abstract class FieldsSearchHook {
+abstract class FieldsSearchHook
+{
     /**
      * Get a list of extra sort fields.
      *
@@ -192,8 +193,7 @@ abstract class FieldsSearchHook {
 
                         if (substr($param, 0, 1) == '=') {
                             $where_clause .= db_string_equal_to($search_field, substr($param, 1));
-                        }
-                        elseif ($row_type == 'integer' || $row_type == 'float') {
+                        } elseif ($row_type == 'integer' || $row_type == 'float') {
                             if (is_numeric($param)) {
                                 $where_clause .= $search_field . '=' . $param;
                             } else {
@@ -326,7 +326,7 @@ function is_under_radar($test)
 /**
  * Get minimum search length for MySQL.
  *
- * @return integer	Search length
+ * @return integer    Search length
  */
 function get_minimum_search_length()
 {
@@ -542,9 +542,56 @@ function do_search_block($map)
         $extra['content'] = '';
     }
 
+    $options = array();
+    if ((count($limit_to) == 1) && ($limit_to[0] != 'all_defaults')) { // If we are doing a specific hook
+        $id = preg_replace('#^search\_#', '', $limit_to[0]);
+
+        require_code('hooks/modules/search/' . filter_naughty($id));
+        $object = object_factory('Hook_search_' . $id);
+        $info = $object->info();
+        if (!is_null($info)) {
+            if (array_key_exists('special_on', $info)) {
+                foreach ($info['special_on'] as $name => $display) {
+                    $_name = 'option_' . $id . '_' . $name;
+                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('CHECKED' => (get_param_string('content', null) === null) || (get_param_integer($_name, 0) == 1), 'DISPLAY' => $display));
+                }
+            }
+            if (array_key_exists('special_off', $info)) {
+                foreach ($info['special_off'] as $name => $display) {
+                    $_name = 'option_' . $id . '_' . $name;
+                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('CHECKED' => (get_param_integer($_name, 0) == 1), 'DISPLAY' => $display));
+                }
+            }
+            if (method_exists($object, 'get_fields')) {
+                $fields = $object->get_fields();
+                foreach ($fields as $field) {
+                    $_name = 'option_' . $field['NAME'];
+                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION' . $field['TYPE'], array('DISPLAY' => $field['DISPLAY'], 'SPECIAL' => $field['SPECIAL'], 'CHECKED' => array_key_exists('checked', $field) ? $field['CHECKED'] : false));
+                }
+            }
+        }
+    }
+
+    $_input_fields = array();
+    foreach ($input_fields as $key => $val) {
+        $input = new Tempcode();
+        if (isset($options['option_' . $key])) { // If there is an input option for this particular $key
+            $tpl_params = $options['option_' . $key][1];
+            $tpl_params['NAME'] = 'option_' . $key;
+            if ($val != '') {
+                $tpl_params['DISPLAY'] = $val;
+            }
+            $input = do_template($options['option_' . $key][0], $tpl_params);
+        }
+        $_input_fields[$key] = array(
+            'LABEL' => $val,
+            'INPUT' => $input,
+        );
+    }
+
     return array(
         'TITLE' => $title,
-        'INPUT_FIELDS' => $input_fields,
+        'INPUT_FIELDS' => $_input_fields,
         'EXTRA' => $extra,
         'SORT' => $sort,
         'AUTHOR' => $author,
