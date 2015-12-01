@@ -135,7 +135,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                 true, // $check_perms
                 null, // $member_id
-                true, //$support_crosslinks
+                false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
                 false //$be_deferential
 
             ));

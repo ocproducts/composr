@@ -34,7 +34,7 @@ class sitemap_test_set extends cms_test_case
         $max_recurse_depth = null;
         $options = SITEMAP_GEN_NONE;
         $zone = '_SEARCH';
-        $meta_gather = SITEMAP_GATHER__ALL;
+        $meta_gather = SITEMAP_GATHER__ALL | SITEMAP_GEN_USE_PAGE_GROUPINGS;
 
         $this->sitemap = retrieve_sitemap_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $options, $zone, $meta_gather);
         $this->flattened = $this->flatten_sitemap($this->sitemap);
@@ -57,7 +57,6 @@ class sitemap_test_set extends cms_test_case
                 $_c = $this->flatten_sitemap($c);
                 foreach ($_c as $k => $__c) {
                     if ($k != '' && $k != 'site:members:browse') {
-                        //if (isset($ret[$k])) { @var_dump($ret);@exit($k); }
                         $this->assertTrue(!isset($ret[$k]), 'Duplicated page: ' . $k);
                     }
 
@@ -153,7 +152,7 @@ class sitemap_test_set extends cms_test_case
     public function testNoOrphans()
     {
         foreach ($this->flattened as $c) {
-            $this->assertTrue(!isset($c['is_unexpected_orphan']), 'Not tied in via page grouping ' . serialize($c));
+            $this->assertTrue(!isset($c['is_unexpected_orphan']), 'Not tied in via page grouping ' . $c['title']->evaluate());
         }
     }
 

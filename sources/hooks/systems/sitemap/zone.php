@@ -403,7 +403,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                                 }
                             }
 
-                            if ($_zone == 'site' || $_zone == 'adminzone') {
+                            if (($_zone == 'site' || $_zone == 'adminzone') && (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0)) {
                                 $child_node['is_unexpected_orphan'] = true; // This should never be set, it indicates a page not in a page grouping
                             }
 

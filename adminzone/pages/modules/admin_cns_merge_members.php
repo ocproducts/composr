@@ -55,7 +55,7 @@ class Module_admin_cns_merge_members
             return null;
         }
 
-        if ($be_deferential) {
+        if ($be_deferential || $support_crosslinks) {
             return null;
         }
 

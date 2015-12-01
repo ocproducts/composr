@@ -107,7 +107,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             return null;
         }
 
-        if ($be_deferential) {
+        if ($be_deferential || $support_crosslinks) {
             return null;
         }
 

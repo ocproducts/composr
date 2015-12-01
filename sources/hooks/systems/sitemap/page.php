@@ -309,7 +309,6 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     if (strpos($extra, ':catalogue_name=') !== false) {
                                         $child_page_link .= preg_replace('#^:\w+#', '', $extra);
                                     }
-
                                     $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
                                 } else {
                                     $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);

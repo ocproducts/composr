@@ -48,7 +48,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
 
         $ret = array();
-        if (!$be_deferential) {
+
+        if (!$be_deferential && !$support_crosslinks) {
             $ret += array(
                 'browse' => array('CUSTOM_PROFILE_FIELDS', 'menu/adminzone/tools/users/custom_profile_fields'),
             );
@@ -58,7 +59,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             'stats' => array('CUSTOM_PROFILE_FIELD_STATS', 'menu/adminzone/tools/users/custom_profile_fields'),
         );
 
-        if (!$be_deferential) {
+        if (!$be_deferential && !$support_crosslinks) {
             $ret += parent::get_entry_points();
         }
 
