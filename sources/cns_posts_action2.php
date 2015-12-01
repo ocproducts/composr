@@ -243,7 +243,12 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             }
         }
         if ($last) { // We're updating caching of the last
-            $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_intended_solely_for' => null, 'p_topic_id' => $topic_id), 'ORDER BY p_time DESC,id DESC', 1);
+            if (get_option('is_on_post_map') == '1') {
+                $order_by = 'ORDER BY p_last_edit_time DESC,p_time DESC,id DESC';
+            } else {
+                $order_by = 'ORDER BY p_time DESC,id DESC';
+            }
+            $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_intended_solely_for' => null, 'p_topic_id' => $topic_id), $order_by, 1);
             if (!array_key_exists(0, $posts)) {
                 $last_post_id = null;
                 $last_time = null;

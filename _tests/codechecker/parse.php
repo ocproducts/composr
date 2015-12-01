@@ -1493,7 +1493,7 @@ function _parse_parameter()
                         $parameter = array('RECEIVE_BY_VALUE', $var, null, $GLOBALS['I']);
                         $parameter['HINT'] = '?' . $hint;
                     } else {
-                        parser_error('Default arguments for type-hinted parameters can only be NULL');
+                        parser_error('Default arguments for type-hinted parameters can only be null');
                     }
                 } else {
                     // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
@@ -1519,7 +1519,7 @@ function _parse_parameter()
                     $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
                     $parameter['HINT'] = '?' . $hint;
                 } else {
-                    parser_error('Default arguments for referenced parameters can only be NULL');
+                    parser_error('Default arguments for referenced parameters can only be null');
                 }
             } else {
                 $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);

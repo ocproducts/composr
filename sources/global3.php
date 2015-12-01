@@ -2151,9 +2151,10 @@ function escape_html($string)
  *
  * @param  string $code The property code
  * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot simplified_attachments_ui itunes
+ * @param  ?string $comcode Comcode that might be WYSIWYG edited; used to determine whether WYSIWYG may load when we'd prefer it to not do so (null: none)
  * @return boolean Whether there is a match
  */
-function browser_matches($code)
+function browser_matches($code, $comcode = null)
 {
     global $BROWSER_MATCHES_CACHE;
     if (isset($BROWSER_MATCHES_CACHE[$code])) {
@@ -2188,7 +2189,7 @@ function browser_matches($code)
             $BROWSER_MATCHES_CACHE[$code] = strpos($browser, 'iphone') !== false || strpos($browser, 'ipad') !== false;
             return $BROWSER_MATCHES_CACHE[$code];
         case 'wysiwyg':
-            if ((get_option('wysiwyg') == '0') || (is_mobile())) {
+            if ((get_option('wysiwyg') == '0') || ((is_mobile()) && ((is_null($comcode)) || (strpos($comcode, 'html]') === false)))) {
                 $BROWSER_MATCHES_CACHE[$code] = false;
                 return false;
             }

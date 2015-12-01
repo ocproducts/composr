@@ -335,7 +335,18 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         if (function_exists('get_member')) {
             if (function_exists('cns_ping_topic_read')) {
                 cms_profile_start_for('cns_make_post:cns_ping_topic_read');
-                cns_ping_topic_read($topic_id, $poster);
+
+                // We have to mark read, even if is_on_automatic_mark_topic_read=0, because otherwise our own post would make the topic show unread (because we don't track individual post read statuses)
+                //  (for performance we do not query the latest post which is not our own for each topic, we rely on caching it for all users)
+                $read_to_timestamp = get_param_integer('timestamp', null);
+                if (!is_null($read_to_timestamp)) {
+                    // Nothing unread since it was read?
+                    if ($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', array('p_topic_id' => $topic_id), ' AND p_time>' . strval($read_to_timestamp) . ' AND id<>' . strval($post_id)) == 0) {
+                        $read_to_timestamp = time();
+                    } // ... then bump up to now, so our own post doesn't make the topic as a whole seem unread
+                }
+                cns_ping_topic_read($topic_id, $poster, $read_to_timestamp);
+
                 cms_profile_end_for('cns_make_post:cns_ping_topic_read');
             }
 

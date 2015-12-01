@@ -115,7 +115,7 @@ function do_user_import()
                 }
             } else {
                 // Edit
-                cns_edit_member($member_id, $email_address, null, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, null, null, null, null, null, null, null, null, $username, $password, null, null, null, null, null, null, null, null, $photo_url, null, null, null, true);
+                cns_edit_member($member_id, $email_address, null, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, null, null, null, null, null, null, null, null, $username, $password, null, null, null, null, null, null, null, null, null, $photo_url, null, null, null, true);
                 require_code('cns_groups_action2');
                 if (!is_null($groups)) {
                     $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);

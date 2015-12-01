@@ -3221,6 +3221,19 @@ function move_to_full_editor(button,more_url)
 		}
 	}
 
+	// Try and make post reply a GET parameter
+	if (typeof form.elements['parent_id']!='undefined')
+	{
+		if (more_url.indexOf('?')==-1)
+		{
+			more_url+='?';
+		} else
+		{
+			more_url+='&';
+		}
+		more_url+='parent_id='+window.encodeURIComponent(form.elements['parent_id'].value);
+	}
+
 	// Reset form target
 	form.setAttribute('target','_top');
 	if (typeof form.old_action!='undefined') form.old_action=form.getAttribute('action');

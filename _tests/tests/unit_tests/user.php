@@ -65,6 +65,7 @@ class user_test_set extends cms_test_case
             '*', // pt_allow
             '', // pt_rules_text
             null, // on_probation_until
+            null, // auto_mark_read
             null, // join_time
             null, // avatar_url
             null, // signature

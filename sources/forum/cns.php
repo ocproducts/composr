@@ -315,6 +315,10 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function topic_is_threaded($topic_id)
     {
+        if (get_param_integer('threaded', null) === 1) {
+            return true;
+        }
+
         global $TOPIC_IS_THREADED_CACHE;
         if (array_key_exists($topic_id, $TOPIC_IS_THREADED_CACHE)) {
             return $TOPIC_IS_THREADED_CACHE[$topic_id] == 1;
@@ -1714,6 +1718,6 @@ class Forum_driver_cns extends Forum_driver_base
     public function get_member_row_field($member, $field)
     {
         $row = $this->get_member_row($member);
-        return ($row === null) ? null : $row[$field];
+        return ($row === null) ? null : (isset($row[$field]) ? $row[$field] : null);
     }
 }

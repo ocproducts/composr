@@ -246,10 +246,11 @@ function user_sync__inbound($since = null)
                 $highlighted_name = 0;
                 $pt_allow = '*';
                 $pt_rules_text = '';
+                $auto_mark_read = null;
 
                 $check_correctness = false;
 
-                $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $cpf_values, $timezone, $primary_group, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $check_correctness, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until);
+                $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $cpf_values, $timezone, $primary_group, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $check_correctness, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
             } else {
                 // Delete?
                 if (function_exists('user_sync__handle_deletion')) {
@@ -280,10 +281,11 @@ function user_sync__inbound($since = null)
                 $highlighted_name = null;
                 $pt_allow = null;
                 $pt_rules_text = null;
+                $auto_mark_read = null;
 
                 $skip_checks = true;
 
-                cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $cpf_values, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, $skip_checks);
+                cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $cpf_values, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, $skip_checks);
 
                 require_code('cns_groups_action2');
                 $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);

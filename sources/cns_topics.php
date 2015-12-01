@@ -226,14 +226,20 @@ function cns_may_delete_topics_by($forum_id, $member_id, $resource_owner)
  *
  * @param  AUTO_LINK $topic_id The ID of the topic to mark as read.
  * @param  ?MEMBER $member_id The member to do this for (null: current member).
+ * @param  ?TIME $timestamp Mark read timestamp (null: now).
  */
-function cns_ping_topic_read($topic_id, $member_id = null)
+function cns_ping_topic_read($topic_id, $member_id = null, $timestamp = null)
 {
     if (is_null($member_id)) {
         $member_id = get_member();
     }
-    $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id), '', 1);
-    $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id, 'l_time' => time()), false, true); // race condition
+    if (is_null($timestamp)) {
+        $timestamp = time();
+    }
+    if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
+        $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id), '', 1);
+        $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id, 'l_time' => $timestamp), false, true); // race condition
+    }
 }
 
 /**
@@ -255,7 +261,10 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
     }
 
     if (is_null($topic_last_time)) {
-        $topic_last_time = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_last_time', array('id' => $topic_id));
+        $topic_last_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_last_time', array('id' => $topic_id));
+        if (is_null($topic_last_time)) {
+            return true; // Should not happen
+        }
     }
 
     $post_history_days_ago = time() - 60 * 60 * 24 * intval(get_option('post_history_days'));

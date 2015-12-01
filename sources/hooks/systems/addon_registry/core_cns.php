@@ -425,6 +425,16 @@ class Hook_addon_registry_core_cns
             'themes/default/css/cns_admin.css',
             'themes/default/css/cns_header.css',
             'themes/default/css/cns_footer.css',
+
+            // Files for post map functionality
+            'themes/default/templates/CNS_POST_MAP.tpl',
+            'themes/default/templates/CNS_POST_MAP_ITEM.tpl',
+            'themes/default/images/cns_post_map/index.html',
+            'themes/default/images/cns_post_map/last_mesg_level.png',
+            'themes/default/images/cns_post_map/mesg_level.png',
+            'themes/default/images/cns_post_map/middle_mesg_level.png',
+            'sources/hooks/systems/config/is_on_post_map.php',
+            'sources/hooks/systems/config/is_on_automatic_mark_topic_read.php',
         );
     }
 
@@ -459,6 +469,8 @@ class Hook_addon_registry_core_cns
             'templates/BLOCK_MAIN_MEMBERS.tpl' => 'block_main_members',
             'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTER.tpl' => 'cns_member_directory_screen_filter',
             'templates/CNS_MEMBER_DIRECTORY_USERNAME.tpl' => 'cns_member_directory_username',
+            'templates/CNS_POST_MAP.tpl' => 'cns_post_map',
+            'templates/CNS_POST_MAP_ITEM.tpl' => 'cns_post_map',
         );
     }
 
@@ -1209,6 +1221,64 @@ class Hook_addon_registry_core_cns
                 'PRIMARY_MEMBERS' => $primary_members,
                 'SECONDARY_MEMBERS' => $secondary_members,
                 'PROSPECTIVE_MEMBERS' => $prospective_members,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__cns_post_map()
+    {
+        $items = new Tempcode();
+
+        $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
+            'TITLE' => lorem_phrase(),
+            'URL' => placeholder_url(),
+            'POST_NUMBER'  =>  placeholder_number(),
+            'POSTER_ID' => placeholder_number(),
+            'POSTER_IS_GUEST' => false,
+            'POSTER_URL' => placeholder_url(),
+            'POSTER_NAME' => lorem_phrase(),
+            'LEVEL_HAS_ADJACENT_SIBLING' => array(true),
+            'POST_LEVEL' => '0',
+            'TIME' => placeholder_date(),
+            'IS_UNREAD' => true,
+        )));
+        $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
+            'TITLE' => lorem_phrase(),
+            'URL' => placeholder_url(),
+            'POST_NUMBER'  =>  placeholder_number(),
+            'POSTER_ID' => placeholder_number(),
+            'POSTER_IS_GUEST' => false,
+            'POSTER_URL' => placeholder_url(),
+            'POSTER_NAME' => lorem_phrase(),
+            'LEVEL_HAS_ADJACENT_SIBLING' => array(true),
+            'POST_LEVEL' => '0',
+            'TIME' => placeholder_date(),
+            'IS_UNREAD' => false,
+        )));
+        $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
+            'TITLE' => lorem_phrase(),
+            'URL' => placeholder_url(),
+            'POST_NUMBER'  =>  placeholder_number(),
+            'POSTER_ID' => placeholder_number(),
+            'POSTER_IS_GUEST' => false,
+            'POSTER_URL' => placeholder_url(),
+            'POSTER_NAME' => lorem_phrase(),
+            'LEVEL_HAS_ADJACENT_SIBLING' => array(false, true),
+            'POST_LEVEL' => '1',
+            'TIME' => placeholder_date(),
+            'IS_UNREAD' => false,
+        )));
+
+        return array(
+            lorem_globalise(do_lorem_template('CNS_POST_MAP', array(
+                'ITEMS' => $items,
             )), null, '', true)
         );
     }

@@ -342,7 +342,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $comcode_editor = get_comcode_editor();
     $comcode_editor_small = get_comcode_editor('post', true);
 
-    $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg') && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
+    $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
 
     $class = '';
     attach_wysiwyg();
@@ -473,11 +473,12 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
 /**
  * Find whether WYSIWYG is currently on.
  *
+ * @param  ?string $default Comcode that might be WYSIWYG edited (null: none)
  * @return boolean Whether it is
  */
-function wysiwyg_on()
+function wysiwyg_on($default = null)
 {
-    return ((browser_matches('wysiwyg')) && ((!array_key_exists('use_wysiwyg', $_COOKIE)) || ($_COOKIE['use_wysiwyg'] != '0')));
+    return ((browser_matches('wysiwyg', $default)) && ((!array_key_exists('use_wysiwyg', $_COOKIE)) || ($_COOKIE['use_wysiwyg'] != '0')));
 }
 
 /**
@@ -1062,7 +1063,7 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
  */
 function form_input_text_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $force_non_wysiwyg = false, $description_side = '', $default_parsed = null, $scrolls = false, $rows = null)
 {
-    if ((browser_matches('wysiwyg')) && (!$force_non_wysiwyg) && (strpos($default, '{$,page hint: no_wysiwyg}') === false)) {
+    if ((browser_matches('wysiwyg', $default)) && (!$force_non_wysiwyg) && (strpos($default, '{$,page hint: no_wysiwyg}') === false)) {
         return form_input_huge_comcode($pretty_name, $description, $name, $default, $required, $tabindex, 10, $description_side, $default_parsed, $scrolls);
     }
 
@@ -1083,7 +1084,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
     if (!$force_non_wysiwyg) {
         attach_wysiwyg();
 
-        $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }
@@ -1148,7 +1149,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
     attach_wysiwyg();
 
     if (!$force_non_wysiwyg) {
-        $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }

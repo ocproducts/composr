@@ -1827,6 +1827,10 @@ class Module_topics
                 $quotes[] = $quote;
             }
             $post = $this->attach_quotes($quotes);
+
+            if ((count($quotes) == 1) && (is_null($parent_id))) {
+                $parent_id = $quotes[0];
+            }
         }
 
         $whisperer = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_poster', array('p_topic_id' => $topic_id, 'p_intended_solely_for' => get_member()), 'ORDER BY p_time DESC');
@@ -1875,7 +1879,7 @@ class Module_topics
         $hidden_fields->attach(form_input_hidden('topic_id', strval($topic_id)));
         $hidden_fields->attach(form_input_hidden('from_url', get_self_url(true, false, array('type' => get_param_string('type', 'browse')))));
 
-        $map = array('page' => '_SELF', 'type' => '_add_reply', 'parent_id' => $parent_id);
+        $map = array('page' => '_SELF', 'type' => '_add_reply', 'parent_id' => $parent_id, 'timestamp' => get_param_integer('timestamp', null));
         $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
         if (($test != -1) && ($test != 0)) {
             $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
@@ -2036,7 +2040,15 @@ class Module_topics
         }
         $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $this->_post_javascript());
 
-        $title = get_screen_title('_ADD_POST', true, array(escape_html($topic_title)));
+        if (is_null($parent_id)) {
+            if (!is_null($forum_id) && get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1) {
+                $title = get_screen_title('_ADD_POST_TOP_LEVEL', true, array(escape_html($topic_title)));
+            } else {
+                $title = get_screen_title('_ADD_POST', true, array(escape_html($topic_title)));
+            }
+        } else {
+            $title = get_screen_title('_ADD_POST_UNDER', true, array(escape_html($topic_title), escape_html($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id)))));
+        }
 
         if (post_param_integer('add_poll', 0) == 1) {
             // Show it worked / Refresh
@@ -2596,22 +2608,18 @@ END;
         $topic_id = get_param_integer('id');
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
 
-        cns_ping_topic_read($topic_id);
+        cns_ping_topic_read($topic_id, get_member(), get_param_integer('timestamp', null));
         if ((is_null($forum_id)) || (get_param_integer('ajax', 0) == 1)) {
             decache('side_cns_private_topics', null, get_member());
             decache('_new_pp', null, get_member());
             decache('_get_pts', null, get_member());
         }
 
-        $title = get_screen_title('MARK_READ');
-
         if (get_param_integer('ajax', 0) == 1) {
             exit();
         }
 
-        // Show it worked / Refresh
-        $url = get_param_string('redirect');
-        return redirect_screen($title, $url, do_lang_tempcode('SUCCESS'));
+        return $this->redirect_to_forum('MARK_UNREAD', $forum_id, do_lang_tempcode('TOPIC_MARKED_READ'));
     }
 
     /**
@@ -3123,7 +3131,11 @@ END;
         }
         $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'bdab02bfa4ea2f50feedf8a15762c5f1', 'TITLE' => do_lang_tempcode('ACTIONS'))));
         $options = array();
-        $options[] = array(do_lang_tempcode('MARK_UNREAD'), 'mark_as_unread', false, do_lang_tempcode('DESCRIPTION_MARK_UNREAD'));
+        if (get_option('is_on_post_map') == '1') {
+            $hidden_fields->attach(form_input_hidden('mark_as_unread', '1'));
+        } else {
+            $options[] = array(do_lang_tempcode('MARK_UNREAD'), 'mark_as_unread', false, do_lang_tempcode('DESCRIPTION_MARK_UNREAD'));
+        }
         $options[] = array(do_lang_tempcode('SHOW_AS_EDITED'), 'show_as_edited', ((time() - $post_details[0]['p_time']) > 60 * 3), do_lang_tempcode('DESCRIPTION_POST_SHOW_AS_EDITED'));
         $specialisation2->attach(form_input_various_ticks($options, ''));
         if (cns_may_delete_post_by($post_id, $post_details[0]['p_time'], $post_details[0]['p_poster'], $forum_id)) {
@@ -3446,7 +3458,7 @@ END;
             'HIDDEN' => $hidden_fields,
             'TITLE' => $title,
             'FIELDS' => $fields,
-            'TEXT'=> do_lang_tempcode('EDITING_TOPIC_NOT_POST'),
+            'TEXT' => do_lang_tempcode('EDITING_TOPIC_NOT_POST'),
             'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
@@ -4096,6 +4108,11 @@ END;
 
         require_code('cns_forums_action2');
         cns_ping_forum_read_all($forum_id);
+
+        if ($forum_id != db_get_first_id()) {
+            // Take user to parent forum
+            $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_parent_forum', array('id' => $forum_id));
+        }
 
         return $this->redirect_to_forum('MARK_READ', $forum_id);
     }

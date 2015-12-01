@@ -103,6 +103,7 @@ function member_get_csv_headings()
         'Language' => 'm_language',
         'Accept member e-mails' => '!m_allow_emails',
         'Opt-in' => '!m_allow_emails_from_staff',
+        'Auto mark read' => 'm_auto_mark_read',
     );
     return $headings;
 }
@@ -618,6 +619,15 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
                 $fields->attach(form_input_multi_list(do_lang_tempcode('PT_ALLOW'), addon_installed('chat') ? do_lang_tempcode('PT_ALLOW_DESCRIPTION_CHAT') : do_lang_tempcode('PT_ALLOW_DESCRIPTION'), 'pt_allow', $usergroup_list));
                 $fields->attach(form_input_text_comcode(do_lang_tempcode('PT_RULES_TEXT'), do_lang_tempcode('PT_RULES_TEXT_DESCRIPTION'), 'pt_rules_text', $pt_rules_text, false));
             }
+
+            if (get_option('is_on_automatic_mark_topic_read') == '0') {
+                require_code('users');
+                $auto_mark_read = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_auto_mark_read');
+
+                $fields->attach(form_input_tick(do_lang_tempcode('ENABLE_AUTO_MARK_READ'), do_lang_tempcode('DESCRIPTION_ENABLE_AUTO_MARK_READ'), 'auto_mark_read', $auto_mark_read == 1));
+            } else {
+                $hidden->attach(form_input_hidden('auto_mark_read', '1'));
+            }
         }
 
         // Prepare list of usergroups, if maybe we are gonna let (a) usergroup-change field(s)
@@ -849,6 +859,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
  * @param  ?SHORT_TEXT $pt_allow Usergroups that may PT the member. (null: don't change)
  * @param  ?LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member. (null: don't change)
  * @param  ?TIME $on_probation_until When the member is on probation until (null: don't change)
+ * @param  ?BINARY $auto_mark_read Mark topics as read automatically (null: don't change)
  * @param  ?TIME $join_time When the member joined (null: don't change)
  * @param  ?URLPATH $avatar_url Avatar (null: don't change)
  * @param  ?LONG_TEXT $signature Signature (null: don't change)
@@ -859,7 +870,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
  * @param  ?ID_TEXT $password_compatibility_scheme Password compatibility scheme (null: don't change)
  * @param  boolean $skip_checks Whether to skip security checks and most of the change-triggered emails
  */
-function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated = null, $username = null, $password = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $join_time = null, $avatar_url = null, $signature = null, $is_perm_banned = null, $photo_url = null, $photo_thumb_url = null, $salt = null, $password_compatibility_scheme = null, $skip_checks = false)
+function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated = null, $username = null, $password = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $auto_mark_read = null, $join_time = null, $avatar_url = null, $signature = null, $is_perm_banned = null, $photo_url = null, $photo_thumb_url = null, $salt = null, $password_compatibility_scheme = null, $skip_checks = false)
 {
     require_code('type_sanitisation');
     require_code('cns_members_action');
@@ -1010,6 +1021,9 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
     if (($skip_checks) || (has_privilege(get_member(), 'probate_members'))) {
         $update['m_on_probation_until'] = $on_probation_until;
+    }
+    if (!is_null($auto_mark_read)) {
+        $update['m_auto_mark_read'] = $auto_mark_read;
     }
     if (!is_null($join_time)) {
         $update['m_join_time'] = $join_time;

@@ -327,10 +327,11 @@ class Module_admin_cns_members
             $pt_allow = '*';
         }
         $pt_rules_text = post_param_string('pt_rules_text', '');
+        $auto_mark_read = post_param_integer('auto_mark_read', 0);
 
         // Add member
         $password_compatibility_scheme = ((post_param_integer('temporary_password', 0) == 1) ? 'temporary' : '');
-        $id = cns_make_member($username, $password, $email_address, null, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), null, '', null, '', 0, $preview_posts, $reveal_age, '', '', '', $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, '', '', true, $password_compatibility_scheme, '', null, null, post_param_integer('highlighted_name', 0), $pt_allow, $pt_rules_text);
+        $id = cns_make_member($username, $password, $email_address, null, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), null, '', null, '', 0, $preview_posts, $reveal_age, '', '', '', $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, '', '', true, $password_compatibility_scheme, '', null, null, post_param_integer('highlighted_name', 0), $pt_allow, $pt_rules_text, null, $auto_mark_read);
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');

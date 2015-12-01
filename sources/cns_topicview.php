@@ -41,7 +41,7 @@ function find_post_id_url($post_id)
     $start = intval(floor(floatval($before) / floatval($max))) * $max;
 
     // Now redirect accordingly
-    $map = array('page' => 'topicview', 'type' => null, 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'post_id' => $post_id);
+    $map = array('page' => 'topicview', 'type' => null, 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'post_id' => $post_id, 'threaded' => get_param_integer('threaded', null));
     foreach ($_GET as $key => $val) {
         if ((substr($key, 0, 3) == 'kfs') || (in_array($key, array('topic_start', 'topic_max')))) {
             $map[$key] = $val;

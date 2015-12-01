@@ -282,8 +282,10 @@ class Module_topicview
             $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('d_notification_code' => 'cns_topic', 'd_code_category' => strval($id), 'd_to_member_id' => get_member()));
         }
 
+        require_code('users');
+
         // Mark as read
-        if (!is_null($id)) {
+        if ((!is_null($id)) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') == 1)) {
             if (is_null($topic_info['forum_id'])) {
                 $this->_update_read_status(); // Done early because we need to have updated read status set when the pt_notifications show up
             } else {
@@ -527,18 +529,36 @@ class Module_topicview
 
             if (!is_guest()) {
                 $too_old = $topic_info['last_time'] < time() - 60 * 60 * 24 * intval(get_option('post_history_days'));
-                if ((get_option('enable_mark_topic_unread') == '1') && (!$too_old)) {
-                    $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
-                    $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-                    if (($test != -1) && ($test != 0)) {
-                        $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
-                    }
+
+                require_code('users');
+
+                if (($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') != 1) && (get_option('enable_mark_topic_unread') === '1') && !cns_has_read_topic($id)) {
                     $test = get_param_integer('threaded', -1);
+                    $redirect_map = array('page' => 'topicview', 'id' => $id);
+                    if ($test != -1) {
+                        $redirect_map['threaded'] = $test;
+                    }
+                    $redirect = build_url($redirect_map, get_module_zone('topicview'));
+                    $map = array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $id, 'redirect' => $redirect->evaluate());
                     if ($test != -1) {
                         $map['threaded'] = $test;
                     }
-                    $mark_unread_url = build_url($map, get_module_zone('topics'));
-                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('_MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons__mark_unread_topic');
+                    $mark_read_url = build_url($map, get_module_zone('topics'));
+                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $mark_read_url, 'img' => 'buttons__mark_read_topic');
+                } else {
+                    if ((get_option('enable_mark_topic_unread') === '1') && !$too_old) {
+                        $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
+                        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
+                        if (($test != -1) && ($test != 0)) {
+                            $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
+                        }
+                        $test = get_param_integer('threaded', -1);
+                        if ($test != -1) {
+                            $map['threaded'] = $test;
+                        }
+                        $mark_unread_url = build_url($map, get_module_zone('topics'));
+                        $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons__mark_unread_topic');
+                    }
                 }
             }
 
@@ -706,7 +726,7 @@ class Module_topicview
 
         // Quick reply
         if ((array_key_exists('may_use_quick_reply', $topic_info)) && ($may_reply) && (!is_null($id))) {
-            $map = array('page' => 'topics', 'type' => '_add_reply', 'topic_id' => $id);
+            $map = array('page' => 'topics', 'type' => '_add_reply', 'topic_id' => $id, 'timestamp' => time());
             $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
             if (($test != -1) && ($test != 0)) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
@@ -717,7 +737,7 @@ class Module_topicview
             }
             $_post_url = build_url($map, get_module_zone('topics'));
             $post_url = $_post_url->evaluate();
-            $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id);
+            $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id, 'timestamp' => time());
             if (($test != -1) && ($test != 0)) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
@@ -954,6 +974,7 @@ class Module_topicview
             'POSTS' => $posts,
             'THREADED' => $threaded,
             'FORUM_ID' => is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']),
+            'IS_ALREADY_READ' => cns_has_read_topic($id),
         ));
 
         require_code('templates_internalise_screen');
@@ -967,13 +988,9 @@ class Module_topicview
     {
         if (!is_guest()) {
             if ((get_option('post_history_days') != '0') && ((get_value('avoid_normal_topic_history') !== '1') || (is_null($this->forum_id)))) {
-                if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
-                    $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => get_member(), 'l_topic_id' => $this->id), '', 1);
-                    $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => get_member(), 'l_topic_id' => $this->id, 'l_time' => time()), false, true); // race condition
-                    if ($GLOBALS['IS_ACTUALLY'] !== null) { // If posting with SU, mark the SUing user as read too, otherwise it is annoying
-                        $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_member_id' => $GLOBALS['IS_ACTUALLY'], 'l_topic_id' => $this->id), '', 1);
-                        $GLOBALS['FORUM_DB']->query_insert('f_read_logs', array('l_member_id' => $GLOBALS['IS_ACTUALLY'], 'l_topic_id' => $this->id, 'l_time' => time()), false, true); // race condition
-                    }
+                cns_ping_topic_read($this->id);
+                if ($GLOBALS['IS_ACTUALLY'] !== null) { // If posting with SU, mark the SUing user as read too, otherwise it is annoying
+                    cns_ping_topic_read($this->id, $GLOBALS['IS_ACTUALLY']);
                 }
             }
         }

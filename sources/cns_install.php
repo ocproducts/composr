@@ -327,6 +327,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
 
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('is_on_anonymous_posts')));
+
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_auto_mark_read', 'BINARY');
     }
 
     // If we have the forum installed to this db already, leave
@@ -445,6 +447,7 @@ function install_cns($upgrade_from = null)
             'm_on_probation_until' => '?TIME',
             'm_profile_views' => 'UINTEGER',
             'm_total_sessions' => 'UINTEGER',
+            'm_auto_mark_read' => 'BINARY',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_members', '#search_user', array('m_username'));
         $GLOBALS['FORUM_DB']->create_index('f_members', 'user_list', array('m_username'));
@@ -897,6 +900,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_by', array('p_poster', 'p_time'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_4', array('t_forum_id', 't_cache_last_time')); // Total index for simple forum topic listing
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_num_posts', array('t_cache_num_posts'));
+        $GLOBALS['FORUM_DB']->create_index('f_posts', 'in_topic_change_order', array('p_topic_id', 'p_last_edit_time', 'p_time', 'id'));
 
         $GLOBALS['FORUM_DB']->create_index('f_groups', '#groups_search__combined', array('g_name', 'g_title'));
         $GLOBALS['FORUM_DB']->create_index('f_posts', '#posts_search__combined', array('p_post', 'p_title'));

@@ -11,7 +11,7 @@
 {+END}
 
 {+START,IF,{$NOT,{IS_SPACER_POST}}}
-	<div class="box box___post{+START,IF,{HIGHLIGHT}} highlighted_post{+END}"><div class="box_inner">
+	<div class="box box___post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted_post{+END}"><div class="box_inner">
 		<div id="post_wrap_{ID*}" class="post time_{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
 			{+START,IF_NON_EMPTY,{ID}}<a id="post_{ID*}"></a>{+END}
 

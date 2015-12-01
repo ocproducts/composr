@@ -1556,13 +1556,20 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .global_side_panel .boxless_space .box .box + .box {
 	padding-top: 0;
 }
-.global_middle .boxless_space .box .box + .box:before, .comments_wrapper .boxless_space .box + .box:before {
+.global_middle .boxless_space .box .box + .box:before {
 	content: "";
 	width: 60%;
 	display: block;
 	margin: 0 auto;
 	border-top: 2px dotted {$GET,pale_border} !important;
 	padding-top: 0.4em;
+}
+.comments_wrapper .boxless_space .box + .box:before {
+	content: "";
+	width: 60%;
+	display: block;
+	margin: 0 auto 2em auto;
+	border-top: 2px dotted {$GET,pale_border} !important;
 }
 .boxless_space .box + .fp_col_blocks_wrap {
 	padding-top: 0;
@@ -2513,7 +2520,7 @@ div.wysiwyg_toolbar_color_finder {
 }
 
 .post .post_subline {
-	margin: 1em 0;
+	margin: 0 0 1em 0;
 	font-size: 0.9em;
 }
 
@@ -2553,7 +2560,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-.post_buttons>*[rel="add reply"] {
+.post_buttons>*[rel="add reply"], .post_buttons>a[rel="back_to_top"] {
 	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;} display: inline-block;/*Needed for IE8*/
 }
 
@@ -2582,6 +2589,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 .comment_wrapper .highlighted_post {
 	background-color: {$GET,point_of_interest_background} !important;
 	padding: 1em !important;
+	margin-top: 1em;
 	border: 1px dotted {$GET,slightly_seeded_complement_text} !important;
 }
 .comments_wrapper .boxless_space .comment_wrapper .highlighted_post.box {
