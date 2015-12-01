@@ -44,7 +44,7 @@
 }
 
 .menu_type__sitemap>ul>li>span>a.toggleable_tray_button img {
-	margin-top: 4px;
+	margin-top: 4px !important;
 }
 
 /* Level 1 */

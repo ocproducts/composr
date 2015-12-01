@@ -61,7 +61,7 @@ function init__sitemap()
     define('SITEMAP_GATHER_CATEGORIES', 512);
     define('SITEMAP_GATHER_VALIDATED', 1024);
     define('SITEMAP_GATHER_DB_ROW', 2048);
-    define('SITEMAP_GATHER__ALL', 0xFFFFFFF);
+    define('SITEMAP_GATHER__ALL', 0x7FFFFFF);
 
     // Defining how a node will be handle
     define('SITEMAP_NODE_NOT_HANDLED', 0);

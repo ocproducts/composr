@@ -225,25 +225,26 @@ class Hook_sitemap_zone extends Hook_sitemap_base
 
         // What page groupings may apply in what zones? (in display order)
         $applicable_page_groupings = array();
-        switch ($zone) {
-            case 'adminzone':
-                $applicable_page_groupings = array(
-                    'audit',
-                    'security',
-                    'structure',
-                    'style',
-                    'setup',
-                    'tools',
-                );
-                break;
+        if (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0) {
+            switch ($zone) {
+                case 'adminzone':
+                    $applicable_page_groupings = array(
+                        'audit',
+                        'security',
+                        'structure',
+                        'style',
+                        'setup',
+                        'tools',
+                    );
+                    break;
 
-            case '':
-                if (get_option('collapse_user_zones') == '0') {
-                    $applicable_page_groupings = array(); // else flow on...
-                }
+                case '':
+                    if (get_option('collapse_user_zones') == '0') {
+                        $applicable_page_groupings = array();
+                        break;
+                    } // else flow on...
 
-            case 'site':
-                if (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0) {
+                case 'site':
                     $applicable_page_groupings = array(
                         'pages',
                         'rich_content',
@@ -257,14 +258,14 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     $applicable_page_groupings = array_merge($applicable_page_groupings, array(
                         'site_meta',
                     ));
-                }
-                break;
+                    break;
 
-            case 'cms':
-                $applicable_page_groupings = array(
-                    'cms',
-                );
-                break;
+                case 'cms':
+                    $applicable_page_groupings = array(
+                        'cms',
+                    );
+                    break;
+            }
         }
 
         $call_struct = true;
@@ -286,8 +287,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             foreach ($links as $link) {
                 list($page_grouping) = $link;
 
-                if (($page_grouping == '') || (in_array($page_grouping, $applicable_page_groupings))) {
-                    if ((is_array($link)) && (is_string($link[2][2]))) {
+                if ((is_array($link)) && (is_string($link[2][2]))) {
+                    if (($page_grouping == '') || (in_array($page_grouping, $applicable_page_groupings))) {
                         $pages_found[$link[2][2] . ':' . $link[2][0]] = true;
                     }
                 }
@@ -316,7 +317,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                         $pages[$page] = $page_type;
                     }
 
-                    if ((!isset($pages_found[$_zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages[$_zone . ':' . $page])))) {
+                    if ((!isset($pages_found[$_zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false/*not a Comcode page*/) || (isset($root_comcode_pages[$_zone . ':' . $page])))) {
                         if ($this->_is_page_omitted_from_sitemap($_zone, $page)) {
                             continue;
                         }
