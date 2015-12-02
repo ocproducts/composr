@@ -44,8 +44,13 @@ class missing_block_params_test_set extends cms_test_case
                     if ((preg_match('/\$info\[\'parameters\'\]\s*=\s*array\([^\)]*\'' . preg_quote($matches[1][$i]) . '\'[^\)]*\);/', $contents) == 0)) {
                         $this->assertTrue(false, 'Missing block param... ' . basename($f, '.php') . ': ' . $matches[1][$i]);
                     }
-                    $need[] = 'BLOCK_' . basename($f, '.php') . '_PARAM_' . $matches[1][$i];
+
+                    // Check lang strings are all there
                     $need[] = 'BLOCK_TRANS_NAME_' . basename($f, '.php');
+                    $need[] = 'BLOCK_' . basename($f, '.php') . '_DESCRIPTION';
+                    $need[] = 'BLOCK_' . basename($f, '.php') . '_USE';
+                    $need[] = 'BLOCK_' . basename($f, '.php') . '_PARAM_' . $matches[1][$i] . '_TITLE';
+                    $need[] = 'BLOCK_' . basename($f, '.php') . '_PARAM_' . $matches[1][$i];
 
                     // Check for caching
                     if ((strpos($contents, '$info[\'cache_on\']') !== false) && (strpos($contents, '$info[\'cache_on\'] = array(') === false) && (strpos($contents, '$info[\'cache_on\'] = \'(count($_POST)==0)?$map:null\';') === false) && (strpos($contents, '$info[\'cache_on\'] = \'$map\';') === false)) {

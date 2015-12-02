@@ -777,7 +777,7 @@ For both blocks and Comcode tags you can use any of the following language const
 | Yes
 | No
 |-
-| "Default: [tt]some value[/tt]"
+| "Default: '[tt]some value[/tt]'."
 | Used to specify the parameter default.
 | Yes
 | Yes
@@ -785,7 +785,7 @@ For both blocks and Comcode tags you can use any of the following language const
 | "Must be either [tt]...[/tt] or [tt]...[/tt] or [tt]...[/tt]"
 | Used to create an adhoc list. Can be as many terms as desired.
 | Yes
-| No
+| No (but you can do a simple pipe-list instead)
 |-
 | "The number of "
 | Used to indicate a numeric input should be used.
