@@ -669,20 +669,136 @@ The main five differences and points of note are:
 4) You can allow the block to cache by defining a [tt]caching_environment[/tt] method. This returns an array which has a [tt]ttl[/tt] (the number of minutes the cache lasts) and a [tt]cache_on[/tt] which is a string containing PHP code that defines the signature (array) for a cached instance of the block. The PHP code can make use of [tt]$map[/tt], and must define a different array for each possible way the block could turn out (i.e. the array is a signature that distinguishes that particular appearance, based on the block's parameters and optionally other things like the viewing user's usergroup membership).
 5) Blocks do not automatically upgrade when run like modules do. If you define upgrade paths you need to trigger them from the Composr upgrader script.
 
-Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the add-block-tool to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called [tt]example[/tt] with parameters [tt]a[/tt] and [tt]b[/tt]. You would define language strings as follows:
+Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the Block construction assistant to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called [tt]example[/tt] with parameters [tt]a[/tt] and [tt]b[/tt]. You would define language strings as follows:
 
-[code="HTML"]
+[code="ini"]
 BLOCK_TRANS_NAME_example=Example
 BLOCK_example_DESCRIPTION=An example block.
 BLOCK_example_USE=Useful for giving examples.
+BLOCK_example_PARAM_a_TITLE=Foo
 BLOCK_example_PARAM_a=This determines foo. Default: 'abc'.
+BLOCK_example_PARAM_b_TITLE=Bar
 BLOCK_example_PARAM_b=This determines bar. Default: 'def'.
 [/code]
 
-As you can see, the parameter strings also define the default parameter values. This has to be done in a way that is structured/worded exactly like the above. It only affects the add-block-tool, it doesn't affect the behaviour of the block when no parameter is passed (you should make that behaviour match what you define here though).
+As you can see, the parameter strings also define the default parameter values. This has to be done in a way that is structured/worded exactly like the above. It only affects the Block construction assistant, it doesn't affect the behaviour of the block when no parameter is passed (you should make that behaviour match what you define here though).
 
 If you need to define a list then you have to do that in a very strict way, like:
 [tt]BLOCK_example_PARAM_c=Foo[/tt]. Value must be either 'x' or 'y' or 'z'. Default: 'x'.
+
+[title="4"]Full reference for language strings[/title]
+
+For blocks:
+{|
+! Language string
+! Purpose
+! Default
+|-
+| [tt]BLOCK_TRANS_NAME_*[/tt]
+| Name of block
+| Automatic from block codename
+|-
+| [tt]BLOCK_*_DESCRIPTION[/tt]
+| Description of block
+| Blank
+|-
+| [tt]BLOCK_*_USE[/tt]
+| Purpose of block
+| Blank
+|-
+| [tt]BLOCK_*_PARAM_*_TITLE[/tt]
+| Parameter title
+| Automatic from parameter codename
+|-
+| [tt]BLOCK_*_PARAM_*[/tt]
+| Parameter description
+| Blank
+|}
+For Comcode tags:
+{|
+! Language string
+! Purpose
+! Default
+|-
+| [i]N/A[/i]
+| Name of tag
+| Automatic from tag codename
+|-
+| [tt]COMCODE_TAG_*_DESCRIPTION[/tt]
+| Description of tag
+| Blank
+|-
+| [i]N/A[/i]
+| Purpose of tag
+| [i]N/A[/i]
+|-
+| [tt]COMCODE_TAG_*_PARAM_*_TITLE[/tt]
+| Parameter title
+| Automatic from parameter codename
+|-
+| [tt]COMCODE_TAG_*_PARAM_*[/tt]
+| Parameter description
+| Blank
+|-
+| [tt]COMCODE_TAG_*_EMBED_TITLE[/tt]
+| Embed value title
+| "Tag Contents"
+|-
+| [tt]COMCODE_TAG_*_EMBED[/tt]
+| Embed value description
+| Blank
+|}
+(as you can see, there are no language strings for defining tag names or uses)
+
+For both blocks and Comcode tags you can use any of the following language construction components...
+{|
+! Magic string within parameter description
+! Purpose
+! Applies for blocks
+! Applies for Comcode tags
+|-
+| " (an ID number, or name)"
+| Just a bit of text that will be stripped, because an input widget will make that obvious.
+| Yes
+| No
+|-
+| "Advanced feature. "
+| Put parameter under an "Advanced" tray.
+| Yes
+| Yes
+|-
+| "Whether (...)"
+| Used to indicate a checkbox should be used for input.
+| Yes
+| No
+|-
+| "hook-type: [tt]<hook-type>[/tt]"
+| Used to indicate a drop-down for selection of a hook from that hook type.
+| Yes
+| No
+|-
+| "Default: [tt]some value[/tt]"
+| Used to specify the parameter default.
+| Yes
+| Yes
+|-
+| "Must be either [tt]...[/tt] or [tt]...[/tt] or [tt]...[/tt]"
+| Used to create an adhoc list. Can be as many terms as desired.
+| Yes
+| No
+|-
+| "The number of "
+| Used to indicate a numeric input should be used.
+| Yes
+| No
+|-
+| " Supports Comcode."
+| Used to indicate that Comcode is supported within the given value.
+| No
+| Yes
+|}
+Various of the above cases only work for blocks because Comcode tags tend to have dedicated interfaces built rather than interface hinting.
+There are many cases for both Comcode tags and blocks where the code picks up on particular tag/block/parameter names and provides very-customised input widgets (or full forms).
 
 [title="3"]Hooks[/title]
 

@@ -346,7 +346,7 @@ function comcode_helper_script_step1()
             if ($custom) {
                 $description = make_string_tempcode(escape_html(is_integer($custom_tag_list[$tag]['tag_description']) ? get_translated_text($custom_tag_list[$tag]['tag_description']) : $custom_tag_list[$tag]['tag_description']));
             } else {
-                $description = do_lang_tempcode('COMCODE_TAG_' . $tag);
+                $description = do_lang_tempcode('COMCODE_TAG_' . $tag . '_DESCRIPTION');
             }
 
             $url = find_script('comcode_helper') . '?type=step2&tag=' . urlencode($tag) . '&field_name=' . get_param_string('field_name') . $keep->evaluate();
@@ -414,7 +414,7 @@ function comcode_helper_script_step2()
     if (isset($custom_tag_list[$tag]['tag_description'])) {
         $tag_description = protect_from_escaping($custom_tag_list[$tag]['tag_description']);
     } else {
-        $tag_description = protect_from_escaping(do_lang('COMCODE_TAG_' . $tag));
+        $tag_description = protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_DESCRIPTION'));
     }
     $has_full_tag_description = false;
 
@@ -532,7 +532,7 @@ function comcode_helper_script_step2()
                 ocp_mark_as_escaped($descriptiont);
             }
 
-            $field_title = do_lang('COMCODE_TAG_' . $tag . '_EMBED_FIELD_TITLE', null, null, null, null, false);
+            $field_title = do_lang('COMCODE_TAG_' . $tag . '_EMBED_TITLE', null, null, null, null, false);
             if (is_null($field_title)) {
                 $field_title = do_lang('TAG_CONTENTS');
             }
@@ -838,7 +838,7 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
  */
 function _get_comcode_tag_param_name($actual_tag, $param)
 {
-    $parameter_name = do_lang('COMCODE_TAG_' . $actual_tag . '_NAME_OF_PARAM_' . $param, null, null, null, null, false);
+    $parameter_name = do_lang('COMCODE_TAG_' . $actual_tag . '_PARAM_' . $param . '_TITLE', null, null, null, null, false);
     if (is_null($parameter_name)) {
         $parameter_name = titleify($param);
     }
@@ -887,7 +887,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
     global $TEXTUAL_TAGS;
 
     if ($tag == 'random') {
-        $fields_advanced->attach(form_input_integer(do_lang_tempcode('COMCODE_TAG_random_EMBED_FIELD_TITLE'), do_lang_tempcode('COMCODE_TAG_random_EMBED'), 'tag_contents', ($default_embed == '') ? null : intval($default_embed), false));
+        $fields_advanced->attach(form_input_integer(do_lang_tempcode('COMCODE_TAG_random_EMBED_TITLE'), do_lang_tempcode('COMCODE_TAG_random_EMBED'), 'tag_contents', ($default_embed == '') ? null : intval($default_embed), false));
     } elseif (($tag == 'media') && (addon_installed('filedump'))) {
         $set_name = 'file';
         $required = true;

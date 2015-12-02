@@ -832,7 +832,7 @@ class Module_filedump
 
         $fields = new Tempcode();
 
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_description'), do_lang('COMCODE_TAG_attachment_PARAM_description'), 'description', $description, false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_description_TITLE'), do_lang('COMCODE_TAG_attachment_PARAM_description'), 'description', $description, false));
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_type');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
@@ -851,9 +851,9 @@ class Module_filedump
         foreach ($hooks as $option_val => $option_label) {
             $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('type', is_image($file) ? 'image_websafe' : '')), $option_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_type'), $_description, 'type', $list, null, false, false));
+        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_type_TITLE'), $_description, 'type', $list, null, false, false));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_framed'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_framed'), 'framed', post_param_integer('framed', 0) == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_framed_TITLE'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_framed'), 'framed', post_param_integer('framed', 0) == 1));
 
         $fields->attach(form_input_integer(do_lang_tempcode('WIDTH'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_width'), 'width', post_param_integer('width', null), false));
 
@@ -867,7 +867,7 @@ class Module_filedump
             list($option_val,$option_label)=explode('=',$option,2);
             $list->attach(form_input_list_entry($option_val,($option_val==post_param_string('align','')),$option_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_align'),'','align',$list,NULL,false,false));*/
+        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_align_TITLE'),'','align',$list,NULL,false,false));*/
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_float');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
@@ -878,7 +878,7 @@ class Module_filedump
             list($option_val, $option_label) = explode('=', $option, 2);
             $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('float', '')), $option_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_float'), '', 'float', $list, null, false, false));
+        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_float_TITLE'), '', 'float', $list, null, false, false));
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_thumb');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
@@ -889,13 +889,13 @@ class Module_filedump
         if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
             $thumb_ticked = (post_param_integer('thumb', 0) == 1);
         }
-        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_thumb'), ucfirst(substr($_description, 12)), 'thumb', $thumb_ticked));
+        $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_TITLE'), ucfirst(substr($_description, 12)), 'thumb', $thumb_ticked));
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_thumb_url');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
             $_description = substr($_description, 0, strlen($adv) + 1);
         }
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_NAME_OF_PARAM_thumb_url'), $_description, 'thumb_url', post_param_string('thumb_url', null), false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_url_TITLE'), $_description, 'thumb_url', post_param_string('thumb_url', null), false));
 
         $form = do_template('FORM', array(
             'FIELDS' => $fields,
