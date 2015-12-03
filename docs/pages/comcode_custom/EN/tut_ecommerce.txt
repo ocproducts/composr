@@ -11,7 +11,7 @@
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
 It is the webmaster's responsibility to research any payment system before use, to convince themselves they are happy with the quality and terms of service.
 
-While Composr by default only supports PayPal, and has theoretically support for WorldPay and SecPay, this should not be considered an endorsement of any of those services.
+While Composr by default only supports particular payment gateways, this should not be considered an endorsement of any of those services.
 [/box]
 To accept payment in the modern world, an organisation must obviously have some kind of 'tie in' to the banking system.
 The banking system runs with international standards for things such as:
@@ -23,7 +23,7 @@ Cheque processing is relatively straight forward, but more infrastructure is nee
 1) By getting an agent to fully handle the transaction and relay the funds
 2) By having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
 
-Composr, by default, allows payment via PayPal, WorldPay and SecPay, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; WorldPay and SecPay are not regularly tested.
+Composr, by default, allows payment via PayPal & WorldPay & SecPay & CCBill, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; WorldPay and SecPay are not regularly tested.
 
 PayPal was chosen because it is without doubt the leading form of payment on the Internet, easy to setup, and flexible in that it can provide support for funding direct from bank accounts, or cheque, as well as debit and credit card processing. Lots of people do not like PayPal policies, but we have no official position on this -- development priorities simply follow funding.
 WorldPay and SecPay are popular alternatives to PayPal. There are many other alternatives that Composr doesn't currently support, but could.
@@ -201,7 +201,7 @@ Composr basically flows like follows:
 6) An availability check is performed, if the hook defines a [tt]is_available[/tt] function. This can do things such as stock checks, sanity checks, and permission checks. It returns one of a number of possible [tt]ECOMMERCE_PRODUCT_*[/tt] values, [tt]ECOMMERCE_PRODUCT_AVAILABLE[/tt] if purchase may happen.
 6) The user is directed to go pay off-site
 7) An IPN (i.e. background message) is sent back to Composr when the payment has happened, and/or when the user clicks to return back to Composr.
-8) Composr interprets the IPN to get back the 'product name' and 'purchase ID'. This is very hook-dependent. For PayPal it will look at the human item-name, find the matching 'product name' (i.e. codename), and it will already know the 'product ID'. For WorldPay it will have to look up a specific transaction in the [tt]trans_expecting[/tt] table that Composr used to track the purchase, because WorldPay doesn't route through full information as PayPal does.
+8) Composr interprets the IPN to get back the 'product name' and 'purchase ID'. This is very hook-dependent. For PayPal it will look at the human item-name, find the matching 'product name' (i.e. codename), and it will already know the 'product ID'. For WorldPay and possibly other payment gateways it will have to look up a specific transaction in the [tt]trans_expecting[/tt] table that Composr used to track the purchase, because WorldPay doesn't route through full information as PayPal does.
 9) Composr looks in all the product hooks to find a matching defined product, checks the price, then dispatches a call to the specified handler function for that product (e.g. [tt]handle_usergroup_subscription[/tt]).
 10) The handler function then does what is necessary to make the purchase happen. For a usergroup subscription this means putting the purchasing member into the appropriate usergroup.
 
@@ -209,7 +209,7 @@ Subscriptions and invoices have some custom handling. Subscriptions can also end
 
 [title="3"]Manual transactions[/title]
 
-Normally a transaction would go through via PayPal/WorldPay/SecPay. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
+Normally a transaction would go through via PayPal/etc. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
 
 However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction from the Admin Zone; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
 1) access the manual transaction screen (Admin Zone > Audit > eCommerce > Manual transaction).
@@ -370,7 +370,7 @@ Admin Zone > Audit > eCommerce > Logs
 
 [surround]
 [media width="150" description="Inputting a manual transaction" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_manual.png[/media]
-While Composr only supports PayPal/WorldPay/SecPay payments by default, it does allow manual transactions to be entered. This is possible in the Admin Zone module. Entering a manual transaction will trigger any code associated with the purchase of a product (such as a usergroup promotion).
+While Composr supports manual transactions to be entered. This is possible in the Admin Zone module. Entering a manual transaction will trigger any code associated with the purchase of a product (such as a usergroup promotion).
 
 Manual transactions may also be used to input transactions that are totally external to Composr, and thus otherwise immeasurable by the charting. For example, an organisations expenditure may be recorded by manually inputting a negative transaction for the special 'Other' product.
 [/surround]

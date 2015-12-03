@@ -349,6 +349,7 @@ class Hook_paypal
 
     /**
      * Make a transaction (payment) button for multiple shopping cart items.
+     * Optional method, provides more detail than make_transaction_button.
      *
      * @param  array $items Items array.
      * @param  Tempcode $currency Currency symbol.
