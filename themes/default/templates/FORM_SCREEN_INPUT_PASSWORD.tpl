@@ -5,7 +5,7 @@
 		</div>
 	{+END}
 
-	<input{+START,IF,{$EQ,{NAME},edit_password}} autocomplete="off"{+START,IF,{$MOBILE}} autocorrect="off"{+END}{+END} onchange="password_strength(this);" size="30" maxlength="255" tabindex="{TABINDEX*}" class="input_password{REQUIRED*}" type="password" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
+	<input{+START,IF,{$EQ,{NAME},edit_password}} autocomplete="off"{+START,IF,{$MOBILE}} autocorrect="off"{+END}{+END} onchange="if (typeof window.password_strength!='undefined') password_strength(this);" size="30" maxlength="255" tabindex="{TABINDEX*}" class="input_password{REQUIRED*}" type="password" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
 
 	{+START,IF,{$AND,{$EQ,{VALUE},},{$EQ,{NAME},edit_password}}}
 		<script type="text/javascript">// <![CDATA[

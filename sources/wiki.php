@@ -169,7 +169,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
     $GLOBALS['SITE_DB']->query_insert('wiki_changes', array('the_action' => 'WIKI_MAKE_POST', 'the_page' => $page_id, 'ip' => get_ip_address(), 'member_id' => $member, 'date_and_time' => time()));
 
     // Update post count
-    if (addon_installed('points')) {
+    if (((addon_installed('points')) && (strlen($message) > 1024)) {
         require_code('points');
         $_count = point_info($member);
         $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;
@@ -344,6 +344,14 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
 
     require_code('comcode_check');
     check_comcode($description, null, false, null, true);
+
+    // Update post count
+    if (((addon_installed('points')) && (strlen($description) > 1024)) {
+        require_code('points');
+        $_count = point_info($member);
+        $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;
+        $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'points_gained_wiki', $count + 1);
+    }
 
     $map = array(
         'hide_posts' => $hide_posts,

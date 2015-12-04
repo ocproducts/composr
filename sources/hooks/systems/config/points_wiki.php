@@ -31,7 +31,7 @@ class Hook_config_points_wiki
     public function get_details()
     {
         return array(
-            'human_name' => 'WIKI_MAKE_POST',
+            'human_name' => 'WIKI',
             'type' => 'integer',
             'category' => 'POINTS',
             'group' => 'COUNT_POINTS_GIVEN',
