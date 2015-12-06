@@ -168,6 +168,12 @@ class Hook_addon_registry_composr_mobile_sdk
             'sources_custom/composr_mobile_sdk/ios/index.html',
             'lang_custom/EN/composr_mobile_sdk.ini',
 
+            // Toolkit
+            'data_custom/composr_mobile_sdk_build.php',
+            'exports/composr_mobile_sdk/.htaccess',
+            'exports/composr_mobile_sdk/index.html',
+            'exports/composr_mobile_sdk/image_assets/index.html',
+
             // Notifications
             'data_custom/modules/composr_mobile_sdk/ios/entrust_root_certification_authority.pem',
             'sources_custom/hooks/systems/notification_types_extended/composr_mobile_sdk.php',

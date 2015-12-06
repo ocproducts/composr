@@ -2,13 +2,66 @@
 
 TODO
 
-For iOS notifications to work, put your Apple-provided server certificate over data_custom/modules/composr_mobile_sdk/ios/server_certificates.pem (follow the usual CSR signing process against your Apple developer account).
-
 [contents]decimal,lower-alpha[/contents]
 
-TODO
+[title="2"]Getting Composr Mobile SDK[/title]
 
-[title="2"]Other approaches[/title]
+[title="3"]iOS/Android SDK[/title]
+
+The main SDK can be [url="found on github"]https://github.com/ocproducts/[/url].
+
+[title="3"]Server-side functionality[/title]
+
+To connect to a Composr site you will need to install the non-bundled [tt]composr_mobile_sdk[/tt] addon.
+This addon also contains some scripting to help generate app assets from the Composr site.
+
+[title="2"]Notifications[/title]
+
+For iOS notifications to work, put your Apple-provided server certificate over [tt]data_custom/modules/composr_mobile_sdk/ios/server_certificates.pem[/tt] (follow the usual CSR signing process against your Apple developer account).
+
+[title="2"]Toolkit[/title]
+
+The toolkit is a part of the non-bundled [tt]composr_mobile_sdk[/tt] addon.
+
+[title="3"]Language files[/title]
+
+This tool will generate iOS/Android string resources.
+
+It is approximate. For example, it does not handle the data types and pluralisation that [url="Android can support"]http://developer.android.com/guide/topics/resources/string-resource.html[/url] or data types that [url="iOS can support"]https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html[/url].
+
+[list="1"]
+[*] Open a command prompt to the Composr installation directory.
+[*] Type a command like:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php language <the .ini filenames which needs to be parsed separated by spaces> <language name>
+[/code]
+For example, to export the [tt]polls.ini[/tt] and [tt]galleries.ini[/tt] files from the [tt]EN[/tt] language pack:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php language polls galleries EN
+[/code]
+[*] Find the files have been generated under [tt]exports/composr_mobile_sdk[/tt]
+[*] Copy through to your app, hand-editing as required
+[/list]
+
+[title="3"]Image assets[/title]
+
+This tool will export theme images to a directory structure more appropriate for copying directly into an iOS/Android app as image assets.
+
+[list="1"]
+[*] Open a command prompt to the Composr installation directory.
+[*] Type a command like:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php images <theme>
+[/code]
+For example, to export the [tt]example[/tt] theme:
+[code="Bash"]
+php data_custom/composr_mobile_sdk_build.php images example
+[/code]
+[*] Find the files have been generated under [tt]exports/composr_mobile_sdk/image_assets[/tt]
+[*] Delete assets you don't want them copy through to your app
+[/list]
+
+[title="2"]Other approaches to mobile integration[/title]
 
 On the [url="tracker"]http://compo.sr/tracker/search.php?tag_string=Type%3A+Mobile[/url] you will find a number of plans and issues relating to further development of Composr Mobile SDK. This is an active process, as we move forward a number of complementary alternative approaches, suited for different mobile integration/extension scenarios. As with all Composr development, development is primary implemented as a byproduct of commercial projects or direct feature sponsorship, but guided by a shared plan that benefits all interested users.
 
