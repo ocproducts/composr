@@ -480,17 +480,17 @@ function _log_it($type, $a = null, $b = null)
 
     if ((get_page_name() != 'admin_themewizard') && (get_page_name() != 'admin_import') && ($ADMIN_LOGGING_ON)) {
         if ($logged < 10) { // Be extra sure it's not some kind of import, causing spam
-            require_all_lang();
-            if (is_null($a)) {
-                $a = do_lang('NA');
-            }
-            if (is_null($a)) {
-                $a = do_lang('NA');
-            }
-            require_code('notifications');
-            $subject = do_lang('ACTIONLOG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), do_lang($type), array($a, $b));
-            $mail = do_lang('ACTIONLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(do_lang($type)), array(is_null($a) ? '' : comcode_escape($a), is_null($b) ? '' : comcode_escape($b)));
             if (addon_installed('actionlog')) {
+                require_all_lang();
+                if (is_null($a)) {
+                    $a = do_lang('NA');
+                }
+                if (is_null($a)) {
+                    $a = do_lang('NA');
+                }
+                require_code('notifications');
+                $subject = do_lang('ACTIONLOG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), do_lang($type), array($a, $b));
+                $mail = do_notification_lang('ACTIONLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(do_lang($type)), array(is_null($a) ? '' : comcode_escape($a), is_null($b) ? '' : comcode_escape($b)));
                 dispatch_notification('actionlog', $type, $subject, $mail, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
             }
         }

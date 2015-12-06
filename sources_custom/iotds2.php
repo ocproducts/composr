@@ -239,7 +239,7 @@ function set_iotd($id)
         $thumb_url = get_custom_base_url() . '/' . $thumb_url;
     }
     $subject = do_lang('IOTD_CHOSEN_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $title);
-    $mail = do_lang('IOTD_CHOSEN_NOTIFICATION_MAIL', comcode_escape(get_site_name()), $title, array($view_url->evaluate(), $thumb_url));
+    $mail = do_notification_lang('IOTD_CHOSEN_NOTIFICATION_MAIL', comcode_escape(get_site_name()), $title, array($view_url->evaluate(), $thumb_url));
     dispatch_notification('iotd_chosen', null, $subject, $mail);
 
     decache('main_iotd');

@@ -122,9 +122,9 @@ function cns_member_handle_promotion($member_id = null)
             ));
 
             // Notify the member
-            $subject = do_lang('RANK_PROMOTED_MAIL_SUBJECT', cns_get_group_name($_p), null, null, get_lang($member_id));
-            $mail = do_lang('RANK_PROMOTED_MAIL', comcode_escape(cns_get_group_name($_p)), null, null, get_lang($member_id));
             require_code('notifications');
+            $subject = do_lang('RANK_PROMOTED_MAIL_SUBJECT', cns_get_group_name($_p), null, null, get_lang($member_id));
+            $mail = do_notification_lang('RANK_PROMOTED_MAIL', comcode_escape(cns_get_group_name($_p)), null, null, get_lang($member_id));
             dispatch_notification('cns_rank_promoted', null, $subject, $mail, array($member_id));
 
             // Carefully update run-time caching
@@ -186,8 +186,11 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($sender_member_id);
 
     require_lang('cns');
+
+    require_code('notifications');
+
     $subject = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL_SUBJECT' : 'POST_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $topic_title, array($sender_displayname, $sender_username));
-    $mail = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, strval($sender_member_id), comcode_escape($sender_username)));
+    $mail = do_notification_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, strval($sender_member_id), comcode_escape($sender_username)));
 
     $limit_to = is_null($_limit_to) ? array() : array($_limit_to);
 
@@ -201,8 +204,6 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
         $limit_to[] = $topic_info[0]['t_pt_from'];
         $limit_to = array_merge($limit_to, collapse_1d_complexity('s_member_id', $GLOBALS['FORUM_DB']->query_select('f_special_pt_access', array('s_member_id'), array('s_topic_id' => $topic_id))));
     }
-
-    require_code('notifications');
     dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, (count($limit_to) == 0) ? null : $limit_to, $sender_member_id, 3, false, false, $no_notify_for__notification_code, $no_notify_for__code_category);
 }
 

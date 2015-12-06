@@ -486,7 +486,7 @@ function send_booking_emails($request)
     );
 
     // Send receipt to customer
-    $receipt = do_template('BOOKING_CONFIRM_FCOMCODE', $tpl_map);
+    $receipt = do_notification_template('BOOKING_CONFIRM_FCOMCODE', $tpl_map);
     $subject = do_lang('SUBJECT_BOOKING_CONFIRM', get_site_name());
     $body = static_evaluate_tempcode($receipt);
     if (get_option('member_booking_only') == '1') {
@@ -498,7 +498,7 @@ function send_booking_emails($request)
 
     // Send notice to staff
     $subject = do_lang('SUBJECT_BOOKING_NOTICE', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true), get_site_name(), $GLOBALS['FORUM_DRIVER']->get_username(get_member()));
-    $notice = do_template(
+    $notice = do_notification_template(
         'BOOKING_NOTICE_FCOMCODE',
         array(
             '_GUID' => 'd223b42f024f853f63cd9908155667a8',

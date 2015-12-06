@@ -249,7 +249,7 @@ function send_invoice_notification($member_id, $id)
     require_code('notifications');
     $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), null, false, false, true);
     $url = $_url->evaluate();
-    dispatch_notification('invoice', null, do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id)), do_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id)), array($member_id));
+    dispatch_notification('invoice', null, do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id)), do_notification_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id)), array($member_id));
 }
 
 /**
@@ -597,11 +597,11 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
                 }
                 if ($payment_status == 'Completed') { // Completed
                     $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+                    $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
                     dispatch_notification('service_paid_for_staff', null, $subject, $body);
                 } else { // Must be SCancelled
                     $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                    $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
                     dispatch_notification('service_cancelled_staff', null, $subject, $body);
                 }
             }

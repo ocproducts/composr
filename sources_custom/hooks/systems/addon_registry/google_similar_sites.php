@@ -108,7 +108,7 @@ class Hook_addon_registry_google_similar_sites
     {
         return array(
             'requires' => array(
-                'PHP 5.2',
+                'PHP5.2',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

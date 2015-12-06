@@ -74,7 +74,7 @@ class Hook_profiles_tabs_comments
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notifications_enabled', 'id', $main_map);
         if (is_null($test)) {
             $GLOBALS['SITE_DB']->query_insert('notifications_enabled', array(
-                                                                           'l_setting' => A_INSTANT_EMAIL,
+                                                                           'l_setting' => _find_member_statistical_notification_type($member_id_of, 'comment_posted'),
                                                                        ) + $main_map);
         }
 

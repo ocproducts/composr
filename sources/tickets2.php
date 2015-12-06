@@ -471,7 +471,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
                     $uid_lang
                 );
 
-                $message = do_lang(
+                $message = do_notification_lang(
                     'TICKET_REPLY_MESSAGE',
                     comcode_escape($title),
                     comcode_escape($ticket_url),
@@ -508,7 +508,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
             get_site_default_lang()
         );
 
-        $message = do_lang(
+        $message = do_notification_lang(
             $new_ticket ? 'TICKET_NEW_MESSAGE_FOR_STAFF' : 'TICKET_REPLY_MESSAGE_FOR_STAFF',
             comcode_escape($title),
             comcode_escape($ticket_url),
@@ -552,7 +552,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
             get_site_default_lang()
         );
 
-        $message = do_lang(
+        $message = do_notification_lang(
             'TICKET_ACTIVITY_BODY',
             comcode_escape($title),
             comcode_escape($ticket_url),

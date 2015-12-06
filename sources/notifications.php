@@ -55,6 +55,23 @@ function init__notifications()
 
     global $NOTIFICATIONS_ON;
     $NOTIFICATIONS_ON = true;
+
+    global $LAST_NOTIFICATION_LANG_CALL, $LAST_NOTIFICATION_TEMPLATE_CALL;
+    $LAST_NOTIFICATION_LANG_CALL = null;
+    $LAST_NOTIFICATION_TEMPLATE_CALL = null;
+
+    global $ALL_NOTIFICATION_TYPES;
+    $ALL_NOTIFICATION_TYPES = array(A_INSTANT_SMS, A_INSTANT_EMAIL, A_DAILY_EMAIL_DIGEST, A_WEEKLY_EMAIL_DIGEST, A_MONTHLY_EMAIL_DIGEST, A_INSTANT_PT, A_WEB_NOTIFICATION);
+
+    global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
+    $HOOKS_NOTIFICATION_TYPES_EXTENDED = find_all_hooks('systems', 'notification_types_extended');
+
+    foreach (array_keys($HOOKS_NOTIFICATION_TYPES_EXTENDED) as $hook) {
+        require_code('hooks/systems/notification_types_extended/' . filter_naughty($hook));
+        $ob = object_factory('Hook_notification_types_extended_' . filter_naughty($hook));
+        $HOOKS_NOTIFICATION_TYPES_EXTENDED[$hook] = $ob;
+        $ob->init();
+    }
 }
 
 /**
@@ -86,6 +103,58 @@ function _get_notification_ob_for_code($notification_code)
     }
     return null;
     //return object_factory('Hook_Notification'); // default
+}
+
+/**
+ * Wraps do_lang, keeping a record of the last call. You can use when building the notification $message.
+ * This allows notification handlers to possibly repeat the call with a customised language string.
+ *
+ * @param  ID_TEXT $codename The language string ID
+ * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
+ * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
+ * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
+ * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
+ */
+function do_notification_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3 = null, $lang = null, $require_result = true)
+{
+    global $LAST_NOTIFICATION_LANG_CALL;
+    $LAST_NOTIFICATION_LANG_CALL = array($codename, $parameter1, $parameter2, $parameter3, $lang, $require_result);
+
+    if (strpos($codename, ':') !== false) {
+        $codename = preg_replace('#^.*:#', '', $codename);
+    }
+
+    return do_lang($codename, $parameter1, $parameter2, $parameter3, $lang, $require_result);
+}
+
+/**
+ * Wraps do_template, keeping a record of the last call. You can use when building the notification $message.
+ * This allows notification handlers to possibly repeat the call with a customised template.
+ *
+ * @param  ID_TEXT $codename The codename of the template being loaded
+ * @param  ?array $parameters A map of parameters for the template (key to value); you can have any number of parameters of any name, there is no set standard; having a _GUID parameter of random value is a convention (null: no parameters)
+ * @param  ?LANGUAGE_NAME $lang The language to load the template in (templates can embed language references) (null: users own language)
+ * @param  boolean $light_error Whether to not produce a stack dump if the template is missing
+ * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
+ * @param  string $suffix File type suffix of template file (e.g. .tpl)
+ * @set    .tpl .js .xml .txt .css
+ * @param  string $directory Subdirectory type to look in
+ * @set    templates javascript xml text css
+ * @param  ?ID_TEXT $theme Theme to use (null: current theme)
+ * @return Tempcode The Tempcode for this template
+ */
+function do_notification_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates', $theme = null)
+{
+    global $LAST_NOTIFICATION_TEMPLATE_CALL;
+    $LAST_NOTIFICATION_TEMPLATE_CALL = array($codename, $parameters, $lang, $light_error, $fallback, $suffix, $directory, $theme);
+
+    if ($light_error || !is_null($fallback)) {
+        fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // We can't support these parameters
+    }
+
+    return do_template($codename, $parameters, $lang, $light_error, $fallback, $suffix, $directory, $theme);
 }
 
 /**
@@ -135,6 +204,9 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         require_code('tasks');
         call_user_func_array__long_task(do_lang('_SEND_NOTIFICATION'), get_screen_title('_SEND_NOTIFICATION', true, null, null, null, false), 'dispatch_notification', array($dispatcher), true, false, false);
     }
+
+    global $LAST_NOTIFICATION_LANG_CALL;
+    $LAST_NOTIFICATION_LANG_CALL = null;
 }
 
 /**
@@ -302,6 +374,7 @@ function _notification_setting_available($setting, $member_id = null)
 
     $system_wide = false;
     $for_member = false;
+
     switch ($setting) {
         case A_WEB_NOTIFICATION:
             if (get_option('web_notifications_enabled') == '1') {
@@ -309,12 +382,14 @@ function _notification_setting_available($setting, $member_id = null)
                 $for_member = true;
             }
             break;
+
         case A_INSTANT_EMAIL:
             $system_wide = true;
             if ($system_wide && !is_null($member_id)) {
                 $for_member = ($GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id) != '');
             }
             break;
+
         case A_DAILY_EMAIL_DIGEST:
         case A_WEEKLY_EMAIL_DIGEST:
         case A_MONTHLY_EMAIL_DIGEST:
@@ -323,6 +398,7 @@ function _notification_setting_available($setting, $member_id = null)
                 $for_member = ($GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id) != '');
             }
             break;
+
         case A_INSTANT_SMS:
             $system_wide = (addon_installed('sms')) && (get_option('sms_api_id') != '');
             if ($system_wide && !is_null($member_id)) {
@@ -338,6 +414,7 @@ function _notification_setting_available($setting, $member_id = null)
                 }
             }
             break;
+
         case A_INSTANT_PT:
             $system_wide = (get_forum_type() == 'cns') && (addon_installed('cns_forum')) && (get_option('notification_enable_private_topics') == '1');
             if ($system_wide && !is_null($member_id)) {
@@ -345,32 +422,75 @@ function _notification_setting_available($setting, $member_id = null)
                 $for_member = has_privilege($member_id, 'use_pt');
             }
             break;
+
+        default:
+            global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
+            foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
+                $ob->_notification_setting_available($setting, $member_id, $system_wide, $for_member);
+            }
+            break;
     }
+
     $ret = $system_wide && (is_null($member_id) || $for_member);
     $nsa_cache[$setting][$member_id] = $ret;
     return $ret;
 }
 
 /**
- * Find what a member usually receives notifications on.
+ * Find what a member usually receives notifications on. Has some advanced searching support, and checks what is permissable.
  *
  * @param  MEMBER $to_member_id Member to send to
+ * @param  ID_TEXT $notification_code The notification code to use
  * @return integer Normal setting
  * @ignore
  */
-function _find_member_statistical_notification_type($to_member_id)
+function _find_member_statistical_notification_type($to_member_id, $notification_code)
 {
+    global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
+
+    // Pre-sweep incase a hook really really wants a particular notification code
+    foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
+        if (method_exists($ob, '_find_member_statistical_notification_type')) {
+            $setting = $ob->_find_member_statistical_notification_type($to_member_id, $notification_code, true);
+            if (!is_null($setting)) {
+                $setting |= A_WEB_NOTIFICATION;
+                return $setting;
+            }
+        }
+    }
+
     static $cache = array();
     if (isset($cache[$to_member_id])) {
         return $cache[$to_member_id];
     }
 
+    $setting = mixed();
+
     $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_code_category' => ''), '', 100/*within reason*/);
-    if ((count($notifications_enabled) == 0) && (_notification_setting_available(A_INSTANT_EMAIL, $to_member_id))) { // Default to e-mail
-        $setting = A_INSTANT_EMAIL;
-    } else {
+
+    // If no notifications so far, we look for defaults
+    if (count($notifications_enabled) == 0) {
+        foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
+            if (method_exists($ob, '_find_member_statistical_notification_type')) {
+                $setting = $ob->_find_member_statistical_notification_type($to_member_id, $notification_code, false);
+                if (!is_null($setting)) {
+                    break;
+                }
+            }
+        }
+
+        if (is_null($setting)) {
+            if (_notification_setting_available(A_INSTANT_EMAIL, $to_member_id)) { // Default to e-mail
+                $setting = A_INSTANT_EMAIL;
+            }
+        }
+    }
+
+    // Search for what can be done to find true statistical result
+    if (is_null($setting)) {
         $possible_settings = array();
-        foreach (array(A_INSTANT_SMS, A_INSTANT_EMAIL, A_DAILY_EMAIL_DIGEST, A_WEEKLY_EMAIL_DIGEST, A_MONTHLY_EMAIL_DIGEST, A_INSTANT_PT, A_WEB_NOTIFICATION) as $possible_setting) {
+        global $ALL_NOTIFICATION_TYPES;
+        foreach ($ALL_NOTIFICATION_TYPES as $possible_setting) {
             if (_notification_setting_available($possible_setting, $to_member_id)) {
                 $possible_settings[$possible_setting] = 0;
             }
@@ -391,6 +511,8 @@ function _find_member_statistical_notification_type($to_member_id)
             $setting = A_INSTANT_EMAIL; // Nothing available, so save as an e-mail notification even though it cannot be received
         }
     }
+
+    // Cache/return
     $cache[$to_member_id] = $setting;
     $setting |= A_WEB_NOTIFICATION;
     return $setting;
@@ -439,7 +561,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
 
     // If none-specified, we'll need to be clever now
     if ($setting == A__STATISTICAL) {
-        $setting = _find_member_statistical_notification_type($to_member_id);
+        $setting = _find_member_statistical_notification_type($to_member_id, $notification_code);
     }
 
     $needs_manual_cc = true;
@@ -560,6 +682,11 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
         }
     }
 
+    global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
+    foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
+        $ob->_dispatch_notification_to_member($to_member_id, $setting, $notification_code, $code_category, $subject, $message, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);
+    }
+
     // Send to staff CC address regardless
     if ((!$no_cc) && ($needs_manual_cc)) {
         $no_cc = true; // Don't CC again
@@ -599,8 +726,9 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
  * @param  ?SHORT_TEXT $notification_category The category within the notification code (null: none)
  * @param  ?MEMBER $member_id The member being signed up (null: current member)
  * @param  ?integer $setting Setting to use (null: default)
+ * @param  boolean $reset_for_all_types Reset all notification types, not just set for $setting
  */
-function enable_notifications($notification_code, $notification_category, $member_id = null, $setting = null)
+function enable_notifications($notification_code, $notification_category, $member_id = null, $setting = null, $reset_for_all_types = true)
 {
     if (is_null($member_id)) {
         $member_id = get_member();
@@ -617,8 +745,8 @@ function enable_notifications($notification_code, $notification_category, $membe
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $setting = $ob->get_default_auto_setting($notification_code, $notification_category);
-        if (!_notification_setting_available($setting, $member_id)) {
-            $setting = _find_member_statistical_notification_type($member_id);
+        if ($setting == A__STATISTICAL || !_notification_setting_available($setting, $member_id)) {
+            $setting = _find_member_statistical_notification_type($member_id, $notification_code);
         }
     } else {
         // Check there is actually something to do here (when saving notifications tab usually everything will be still the same)
@@ -632,17 +760,17 @@ function enable_notifications($notification_code, $notification_category, $membe
         }
     }
 
-    $db->query_delete('notifications_enabled', array(
+    $map = array(
         'l_member_id' => $member_id,
         'l_notification_code' => substr($notification_code, 0, 80),
         'l_code_category' => is_null($notification_category) ? '' : $notification_category,
-    ));
-    $db->query_insert('notifications_enabled', array(
-        'l_member_id' => $member_id,
-        'l_notification_code' => substr($notification_code, 0, 80),
-        'l_code_category' => is_null($notification_category) ? '' : $notification_category,
-        'l_setting' => $setting,
-    ));
+    );
+    if (!$reset_for_all_types) {
+        $map['l_setting'] = $setting;
+    }
+    $db->query_delete('notifications_enabled', $map);
+    $map['l_setting'] = $setting;
+    $db->query_insert('notifications_enabled', $map);
 
     if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns')) { // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones
         $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category);

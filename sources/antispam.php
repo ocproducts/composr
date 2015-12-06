@@ -342,7 +342,7 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
         if ($ban_happened) {
             require_code('notifications');
             $subject = do_lang('NOTIFICATION_SPAM_CHECK_BLOCK_SUBJECT_BAN', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
-            $message = do_lang('NOTIFICATION_SPAM_CHECK_BLOCK_BODY_BAN', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
+            $message = do_notification_lang('NOTIFICATION_SPAM_CHECK_BLOCK_BODY_BAN', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
             dispatch_notification('spam_check_block', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
         }
 
@@ -355,7 +355,7 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
         if (intval($confidence_level * 100.0) >= $spam_block_threshold) {
             require_code('notifications');
             $subject = do_lang('NOTIFICATION_SPAM_CHECK_BLOCK_SUBJECT_BLOCK', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
-            $message = do_lang('NOTIFICATION_SPAM_CHECK_BLOCK_BODY_BLOCK', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
+            $message = do_notification_lang('NOTIFICATION_SPAM_CHECK_BLOCK_BODY_BLOCK', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
             dispatch_notification('spam_check_block', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
 
             warn_exit(do_lang_tempcode('STOPPED_BY_ANTISPAM', escape_html($user_ip), escape_html($blocked_by)));
@@ -370,7 +370,7 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
 
         require_code('notifications');
         $subject = do_lang('NOTIFICATION_SPAM_CHECK_BLOCK_SUBJECT_APPROVE', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
-        $message = do_lang('NOTIFICATION_SPAM_CHECK_BLOCK_BODY_APPROVE', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
+        $message = do_notification_lang('NOTIFICATION_SPAM_CHECK_BLOCK_BODY_APPROVE', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
         dispatch_notification('spam_check_block', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
     }
 }

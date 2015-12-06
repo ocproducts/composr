@@ -32,7 +32,7 @@ class Hook_notification_cns_member_needs_validation extends Hook_notification__S
      */
     public function get_initial_setting($notification_code, $category = null)
     {
-        return A_INSTANT_EMAIL;
+        return A__STATISTICAL;
     }
 
     /**

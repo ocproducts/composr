@@ -313,7 +313,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
                 require_lang('backups');
                 require_code('notifications');
                 $subject = do_lang('FAILED_TO_UPLOAD_BACKUP_SUBJECT', null, null, null, get_site_default_lang());
-                $message = do_lang('FAILED_TO_UPLOAD_BACKUP_BODY', $copy_server, null, null, get_site_default_lang());
+                $message = do_notification_lang('FAILED_TO_UPLOAD_BACKUP_BODY', $copy_server, null, null, get_site_default_lang());
                 dispatch_notification('error_occurred', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
             }
         }

@@ -967,7 +967,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         require_code('notifications');
         $subject = do_lang('DOWNLOAD_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $name);
         $self_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $id), get_module_zone('downloads'), null, false, false, true);
-        $mail = do_lang('DOWNLOAD_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($name), array(comcode_escape($self_url->evaluate())));
+        $mail = do_notification_lang('DOWNLOAD_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($name), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('download', strval($category_id), $subject, $mail, $privacy_limits);
     }
 
@@ -1147,7 +1147,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         require_lang('downloads');
         require_code('notifications');
         $subject = do_lang('DOWNLOAD_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $name);
-        $mail = do_lang('DOWNLOAD_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($name), array(comcode_escape($self_url->evaluate())));
+        $mail = do_notification_lang('DOWNLOAD_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($name), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('download', strval($category_id), $subject, $mail, $privacy_limits);
     }
 

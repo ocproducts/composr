@@ -1317,7 +1317,7 @@ class Module_filedump
             // Logging etc
             require_code('notifications');
             $subject = do_lang('FILEDUMP_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $filename, $place);
-            $mail = do_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($place), comcode_escape($description)));
+            $mail = do_notification_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($place), comcode_escape($description)));
             dispatch_notification('filedump', $place, $subject, $mail);
             log_it('FILEDUMP_UPLOAD', $filename, $place);
             require_code('users2');

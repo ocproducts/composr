@@ -69,7 +69,7 @@ class Hook_cron_classifieds
                     }
 
                     $subject_line = do_lang('SUBJECT_CLASSIFIED_ADVERT_EXPIRING', $ad_title, get_site_name(), null, get_lang($member_id), false);
-                    $mail = do_lang('MAIL_CLASSIFIED_ADVERT_EXPIRING', $ad_title, comcode_escape(get_site_name()), comcode_escape($renew_url->evaluate()), get_lang($member_id), false);
+                    $mail = do_notification_lang('MAIL_CLASSIFIED_ADVERT_EXPIRING', $ad_title, comcode_escape(get_site_name()), comcode_escape($renew_url->evaluate()), get_lang($member_id), false);
 
                     // Send actual notification
                     dispatch_notification('classifieds__' . $entry['c_name'], '', $subject_line, $mail, array($member_id), A_FROM_SYSTEM_PRIVILEGED);

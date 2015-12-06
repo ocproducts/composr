@@ -143,7 +143,7 @@ class Hook_cron_downloads_followup_email
             }
             $subject_line = do_lang('SUBJECT_DOWNLOADS_FOLLOWUP_EMAIL', get_site_name(), $member_name, $s, $lang, false);
             // Pass download count, download list, and member ID to template.
-            $message = static_evaluate_tempcode(do_template("$mail_template", array('MEMBER_ID' => strval($member_id), 'DOWNLOAD_LIST' => $download_list, 'DOWNLOAD_COUNT' => strval($count))));
+            $message = static_evaluate_tempcode(do_notification_template($mail_template, array('MEMBER_ID' => strval($member_id), 'DOWNLOAD_LIST' => $download_list, 'DOWNLOAD_COUNT' => strval($count))));
 
             if ($debug) {
                 echo "downloads_followup_email: sending notification (if user allows download followup notifications) to ID #" . strval($member_id) . " ($member_name)\n";

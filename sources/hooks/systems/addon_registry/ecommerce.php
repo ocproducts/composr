@@ -655,7 +655,7 @@ class Hook_addon_registry_ecommerce
                 'IPN_URL' => placeholder_url(),
                 'TRANS_ID' => placeholder_id(),
                 'MEMBER_ADDRESS' => lorem_paragraph(),
-                'ACCOUNT_NUM' => $account_num,
+                'ACCOUNT_NUM' => placeholder_id(),
                 'SUBACCOUNT_NUM' => placeholder_id(),
                 'FORM_NAME' => placeholder_id(),
                 'FORM_PERIOD' => placeholder_id(),

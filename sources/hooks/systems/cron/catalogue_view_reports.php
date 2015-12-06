@@ -113,9 +113,9 @@ class Hook_cron_catalogue_view_reports
                         }
                         $buildup .= $temp;
                     }
-                    $mail = do_lang($catalogue['c_name'] . '__CATALOGUE_VIEW_REPORT', $buildup, comcode_escape($catalogue_title), $regularity, get_lang($member_id), false);
+                    $mail = do_notification_lang($catalogue['c_name'] . '__CATALOGUE_VIEW_REPORT', $buildup, comcode_escape($catalogue_title), $regularity, get_lang($member_id), false);
                     if (is_null($mail)) {
-                        $mail = do_lang('DEFAULT__CATALOGUE_VIEW_REPORT', $buildup, comcode_escape($catalogue_title), array($regularity, get_site_name()), get_lang($member_id));
+                        $mail = do_notification_lang('DEFAULT__CATALOGUE_VIEW_REPORT', $buildup, comcode_escape($catalogue_title), array($regularity, get_site_name()), get_lang($member_id));
                     }
                     $subject_line = do_lang($catalogue['c_name'] . '__CATALOGUE_VIEW_REPORT_SUBJECT', $catalogue_title, get_site_name(), null, get_lang($member_id), false);
                     if (is_null($subject_line)) {

@@ -1064,11 +1064,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         require_code('notifications');
 
         $subject = do_lang('USERNAME_CHANGED_MAIL_SUBJECT', $username, $old_username, null, get_lang($member_id));
-        $mail = do_lang('USERNAME_CHANGED_MAIL', comcode_escape(get_site_name()), comcode_escape($username), comcode_escape($old_username), get_lang($member_id));
+        $mail = do_notification_lang('USERNAME_CHANGED_MAIL', comcode_escape(get_site_name()), comcode_escape($username), comcode_escape($old_username), get_lang($member_id));
         dispatch_notification('cns_username_changed', null, $subject, $mail, array($member_id));
 
         $subject = do_lang('STAFF_USERNAME_CHANGED_MAIL_SUBJECT', $username, $old_username, null, get_site_default_lang());
-        $mail = do_lang('STAFF_USERNAME_CHANGED_MAIL', comcode_escape(get_site_name()), comcode_escape($username), comcode_escape($old_username), get_site_default_lang());
+        $mail = do_notification_lang('STAFF_USERNAME_CHANGED_MAIL', comcode_escape(get_site_name()), comcode_escape($username), comcode_escape($old_username), get_site_default_lang());
         dispatch_notification('cns_username_changed_staff', null, $subject, $mail, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
 
         if (addon_installed('news')) {
@@ -1088,7 +1088,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
                     if (!has_actual_page_access(get_member(), 'admin_cns_members')) {
                         $part_b = do_lang('PASSWORD_CHANGED_MAIL_BODY_2', get_ip_address());
                     }
-                    $mail = do_lang('PASSWORD_CHANGED_MAIL_BODY', get_site_name(), $part_b, null, get_lang($member_id));
+                    $mail = do_notification_lang('PASSWORD_CHANGED_MAIL_BODY', get_site_name(), $part_b, null, get_lang($member_id));
 
                     require_code('notifications');
                     dispatch_notification('cns_password_changed', null, do_lang('PASSWORD_CHANGED_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($member_id), null, 2);
@@ -1744,7 +1744,7 @@ function cns_member_choose_signature($new_signature, $member_id = null)
 
     require_code('notifications');
     $subject = do_lang('CHOOSE_SIGNATURE_SUBJECT', $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), $GLOBALS['FORUM_DRIVER']->get_username($member_id), null, get_lang($member_id));
-    $body = do_lang('CHOOSE_SIGNATURE_BODY', $new_signature, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), get_lang($member_id));
+    $body = do_notification_lang('CHOOSE_SIGNATURE_BODY', $new_signature, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), get_lang($member_id));
     dispatch_notification('cns_choose_signature', null, $subject, $body, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
 
     // Decache from run-time cache
@@ -1822,7 +1822,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
         if ((substr($avatar_url, 0, 7) != 'themes/') && (addon_installed('cns_avatars'))) {
             require_code('notifications');
             $subject = do_lang('CHOOSE_AVATAR_SUBJECT', $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), $GLOBALS['FORUM_DRIVER']->get_username($member_id), null, get_lang($member_id));
-            $body = do_lang('CHOOSE_AVATAR_BODY', $stub . $avatar_url, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), get_lang($member_id));
+            $body = do_notification_lang('CHOOSE_AVATAR_BODY', $stub . $avatar_url, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), get_lang($member_id));
             dispatch_notification('cns_choose_avatar', null, $subject, $body, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
         }
     }
@@ -1935,7 +1935,7 @@ function cns_member_choose_photo_concrete($url, $thumb_url, $member_id = null)
 
     require_code('notifications');
     $subject = do_lang('CHOOSE_PHOTO_SUBJECT', $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), $GLOBALS['FORUM_DRIVER']->get_username($member_id), null, get_lang($member_id));
-    $body = do_lang('CHOOSE_PHOTO_BODY', $url, $thumb_url, array($GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true)), get_lang($member_id));
+    $body = do_notification_lang('CHOOSE_PHOTO_BODY', $url, $thumb_url, array($GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true)), get_lang($member_id));
     dispatch_notification('cns_choose_photo', null, $subject, $body, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
 
     // If Avatars addon not installed, use photo for it

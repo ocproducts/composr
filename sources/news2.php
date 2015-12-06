@@ -639,11 +639,11 @@ function dispatch_news_notification($id, $title, $main_news_category)
     require_lang('news');
     if ($is_blog) {
         $subject = do_lang('BLOG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $title);
-        $mail = do_lang('BLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate()));
+        $mail = do_notification_lang('BLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate()));
         dispatch_notification('news_entry', strval($main_news_category), $subject, $mail, $privacy_limits);
     } else {
         $subject = do_lang('NEWS_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $title);
-        $mail = do_lang('NEWS_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate()));
+        $mail = do_notification_lang('NEWS_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate()));
         dispatch_notification('news_entry', strval($main_news_category), $subject, $mail, $privacy_limits);
     }
 }

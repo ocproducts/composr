@@ -913,8 +913,7 @@ function do_site()
         require_code('notifications');
         $current_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         $subject = do_lang('AFA_NOTIFICATION_MAIL_SUBJECT', $current_username, get_site_name(), get_ip_address());
-        $mail = do_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
-
+        $mail = do_notification_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
         dispatch_notification('adminzone_dashboard_accessed', null, $subject, $mail);
 
         // Track very basic details of what sites use Composr. You can remove if you like.
@@ -940,7 +939,7 @@ function do_site()
             if ((is_integer($disk_space)) && ($disk_space < $low_space_check)) {
                 require_code('notifications');
                 $subject = do_lang('LOW_DISK_SPACE_SUBJECT', null, null, null, get_site_default_lang());
-                $message = do_lang('LOW_DISK_SPACE_MAIL', strval(intval(round($disk_space / 1024 / 1024))), null, null, get_site_default_lang());
+                $message = do_notification_lang('LOW_DISK_SPACE_MAIL', strval(intval(round($disk_space / 1024 / 1024))), null, null, get_site_default_lang());
                 dispatch_notification('low_disk_space', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
             }
         }

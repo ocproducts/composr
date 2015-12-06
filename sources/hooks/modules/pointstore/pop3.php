@@ -310,7 +310,8 @@ class Hook_pointstore_pop3
 
         // Mail off the order form
         $encoded_reason = do_lang('TITLE_NEWPOP3');
-        $message_raw = do_template('POINTSTORE_POP3_MAIL', array(
+        require_code('notifications');
+        $message_raw = do_notification_template('POINTSTORE_POP3_MAIL', array(
             '_GUID' => '19022c49d0bdde39735245850d04fca7',
             'EMAIL' => $email,
             'ENCODED_REASON' => $encoded_reason,
@@ -323,7 +324,6 @@ class Hook_pointstore_pop3
             'POP3_URL' => $pop3_url,
             'SUFFIX_PRICE' => integer_format($suffix_price),
         ), null, false, null, '.txt', 'text');
-        require_code('notifications');
         dispatch_notification('pointstore_request_pop3', 'pop3_' . strval($sale_id), do_lang('MAIL_REQUEST_POP3', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
         $text = do_lang_tempcode('ORDER_POP3_DONE', escape_html($prefix . '@' . $_suffix));
@@ -408,8 +408,8 @@ class Hook_pointstore_pop3
         $quota_url = get_option('quota_url');
         $_price = $quota * $price;
         $encoded_reason = do_lang('TITLE_QUOTA');
-        $message_raw = do_template('POINTSTORE_QUOTA_MAIL', array('_GUID' => '5a4e0bb5e53e6ccf8e57581c377557f4', 'ENCODED_REASON' => $encoded_reason, 'QUOTA' => integer_format($quota), 'EMAIL' => $prefix . $suffix, 'QUOTA_URL' => $quota_url, 'PRICE' => integer_format($_price)), null, false, null, '.txt', 'text');
         require_code('notifications');
+        $message_raw = do_notification_template('POINTSTORE_QUOTA_MAIL', array('_GUID' => '5a4e0bb5e53e6ccf8e57581c377557f4', 'ENCODED_REASON' => $encoded_reason, 'QUOTA' => integer_format($quota), 'EMAIL' => $prefix . $suffix, 'QUOTA_URL' => $quota_url, 'PRICE' => integer_format($_price)), null, false, null, '.txt', 'text');
         dispatch_notification('pointstore_request_quota', 'quota_' . uniqid('', true), do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

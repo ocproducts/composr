@@ -122,13 +122,13 @@ function init__global3()
     // Notifications (defined here, as notification_poller may need them - yet we don't want to include all the notification dispatch code)
     define('A_NA', 0x0); // Not applicable          (0 in decimal)
     //
-    define('A_INSTANT_EMAIL', 0x2); //              (2 in decimal)
-    define('A_DAILY_EMAIL_DIGEST', 0x4); //            (4 in decimal)
-    define('A_WEEKLY_EMAIL_DIGEST', 0x8); //        (8 in decimal)
-    define('A_MONTHLY_EMAIL_DIGEST', 0x10); //         (16 in decimal)
-    define('A_INSTANT_SMS', 0x20); //                  (32 in decimal)
-    define('A_INSTANT_PT', 0x40); // Private topic  (64 in decimal)
-    define('A_WEB_NOTIFICATION', 0x80); // Desktop notification if site is open, and always shows on notification dropdown  (128 in decimal)
+    define('A_INSTANT_EMAIL', 0x2);         // (2 in decimal)
+    define('A_DAILY_EMAIL_DIGEST', 0x4);    // (4 in decimal)
+    define('A_WEEKLY_EMAIL_DIGEST', 0x8);   // (8 in decimal)
+    define('A_MONTHLY_EMAIL_DIGEST', 0x10); // (16 in decimal)
+    define('A_INSTANT_SMS', 0x20);          // (32 in decimal)
+    define('A_INSTANT_PT', 0x40);           // (64 in decimal)  Private topic
+    define('A_WEB_NOTIFICATION', 0x80);     // (128 in decimal) Desktop notification if site is open, and always shows on notification dropdown
     // And...
     define('A__ALL', 0xFFFFFF);
     // And...

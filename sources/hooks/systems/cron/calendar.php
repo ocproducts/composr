@@ -98,7 +98,7 @@ class Hook_cron_calendar
                     $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $job['j_event_id']), get_module_zone('calendar'), null, false, false, true);
                     $url = $_url->evaluate();
                     $subject_line = do_lang('EVENT_REMINDER_SUBJECT', $title, null, null, get_lang($job['n_member_id']));
-                    $message_raw = do_lang('EVENT_REMINDER_CONTENT', comcode_escape($date), comcode_escape($url), get_translated_text($job['e_content']), get_lang($job['n_member_id']));
+                    $message_raw = do_notification_lang('EVENT_REMINDER_CONTENT', comcode_escape($date), comcode_escape($url), get_translated_text($job['e_content']), get_lang($job['n_member_id']));
                     dispatch_notification('calendar_reminder', strval($job['e_type']), $subject_line, $message_raw, array($job['n_member_id']), $job['e_submitter']);
                 }
 

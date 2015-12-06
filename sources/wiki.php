@@ -169,7 +169,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
     $GLOBALS['SITE_DB']->query_insert('wiki_changes', array('the_action' => 'WIKI_MAKE_POST', 'the_page' => $page_id, 'ip' => get_ip_address(), 'member_id' => $member, 'date_and_time' => time()));
 
     // Update post count
-    if (((addon_installed('points')) && (strlen($message) > 1024)) {
+    if ((addon_installed('points')) && (strlen($message) > 1024)) {
         require_code('points');
         $_count = point_info($member);
         $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;
@@ -346,7 +346,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
     check_comcode($description, null, false, null, true);
 
     // Update post count
-    if (((addon_installed('points')) && (strlen($description) > 1024)) {
+    if ((addon_installed('points')) && (strlen($description) > 1024)) {
         require_code('points');
         $_count = point_info($member);
         $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;
@@ -897,10 +897,11 @@ function dispatch_wiki_post_notification($post_id, $type)
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
     $their_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
 
-    $subject = do_lang($type . '_WIKI_POST_SUBJECT', $page_name, $their_displayname, $their_username, get_site_default_lang());
-    $message_raw = do_lang($type . '_WIKI_POST_BODY', comcode_escape($their_displayname), comcode_escape($page_name), array(comcode_escape($view_url), $_the_message, strval(get_member()), comcode_escape($their_username)), get_site_default_lang());
-
     require_code('notifications');
+
+    $subject = do_lang($type . '_WIKI_POST_SUBJECT', $page_name, $their_displayname, $their_username, get_site_default_lang());
+    $message_raw = do_notification_lang($type . '_WIKI_POST_BODY', comcode_escape($their_displayname), comcode_escape($page_name), array(comcode_escape($view_url), $_the_message, strval(get_member()), comcode_escape($their_username)), get_site_default_lang());
+
     dispatch_notification('wiki', strval($page_id), $subject, $message_raw);
 }
 
@@ -921,9 +922,10 @@ function dispatch_wiki_page_notification($page_id, $type)
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
     $their_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
 
-    $subject = do_lang($type . '_WIKI_PAGE_SUBJECT', $page_name, $their_displayname, $their_username, get_site_default_lang());
-    $message_raw = do_lang($type . '_WIKI_PAGE_BODY', comcode_escape($their_displayname), comcode_escape($page_name), array(comcode_escape($view_url), $_the_message, comcode_escape($their_username)), get_site_default_lang());
-
     require_code('notifications');
+
+    $subject = do_lang($type . '_WIKI_PAGE_SUBJECT', $page_name, $their_displayname, $their_username, get_site_default_lang());
+    $message_raw = do_notification_lang($type . '_WIKI_PAGE_BODY', comcode_escape($their_displayname), comcode_escape($page_name), array(comcode_escape($view_url), $_the_message, comcode_escape($their_username)), get_site_default_lang());
+
     dispatch_notification('wiki', strval($page_id), $subject, $message_raw);
 }

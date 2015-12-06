@@ -213,7 +213,7 @@ function save_privacy_form_fields($content_type, $content_id, $privacy_level, $a
             $content_type_label = do_lang($cma_info['content_type_label']);
 
             $subject = do_lang('NOTIFICATION_SUBJECT_invited_content', comcode_escape($content_submitter_username));
-            $mail = do_lang('NOTIFICATION_BODY_invited_content', comcode_escape($content_submitter_username), strtolower(comcode_escape($content_type_label)), array(comcode_escape($content_title), $content_url->evaluate(), comcode_escape($content_type_label)));
+            $mail = do_notification_lang('NOTIFICATION_BODY_invited_content', comcode_escape($content_submitter_username), strtolower(comcode_escape($content_type_label)), array(comcode_escape($content_title), $content_url->evaluate(), comcode_escape($content_type_label)));
             dispatch_notification('invited_content', null, $subject, $mail, $invited_members);
         }
     }

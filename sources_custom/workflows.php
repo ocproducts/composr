@@ -683,7 +683,7 @@ function workflow_update_handler()
     }
     $subject = do_lang('APPROVAL_EMAIL_SUBJECT',/*TODO: Should pass title in, for unique email subject line*/
         null, null, null, get_site_default_lang());
-    $body = do_lang('APPROVAL_EMAIL_BODY', post_param_string('http_referer', cms_srv('HTTP_REFERER')), $status_list, $workflow_notes, get_site_default_lang());
+    $body = do_notification_lang('APPROVAL_EMAIL_BODY', post_param_string('http_referer', cms_srv('HTTP_REFERER')), $status_list, $workflow_notes, get_site_default_lang());
     dispatch_notification('workflow_step', strval($workflow_id), $subject, $body, $send_to_members);
 
     // Finally return a success message

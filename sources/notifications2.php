@@ -42,6 +42,12 @@ function _get_available_notification_types($member_id_of = null)
             $_notification_types[$possible] = $ntype;
         }
     }
+
+    global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
+    foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
+        $_notification_types += $ob->_get_available_notification_types($member_id_of);
+    }
+
     return $_notification_types;
 }
 
@@ -73,8 +79,6 @@ function notifications_ui($member_id_of)
         return new Tempcode();
     }
 
-    $statistical_notification_type = _find_member_statistical_notification_type($member_id_of);
-
     $lockdown = collapse_2d_complexity('l_notification_code', 'l_setting', $GLOBALS['SITE_DB']->query_select('notification_lockdown', array('*')));
 
     $cnt_post = count($_POST);
@@ -100,7 +104,7 @@ function notifications_ui($member_id_of)
             if ($ob->member_could_potentially_enable($notification_code, $member_id_of)) {
                 $current_setting = notifications_setting($notification_code, null, $member_id_of);
                 if ($current_setting == A__STATISTICAL) {
-                    $current_setting = $statistical_notification_type;
+                    $current_setting = _find_member_statistical_notification_type($member_id_of, $notification_code);
                 }
                 $allowed_setting = $ob->allowed_settings($notification_code);
 
@@ -379,15 +383,13 @@ function _notifications_build_category_tree($_notification_types, $notification_
 {
     $_notification_categories = $ob->create_category_tree($notification_code, $id);
 
-    $statistical_notification_type = _find_member_statistical_notification_type(get_member());
-
     $notification_categories = array();
     foreach ($_notification_categories as $c) {
         $notification_category = (is_integer($c['id']) ? strval($c['id']) : $c['id']);
 
         $current_setting = notifications_setting($notification_code, $notification_category);
         if ($current_setting == A__STATISTICAL) {
-            $current_setting = _find_member_statistical_notification_type(get_member());
+            $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
         }
 
         $notification_category_being_changed = get_param_string('id', null);
@@ -411,14 +413,14 @@ function _notifications_build_category_tree($_notification_types, $notification_
 
         $current_setting = notifications_setting($notification_code, $notification_category);
         if ($current_setting == A__STATISTICAL) {
-            $current_setting = _find_member_statistical_notification_type(get_member());
+            $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
         }
 
         $notification_types = array();
         foreach ($_notification_types as $possible => $ntype) {
             $current_setting = notifications_setting($notification_code, $notification_category);
             if ($current_setting == A__STATISTICAL) {
-                $current_setting = $statistical_notification_type;
+                $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
             }
             $allowed_setting = $ob->allowed_settings($notification_code);
 

@@ -1078,7 +1078,7 @@ class Module_tickets
             $ticket_type_name_old = get_translated_text($ticket_type_details['ticket_type_name']);
 
             $subject = do_lang('SUBJECT_TICKET_REROUTED', $title, $username, array($ticket_type_name_new, $ticket_type_name_old));
-            $message = do_lang('BODY_TICKET_REROUTED', comcode_escape($title), comcode_escape($username), array(comcode_escape($ticket_type_name_new), comcode_escape($ticket_type_name_old)));
+            $message = do_notification_lang('BODY_TICKET_REROUTED', comcode_escape($title), comcode_escape($username), array(comcode_escape($ticket_type_name_new), comcode_escape($ticket_type_name_old)));
 
             dispatch_notification(
                 'ticket_new_staff',
@@ -1177,7 +1177,7 @@ class Module_tickets
             ),
             get_site_default_lang()
         );
-        $message = do_lang(
+        $message = do_notification_lang(
             'TICKETS_MERGED_INTO_BODY',
             comcode_escape($from_title),
             comcode_escape($to_title),
@@ -1254,7 +1254,7 @@ class Module_tickets
             ),
             get_site_default_lang()
         );
-        $message = do_lang(
+        $message = do_notification_lang(
             'TICKET_ASSIGNED_BODY',
             comcode_escape($ticket_title),
             comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),
@@ -1309,7 +1309,7 @@ class Module_tickets
             ),
             get_site_default_lang()
         );
-        $message = do_lang(
+        $message = do_notification_lang(
             'TICKET_UNASSIGNED_BODY',
             comcode_escape($ticket_title),
             comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),

@@ -664,7 +664,7 @@ class Module_quiz
                 }
 
                 // Send notification about the result to the staff: include result and corrections, and unknowns
-                $mail = do_template('QUIZ_TEST_ANSWERS_MAIL', array(
+                $mail = do_notification_template('QUIZ_TEST_ANSWERS_MAIL', array(
                     '_GUID' => 'a0f8f47cdc1ef83b59c93135ebb5c114',
                     'ENTRY_ID' => strval($entry_id),
                     'QUIZ_NAME' => $quiz_name,
@@ -695,7 +695,7 @@ class Module_quiz
             case 'SURVEY':
                 $result_to_member = do_lang_tempcode('SURVEY_THANKYOU');
 
-                $given_answers_to_staff = do_template('QUIZ_SURVEY_ANSWERS_MAIL', array(
+                $given_answers_to_staff = do_notification_template('QUIZ_SURVEY_ANSWERS_MAIL', array(
                     '_GUID' => '381f392c8e491b6e078bcae34adc45e8',
                     'ENTRY_ID' => strval($entry_id),
                     'QUIZ_NAME' => $quiz_name,

@@ -154,6 +154,11 @@ class Hook_addon_registry_core_notifications
             'data_custom/modules/web_notifications/.htaccess',
             'data_custom/modules/web_notifications/index.html',
             'sources/hooks/systems/tasks/dispatch_notification.php',
+            'sources/hooks/systems/notification_types_extended/.htaccess',
+            'sources/hooks/systems/notification_types_extended/index.html',
+            'sources_custom/hooks/systems/notification_types_extended/.htaccess',
+            'sources_custom/hooks/systems/notification_types_extended/index.html',
+            'sources/hooks/systems/rss/web_notifications.php',
         );
     }
 

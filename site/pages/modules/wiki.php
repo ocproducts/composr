@@ -300,6 +300,8 @@ class Module_wiki
             $db_posts = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), $where_map, 'ORDER BY date_and_time', 300);
             $num_posts = count($db_posts);
 
+            $description_comcode = get_translated_text($page['description']);
+
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $page['add_date']),
                 'creator' => $GLOBALS['FORUM_DRIVER']->get_username($page['submitter']),

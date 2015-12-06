@@ -2,11 +2,17 @@
 
 TODO
 
+For iOS notifications to work, put your Apple-provided server certificate over data_custom/modules/composr_mobile_sdk/ios/server_certificates.pem (follow the usual CSR signing process against your Apple developer account).
+
 [contents]decimal,lower-alpha[/contents]
 
 TODO
 
-[title="2"]Tapatalk[/title]
+[title="2"]Other approaches[/title]
+
+On the [url="tracker"]http://compo.sr/tracker/search.php?tag_string=Type%3A+Mobile[/url] you will find a number of plans and issues relating to further development of Composr Mobile SDK. This is an active process, as we move forward a number of complementary alternative approaches, suited for different mobile integration/extension scenarios. As with all Composr development, development is primary implemented as a byproduct of commercial projects or direct feature sponsorship, but guided by a shared plan that benefits all interested users.
+
+[title="3"]Tapatalk[/title]
 
 There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users. Tapatalk will essentially function as an "out of the box Composr app", as we continue to extend our implementation to include other kinds of content within virtual-forums/virtual-topics.
 

@@ -57,18 +57,6 @@ class Hook_notification_downloads_followup_email extends Hook_Notification
     }
 
     /**
-     * Find a bitmask of settings (email, SMS, etc) a notification code supports for listening on.
-     *
-     * @param  ID_TEXT $notification_code Notification code
-     * @return integer Allowed settings
-     */
-    public function allowed_settings($notification_code)
-    {
-        //return A__ALL & ~A_DAILY_EMAIL_DIGEST & ~A_WEEKLY_EMAIL_DIGEST & ~A_MONTHLY_EMAIL_DIGEST & ~A_INSTANT_SMS;
-        return A_INSTANT_EMAIL | A_INSTANT_PT;
-    }
-
-    /**
      * Find the initial setting that members have for a notification code (only applies to the member_could_potentially_enable members).
      *
      * @param  ID_TEXT $notification_code Notification code
@@ -88,9 +76,8 @@ class Hook_notification_downloads_followup_email extends Hook_Notification
      */
     public function list_handled_codes()
     {
-        //require_lang('downloads_followup_email');
         $list = array();
-        $list['downloads_followup_email'] = array(do_lang('menus:CONTENT'), do_lang('NOTIFICATION_TYPE_downloads_followup_email'));
+        $list['downloads_followup_email'] = array(do_lang('menus:CONTENT'), do_lang('downloads_followup_email:NOTIFICATION_TYPE_downloads_followup_email'));
         return $list;
     }
 

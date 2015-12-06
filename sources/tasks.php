@@ -76,9 +76,11 @@ function execute_task_background($task_row)
     if ($task_row['t_send_notification'] == 1) {
         $attachments = array();
 
+        require_code('notifications');
+
         if (is_null($result)) {
             $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
-            $message = do_lang('TASK_COMPLETED_BODY_SIMPLE');
+            $message = do_notification_lang('TASK_COMPLETED_BODY_SIMPLE');
         } else {
             $content_result = mixed();
 
@@ -88,7 +90,7 @@ function execute_task_background($task_row)
             if (is_null($mime_type)) {
                 $subject = do_lang('TASK_FAILED_SUBJECT', $task_row['t_title']);
                 $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
-                $message = do_lang('TASK_FAILED_SIMPLE', $_content_result);
+                $message = do_notification_lang('TASK_FAILED_SIMPLE', $_content_result);
             } else {
                 $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
 
@@ -102,7 +104,7 @@ function execute_task_background($task_row)
                     }
 
                     $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
-                    $message = do_lang('TASK_COMPLETED_SIMPLE', $_content_result);
+                    $message = do_notification_lang('TASK_COMPLETED_SIMPLE', $_content_result);
                 } else {
                     // Some downloaded result
                     if (is_array($content_result)) {
@@ -111,12 +113,11 @@ function execute_task_background($task_row)
                         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
                     }
 
-                    $message = do_lang('TASK_COMPLETED_BODY_ATTACHMENT');
+                    $message = do_notification_lang('TASK_COMPLETED_BODY_ATTACHMENT');
                 }
             }
         }
 
-        require_code('notifications');
         dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, 2, false, false, null, null, '', '', '', '', $attachments);
 
         if (is_null(!$result)) {
@@ -134,7 +135,7 @@ function execute_task_background($task_row)
 }
 
 /**
- * Send out the newsletter.
+ * Execute a long task, via the task queue.
  *
  * @param  string $plain_title Title to use for completion notification subject lines
  * @param  ?Tempcode $title Title to use if there is no queueing or a queue message (null: don't return a full screen)

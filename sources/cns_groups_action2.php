@@ -315,11 +315,11 @@ function cns_member_ask_join_group($group_id, $member_id = null)
 
         $leader_id = $group_info[0]['g_group_leader'];
         if (!is_null($leader_id)) {
-            $mail = do_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_lang($leader_id));
+            $mail = do_notification_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_lang($leader_id));
             $subject = do_lang('GROUP_JOIN_REQUEST_MAIL_SUBJECT', null, null, null, get_lang($leader_id));
             dispatch_notification('cns_group_join_request', null, $subject, $mail, array($leader_id));
         } else {
-            $mail = do_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_site_default_lang());
+            $mail = do_notification_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_site_default_lang());
             $subject = do_lang('GROUP_JOIN_REQUEST_MAIL_SUBJECT', null, null, null, get_site_default_lang());
             dispatch_notification('cns_group_join_request_staff', null, $subject, $mail, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
         }
@@ -401,7 +401,7 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
         $group_name = cns_get_group_name($id);
         $subject = do_lang('MJG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $username, $group_name);
         $group_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $id), get_module_zone('groups'), null, false, false, true);
-        $mail = do_lang('MJG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($group_name), $group_url->evaluate(), comcode_escape($displayname)));
+        $mail = do_notification_lang('MJG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($group_name), $group_url->evaluate(), comcode_escape($displayname)));
         dispatch_notification('cns_member_joined_group', strval($id), $subject, $mail);
     }
 
@@ -449,13 +449,13 @@ function cns_member_validate_into_group($group_id, $prospective_member_id, $decl
 
         log_it('MEMBER_ADDED_TO_GROUP', strval($prospective_member_id), strval($group_id));
 
-        $mail = do_lang('GROUP_ACCEPTED_MAIL', get_site_name(), $name, null, get_lang($prospective_member_id));
+        $mail = do_notification_lang('GROUP_ACCEPTED_MAIL', get_site_name(), $name, null, get_lang($prospective_member_id));
         $subject = do_lang('GROUP_ACCEPTED_MAIL_SUBJECT', $name, null, null, get_lang($prospective_member_id));
     } else {
         if ($reason != '') {
-            $mail = do_lang('GROUP_DECLINED_MAIL_REASON', comcode_escape(get_site_name()), comcode_escape($name), comcode_escape($reason), get_lang($prospective_member_id));
+            $mail = do_notification_lang('GROUP_DECLINED_MAIL_REASON', comcode_escape(get_site_name()), comcode_escape($name), comcode_escape($reason), get_lang($prospective_member_id));
         } else {
-            $mail = do_lang('GROUP_DECLINED_MAIL', comcode_escape(get_site_name()), comcode_escape($name), null, get_lang($prospective_member_id));
+            $mail = do_notification_lang('GROUP_DECLINED_MAIL', comcode_escape(get_site_name()), comcode_escape($name), null, get_lang($prospective_member_id));
         }
         $subject = do_lang('GROUP_DECLINED_MAIL_SUBJECT', $name, null, null, get_lang($prospective_member_id));
     }

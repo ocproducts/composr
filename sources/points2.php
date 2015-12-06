@@ -122,13 +122,13 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
         $url = $_url->evaluate();
         require_code('notifications');
         if ($anonymous) {
-            $message_raw = do_lang('GIVEN_POINTS_FOR_ANON', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url)), get_lang($recipient_id));
+            $message_raw = do_notification_lang('GIVEN_POINTS_FOR_ANON', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url)), get_lang($recipient_id));
             dispatch_notification('received_points', null, do_lang('YOU_GIVEN_POINTS', integer_format($amount), null, null, get_lang($recipient_id)), $message_raw, array($recipient_id), A_FROM_SYSTEM_UNPRIVILEGED);
         } else {
-            $message_raw = do_lang('GIVEN_POINTS_FOR', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_lang($recipient_id));
+            $message_raw = do_notification_lang('GIVEN_POINTS_FOR', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_lang($recipient_id));
             dispatch_notification('received_points', null, do_lang('YOU_GIVEN_POINTS', integer_format($amount), null, null, get_lang($recipient_id)), $message_raw, array($recipient_id), $sender_id, 3, false, false, null, null, '', '', '', '', null, true);
         }
-        $message_raw = do_lang('MEMBER_GIVEN_POINTS_FOR', comcode_escape($their_displayname), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_site_default_lang());
+        $message_raw = do_notification_lang('MEMBER_GIVEN_POINTS_FOR', comcode_escape($their_displayname), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_site_default_lang());
         dispatch_notification('receive_points_staff', null, do_lang('MEMBER_GIVEN_POINTS', integer_format($amount), null, null, get_site_default_lang()), $message_raw, null, $sender_id);
     }
 

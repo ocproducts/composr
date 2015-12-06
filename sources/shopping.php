@@ -195,9 +195,12 @@ function purchase_done_staff_mail($order_id)
     $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'c_member', array('id' => $order_id));
     $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-    $subject = do_lang('ORDER_PLACED_MAIL_SUBJECT', get_site_name(), strval($order_id), array($displayname, $username), get_site_default_lang());
-    $message = do_lang('ORDER_PLACED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($displayname), array(strval($order_id), strval($member_id), comcode_escape($username)), get_site_default_lang());
+
     require_code('notifications');
+
+    $subject = do_lang('ORDER_PLACED_MAIL_SUBJECT', get_site_name(), strval($order_id), array($displayname, $username), get_site_default_lang());
+    $message = do_notification_lang('ORDER_PLACED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($displayname), array(strval($order_id), strval($member_id), comcode_escape($username)), get_site_default_lang());
+
     dispatch_notification('new_order', null, $subject, $message);
 }
 
@@ -233,10 +236,11 @@ function stock_maintain_warn_mail($product_name, $product_id)
 {
     $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_id), get_module_zone('catalogues'));
 
-    $subject = do_lang('STOCK_LEVEL_MAIL_SUBJECT', get_site_name(), $product_name, null, get_site_default_lang());
-    $message = do_lang('STOCK_MAINTENANCE_WARN_MAIL', comcode_escape(get_site_name()), comcode_escape($product_name), array($product_info_url->evaluate()), get_site_default_lang());
-
     require_code('notifications');
+
+    $subject = do_lang('STOCK_LEVEL_MAIL_SUBJECT', get_site_name(), $product_name, null, get_site_default_lang());
+    $message = do_notification_lang('STOCK_MAINTENANCE_WARN_MAIL', comcode_escape(get_site_name()), comcode_escape($product_name), array($product_info_url->evaluate()), get_site_default_lang());
+
     dispatch_notification('low_stock', null, $subject, $message, null, null, A_FROM_SYSTEM_PRIVILEGED);
 }
 
@@ -422,7 +426,7 @@ function payment_form()
             $fields = new Tempcode();
             $hidden = new Tempcode();
         } else {
-            list($fields, $hidden) = get_transaction_form_fields(null, strval($order_id), $item_name, float_to_raw_string($price), null, '');
+            list($fields, $hidden) = get_transaction_form_fields(null, strval($order_id), $item_name, float_to_raw_string($price), get_option('currency'), null, '');
         }
 
         $finish_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));

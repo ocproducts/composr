@@ -341,6 +341,8 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $block_tag = post_param_integer('block_tag', 0);
         $textual_tag = post_param_integer('textual_tag', 0);
 
+        $this->check_parameters_all_there(($parameters == '') ? array() : explode(',', $parameters), $replace);
+
         add_custom_comcode_tag($tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag);
 
         return $tag;
@@ -378,9 +380,45 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $block_tag = post_param_integer('block_tag', 0);
         $textual_tag = post_param_integer('textual_tag', 0);
 
+        $this->check_parameters_all_there(($parameters == '') ? array() : explode(',', $parameters), $replace);
+
         edit_custom_comcode_tag($id, $tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag);
 
         $this->new_id = $tag;
+    }
+
+    /**
+     * Check defined parameters are consistent with replace text.
+     *
+     * @param  array  $_parameters Parameters configured
+     * @param  string $replace Text to replace within
+     */
+    private function check_parameters_all_there($_parameters, $replace)
+    {
+        $parameters = array();
+        foreach ($_parameters as $param) {
+            $parameters[] = strtolower(preg_replace('#=.*$#', '', $param));
+        }
+        $parameters[] = 'content'; // implied
+
+        $matches = array();
+        $num_matches = preg_match_all('#\{(\w+)[^\w\}]*\}#', $replace, $matches);
+        $parameters_in_replace = array();
+        for ($i = 0; $i < $num_matches; $i++) {
+            $parameters_in_replace[] = strtolower($matches[1][$i]);
+        }
+
+        foreach (array_unique($parameters) as $param) {
+            if (!in_array($param, $parameters_in_replace)) {
+                attach_message(do_lang_tempcode('PARAMETER_DEFINED_NOT_USED', escape_html($param)), 'warn');
+            }
+        }
+
+        foreach (array_unique($parameters_in_replace) as $param) {
+            if (!in_array($param, $parameters)) {
+                attach_message(do_lang_tempcode('PARAMETER_USED_NOT_DEFINED', escape_html($param)), 'warn');
+            }
+        }
     }
 
     /**

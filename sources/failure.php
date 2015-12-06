@@ -349,7 +349,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         require_code('notifications');
         require_lang('tasks');
         $n_subject = do_lang('_TASK_FAILED_SUBJECT');
-        $n_message = do_lang('TASK_FAILED_BODY', '[semihtml]' . $text_eval . '[/semihtml]');
+        $n_message = do_notification_lang('TASK_FAILED_BODY', '[semihtml]' . $text_eval . '[/semihtml]');
         dispatch_notification('task_completed', null, $n_subject, $n_message, array(get_member()), A_FROM_SYSTEM_PRIVILEGED, 2);
     }
 
@@ -671,11 +671,13 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     }
 
     if (function_exists('do_lang')) {
+        require_code('notifications');
+
         $reason_full = do_lang($reason, $reason_param_a, $reason_param_b, null, get_site_default_lang());
         $_stack_trace = get_html_trace();
         $stack_trace = str_replace('html', '&#104;tml', $_stack_trace->evaluate());
         $time = get_timezoned_date(time(), true, true, true);
-        $message = do_template(
+        $message = do_notification_template(
             'HACK_ATTEMPT_MAIL',
             array(
                 '_GUID' => '6253b3c42c5e6c70d20afa9d1f5b40bd',
@@ -698,8 +700,6 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             '.txt',
             'text'
         );
-
-        require_code('notifications');
 
         if (($reason != 'CAPTCHAFAIL_HACK') && ($reason != 'LAME_SPAM_HACK')) {
             $subject = do_lang('HACK_ATTACK_SUBJECT', $ip, null, null, get_site_default_lang());
@@ -1017,7 +1017,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 
     require_code('notifications');
     require_code('comcode');
-    $mail = do_lang('ERROR_MAIL', comcode_escape($error_url), str_replace(array('[html', '[/html'), array('&#91;html', '&#91;/html'), $text), $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
+    $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), str_replace(array('[html', '[/html'), array('&#91;html', '&#91;/html'), $text), $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
     dispatch_notification($notification_type, null, do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), $ocproducts ? '?' : get_ip_address(), null, get_site_default_lang()), $mail, null, A_FROM_SYSTEM_PRIVILEGED);
     if (
         ($ocproducts) &&

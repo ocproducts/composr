@@ -49,7 +49,7 @@ class Hook_cron_cns_birthdays
                 require_code('notifications');
 
                 $subject = do_lang('BIRTHDAY_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $displayname, $username);
-                $mail = do_lang(
+                $mail = do_notification_lang(
                     'BIRTHDAY_NOTIFICATION_MAIL',
                     comcode_escape(get_site_name()),
                     comcode_escape($username),
@@ -83,7 +83,7 @@ class Hook_cron_cns_birthdays
 
             if (count($_birthdays) > 1) {
                 $combined_birthdays_subject = do_lang('COMBINED_BIRTHDAY_NOTIFICATION_MAIL_SUBJECT', get_site_name(), integer_format(count($_birthdays)));
-                $combined_birthdays_mail = do_lang('COMBINED_BIRTHDAY_NOTIFICATION_MAIL', comcode_escape(get_site_name()), $combined_birthdays_mail, comcode_escape(integer_format(count($_birthdays))));
+                $combined_birthdays_mail = do_notification_lang('COMBINED_BIRTHDAY_NOTIFICATION_MAIL', comcode_escape(get_site_name()), $combined_birthdays_mail, comcode_escape(integer_format(count($_birthdays))));
 
                 dispatch_notification('cns_birthday', null, $combined_birthdays_subject, $combined_birthdays_mail);
             }

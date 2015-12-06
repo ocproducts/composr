@@ -43,7 +43,7 @@ function assign_referral_awards($referee, $trigger)
                     $referee_username,
                     $referee_displayname
                 ),
-                do_lang(
+                do_notification_lang(
                     'MAIL_REFERRALS__NONREFERRAL__TOSTAFF_BODY',
                     comcode_escape($referee_username),
                     comcode_escape($referee_displayname)
@@ -148,7 +148,7 @@ function _assign_referral_awards(
                     if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                         $body_lang_string .= '__' . $scheme_name;
                     }
-                    $body = do_lang(
+                    $body = do_notification_lang(
                         $body_lang_string,
                         comcode_escape($level_description),
                         comcode_escape($referrer_username),
@@ -191,7 +191,7 @@ function _assign_referral_awards(
                     if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                         $body_lang_string .= '__' . $scheme_name;
                     }
-                    $body = do_lang(
+                    $body = do_notification_lang(
                         $body_lang_string,
                         comcode_escape($referrer_username),
                         comcode_escape(integer_format($num_total_qualified_by_referrer)),
@@ -235,7 +235,7 @@ function _assign_referral_awards(
                 if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                     $body_lang_string .= '__' . $scheme_name;
                 }
-                $body = do_lang(
+                $body = do_notification_lang(
                     $body_lang_string,
                     comcode_escape($referrer_username),
                     comcode_escape(integer_format($num_total_qualified_by_referrer)),
@@ -279,7 +279,7 @@ function _assign_referral_awards(
                 if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                     $body_lang_string .= '__' . $scheme_name;
                 }
-                $body = do_lang(
+                $body = do_notification_lang(
                     $body_lang_string,
                     comcode_escape($referrer_username),
                     comcode_escape($referee_username),
@@ -320,7 +320,7 @@ function _assign_referral_awards(
                 if (do_lang($body_lang_string . '__' . $scheme_name, null, null, null, null, false) !== null) {
                     $body_lang_string .= '__' . $scheme_name;
                 }
-                $body = do_lang(
+                $body = do_notification_lang(
                     $body_lang_string,
                     comcode_escape($referrer_username),
                     comcode_escape($referee_username),

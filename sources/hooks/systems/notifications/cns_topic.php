@@ -153,7 +153,7 @@ class Hook_notification_cns_topic extends Hook_Notification
      */
     public function get_default_auto_setting($notification_code, $category = null)
     {
-        return A_INSTANT_EMAIL;
+        return A__STATISTICAL;
     }
 
     /**

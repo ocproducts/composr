@@ -95,8 +95,8 @@ class Hook_cron_disastr
                     }
 
                     if (!$has_immunization) {
-                        $cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
-                        $cure_url = $cure_url->evaluate();
+                        $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
+                        $cure_url = $_cure_url->evaluate();
 
                         if ($insert) {
                             // infect the member for the first time
@@ -106,7 +106,7 @@ class Hook_cron_disastr
                             $GLOBALS['SITE_DB']->query_update('members_diseases', array('member_id' => $friends_healthy[$to_infect], 'disease_id' => $disease['id'], 'sick' => 1, 'cure' => 0, 'immunisation' => 0), array('member_id' => $friends_healthy[$to_infect], 'disease_id' => $disease['id']), '', 1);
                         }
 
-                        $message = do_lang('DISEASES_MAIL_MESSAGE', $disease['name'], $disease['name'], array($cure_url, get_site_name()), get_lang($friends_healthy[$to_infect]));
+                        $message = do_notification_lang('DISEASES_MAIL_MESSAGE', $disease['name'], $disease['name'], array($cure_url, get_site_name()), get_lang($friends_healthy[$to_infect]));
                         dispatch_notification('got_disease', null, do_lang('DISEASES_MAIL_SUBJECT', get_site_name(), $disease['name'], null, get_lang($friends_healthy[$to_infect])), $message, array($friends_healthy[$to_infect]), A_FROM_SYSTEM_PRIVILEGED);
 
                         $sick_members[] = $friends_healthy[$to_infect];
@@ -145,8 +145,8 @@ class Hook_cron_disastr
 
                 require_code('notifications');
 
-                $cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
-                $cure_url = $cure_url->evaluate();
+                $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
+                $cure_url = $_cure_url->evaluate();
 
                 if ($insert) {
                     // infect the member for the first time
@@ -156,7 +156,7 @@ class Hook_cron_disastr
                     $GLOBALS['SITE_DB']->query_update('members_diseases', array('member_id' => strval($random_member[0]['id']), 'disease_id' => $disease['id'], 'sick' => 1, 'cure' => 0, 'immunisation' => 0), array('member_id' => strval($random_member[0]['id']), 'disease_id' => strval($disease['id'])), '', 1);
                 }
 
-                $message = do_lang('DISEASES_MAIL_MESSAGE', $disease['name'], $disease['name'], array($cure_url, get_site_name()), get_lang($random_member[0]['id']));
+                $message = do_notification_lang('DISEASES_MAIL_MESSAGE', $disease['name'], $disease['name'], array($cure_url, get_site_name()), get_lang($random_member[0]['id']));
                 dispatch_notification('got_disease', null, do_lang('DISEASES_MAIL_SUBJECT', get_site_name(), $disease['name'], null, get_lang($random_member[0]['id'])), $message, array($random_member[0]['id']), A_FROM_SYSTEM_PRIVILEGED);
             }
 

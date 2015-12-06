@@ -531,7 +531,7 @@ function cns_invite_to_pt($member_id, $topic_id)
 
     require_code('notifications');
     $subject = do_lang('INVITED_TO_TOPIC_SUBJECT', get_site_name(), $topic_title, get_lang($member_id));
-    $mail = do_lang('INVITED_TO_TOPIC_BODY', get_site_name(), comcode_escape($topic_title), array(comcode_escape($current_username), $topic_url), get_lang($member_id));
+    $mail = do_notification_lang('INVITED_TO_TOPIC_BODY', get_site_name(), comcode_escape($topic_title), array(comcode_escape($current_username), $topic_url), get_lang($member_id));
     dispatch_notification('cns_topic_invite', null, $subject, $mail, array($member_id));
 }
 
@@ -558,7 +558,7 @@ function send_pt_notification($post_id, $subject, $topic_id, $to_id, $from_id = 
 
     require_code('notifications');
     $msubject = do_lang('NEW_PRIVATE_TOPIC_SUBJECT', $subject, null, null, get_lang($to_id));
-    $mmessage = do_lang('NEW_PRIVATE_TOPIC_MESSAGE', comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($from_id, true)), comcode_escape($subject), array(comcode_escape($GLOBALS['FORUM_DRIVER']->topic_url($topic_id)), $post_comcode, strval($from_id)), get_lang($to_id));
+    $mmessage = do_notification_lang('NEW_PRIVATE_TOPIC_MESSAGE', comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($from_id, true)), comcode_escape($subject), array(comcode_escape($GLOBALS['FORUM_DRIVER']->topic_url($topic_id)), $post_comcode, strval($from_id)), get_lang($to_id));
     dispatch_notification('cns_new_pt', null, $msubject, $mmessage, array($to_id), $from_id);
 
     if ($mark_unread) {
