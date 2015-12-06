@@ -128,16 +128,20 @@ function load_config_options()
 
     $CONFIG_OPTIONS_FULLY_LOADED = true;
 
-    $temp = $GLOBALS['SITE_DB']->query_select('config', array('*'), null, '', null, null, true);
+    $temp = $GLOBALS['SITE_DB']->query_select('config', array('c_name'/*LEGACY, see note below*/, '*'), null, '', null, null, true);
 
     if ($temp === null) {
-        if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
-            $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
-            if ($temp === null) {
+        if (running_script('install')) {
+            $temp = array();
+        } else {
+            if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
+                $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
+                if ($temp === null) {
+                    critical_error('DATABASE_FAIL');
+                }
+            } else {
                 critical_error('DATABASE_FAIL');
             }
-        } else {
-            critical_error('DATABASE_FAIL');
         }
     }
 
