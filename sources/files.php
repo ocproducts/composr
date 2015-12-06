@@ -250,6 +250,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '403.shtml' => '',
                                              'cron.yaml' => '',
                                              'dos.yaml' => '',
+                                             'server_certificates.pem' => 'data_custom/modules/composr_mobile_sdk/ios',
                                              'queue.yaml' => '',
                                              '.htaccess' => '',
 

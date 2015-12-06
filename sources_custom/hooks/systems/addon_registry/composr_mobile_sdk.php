@@ -170,6 +170,7 @@ class Hook_addon_registry_composr_mobile_sdk
 
             // Notifications
             'data_custom/modules/composr_mobile_sdk/ios/entrust_root_certification_authority.pem',
+            'sources_custom/hooks/systems/notification_types_extended/composr_mobile_sdk.php',
             'sources_custom/composr_mobile_sdk/notifications.php',
             'sources_custom/composr_mobile_sdk/ios/notifications.php',
             'sources_custom/composr_mobile_sdk/ios/ApnsPHP/Abstract.php',
