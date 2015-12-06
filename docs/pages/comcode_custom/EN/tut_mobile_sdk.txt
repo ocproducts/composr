@@ -1,6 +1,7 @@
 [title sub="Written by ocProducts"]Composr Tutorial: Writing mobile apps - the Composr Mobile SDK[/title]
 
-Composr Mobile SDK is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experience iOS and Android developers.
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/logo.jpg[/media]
+Composr Mobile SDK ("CMS SDK") is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experience iOS and Android developers.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -15,9 +16,41 @@ The main iOS/Android SDK can be [url="found on github"]https://github.com/ocprod
 To connect to a Composr site you will need to install the non-bundled [tt]composr_mobile_sdk[/tt] addon.
 This addon also contains some scripting to help generate app assets from the Composr site.
 
-[title="3"]The SDK[/title]
+[title="2"]The SDK[/title]
 
-TODO
+[title="3"]Setup[/title]
+
+[title="4"]iOS[/title]
+
+How to link the SDK into your project:
+[list="1"]
+[*] Create a new project to use with [tt]CMS_SDK[/tt] or open an existing project.
+[*] Add a Prefix Header file (.pch) to your project if you do not have one (the prefix headers are not added automatically in Xcode6 created projects). Steps to add a pch file:
+ - File --> New -->
+ - iOS --> Other --> PCH File --> [tt]ProjectName-Prefix.pch[/tt]
+ - Project > Build Settings > Search: "Prefix Header"
+ - Under "Apple LLVM 6.0" you will get the Prefix Header key
+ - Type in: [tt]ProjectName/ProjectName-Prefix.pch[/tt]
+ - Clean project
+[*] Frameworks you need to add in Build Phases:
+ - [tt]MobileCoreServices.framework[/tt]
+ - [tt]libz.dylib[/tt]
+ - [tt]CFNetwork.framework[/tt]
+ - [tt]libsqlite3.0.dylib[/tt]
+ - [tt]SystemConfiguration.framework[/tt]
+ - [tt]Foundation.framework[/tt]
+ - [tt]CoreGraphics.framework[/tt]
+ - [tt]UIKit.framework[/tt]
+[*] Now, add [tt]CMS_SDK[/tt] entirely to your project by File --> Add Files to [tt]<your_project_name>[/tt]. Then, you can delete off the files not required. Make sure you check the "Copy items if needed" option and add the required targets.
+[*] Once you have imported the entire SDK, you can move some unwanted files to trash. You can also import the SDK without these files, but this would be easier. Files to be removed:
+ - The xcode project file ([tt]Composr Mobile SDK.xcodeproj[/tt])
+ - [tt]AppDelegate.h[/tt] and [tt]AppDelegate.m[/tt]
+ - Entire [tt]Composr Mobile SDKTests[/tt] folder
+ - [tt]Supporting Files[/tt] folder
+[*] Now, you need to add a compiler option for the [tt]JsonKit[/tt] library. Open the "Compile Sources" in "Build Settings" of your project. Scroll down to [tt]JSONKit.m[/tt] and double click on it. In the popup that appears, give this text: [tt]-fno-objc-arc -Wno-conversion[/tt].
+[*] Now, open up your pch file and import [tt]CMS_SDK.h[/tt] so that the SDK is available in your entire project.
+[/list]
+That's it. You are now good to go work with the features of [tt]CMS_SDK[/tt].
 
 [title="2"]Notifications[/title]
 
@@ -29,6 +62,7 @@ For iOS notifications to work, put your Apple-provided server certificate over [
 
 [title="2"]Toolkit[/title]
 
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/phone.png[/media]
 The toolkit will help you mirror some Composr website resources into a mobile app. It is a part of the non-bundled [tt]composr_mobile_sdk[/tt] addon.
 
 [title="3"]Language files[/title]

@@ -850,6 +850,8 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_menus/menus_editor.png',
             'data_custom/images/docs/tut_mobile/mobile.png',
             'data_custom/images/docs/tut_mobile/mobile_menu.png',
+            'data_custom/images/docs/tut_mobile_sdk/logo.jpg',
+            'data_custom/images/docs/tut_mobile_sdk/phone.png',
             'data_custom/images/docs/tut_moderation/forum_helpdesk_add_multi_moderation.png',
             'data_custom/images/docs/tut_moderation/forum_helpdesk_using_multi_moderation.png',
             'data_custom/images/docs/tut_moderation/mod_edit_topic.png',
