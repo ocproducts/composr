@@ -30,21 +30,26 @@ class Hook_check_mysql_version
      */
     public function run()
     {
+        $minimum_version = '5.5.3'; // also maintain in tut_web_hosting.txt
+        // ^ Why? We need this for proper Unicode support: https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html
+
+        // If you really need to fiddle it and don't care about emoji, add this to _config.php while installing (before step 5 runs):   $SITE_INFO['database_charset'] = 'utf8';
+
         $warning = array();
         if (isset($GLOBALS['SITE_DB']->connection_read[0])) {
             if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
                 $version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
                 if ($version !== false) {
                     $x = float_to_raw_string(floatval($version) / 10000.0);
-                    if (version_compare($x, '4.1.0', '<')) {
-                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD');
+                    if (version_compare($x, $minimum_version, '<')) {
+                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version));
                     }
                 }
             } elseif (function_exists('mysql_get_server_info') && get_db_type() == 'mysql') {
                 $version = @mysql_get_server_info($GLOBALS['SITE_DB']->connection_read[0]);
                 if ($version !== false) {
-                    if (version_compare($version, '4.1.0', '<')) {
-                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD');
+                    if (version_compare($version, $minimum_version, '<')) {
+                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version));
                     }
                 }
             }

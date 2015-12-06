@@ -1120,8 +1120,17 @@ function step_5()
         }
     }
 
-    // Read in a temporary SITE_INFO, but only so this step has something to run with (the _config.php write doesn't use this data)
     global $SITE_INFO;
+
+    // If this exists, we may as well try and read it - may have some special flags in here during installation that we want to propagate
+    @include(get_file_base() . '/_config.php');
+    foreach ($SITE_INFO as $key => $val) {
+        if (!isset($_POST[$key])) {
+            $_POST[$key] = $val;
+        }
+    }
+
+    // Read in a temporary SITE_INFO, but only so this step has something to run with (the _config.php write doesn't use this data)
     foreach ($_POST as $key => $val) {
         if (in_array($key, array(
             'ftp_password',
