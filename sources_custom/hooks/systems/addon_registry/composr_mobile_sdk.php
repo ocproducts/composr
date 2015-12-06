@@ -108,7 +108,7 @@ class Hook_addon_registry_composr_mobile_sdk
     public function get_dependencies()
     {
         return array(
-            'requires' => array('PHP5.3'),
+            'requires' => array('PHP5.3', 'Conversr'),
             'recommends' => array(),
             'conflicts_with' => array()
         );
@@ -174,10 +174,17 @@ class Hook_addon_registry_composr_mobile_sdk
             'exports/composr_mobile_sdk/index.html',
             'exports/composr_mobile_sdk/image_assets/index.html',
 
+            // External endpoints (API)
+            'sources_custom/hooks/endpoints/account/join.php',
+            'sources_custom/hooks/endpoints/account/login.php',
+            'sources_custom/hooks/endpoints/account/lost_password.php',
+            'sources_custom/hooks/endpoints/account/setup_push_notifications.php',
+            'sources_custom/hooks/endpoints/misc/contact_us.php',
+            // Also see cns_tapatalk addon for more useful endpoints, but via Tapatalk API. At some point we likely will merge this into a single framework
+
             // Notifications
             'data_custom/modules/composr_mobile_sdk/ios/entrust_root_certification_authority.pem',
             'sources_custom/hooks/systems/notification_types_extended/composr_mobile_sdk.php',
-            'sources_custom/composr_mobile_sdk/notifications.php',
             'sources_custom/composr_mobile_sdk/ios/notifications.php',
             'sources_custom/composr_mobile_sdk/ios/ApnsPHP/Abstract.php',
             'sources_custom/composr_mobile_sdk/ios/ApnsPHP/Autoload.php',

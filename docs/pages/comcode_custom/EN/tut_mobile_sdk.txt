@@ -1,27 +1,35 @@
-[title sub="Written by Rajesh Kumar (ocProducts)"]Composr Tutorial: Writing mobile apps - the Composr Mobile SDK[/title]
+[title sub="Written by ocProducts"]Composr Tutorial: Writing mobile apps - the Composr Mobile SDK[/title]
 
-TODO
+Composr Mobile SDK is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experience iOS and Android developers.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Getting Composr Mobile SDK[/title]
 
-[title="3"]iOS/Android SDK[/title]
+[title="3"]SDK[/title]
 
-The main SDK can be [url="found on github"]https://github.com/ocproducts/[/url].
+The main iOS/Android SDK can be [url="found on github"]https://github.com/ocproducts/[/url].
 
 [title="3"]Server-side functionality[/title]
 
 To connect to a Composr site you will need to install the non-bundled [tt]composr_mobile_sdk[/tt] addon.
 This addon also contains some scripting to help generate app assets from the Composr site.
 
+[title="3"]The SDK[/title]
+
+TODO
+
 [title="2"]Notifications[/title]
+
+Composr can support sending native iOS/Android push notifications.
+
+There are many configuration options located in Admin Zone > Setup > Configuration > Composr APIs.
 
 For iOS notifications to work, put your Apple-provided server certificate over [tt]data_custom/modules/composr_mobile_sdk/ios/server_certificates.pem[/tt] (follow the usual CSR signing process against your Apple developer account).
 
 [title="2"]Toolkit[/title]
 
-The toolkit is a part of the non-bundled [tt]composr_mobile_sdk[/tt] addon.
+The toolkit will help you mirror some Composr website resources into a mobile app. It is a part of the non-bundled [tt]composr_mobile_sdk[/tt] addon.
 
 [title="3"]Language files[/title]
 
@@ -60,6 +68,116 @@ php data_custom/composr_mobile_sdk_build.php images example
 [*] Find the files have been generated under [tt]exports/composr_mobile_sdk/image_assets[/tt]
 [*] Delete assets you don't want them copy through to your app
 [/list]
+
+[title="2"]Server-side API[/title]
+
+You may access the server-side API by making HTTP calls to [tt]http://yourbaseurl/data/endpoint.php[/tt]. Results are returned as JSON.
+
+The API is split into a number of endpoints, which are given a 'hook' name, and categorised by 'hook type'.
+
+Both REST-style and GET-parameter style requests can be made. At the time of writing, the API is still quite young and most calls are not really content-based, so REST isn't particularly relevant as a metaphor, so we recommend keeping it simple and just using the GET-parameter method.
+
+Here are 2 equivalent example API calls...
+ - [tt]PUT http://yourbaseurl/data/endpoint.php/somehooktype/somehook/someid[/tt] (REST style)
+ - [tt]POST http://yourbaseurl/data/endpoint.php?hook_type=somehooktype&hook=somehook&type=edit&id=someid[/tt] (GET-parameter style)
+Notice these differences:
+[list="1"]
+[*] Request method vs simple GET/POST with use of Composr-style [tt]type[/tt] parameter.
+They are mapped as follows: [tt]GET[/tt]=[tt]view[/tt], [tt]PUT[/tt]=[tt]edit[/tt], [tt]POST[/tt]=[tt]add[/tt], [tt]DELETE[/tt]=[tt]delete[/tt].
+[*] The path components after the PHP file, vs use of [tt]hook_type[/tt], [tt]hook[/tt], and [tt]id[/tt] GET parameters.
+[/list]
+
+Apart from the standardised [tt]type[/tt] and [tt]id[/tt] request parameters described above, input parameters are just put through as GET/POST parameters (i.e. not submitted via POSTed/PUT JSON data). Different endpoints may use different parameters. It is up to the endpoint how to use the parameters, even the meaning of [tt]type[/tt] and [tt]id[/tt] is not defined and those parameters are not required by all endpoints.
+
+JSON is returned in the response as a structure like:
+[code="JavaScript"]
+{
+	success: true|false,
+	error_details: string|null,
+	response_data: ...
+}
+[/code]
+
+Any endpoint may return an error as a false [tt]success[/tt], so the iOS/Android code must handle this. If there is an error, [tt]error_details[/tt] will always be set. Error messages are guaranteed to be human-readable and to be translatable, so you can show them directly to mobile users.
+
+The particular data returned within [tt]response_data[/tt] varies by endpoint.
+
+Authentication is done automatically using cookies, just like it would for normal website requests. If you can't use cookies, re-send the [tt]device_auth_member_id_cn[/tt]/[tt]device_auth_pass_hashed_cn[/tt]/[tt]device_auth_member_id_vl[/tt]/[tt]device_auth_pass_hashed_vl[/tt] response parameters from the [tt]login[/tt] endpoint as POST parameters to subsequent requests.
+
+[title="3"]Default available endpoints[/title]
+
+{|
+! Hook type
+! Hook
+! GET parameters
+! POST parameters
+! Dictionary entries within [tt]response_data[/tt]
+|-
+| [tt]account[/tt]
+| [tt]join[/tt]
+| [i]None[/i]
+| Whatever the normal Composr join form POSTS through. This is usually at least:
+[tt]username[/tt]
+
+[tt]password[/tt]
+
+[tt]password_confirm[/tt]
+
+[tt]email_address[/tt]
+
+[tt]email_address_confirm[/tt]
+
+[tt]dob_day[/tt]
+
+[tt]dob_month[/tt]
+
+[tt]dob_year[/tt]
+| [tt]message[/tt]
+|-
+| [tt]account[/tt]
+| [tt]login[/tt]
+| [i]None[/i]
+| [tt]username[/tt]
+
+[tt]password[/tt]
+| [tt]device_auth_member_id_cn[/tt] (name of cookie containing member ID)
+
+[tt]device_auth_pass_hashed_cn[/tt] (name of cookie containing hashed password)
+
+[tt]device_auth_member_id_vl[/tt] (member ID, if reading cookies is too difficult on your platform)
+
+[tt]device_auth_pass_hashed_vl[/tt] (hashed password, if reading cookies is too difficult on your platform)
+
+Lots of data from Composr's [tt]cns_read_in_member_profile[/tt] function
+|-
+| [tt]account[/tt]
+| [tt]lost_password[/tt]
+| [tt]username[/tt] (optional)
+
+[tt]email_address[/tt] (optional) -- one of these must be passed
+| [i]None[/i]
+| [tt]message[/tt]
+|-
+| [tt]account[/tt]
+| [tt]setup_push_notifications[/tt]
+| [tt]device[/tt] ("ios" or "android")
+
+[tt]member[/tt] (optional, the member ID being set up for -- defaults to current member)
+| [tt]token[/tt] (device notification token)
+| [tt]message[/tt]
+|-
+| [tt]misc[/tt]
+| [tt]contact_us[/tt]
+| [i]None[/i]
+| [tt]category[/tt] (optional, category for message)
+
+[tt]post[/tt] (the message)
+
+[tt]title[/tt] (optional, the subject line)
+
+[tt]email[/tt] (optional, the email to send from -- defaults to that of current member)
+| [tt]message[/tt]
+|}
 
 [title="2"]Other approaches to mobile integration[/title]
 

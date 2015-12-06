@@ -1365,6 +1365,26 @@ class Hook_addon_registry_core
             'sources/deep_clean.php',
             'sources/hooks/systems/symbols/DEEP_CLEAN.php',
 
+            // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
+            'data/endpoint.php',
+            'sources/endpoints.php',
+            'sources/hooks/endpoints/.htaccess',
+            'sources/hooks/endpoints/index.html',
+            'sources/hooks/endpoints/account/.htaccess',
+            'sources/hooks/endpoints/account/index.html',
+            'sources/hooks/endpoints/content/.htaccess',
+            'sources/hooks/endpoints/content/index.html',
+            'sources/hooks/endpoints/misc/.htaccess',
+            'sources/hooks/endpoints/misc/index.html',
+            'sources_custom/hooks/endpoints/.htaccess',
+            'sources_custom/hooks/endpoints/index.html',
+            'sources_custom/hooks/endpoints/account/.htaccess',
+            'sources_custom/hooks/endpoints/account/index.html',
+            'sources_custom/hooks/endpoints/content/.htaccess',
+            'sources_custom/hooks/endpoints/content/index.html',
+            'sources_custom/hooks/endpoints/misc/.htaccess',
+            'sources_custom/hooks/endpoints/misc/index.html',
+
             // Admin theme
             'themes/admin/css/index.html',
             'themes/admin/css/adminzone.css',

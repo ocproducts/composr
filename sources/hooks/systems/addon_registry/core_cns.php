@@ -357,6 +357,7 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/CNS_JOIN_STEP2_SCREEN.tpl',
             'lang/EN/cns_lurkers.ini',
             'sources/cns_profiles.php',
+            'sources/cns_lost_password.php',
             'sources/hooks/systems/profiles_tabs/index.html',
             'sources_custom/hooks/systems/profiles_tabs/index.html',
             'sources/hooks/systems/profiles_tabs/about.php',

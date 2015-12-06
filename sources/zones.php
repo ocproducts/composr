@@ -905,7 +905,7 @@ function _get_module_path($zone, $module)
  * Get an array of all the hook implementations for a hook class.
  *
  * @param  ID_TEXT $type The type of hook
- * @set    blocks modules systems
+ * @set    blocks endpoints modules systems
  * @param  ID_TEXT $entry The hook class to find hook implementations for (e.g. the name of a module)
  * @return array A map of hook implementation name to [sources|sources_custom]
  */
