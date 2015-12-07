@@ -99,7 +99,7 @@ class tutorials_all_linked_test_set extends cms_test_case
         while (($f = readdir($dh)) !== false) {
             if (substr($f, -4) == '.png') {
                 $icon = basename($f, '.png');
-                if (!in_array($icon, array('css', 'javascript', 'php', 'video' /*Generic ones we aren't using yet*/))) {
+                if (!in_array($icon, array('css', 'javascript', 'php', 'video' /*Very generic ones we aren't using yet*/))) {
                     $this->assertTrue(in_array(find_theme_image('tutorial_icons/' . $icon), $icons_used), $icon . ' icon is not used');
                 }
             }

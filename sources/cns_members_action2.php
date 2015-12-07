@@ -1270,6 +1270,8 @@ function cns_ban_member($member_id)
     mail_wrap(do_lang('BAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', 2, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
 
     decache('main_members');
+
+    unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
 }
 
 /**
@@ -1297,6 +1299,8 @@ function cns_unban_member($member_id)
     mail_wrap(do_lang('UNBAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', 2, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
 
     decache('main_members');
+
+    unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
 }
 
 /**

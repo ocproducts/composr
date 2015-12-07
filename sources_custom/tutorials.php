@@ -387,6 +387,7 @@ function find_tutorial_image($icon, $tags, $get_theme_image = false)
 function _find_tutorial_image_for_tag($tag)
 {
     $tag = str_replace(' ', '_', $tag);
+    $tag = str_replace('+', '', $tag); // E.g. Wiki+
     $tag = str_replace('&', 'and', $tag);
     $tag = strtolower($tag);
     return $tag;

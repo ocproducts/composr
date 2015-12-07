@@ -126,6 +126,9 @@ class lang_test_set extends cms_test_case
         if (preg_match('#([^\]/A-Za-z"\_<]+)comcode([^A-Za-z"]+)#', $string) != 0) {
             $this->assertTrue(false, 'The term \'comcode\' was used in ' . $file . '. This should be changed to \'Comcode\'.');
         }
+        if (strpos($string, 'wiki+') !== false) {
+            $this->assertTrue(false, 'The term \'wiki+\' was used in ' . $file . '. This should be changed to \'Wiki+\'.');
+        }
         if (!is_null($key)) {
             if (stripos($string, 'supermember') !== false) {
                 $this->assertTrue(false, 'The term \'supermember\' was used in ' . $file . '. This should be changed to \'super-member\'.');

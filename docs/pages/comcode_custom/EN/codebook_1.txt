@@ -671,7 +671,7 @@ The main five differences and points of note are:
 
 Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the Block construction assistant to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called [tt]example[/tt] with parameters [tt]a[/tt] and [tt]b[/tt]. You would define language strings as follows:
 
-[code="ini"]
+[code="INI"]
 BLOCK_TRANS_NAME_example=Example
 BLOCK_example_DESCRIPTION=An example block.
 BLOCK_example_USE=Useful for giving examples.

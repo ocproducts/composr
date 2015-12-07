@@ -1377,7 +1377,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'themes/default/images_custom/tutorial_icons/upgrading.png',
             'themes/default/images_custom/tutorial_icons/web_hosting.png',
             'themes/default/images_custom/tutorial_icons/web_standards_and_accessibility.png',
-            'themes/default/images_custom/tutorial_icons/wiki+.png',
+            'themes/default/images_custom/tutorial_icons/wiki.png',
             'themes/default/images_custom/tutorial_icons/internet_technology.png',
             'themes/default/images_custom/tutorial_icons/mobile.png',
         );
