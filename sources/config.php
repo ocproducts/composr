@@ -128,7 +128,7 @@ function load_config_options()
 
     $CONFIG_OPTIONS_FULLY_LOADED = true;
 
-    $temp = $GLOBALS['SITE_DB']->query_select('config', array('c_name'/*LEGACY, see note below*/, '*'), null, '', null, null, true);
+    $temp = $GLOBALS['SITE_DB']->query_select('config', array('*', 'c_name'/*LEGACY, see note below*/), null, '', null, null, true);
 
     if ($temp === null) {
         if (running_script('install')) {
