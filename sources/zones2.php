@@ -217,7 +217,10 @@ function save_zone_base_url($zone, $base_url)
     @flock($tmp, LOCK_UN);
     fclose($tmp);
     $config_file_before = $config_file;
-    $config_file = preg_replace('#\n?\$SITE_INFO[\'ZONE_MAPPING_' . preg_quote($zone, '#') . '\']=array\(\'[^\']+\',\'[^\']+\'\);\n?#', '', $config_file); // Strip any old entry
+
+    $regexp = '#\n?\$SITE_INFO\[\'ZONE_MAPPING_' . preg_quote($zone, '#') . '\'\] = array\(\'[^\']+\', \'[^\']+\'\);\n?#';
+    $config_file = preg_replace($regexp, '', $config_file); // Strip any old entry
+
     if ($base_url != '') { // Add new entry, if appropriate
         if (url_is_local($base_url)) {
             $domain = cms_srv('HTTP_HOST');
@@ -230,7 +233,7 @@ function save_zone_base_url($zone, $base_url)
             $domain = $parsed['host'];
             $path = $parsed['path'];
         }
-        $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "']=array('" . addslashes($domain) . "','" . addslashes(trim($path, '/')) . "');\n";
+        $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "'] = array('" . addslashes($domain) . "', '" . addslashes(trim($path, '/')) . "');\n";
     }
 
     if ($config_file != $config_file_before) {

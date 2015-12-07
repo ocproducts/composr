@@ -38,7 +38,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'comcode_page':
-                return $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)');
+                return $GLOBALS['SITE_DB']->query_select_value('comcode_pages p JOIN ' . get_table_prefix() . 'zones z ON p.the_zone=z.zone_name', 'COUNT(*)'); // Extra joining just because things are liable to accidentally become inconsistent for zones&pages (due to their partial on-disk nature)
 
             case 'zone':
                 return $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)');
@@ -65,7 +65,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
                     $where = array('the_page' => $page);
                 }
 
-                $_ret = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_zone', 'the_page'), $where);
+                $_ret = $GLOBALS['SITE_DB']->query_select('comcode_pages p JOIN ' . get_table_prefix() . 'zones z ON p.the_zone=z.zone_name', array('the_zone', 'the_page'), $where);
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = $r['the_zone'] . ':' . $r['the_page'];
@@ -340,8 +340,12 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         require_code('site');
         foreach (array_keys(find_all_langs()) as $lang) {
             $result = _request_page($row['the_page'], $row['the_zone'], 'comcode_custom', $lang, true);
-            list(, , , $_lang, $full_path) = $result;
+            list(, , , $_lang, $_full_path) = $result;
             if ($lang == $_lang) {
+                $full_path = get_custom_file_base() . '/' . $_full_path;
+                if (is_file($full_path)) {
+                    $full_path = get_file_base() . '/' . $_full_path;
+                }
                 $text[$lang] = file_get_contents($full_path);
             }
         }

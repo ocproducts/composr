@@ -132,13 +132,13 @@ class resource_fs_test_set extends cms_test_case
                 $folder_resource_type = is_array($ob->folder_resource_type) ? $ob->folder_resource_type[0] : $ob->folder_resource_type;
                 list(, $folder_resource_id) = $ob->folder_convert_filename_to_id('test-a', $folder_resource_type);
                 $test = $ob->search($folder_resource_type, $folder_resource_id, true);
-                $this->assertTrue($test !== null, 'Could not search for ' . $folder_resource_type);
+                $this->assertTrue($test !== null, 'Could not search for ' . $folder_resource_type . ' test-a');
             }
 
             $file_resource_type = is_array($ob->file_resource_type) ? $ob->file_resource_type[0] : $ob->file_resource_type;
             list(, $file_resource_id) = $ob->file_convert_filename_to_id('test-content', $file_resource_type);
             $test = $ob->search($file_resource_type, $file_resource_id, true);
-            $this->assertTrue($test !== null, 'Could not search for ' . $file_resource_type);
+            $this->assertTrue($test !== null, 'Could not search for ' . $file_resource_type . ' test-content');
             if (!is_null($test)) {
                 if (is_null($ob->folder_resource_type)) {
                     $this->assertTrue($test == '', 'Should have found in root, ' . $file_resource_type);
