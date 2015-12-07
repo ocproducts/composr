@@ -57,7 +57,7 @@ function getAlexaRank($url)
     $p = array();
     $result = http_download_file('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.0);
     if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
-        $rank = integer_format(intval($p[2]));
+        $rank = integer_format(intval($p[1]));
     } else {
         $rank = do_lang('NA');
     }
