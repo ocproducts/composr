@@ -31,8 +31,10 @@ class Hook_endpoint_account_join
         cns_require_all_forum_stuff();
         list($message, $member_id) = cns_join_actual(false);
 
+        $_message = $message->evaluate();
+
         return array(
-            'message' => $message->evaluate(),
+            'message' => ($_message == '') ? null : $_message,
         );
     }
 }
