@@ -1552,6 +1552,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     }
                                 }
                                 return null;
+                            case '405':
+                                if ($byte_limit == 0 && !$no_redirect && empty($post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
+                                    $text = _http_download_file($url, 1, $trigger_error, false, $ua, $post_params, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                    $DOWNLOAD_LEVEL--;
+                                    if ($put !== null) {
+                                        fclose($put);
+                                        if (!$put_no_delete) {
+                                            @unlink($put_path);
+                                        }
+                                    }
+                                    return _detect_character_encoding($text);
+                                }
                             default:
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url)));
