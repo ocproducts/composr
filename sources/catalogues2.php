@@ -125,6 +125,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
             'rep_image' => '',
             'c_name' => $name,
             'cc_notes' => '',
+            'cc_order' => 0,
             'cc_add_date' => time(),
             'cc_parent_id' => null,
         );
