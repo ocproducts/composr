@@ -172,7 +172,7 @@ function init__webstandards()
         'colgroup' => array('col'),
         'select' => array('option', 'optgroup'),
         'legend' => array('ins', 'del'),
-        //'map'=>array('area'), Apparently no such rule (see w3.org)
+        //'map' => array('area'), Apparently no such rule (see w3.org)
         'html' => array('head', 'body'),
         'embed' => array('noembed'),
         'applet' => array('param'),
@@ -194,7 +194,7 @@ function init__webstandards()
         'pre' => array(),
         'script' => array(),
         'param' => array(),
-        /*'option'=>array(),*/
+        /*'option' => array(),*/
         'area' => array(),
         'link' => array('link'),
         'basefont' => array(),
@@ -243,8 +243,8 @@ function init__webstandards()
     global $REQUIRE_ANCESTER;
     $REQUIRE_ANCESTER = array(
         'textarea' => 'form',
-        //'input'=>'form',
-        //'button'=>'form',
+        //'input' => 'form',
+        //'button' => 'form',
         'option' => 'form',
         'optgroup' => 'form',
         'select' => 'form',

@@ -208,16 +208,16 @@ function xhtmlise_html($html, $definitely_want = false, $snippet = false)
 
     // Remove some empty tags that shouldn't be empty (e.g. table)
     $may_not_be_empty = array(
-        /*'h1','h2','h3','h4','h5','h6','p','blockquote','pre',*/
-        'br', 'hr',/*'fieldset','address','noscript',*/
+        /*'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'pre',*/
+        'br', 'hr',/*'fieldset', 'address', 'noscript',*/
         'table', 'tbody',
         'tfoot', 'thead', 'tr', 'dd', 'dt', 'dl', 'li', 'ol', 'ul', 'rbc', 'rtc', 'rb', 'rt', 'rp',/*'span',*/
         'abbr',
-        'acronym', 'cite',/*'code',*/
-        'dfn',/*'em','strong','kbd','q','samp','var','sub','sup','tt','del',*/
+        'acronym', 'cite',/* 'code',*/
+        'dfn',/* 'em', 'strong', 'kbd', 'q', 'samp', 'var', 'sub', 'sup', 'tt', 'del',*/
         'ruby', 'bdo',
         'img',/*'ins',*/
-        'param', 'input', 'select', 'object', 'caption', 'label',/*'b','i','small','big',*/
+        'param', 'input', 'select', 'object', 'caption', 'label',/* 'b', 'i', 'small', 'big',*/
         'base', 'body', 'col', 'colgroup', 'map',
         'optgroup', 'legend', 'area', 'form',
     );

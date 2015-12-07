@@ -291,7 +291,7 @@ class CMSModerationWrite
 
         $GLOBALS['FORUM_DB']->query_update(
             'f_posts',
-            array('p_post' => lang_remap_comcode($target_post['p_post'], $merged_post, $GLOBALS['FORUM_DB'])),
+            lang_remap_comcode('p_post', $target_post['p_post'], $merged_post, $GLOBALS['FORUM_DB']),
             array('id' => $target_post_id),
             '',
             1

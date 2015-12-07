@@ -140,6 +140,12 @@ class lang_test_set extends cms_test_case
         if (preg_match('#([^/\_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The filetype \'zip\' was used in ' . $file . '. This should be changed to \'ZIP\'.');
         }
+        if (stripos($string, 'CommandrFS') !== false) {
+            $this->assertTrue(false, 'The phrase \'CommandrFS\' was used in ' . $file . '. This should be changed to \'Commandr-fs\'.');
+        }
+        if (strpos($string, 'Commandr-FS') !== false) {
+            $this->assertTrue(false, 'The phrase \'Commandr-FS\' was used in ' . $file . '. This should be changed to \'Commandr-fs\'.');
+        }
 
         // Old-fashioned words
         if (stripos($string, 'amongst') !== false) {

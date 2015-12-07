@@ -67,10 +67,10 @@ function autoprobe_cdns()
         (substr($domain_name, 0, 4) == 'www.') ? preg_replace('#^www\.#', '', $domain_name) : ('www' . '.' . $domain_name),
         'ftp' . '.' . $domain_name,
         'mail' . '.' . $domain_name,
-        /*'smtp'.'.'.$domain_name,  Let's be at least somewhat reasonable ;-)
-        'imap'.'.'.$domain_name,
-        'pop'.'.'.$domain_name,
-        'webmail'.'.'.$domain_name,*/
+        /*'smtp' . '.' . $domain_name,  Let's be at least somewhat reasonable ;-)
+        'imap' . '.' . $domain_name,
+        'pop' . '.' . $domain_name,
+        'webmail' . '.' . $domain_name,*/
     );
 
     $detected_cdns = '';

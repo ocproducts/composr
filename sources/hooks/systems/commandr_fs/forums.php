@@ -111,31 +111,31 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         switch ($above) {
             case '':
             case 'forum':
-                if (($under == 'topic') && ($above === null)) {
+                if (($under == 'topic') && (empty($above))) {
                     return null;
                 }
 
-                if (($under == 'forum') || ($under == 'topic')) {
-                    $sub_info = $this->_get_cma_info($under);
-                    $folder_info = $this->_get_cma_info('forum');
-                    if ($under == 'topic') {
-                        return array(
-                            'cat_field' => $sub_info['parent_category_field'],
-                            'linker_table' => null,
-                            'id_field' => $sub_info['parent_spec__field_name'],
-                            'id_field_linker' => $sub_info['parent_spec__field_name'],
-                            'cat_field_numeric' => $folder_info['id_field_numeric'],
-                        );
-                    }
+                if ($under == 'topic') {
                     return array(
-                        'cat_field' => $sub_info['parent_category_field'],
-                        'linker_table' => $sub_info['parent_spec__table_name'],
-                        'id_field' => $sub_info['parent_spec__field_name'],
-                        'id_field_linker' => $sub_info['parent_spec__field_name'],
-                        'cat_field_numeric' => $folder_info['id_field_numeric'],
+                        'cat_field' => 't_forum_id',
+                        'linker_table' => null,
+                        'id_field' => 'id',
+                        'id_field_linker' => 'id',
+                        'cat_field_numeric' => true,
+                    );
+                }
+
+                if ($under == 'forum') {
+                    return array(
+                        'cat_field' => 'f_parent_forum',
+                        'linker_table' => 'f_forums',
+                        'id_field' => 'id',
+                        'id_field_linker' => 'id',
+                        'cat_field_numeric' => true,
                     );
                 }
                 break;
+
             case 'topic':
                 if ($under == 'post') {
                     return array(
@@ -301,13 +301,12 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $pinned = $this->_default_property_int($properties, 'pinned');
         $sunk = $this->_default_property_int($properties, 'sunk');
         $cascading = $this->_default_property_int($properties, 'cascading');
-        $pt_from = $this->_default_property_int($properties, 'pt_from');
-        $pt_to = $this->_default_property_int($properties, 'pt_to');
+        $pt_from = $this->_default_property_int_null($properties, 'pt_from');
+        $pt_to = $this->_default_property_int_null($properties, 'pt_to');
         $num_views = $this->_default_property_int($properties, 'views');
         $description_link = $this->_default_property_str($properties, 'description_link');
 
-        return array(/*$description,*/
- $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link);
+        return array(/*$description,*/ $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link);
     }
 
     /**
@@ -354,8 +353,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
             $forum_id = $this->_integer_category($category);
 
-            list(/*$description,*/
-                $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
+            list(/*$description,*/ $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
 
             $id = cns_make_topic($forum_id,/*$description*/
                 $label, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, false, $num_views, null, $description_link);
@@ -446,8 +444,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         }
 
         return array(
-            'label' => $row[/*'t_cache_first_title'*/
-                       't_description'],
+            'label' => $row[/*'t_cache_first_title'*/'t_description'],
             /*'description'=>$row['t_description'],*/
             'emoticon' => $row['t_emoticon'],
             'validated' => $row['t_validated'],
@@ -496,8 +493,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             }
 
             $label = $this->_default_property_str($properties, 'label');
-            list(/*$description,*/
-                $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
+            list(/*$description,*/$emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
 
             cns_edit_topic(intval($resource_id),/*$description*/
                 $label, $emoticon, $validated, $open, $pinned, $sunk, $cascading, '',/*$label*/

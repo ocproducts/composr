@@ -84,21 +84,26 @@ class resource_fs_test_set extends cms_test_case
         $commandr_fs = new Commandr_fs();
 
         foreach ($this->resourcefs_obs as $commandrfs_hook => $ob) {
-            $count = 0;
+            $count_folders = 0;
             if (!is_null($ob->folder_resource_type)) {
                 foreach (is_array($ob->folder_resource_type) ? $ob->folder_resource_type : array($ob->folder_resource_type) as $resource_type) {
-                    $count += $ob->get_resources_count($resource_type);
+                    $count_folders += $ob->get_resources_count($resource_type);
                     $this->assertTrue($ob->find_resource_by_label($resource_type, str_replace('.', '_', uniqid('', true))) == array()); // Search for a unique random ID should find nothing
                 }
             }
+            $count_files = 0;
             foreach (is_array($ob->file_resource_type) ? $ob->file_resource_type : array($ob->file_resource_type) as $resource_type) {
-                $count += $ob->get_resources_count($resource_type);
+                $count_files += $ob->get_resources_count($resource_type);
                 $this->assertTrue($ob->find_resource_by_label($resource_type, str_replace('.', '_', uniqid('', true))) == array()); // Search for a unique random ID should find nothing
             }
 
             $listing = $this->_recursive_listing($ob, array(), array('var', $commandrfs_hook), $commandr_fs);
-            $this->assertTrue($count == count($listing), 'File/folder count mismatch for ' . $commandrfs_hook);
-            //if ($count!=count($listing)){@var_dump($listing);@exit('!'.$count.'!'.$commandrfs_hook);} Useful for debugging
+            $count = $count_folders + $count_files;
+            $this->assertTrue(
+                $count == count($listing),
+                'File/folder count mismatch for ' . $commandrfs_hook . ' (' . integer_format($count_folders) . ' folders + ' . integer_format($count_files) . ' files -vs- ' . integer_format(count($listing)) . ' in Commandr-fs listing)'
+            );
+            //if ($count!=count($listing)){@var_dump($listing);@exit('!'.$count.'!'.$commandrfs_hook);} //Useful for debugging
         }
     }
 

@@ -166,7 +166,7 @@ class CMSAttachmentWrite
         }
         $post_comcode = get_translated_text($_post_comcode);
         $post_comcode = preg_replace('#\n*\[attachment(_safe)?( [^\[\]]*)?\]' . strval($attachment_id) . '\[/attachment(_safe)?\]#U', '', $post_comcode);
-        $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_post' => lang_remap_comcode($_post_comcode, $post_comcode, $GLOBALS['FORUM_DB'])), array('id' => $post_id), '', 1);
+        $GLOBALS['FORUM_DB']->query_update('f_posts', lang_remap_comcode('p_post', $_post_comcode, $post_comcode, $GLOBALS['FORUM_DB']), array('id' => $post_id), '', 1);
 
         require_code('attachments3');
 

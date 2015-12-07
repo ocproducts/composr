@@ -712,7 +712,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     '_GUID' => 'b23069c20202aa59b7450ebf8d49cde1',
                     'CSS' => '{CSS}',
                     'LOGOURL' => get_logo_url(''),
-                    /*'LOGOMAP'=>get_option('logo_map'),*/
                     'LANG' => $lang,
                     'TITLE' => $subject,
                     'CONTENT' => $_html_content,

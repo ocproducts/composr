@@ -229,7 +229,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                         if (function_exists('posix_getpwuid')) $owner=posix_getpwuid($owner);
                         if (function_exists('posix_getgrgid')) $group=posix_getgrgid($group);*/
                         $perms = fileperms($full);
-                        $info[] = array('path' => $full, 'size' => filesize($full),/*'owner'=>$owner,'group'=>$group,*/
+                        $info[] = array('path' => $full, 'size' => filesize($full),/* 'owner' => $owner, 'group' => $group,*/
                                         'perms' => $perms, 'ctime' => $ctime, 'mtime' => $mtime);
                     }
                 }
