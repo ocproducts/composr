@@ -604,7 +604,9 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
     list($_type, $index) = get_cpf_storage_for($type);
 
     require_code('database_action');
+
     $GLOBALS['FORUM_DB']->add_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Default will be made explicit when we insert rows
+
     $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
     if ($indices_count < 60) { // Could be 64 but trying to be careful here...
         if ($index) {
