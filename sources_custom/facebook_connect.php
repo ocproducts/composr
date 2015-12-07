@@ -276,6 +276,7 @@ function handle_facebook_connection_login($current_logged_in_member)
 
             // Custom profile fields should be filled, as possible
             $changes = array();
+            require_lang('cns_special_cpf');
             $mappings = array(
                 'about' => do_lang('DEFAULT_CPF_about_NAME'),
                 'bio' => do_lang('DEFAULT_CPF_interests_NAME'),

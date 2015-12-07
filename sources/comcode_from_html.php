@@ -1023,7 +1023,7 @@ function array_html_preg_replace($element, $array, $semihtml)
     } while ($pos !== false);
 
     // Short way
-    if ($easy_replace || version_compare('4.3.0', phpversion()) >= 0/*PREG_OFFSET_CAPTURE in PHP4.3*/) {
+    if ($easy_replace) {
         foreach ($array as $temp) {
             list($pattern, $replacement) = $temp;
             $semihtml = preg_replace(str_replace('$', '', str_replace('^', '', $pattern)), $replacement, $semihtml);

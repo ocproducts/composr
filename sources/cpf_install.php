@@ -117,6 +117,6 @@ function uninstall_mobile_phone_field()
  */
 function install_mobile_phone_field()
 {
-    require_lang('cns');
+    require_lang('cns_special_cpf');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 30, 0, 0, 1, 0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text');
 }

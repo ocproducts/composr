@@ -80,6 +80,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
+        require_lang('cns_special_cpf');
         require_css('cns_admin');
 
         set_helper_panel_tutorial('tut_adv_members');

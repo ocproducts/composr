@@ -295,6 +295,7 @@ class Hook_addon_registry_core_cns
             'themes/default/images/cns_emoticons/fishing.png',
             'themes/default/images/cns_emoticons/reallybadday.gif',
             'lang/EN/cns.ini',
+            'lang/EN/cns_special_cpf.ini',
             'lang/EN/cns_components.ini',
             'lang/EN/cns_config.ini',
             'sources/forum/cns.php',

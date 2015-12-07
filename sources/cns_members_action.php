@@ -456,6 +456,8 @@ function cns_make_boiler_custom_field($type)
     global $CUSTOM_FIELD_CACHE;
     $CUSTOM_FIELD_CACHE = array();
 
+    require_lang('cns_special_cpf');
+
     if (substr($type, 0, 4) == 'cms_') {
         $title = do_lang('SPECIAL_CPF__' . $type);
         $description = '';

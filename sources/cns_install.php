@@ -180,6 +180,7 @@ function install_cns($upgrade_from = null)
     require_code('cns_forums');
     require_lang('cns');
     require_lang('cns_config');
+    require_lang('cns_special_cpf');
     require_code('cns_moderation_action');
     require_code('cns_posts_action');
     require_code('cns_members_action');

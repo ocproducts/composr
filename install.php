@@ -2313,6 +2313,9 @@ function step_10_populate_database()
     $ADD_MENU_COUNTER = 100;
 
     $zones = find_all_zones();
+    if (file_exists(get_file_base() . '/docs')) { // installing from git
+        $zones[] = 'docs';
+    }
     foreach ($zones as $zone) {
         if (($zone != 'site') && ($zone != 'adminzone') && ($zone != 'forum') && ($zone != 'cms')) {
             $modules = find_all_modules($zone);

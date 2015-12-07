@@ -187,6 +187,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
                 }
 
                 require_lang('cns');
+                require_lang('cns_special_cpf');
                 $test = do_lang('SPECIAL_CPF__' . $row['trans_name'], null, null, null, null, false);
                 if ($test !== null) {
                     $row['trans_name'] = $test;

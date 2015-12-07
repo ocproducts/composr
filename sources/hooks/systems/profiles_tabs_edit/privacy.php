@@ -159,6 +159,7 @@ class Hook_profiles_tabs_edit_privacy
 
             // Work out the displayed CPF title
             if (substr($cpf_title, 0, 4) == 'cms_') {
+                require_lang('cns_special_cpf');
                 $_cpf_title = do_lang('SPECIAL_CPF__' . $cpf_title, null, null, null, null, false);
                 if (!is_null($_cpf_title)) {
                     $cpf_title = $_cpf_title;

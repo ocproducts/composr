@@ -128,6 +128,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'cv2', ecommerce_test_mode() ? '123' : get_cms_cpf('payment_card_cv2'), true));
 
     // Shipping address fields
+    require_lang('cns_special_cpf');
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_firstname'), '', 'first_name', get_cms_cpf('firstname'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_lastname'), '', 'last_name', get_cms_cpf('last_name'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_street_address'), '', 'address1', get_cms_cpf('street_address'), true));

@@ -212,6 +212,7 @@ class Module_cms_authors
             if (get_forum_type() == 'cns') {
                 require_code('cns_members');
                 require_lang('cns');
+                require_lang('cns_special_cpf');
                 $info = cns_get_all_custom_fields_match_member(get_member());
                 if (array_key_exists(do_lang('DEFAULT_CPF_about_NAME'), $info)) {
                     $_description = $info[do_lang('DEFAULT_CPF_about_NAME')]['RENDERED'];

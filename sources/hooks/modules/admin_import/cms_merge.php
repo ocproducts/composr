@@ -1958,7 +1958,7 @@ class Hook_cms_merge
             if (is_null($member_id)) {
                 continue;
             }
-            $row['member_id'] = strval($member_id);
+            $row['member_id'] = $member_id;
 
             $GLOBALS['SITE_DB']->query_insert('ticket_extra_access', $row);
         }
@@ -1982,7 +1982,7 @@ class Hook_cms_merge
             if (is_null($member_id)) {
                 continue;
             }
-            $row['member_id'] = strval($member_id);
+            $row['member_id'] = $member_id;
 
             $GLOBALS['SITE_DB']->query_insert('ticket_known_emailers', $row);
         }
@@ -2020,6 +2020,13 @@ class Hook_cms_merge
         foreach ($rows as $row) {
             add_ip_ban($row['ip'], array_key_exists('i_descrip', $row) ? $row['i_descrip'] : '', array_key_exists('i_ban_until', $row) ? $row['i_ban_until'] : null, array_key_exists('i_ban_positive', $row) ? ($row['i_ban_positive'] == 1) : 1);
         }
+
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'unbannable_ip');
+        $this->_fix_comcode_ownership($rows);
+        foreach ($rows as $row) {
+            $GLOBALS['SITE_DB']->query_insert('unbannable_ip', $row);
+        }
+
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'usersubmitban_member');
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
@@ -2727,9 +2734,23 @@ class Hook_cms_merge
                     continue;
                 }
                 unset($row['id']);
-                $row['l_member_id'] = strval($member_id);
+                $row['l_member_id'] = $member_id;
 
                 $GLOBALS['SITE_DB']->query_insert('notifications_enabled', $row);
+            }
+        }
+
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'device_token_details', null, null, true);
+        if (!is_null($rows)) {
+            foreach ($rows as $row) {
+                $member_id = import_id_remap_get('member', strval($row['member_id']), true);
+                if (is_null($member_id)) {
+                    continue;
+                }
+                unset($row['id']);
+                $row['member_id'] = $member_id;
+
+                $GLOBALS['SITE_DB']->query_insert('device_token_details', $row);
             }
         }
 
@@ -3700,7 +3721,7 @@ class Hook_cms_merge
                 continue;
             }
             unset($row['id']);
-            $row['s_member_id'] = strval($member_id);
+            $row['s_member_id'] = $member_id;
 
             $GLOBALS['SITE_DB']->query_insert('searches_saved', $row);
         }
