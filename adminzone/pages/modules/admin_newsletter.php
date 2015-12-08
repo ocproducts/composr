@@ -1080,7 +1080,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
         // Actualiser for removal
         if (preg_match('#^periodic\_remove\_confirmed\_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
-            $GLOBALS['SITE_DB']->query_delete('newsletter_periodic', array('id' => intval($matches[1])), '', 1);
+            delete_periodic_newsletter(intval($matches[1]));
 
             // We redirect back to the admin_newsletter main page
             $url = build_url(array('page' => 'admin_newsletter', 'type' => 'browse', 'redirected' => '1'), get_module_zone('admin_newsletter'));
@@ -1735,21 +1735,6 @@ class Module_admin_newsletter extends Standard_crud_module
             } elseif ($when == 'weekly') {
                 $day = post_param_integer('periodic_weekday_weekly', 5);
             }
-            $map = array(
-                'np_message' => post_param_string('chosen_categories', ''),
-                'np_subject' => $subject,
-                'np_lang' => $lang,
-                'np_send_details' => serialize($send_details),
-                'np_html_only' => $html_only,
-                'np_from_email' => $from_email,
-                'np_from_name' => $from_name,
-                'np_priority' => $priority,
-                'np_csv_data' => $csv_data,
-                'np_frequency' => $when,
-                'np_day' => $day,
-                'np_in_full' => $in_full,
-                'np_template' => $template,
-            );
             require_lang('dates');
             $week_days = array(1 => do_lang('MONDAY'), 2 => do_lang('TUESDAY'), 3 => do_lang('WEDNESDAY'), 4 => do_lang('THURSDAY'), 5 => do_lang('FRIDAY'), 6 => do_lang('SATURDAY'), 7 => do_lang('SUNDAY'));
             if ($when == 'weekly') {
@@ -1763,16 +1748,16 @@ class Module_admin_newsletter extends Standard_crud_module
 
             $matches = array();
             if (preg_match('#^replace_existing\_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
+                $last_sent = null;
                 if (post_param_string('periodic_for') != 'future') {
-                    $map['np_last_sent'] = 0;
+                    $last_sent = 0;
                 }
-                $GLOBALS['SITE_DB']->query_update('newsletter_periodic', $map, array('id' => intval($matches[1])), '', 1);
+                edit_periodic_newsletter(intval($matches[1]), $subject, post_param_string('chosen_categories', ''), $lang, serialize($send_details), $html_only, $from_email, $from_name, $priority, $csv_data, $when, $day, $in_full, $template, $last_sent);
                 $message = do_lang('PERIODIC_SUCCESS_MESSAGE_EDIT', $when, $each);
             } else {
                 $last_sent = (post_param_string('periodic_for') == 'future') ? time() : 0;
-                $map['np_last_sent'] = $last_sent;
 
-                $GLOBALS['SITE_DB']->query_insert('newsletter_periodic', $map, true);
+                add_periodic_newsletter($subject, post_param_string('chosen_categories', ''), $lang, serialize($send_details), $html_only, $from_email, $from_name, $priority, $csv_data, $when, $day, $in_full, $template, $last_sent);
                 $message = do_lang('PERIODIC_SUCCESS_MESSAGE_ADD', $when, $each);
             }
 

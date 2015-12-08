@@ -136,6 +136,11 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
     require_code('themes2');
     tidy_theme_img_code($theme_img_code, $old_theme_img_code, 'f_emoticons', 'e_theme_img_code');
 
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resourcefs_moniker('emoticon', $code);
+    }
+
     log_it('EDIT_EMOTICON', $code, $theme_img_code);
 }
 
@@ -155,6 +160,11 @@ function cns_delete_emoticon($code)
 
     require_code('themes2');
     tidy_theme_img_code(null, $old_theme_img_code, 'f_emoticons', 'e_theme_img_code');
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        expunge_resourcefs_moniker('emoticon', $code);
+    }
 
     log_it('DELETE_EMOTICON', $code);
 }
@@ -189,6 +199,12 @@ function cns_edit_welcome_email($id, $name, $subject, $text, $send_time, $newsle
     $map += lang_remap('w_subject', $_subject, $subject);
     $map += lang_remap('w_text', $_text, $text);
     $GLOBALS['SITE_DB']->query_update('f_welcome_emails', $map, array('id' => $id), '', 1);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resourcefs_moniker('welcome_email', strval($id));
+    }
+
     log_it('EDIT_WELCOME_EMAIL', strval($id), get_translated_text($_subject));
 }
 
@@ -204,10 +220,17 @@ function cns_delete_welcome_email($id)
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $_text = $GLOBALS['SITE_DB']->query_select_value('f_welcome_emails', 'w_text', array('id' => $id));
-    log_it('DELETE_WELCOME_EMAIL', strval($id), get_translated_text($_subject));
+
     $GLOBALS['SITE_DB']->query_delete('f_welcome_emails', array('id' => $id), '', 1);
     delete_lang($_subject);
     delete_lang($_text);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        expunge_resourcefs_moniker('welcome_email', strval($id));
+    }
+
+    log_it('DELETE_WELCOME_EMAIL', strval($id), get_translated_text($_subject));
 }
 
 /**

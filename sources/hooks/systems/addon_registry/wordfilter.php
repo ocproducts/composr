@@ -109,7 +109,7 @@ class Hook_addon_registry_wordfilter
             'adminzone/pages/modules/admin_wordfilter.php',
             'sources/hooks/modules/admin_setupwizard/wordfilter.php',
             'sources/hooks/modules/admin_import_types/wordfilter.php',
-            'sources/hooks/systems/commandr_fs_extended_config/wordfilter_word.php',
+            'sources/hooks/systems/commandr_fs_extended_config/wordfilter.php',
         );
     }
 

@@ -104,6 +104,8 @@ class Hook_addon_registry_welcome_emails
             'lang/EN/cns_welcome_emails.ini',
             'sources/hooks/systems/cron/cns_welcome_emails.php',
             'sources/hooks/systems/preview/cns_welcome_email.php',
+            'sources/hooks/systems/commandr_fs/welcome_emails.php',
+            'sources/hooks/systems/resource_meta_aware/welcome_emails.php',
         );
     }
 }

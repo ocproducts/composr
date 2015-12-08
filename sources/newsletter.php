@@ -422,6 +422,12 @@ function add_newsletter($title, $description)
     $map += insert_lang('title', $title, 2);
     $map += insert_lang('description', $description, 2);
     $id = $GLOBALS['SITE_DB']->query_insert('newsletters', $map, true);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resourcefs_moniker('newsletter', strval($id), null, null, true);
+    }
+
     log_it('ADD_NEWSLETTER', strval($id), $title);
 
     decache('main_newsletter_signup');
@@ -444,6 +450,12 @@ function edit_newsletter($id, $title, $description)
     $map += lang_remap('title', $_title, $title);
     $map += lang_remap('description', $_description, $description);
     $GLOBALS['SITE_DB']->query_update('newsletters', $map, array('id' => $id), '', 1);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resourcefs_moniker('newsletter', strval($id));
+    }
+
     log_it('EDIT_NEWSLETTER', strval($id), $_title);
 
     decache('main_newsletter_signup');
@@ -458,11 +470,143 @@ function delete_newsletter($id)
 {
     $_title = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'title', array('id' => $id));
     $_description = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'description', array('id' => $id));
-    log_it('DELETE_NEWSLETTER', strval($id), get_translated_text($_title));
+
     $GLOBALS['SITE_DB']->query_delete('newsletters', array('id' => $id), '', 1);
     $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('newsletter_id' => $id));
     delete_lang($_title);
     delete_lang($_description);
 
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        expunge_resourcefs_moniker('newsletter', strval($id));
+    }
+
+    log_it('DELETE_NEWSLETTER', strval($id), get_translated_text($_title));
+
     decache('main_newsletter_signup');
+}
+
+/**
+ * Make a periodic newsletter.
+ *
+ * @param  LONG_TEXT $subject Subject
+ * @param  LONG_TEXT $message Message
+ * @param  LANGUAGE_NAME $lang Language to send for
+ * @param  LONG_TEXT $send_details The data sent in each newsletter
+ * @param  BINARY $html_only Whether to send in HTML only
+ * @param  SHORT_TEXT $from_email From address
+ * @param  SHORT_TEXT $from_name From name
+ * @param  SHORT_INTEGER $priority Priority
+ * @param  LONG_TEXT $csv_data CSV data of who to send to
+ * @param  SHORT_TEXT $frequency Send frequency
+ * @set weekly biweekly monthly
+ * @param  SHORT_INTEGER $day Weekday to send on
+ * @param  BINARY $in_full Embed full articles
+ * @param  ID_TEXT $template Mail template to use, e.g. MAIL
+ * @param  ?TIME $last_sent When was last sent (null: now)
+ * @return AUTO_LINK The ID
+ */
+function add_periodic_newsletter($subject, $message, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $frequency, $day, $in_full = 0, $template = 'MAIL', $last_sent = null)
+{
+    require_code('global4');
+    prevent_double_submit('ADD_PERIODIC_NEWSLETTER', null, $subject);
+
+    if (is_null($last_sent)) {
+        $last_sent = time();
+    }
+
+    $id = $GLOBALS['SITE_DB']->query_insert('newsletter_periodic', array(
+        'np_subject' => $subject,
+        'np_message' => $message,
+        'np_lang' => $lang,
+        'np_send_details' => $send_details,
+        'np_html_only' => $html_only,
+        'np_from_email' => $from_email,
+        'np_from_name' => $from_name,
+        'np_priority' => $priority,
+        'np_csv_data' => $csv_data,
+        'np_frequency' => $frequency,
+        'np_day' => $day,
+        'np_in_full' => $in_full,
+        'np_template' => $template,
+        'np_last_sent' => $last_sent,
+    ), true);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resourcefs_moniker('periodic_newsletter', strval($id), null, null, true);
+    }
+
+    log_it('ADD_PERIODIC_NEWSLETTER', strval($id), $subject);
+
+    return $id;
+}
+
+/**
+ * Edit a periodic newsletter.
+ *
+ * @param  AUTO_LINK $id The ID
+ * @param  LONG_TEXT $subject Subject
+ * @param  LONG_TEXT $message Message
+ * @param  LANGUAGE_NAME $lang Language to send for
+ * @param  LONG_TEXT $send_details The data sent in each newsletter
+ * @param  BINARY $html_only Whether to send in HTML only
+ * @param  SHORT_TEXT $from_email From address
+ * @param  SHORT_TEXT $from_name From name
+ * @param  SHORT_INTEGER $priority Priority
+ * @param  LONG_TEXT $csv_data CSV data of who to send to
+ * @param  SHORT_TEXT $frequency Send frequency
+ * @set weekly biweekly monthly
+ * @param  SHORT_INTEGER $day Weekday to send on
+ * @param  BINARY $in_full Embed full articles
+ * @param  ID_TEXT $template Mail template to use, e.g. MAIL
+ * @param  ?TIME $last_sent When was last sent (null: don't change)
+ */
+function edit_periodic_newsletter($id, $subject, $message, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $frequency, $day, $in_full, $template, $last_sent = null)
+{
+    $map = array(
+        'np_subject' => $subject,
+        'np_message' => $message,
+        'np_lang' => $lang,
+        'np_send_details' => $send_details,
+        'np_html_only' => $html_only,
+        'np_from_email' => $from_email,
+        'np_from_name' => $from_name,
+        'np_priority' => $priority,
+        'np_csv_data' => $csv_data,
+        'np_frequency' => $frequency,
+        'np_day' => $day,
+        'np_in_full' => $in_full,
+        'np_template' => $template,
+    );
+    if (!is_null($last_sent)) {
+        $map['np_last_sent'] = $last_sent;
+    }
+    $GLOBALS['SITE_DB']->query_update('newsletter_periodic', $map, array('id' => $id));
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resourcefs_moniker('periodic_newsletter', strval($id));
+    }
+
+    log_it('EDIT_PERIODIC_NEWSLETTER', strval($id), $subject);
+}
+
+/**
+ * Delete a periodic newsletter.
+ *
+ * @param  AUTO_LINK $id The ID
+ */
+function delete_periodic_newsletter($id)
+{
+    $subject = $GLOBALS['SITE_DB']->query_select_value('newsletter_periodic', 'np_subject', array('id' => $id));
+
+    $GLOBALS['SITE_DB']->query_delete('newsletter_periodic', array('id' => $id));
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        expunge_resourcefs_moniker('periodic_newsletter', strval($id));
+    }
+
+    log_it('DELETE_PERIODIC_NEWSLETTER', strval($id), $subject);
 }

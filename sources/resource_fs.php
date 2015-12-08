@@ -2242,6 +2242,7 @@ class Resource_fs_base
                     $where = array($relationship['cat_field'] => $_cat_id);
                 }
             }
+            $select = array_unique($select);
             $child_folders = $folder_info['connection']->query_select($table, $select, $where, $extra, 10000/*Reasonable limit*/);
             foreach ($child_folders as $folder) {
                 $str_id = extract_content_str_id_from_data($folder, $folder_info);
@@ -2296,6 +2297,7 @@ class Resource_fs_base
             if (!is_array($file_info['id_field'])) {
                 $select[] = $file_info['id_field'];
             }
+            $select = array_unique($select);
             $files = $file_info['connection']->query_select($file_info['table'], $select, $where, '', 10000/*Reasonable limit*/);
             foreach ($files as $file) {
                 $str_id = extract_content_str_id_from_data($file, $file_info);
