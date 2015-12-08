@@ -184,8 +184,8 @@ function add_attachments_from_comcode($comcode, $attachment_ids)
     $comcode = str_replace(array_keys($emoticon_map), array_values($emoticon_map), $comcode);
 
     // Wordfilter
-    require_code('word_filter');
-    $comcode = check_word_filter($comcode);
+    require_code('wordfilter');
+    $comcode = check_wordfilter($comcode);
 
     // Map BBCode that we do not support, to Comcode
     $comcode = str_ireplace(array('[spoiler', '[/spoiler'), array('[hide', '[/hide'), $comcode);

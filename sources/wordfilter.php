@@ -23,10 +23,10 @@
  *
  * @ignore
  */
-function init__word_filter()
+function init__wordfilter()
 {
-    global $WORD_FILTERING_ALREADY;
-    $WORD_FILTERING_ALREADY = false;
+    global $WORDFILTERING_ALREADY;
+    $WORDFILTERING_ALREADY = false;
 }
 
 /**
@@ -40,10 +40,10 @@ function init__word_filter()
  * @param  boolean $perm_check Whether to allow permission-based skipping, and length-based skipping
  * @return string "Fixed" version
  */
-function check_word_filter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
+function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
 {
-    global $WORD_FILTERING_ALREADY;
-    if ($WORD_FILTERING_ALREADY) {
+    global $WORDFILTERING_ALREADY;
+    if ($WORDFILTERING_ALREADY) {
         return $a;
     }
 
@@ -51,7 +51,7 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
         if (strlen($a) < 3) {
             return $a;
         }
-        if ((function_exists('has_privilege')) && (!$GLOBALS['MICRO_AJAX_BOOTUP']) && (has_privilege(get_member(), 'bypass_word_filter'))) {
+        if ((function_exists('has_privilege')) && (!$GLOBALS['MICRO_AJAX_BOOTUP']) && (has_privilege(get_member(), 'bypass_wordfilter'))) {
             return $a;
         }
     }
@@ -83,7 +83,7 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
         if ((array_key_exists(strtolower($word), $WORDS_TO_FILTER_CACHE)) && ($WORDS_TO_FILTER_CACHE[strtolower($word)]['w_substr'] == 0)) {
             $w = $WORDS_TO_FILTER_CACHE[strtolower($word)];
             if (($w['w_replacement'] == '') && (!$no_die)) {
-                warn_exit_wordfilter($name, do_lang_tempcode('WORD_FILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
+                warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
             } else {
                 $changes[] = array($pos, $word, $w['w_replacement']);
             }
@@ -94,7 +94,7 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
             foreach ($WORDS_TO_FILTER_CACHE as $word2 => $w) {
                 if (($w['w_substr'] == 0) && (simulated_wildcard_match($word, $word2, true))) {
                     if (($w['w_replacement'] == '') && (!$no_die)) {
-                        warn_exit_wordfilter($name, do_lang_tempcode('WORD_FILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
+                        warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
                     } else {
                         $changes[] = array($pos, $word, $w['w_replacement']);
                     }
@@ -115,7 +115,7 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
     foreach ($WORDS_TO_FILTER_CACHE as $word => $w) {
         if (($w['w_substr'] == 1) && (strpos($a, $word) !== false)) {
             if (($w['w_replacement'] == '') && (!$no_die)) {
-                warn_exit_wordfilter($name, do_lang_tempcode('WORD_FILTER_YOU', escape_html($word)));
+                warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word)));
             } else {
                 $a = preg_replace('#' . preg_quote($word) . '#i', $w['w_replacement'], $a);
             }
@@ -134,8 +134,8 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
  */
 function warn_exit_wordfilter($name, $message)
 {
-    global $WORD_FILTERING_ALREADY;
-    $WORD_FILTERING_ALREADY = true;
+    global $WORDFILTERING_ALREADY;
+    $WORDFILTERING_ALREADY = true;
 
     if (is_null($name)) {
         warn_exit($message);

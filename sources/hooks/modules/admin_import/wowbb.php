@@ -915,7 +915,7 @@ class Hook_wowbb
     public function import_wordfilter($db, $table_prefix, $file_base)
     {
         require($file_base . '/config.php');
-        $filter = constant('BAD_WORD_FILTER');
+        $filter = constant('BAD_WORDFILTER');
 
         if ($filter == 'Array') {
             return;

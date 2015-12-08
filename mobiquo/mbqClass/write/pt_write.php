@@ -66,8 +66,8 @@ class CMSPtWrite
 
         $body = add_attachments_from_comcode($body, $attachment_ids);
 
-        require_code('word_filter');
-        $subject = check_word_filter($subject);
+        require_code('wordfilter');
+        $subject = check_wordfilter($subject);
 
         $new_topic_id = cns_make_topic(null, '', '', null, 1, 0, 0, 0, $from_id, $to_member);
         cns_make_post($new_topic_id, $subject, $body, 0, true);
@@ -101,8 +101,8 @@ class CMSPtWrite
 
         $body = add_attachments_from_comcode($body, $attachment_ids);
 
-        require_code('word_filter');
-        $subject = check_word_filter($subject);
+        require_code('wordfilter');
+        $subject = check_wordfilter($subject);
 
         $new_post_id = cns_make_post($topic_id, $subject, $body); // NB: Checks perms implicitly
 

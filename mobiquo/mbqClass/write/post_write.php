@@ -52,8 +52,8 @@ class CMSPostWrite
 
         $post = add_attachments_from_comcode($post, $attachment_ids);
 
-        require_code('word_filter');
-        $title = check_word_filter($title);
+        require_code('wordfilter');
+        $title = check_wordfilter($title);
 
         $post_id = cns_make_post($topic_id, $title, $post, 0, false, null, 0, null, null, null, $member_id, null, null, null, true, true, $forum_id); // NB: Checks perms implicitly
 

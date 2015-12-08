@@ -2525,8 +2525,8 @@ function wordfilter_text($text)
         return $text;
     }
 
-    require_code('word_filter');
-    return check_word_filter($text, null, true);
+    require_code('wordfilter');
+    return check_wordfilter($text, null, true);
 }
 
 /**

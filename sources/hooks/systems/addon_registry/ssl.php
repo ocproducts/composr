@@ -105,6 +105,7 @@ class Hook_addon_registry_ssl
             'adminzone/pages/modules/admin_ssl.php',
             'sources/hooks/systems/page_groupings/ssl.php',
             'lang/EN/ssl.ini',
+            'sources/hooks/systems/commandr_fs_extended_config/https_setting.php',
         );
     }
 

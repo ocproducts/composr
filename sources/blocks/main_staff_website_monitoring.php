@@ -279,6 +279,8 @@ class Block_main_staff_website_monitoring
             }
 
             decache('main_staff_website_monitoring');
+
+            log_it('SITE_WATCHLIST');
         }
 
         $rows = $GLOBALS['SITE_DB']->query_select('sitewatchlist');

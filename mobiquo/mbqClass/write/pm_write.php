@@ -87,8 +87,8 @@ class CMSPmWrite
 
         $message = add_attachments_from_comcode($message, array());
 
-        require_code('word_filter');
-        $subject = check_word_filter($subject);
+        require_code('wordfilter');
+        $subject = check_wordfilter($subject);
 
         switch ($action) {
             case self::TAPATALK_MESSAGE_NEW:

@@ -213,7 +213,7 @@ function get_false_permissions()
         array('GENERAL_SETTINGS', 'may_enable_staff_notifications'),
         array('GENERAL_SETTINGS', 'bypass_flood_control'),
         array('GENERAL_SETTINGS', 'remove_page_split'),
-        array('GENERAL_SETTINGS', 'bypass_word_filter'),
+        array('GENERAL_SETTINGS', 'bypass_wordfilter'),
         array('SUBMISSION', 'perform_keyword_check'),
         array('SUBMISSION', 'have_personal_category'),
     );

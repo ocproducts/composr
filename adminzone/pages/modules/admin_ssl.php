@@ -150,6 +150,8 @@ class Module_admin_ssl
 
         erase_persistent_cache();
 
+        log_it('SSL_CONFIGURATION');
+
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

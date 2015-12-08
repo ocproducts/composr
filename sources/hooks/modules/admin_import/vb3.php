@@ -274,7 +274,7 @@ class Hook_vb3
 
             // privileges
             set_privilege($id_new, 'comcode_dangerous', $PROBED_FORUM_CONFIG['allowhtml'] == 1);
-            set_privilege($id_new, 'bypass_word_filter', $PROBED_FORUM_CONFIG['censorwords'] == 0);
+            set_privilege($id_new, 'bypass_wordfilter', $PROBED_FORUM_CONFIG['censorwords'] == 0);
             set_privilege($id_new, 'use_quick_reply', $PROBED_FORUM_CONFIG['quickreply'] == 1);
             set_privilege($id_new, 'vote_in_polls', ($row['forumpermissions'] & 32768) != 0);
             set_privilege($id_new, 'view_member_photos', ($row['genericpermissions'] & 4096) != 0);

@@ -161,6 +161,8 @@ class Block_main_staff_links
             }
 
             decache('main_staff_links');
+
+            log_it('STAFF_LINKS');
         }
 
         $rows = $GLOBALS['SITE_DB']->query_select('stafflinks', array('*'));

@@ -1158,7 +1158,7 @@ class Hook_addon_registry_core
             'sources/character_sets.php',
             'sources/css_and_js.php',
             'sources/jsmin.php',
-            'sources/word_filter.php',
+            'sources/wordfilter.php',
             'sources/input_filter.php',
             'sources/input_filter_2.php',
             'sources/hooks/systems/checks/.htaccess',

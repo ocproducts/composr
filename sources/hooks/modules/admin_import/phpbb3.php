@@ -193,7 +193,7 @@ class Hook_phpbb3
 
             set_privilege($id, 'own_avatars', $PROBED_FORUM_CONFIG['allow_avatar_upload'] == '1');
             set_privilege($id, 'rename_self', $PROBED_FORUM_CONFIG['allow_namechange'] == '1');
-            set_privilege($id, 'bypass_word_filter', $PROBED_FORUM_CONFIG['allow_namechange'] == '1');
+            set_privilege($id, 'bypass_wordfilter', $PROBED_FORUM_CONFIG['allow_namechange'] == '1');
         }
     }
 

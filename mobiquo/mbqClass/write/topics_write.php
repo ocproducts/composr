@@ -33,8 +33,8 @@ class CMSTopicWrite
 
         $post = add_attachments_from_comcode($post, $attachment_ids);
 
-        require_code('word_filter');
-        $title = check_word_filter($title);
+        require_code('wordfilter');
+        $title = check_wordfilter($title);
 
         require_code('cns_topics_action');
         $new_topic_id = cns_make_topic($forum_id);

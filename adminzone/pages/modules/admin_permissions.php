@@ -143,6 +143,7 @@ class Module_admin_permissions
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             add_privilege('SUBMISSION', 'unfiltered_input', false);
+            rename_privilege('bypass_word_filter', 'bypass_wordfilter');
         }
     }
 

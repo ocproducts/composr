@@ -1682,7 +1682,7 @@ class Hook_cms_merge
      */
     public function import_wordfilter($db, $table_prefix, $file_base)
     {
-        require_code('word_filter');
+        require_code('wordfilter');
 
         $rows = $db->query('SELECT word FROM ' . $table_prefix . 'wordfilter', null, null, true);
         if (is_null($rows)) {

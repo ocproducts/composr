@@ -585,7 +585,7 @@ function log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b
  * @param  boolean $perm_check Whether to allow permission-based skipping, and length-based skipping
  * @return string "Fixed" version
  */
-function check_word_filter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
+function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
 {
     return $a;
 }

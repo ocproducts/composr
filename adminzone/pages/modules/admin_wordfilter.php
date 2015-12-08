@@ -138,7 +138,7 @@ class Module_admin_wordfilter
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
-            return $this->word_filter_interface();
+            return $this->wordfilter_interface();
         }
         if ($type == 'add') {
             return $this->add_word();
@@ -155,7 +155,7 @@ class Module_admin_wordfilter
      *
      * @return Tempcode The UI
      */
-    public function word_filter_interface()
+    public function wordfilter_interface()
     {
         require_code('form_templates');
         $list = new Tempcode();

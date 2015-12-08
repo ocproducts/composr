@@ -415,12 +415,12 @@ function filter_form_field_default($name, $val, $live = false)
                                 global $WORDS_TO_FILTER_CACHE;
                                 $temp_remember = $WORDS_TO_FILTER_CACHE;
                                 $WORDS_TO_FILTER_CACHE = array($attributes['embed'] => array('word' => $attributes['embed'], 'w_replacement' => '', 'w_substr' => 0));
-                                require_code('word_filter');
-                                check_word_filter($val, $name, false, true, false);
+                                require_code('wordfilter');
+                                check_wordfilter($val, $name, false, true, false);
                                 $WORDS_TO_FILTER_CACHE = $temp_remember;
                             } else {
                                 if ($live && strpos($val, $attributes['embed']) !== false) {
-                                    warn_exit_wordfilter($name, do_lang_tempcode('WORD_FILTER_YOU', escape_html($attributes['embed']))); // In soviet Russia, words filter you
+                                    warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($attributes['embed']))); // In soviet Russia, words filter you
                                 }
                             }
                             break;

@@ -1336,9 +1336,9 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
 
     if (($ret != '') && (addon_installed('wordfilter'))) {
         if ($name != 'password') {
-            require_code('word_filter');
+            require_code('wordfilter');
             if ($ret !== $default) {
-                $ret = check_word_filter($ret, $name);
+                $ret = check_wordfilter($ret, $name);
             }
         }
     }
