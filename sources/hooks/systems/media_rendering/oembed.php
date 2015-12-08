@@ -60,7 +60,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
     {
         if ($mime_type == 'text/html' || $mime_type == 'application/xhtml+xml') {
             if ($meta_details !== null) {
-                if ((($meta_details['t_json_discovery'] != '') && (function_exists('json_decode'))) || ($meta_details['t_xml_discovery'] != '')) {
+                if (($meta_details['t_json_discovery'] != '') || ($meta_details['t_xml_discovery'] != '')) {
                     return MEDIA_RECOG_PRECEDENCE_MEDIUM;
                 }
             }
@@ -113,7 +113,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
 
         // Work out the full endpoint URL to call
         $format_in_path = (strpos($endpoint, '{format}') !== false);
-        $preferred_format = function_exists('json_decode') ? 'json' : 'xml';
+        $preferred_format = 'json';
         if ($format_in_path) {
             $endpoint = str_replace('{format}', $preferred_format, $endpoint);
         }
@@ -163,18 +163,17 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
             case 'application/json':
             case 'application/json+oembed':
             case 'text/javascript': // noembed uses this, naughty
-                if (function_exists('json_decode')) {
-                    $_data = json_decode($result[0]);
-                    if ($_data === null) {
-                        return null;
+                require_code('json');
+                $_data = json_decode($result[0]);
+                if ($_data === null) {
+                    return null;
+                }
+                $data = array();
+                foreach ($_data as $key => $val) { // It's currently an object, we want an array
+                    if (is_null($val)) {
+                        continue;
                     }
-                    $data = array();
-                    foreach ($_data as $key => $val) { // It's currently an object, we want an array
-                        if (is_null($val)) {
-                            continue;
-                        }
-                        $data[$key] = is_string($val) ? convert_to_internal_encoding($val, 'utf-8') : strval($val);
-                    }
+                    $data[$key] = is_string($val) ? convert_to_internal_encoding($val, 'utf-8') : strval($val);
                 }
                 break;
             default:
@@ -411,7 +410,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
         $meta_details = get_webpage_meta_details($url);
         $mime_type = $meta_details['t_mime_type'];
         if ($mime_type == 'text/html' || $mime_type == 'application/xhtml+xml') {
-            if (($meta_details['t_json_discovery'] != '') && (function_exists('json_decode'))) {
+            if ($meta_details['t_json_discovery'] != '') {
                 return $meta_details['t_json_discovery'];
             }
             if ($meta_details['t_xml_discovery'] != '') {

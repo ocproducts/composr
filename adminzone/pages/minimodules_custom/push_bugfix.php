@@ -108,7 +108,7 @@ if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
         }
     }
     if ($git_commit_id !== null) {
-        $git_url = 'https://github.com/chrisgraham/Composr/commit/' . $git_commit_id;
+        $git_url = 'https://github.com/ocproducts/composr/commit/' . $git_commit_id;
         if (post_param_string('git_commit_id', '') == '') {
             $done['Commited to git'] = $git_url;
         }

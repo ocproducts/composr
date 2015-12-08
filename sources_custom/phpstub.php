@@ -3842,18 +3842,6 @@ function xml_set_start_namespace_decl_handler($parser, $handler)
 }
 
 /**
- * Generates XML for a method request.
- *
- * @param  string $method The method to call.
- * @param  array $params The parameters to use.
- * @return string The XML.
- */
-function xmlrpc_encode_request($method, $params)
-{
-    return '';
-}
-
-/**
  * Arc cosine.
  *
  * @param  float $arg Argument.

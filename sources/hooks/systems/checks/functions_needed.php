@@ -71,7 +71,7 @@ class Hook_check_functions_needed
             utf8_decode utf8_encode wordwrap xml_error_string xml_get_current_byte_index xml_get_current_line_number
             xml_get_error_code xml_parse xml_parser_create_ns xml_parser_free xml_parser_set_option
             xml_set_character_data_handler xml_set_element_handler xml_set_end_namespace_decl_handler xml_set_object
-            xml_set_start_namespace_decl_handler xmlrpc_encode_request acos array_rand array_unshift asin assert
+            xml_set_start_namespace_decl_handler acos array_rand array_unshift asin assert
             assert_options atan base_convert basename bin2hex bindec call_user_func_array
             connection_aborted connection_status crc32 decbin each empty fflush fileatime flock flush
             get_current_user gethostbyaddr getrandmax gmmktime gmstrftime ip2long

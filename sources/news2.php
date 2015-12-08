@@ -356,7 +356,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
         generate_resourcefs_moniker('news', strval($id), null, null, true);
     }
 
-    if ((function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false) && (function_exists('xmlrpc_encode'))) {
+    if ((function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
         if (function_exists('set_time_limit')) {
             @set_time_limit(0);
         }
@@ -371,27 +371,19 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
             foreach ($listeners as $listener) {
                 $data = $listener['watching_channel'];
                 if ($listener['rem_protocol'] == 'xml-rpc') {
-                    $request = xmlrpc_encode_request($listener['rem_procedure'], $data);
-                    $length = strlen($request);
-                    $_length = strval($length);
-                    $packet = <<<END
-POST /{$listener['rem_path']} HTTP/1.0
-Host: {$listener['rem_ip']}
-Content-Type: text/xml
-Content-length: {$_length}
-
-{$request}
-END;
+                    require_code('xmlrpc');
+                    xml_rpc('http://' . $listener['rem_ip'] . ':' . strval($listener['rem_port']) . '/' . $listener['rem_path'], $listener['rem_procedure'], $data, true);
+                } else {
+                    $errno = 0;
+                    $errstr = '';
+                    $mysock = @fsockopen($listener['rem_ip'], $listener['rem_port'], $errno, $errstr, 6.0);
+                    if ($mysock !== false) {
+                        @fwrite($mysock, $packet);
+                        @fclose($mysock);
+                    }
                 }
-                $errno = 0;
-                $errstr = '';
-                $mysock = @fsockopen($listener['rem_ip'], $listener['rem_port'], $errno, $errstr, 6.0);
-                if ($mysock !== false) {
-                    @fwrite($mysock, $packet);
-                    @fclose($mysock);
-                }
-                $start += 100;
             }
+            $start += 100;
         } while (array_key_exists(0, $listeners));
     }
 

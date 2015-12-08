@@ -18,6 +18,15 @@
  * @package    core
  */
 
+/*
+XML or JSON?
+
+We generally prefer JSON when connecting to 3rd party backend services, where no human touches the data transferred.
+However in some cases particular standards do require XML, we do use XML for our own AJAX, and we generally tend to prefer XML for user-edited file formats.
+
+To use JSON in Composr, use standard PHP functions and do require_code('json'); in advance so we can plug in missing functions for older PHP versions.
+*/
+
 /**
  * Get XML definition of common entities we may use.
  *
@@ -122,8 +131,6 @@ class CMS_simple_xml_reader
      */
     public function __construct($xml_data)
     {
-        require_code('xml');
-
         $this->gleamed = array();
         $this->error = null;
 

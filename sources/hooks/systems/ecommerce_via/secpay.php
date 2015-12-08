@@ -210,7 +210,7 @@ class Hook_secpay
         $username = $this->_get_username();
         $password = get_option('ipn_password');
         $password_2 = get_option('vpn_password');
-        $result = $this->_xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call','SECVPN.repeatCardFullAddr',array($username,$password_2,$trans_id,-1,$password,'','','','','','repeat_change=true,repeat=false'),true);
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $password_2, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true, repeat=false'), true);
         if (is_null($result)) {
             return false;
         }
