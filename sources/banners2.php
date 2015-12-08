@@ -363,7 +363,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
     }
 
     decache('main_banner_wave');
-    decache('main_topsites');
+    decache('main_top_sites');
 
     log_it('ADD_BANNER', $name, $caption);
 
@@ -447,7 +447,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
     log_it('EDIT_BANNER', $name);
 
     decache('main_banner_wave');
-    decache('main_topsites');
+    decache('main_top_sites');
 
     if (!addon_installed('unvalidated')) {
         $validated = 1;
@@ -526,7 +526,7 @@ function delete_banner($name)
     delete_upload('uploads/banners', 'banners', 'img_url', 'name', $name);
 
     decache('main_banner_wave');
-    decache('main_topsites');
+    decache('main_top_sites');
 
     $GLOBALS['SITE_DB']->query_delete('banners', array('name' => $name), '', 1);
 

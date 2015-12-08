@@ -21,7 +21,7 @@
 /**
  * Block class.
  */
-class Block_main_topsites
+class Block_main_top_sites
 {
     /**
      * Find details of the block.
@@ -101,6 +101,6 @@ class Block_main_topsites
             $submit_url = new Tempcode();
         }
 
-        return do_template('BLOCK_MAIN_TOPSITES', array('_GUID' => '776cecc3769b4f4e082be327da5b7248', 'TYPE' => $map['param'], 'BANNERS' => $banners, 'SUBMIT_URL' => $submit_url));
+        return do_template('BLOCK_MAIN_TOP_SITES', array('_GUID' => '776cecc3769b4f4e082be327da5b7248', 'TYPE' => $map['param'], 'BANNERS' => $banners, 'SUBMIT_URL' => $submit_url));
     }
 }

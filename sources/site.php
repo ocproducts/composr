@@ -1606,7 +1606,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
             ($codename[0] == '_') ||
             ($zone . ':' . $codename == ':404') ||
 
-            // Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
+            // HACKHACK. Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
             ($codename == 'rules') ||
             ($zone . ':' . $codename == ':recommend_help') ||
             ($zone . ':' . $codename == ':popup_blockers') ||

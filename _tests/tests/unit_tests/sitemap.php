@@ -56,7 +56,7 @@ class sitemap_test_set extends cms_test_case
             foreach ($children as $c) {
                 $_c = $this->flatten_sitemap($c);
                 foreach ($_c as $k => $__c) {
-                    if ($k != '' && $k != 'site:members:browse') {
+                    if ($k != '') {
                         $this->assertTrue(!isset($ret[$k]), 'Duplicated page: ' . $k);
                     }
 
@@ -130,7 +130,7 @@ class sitemap_test_set extends cms_test_case
                     'site:popup_blockers',
                     'site:userguide_chatcode',
                     'site:userguide_comcode',
-                    'site:topsites',
+                    'site:top_sites',
                     ':recommend_help',
                 ))) {
                     continue;
