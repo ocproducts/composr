@@ -119,7 +119,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
             $mtime = octdec(trim(substr($header, 136, 12)));
             $chksum = octdec(trim(substr($header, 148, 8)));
             $block_size = file_size_to_tar_block_size($size);
-            //$is_ok=substr($header,156,1)=='0';  Actually, this isn't consistently useful
+            //$is_ok = substr($header, 156, 1) == '0';  Actually, this isn't consistently useful
 
             $header2 = substr($header, 0, 148);
             $header2 .= '        ';

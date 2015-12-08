@@ -60,7 +60,7 @@ function init__global2()
 
         header('Content-Type: application/xml');
 
-        //  encoding="'.get_charset().'" not needed due to no data in it
+        //  encoding="' . get_charset() . '" not needed due to no data in it
         $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
     }
 
@@ -199,7 +199,7 @@ function init__global2()
     require_code_no_override('version');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
         // Marker that Composr running
-        //@header('X-Powered-By: Composr '.cms_version_pretty().' (PHP '.phpversion().')');
+        //@header('X-Powered-By: Composr ' . cms_version_pretty() . ' (PHP ' . phpversion() . ')');
         @header('X-Powered-By: Composr'); // Better to keep it vague, for security reasons
 
         // Get ready for query logging if requested

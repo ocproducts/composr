@@ -103,7 +103,7 @@ function friend_add($likes, $liked, $time = null)
         log_it('MAKE_FRIEND', strval($likes), strval($liked));
         require_code('activities');
         syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS', $to_displayname, '', '', '_SEARCH:members:view:' . strval($liked), '_SEARCH:members:view:' . strval($likes), '', 'chat', 1, $likes);
-        //syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS',$to_displayname,'','','_SEARCH:members:view:'.strval($liked),'_SEARCH:members:view:'.strval($likes),'','chat',1,$liked); Should only show if the user also does this
+        //syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS', $to_displayname, '', '', '_SEARCH:members:view:' . strval($liked), '_SEARCH:members:view:' . strval($likes), '', 'chat', 1, $liked); Should only show if the user also does this
 
         decache('main_friends_list');
     }

@@ -53,7 +53,7 @@ foreach ($gifts as $gift) {
     $to_link = do_template('MEMBER_TOOLTIP', array('_GUID' => '0cdd0adf612cf0f50a732daa79718d09', 'SUBMITTER' => strval($gift['gift_to'])));//hyperlink($to_url, $to_name, false, true);
 
     echo '<tr>';
-// echo '<td>'.$from_link->evaluate().'</td>';
+    //echo '<td>' . $from_link->evaluate() . '</td>';
     echo '<td>' . $to_link->evaluate() . '</td>';
     echo '<td>' . escape_html(integer_format($amount)) . '</td>';
     if (trim($reason) != '') {

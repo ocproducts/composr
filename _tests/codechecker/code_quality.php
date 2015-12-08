@@ -744,7 +744,7 @@ function check_function($function)
     global $GLOBAL_VARIABLES, $LOCAL_VARIABLES, $CURRENT_CLASS;
     $LOCAL_VARIABLES = reinitialise_local_variables(); // Map (by name) of maps : is_global, types. Note there is boolean-false and NULL types: boolean_false is when we KNOW a boolean is false, so it might map to ~
 
-    //if (isset($GLOBALS['PEDANTIC'])) if (strlen(serialize($function))>30000) log_warning('Function '.$function['name'].' is too big',$function['offset']);
+    //if (isset($GLOBALS['PEDANTIC'])) if (strlen(serialize($function)) > 30000) log_warning('Function ' . $function['name'] . ' is too big', $function['offset']);
 
     global $FUNCTION_SIGNATURES;
     $class = $CURRENT_CLASS;
@@ -1371,7 +1371,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     if ((isset($GLOBALS['CHECKS'])) && ($function == 'tempname')) {
         log_warning('Make sure temporary files are deleted', $c_pos);
     }
-    //if ((isset($GLOBALS['CHECKS'])) && ($function=='fopen')) log_warning('Make sure opened files are closed',$c_pos);  Not going to actually cause problems, as PHP'll close it when the script finishes
+    //if ((isset($GLOBALS['CHECKS'])) && ($function == 'fopen')) log_warning('Make sure opened files are closed', $c_pos);  Not going to actually cause problems, as PHP'll close it when the script finishes
     if ((isset($GLOBALS['CHECKS'])) && ($function == 'get_username') && (@$c[2][0][1] != 'get_member')) {
         log_warning('Make sure guests/deleted-members are handled properly', $c_pos);
     }
@@ -1393,7 +1393,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     if ((isset($GLOBALS['CHECKS'])) && (isset($GLOBALS['PEDANTIC'])) && (in_array($function, array('query_update', 'query_delete')))) {
         log_warning('Check log_it/cat-entry-handling/delete_lang', $c_pos);
     }
-    //if ((isset($GLOBALS['CHECKS'])) && (isset($GLOBALS['PEDANTIC'])) && ($function=='query_select')) log_warning('Check that non-singular select is wanted for this query',$c_pos);  This is REALLY pedantic ;) I'm sure MySQL is clever enough to see that only one row can match against a key
+    //if ((isset($GLOBALS['CHECKS'])) && (isset($GLOBALS['PEDANTIC'])) && ($function == 'query_select')) log_warning('Check that non-singular select is wanted for this query', $c_pos);  This is REALLY pedantic ;) I'm sure MySQL is clever enough to see that only one row can match against a key
 
     if (!is_null($ret)) {
         return $ret['type'];
@@ -1900,11 +1900,12 @@ function check_variable($variable, $reference = false, $function_guard = '')
 
     $next = $variable[2];
     while ($next != array()) { // Complex: we must perform checks to make sure the base is of the correct type for the complexity to be valid. We must also note any deep variable references used in array index / string extract expressions
-        /*if ($next[0]=='CHAR_OF_STRING')    Deprecated syntax
-        {
+        /*if ($next[0] == 'CHAR_OF_STRING') {    Deprecated syntax
             check_expression($next[1]);
-            $passes=ensure_type(array('string'),check_variable(array('VARIABLE',$identifier,array())),$variable[3],'Variable \''.$identifier.'\' must be a string due to dereferencing');
-            if ($passes) infer_expression_type_to_variable_type('string',$next[1]);
+            $passes = ensure_type(array('string'), check_variable(array('VARIABLE', $identifier, array())), $variable[3], 'Variable \'' . $identifier . '\' must be a string due to dereferencing');
+            if ($passes) {
+                infer_expression_type_to_variable_type('string', $next[1]);
+            }
             return 'string';
         }*/
 
@@ -1916,7 +1917,7 @@ function check_variable($variable, $reference = false, $function_guard = '')
             }
             check_expression($next[1]);
             $passes = ensure_type(array('array', 'string'), $type, $variable[3], 'Variable must be an array/string due to dereferencing');
-            //if ($passes) infer_expression_type_to_variable_type('array',$next[1]);
+            //if ($passes) infer_expression_type_to_variable_type('array', $next[1]);
             $type = 'mixed'; // We don't know the array data types
 
             $next = $next[2];

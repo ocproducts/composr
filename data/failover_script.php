@@ -305,10 +305,10 @@ function set_failover_mode($new_mode)
                 );
                 $regexp = '(' . str_replace(' ', '\ ', implode('|', $browsers)) . ')';
 
-                //$new_code.='RewriteMap failover_mode txt:'.$FILE_BASE.'/data_custom/failover_rewritemap.txt'."\n";	Has to be defined in main Apache config
+                //$new_code .= 'RewriteMap failover_mode txt:' . $FILE_BASE . '/data_custom/failover_rewritemap.txt' . "\n";	Has to be defined in main Apache config
                 $new_code .= 'RewriteCond %{QUERY_STRING} !keep_failover [NC]' . "\n";
                 $new_code .= 'RewriteRule ^(.*) ${failover_mode:\$1} [L,QSA]' . "\n";
-                //$new_code.='RewriteMap failover_mode__mobile txt:'.$FILE_BASE.'/data_custom/failover_rewritemap__mobile.txt'."\n";
+                //$new_code .= 'RewriteMap failover_mode__mobile txt:' . $FILE_BASE . '/data_custom/failover_rewritemap__mobile.txt' . "\n";
                 $new_code .= 'RewriteCond %{QUERY_STRING} !keep_failover [NC]' . "\n";
                 $new_code .= 'RewriteCond %{HTTP_USER_AGENT} ' . $regexp . "\n";
                 $new_code .= 'RewriteRule ^(.*) ${failover_mode__mobile:\$1} [L,QSA]' . "\n";

@@ -556,7 +556,7 @@ function init__webstandards2()
     $TAG_ATTRIBUTES += array(
         'table.frame' => '(void|above|below|hsides|lhs|rhs|vsides|box|border)',
         'table.rules' => '(none|groups|rows|cols|all)',
-        //'table.summary'=>'.*', Not in HTML5
+        //'table.summary' => '.*', Not in HTML5
         'tbody.char' => $enforce_character,
         'tbody.charoff' => $enforce_length,
         'td.axis' => '.+',
@@ -596,7 +596,7 @@ function init__webstandards2()
 
         // Below brought back in in modules (target, iframe) / fully in HTML5
         'a.target' => '.+',
-        //'area.target'=>'.+',
+        //'area.target' => '.+',
         'base.target' => '.+',
         'form.target' => '.+',
         'iframe.longdesc' => '.+',
@@ -670,7 +670,7 @@ function init__webstandards2()
     global $TAG_ATTRIBUTES_REQUIRED;
     $TAG_ATTRIBUTES_REQUIRED = array(
         'base' => array('href'), // XHTML-strict
-        //'html'=>array('xmlns'/*,'xml:lang' Not in XHTML5*/),
+        //'html'=>array('xmlns'/*, 'xml:lang' Not in XHTML5*/),
         'meta' => array('content'),
         'style' => array(/*'type'*/),
         'script' => array(/*'type'*/),
@@ -1238,7 +1238,7 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
             $errors[] = array($TAGS_DEPRECATE_ALLOW ? 'XHTML_DEPRECATED_TAG' : 'XHTML_UNKNOWN_TAG', $tag);
         }
     } elseif ((isset($TAGS_INLINE[$tag])) || (isset($TAGS_INLINE_DEPRECATED[$tag]))) {
-        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG!='span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[]=array('XHTML_ANCESTER_INLINE_NORMAL',$tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
+        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG != 'span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[] = array('XHTML_ANCESTER_INLINE_NORMAL', $tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
         if ($tag != 'label') {
             $ANCESTER_INLINE += $dif;
         }
@@ -1330,7 +1330,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
             $errors = array_merge($errors, check_spelling($_value));
         }
 
-        //if (($attribute=='alt') && ($tag!='input') && (strlen(strip_tags($value))>150)) $errors[]=array('WCAG_ATTRIBUTE_TOO_LONG',$attribute);
+        //if (($attribute == 'alt') && ($tag != 'input') && (strlen(strip_tags($value)) > 150)) $errors[] = array('WCAG_ATTRIBUTE_TOO_LONG', $attribute);
 
         if (($attribute == 'href') || ($attribute == 'src') || (($attribute == 'data') && ($tag == 'object'))) {
             $CRAWLED_URLS[] = @html_entity_decode($value, ENT_QUOTES, get_charset());
@@ -1537,7 +1537,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
                 }
             }
         }
-        //if ((strlen(@html_entity_decode($_content,ENT_QUOTES,get_charset()))>40) && (isset($attributes['href'])) && (strpos($attributes['href'],'tut_')===false)) $errors[]=array('WCAG_ATTRIBUTE_TOO_LONG','a');
+        //if ((strlen(@html_entity_decode($_content, ENT_QUOTES, get_charset())) > 40) && (isset($attributes['href'])) && (strpos($attributes['href'], 'tut_') === false)) $errors[] = array('WCAG_ATTRIBUTE_TOO_LONG', 'a');
         if ($title == '') {
             if (strtolower($content) == 'more') {
                 $errors[] = array('WCAG_DODGY_LINK_2', $string);
@@ -1589,7 +1589,7 @@ function _check_labelling($tag, $attributes, $self_close, $close)
                 }
             }
 
-            //if ((!in_array('label',$TAG_STACK)) )//&& ((!isset($attributes['value']) || ($attributes['value']=='')))) { // Compromise - sometimes we will use a default value as a substitute for a label. Not strictly allowed in accessibility rules, but writers mention as ok (+ we need it so we don't clutter things unless we start hiding labels, which is not nice)
+            //if ((!in_array('label', $TAG_STACK)))//&& ((!isset($attributes['value']) || ($attributes['value'] == '')))) { // Compromise - sometimes we will use a default value as a substitute for a label. Not strictly allowed in accessibility rules, but writers mention as ok (+ we need it so we don't clutter things unless we start hiding labels, which is not nice)
             if (!isset($attributes['id'])) {
                 $attributes['id'] = 'unnamed_' . strval(mt_rand(0, 10000));
             }

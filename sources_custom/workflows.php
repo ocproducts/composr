@@ -279,7 +279,7 @@ function get_workflow_form($workflow_content_id)
                 // Set the default value. We want groups allowed to approve the
                 // next+1 point ticked (assuming we're approving the next one)
                 // For simplicity, let's keep these unticked for now.
-                //if (in_array($allowed_group['usergroup'],$groups_shown))
+                //if (in_array($allowed_group['usergroup'], $groups_shown))
                 //{
                 $send_next[$allowed_group][] = false;
                 //}

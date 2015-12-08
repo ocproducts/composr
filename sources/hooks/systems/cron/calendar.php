@@ -53,7 +53,7 @@ class Hook_cron_calendar
 
                 // Dispatch
                 if (is_null($job['j_reminder_id'])) { // It's code/URL
-                    //if (!has_actual_page_access($job['e_submitter'],'admin_commandr')) continue; // Someone was admin but isn't anymore          Actually, really ex-admins could have placed lots of other kinds of traps. It's the responsibility of the staff to check this on a wider basis. There's no use creating tangental management complexity for just one case.
+                    //if (!has_actual_page_access($job['e_submitter'], 'admin_commandr')) continue; // Someone was admin but isn't anymore          Actually, really ex-admins could have placed lots of other kinds of traps. It's the responsibility of the staff to check this on a wider basis. There's no use creating tangental management complexity for just one case.
                     if ($job['e_type'] != db_get_first_id()) {
                         continue; // Very strange
                     }

@@ -97,7 +97,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
             $dirty = true; // Tainted from the official pack, so can't store server wide
         }
 
-        // NB: Merge op doesn't happen in require_lang. It happens when do_lang fails and then decides it has to force a recursion to do_lang(xx,fallback_lang()) which triggers require_lang(xx,fallback_lang()) when it sees it's not loaded
+        // NB: Merge op doesn't happen in require_lang. It happens when do_lang fails and then decides it has to force a recursion to do_lang(xx, fallback_lang()) which triggers require_lang(xx, fallback_lang()) when it sees it's not loaded
 
         if (($bad) && ($lang != fallback_lang())) { // Still some hope
             require_lang($codename, fallback_lang(), $type, $ignore_errors);

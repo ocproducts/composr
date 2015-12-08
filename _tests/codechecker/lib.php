@@ -280,9 +280,9 @@ function log_warning($warning, $i = -1, $absolute = false)
     list($pos, $line, $full_line) = pos_to_line_details($i, $absolute);
 
     echo 'WARNING "' . $FILENAME . '" ' . $line . ' ' . $pos . ' ' . 'PHP: ' . $warning . cnl();
-// if (!isset($MYFILE_WARNINGS)) $MYFILE_WARNINGS=fopen('warnings_'.$START_TIME.'.log','at');
-// fwrite($MYFILE_WARNINGS,$FILENAME.': '.$warning.' (at line '.$line.', position '.$pos.')  ['.$full_line.']'."\n");
-    //fclose($MYFILE_WARNINGS);
+// if (!isset($MYFILE_WARNINGS)) $MYFILE_WARNINGS = fopen('warnings_' . $START_TIME . '.log', 'at');
+// fwrite($MYFILE_WARNINGS, $FILENAME . ': ' . $warning . ' (at line ' . $line . ', position ' . $pos . ')  [' . $full_line . ']' . "\n");
+// fclose($MYFILE_WARNINGS);
 }
 
 function log_special($type, $value)

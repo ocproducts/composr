@@ -410,7 +410,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                 array('(?!index\.html$)(?!\.htaccess$).*', '.*_custom(/.*)?'), // Stuff under custom folders
             ));
             $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
-                //'.*\_custom'=>'.*', Let it find them, but work on the contents
+                //'.*\_custom' => '.*', Let it find them, but work on the contents
                 array('(?!index\.html$)(?!\.htaccess$).*', 'sources_custom/[^/]*'), // We don't want deep sources_custom directories either
             ));
         }

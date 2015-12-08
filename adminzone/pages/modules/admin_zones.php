@@ -71,18 +71,22 @@ class Module_admin_zones
     {
         /*     $zones=find_all_zones(true);     We don't really want to throw away on-disk data on reinstalls
         require_code('files');
-        foreach ($zones as $zone)
-        {
-            //if (!in_array($zone,array('','docs','adminzone','collaboration','forum','cms','site'))) deldir_contents(get_file_base().'/'.$zone,true);
-            $langs=find_all_langs(true);
-            foreach (array_keys($langs) as $lang)
-            {
-                    $path=get_custom_file_base().(($zone=='')?'':'/').$zone.'/pages/comcode_custom/'.$lang;
-                    if (file_exists($path)) deldir_contents($path,true);
-                    $path=get_custom_file_base().(($zone=='')?'':'/').$zone.'/pages/html_custom/'.$lang;
-                    if (file_exists($path)) deldir_contents($path,true);
+        foreach ($zones as $zone) {
+            //if (!in_array($zone, array('', 'docs', 'adminzone', 'collaboration', 'forum', 'cms', 'site'))) {
+            //    deldir_contents(get_file_base() . '/' . $zone, true);
+            //}
+            $langs = find_all_langs(true);
+            foreach (array_keys($langs) as $lang) {
+                $path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang;
+                if (file_exists($path)) {
+                    deldir_contents($path, true);
+                }
+                $path = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/html_custom/' . $lang;
+                if (file_exists($path)) {
+                    deldir_contents($path, true);
+                }
             }
-            //deldir_contents(get_file_base().(($zone=='')?'':'/').$zone.'/pages/minimodules_custom',true);
+            // deldir_contents(get_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/minimodules_custom', true);
             // modules_custom purposely left
         }*/
     }

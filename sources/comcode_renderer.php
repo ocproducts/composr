@@ -1714,7 +1714,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     }
                 }
                 if ($ptest === false) {
-                    //$temp_tpl->attach(' ['.do_lang('MISSING_RESOURCE').']');  // Don't want this as we might be making the page immediately
+                    //$temp_tpl->attach(' [' . do_lang('MISSING_RESOURCE') . ']');  // Don't want this as we might be making the page immediately
                     if ((!in_array(get_page_name(), $GLOBALS['DONT_CARE_MISSING_PAGES'])) && (!in_array($page, $GLOBALS['DONT_CARE_MISSING_PAGES'])) && (running_script('index'))) {
                         if ($ignore_if_hidden) {
                             $temp_tpl = do_template('COMCODE_DEL', array('_GUID' => 'df638c61bc17ca975e95cf5f749836f5', 'CONTENT' => $caption));

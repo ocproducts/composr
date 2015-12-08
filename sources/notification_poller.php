@@ -280,7 +280,7 @@ function web_notification_to_xml($row)
                                                               'CODE_CATEGORY' => $row['d_code_category'],
     ));
 
-    //sound="'.(($row['d_priority']<3)?'on':'off').'"
+    //sound="' . (($row['d_priority'] < 3) ? 'on' : 'off') . '"
     return '
         <web_notification
             id="' . strval($row['id']) . '"

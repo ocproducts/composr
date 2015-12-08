@@ -106,8 +106,8 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
             $expanded = true;
             $expander[$level] = -1;
         } else { // No (well maybe its not even expandable, maybe its a link)
-            /*$expand_this=get_param_integer('keep_'.$menu.'_expand_'.$i,0);
-            $expanded=($expand_this==1); PROBLEMS WITH CACHE - SO WE'LL USE JAVASCRIPT FOR THIS  */
+            /*$expand_this = get_param_integer('keep_' . $menu . '_expand_' . $i, 0);
+            $expanded = ($expand_this == 1); PROBLEMS WITH CACHE - SO WE'LL USE JAVASCRIPT FOR THIS  */
             $expanded = false;
             $expander[$level] = $i;
         }

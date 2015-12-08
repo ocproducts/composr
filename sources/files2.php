@@ -1065,7 +1065,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             } else {
                                                 curl_setopt($ch,CURLOPT_SSL_CIPHER_LIST,'TLSv1');
                                             }
-                                            //if (!$no_redirect) @curl_setopt($ch,CURLOPT_FOLLOWLOCATION,true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
+                                            //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_USERAGENT, $ua);

@@ -69,7 +69,7 @@ class Module_admin_backup
         delete_value('backup_b_type');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/exports/backups',true);
+        //deldir_contents(get_custom_file_base() . '/exports/backups', true);
     }
 
     /**

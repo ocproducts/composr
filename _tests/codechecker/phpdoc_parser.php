@@ -66,7 +66,7 @@ foreach ($files as $filename) {
     if ($_filename == 'sources' . DIRECTORY_SEPARATOR . 'minikernel.php') {
         continue;
     }
-    //echo 'SIGNATURES-DOING '.$_filename.cnl();
+    //echo 'SIGNATURES-DOING ' . $_filename . cnl();
     $result = get_php_file_api($_filename, false);
 
     foreach ($result as $i => $r) {
@@ -90,7 +90,7 @@ foreach ($files as $filename) {
             $classes[$class] = $in;
         }
     }
-    //echo 'SIGNATURES-DONE '.$_filename.cnl();
+    //echo 'SIGNATURES-DONE ' . $_filename . cnl();
 }
 
 $classes['__global'] = array('functions' => $global);

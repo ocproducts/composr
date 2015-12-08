@@ -688,7 +688,7 @@ class Module_admin_import
                     continue; // Lots of data and it's not important
                 }
 
-                //echo '(working) '.$field['m_table'].'/'.$field['m_name'].'<br />';
+                //echo '(working) ' . $field['m_table'] . '/' . $field['m_name'] . '<br />';
 
                 $values = $GLOBALS['SITE_DB']->query_select($field['m_table'], array('*'));
                 foreach ($values as $value) {

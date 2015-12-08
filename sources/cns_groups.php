@@ -299,7 +299,7 @@ function cns_get_member_best_group_property($member_id, $property)
 function cns_get_best_group_property($groups, $property)
 {
     $big_is_better = array('gift_points_per_day', 'gift_points_base', 'enquire_on_new_ips', 'is_super_admin', 'is_super_moderator', 'max_daily_upload_mb', 'max_attachments_per_post', 'max_avatar_width', 'max_avatar_height', 'max_post_length_comcode', 'max_sig_length_comcode');
-    //$small_and_perfectly_formed=array('flood_control_submit_secs','flood_control_access_secs'); Not needed by elimination, but nice to have here as a note
+    //$small_and_perfectly_formed = array('flood_control_submit_secs', 'flood_control_access_secs'); Not needed by elimination, but nice to have here as a note
 
     $go_super_size = in_array($property, $big_is_better);
 

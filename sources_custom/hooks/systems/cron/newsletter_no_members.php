@@ -31,7 +31,7 @@ class Hook_cron_newsletter_no_members
                 }
                 $or_list .= db_string_equal_to('email', $new_member['m_email_address']);
             }
-            //$GLOBALS['SITE_DB']->query('DELETE FROM '.get_table_prefix().'newsletter WHERE '.$or_list);   Leave the main account
+            //$GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'newsletter WHERE ' . $or_list);   Leave the main account
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE ' . $or_list, null, null, false, true); // Customise this line to remove them only from a specific newsletter
         }
     }

@@ -258,7 +258,7 @@ function init__m_zip()
          */
         function _m_zip_RelPath($base_path, $path)
         {
-            //echo("BasePath:$base_path,Path;$path");
+            //echo("BasePath:$base_path, Path;$path");
             if ($path == $base_path) {
                 return '';
             }
@@ -348,7 +348,7 @@ function init__m_zip()
 
             // UNCOMMENT THIS TO SPEEDUP. WILL REQUIRE MORE RAM AND FAIL FOR BIG-BIG FILES
 
-            //if (/*$zip_entry_file_size==0 ||*/ $zip_entry_file_size==filesize($TheFile)) return implode('',file($TheFile));
+            //if (/*$zip_entry_file_size == 0 ||*/ $zip_entry_file_size == filesize($TheFile)) return implode('', file($TheFile));
 
             $FH = $M_ZIP_FILE_HANDLES[$zip_entry[0]];
             if ($FH) {
@@ -375,7 +375,7 @@ function init__m_zip()
          */
         function m_deldir($a_dir)
         {
-            // echo('<p>Deleting:'.$a_dir);
+            // echo('<p>Deleting:' . $a_dir);
             // return; // uncomment to skip deletion (leave things)
 
             // added support for trailing slash

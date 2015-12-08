@@ -124,7 +124,7 @@ function create_selection_list_timezone_list($timezone = null)
     $time_now = time();
     foreach (get_timezone_list() as $_timezone => $timezone_nice) {
         $timezone_list .= '<option ' . (($timezone == $_timezone) ? 'selected="selected" ' : '') . 'value="' . escape_html($_timezone) . '">' . escape_html($timezone_nice) . '</option>'; // XHTMLXHTML
-        //$timezone_list->attach(do_template('CNS_AUTO_TIME_ZONE_ENTRY',array('_GUID'=>'2aed8a9fcccb52e5d52b5a307a906b3a','HOUR'=>date('H',tz_time($time_now,$_timezone)),'DW'=>date('w',tz_time(time(),$_timezone)),'NAME'=>$_timezone,'SELECTED'=>($timezone==$_timezone),'CLASS'=>'','TEXT'=>$timezone_nice)));
+        //$timezone_list->attach(do_template('CNS_AUTO_TIME_ZONE_ENTRY', array('_GUID' => '2aed8a9fcccb52e5d52b5a307a906b3a', 'HOUR' => date('H', tz_time($time_now, $_timezone)), 'DW' => date('w', tz_time(time(), $_timezone)), 'NAME' => $_timezone, 'SELECTED' => ($timezone == $_timezone), 'CLASS' => '', 'TEXT' => $timezone_nice)));
     }
     return make_string_tempcode($timezone_list);
 }
@@ -606,7 +606,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
                     $hidden->attach(form_input_hidden('views_signatures', '1'));
                 }
             }
-            //$fields->attach(form_input_tick(do_lang_tempcode('AUTO_NOTIFICATION_CONTRIB_CONTENT'),do_lang_tempcode('DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT'),'auto_monitor_contrib_content',$auto_monitor_contrib_content==1));  Now on notifications tab, even though it is technically an account setting
+            //$fields->attach(form_input_tick(do_lang_tempcode('AUTO_NOTIFICATION_CONTRIB_CONTENT'), do_lang_tempcode('DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT'), 'auto_monitor_contrib_content', $auto_monitor_contrib_content == 1));  Now on notifications tab, even though it is technically an account setting
             $usergroup_list = new Tempcode();
             $lgroups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true);
             foreach ($lgroups as $key => $val) {

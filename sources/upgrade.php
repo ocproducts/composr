@@ -245,7 +245,7 @@ function upgrade_script()
                         fclose($myfile);
                     }
                     $upgrade_resource = tar_open($temp_path, 'rb');
-                    //tar_extract_to_folder($upgrade_resource,'',true);
+                    //tar_extract_to_folder($upgrade_resource, '', true);
                     disable_php_memory_limit();
                     $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB
                     $data = array('todo' => array());
@@ -1419,7 +1419,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
                         }
                     }
                     $disabled = '';
-                    //if ((is_dir($dir.'/'.$file=='')) && ()) Not needed as this is only for files
+                    //if ((is_dir($dir . '/' . $file == '')) && ()) Not needed as this is only for files
                     $checked = '';
 
                     if (array_key_exists($rela . $file, $old_files)) {

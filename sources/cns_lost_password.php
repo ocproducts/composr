@@ -98,7 +98,7 @@ function lost_password_emailer_step($username, $email_address)
         $_SERVER['SERVER_NAME'] = cms_srv('SERVER_ADDR');
 
         $from_email = get_option('website_email');
-        //$from_email='noreply@'.$_SERVER['SERVER_ADDR'];  Won't work on most hosting
+        //$from_email = 'noreply@' . $_SERVER['SERVER_ADDR'];  Won't work on most hosting
         $from_name = do_lang('PASSWORD_RESET_ULTRA_FROM');
         $subject = do_lang('PASSWORD_RESET_ULTRA_SUBJECT', $code);
         $body = do_lang('PASSWORD_RESET_ULTRA_BODY', $code);

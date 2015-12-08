@@ -170,7 +170,7 @@ class Block_main_google_map
             }
             $entries_to_show = array_merge($entries_to_show, $ce_entries);
             if ((count($entries_to_show) == 0) && (($min_latitude == '') || ($max_latitude == '') || ($min_longitude == '') || ($max_longitude == ''))) { // If there's nothing to show and no given bounds
-                //return paragraph(do_lang_tempcode('NO_ENTRIES'),'','nothing_here');
+                //return paragraph(do_lang_tempcode('NO_ENTRIES'), '', 'nothing_here');
             }
 
             // Find long/lat fields

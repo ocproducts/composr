@@ -2172,7 +2172,7 @@ function step_7()
     $modules = find_all_modules('adminzone');
     foreach ($modules as $module => $type) {
         if (($module != 'admin_version') && ($module != 'admin_permissions')) {
-            //echo '<!-- Installing '.escape_html($module).' -->';
+            //echo '<!-- Installing ' . escape_html($module) . ' -->';
             if (reinstall_module('adminzone', $module)) {
                 $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ab3', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
             }
@@ -2326,7 +2326,7 @@ function step_10_populate_database()
             }
         }
     }
-// $log->attach(do_template('INSTALLER_DONE_SOMETHING',array('_GUID'=>'6a160da6fd9031e90b37a40aea149137','SOMETHING'=>do_lang('TABLES_CREATED','Composr'))));
+    //$log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '6a160da6fd9031e90b37a40aea149137', 'SOMETHING' => do_lang('TABLES_CREATED', 'Composr'))));
 
     return $log;
 }

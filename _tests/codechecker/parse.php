@@ -58,7 +58,7 @@ function _parse_php()
                         log_warning('Duplicated function \'' . $_function['name'] . '\'');
                     }
                 }
-                //log_special('defined',$_function['name']);
+                //log_special('defined', $_function['name']);
                 $program['functions'][] = $_function;
                 break;
 
@@ -307,7 +307,7 @@ function _parse_command_actual($no_term_needed = false)
                 pparse__parser_next();
                 $command = _parse_call_chain($command, $suppress_error);
             }
-            //log_special('functions',$identifier.'/'.count($parameters));
+            //log_special('functions', $identifier . '/' . count($parameters));
             if (!$no_term_needed) {
                 _test_command_end();
             }
@@ -1024,7 +1024,7 @@ function _parse_expression_inner()
                 $parameters = _parse_comma_expressions();
                 pparse__parser_expect('BRACKET_CLOSE');
                 $expression = array('CALL_DIRECT', $next[1], $parameters, $suppress_error, $GLOBALS['I']);
-                //log_special('functions',$next[1].'/'.count($parameters));
+                //log_special('functions', $next[1] . '/' . count($parameters));
             } else {
                 if (strtolower($next[1]) == $next[1]) {
                     _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
@@ -1629,11 +1629,14 @@ function pparse__parser_next($all = false)
 function parser_error($message)
 {
     global $TOKENS, $I;
-    /*foreach ($TOKENS as $key=>$token)   Debug output
-    {
-        if ($key==$I) echo '<strong>';
-        echo ' '.$token[0].' ';
-        if ($key==$I) echo '</strong>';
+    /*foreach ($TOKENS as $key => $token) { Debug output
+        if ($key == $I) {
+            echo '<strong>';
+        }
+        echo ' ' . $token[0] . ' ';
+        if ($key == $I) {
+            echo '</strong>';
+        }
     }*/
     list($pos, $line, $full_line) = pos_to_line_details($I);
     die_error('PARSER', $pos, $line, $message);
@@ -1671,6 +1674,6 @@ function handle_comment($comment)
         if (strpos($comment[1], 'HACKHACK') !== false) {
             log_warning('HACKHACK comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
         }
-        //if (strpos($comment[1],'XHTMLXHTML')!==false) log_warning('XHTMLXHTML comment found',$GLOBALS['I']); Don't want to report these
+        //if (strpos($comment[1], 'XHTMLXHTML') !== false) log_warning('XHTMLXHTML comment found', $GLOBALS['I']); Don't want to report these
     }
 }

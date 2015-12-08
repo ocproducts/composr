@@ -181,7 +181,7 @@ class Hook_profiles_tabs_edit_settings
 
             if (!fractional_edit()) {
                 // Secondary groups
-                //if (array_key_exists('secondary_groups',$_POST)) { Can't use this line, because deselecting all will result in it not being passed
+                //if (array_key_exists('secondary_groups', $_POST)) { Can't use this line, because deselecting all will result in it not being passed
                 if (!array_key_exists('secondary_groups', $_POST)) {
                     $_POST['secondary_groups'] = array();
                 }

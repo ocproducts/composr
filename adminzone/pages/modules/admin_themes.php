@@ -334,7 +334,7 @@ class Module_admin_themes
         if ($type == 'screen_preview') {
             $function = get_param_string('function');
 
-            //get_screen_title('SCREEN_PREVIEW',true,array(escape_html($function))); // Affects breadcrumbs etc
+            //get_screen_title('SCREEN_PREVIEW', true, array(escape_html($function))); // Affects breadcrumbs etc
             get_screen_title($function, false); // Affects breadcrumbs etc
             breadcrumb_set_parents(array(array('_SELF:_SELF:screen_previews', do_lang_tempcode('SCREEN_PREVIEWS'))));
         }
@@ -2003,13 +2003,14 @@ class Module_admin_themes
         $hidden->attach(form_input_hidden('lang', $lang));
         $fields->attach(form_input_line(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_THEME_IMAGE_NAME'), 'id', $id, true, null, null, 'text', 'some/path/name'));
 
-        /*$list=combo_get_image_paths($path,get_base_url().'/themes/'.rawurlencode($theme).'/images/',get_file_base().'/themes/'.filter_naughty($theme).'/images/');    Actually we don't want to allow selection from existing -- too weird, creating these cross-links
-        $list->attach(combo_get_image_paths($path,get_base_url().'/themes/'.rawurlencode($theme).'/images_custom/',get_file_base().'/themes/'.filter_naughty($theme).'/images_custom/'));
-        if ($theme!='default')
-        {
-            $list->attach(combo_get_image_paths($path,get_base_url().'/themes/default/images/',get_file_base().'/themes/default/images/'));
-            $list->attach(combo_get_image_paths($path,get_base_url().'/themes/default/images_custom/',get_file_base().'/themes/default/images_custom/'));
-        }*/
+        /* Actually we don't want to allow selection from existing -- too weird, creating these cross-links
+        $list = combo_get_image_paths($path, get_base_url() . '/themes/' . rawurlencode($theme) . '/images/', get_file_base() . '/themes/' . filter_naughty($theme) . '/images/');
+        $list->attach(combo_get_image_paths($path, get_base_url() . '/themes/' . rawurlencode($theme) . '/images_custom/', get_file_base() . '/themes/' . filter_naughty($theme) . '/images_custom/'));
+        if ($theme != 'default') {
+            $list->attach(combo_get_image_paths($path, get_base_url() . '/themes/default/images/', get_file_base() . '/themes/default/images/'));
+            $list->attach(combo_get_image_paths($path, get_base_url() . '/themes/default/images_custom/', get_file_base() . '/themes/default/images_custom/'));
+        }
+        */
         handle_max_file_size($hidden, 'image');
 
         $set_name = 'image';
@@ -2018,7 +2019,7 @@ class Module_admin_themes
         $field_set = alternate_fields_set__start($set_name);
 
         $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', false, null, null, true, str_replace(' ', '', get_option('valid_images'))));
-        //  $fields->attach(form_input_radio(do_lang_tempcode('CHOOSE'),'',$list));
+        //$fields->attach(form_input_radio(do_lang_tempcode('CHOOSE'), '', $list));
 
         $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'path', $path, false));
 

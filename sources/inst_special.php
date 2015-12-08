@@ -36,9 +36,9 @@ function get_chmod_array($lang)
         $hooks = find_all_hooks('systems', 'addon_registry');
         $hook_keys = array_keys($hooks);
         foreach ($hook_keys as $hook) {
-            //require_code('hooks/systems/addon_registry/'.filter_naughty_harsh($hook));
-            //$object=object_factory('Hook_addon_registry_'.filter_naughty_harsh($hook));
-            //$extra_files=array_merge($extra_files,$object->get_chmod_array());
+            /*require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));
+            $object = object_factory('Hook_addon_registry_' . filter_naughty_harsh($hook));
+            $extra_files = array_merge($extra_files, $object->get_chmod_array());*/
 
             // Save memory compared to above commented code...
 

@@ -242,7 +242,7 @@ function make_installers($skip_file_grab = false)
         if ($cmd_result !== null) {
             $output2 .= $cmd_result;
         }
-        //$out.=do_build_zip_output($v,$output2);  Don't mention, as will get auto-deleted after gzipping anyway
+        //$out .= do_build_zip_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . escapeshellarg($bundled);
         shell_exec($cmd);

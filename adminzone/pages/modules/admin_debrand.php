@@ -178,7 +178,7 @@ class Module_admin_debrand
         set_option('show_docs', post_param_string('show_docs', '0'));
 
         require_code('database_action');
-        //set_option('allow_member_integration','off');
+        //set_option('allow_member_integration', 'off');
 
         foreach (array(get_file_base() . '/pages/comcode_custom/' . get_site_default_lang(), get_file_base() . '/adminzone/pages/comcode_custom/' . get_site_default_lang()) as $dir) {
             if (!file_exists($dir)) {

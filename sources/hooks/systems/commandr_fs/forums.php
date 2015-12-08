@@ -294,7 +294,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      */
     protected function __folder_read_in_properties_topic($path, $properties)
     {
-        //$description=$this->_default_property_str($properties,'description');
+        //$description = $this->_default_property_str($properties, 'description');
         $emoticon = $this->_default_property_str($properties, 'emoticon');
         $validated = $this->_default_property_int($properties, 'validated');
         $open = $this->_default_property_int($properties, 'open');
@@ -355,9 +355,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
             list(/*$description,*/ $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
 
-            $id = cns_make_topic($forum_id,/*$description*/
-                $label, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, false, $num_views, null, $description_link);
-            //$GLOBALS['FORUM_DB']->query_update('f_topics',array('t_cache_first_title'=>$label),array('id'=>$id),'',1);
+            $id = cns_make_topic($forum_id,/*$description*/$label, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, false, $num_views, null, $description_link);
+            //$GLOBALS['FORUM_DB']->query_update('f_topics', array('t_cache_first_title' => $label), array('id' => $id), '', 1);
             generate_resourcefs_moniker('topic', strval($id));
             if ((array_key_exists('poll', $properties)) && ($properties['poll'] != '')) {
                 require_code('cns_polls_action');

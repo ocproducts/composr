@@ -1967,7 +1967,7 @@ function php_addslashes($in)
 {
     global $PHP_REP_FROM, $PHP_REP_TO;
     return str_replace($PHP_REP_FROM, $PHP_REP_TO, $in);
-    //return str_replace("\n",'\n',str_replace('$','\$',str_replace('\\\'','\'',addslashes($in))));
+    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
 }
 
 /**
@@ -2869,7 +2869,7 @@ function get_tutorial_url($tutorial)
  */
 function get_brand_page_url($params, $zone)
 {
-    //$value=get_brand_base_url().'/'.$zone.'/'.urlencode($params['page']).'.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
+    //$value = get_brand_base_url() . '/' . $zone . '/' . urlencode($params['page']) . '.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
     return str_replace(get_base_url(), get_brand_base_url(), static_evaluate_tempcode(build_url($params, $zone, null, false, false, true)));
 }
 

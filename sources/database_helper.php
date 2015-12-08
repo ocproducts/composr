@@ -88,7 +88,7 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
                           'unicode_MD5' => $take_unicode_into_account * 33 + 1
     );
     $keywords = get_db_keywords();
-    //if (in_array(strtoupper($table_name),$keywords)) fatal_exit($table_name.' is a keyword'); // No point, as we have table prefixes
+    //if (in_array(strtoupper($table_name), $keywords)) fatal_exit($table_name . ' is a keyword'); // No point, as we have table prefixes
     $key_size = 0;
     $total_size = 0;
     $key_size_unicode = 0;
@@ -126,7 +126,9 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
         if (($null) && (!$skip_null_check) && (($field == 'MINIID_TEXT') || ($field == 'ID_TEXT') || ($field == 'LANGUAGE_NAME') || ($field == 'IP') || ($field == 'URLPATH') || ($field == 'LONG_TEXT') || ($field == 'SHORT_TEXT'))) { // Needed for Oracle, really
             fatal_exit('You may not have a NULL string field');
         }
-        //if (($key) && (substr($id_name,0,1)!='#') && (!$size_restricted) && (($field=='LONG_TEXT'))) fatal_exit('You may not use a '.$field.' field for part of a key');    We now size restrict using "(255)"
+        /*if (($key) && (substr($id_name, 0, 1) != '#') && (!$size_restricted) && (($field == 'LONG_TEXT'))) {      We now size restrict using "(255)"
+            fatal_exit('You may not use a ' . $field . ' field for part of a key');
+        }*/
         if (($key) && ($primary_key) && ($null)) {
             fatal_exit('No field that may be NULL may be a part of a primary key');
         }

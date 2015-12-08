@@ -92,7 +92,7 @@ class Module_admin_permissions
             $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
             foreach ($usergroups as $id => $name) {
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => '', 'group_id' => $id));
-                //$GLOBALS['SITE_DB']->query_insert('group_zone_access',array('zone_name'=>'docs','group_id'=>$id)); Docs are admin only now
+                //$GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'docs', 'group_id' => $id)); Docs are admin only now
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'forum', 'group_id' => $id));
                 if ($id != $guest_groups[0]) {
                     $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'site', 'group_id' => $id));

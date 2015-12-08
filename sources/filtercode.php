@@ -839,7 +839,7 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
                             $alt .= ' OR ';
                         }
                         $_filter_val = explode('-', $filter_val, 2);
-                        //$alt.=$filter_key.'>='.$_filter_val[0].' AND '.$filter_key.'<='.$_filter_val[1];     Less efficient than the below, due to possibility of $filter_key being a subselect
+                        //$alt .= $filter_key . '>=' . $_filter_val[0] . ' AND ' . $filter_key . '<=' . $_filter_val[1];     Less efficient than the below, due to possibility of $filter_key being a subselect
                         $alt .= $filter_key . ' BETWEEN ' . $_filter_val[0] . ' AND ' . $_filter_val[1];
                     }
                     break;

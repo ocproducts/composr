@@ -356,7 +356,7 @@ function js_check_variable_list($JS_LOCAL_VARIABLES)
 
         // Check for non-used variables
         if (($v['unused_value']) && ($name != '__return') && ($name != '_') && (!$v['is_global']) && (!in_array($name, array('this', 'arguments', 'event')))) {
-            //       js_log_warning('CHECKER', 'Non-used '.($v['unused_value']?'value':'variable').' (\''.$name.'\')',$v['first_mention']);   Annoying error, unneeded, inaccurate
+            //js_log_warning('CHECKER', 'Non-used ' . ($v['unused_value'] ? 'value' : 'variable') . ' (\'' . $name . '\')', $v['first_mention']);   Annoying error, unneeded, inaccurate
         }
     }
 }
@@ -420,8 +420,10 @@ function js_check_command($command, $depth)
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
                 $t = js_check_expression($c[1]);
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-                //$passes=js_ensure_type(array('Boolean'),$t,$c_pos,'Conditionals must be Boolean (if) [is '.$t.']');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if) [is ' . $t . ']');
+                if ($passes) {
+                    js_infer_expression_type_to_variable_type('Boolean', $c[1]);
+                }*/
                 js_check_command($c[2], $depth);
                 break;
             case 'IF_ELSE':
@@ -429,14 +431,18 @@ function js_check_command($command, $depth)
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
                 $t = js_check_expression($c[1]);
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-                //$passes=js_ensure_type(array('Boolean'),$t,$c_pos,'Conditionals must be Boolean (if-else)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if-else)');
+                if ($passes) {
+                    js_infer_expression_type_to_variable_type('Boolean', $c[1]);
+                }*/
                 js_check_command($c[2], $depth);
                 js_check_command($c[3], $depth);
                 break;
             case 'FOREACH_list':
-                //$passes=js_ensure_type(array('Array'),js_check_expression($c[1]),$c_pos,'FOR-OF must take Array');
-                //if ($passes) js_infer_expression_type_to_variable_type('Array',$c[1]);
+                /*$passes = js_ensure_type(array('Array'), js_check_expression($c[1]), $c_pos, 'FOR-OF must take Array');
+                if ($passes) {
+                    js_infer_expression_type_to_variable_type('Array', $c[1]);
+                }*/
                 js_add_variable_reference($c[2][1], $c_pos, true);
                 js_check_command($c[3], $depth + 1);
                 break;
@@ -448,7 +454,7 @@ function js_check_command($command, $depth)
                     js_check_command(array($c[3]), $depth + 1);
                 }
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[2]), $c_pos, 'Loop conditionals must be Boolean (for)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[2]);
+                //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[2]);
                 if (!is_null($c[4])) {
                     js_check_command($c[4], $depth + 1);
                 }
@@ -456,11 +462,11 @@ function js_check_command($command, $depth)
             case 'DO':
                 js_check_command($c[2], $depth + 1);
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[1]), $c_pos, 'Loop conditionals must be Boolean (do)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[1]);
                 break;
             case 'WHILE':
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[1]), $c_pos, 'Loop conditionals must be Boolean (while)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[1]);
                 js_check_command($c[2], $depth + 1);
                 $rem = $GLOBALS['JS_PARSING_CONDITIONAL'];
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
@@ -578,40 +584,40 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
         $t = js_check_expression($e[1], false, $is_guarded);
         $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-        //$passes=js_ensure_type(array('Boolean'),$t,$c_pos,'Conditionals must be Boolean (unary)');
-        //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$e[1]);
+        //$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (unary)');
+        //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[1]);
         $type_a = js_check_expression($e[2][0]);
         $type_b = js_check_expression($e[2][1]);
-        /*if (($type_a!='Null') && ($type_b!='Null'))
+        /*if (($type_a != 'Null') && ($type_b != 'Null'))
         {
-            $passes=js_ensure_type(array($type_a),$type_b,$c_pos,'Type symettry error in unary operator');
-            //if ($passes) js_infer_expression_type_to_variable_type($type_a,$e[2][1]);
+            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symettry error in unary operator');
+            //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2][1]);
         }*/
         return $type_a;
     }
     if (in_array($e[0], array('BOOLEAN_AND', 'BOOLEAN_OR'))) {
         $exp = js_check_expression($e[1], false, $is_guarded);
-        //$passes=js_ensure_type(array('Boolean'),$exp,$c_pos-1,'Can only use Boolean combinators with Booleans');
-        //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$e[1]);
+        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos - 1, 'Can only use Boolean combinators with Booleans');
+        //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[1]);
         $exp = js_check_expression($e[2]);
-        //$passes=js_ensure_type(array('Boolean'),$exp,$c_pos,'Can only use Boolean combinators with Booleans');
-        //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$e[2]);
+        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos, 'Can only use Boolean combinators with Booleans');
+        //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[2]);
         return 'Boolean';
     }
     if (in_array($e[0], array('BW_XOR', 'BW_AND', 'BW_OR', 'SL', 'SR', 'ZSR', 'REMAINDER'))) {
         $passes = js_ensure_type(array('Number'), js_check_expression($e[1], false, $is_guarded), $c_pos - 1, 'Can only use integer combinators with Numbers');
-        //if ($passes) js_infer_expression_type_to_variable_type('Number',$e[1]);
+        //if ($passes) js_infer_expression_type_to_variable_type('Number', $e[1]);
         $passes = js_ensure_type(array('Number'), js_check_expression($e[2]), $c_pos, 'Can only use integer combinators with Numbers');
-        //if ($passes) js_infer_expression_type_to_variable_type('Number',$e[2]);
+        //if ($passes) js_infer_expression_type_to_variable_type('Number', $e[2]);
         return 'Number';
     }
     if (in_array($e[0], array('CONC'))) {
         $type_a = js_check_expression($e[1], false, $is_guarded);
         $type_b = js_check_expression($e[2]);
         $passes = js_ensure_type(array('String'), $type_a, $c_pos - 1, 'Can only use string combinators with Strings (1) (not ' . $type_a . ')');
-        //if ($passes) js_infer_expression_type_to_variable_type('String',$e[1]);
+        //if ($passes) js_infer_expression_type_to_variable_type('String', $e[1]);
         $passes = js_ensure_type(array('String'), $type_b, $c_pos, 'Can only use string combinators with Strings (2) (not ' . $type_b . ')');
-        //if ($passes) js_infer_expression_type_to_variable_type('String',$e[2]);
+        //if ($passes) js_infer_expression_type_to_variable_type('String', $e[2]);
         return 'String';
     }
     if (in_array($e[0], array('SUBTRACT', 'MULTIPLY', 'DIVIDE'))) {
@@ -646,7 +652,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             js_log_warning('CHECKER', 'It\'s redundant to equate to truths', $c_pos);
         }
         $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Comparators must have type symmetric operands (' . $type_a . ' vs ' . $type_b . ')');
-        //if ($passes) js_infer_expression_type_to_variable_type($type_a,$e[2]);
+        //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2]);
         return 'Boolean';
     }
     if ($e[0] == 'INSTANCEOF') {
@@ -706,8 +712,8 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             return js_check_expression($inner[1], false, $is_guarded);
         case 'BOOLEAN_NOT':
             $expression = js_check_expression($inner[1], false, $is_guarded);
-            //$passes=js_ensure_type(array('Boolean'),$expression,$c_pos,'Can only \'NOT\' a Boolean');
-            //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$inner[1]);
+            //$passes=js_ensure_type(array('Boolean'), $expression, $c_pos, 'Can only \'NOT\' a Boolean');
+            //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $inner[1]);
             return 'Boolean';
         case 'TYPEOF':
             js_check_expression($inner[1], false, true);
@@ -818,7 +824,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
                 if (($GLOBALS['JS_PARSING_CONDITIONAL']) && (count($variable[2]) == 0)) { // We're running a conditional on this, meaning the user is likely checking to see if it exists (if it's a boolean that doesn't exist, we're in trouble, but unfortunately it's ambiguous).
                     // We add the variable, because it might have been guaranteed. We're screwed if it is not a guaranteeing conditional, but it's impossible to test that ("the halting problem")
                     if (($class == 'Window') || ($class == 'Self')) {
-                        //js_add_variable_reference($identifier,$variable[count($variable)-1],true,false,NULL,true); Causes confusion
+                        //js_add_variable_reference($identifier, $variable[count($variable) - 1], true, false, null, true); Causes confusion
                     }
                     $JS_PROTOTYPES[$class][1][] = array('!Object', $identifier); // Could be any type
                 }
@@ -860,14 +866,16 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
             js_scan_extractive_expressions($variable[2][2]);
         }
 
-        //js_add_variable_reference($identifier,$variable[count($variable)-1],false,true);
+        //js_add_variable_reference($identifier, $variable[count($variable) - 1], false, true);
 
         if ($variable[2][0] == 'ARRAY_AT') {
             js_check_expression($variable[2][1]);
             $exp_type = js_check_variable(array('VARIABLE', $identifier, array(), $variable[count($variable) - 1]), true, false, $class);
 
-//       $passes=js_ensure_type(array('!Array'),$exp_type,$variable[3],'Variable \''.$identifier.'\' must be an Array due to dereferencing (is '.$exp_type.')');
-//       if ($passes) js_infer_expression_type_to_variable_type('!Array',$variable[2][1]);
+            /*$passes = js_ensure_type(array('!Array'), $exp_type, $variable[3], 'Variable \'' . $identifier . '\' must be an Array due to dereferencing (is ' . $exp_type . ')');
+            if ($passes) {
+                js_infer_expression_type_to_variable_type('!Array', $variable[2][1]);
+            }*/
             $pos = strpos($exp_type, 'Array');
             if ($pos !== false) {
                 $exp_type = substr($exp_type, 0, $pos);

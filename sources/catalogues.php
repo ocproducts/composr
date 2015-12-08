@@ -938,10 +938,10 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         if (($view_type == 'PAGE') || (($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH')) || ($force_view_all)) {
             // Different ways of accessing the main field value, and pure version of it
             $field_name = get_translated_text($field['cf_name']);
-            //$map['FIELDNAME_'.$str_i]=$field_name;
-            //$fields_2d[]=array('NAME'=>$field_name,'VALUE'=>$use_ev);
+            //$map['FIELDNAME_' . $str_i] = $field_name;
+            //$fields_2d[] = array('NAME' => $field_name, 'VALUE' => $use_ev);
             $field_type = $field['cf_type'];
-            //$map['FIELDTYPE_'.$str_i]=$field_type;
+            //$map['FIELDTYPE_' . $str_i] = $field_type;
             $map['FIELD_' . $str_i] = $use_ev;
             $map['_FIELD_' . $str_id] = &$map['FIELD_' . $str_i];
             if ($use_ev === $ev) {

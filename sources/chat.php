@@ -86,7 +86,7 @@ function messages_script()
     }
 
     // Check we are allowed here
-    //if (!has_actual_page_access(get_member(),'chat')) access_denied('PAGE_ACCESS');  Actually we'll use room permissions for that; don't want to block the shoutbox
+    //if (!has_actual_page_access(get_member(), 'chat')) access_denied('PAGE_ACCESS');  Actually we'll use room permissions for that; don't want to block the shoutbox
 
     // Check the action
     $action = get_param_string('action', 'new');

@@ -523,7 +523,7 @@ function find_server_load($server)
 {
     return 1; // Not currently supported, needs customising per-server
 
-    //   $stats=http_download_file('http://'.$server.'/data_custom/stats.php?html=1');
+    //$stats = http_download_file('http://' . $server . '/data_custom/stats.php?html=1');
     $stats = shell_exec('php /home/demonstratr/public_html/data_custom/stats.php 1');
     $matches = array();
     preg_match('#Memory%: (.*)<br />Swap%: (.*)<br />15-min-load: load average: (.*)<br />5-min-load: (.*)<br />1-min-load: (.*)<br />CPU-user%: (.*)<br />CPU-idle%: (.*)<br />Free-space: (.*)#', $stats, $matches);
@@ -666,7 +666,7 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, null, true);
-// $master_conn->query('DROP USER \'demonstratr_site_'.$codename.'\'');
+    //$master_conn->query('DROP USER \'demonstratr_site_' . $codename . '\'');
 
     $GLOBALS['SITE_DB']->query_delete('sites_deletion_codes', array('s_codename' => $codename), '', 1);
     $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(rand(0, 100))), array('s_codename' => $codename), '', 1, null, false, true);
@@ -690,5 +690,5 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     reset_base_config_file($server);
 
     // Special
-    //$GLOBALS['SITE_DB']->query_delete('sites_email',array('s_codename'=>$codename));
+    //$GLOBALS['SITE_DB']->query_delete('sites_email', array('s_codename' => $codename));
 }

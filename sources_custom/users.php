@@ -2,7 +2,7 @@
 
 function init__users()
 {
-    //if (addon_installed('Facebook Support',true))
+    //if (addon_installed('Facebook Support', true))
     if (is_file(get_file_base() . '/sources/facebook_connect.php')) {
         require_code('facebook_connect');
     }

@@ -1108,8 +1108,10 @@ class DatabaseConnector
 
         if (!$NO_QUERY_LIMIT) {
             $QUERY_COUNT++;
-            //@exit('!');
-            //if ($QUERY_COUNT>10) @ob_end_clean();@print('Query: '.$query."\n");
+            /*if ($QUERY_COUNT > 10) {
+                @ob_end_clean();
+            }
+            @print('Query: ' . $query . "\n");*/
         }
         static $fb = null;
         if ($fb === null) {

@@ -969,9 +969,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $g_or = _get_where_clause_groups(get_member());
 
         // this destroys mysqls query optimiser by forcing complexed OR's into the join, so we'll do this in PHP code
-        //     $table.=' LEFT JOIN '.$GLOBALS['SITE_DB']->get_table_prefix().'group_category_access z ON ('.db_string_equal_to('z.module_the_name',$permissions_module).' AND z.category_name='.$permissions_field.(($g_or!='')?(' AND '.str_replace('group_id','z.group_id',$g_or)):'').')';
-        //     $where_clause.=' AND ';
-        //     $where_clause.='z.category_name IS NOT NULL';
+        /*$table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access z ON (' . db_string_equal_to('z.module_the_name', $permissions_module) . ' AND z.category_name=' . $permissions_field . (($g_or != '') ? (' AND ' . str_replace('group_id', 'z.group_id', $g_or)) : '') . ')';
+        $where_clause .= ' AND ';
+        $where_clause .= 'z.category_name IS NOT NULL';*/
 
         $cat_access = list_to_map('category_name', $GLOBALS['FORUM_DB']->query('SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module) . ' UNION ALL SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval((integer)get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module), null, null, false, true));
     }

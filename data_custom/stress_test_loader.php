@@ -122,9 +122,9 @@ function do_work()
     require_code('files2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)'); $i < $num_wanted; $i++) {
         $file = uniqid('', true);
-        /*$path=get_custom_file_base().'/site/pages/comcode_custom/'.fallback_lang().'/'.$file.'.txt';
-        $myfile=fopen($path,GOOGLE_APPENGINE?'wb':'wt');
-        fwrite($myfile,random_text());
+        /*$path = get_custom_file_base() . '/site/pages/comcode_custom/' . fallback_lang() . '/' . $file . '.txt';
+        $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+        fwrite($myfile, random_text());
         fclose($myfile);
         sync_file($path);
         fix_permissions($path);*/

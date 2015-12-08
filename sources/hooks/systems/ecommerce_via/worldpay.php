@@ -95,7 +95,7 @@ class Hook_worldpay
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         $trans_id = $this->generate_trans_id();
         $digest_option = get_option('ipn_digest');
-        //$digest=md5((($digest_option=='')?($digest_option.':'):'').$trans_id.':'.float_to_raw_string($amount).':'.$currency); Deprecated
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency);
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
@@ -164,7 +164,7 @@ class Hook_worldpay
                 break;
         }
         $digest_option = get_option('ipn_digest');
-        //$digest=md5((($digest_option=='')?($digest_option.':'):'').$trans_id.':'.float_to_raw_string($amount).':'.$currency.$length_units_2.strval($length));   Deprecated
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,

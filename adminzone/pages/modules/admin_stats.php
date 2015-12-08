@@ -534,7 +534,7 @@ class Module_admin_stats
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
         }
-        //$max_rows=$GLOBALS['SITE_DB']->query_select_value('adminlogs','COUNT(DISTINCT date_and_time)');   Cannot do this as the DB does not do all the processing
+        //$max_rows = $GLOBALS['SITE_DB']->query_select_value('adminlogs', 'COUNT(DISTINCT date_and_time)');   Cannot do this as the DB does not do all the processing
 
         $data = array();
         $base = $rows[0]['date_and_time'];

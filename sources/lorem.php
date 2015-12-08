@@ -257,8 +257,6 @@ function placeholder_form_with_field($field_name)
     require_code('form_templates');
     $hidden = form_input_hidden($field_name, '0');
 
-    //$field->attach(form_input_line_auto_load('test','test.','test','',false,'news'));
-
     $form = do_lorem_template('FORM', array('TABINDEX' => placeholder_number(), 'HIDDEN' => $hidden, 'TEXT' => $text, 'FIELDS' => placeholder_fields(), 'URL' => placeholder_url(), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => 'proceed'));
 
     return $form;

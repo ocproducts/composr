@@ -85,7 +85,7 @@ function init__tempcode()
     require_code('symbols');
 
     global $FULL_RESET_VAR_CODE, $RESET_VAR_CODE;
-    // && substr($x,0,6)==\'bound_\' removed from the below for performance, not really needed
+    // && substr($x, 0, 6) == \'bound_\' removed from the below for performance, not really needed
     $FULL_RESET_VAR_CODE = 'foreach(get_defined_vars() as $x => $_) { if ($x[0]==\'b\' && $x[1]==\'o\') unset($$x); } extract($parameters,EXTR_PREFIX_ALL,\'bound\');';
     $RESET_VAR_CODE = 'extract($parameters,EXTR_PREFIX_ALL,\'bound\');';
 
@@ -145,7 +145,7 @@ function php_addslashes_twice($in)
 
     /*global $PHP_REP_FROM,$PHP_REP_TO_TWICE;
     return str_replace($PHP_REP_FROM,$PHP_REP_TO_TWICE,$in);
-    //return str_replace("\n",'\n',str_replace('$','\$',str_replace('\\\'','\'',addslashes($in))));*/
+    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));*/
 }
 
 /**
@@ -2084,7 +2084,7 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
     if ($result === false) {
         if ($GLOBALS['DEV_MODE']) {
             $message = (isset($php_errormsg) ? ($php_errormsg . ' - ') : '') . $code;
-            //@ob_end_clean();@exit('!'.$message.'!');
+            //@ob_end_clean(); @exit('!' . $message . '!');
             fatal_exit($message);
         }
         $result = '';

@@ -110,7 +110,7 @@ if (!file_exists($out_path . '.tmp')) {
     $result = shell_exec($cmd . ' > ' . $out_path . '.tmp');
     $sql_dump_output .= escape_html($result);
     if ((!is_file($out_path . '.tmp')) || (filesize($out_path . '.tmp') == 0)) {
-        //echo $cmd.' > '.$out_path.'.tmp'; // Temporarily reenable ONLY when debugging, for security reasons
+        //echo $cmd . ' > ' . $out_path . '.tmp'; // Temporarily reenable ONLY when debugging, for security reasons
         warn_exit(protect_from_escaping('Failed to create SQL dump (maybe try on command line)...<br /><br />' . $sql_dump_output));
     }
 }

@@ -353,7 +353,7 @@ class Module_catalogues
 
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', '#lcv_value', array('cv_value'), 'id');
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', '#scv_value', array('cv_value'), 'id');
-            //$GLOBALS['SITE_DB']->create_index('catalogue_efv_long','ilcv_value',array('cv_value'),'id');  Not allowed, LONG_TEXT can not be in key. People shouldn't order by this anyway
+            //$GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'ilcv_value', array('cv_value'), 'id');  Not allowed, LONG_TEXT can not be in key. People shouldn't order by this anyway
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'iscv_value', array('cv_value'), 'id');
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'lcf_id', array('cf_id'), 'id');
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'scf_id', array('cf_id'), 'id');

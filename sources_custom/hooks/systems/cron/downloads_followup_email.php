@@ -33,7 +33,7 @@ class Hook_cron_downloads_followup_email
         //    2=debug output with short interval (.01 hour instead of default 24 hours) for manually running cron_bridge.php
         //    1=debug output with normal interval (default 24 hours)
         //    0=no debug output
-        // In Commandr :set_value('downloads_followup_email_debug','1');
+        // In Commandr :set_value('downloads_followup_email_debug', '1');
         $debug_mode = get_value('downloads_followup_email_debug');
         if ($debug_mode != '0' && $debug_mode != '1' && $debug_mode != '2') {
             $debug_mode = '0';

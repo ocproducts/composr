@@ -77,11 +77,13 @@ class Module_admin_cns_members
             if (addon_installed('securitylogging')) {
                 $ret['_SEARCH:admin_lookup:browse'] = array('INVESTIGATE_USER', 'menu/adminzone/tools/users/investigate_user');
             }
-            //if (addon_installed('ecommerce'))
-            // $ret['_SEARCH:admin_ecommerce:browse']=array('CUSTOM_PRODUCT_USERGROUP','menu/adminzone/audit/ecommerce/ecommerce');
-            //$ret['_SEARCH:admin_cns_groups:browse']=array('USERGROUPS','menu/social/groups');
-            //if (addon_installed('staff'))
-            // $ret['_SEARCH:admin_staff:browse']=array('STAFF','menu/site_meta/staff');
+            /*if (addon_installed('ecommerce')) {
+                $ret['_SEARCH:admin_ecommerce:browse'] = array('CUSTOM_PRODUCT_USERGROUP', 'menu/adminzone/audit/ecommerce/ecommerce');
+            }
+            $ret['_SEARCH:admin_cns_groups:browse'] = array('USERGROUPS', 'menu/social/groups');
+            if (addon_installed('staff')) {
+                $ret['_SEARCH:admin_staff:browse'] = array('STAFF', 'menu/site_meta/staff');
+            }*/
             if (addon_installed('warnings')) {
                 $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
             }
@@ -604,7 +606,7 @@ class Module_admin_cns_members
 
         // Contents (preset / detailed specification)...
 
-        //$fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',array('SECTION_HIDDEN'=>false,'TITLE'=>do_lang_tempcode('CONTENTS'))));
+        //$fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('CONTENTS'))));
 
         $presets = method_exists($this, '_get_export_presets') ? $this->_get_export_presets() : array();
         if ($presets != array()) {

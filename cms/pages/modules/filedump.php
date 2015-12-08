@@ -53,7 +53,7 @@ class Module_filedump
         delete_privilege('upload_anything_filedump');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/uploads/filedump',true);
+        //deldir_contents(get_custom_file_base() . '/uploads/filedump', true);
     }
 
     /**

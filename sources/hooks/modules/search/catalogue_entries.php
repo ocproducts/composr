@@ -226,11 +226,11 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
                 $non_trans_fields = array('c.cv_value');
             } else {
                 $join = ' LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_short_trans a ON (r.id=a.ce_id AND f.id=a.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_long_trans b ON (r.id=b.ce_id AND f.id=b.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_long d ON (r.id=d.ce_id AND f.id=d.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_short c ON (r.id=c.ce_id AND f.id=c.cf_id)';
-                //' LEFT JOIN '.get_table_prefix().'catalogue_efv_float g ON (r.id=g.ce_id AND f.id=g.cf_id) LEFT JOIN '.get_table_prefix().'catalogue_efv_integer h ON (r.id=h.ce_id AND f.id=h.cf_id)';       No search is done on these unless it's an advanced search
+                //' LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_float g ON (r.id=g.ce_id AND f.id=g.cf_id) LEFT JOIN ' . get_table_prefix() . 'catalogue_efv_integer h ON (r.id=h.ce_id AND f.id=h.cf_id)';       No search is done on these unless it's an advanced search
                 $trans_fields = array('a.cv_value' => 'LONG_TRANS__COMCODE', 'b.cv_value' => 'LONG_TRANS__COMCODE');
                 $_remapped_orderer = str_replace('b_cv_value', 'b.cv_value', $remapped_orderer);
                 $extra_select = ',b.cv_value AS b_cv_value';
-                $non_trans_fields = array('c.cv_value', 'd.cv_value'/*,'g.cv_value','h.cv_value'*/);
+                $non_trans_fields = array('c.cv_value', 'd.cv_value'/*, 'g.cv_value', 'h.cv_value'*/);
             }
 
             $where_clause .= ' AND ';

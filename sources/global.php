@@ -162,7 +162,7 @@ function require_code($codename, $light_exit = false)
                         include($path_orig);
                     }
                 } else {
-                    //static $log_file=NULL;if ($log_file===NULL) $log_file=fopen(get_file_base().'/log.'.strval(time()).'.txt','wb');fwrite($log_file,$path_orig."\n");      Good for debugging errors in eval'd code
+                    //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); fwrite($log_file, $path_orig . "\n");      Good for debugging errors in eval'd code
                     eval($orig); // Load up modified original
 
                 }
@@ -479,18 +479,24 @@ function hhvm_include($path)
 {
     return include($path); // Disable this line to enable the fancy Hack support. We don't maintain this 100%, but it is a great performance option.
 
-    /*//if (!is_file($path.'.hh'))  // Leave this commented when debugging
+    /*//if (!is_file($path . '.hh'))  // Leave this commented when debugging
     {
-        if ($path==get_file_base().'/sources/php.php') return include($path);
-        if ($path==get_file_base().'/sources/type_sanitisation.php') return include($path);
-        if (strpos($path,'_custom')!==false) return include($path);
+        if ($path == get_file_base() . '/sources/php.php') {
+            return include($path);
+        }
+        if ($path == get_file_base() . '/sources/type_sanitisation.php') {
+            return include($path);
+        }
+        if (strpos($path, '_custom') !== false) {
+            return include($path);
+        }
 
         require_code('php');
-        $path=substr($path,strlen(get_file_base())+1);
-        $new_code=convert_from_php_to_hhvm_hack($path);
-        file_put_contents($path.'.hh',$new_code);
+        $path = substr($path, strlen(get_file_base()) + 1);
+        $new_code = convert_from_php_to_hhvm_hack($path);
+        file_put_contents($path . '.hh', $new_code);
     }
-    return include($path.'.hh');*/
+    return include($path . '.hh');*/
 }
 
 // Useful for basic profiling

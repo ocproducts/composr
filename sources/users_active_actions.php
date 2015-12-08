@@ -389,7 +389,7 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
                 $output = @setcookie($name, $value, $time, $path, $cookie_domain . '; HttpOnly');
             } else {
                 $output = @call_user_func_array('setcookie', array($name, $value, $time, $path, $cookie_domain, 0, true)); // For Phalanger
-                //$output=@setcookie($name,$value,$time,$path,$cookie_domain,0,true);
+                //$output = @setcookie($name, $value, $time, $path, $cookie_domain, 0, true);
             }
         }
     }

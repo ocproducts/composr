@@ -44,7 +44,7 @@ class Hook_task_send_newsletter
         require_code('newsletter');
         require_code('mail');
 
-        //mail_wrap($subject,$message,$addresses,$usernames,$from_email,$from_name,3,null,true,null,true,$html_only==1);  Not so easy any more as message needs tailoring per subscriber
+        //mail_wrap($subject, $message, $addresses, $usernames, $from_email, $from_name, 3, null, true, null, true, $html_only == 1);  Not so easy any more as message needs tailoring per subscriber
 
         $last_cron = get_value('last_cron');
 

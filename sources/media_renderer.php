@@ -118,11 +118,11 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
     $matches = array();
     if ((strpos($url, '/') === false) || (url_is_local($url))) {// Just a local file
         // Unfortunately, just not reliable enough to use always (e.g. http://commons.wikimedia.org/wiki/File:Valmiki_Ramayana.jpg)
-        //if (preg_match('#\.(\w+)$#',preg_replace('#\#.*#','',$url)/*trim off hash component*/,$matches)!=0) {
+        //if (preg_match('#\.(\w+)$#', preg_replace('#\#.*#', '', $url)/*trim off hash component*/, $matches)!=0) {
         // Find via extension
         require_code('mime_types');
         //}
-        //$mime_type=get_mime_type($matches[1],$as_admin);
+        //$mime_type = get_mime_type($matches[1], $as_admin);
         $mime_type = get_mime_type(get_file_extension($url), $as_admin);
         if ($mime_type != 'application/octet-stream') {
             foreach ($hooks as $hook) {

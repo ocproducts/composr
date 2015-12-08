@@ -102,7 +102,7 @@ class Module_admin_disastr extends Standard_crud_module
         $GLOBALS['SITE_DB']->drop_table_if_exists('members_diseases');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/uploads/diseases_addon',true);
+        //deldir_contents(get_custom_file_base() . '/uploads/diseases_addon', true);
     }
 
     /**

@@ -559,7 +559,7 @@ class Hook_ipb_base
 
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']), true);
                 if (is_null($forum_id)) {
-                    //              import_id_remap_put('topic',strval($row['tid']),-1);  Want to allow coming back if accidently a forum was missed
+                    //import_id_remap_put('topic', strval($row['tid']), -1);  Want to allow coming back if accidently a forum was missed
                     continue;
                 }
 

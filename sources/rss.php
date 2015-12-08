@@ -122,7 +122,7 @@ class CMS_RSS
             @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, $parser_charset);
             xml_set_element_handler($xml_parser, 'startElement', 'endElement');
             xml_set_character_data_handler($xml_parser, 'startText');
-            //xml_set_external_entity_ref_handler($xml_parser,'extEntity');
+            //xml_set_external_entity_ref_handler($xml_parser, 'extEntity');
             if (function_exists('xml_set_start_namespace_decl_handler')) {
                 xml_set_start_namespace_decl_handler($xml_parser, 'startNamespace');
             }
@@ -243,12 +243,14 @@ class CMS_RSS
 
         if ($name == 'RSS') {
             $this->type = 'RSS';
-            /*    $version=explode('.',$attributes['VERSION']);      Actually we won't try and detect versions, RSS usage is too much of a mess
-            if ($version[0]=='0') && ($version[1]=='90') $this->version=0.9; // rdf
-            elseif ($version[0]=='0') && ($version[1][0]=='9') $this->version=0.91;
-            elseif ($version[0]=='1') $this->version=1; // rdf
-            elseif ($version[0]=='2') $this->version=2;
-            else fatal_exit(do_lang('RSS_UNKNOWN_VERSION',$version));*/
+            /* Actually we won't try and detect versions, RSS usage is too much of a mess
+                $version = explode('.', $attributes['VERSION']);
+                if ($version[0] == '0') && ($version[1] == '90') $this->version = 0.9; // rdf
+                elseif ($version[0] == '0') && ($version[1][0] == '9') $this->version = 0.91;
+                elseif ($version[0] == '1') $this->version = 1; // rdf
+                elseif ($version[0] == '2') $this->version = 2;
+                else fatal_exit(do_lang('RSS_UNKNOWN_VERSION', $version));
+            */
             $this->version = $attributes['VERSION'];
         }
 

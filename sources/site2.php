@@ -96,7 +96,7 @@ function get_staff_actions_list()
             continue;
         }
         $staff_actions .= '<option' . (($staff_actions == '') ? ' disabled="disabled" class="label"' : '') . ' ' . (($name == $special_page_type) ? 'selected="selected" ' : '') . 'value="' . escape_html($name) . '">' . (isset($text->codename/*faster than is_object*/) ? $text->evaluate() : escape_html($text)) . '</option>'; // XHTMLXHTML
-        //$staff_actions.=static_evaluate_tempcode(form_input_list_entry($name,($name==$special_page_type),$text,false,$disabled)); Disabled 'proper' way for performance reasons
+        //$staff_actions .= static_evaluate_tempcode(form_input_list_entry($name, ($name == $special_page_type), $text, false, $disabled)); Disabled 'proper' way for performance reasons
     }
     if ($started_opt_group) {
         $staff_actions .= '</optgroup>';
@@ -291,8 +291,8 @@ function page_not_found($codename, $zone)
 
         $from = str_replace('cms_', '', str_replace('admin_', '', $possibility));
         $to = str_replace('cms_', '', str_replace('admin_', '', $codename));
-        //$dist=levenshtein($from,$to);  If we use this, change > to < also
-        //$threshold=4;
+        //$dist = levenshtein($from, $to);  If we use this, change > to < also
+        //$threshold = 4;
         $dist = 0.0;
         similar_text($from, $to, $dist);
         $threshold = 75.0;

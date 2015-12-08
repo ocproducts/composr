@@ -1314,15 +1314,16 @@ class Database_Static_xml
         fix_permissions($path, 0666);
         sync_file($path);
 
-        /*if (file_exists($db[0].'/'.$table_name.'/.svn/prop-base/'))      If we want them in subversion as binary, but we probably don't as merging can often work
-        {
-            $tpath=$db[0].'/'.$table_name.'/.svn/prop-base/'.$guid.$suffix;
-            $myfile=fopen($tpath,'wb');
-            fwrite($myfile,'K 13\nsvn:mime-type\nV 24\napplication/octet-stream\nEND');
-            fclose($myfile);
-            fix_permissions($tpath,0666);
-            sync_file($tpath);
-        }*/
+        /* If we want them in subversion as binary, but we probably don't as merging can often work
+            if (file_exists($db[0] . '/' . $table_name . '/.svn/prop-base/')) {
+                $tpath = $db[0] . '/' . $table_name . '/.svn/prop-base/' . $guid . $suffix;
+                $myfile = fopen($tpath, 'wb');
+                fwrite($myfile, 'K 13\nsvn:mime-type\nV 24\napplication/octet-stream\nEND');
+                fclose($myfile);
+                fix_permissions($tpath, 0666);
+                sync_file($tpath);
+            }
+        */
 
         unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
 
@@ -1332,8 +1333,7 @@ class Database_Static_xml
             $new_path = $db[0] . '/' . $table_name . '/' . $new_guid . $suffix;
             if ($path != $new_path) {
                 rename($path, $new_path);
-                /*if (substr($path,-5)=='.mine')
-                            unlink();  Yuck, messy, we will ignore this potential problem - people should not edit stuff that is conflicted */
+                /*if (substr($path, -5) == '.mine') unlink();  Yuck, messy, we will ignore this potential problem - people should not edit stuff that is conflicted */
             }
         }
     }
@@ -2136,7 +2136,7 @@ class Database_Static_xml
                 return null;
 
             case 'FIELD':
-                //if (!array_key_exists($expr[1],$bindings)) {@var_dump($bindings);exit($expr[1]);}   // Useful for debugging
+                //if (!array_key_exists($expr[1], $bindings)) {@var_dump($bindings);exit($expr[1]);}   // Useful for debugging
                 return $bindings[$expr[1]];
 
             case '+':

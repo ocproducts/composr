@@ -223,7 +223,7 @@ class lang_test_set extends cms_test_case
                 $this->assertTrue(false, 'A word in ' . $file . ' that was in the middle of the string started with a capital letter. This might be a badly capitalised string.');
             }
 
-            //if (stripos($string,'center')!==false) $this->assertTrue(false,'The word \'center\' was used in '.$file.'. This should be changed to \'centre\'.');
+            //if (stripos($string, 'center') !== false) $this->assertTrue(false, 'The word \'center\' was used in ' . $file . '. This should be changed to \'centre\'.');
         }
     }
 

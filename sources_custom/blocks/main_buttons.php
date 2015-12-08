@@ -88,7 +88,7 @@ class Block_main_buttons
         add_banner_quiet('firefox', 'data_custom/images/causes/firefox.gif', 'Firefox', 'Firefox', 0, 'http://www.mozilla.com/firefox/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('w3cxhtml', 'data_custom/images/causes/w3c-xhtml.gif', 'W3C XHTML', 'W3C XHTML', 0, 'http://www.w3.org/MarkUp/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('w3ccss', 'data_custom/images/causes/w3c-css.gif', 'W3C CSS', 'W3C CSS', 0, 'http://www.w3.org/Style/CSS/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
-        //add_banner_quiet('w3cwcag','data_custom/images/causes/w3c-wcag.gif','W3C WCAG','W3C WCAG',0,'http://www.w3.org/TR/WCAG10/',3,'',0,NULL,$submitter,1,'buttons',NULL,0,0,0,0,NULL);   //no banner image
+        //add_banner_quiet('w3cwcag', 'data_custom/images/causes/w3c-wcag.gif', 'W3C WCAG', 'W3C WCAG', 0, 'http://www.w3.org/TR/WCAG10/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);   //no banner image
         add_banner_quiet('cancerresearch', 'data_custom/images/causes/cancerresearch.gif', 'Cancer Research', 'Cancer Research', 0, 'http://www.cancerresearchuk.org/', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('rspca', 'data_custom/images/causes/rspca.gif', 'RSPCA', 'RSPCA', 0, 'http://www.rspca.org.uk/home', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);
         add_banner_quiet('peta', 'data_custom/images/causes/peta.gif', 'PETA', 'PETA', 0, 'http://www.peta.org', 3, '', 0, null, $submitter, 1, 'buttons', null, 0, 0, 0, 0, null);

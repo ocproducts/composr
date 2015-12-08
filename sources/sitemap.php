@@ -70,15 +70,15 @@ function init__sitemap()
 
     // Sitemap importances
     define('SITEMAP_IMPORTANCE_NONE', 0.0);
-    //define('SITEMAP_IMPORTANCE_',0.1);
+    //define('SITEMAP_IMPORTANCE_', 0.1);
     define('SITEMAP_IMPORTANCE_LOW', 0.2);
-    //define('SITEMAP_IMPORTANCE_',0.3);
-    //define('SITEMAP_IMPORTANCE_',0.4);
+    //define('SITEMAP_IMPORTANCE_', 0.3);
+    //define('SITEMAP_IMPORTANCE_', 0.4);
     define('SITEMAP_IMPORTANCE_MEDIUM', 0.5);
-    //define('SITEMAP_IMPORTANCE_',0.6);
-    //define('SITEMAP_IMPORTANCE_',0.7);
+    //define('SITEMAP_IMPORTANCE_', 0.6);
+    //define('SITEMAP_IMPORTANCE_', 0.7);
     define('SITEMAP_IMPORTANCE_HIGH', 0.8);
-    //define('SITEMAP_IMPORTANCE_',0.9);
+    //define('SITEMAP_IMPORTANCE_', 0.9);
     define('SITEMAP_IMPORTANCE_ULTRA', 1.0);
 
     // Sitemap generation settings

@@ -393,7 +393,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
 
     $token = _get_next_tag();
     while (!is_null($token)) {
-        //echo $T_POS.'-'.$POS.' ('.$stack_size.')<br />';
+        //echo $T_POS . '-' . $POS . ' (' . $stack_size . ')<br />';
 
         while ((is_array($token)) && (count($token) != 0)) { // Some kind of error in our token
             if (is_null($WEBSTANDARDS_CHECKER_OFF)) {
@@ -819,7 +819,7 @@ function _get_next_tag()
             $LINENO++;
             $LINESTART = $POS;
         }
-        //echo $status.' for '.$next.'<br />';
+        //echo $status . ' for ' . $next . '<br />';
 
         // Entity checking
         if (($next == '&') && ($status != IN_CDATA) && ($status != IN_COMMENT) && (is_null($WEBSTANDARDS_CHECKER_OFF))) {
@@ -983,7 +983,7 @@ function _get_next_tag()
                     $status = IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT;
                 } elseif ($next == '<') {
                     $errors[] = array('XML_TAG_OPEN_ANOMALY', '5');
-                    //return array(NULL,$errors);
+                    //return array(null, $errors);
                     // We have to assume we shouldn't REALLY have found a tag
                     $POS--;
                     $current_tag = '';
@@ -1001,7 +1001,7 @@ function _get_next_tag()
                         $errors[] = array('XML_TAG_CLOSE_ANOMALY');
                     }
                     // Things like nowrap, checked, etc
-                    //return array(NULL,$errors);
+                    //return array(null, $errors);
 
                     if (isset($attribute_map[$current_attribute_name])) {
                         $errors[] = array('XML_TAG_DUPLICATED_ATTRIBUTES', $current_tag);
@@ -1030,7 +1030,7 @@ function _get_next_tag()
                     if ($GLOBALS['XML_CONSTRAIN']) {
                         $errors[] = array('XML_ATTRIBUTE_ERROR');
                     }
-                    //return array(NULL,$errors);  Actually  <blah nowrap ... /> could cause this
+                    //return array(null, $errors);  Actually  <blah nowrap ... /> could cause this
 
                     $status = IN_TAG_BETWEEN_ATTRIBUTES;
                     if (isset($attribute_map[$current_attribute_name])) {

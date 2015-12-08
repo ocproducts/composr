@@ -1513,7 +1513,7 @@ function adjust_event_dates_for_a_recurrence($day, $event, $timezone)
         $orig_concrete_start_day = start_find_concrete_day_of_month_wrap($event);
 
         // Adjust for the fact that this was given in the user's timezone, while event is in UTC
-        //$first_timestamp=mktime(is_null($event['e_start_hour'])?0:$event['e_start_hour'],is_null($event['e_start_minute'])?0:$event['e_start_minute'],0,$orig_start_month,$orig_concrete_start_day,$orig_start_year);	Wrong, DST could be issue
+        //$first_timestamp = mktime(is_null($event['e_start_hour']) ? 0 : $event['e_start_hour'], is_null($event['e_start_minute']) ? 0 : $event['e_start_minute'], 0, $orig_start_month, $orig_concrete_start_day, $orig_start_year);	Wrong, DST could be issue
         $incident_timestamp = mktime(is_null($event['e_start_hour']) ? 0 : $event['e_start_hour'], is_null($event['e_start_minute']) ? 0 : $event['e_start_minute'], 0, $recurrence_start_month, $recurrence_start_day, $recurrence_start_year);
         $shifted_incident_timestamp = tz_time($incident_timestamp, $timezone);
         $day_dif_due_to_timezone = intval(date('z', $incident_timestamp)) - intval(date('z', $shifted_incident_timestamp));

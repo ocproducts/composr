@@ -72,7 +72,7 @@ class css_and_js_test_set extends cms_test_case
                         var_dump($errors['errors']);
                     }
                 } else {
-                    //echo 'Ok: '.$f."\n";
+                    //echo 'Ok: ' . $f . "\n";
                     //flush();
                 }
             }

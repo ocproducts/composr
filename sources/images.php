@@ -138,7 +138,7 @@ function _symbol_thumbnail($param)
                 $thumb_save_dir = 'uploads/' . $thumb_save_dir;
             }
         } else {
-            //$thumb_save_dir=dirname(rawurldecode(preg_replace('#'.preg_quote(get_custom_base_url().'/','#').'#','',$orig_url)));  Annoying
+            //$thumb_save_dir = dirname(rawurldecode(preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $orig_url)));  Annoying
             $thumb_save_dir = 'uploads/auto_thumbs';
         }
         if (!is_dir(get_custom_file_base() . '/' . $thumb_save_dir)) {

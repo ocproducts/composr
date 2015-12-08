@@ -71,7 +71,7 @@ function _webstandards_js_parse_js()
                         js_log_warning('PARSER', 'Duplicated function \'' . $_function['name'] . '\'');
                     }
                 }
-                //log_special('defined',$_function['name']);
+                //log_special('defined', $_function['name']);
                 $program['functions'][] = $_function;
 
                 // Sometimes happens when people get confused by =function() and function blah() {};
@@ -925,7 +925,7 @@ function _webstandards_js_parse_identify_chain($variable)
                 return null;
             }
             $expression = array('CALL', $variable, $parameters, $GLOBALS['JS_PARSE_POSITION']);
-            //log_special('functions',$next[1].'/'.count($parameters)); Useful for debugging
+            //log_special('functions', $next[1] . '/' . count($parameters)); Useful for debugging
 
             // Now, it is possible we are actually part of a larger variable
             $next_2 = parser_peek();

@@ -227,7 +227,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
         if ($locked == 0) {
             $groups = new Tempcode();
-            //$groups=form_input_list_entry('-1',false,do_lang_tempcode('_ALL'));
+            //$groups = form_input_list_entry('-1', false, do_lang_tempcode('_ALL'));
             foreach ($rows as $group) {
                 if ($group['id'] != db_get_first_id()) {
                     $groups->attach(form_input_list_entry(strval($group['id']), count(array_intersect(array($group['id']), explode(',', $only_group))) != 0, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));

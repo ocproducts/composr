@@ -78,7 +78,7 @@ class Module_admin_setupwizard
         }
 
         if ($type != 'browse') {
-            //breadcrumb_set_parents(array(array('_SELF:_SELF:browse',do_lang_tempcode('START'))));
+            //breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('START'))));
 
             $step = min(10, intval(substr($type, 4)));
         }

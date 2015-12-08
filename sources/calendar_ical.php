@@ -432,8 +432,8 @@ function get_event_data_ical($calendar_nodes)
     $rec_array = array('FREQ', 'BYDAY', 'INTERVAL', 'COUNT');
     $rec_by_day = array('MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU');
 
-// if (array_key_exists('LOCATION',$calendar_nodes))
-//    $geo_position=$calendar_nodes['LOCATION'];      We don't support these in Composr, at least not yet
+    //if (array_key_exists('LOCATION', $calendar_nodes))
+    //    $geo_position = $calendar_nodes['LOCATION'];      We don't support these in Composr, at least not yet
 
     if ((array_key_exists('CLASS', $calendar_nodes)) && ($calendar_nodes['CLASS'] == 'PRIVATE')) {
         $is_public = 0;

@@ -1204,7 +1204,7 @@ class Module_topics
         if (!array_key_exists(0, $topic_info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
-        //$this->handle_topic_breadcrumbs($topic_info[0]['t_forum_id'],$topic_id,$topic_info[0]['t_cache_first_title'],do_lang_tempcode('DELETE_TOPICS_AND_POSTS'));
+        //$this->handle_topic_breadcrumbs($topic_info[0]['t_forum_id'], $topic_id, $topic_info[0]['t_cache_first_title'], do_lang_tempcode('DELETE_TOPICS_AND_POSTS'));
 
         return $this->relay_with_reason('DELETE_TOPICS_AND_POSTS');
     }
@@ -1902,7 +1902,7 @@ class Module_topics
             if (addon_installed('unvalidated')) {
                 $moderation_options[] = array(do_lang_tempcode('VALIDATED'), 'validated', true, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post'));
             }
-            //if ($intended_solely_for==-1) $moderation_options[]=array(do_lang_tempcode('CASCADING'),'cascading',false,do_lang_tempcode('DESCRIPTION_CASCADING'));     Too much to offer this too
+            //if ($intended_solely_for == -1) $moderation_options[] = array(do_lang_tempcode('CASCADING'), 'cascading', false, do_lang_tempcode('DESCRIPTION_CASCADING'));     Too much to offer this too
         } else {
             $moderation_options = array();
             $hidden_fields->attach(form_input_hidden('validated', '1'));

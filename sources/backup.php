@@ -157,17 +157,17 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
 
 //COMMANDS BEGIN
 //\$GLOBALS['SITE_DB']->drop_table_if_exists('db_meta');
-//\$GLOBALS['SITE_DB']->create_table('db_meta',array(
-// 'm_table'=>'*ID_TEXT',
-// 'm_name'=>'*ID_TEXT',
-// 'm_type'=>'ID_TEXT'
+//\$GLOBALS['SITE_DB']->create_table('db_meta', array(
+// 'm_table' => '*ID_TEXT',
+// 'm_name' => '*ID_TEXT',
+// 'm_type' => 'ID_TEXT'
 //));
 //
 //\$GLOBALS['SITE_DB']->drop_table_if_exists('db_meta_indices');
-//\$GLOBALS['SITE_DB']->create_table('db_meta_indices',array(
-// 'i_table'=>'*ID_TEXT',
-// 'i_name'=>'*ID_TEXT',
-// 'i_fields'=>'*ID_TEXT',
+//\$GLOBALS['SITE_DB']->create_table('db_meta_indices', array(
+// 'i_table' => '*ID_TEXT',
+// 'i_name' => '*ID_TEXT',
+// 'i_fields' => '*ID_TEXT',
 //));
 ");
     get_table_backup($logfile, 'db_meta', 'db_meta_indices', $install_data_php_file);

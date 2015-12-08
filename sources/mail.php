@@ -190,7 +190,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $tags_to_preserve = array();
     }
 
-    //$message_plain=str_replace("\n",'',$message_plain);
+    //$message_plain = str_replace("\n", '', $message_plain);
 
     // Very simple case
     if ((strpos($message_plain, '[') === false) && (strpos($message_plain, '{') === false)) {

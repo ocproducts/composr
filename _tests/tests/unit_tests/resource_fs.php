@@ -103,7 +103,7 @@ class resource_fs_test_set extends cms_test_case
                 $count == count($listing),
                 'File/folder count mismatch for ' . $commandrfs_hook . ' (' . integer_format($count_folders) . ' folders + ' . integer_format($count_files) . ' files -vs- ' . integer_format(count($listing)) . ' in Commandr-fs listing)'
             );
-            //if ($count!=count($listing)){@var_dump($listing);@exit('!'.$count.'!'.$commandrfs_hook);} //Useful for debugging
+            //if ($count != count($listing)) { @var_dump($listing); @exit('!' . $count . '!' . $commandrfs_hook); } //Useful for debugging
         }
     }
 

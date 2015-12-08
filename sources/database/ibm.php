@@ -430,7 +430,7 @@ class Database_Static_ibm
             $i++;
         }
         odbc_free_result($results);
-        //   echo '<p>End '.microtime(false);
+        //   echo '<p>End ' . microtime(false);
         return $out;
     }
 }

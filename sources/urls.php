@@ -176,7 +176,7 @@ function cms_url_encode($url_part, $consider_rewrite = null)
         $consider_rewrite = can_try_mod_rewrite();
     }
     if ($consider_rewrite) { // These interfere with mod_rewrite processing because they get pre-decoded and make things ambiguous
-        //$url_part=str_replace(':','(colon)',$url_part); We'll ignore theoretical problem here- we won't expect there to be a need for encodings within redirect URL paths (params is fine, handles naturally)
+        //$url_part = str_replace(':', '(colon)', $url_part); We'll ignore theoretical problem here- we won't expect there to be a need for encodings within redirect URL paths (params is fine, handles naturally)
         $url_part = str_replace(array('/', '&', '#'), array(':slash:', ':amp:', ':uhash:'), $url_part); // horrible but mod_rewrite does it so we need to
     }
     $url_part = urlencode($url_part);
@@ -211,7 +211,7 @@ function cms_url_decode_post_process($url_part)
 {
     if ((strpos($url_part, ':') !== false) && (can_try_mod_rewrite())) {
         $url_part = str_replace(array(':uhash:', ':amp:', ':slash:'), array('#', '&', '/'), $url_part);
-        //$url_part=str_replace('(colon)',':',$url_part);
+        //$url_part = str_replace('(colon)', ':', $url_part);
     }
     return $url_part;
 }

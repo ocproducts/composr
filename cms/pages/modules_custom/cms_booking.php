@@ -285,9 +285,9 @@ class Module_cms_booking extends Standard_crud_module
             }
         }
         $fields->attach(form_input_line(do_lang_tempcode('BOOKABLE_CATEGORISATION'), do_lang_tempcode('DESCRIPTION_BOOKABLE_CATEGORISATION'), 'categorisation', $categorisation, true));
-        //$fields->attach(form_input_select(do_lang_tempcode('CYCLE_TYPE'),do_lang_tempcode('DESCRIPTION_CYCLE_TYPE'),'cycle_type',$details['cycle_type'],false));
-        //$fields->attach(form_input_line(do_lang_tempcode('CYCLE_PATTERN'),do_lang_tempcode('DESCRIPTION_CYCLE_PATTERN'),'cycle_pattern',$details['cycle_pattern'],false));
-        //$fields->attach(form_input_tick(do_lang_tempcode('USER_MAY_CHOOSE_CODE'),do_lang_tempcode('DESCRIPTION_USER_MAY_CHOOSE_CODE'),'user_may_choose_code',$details['user_may_choose_code']==1));
+        //$fields->attach(form_input_select(do_lang_tempcode('CYCLE_TYPE'), do_lang_tempcode('DESCRIPTION_CYCLE_TYPE'), 'cycle_type', $details['cycle_type'], false));
+        //$fields->attach(form_input_line(do_lang_tempcode('CYCLE_PATTERN'), do_lang_tempcode('DESCRIPTION_CYCLE_PATTERN'), 'cycle_pattern', $details['cycle_pattern'], false));
+        //$fields->attach(form_input_tick(do_lang_tempcode('USER_MAY_CHOOSE_CODE'), do_lang_tempcode('DESCRIPTION_USER_MAY_CHOOSE_CODE'), 'user_may_choose_code', $details['user_may_choose_code']==1));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_NOTES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_NOTES'), 'supports_notes', $details['supports_notes'] == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('BOOKABLE_DATES_ARE_RANGES'), do_lang_tempcode('DESCRIPTION_BOOKABLE_DATES_ARE_RANGES'), 'dates_are_ranges', $details['dates_are_ranges'] == 1));
 
@@ -505,7 +505,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_SUPPLEMENT_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $fields->attach(form_input_tick(do_lang_tempcode('PRICE_IS_PER_PERIOD'), do_lang_tempcode('DESCRIPTION_PRICE_IS_PER_PERIOD'), 'price_is_per_period', $details['price_is_per_period'] == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_QUANTITIES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_QUANTITIES'), 'supports_quantities', $details['supports_quantities'] == 1));
-        //$fields->attach(form_input_line(do_lang_tempcode('PROMO_CODE'),do_lang_tempcode('DESCRIPTION_PROMO_CODE'),'promo_code',$details['promo_code'],true));
+        //$fields->attach(form_input_line(do_lang_tempcode('PROMO_CODE'), do_lang_tempcode('DESCRIPTION_PROMO_CODE'), 'promo_code', $details['promo_code'], true));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_NOTES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_NOTES'), 'supports_notes', $details['supports_notes'] == 1));
         $fields->attach(form_input_integer(do_lang_tempcode('SORT_ORDER'), do_lang_tempcode('DESCRIPTION_SORT_ORDER'), 'sort_order', $details['sort_order'], true));
 

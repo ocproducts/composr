@@ -356,7 +356,7 @@ class Self_learning_cache
 function persistent_cache_get($key, $min_cache_date = null)
 {
     global $PERSISTENT_CACHE;
-    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0,3) == 1)) return NULL;  Annoying when doing performance tests, but you can enable to test persistent cache more
+    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0, 3) == 1)) return NULL;  Annoying when doing performance tests, but you can enable to test persistent cache more
     if ($PERSISTENT_CACHE === null) {
         return null;
     }

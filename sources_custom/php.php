@@ -853,7 +853,7 @@ function render_php_function($function, $class, $show_filename = false)
     $parameters = new Tempcode();
     $full_parameters = new Tempcode();
     foreach ($function['parameters'] as $parameter) {
-        //           if (!array_key_exists('type',$parameter)) exit($function['name']);
+        //if (!array_key_exists('type', $parameter)) exit($function['name']);
 
         $parameters->attach(do_template('PHP_PARAMETER_LIST', array('_GUID' => '03e76c19ec2cf9cb7f283db72728fc13', 'TYPE' => $parameter['type'], 'NAME' => $parameter['name'])));
 
