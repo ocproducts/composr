@@ -1916,7 +1916,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_index('group_privileges', 'group_id', array('group_id'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('privilege_list');
-    $GLOBALS['SITE_DB']->create_table('privilege_list', array(
+    $GLOBALS['SITE_DB']->create_table('privilege_list', array( // Why does this table exist? It could be done cleanly in hooks (which are easier to version) like config is, but when we add a privilege we do need to carefully define who gets it (as an immediate-op with potential complex code) -- it is cleaner to just handle definition in same place as that code).
         'p_section' => 'ID_TEXT',
         'the_name' => '*ID_TEXT',
         'the_default' => '*BINARY'
