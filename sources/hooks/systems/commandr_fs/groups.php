@@ -395,7 +395,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $primary_group_id = $this->_integer_category($category);
         $groups[] = $primary_group_id;
         if ((isset($properties['groups'])) && ($properties['groups'] != '')) {
-            $_groups = @unserialize($properties['groups']);
+            $_groups = @json_decode($properties['groups']);
             if ($_groups !== false) {
                 foreach ($_groups as $group) {
                     $groups[] = intval(remap_portable_as_resource_id('group', $group));
@@ -518,7 +518,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'salt' => $row['m_pass_salt'],
             'password_compatibility_scheme' => $row['m_password_compat_scheme'],
             'email_address' => $row['m_email_address'],
-            'groups' => serialize($groups),
+            'groups' => json_encode($groups),
             'dob_day' => $row['m_dob_day'],
             'dob_month' => $row['m_dob_month'],
             'dob_year' => $row['m_dob_year'],

@@ -125,7 +125,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $mail_end = $this->_default_property_str($properties, 'mail_end');
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
-        $mails = ($_mails == '') ? array() : unserialize($_mails);
+        $mails = ($_mails == '') ? array() : json_decode($_mails);
 
         $id = add_usergroup_subscription($label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails);
         return strval($id);
@@ -176,7 +176,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
             'mail_end' => $row['s_mail_end'],
             'mail_uhoh' => $row['s_mail_uhoh'],
             'uses_primary' => $row['s_uses_primary'],
-            'mails' => serialize($mails),
+            'mails' => json_encode($mails),
         );
     }
 
@@ -208,7 +208,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $mail_end = $this->_default_property_str($properties, 'mail_end');
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
-        $mails = ($_mails == '') ? array() : unserialize($_mails);
+        $mails = ($_mails == '') ? array() : json_decode($_mails);
 
         edit_usergroup_subscription(intval($resource_id), $label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails);
 

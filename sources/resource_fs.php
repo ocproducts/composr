@@ -27,6 +27,15 @@ i.e. Perform generalised operations on resource types without needing to know th
 The user knows all of Commandr-fs as "The Composr Repository".
 */
 
+/*
+In Composr we have cms_merge and we have Resource-fs.
+
+Resource-fs is intended for staging site functionality and backups, mainly.
+cms_merge is intended to merge disparate sites in a more complete way.
+
+There is overlap, but intentionally each approach is optimised in a different way.
+*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -35,6 +44,8 @@ The user knows all of Commandr-fs as "The Composr Repository".
 function init__resource_fs()
 {
     require_code('commandr');
+
+    require_code('json');
 
     define('RESOURCEFS_DEFAULT_EXTENSION', 'cms');
 
@@ -1876,7 +1887,7 @@ class Resource_fs_base
         if ($properties === false) {
             return false;
         }
-        return serialize($properties); // TODO: Should be XML serialisation, #1160 on tracker
+        return json_encode($properties); // TODO: Should be XML serialisation, #1160 on tracker
     }
 
     /**
@@ -1892,7 +1903,7 @@ class Resource_fs_base
         if ($properties === false) {
             return false;
         }
-        return serialize($properties); // TODO: Should be XML serialisation, #1160 on tracker
+        return json_encode($properties); // TODO: Should be XML serialisation, #1160 on tracker
     }
 
     /**
@@ -1905,7 +1916,7 @@ class Resource_fs_base
      */
     public function file_save_xml($filename, $path, $data)
     {
-        $properties = ($data == '') ? array() : @unserialize($data); // TODO: Should be XML parsing, #1160 on tracker
+        $properties = ($data == '') ? array() : @json_decode($data); // TODO: Should be XML parsing, #1160 on tracker
         if ($properties === false) {
             return false;
         }
@@ -1965,7 +1976,7 @@ class Resource_fs_base
      */
     public function folder_save_xml($filename, $path, $data)
     {
-        $properties = @unserialize($data); // TODO: Should be XML parsing, #1160 on tracker
+        $properties = @json_decode($data); // TODO: Should be XML parsing, #1160 on tracker
         if ($properties === false) {
             return false;
         }

@@ -1193,7 +1193,9 @@ class Virtual_shell
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state'] = stripslashes($_COOKIE['commandr_state']);
                 }
-                $commandr_state_diff = @unserialize(base64_decode($_COOKIE['commandr_state']));
+                $_commandr_state_diff = base64_decode($_COOKIE['commandr_state']);
+                secure_serialized_data($_commandr_state_diff);
+                $commandr_state_diff = @unserialize($_commandr_state_diff);
                 if (!is_array($commandr_state_diff)) {
                     $commandr_state_diff = array();
                 }
@@ -1205,7 +1207,9 @@ class Virtual_shell
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state_lang'] = stripslashes($_COOKIE['commandr_state_lang']);
                 }
-                $commandr_state_lang_diff = @unserialize(base64_decode($_COOKIE['commandr_state_lang']));
+                $_commandr_state_lang_diff = base64_decode($_COOKIE['commandr_state_lang']);
+                secure_serialized_data($_commandr_state_lang_diff);
+                $commandr_state_lang_diff = @unserialize($_commandr_state_lang_diff);
                 if (!is_array($commandr_state_lang_diff)) {
                     $commandr_state_lang_diff = array();
                 }
@@ -1217,7 +1221,9 @@ class Virtual_shell
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state_code'] = stripslashes($_COOKIE['commandr_state_code']);
                 }
-                $commandr_state_code_diff = @unserialize(base64_decode($_COOKIE['commandr_state_code']));
+                $_commandr_state_code_diff = base64_decode($_COOKIE['commandr_state_code']);
+                secure_serialized_data($_commandr_state_code_diff);
+                $commandr_state_code_diff = @unserialize($_commandr_state_code_diff);
                 if (!is_array($commandr_state_code_diff)) {
                     $commandr_state_code_diff = array();
                 }
@@ -1228,6 +1234,9 @@ class Virtual_shell
             $already_required = array_keys($GLOBALS['REQUIRED_CODE']);
             foreach ($commandr_state_diff as $commandr_key => $commandr_val) {
                 if (!is_scalar($commandr_val)) {
+                    continue;
+                }
+                if (preg_match('#^\w+$#', $commandr_key) != 0) {
                     continue;
                 }
 

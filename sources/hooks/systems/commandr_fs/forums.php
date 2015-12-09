@@ -361,7 +361,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             if ((array_key_exists('poll', $properties)) && ($properties['poll'] != '')) {
                 require_code('cns_polls_action');
 
-                $poll_data = unserialize($properties['poll']);
+                $poll_data = json_decode($properties['poll']);
 
                 $question = $poll_data['question'];
                 $is_private = $poll_data['is_private'];
@@ -421,7 +421,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         }
         $row = $rows[0];
 
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => intval($row['t_poll_id'])), '', 1);
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_polls', array('*'), array('id' => intval($row['t_poll_id'])), '', 1);
         if (array_key_exists(0, $rows)) {
             $answers = $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('pa_answer', 'pa_cache_num_votes'), array('pa_poll_id' => $row['t_poll_id']));
             $_answers = array();
@@ -437,7 +437,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 'requires_reply' => $rows[0]['po_requires_reply'],
                 'answers' => $_answers,
             );
-            $_poll_data = serialize($poll_data);
+            $_poll_data = json_encode($poll_data);
         } else {
             $_poll_data = '';
         }
@@ -501,7 +501,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             $poll_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_poll_id', array('id' => intval($resource_id)));
 
             if ((array_key_exists('poll', $properties)) && ($properties['poll'] != '')) {
-                $poll_data = unserialize($properties['poll']);
+                $poll_data = json_decode($properties['poll']);
 
                 $question = $poll_data['question'];
                 $is_private = $poll_data['is_private'];

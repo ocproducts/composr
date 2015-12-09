@@ -53,7 +53,7 @@ class Hook_commandr_fs_extended_config__match_key_message
             $row2 = array('message' => '<lang>' . get_translated_text_xml($row['k_message'], 'message', $GLOBALS['SITE_DB']) . '</lang>', 'match_key' => $row['k_match_key']);
             $rows2[] = $row2;
         }
-        return serialize($rows2);
+        return json_encode($rows2);
     }
 
     /**
@@ -76,7 +76,7 @@ class Hook_commandr_fs_extended_config__match_key_message
         }
         $GLOBALS['SITE_DB']->query_delete('match_key_messages');
 
-        $rows = @unserialize($contents);
+        $rows = @json_decode($contents);
         if ($rows === false) {
             return false;
         }

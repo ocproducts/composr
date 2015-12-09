@@ -18,6 +18,15 @@
  * @package    import
  */
 
+/*
+In Composr we have cms_merge and we have Resource-fs.
+
+Resource-fs is intended for staging site functionality and backups, mainly.
+cms_merge is intended to merge disparate sites in a more complete way.
+
+There is overlap, but intentionally each approach is optimised in a different way.
+*/
+
 /**
  * Hook class.
  */
