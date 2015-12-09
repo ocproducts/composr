@@ -422,7 +422,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/posts.php',
             '_tests/tests/unit_tests/quiz.php',
             '_tests/tests/unit_tests/rating.php',
-            '_tests/tests/unit_tests/relations.php',
+            '_tests/tests/unit_tests/database_relations.php',
             '_tests/tests/unit_tests/rss.php',
             '_tests/tests/unit_tests/shopping.php',
             '_tests/tests/unit_tests/standard_dir_files.php',

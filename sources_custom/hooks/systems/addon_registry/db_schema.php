@@ -134,7 +134,7 @@ class Hook_addon_registry_db_schema
             'adminzone/pages/minimodules_custom/sql_schema_generate.php',
             'adminzone/pages/minimodules_custom/sql_schema_generate_by_addon.php',
             'adminzone/pages/minimodules_custom/sql_show_tables_by_addon.php',
-            'sources_custom/relations.php',
+            'sources_custom/database_relations.php',
             'sources_custom/hooks/systems/page_groupings/db_schema.php',
             'sources_custom/database_toolkit.php',
         );

@@ -15,7 +15,7 @@ First run this, then run SQLEditor on the files created in uploads/website_speci
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-require_code('relations');
+require_code('database_relations');
 
 $all_tables = get_all_tables();
 

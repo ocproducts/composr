@@ -24,7 +24,7 @@ if (!isset($_GET['testing'])) {
     header('Content-type: text/plain; charset=' . get_charset());
 }
 
-require_code('relations');
+require_code('database_relations');
 $relation_map = get_relation_map();
 
 $tables = get_all_tables();

@@ -52,48 +52,45 @@ function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_fi
         }
         fwrite($install_php_file, preg_replace('#^#m', '//', "   \$GLOBALS['SITE_DB']->create_table('$table',array(\n$array),true,true);\n"));
 
-        if (($table == 'stats') || ($table == 'incoming_uploads') || ($table == 'cache') || ($table == 'url_title_cache') || ($table == 'urls_checked') || ($table == 'ip_country')) { // These are not things we want to back up
-            $data = array();
-        } else {
-            if (($table != 'edit_pings') && ($table != 'cache')) {
-                $start = 0;
-                do {
-                    $data = $GLOBALS['SITE_DB']->query_select($table, array('*'), null, '', 100, $start, false, array());
-                    foreach ($data as $d) {
-                        $list = '';
-                        $value = mixed();
-                        foreach ($d as $name => $value) {
-                            if (multi_lang_content()) {
-                                if (($table == 'translate') && ($name == 'text_parsed')) {
-                                    $value = '';
-                                }
-                            } else {
-                                if (strpos($name, '__text_parsed') !== false) {
-                                    $value = '';
-                                }
+        require_code('database_relations');
+        if (!table_has_purpose_flag($table, TABLE_PURPOSE__NO_BACKUPS)) {
+            $start = 0;
+            do {
+                $data = $GLOBALS['SITE_DB']->query_select($table, array('*'), null, '', 100, $start, false, array());
+                foreach ($data as $d) {
+                    $list = '';
+                    $value = mixed();
+                    foreach ($d as $name => $value) {
+                        if (multi_lang_content()) {
+                            if (($table == 'translate') && ($name == 'text_parsed')) {
+                                $value = '';
                             }
-
-                            if (is_null($value)) {
-                                continue;
-                            }
-                            if ($list != '') {
-                                $list .= ',';
-                            }
-                            $list .= "'" . (is_string($name) ? $name : strval($name)) . "'=>";
-                            if (is_integer($value)) {
-                                $list .= strval($value);
-                            } elseif (is_float($value)) {
-                                $list .= float_to_raw_string($value);
-                            } else {
-                                $list .= '"' . php_addslashes($value) . '"';
+                        } else {
+                            if (strpos($name, '__text_parsed') !== false) {
+                                $value = '';
                             }
                         }
-                        fwrite($install_php_file, preg_replace('#^#m', '//', "   \$GLOBALS['SITE_DB']->query_insert('$table',array($list));\n"));
-                    }
 
-                    $start += 100;
-                } while (count($data) != 0);
-            }
+                        if (is_null($value)) {
+                            continue;
+                        }
+                        if ($list != '') {
+                            $list .= ',';
+                        }
+                        $list .= "'" . (is_string($name) ? $name : strval($name)) . "'=>";
+                        if (is_integer($value)) {
+                            $list .= strval($value);
+                        } elseif (is_float($value)) {
+                            $list .= float_to_raw_string($value);
+                        } else {
+                            $list .= '"' . php_addslashes($value) . '"';
+                        }
+                    }
+                    fwrite($install_php_file, preg_replace('#^#m', '//', "   \$GLOBALS['SITE_DB']->query_insert('$table',array($list));\n"));
+                }
+
+                $start += 100;
+            } while (count($data) != 0);
         }
 
         fwrite($logfile, 'Backed up table ' . $table . "\n");

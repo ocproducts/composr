@@ -3206,7 +3206,9 @@ class Hook_cms_merge
 
             $row_start += 200;
         } while (count($rows) > 0);
+
         $this->_import_content_reviews($db, $table_prefix, 'topic', 'topic');
+
         // Read logs
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'f_read_logs');
         foreach ($rows as $row) {
@@ -3223,6 +3225,28 @@ class Hook_cms_merge
         }
 
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'topic', 'topic');
+
+        // Special pt access
+        $row_start = 0;
+        $rows = array();
+        do {
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'f_special_pt_access ORDER BY s_topic_id,s_member_id', 200, $row_start);
+            $this->_fix_comcode_ownership($rows);
+            foreach ($rows as $row) {
+                $row['s_member_id'] = import_id_remap_get('member', $row['s_member_id'], true);
+                $row['s_topic_id'] = import_id_remap_get('topic', $row['s_topic_id'], true);
+                if (is_null($row['s_member_id'])) {
+                    continue;
+                }
+                if (is_null($row['s_topic_id'])) {
+                    continue;
+                }
+                $GLOBALS['FORUM_DB']->query_delete('f_special_pt_access', $row);
+                $GLOBALS['FORUM_DB']->query_insert('f_special_pt_access', $row);
+            }
+
+            $row_start += 200;
+        } while (count($rows) > 0);
     }
 
     /**

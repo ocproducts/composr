@@ -25,11 +25,12 @@
  */
 function find_all_xml_tables()
 {
-    $skip = array('comcode_pages'/*complex IDs, and uses filesystem*/, 'group_category_access', 'group_privileges', 'seo_meta', 'seo_meta_keywords', 'sessions', 'ip_country', 'f_moderator_logs', 'download_logging', 'url_title_cache', 'urls_checked', 'cached_comcode_pages', 'stats', 'import_id_remap', 'import_parts_done', 'import_session', 'cache', 'cache_on', 'blocks', 'modules', 'addons', 'addon_dependencies', 'db_meta', 'db_meta_indices', 'adminlogs', 'autosave', 'translate', 'translate_history');
+    $skip_flags = TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__NO_STAGING_COPY | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__SUBDATA;
+
     $all_tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
     $tables = array();
     foreach ($all_tables as $table) {
-        if (!in_array($table['m_table'], $skip)) {
+        if (!table_has_purpose_flag($table['m_table'], $skip_flags)) {
             $tables[] = $table['m_table'];
         }
     }

@@ -1871,7 +1871,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
         $ip_bans = function_exists('persistent_cache_get') ? persistent_cache_get('IP_BANS') : null;
         if ($ip_bans === null) {
             $ip_bans = $GLOBALS['SITE_DB']->query_select('banned_ip', array('*'), null, '', null, null, true);
-            if (!is_array($ip_bans)) {
+            if (!is_array($ip_bans)) { // LEGACY
                 $ip_bans = $GLOBALS['SITE_DB']->query_select('usersubmitban_ip', array('*'), null, '', null, null, true);
             }
             if ($ip_bans !== null) {
