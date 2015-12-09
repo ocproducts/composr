@@ -142,10 +142,10 @@ function get_content_object($content_type)
  * Find a different content type code from the one had.
  *
  * @param  ID_TEXT $type_has Content type type we know
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook
  * @param  ID_TEXT $type_id Content type ID we know
  * @param  ID_TEXT $type_wanted Desired content type
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook
  * @return ID_TEXT Corrected content type type (blank: could not find)
  */
 function convert_composr_type_codes($type_has, $type_id, $type_wanted)
@@ -156,7 +156,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
 
     // Search content-meta-aware hooks
     $found_type_id = '';
-    $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
+    $cma_hooks = find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware');
     foreach (array_keys($cma_hooks) as $content_type) {
         if ((($type_has == 'content_type') && ($content_type == $type_id)) || ($type_has != 'content_type')) {
             $cma_ob = get_content_object($content_type);
@@ -179,7 +179,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
  * Find content type info, for a particular content type type we know.
  *
  * @param  ID_TEXT $type_has Content type type we know
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook
  * @param  ID_TEXT $type_id Content type ID we know
  * @return array Content type info list (blank: could not find)
  */
@@ -189,7 +189,7 @@ function convert_composr_type_codes_multiple($type_has, $type_id)
 
     // Search content-meta-aware hooks
     $found_type_ids = array();
-    $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
+    $cma_hooks = find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware');
     foreach (array_keys($cma_hooks) as $content_type) {
         if ((($type_has == 'content_type') && ($content_type == $type_id)) || ($type_has != 'content_type')) {
             $cma_ob = get_content_object($content_type);

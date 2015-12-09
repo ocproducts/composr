@@ -25,7 +25,7 @@
  */
 function find_all_xml_tables()
 {
-    $skip_flags = TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__NO_STAGING_COPY | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__SUBDATA;
+    $skip_flags = TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__NO_STAGING_COPY | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__SUBDATA;
 
     $all_tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
     $tables = array();

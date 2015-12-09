@@ -260,6 +260,7 @@ function get_tables_by_addon()
 function get_table_descriptions()
 {
     $table_descriptions = array(
+        'alternative_ids' => 'different sets of IDs for a database ID, allowing more robust cross-site or label based content referencing',
         'adminlogs' => 'stores logs of actions performed on the website',
         'attachment_refs' => 'stores references of what content uses what attachments (it allows attachment permissions to work, as it tells Composr what \'owner\' content to verify permissions against)',
         'attachments' => 'attachments referenced by Comcode (images, downloads, videos, etc)',
@@ -267,7 +268,7 @@ function get_table_descriptions()
         'blocks' => 'a registry of all installed blocks',
         'cache' => 'data caching, especially block caching',
         'cache_on' => 'a registry of what cacheable things are cached by what parameters',
-        'config' => 'all the configuration options and current settings',
+        'config' => 'all the configuration settings that have been saved',
         'edit_pings' => 'used to stop people editing the same thing at the same time (AJAX)',
         'failedlogins' => 'a log of all failed logins',
         'group_category_access' => 'defines what groups may access what categories',
@@ -278,7 +279,6 @@ function get_table_descriptions()
         'incoming_uploads' => 'temporary storage of uploaded files, before main form submission',
         'link_tracker' => 'outgoing click tracking (not really used much)',
         'logged_mail_messages' => 'logged emails (so you can check incorrect emails aren\'t going out) / email queuing',
-        'values_elective' => 'arbitrary store of lengthy/elective data values (mapping of keys to values)',
         'member_category_access' => 'defines what members may access what categories (rarely used, no admin UI)',
         'member_page_access' => 'defines what members may access what pages (rarely used, no admin UI)',
         'member_tracking' => 'tracks the locations of online users',
@@ -310,6 +310,7 @@ function get_table_descriptions()
         'usersubmitban_member' => 'list of banned members',
         'webstandards_checked_once' => 'this is used by the inbuilt XHTML checker to know what markup it has already checked, so it doesn\'t waste a lot of time re-checking the same stuff; it uses a hash-signature-check so it doesn\'t need to store all data in the table',
         'values' => 'arbitrary store of data values (mapping of keys to values)',
+        'values_elective' => 'arbitrary store of lengthy/elective data values (mapping of keys to values)',
         'zones' => 'details of all zones on the website',
         'content_primary__members' => 'sets content privacy',
         'content_regions' => 'sets the regions content may be viewed from',
