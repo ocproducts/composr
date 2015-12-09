@@ -892,10 +892,6 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$FIND_SCRIPT_NOHTTP}</td>
-			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>), but as a relative URL to domain name root</td>
-		</tr>
-		<tr style="background: #DDFFDD">
 			<td>{$MAKE_URL_ABSOLUTE,someurl}</td>
 			<td>Take what may be a relative URL (relative to site base URL), and make sure it is an absolute URL</td>
 		</tr>
