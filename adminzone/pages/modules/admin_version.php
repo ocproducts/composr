@@ -89,16 +89,16 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('urls_checked');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
 
-        /*$zones=find_all_zones(true);    We don't want to get rid of on-disk data when reinstalling
+        /* We don't want to get rid of on-disk data when reinstalling
+        $zones = find_all_zones(true);
         require_code('files');
-        $langs=find_all_langs(true);
-        foreach ($zones as $zone)
-        {
-            foreach (array_keys($langs) as $lang)
-            {
-                    deldir_contents(zone_black_magic_filterer(get_custom_file_base().(($zone=='')?'':'/').$zone.'/pages/comcode_custom/'.$lang,true),true);
+        $langs = find_all_langs(true);
+        foreach ($zones as $zone) {
+            foreach (array_keys($langs) as $lang) {
+                deldir_contents(zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang, true), true);
             }
-        }*/
+        }
+        */
 
         delete_attachments('comcode_page');
 

@@ -205,9 +205,9 @@ class Hook_fields_date
             $time = array(intval($time_bits[1]), intval($time_bits[0]), intval($date_bits[1]), intval($date_bits[2]), intval($date_bits[0]));
         }
         /*
-        $min_year=1902; // 1902 is based on signed integer limit
-        $max_year=2037; // 2037 is based on signed integer limit
-        $years_to_show=$max_year-$min_year;
+        $min_year = 1902; // 1902 is based on signed integer limit
+        $max_year = 2037; // 2037 is based on signed integer limit
+        $years_to_show = $max_year - $min_year;
         ^^^ NONSENSE: Integers not used to save!
         */
         $min_year = intval(option_value_from_field_array($field, 'min_year', strval(intval(date('Y')) - 10)));

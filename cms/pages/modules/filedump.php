@@ -859,15 +859,18 @@ class Module_filedump
 
         $fields->attach(form_input_integer(do_lang_tempcode('HEIGHT'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_height'), 'height', post_param_integer('height', null), false));
 
-        /*$_description=do_lang('COMCODE_TAG_attachment_PARAM_align');
-        if (substr($_description,0,strlen($adv)+1)==$adv) $_description=substr($_description,0,strlen($adv)+1);
-        $list=new Tempcode();
-        foreach (explode('|',$_description) as $option)
-        {
-            list($option_val,$option_label)=explode('=',$option,2);
-            $list->attach(form_input_list_entry($option_val,($option_val==post_param_string('align','')),$option_label));
+        /*
+        $_description = do_lang('COMCODE_TAG_attachment_PARAM_align');
+        if (substr($_description, 0, strlen($adv) + 1) == $adv) {
+            $_description = substr($_description, 0, strlen($adv) + 1);
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_align_TITLE'),'','align',$list,NULL,false,false));*/
+        $list = new Tempcode();
+        foreach (explode('|', $_description) as $option) {
+            list($option_val, $option_label) = explode('=', $option, 2);
+            $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('align', '')), $option_label));
+        }
+        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_align_TITLE'), '', 'align', $list, null, false, false));
+        */
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_float');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {

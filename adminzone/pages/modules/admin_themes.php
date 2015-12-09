@@ -480,7 +480,7 @@ class Module_admin_themes
             $zone_list = new Tempcode();
             if ($theme == $site_default_theme) {
                 if ((count($zones) < 10) && (!is_cns_satellite_site()) && ($free_choices == 0)) {
-                    $zone_list->attach($zone_list_free_choices); // Actually will do nothing, as $free_choices==0
+                    $zone_list->attach($zone_list_free_choices); // Actually will do nothing, as $free_choices == 0
                 } else {
                     $zone_list->attach(do_lang_tempcode('THEME_DEFAULT_FOR_SITE'));
                 }

@@ -215,8 +215,8 @@ if ((count($files) == 0) && (@$_GET['full_scan'] != '1')) {
     if (count($files) == 0) {
         $files = push_bugfix_do_dir(get_file_base(), $git_found, 24 * 60 * 60 * 14);
     }
-    /*$git_status='required="required"';
-    $git_status_2='';*/
+    /*$git_status = 'required="required"';
+    $git_status_2 = '';*/
     $git_status_3 = '<strong>Git commit ID</strong>';
     $choose_files_label = '<strong>Choose files</strong>';
 }

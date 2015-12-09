@@ -54,9 +54,8 @@ function _img_tag_fixup($matches)
     }
     $params = str_replace(' ismap', '', $params);
 
-    /*$referer=post_param_string('http_referer',cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
-    $caller_url = /*looks_like_url($referer)?preg_replace('#/[^/]*$#','',$referer):*/
-        get_base_url();
+    /*$referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
+    $caller_url = /*looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : */get_base_url();
 
     if ((strpos($matches[2], '{$FIND_SCRIPT') === false) && (strpos($matches[2], '{$IMG') === false)) {
         $new_url = qualify_url($matches[2], $caller_url);
@@ -76,9 +75,8 @@ function _img_tag_fixup($matches)
  */
 function _img_tag_fixup_raw($matches)
 {
-    /*$referer=post_param_string('http_referer',cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
-    $caller_url = /*looks_like_url($referer)?preg_replace('#/[^/]*$#','',$referer):*/
-        get_base_url();
+    /*$referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
+    $caller_url = /*looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : */get_base_url();
 
     $matches[2] = html_entity_decode($matches[2], ENT_QUOTES, get_charset());
 
@@ -501,7 +499,7 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace_callback('#(<![CDATA[)(.*)(]]>)#siU', '_cdata_protect', $semihtml);
     // And use same method to protect our code tags
     /* foreach (array_keys($GLOBALS['CODE_TAGS']) as $code_tag)
-            $semihtml=preg_replace_callback('#(\['.$code_tag.'[^\]]*\])(.*)(\[/'.$code_tag.'\])#siU','_codetag_protect',$semihtml);
+        $semihtml = preg_replace_callback('#(\[' . $code_tag . '[^\]]*\])(.*)(\[/' . $code_tag . '\])#siU', '_codetag_protect', $semihtml);
     Actually no, we don't want this. These tags are typed potentially to show HTML and thus the entities must get decoded
     */
 
@@ -784,9 +782,11 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('</CDATA__amp>', '&', $semihtml);
 
     // Tempcode escaping
-    /*$semihtml=str_replace('{+','\{+',$semihtml); No - people should be able to type this if they want
-    $semihtml=str_replace('{$','\{$',$semihtml);
-    $semihtml=str_replace('{!','\{!',$semihtml);*/
+    /* No - people should be able to type this if they want
+    $semihtml = str_replace('{+', '\{+', $semihtml);
+    $semihtml = str_replace('{$', '\{$', $semihtml);
+    $semihtml = str_replace('{!', '\{!', $semihtml);
+    */
 
     $semihtml = str_replace('[ html', '[html', $semihtml);
     $semihtml = str_replace('[ semihtml', '[semihtml', $semihtml);

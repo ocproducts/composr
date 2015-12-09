@@ -487,8 +487,8 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
             if ($details !== false) { // Check it is not corrupt. If it is corrupt, we will give an error later
                 $magic_factor = 3.0; /* factor of inefficency by experimentation */
 
-                $channels = 4;//array_key_exists('channels',$details)?$details['channels']:3; it will be loaded with 4
-                $bits_per_channel = 8;//array_key_exists('bits',$details)?$details['bits']:8; it will be loaded with 8
+                $channels = 4;//array_key_exists('channels', $details) ? $details['channels'] : 3; it will be loaded with 4
+                $bits_per_channel = 8;//array_key_exists('bits', $details) ? $details['bits'] : 8; it will be loaded with 8
                 $bytes = ($details[0] * $details[1]) * ($bits_per_channel / 8) * ($channels + 1) * $magic_factor;
 
                 if ($bytes > floatval($what_we_will_allow)) {

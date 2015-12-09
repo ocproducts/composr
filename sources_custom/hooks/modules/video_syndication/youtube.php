@@ -82,14 +82,15 @@ class Hook_video_syndication_youtube
         do {
             if (!is_null($transcoding_id)) {
                 /* EDIT: Actually we looked at transcoding table instead and lookup individual video and process as such
-                    $query_params['category']='sync'.strval($local_id); // Covers {http://gdata.youtube.com/schemas/2007/developertags.cat} and {http://gdata.youtube.com/schemas/2007/keywords.cat}
-                    $xml=$this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads',$query_params);
+                $query_params['category'] = 'sync' . strval($local_id); // Covers {http://gdata.youtube.com/schemas/2007/developertags.cat} and {http://gdata.youtube.com/schemas/2007/keywords.cat}
+                $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
 
-                    if (!isset($parsed->entry)) // Annoying! Youtube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
-                    {
-                            unset($query_params['category']);
-                            $xml=$this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads',$query_params);
-                    }*/
+                if (!isset($parsed->entry)) // Annoying! Youtube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
+                {
+                    unset($query_params['category']);
+                    $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+                }
+                */
 
                 $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $transcoding_id, array());
 
@@ -237,7 +238,7 @@ class Hook_video_syndication_youtube
             @set_time_limit(10000);
         }
         try {
-            $test = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*,$file_path*/);
+            $test = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*, $file_path*/);
             $response = $this->_http($HTTP_DOWNLOAD_URL, null, 'PUT', null, 10000.0, $extra_headers, $file_path, $mime_type);
 
             if ($is_temp_file) {

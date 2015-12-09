@@ -150,7 +150,7 @@ class Hook_cleanup_criticise_mysql_fields
                 $type = (strpos($_type, 'int') !== false) ? 'INTEGER' : 'SHORT_TEXT';
                 switch ($_type) {
                     case 'varchar(5)':
-                        //$type='LANGUAGE_NAME';   Ideally, but we cannot assume
+                        //$type = 'LANGUAGE_NAME';   Ideally, but we cannot assume
                         $type = 'ID_TEXT';
                         break;
                     case 'varchar(40)':

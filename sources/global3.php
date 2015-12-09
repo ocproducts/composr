@@ -860,10 +860,10 @@ function is_writable_wrap($path)
 
     if (is_dir($path)) {
         /*if (false) { // ideal, but too dangerous as sometimes you can write files but not delete again
-            $test=@fopen($path.'/cms.delete.me',GOOGLE_APPENGINE?'wb':'wt');
-            if ($test!==false) {
+            $test = @fopen($path . '/cms.delete.me', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            if ($test !== false) {
                 fclose($test);
-                unlink($path.'/cms.delete.me');
+                unlink($path . '/cms.delete.me');
                 return true;
             }
             return false;
@@ -1627,10 +1627,15 @@ function get_ip_address($amount = 4, $ip = null)
     }
 
     if ($ip === null) {
-        /*$fw=cms_srv('HTTP_X_FORWARDED_FOR');  Presents too many security and maintenance problems. Can easily be faked, or changed.
-        if (cms_srv('HTTP_CLIENT_IP')!='') $fw=cms_srv('HTTP_CLIENT_IP');
-        if (($fw!='') && ($fw!='127.0.0.1') && (substr($fw,0,8)!='192.168.') && (substr($fw,0,3)!='10.') && (is_valid_ip($fw)) && ($fw!=cms_srv('SERVER_ADDR'))) $ip=$fw;
-        else */
+        /* Presents too many security and maintenance problems. Can easily be faked, or changed.
+        $fw = cms_srv('HTTP_X_FORWARDED_FOR');
+        if (cms_srv('HTTP_CLIENT_IP') != '') {
+            $fw = cms_srv('HTTP_CLIENT_IP');
+        }
+        if (($fw != '') && ($fw != '127.0.0.1') && (substr($fw, 0, 8) != '192.168.') && (substr($fw, 0, 3) != '10.') && (is_valid_ip($fw)) && ($fw != cms_srv('SERVER_ADDR'))) {
+            $ip = $fw;
+        } else
+        */
         $ip = cms_srv('REMOTE_ADDR');
     }
 
@@ -2117,15 +2122,13 @@ function get_num_users_peak()
  */
 function escape_html($string)
 {
-    //   if ($string==='') return $string; // Optimisation, but doesn't work well
+    //if ($string === '') return $string; // Optimisation, but doesn't work well
     if (isset($string->codename)/*faster than is_object*/) {
         return $string;
     }
 
-    /*if ($GLOBALS['XSS_DETECT'])   Useful for debugging
-    {
-        if (ocp_is_escaped($string))
-        {
+    /*if ($GLOBALS['XSS_DETECT']) {  Useful for debugging
+        if (ocp_is_escaped($string)) {
             @var_dump(debug_backtrace());
             @exit('String double-escaped');
         }
@@ -2450,9 +2453,9 @@ function has_cookies() // Will fail on users first visit, but then will catch on
         return $HAS_COOKIES_CACHE;
     }
 
-    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies',0)==0) && (!running_script('commandr')))   We know this works by now, was tested for years. Causes annoyance when developing
+    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0) && (!running_script('commandr')))   We know this works by now, was tested for years. Causes annoyance when developing
     {
-        $_COOKIE=array();
+        $_COOKIE = array();
         return false;
     }*/
 

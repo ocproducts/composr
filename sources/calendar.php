@@ -355,7 +355,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         $start_month += $dif_month;
         if ($start_monthly_spec_type == 'day_of_month') {
             $start_day += $dif_day;
-            //$start_day_of_month=$start_day;   Is static actually
+            //$start_day_of_month = $start_day;   Is static actually
         } else {
             $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, is_null($start_hour) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, is_null($start_minute) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
         }

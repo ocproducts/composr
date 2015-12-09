@@ -310,7 +310,7 @@ function attachments_script()
     // Send actual data
     $myfile = fopen($_full, 'rb');
     fseek($myfile, $from);
-    /*if ($size==$new_length)    Uses a lot of memory :S
+    /*if ($size == $new_length)    Uses a lot of memory :S
     {
         fpassthru($myfile);
     } else {*/

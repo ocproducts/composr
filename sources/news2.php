@@ -399,7 +399,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     }
     if (($meta_keywords == '') && ($meta_description == '')) {
         $meta_description = ($news == '') ? $news_article : $news;
-        seo_meta_set_for_implicit('news', strval($id), array($title, $meta_description/*,$news_article*/), $meta_description); // News article could be used, but it's probably better to go for the summary only to avoid crap
+        seo_meta_set_for_implicit('news', strval($id), array($title, $meta_description/*, $news_article*/), $meta_description); // News article could be used, but it's probably better to go for the summary only to avoid crap
     } else {
         seo_meta_set_for_explicit('news', strval($id), $meta_keywords, $meta_description);
     }

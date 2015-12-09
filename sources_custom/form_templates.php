@@ -74,7 +74,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
         $out = array();
         foreach ($_option[0] as $option) {
             // $disabled has been added to the API, so we must emulate the
-            // previous behaviour if it isn't supplied (ie. $disabled='0')
+            // previous behaviour if it isn't supplied (ie. $disabled == '0')
             if (count($option) == 4) {
                 list($pretty_name, $name, $value, $_description) = $option;
                 $disabled = '0';

@@ -130,7 +130,7 @@ class CMS_RSS
                 xml_set_end_namespace_decl_handler($xml_parser, 'endNameSpace');
             }
 
-            //$data=convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
+            //$data = convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
 
             if (strpos($data, '<!ENTITY') === false) {
                 $extra_data = "<" . "?xml version=\"1.0\" encoding=\"" . $GLOBALS['HTTP_CHARSET'] . "\" ?" . ">
@@ -190,7 +190,7 @@ class CMS_RSS
      */
     /*function extEntity($parser, $open_entity_names, $base, $system_id, $public_id)
     {
-        $_open_entity_names=explode(',', $open_entity_names);
+        $_open_entity_names = explode(',', $open_entity_names);
         return 1; // Kludge to skip dodgy entities
     }*/
 

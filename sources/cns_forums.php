@@ -235,14 +235,18 @@ function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree
     return $subordinates;
 }
 
-/*function cns_is_up_to_date_on_forum($forum_id,$member_id=NULL)     Interesting function, not currently needed
+/* Interesting function, not currently needed
+function cns_is_up_to_date_on_forum($forum_id, $member_id = null)
 {
-    $_last_topic=$GLOBALS['FORUM_DB']->query_select('f_forums',array('f_cache_last_time','f_cache_last_topic_id'),array('id'=>$forum_id));
-    if (!array_key_exists(0,$_last_topic)) return false; // Data error, but let's just trip past
-    $topic_last_time=$_last_topic[0]['f_cache_last_time'];
-    $topic_id=$_last_topic[0]['f_cache_last_topic_id'];
-    return cns_has_read_topic($topic_id,$topic_last_time,$member_id);
-}*/
+    $_last_topic = $GLOBALS['FORUM_DB']->query_select('f_forums', array('f_cache_last_time', 'f_cache_last_topic_id'), array('id' => $forum_id));
+    if (!array_key_exists(0, $_last_topic)) {
+        return false; // Data error, but let's just trip past
+    }
+    $topic_last_time = $_last_topic[0]['f_cache_last_time'];
+    $topic_id = $_last_topic[0]['f_cache_last_topic_id'];
+    return cns_has_read_topic($topic_id, $topic_last_time, $member_id);
+}
+*/
 
 /**
  * Find whether a member may moderate a certain forum.

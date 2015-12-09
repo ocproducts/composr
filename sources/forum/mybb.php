@@ -1025,7 +1025,7 @@ class Forum_driver_mybb extends Forum_driver_base
         if (in_array($user_level, array(3, 4, 6))) {
             return true; // return all administrators + all moderators
         }
-        //if ($user_level==4) return true; //this returns only administrators
+        //if ($user_level == 4) return true; //this returns only administrators
         return false;
     }
 

@@ -348,7 +348,7 @@ function get_recommended_user_func($raw_params)
     require_once(COMMON_CLASS_PATH_READ . '/user_read.php');
 
     list($start, $max) = get_pagination_positions($params, 0, 1, 20);
-    //$mode=$params[2];	Not used, we don't differentiate Tapatalk vs non-Tapatalk users
+    //$mode = $params[2];	Not used, we don't differentiate Tapatalk vs non-Tapatalk users
 
     $user_object = new CMSUserRead();
     list($total, $_users) = $user_object->get_recommended_users($start, $max);

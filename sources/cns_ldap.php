@@ -239,8 +239,8 @@ function cns_ldap_bind()
         /*
         Example for Active Directory, if domain is chris4.com
 
-        $login='cn=Administrator,cn=Users,dc=chris4,dc=com'; // Log in using full name (cn) [in this case, same as username, but not always]
-        $login='Administrator@chris4.com'; // Log in using username (sAMAccountName)
+        $login = 'cn=Administrator,cn=Users,dc=chris4,dc=com'; // Log in using full name (cn) [in this case, same as username, but not always]
+        $login = 'Administrator@chris4.com'; // Log in using username (sAMAccountName)
         */
         $test = @ldap_bind($LDAP_CONNECTION, $login, get_option('ldap_bind_password')); // This sometimes causes errors, and isn't always needed. Hence error output is suppressed
         if ($test === false) {

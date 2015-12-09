@@ -320,8 +320,8 @@ class Hook_secpay
      */
     public function handle_transaction()
     {
-        /*$myfile=fopen(get_file_base().'/data_custom/ecommerce.log','at');      Useful for debugging
-        fwrite($myfile,serialize($_POST));
+        /*$myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');      Useful for debugging
+        fwrite($myfile, serialize($_POST));
         fclose($myfile);*/
 
         $txn_id = post_param_string('trans_id');

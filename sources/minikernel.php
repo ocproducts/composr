@@ -195,7 +195,7 @@ function get_html_trace()
  */
 function fatal_exit($text)
 {
-    //   if (is_object($text)) $text=$text->evaluate();
+    //if (is_object($text)) $text = $text->evaluate();
 
     // To break any looping of errors
     global $EXITING;

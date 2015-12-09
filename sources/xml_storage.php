@@ -550,7 +550,7 @@ function _import_xml_row($parsed, &$all_existing_data, $all_fields, $all_id_fiel
             $same = true;
             foreach ($key_map as $xk => $xv) {
                 if ($e[$xk] !== $xv) {
-                    $same = false; // will reset to true right away except for the last iteration - in which case the "$update=$same;" line will take note
+                    $same = false; // will reset to true right away except for the last iteration - in which case the "$update = $same;" line will take note
                     continue 2;
                 }
             }

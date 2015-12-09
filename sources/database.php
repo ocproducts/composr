@@ -585,12 +585,12 @@ class DatabaseConnector
         /*
         // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
 
-        $full_tablename=$this->get_table_prefix().$tablename;
+        $full_tablename = $this->get_table_prefix() . $tablename;
 
-        $rows=$this->query("SHOW TABLES LIKE '".$full_tablename."'");
+        $rows = $this->query("SHOW TABLES LIKE '" . $full_tablename . "'");
         foreach ($rows as $row)
             foreach ($row as $field)
-                    if ($field==$full_tablename) return true;
+                if ($field == $full_tablename) return true;
         return false;
         */
 
@@ -735,7 +735,7 @@ class DatabaseConnector
 
         $select = '';
         foreach ($select_map as $key) {
-            //if (!is_string($key)) $key=strval($key);   Should not happen, but won't cause a problem if does. Don't do this check for performance reasons.
+            //if (!is_string($key)) $key = strval($key);   Should not happen, but won't cause a problem if does. Don't do this check for performance reasons.
 
             if ($select != '') {
                 $select .= ',';
@@ -1287,11 +1287,12 @@ class DatabaseConnector
             $out = array('time' => ($after - $before), 'text' => $text, 'rows' => is_array($ret) ? count($ret) : null);
             $QUERY_LIST[] = $out;
         }
-        /*if (microtime_diff($after,$before)>1.0)  Generally one would use MySQL's own slow query log, which will impact Composr performance less
-        {
+        /*  Generally one would use MySQL's own slow query log, which will impact Composr performance less
+        if (microtime_diff($after, $before) > 1.0) {
             cms_profile_start_for('_query:SLOW_ALERT');
-            cms_profile_end_for('_query:SLOW_ALERT',$query);
-        }*/
+            cms_profile_end_for('_query:SLOW_ALERT', $query);
+        }
+        */
 
         // Run hooks, if any exist
         if ($UPON_QUERY_HOOKS_CACHE !== null) {
@@ -1454,7 +1455,7 @@ class DatabaseConnector
                     $where .= $key . ' IS NULL';
                 } else {
                     if ((is_string($value)) && ($value == '') && ($this->static_ob->db_empty_is_null())) {
-                        $where .= $key . ' IS NULL'; // $value=' ';
+                        $where .= $key . ' IS NULL'; // $value = ' ';
                     } else {
                         $where .= db_string_equal_to($key, $value);
                     }

@@ -741,7 +741,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
         }
     }
 
-    if (($room_row['is_im'] == 1)/* && ($first_message==1)*/) { // first_message doesn't add much efficiency and a pain to correlate on the client-side
+    if (($room_row['is_im'] == 1)/* && ($first_message == 1)*/) { // first_message doesn't add much efficiency and a pain to correlate on the client-side
         $invited_already = null;
         $active_members = null;
         $allow_list = explode(',', $room_row['allow_list']);
@@ -787,12 +787,12 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
         }
     }
 
-    /*if ($return=='0') Flood control creates error, but we'd rather see it shown inline
+    /*if ($return == '0') Flood control creates error, but we'd rather see it shown inline
     {
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
-        $output='<'.'?xml version="1.0" encoding="'.get_charset().'" ?'.'>
+        $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
 <!DOCTYPE xc:content [
 <!ENTITY euro "&#8364;">
 <!ENTITY ldquo "&#8220;">
@@ -975,7 +975,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
         'text_colour' => get_option('chat_default_post_colour'),
         'font_name' => get_option('chat_default_post_font'),
     );
-    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null/*,$wrap_pos*/); // Can't wrap system messages, the Comcode parser won't know 'private' is a real tag so will wrap inside its definition
+    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null/*, $wrap_pos*/); // Can't wrap system messages, the Comcode parser won't know 'private' is a real tag so will wrap inside its definition
     $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
     $myfile = @fopen(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', 'wb') or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
     fwrite($myfile, strval($message_id));

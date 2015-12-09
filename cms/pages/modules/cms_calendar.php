@@ -893,14 +893,12 @@ class Module_cms_calendar extends Standard_crud_module
         $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUBMIT_THANKYOU')) : $conflicts;
 
         /*
-        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))
-        {
-            if (!is_null($conflicts))
-            {
-                    $tpl=globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'),protect_from_escaping($conflicts)),NULL,'',true);
-                    $tpl->evaluate_echo();
-                    $GLOBALS['SCREEN_TEMPLATE_CALLED']='';
-                    exit();
+        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+            if (!is_null($conflicts)) {
+                $tpl = globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'), protect_from_escaping($conflicts)), null, '', true);
+                $tpl->evaluate_echo();
+                $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
+                exit();
             }
         }
         */
@@ -1194,15 +1192,13 @@ class Module_cms_calendar extends Standard_crud_module
             $conflicts = detect_conflicts(get_member(), $id, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
             $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUCCESS')) : $conflicts;
             /*
-            if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))
-            {
-                    if (!is_null($conflicts))
-                    {
-                            $tpl=globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'),protect_from_escaping($conflicts)),NULL,'',true);
-                            $tpl->evaluate_echo();
-                            $GLOBALS['SCREEN_TEMPLATE_CALLED']='';
-                            exit();
-                    }
+            if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+                if (!is_null($conflicts)) {
+                    $tpl = globalise(warn_screen(get_screen_title('CONFLICTS_DETECTED'), protect_from_escaping($conflicts)), null, '', true);
+                    $tpl->evaluate_echo();
+                    $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
+                    exit();
+                }
             }
             */
         } else {

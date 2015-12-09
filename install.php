@@ -748,7 +748,7 @@ function step_4()
         $PROBED_FORUM_CONFIG['cookie_member_hash'] = 'cms_member_hash';
     }
 
-    $cookie_domain = '';//(($domain=='localhost') || (strpos($domain,'.')===false))?'':('.'.$domain);
+    $cookie_domain = '';//(($domain == 'localhost') || (strpos($domain, '.') === false)) ? '' : ('.' . $domain);
     $cookie_path = '/';
     $cookie_days = '120';
     $use_persistent = false;
@@ -942,7 +942,7 @@ function step_4()
         $hidden->attach(form_input_hidden('table_prefix', $table_prefix));
     }
     /*if (!GOOGLE_APPENGINE) {   Excessive, let user tune later
-        $options->attach(make_tick(do_lang_tempcode('USE_PERSISTENT'),example('','USE_PERSISTENT_TEXT'),'use_persistent',$use_persistent?1:0));
+        $options->attach(make_tick(do_lang_tempcode('USE_PERSISTENT'), example('', 'USE_PERSISTENT_TEXT'), 'use_persistent', $use_persistent ? 1 : 0));
     }*/
 
     if (($use_msn == 0) && ($forum_type != 'cns')) { // Merge into one set of options
@@ -1648,7 +1648,7 @@ if (!function_exists(\'git_repos\')) {
         $path = dirname(__FILE__).\'/.git/HEAD\';
         if (!is_file($path)) return \'\';
         $lines = file($path);
-        $parts = explode(\'/\',$lines[0]);
+        $parts = explode(\'/\', $lines[0]);
         return trim(end($parts));
     }
 }
@@ -2409,9 +2409,9 @@ function require_code($codename)
             call_user_func('init__' . str_replace('/', '__', $codename));
         }
     }
-    /*if (!array_key_exists('type',$_GET))   Memory usage debugging. Not safe, as can mess up Tempcode generation (mixed echos) {
+    /*if (!array_key_exists('type', $_GET))   Memory usage debugging. Not safe, as can mess up Tempcode generation (mixed echos) {
         if (function_exists('memory_get_usage')) {
-            echo '<!-- Memory diff for '.$codename.' was: '.number_format(memory_get_usage()-$prior).' -->'."\n";
+            echo '<!-- Memory diff for ' . $codename . ' was: ' . number_format(memory_get_usage() - $prior) . ' -->' . "\n";
         }
     }*/
 }

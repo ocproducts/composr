@@ -1302,7 +1302,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_members_groups($member)
     {
-        //if ($member==$this->get_guest_id()) return array(1); May not hold true
+        //if ($member == $this->get_guest_id()) return array(1); May not hold true
 
         $groups = collapse_1d_complexity('group_id', $this->connection->query_select('user_group', array('group_id'), array('user_pending' => 0, 'user_id' => $member)));
         $groups[] = $this->get_member_row_field($member, 'group_id');

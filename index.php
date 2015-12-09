@@ -24,7 +24,7 @@ if (getcwd() != $FILE_BASE) {
     @chdir($FILE_BASE);
 }
 
-$profile = false;//array_key_exists('tick_profile',$_GET);
+$profile = false;//array_key_exists('tick_profile', $_GET);
 if ($profile) {
     global $FUNC_WATCH, $MICROTIME;
 

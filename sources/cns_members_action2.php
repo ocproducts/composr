@@ -1554,16 +1554,19 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
  */
 function cns_check_name_valid(&$username, $member_id = null, $password = null, $return_errors = false)
 {
-    /*   $striped_username=$username;           This would be an internationalisation mistake
-    $allowed_characters=array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-                                                                                                          'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-                                                                                                          '0','1','2','3','4','5','6','7','8','9',' ',
-                                                                                                          '#','@',':',';','/',"\\",'.',',','|','!','%','$','^','(','*',')','-','_','+','=','[',']','{','}','~');
-    foreach ($allowed_characters as $allowed_character)
-    {
-        $striped_username=str_replace($allowed_character,'',$striped_username);
+    /* This would be an internationalisation mistake
+    $striped_username = $username;
+    $allowed_characters = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ',
+                                '#', '@', ':', ';', '/', "\\", '.', ',', '|', '!', '%', '$', '^', '(', '*', ')', '-', '_', '+', '=', '[', ']', '{', '}', '~');
+    foreach ($allowed_characters as $allowed_character) {
+        $striped_username = str_replace($allowed_character, '', $striped_username);
     }
-    if ($striped_username!='') warn_exit(do_lang_tempcode('USERNAME_BAD_SYMBOLS'));*/
+    if ($striped_username != '') {
+        warn_exit(do_lang_tempcode('USERNAME_BAD_SYMBOLS'));
+    }
+    */
 
     // Check it doesn't already exist
     if (!is_null($username)) {

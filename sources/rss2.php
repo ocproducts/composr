@@ -40,7 +40,7 @@ function backend_cloud_script()
         exit('false');
     }
     $port = post_param_integer('port', '80');
-    // $watching_channel=$_POST['channels'];
+    // $watching_channel = $_POST['channels'];
     $status = _cloud_register_them($path, $procedure, $protocol, $port, get_param_string('type', ''));
     if (!$status) {
         exit('false');

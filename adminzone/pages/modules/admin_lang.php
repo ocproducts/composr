@@ -441,7 +441,7 @@ class Module_admin_lang
             $_to_translate[] = $it;
         }
         $to_translate = $_to_translate;
-        foreach ($to_translate as $i=>$it) {
+        foreach ($to_translate as $i => $it) {
             $old = $it['text_original'];
             $current = $this->find_lang_matches($old, $lang);
             $priority = ($last_level === $it['importance_level']) ? null : do_lang('PRIORITY_' . strval($it['importance_level']));
@@ -662,7 +662,7 @@ class Module_admin_lang
             if (array_key_exists($name, $for_lang)) {
                 $current = $for_lang[$name];
             } else {
-                $current = '';//$this->find_lang_matches($old,$lang); Too slow / useless for code translation
+                $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
             }
             if (($current == '') && (strtolower($name) != $name)) {
                 $trans_lot .= str_replace('\n', "\n", str_replace(array('{', '}'), array('(((', ')))'), $old)) . $delimit;
@@ -691,7 +691,7 @@ class Module_admin_lang
             if (array_key_exists($name, $for_lang)) {
                 $current = $for_lang[$name];
             } else {
-                $current = '';//$this->find_lang_matches($old,$lang); Too slow / useless for code translation
+                $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
             }
             $description = array_key_exists($name, $descriptions) ? $descriptions[$name] : '';
             if (($current == '') && (strtolower($name) != $name) && (array_key_exists($next, $translated_stuff))) {

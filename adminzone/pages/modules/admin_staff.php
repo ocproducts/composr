@@ -192,7 +192,7 @@ class Module_admin_staff
                 continue;
             }
             if (substr($key, 0, 6) == 'staff_') {
-                $id = intval($val); // e.g. $key=staff_2, $val=2  - so could also say $id=intval(substr($key,6));
+                $id = intval($val); // e.g. $key = staff_2, $val = 2  - so could also say $id = intval(substr($key, 6));
 
                 $this->_staff_edit($id, post_param_string('role_' . strval($id)));
 

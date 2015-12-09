@@ -17,7 +17,7 @@ function init__galleries2($code)
 {
     // We want to inject our workflow handling code into add_image...
     $code = str_replace(
-        'log_it(\'ADD_IMAGE\',strval($id),$title);',
+        'log_it(\'ADD_IMAGE\', strval($id), $title);',
         '
         if ($validated == 0) {
             require_code("workflows");

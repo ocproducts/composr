@@ -1500,9 +1500,9 @@ function generate_gradient($top, $bottom)
  */
 function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour_b1_orig, $colour_b1_new, $colour_b2_orig = null, $colour_b2_new = null, $gradient_direction = 'vertical', $pixel_x_start_array = null, $gradient_offset = 0, $end_array = false)
 {
-    /*$colour_a_new=$colour_a_orig;  For testing: a null conversion
-    $colour_b1_new=$colour_b1_orig;
-    $colour_b2_new=$colour_b2_orig;*/
+    /*$colour_a_new = $colour_a_orig;  For testing: a null conversion
+    $colour_b1_new = $colour_b1_orig;
+    $colour_b2_new = $colour_b2_orig;*/
 
     $colour_a_orig = str_replace('#', '', $colour_a_orig);
     $colour_b1_orig = str_replace('#', '', $colour_b1_orig);

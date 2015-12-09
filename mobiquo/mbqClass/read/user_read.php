@@ -146,14 +146,16 @@ class CMSUserRead
         $user_ids = array();
 
         if (!is_guest()) {
-            // This really isn't as designed. Chat blocking != Forum blocking
-            //$chat_blocked=$GLOBALS['SITE_DB']->query_select('chat_blocking',array('member_blocked'),array('member_blocker'=>$user_id));
-            //$user_ids=array_merge(collapse_1d_complexity('member_blocked',$chat_blocked),$user_ids);
+            /* This really isn't as designed. Chat blocking != Forum blocking
+            $chat_blocked = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => $user_id));
+            $user_ids = array_merge(collapse_1d_complexity('member_blocked', $chat_blocked), $user_ids);
+            */
         }
 
-        // We don't really want to filter these, would confuse
-        //$banned=$GLOBALS['SITE_DB']->query_select('usersubmitban_member',array('the_member'));
-        //$user_ids=array_merge(collapse_1d_complexity('the_member',$banned),$user_ids);
+        /* We don't really want to filter these, would confuse
+        $banned = $GLOBALS['SITE_DB']->query_select('usersubmitban_member', array('the_member'));
+        $user_ids = array_merge(collapse_1d_complexity('the_member', $banned), $user_ids);
+        */
 
         return array_unique($user_ids);
     }

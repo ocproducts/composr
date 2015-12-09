@@ -314,7 +314,7 @@ class Module_admin_setupwizard
             $addon_list_advanced_on_by_default = array();
         }
 
-        /*$addon_list_on_by_default=array(   These will be put on in individual Setup Wizard profiles; we list them here just so our addon_setupwizard unit test can ensure we haven't forgotten to consider their status
+        /*$addon_list_on_by_default = array(   These will be put on in individual Setup Wizard profiles; we list them here just so our addon_setupwizard unit test can ensure we haven't forgotten to consider their status
             'aggregate_types',
             'authors',
             'calendar',

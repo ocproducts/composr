@@ -224,10 +224,16 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                             }
                         }
-                        /*$owner=fileowner($full);   We don't store all this stuff, it's not in Composr's remit
-                        $group=filegroup($full);
-                        if (function_exists('posix_getpwuid')) $owner=posix_getpwuid($owner);
-                        if (function_exists('posix_getgrgid')) $group=posix_getgrgid($group);*/
+                        /* We don't store all this stuff, it's not in Composr's remit
+                        $owner = fileowner($full);
+                        $group = filegroup($full);
+                        if (function_exists('posix_getpwuid')) {
+                            $owner = posix_getpwuid($owner);
+                        }
+                        if (function_exists('posix_getgrgid')) {
+                            $group = posix_getgrgid($group);
+                        }
+                        */
                         $perms = fileperms($full);
                         $info[] = array('path' => $full, 'size' => filesize($full),/* 'owner' => $owner, 'group' => $group,*/
                                         'perms' => $perms, 'ctime' => $ctime, 'mtime' => $mtime);

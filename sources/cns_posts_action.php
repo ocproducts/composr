@@ -372,9 +372,11 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             }
             if ($validated == 1) {
                 if (!is_null($forum_id)) {
-                    /*if ($sunk==1) {    Don't hide posts to sunk topics actually, it's too weird
-                        $GLOBALS['FORUM_DB']->query('UPDATE '.$GLOBALS['FORUM_DB']->get_table_prefix().'f_forums SET f_cache_num_topics=(f_cache_num_topics+'.(($is_starter)?'1':'0').'),f_cache_num_posts=(f_cache_num_posts+1) WHERE id='.strval($topic_id));
-                    } else {*/
+                    /* Don't hide posts to sunk topics actually, it's too weird
+                    if ($sunk == 1) {
+                        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums SET f_cache_num_topics=(f_cache_num_topics+' . (($is_starter) ? '1' : '0') . '),f_cache_num_posts=(f_cache_num_posts+1) WHERE id=' . strval($topic_id));
+                    } else {
+                    */
                     require_code('cns_posts_action2');
 
                     // Find if the topic is validated. This can be approximate, if we don't get 1 then cns_force_update_forum_caching will do a search, making the code very slightly slower

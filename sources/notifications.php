@@ -784,7 +784,7 @@ function enable_notifications($notification_code, $notification_category, $membe
 }
 
 /**
- * Disable notifications for a member on a notification type+category. Chances are you don't want to call this, you want to call enable_notifications with $setting=A_NA. That'll stop the default coming back.
+ * Disable notifications for a member on a notification type+category. Chances are you don't want to call this, you want to call enable_notifications with $setting = A_NA. That'll stop the default coming back.
  *
  * @param  ID_TEXT $notification_code The notification code to use
  * @param  ?SHORT_TEXT $notification_category The category within the notification code (null: none)
@@ -895,7 +895,7 @@ function notifications_setting($notification_code, $notification_category, $memb
             if ($ob === null) {
                 return A_NA; // Can happen in template test sets, as this can be called up by a symbol
             }
-            //if ($ob===NULL) fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            //if ($ob === null) fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             $test = $ob->get_initial_setting($notification_code, $notification_category);
         }
     }

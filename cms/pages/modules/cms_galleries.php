@@ -304,7 +304,7 @@ class Module_cms_galleries extends Standard_crud_module
     public function _import()
     {
         $cat = get_param_string('name', 'root');
-        check_privilege('mass_import'/*Not currently scoped to categories,array('galleries',$cat)*/);
+        check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
         if (substr($cat, 0, 7) != 'member_') {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $cat));
@@ -428,7 +428,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         require_code('images');
 
-        check_privilege('mass_import'/*Not currently scoped to categories,array('galleries',$cat)*/);
+        check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
         post_param_string('test'); // To pick up on max file size exceeded errors
 
@@ -627,7 +627,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_code('images');
         require_code('exif');
 
-        check_privilege('mass_import'/*Not currently scoped to categories,array('galleries',$cat)*/);
+        check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
         if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
             return new Tempcode();
@@ -768,7 +768,7 @@ class Module_cms_galleries extends Standard_crud_module
     {
         $cat = post_param_string('cat');
 
-        check_privilege('mass_import'/*Not currently scoped to categories,array('galleries',$cat)*/);
+        check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
         make_member_gallery_if_needed($cat);
 
@@ -943,7 +943,7 @@ class Module_cms_galleries extends Standard_crud_module
     {
         $cat = post_param_string('cat');
 
-        check_privilege('mass_import'/*Not currently scoped to categories,array('galleries',$cat)*/);
+        check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
         foreach ($_POST as $x => $file) {
             if (!is_string($file)) {

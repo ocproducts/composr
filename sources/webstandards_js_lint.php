@@ -402,11 +402,14 @@ function js_check_command($command, $depth)
             case 'SWITCH':
                 $switch_type = js_check_expression($c[1]);
                 foreach ($c[2] as $case) {
-                    /*if (!is_null($case[0]))
-                            {
-                                        $passes=js_ensure_type(array($switch_type),js_check_expression($case[0]),$c_pos,'Switch type inconsistency');
-                                        if ($passes) js_infer_expression_type_to_variable_type($switch_type,$case[0]);
-                            }*/
+                    /*
+                    if (!is_null($case[0])) {
+                        $passes = js_ensure_type(array($switch_type), js_check_expression($case[0]), $c_pos, 'Switch type inconsistency');
+                        if ($passes) {
+                            js_infer_expression_type_to_variable_type($switch_type, $case[0]);
+                        }
+                    }
+                    */
                     js_check_command($case[1], $depth + 1);
                 }
                 break;
@@ -712,7 +715,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             return js_check_expression($inner[1], false, $is_guarded);
         case 'BOOLEAN_NOT':
             $expression = js_check_expression($inner[1], false, $is_guarded);
-            //$passes=js_ensure_type(array('Boolean'), $expression, $c_pos, 'Can only \'NOT\' a Boolean');
+            //$passes = js_ensure_type(array('Boolean'), $expression, $c_pos, 'Can only \'NOT\' a Boolean');
             //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $inner[1]);
             return 'Boolean';
         case 'TYPEOF':
@@ -1014,11 +1017,12 @@ function js_add_variable_reference($identifier, $first_mention, $instantiation =
  */
 function js_infer_expression_type_to_variable_type($type, $expr)
 {
-    /*   if (($expression[0]=='VARIABLE') && (count($expression[1][2])==0))      Not reliable enough, JS is very dynamic
-    {
-        $identifier=$expression[1][1];
-        js_set_composr_type($identifier,$type);
-    }*/
+    /* Not reliable enough, JS is very dynamic
+    if (($expression[0] == 'VARIABLE') && (count($expression[1][2]) == 0)) {
+        $identifier = $expression[1][1];
+        js_set_composr_type($identifier, $type);
+    }
+    */
 }
 
 /**

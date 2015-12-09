@@ -130,7 +130,7 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
         if ($pos === false) {
             // Are we expanding or contracting?
             if (($expanded) || ($expander[$level] == -1)) { // If is naturally expanded, or there is nothing that can expand it (probably because it has no parent)
-                $modifiers['expanded'] = 1;
+                $modifiers['expanded'] = true;
             }
 
             array_push($stack, $current_level);
@@ -154,12 +154,12 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
             $url = ltrim(substr($line, $pos + 1));
             if ($url[0] == '~') {
                 $url = substr($url, 1);
-                $modifiers['new_window'] = 1;
+                $modifiers['new_window'] = true;
             }
             /*elseif ($url[0]=='?')   Cache says no-no
             {
-                    $url=substr($url,1);
-                    $modifers['check_perms']=1;
+                    $url = substr($url, 1);
+                    $modifers['check_perms'] = true;
             }*/
 
             $current_level['children'][] = array(

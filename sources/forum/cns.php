@@ -1503,7 +1503,7 @@ class Forum_driver_cns extends Forum_driver_base
         if ((!cns_is_ldap_member($member_id)) && (!is_null($member_id))) {
             return md5($password);
         } else {
-            return $password; //cns_ldap_hash($member_id,$password); Can't do hash checks under all systems
+            return $password; //cns_ldap_hash($member_id, $password); Can't do hash checks under all systems
         }
     }
 

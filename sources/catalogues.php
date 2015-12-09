@@ -891,8 +891,8 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $map['FIELDS_GRID'] = new Tempcode();
     $map['FIELDS_TABULAR'] = new Tempcode();
     $map['fields'] = $fields;
-    //$fields_1d=array();
-    //$fields_2d=array();
+    //$fields_1d = array();
+    //$fields_2d = array();
 
     $no_catalogue_field_assembly = (get_value('no_catalogue_field_assembly') === '1');
     $no_catalogue_field_assembly_fieldmaps__this = (get_value('no_catalogue_field_assembly_fieldmaps__' . $catalogue['c_name']) === '1');

@@ -39,10 +39,10 @@ Note that:
  - for record searching, look at Filtercode, the companion language
 
 EXAMPLE CALLS...
-$results=selectcode_to_sqlfragment('1,3-10,!6,12*','id','download_categories','parent_id','cat','id');
-$results=selectcode_to_idlist_using_db('1,3-10,!6,12*','downloads','id','download_categories','parent_id','cat','id');
-$results=selectcode_to_idlist_using_memory('1,3-10,!6,12*',array(1=>2,2=>2,3=>2,4=>3),'download_categories','parent_id','cat','id');
-$results=selectcode_to_idlist_using_callback('1,3-10,!6,12*','_callback_get_download_structure','download_categories','parent_id','cat','id');
+$results = selectcode_to_sqlfragment('1,3-10,!6,12*', 'id', 'download_categories', 'parent_id', 'cat', 'id');
+$results = selectcode_to_idlist_using_db('1,3-10,!6,12*', 'downloads', 'id', 'download_categories', 'parent_id', 'cat', 'id');
+$results = selectcode_to_idlist_using_memory('1,3-10,!6,12*', array(1 => 2, 2 => 2, 3 => 2, 4 => 3), 'download_categories', 'parent_id', 'cat', 'id');
+$results = selectcode_to_idlist_using_callback('1,3-10,!6,12*', '_callback_get_download_structure', 'download_categories', 'parent_id', 'cat', 'id');
 */
 
 /**

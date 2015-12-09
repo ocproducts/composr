@@ -619,8 +619,8 @@ class Module_admin_stats
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('LOAD_TIMES_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
@@ -734,8 +734,8 @@ class Module_admin_stats
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('TOP_REFERRERS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
@@ -866,8 +866,8 @@ class Module_admin_stats
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('TOP_SEARCH_KEYWORDS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
@@ -1010,8 +1010,8 @@ class Module_admin_stats
             }
             $start = 0;
             $max = 10000;
-            /*$time_start=0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end=time();*/
+            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
+            $time_end = time();*/
         }
 
         $this->title = get_screen_title('PAGES_STATISTICS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));

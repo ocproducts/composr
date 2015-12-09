@@ -30,7 +30,7 @@ Not doing (from PhpStorm Code Inspector):
  - "Missing return statement" (this is useful, but if we have like a warn_exit at the end of a function, this would trigger the error)
 
 Unsupported syntax:
- static $foo=1,$bar=2;
+ static $foo = 1,$bar = 2;
   Not documented in PHP manual, so may be unreliable.
 */
 
@@ -81,7 +81,7 @@ if (array_key_exists('mixed', $_GET)) {
 if (array_key_exists('pedantic', $_GET)) {
     $GLOBALS['PEDANTIC'] = 1;
 }
-/*if (array_key_exists('todo',$_GET)) { */
+/*if (array_key_exists('todo', $_GET)) { */
 $GLOBALS['TODO'] = 1; // NB: Unit test skips these ones anyway
 /* } */
 if (array_key_exists('security', $_GET)) {
@@ -1540,13 +1540,13 @@ Demonstration of all the assignment checks we could make:
 
 $foo+='a';
 
-$bar=1;
-$bar[]='a';
+$bar = 1;
+$bar[] = 'a';
 
-list($a)=1;
+list($a) = 1;
 
-$b=1;
-$b{3}='a';
+$b = 1;
+$b[3] = 'a';
 */
 function check_assignment($c, $c_pos, $function_guard = '')
 {
@@ -1624,10 +1624,9 @@ function check_assignment($c, $c_pos, $function_guard = '')
                 $LOCAL_VARIABLES[$c[2][1]]['mixed_tag'] = true;
                 $e_type = '?mixed';
             }
-            /*elseif (($e_type=='boolean-false') && ($c[3][0]=='LITERAL'))    No, it'll give a mixed type error
-            {
-                    global $LOCAL_VARIABLES;
-                    $LOCAL_VARIABLES[$c[2][1]]['types'][]='boolean';
+            /*elseif (($e_type == 'boolean-false') && ($c[3][0] == 'LITERAL')) { No, it'll give a mixed type error
+                global $LOCAL_VARIABLES;
+                $LOCAL_VARIABLES[$c[2][1]]['types'][] = 'boolean';
             }*/
             set_composr_type($target[1], $e_type);
         } else {
@@ -1858,7 +1857,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             }
             return 'object-' . $inner[1];
         case 'CLONE_OBJECT':
-            // $a=clone $b will make a shallow copy of the object $, so we just
+            // $a = clone $b will make a shallow copy of the object $, so we just
             // return $b's type
             return check_expression($inner[1], false, false, '');
         case 'CREATE_ARRAY':
@@ -1924,17 +1923,17 @@ function check_variable($variable, $reference = false, $function_guard = '')
         } elseif ($next[0] == 'DEREFERENCE') {
             // Special rule for 'this->connection'
             if (($variable[1] == 'this') && ($variable[2][1][1] == 'connection') && ((!isset($variable[2][2][0])) || ($variable[2][2][0] != 'DEREFERENCE'))) {
-                $type='DatabaseConnector';
+                $type = 'DatabaseConnector';
             }
 
             // Special rule for $GLOBALS['?_DB']
             if (($variable[1] == 'GLOBALS') && ($variable[2][1][1][0] == 'STRING') && (substr($variable[2][1][1][1], -3) == '_DB') && ((!isset($variable[2][2][2][0])) || ($variable[2][2][2][0] != 'DEREFERENCE'))) {
-                $type='DatabaseConnector';
+                $type = 'DatabaseConnector';
             }
 
             // Special rule for $GLOBALS['FORUM_DRIVER']
             if (($variable[1] == 'GLOBALS') && ($variable[2][1][1][0] == 'STRING') && ($variable[2][1][1][1] == 'FORUM_DRIVER')) {
-                $type='Forum_driver_base';
+                $type = 'Forum_driver_base';
             }
 
             ensure_type(array('object', 'resource'), $type, $variable[3], 'Variable must be an object due to dereferencing');
@@ -2080,10 +2079,9 @@ function reinitialise_local_variables()
 // If the given expression is a direct variable expression, this function will infer the type as the given type. This therefore allows type infering on usage as well as on assignment
 function infer_expression_type_to_variable_type($type, $expression)
 {
-    /*   if (($expression[0]=='VARIABLE') && (count($expression[1][2])==0))      Not reliable
-    {
-        $identifier=$expression[1][1];
-        set_composr_type($identifier,$type);
+    /*if (($expression[0] == 'VARIABLE') && (count($expression[1][2]) == 0)) {      Not reliable
+        $identifier = $expression[1][1];
+        set_composr_type($identifier, $type);
     }*/
 }
 

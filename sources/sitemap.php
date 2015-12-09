@@ -793,17 +793,16 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             );
         }
 
-        /*if ((($meta_gather & SITEMAP_GATHER_DESCRIPTION)!=0) && (isset($cma_info['description_field'])))  Description field generally not appropriate for Sitemap
-        {
-            $description=$row[$cma_info['description_field']];
-            if (is_integer($description))
-            {
+        /* Description field generally not appropriate for Sitemap
+        if ((($meta_gather & SITEMAP_GATHER_DESCRIPTION) != 0) && (isset($cma_info['description_field']))) {
+            $description = $row[$cma_info['description_field']];
+            if (is_integer($description)) {
                 $struct['extra_meta']['description'] = get_translated_tempcode($description, $cma_info['connection']);
-            } else
-            {
+            } else {
                 $struct['extra_meta']['description'] = make_string_tempcode(escape_html($description));
             }
-        }*/
+        }
+        */
 
         if ((($meta_gather & SITEMAP_GATHER_IMAGE) != 0) && (isset($cma_info['thumb_field']))) {
             if (method_exists($this, '_find_theme_image')) {
@@ -1104,8 +1103,10 @@ function get_page_grouping_links()
  */
 function get_root_comcode_pages($zone, $include_zone = false)
 {
-    /*$rows=$GLOBALS['SITE_DB']->query_select('comcode_pages',array('the_page','p_validated'),array('the_zone'=>$zone,'p_parent_page'=>''));
-    return collapse_2d_complexity('the_page','p_validated',$rows);*/
+    /*
+    $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page', 'p_validated'), array('the_zone' => $zone, 'p_parent_page' => ''));
+    return collapse_2d_complexity('the_page', 'p_validated', $rows);
+    */
 
     // This uses more memory than the above, but is needed as pages may not have got into the database yet...
 
@@ -1114,7 +1115,7 @@ function get_root_comcode_pages($zone, $include_zone = false)
     $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,p_validated FROM ' . get_table_prefix() . 'comcode_pages WHERE ' . db_string_equal_to('the_zone', $zone) . ' AND ' . db_string_not_equal_to('p_parent_page', ''));
     $non_root = collapse_2d_complexity('the_page', 'p_validated', $rows);
 
-    $pages = find_all_pages_wrap($zone, false, /*$consider_redirects=*/true, /*$show_method = */0, /*$page_type = */'comcode');
+    $pages = find_all_pages_wrap($zone, false, /*$consider_redirects = */true, /*$show_method = */0, /*$page_type = */'comcode');
     foreach ($pages as $page => $page_type) {
         if (isset($non_root[$page])) {
             unset($pages[$page]);

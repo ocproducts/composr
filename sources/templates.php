@@ -305,8 +305,10 @@ function form_input_list_entry($value, $selected = false, $text = '', $red = fal
     }
 
     /* Causes a small performance hit and very unlikely to be needed
-    if (function_exists('filter_form_field_default')) // Don't include just for this (may not be used on a full input form), preserve memory
-        $selected=(filter_form_field_default($value,$selected?'1':'')=='1');*/
+    if (function_exists('filter_form_field_default')) { // Don't include just for this (may not be used on a full input form), preserve memory
+        $selected = (filter_form_field_default($value, $selected ? '1' : '') == '1');
+    }
+    */
 
     return do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('_GUID' => 'dd76a2685d0fba5f819ef160b0816d03', 'SELECTED' => $selected, 'DISABLED' => $disabled, 'CLASS' => $red ? 'criticalfield' : '', 'NAME' => is_integer($value) ? strval($value) : $value, 'TEXT' => $text));
 }

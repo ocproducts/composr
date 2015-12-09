@@ -304,9 +304,9 @@ function show_memory_points()
  * @param  ?string $death_message The message to exit with (null: return, do not exit)
  * @return boolean Whether we are
  */
-/*function debug_running_underneath($function, $death_message=NULL)
+/*function debug_running_underneath($function, $death_message = null)
 {
-    $stack=debug_backtrace();
+    $stack = debug_backtrace();
     foreach ($stack as $level) {
         if (in_array($function, $level)) {
             if (!is_null($death_message)) {

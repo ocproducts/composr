@@ -216,9 +216,11 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                 $url_details2 = parse_url($endpoint);
                 $whitelist = explode("\n", get_option('oembed_html_whitelist'));
                 if ((!in_array($url_details['host'], $whitelist)) && (!in_array($url_details2['host'], $whitelist)) && (!in_array(preg_replace('#^www\.#', '', $url_details['host']), $whitelist))) {
-                    /*require_code('comcode_compiler');  We could do this but it's not perfect, it still has some level of trust
-                            $len=strlen($data['html']);
-                            filter_html(false,$GLOBALS['FORUM_DRIVER']->get_guest_id(),0,$len,$data['html'],true,false);*/
+                    /* We could do this but it's not perfect, it still has some level of trust
+                    require_code('comcode_compiler');
+                    $len = strlen($data['html']);
+                    filter_html(false, $GLOBALS['FORUM_DRIVER']->get_guest_id(), 0, $len, $data['html'], true, false);
+                    */
                     $data['html'] = strip_tags($data['html']);
                 }
 
@@ -306,17 +308,27 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                     $map['height'] = $data['height'];
                 }
                 $url = $data['url']; // NB: This will also have been constrained to the maxwidth/maxheight (at least it is for Flickr)
-                /*if (array_key_exists('thumbnail_url',$data)) $map['thumb_url']=$data['thumbnail_url']; Cannot control the size, so we'll make our own inside image_websafe
-                    if (array_key_exists('thumbnail_width',$data)) $map['width']=$data['thumbnail_width'];
-                    if (array_key_exists('thumbnail_height',$data)) $map['height']=$data['thumbnail_height'];*/
+                /* Cannot control the size, so we'll make our own inside image_websafe
+                if (array_key_exists('thumbnail_url', $data)) {
+                    $map['thumb_url'] = $data['thumbnail_url'];
+                }
+                if (array_key_exists('thumbnail_width', $data)) {
+                    $map['width'] = $data['thumbnail_width'];
+                }
+                if (array_key_exists('thumbnail_height', $data)) {
+                    $map['height'] = $data['thumbnail_height'];
+                }
+                */
                 if (array_key_exists('description', $data)) {
                     $map['description'] = $data['description']; // not official, but embed.ly has it
                 } elseif (array_key_exists('title', $data)) {
                     $map['description'] = $data['title'];
                 }
-                /*require_code('mime_types');   $url should be the full image not to view the resource, so we don't need to trick the mime type
-                    require_code('files');
-                    $map['mime_type']=get_mime_type(get_file_extension($map['thumb_url']));*/
+                /* $url should be the full image not to view the resource, so we don't need to trick the mime type
+                require_code('mime_types');
+                require_code('files');
+                $map['mime_type'] = get_mime_type(get_file_extension($map['thumb_url']));
+                */
                 require_code('media_renderer');
                 return render_media_url($url, $url_safe, $attributes + $map, false, $source_member, MEDIA_TYPE_ALL, 'image_websafe');
 

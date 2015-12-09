@@ -141,7 +141,7 @@ function output_room_screen($member_id)
 {
     $title = get_screen_title('BUILDR');
 
-    /*$test_tpl=internalise_own_screen($title); Would require lots of work to make sure all links point right
+    /*$test_tpl = internalise_own_screen($title); Would require lots of work to make sure all links point right
     if (is_object($test_tpl)) return $test_tpl;*/
 
     destick($member_id);

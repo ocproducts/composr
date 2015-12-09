@@ -143,9 +143,11 @@ function php_addslashes_twice($in)
 
     // This code does not work, provides awfully confusing Tempcode errors...
 
-    /*global $PHP_REP_FROM,$PHP_REP_TO_TWICE;
-    return str_replace($PHP_REP_FROM,$PHP_REP_TO_TWICE,$in);
-    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));*/
+    /*
+    global $PHP_REP_FROM, $PHP_REP_TO_TWICE;
+    return str_replace($PHP_REP_FROM, $PHP_REP_TO_TWICE, $in);
+    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
+    */
 }
 
 /**
@@ -1778,13 +1780,13 @@ class Tempcode
                 $seq_part_0 = $seq_part[0];
                 /*if ($DEV_MODE) {
                     if (!isset($tpl_funcs[$seq_part_0])) {
-                        debug_eval($this->code_to_preexecute[$seq_part_0],$tpl_funcs);
+                        debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
                     }
-                    if (($tpl_funcs[$seq_part_0][0]!='e') && (function_exists($tpl_funcs[$seq_part_0]))) {
-                        debug_call_user_func($tpl_funcs[$seq_part_0],$seq_part[1],$current_lang,$seq_part[4]);
+                    if (($tpl_funcs[$seq_part_0][0] != 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
+                        debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                     } else {
-                        $parameters=$seq_part[1];
-                        debug_eval($tpl_funcs[$seq_part_0],$tpl_funcs,$parameters,$cl);
+                        $parameters = $seq_part[1];
+                        debug_eval($tpl_funcs[$seq_part_0], $tpl_funcs, $parameters, $cl);
                     }
                 } else {*/
                 if (!isset($tpl_funcs[$seq_part_0])) {
@@ -1883,15 +1885,15 @@ class Tempcode
                 $seq_part_0 = $seq_part[0];
                 /*if ($DEV_MODE) {
                     if (!isset($tpl_funcs[$seq_part_0])) {
-                        debug_eval($this->code_to_preexecute[$seq_part_0],$tpl_funcs);
+                        debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
                     }
-                    if (($tpl_funcs[$seq_part_0][0]!='e') && (function_exists($tpl_funcs[$seq_part_0]))) {
-                        debug_call_user_func($tpl_funcs[$seq_part_0],$seq_part[1],$current_lang,$seq_part[4]);
+                    if (($tpl_funcs[$seq_part_0][0] != 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
+                        debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                     } else {
-                        $parameters=$seq_part[1];
-                        debug_eval($tpl_funcs[$seq_part_0],$tpl_funcs,$parameters,$cl);
+                        $parameters = $seq_part[1];
+                        debug_eval($tpl_funcs[$seq_part_0], $tpl_funcs, $parameters, $cl);
                     }
-                    } else {*/
+                } else {*/
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
@@ -1977,13 +1979,13 @@ class Tempcode
                 $seq_part_0 = $seq_part[0];
                 /*if ($DEV_MODE) {
                     if (!isset($tpl_funcs[$seq_part_0])) {
-                        debug_eval($this->code_to_preexecute[$seq_part_0],$tpl_funcs);
+                        debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
                     }
-                    if (($tpl_funcs[$seq_part_0][0]!='e') && (function_exists($tpl_funcs[$seq_part_0]))) {
-                        debug_call_user_func($tpl_funcs[$seq_part_0],$seq_part[1],$current_lang,$seq_part[4]);
+                    if (($tpl_funcs[$seq_part_0][0] != 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
+                        debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                     } else {
-                        $parameters=$seq_part[1];
-                        debug_eval($tpl_funcs[$seq_part_0],$tpl_funcs,$parameters,$cl);
+                        $parameters = $seq_part[1];
+                        debug_eval($tpl_funcs[$seq_part_0], $tpl_funcs, $parameters, $cl);
                     }
                 } else {*/
                 if (!isset($tpl_funcs[$seq_part_0])) {

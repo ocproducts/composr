@@ -419,10 +419,15 @@ class Hook_phpbb3
                     foreach ($rows2[0] as $key => $val) {
                         if (substr($key, 0, 3) == 'pf_') {
                             if (is_null($val)) {
-                                /*if ($cpf_rows[substr($key,3)]==FIELD_INT) $val=NULL; Actually is stored as a string
-                                                                            elseif ($cpf_rows[substr($key,3)]==FIELD_BOOL) $val=NULL;
-                                                                            elseif ($cpf_rows[substr($key,3)]==FIELD_DATE) $val=NULL;
-                                                                            else */
+                                /* Actually is stored as a string
+                                if ($cpf_rows[substr($key, 3)] == FIELD_INT) {
+                                    $val = null;
+                                } elseif ($cpf_rows[substr($key, 3)] == FIELD_BOOL) {
+                                    $val = null;
+                                } elseif ($cpf_rows[substr($key, 3)] == FIELD_DATE) {
+                                    $val = null;
+                                } else
+                                */
                                 $val = '';
                             }
                             if (!is_string($val)) {
@@ -1347,7 +1352,7 @@ class Hook_phpbb3
                         $default = $_default;
                         break;
                     /*case FIELD_DATE: Unsupported
-                                        $type='integer';
+                                        $type = 'integer';
                                         break;*/
                 }
 

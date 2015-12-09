@@ -193,8 +193,8 @@ class Hook_ipb1 extends Hook_ipb_base
         require($file_base . '/conf_global.php');
         set_option('staff_address', $PROBED_FORUM_CONFIG['email_out']);
         set_option('restricted_usernames', $PROBED_FORUM_CONFIG['ban_names']);
-        /*set_option('forum_posts_per_page',$PROBED_FORUM_CONFIG['display_max_posts']);   Not useful
-        set_option('forum_topics_per_page',$PROBED_FORUM_CONFIG['display_max_topics']);*/
+        /*set_option('forum_posts_per_page', $PROBED_FORUM_CONFIG['display_max_posts']);   Not useful
+        set_option('forum_topics_per_page', $PROBED_FORUM_CONFIG['display_max_topics']);*/
         set_option('site_name', $PROBED_FORUM_CONFIG['home_name']);
         set_option('site_closed', $PROBED_FORUM_CONFIG['board_offline']);
         set_option('closed', $PROBED_FORUM_CONFIG['offline_msg']);

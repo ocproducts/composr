@@ -297,7 +297,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
             $categories->attach($li);
         } else {
             if ((((!is_null($cat['nc_owner'])) && ($may_blog)) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
-                $categories->attach(form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY',$GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'],true))*/ . ' (#' . strval($cat['n_id']) . ')'));
+                $categories->attach(form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY', $GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'], true))*/ . ' (#' . strval($cat['n_id']) . ')'));
             }
         }
     }

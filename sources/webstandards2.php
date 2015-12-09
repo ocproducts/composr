@@ -928,7 +928,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
         }
 
         // Embed is a special case
-        //if (($tag=='embed') && (!$self_close)) $EXPECTING_TAG='noembed'; // noembed not valid in (X)HTML5
+        //if (($tag == 'embed') && (!$self_close)) $EXPECTING_TAG = 'noembed'; // noembed not valid in (X)HTML5
 
         if (($tag == 'fieldset') && (!$self_close)) {
             $EXPECTING_TAG = 'legend';
@@ -1152,11 +1152,14 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                     $errors[] = array('WCAG_BAD_LAYOUT_TABLE');
                 }
 
-                /*if (!isset($attributes['abbr'])) We used to enforce th length for accessibility, but this is impractical since 'abbr' attribute was dropped in HTML5
-                    {
-                            $content=trim(substr($OUT,$POS,strpos($OUT,'</th>',$POS)-$POS)); // This isn't perfect - In theory a th could contain a table itself: but it's not very semantic if it does
-                            if (strlen(trim(@html_entity_decode(strip_tags($content),ENT_QUOTES,get_charset())))>40) $errors[]=array('WCAG_TH_TOO_LONG');
-                    }*/
+                /* We used to enforce th length for accessibility, but this is impractical since 'abbr' attribute was dropped in HTML5
+                if (!isset($attributes['abbr'])) {
+                    $content = trim(substr($OUT, $POS, strpos($OUT, '</th>', $POS) - $POS)); // This isn't perfect - In theory a th could contain a table itself: but it's not very semantic if it does
+                    if (strlen(trim(@html_entity_decode(strip_tags($content), ENT_QUOTES, get_charset()))) > 40) {
+                        $errors[] = array('WCAG_TH_TOO_LONG');
+                    }
+                }
+                */
                 break;
 
             case 'a':
@@ -1182,8 +1185,10 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
         /*if (($tag[0]=='h') && (is_numeric(substr($tag,1))))   Excessive check, heading order gaps are okay as long as order is still logical
         {
             global $LAST_HEADING;
-            if ($LAST_HEADING<intval(substr($tag,1))-1) $errors[]=array('WCAG_HEADING_ORDER');
-            $LAST_HEADING=intval(substr($tag,1));
+            if ($LAST_HEADING < intval(substr($tag, 1)) - 1) {
+                $errors[] = array('WCAG_HEADING_ORDER');
+            }
+            $LAST_HEADING = intval(substr($tag, 1));
         }*/
 
         if (isset($attributes['accesskey'])) {
@@ -1312,7 +1317,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
                 continue;
             }
 
-            //if ($tag=='embed') continue; // Hack, to allow rich media to work in multiple browsers. Not needed now that <object> tag is quite stable.
+            //if ($tag == 'embed') continue; // Hack, to allow rich media to work in multiple browsers. Not needed now that <object> tag is quite stable.
             $errors[] = array('XHTML_UNKNOWN_ATTRIBUTE', $tag, $attribute);
             continue;
         } else {
@@ -1498,13 +1503,16 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
     $errors = array();
 
     // Check positioning - not anymore "until user agents"
-    /*if ((!is_null($LAST_A_TAG)) && (isset($attributes['href'])))
-    {
-        $between=substr($OUT,$LAST_A_TAG+1,$TAG_RANGES[count($TAG_RANGES)-1][0]-$LAST_A_TAG-2);
-        $between=str_replace('&nbsp;',' ',$between);
-        $between=strip_tags($between,'<li><td><img><hr><br><p><th>');
-        if (trim($between)=='') $errors[]=array('WCAG_ADJACENT_LINKS');
-    }*/
+    /*
+    if ((!is_null($LAST_A_TAG)) && (isset($attributes['href']))) {
+        $between = substr($OUT, $LAST_A_TAG + 1, $TAG_RANGES[count($TAG_RANGES) - 1][0] - $LAST_A_TAG - 2);
+        $between = str_replace('&nbsp;', ' ', $between);
+        $between = strip_tags($between, '<li><td><img><hr><br><p><th>');
+        if (trim($between) == '') {
+            $errors[] = array('WCAG_ADJACENT_LINKS');
+        }
+    }
+    */
 
     // Check captioning
     global $A_LINKS;
@@ -1566,8 +1574,8 @@ function _check_labelling($tag, $attributes, $self_close, $close)
     $errors = array();
 
     global $FOR_LABEL_IDS, $FOR_LABEL_IDS_2, $INPUT_TAG_IDS;
-    if (($tag == 'td')/* || ($tag=='div')*/) {
-        //$FOR_LABEL_IDS=array(); // Can't work across table cells      Actually this is an ancient and lame restriction that hurts accessibility more than helping it
+    if (($tag == 'td')/* || ($tag == 'div')*/) {
+        //$FOR_LABEL_IDS = array(); // Can't work across table cells      Actually this is an ancient and lame restriction that hurts accessibility more than helping it
     }
     if (($tag == 'label') && (isset($attributes['for']))) {
         $FOR_LABEL_IDS[$attributes['for']] = 1;
@@ -1653,7 +1661,7 @@ function _webstandards_css_sheet($data)
     $class = '';
     $at_rule = '';
     $at_rule_block = '';
-    //$left_no_mans_land_once=false;
+    //$left_no_mans_land_once = false;
     $brace_level = 0;
     $i = 0;
     $class_start_line = null;
@@ -1754,7 +1762,7 @@ function _webstandards_css_sheet($data)
                     }
                     $status = CSS_IN_IDENTIFIER;
                     $class_name = '';
-                    //$left_no_mans_land_once=true;
+                    //$left_no_mans_land_once = true;
                 } elseif ($next == '@') {
                     $status = CSS_AT_RULE;
                     $at_rule = '';
@@ -1764,7 +1772,7 @@ function _webstandards_css_sheet($data)
                 } elseif ($next == '*') {
                     $status = CSS_IN_IDENTIFIER;
                     $class_name = '*';
-                    //$left_no_mans_land_once=true;
+                    //$left_no_mans_land_once = true;
                 } else {
                     $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
                 }

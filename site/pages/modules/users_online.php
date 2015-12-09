@@ -113,7 +113,7 @@ class Module_users_online
         foreach ($members as $row) {
             $last_activity = $row['last_activity'];
             $member = $row['member_id'];
-            //$username=$row['cache_username'];
+            //$username = $row['cache_username'];
             $location = $row['the_title'];
             if (($location == '') && ($row['the_type'] == 'rss')) {
                 $location = 'RSS';

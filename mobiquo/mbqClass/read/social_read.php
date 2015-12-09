@@ -209,8 +209,8 @@ class CMSSocialRead
                     $content_id = preg_replace('#^.*:topicview:browse:(\d+)\#post_(\d+).*$#', '$2', $row['a_pagelink_1']);
                     break;
                 /*case 'ACTIVITY_LIKES':	No likes actually
-                    $content_type='like';
-                    $content_id=preg_replace('#:topicview:findpost:(\d+)#','$1',$row['a_pagelink_1']);
+                    $content_type = 'like';
+                    $content_id = preg_replace('#:topicview:findpost:(\d+)#', '$1', $row['a_pagelink_1']);
                     break;*/
             }
 

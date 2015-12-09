@@ -1138,7 +1138,7 @@ function _parse_variable($suppress_error, $can_be_dangling_method_call_instead =
         }
     }
 
-    $variable_chain = _parse_variable_dereferencing_chain_segment($suppress_error/*,$can_be_dangling_method_call_instead*/);
+    $variable_chain = _parse_variable_dereferencing_chain_segment($suppress_error/*, $can_be_dangling_method_call_instead*/);
     if ($variable_chain !== array()) {
         // Restructure the chain around any particular calls made
         $actual_expression = array('VARIABLE', $variable[1], $variable_chain, $GLOBALS['I']);
@@ -1233,9 +1233,9 @@ function _parse_variable_dereferencing_chain_segment($suppress_error)
             $variable = array('CALL_METHOD', null/*will be subbed later for preceding part of chain*/, $args, $suppress_error, $GLOBALS['I'], $tunnel);
             break;
 
-        /*case 'CURLY_OPEN':  Not in PHP 6
+        /*case 'CURLY_OPEN':  Not in PHP 7
             pparse__parser_next();
-            $variable=array('CHAR_OF_STRING',_parse_expression(),$GLOBALS['I']);
+            $variable = array('CHAR_OF_STRING', _parse_expression(), $GLOBALS['I']);
             pparse__parser_expect('CURLY_CLOSE');
             break;*/
 

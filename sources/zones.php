@@ -734,16 +734,16 @@ function load_module_page($string, $codename, &$out = null)
         }
 
         if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {
-            /*if (strpos($string,'_custom/')!==false)    Breaks output streaming
-            {
-                    $_out=$out->evaluate();
-                    _solemnly_leave($_out);
-                    if (!has_solemnly_declared(I_UNDERSTAND_XSS))
-                    {
-                            $out=make_string_tempcode($_out);
-                    }
-                    _solemnly_enter();
-            }*/
+            /* Breaks output streaming
+            if (strpos($string, '_custom/') !== false) {
+                $_out = $out->evaluate();
+                _solemnly_leave($_out);
+                if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
+                    $out = make_string_tempcode($_out);
+                }
+                _solemnly_enter();
+            }
+            */
 
             $out->evaluate_echo(null, true);
         }
@@ -929,7 +929,7 @@ function find_all_hooks($type, $entry)
     if ($dh !== false) {
         foreach ($dh as $file) {
             $basename = basename($file, '.php');
-            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#',$basename)!=0) Let's trust - performance*/) {
+            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
                 $out[$basename] = 'sources';
             }
         }
@@ -941,7 +941,7 @@ function find_all_hooks($type, $entry)
         if ($dh !== false) {
             foreach ($dh as $file) {
                 $basename = basename($file, '.php');
-                if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#',$basename)!=0) Let's trust - performance*/) {
+                if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
                     $out[$basename] = 'sources_custom';
                 }
             }

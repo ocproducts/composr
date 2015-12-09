@@ -397,7 +397,7 @@ function init__global2()
         $JAVASCRIPTS += $JAVASCRIPTS_DEFAULT;
     }
     /*cms_memory_profile('startup');   If debugging with inbuilt profiler
-    $func=get_defined_functions();
+    $func = get_defined_functions();
     print_r($func['user']);*/
 
     // Pre-load used blocks in bulk
@@ -685,7 +685,7 @@ function catch_fatal_errors()
                 i_force_refresh();
             }
         }
-        //$tmp=$GLOBALS;unset($tmp['GLOBALS']);@var_dump($tmp);@exit();
+        //$tmp = $GLOBALS;unset($tmp['GLOBALS']);@var_dump($tmp);@exit();
         //@var_dump(get_defined_functions()); exit(); // Useful for debugging memory problems, finding unneeded stuff that is loaded
         switch ($error['type']) {
             case E_ERROR:
@@ -805,9 +805,11 @@ function is_browser_decaching()
 
     return false;    // This technique stopped working well, Chrome sends cache-control too freely
 
-    /*$header_method=(array_key_exists('HTTP_CACHE_CONTROL',$_SERVER)) && ($_SERVER['HTTP_CACHE_CONTROL']=='no-cache') && (cms_srv('REQUEST_METHOD')!='POST') && ((!function_exists('browser_matches')));
-    $BROWSER_DECACHEING=(($header_method) && ((array_key_exists('FORUM_DRIVER',$GLOBALS)) && (has_actual_page_access(get_member(),'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
-    return $BROWSER_DECACHEING;*/
+    /*
+    $header_method = (array_key_exists('HTTP_CACHE_CONTROL', $_SERVER)) && ($_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache') && (cms_srv('REQUEST_METHOD') != 'POST') && ((!function_exists('browser_matches')));
+    $BROWSER_DECACHEING = (($header_method) && ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (has_actual_page_access(get_member(), 'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
+    return $BROWSER_DECACHEING;
+    */
 }
 
 /**

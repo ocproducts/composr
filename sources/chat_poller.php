@@ -40,7 +40,7 @@ function chat_poller()
         require_code('config'); // Config is needed for much active stuff
         require_code('users'); // Users are important due to permissions
 
-        $room_id=get_param_integer('room_id',-1);
+        $room_id = get_param_integer('room_id', -1);
         require_code('chat');
         chat_room_prune($room_id);
         */

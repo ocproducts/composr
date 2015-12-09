@@ -69,10 +69,18 @@ function can_static_cache()
     if (isset($_GET['redirect'])) {
         return false;
     }
-    /*$url_easy=static_cache__get_self_url_easy();
-    if (strpos($url_easy,'sort=')!==false) return false;	Actually this stops very useful caching, esp on the forum - better to just reduce the cache time to a fraction of an hour
-    if (strpos($url_easy,'start=')!==false) return false;
-    if (strpos($url_easy,'max=')!==false) return false;*/
+    /* Actually this stops very useful caching, esp on the forum - better to just reduce the cache time to a fraction of an hour
+    $url_easy = static_cache__get_self_url_easy();
+    if (strpos($url_easy, 'sort=') !== false) {
+        return false;
+    }
+    if (strpos($url_easy, 'start=') !== false) {
+        return false;
+    }
+    if (strpos($url_easy, 'max=') !== false) {
+        return false;
+    }
+    */
     return true;
 }
 

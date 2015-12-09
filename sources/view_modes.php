@@ -878,7 +878,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
         if ((is_null($level_ranges)) && ($char == "\t")) {
             $char = '&nbsp;&nbsp;&nbsp;';
         }
-        //if ($char==' ') $char='&nbsp;';
+        //if ($char == ' ') $char = '&nbsp;';
         if (function_exists('ocp_mark_as_escaped')) {
             ocp_mark_as_escaped($char);
         }

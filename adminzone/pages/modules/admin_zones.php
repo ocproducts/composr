@@ -69,7 +69,8 @@ class Module_admin_zones
      */
     public function uninstall()
     {
-        /*     $zones=find_all_zones(true);     We don't really want to throw away on-disk data on reinstalls
+        /* We don't really want to throw away on-disk data on reinstalls
+        $zones = find_all_zones(true);
         require_code('files');
         foreach ($zones as $zone) {
             //if (!in_array($zone, array('', 'docs', 'adminzone', 'collaboration', 'forum', 'cms', 'site'))) {
@@ -88,7 +89,8 @@ class Module_admin_zones
             }
             // deldir_contents(get_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/minimodules_custom', true);
             // modules_custom purposely left
-        }*/
+        }
+        */
     }
 
     public $title;

@@ -112,7 +112,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
     $sink_state = $mm[0]['mm_sink_state'];
     $move_to = $mm[0]['mm_move_to'];
     $title_suffix = $mm[0]['mm_title_suffix'];
-    //$post_text=$mm[0]['mm_post_text']; We'll allow user to specify the post_text, with this as a default
+    //$post_text = $mm[0]['mm_post_text']; We'll allow user to specify the post_text, with this as a default
     $update_array = array();
     if (!is_null($pin_state)) {
         $update_array['t_pinned'] = $pin_state;

@@ -143,13 +143,15 @@ function comcode_convert_script()
         $stripped_new = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $new));
         $stripped_old = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $out));
         if (($box_title != '') && ($stripped_new != $stripped_old)) {
-            /*$myfile=fopen(get_file_base().'/a','wb');
-            fwrite($myfile,preg_replace('#<!--.*-->#Us','',preg_replace('#\s+#',chr(10),$new)));
+            /*
+            $myfile = fopen(get_file_base() . '/a', 'wb');
+            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $new)));
             fclose($myfile);
 
-            $myfile=fopen(get_file_base().'/b','wb');
-            fwrite($myfile,preg_replace('#<!--.*-->#Us','',preg_replace('#\s+#',chr(10),$out)));
-            fclose($myfile);*/
+            $myfile = fopen(get_file_base() . '/b', 'wb');
+            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $out)));
+            fclose($myfile);
+            */
 
             $out = $new . do_lang('BROKEN_XHTML_FIXED');
         } else {

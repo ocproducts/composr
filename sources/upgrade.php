@@ -789,13 +789,16 @@ function check_perms()
                 }
             }
         }
-        /*if (strpos($chmod,'themes/default')!==false) // chmod ALL theme files
-        {
-            foreach (array_keys($themes) as $theme)
-            {
-                    $_chmod=str_replace('themes/default','themes/'.$theme,$chmod);
-                    if (!file_exists(get_file_base().'/'.$_chmod)) continue;
-                    if (!is_writable_wrap(get_file_base().'/'.$_chmod)) $out.='<li>'.do_lang('FU_NEEDS_CHMOD','<kbd>'.escape_html($_chmod).'</kbd>').'</li>';
+        /*
+        if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme files
+            foreach (array_keys($themes) as $theme) {
+                $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
+                if (!file_exists(get_file_base() . '/' . $_chmod)) {
+                    continue;
+                }
+                if (!is_writable_wrap(get_file_base() . '/' . $_chmod)) {
+                    $out .= '<li>' . do_lang('FU_NEEDS_CHMOD', '<kbd>' . escape_html($_chmod) . '</kbd>') . '</li>';
+                }
             }
         } else
         {*/
@@ -863,14 +866,16 @@ function fix_perms()
                 }
             }
         }
-        /*if (strpos($chmod,'themes/default')!==false)
-        {
-            foreach (array_keys($themes) as $theme)
-            {
-                    $_chmod=str_replace('themes/default','themes/'.$theme,$chmod);
-                    if (!file_exists(get_file_base().'/'.$_chmod)) continue;
-                    if (!is_writable_wrap(get_file_base().'/'.$_chmod))
-                            afm_set_perms($_chmod,true);
+        /*
+        if (strpos($chmod,'themes/default') !== false) {
+            foreach (array_keys($themes) as $theme) {
+                $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
+                if (!file_exists(get_file_base() . '/' . $_chmod)) {
+                    continue;
+                }
+                if (!is_writable_wrap(get_file_base() . '/' . $_chmod)) {
+                    afm_set_perms($_chmod, true);
+                }
             }
         } else
         {*/

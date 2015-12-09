@@ -1142,9 +1142,13 @@ class Database_Static_xml
             }
         }
 
-        /*$ob=new xml_file_parse($file_contents); Too slow
-        if (!is_null($ob->error)) fatal_exit($ob->error);
-        $_record=$ob->output;*/
+        /* Too slow
+        $ob = new xml_file_parse($file_contents);
+        if (!is_null($ob->error)) {
+            fatal_exit($ob->error);
+        }
+        $_record = $ob->output;
+        */
         // This is much faster, even though it's a bit of a hack as it assumes all records are as Composr would write them
         $bits = preg_split('#</?([^>]*)>#', $file_contents, -1, PREG_SPLIT_DELIM_CAPTURE);
         $_record = array();
@@ -1348,20 +1352,21 @@ class Database_Static_xml
     {
         /* This generally is a bad idea. Things can get deleted then re-made, and we don't even need it. This command works better:
         svn status | grep '\!.*\.xml' | awk '{print $2;}' | xargs svn rm
-        $svn_command='svn remove "'.str_replace('"','\"',$path).'"';
+        $svn_command = 'svn remove "' . str_replace('"', '\"', $path) . '"';
         //@shell_exec($svn_command);   Can't do as it would not execute with the correct permissions
-        $new=!file_exists($db[0].'/deletions.sh');
-        $command_file=@fopen($db[0].'/deletions.sh','at');
-        if ($command_file!==false)
-        {
-            if ($new)
-                    fwrite($command_file,'#!/bin/sh'."\n");
-            fwrite($command_file,$svn_command."\n");
+        $new = !file_exists($db[0] . '/deletions.sh');
+        $command_file = @fopen($db[0] . '/deletions.sh', 'at');
+        if ($command_file !== false) {
+            if ($new) {
+                fwrite($command_file, '#!/bin/sh' . "\n");
+            }
+            fwrite($command_file, $svn_command . "\n");
             fclose($command_file);
             require_code('files');
-            fix_permissions($db[0].'/deletions.sh',0777);
-            sync_file($db[0].'/deletions.sh');
-        }*/
+            fix_permissions($db[0] . '/deletions.sh', 0777);
+            sync_file($db[0] . '/deletions.sh');
+        }
+        */
 
         if (file_exists($path)) {
             $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');

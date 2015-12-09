@@ -46,7 +46,7 @@ function init__caches()
      */
     $PERSISTENT_CACHE = null;
 
-    $use_persistent_cache = ((array_key_exists('use_persistent_cache', $SITE_INFO)) && ($SITE_INFO['use_persistent_cache'] != '') && ($SITE_INFO['use_persistent_cache'] != '0'));// Default to off because badly configured caches can result in lots of very slow misses and lots of lost sessions || ((!array_key_exists('use_persistent_cache',$SITE_INFO)) && ((function_exists('xcache_get')) || (function_exists('wincache_ucache_get')) || (function_exists('apc_fetch')) || (function_exists('eaccelerator_get')) || (function_exists('mmcache_get'))));
+    $use_persistent_cache = ((array_key_exists('use_persistent_cache', $SITE_INFO)) && ($SITE_INFO['use_persistent_cache'] != '') && ($SITE_INFO['use_persistent_cache'] != '0'));// Default to off because badly configured caches can result in lots of very slow misses and lots of lost sessions || ((!array_key_exists('use_persistent_cache', $SITE_INFO)) && ((function_exists('xcache_get')) || (function_exists('wincache_ucache_get')) || (function_exists('apc_fetch')) || (function_exists('eaccelerator_get')) || (function_exists('mmcache_get'))));
     if (($use_persistent_cache) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
         if ((class_exists('Memcached')) && (($SITE_INFO['use_persistent_cache'] == 'memcached') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/memcached');

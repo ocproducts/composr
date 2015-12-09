@@ -131,7 +131,7 @@ class html_safe_lang_test_set extends cms_test_case
 
             $cnt++;
         }
-        //if ($cnt==0) echo '<p><em>None</em></p>';
+        //if ($cnt == 0) echo '<p><em>None</em></p>';
     }
 
     public function do_dir($dir, $dir_stub, $exp, $ext)

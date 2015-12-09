@@ -628,17 +628,19 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail/postfix-masquerading-as-sendmail not supporting the correct \r\n
-    /*$sendmail_path=ini_get('sendmail_path');
-    if ((strpos($sendmail_path,'qmail')!==false) || (strpos($sendmail_path,'sendmail')!==false))
-        $line_term="\n";
-    else
-        $line_term="\r\n";
+    /*
+    $sendmail_path = ini_get('sendmail_path');
+    if ((strpos($sendmail_path, 'qmail') !== false) || (strpos($sendmail_path, 'sendmail') !== false)) {
+        $line_term = "\n";
+    } else {
+        $line_term = "\r\n";
+    }
     */
     if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') || (get_option('smtp_sockets_use') == '1')) {
         $line_term = "\r\n";
-        /*} elseif (strtoupper(substr(PHP_OS,0,3))=='MAC')
-        {
-            $line_term="\r";*/
+    /*} elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'MAC')
+    {
+        $line_term = "\r";*/
     } else {
         $line_term = "\n";
     }
@@ -975,7 +977,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if (!is_null($attachments)) {
         foreach ($attachments as $path => $filename) {
             $sending_message .= '--' . $boundary . $line_term;
-            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // .'; name="'.str_replace("\r",'',str_replace("\n",'',$filename)).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
+            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // . '; name="' . str_replace("\r", '', str_replace("\n", '', $filename)).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
             $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term;
             $sending_message .= 'Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', $filename)) . '"' . $line_term . $line_term;
 

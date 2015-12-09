@@ -600,7 +600,7 @@ class Hook_html_site
      * @param  string $to_strip What we are stripping.
      * @param  string $subject What we are stripping from.
      * @param  boolean $backwards Whether we are removing from the end.
-     * @param  integer $i The position to start at (if $backwards=true, then this is relative to the end).
+     * @param  integer $i The position to start at (if $backwards == true, then this is relative to the end).
      * @return string The altered string.
      */
     public function levenshtein_strip_search($to_strip, $subject, $backwards, $i)

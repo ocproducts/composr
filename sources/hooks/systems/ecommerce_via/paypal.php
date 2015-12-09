@@ -176,8 +176,12 @@ class Hook_paypal
         if (($tax != '') && (intval($tax) > 0) && ($mc_gross != '')) {
             $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($tax));
         }
-        /*$shipping=post_param_string('shipping','');  Actually, the hook will have added shipping to the overall product cost
-        if (($shipping!='') && (intval($shipping)>0) && ($mc_gross!='')) $mc_gross=float_to_raw_string(floatval($mc_gross)-floatval($shipping));*/
+        /* Actually, the hook will have added shipping to the overall product cost
+        $shipping = post_param_string('shipping', '');
+        if (($shipping != '') && (intval($shipping) > 0) && ($mc_gross != '')) {
+            $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($shipping));
+        }
+        */
         $mc_currency = post_param_string('mc_currency', ''); // May be blank for subscription
 
         // More stuff that we might need

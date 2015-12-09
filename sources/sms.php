@@ -57,7 +57,7 @@ function sms_wrap($message, $to_sms)
     if ((strtolower(get_charset()) != 'utf-8') && (strtolower(get_charset()) != 'utf8')) {
         $site_name = utf8_encode($site_name);
     }
-    //$callback=xmlentities(find_script('sms')); --- set on clickatell's site
+    //$callback = xmlentities(find_script('sms')); --- set on clickatell's site
     $callback = '0'; /* return nothing (for the moment); TODO: change to 3 (return all message statuses)   #376 on tracker */
 
     $threshold = mktime(0, 0, 0, intval(date('m')), 0, intval(date('Y')));

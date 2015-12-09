@@ -1568,11 +1568,12 @@ abstract class Standard_crud_module
                 delete_form_custom_fields($this->content_type, $id);
             }
 
-            /*if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect',NULL)))))    No - resource is gone now, and redirect would almost certainly try to take us back there
-            {
-                    $url=(($this->redirect_type=='!') || (is_null($this->redirect_type)))?get_param_string('redirect'):build_url(array('page'=>'_SELF','type'=>$this->redirect_type),'_SELF');
-                    return redirect_screen($this->title,$url,do_lang_tempcode($this->success_message_str));
-            }*/
+            /*    No - resource is gone now, and redirect would almost certainly try to take us back there
+            if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
+                $url = (($this->redirect_type == '!') || (is_null($this->redirect_type))) ? get_param_string('redirect') : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
+                return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
+            }
+            */
 
             if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
                 $url = make_string_tempcode(str_replace('__ID__', $id, get_param_string('redirect')));

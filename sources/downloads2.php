@@ -155,7 +155,7 @@ function dload_script()
     // Filename
     $full = $myrow['url'];
     $breakdown = @pathinfo($full) or warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', $full));
-    //$filename=$breakdown['basename'];
+    //$filename = $breakdown['basename'];
     if (!array_key_exists('extension', $breakdown)) {
         $extension = '';
     } else {
@@ -272,7 +272,7 @@ function dload_script()
     // Send actual data
     $myfile = fopen($_full, 'rb');
     fseek($myfile, $from);
-    /*if ($size==$new_length)    Uses a lot of memory :S
+    /*if ($size == $new_length)    Uses a lot of memory :S
     {
         fpassthru($myfile);
     } else {*/

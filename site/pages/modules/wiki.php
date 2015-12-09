@@ -627,10 +627,9 @@ class Module_wiki
         $page_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $chain), '_SELF');
         $pos = strpos($chain, '/');
         $id = intval(substr($chain, ($pos === false) ? 0 : ($pos + 1)));
-        /*if ((addon_installed('search')) && (has_actual_page_access(get_member(),'search'))) // Not enough space
-        {
-            $search_url=build_url(array('page'=>'search','type'=>'browse','id'=>'wiki_posts','search_under'=>$id),get_module_zone('search'));
-            $search_button=do_template('BUTTON_SCREEN',array('_GUID'=>'ad8783a0af3a35f21022b30397f1b03e','IMMEDIATE'=>false,'REL'=>'search','URL'=>$search_url,'TITLE'=>do_lang_tempcode('SEARCH'),'IMG'=>'buttons__search'));
+        /*if ((addon_installed('search')) && (has_actual_page_access(get_member(),'search'))) { // Not enough space
+            $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'wiki_posts', 'search_under' => $id), get_module_zone('search'));
+            $search_button = do_template('BUTTON_SCREEN', array('_GUID' => 'ad8783a0af3a35f21022b30397f1b03e', 'IMMEDIATE' => false, 'REL' => 'search', 'URL' => $search_url, 'TITLE' => do_lang_tempcode('SEARCH'), 'IMG' => 'buttons__search'));
         } else */
         $search_button = new Tempcode();
         $changes_url = build_url(array('page' => '_SELF', 'type' => 'changes', 'id' => $chain), '_SELF');
