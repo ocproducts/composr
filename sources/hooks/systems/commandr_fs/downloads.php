@@ -140,10 +140,10 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             'label' => $row['category'],
             'description' => $row['description'],
             'notes' => $row['notes'],
-            'rep_image' => $row['rep_image'],
+            'rep_image' => remap_urlpath_as_portable($row['rep_image']),
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'add_date' => $row['add_date'],
+            'add_date' => remap_time_as_portable($row['add_date']),
         );
     }
 
@@ -225,7 +225,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         require_code('downloads2');
 
         $category_id = $this->_integer_category($category);
-        $url = $this->_default_property_str($properties, 'url');
+        $url = $this->_default_property_urlpath($properties, 'url');
         $description = $this->_default_property_str($properties, 'description');
         $author = $this->_default_property_str($properties, 'author');
         $additional_details = $this->_default_property_str($properties, 'additional_details');
@@ -249,11 +249,11 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $cost = $this->_default_property_int($properties, 'cost');
         $submitter_gets_points = $this->_default_property_int($properties, 'submitter_gets_points');
         $licence = $this->_default_property_int_null($properties, 'licence');
-        $add_date = $this->_default_property_int_null($properties, 'add_date');
+        $add_date = $this->_default_property_time($properties, 'add_date');
         $num_downloads = $this->_default_property_int($properties, 'num_downloads');
         $views = $this->_default_property_int($properties, 'views');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $default_pic = $this->_default_property_int($properties, 'default_pic');
@@ -285,7 +285,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         return array(
             'label' => $row['name'],
-            'url' => $row['url'],
+            'url' => remap_urlpath_as_portable($row['url']),
             'description' => $row['description'],
             'author' => $row['author'],
             'additional_details' => $row['additional_details'],
@@ -304,9 +304,9 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             'views' => $row['download_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['submitter'],
-            'add_date' => $row['add_date'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['add_date']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
     }
 
@@ -332,7 +332,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $category_id = $this->_integer_category($category);
-        $url = $this->_default_property_str($properties, 'url');
+        $url = $this->_default_property_urlpath($properties, 'url');
         $description = $this->_default_property_str($properties, 'description');
         $author = $this->_default_property_str($properties, 'author');
         $additional_details = $this->_default_property_str($properties, 'additional_details');
@@ -356,11 +356,11 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $cost = $this->_default_property_int($properties, 'cost');
         $submitter_gets_points = $this->_default_property_int($properties, 'submitter_gets_points');
         $licence = $this->_default_property_int_null($properties, 'licence');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $num_downloads = $this->_default_property_int($properties, 'num_downloads');
         $views = $this->_default_property_int($properties, 'views');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $default_pic = $this->_default_property_int($properties, 'default_pic');

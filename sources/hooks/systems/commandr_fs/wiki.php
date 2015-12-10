@@ -142,12 +142,12 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             'description' => $row['description'],
             'notes' => $row['notes'],
             'hide_posts' => $row['hide_posts'],
-            'submitter' => $row['submitter'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
             'views' => $row['wiki_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'add_date' => $row['add_date'],
-            'edit_date' => $row['edit_date'],
+            'add_date' => remap_time_as_portable($row['add_date']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
     }
 
@@ -278,9 +278,9 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             'validated' => $row['validated'],
             'send_notification' => $row['send_notification'],
             'views' => $row['wiki_views'],
-            'poster' => $row['poster'],
-            'add_date' => $row['date_and_time'],
-            'edit_date' => $row['edit_date'],
+            'poster' => remap_resource_id_as_portable('member', $row['poster']),
+            'add_date' => remap_time_as_portable($row['date_and_time']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
     }
 

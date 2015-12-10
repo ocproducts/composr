@@ -131,9 +131,9 @@ class Hook_commandr_fs_news extends Resource_fs_base
 
         return array(
             'label' => $row['nc_title'],
-            'rep_image' => $row['nc_img'],
+            'rep_image' => remap_urlpath_as_portable($row['nc_img']),
             'notes' => $row['notes'],
-            'owner' => $row['nc_owner'],
+            'owner' => remap_resource_id_as_portable('member', $row['nc_owner']),
         );
     }
 
@@ -268,12 +268,12 @@ class Hook_commandr_fs_news extends Resource_fs_base
             'allow_trackbacks' => $row['allow_trackbacks'],
             'notes' => $row['notes'],
             'views' => $row['news_views'],
-            'image' => $row['news_image'],
+            'image' => remap_urlpath_as_portable($row['news_image']),
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['submitter'],
-            'add_date' => $row['date_and_time'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['date_and_time']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($row['id'])))),
         );
     }

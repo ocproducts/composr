@@ -184,10 +184,10 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'is_super_admin' => $row['g_is_super_admin'],
             'is_super_moderator' => $row['g_is_super_moderator'],
             'rank_title' => $row['g_title'],
-            'rank_image' => $row['g_rank_image'],
-            'promotion_target' => $row['g_promotion_target'],
+            'rank_image' => remap_urlpath_as_portable($row['g_rank_image']),
+            'promotion_target' => remap_resource_id_as_portable('group', $row['g_promotion_target']),
             'promotion_threshold' => $row['g_promotion_threshold'],
-            'group_leader' => $row['g_group_leader'],
+            'group_leader' => remap_resource_id_as_portable('member', $row['g_group_leader']),
             'flood_control_submit_secs' => $row['g_flood_control_submit_secs'],
             'flood_control_access_secs' => $row['g_flood_control_access_secs'],
             'max_daily_upload_mb' => $row['g_max_daily_upload_mb'],
@@ -288,6 +288,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         }
         $join_time = $this->_default_property_time($properties, 'join_time');
         $last_visit_time = $this->_default_property_time_null($properties, 'last_visit_time');
+        $last_submit_time = $this->_default_property_time_null($properties, 'last_submit_time');
         $theme = $this->_default_property_str($properties, 'theme');
         $avatar_url = $this->_default_property_urlpath($properties, 'avatar_url');
         $signature = $this->_default_property_str($properties, 'signature');
@@ -309,7 +310,6 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $validated_email_confirm_code = $this->_default_property_str($properties, 'validated_email_confirm_code');
         $password_compatibility_scheme = $this->_default_property_str_null($properties, 'password_compatibility_scheme');
         $salt = $this->_default_property_str($properties, 'salt');
-        $last_submit_time = $this->_default_property_time_null($properties, 'last_submit_time');
         $highlighted_name = $this->_default_property_int($properties, 'highlighted_name');
         $pt_allow = $this->_default_property_str($properties, 'pt_allow');
         $pt_rules_text = $this->_default_property_str($properties, 'pt_rules_text');
@@ -397,17 +397,19 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'dob_year' => $row['m_dob_year'],
             'timezone' => $row['m_timezone_offset'],
             'validated' => $row['m_validated'],
-            'join_time' => $row['m_join_time'],
-            'last_visit_time' => $row['m_last_visit_time'],
+            'join_time' => remap_time_as_portable($row['m_join_time']),
+            'last_visit_time' => remap_time_as_portable($row['m_last_visit_time']),
+            'last_submit_time' => remap_time_as_portable($row['m_last_submit_time']),
+            'on_probation_until' => remap_time_as_portable($row['m_on_probation_until']),
             'theme' => $row['m_theme'],
-            'avatar_url' => $row['m_avatar_url'],
+            'avatar_url' => remap_urlpath_as_portable($row['m_avatar_url']),
             'signature' => $row['m_signature'],
             'is_perm_banned' => $row['m_is_perm_banned'],
             'preview_posts' => $row['m_preview_posts'],
             'reveal_age' => $row['m_reveal_age'],
             'user_title' => $row['m_title'],
-            'photo_url' => $row['m_photo_url'],
-            'photo_thumb_url' => $row['m_photo_thumb_url'],
+            'photo_url' => remap_urlpath_as_portable($row['m_photo_url']),
+            'photo_thumb_url' => remap_urlpath_as_portable($row['m_photo_thumb_url']),
             'views_signatures' => $row['m_views_signatures'],
             'auto_monitor_contrib_content' => $row['m_auto_monitor_contrib_content'],
             'language' => $row['m_language'],
@@ -415,7 +417,6 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'allow_emails_from_staff' => $row['m_allow_emails_from_staff'],
             'ip_address' => $row['m_ip_address'],
             'validated_email_confirm_code' => $row['m_validated_email_confirm_code'],
-            'last_submit_time' => $row['m_last_submit_time'],
             'highlighted_name' => $row['m_highlighted_name'],
             'pt_allow' => $row['m_pt_allow'],
             'pt_rules_text' => $row['m_pt_rules_text'],

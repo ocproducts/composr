@@ -177,9 +177,9 @@ class Hook_commandr_fs_polls extends Resource_fs_base
             'votes9' => $row['votes9'],
             'votes10' => $row['votes10'],
             'views' => $row['poll_views'],
-            'submitter' => $row['submitter'],
-            'add_date' => $row['add_time'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['add_time']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
     }
 

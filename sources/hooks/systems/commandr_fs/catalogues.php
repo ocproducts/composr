@@ -254,7 +254,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
         $move_days_lower = $this->_default_property_int($properties, 'move_days_lower');
         $move_days_higher = $this->_default_property_int($properties, 'move_days_higher');
-        $move_target = $this->_default_property_resource_id_null('catalogue', $properties, 'move_target');
+        $move_target = $this->_default_property_resource_id_null('catalogue_category', $properties, 'move_target');
         $order = $this->_default_property_int($properties, 'order');
         $add_date = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
@@ -357,14 +357,14 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 'label' => $row['cc_title'],
                 'description' => $row['cc_description'],
                 'notes' => $row['cc_notes'],
-                'rep_image' => $row['rep_image'],
+                'rep_image' => remap_urlpath_as_portable($row['rep_image']),
                 'move_days_lower' => $row['cc_move_days_lower'],
                 'move_days_higher' => $row['cc_move_days_higher'],
-                'move_target' => $row['cc_move_target'],
+                'move_target' => remap_resource_id_as_portable('catalogue_category', $row['cc_move_target']),
                 'order' => $row['cc_order'],
                 'meta_keywords' => $meta_keywords,
                 'meta_description' => $meta_description,
-                'add_date' => $row['cc_add_date'],
+                'add_date' => remap_time_as_portable($row['cc_add_date']),
             ) + $this->_custom_fields_load('catalogue_category', strval($row['id']));
         }
 
@@ -407,7 +407,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'send_view_reports' => $row['c_send_view_reports'],
             'default_review_freq' => $row['c_default_review_freq'],
             'fields' => $fields,
-            'add_date' => $row['c_add_date'],
+            'add_date' => remap_time_as_portable($row['c_add_date']),
         );
     }
 
@@ -665,9 +665,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'views' => $row['ce_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['ce_submitter'],
-            'add_date' => $row['ce_add_date'],
-            'edit_date' => $row['ce_edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['ce_submitter']),
+            'add_date' => remap_time_as_portable($row['ce_add_date']),
+            'edit_date' => remap_time_as_portable($row['ce_edit_date']),
         );
 
         require_code('catalogues');

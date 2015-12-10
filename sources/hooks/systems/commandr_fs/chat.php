@@ -117,7 +117,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         return array(
             'label' => $row['room_name'],
             'welcome_message' => $row['c_welcome'],
-            'room_owner' => $row['room_owner'],
+            'room_owner' => remap_resource_id_as_portable('member', $row['room_owner']),
             'allow' => $row['allow_list'],
             'allow_groups' => $row['allow_list_groups'],
             'disallow' => $row['disallow_list'],

@@ -361,7 +361,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             return array(
                 'label' => $row['f_name'],
                 'description' => $row['f_description'],
-                'forum_grouping_id' => $row['f_forum_grouping_id'],
+                'forum_grouping_id' => remap_resource_id_as_portable('forum_grouping', $row['f_forum_grouping_id']),
                 'position' => $row['f_position'],
                 'post_count_increment' => $row['f_post_count_increment'],
                 'order_sub_alpha' => $row['f_order_sub_alpha'],
@@ -411,8 +411,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             'pinned' => $row['t_pinned'],
             'sunk' => $row['t_sunk'],
             'cascading' => $row['t_cascading'],
-            'pt_from' => $row['t_pt_from'],
-            'pt_to' => $row['t_pt_to'],
+            'pt_from' => remap_resource_id_as_portable('member', $row['t_pt_from']),
+            'pt_to' => remap_resource_id_as_portable('member', $row['t_pt_to']),
             'views' => $row['t_num_views'],
             'description_link' => $row['t_description_link'],
             'poll' => $poll_data,
@@ -577,11 +577,11 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             'poster_name_if_guest' => $row['p_poster_name_if_guest'],
             'ip_address' => $row['p_ip_address'],
             'intended_solely_for' => $row['p_intended_solely_for'],
-            'parent_id' => $row['p_parent_id'],
-            'poster' => $row['p_poster'],
+            'parent_id' => remap_resource_id_as_portable('post', $row['p_parent_id']),
+            'poster' => remap_resource_id_as_portable('member', $row['p_poster']),
             'last_edit_by' => $row['p_last_edit_by'],
-            'add_date' => $row['p_time'],
-            'edit_date' => $row['p_last_edit_time'],
+            'add_date' => remap_time_as_portable($row['p_time']),
+            'edit_date' => remap_time_as_portable($row['p_last_edit_time']),
         );
     }
 

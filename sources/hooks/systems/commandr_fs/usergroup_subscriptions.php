@@ -134,7 +134,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
             'cost' => $row['s_cost'],
             'length' => $row['s_length'],
             'length_units' => $row['s_length_units'],
-            'group_id' => $row['s_group_id'],
+            'group_id' => remap_resource_id_as_portable('group', $row['s_group_id']),
             'enabled' => $row['s_enabled'],
             'mail_start' => $row['s_mail_start'],
             'mail_end' => $row['s_mail_end'],

@@ -102,8 +102,8 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
             'label' => $row['aggregate_label'],
             'aggregate_type' => $row['aggregate_type'],
             'other_parameters' => $row['other_parameters'],
-            'add_date' => $row['add_time'],
-            'edit_date' => $row['edit_time'],
+            'add_date' => remap_time_as_portable($row['add_time']),
+            'edit_date' => remap_time_as_portable($row['edit_time']),
         );
     }
 

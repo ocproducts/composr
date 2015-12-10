@@ -228,7 +228,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         require_code('banners2');
 
         $name = $this->_create_name_from_label($label);
-        $imgurl = $this->_default_property_urlpath($properties, 'image_url');
+        $img_url = $this->_default_property_urlpath($properties, 'img_url');
         $title_text = $this->_default_property_str($properties, 'title_text');
         $direct_code = $this->_default_property_str($properties, 'direct_code');
         $campaignremaining = $this->_default_property_int($properties, 'campaignremaining');
@@ -254,7 +254,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $views_from = $this->_default_property_int($properties, 'views_from');
         $views_to = $this->_default_property_int($properties, 'views_to');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
-        $name = add_banner($name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
+        $name = add_banner($name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
         return $name;
     }
 
@@ -277,7 +277,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         return array(
             'label' => $row['name'],
-            'image_url' => $row['img_url'],
+            'img_url' => remap_urlpath_as_portable($row['img_url']),
             'title_text' => $row['b_title_text'],
             'direct_code' => $row['b_direct_code'],
             'campaignremaining' => $row['campaign_remaining'],
@@ -285,7 +285,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             'importancemodulus' => $row['importance_modulus'],
             'notes' => $row['notes'],
             'the_type' => $row['the_type'],
-            'expiry_date' => $row['expiry_date'],
+            'expiry_date' => remap_time_as_portable($row['expiry_date']),
             'validated' => $row['validated'],
             'b_types' => collapse_1d_complexity('b_type', $GLOBALS['SITE_DB']->query_select('banners_types', array('b_type'), array('name' => $row['name']))),
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'banner', 'content_id' => $row['name']))),
@@ -293,9 +293,9 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             'hits_to' => $row['hits_to'],
             'views_from' => $row['views_from'],
             'views_to' => $row['views_to'],
-            'submitter' => $row['submitter'],
-            'add_date' => $row['add_date'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['add_date']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
     }
 
@@ -321,7 +321,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $name = $this->_create_name_from_label($label);
-        $imgurl = $this->_default_property_urlpath($properties, 'image_url');
+        $img_url = $this->_default_property_urlpath($properties, 'img_url');
         $title_text = $this->_default_property_str($properties, 'title_text');
         $direct_code = $this->_default_property_str($properties, 'direct_code');
         $campaignremaining = $this->_default_property_int($properties, 'campaignremaining');
@@ -330,7 +330,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $notes = $this->_default_property_str($properties, 'notes');
         $the_type = $this->_default_property_int($properties, 'the_type');
         $expiry_date = $this->_default_property_time_null($properties, 'expiry_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $validated = $this->_default_property_int_null($properties, 'validated');
         if (is_null($validated)) {
             $validated = 1;
@@ -347,7 +347,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $views_to = $this->_default_property_int($properties, 'views_to');
         $edit_date = $this->_default_property_time($properties, 'edit_date');
 
-        $name = edit_banner($resource_id, $name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
+        $name = edit_banner($resource_id, $name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
 
         return $resource_id;
     }

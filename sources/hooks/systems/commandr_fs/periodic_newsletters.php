@@ -119,7 +119,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
             'day' => $row['np_day'],
             'in_full' => $row['np_in_full'],
             'template' => $row['np_template'],
-            'last_sent' => $row['np_last_sent'],
+            'last_sent' => remap_time_as_portable($row['np_last_sent']),
         );
     }
 

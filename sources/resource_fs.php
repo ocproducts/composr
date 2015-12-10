@@ -787,6 +787,10 @@ function remap_portable_as_time($portable_data)
         return null;
     }
 
+    if (is_numeric($portable_data)) {
+        return intval($portable_data);
+    }
+
     return strtotime($portable_data);
 }
 

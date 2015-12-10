@@ -252,7 +252,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'calendar_events', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'calendar_events', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $member_calendar = $this->_default_property_int_null($properties, 'member_calendar');
+        $member_calendar = $this->_default_property_member_null($properties, 'member_calendar');
         $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
         $add_time = $this->_default_property_time($properties, 'add_date');
@@ -314,10 +314,10 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             'views' => $row['e_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['e_submitter'],
-            'member_calendar' => $row['e_member_calendar'],
-            'add_date' => $row['e_add_date'],
-            'edit_date' => $row['e_edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['e_submitter']),
+            'member_calendar' => remap_resource_id_as_portable('member', $row['e_member_calendar']),
+            'add_date' => remap_time_as_portable($row['e_add_date']),
+            'edit_date' => remap_time_as_portable($row['e_edit_date']),
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => strval($row['id'])))),
         );
     }
@@ -389,7 +389,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'calendar_events', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'calendar_events', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $member_calendar = $this->_default_property_int_null($properties, 'member_calendar');
+        $member_calendar = $this->_default_property_member_null($properties, 'member_calendar');
         $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
         $add_time = $this->_default_property_time($properties, 'add_date');

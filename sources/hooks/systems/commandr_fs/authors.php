@@ -111,7 +111,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
         return array(
             'label' => $row['author'],
             'url' => $row['url'],
-            'member_id' => $row['member_id'],
+            'member_id' => remap_resource_id_as_portable('member', $row['member_id']),
             'description' => $row['description'],
             'skills' => $row['skills'],
             'meta_keywords' => $meta_keywords,

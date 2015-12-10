@@ -321,9 +321,9 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             'show_as_edit' => $row['p_show_as_edit'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['p_submitter'],
-            'add_date' => $row['p_add_date'],
-            'edit_date' => $row['p_edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['p_submitter']),
+            'add_date' => remap_time_as_portable($row['p_add_date']),
+            'edit_date' => remap_time_as_portable($row['p_edit_date']),
         );
     }
 

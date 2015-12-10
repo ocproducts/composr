@@ -102,8 +102,8 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
             'subject' => get_translated_text($row['w_subject'], $GLOBALS['FORUM_DB']),
             'text' => get_translated_text($row['w_text'], $GLOBALS['FORUM_DB']),
             'send_time' => $row['w_send_time'],
-            'newsletter' => $row['w_newsletter'],
-            'usergroup' => $row['w_usergroup'],
+            'newsletter' => remap_resource_id_as_portable('newsletter', $row['w_newsletter']),
+            'usergroup' => remap_resource_id_as_portable('group', $row['w_usergroup']),
             'usergroup_type' => $row['w_usergroup_type'],
         );
     }
