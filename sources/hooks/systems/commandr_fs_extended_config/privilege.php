@@ -80,7 +80,7 @@ class Hook_commandr_fs_extended_config__privilege
 
         $ret = true;
         foreach ($all as $table => $rows) {
-            $ret = $ret && table_from_json($table, $rows);
+            $ret = $ret && table_from_json($table, $rows, null, TABLE_REPLACE_MODE_SEVERE);
         }
         return $ret;
     }

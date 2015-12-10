@@ -107,7 +107,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $id = add_usergroup_subscription($label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
 
         if (isset($properties['mails'])) {
-            table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => $id));
+            table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => $id), TABLE_REPLACE_MODE_NONE);
         }
 
         return strval($id);
@@ -178,7 +178,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         edit_usergroup_subscription(intval($resource_id), $label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
 
         if (isset($properties['mails'])) {
-            table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => intval($resource_id)));
+            table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
         return $resource_id;

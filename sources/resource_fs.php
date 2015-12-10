@@ -59,6 +59,10 @@ function init__resource_fs()
 
     global $RESOURCEFS_ADD_ONLY;
     $RESOURCEFS_ADD_ONLY = false;
+
+    define('TABLE_REPLACE_MODE_NONE', 0);
+    define('TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA', 1);
+    define('TABLE_REPLACE_MODE_SEVERE', 2);
 }
 
 /**
@@ -492,14 +496,14 @@ TABLE LEVEL
  *
  * @param  string $table Table name
  * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none)
- * @param  ?array $map Extra WHERE constraints (null: none)
+ * @param  ?array $where_map Extra WHERE constraints (null: none)
  * @return string JSON data
  */
-function table_to_json($table, $fields_to_skip = null, $map = null)
+function table_to_json($table, $fields_to_skip = null, $where_map = null)
 {
     require_code('json');
 
-    return json_encode(table_to_portable_rows($table, $fields_to_skip, $map));
+    return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map));
 }
 
 /**
@@ -507,14 +511,14 @@ function table_to_json($table, $fields_to_skip = null, $map = null)
  *
  * @param  string $table Table name
  * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none)
- * @param  ?array $map Extra WHERE constraints (null: none)
+ * @param  ?array $where_map Extra WHERE constraints (null: none)
  * @param  ?object $connection Database connection to look up from (null: work out from table name)
  * @return array Portable rows
  */
-function table_to_portable_rows($table, $fields_to_skip = null, $map = null, $connection = null)
+function table_to_portable_rows($table, $fields_to_skip = null, $where_map = null, $connection = null)
 {
-    if (is_null($map)) {
-        $map = array();
+    if (is_null($where_map)) {
+        $where_map = array();
     }
 
     if (is_null($connection)) {
@@ -523,7 +527,7 @@ function table_to_portable_rows($table, $fields_to_skip = null, $map = null, $co
 
     $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
 
-    $rows = $connection->query_select($table, array('*'), $map);
+    $rows = $connection->query_select($table, array('*'), $where_map);
 
     $relation_map = get_relation_map_for_table($table);
 
@@ -546,16 +550,16 @@ function table_to_portable_rows($table, $fields_to_skip = null, $map = null, $co
  * @param  string $table Table name
  * @param  mixed $json JSON data OR rows that are already decoded
  * @param  ?array $extra_field_data Extra data to add to each row (null: none)
- * @param  boolean $full_replace Whether to fully replace the current table contents
+ * @param  boolean $replace_mode Whether to fully replace the current table contents
  * @return boolean Success status
  */
-function table_from_json($table, $json, $extra_field_data = null, $full_replace = true)
+function table_from_json($table, $json, $extra_field_data, $replace_mode)
 {
     require_code('json');
 
     $rows = @json_decode($json);
 
-    return table_from_portable_rows($table, $json, $extra_field_data, $full_replace);
+    return table_from_portable_rows($table, $json, $extra_field_data, $replace_mode);
 }
 
 /**
@@ -564,11 +568,11 @@ function table_from_json($table, $json, $extra_field_data = null, $full_replace 
  * @param  string $table Table name
  * @param  array $rows Portable rows
  * @param  ?array $extra_field_data Extra data to add to each row (null: none)
- * @param  boolean $full_replace Whether to fully replace the current table contents
+ * @param  boolean $replace_mode Whether to fully replace the current table contents
  * @param  ?object $connection Database connection to look up from (null: work out from table name)
  * @return boolean Success status
  */
-function table_from_portable_rows($table, $rows, $extra_field_data = null, $full_replace = true, $connection = null)
+function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode, $connection = null)
 {
     if (is_null($connection)) {
         $connection = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
@@ -589,7 +593,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data = null, $full
         }
     }
 
-    if ($full_replace) {
+    if ($replace_mode) {
         if (count($lang_fields) != 0 || count($upload_fields) != 0) {
             $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields));
 
@@ -632,7 +636,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data = null, $full
 
         $row = table_row_from_portable_row($row, $db_fields, $relation_map, $connection);
 
-        if (!$full_replace) {
+        if (!$replace_mode) {
             if (count($lang_fields) != 0 || count($upload_fields) != 0) {
                 $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields), array_intersect_key($row, $keys));
 
@@ -999,7 +1003,7 @@ function remap_portable_as_trans($portable_data, $field, $connection)
     $id = $connection->query_select_value('translate', 'MAX(id)');
     $id = ($id === null) ? null : ($id + 1);
 
-    table_from_portable_rows('translate', $portable_data, array('id' => $id, 'text_parsed' => ''), false, $connection);
+    table_from_portable_rows('translate', $portable_data, array('id' => $id, 'text_parsed' => ''), TABLE_REPLACE_MODE_NONE, $connection);
 
     $connection->query('UNLOCK TABLES', null, null, true);
 

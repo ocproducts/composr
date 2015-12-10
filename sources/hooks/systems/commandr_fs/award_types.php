@@ -91,6 +91,11 @@ class Hook_commandr_fs_award_types extends Resource_fs_base
         $update_time_hours = $this->_default_property_int($properties, 'update_time_hours');
 
         $id = add_award_type($label, $description, $points, $resource_type, $hide_awardee, $update_time_hours);
+
+        if (isset($properties['archive'])) {
+            table_from_portable_rows('award_archive', $properties['archive'], array('a_type_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
         return strval($id);
     }
 
@@ -118,6 +123,7 @@ class Hook_commandr_fs_award_types extends Resource_fs_base
             'resource_type' => $row['a_content_type'],
             'hide_awardee' => $row['a_hide_awardee'],
             'update_time_hours' => $row['a_update_time_hours'],
+            'archive' => table_to_portable_rows('award_archive', /*skip*/array(), array('a_type_id' => intval($resource_id))),
         );
     }
 
@@ -147,6 +153,10 @@ class Hook_commandr_fs_award_types extends Resource_fs_base
         $update_time_hours = $this->_default_property_int($properties, 'update_time_hours');
 
         edit_award_type(intval($resource_id), $label, $description, $points, $resource_type, $hide_awardee, $update_time_hours);
+
+        if (isset($properties['archive'])) {
+            table_from_portable_rows('award_archive', $properties['archive'], array('TODO-foreign-key' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
 
         return $resource_id;
     }

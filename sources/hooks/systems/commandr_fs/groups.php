@@ -365,7 +365,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $id = cns_make_member($label, $password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $category, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, false, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
 
         if (isset($properties['groups'])) {
-            table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => $id));
+            table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => $id), TABLE_REPLACE_MODE_NONE);
         }
 
         return strval($id);
@@ -466,7 +466,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         cns_edit_member(intval($resource_id), $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $category, $actual_custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $label, $password_hashed, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, true);
 
         if (isset($properties['groups'])) {
-            table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => intval($resource_id)));
+            table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
         return $resource_id;

@@ -72,6 +72,15 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
 
         $id = add_newsletter($label, $description);
+
+        if (isset($properties['archive'])) {
+            table_from_portable_rows('newsletter_archive', $properties['archive'], array('newsletter' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        if (isset($properties['subscribers'])) {
+            table_from_portable_rows('newsletter_subscribe', $properties['subscribers'], array('newsletter_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
         return strval($id);
     }
 
@@ -94,7 +103,9 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
 
         return array(
             'label' => get_translated_text($row['title']),
-            'aggregate_type' => get_translated_text($row['description']),
+            'description' => get_translated_text($row['description']),
+            'archive' => table_to_portable_rows('newsletter_archive', /*skip*/array('id'), array('newsletter' => intval($resource_id))),
+            'subscribers' => table_to_portable_rows('newsletter_subscribe', /*skip*/array(), array('newsletter_id' => intval($resource_id))),
         );
     }
 
@@ -117,6 +128,14 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
 
         edit_newsletter(intval($resource_id), $label, $description);
+
+        if (isset($properties['archive'])) {
+            table_from_portable_rows('newsletter_archive', $properties['archive'], array('newsletter' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        if (isset($properties['subscribers'])) {
+            table_from_portable_rows('newsletter_subscribe', $properties['subscribers'], array('newsletter_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
 
         return $resource_id;
     }

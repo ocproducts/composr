@@ -64,6 +64,6 @@ class Hook_commandr_fs_extended_config__checklist_task
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('customtasks', $contents);
+        return table_from_json('customtasks', $contents, null, TABLE_REPLACE_MODE_SEVERE);
     }
 }

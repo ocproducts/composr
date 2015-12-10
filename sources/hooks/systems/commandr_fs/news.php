@@ -222,8 +222,8 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $news_article = $this->_default_property_str($properties, 'article');
         $main_news_category = $this->_integer_category($category);
         $news_category = array();
-        if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
-            $news_category = array_map('intval', explode(',', $properties['categories']));
+        if (!empty($properties['categories'])) {
+            $news_category = $properties['categories'];
         }
         $time = $this->_default_property_time($properties, 'add_date');
         $submitter = $this->_default_property_member($properties, 'submitter');
@@ -233,6 +233,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $regions = empty($properties['regions']) ? array() : $properties['regions'];
+
         $id = add_news($label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $time, $submitter, $views, $edit_date, null, $image, $meta_keywords, $meta_description, $regions);
         return strval($id);
     }
@@ -274,6 +275,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['date_and_time']),
             'edit_date' => remap_time_as_portable($row['edit_date']),
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($row['id'])))),
+            'categories' => collapse_1d_complexity('news_entry_category', $GLOBALS['SITE_DB']->query_select('news_category_entries', array('news_entry_category'), array('news_entry' => $row['id']))),
         );
     }
 
@@ -311,8 +313,8 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $news_article = $this->_default_property_str($properties, 'article');
         $main_news_category = $this->_integer_category($category);
         $news_category = array();
-        if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
-            $news_category = array_map('intval', explode(',', $properties['categories']));
+        if (!empty($properties['categories'])) {
+            $news_category = $properties['categories'];
         }
         $add_time = $this->_default_property_time($properties, 'add_date');
         $submitter = $this->_default_property_member($properties, 'submitter');

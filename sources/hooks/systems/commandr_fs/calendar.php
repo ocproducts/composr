@@ -262,6 +262,11 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $views, $add_time, $edit_time, null, $meta_keywords, $meta_description, $regions);
+
+        if (isset($properties['reminders'])) {
+            table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
         return strval($id);
     }
 
@@ -318,6 +323,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['e_add_date']),
             'edit_date' => remap_time_as_portable($row['e_edit_date']),
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => strval($row['id'])))),
+            'reminders' => table_to_portable_rows('calendar_reminders', /*skip*/array('id'), array('e_id' => intval($resource_id))),
         );
     }
 
@@ -398,6 +404,10 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         edit_calendar_event(intval($resource_id), $type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, $regions, true);
+
+        if (isset($properties['reminders'])) {
+            table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
 
         return $resource_id;
     }
