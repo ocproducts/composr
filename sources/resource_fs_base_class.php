@@ -355,7 +355,7 @@ class Resource_fs_base
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
-     * @return ?string The value (null: NULL value)
+     * @return ?string The value (null: null value)
      */
     protected function _default_property_str($properties, $property)
     {
@@ -367,11 +367,11 @@ class Resource_fs_base
     }
 
     /**
-     * Find a default property, defaulting to NULL.
+     * Find a default property, defaulting to null.
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
-     * @return ?string The value (null: NULL value)
+     * @return ?string The value (null: null value)
      */
     protected function _default_property_str_null($properties, $property)
     {
@@ -383,11 +383,11 @@ class Resource_fs_base
     }
 
     /**
-     * Find an integer default property, defaulting to NULL.
+     * Find an integer default property, defaulting to 0.
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
-     * @return ?integer The value (null: NULL value)
+     * @return ?integer The value (null: null value)
      */
     protected function _default_property_int($properties, $property)
     {
@@ -396,6 +396,27 @@ class Resource_fs_base
         }
         if (is_null($properties[$property])) {
             return 0;
+        }
+        if (is_integer($properties[$property])) {
+            return $properties[$property];
+        }
+        return intval($properties[$property]);
+    }
+
+    /**
+     * Find a default property, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?integer The value (null: null value)
+     */
+    protected function _default_property_int_null($properties, $property)
+    {
+        if (!array_key_exists($property, $properties)) {
+            return null;
+        }
+        if (is_null($properties[$property])) {
+            return null;
         }
         if (is_integer($properties[$property])) {
             return $properties[$property];
@@ -415,27 +436,6 @@ class Resource_fs_base
             return null;
         }
         return ($category == '') ? null : intval($category);
-    }
-
-    /**
-     * Find a default property, defaulting to blank.
-     *
-     * @param  array $properties The properties
-     * @param  ID_TEXT $property The property
-     * @return ?integer The value (null: NULL value)
-     */
-    protected function _default_property_int_null($properties, $property)
-    {
-        if (!array_key_exists($property, $properties)) {
-            return null;
-        }
-        if (is_null($properties[$property])) {
-            return null;
-        }
-        if (is_integer($properties[$property])) {
-            return $properties[$property];
-        }
-        return intval($properties[$property]);
     }
 
     /**
@@ -476,6 +476,182 @@ class Resource_fs_base
         $cache[$property][$table][$default][$db_property] = $ret;
 
         return $ret;
+    }
+
+    /**
+     * Find a default property for a timestamp, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?integer The value (null: null value)
+     */
+    protected function _default_property_time_null($properties, $property)
+    {
+        if (!isset($properties[$property])) {
+            return null;
+        }
+
+        return $this->_default_property_time($properties, $property);
+    }
+
+    /**
+     * Find a default property for a timestamp, defaulting to current time.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return integer The value
+     */
+    protected function _default_property_time($properties, $property)
+    {
+        if (!isset($properties[$property])) {
+            return time();
+        }
+
+        if (is_integer($properties[$property])) {
+            return $properties[$property];
+        }
+
+        return remap_portable_as_time($properties[$property]);
+    }
+
+    /**
+     * Find a default property for a member, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?integer The value (null: null value)
+     */
+    protected function _default_property_member_null($properties, $property)
+    {
+        if (!isset($properties[$property])) {
+            return null;
+        }
+
+        return $this->_default_property_member($properties, $property);
+    }
+
+    /**
+     * Find a default property for a member.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?integer The value (null: null value)
+     */
+    protected function _default_property_member($properties, $property)
+    {
+        if (!isset($properties[$property])) {
+            return get_member();
+        }
+
+        if (is_integer($properties[$property])) {
+            return $properties[$property];
+        }
+
+        return remap_portable_as_resource_id('member', $properties[$property]);
+    }
+
+    /**
+     * Find a default property for a usergroup, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?integer The value (null: null value)
+     */
+    protected function _default_property_group_null($properties, $property)
+    {
+        if (!isset($properties[$property])) {
+            return null;
+        }
+
+        return $this->_default_property_group($properties, $property);
+    }
+
+    /**
+     * Find a default property for a usergroup.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?integer The value (null: null value)
+     */
+    protected function _default_property_group($properties, $property)
+    {
+        if (is_integer($properties[$property])) {
+            return $properties[$property];
+        }
+
+        return remap_portable_as_resource_id('group', $properties[$property]);
+    }
+
+    /**
+     * Find a default property for a URL.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return string The value
+     */
+    protected function _default_property_urlpath($properties, $property)
+    {
+        if (empty($properties[$property])) {
+            return '';
+        }
+
+        return remap_portable_as_urlpath($properties[$property]);
+    }
+
+    /**
+     * Find a default property for a foreign key, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?mixed The value (null: null value)
+     */
+    protected function _default_property_foreign_key_null($table_referenced, $properties, $property)
+    {
+        if (!isset($properties[$property])) {
+            return null;
+        }
+
+        return $this->_default_property_foreign_key($table_referenced, $properties, $property);
+    }
+
+    /**
+     * Find a default property for a foreign key.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?mixed The value
+     */
+    protected function _default_property_foreign_key($table_referenced, $properties, $property)
+    {
+        return remap_portable_as_foreign_key($table_referenced, $properties[$property]);
+    }
+
+    /**
+     * Find a default property for a resource, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?mixed The value (null: null value)
+     */
+    protected function _default_property_resource_id_null($resource_type, $properties, $property)
+    {
+        if (!isset($properties[$property])) {
+            return null;
+        }
+
+        return $this->_default_property_resource_id($resource_type, $properties, $property);
+    }
+
+    /**
+     * Find a default property for a resource.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?mixed The value
+     */
+    protected function _default_property_resource_id($resource_type, $properties, $property)
+    {
+        return remap_portable_as_resource_id($table_referenced, $properties[$property]);
     }
 
     /**

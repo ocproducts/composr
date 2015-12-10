@@ -787,10 +787,6 @@ function remap_portable_as_time($portable_data)
         return null;
     }
 
-    if (is_numeric($portable_data)) {
-        return intval($portable_data);
-    }
-
     return strtotime($portable_data);
 }
 
@@ -881,7 +877,7 @@ function remap_foreign_key_as_portable($_table_referenced, $id)
  * Convert a portable foreign key to a real foreign key.
  *
  * @param  array $_table_referenced The table the key is to
- * @param  ?string $portable_data Portable ID details (null: not set)
+ * @param  ?mixed $portable_data Portable ID details (null: not set)
  * @return ?mixed The key (null: not set)
  */
 function remap_portable_as_foreign_key($_table_referenced, $portable_data)
@@ -901,7 +897,7 @@ function remap_portable_as_foreign_key($_table_referenced, $portable_data)
  * Convert a local ID to something portable.
  *
  * @param  ID_TEXT $resource_type The resource type
- * @param  ?ID_TEXT $resource_id The resource ID (null: not set)
+ * @param  ?mixed $resource_id The resource ID (null: not set)
  * @return ?array Portable ID details (null: not set)
  */
 function remap_resource_id_as_portable($resource_type, $resource_id)
@@ -932,7 +928,7 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
  *
  * @param  ID_TEXT $resource_type The resource type
  * @param  ?mixed $portable_data Portable ID details (null: not set)
- * @return ?ID_TEXT The resource ID (null: not set)
+ * @return ?mixed The resource ID (null: not set)
  */
 function remap_portable_as_resource_id($resource_type, $portable_data)
 {
