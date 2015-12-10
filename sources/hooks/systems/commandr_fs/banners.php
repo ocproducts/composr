@@ -319,7 +319,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $name = $this->_create_name_from_label($label);
-        $img_url = $this->_default_property_urlpath($properties, 'img_url');
+        $img_url = $this->_default_property_urlpath($properties, 'img_url', true);
         $title_text = $this->_default_property_str($properties, 'title_text');
         $direct_code = $this->_default_property_str($properties, 'direct_code');
         $campaignremaining = $this->_default_property_int($properties, 'campaignremaining');

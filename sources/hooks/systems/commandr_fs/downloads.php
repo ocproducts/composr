@@ -166,7 +166,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $parent_id = $this->_integer_category($category);
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image', true);
         $add_time = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
@@ -332,7 +332,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $category_id = $this->_integer_category($category);
-        $url = $this->_default_property_urlpath($properties, 'url');
+        $url = $this->_default_property_urlpath($properties, 'url', true);
         $description = $this->_default_property_str($properties, 'description');
         $author = $this->_default_property_str($properties, 'author');
         $additional_details = $this->_default_property_str($properties, 'additional_details');

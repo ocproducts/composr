@@ -818,9 +818,10 @@ function remap_urlpath_as_portable($urlpath)
  * Convert a portable URL to a real URL.
  *
  * @param  ?string $portable_data Portable details (null: not set)
+ * @param  boolean $ignore_conflicts Whether to ignore conflicts with existing files (=edit op, basically)
  * @return ?string The URL (null: not set)
  */
-function remap_portable_as_urlpath($portable_data)
+function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
 {
     if (!is_array($portable_data)) {
         return $portable_data;
@@ -831,13 +832,16 @@ function remap_portable_as_urlpath($portable_data)
     $urlpath = $portable_data[0];
 
     $place = get_custom_file_base() . '/' . $urlpath;
-    // Hunt with sensible names until we don't get a conflict
-    $i = 2;
-    while (file_exists($place)) {
-        $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
-        $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
-        $urlpath = dirname($urlpath) . '/' . urlencode($filename);
-        $i++;
+
+    if ($ignore_conflicts) {
+        // Hunt with sensible names until we don't get a conflict
+        $i = 2;
+        while (file_exists($place)) {
+            $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
+            $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
+            $urlpath = dirname($urlpath) . '/' . urlencode($filename);
+            $i++;
+        }
     }
 
     file_put_contents($place, $binary);

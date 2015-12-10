@@ -199,11 +199,11 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $accept_videos = $this->_default_property_int_modeavg($properties, 'accept_videos', 'galleries', 1);
         $is_member_synched = $this->_default_property_int($properties, 'is_member_synched');
         $flow_mode_interface = $this->_default_property_int($properties, 'flow_mode_interface');
-        $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
-        $watermark_top_left = $this->_default_property_urlpath($properties, 'watermark_top_left');
-        $watermark_top_right = $this->_default_property_urlpath($properties, 'watermark_top_right');
-        $watermark_bottom_left = $this->_default_property_urlpath($properties, 'watermark_bottom_left');
-        $watermark_bottom_right = $this->_default_property_urlpath($properties, 'watermark_bottom_right');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image', true);
+        $watermark_top_left = $this->_default_property_urlpath($properties, 'watermark_top_left', true);
+        $watermark_top_right = $this->_default_property_urlpath($properties, 'watermark_top_right', true);
+        $watermark_bottom_left = $this->_default_property_urlpath($properties, 'watermark_bottom_left', true);
+        $watermark_bottom_right = $this->_default_property_urlpath($properties, 'watermark_bottom_right', true);
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'galleries', 1);
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'galleries', 1);
         $add_time = $this->_default_property_time($properties, 'add_date');
@@ -411,8 +411,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $description = $this->_default_property_str($properties, 'description');
-        $url = $this->_default_property_urlpath($properties, 'url');
-        $thumb_url = $this->_default_property_urlpath($properties, 'thumb_url');
+        $url = $this->_default_property_urlpath($properties, 'url', true);
+        $thumb_url = $this->_default_property_urlpath($properties, 'thumb_url', true);
         $validated = $this->_default_property_int_null($properties, 'validated');
         if (is_null($validated)) {
             $validated = 1;

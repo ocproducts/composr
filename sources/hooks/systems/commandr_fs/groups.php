@@ -98,15 +98,16 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      *
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
+     * @param  boolean $edit Is an edit
      * @return array Properties
      */
-    protected function __folder_read_in_properties($path, $properties)
+    protected function __folder_read_in_properties($path, $properties, $edit)
     {
         $is_default = $this->_default_property_int($properties, 'is_default');
         $is_super_admin = $this->_default_property_int($properties, 'is_super_admin');
         $is_super_moderator = $this->_default_property_int($properties, 'is_super_moderator');
         $rank_title = $this->_default_property_str($properties, 'rank_title');
-        $rank_image = $this->_default_property_urlpath($properties, 'rank_image');
+        $rank_image = $this->_default_property_urlpath($properties, 'rank_image', $edit);
         $promotion_target = $this->_default_property_group_null($properties, 'promotion_target');
         $promotion_threshold = $this->_default_property_int_null($properties, 'promotion_threshold');
         $group_leader = $this->_default_property_member_null($properties, 'group_leader');
@@ -152,7 +153,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         require_code('cns_groups_action');
 
-        list($is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club) = $this->__folder_read_in_properties($path, $properties);
+        list($is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club) = $this->__folder_read_in_properties($path, $properties, false);
 
         $id = cns_make_group($label, $is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club, true, false);
 
@@ -223,7 +224,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         require_code('cns_groups_action2');
 
         $label = $this->_default_property_str($properties, 'label');
-        list($is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club) = $this->__folder_read_in_properties($path, $properties);
+        list($is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club) = $this->__folder_read_in_properties($path, $properties, true);
 
         cns_edit_group(intval($resource_id), $label, $is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club, true);
 
@@ -268,9 +269,10 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      *
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
+     * @param  boolean $edit Is an edit
      * @return array Properties
      */
-    protected function __file_read_in_properties($path, $properties)
+    protected function __file_read_in_properties($path, $properties, $edit)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         $password_hashed = $this->_default_property_str($properties, 'password_hashed');
@@ -290,14 +292,14 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $last_visit_time = $this->_default_property_time_null($properties, 'last_visit_time');
         $last_submit_time = $this->_default_property_time_null($properties, 'last_submit_time');
         $theme = $this->_default_property_str($properties, 'theme');
-        $avatar_url = $this->_default_property_urlpath($properties, 'avatar_url');
+        $avatar_url = $this->_default_property_urlpath($properties, 'avatar_url', $edit);
         $signature = $this->_default_property_str($properties, 'signature');
         $is_perm_banned = $this->_default_property_int($properties, 'is_perm_banned');
         $preview_posts = $this->_default_property_int_modeavg($properties, 'preview_posts', 'f_members', 0, 'm_preview_posts');
         $reveal_age = $this->_default_property_int_modeavg($properties, 'reveal_age', 'f_members', 0, 'm_reveal_age');
         $user_title = $this->_default_property_str($properties, 'user_title');
-        $photo_url = $this->_default_property_urlpath($properties, 'photo_url');
-        $photo_thumb_url = $this->_default_property_urlpath($properties, 'photo_thumb_url');
+        $photo_url = $this->_default_property_urlpath($properties, 'photo_url', $edit);
+        $photo_thumb_url = $this->_default_property_urlpath($properties, 'photo_thumb_url', $edit);
         $views_signatures = $this->_default_property_int($properties, 'views_signatures');
         $auto_monitor_contrib_content = $this->_default_property_int_null($properties, 'auto_monitor_contrib_content');
         if (is_null($auto_monitor_contrib_content)) {
@@ -358,7 +360,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         require_code('cns_members_action');
 
-        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $password_compatibility_scheme, $salt, $last_submit_time, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read) = $this->__file_read_in_properties($path, $properties);
+        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $password_compatibility_scheme, $salt, $last_submit_time, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read) = $this->__file_read_in_properties($path, $properties, false);
 
         $id = cns_make_member($label, $password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $category, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, false, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
 
@@ -459,7 +461,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         require_code('cns_members_action2');
 
         $label = $this->_default_property_str($properties, 'label');
-        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $password_compatibility_scheme, $salt, $last_submit_time, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read) = $this->__file_read_in_properties($path, $properties);
+        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $password_compatibility_scheme, $salt, $last_submit_time, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read) = $this->__file_read_in_properties($path, $properties, true);
 
         cns_edit_member(intval($resource_id), $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $category, $actual_custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $label, $password_hashed, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, true);
 

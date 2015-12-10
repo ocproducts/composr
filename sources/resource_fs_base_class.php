@@ -587,15 +587,16 @@ class Resource_fs_base
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
+     * @param  boolean $ignore_conflicts Whether to ignore conflicts with existing files (=edit op, basically)
      * @return string The value
      */
-    protected function _default_property_urlpath($properties, $property)
+    protected function _default_property_urlpath($properties, $property, $ignore_conflicts = false)
     {
         if (empty($properties[$property])) {
             return '';
         }
 
-        return remap_portable_as_urlpath($properties[$property]);
+        return remap_portable_as_urlpath($properties[$property], $ignore_conflicts);
     }
 
     /**

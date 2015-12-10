@@ -229,9 +229,10 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      *
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
+     * @param  boolean $edit Is an edit
      * @return ~array Properties (false: error)
      */
-    protected function __folder_read_in_properties_category($path, $properties)
+    protected function __folder_read_in_properties_category($path, $properties, $edit)
     {
         if (strpos($path, '/') === false) {
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue');
@@ -251,7 +252,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image', $edit);
         $move_days_lower = $this->_default_property_int($properties, 'move_days_lower');
         $move_days_higher = $this->_default_property_int($properties, 'move_days_higher');
         $move_target = $this->_default_property_resource_id_null('catalogue_category', $properties, 'move_target');
@@ -278,7 +279,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         require_code('catalogues2');
 
         if ($path != '') { // Category
-            $_properties = $this->__folder_read_in_properties_category($path, $properties);
+            $_properties = $this->__folder_read_in_properties_category($path, $properties, false);
             if ($_properties === false) {
                 return false;
             }
@@ -485,7 +486,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         } else {
             $label = $this->_default_property_str($properties, 'label');
 
-            $_properties = $this->__folder_read_in_properties_category($path, $properties);
+            $_properties = $this->__folder_read_in_properties_category($path, $properties, true);
             if ($_properties === false) {
                 return false;
             }

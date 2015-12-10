@@ -152,7 +152,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         require_code('news2');
 
         $label = $this->_default_property_str($properties, 'label');
-        $img = $this->_default_property_urlpath($properties, 'rep_image');
+        $img = $this->_default_property_urlpath($properties, 'rep_image', true);
         $notes = $this->_default_property_str($properties, 'notes');
         $owner = $this->_default_property_member_null($properties, 'owner');
 
@@ -318,7 +318,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
         $edit_time = $this->_default_property_time($properties, 'edit_date');
-        $image = $this->_default_property_urlpath($properties, 'image');
+        $image = $this->_default_property_urlpath($properties, 'image', true);
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $regions = empty($properties['regions']) ? array() : $properties['regions'];
