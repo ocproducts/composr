@@ -31,8 +31,9 @@ foreach ($tables_by as $t => $ts) {
         foreach ($fields as $field) {
             $type = str_replace('?', '', str_replace('*', '', $field['m_type']));
             $extra = '';
-            if (isset($relation_map[$table . '.' . $field['m_name']])) {
-                $extra .= ' ( &rarr; <strong>' . escape_html($relation_map[$table . '.' . $field['m_name']]) . '</strong>)';
+            if (array_key_exists($relation_map, $table . '.' . $field['m_name'])) {
+                $relation = $relation_map[$table . '.' . $field['m_name']];
+                $extra .= ' ( &rarr; <strong>' . escape_html(is_null($relation) ? '*' : $relation) . '</strong>)';
             }
             if (strpos($field['m_type'], '*') !== false) {
                 $extra .= ' (<span style="text-decoration: underline"">Key field</span>)';

@@ -46,6 +46,7 @@ class Hook_commandr_fs_extended_config__privilege
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
         require_code('resource_fs');
+        require_code('json');
 
         $tables = array(
             'group_privileges' => array('category_name' => ''),
@@ -55,16 +56,7 @@ class Hook_commandr_fs_extended_config__privilege
         );
         $all = array();
         foreach ($tables as $table => $map) {
-            $rows = $GLOBALS['SITE_DB']->query_select($table, array('*'), $map);
-            foreach ($rows as $i => $row) {
-                if (array_key_exists('member_id', $row)) {
-                    $rows[$i]['member_id'] = remap_resource_id_as_portable('member', strval($row['member_id']));
-                }
-                if (array_key_exists('group_id', $row)) {
-                    $rows[$i]['group_id'] = remap_resource_id_as_portable('group', strval($row['group_id']));
-                }
-            }
-            $all[$table] = $rows;
+            $all[$table] = table_to_portable_rows($table, null, $map);
         }
         return json_encode($all);
     }
@@ -86,19 +78,10 @@ class Hook_commandr_fs_extended_config__privilege
             return false;
         }
 
+        $ret = true;
         foreach ($all as $table => $rows) {
-            $GLOBALS['SITE_DB']->query_delete($table);
-            foreach ($rows as $row) {
-                if (array_key_exists('member_id', $row)) {
-                    $row['member_id'] = remap_portable_as_resource_id('member', $row['member_id']);
-                }
-                if (array_key_exists('group_id', $row)) {
-                    $row['group_id'] = remap_portable_as_resource_id('group', $row['group_id']);
-                }
-
-                $GLOBALS['SITE_DB']->query_insert($table, $row);
-            }
+            $ret = $ret && table_from_json($table, $rows);
         }
-        return true;
+        return $ret;
     }
 }

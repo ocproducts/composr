@@ -299,7 +299,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         }
         $cost = $this->_default_property_int($properties, 'cost');
         $submitter_gets_points = $this->_default_property_int($properties, 'submitter_gets_points');
-        $licence = $this->_default_property_int_null($properties, 'licence'); // TODO, #1160 on tracker
+        $licence = $this->_default_property_int_null($properties, 'licence');
         $add_date = $this->_default_property_int_null($properties, 'add_date');
         $num_downloads = $this->_default_property_int($properties, 'num_downloads');
         $views = $this->_default_property_int($properties, 'views');
@@ -406,7 +406,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         }
         $cost = $this->_default_property_int($properties, 'cost');
         $submitter_gets_points = $this->_default_property_int($properties, 'submitter_gets_points');
-        $licence = $this->_default_property_int_null($properties, 'licence'); // TODO, #1160 on tracker
+        $licence = $this->_default_property_int_null($properties, 'licence');
         $add_time = $this->_default_property_int_null($properties, 'add_date');
         $num_downloads = $this->_default_property_int($properties, 'num_downloads');
         $views = $this->_default_property_int($properties, 'views');

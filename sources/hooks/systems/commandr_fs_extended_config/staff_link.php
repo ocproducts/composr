@@ -45,8 +45,7 @@ class Hook_commandr_fs_extended_config__staff_link
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        $rows = $GLOBALS['SITE_DB']->query_select('stafflinks', array('*'));
-        return json_encode($rows);
+        return table_to_json('stafflinks', array('id'));
     }
 
     /**
@@ -61,14 +60,6 @@ class Hook_commandr_fs_extended_config__staff_link
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        $GLOBALS['SITE_DB']->query_delete('stafflinks');
-        $rows = @json_decode($contents);
-        if ($rows === false) {
-            return false;
-        }
-        foreach ($rows as $row) {
-            $GLOBALS['SITE_DB']->query_insert('stafflinks', $row);
-        }
-        return true;
+        return table_from_json('stafflinks', $contents);
     }
 }

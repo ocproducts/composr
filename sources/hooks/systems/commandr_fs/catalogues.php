@@ -443,7 +443,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'ecommerce' => $row['c_ecommerce'],
             'send_view_reports' => $row['c_send_view_reports'],
             'default_review_freq' => $row['c_default_review_freq'],
-            'fields' => json_encode($fields),
+            'fields' => $fields,
             'add_date' => $row['c_add_date'],
         );
     }

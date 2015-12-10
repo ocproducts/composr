@@ -45,15 +45,7 @@ class Hook_commandr_fs_extended_config__match_key_message
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        require_code('xml_storage');
-
-        $rows = $GLOBALS['SITE_DB']->query_select('match_key_messages', array('k_message', 'k_match_key'), null, 'ORDER BY id');
-        $rows2 = array();
-        foreach ($rows as $row) {
-            $row2 = array('message' => '<lang>' . get_translated_text_xml($row['k_message'], 'message', $GLOBALS['SITE_DB']) . '</lang>', 'match_key' => $row['k_match_key']);
-            $rows2[] = $row2;
-        }
-        return json_encode($rows2);
+        return table_to_json('match_key_messages', array('id'));
     }
 
     /**
@@ -68,23 +60,6 @@ class Hook_commandr_fs_extended_config__match_key_message
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        require_code('xml_storage');
-
-        $rows = $GLOBALS['SITE_DB']->query_select('match_key_messages', array('k_message'));
-        foreach ($rows as $row) {
-            delete_lang($row['k_message']);
-        }
-        $GLOBALS['SITE_DB']->query_delete('match_key_messages');
-
-        $rows = @json_decode($contents);
-        if ($rows === false) {
-            return false;
-        }
-        foreach ($rows as $row) {
-            $row2 = array('k_match_key' => $row['k_match_key']);
-            $row2 += insert_lang_xml('k_message', $row['k_message']);
-            $GLOBALS['SITE_DB']->query_insert('match_key_messages', $row2);
-        }
-        return true;
+        return table_from_json('match_key_messages', $contents);
     }
 }

@@ -123,6 +123,19 @@ function array_intersect($array1, $array2, $array3 = null)
 }
 
 /**
+ * Computes the intersection of arrays using keys for comparison.
+ *
+ * @param  array $array1 First array.
+ * @param  array $array2 Second array.
+ * @param  ?array $array3 Third array (null: only 2).
+ * @return array The intersection.
+ */
+function array_intersect_key($array1, $array2, $array3 = null)
+{
+    return array();
+}
+
+/**
  * Calculate the intersection of arrays with additional index check.
  *
  * @param  array $array1 First array.

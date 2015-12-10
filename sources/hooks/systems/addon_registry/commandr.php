@@ -122,6 +122,7 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/antispam_check.php',
             'sources/hooks/systems/commandr_commands/set_comment_forum.php',
             'sources/resource_fs.php',
+            'sources/resource_fs_base_class.php',
             'data/modules/admin_commandr/.htaccess',
             'themes/default/templates/COMMANDR_HELP.tpl',
             'themes/default/templates/COMMANDR_LS.tpl',

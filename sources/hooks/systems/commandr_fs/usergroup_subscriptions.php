@@ -125,9 +125,11 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $mail_end = $this->_default_property_str($properties, 'mail_end');
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
-        $mails = ($_mails == '') ? array() : json_decode($_mails);
 
-        $id = add_usergroup_subscription($label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails);
+        $id = add_usergroup_subscription($label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
+
+        table_from_json('f_usergroup_sub_mails', $_mails, array('m_usergroup_sub_id' => $id));
+
         return strval($id);
     }
 
@@ -148,22 +150,6 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         }
         $row = $rows[0];
 
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-
-        $_mails = $GLOBALS['FORUM_DB']->query_select('f_usergroup_sub_mails', array('*'), array('m_usergroup_sub_id' => intval($resource_id)), 'ORDER BY id');
-        $mails = array();
-        foreach ($_mails as $_mail) {
-            $mails[] = array(
-                'subject' => get_translated_text($_mail['m_subject'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
-                'body' => get_translated_text($_mail['m_body'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
-                'ref_point' => $_mail['m_ref_point'],
-                'ref_point_offset' => $_mail['m_ref_point_offset'],
-            );
-        }
-
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
-
         return array(
             'label' => $row['s_title'],
             'description' => $row['s_description'],
@@ -176,7 +162,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
             'mail_end' => $row['s_mail_end'],
             'mail_uhoh' => $row['s_mail_uhoh'],
             'uses_primary' => $row['s_uses_primary'],
-            'mails' => json_encode($mails),
+            'mails' => table_to_json('f_usergroup_sub_mails', array('id', 'm_usergroup_sub_id'), array('m_usergroup_sub_id' => intval($resource_id))),
         );
     }
 
@@ -208,9 +194,10 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $mail_end = $this->_default_property_str($properties, 'mail_end');
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
-        $mails = ($_mails == '') ? array() : json_decode($_mails);
 
-        edit_usergroup_subscription(intval($resource_id), $label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails);
+        edit_usergroup_subscription(intval($resource_id), $label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
+
+        table_from_json('f_usergroup_sub_mails', $_mails, array('m_usergroup_sub_id' => intval($resource_id)));
 
         return $resource_id;
     }

@@ -34,11 +34,15 @@
  * @param  ?LONG_TEXT $mail_start The text of the e-mail to send out when a subscription is start (null: default)
  * @param  ?LONG_TEXT $mail_end The text of the e-mail to send out when a subscription is ended (null: default)
  * @param  ?LONG_TEXT $mail_uhoh The text of the e-mail to send out when a subscription cannot be renewed because the subproduct is gone (null: default)
- * @param  array $mails Other e-mails to send
+ * @param  ?array $mails Other e-mails to send (null: none)
  * @return AUTO_LINK The ID
  */
-function add_usergroup_subscription($title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails)
+function add_usergroup_subscription($title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
 {
+    if (is_null($mails)) {
+        $mails = array();
+    }
+
     require_code('global4');
     prevent_double_submit('ADD_USERGROUP_SUBSCRIPTION', null, $title);
 

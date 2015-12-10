@@ -813,8 +813,8 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
         if (($obfuscate == 0) || ($obfuscate == 3) || (strlen($file) > 150)) {
             $filename = preg_replace('#\..*\.#', '.', $file);
             $place = $upload_folder_full . '/' . $filename;
-            $i = 2;
             // Hunt with sensible names until we don't get a conflict
+            $i = 2;
             while (file_exists($place)) {
                 $filename = strval($i) . preg_replace('#\..*\.#', '.', $file);
                 $place = $upload_folder_full . '/' . $filename;

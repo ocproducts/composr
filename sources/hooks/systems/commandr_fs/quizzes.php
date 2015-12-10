@@ -138,7 +138,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $text = $this->_default_property_str($properties, 'text');
         $submitter = $this->_default_property_int_null($properties, 'submitter');
         $points_for_passing = $this->_default_property_int($properties, 'points_for_passing');
-        $tied_newsletter = $this->_default_property_int_null($properties,'tied_newsletter');
+        $tied_newsletter = $this->_default_property_int_null($properties, 'tied_newsletter');
         $reveal_answers = $this->_default_property_int($properties, 'reveal_answers');
         $shuffle_questions = $this->_default_property_int($properties, 'shuffle_questions');
         $shuffle_answers = $this->_default_property_int($properties, 'shuffle_answers');
@@ -238,7 +238,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $text = $this->_default_property_str($properties, 'text');
         $submitter = $this->_default_property_int_null($properties, 'submitter');
         $points_for_passing = $this->_default_property_int($properties, 'points_for_passing');
-        $tied_newsletter = $this->_default_property_int_null($properties,'tied_newsletter');
+        $tied_newsletter = $this->_default_property_int_null($properties, 'tied_newsletter');
         $reveal_answers = $this->_default_property_int($properties, 'reveal_answers');
         $shuffle_questions = $this->_default_property_int($properties, 'shuffle_questions');
         $shuffle_answers = $this->_default_property_int($properties, 'shuffle_answers');

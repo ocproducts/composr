@@ -263,7 +263,7 @@ function _insert_lang($field_name, $text, $level, $connection = null, $comcode =
     }
 
     if (($id === null) && (multi_lang())) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
-        $connection->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, null, true);
+        $connection->query('LOCK TABLES ' . $connection->get_table_prefix() . 'translate', null, null, true);
         $lock = true;
         $id = $connection->query_select_value('translate', 'MAX(id)');
         $id = ($id === null) ? null : ($id + 1);

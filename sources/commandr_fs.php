@@ -54,17 +54,17 @@ class Commandr_fs
 
         The virtual filesystem is a nested directory structure, where terminals mapping to strings represent Commandr-fs hooks
             $this->commandr_fs=array(
-                    'blah'=>array(),
-        *** 'blah2'=>array(
-                            'foo'=>array(),
-                            'foo2'=>array(),
-        ***    'foo3'=>array(
-        ***       'bar'=>'members', // 'members' hook is tied into 'bar', rather than an explicit array
-                                        'bar2'=>array(),
-                            ),
-                            'foo4'=>array(),
+                'blah'=>array(),
+            *** 'blah2'=>array(
+                    'foo'=>array(),
+                    'foo2'=>array(),
+                *** 'foo3'=>array(
+                    *** 'bar'=>'members', // 'members' hook is tied into 'bar', rather than an explicit array
+                        'bar2'=>array(),
                     ),
-                    'blah3'=>array(),
+                    'foo4'=>array(),
+                    ),
+                'blah3'=>array(),
             );
         */
 

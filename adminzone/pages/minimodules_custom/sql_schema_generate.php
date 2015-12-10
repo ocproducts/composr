@@ -25,7 +25,6 @@ if (!isset($_GET['testing'])) {
 }
 
 require_code('database_relations');
-$relation_map = get_relation_map();
 
 $tables = get_all_tables();
 

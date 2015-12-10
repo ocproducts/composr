@@ -45,8 +45,7 @@ class Hook_commandr_fs_extended_config__https_setting
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        $rows = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'));
-        return json_encode($rows);
+        return table_to_json('https_pages');
     }
 
     /**
@@ -61,14 +60,6 @@ class Hook_commandr_fs_extended_config__https_setting
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        $GLOBALS['SITE_DB']->query_delete('https_pages');
-        $rows = @json_decode($contents);
-        if ($rows === false) {
-            return false;
-        }
-        foreach ($rows as $row) {
-            $GLOBALS['SITE_DB']->query_insert('https_pages', $row);
-        }
-        return true;
+        return table_from_json('https_pages', $contents);
     }
 }
