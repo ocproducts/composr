@@ -66,28 +66,6 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'cost' => 'SHORT_TEXT',
-            'length' => 'INTEGER',
-            'length_units' => 'SHORT_TEXT',
-            'group_id' => 'group',
-            'enabled' => 'BINARY',
-            'mail_start' => 'LONG_TRANS',
-            'mail_end' => 'LONG_TRANS',
-            'mail_uhoh' => 'LONG_TRANS',
-            'uses_primary' => 'BINARY',
-            'mails' => 'LONG_TEXT',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)

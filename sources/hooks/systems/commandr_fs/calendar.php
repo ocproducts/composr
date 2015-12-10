@@ -76,19 +76,6 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'logo' => 'URLPATH',
-            'external_feed' => 'URLPATH',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -186,49 +173,6 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         delete_event_type(intval($resource_id));
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'start_year' => 'INTEGER',
-            'start_month' => 'SHORT_INTEGER',
-            'start_day' => 'SHORT_INTEGER',
-            'start_monthly_spec_type' => 'ID_TEXT',
-            'start_hour' => '?SHORT_INTEGER',
-            'start_minute' => '?SHORT_INTEGER',
-            'end_year' => '?INTEGER',
-            'end_month' => '?SHORT_INTEGER',
-            'end_day' => '?SHORT_INTEGER',
-            'end_monthly_spec_type' => 'ID_TEXT',
-            'end_hour' => '?SHORT_INTEGER',
-            'end_minute' => '?SHORT_INTEGER',
-            'timezone' => 'ID_TEXT',
-            'do_timezone_conv' => 'BINARY',
-            'recurrence' => 'SHORT_TEXT',
-            'recurrences' => '?INTEGER',
-            'seg_recurrences' => 'BINARY',
-            'priority' => 'SHORT_INTEGER',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'views' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'member_calendar' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-            'regions' => 'LONG_TEXT',
-        );
     }
 
     /**

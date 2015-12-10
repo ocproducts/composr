@@ -66,36 +66,6 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        $ret = array(
-            'description' => 'SHORT_TRANS',
-            'locked' => 'BINARY',
-            'default' => 'LONG_TEXT',
-            'public_view' => 'BINARY',
-            'owner_view' => 'BINARY',
-            'owner_set' => 'BINARY',
-            'type' => 'ID_TEXT',
-            'required' => 'BINARY',
-            'show_in_posts' => 'BINARY',
-            'show_in_post_previews' => 'BINARY',
-            'order' => 'INTEGER',
-            'only_group' => 'LONG_TEXT',
-            'show_on_join_form' => 'BINARY',
-            'options' => 'SHORT_TEXT',
-        );
-        require_code('encryption');
-        if (is_encryption_enabled()) {
-            $ret['encryption'] = 'BINARY';
-        }
-        return $ret;
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)

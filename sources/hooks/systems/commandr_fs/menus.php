@@ -72,16 +72,6 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array();
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -194,27 +184,6 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         delete_menu($resource_id);
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'order' => 'INTEGER',
-            'parent' => '?menu_item',
-            'caption_long' => 'SHORT_TRANS',
-            'url' => 'SHORT_TEXT',
-            'check_permissions' => 'BINARY',
-            'expanded' => 'BINARY',
-            'new_window' => 'BINARY',
-            'page_only' => 'ID_TEXT',
-            'theme_img_code' => 'ID_TEXT',
-            'include_sitemap' => 'SHORT_INTEGER',
-        );
     }
 
     /**

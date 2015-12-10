@@ -66,20 +66,6 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'text' => 'LONG_TEXT',
-            'forum_multi_code' => 'SHORT_TEXT',
-            'use_default_forums' => 'BINARY',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)

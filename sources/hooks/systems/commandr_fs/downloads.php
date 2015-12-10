@@ -76,23 +76,6 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'notes' => 'LONG_TEXT',
-            'rep_image' => 'URLPATH',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'add_date' => 'TIME',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -208,40 +191,6 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         delete_download_category(intval($resource_id));
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'url' => 'URLPATH',
-            'description' => 'LONG_TRANS',
-            'author' => 'author',
-            'additional_details' => 'LONG_TRANS',
-            'out_mode_id' => '?download',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'original_filename' => 'SHORT_TEXT',
-            'file_size' => 'INTEGER',
-            'cost' => 'INTEGER',
-            'submitter_gets_points' => 'BINARY',
-            'licence' => 'download_licence',
-            'num_downloads' => 'INTEGER',
-            'views' => 'INTEGER',
-            'default_pic' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
     }
 
     /**

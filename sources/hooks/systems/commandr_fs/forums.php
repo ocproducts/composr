@@ -152,45 +152,6 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @param  ID_TEXT $category Parent category (blank: root / not applicable)
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties($category)
-    {
-        if (substr($category, 0, 6) == 'FORUM-') {
-            return array(
-                'description' => 'LONG_TRANS',
-                'forum_grouping_id' => 'forum_grouping',
-                'position' => 'INTEGER',
-                'post_count_increment' => 'BINARY',
-                'order_sub_alpha' => 'BINARY',
-                'intro_question' => 'LONG_TRANS',
-                'intro_answer' => 'LONG_TRANS',
-                'redirection' => 'SHORT_TEXT|forum',
-                'order' => 'ID_TEXT',
-                'is_threaded' => 'BINARY',
-            );
-        }
-
-        return array(
-            'description' => 'SHORT_TEXT',
-            'emoticon' => 'SHORT_TEXT',
-            'validated' => 'BINARY',
-            'open' => 'BINARY',
-            'pinned' => 'BINARY',
-            'sunk' => 'BINARY',
-            'cascading' => 'BINARY',
-            'pt_from' => '?member',
-            'pt_to' => '?member',
-            'views' => 'INTEGER',
-            'description_link' => 'SHORT_TEXT',
-            'poll' => 'LONG_TRANS',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -546,29 +507,6 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         }
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'post' => 'LONG_TRANS',
-            'skip_sig' => 'BINARY',
-            'validated' => 'BINARY',
-            'is_emphasised' => 'BINARY',
-            'poster_name_if_guest' => 'ID_TEXT',
-            'ip_address' => 'IP',
-            'intended_solely_for' => '?member',
-            'parent_id' => '?post',
-            'poster' => 'member',
-            'last_edit_by' => '?member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
     }
 
     /**

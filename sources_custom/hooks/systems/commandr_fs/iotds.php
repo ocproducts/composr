@@ -51,37 +51,12 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'url' => 'URLPATH',
-            'caption' => 'LONG_TRANS',
-            'thumb_url' => 'URLPATH',
-            'current' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'used' => 'BINARY',
-            'use_time' => '?TIME',
-            'views' => 'INTEGER',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => 'TIME',
-        );
-    }
-
-    /**
      * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @return ~ID_TEXT                 The resource ID (false: error, could not create via these properties / here)
+     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
     public function file_add($filename, $path, $properties)
     {

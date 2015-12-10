@@ -149,43 +149,6 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @param  ID_TEXT $category Parent category (blank: root / not applicable)
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties($category)
-    {
-        if (substr($category, 0, 10) != 'CATALOGUE-') { // Category
-            return array(
-                        'description' => 'LONG_TRANS',
-                       'notes' => 'LONG_TEXT',
-                       'rep_image' => 'URLPATH',
-                       'move_days_lower' => '?INTEGER',
-                       'move_days_higher' => '?INTEGER',
-                       'move_target' => '?catalogue_category',
-                       'order' => 'INTEGER',
-                       'meta_keywords' => 'LONG_TRANS',
-                       'meta_description' => 'LONG_TRANS',
-                       'add_date' => 'TIME',
-                   ) + $this->_custom_fields_enumerate_properties('catalogue_category');
-        }
-
-        return array( // Catalogue
-                      'description' => 'LONG_TRANS',
-                      'display_type' => 'SHORT_INTEGER',
-                      'is_tree' => 'BINARY',
-                      'notes' => 'LONG_TEXT',
-                      'submit_points' => 'INTEGER',
-                      'ecommerce' => 'BINARY',
-                      'send_view_reports' => 'BINARY',
-                      'default_review_freq' => '?INTEGER',
-                      'fields' => 'LONG_TRANS',
-                      'add_date' => 'TIME',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -556,72 +519,6 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         }
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @param  ID_TEXT $category Parent category (blank: root / not applicable)
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties($category)
-    {
-        $props = array();
-
-        $category_id = $this->_integer_category($category);
-        $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'c_name', array('id' => $category_id));
-        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_type', 'cf_default', 'cf_name'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
-        $unique_key_num = $this->_find_unique_key_num($_fields);
-        foreach ($_fields as $i => $field_bits) {
-            if ($i != $unique_key_num) {
-                $cf_name = get_translated_text($field_bits['cf_name']);
-                $fixed_id = fix_id($cf_name);
-                if (!array_key_exists($fixed_id, $props)) {
-                    $key = $fixed_id;
-                } else {
-                    $key = 'field_' . strval($field_bits['id']);
-                }
-
-                require_code('fields');
-                $ob = get_fields_hook($field_bits['cf_type']);
-                list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $field_bits['cf_type'], 'cf_default' => ''));
-                $_type = 'SHORT_TEXT';
-                switch ($storage_type) {
-                    case 'short_trans':
-                        $_type = 'SHORT_TRANS';
-                        break;
-                    case 'long_trans':
-                        $_type = 'LONG_TRANS';
-                        break;
-                    case 'long':
-                        $_type = 'LONG_TEXT';
-                        break;
-                    case 'integer':
-                        $_type = 'INTEGER';
-                        break;
-                    case 'float':
-                        $_type = 'REAL';
-                        break;
-                }
-                $props[$key] = $_type;
-            }
-        }
-
-        $props += array(
-            'validated' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'views' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-
-        return $props;
     }
 
     /**

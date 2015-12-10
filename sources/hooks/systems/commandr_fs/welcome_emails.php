@@ -56,23 +56,6 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'subject' => 'SHORT_TRANS',
-            'text' => 'LONG_TRANS',
-            'send_time' => 'INTEGER',
-            'newsletter' => '?AUTO_LINK',
-            'usergroup' => '?AUTO_LINK',
-            'usergroup_type' => 'ID_TEXT',
-        );
-    }
-
-    /**
      * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label

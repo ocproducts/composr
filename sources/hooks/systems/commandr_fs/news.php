@@ -76,20 +76,6 @@ class Hook_commandr_fs_news extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'rep_image' => 'URLPATH',
-            'notes' => 'LONG_TEXT',
-            'owner' => 'member',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -190,33 +176,6 @@ class Hook_commandr_fs_news extends Resource_fs_base
         delete_news_category(intval($resource_id));
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'news_summary' => 'LONG_TRANS',
-            'news_article' => 'LONG_TRANS',
-            'author' => 'author',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'views' => 'INTEGER',
-            'image' => 'URLPATH',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-            'regions' => 'LONG_TEXT',
-        );
     }
 
     /**

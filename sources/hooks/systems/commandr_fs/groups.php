@@ -82,42 +82,6 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'is_default' => 'BINARY',
-            'is_super_admin' => 'BINARY',
-            'is_super_moderator' => 'BINARY',
-            'rank_title' => 'SHORT_TRANS',
-            'rank_image' => 'URLPATH',
-            'promotion_target' => '?group',
-            'promotion_threshold' => '?INTEGER',
-            'group_leader' => '?member',
-            'flood_control_submit_secs' => 'INTEGER',
-            'flood_control_access_secs' => 'INTEGER',
-            'max_daily_upload_mb' => 'INTEGER',
-            'max_attachments_per_post' => 'INTEGER',
-            'max_avatar_width' => 'INTEGER',
-            'max_avatar_height' => 'INTEGER',
-            'max_post_length_comcode' => 'INTEGER',
-            'max_sig_length_comcode' => 'INTEGER',
-            'gift_points_base' => 'INTEGER',
-            'gift_points_per_day' => 'INTEGER',
-            'enquire_on_new_ips' => 'BINARY',
-            'is_presented_at_install' => 'BINARY',
-            'hidden' => 'BINARY',
-            'order' => 'INTEGER',
-            'rank_image_pri_only' => 'BINARY',
-            'open_membership' => 'BINARY',
-            'is_private_club' => 'BINARY',
-        ) + $this->_custom_fields_enumerate_properties('group');
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -283,86 +247,6 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         cns_delete_group(intval($resource_id));
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        $props = array(
-            'password_hashed' => 'SHORT_TEXT',
-            'salt' => 'SHORT_TEXT',
-            'password_compatibility_scheme' => 'ID_TEXT',
-            'email_address' => 'SHORT_TEXT',
-            'groups' => 'LONG_TEXT',
-            'dob_day' => '?SHORT_INTEGER',
-            'dob_month' => '?SHORT_INTEGER',
-            'dob_year' => '?SHORT_INTEGER',
-            'timezone' => 'ID_TEXT',
-            'validated' => 'BINARY',
-            'join_time' => 'TIME',
-            'last_visit_time' => 'TIME',
-            'theme' => 'ID_TEXT',
-            'avatar_url' => 'URLPATH',
-            'signature' => 'LONG_TRANS',
-            'is_perm_banned' => 'BINARY',
-            'preview_posts' => 'BINARY',
-            'reveal_age' => 'BINARY',
-            'user_title' => 'SHORT_TEXT',
-            'photo_url' => 'URLPATH',
-            'photo_thumb_url' => 'URLPATH',
-            'views_signatures' => 'BINARY',
-            'auto_monitor_contrib_content' => 'BINARY',
-            'language' => 'LANGUAGE_NAME',
-            'allow_emails' => 'BINARY',
-            'allow_emails_from_staff' => 'BINARY',
-            'ip_address' => 'IP',
-            'validated_email_confirm_code' => 'SHORT_TEXT',
-            'last_submit_time' => 'TIME',
-            'highlighted_name' => 'BINARY',
-            'pt_allow' => 'SHORT_TEXT',
-            'pt_rules_text' => 'LONG_TRANS',
-            'on_probation_until' => '?TIME',
-            'auto_mark_read' => 'BINARY',
-        );
-        require_code('cns_members');
-        $custom_fields = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, 0, null);
-        foreach ($custom_fields as $i => $custom_field) {
-            $cf_name = get_translated_text($custom_field['cf_name'], $GLOBALS['FORUM_DB']);
-            $fixed_id = fix_id($cf_name);
-            if (!array_key_exists($fixed_id, $props)) {
-                $key = $fixed_id;
-            } else {
-                $key = 'field_' . strval($custom_field['id']);
-            }
-
-            require_code('fields');
-            $ob = get_fields_hook($custom_field['cf_type']);
-            list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $custom_field['cf_type'], 'cf_default' => ''));
-            $_type = 'SHORT_TEXT';
-            switch ($storage_type) {
-                case 'short_trans':
-                    $_type = 'SHORT_TRANS';
-                    break;
-                case 'long_trans':
-                    $_type = 'LONG_TRANS';
-                    break;
-                case 'long':
-                    $_type = 'LONG_TEXT';
-                    break;
-                case 'integer':
-                    $_type = 'INTEGER';
-                    break;
-                case 'float':
-                    $_type = 'REAL';
-                    break;
-            }
-            $props[$key] = $_type;
-        }
-        return $props;
     }
 
     /**

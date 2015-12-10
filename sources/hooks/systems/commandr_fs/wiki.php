@@ -76,26 +76,6 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'notes' => 'LONG_TEXT',
-            'hide_posts' => 'BINARY',
-            'submitter' => 'member',
-            'views' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
      * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
@@ -241,23 +221,6 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         wiki_delete_page(intval($resource_id));
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'validated' => 'BINARY',
-            'send_notification' => 'BINARY',
-            'views' => 'INTEGER',
-            'poster' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
     }
 
     /**

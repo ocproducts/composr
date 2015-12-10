@@ -74,35 +74,6 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'name' => 'ID_TEXT',
-            'description' => 'LONG_TRANS',
-            'notes' => 'LONG_TEXT',
-            'accept_images' => 'BINARY',
-            'accept_videos' => 'BINARY',
-            'is_member_synched' => 'BINARY',
-            'flow_mode_interface' => 'BINARY',
-            'rep_image' => 'URLPATH',
-            'watermark_top_left' => 'URLPATH',
-            'watermark_top_right' => 'URLPATH',
-            'watermark_bottom_left' => 'URLPATH',
-            'watermark_bottom_right' => 'URLPATH',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'add_date' => 'TIME',
-            'owner' => 'member',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -260,35 +231,6 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         delete_gallery($resource_id);
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'url' => 'URLPATH',
-            'thumb_url' => 'URLPATH',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'video_length' => 'INTEGER',
-            'video_width' => 'INTEGER',
-            'video_height' => 'INTEGER',
-            'views' => 'INTEGER',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-            'regions' => 'LONG_TEXT',
-        );
     }
 
     /**

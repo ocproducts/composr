@@ -56,25 +56,6 @@ class Hook_commandr_fs_chat extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'welcome_message' => 'LONG_TRANS',
-            'room_owner' => 'member',
-            'allow' => 'SHORT_TEXT',
-            'allow_groups' => 'SHORT_TEXT',
-            'disallow' => 'SHORT_TEXT',
-            'disallow_groups' => 'SHORT_TEXT',
-            'room_lang' => 'LANGUAGE_NAME',
-            'is_im' => 'BINARY',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)

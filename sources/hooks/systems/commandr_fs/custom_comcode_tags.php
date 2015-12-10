@@ -52,26 +52,6 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'title' => 'SHORT_TRANS',
-            'description' => 'SHORT_TRANS',
-            'replace' => 'LONG_TEXT',
-            'example' => 'LONG_TEXT',
-            'parameters' => 'SHORT_TEXT',
-            'enabled' => 'BINARY',
-            'dangerous_tag' => 'BINARY',
-            'block_tag' => 'BINARY',
-            'textual_tag' => 'BINARY'
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)

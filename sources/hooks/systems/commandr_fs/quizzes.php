@@ -56,39 +56,6 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'timeout' => '?TIME',
-            'start_text' => 'LONG_TRANS',
-            'end_text' => 'LONG_TRANS',
-            'end_text_fail' => 'LONG_TRANS',
-            'notes' => 'LONG_TEXT',
-            'percentage' => 'INTEGER',
-            'open_time' => 'TIME',
-            'close_time' => '?TIME',
-            'num_winners' => 'INTEGER',
-            'redo_time' => '?INTEGER',
-            'type' => 'ID_TEXT',
-            'validated' => 'BINARY',
-            'text' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'points_for_passing' => 'INTEGER',
-            'tied_newsletter' => '?newsletter',
-            'reveal_answers' => 'BINARY',
-            'shuffle_questions' => 'BINARY',
-            'shuffle_answers' => 'BINARY',
-            'add_date' => '?TIME',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)

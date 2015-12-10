@@ -56,30 +56,6 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'message' => 'LONG_TEXT',
-            'lang' => 'LANGUAGE_NAME',
-            'send_details' => 'LONG_TEXT',
-            'html_only' => 'BINARY',
-            'from_email' => 'SHORT_TEXT',
-            'from_name' => 'SHORT_TEXT',
-            'priority' => 'SHORT_INTEGER',
-            'csv_data' => 'LONG_TEXT',
-            'frequency' => 'SHORT_TEXT',
-            'day' => 'SHORT_INTEGER',
-            'in_full' => 'BINARY',
-            'template' => 'ID_TEXT',
-            'last_sent' => 'TIME',
-        );
-    }
-
-    /**
      * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label

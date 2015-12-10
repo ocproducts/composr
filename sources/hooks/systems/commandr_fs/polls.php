@@ -56,47 +56,6 @@ class Hook_commandr_fs_polls extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'answer1' => 'SHORT_TRANS',
-            'answer2' => 'SHORT_TRANS',
-            'answer3' => 'SHORT_TRANS',
-            'answer4' => 'SHORT_TRANS',
-            'answer5' => 'SHORT_TRANS',
-            'answer6' => 'SHORT_TRANS',
-            'answer7' => 'SHORT_TRANS',
-            'answer8' => 'SHORT_TRANS',
-            'answer9' => 'SHORT_TRANS',
-            'answer10' => 'SHORT_TRANS',
-            'current' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'use_time' => '?TIME',
-            'votes1' => 'INTEGER',
-            'votes2' => 'INTEGER',
-            'votes3' => 'INTEGER',
-            'votes4' => 'INTEGER',
-            'votes5' => 'INTEGER',
-            'votes6' => 'INTEGER',
-            'votes7' => 'INTEGER',
-            'votes8' => 'INTEGER',
-            'votes9' => 'INTEGER',
-            'votes10' => 'INTEGER',
-            'views' => 'INTEGER',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
      * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label

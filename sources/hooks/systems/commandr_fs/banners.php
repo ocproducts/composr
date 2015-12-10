@@ -68,22 +68,6 @@ class Hook_commandr_fs_banners extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'is_textual' => 'BINARY',
-            'image_width' => 'INTEGER',
-            'image_height' => 'INTEGER',
-            'max_file_size' => 'INTEGER',
-            'comcode_inline' => 'BINARY',
-        );
-    }
-
-    /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
@@ -210,36 +194,6 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         delete_banner_type($resource_id);
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'image_url' => 'URLPATH',
-            'title_text' => 'SHORT_TRANS',
-            'direct_code' => 'LONG_TEXT',
-            'campaignremaining' => 'INTEGER',
-            'site_url' => 'URLPATH',
-            'importancemodulus' => 'INTEGER',
-            'notes' => 'LONG_TEXT',
-            'the_type' => 'SHORT_INTEGER',
-            'expiry_date' => '?TIME',
-            'validated' => 'BINARY',
-            'b_types' => 'LONG_TEXT',
-            'regions' => 'LONG_TEXT',
-            'hits_from' => 'INTEGER',
-            'hits_to' => 'INTEGER',
-            'views_from' => 'INTEGER',
-            'views_to' => 'INTEGER',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
     }
 
     /**
