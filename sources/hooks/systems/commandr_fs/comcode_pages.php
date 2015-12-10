@@ -251,12 +251,9 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             $validated = 1;
         }
         $edit_time = $this->_default_property_time_null($properties, 'edit_date');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        if (is_null($add_time)) {
-            $add_time = time();
-        }
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $show_as_edit = $this->_default_property_int($properties, 'show_as_edit');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         if (is_null($submitter)) {
             $submitter = get_member();
         }
@@ -364,13 +361,10 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        if (is_null($add_time)) {
-            $add_time = time();
-        }
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $show_as_edit = $this->_default_property_int($properties, 'show_as_edit');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         if (is_null($submitter)) {
             $submitter = get_member();
         }

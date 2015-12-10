@@ -74,7 +74,7 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
             $aggregate_type = 'example';
         }
         $other_parameters = empty($properties['other_parameters']) ? array() : $properties['other_parameters'];
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_time = $this->_default_property_time_null($properties, 'edit_date');
 
         $id = add_aggregate_type_instance($label, $aggregate_type, $other_parameters, $add_time, $edit_time, true, true);
@@ -128,8 +128,10 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
             $aggregate_type = 'example';
         }
         $other_parameters = empty($properties['other_parameters']) ? array() : $properties['other_parameters'];
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
 
-        edit_aggregate_type_instance(intval($resource_id), $label, $aggregate_type, $other_parameters, true);
+        edit_aggregate_type_instance(intval($resource_id), $label, $aggregate_type, $other_parameters, true, $add_time, $edit_time);
 
         return $resource_id;
     }

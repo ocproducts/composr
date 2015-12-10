@@ -253,9 +253,9 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'calendar_events', 1);
         $notes = $this->_default_property_str($properties, 'notes');
         $member_calendar = $this->_default_property_int_null($properties, 'member_calendar');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_time = $this->_default_property_time_null($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
@@ -389,11 +389,11 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'calendar_events', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'calendar_events', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $member_calendar = $this->_default_property_int_null($properties, 'member_calendar');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $_regions = $this->_default_property_str($properties, 'regions');

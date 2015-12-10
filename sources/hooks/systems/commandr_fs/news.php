@@ -225,8 +225,8 @@ class Hook_commandr_fs_news extends Resource_fs_base
         if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
             $news_category = array_map('intval', explode(',', $properties['categories']));
         }
-        $time = $this->_default_property_time_null($properties, 'add_date');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
+        $time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $image = $this->_default_property_urlpath($properties, 'image');
@@ -315,10 +315,10 @@ class Hook_commandr_fs_news extends Resource_fs_base
         if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
             $news_category = array_map('intval', explode(',', $properties['categories']));
         }
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $image = $this->_default_property_urlpath($properties, 'image');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');

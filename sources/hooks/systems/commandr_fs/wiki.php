@@ -98,8 +98,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $hide_posts = $this->_default_property_int($properties, 'hide_posts');
-        $member = $this->_default_property_member_null($properties, 'submitter');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $member = $this->_default_property_member($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
@@ -172,9 +172,9 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $hide_posts = $this->_default_property_int($properties, 'hide_posts');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_date = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
@@ -247,9 +247,9 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $member = $this->_default_property_member_null($properties, 'poster');
+        $member = $this->_default_property_member($properties, 'poster');
         $send_notification = $this->_default_property_int($properties, 'send_notification');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $id = wiki_add_post($page_id, $label, $validated, $member, $send_notification, $add_time, $views, $edit_date);
@@ -310,10 +310,10 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $member = $this->_default_property_member_null($properties, 'poster');
+        $member = $this->_default_property_member($properties, 'poster');
         $send_notification = $this->_default_property_int($properties, 'send_notification');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
 
         wiki_edit_post(intval($resource_id), $label, $validated, $member, $page_id, $edit_time, $add_time, $views, true);

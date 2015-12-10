@@ -122,8 +122,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $watermark_bottom_right = $this->_default_property_urlpath($properties, 'watermark_bottom_right');
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'galleries', 1);
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'galleries', 1);
-        $add_date = $this->_default_property_time_null($properties, 'add_date');
-        $g_owner = $this->_default_property_time_null($properties, 'owner');
+        $add_date = $this->_default_property_time($properties, 'add_date');
+        $g_owner = $this->_default_property_member_null($properties, 'owner');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $name = add_gallery($name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $allow_rating, $allow_comments, false, $add_date, $g_owner, $meta_keywords, $meta_description, true);
@@ -206,7 +206,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $watermark_bottom_right = $this->_default_property_urlpath($properties, 'watermark_bottom_right');
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'galleries', 1);
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'galleries', 1);
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $g_owner = $this->_default_property_member_null($properties, 'owner');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
@@ -292,8 +292,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             $validated = 1;
         }
         $notes = $this->_default_property_str($properties, 'notes');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $add_date = $this->_default_property_time_null($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $add_date = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
@@ -420,9 +420,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             $validated = 1;
         }
         $notes = $this->_default_property_str($properties, 'notes');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');

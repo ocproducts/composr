@@ -219,7 +219,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $ecommerce = $this->_default_property_int($properties, 'ecommerce');
         $send_view_reports = $this->_default_property_int($properties, 'send_view_reports');
         $default_review_freq = $this->_default_property_int_null($properties, 'default_review_freq');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
 
         return array($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time);
     }
@@ -256,7 +256,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $move_days_higher = $this->_default_property_int($properties, 'move_days_higher');
         $move_target = $this->_default_property_resource_id_null('catalogue', $properties, 'move_target');
         $order = $this->_default_property_int($properties, 'order');
-        $add_date = $this->_default_property_time_null($properties, 'add_date');
+        $add_date = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
@@ -598,14 +598,13 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'catalogue_entries', 1);
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'catalogue_entries', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'catalogue_entries', 1);
-        $time = $this->_default_property_time_null($properties, 'add_date');
-        $submitter = $this->_default_property_member_null($properties, 'submitter');
-        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
+        $time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        return array($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, $meta_keywords, $meta_description);
+        return array($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $views, $meta_keywords, $meta_description);
     }
 
     /**
@@ -630,7 +629,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         require_code('catalogues2');
 
-        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
 
         $id = actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, null, $meta_keywords, $meta_description);
         return strval($id);
@@ -725,7 +726,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         require_code('catalogues2');
 
         $label = $this->_default_property_str($properties, 'label');
-        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+
+        $edit_date = $this->_default_property_time($properties, 'edit_date');
 
         actual_edit_catalogue_entry(intval($resource_id), $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_keywords, $meta_description, $edit_date, $time, $views, $submitter, true);
 

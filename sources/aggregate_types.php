@@ -84,8 +84,10 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
  * @param  ID_TEXT $aggregate_type What the instance is of
  * @param  array $_other_parameters Additional parameters
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
+ * @param  ?TIME $add_time Add time (null: don't change)
+ * @param  ?TIME $edit_time Edit time (null: now)
  */
-function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_other_parameters, $uniqify = false)
+function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_other_parameters, $uniqify = false, $add_time = null, $edit_time = null)
 {
     // Check aggregate type
     $types = parse_aggregate_xml();
@@ -108,12 +110,16 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
         }
     }
 
-    $GLOBALS['SITE_DB']->query_update('aggregate_type_instances', array(
+    $map = array(
         'aggregate_label' => $aggregate_label,
         'aggregate_type' => $aggregate_type,
         'other_parameters' => $other_parameters,
-        'edit_time' => time(),
-    ), array('id' => $id), '', 1);
+        'edit_time' => is_null($edit_time) ? time() : $edit_time,
+    );
+    if (!is_null($add_time)) {
+        $map['add_time'] = $add_time;
+    }
+    $GLOBALS['SITE_DB']->query_update('aggregate_type_instances', $map, array('id' => $id), '', 1);
 
     sync_aggregate_type_instance($id, $aggregate_label, $old_aggregate_label, $aggregate_type, $_other_parameters, $old_parameters);
 

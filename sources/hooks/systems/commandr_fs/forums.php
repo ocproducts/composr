@@ -541,8 +541,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $is_emphasised = $this->_default_property_int($properties, 'is_emphasised');
         $poster_name_if_guest = $this->_default_property_str($properties, 'poster_name_if_guest');
         $ip_address = $this->_default_property_str_null($properties, 'ip_address');
-        $time = $this->_default_property_time_null($properties, 'add_date');
-        $poster = $this->_default_property_member_null($properties, 'poster');
+        $time = $this->_default_property_time($properties, 'add_date');
+        $poster = $this->_default_property_member($properties, 'poster');
         $intended_solely_for = $this->_default_property_member_null($properties, 'intended_solely_for');
         $last_edit_time = $this->_default_property_time_null($properties, 'edit_date');
         $last_edit_by = $this->_default_property_member_null($properties, 'last_edit_by');
@@ -616,14 +616,14 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $is_emphasised = $this->_default_property_int($properties, 'is_emphasised');
         $poster_name_if_guest = $this->_default_property_str($properties, 'poster_name_if_guest');
         $ip_address = $this->_default_property_str_null($properties, 'ip_address');
-        $add_time = $this->_default_property_time_null($properties, 'add_date');
-        $poster = $this->_default_property_member_null($properties, 'poster');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $poster = $this->_default_property_member($properties, 'poster');
         $intended_solely_for = $this->_default_property_member_null($properties, 'intended_solely_for');
-        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
-        $last_edit_by = $this->_default_property_member_null($properties, 'last_edit_by');
+        $last_edit_time = $this->_default_property_time($properties, 'edit_date');
+        $last_edit_by = $this->_default_property_member($properties, 'last_edit_by');
         $parent_id = $this->_default_property_resource_id_null('post', $properties, 'parent_id');
 
-        cns_edit_post(intval($resource_id), $validated, $label, $post, $skip_sig, $is_emphasised, $intended_solely_for, true, false, '', false, $edit_time, $add_time, $poster, true, false);
+        cns_edit_post(intval($resource_id), $validated, $label, $post, $skip_sig, $is_emphasised, $intended_solely_for, true, false, '', false, $last_edit_time, $add_time, $poster, true, false);
 
         return $resource_id;
     }

@@ -286,7 +286,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $join_time = $this->_default_property_time_null($properties, 'join_time');
+        $join_time = $this->_default_property_time($properties, 'join_time');
         $last_visit_time = $this->_default_property_time_null($properties, 'last_visit_time');
         $theme = $this->_default_property_str($properties, 'theme');
         $avatar_url = $this->_default_property_urlpath($properties, 'avatar_url');
