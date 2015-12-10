@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    match_key_permissions
+ * @package    ssl
  */
 
 /**
  * Hook class.
  */
-class Hook_commandr_fs_extended_config__match_key_message
+class Hook_commandr_fs_extended_config__https_settings
 {
     /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__match_key_message
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'PAGE_MATCH_KEY_ACCESS');
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'SSL_CONFIGURATION');
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -45,7 +45,7 @@ class Hook_commandr_fs_extended_config__match_key_message
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        return table_to_json('match_key_messages', array('id'));
+        return table_to_json('https_pages');
     }
 
     /**
@@ -60,6 +60,6 @@ class Hook_commandr_fs_extended_config__match_key_message
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('match_key_messages', $contents, null, TABLE_REPLACE_MODE_SEVERE);
+        return table_from_json('https_pages', $contents, null, TABLE_REPLACE_MODE_SEVERE);
     }
 }

@@ -158,6 +158,8 @@ class Hook_addon_registry_points
             'sources/hooks/systems/config/gift_reward_amount.php',
             'sources/hooks/systems/config/gift_reward_chance.php',
             'sources/hooks/systems/tasks/export_points_log.php',
+            'sources/hooks/systems/commandr_fs_extended_member/point_charges.php',
+            'sources/hooks/systems/commandr_fs_extended_member/point_gifts_given.php',
         );
     }
 

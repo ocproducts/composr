@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_commandr_fs_extended_config__checklist_task
+class Hook_commandr_fs_extended_config__checklist_tasks
 {
     /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.

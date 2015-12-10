@@ -112,8 +112,37 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $add_time = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+
         $id = add_quiz($label, $timeout, $start_text, $end_text, $end_text_fail, $notes, $percentage, $open_time, $close_time, $num_winners, $redo_time, $type, $validated, $text, $submitter, $points_for_passing, $tied_newsletter, $reveal_answers, $shuffle_questions, $shuffle_answers, $add_time, $meta_keywords, $meta_description);
+
+        if (isset($properties['winners'])) {
+            table_from_portable_rows('quiz_winner', $properties['winners'], array('q_entry' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $this->add_quiz_entries($properties, $id);
+
         return strval($id);
+    }
+
+    /**
+     * Custom import code for quiz entries.
+     *
+     * @param  array $properties The properties
+     * @param  AUTO_LINK $quiz_id The quiz
+     */
+    private function add_quiz_entries($properties, $quiz_id)
+    {
+        if (isset($properties['entries'])) {
+            $GLOBALS['SITE_DB']->query_delete('quiz_entries', array('q_quiz' => $quiz_id));
+            foreach ($properties['entries'] as $entry) {
+                $answers = $entry['answers'];
+                unset($entry['answers']);
+                $entry_id = $GLOBALS['SITE_DB']->query_insert('quiz_entries', $entry + array('q_quiz' => $quiz_id), true);
+                foreach ($answers as $answer) {
+                    $GLOBALS['SITE_DB']->query_insert('quiz_entry_answer', $answer + array('q_entry' => $entry_id));
+                }
+            }
+        }
     }
 
     /**
@@ -137,6 +166,12 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $text = load_quiz_questions_to_string(intval($resource_id));
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('quiz', strval($row['id']));
+
+        $entries = table_to_portable_rows('quiz_entries', /*skip*/array(), array('q_quiz' => intval($resource_id)));
+        foreach ($entries as &$entry) {
+            $entry['answers'] = table_to_portable_rows('quiz_entry_answer', /*skip*/array('id'), array('q_entry' => $entry['id']));
+            unset($entry['id']);
+        }
 
         return array(
             'label' => $row['q_name'],
@@ -162,6 +197,8 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['q_add_date']),
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
+            'winners' => table_to_portable_rows('quiz_winner', /*skip*/array(), array('q_entry' => intval($resource_id))),
+            'entries' => $entries,
         );
     }
 
@@ -214,6 +251,12 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         edit_quiz(intval($resource_id), $label, $timeout, $start_text, $end_text, $end_text_fail, $notes, $percentage, $open_time, $close_time, $num_winners, $redo_time, $type, $validated, $text, $meta_keywords, $meta_description, $points_for_passing, $tied_newsletter, $reveal_answers, $shuffle_questions, $shuffle_answers, $add_time, $submitter, true);
+
+        if (isset($properties['winners'])) {
+            table_from_portable_rows('quiz_winner', $properties['winners'], array('q_entry' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $this->add_quiz_entries($properties, intval($resource_id));
 
         return $resource_id;
     }

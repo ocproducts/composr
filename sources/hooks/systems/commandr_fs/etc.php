@@ -143,7 +143,6 @@ class Hook_commandr_fs_etc
         }
 
         require_code('resource_fs');
-
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
         $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCEFS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {
@@ -172,12 +171,12 @@ class Hook_commandr_fs_etc
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
         require_code('config2');
-        require_code('resource_fs');
 
         if (count($meta_dir) > 0) {
             return false; // Directory doesn't exist
         }
 
+        require_code('resource_fs');
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
         $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCEFS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {

@@ -368,6 +368,13 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => $id), TABLE_REPLACE_MODE_NONE);
         }
 
+        $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
+            $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+            $ob->write_property($id);
+        }
+
         return strval($id);
     }
 
@@ -437,6 +444,13 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $ret[$key] = $cpf['RAW'];
         }
 
+        $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
+            $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+            $ret[$hook] = $ob->read_property(intval($resource_id));
+        }
+
         return $ret;
     }
 
@@ -467,6 +481,13 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         if (isset($properties['groups'])) {
             table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
+            $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+            $ob->write_property(intval($resource_id));
         }
 
         return $resource_id;

@@ -219,6 +219,8 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/max_ip_addresses_per_subscriber.php',
             'sources/hooks/systems/notifications/ip_address_sharing.php',
             'sources/hooks/systems/symbols/CURRENCY_SYMBOL.php',
+            'sources/hooks/systems/commandr_fs_extended_member/invoices.php',
+            'sources/hooks/systems/commandr_fs_extended_member/subscriptions.php',
         );
     }
 

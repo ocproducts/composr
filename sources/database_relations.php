@@ -467,6 +467,7 @@ function get_relation_map()
         'newsletter_subscribe.newsletter_id' => 'newsletters.id',
         'news_category_entries.news_entry' => 'news.id',
         'news_category_entries.news_entry_category' => 'news_categories.id',
+        'notifications_enabled.l_code_category' => null,
         'poll_votes.v_poll_id' => 'poll.poll_id',
         'pstore_permissions.p_category' => null,
         'pstore_permissions.p_page' => 'modules.module_the_name',

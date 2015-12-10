@@ -141,9 +141,9 @@ class Hook_addon_registry_core_adminzone_dashboard
             'themes/default/images/checklist/cross2.png',
             'sources/hooks/systems/notifications/checklist_task.php',
             'themes/default/templates/BLOCK_MAIN_STAFF_ACTIONS.tpl',
-            'sources/hooks/systems/commandr_fs_extended_config/checklist_task.php',
-            'sources/hooks/systems/commandr_fs_extended_config/staff_link.php',
-            'sources/hooks/systems/commandr_fs_extended_config/staff_monitoring_site.php',
+            'sources/hooks/systems/commandr_fs_extended_config/checklist_tasks.php',
+            'sources/hooks/systems/commandr_fs_extended_config/staff_links.php',
+            'sources/hooks/systems/commandr_fs_extended_config/staff_monitoring_sites.php',
         );
     }
 

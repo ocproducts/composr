@@ -371,6 +371,7 @@ class Hook_addon_registry_core_cns
             'sources/cns_popups.php',
             'sources/hooks/systems/commandr_fs/emoticons.php',
             'sources/hooks/systems/resource_meta_aware/emoticon.php',
+            'sources/hooks/systems/commandr_fs_extended_member/known_login_ips.php',
             'sources/hooks/systems/preview/cns_emoticon.php',
             'sources/hooks/systems/cron/cns_confirm_reminder.php',
             'themes/default/templates/CNS_TOPIC_POST_AVATAR.tpl',

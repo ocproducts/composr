@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    redirects_editor
+ * @package    core
  */
 
 /**
  * Hook class.
  */
-class Hook_commandr_fs_extended_config__redirect
+class Hook_commandr_fs_extended_config__privileges
 {
     /**
      * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__redirect
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'SET_REDIRECTS');
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'PAGE_ACCESS') . ' OR ' . db_string_equal_to('the_type', 'PRIVILEGES');
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -45,7 +45,20 @@ class Hook_commandr_fs_extended_config__redirect
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        return table_to_json('redirects');
+        require_code('resource_fs');
+        require_code('json');
+
+        $tables = array(
+            'group_privileges' => array('category_name' => ''),
+            'member_privileges' => array('category_name' => ''),
+            'group_page_access' => array(),
+            'member_page_access' => array(),
+        );
+        $all = array();
+        foreach ($tables as $table => $map) {
+            $all[$table] = table_to_portable_rows($table, null, $map);
+        }
+        return json_encode($all);
     }
 
     /**
@@ -60,6 +73,15 @@ class Hook_commandr_fs_extended_config__redirect
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('redirects', $contents, null, TABLE_REPLACE_MODE_SEVERE);
+        $all = @json_decode($contents);
+        if ($all === false) {
+            return false;
+        }
+
+        $ret = true;
+        foreach ($all as $table => $rows) {
+            $ret = $ret && table_from_json($table, $rows, null, TABLE_REPLACE_MODE_SEVERE);
+        }
+        return $ret;
     }
 }
