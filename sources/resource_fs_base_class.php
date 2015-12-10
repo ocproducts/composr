@@ -602,34 +602,37 @@ class Resource_fs_base
     /**
      * Find a default property for a foreign key, defaulting to null.
      *
+     * @param  array $_table_referenced The table the key is to
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
      * @return ?mixed The value (null: null value)
      */
-    protected function _default_property_foreign_key_null($table_referenced, $properties, $property)
+    protected function _default_property_foreign_key_null($_table_referenced, $properties, $property)
     {
         if (!isset($properties[$property])) {
             return null;
         }
 
-        return $this->_default_property_foreign_key($table_referenced, $properties, $property);
+        return $this->_default_property_foreign_key($_table_referenced, $properties, $property);
     }
 
     /**
      * Find a default property for a foreign key.
      *
+     * @param  array $_table_referenced The table the key is to
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
-     * @return ?mixed The value
+     * @return mixed The value
      */
-    protected function _default_property_foreign_key($table_referenced, $properties, $property)
+    protected function _default_property_foreign_key($_table_referenced, $properties, $property)
     {
-        return remap_portable_as_foreign_key($table_referenced, $properties[$property]);
+        return remap_portable_as_foreign_key($_table_referenced, $properties[$property]);
     }
 
     /**
      * Find a default property for a resource, defaulting to null.
      *
+     * @param  ID_TEXT $resource_type The resource type
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
      * @return ?mixed The value (null: null value)
@@ -646,13 +649,14 @@ class Resource_fs_base
     /**
      * Find a default property for a resource.
      *
+     * @param  ID_TEXT $resource_type The resource type
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
-     * @return ?mixed The value
+     * @return mixed The value
      */
     protected function _default_property_resource_id($resource_type, $properties, $property)
     {
-        return remap_portable_as_resource_id($table_referenced, $properties[$property]);
+        return remap_portable_as_resource_id($resource_type, $properties[$property]);
     }
 
     /**
