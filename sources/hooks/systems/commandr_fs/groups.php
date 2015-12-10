@@ -362,8 +362,9 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         $id = cns_make_member($label, $password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $category, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, false, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
 
-        $_groups = $this->_default_property_str($properties, 'groups');
-        table_from_json('f_group_members', $_groups, array('gm_member_id' => $id));
+        if (isset($properties['groups'])) {
+            table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => $id));
+        }
 
         return strval($id);
     }
@@ -391,7 +392,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'salt' => $row['m_pass_salt'],
             'password_compatibility_scheme' => $row['m_password_compat_scheme'],
             'email_address' => $row['m_email_address'],
-            'groups' => table_to_json('f_group_members', array('gm_member_id'), array('gm_member_id' => intval($resource_id))),
+            'groups' => table_to_portable_rows('f_group_members', array('gm_member_id'), array('gm_member_id' => intval($resource_id))),
             'dob_day' => $row['m_dob_day'],
             'dob_month' => $row['m_dob_month'],
             'dob_year' => $row['m_dob_year'],
@@ -462,8 +463,9 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         cns_edit_member(intval($resource_id), $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $category, $actual_custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $label, $password_hashed, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, true);
 
-        $_groups = $this->_default_property_str($properties, 'groups');
-        table_from_json('f_group_members', $_groups, array('gm_member_id' => intval($resource_id)));
+        if (isset($properties['groups'])) {
+            table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => intval($resource_id)));
+        }
 
         return $resource_id;
     }

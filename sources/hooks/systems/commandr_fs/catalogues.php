@@ -297,7 +297,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             $name = actual_add_catalogue($name, $label, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time, true);
 
             if ((array_key_exists('fields', $properties)) && ($properties['fields'] != '')) {
-                $fields_data = json_decode($properties['fields']);
+                $fields_data = $properties['fields'];
                 foreach ($fields_data as $field_data) {
                     $type = $field_data['type'];
                     $order = $field_data['order'];
@@ -437,7 +437,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             if ((array_key_exists('fields', $properties)) && ($properties['fields'] != '')) {
                 $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_description'), array('c_name' => $name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
 
-                $fields_data = json_decode($properties['fields']);
+                $fields_data = $properties['fields'];
                 foreach ($fields_data as $i => $field_data) {
                     $type = $field_data['type'];
                     $order = $field_data['order'];

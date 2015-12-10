@@ -232,8 +232,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $image = $this->_default_property_urlpath($properties, 'image');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-        $_regions = $this->_default_property_str($properties, 'regions');
-        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
         $id = add_news($label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $time, $submitter, $views, $edit_date, null, $image, $meta_keywords, $meta_description, $regions);
         return strval($id);
     }
@@ -322,9 +321,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $image = $this->_default_property_urlpath($properties, 'image');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-
-        $_regions = $this->_default_property_str($properties, 'regions');
-        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         edit_news(intval($resource_id), $label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_keywords, $meta_description, $image, $add_time, $edit_time, $views, $submitter, $regions, true);
 

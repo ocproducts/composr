@@ -243,10 +243,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             $validated = 1;
         }
         $b_type = $category;
-        $_b_types = $this->_default_property_str($properties, 'b_types');
-        $b_types = ($_b_types == '') ? array() : explode(',', $_b_types);
-        $_regions = $this->_default_property_str($properties, 'regions');
-        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+        $b_types = empty($properties['b_types']) ? array() : $properties['b_types'];
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
         $notes = $this->_default_property_str($properties, 'notes');
         $time = $this->_default_property_time($properties, 'add_date');
         $hits_from = $this->_default_property_int($properties, 'hits_from');
@@ -336,10 +334,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             $validated = 1;
         }
         $b_type = $category;
-        $_b_types = $this->_default_property_str($properties, 'b_types');
-        $b_types = ($_b_types == '') ? array() : explode(',', $_b_types);
-        $_regions = $this->_default_property_str($properties, 'regions');
-        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+        $b_types = empty($properties['b_types']) ? array() : $properties['b_types'];
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
         $add_time = $this->_default_property_time($properties, 'add_date');
         $hits_from = $this->_default_property_int($properties, 'hits_from');
         $hits_to = $this->_default_property_int($properties, 'hits_to');

@@ -298,9 +298,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-
-        $_regions = $this->_default_property_str($properties, 'regions');
-        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         require_code('images');
         if ((((is_image($url)) || ($url == '')) && ((!array_key_exists('video_length', $properties)) || ($properties['video_length'] == '')) || ($force_type === 'image')) && ($force_type !== 'video')) {
@@ -426,9 +424,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-
-        $_regions = $this->_default_property_str($properties, 'regions');
-        $regions = ($_regions == '') ? array() : explode(',', $_regions);
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         if ($resource_type == 'image') {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'images', 1);
