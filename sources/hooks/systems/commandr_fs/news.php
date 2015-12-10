@@ -119,9 +119,9 @@ class Hook_commandr_fs_news extends Resource_fs_base
 
         require_code('news2');
 
-        $img = $this->_default_property_str($properties, 'rep_image');
+        $img = $this->_default_property_urlpath($properties, 'rep_image');
         $notes = $this->_default_property_str($properties, 'notes');
-        $owner = $this->_default_property_int_null($properties, 'owner');
+        $owner = $this->_default_property_member_null($properties, 'owner');
         $id = add_news_category($label, $img, $notes, $owner);
         return strval($id);
     }
@@ -166,9 +166,9 @@ class Hook_commandr_fs_news extends Resource_fs_base
         require_code('news2');
 
         $label = $this->_default_property_str($properties, 'label');
-        $img = $this->_default_property_str($properties, 'rep_image');
+        $img = $this->_default_property_urlpath($properties, 'rep_image');
         $notes = $this->_default_property_str($properties, 'notes');
-        $owner = $this->_default_property_int_null($properties, 'owner');
+        $owner = $this->_default_property_member_null($properties, 'owner');
 
         edit_news_category(intval($resource_id), $label, $img, $notes, $owner);
 
@@ -266,11 +266,11 @@ class Hook_commandr_fs_news extends Resource_fs_base
         if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
             $news_category = array_map('intval', explode(',', $properties['categories']));
         }
-        $time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $time = $this->_default_property_time_null($properties, 'add_date');
+        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
-        $image = $this->_default_property_str($properties, 'image');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
+        $image = $this->_default_property_urlpath($properties, 'image');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $_regions = $this->_default_property_str($properties, 'regions');
@@ -356,11 +356,11 @@ class Hook_commandr_fs_news extends Resource_fs_base
         if ((array_key_exists('categories', $properties)) && ($properties['categories'] != '')) {
             $news_category = array_map('intval', explode(',', $properties['categories']));
         }
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
-        $image = $this->_default_property_str($properties, 'image');
+        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
+        $image = $this->_default_property_urlpath($properties, 'image');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 

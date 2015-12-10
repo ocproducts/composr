@@ -274,7 +274,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         require_code('banners2');
 
         $name = $this->_create_name_from_label($label);
-        $imgurl = $this->_default_property_str($properties, 'image_url');
+        $imgurl = $this->_default_property_urlpath($properties, 'image_url');
         $title_text = $this->_default_property_str($properties, 'title_text');
         $direct_code = $this->_default_property_str($properties, 'direct_code');
         $campaignremaining = $this->_default_property_int($properties, 'campaignremaining');
@@ -282,8 +282,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $importancemodulus = $this->_default_property_int($properties, 'importancemodulus');
         $notes = $this->_default_property_str($properties, 'notes');
         $the_type = $this->_default_property_int($properties, 'the_type');
-        $expiry_date = $this->_default_property_int_null($properties, 'expiry_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $expiry_date = $this->_default_property_time_null($properties, 'expiry_date');
+        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $validated = $this->_default_property_int_null($properties, 'validated');
         if (is_null($validated)) {
             $validated = 1;
@@ -294,12 +294,12 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $_regions = $this->_default_property_str($properties, 'regions');
         $regions = ($_regions == '') ? array() : explode(',', $_regions);
         $notes = $this->_default_property_str($properties, 'notes');
-        $time = $this->_default_property_int_null($properties, 'add_date');
+        $time = $this->_default_property_time_null($properties, 'add_date');
         $hits_from = $this->_default_property_int($properties, 'hits_from');
         $hits_to = $this->_default_property_int($properties, 'hits_to');
         $views_from = $this->_default_property_int($properties, 'views_from');
         $views_to = $this->_default_property_int($properties, 'views_to');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $name = add_banner($name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
         return $name;
     }
@@ -367,7 +367,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $name = $this->_create_name_from_label($label);
-        $imgurl = $this->_default_property_str($properties, 'image_url');
+        $imgurl = $this->_default_property_urlpath($properties, 'image_url');
         $title_text = $this->_default_property_str($properties, 'title_text');
         $direct_code = $this->_default_property_str($properties, 'direct_code');
         $campaignremaining = $this->_default_property_int($properties, 'campaignremaining');
@@ -375,7 +375,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $importancemodulus = $this->_default_property_int($properties, 'importancemodulus');
         $notes = $this->_default_property_str($properties, 'notes');
         $the_type = $this->_default_property_int($properties, 'the_type');
-        $expiry_date = $this->_default_property_int_null($properties, 'expiry_date');
+        $expiry_date = $this->_default_property_time_null($properties, 'expiry_date');
         $submitter = $this->_default_property_int_null($properties, 'submitter');
         $validated = $this->_default_property_int_null($properties, 'validated');
         if (is_null($validated)) {
@@ -386,12 +386,12 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $b_types = ($_b_types == '') ? array() : explode(',', $_b_types);
         $_regions = $this->_default_property_str($properties, 'regions');
         $regions = ($_regions == '') ? array() : explode(',', $_regions);
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $add_time = $this->_default_property_time_null($properties, 'add_date');
         $hits_from = $this->_default_property_int($properties, 'hits_from');
         $hits_to = $this->_default_property_int($properties, 'hits_to');
         $views_from = $this->_default_property_int($properties, 'views_from');
         $views_to = $this->_default_property_int($properties, 'views_to');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
 
         $name = edit_banner($resource_id, $name, $imgurl, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
 

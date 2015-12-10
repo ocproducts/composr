@@ -101,7 +101,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         require_code('chat2');
 
         $welcome = $this->_default_property_str($properties, 'welcome_message');
-        $room_owner = $this->_default_property_int_null($properties, 'room_owner');
+        $room_owner = $this->_default_property_member_null($properties, 'room_owner');
         $allow2 = $this->_default_property_str($properties, 'allow');
         $allow2_groups = $this->_default_property_str($properties, 'allow_groups');
         $disallow2 = $this->_default_property_str($properties, 'disallow');
@@ -163,7 +163,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $welcome = $this->_default_property_str($properties, 'welcome_message');
-        $room_owner = $this->_default_property_int_null($properties, 'room_owner');
+        $room_owner = $this->_default_property_member_null($properties, 'room_owner');
         $allow2 = $this->_default_property_str($properties, 'allow');
         $allow2_groups = $this->_default_property_str($properties, 'allow_groups');
         $disallow2 = $this->_default_property_str($properties, 'disallow');

@@ -95,7 +95,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
         require_code('authors');
 
         $url = $this->_default_property_str($properties, 'url');
-        $member_id = $this->_default_property_int_null($properties, 'member_id');
+        $member_id = $this->_default_property_member_null($properties, 'member_id');
         $description = $this->_default_property_str($properties, 'description');
         $skills = $this->_default_property_str($properties, 'skills');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
@@ -153,7 +153,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $url = $this->_default_property_str($properties, 'url');
-        $member_id = $this->_default_property_int_null($properties, 'member_id');
+        $member_id = $this->_default_property_member_null($properties, 'member_id');
         $description = $this->_default_property_str($properties, 'description');
         $skills = $this->_default_property_str($properties, 'skills');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');

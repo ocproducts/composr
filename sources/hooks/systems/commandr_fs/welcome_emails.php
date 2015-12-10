@@ -89,8 +89,8 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $subject = $this->_default_property_str($properties, 'subject');
         $text = $this->_default_property_str($properties, 'text');
         $send_time = $this->_default_property_int($properties, 'send_time');
-        $newsletter = $this->_default_property_int_null($properties, 'newsletter');
-        $usergroup = $this->_default_property_int_null($properties, 'usergroup');
+        $newsletter = $this->_default_property_resource_id_null('newsletter', $properties, 'newsletter');
+        $usergroup = $this->_default_property_group_null($properties, 'usergroup');
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 
         $id = cns_make_welcome_email($label, $subject, $text, $send_time, $newsletter, $usergroup, $usergroup_type);
@@ -144,8 +144,8 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $subject = $this->_default_property_str($properties, 'subject');
         $text = $this->_default_property_str($properties, 'text');
         $send_time = $this->_default_property_int($properties, 'send_time');
-        $newsletter = $this->_default_property_int_null($properties, 'newsletter');
-        $usergroup = $this->_default_property_int_null($properties, 'usergroup');
+        $newsletter = $this->_default_property_resource_id_null('newsletter', $properties, 'newsletter');
+        $usergroup = $this->_default_property_group_null($properties, 'usergroup');
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 
         cns_edit_welcome_email(intval($resource_id), $label, $subject, $text, $send_time, $newsletter, $usergroup, $usergroup_type);

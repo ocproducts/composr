@@ -79,7 +79,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
                 'w_send_time' => 'INTEGER',
                 'w_newsletter' => '?AUTO_LINK',
                 'w_usergroup' => '?AUTO_LINK',
-                'w_usergroup_type' => 'ID_TEXT',
+                'w_usergroup_type' => 'ID_TEXT', // <blank>, primary, secondary
             ));
         }
 
@@ -225,9 +225,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         $fields->attach(form_input_huge_comcode(do_lang_tempcode('TEXT'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_TEXT'), 'text', $text, true));
         $fields->attach(form_input_integer(do_lang_tempcode('SEND_TIME'), do_lang_tempcode('DESCRIPTION_SEND_TIME'), 'send_time', $send_time, true));
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3c9bf61e762eb8715a7fdde214b7eac2', 'SECTION_HIDDEN' => false,
-                                                                      'TITLE' => do_lang_tempcode('SCOPE'),
-        )));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3c9bf61e762eb8715a7fdde214b7eac2', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('SCOPE'))));
 
         if (addon_installed('newsletter')) {
             require_lang('newsletter');

@@ -126,8 +126,8 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $parent_id = $this->_integer_category($category);
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $rep_image = $this->_default_property_str($properties, 'rep_image');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
+        $add_time = $this->_default_property_time_null($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $id = add_download_category($label, $parent_id, $description, $notes, $rep_image, null, $add_time, $meta_keywords, $meta_description);
@@ -183,8 +183,8 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $parent_id = $this->_integer_category($category);
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $rep_image = $this->_default_property_str($properties, 'rep_image');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
+        $add_time = $this->_default_property_time_null($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 

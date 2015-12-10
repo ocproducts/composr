@@ -103,7 +103,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
         $day = $this->_default_property_int($properties, 'day');
         $in_full = $this->_default_property_int($properties, 'in_full');
         $template = $this->_default_property_str($properties, 'template');
-        $last_sent = $this->_default_property_int($properties, 'last_sent');
+        $last_sent = $this->_default_property_time($properties, 'last_sent');
 
         require_code('newsletter');
 
@@ -173,7 +173,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
         $day = $this->_default_property_int($properties, 'day');
         $in_full = $this->_default_property_int($properties, 'in_full');
         $template = $this->_default_property_str($properties, 'template');
-        $last_sent = $this->_default_property_int($properties, 'last_sent');
+        $last_sent = $this->_default_property_time($properties, 'last_sent');
 
         require_code('newsletter');
 

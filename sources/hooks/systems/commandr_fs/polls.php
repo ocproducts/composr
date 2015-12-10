@@ -153,8 +153,8 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'poll', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'poll', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $time = $this->_default_property_time_null($properties, 'add_date');
+        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $use_time = $this->_default_property_int_null($properties, 'use_time');
         $v1 = $this->_default_property_int($properties, 'votes1');
         $v2 = $this->_default_property_int($properties, 'votes2');
@@ -167,7 +167,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $v9 = $this->_default_property_int($properties, 'votes9');
         $v10 = $this->_default_property_int($properties, 'votes10');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $id = add_poll($label, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $current, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $time, $submitter, $use_time, $v1, $v2, $v3, $v4, $v5, $v6, $v7, $v8, $v9, $v10, $views, $edit_date);
         return strval($id);
     }
@@ -283,8 +283,8 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'poll', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'poll', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $add_time = $this->_default_property_time_null($properties, 'add_date');
+        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $use_time = $this->_default_property_int_null($properties, 'use_time');
         $v1 = $this->_default_property_int($properties, 'votes1');
         $v2 = $this->_default_property_int($properties, 'votes2');
@@ -297,7 +297,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $v9 = $this->_default_property_int($properties, 'votes9');
         $v10 = $this->_default_property_int($properties, 'votes10');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
 
         edit_poll(intval($resource_id), $label, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, true);
 

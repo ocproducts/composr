@@ -168,9 +168,6 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
         $block_tag = $this->_default_property_int($properties, 'block_tag');
         $textual_tag = $this->_default_property_int($properties, 'textual_tag');
 
-        $_title = $GLOBALS['SITE_DB']->query_select_value('custom_comcode', 'tag_title', array('tag_tag' => $resource_id));
-        $_description = $GLOBALS['SITE_DB']->query_select_value('custom_comcode', 'tag_description', array('tag_tag' => $resource_id));
-
         $tag = edit_custom_comcode_tag($resource_id, $tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag, true);
 
         return $resource_id;

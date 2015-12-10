@@ -142,10 +142,10 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $is_super_admin = $this->_default_property_int($properties, 'is_super_admin');
         $is_super_moderator = $this->_default_property_int($properties, 'is_super_moderator');
         $rank_title = $this->_default_property_str($properties, 'rank_title');
-        $rank_image = $this->_default_property_str($properties, 'rank_image');
-        $promotion_target = $this->_default_property_int_null($properties, 'promotion_target');
+        $rank_image = $this->_default_property_urlpath($properties, 'rank_image');
+        $promotion_target = $this->_default_property_group_null($properties, 'promotion_target');
         $promotion_threshold = $this->_default_property_int_null($properties, 'promotion_threshold');
-        $group_leader = $this->_default_property_int_null($properties, 'group_leader');
+        $group_leader = $this->_default_property_member_null($properties, 'group_leader');
         $flood_control_submit_secs = $this->_default_property_int_modeavg($properties, 'flood_control_submit_secs', 'f_groups', 0, 'g_flood_control_submit_secs');
         $flood_control_access_secs = $this->_default_property_int_modeavg($properties, 'flood_control_access_secs', 'f_groups', 0, 'g_flood_control_access_secs');
         $max_daily_upload_mb = $this->_default_property_int_modeavg($properties, 'max_daily_upload_mb', 'f_groups', 70, 'g_max_daily_upload_mb');
@@ -402,17 +402,17 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $join_time = $this->_default_property_int_null($properties, 'join_time');
-        $last_visit_time = $this->_default_property_int_null($properties, 'last_visit_time');
+        $join_time = $this->_default_property_time_null($properties, 'join_time');
+        $last_visit_time = $this->_default_property_time_null($properties, 'last_visit_time');
         $theme = $this->_default_property_str($properties, 'theme');
-        $avatar_url = $this->_default_property_str($properties, 'avatar_url');
+        $avatar_url = $this->_default_property_urlpath($properties, 'avatar_url');
         $signature = $this->_default_property_str($properties, 'signature');
         $is_perm_banned = $this->_default_property_int($properties, 'is_perm_banned');
         $preview_posts = $this->_default_property_int_modeavg($properties, 'preview_posts', 'f_members', 0, 'm_preview_posts');
         $reveal_age = $this->_default_property_int_modeavg($properties, 'reveal_age', 'f_members', 0, 'm_reveal_age');
         $user_title = $this->_default_property_str($properties, 'user_title');
-        $photo_url = $this->_default_property_str($properties, 'photo_url');
-        $photo_thumb_url = $this->_default_property_str($properties, 'photo_thumb_url');
+        $photo_url = $this->_default_property_urlpath($properties, 'photo_url');
+        $photo_thumb_url = $this->_default_property_urlpath($properties, 'photo_thumb_url');
         $views_signatures = $this->_default_property_int($properties, 'views_signatures');
         $auto_monitor_contrib_content = $this->_default_property_int_null($properties, 'auto_monitor_contrib_content');
         if (is_null($auto_monitor_contrib_content)) {
@@ -425,11 +425,11 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $validated_email_confirm_code = $this->_default_property_str($properties, 'validated_email_confirm_code');
         $password_compatibility_scheme = $this->_default_property_str_null($properties, 'password_compatibility_scheme');
         $salt = $this->_default_property_str($properties, 'salt');
-        $last_submit_time = $this->_default_property_int_null($properties, 'last_submit_time');
+        $last_submit_time = $this->_default_property_time_null($properties, 'last_submit_time');
         $highlighted_name = $this->_default_property_int($properties, 'highlighted_name');
         $pt_allow = $this->_default_property_str($properties, 'pt_allow');
         $pt_rules_text = $this->_default_property_str($properties, 'pt_rules_text');
-        $on_probation_until = $this->_default_property_int_null($properties, 'on_probation_until');
+        $on_probation_until = $this->_default_property_time_null($properties, 'on_probation_until');
         $auto_mark_read = $this->_default_property_int($properties, 'auto_mark_read');
 
         require_code('cns_members');

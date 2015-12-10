@@ -120,11 +120,11 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $end_text_fail = $this->_default_property_str($properties, 'end_text_fail');
         $notes = $this->_default_property_str($properties, 'notes');
         $percentage = $this->_default_property_int($properties, 'percentage');
-        $open_time = $this->_default_property_int_null($properties, 'open_time');
+        $open_time = $this->_default_property_time_null($properties, 'open_time');
         if (is_null($open_time)) {
             $open_time = time();
         }
-        $close_time = $this->_default_property_int_null($properties, 'close_time');
+        $close_time = $this->_default_property_time_null($properties, 'close_time');
         $num_winners = $this->_default_property_int($properties, 'num_winners');
         $redo_time = $this->_default_property_int($properties, 'redo_time');
         $type = $this->_default_property_str($properties, 'type');
@@ -136,13 +136,13 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
             $validated = 1;
         }
         $text = $this->_default_property_str($properties, 'text');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $points_for_passing = $this->_default_property_int($properties, 'points_for_passing');
         $tied_newsletter = $this->_default_property_int_null($properties, 'tied_newsletter');
         $reveal_answers = $this->_default_property_int($properties, 'reveal_answers');
         $shuffle_questions = $this->_default_property_int($properties, 'shuffle_questions');
         $shuffle_answers = $this->_default_property_int($properties, 'shuffle_answers');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $add_time = $this->_default_property_time_null($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $id = add_quiz($label, $timeout, $start_text, $end_text, $end_text_fail, $notes, $percentage, $open_time, $close_time, $num_winners, $redo_time, $type, $validated, $text, $submitter, $points_for_passing, $tied_newsletter, $reveal_answers, $shuffle_questions, $shuffle_answers, $add_time, $meta_keywords, $meta_description);
@@ -220,11 +220,11 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $end_text_fail = $this->_default_property_str($properties, 'end_text_fail');
         $notes = $this->_default_property_str($properties, 'notes');
         $percentage = $this->_default_property_int($properties, 'percentage');
-        $open_time = $this->_default_property_int_null($properties, 'open_time');
+        $open_time = $this->_default_property_time_null($properties, 'open_time');
         if (is_null($open_time)) {
             $open_time = time();
         }
-        $close_time = $this->_default_property_int_null($properties, 'close_time');
+        $close_time = $this->_default_property_time_null($properties, 'close_time');
         $num_winners = $this->_default_property_int($properties, 'num_winners');
         $redo_time = $this->_default_property_int($properties, 'redo_time');
         $type = $this->_default_property_str($properties, 'type');
@@ -236,13 +236,13 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
             $validated = 1;
         }
         $text = $this->_default_property_str($properties, 'text');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $submitter = $this->_default_property_member_null($properties, 'submitter');
         $points_for_passing = $this->_default_property_int($properties, 'points_for_passing');
         $tied_newsletter = $this->_default_property_int_null($properties, 'tied_newsletter');
         $reveal_answers = $this->_default_property_int($properties, 'reveal_answers');
         $shuffle_questions = $this->_default_property_int($properties, 'shuffle_questions');
         $shuffle_answers = $this->_default_property_int($properties, 'shuffle_answers');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $add_time = $this->_default_property_time_null($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
