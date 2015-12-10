@@ -104,7 +104,7 @@ class Block_main_staff_links
                 'Smashing Magazine (web design articles)' => 'http://www.smashingmagazine.com/',
                 'w3schools (learn web technologies)' => 'http://www.w3schools.com/',
                 // NB: Not including a web host, as the user will likely already have one
-                //'GoDaddy (Domains and SSL certificates)'=>'http://www.godaddy.com/', // A bit overly-specific, plus similar to the above
+                //'GoDaddy (Domains and SSL certificates)' => 'http://www.godaddy.com/', // A bit overly-specific, plus similar to the above
             );
             foreach ($default_links as $link_title => $url) {
                 $GLOBALS['SITE_DB']->query_insert('stafflinks', array(

@@ -628,7 +628,7 @@ function install_cns($upgrade_from = null)
             'f_description' => 'LONG_TRANS__COMCODE',
             'f_forum_grouping_id' => '?AUTO_LINK', // Categories can exist on multiple forum levels and positions - wherever a forum exists, the forum grouping it uses exists too (but not forums in the forum grouping which aren't at level and position)
             'f_parent_forum' => '?AUTO_LINK',
-            'f_position' => 'INTEGER', // might have been called 'f_order'=>'INTEGER' (consistent with other table's ordering fields) if we had not used f_order as a text field to determine the automatic ordering type
+            'f_position' => 'INTEGER', // might have been called 'f_order' => 'INTEGER' (consistent with other table's ordering fields) if we had not used f_order as a text field to determine the automatic ordering type
             'f_order_sub_alpha' => 'BINARY',
             'f_post_count_increment' => 'BINARY',
             'f_intro_question' => 'LONG_TRANS__COMCODE',

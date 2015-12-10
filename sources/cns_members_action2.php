@@ -554,10 +554,10 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     }
 
     /*
-    if (!$mini_mode)
-    {
-        if (($doing_international) || ($doing_langs) || ($doing_email_option) || ($doing_wide_option) || ($doing_theme_option) || ($doing_local_forum_options))
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',array('_GUID'=>'3cd79bbea084ec1fe148edddad7d52b4','FORCE_OPEN'=>is_null($member_id)?true:NULL,'TITLE'=>do_lang_tempcode('SETTINGS'))));
+    if (!$mini_mode) {
+        if (($doing_international) || ($doing_langs) || ($doing_email_option) || ($doing_wide_option) || ($doing_theme_option) || ($doing_local_forum_options)) {
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3cd79bbea084ec1fe148edddad7d52b4', 'FORCE_OPEN' => is_null($member_id) ? true : null, 'TITLE' => do_lang_tempcode('SETTINGS'))));
+        }
     }
     */
 

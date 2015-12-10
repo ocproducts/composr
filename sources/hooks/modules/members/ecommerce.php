@@ -40,8 +40,9 @@ class Hook_members_ecommerce
         $modules = array();
 
         /*  Now we provide this link under the embedded list of subscriptions
-        if ($GLOBALS['SITE_DB']->query_select_value('subscriptions','COUNT(*)',array('s_member_id'=>$member_id))!=0)
-            $modules[]=array('views',do_lang_tempcode('MY_SUBSCRIPTIONS'),build_url(array('page'=>'subscriptions','type'=>'browse','id'=>$member_id),get_module_zone('subscriptions')),'menu/adminzone/audit/ecommerce/subscriptions');
+        if ($GLOBALS['SITE_DB']->query_select_value('subscriptions', 'COUNT(*)', array('s_member_id' => $member_id)) != 0) {
+            $modules[] = array('views', do_lang_tempcode('MY_SUBSCRIPTIONS'), build_url(array('page' => 'subscriptions', 'type' => 'browse', 'id' => $member_id), get_module_zone('subscriptions')), 'menu/adminzone/audit/ecommerce/subscriptions');
+        }
         */
 
         if ($GLOBALS['SITE_DB']->query_select_value('invoices', 'COUNT(*)', array('i_member_id' => $member_id)) != 0) {

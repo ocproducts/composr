@@ -74,7 +74,7 @@ function callback($match)
     if ($match[2] != '_GUID') {
         echo 'Insert needed for ' . escape_html($match[1]) . '<br />';
         $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $new_guid);
-        return "do_template('" . $match[1] . "',array('_GUID'=>'" . $new_guid . "','" . $match[2] . '\'=>' . (isset($match[3]) ? $match[3] : '');
+        return "do_template('" . $match[1] . "', array('_GUID' => '" . $new_guid . "', '" . $match[2] . '\' => ' . (isset($match[3]) ? $match[3] : '');
     }
     if (isset($match[3])) {
         global $FOUND_GUID;
@@ -82,7 +82,7 @@ function callback($match)
         if (array_key_exists($guid_value, $FOUND_GUID)) {
             echo 'Repair needed for ' . escape_html($match[1]) . '<br />';
             $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $new_guid);
-            return "do_template('" . $match[1] . "',array('_GUID'=>'" . $new_guid . "'";
+            return "do_template('" . $match[1] . "', array('_GUID' => '" . $new_guid . "'";
         }
         $FOUND_GUID[$guid_value] = 1;
         $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $guid_value);

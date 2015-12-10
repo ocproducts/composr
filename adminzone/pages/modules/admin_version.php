@@ -783,7 +783,7 @@ class Module_admin_version
                                                                         'resource_resourcefs_hook' => 'ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_guid', array('resource_guid'));
-            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label', array('resource_label'/*,'resource_type'key would be too long*/));
+            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label', array('resource_label'/*, 'resource_type'key would be too long*/));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker', array('resource_moniker', 'resource_type'));
             //$GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label_uniqueness', array('resource_label', 'resource_resourcefs_hook'));key would be too long
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker_uniq', array('resource_moniker', 'resource_resourcefs_hook'));
@@ -889,8 +889,8 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_table('unbannable_ip', array(
-                'ip'=>'*IP',
-                'note'=>'SHORT_TEXT',
+                'ip' => '*IP',
+                'note' => 'SHORT_TEXT',
             ));
         }
     }

@@ -352,7 +352,7 @@ class Module_admin_orders
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond);
         $pagination = pagination(do_lang_tempcode('ORDERS'), $start, 'start', $max, 'max', $max_rows, true);
 
-        $widths = mixed();//array('110','70','80','200','120','180','180','200');
+        $widths = mixed();//array('110', '70', '80', '200', '120', '180', '180', '200');
         $results_table = results_table(do_lang_tempcode('ORDERS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $order_entries, $sortables, $sortable, $sort_order, 'sort', null, $widths);
 
         $hidden = build_keep_form_fields('_SELF', true, array('filter'));

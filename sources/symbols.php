@@ -1156,7 +1156,7 @@ function ecv_REQUIRE_JAVASCRIPT($lang, $escaped, $param)
             if (!array_key_exists($param[0], $GLOBALS['JAVASCRIPTS'])) {
                     $GLOBALS['JAVASCRIPTS'][$param[0]] = true;
                     $file = javascript_enforce($param[0]);
-                    $_value = do_template('JAVASCRIPT_NEED_INLINE', array('_GUID'=>'d6c907e26c5a8dd8c65f1d36a1a674a9', 'CODE'=>file_get_contents($file)));
+                    $_value = do_template('JAVASCRIPT_NEED_INLINE', array('_GUID' => 'd6c907e26c5a8dd8c65f1d36a1a674a9', 'CODE' => file_get_contents($file)));
                     $value = $_value->evaluate();
             }*/
         }

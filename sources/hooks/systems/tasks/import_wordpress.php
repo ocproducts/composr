@@ -216,7 +216,7 @@ class Hook_task_import_wordpress
 
                         // Track import IDs
                         $imported_news[] = array(
-                            //'full_url'=>'', We don't know this for a database import
+                            //'full_url' => '', We don't know this for a database import
                             'import_id' => $id,
                             'import__news' => $news,
                             'import__news_article' => $news_article,

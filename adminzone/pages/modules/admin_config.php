@@ -753,7 +753,7 @@ class Module_admin_config
         // Show it worked / Refresh
         $redirect = get_param_string('redirect', null);
         if ($redirect === null) {
-            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF'); // ,'type'=>'category','id'=>$category
+            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF'); // , 'type' => 'category', 'id' => $category
         } else {
             $url = make_string_tempcode($redirect);
         }

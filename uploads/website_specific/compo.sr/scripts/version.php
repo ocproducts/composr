@@ -257,21 +257,21 @@ if (!is_null($our_version)) {
     echo '<p>' . do_lang('CMS_NON_EXISTANT_VERSION') . '</p>';
 }
 /*if (false) { // Info isn't actually helpful, as the download_description above contains it also
-	echo '<h3>Next version</h3>';
-	// Next version
-	if (!is_null($next_upgrade_version)) {
-		// NB: $has_jump should always be true in this branch, unless there are holes in the version DB
-		echo '<p>You are running an outdated version. The closest version is <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="Version '.escape_html($next_upgrade_version['version']).' (this link will open in a new window)" href="'.escape_html(static_evaluate_tempcode(build_url(array('page'=>'news','type'=>'view','id'=>$next_upgrade_version['news_id'],'wide_high'=>1),'site'))).'">version '.escape_html($next_upgrade_version['version']).'</a>, but read on for the latest recommended upgrade paths.</p>';
-	} elseif ((!is_null($our_version)) && (!$has_jump)) {
-		echo '<p>You are running the latest version.</p>';
-	} else {
-		echo '<p>Sorry, details of the next version is not in our database.</p>';
-	}
+    echo '<h3>Next version</h3>';
+    // Next version
+    if (!is_null($next_upgrade_version)) {
+        // NB: $has_jump should always be true in this branch, unless there are holes in the version DB
+        echo '<p>You are running an outdated version. The closest version is <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="Version ' . escape_html($next_upgrade_version['version']) . ' (this link will open in a new window)" href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $next_upgrade_version['news_id'], 'wide_high' => 1), 'site'))) . '">version ' . escape_html($next_upgrade_version['version']) . '</a>, but read on for the latest recommended upgrade paths.</p>';
+    } elseif ((!is_null($our_version)) && (!$has_jump)) {
+        echo '<p>You are running the latest version.</p>';
+    } else {
+        echo '<p>Sorry, details of the next version is not in our database.</p>';
+    }
 } else
 {
-	if ((is_null($next_upgrade_version)) && (!is_null($our_version)) && (!$has_jump)) {
-		echo '<p>You are running the latest version.</p>';
-	}
+    if ((is_null($next_upgrade_version)) && (!is_null($our_version)) && (!$has_jump)) {
+        echo '<p>You are running the latest version.</p>';
+    }
 }*/
 // Latest versions
 if ($has_jump) {

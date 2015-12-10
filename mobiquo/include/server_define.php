@@ -185,10 +185,10 @@ $SERVER_DEFINE = array(
                              array($xmlrpcArray, $xmlrpcBase64, $xmlrpcString)),
     ),
 
-    /*'get_new_topic'=>array(	NO LONGER EXISTS
-        'function'=>'get_new_topic_func',
-        'signature'=>array(array($xmlrpcStruct),
-                                array($xmlrpcStruct,$xmlrpcInt,$xmlrpcInt)),
+    /*'get_new_topic' => array(	NO LONGER EXISTS
+        'function' => 'get_new_topic_func',
+        'signature' => array(array($xmlrpcStruct),
+                                array($xmlrpcStruct, $xmlrpcInt, $xmlrpcInt)),
     ),*/
 
     'get_latest_topic' => array(
@@ -251,13 +251,13 @@ $SERVER_DEFINE = array(
     ),
 
     /*'reply_topic'=>array(	NO LONGER EXISTS
-        'function'=>'reply_topic_func',
-        'signature'=>array(array($xmlrpcStruct,$xmlrpcString,$xmlrpcBase64,$xmlrpcBase64,$xmlrpcBase64,$xmlrpcString),
-                                array($xmlrpcStruct,$xmlrpcString,$xmlrpcBase64,$xmlrpcBase64,$xmlrpcBase64),
-                                array($xmlrpcStruct,$xmlrpcString,$xmlrpcString,$xmlrpcBase64,$xmlrpcBase64),
-                                array($xmlrpcStruct,$xmlrpcString,$xmlrpcString,$xmlrpcBase64,$xmlrpcBase64),
-                                array($xmlrpcStruct,$xmlrpcString,$xmlrpcString,$xmlrpcBase64,$xmlrpcBase64,$xmlrpcArray,$xmlrpcString),
-                                array($xmlrpcStruct,$xmlrpcString,$xmlrpcString,$xmlrpcBase64,$xmlrpcBase64,$xmlrpcArray,$xmlrpcString,$xmlrpcBoolean)),
+        'function' => 'reply_topic_func',
+            'signature'=>array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcString),
+                               array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcBase64),
+                               array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64),
+                               array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64),
+                               array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcArray, $xmlrpcString),
+                               array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcBase64, $xmlrpcArray, $xmlrpcString, $xmlrpcBoolean)),
     ),*/
 
     'subscribe_topic' => array(
@@ -408,8 +408,8 @@ $SERVER_DEFINE = array(
     ),
 
     /*'set_avatar'=>array(	NO LONGER EXISTS
-        'function'=>'upload_avatar_func',
-        'signature'=>array(array($xmlrpcStruct)),
+        'function' => 'upload_avatar_func',
+        'signature' => array(array($xmlrpcStruct)),
     ),*/
 
     'upload_avatar' => array(
@@ -471,8 +471,8 @@ $SERVER_DEFINE = array(
     ),
 
     /*'m_delete_post_by_user'=>array(	NO LONGER EXISTS
-        'function'=>'m_delete_post_by_user_func',
-        'signature'=>array(array($xmlrpcStruct,$xmlrpcString,$xmlrpcBase64)),
+        'function' => 'm_delete_post_by_user_func',
+        'signature' => array(array($xmlrpcStruct,$xmlrpcString,$xmlrpcBase64)),
     ),*/
 
     'm_move_topic' => array(
@@ -584,8 +584,8 @@ $SERVER_DEFINE = array(
     ),
 
     /*'activate_account'=>array(	NO LONGER EXISTS
-          'function'=>'activate_account_func',
-          'signature'=>array(array($xmlrpcStruct,$xmlrpcBase64,$xmlrpcString,$xmlrpcString)),
+          'function' => 'activate_account_func',
+          'signature' => array(array($xmlrpcStruct, $xmlrpcBase64, $xmlrpcString, $xmlrpcString)),
      ),*/
 
     'set_api_key' => array(

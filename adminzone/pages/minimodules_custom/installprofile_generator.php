@@ -58,7 +58,7 @@ class Hook_admin_setupwizard_installprofiles_mycustomprofile
     function info()
     {
         return array(
-            'title'=>'My Custom installprofile',
+            'title' => 'My Custom installprofile',
         );
     }
 

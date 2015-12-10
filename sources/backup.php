@@ -48,7 +48,7 @@ function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_fi
             if ($array != '') {
                 $array .= ",\n";
             }
-            $array .= "    '" . $name . "'=>'" . $type . "'";
+            $array .= "    '" . $name . "' => '" . $type . "'";
         }
         fwrite($install_php_file, preg_replace('#^#m', '//', "   \$GLOBALS['SITE_DB']->create_table('$table',array(\n$array),true,true);\n"));
 

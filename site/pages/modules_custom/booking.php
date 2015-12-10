@@ -62,7 +62,7 @@ class Module_booking
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('bookable', array(
                 'id' => '*AUTO',
-                //'num_available'=>'INTEGER',      Implied by number of bookable_codes attached to bookable_id
+                //'num_available' => 'INTEGER',      Implied by number of bookable_codes attached to bookable_id
                 'title' => 'SHORT_TRANS__COMCODE',
                 'description' => 'LONG_TRANS__COMCODE',
                 'price' => 'REAL',

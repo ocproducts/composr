@@ -120,7 +120,7 @@ class Hook_wowbb
         $config_remapping = array(
             'ACTIVATION_EMAIL' => 'require_new_member_validation',
             'BOARD_ON' => '!site_closed',
-            //'MANA'=>'is_on_points',
+            //'MANA' => 'is_on_points',
             'BOARD_NAME' => 'site_name',
             'SESSION_LENGTH' => 'session_expiry_time',
             'POSTS_PER_PAGE' => 'forum_posts_per_page',

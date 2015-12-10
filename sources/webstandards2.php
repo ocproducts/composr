@@ -604,10 +604,10 @@ function init__webstandards2()
         'iframe.src' => '.+',
 
         // These are needed in IE, so we will have to browser sniff and output if IE being used, but not check them as okay
-        //'iframe.scrolling'=>'(yes|no|auto)',
-        //'iframe.frameborder'=>'(1|0)',
-        //'iframe.marginheight'=>$enforce_pixels,
-        //'iframe.marginwidth'=>$enforce_pixels,
+        //'iframe.scrolling' => '(yes|no|auto)',
+        //'iframe.frameborder' => '(1|0)',
+        //'iframe.marginheight' => $enforce_pixels,
+        //'iframe.marginwidth' => $enforce_pixels,
     );
     $TAG_ATTRIBUTES += array(
         '*.hidden' => '(hidden)',

@@ -429,7 +429,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     $does_match = false;
     foreach (array('PG', 'HTM', 'SIMPLE') as $url_scheme) {
         $mappings = get_remappings($url_scheme);
-        foreach ($mappings as $mapping) { // e.g. array(array('page'=>'wiki','id'=>NULL),'pg/s/ID',true),
+        foreach ($mappings as $mapping) { // e.g. array(array('page' => 'wiki', 'id' => null), 'pg/s/ID', true),
             if (is_null($mapping)) {
                 continue;
             }

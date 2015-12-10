@@ -63,10 +63,10 @@ function search_test()
                 'page' => 1,
                 'perpage' => 10,
                 'keywords' => '%fgddf',
-                //'userid'=>'3',
+                //'userid' => '3',
                 'searchuser' => '%admin',
-                //'forumid'=>'2',
-                //'threadid'=>'3',
+                //'forumid' => '2',
+                //'threadid' => '3',
                 'titleonly' => 0,
                 'showposts' => 1,
                 'searchtime' => 60 * 60 * 24 * 365 * 2, // 2 years

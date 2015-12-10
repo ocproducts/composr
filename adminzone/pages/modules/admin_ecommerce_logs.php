@@ -303,7 +303,7 @@ class Module_admin_ecommerce_logs
 
         $results_table = results_table(do_lang('TRANSACTIONS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*,'start'=>$start,'max'=>$max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*, 'start'=>$start, 'max'=>$max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
 
         $products = new Tempcode();
         $product_rows = $GLOBALS['SITE_DB']->query_select('transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');

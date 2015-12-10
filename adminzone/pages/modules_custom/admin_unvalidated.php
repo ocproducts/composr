@@ -131,10 +131,10 @@ class Module_admin_unvalidated
             if (!$content->is_empty()) {
                 if (array_key_exists('uses_workflow', $info) && $info['uses_workflow']) {
                     // Content that uses a workflow is validated via its view screen
-                    $post_url = build_url(array('page' => $info['view_module'], 'type' => $info['view_type'], 'validated' => 1/*,'redirect'=>get_self_url(true)*/), get_module_zone($info['view_module']), null, false, true);
+                    $post_url = build_url(array('page' => $info['view_module'], 'type' => $info['view_type'], 'validated' => 1/*, 'redirect'=>get_self_url(true)*/), get_module_zone($info['view_module']), null, false, true);
                 } else {
                     // Content which isn't in a workflow is validated via its edit screen
-                    $post_url = build_url(array('page' => $info['edit_module'], 'type' => $info['edit_type'], 'validated' => 1/*,'redirect'=>get_self_url(true)*/), get_module_zone($info['edit_module']), null, false, true);
+                    $post_url = build_url(array('page' => $info['edit_module'], 'type' => $info['edit_type'], 'validated' => 1/*, 'redirect'=>get_self_url(true)*/), get_module_zone($info['edit_module']), null, false, true);
                 }
                 $fields = form_input_list(do_lang_tempcode('CONTENT'), '', $info['edit_identifier'], $content, null, true);
 

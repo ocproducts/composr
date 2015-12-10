@@ -168,7 +168,7 @@ class Hook_addon_registry_locations_catalogues
                 'l_population' => '?INTEGER',
                 'l_latitude' => '?REAL',
                 'l_longitude' => '?REAL',
-                //'l_postcode'=>'ID_TEXT',   Actually often many postcodes per location and/or poor alignment
+                //'l_postcode' => 'ID_TEXT',   Actually often many postcodes per location and/or poor alignment
             ));
             $GLOBALS['SITE_DB']->create_index('locations', 'l_place', array('l_place'));
             $GLOBALS['SITE_DB']->create_index('locations', 'l_country', array('l_country'));
