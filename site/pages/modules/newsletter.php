@@ -235,6 +235,8 @@ class Module_newsletter
      */
     public function run()
     {
+        require_code('newsletter');
+
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
@@ -375,7 +377,7 @@ class Module_newsletter
         if ($password != trim(post_param_string('password_confirm', ''))) {
             warn_exit(make_string_tempcode(escape_html(do_lang('PASSWORD_MISMATCH'))));
         }
-        $lang = post_param_string('lang', user_lang());
+        $language = post_param_string('lang', user_lang());
         if (!is_email_address($email)) {
             return warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
@@ -412,19 +414,13 @@ class Module_newsletter
             }
             $salt = produce_salt();
             if (is_null($old_confirm)) {
-                $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array(
-                    'n_forename' => $forename,
-                    'n_surname' => $surname,
-                    'join_time' => time(),
-                    'language' => $lang,
-                    'email' => $email,
-                    'code_confirm' => $code_confirm,
-                    'pass_salt' => $salt,
-                    'the_password' => ratchet_hash($password, $salt, PASSWORD_SALT),
-                ));
+                add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt, PASSWORD_SALT), $salt, $language, $forename, $surname);
+
                 $this->_send_confirmation($email, $code_confirm, $password, $forename, $surname);
             } else {
-                $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('n_forename' => $forename, 'n_surname' => $surname, 'join_time' => time(), 'language' => $lang), array('email' => $email), '', 1);
+                $id = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'id', array('email' => $email));
+                edit_newsletter_subscriber($id, $email, time(), null, null, null, $language, $forename, $surname);
+
                 $this->_send_confirmation($email, $code_confirm, null, $forename, $surname);
             }
             $message = do_lang_tempcode('NEWSLETTER_CONFIRM', escape_html($email));
@@ -461,7 +457,8 @@ class Module_newsletter
 
             // Update name etc if it's an edit
             if ((!is_null($old_confirm)) && ($old_confirm == 0)) {
-                $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('n_forename' => $forename, 'n_surname' => $surname), array('email' => $email), '', 1);
+                $id = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'id', array('email' => $email));
+                edit_newsletter_subscriber($id, $email, null, null, null, null, null, $forename, $surname);
             }
         }
 
@@ -479,17 +476,17 @@ class Module_newsletter
         require_code('crypt');
 
         $email = trim(get_param_string('email'));
-        $lang = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'language', array('email' => $email));
+        $language = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'language', array('email' => $email));
         $salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
         $new_password = produce_salt();
         $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('the_password' => ratchet_hash($new_password, $salt, PASSWORD_SALT)), array('email' => $email), '', 1);
 
-        $message = do_lang('NEWSLETTER_PASSWORD_CHANGE', comcode_escape(get_ip_address()), comcode_escape($new_password), null, $lang);
+        $message = do_lang('NEWSLETTER_PASSWORD_CHANGE', comcode_escape(get_ip_address()), comcode_escape($new_password), null, $language);
 
         require_code('mail');
         mail_wrap(get_option('newsletter_title'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
 
-        return inform_screen($this->title, protect_from_escaping(do_lang('NEWSLETTER_PASSWORD_BEEN_RESET', null, null, null, $lang)));
+        return inform_screen($this->title, protect_from_escaping(do_lang('NEWSLETTER_PASSWORD_BEEN_RESET', null, null, null, $language)));
     }
 
     /**

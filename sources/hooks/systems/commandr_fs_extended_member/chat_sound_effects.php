@@ -42,6 +42,6 @@ class Hook_commandr_fs_extended_member__chat_sound_effects
      */
     public function write_property($member_id, $data)
     {
-        return table_from_portable_rows('chat_sound_effects', $data, array('s_member' => $member_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        table_from_portable_rows('chat_sound_effects', $data, array('s_member' => $member_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
     }
 }

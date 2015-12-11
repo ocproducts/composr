@@ -49,7 +49,7 @@ class Hook_resource_meta_aware_usergroup_subscription
             'parent_spec__table_name' => null,
             'parent_spec__parent_name' => null,
             'parent_spec__field_name' => null,
-            'category_is_string' => true,
+            'category_is_string' => false,
 
             'title_field' => 's_title',
             'title_field_dereference' => true,

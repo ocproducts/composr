@@ -42,6 +42,6 @@ class Hook_commandr_fs_extended_member__calendar_interests
      */
     public function write_property($member_id, $data)
     {
-        return table_from_portable_rows('calendar_interests', $data, array('i_member_id' => $member_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        table_from_portable_rows('calendar_interests', $data, array('i_member_id' => $member_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
     }
 }

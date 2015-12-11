@@ -42,6 +42,6 @@ class Hook_commandr_fs_extended_member__bookmarks
      */
     public function write_property($member_id, $data)
     {
-        return table_from_portable_rows('bookmarks', $data, array('b_owner' => $member_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        table_from_portable_rows('bookmarks', $data, array('b_owner' => $member_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
     }
 }

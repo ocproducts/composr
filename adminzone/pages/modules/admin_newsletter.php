@@ -263,9 +263,9 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function import_subscribers()
     {
-        $_lang = choose_language($this->title);
-        if (is_object($_lang)) {
-            return $_lang;
+        $_language = choose_language($this->title);
+        if (is_object($_language)) {
+            return $_language;
         }
 
         require_lang('cns');
@@ -319,7 +319,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $submit_name = do_lang_tempcode('PROCEED');
             $post_url = get_self_url();
 
-            $hidden->attach(form_input_hidden('lang', $_lang));
+            $hidden->attach(form_input_hidden('lang', $_language));
             handle_max_file_size($hidden);
 
             return do_template('FORM_SCREEN', array('_GUID' => '7e0387bcc4a1b7e2846ba357d36dbc15', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
@@ -354,9 +354,9 @@ class Module_admin_newsletter extends Standard_crud_module
             $username_index = 3;
             $hash_index = 6;
             $salt_index = 7;
-            $lang_index = 8;
+            $language_index = 8;
             $code_confirm_index = 9;
-            $jointime_index = 10;
+            $join_time_index = 10;
 
             $count = 0;
             $count2 = 0;
@@ -401,7 +401,7 @@ class Module_admin_newsletter extends Standard_crud_module
                                 $code_confirm_index = $j;
                             }
                             if ((stripos($val, 'time') !== false) || (stripos($val, 'date') !== false) || (strtolower($val) == do_lang('JOIN_DATE'))) {
-                                $jointime_index = $j;
+                                $join_time_index = $j;
                             }
                         }
                         continue;
@@ -420,14 +420,14 @@ class Module_admin_newsletter extends Standard_crud_module
                         $username = array_key_exists($username_index, $csv_line) ? $csv_line[$username_index] : '';
                         $hash = array_key_exists($hash_index, $csv_line) ? $csv_line[$hash_index] : '';
                         $salt = array_key_exists($salt_index, $csv_line) ? $csv_line[$salt_index] : '';
-                        $lang = (array_key_exists($lang_index, $csv_line) && ((file_exists(get_custom_file_base() . '/lang/' . $csv_line[$lang_index])) || (file_exists(get_custom_file_base() . '/lang_custom/' . $csv_line[$lang_index])))) ? $csv_line[$lang_index] : $_lang;
-                        if ($lang == '') {
-                            $lang = $_lang;
+                        $language = (array_key_exists($language_index, $csv_line) && ((file_exists(get_custom_file_base() . '/lang/' . $csv_line[$language_index])) || (file_exists(get_custom_file_base() . '/lang_custom/' . $csv_line[$language_index])))) ? $csv_line[$language_index] : $_language;
+                        if ($language == '') {
+                            $language = $_language;
                         }
                         $code_confirm = array_key_exists($code_confirm_index, $csv_line) ? intval($csv_line[$code_confirm_index]) : 0;
-                        $jointime = array_key_exists($jointime_index, $csv_line) ? strtotime($csv_line[$jointime_index]) : time();
-                        if ($jointime === false) {
-                            $jointime = time();
+                        $join_time = array_key_exists($join_time_index, $csv_line) ? strtotime($csv_line[$join_time_index]) : time();
+                        if ($join_time === false) {
+                            $join_time = time();
                         }
 
                         if ($newsletter_id == '-1') {
@@ -450,26 +450,14 @@ class Module_admin_newsletter extends Standard_crud_module
                         } else {
                             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'id', array('email' => $email));
                             if (is_null($test)) {
-                                $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array(
-                                    'email' => $email,
-                                    'join_time' => $jointime,
-                                    'code_confirm' => $code_confirm,
-                                    'the_password' => $hash,
-                                    'pass_salt' => $salt,
-                                    'language' => $lang,
-                                    'n_forename' => $forename,
-                                    'n_surname' => $surname,
-                                ));
+                                add_newsletter_subscriber($email, $join_time, $code_confirm, $hash, $salt, $language, $forename, $surname);
+
                                 if ($level != 0) {
                                     $count++;
                                 }
                             } else {
-                                $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array(
-                                    'n_forename' => $forename,
-                                    'n_surname' => $surname,
-                                ), array(
-                                    'email' => $email,
-                                ), '', 1);
+                                edit_newsletter_subscriber($test, null, null, null, null, null, null, $forename, $surname);
+
                                 if ($level == 0) {
                                     $count++;
                                 }
@@ -504,6 +492,8 @@ class Module_admin_newsletter extends Standard_crud_module
         } else {
             $message = do_lang_tempcode('NEWSLETTER_IMPORTED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2)));
         }
+
+        log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');
 
         return inform_screen($this->title, $message);
     }
@@ -808,7 +798,7 @@ class Module_admin_newsletter extends Standard_crud_module
                     $name = array_key_exists('m_username', $r) ? $r['m_username'] : '';
 
                     $salt = array_key_exists('pass_salt', $r) ? $r['pass_salt'] : '';
-                    $_lang = array_key_exists('language', $r) ? $r['language'] : '';
+                    $_language = array_key_exists('language', $r) ? $r['language'] : '';
                     $confirm_code = array_key_exists('confirm_code', $r) ? $r['confirm_code'] : 0;
                     $join_time = array_key_exists('join_time', $r) ? $r['join_time'] : time();
 
@@ -817,7 +807,7 @@ class Module_admin_newsletter extends Standard_crud_module
                     $unsub = array_key_exists('the_password', $r) ? ratchet_hash($r['the_password'], 'xunsub') : '';
 
                     if ($csv == 1) {
-                        echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_lang) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '"' . "\n";
+                        echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_language) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '"' . "\n";
                     } else {
                         $tpl = do_template('NEWSLETTER_SUBSCRIBER', array('_GUID' => 'ca45867a23cbaa7c6788d3cd2ba2793c', 'EMAIL' => $email, 'FORENAME' => $forename, 'SURNAME' => $surname, 'NAME' => $name, 'NEWSLETTER_SEND_ID' => $send_id, 'NEWSLETTER_HASH' => $hash));
                         $out .= $tpl->evaluate();
