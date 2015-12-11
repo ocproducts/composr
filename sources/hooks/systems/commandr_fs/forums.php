@@ -330,13 +330,47 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 $minimum_selections = $poll_data['minimum_selections'];
                 $maximum_selections = $poll_data['maximum_selections'];
                 $requires_reply = $poll_data['requires_reply'];
-                $answers = $poll_data['answers']; // A list of pairs of the potential voteable answers and the number of votes.
+                $answers = $poll_data['answers']; // A list of pairs of the potential voteable answers and the cached number of votes.
 
-                cns_make_poll($id, $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers, false);
+                $poll_id = cns_make_poll($id, $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers, false);
+
+                $votes = $poll_data['votes'];
+                table_from_portable_rows('f_poll_votes', $properties['votes'], array('pv_poll_id' => $poll_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
             }
+
+            if (isset($properties['special_pt_access'])) {
+                table_from_portable_rows('f_special_pt_access', $properties['special_pt_access'], array('s_topic_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+            }
+
+            $this->save_ticket_associations($properties, $id);
         }
 
         return strval($id);
+    }
+
+    /**
+     * Save ticket associations.
+     *
+     * @param  array $properties Properties
+     * @param  AUTO_LINK $topic_id The topic ID
+     */
+    private function save_ticket_associations($properties, $topic_id)
+    {
+        if (addon_installed('tickets')) {
+            $GLOBALS['SITE_DB']->query_delete('tickets', array('topic_id' => $topic_id));
+            foreach ($properties['ticket_associations'] as $ticket_association) {
+                $extra_access = $ticket_association['extra_access'];
+                unset($ticket_association['extra_access']);
+
+                $GLOBALS['SITE_DB']->query_delete('ticket_extra_access', array('ticket_id' => $ticket_association['ticket_id']));
+
+                foreach ($extra_access as $_extra_access) {
+                    $GLOBALS['SITE_DB']->query_insert('ticket_extra_access', $_extra_access + array('ticket_id' => $ticket_association['ticket_id']));
+                }
+
+                $GLOBALS['SITE_DB']->query_insert('tickets', $ticket_association + array('topic_id' => $topic_id));
+            }
+        }
     }
 
     /**
@@ -397,12 +431,13 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 'maximum_selections' => $rows[0]['po_maximum_selections'],
                 'requires_reply' => $rows[0]['po_requires_reply'],
                 'answers' => $_answers,
+                'votes' => table_to_portable_rows('f_poll_votes', /*skip*/array('id'), array('pv_poll_id' => $row['t_poll_id'])),
             );
         } else {
             $poll_data = null;
         }
 
-        return array(
+        $ret = array(
             'label' => $row['t_cache_first_title'],
             'description' => $row['t_description'],
             'emoticon' => $row['t_emoticon'],
@@ -417,6 +452,20 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             'description_link' => $row['t_description_link'],
             'poll' => $poll_data,
         );
+
+        if (!is_null($row['t_forum_id'])) {
+            $ret['special_pt_access'] = table_to_portable_rows('f_special_pt_access', /*skip*/array(), array('s_topic_id' => intval($resource_id)));
+        }
+
+        if (addon_installed('tickets')) {
+            $ticket_associations = table_to_portable_rows('tickets', /*skip*/array(), array('topic_id' => intval($resource_id)));
+            foreach ($ticket_associations as &$ticket_association) {
+                $ticket_association['extra_access'] = table_to_portable_rows('ticket_extra_access', /*skip*/array(), array('ticket_id' => $ticket_association['ticket_id']));
+            }
+            $ret['ticket_associations'] = $ticket_associations;
+        }
+
+        return $ret;
     }
 
     /**
@@ -471,17 +520,26 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
                 if (is_null($poll_id)) {
                     require_code('cns_polls_action');
-                    cns_make_poll(intval($resource_id), $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers, false);
+                    $poll_id = cns_make_poll(intval($resource_id), $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers, false);
                 } else {
                     require_code('cns_polls_action2');
                     cns_edit_poll($poll_id, $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers);
                 }
+
+                $votes = $poll_data['votes'];
+                table_from_portable_rows('f_poll_votes', $properties['votes'], array('pv_poll_id' => $poll_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
             } else {
                 if (!is_null($poll_id)) {
                     require_code('cns_polls_action2');
                     cns_delete_poll($poll_id);
                 }
             }
+
+            if (isset($properties['special_pt_access'])) {
+                table_from_portable_rows('f_special_pt_access', $properties['special_pt_access'], array('s_topic_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+            }
+
+            $this->save_ticket_associations($properties, intval($resource_id));
         }
 
         return $resource_id;

@@ -531,11 +531,14 @@ function table_to_portable_rows($table, $fields_to_skip = null, $where_map = nul
 
     $relation_map = get_relation_map_for_table($table);
 
+    if (is_null($fields_to_skip)) {
+        $fields_to_skip = array();
+    }
+    $fields_to_skip = array_merge($fields_to_skip, array_keys($where_map));
+
     foreach ($rows as &$row) {
-        if (!is_null($fields_to_skip)) {
-            foreach ($fields_to_skip as $field_to_skip) {
-                unset($row[$field_to_skip]);
-            }
+        foreach ($fields_to_skip as $field_to_skip) {
+            unset($row[$field_to_skip]);
         }
 
         $row = table_row_to_portable_row($row, $db_fields, $relation_map, $connection);
