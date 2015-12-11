@@ -120,6 +120,8 @@ class Hook_addon_registry_securitylogging
             'adminzone/pages/modules/admin_lookup.php',
             'sources/lookup.php',
             'sources/hooks/systems/commandr_fs_extended_member/banned_from_submitting.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ip_banned.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ip_unbannable.php',
         );
     }
 

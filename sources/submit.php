@@ -199,6 +199,8 @@ function ban_ip($ip, $descrip = '')
     if (($ban != '') && (!compare_ip_address($ban, get_ip_address()))) {
         require_code('failure');
         add_ip_ban($ban, $descrip);
+
+        log_it('IP_BANNED', $ip);
     } elseif (compare_ip_address($ban, get_ip_address())) {
         attach_message(do_lang_tempcode('AVOIDING_BANNING_SELF'), 'warn');
     }
@@ -215,4 +217,6 @@ function unban_ip($ip)
 
     $unban = trim($ip);
     remove_ip_ban($unban);
+
+    log_it('IP_UNBANNED', $ip);
 }

@@ -125,6 +125,13 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
 
         $zone = actual_add_zone($zone, $human_title, $default_page, $header_text, $theme, $require_session, true);
 
+        if (isset($properties['group_access'])) {
+            table_from_portable_rows('group_zone_access', $properties['group_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+        if (isset($properties['member_access'])) {
+            table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
         return $zone;
     }
 
@@ -152,6 +159,8 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             'header_text' => $row['zone_header_text'],
             'theme' => $row['zone_theme'],
             'require_session' => $row['zone_require_session'],
+            'group_access' => table_to_portable_rows('group_zone_access', /*skip*/array(), array('zone_name' => $resource_id)),
+            'member_access' => table_to_portable_rows('member_zone_access', /*skip*/array(), array('zone_name' => $resource_id)),
         );
     }
 
@@ -184,6 +193,13 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $zone = $this->_create_name_from_label($label);
 
         $zone = actual_edit_zone($resource_id, $human_title, $default_page, $header_text, $theme, $require_session, $zone, true, true);
+
+        if (isset($properties['group_access'])) {
+            table_from_portable_rows('group_zone_access', $properties['group_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+        if (isset($properties['member_access'])) {
+            table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
 
         return $resource_id;
     }
