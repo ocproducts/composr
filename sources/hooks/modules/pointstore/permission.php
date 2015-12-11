@@ -250,6 +250,8 @@ class Hook_pointstore_permission
             $map += insert_lang('p_mail_body', $mail_body, 2);
             $GLOBALS['SITE_DB']->query_insert('pstore_permissions', $map);
         }
+
+        log_it('POINTSTORE_AMEND_CUSTOM_PERMISSIONS');
     }
 
     /**
