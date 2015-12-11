@@ -15,14 +15,44 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    commandr
+ * @package    filedump
  */
 
 /**
  * Hook class.
  */
-class Hook_commandr_fs_raw
+class Hook_commandr_fs_filedump
 {
+    /**
+     * Standard constructor.
+     */
+    public function __construct()
+    {
+        require_code('resource_fs');
+    }
+
+    /**
+     * Get complete path.
+     *
+     * @param  array $meta_dir The current meta-directory path
+     * @return array A pair: Complete path, Relative path
+     */
+    private function get_complete_path($meta_dir)
+    {
+        $path = get_custom_file_base() . '/uploads/filedump';
+        $subpath = '';
+        foreach ($meta_dir as $meta_dir_section) {
+            if ($subpath != '') {
+                $subpath .= '/';
+            }
+            $subpath .= filter_naughty($meta_dir_section);
+        }
+        if ($subpath != '') {
+            $path .= '/' . $subpath;
+        }
+        return array($path, $subpath);
+    }
+
     /**
      * Standard Commandr-fs listing function for commandr_fs hooks.
      *
@@ -33,10 +63,7 @@ class Hook_commandr_fs_raw
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
-        $path = get_custom_file_base();
-        foreach ($meta_dir as $meta_dir_section) {
-            $path .= '/' . filter_naughty($meta_dir_section);
-        }
+        list($path, $place) = $this->get_complete_path($meta_dir);
 
         $listing = array();
         if (is_dir($path)) {
@@ -51,6 +78,15 @@ class Hook_commandr_fs_raw
                     );
                 }
             }
+
+            // Folder meta
+            $listing[] = array(
+                RESOURCEFS_SPECIAL_DIRECTORY_FILE,
+                COMMANDRFS_FILE,
+                null,
+                filemtime($path),
+            );
+
             return $listing;
         }
 
@@ -69,10 +105,8 @@ class Hook_commandr_fs_raw
     public function make_directory($meta_dir, $meta_root_node, $new_dir_name, &$commandr_fs)
     {
         $new_dir_name = filter_naughty($new_dir_name);
-        $path = get_custom_file_base();
-        foreach ($meta_dir as $meta_dir_section) {
-            $path .= '/' . filter_naughty($meta_dir_section);
-        }
+
+        list($path, $place) = $this->get_complete_path($meta_dir);
 
         if ((is_dir($path)) && (!file_exists($path . '/' . $new_dir_name)) && (is_writable_wrap($path))) {
             $ret = @mkdir($path . '/' . $new_dir_name, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . '/' . $new_dir_name)));
@@ -96,16 +130,22 @@ class Hook_commandr_fs_raw
     public function remove_directory($meta_dir, $meta_root_node, $dir_name, &$commandr_fs)
     {
         $dir_name = filter_naughty($dir_name);
-        $path = get_custom_file_base();
-        foreach ($meta_dir as $meta_dir_section) {
-            $path .= '/' . filter_naughty($meta_dir_section);
-        }
+
+        list($path, $place) = $this->get_complete_path($meta_dir);
 
         if ((is_dir($path)) && (file_exists($path . '/' . $dir_name)) && (is_writable_wrap($path . '/' . $dir_name))) {
             require_code('files');
             deldir_contents($path . '/' . $dir_name);
             $ret = @rmdir($path . '/' . $dir_name) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . '/' . $dir_name)));
             sync_file($path . '/' . $dir_name);
+
+            // Cleanup from DB
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)));
+            if (!is_null($test)) {
+                delete_lang($test);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)), '', 1);
+            }
+
             return true;
         } else {
             return false; // Directory doesn't exist
@@ -124,14 +164,36 @@ class Hook_commandr_fs_raw
     public function remove_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
         $file_name = filter_naughty($file_name);
-        $path = get_custom_file_base();
-        foreach ($meta_dir as $meta_dir_section) {
-            $path .= '/' . filter_naughty($meta_dir_section);
+
+        list($path, $place) = $this->get_complete_path($meta_dir);
+
+        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+            // What if folder meta...
+
+            $dir_name = basename($place);
+            $place = dirname($place);
+
+            // Cleanup from DB
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)));
+            if (!is_null($test)) {
+                delete_lang($test);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)), '', 1);
+            }
+
+            return true;
         }
 
         if ((is_dir($path)) && (file_exists($path . '/' . $file_name)) && (is_writable_wrap($path . '/' . $file_name))) {
             $ret = @unlink($path . '/' . $file_name) or intelligent_write_error($path . '/' . $file_name);
             sync_file($path . '/' . $file_name);
+
+            // Cleanup from DB
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)));
+            if (!is_null($test)) {
+                delete_lang($test);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)), '', 1);
+            }
+
             return $ret;
         } else {
             return false; // File doesn't exist
@@ -150,13 +212,37 @@ class Hook_commandr_fs_raw
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
         $file_name = filter_naughty($file_name);
-        $path = get_custom_file_base();
-        foreach ($meta_dir as $meta_dir_section) {
-            $path .= '/' . filter_naughty($meta_dir_section);
+
+        list($path, $place) = $this->get_complete_path($meta_dir);
+
+        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+            // What if folder meta...
+
+            $dir_name = basename($place);
+            $place = dirname($place);
+
+            $rows = table_to_portable_rows('filedump', array('id'), array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)));
+            if (array_key_exists(0, $rows)) {
+                $output = $rows[0];
+            } else {
+                $output = array('description' => '', 'the_member' => remap_resource_id_as_portable('member', get_member()));
+            }
+
+            return json_encode($output);
         }
 
         if ((is_dir($path)) && (file_exists($path . '/' . $file_name)) && (is_readable($path . '/' . $file_name))) {
-            return file_get_contents($path . '/' . $file_name);
+            $data = file_get_contents($path . '/' . $file_name);
+
+            $output = array('data' => base64_encode($data));
+            $rows = table_to_portable_rows('filedump', array('id'), array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)));
+            if (array_key_exists(0, $rows)) {
+                $output += $rows[0];
+            } else {
+                $output += array('description' => '', 'the_member' => remap_resource_id_as_portable('member', get_member()));
+            }
+
+            return json_encode($output);
         } else {
             return false; // File doesn't exist
         }
@@ -175,21 +261,47 @@ class Hook_commandr_fs_raw
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
         $file_name = filter_naughty($file_name);
-        $path = get_custom_file_base();
-        foreach ($meta_dir as $meta_dir_section) {
-            $path .= '/' . filter_naughty($meta_dir_section);
+
+        list($path, $place) = $this->get_complete_path($meta_dir);
+
+        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+            // What if folder meta...
+
+            $dir_name = basename($place);
+            $place = dirname($place);
+
+            $input = json_decode($contents, true);
+
+            if (count($input) != 0) {
+                table_from_portable_rows('filedump', array($input), array('name' => substr($dir_name, 0, 80), 'path' => substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+            }
+
+            return true;
         }
 
         if ((is_dir($path)) && (((file_exists($path . '/' . $file_name)) && (is_writable_wrap($path . '/' . $file_name))) || ((!file_exists($path . '/' . $file_name)) && (is_writable_wrap($path))))) {
+            $input = json_decode($contents, true);
+
+            $data = @base64_decode($input['data']);
+            if ($data === false) {
+                $data = $input['data'];
+            }
+            unset($input['data']);
+
             $fh = @fopen($path . '/' . $file_name, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($path . '/' . $file_name);
-            $output = fwrite($fh, $contents);
+            $output = fwrite($fh, $data);
             fclose($fh);
-            if ($output < strlen($contents)) {
+            if ($output < strlen($data)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
             fix_permissions($path . '/' . $file_name);
             sync_file($path . '/' . $file_name);
-            return $output;
+
+            if (count($input) != 0) {
+                table_from_portable_rows('filedump', array($input), array('name' => substr($file_name, 0, 80), 'path' => substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+            }
+
+            return true;
         } else {
             return false; // File doesn't exist
         }

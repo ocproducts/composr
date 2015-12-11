@@ -51,6 +51,8 @@ function init__resource_fs()
 
     define('RESOURCEFS_DEFAULT_EXTENSION', 'cms');
 
+    define('RESOURCEFS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCEFS_DEFAULT_EXTENSION);
+
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
     global $RESOURCEFS_LOGGER, $RESOURCEFS_LOGGER_LEVEL;
@@ -495,14 +497,12 @@ TABLE LEVEL
  * Transfer a table's contents to JSON format.
  *
  * @param  string $table Table name
- * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none)
+ * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none). Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
  * @param  ?array $where_map Extra WHERE constraints (null: none)
  * @return string JSON data
  */
 function table_to_json($table, $fields_to_skip = null, $where_map = null)
 {
-    require_code('json');
-
     return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map));
 }
 
@@ -510,7 +510,7 @@ function table_to_json($table, $fields_to_skip = null, $where_map = null)
  * Transfer a table's contents to portable rows.
  *
  * @param  string $table Table name
- * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none)
+ * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none). Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
  * @param  ?array $where_map Extra WHERE constraints (null: none)
  * @param  ?object $connection Database connection to look up from (null: work out from table name)
  * @return array Portable rows
@@ -558,9 +558,7 @@ function table_to_portable_rows($table, $fields_to_skip = null, $where_map = nul
  */
 function table_from_json($table, $json, $extra_field_data, $replace_mode)
 {
-    require_code('json');
-
-    $rows = @json_decode($json);
+    $rows = @json_decode($json, true);
 
     return table_from_portable_rows($table, $json, $extra_field_data, $replace_mode);
 }
@@ -639,7 +637,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
 
         $row = table_row_from_portable_row($row, $db_fields, $relation_map, $connection);
 
-        if (!$replace_mode) {
+        if ($replace_mode == TABLE_REPLACE_MODE_NONE) {
             if (count($lang_fields) != 0 || count($upload_fields) != 0) {
                 $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields), array_intersect_key($row, $keys));
 
@@ -677,11 +675,15 @@ ROW LEVEL
  * @param  array $row Table row
  * @param  array $db_fields A map of DB-style schema data for the fields we have in $row; helps us build portability
  * @param  array $relation_map Relation map
- * @param  object $connection Database connection to look up from
+ * @param  ?object $connection Database connection to look up from (null: main site DB)
  * @return array Portable row
  */
-function table_row_to_portable_row($row, $db_fields, $relation_map, $connection)
+function table_row_to_portable_row($row, $db_fields, $relation_map, $connection = null)
 {
+    if (is_null($connection)) {
+        $connection = $GLOBALS['SITE_DB'];
+    }
+
     foreach ($db_fields as $db_field_name => $db_field_type) {
         if (!isset($row[$db_field_name])) {
             continue;
@@ -723,11 +725,15 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $connection)
  * @param  array $row Portable row
  * @param  array $db_fields A map of DB-style schema data for the fields we have in $row; helps us build portability
  * @param  array $relation_map Relation map
- * @param  object $connection Database connection to look up from
+ * @param  ?object $connection Database connection to look up from (null: main site DB)
  * @return array Table row
  */
-function table_row_from_portable_row($row, $db_fields, $relation_map, $connection)
+function table_row_from_portable_row($row, $db_fields, $relation_map, $connection = null)
 {
+    if (is_null($connection)) {
+        $connection = $GLOBALS['SITE_DB'];
+    }
+
     foreach ($db_fields as $db_field_name => $db_field_type) {
         if (!isset($row[$db_field_name])) {
             continue;
@@ -915,6 +921,10 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
 {
     if (is_null($resource_id)) {
         return null;
+    }
+
+    if (is_integer($resource_id)) {
+        $resource_id = strval($resource_id);
     }
 
     list($moniker, $guid, $label) = generate_resourcefs_moniker($resource_type, $resource_id);

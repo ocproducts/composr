@@ -164,7 +164,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
             case 'application/json+oembed':
             case 'text/javascript': // noembed uses this, naughty
                 require_code('json');
-                $_data = json_decode($result[0]);
+                $_data = json_decode($result[0], true);
                 if ($_data === null) {
                     return null;
                 }

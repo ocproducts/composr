@@ -119,6 +119,7 @@ class Hook_addon_registry_filedump
             'uploads/filedump/.htaccess',
             'themes/default/css/filedump.css',
             'sources/filedump.php',
+            'sources/hooks/systems/commandr_fs/filedump.php',
         );
     }
 

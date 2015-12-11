@@ -24,7 +24,7 @@
 class Hook_commandr_fs_extended_config__ip_unbannable
 {
     /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
@@ -35,7 +35,7 @@ class Hook_commandr_fs_extended_config__ip_unbannable
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr FS hooks.
+     * Standard Commandr-fs file reading function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -49,7 +49,7 @@ class Hook_commandr_fs_extended_config__ip_unbannable
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr FS hooks.
+     * Standard Commandr-fs file writing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory

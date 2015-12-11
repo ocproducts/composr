@@ -1563,7 +1563,7 @@ class Resource_fs_base
      */
     public function file_save_xml($filename, $path, $data)
     {
-        $properties = ($data == '') ? array() : @json_decode($data); // TODO: Should be XML parsing, #1160 on tracker
+        $properties = ($data == '') ? array() : @json_decode($data, true); // TODO: Should be XML parsing, #1160 on tracker
         if ($properties === false) {
             return false;
         }
@@ -1623,7 +1623,7 @@ class Resource_fs_base
      */
     public function folder_save_xml($filename, $path, $data)
     {
-        $properties = @json_decode($data); // TODO: Should be XML parsing, #1160 on tracker
+        $properties = @json_decode($data, true); // TODO: Should be XML parsing, #1160 on tracker
         if ($properties === false) {
             return false;
         }
@@ -1830,7 +1830,7 @@ class Resource_fs_base
     */
 
     /**
-     * Standard commandr_fs listing function for Commandr-fs hooks.
+     * Standard Commandr-fs listing function for Commandr-fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -2007,7 +2007,7 @@ class Resource_fs_base
             }
 
             $listing[] = array(
-                '_folder.' . RESOURCEFS_DEFAULT_EXTENSION,
+                RESOURCEFS_SPECIAL_DIRECTORY_FILE,
                 COMMANDRFS_FILE,
                 null/*don't calculate a filesize*/,
                 $filetime,
@@ -2018,7 +2018,7 @@ class Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs directory creation function for Commandr-fs hooks.
+     * Standard Commandr-fs directory creation function for Commandr-fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -2035,7 +2035,7 @@ class Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs directory removal function for Commandr-fs hooks.
+     * Standard Commandr-fs directory removal function for Commandr-fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -2052,7 +2052,7 @@ class Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr-fs hooks.
+     * Standard Commandr-fs file reading function for Commandr-fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -2062,14 +2062,14 @@ class Resource_fs_base
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        if ($file_name == '_folder.' . RESOURCEFS_DEFAULT_EXTENSION) {
+        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
             return $this->folder_load__flat(array_pop($meta_dir), implode('/', $meta_dir));
         }
         return $this->file_load__flat($file_name, implode('/', $meta_dir));
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr-fs hooks.
+     * Standard Commandr-fs file writing function for Commandr-fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -2080,14 +2080,14 @@ class Resource_fs_base
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        if ($file_name == '_folder.' . RESOURCEFS_DEFAULT_EXTENSION) {
+        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
             return $this->folder_save__flat(array_pop($meta_dir), implode('/', $meta_dir), $contents) !== false;
         }
         return $this->file_save__flat($file_name, implode('/', $meta_dir), $contents) !== false;
     }
 
     /**
-     * Standard commandr_fs file removal function for Commandr-fs hooks.
+     * Standard Commandr-fs file removal function for Commandr-fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -2097,7 +2097,7 @@ class Resource_fs_base
      */
     public function remove_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        if ($file_name == '_folder.' . RESOURCEFS_DEFAULT_EXTENSION) {
+        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
             return true; // Fake success, as needs to do so when deleting folder contents
         }
         return $this->file_delete($file_name, implode('/', $meta_dir));
