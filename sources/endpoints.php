@@ -60,25 +60,38 @@ function endpoint_script()
             $matches = array();
             if (preg_match('#^(/\w+)(/\w+)?(/.+)?#', $path_info, $matches) != 0) {
                 $hook_type = ltrim($matches[1], '/');
-                $hook = ltrim($matches[2], '/');
-                $id = ltrim($matches[3], '/');
+                $hook = isset($matches[2]) ? ltrim($matches[2], '/') : false;
+                $id = isset($matches[3]) ? ltrim($matches[3], '/') : null;
+            }
+
+            // POST data may need switching about
+            if (count($_POST) == 0) {
+                global $HTTP_RAW_POST_DATA;
+                if (isset($HTTP_RAW_POST_DATA)) {
+                    $ver = PHP_VERSION;
+                    if (intval($ver[0]) >= 5) {
+                        $_POST['data'] = @file_get_contents('php://input');
+                    } else {
+                        $_POST['data'] = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
+                    }
+                }
             }
 
             // Convert from REST's use of standard HTTP verbs to Composr's standard $type names (also corresponds with CRUD)
             switch (strtoupper($_SERVER['REQUEST_METHOD'])) {
-                case 'POST': // CRUD: Create
+                case 'POST': // REST POST = CRUD create = Composr add
                     $type = 'add';
                     break;
 
-                case 'PUT': // CRUD: Update
+                case 'PUT': // REST PUT = CRUD update = Composr edit
                     $type = 'edit';
                     break;
 
-                case 'DELETE': // CRUD: Delete
+                case 'DELETE': // REST DELETE = CRUD delete = Composr delete
                     $type = 'delete';
                     break;
 
-                case 'GET':
+                case 'GET': // REST GET = N/A = Composr view
                 default:
                     $type = 'view';
                     break;
@@ -88,7 +101,7 @@ function endpoint_script()
         // GET params take priority
         $hook_type = get_param_string('hook_type', $hook_type);
         $hook = get_param_string('hook', $hook);
-        $type = get_param_string('type', $id);
+        $type = get_param_string('type', $type);
         $id = get_param_string('id', $id);
         $response_type = get_param_string('response_type', $response_type);
 
@@ -107,7 +120,7 @@ function endpoint_script()
     catch (Exception $e) {
         $return_data = array(
             'success' => false,
-            'error_details' => html_entity_decode(strip_tags($e->getMessage()), ENT_QUOTES, get_charset()),
+            'error_details' => strip_html($e->getMessage()),
             'response_data' => array(),
         );
     }
@@ -121,7 +134,7 @@ function endpoint_script()
             break;
 
         default:
-            fatal_exit('Only supported output type is JSON.');
+            fatal_exit(do_lang_tempcode('JSON_ONLY'));
             break;
     }
 }

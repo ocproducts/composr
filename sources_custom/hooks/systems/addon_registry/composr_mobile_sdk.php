@@ -179,6 +179,7 @@ class Hook_addon_registry_composr_mobile_sdk
             'sources_custom/hooks/endpoints/account/login.php',
             'sources_custom/hooks/endpoints/account/lost_password.php',
             'sources_custom/hooks/endpoints/account/setup_push_notifications.php',
+            'sources_custom/hooks/endpoints/content/commandr_fs.php',
             'sources_custom/hooks/endpoints/misc/contact_us.php',
             // Also see cns_tapatalk addon for more useful endpoints, but via Tapatalk API. At some point we likely will merge this into a single framework
 

@@ -1,4 +1,4 @@
-[title sub="Written by ocProducts"]Composr Tutorial: Writing mobile apps - the Composr Mobile SDK[/title]
+[title sub="Written by ocProducts"]Composr Tutorial: Writing mobile apps -- the Composr Mobile SDK[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/logo.jpg[/media]
 Composr Mobile SDK ("CMS SDK") is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experience iOS and Android developers.
@@ -211,6 +211,20 @@ Lots of data from Composr's [tt]cns_read_in_member_profile[/tt] function
 
 [tt]email[/tt] (optional, the email to send from -- defaults to that of current member)
 | [tt]message[/tt]
+|-
+| [tt]content[/tt]
+| [tt]commandr_fs[/tt]
+| [i]None[/i]
+
+The standardised [tt]type[/tt] specifies the REST operation
+
+The standardised [tt]id[/tt] specifies the Commandr-fs path
+| [i]Raw data, not split into fields[/i]
+
+[b]or[/b]
+
+[i]A single parameter named [tt]data[/tt] containing said data[/i]
+| [i]Whatever the Commandr-fs hook has[/i]
 |}
 
 [title="2"]Other approaches to mobile integration[/title]

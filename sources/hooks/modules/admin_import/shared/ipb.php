@@ -663,7 +663,7 @@ class Hook_ipb_base
                 $title = '';
                 if ($row['new_topic'] == 1) {
                     $topics = $db->query('SELECT * FROM ' . $table_prefix . 'topics WHERE tid=' . strval($row['topic_id']));
-                    $title = strip_tags(@html_entity_decode($topics[0]['title'], ENT_QUOTES, get_charset()));
+                    $title = strip_html($topics[0]['title']);
                 } elseif (!is_null($row['post_title'])) {
                     $title = @html_entity_decode($row['post_title'], ENT_QUOTES, get_charset());
                 }

@@ -275,7 +275,7 @@ class template_previews_test_set extends cms_test_case
                 $ATTACHED_MESSAGES = new Tempcode();
             }
             $put_out = (!$ATTACHED_MESSAGES->is_empty()) || (count($ATTACHED_MESSAGES_RAW) > 0);
-            $this->assertFalse($put_out, 'Messages put out by ' . $function . '  (' . strip_tags($ATTACHED_MESSAGES->evaluate()) . ')');
+            $this->assertFalse($put_out, 'Messages put out by ' . $function . '  (' . strip_html($ATTACHED_MESSAGES->evaluate()) . ')');
 
             if (!$put_out) {
                 fclose(fopen(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp', 'wb'));

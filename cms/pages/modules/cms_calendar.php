@@ -683,7 +683,7 @@ class Module_cms_calendar extends Standard_crud_module
     public function get_event_parameters()
     {
         $type = post_param_integer('type', INTEGER_MAGIC_NULL);
-        if ((!has_actual_page_access(get_member(), 'admin_commandr')) && ($type == db_get_first_id())) {
+        if ((!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) && ($type == db_get_first_id())) {
             access_denied('I_ERROR');
         }
         $recurrence = post_param_string('recurrence', STRING_MAGIC_NULL);

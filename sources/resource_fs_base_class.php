@@ -23,7 +23,7 @@
  *
  * @package    commandr
  */
-class Resource_fs_base
+abstract class Resource_fs_base
 {
     /*
     FINDING INFORMATION ABOUT HOOK STRUCTURE

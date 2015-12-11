@@ -77,7 +77,7 @@ class Hook_choose_gallery
             }
             $title = $t['title'];
             if (is_object($title)) {
-                $title = @html_entity_decode(strip_tags($title->evaluate()), ENT_QUOTES, get_charset());
+                $title = strip_html($title->evaluate());
             }
             $has_children = ($t['child_count'] != 0);
             $selectable =

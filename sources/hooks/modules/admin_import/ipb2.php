@@ -146,7 +146,7 @@ class Hook_ipb2 extends Hook_ipb_base
                 continue;
             }
 
-            $description = strip_tags(@html_entity_decode($row['description'], ENT_QUOTES, get_charset()));
+            $description = strip_html($row['description']);
             $expanded_by_default = 1;
 
             $id_new = cns_make_forum_grouping($title, $description, $expanded_by_default);
@@ -181,7 +181,7 @@ class Hook_ipb2 extends Hook_ipb_base
             }
 
             $name = @html_entity_decode($row['name'], ENT_QUOTES, get_charset());
-            $description = strip_tags(@html_entity_decode($row['description'], ENT_QUOTES, get_charset()));
+            $description = strip_html($row['description']);
 
             // To determine whether parent_id specifies category or parent, we must check status of what it is pointing at
             $parent_test = $db->query('SELECT use_ibc,parent_id FROM ' . $table_prefix . 'forums WHERE id=' . strval($row['parent_id']));

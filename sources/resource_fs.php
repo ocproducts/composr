@@ -815,7 +815,7 @@ function remap_urlpath_as_portable($urlpath)
         return null;
     }
 
-    if ($urlpath == '' || strpos($urlpath, ':') !== false) {
+    if ($urlpath == '' || strpos($urlpath, ':') !== false || get_param_integer('raw_urls', 0) == 1) {
         return $urlpath;
     }
 

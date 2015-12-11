@@ -63,7 +63,7 @@ class Hook_choose_image
             if ($id === $_id) { // Possible when we look under as a root
                 foreach ($t['entries'] as $eid => $etitle) {
                     if (is_object($etitle)) {
-                        $etitle = @html_entity_decode(strip_tags($etitle->evaluate()), ENT_QUOTES, get_charset());
+                        $etitle = strip_html($etitle->evaluate());
                     }
 
                     $thumb_url = ensure_thumbnail($t['entries_rows'][$eid]['url'], $t['entries_rows'][$eid]['thumb_url'], 'galleries', 'images', $eid);

@@ -1740,7 +1740,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     if ((!$is_panel) && (!$being_included)) {
         if (($title_to_use !== null) && ($title_to_use != '')) {
             get_screen_title($title_to_use, false); // Little hack - this will force DISPLAYED_TITLE to get set.
-            $filtered_title_to_use = @html_entity_decode(strip_tags($title_to_use), ENT_QUOTES, get_charset());
+            $filtered_title_to_use = strip_html($title_to_use);
         }
         seo_meta_load_for('comcode_page', $zone . ':' . $codename, $filtered_title_to_use);
     }

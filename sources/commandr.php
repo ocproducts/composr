@@ -58,7 +58,7 @@ function commandr_script()
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        if (!has_actual_page_access(get_member(), 'admin_commandr')) {
+        if (!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
             fatal_exit(do_lang_tempcode('ACCESS_DENIED__PAGE_ACCESS', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
         }
     }

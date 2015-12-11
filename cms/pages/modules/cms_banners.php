@@ -580,18 +580,18 @@ class Module_cms_banners extends Standard_crud_module
             // Basic stats...
 
             if ($has_banner_network) {
-                $csv_row[strip_tags(do_lang('BANNER_HITSFROM'))] = integer_format($row['hits_from']);
-                $csv_row[strip_tags(do_lang('BANNER_VIEWSFROM'))] = integer_format($row['views_from']);
+                $csv_row[strip_html(do_lang('BANNER_HITSFROM'))] = integer_format($row['hits_from']);
+                $csv_row[strip_html(do_lang('BANNER_VIEWSFROM'))] = integer_format($row['views_from']);
             }
-            $csv_row[strip_tags(do_lang('BANNER_HITSTO'))] = ($row['site_url'] == '') ? strip_tags(do_lang('CANT_TRACK')) : integer_format($row['hits_to']);
-            $csv_row[strip_tags(do_lang('BANNER_VIEWSTO'))] = ($row['site_url'] == '') ? strip_tags(do_lang('CANT_TRACK')) : integer_format($row['views_to']);
+            $csv_row[strip_html(do_lang('BANNER_HITSTO'))] = ($row['site_url'] == '') ? strip_html(do_lang('CANT_TRACK')) : integer_format($row['hits_to']);
+            $csv_row[strip_html(do_lang('BANNER_VIEWSTO'))] = ($row['site_url'] == '') ? strip_html(do_lang('CANT_TRACK')) : integer_format($row['views_to']);
 
             if ($row['views_to'] != 0) {
                 $click_through = float_format(100.0 * (floatval($row['hits_to']) / floatval($row['views_to'])));
             } else {
                 $click_through = do_lang('NA');
             }
-            $csv_row[strip_tags(do_lang('BANNER_CLICKTHROUGH'))] = ($row['site_url'] == '') ? strip_tags(do_lang('CANT_TRACK')) : $click_through;
+            $csv_row[strip_html(do_lang('BANNER_CLICKTHROUGH'))] = ($row['site_url'] == '') ? strip_html(do_lang('CANT_TRACK')) : $click_through;
 
             // Display determination details...
 

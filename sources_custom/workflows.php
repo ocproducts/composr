@@ -687,7 +687,7 @@ function workflow_update_handler()
     dispatch_notification('workflow_step', strval($workflow_id), $subject, $body, $send_to_members);
 
     // Finally return a success message
-    $return_url = strip_tags(post_param_string('return_url'));
+    $return_url = post_param_string('return_url');
     return redirect_screen(new Tempcode(), $return_url, $success_message);
 }
 

@@ -693,7 +693,7 @@ class Hook_ecommerce_catalogue_items
         if (array_key_exists('FIELD_0', $map)) {
             $product_title = $map['FIELD_0_PLAIN'];
             if (is_object($product_title)) {
-                $product_title = @html_entity_decode(strip_tags($product_title->evaluate()), ENT_QUOTES);
+                $product_title = strip_html($product_title->evaluate());
             }
         }
 

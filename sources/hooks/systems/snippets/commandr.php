@@ -34,7 +34,7 @@ class Hook_snippet_commandr
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        if (has_actual_page_access(get_member(), 'admin_commandr')) {
+        if (has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
             require_code('commandr');
             require_lang('commandr');
 

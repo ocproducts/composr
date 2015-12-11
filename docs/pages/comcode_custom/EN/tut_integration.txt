@@ -71,7 +71,7 @@ To clarify, the following linking situations confuse Composr:
  - page trees that go more than one level deep
  - links that go back up a page tree
 
-[title="2"]Embedding[/title]
+[title="2"]Embedding into Composr[/title]
 
 If you wish for the other system to appear directly inside Composr, much like a Composr page, this is a lot more awkward.
 
@@ -192,7 +192,7 @@ This form of integration is most appropriate for news and calendars, although ot
 
 Use of RSS is documented in the [page="_SEARCH:tut_adv_news"]Advanced News tutorial[/page].
 
-[title="2"]Integrating JavaScript libraries[/title]
+[title="2"]Integrating JavaScript libraries into Composr[/title]
 
 There are a number of different techniques you can use.
 
@@ -289,7 +289,7 @@ You could inject a JavaScript element that includes an external URL, or a JavaSc
 
 There is an equivalent [tt]attach_to_screen_footer[/tt] function.
 
-[title="2"]Integrating CSS libraries[/title]
+[title="2"]Integrating CSS libraries into Composr[/title]
 
 There are a number of different techniques you can use.
 
@@ -324,7 +324,7 @@ If you want to include the CSS library from a template, do:
 {$REQUIRE_CSS,example}
 [/code]
 
-[title="2"]Look and feel[/title]
+[title="2"]Look and feel when integrating into Composr[/title]
 
 The other system is unlikely to naturally fit in with your Composr theme: therefore you may need to make an effort to make them look alike. This would either involve changing Composr, changing the other system, or changing both to coalesce visually.
 
@@ -370,12 +370,20 @@ If coding a system to create an Composr login automatically (i.e. without needin
 
 You may need to tune the "Pages without security tokens" option if you are setting up pages with custom forms but not going through the full Composr forms API.
 
+[title="2"]General integration for external systems to access Composr[/title]
+
+As Composr is Open Source, you can add whatever integration code you wish to it so that other systems have a way in.
+
+However, the framework for this has been done for you with the endpoints API, and [page="_SEARCH:tut_mobile_sdk"]Composr Mobile SDK[/page] provides a ready-made set of endpoints covering many common use cases.
+New endpoint hooks can be created by a PHP programmer easily, providing whatever custom REST API integration is required.
+
 [concepts
  1_key="iframe"    1_value="A portion of the main web page that encloses another web page (with its own URL)"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
+ - [page="_SEARCH:tut_mobile_sdk"]Writing mobile apps -- the Composr Mobile SDK[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of the forum driver system[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]

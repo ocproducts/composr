@@ -39,6 +39,6 @@ class Hook_snippet_exists_emoticon
 
         require_lang('cns');
 
-        return make_string_tempcode(strip_tags(strip_html(do_lang('CONFLICTING_EMOTICON_CODE', escape_html($val)))));
+        return make_string_tempcode(strip_html(do_lang('CONFLICTING_EMOTICON_CODE', escape_html($val))));
     }
 }

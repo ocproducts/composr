@@ -62,7 +62,7 @@ class Hook_choose_video
             if ($id === $_id) { // Possible when we look under as a root
                 foreach ($t['entries'] as $eid => $etitle) {
                     if (is_object($etitle)) {
-                        $etitle = @html_entity_decode(strip_tags($etitle->evaluate()), ENT_QUOTES, get_charset());
+                        $etitle = strip_html($etitle->evaluate());
                     }
                     $out .= '<entry id="' . xmlentities(strval($eid)) . '" title="' . xmlentities($etitle) . '" selectable="true"></entry>';
                 }

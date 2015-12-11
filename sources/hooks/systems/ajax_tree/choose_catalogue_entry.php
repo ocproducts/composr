@@ -56,7 +56,7 @@ class Hook_choose_catalogue_entry
             if ($id === strval($_id)) { // Possible when we look under as a root
                 foreach ($t['entries'] as $eid => $etitle) {
                     if (is_object($etitle)) {
-                        $etitle = @strip_tags(html_entity_decode($etitle->evaluate(), ENT_QUOTES, get_charset()));
+                        $etitle = strip_html($etitle->evaluate());
                     }
                     $out .= '<entry id="' . xmlentities(strval($eid)) . '" title="' . xmlentities($etitle) . '" selectable="true"></entry>';
                 }
