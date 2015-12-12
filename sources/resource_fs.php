@@ -134,12 +134,7 @@ function resourcefs_logging__end()
  */
 function get_resource_commandrfs_object($resource_type)
 {
-    $object = get_content_object($resource_type);
-    if (is_null($object)) {
-        return null;
-    }
-    $info = $object->info();
-    $fs_hook = $info['commandr_filesystem_hook'];
+    $fs_hook = convert_composr_type_codes('content_type', $resource_type, 'commandr_filesystem_hook');
     if (is_null($fs_hook)) {
         return null;
     }
@@ -290,6 +285,9 @@ function find_guid_via_id($resource_type, $resource_id)
 function find_commandrfs_filename_via_id($resource_type, $resource_id, $include_subpath = false)
 {
     $resourcefs_ob = get_resource_commandrfs_object($resource_type);
+    if (is_null($resourcefs_ob)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
     $filename = $resourcefs_ob->convert_id_to_filename($resource_type, $resource_id);
     if (!is_null($filename)) {
         if ($include_subpath) {

@@ -47,7 +47,7 @@ How to link the SDK into your project:
  - [tt]AppDelegate.h[/tt] and [tt]AppDelegate.m[/tt]
  - Entire [tt]Composr Mobile SDKTests[/tt] folder
  - [tt]Supporting Files[/tt] folder
-[*] Now, you need to add a compiler option for the [tt]JsonKit[/tt] library. Open the "Compile Sources" in "Build Settings" of your project. Scroll down to [tt]JSONKit.m[/tt] and double click on it. In the popup that appears, give this text: [tt]-fno-objc-arc -Wno-conversion[/tt].
+[*] Now, you need to add a compiler option for the [tt]JsonKit[/tt] library. Open the "Compile Sources" in "Build Phases" of your project. Scroll down to [tt]JSONKit.m[/tt] and double click on it. In the popup that appears, give this text: [tt]-fno-objc-arc -Wno-conversion[/tt].
 [*] Now, open up your pch file and import [tt]CMS_SDK.h[/tt] so that the SDK is available in your entire project.
 [/list]
 That's it. You are now good to go work with the features of [tt]CMS_SDK[/tt].

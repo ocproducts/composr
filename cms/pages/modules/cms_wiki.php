@@ -55,6 +55,7 @@ class Module_cms_wiki
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         $ret = array(
+            'browse' => array('MANAGE_WIKI', 'menu/rich_content/wiki'),
             'add_page' => array('WIKI_ADD_PAGE', 'menu/rich_content/wiki'),
         );
 

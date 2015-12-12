@@ -27,6 +27,10 @@ class Hook_endpoint_content_commandr_fs
      */
     public function run($type, $id)
     {
+        if (!addon_installed('commandr')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON'));
+        }
+
         require_lang('composr_mobile_sdk');
 
         if (!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
@@ -61,7 +65,7 @@ class Hook_endpoint_content_commandr_fs
         switch ($type) {
             case 'add':
                 if (!$exists) {
-                    $test = $commandr_fs->write_file($path_arr, post_param_string('data', ''));
+                    $test = $commandr_fs->write_file($path_arr, post_param_string('data'));
                     if (!$test) {
                         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                     }
@@ -72,7 +76,7 @@ class Hook_endpoint_content_commandr_fs
 
             case 'edit':
                 if ($exists) {
-                    $test = $commandr_fs->write_file($path_arr, post_param_string('data', ''));
+                    $test = $commandr_fs->write_file($path_arr, post_param_string('data'));
                     if (!$test) {
                         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                     }
@@ -91,6 +95,32 @@ class Hook_endpoint_content_commandr_fs
                     warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($id)));
                 }
                 break;
+
+            case 'search':
+                // Search format is <resource-type>/<resource-id> (e.g. download/10) OR <guid>
+                require_code('resource_fs');
+                if (strpos($id, '/') === false) {
+                    $details = $GLOBALS['SITE_DB']->query_select('alternative_ids', array('*'), array(
+                        'resource_guid' => $resource_guid,
+                    ), '', 1);
+                    if (!array_key_exists(0, $details)) {
+                        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                    }
+                    $resource_type = $details[0]['resource_type'];
+                    $resource_id = $details[0]['resource_id'];
+                } else {
+                    list($resource_type, $resource_id) = explode('/', $id, 2);
+                }
+                $id = find_commandrfs_filename_via_id($resource_type, $resource_id, true);
+                if (is_null($id)) {
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                }
+                $fs_hook = convert_composr_type_codes('content_type', $resource_type, 'commandr_filesystem_hook');
+                $id = 'var/' . $fs_hook . '/' . $id;
+                $path_arr = $commandr_fs->_pwd_to_array('/' . $id);
+                $is_file = $commandr_fs->_is_file($path_arr);
+                $is_dir = $commandr_fs->_is_dir($path_arr);
+                $exists = $is_file || $is_dir;
 
             case 'view':
                 if ($exists) {
