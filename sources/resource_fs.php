@@ -19,7 +19,7 @@
  */
 
 /*
-Resource-fs serves the 'var' parts of Commandr-fs. It binds Commandr-fs to a property/XML-based content model.
+Resource-fs serves the 'var' parts of Commandr-fs. It binds Commandr-fs to a property/JSON-based content model.
 
 A programmer can also directly talk to Resource-fs to do abstracted CRUD operations on just about any kind of Composr resource.
 i.e. Perform generalised operations on resource types without needing to know their individual APIs.

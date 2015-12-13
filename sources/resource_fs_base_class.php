@@ -177,7 +177,7 @@ abstract class Resource_fs_base
         if (array() == $this->can_accept_filetype(get_file_extension($filename))) {
             return false;
         }
-        return $this->file_load_xml($filename, $path); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
+        return $this->file_load_json($filename, $path); // By default, only defer to the inbuilt Composr JSON implementation (hooks may override this with support for other kinds of interchange file formats)
     }
 
     /**
@@ -195,7 +195,7 @@ abstract class Resource_fs_base
                 return false;
             }
         }
-        return $this->folder_load_xml($filename, $path); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
+        return $this->folder_load_json($filename, $path); // By default, only defer to the inbuilt Composr JSON implementation (hooks may override this with support for other kinds of interchange file formats)
     }
 
     /**
@@ -227,7 +227,7 @@ abstract class Resource_fs_base
         if (array() == $this->can_accept_filetype(get_file_extension($filename))) {
             return false;
         }
-        return $this->file_save_xml($filename, $path, $data); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
+        return $this->file_save_json($filename, $path, $data); // By default, only defer to the inbuilt Composr JSON implementation (hooks may override this with support for other kinds of interchange file formats)
     }
 
     /**
@@ -246,7 +246,7 @@ abstract class Resource_fs_base
                 return false;
             }
         }
-        return $this->folder_save_xml($filename, $path, $data); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
+        return $this->folder_save_json($filename, $path, $data); // By default, only defer to the inbuilt Composr JSON implementation (hooks may override this with support for other kinds of interchange file formats)
     }
 
     /**
@@ -940,7 +940,7 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Save function for resource-fs. Parses the data for some resource to a resource-fs XML file. Wraps file_save/folder_save.
+     * Save function for resource-fs. Parses the data for some resource to a resource-fs JSON file. Wraps file_save/folder_save.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  ID_TEXT $label Filename OR Resource label
@@ -1518,52 +1518,52 @@ abstract class Resource_fs_base
     }
 
     /*
-    XML FILE HANDLING: OUR DEFAULT PROPERTY LIST SERIALISATION/DESERIALISATION
+    JSON FILE HANDLING: OUR DEFAULT PROPERTY LIST SERIALISATION/DESERIALISATION
     */
 
     /**
-     * Load function for resource-fs (for files). Finds the data for some resource from a resource-fs XML file.
+     * Load function for resource-fs (for files). Finds the data for some resource from a resource-fs JSON file.
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @return ~string Resource data (false: error)
      */
-    public function file_load_xml($filename, $path)
+    public function file_load_json($filename, $path)
     {
         $properties = $this->file_load($filename, $path);
         if ($properties === false) {
             return false;
         }
-        return json_encode($properties); // TODO: Should be XML serialisation, #1160 on tracker
+        return json_encode($properties);
     }
 
     /**
-     * Load function for resource-fs (for folders). Finds the data for some resource from a resource-fs XML folder.
+     * Load function for resource-fs (for folders). Finds the data for some resource from a resource-fs JSON folder.
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @return ~string Resource data (false: error)
      */
-    public function folder_load_xml($filename, $path)
+    public function folder_load_json($filename, $path)
     {
         $properties = $this->folder_load($filename, $path);
         if ($properties === false) {
             return false;
         }
-        return json_encode($properties); // TODO: Should be XML serialisation, #1160 on tracker
+        return json_encode($properties);
     }
 
     /**
-     * Save function for resource-fs (for files). Parses the data for some resource to a resource-fs XML file.
+     * Save function for resource-fs (for files). Parses the data for some resource to a resource-fs JSON file.
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  string $data Resource data
      * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
-    public function file_save_xml($filename, $path, $data)
+    public function file_save_json($filename, $path, $data)
     {
-        $properties = ($data == '') ? array() : @json_decode($data, true); // TODO: Should be XML parsing, #1160 on tracker
+        $properties = ($data == '') ? array() : @json_decode($data, true);
         if ($properties === false) {
             return false;
         }
@@ -1614,16 +1614,16 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Save function for resource-fs (for folders). Parses the data for some resource to a resource-fs XML folder.
+     * Save function for resource-fs (for folders). Parses the data for some resource to a resource-fs JSON folder.
      *
      * @param  ID_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable)
      * @param  string $data Resource data
      * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
-    public function folder_save_xml($filename, $path, $data)
+    public function folder_save_json($filename, $path, $data)
     {
-        $properties = @json_decode($data, true); // TODO: Should be XML parsing, #1160 on tracker
+        $properties = @json_decode($data, true);
         if ($properties === false) {
             return false;
         }

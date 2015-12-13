@@ -1151,7 +1151,6 @@ class Hook_addon_registry_core
             'sources/forum_stub.php',
             'sources/global.php',
             'sources/shared_installs.php',
-            'sources/xml_storage.php',
             'sources/override_api.php',
             'sources/global2.php',
             'sources/character_sets.php',

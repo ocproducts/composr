@@ -97,8 +97,6 @@ class Hook_addon_registry_import
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/tools/bulk_content_actions/xml_storage.png',
-            'themes/default/images/icons/48x48/menu/adminzone/tools/bulk_content_actions/xml_storage.png',
             'themes/default/css/importing.css',
             'sources/hooks/modules/admin_import/html_site.php',
             'sources/hooks/modules/admin_import/index.html',
@@ -136,11 +134,6 @@ class Hook_addon_registry_import
             'sources/hooks/modules/admin_import/wordpress.php',
             'sources/hooks/systems/cns_auth/wordpress.php',
             'sources/import.php',
-            'lang/EN/xml_storage.ini',
-            'themes/default/templates/XML_STORAGE_SCREEN.tpl',
-            'themes/default/templates/XML_STORAGE_EXPORT_RESULTS_SCREEN.tpl',
-            'themes/default/templates/XML_STORAGE_IMPORT_RESULTS_SCREEN.tpl',
-            'adminzone/pages/modules/admin_xml_storage.php',
             'sources/hooks/systems/commandr_commands/continue_import.php',
         );
     }
@@ -156,9 +149,6 @@ class Hook_addon_registry_import
             'templates/IMPORT_ACTION_LINE.tpl' => 'administrative__import_action_screen',
             'templates/IMPORT_ACTION_SCREEN.tpl' => 'administrative__import_action_screen',
             'templates/IMPORT_MESSAGE.tpl' => 'administrative__import_action_screen',
-            'templates/XML_STORAGE_SCREEN.tpl' => 'administrative__xml_storage_screen',
-            'templates/XML_STORAGE_IMPORT_RESULTS_SCREEN.tpl' => 'administrative__xml_storage_import_results_screen',
-            'templates/XML_STORAGE_EXPORT_RESULTS_SCREEN.tpl' => 'administrative__xml_storage_export_results_screen',
             'text/IMPORT_MKPORTAL_FCOMCODEPAGE.txt' => 'administrative__import_mkportal_fcomcodepage',
             'text/IMPORT_PHPNUKE_FCOMCODEPAGE.txt' => 'administrative__import_phpnuke_fcomcodepage'
         );
@@ -194,66 +184,6 @@ class Hook_addon_registry_import
                 'IMPORTER' => lorem_phrase(),
                 'IMPORT_LIST' => $import_list,
                 'URL' => placeholder_url(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__xml_storage_screen()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('XML_STORAGE_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'IMPORT_FORM' => placeholder_form(),
-                'EXPORT_FORM' => placeholder_form(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__xml_storage_import_results_screen()
-    {
-        $ops_nice = array();
-        foreach (placeholder_array() as $v) {
-            $ops_nice[] = array(
-                'OP' => lorem_word(),
-                'PARAM_A' => lorem_word_2(),
-                'PARAM_B' => lorem_word_2(),
-            );
-        }
-        return array(
-            lorem_globalise(do_lorem_template('XML_STORAGE_IMPORT_RESULTS_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'OPS' => $ops_nice,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__xml_storage_export_results_screen()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('XML_STORAGE_EXPORT_RESULTS_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'XML' => lorem_phrase(),
             )), null, '', true)
         );
     }

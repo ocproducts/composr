@@ -400,7 +400,7 @@ $featuretree = array(
                 null, // divider
                 array('Custom field filters', 'For example, restrict news posts to a minimum length'),
                 array('Stack dumps for easy debugging'),
-                array('Synchronise data between staging and live sites using XML <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of XML transfer tool" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_xml_storage&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Synchronise data between staging and live sites using Resource-fs'),
             ),
         ),
         'integration' => array(

@@ -38,7 +38,6 @@ class Hook_page_groupings_import
 
         return array(
             array('tools', 'menu/_generic_admin/import', array('admin_import', array('type' => 'browse'), get_module_zone('admin_import')), do_lang_tempcode('import:IMPORT'), 'import:DOC_IMPORT'),
-            array('tools', 'menu/adminzone/tools/bulk_content_actions/xml_storage', array('admin_xml_storage', array('type' => 'browse'), get_module_zone('admin_xml_storage')), do_lang_tempcode('xml_storage:XML_STORAGE'), 'xml_storage:DOC_XML_STORAGE'),
         );
     }
 }
