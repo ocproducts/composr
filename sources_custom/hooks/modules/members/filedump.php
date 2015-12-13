@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    member_filedumps
+ */
+
+/**
+ * Hook class.
  */
 class Hook_members_filedump
 {

@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    release_compile
  */
 
 // Find Composr base directory, and chdir into it
@@ -44,14 +44,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-$rows = $GLOBALS['SITE_DB']->query_select('db_meta');
-$db_meta = array();
-foreach ($rows as $row) {
-    if (!isset($db_meta[$row['m_table']])) {
-        $db_meta[$row['m_table']] = array();
-    }
-    $db_meta[$row['m_table']][$row['m_name']] = $row['m_type'];
-}
-$myfile = fopen(get_file_base() . '/data/db_meta.dat', GOOGLE_APPENGINE ? 'wb' : 'wt');
-fwrite($myfile, serialize($db_meta));
-fclose($myfile);
+require_code('make_release');
+make_database_manifest();
+echo 'Done';

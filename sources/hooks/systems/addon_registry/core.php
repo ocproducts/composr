@@ -1141,6 +1141,7 @@ class Hook_addon_registry_core
             'sources/database.php',
             'sources/database_security_filter.php',
             'sources/database_helper.php',
+            'sources/database_repair.php',
             'sources/database_action.php',
             'sources/database_search.php',
             'sources/diff.php',

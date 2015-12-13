@@ -404,7 +404,77 @@ function _helper_rename_table($this_ref, $old, $new)
  */
 function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default = null)
 {
+    list($query, $default_st) = _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $default);
+    $this_ref->_query($query);
+
+    if (isset($GLOBALS['XML_CHAIN_DB'])) {
+        // DB chaining: It's a write query, so needs doing on chained DB too
+        $GLOBALS['XML_CHAIN_DB']->_query($query);
+    }
+
     $lang_level = 3;
+ 
+    if (multi_lang_content()) {
+        if (!is_null($default_st)) {
+            $start = 0;
+            do {
+                $rows = $this_ref->_query('SELECT * FROM ' . $this_ref->get_table_prefix() . $table_name, 1000, $start);
+                foreach ($rows as $row) {
+                    $this_ref->query_update($table_name, insert_lang($name, $default_st, $lang_level), $row);
+                }
+                $start += 1000;
+            } while (count($rows) > 0);
+        }
+    }
+
+    $this_ref->query_insert('db_meta', array('m_table' => $table_name, 'm_name' => $name, 'm_type' => $_type));
+    reload_lang_fields();
+
+    if (!multi_lang_content()) {
+        if (strpos($_type, '_TRANS') !== false) {
+            $GLOBALS['SITE_DB']->create_index($table_name, '#' . $name, array($name));
+        }
+    }
+
+    if ((!multi_lang_content()) && (strpos($_type, '__COMCODE') !== false)) {
+        $type_remap = $this_ref->static_ob->db_get_type_remap();
+
+        foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
+            $sub_name = $name . '__' . $sub_name;
+            $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
+            if ($sub_name == 'text_parsed') {
+                $query .= ' DEFAULT \'\'';
+            } elseif ($sub_name == 'source_user') {
+                $query .= ' DEFAULT ' . strval(db_get_first_id());
+            }
+            $query .= ' NOT NULL';
+            $this_ref->_query($query);
+
+            if (isset($GLOBALS['XML_CHAIN_DB'])) {
+                // DB chaining: It's a write query, so needs doing on chained DB too
+                $GLOBALS['XML_CHAIN_DB']->_query($query);
+            }
+        }
+    }
+
+    if (function_exists('persistent_cache_delete')) {
+        persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
+    }
+}
+
+/**
+ * SQL to add a field to an existing table.
+ *
+ * @param  object $this_ref Link to the real database object
+ * @param  ID_TEXT $table_name The table name
+ * @param  ID_TEXT $name The field name
+ * @param  ID_TEXT $_type The field type
+ * @param  ?mixed $default The default value (null: no default)
+ * @return array A pair: SQL, default value for fields
+ * @ignore
+ */
+function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $default = null)
+{
     $default_st = null;
 
     if (is_null($default)) {
@@ -480,6 +550,24 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     if (substr($_type, 0, 1) == '*') {
         $query .= ', ADD PRIMARY KEY (' . $name . ')';
     }
+
+    return array($query, $default_st);
+}
+
+/**
+ * Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability
+ *
+ * @param  object $this_ref Link to the real database object
+ * @param  ID_TEXT $table_name The table name
+ * @param  ID_TEXT $name The field name
+ * @param  ID_TEXT $_type The new field type
+ * @param  ?ID_TEXT $new_name The new field name (null: leave name)
+ * @ignore
+ */
+function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_name = null)
+{
+    $query = _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $new_name);
+
     $this_ref->_query($query);
 
     if (isset($GLOBALS['XML_CHAIN_DB'])) {
@@ -487,46 +575,11 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
         $GLOBALS['XML_CHAIN_DB']->_query($query);
     }
 
-    if (multi_lang_content()) {
-        if (!is_null($default_st)) {
-            $start = 0;
-            do {
-                $rows = $this_ref->_query('SELECT * FROM ' . $this_ref->get_table_prefix() . $table_name, 1000, $start);
-                foreach ($rows as $row) {
-                    $this_ref->query_update($table_name, insert_lang($name, $default_st, $lang_level), $row);
-                }
-                $start += 1000;
-            } while (count($rows) > 0);
-        }
+    $update_map = array('m_type' => $_type);
+    if (!is_null($new_name)) {
+        $update_map['m_name'] = $new_name;
     }
-
-    $this_ref->query_insert('db_meta', array('m_table' => $table_name, 'm_name' => $name, 'm_type' => $_type));
-    reload_lang_fields();
-
-    if (!multi_lang_content()) {
-        if (strpos($_type, '_TRANS') !== false) {
-            $GLOBALS['SITE_DB']->create_index($table_name, '#' . $name, array($name));
-        }
-    }
-
-    if ((!multi_lang_content()) && (strpos($_type, '__COMCODE') !== false)) {
-        foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
-            $sub_name = $name . '__' . $sub_name;
-            $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
-            if ($sub_name == 'text_parsed') {
-                $query .= ' DEFAULT \'\'';
-            } elseif ($sub_name == 'source_user') {
-                $query .= ' DEFAULT ' . strval(db_get_first_id());
-            }
-            $query .= ' NOT NULL';
-            $this_ref->_query($query);
-
-            if (isset($GLOBALS['XML_CHAIN_DB'])) {
-                // DB chaining: It's a write query, so needs doing on chained DB too
-                $GLOBALS['XML_CHAIN_DB']->_query($query);
-            }
-        }
-    }
+    $this_ref->query_update('db_meta', $update_map, array('m_table' => $table_name, 'm_name' => $name));
 
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
@@ -541,9 +594,10 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
  * @param  ID_TEXT $name The field name
  * @param  ID_TEXT $_type The new field type
  * @param  ?ID_TEXT $new_name The new field name (null: leave name)
+ * @return string SQL
  * @ignore
  */
-function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_name = null)
+function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $new_name = null)
 {
     $type_remap = $this_ref->static_ob->db_get_type_remap();
 
@@ -585,26 +639,12 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
     } else {
         $query .= $name;
     }
-    $query .= $extra . ' ' . $type_remap[$type] . ' ' . $tag;
+    $query .= ' ' . $extra . ' ' . $type_remap[$type] . $tag;
     if (substr($_type, 0, 1) == '*') {
         $query .= ', ADD PRIMARY KEY (' . ((!is_null($new_name)) ? $new_name : $name) . ')';
     }
-    $this_ref->_query($query);
 
-    if (isset($GLOBALS['XML_CHAIN_DB'])) {
-        // DB chaining: It's a write query, so needs doing on chained DB too
-        $GLOBALS['XML_CHAIN_DB']->_query($query);
-    }
-
-    $update_map = array('m_type' => $_type);
-    if (!is_null($new_name)) {
-        $update_map['m_name'] = $new_name;
-    }
-    $this_ref->query_update('db_meta', $update_map, array('m_table' => $table_name, 'm_name' => $name));
-
-    if (function_exists('persistent_cache_delete')) {
-        persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
-    }
+    return $query;
 }
 
 /**

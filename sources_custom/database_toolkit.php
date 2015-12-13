@@ -215,7 +215,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
             }
         }
 
-        $out[] = db_create_table($table_name, $fields);
+        $out[] = db_create_table_sql($table_name, $fields);
         if ($echo) {
             echo $out[0];
             $out = array();
@@ -329,13 +329,13 @@ function db_get_type_remap()
 }
 
 /**
- * Create a new table.
+ * SQL to create a new table.
  *
  * @param  ID_TEXT $table_name The table name
  * @param  array $fields A map of field names to Composr field types (with *#? encodings)
  * @return string The SQL for it
  */
-function db_create_table($table_name, $fields)
+function db_create_table_sql($table_name, $fields)
 {
     $type_remap = db_get_type_remap();
 

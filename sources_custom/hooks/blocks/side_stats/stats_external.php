@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    analysr
+ */
+
+/**
+ * Hook class.
  */
 class Hook_stats_external
 {

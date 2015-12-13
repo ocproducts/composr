@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    google_search
+ */
+
+/**
+ * Block class.
  */
 class Block_side_google_search
 {

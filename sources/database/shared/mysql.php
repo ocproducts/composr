@@ -65,16 +65,32 @@ class Database_super_mysql
      */
     public function db_create_index($table_name, $index_name, $_fields, $db)
     {
+        $query = $this->db_create_index_sql($table_name, $index_name, $_fields, $db);
+        if (!is_null($query)) {
+            $this->db_query($query, $db);
+        }
+    }
+
+    /**
+     * SQL to create a table index.
+     *
+     * @param  ID_TEXT $table_name The name of the table to create the index on
+     * @param  ID_TEXT $index_name The index name (not really important at all)
+     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
+     * @return ?string SQL (null: do nothing)
+     */
+    public function db_create_index_sql($table_name, $index_name, $_fields)
+    {
         if ($index_name[0] == '#') {
             if ($this->using_innodb()) {
-                return;
+                return null;
             }
             $index_name = substr($index_name, 1);
             $type = 'FULLTEXT';
         } else {
             $type = 'INDEX';
         }
-        $this->db_query('ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')', $db);
+        return 'ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')';
     }
 
     /**
@@ -185,6 +201,21 @@ class Database_super_mysql
      */
     public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
     {
+        $query = $this->db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes);
+        $this->db_query($query, $db, null, null);
+    }
+
+    /**
+     * SQL to create a new table.
+     *
+     * @param  ID_TEXT $table_name The table name
+     * @param  array $fields A map of field names to Composr field types (with *#? encodings)
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return string SQL
+     */
+    public function db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes = false)
+    {
         $type_remap = $this->db_get_type_remap();
 
         $_fields = '';
@@ -239,8 +270,9 @@ class Database_super_mysql
 
         $query .= ' CHARACTER SET=' . preg_replace('#\_.*$#', '', $charset);
 
-        $query .= ' ' . $type_key . '=' . $table_type . ';';
-        $this->db_query($query, $db, null, null);
+        $query .= ' ' . $type_key . '=' . $table_type;
+
+        return $query;
     }
 
     /**

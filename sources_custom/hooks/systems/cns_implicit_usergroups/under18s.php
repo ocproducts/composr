@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    under18s
+ */
+
+/**
+ * Hook class.
  */
 class Hook_implicit_usergroups_under18s
 {

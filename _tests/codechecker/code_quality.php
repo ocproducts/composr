@@ -111,10 +111,32 @@ $MADE_CALL = null;
 
 // Load up table info
 global $TABLE_FIELDS;
-$TABLE_FIELDS = (file_exists($COMPOSR_PATH . '/data/db_meta.dat') && (filemtime($COMPOSR_PATH . '/index.php') < filemtime($COMPOSR_PATH . '/data/db_meta.dat'))) ? unserialize(file_get_contents($COMPOSR_PATH . '/data/db_meta.dat')) : null;
-if (!is_null($TABLE_FIELDS)) {
-    $TABLE_FIELDS['db_meta'] = array('m_table' => 'ID_TEXT', 'm_name' => 'ID_TEXT', 'm_type' => 'ID_TEXT');
+if (file_exists($COMPOSR_PATH . '/data/db_meta.dat') && (filemtime($COMPOSR_PATH . '/index.php') < filemtime($COMPOSR_PATH . '/data/db_meta.dat'))) {
+    $_table_fields = unserialize(file_get_contents($COMPOSR_PATH . '/data/db_meta.dat'));
+    $TABLE_FIELDS = $_table_fields['tables'];
+} else {
+    $TABLE_FIELDS = array();
 }
+$TABLE_FIELDS['db_meta'] = array(
+    array(
+        'addon' => 'core',
+        'fields' => array(
+            'm_table' => '*ID_TEXT',
+            'm_name' => '*ID_TEXT',
+            'm_type' => 'ID_TEXT'
+        )
+    ),
+);
+$TABLE_FIELDS['db_meta_indices'] = array(
+    array(
+        'addon' => 'core',
+        'fields' => array(
+            'i_table' => '*ID_TEXT',
+            'i_name' => '*ID_TEXT',
+            'i_fields' => '*ID_TEXT',
+        )
+    ),
+);
 
 // Special funcs (these may have been defined with stubs, but this says to mark them as requiring guards anyway)...
 global $EXT_FUNCS;
@@ -1449,7 +1471,7 @@ function check_db_map($table, $expr_map, $c_pos, $must_be_complete = false)
     if ($arr_count == count($map)) {
         if ((!isset($GLOBALS['TABLE_FIELDS'][$table])) && (!is_null($GLOBALS['TABLE_FIELDS']))) {
             if (strpos($table, ' ') === false) {
-                log_warning('Unknown table referenced', $c_pos);
+                log_warning('Unknown table referenced (' . $table . ')', $c_pos);
             }
         }
     } else {
@@ -1458,7 +1480,7 @@ function check_db_map($table, $expr_map, $c_pos, $must_be_complete = false)
         }
     }
     if (($must_be_complete) && (isset($GLOBALS['TABLE_FIELDS'][$table])) && (!is_null($GLOBALS['TABLE_FIELDS']))) {
-        if ((isset($GLOBALS['TABLE_FIELDS'][$table]['id'])) && (strpos($GLOBALS['TABLE_FIELDS'][$table]['id'], 'AUTO') !== false)) {
+        if ((isset($GLOBALS['TABLE_FIELDS'][$table]['fields']['id'])) && (strpos($GLOBALS['TABLE_FIELDS'][$table]['fields']['id'], 'AUTO') !== false)) {
             $map['id'] = 'integer'; // Auto
         }
         $missing = implode(', ', array_diff(array_keys($GLOBALS['TABLE_FIELDS'][$table]), array_keys($map)));
@@ -1497,7 +1519,7 @@ function _check_db_field($table, $field, $c_pos, $type = null)
 
     if (!isset($GLOBALS['TABLE_FIELDS'][$table])) {
         if (strpos($table, ' ') === false) {
-            log_warning('Unknown table referenced', $c_pos);
+            log_warning('Unknown table referenced (' . $table . ')', $c_pos);
         }
         return;
     }
@@ -1511,13 +1533,13 @@ function _check_db_field($table, $field, $c_pos, $type = null)
         return;
     }
 
-    if (!isset($GLOBALS['TABLE_FIELDS'][$table][$field])) {
+    if (!isset($GLOBALS['TABLE_FIELDS'][$table]['fields'][$field])) {
         log_warning('Unknown field (' . $field . ') referenced', $c_pos);
         return;
     }
 
     if (!is_null($type)) {
-        $expected_type = str_replace('*', '', $GLOBALS['TABLE_FIELDS'][$table][$field]);
+        $expected_type = str_replace('*', '', $GLOBALS['TABLE_FIELDS'][$table]['fields'][$field]);
         ensure_type(array($expected_type), $type, $c_pos, 'DB field ' . $field . ' should be ' . $expected_type . ', not ' . $type);
     }
 }

@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    extended_media_rendering
  */
 class Hook_media_rendering_video_cnn extends Media_renderer_with_fallback
 {

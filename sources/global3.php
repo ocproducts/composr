@@ -1512,7 +1512,7 @@ function collapse_2d_complexity($key, $value, $list)
 /**
  * Take a list of maps of just one element, and make it into a single map
  *
- * @param  string $key The key of our maps that reside in our map
+ * @param  ?string $key The key of our maps that reside in our map (null: first key)
  * @param  array $list The map of maps
  * @return array The collapsed map
  */
@@ -1520,7 +1520,11 @@ function collapse_1d_complexity($key, $list)
 {
     $new_array = array();
     foreach ($list as $map) {
-        $new_array[] = $map[$key];
+        if ($key === null) {
+            $new_array[] = array_shift($map);
+        } else {
+            $new_array[] = $map[$key];
+        }
     }
 
     return $new_array;

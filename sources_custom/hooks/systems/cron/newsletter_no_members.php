@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    newsletter_no_members
+ */
+
+/**
+ * Hook class.
  */
 class Hook_cron_newsletter_no_members
 {

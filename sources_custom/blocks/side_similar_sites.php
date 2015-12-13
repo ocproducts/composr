@@ -10,7 +10,9 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    google_similar_sites
  */
+
 /*EXTRA FUNCTIONS: json_decode*/
 
 /**

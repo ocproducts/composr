@@ -27,6 +27,7 @@ function get_table_purpose_flags()
         'bookable_supplement_for' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under bookable*/,
         'booking' => TABLE_PURPOSE__NORMAL,
         'booking_supplement' => TABLE_PURPOSE__NORMAL,
+        'cached_weather_codes' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
         'classifieds_prices' => TABLE_PURPOSE__NORMAL,
         'community_billboard' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE,
         'credit_charge_log' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under f_members*/,
