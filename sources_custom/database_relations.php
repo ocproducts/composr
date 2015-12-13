@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    db_schema
+ */
+
+/**
  * Find how tables might be ignored for backups etc.
  * This is mainly used for building unit tests that make sure things are consistently implemented.
  *

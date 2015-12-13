@@ -162,9 +162,7 @@ class Hook_addon_registry_iotds
             'lang_custom/EN/iotds.ini',
             'site/pages/modules_custom/iotds.php',
             'uploads/iotds_addon/index.html',
-            'uploads/iotds_addon/.htaccess',
             'uploads/iotds_addon_thumbs/index.html',
-            'uploads/iotds_addon_thumbs/.htaccess',
         );
     }
 

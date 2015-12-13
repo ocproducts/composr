@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    world_regions
+ */
+
+/**
  * Get a nice, formatted XHTML list of regions
  *
  * @param  ?array $regions The currently selected regions (null: none selected)

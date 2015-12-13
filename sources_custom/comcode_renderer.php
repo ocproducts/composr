@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    comcode_html_whitelist
+ */
+
 if (!function_exists('init__comcode_renderer')) {
     function init__comcode_renderer($in = null)
     {

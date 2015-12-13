@@ -330,7 +330,6 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
             'mobiquo/mbqClass/read/attachment_read.php',
             'mobiquo/mbqClass/read/board_stats.php',
             'mobiquo/mbqClass/read/forum_read.php',
-            'mobiquo/mbqClass/read/forum_topics_read.php',
             'mobiquo/mbqClass/read/moderation_read.php',
             'mobiquo/mbqClass/read/pm_read.php',
             'mobiquo/mbqClass/read/pt_read.php',

@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @package    thumbnail_editor
+ */
+
 /*
 * http://www.webmotionuk.com/php-jquery-image-upload-and-crop/
 * Copyright (c) 2008 http://www.webmotionuk.com / http://www.webmotionuk.co.uk

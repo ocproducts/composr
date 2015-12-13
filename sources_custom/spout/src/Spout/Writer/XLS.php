@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package    excel_support
+ */
+
 namespace Box\Spout\Writer;
 
 use Box\Spout\Common\Exception\IOException;

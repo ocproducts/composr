@@ -158,7 +158,6 @@ You can add more banners through this section, just make sure they are 120px &ti
             'sources_custom/blocks/main_buttons.php',
             'data_custom/images/causes/amnestyinternational.gif',
             'data_custom/images/causes/bhf.gif',
-            'data_custom/images/causes/bringdownie6.gif',
             'data_custom/images/causes/cancerresearch.gif',
             'data_custom/images/causes/cnd.gif',
             'data_custom/images/causes/firefox.gif',

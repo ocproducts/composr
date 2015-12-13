@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    composr_release_build
+ */
+
 /*
     NB: Multi line do_template calls may be uglified. You can find those in your IDE using
     do_template[^\n]*_GUID[^\n]*\n\t+'

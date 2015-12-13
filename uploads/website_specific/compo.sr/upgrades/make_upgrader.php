@@ -11,7 +11,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composrcom
+ * @package    composr_homesite
  */
 
 /* Returns triple: PATH or NULL if critical error, NULL or error string if error */

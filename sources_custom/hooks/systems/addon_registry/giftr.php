@@ -184,7 +184,6 @@ When creating new gifts please only use images which are free to use, we suggest
             'uploads/giftr_addon/Santa_Hat.jpg',
             'themes/default/templates_custom/CNS_BIRTHDAY_LINK.tpl',
             'themes/default/templates_custom/CNS_USER_MEMBER.tpl',
-            'lang_custom/EN/cns.ini ',
         );
     }
 }

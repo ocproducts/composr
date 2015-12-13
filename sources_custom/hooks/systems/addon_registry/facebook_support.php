@@ -197,6 +197,7 @@ Please be aware that this addon overrides some common templates to add Facebook 
             'sources_custom/hooks/systems/config/facebook_sync_email.php',
             'sources_custom/hooks/systems/config/facebook_sync_username.php',
             'sources_custom/cns_field_editability.php',
+            'sources_custom/facebook/.htaccess',
         );
     }
 }

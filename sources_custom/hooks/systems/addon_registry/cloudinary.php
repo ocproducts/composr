@@ -147,6 +147,7 @@ class Hook_addon_registry_cloudinary
             'sources_custom/Cloudinary/cacert.pem',
             'sources_custom/Cloudinary/index.html',
             'sources_custom/hooks/systems/cdn_transfer/cloudinary.php',
+            'sources_custom/Cloudinary/.htaccess',
         );
     }
 }

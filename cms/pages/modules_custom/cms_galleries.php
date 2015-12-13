@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    workflows
+ */
+
+/**
  * Inject workflow code into the galleries module.
  *
  * @param   string $code Original code

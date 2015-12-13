@@ -164,6 +164,7 @@ class Hook_addon_registry_composr_mobile_sdk
             'data_custom/modules/composr_mobile_sdk/android/index.html',
             'data_custom/modules/composr_mobile_sdk/ios/index.html',
             'sources_custom/composr_mobile_sdk/index.html',
+            'sources_custom/composr_mobile_sdk/.htaccess',
             'sources_custom/composr_mobile_sdk/android/index.html',
             'sources_custom/composr_mobile_sdk/ios/index.html',
             'lang_custom/EN/composr_mobile_sdk.ini',

@@ -45,6 +45,8 @@ function init__files()
         define('IGNORE_UPLOADS', 8192); // More specific than IGNORE_CUSTOM_DIR_GROWN_CONTENTS, except it does skip .htaccess/index.html under uploads too
         define('IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS', 16384);
         define('IGNORE_CUSTOM_DIR_GROWN_CONTENTS', 32768);
+        define('IGNORE_NONBUNDLED_VERY_SCATTERED', 65536);
+        define('IGNORE_NONBUNDLED_EXTREMELY_SCATTERED', 131072);
     }
 }
 
@@ -486,7 +488,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         }
     }
 
-    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0) {
+    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_EXTREMELY_SCATTERED) != 0) {
         if (preg_match('#^data_custom/images/addon_screenshots(/|$)#', strtolower($filepath)) != 0) {
             return true; // Relating to addon build, but not defined in addons
         }
@@ -506,7 +508,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         if (preg_match('#^data_custom/sitemaps(/|$)#', strtolower($filepath)) != 0) {
             return true; // Don't want sitemap files
         }
+    }
 
+    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0) {
         static $addon_files = null;
         if ($addon_files === null) {
             $addon_files = array();// Old style: function_exists('collapse_1d_complexity') ? array_map('strtolower', collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename')))) : array();
@@ -527,7 +531,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             $addon_files = array_flip($addon_files);
         }
         if (isset($addon_files[strtolower($filepath)])) {
-            return true;
+            if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 && strpos($filepath, '_custom') === false) {
+                return true;
+            }
         }
         // Note that we have no support for identifying directories related to addons, only files inside. Code using this function should detect directories with no usable files in as relating to addons.
     }

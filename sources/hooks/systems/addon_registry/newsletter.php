@@ -129,7 +129,7 @@ class Hook_addon_registry_newsletter
             'sources/hooks/systems/commandr_fs/newsletters.php',
             'sources/hooks/systems/commandr_fs/periodic_newsletters.php',
             'sources/hooks/systems/commandr_fs/newsletter_subscribers.php',
-            'sources/hooks/systems/resource_meta_aware/newsletters.php',
+            'sources/hooks/systems/resource_meta_aware/newsletter.php',
             'sources/hooks/systems/resource_meta_aware/periodic_newsletter.php',
             'sources/hooks/systems/resource_meta_aware/newsletter_subscriber.php',
             'site/pages/modules/newsletter.php',

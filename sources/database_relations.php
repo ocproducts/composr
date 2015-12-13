@@ -270,6 +270,10 @@ function table_has_purpose_flag($table, $flag)
         $flags = get_table_purpose_flags();
     }
 
+    if (!isset($flags[$table])) {
+        return false;
+    }
+
     $real_flag = $flags[$table];
     return ($real_flag & $flag) != 0;
 }

@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    world_regions
+ */
+
+/**
  * Create CPF fields for address.
  * Assumes Conversr.
  */

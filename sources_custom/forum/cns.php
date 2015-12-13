@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    jestr
+ */
+
 if (!function_exists('init__forum__cns')) {
     function init__forum__cns($in = null)
     {

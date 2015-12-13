@@ -275,7 +275,6 @@ class Hook_addon_registry_webdav
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VEvent.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VFreeBusy.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/VJournal.php',
-            'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component/Vwebdav.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Component.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/DateTimeParser.php',
             'sources_custom/sabredav/vendor/sabre/vobject/lib/Sabre/VObject/Document.php',

@@ -7,6 +7,12 @@
 
 */
 
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    challengr
+ */
+
 function init__site__pages__modules_custom__quiz($in = null)
 {
     $before = 'if ($minimum_percentage >= $quiz[\'q_percentage\'])';

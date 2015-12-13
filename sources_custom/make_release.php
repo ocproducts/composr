@@ -553,14 +553,18 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
             $table_matches = array();
             $table_num_matches = preg_match_all($table_regexp, $contents, $table_matches);
             for ($i = 0; $i < $table_num_matches; $i++) {
-                $table_addons[$table_matches[1][$i]] = $addon;
+                $table_name = $table_matches[1][$i];
+                $table_addons[$table_name] = $addon;
             }
 
             $index_regexp = '#->create_index\(\'(\w+)\',\s*\'([\#\w]+)\'#';
             $index_matches = array();
             $index_num_matches = preg_match_all($index_regexp, $contents, $index_matches);
             for ($i = 0; $i < $index_num_matches; $i++) {
-                $index_addons[$index_matches[1][$i]][$index_matches[2][$i]] = $addon;
+                $table_name = $index_matches[1][$i];
+                $index_name = $index_matches[2][$i];
+                $universal_index_key = $table_name . '__' . $index_name;
+                $index_addons[$universal_index_key] = $addon;
             }
 
             if ($file == 'sources/cns_install.php') {
@@ -574,7 +578,8 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
             $privilege_matches = array();
             $privilege_num_matches = preg_match_all($privilege_regexp, $contents, $privilege_matches);
             for ($i = 0; $i < $privilege_num_matches; $i++) {
-                $privilege_addons[$privilege_matches[1][$i]] = $addon;
+                $privilege_name = $privilege_matches[1][$i];
+                $privilege_addons[$privilege_name] = $addon;
             }
         }
     }
@@ -590,15 +595,20 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
         }
     }
 
-    $all_indices = collapse_2d_complexity('i_name', 'i_table', $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_table')));
-    foreach ($all_indices as $index_name => $table_name) {
-        if (!isset($index_addons[$table_name][$index_name])) {
+    $all_indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_table'));
+    foreach ($all_indices as $index) {
+        $table_name = $index['i_table'];
+        $index_name = $index['i_name'];
+
+        $universal_index_key = $table_name . '__' . $index_name;
+
+        if (!isset($index_addons[$universal_index_key])) {
             if (!array_key_exists($table_name, $table_addons)) {
                 if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
                     warn_exit('Index ' . $index_name . ' in meta database could not be sourced.');
                 }
             } else {
-                $index_addons[$table_name][$index_name] = $table_addons[$table_name];
+                $index_addons[$universal_index_key] = $table_addons[$table_name];
             }
         }
     }
@@ -636,15 +646,18 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
         $table_name = $index['i_table'];
         $index_name = trim($index['i_name'], '#');
 
-        if (!isset($index_addons[$table_name][$index_name])) {
+        $universal_index_key = $table_name . '__' . $index['i_name'];
+
+        if (!isset($index_addons[$universal_index_key])) {
             continue;
         }
 
-        $indices[$index_name] = array(
-            'addon' => $index_addons[$table_name][$index_name],
+        $indices[$universal_index_key] = array(
+            'addon' => $index_addons[$universal_index_key],
+            'name' => $index_name,
             'table' => $table_name,
-            'fields' => explode(',', $index['i_fields']),
-            'is_full_text' => (strpos($index['i_table'], '#') !== false),
+            'fields' => explode(',', preg_replace('#\([^\)]*\)#', '', $index['i_fields'])),
+            'is_full_text' => (strpos($index['i_name'], '#') !== false),
         );
     }
 

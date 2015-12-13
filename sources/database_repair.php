@@ -33,6 +33,7 @@ class DatabaseRepair
     public function search_for_database_issues()
     {
         require_code('database_helper');
+        require_code('database_relations');
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
@@ -62,21 +63,27 @@ class DatabaseRepair
             $existent_tables[$table_name] = $_existent_table;
 
             $index_details = $GLOBALS['SITE_DB']->query('SHOW INDEXES FROM ' . get_table_prefix() . $table_name); // Table, Non_unique, Key_name, Seq_in_index, Column_name, Collation, Cardinality, Sub_part, Packed, Null, Index_type
-            $existent_indices = array();
             foreach ($index_details as $index) {
-                if ($index['Key_name'] == 'PRIMARY') {
+                $index_name = $index['Key_name'];
+
+                if ($index_name == 'PRIMARY') {
                     continue;
                 }
 
-                if (!isset($existent_indices[$index['Key_name']])) {
-                    $existent_indices[$index['Key_name']] = array(
+                $is_full_text = ($index['Index_type'] == 'FULLTEXT');
+
+                $universal_index_key = $table_name . '__' . ($is_full_text ? '#' : '') . $index_name;
+
+                if (!isset($existent_indices[$universal_index_key])) {
+                    $existent_indices[$universal_index_key] = array(
                         'table' => $table_name,
+                        'name' => $index_name,
                         'fields' => array(),
-                        'is_full_text' => $index['Index_type'] == 'FULLTEXT',
+                        'is_full_text' => $is_full_text,
                     );
                 }
 
-                $existent_indices[$index['Key_name']]['fields'][] = $index['Column_name'];
+                $existent_indices[$universal_index_key]['fields'][] = preg_replace('#\([^\)]*\)#', '', $index['Column_name']);
             }
         }
 
@@ -94,10 +101,14 @@ class DatabaseRepair
         $indices = array();
         foreach ($index_details as $index) {
             $index_name = trim($index['i_name'], '#');
-            $meta_indices[$index_name] = array(
-                'table' => $index['i_table'],
-                'fields' => explode(',', $index['i_fields']),
-                'is_full_text' => (strpos($index['i_table'], '#') !== false),
+            $table_name = $index['i_table'];
+            $universal_index_key = $table_name . '__' . $index['i_name'];
+
+            $meta_indices[$universal_index_key] = array(
+                'table' => $table_name,
+                'name' => $index_name,
+                'fields' => explode(',', preg_replace('#\([^\)]*\)#', '', $index['i_fields'])),
+                'is_full_text' => (strpos($index['i_name'], '#') !== false),
             );
         }
 
@@ -120,10 +131,10 @@ class DatabaseRepair
         }
 
         $expected_indices = array();
-        foreach ($data['indices'] as $index_name => $index) {
+        foreach ($data['indices'] as $universal_index_key => $index) {
             if (addon_installed($index['addon'])) {
                 unset($index['addon']);
-                $expected_indices[$index_name] = $index;
+                $expected_indices[$universal_index_key] = $index;
             }
         }
 
@@ -136,7 +147,7 @@ class DatabaseRepair
         }
 
         $needs_changes = false;
-        $needs_changes = $needs_changes || $this->search_for_meta_table_issues($existent_tables, $meta_tables);
+        $needs_changes = $needs_changes || $this->search_for_meta_table_issues($existent_tables, $meta_tables, $expected_tables);
         $needs_changes = $needs_changes || $this->search_for_meta_index_issues($existent_indices, $meta_indices);
         $phase = $needs_changes ? 1 : 2;
         if (!$needs_changes) {
@@ -156,9 +167,10 @@ class DatabaseRepair
      *
      * @param  array $existent_tables Existent tables
      * @param  array $meta_tables Meta tables
+     * @param  array $expected_tables Expected tables
      * @return boolean Whether there have been issues found
      */
-    private function search_for_meta_table_issues($existent_tables, $meta_tables)
+    private function search_for_meta_table_issues($existent_tables, $meta_tables, $expected_tables)
     {
         $needs_changes = false;
 
@@ -211,8 +223,12 @@ class DatabaseRepair
                 // Fields alien in DB?
                 foreach ($existent_tables[$table_name] as $field_name => $field) {
                     if (!isset($meta_tables[$table_name][$field_name]) && strpos($field_name, '__text_parsed') === false && strpos($field_name, '__source_user') === false) {
-                        $field_type_raw = $field['type'];
-                        $field_type = $this->db_type_to_composr_type($field_name, $field_type_raw, $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                        if (isset($expected_tables[$table_name]['fields'][$field_name])) {
+                            $field_type = $expected_tables[$table_name]['fields'][$field_name];
+                        } else {
+                            $field_type_raw = $field['type'];
+                            $field_type = $this->db_type_to_composr_type($field_name, $field_type_raw, $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                        }
 
                         $this->fix_table_missing_in_meta__create_field($table_name, $field_name, $field_type);
                         $needs_changes = true;
@@ -226,14 +242,18 @@ class DatabaseRepair
 
         // Tables alien in DB
         foreach ($existent_tables as $table_name => $table) {
-            if ($table_name == 'db_meta' || $table_name == 'db_meta_indices') {
+            if ($table_name == 'db_meta' || $table_name == 'db_meta_indices' || table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
                 continue;
             }
 
             if (!isset($meta_tables[$table_name])) {
                 $table_cleaned = array();
-                foreach ($table['fields'] as $field_name => $field) {
-                    $table_cleaned[$field_name] = $this->db_type_to_composr_type($field_name, $field['type'], $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                foreach ($table as $field_name => $field) {
+                    if (isset($expected_tables[$table_name]['fields'][$field_name])) {
+                        $table_cleaned[$field_name] = $expected_tables[$table_name]['fields'][$field_name];
+                    } else {
+                        $table_cleaned[$field_name] = $this->db_type_to_composr_type($field_name, $field['type'], $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                    }
                 }
 
                 $this->create_table_missing_in_meta($table_name, $table_cleaned);
@@ -256,27 +276,35 @@ class DatabaseRepair
         $needs_changes = false;
 
         // Indices missing from DB -or- inconsistent in DB
-        foreach ($meta_indices as $index_name => $index) {
-            if (isset($existent_indices[$index_name])) {
-                $existent_fields = $existent_indices[$index_name]['fields'];
+        foreach ($meta_indices as $universal_index_key => $index) {
+            $meta_index_name = $index['name'];
+            if (isset($existent_indices[$universal_index_key])) {
+                $existent_fields = $existent_indices[$universal_index_key]['fields'];
                 $meta_fields = $index['fields'];
-                $existent_is_full_text = $existent_indices[$index_name]['is_full_text'];
+                $existent_is_full_text = $existent_indices[$universal_index_key]['is_full_text'];
                 $meta_is_full_text = $index['is_full_text'];
                 sort($existent_fields);
                 sort($meta_fields);
                 if ($existent_fields != $meta_fields || $existent_is_full_text != $meta_is_full_text) {
-                    $this->fix_index_inconsistent_in_meta($index_name, $index);
+                    $this->fix_index_inconsistent_in_meta($meta_index_name, $existent_indices[$universal_index_key]);
                     $needs_changes = true;
                 }
             } else {
-                $this->create_index_missing_from_db($index_name, $index, false);
+                $this->create_index_missing_from_db($meta_index_name, $index, false);
                 $needs_changes = true;
             }
         }
 
         // Indices alien in DB
-        foreach ($existent_indices as $index_name => $index) {
-            if (!isset($meta_indices[$index_name])) {
+        foreach ($existent_indices as $universal_index_key => $index) {
+            $table_name = $index['table'];
+
+            if ($table_name == 'db_meta' || $table_name == 'db_meta_indices' || table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                continue;
+            }
+
+            if (!isset($meta_indices[$universal_index_key])) {
+                $index_name = $index['name'];
                 $this->create_index_missing_in_meta($index_name, $index);
                 $needs_changes = true;
             }
@@ -313,10 +341,11 @@ class DatabaseRepair
                         $existent_details = $existent_tables[$table_name][$field_name];
 
                         // Fields of inconsistent type?
-                        $expected_field_type_raw = $type_map[$field_type];
+                        $field_type_trimmed = trim($field_type, '*?');
+                        $expected_field_type_raw = $type_map[$field_type_trimmed];
                         $expected_is_primary = (strpos($field_type, '*') !== false);
-                        $expected_null_ok = (strpos($field_type, '?') !== false);
-                        $expected_is_auto_increment = ($field_type == 'AUTO');
+                        $expected_null_ok = (strpos($field_type, '?') !== false) && (multi_lang_content() || strpos($field_type, '_TRANS') === false);
+                        $expected_is_auto_increment = ($field_type_trimmed == 'AUTO');
                         $bad_type = ($expected_field_type_raw != $existent_details['type']);
                         $bad_null_ok = ($expected_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($expected_is_auto_increment != $existent_details['is_auto_increment']);
@@ -356,10 +385,9 @@ class DatabaseRepair
 
         // Tables alien in DB
         foreach ($existent_tables as $table_name => $table) {
-            if ($table_name == 'db_meta' || $table_name == 'db_meta_indices') {
+            if ($table_name == 'db_meta' || $table_name == 'db_meta_indices' || table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
                 continue;
             }
-
             if (!isset($expected_tables[$table_name])) {
                 $this->delete_table_alien_in_db($table_name, isset($meta_tables[$table_name][$field_name]));
                 $needs_changes = true;
@@ -382,28 +410,36 @@ class DatabaseRepair
         $needs_changes = false;
 
         // Indices missing from DB -or- inconsistent in DB
-        foreach ($expected_indices as $index_name => $index) {
-            if (isset($existent_indices[$index_name])) {
-                $existent_fields = $existent_indices[$index_name]['fields'];
+        foreach ($expected_indices as $universal_index_key => $index) {
+            $expected_index_name = $index['name'];
+            if (isset($existent_indices[$universal_index_key])) {
+                $existent_fields = $existent_indices[$universal_index_key]['fields'];
                 $expected_fields = $index['fields'];
-                $existent_is_full_text = $existent_indices[$index_name]['is_full_text'];
+                $existent_is_full_text = $existent_indices[$universal_index_key]['is_full_text'];
                 $expected_is_full_text = $index['is_full_text'];
                 sort($existent_fields);
                 sort($expected_fields);
                 if ($existent_fields != $expected_fields || $existent_is_full_text != $expected_is_full_text) {
-                    $this->fix_index_inconsistent_in_db($index_name, $index, true);
+                    $this->fix_index_inconsistent_in_db($expected_index_name, $index, true);
                     $needs_changes = true;
                 }
             } else {
-                $this->create_index_missing_from_db($index_name, $index, true);
+                $this->create_index_missing_from_db($expected_index_name, $index, true);
                 $needs_changes = true;
             }
         }
 
         // Indices alien in DB
-        foreach ($existent_indices as $index_name => $index) {
-            if (!isset($expected_indices[$index_name])) {
-                $this->delete_index_alien_in_db($index_name, $index, isset($meta_indices[$index_name]));
+        foreach ($existent_indices as $universal_index_key => $index) {
+            $table_name = $index['table'];
+
+            if ($table_name == 'db_meta' || $table_name == 'db_meta_indices' || table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                continue;
+            }
+
+            if (!isset($expected_indices[$universal_index_key])) {
+                $index_name = $index['name'];
+                $this->delete_index_alien_in_db($index_name, $index, isset($meta_indices[$universal_index_key]));
                 $needs_changes = true;
             }
         }
@@ -487,20 +523,19 @@ class DatabaseRepair
             }
         }
 
-        $fields = $table['fields'];
-        foreach ($table['fields'] as $name => $type) {
+        $table_copy = $table;
+        foreach ($table_copy as $name => $type) {
             if (!multi_lang_content()) {
                 if (strpos($type, '_TRANS') !== false) {
                     if (strpos($type, '__COMCODE') !== false) {
-                        $fields[$name . '__text_parsed'] = 'LONG_TEXT';
-                        $fields[$name . '__source_user'] = 'MEMBER';
+                        $table[$name . '__text_parsed'] = 'LONG_TEXT';
+                        $table[$name . '__source_user'] = 'MEMBER';
                     }
 
-                    $fields[$name] = 'LONG_TEXT'; // In the DB layer, it must now save as such
+                    $table[$name] = 'LONG_TEXT'; // In the DB layer, it must now save as such
                 }
             }
         }
-        $table['fields'] = $fields;
 
         $query = $GLOBALS['SITE_DB']->static_ob->db_create_table_sql(get_table_prefix() . $table_name, $table, $table_name);
         $this->add_fixup_query($query);
@@ -608,9 +643,9 @@ class DatabaseRepair
             }
         }
 
-        $this->add_fixup_query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY');
+        $this->add_fixup_query('ALTER TABLE ' . get_table_prefix() . $table_name . ' DROP PRIMARY KEY');
         $_key_fields = implode(', ', $key_fields);
-        $this->add_fixup_query('ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY (' . $_key_fields . ')');
+        $this->add_fixup_query('ALTER TABLE ' . get_table_prefix() . $table_name . ' ADD PRIMARY KEY (' . $_key_fields . ')');
     }
 
     /**
@@ -629,7 +664,7 @@ class DatabaseRepair
             $this->add_fixup_query($query);
         }
 
-        $this->add_fixup_query('DROP TABLE IF EXISTS ' . $table_name);
+        $this->add_fixup_query('DROP TABLE IF EXISTS ' . get_table_prefix() . $table_name);
     }
 
     /**
@@ -641,7 +676,7 @@ class DatabaseRepair
      */
     private function fix_index_inconsistent_in_meta($index_name, $index)
     {
-        $query = 'UPDATE ' . get_table_prefix() . 'db_meta_indices SET i_fields=' . db_escape_string(implode(',', $index['fields'])) . ' WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string($index_name) . '\'';
+        $query = 'UPDATE ' . get_table_prefix() . 'db_meta_indices SET i_fields=\'' . db_escape_string(implode(',', $index['fields'])) . '\' WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string($index_name) . '\'';
         $this->add_fixup_query($query);
     }
 
@@ -729,7 +764,7 @@ class DatabaseRepair
         $section = $privilege['section'];
         $default = $privilege['default'];
 
-        $query = 'INSERT INTO ' . get_table_prefix() . 'privilege_list (p_section, the_name, the_default) VALUES (\'' . db_escape_string($section) . '\', \'' . db_escape_string($privilege_name) . '\', ' . db_escape_string($default) . ')';
+        $query = 'INSERT INTO ' . get_table_prefix() . 'privilege_list (p_section, the_name, the_default) VALUES (\'' . db_escape_string($section) . '\', \'' . db_escape_string($privilege_name) . '\', ' . strval($default) . ')';
         $this->add_fixup_query($query);
     }
 
@@ -744,7 +779,7 @@ class DatabaseRepair
         $section = $privilege['section'];
         $default = $privilege['default'];
 
-        $query = 'UPDATE ' . get_table_prefix() . 'privilege_list SET p_section=\'' . db_escape_string($section) . '\', the_default=' . db_escape_string($default) . ' WHERE the_name=\'' . db_escape_string($privilege_name) . '\'';
+        $query = 'UPDATE ' . get_table_prefix() . 'privilege_list SET p_section=\'' . db_escape_string($section) . '\', the_default=' . strval($default) . ' WHERE the_name=\'' . db_escape_string($privilege_name) . '\'';
         $this->add_fixup_query($query);
     }
 

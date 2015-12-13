@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    world_regions
+ */
+
+/**
  * Get a map betweeen regions and possible counties.
  *
  * @return array Map: region=>list of counties

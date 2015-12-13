@@ -188,7 +188,7 @@ Buildr is a full zone addon for Composr.';
             'buildr/pages/comcode_custom/EN/docs.txt',
             'buildr/pages/comcode/EN/index.html',
             'buildr/pages/comcode_custom/EN/rules.txt',
-            'buildr/pages/comcode/EN/start.txt',
+            'buildr/pages/comcode_custom/EN/start.txt',
             'buildr/pages/comcode/index.html',
             'buildr/pages/comcode_custom/.htaccess',
             'buildr/pages/comcode_custom/EN/.htaccess',
@@ -256,7 +256,7 @@ Buildr is a full zone addon for Composr.';
             'data_custom/modules/buildr/docs/room1.3.png',
             'data_custom/modules/buildr/docs/roompw1.0.png',
             'data_custom/modules/buildr/docs/roompw1.1.png',
-            'data_custom/modules/buildr/docs//modules/buildr/index.html',
+            'data_custom/modules/buildr/index.html',
         );
     }
 }

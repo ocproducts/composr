@@ -8,6 +8,12 @@
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    banner_click_points
+ */
+
+/**
  * Hook class.
  */
 class Hook_upon_query_banner_click_points

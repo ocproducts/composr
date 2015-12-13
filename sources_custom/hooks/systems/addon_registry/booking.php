@@ -155,7 +155,6 @@ You may wish to deny access to the usergroup and member directories when using t
             'sources_custom/blocks/main_choose_to_book.php',
             'sources_custom/hooks/modules/members/booking.php',
             'themes/default/templates_custom/BLOCK_SIDE_BOOK_DATE_RANGE.tpl',
-            'themes/default/templates_custom/BLOCK_SIDE_CHOOSE_SHOWING.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_CHOOSE_TO_BOOK.tpl',
             'themes/default/javascript_custom/booking.js',
             'data_custom/bookings_ical.php',
