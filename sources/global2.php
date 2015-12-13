@@ -1526,7 +1526,7 @@ function post_param_integer($name, $default = false)
     $ret = __param($_POST, $name, ($default === false) ? $default : (($default === null) ? '' : strval($default)), true, true);
 
     if ((!$GLOBALS['BOOTSTRAPPING']) && (!$GLOBALS['MICRO_AJAX_BOOTUP'])) {
-        if ($ret !== $default) {
+        if (intval($ret) !== $default) {
             check_posted_field($name, $ret);
         }
 
