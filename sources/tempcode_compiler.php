@@ -711,14 +711,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $found = find_template_place($eval, '', $theme, '.tpl', 'templates', $template_name == $eval);
                                     $_theme = $found[0];
                                     if ($found[1] !== null) {
-                                        $fullpath = get_custom_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
-                                        if (!is_file($fullpath)) {
-                                            $fullpath = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
+                                        $full_path = get_custom_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
+                                        if (!is_file($full_path)) {
+                                            $full_path = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
                                         }
-                                        if (is_file($fullpath)) {
-                                            $tmp = fopen($fullpath, 'rb');
+                                        if (is_file($full_path)) {
+                                            $tmp = fopen($full_path, 'rb');
                                             @flock($tmp, LOCK_SH);
-                                            $filecontents = file_get_contents($fullpath);
+                                            $filecontents = file_get_contents($full_path);
                                             @flock($tmp, LOCK_UN);
                                             fclose($tmp);
                                         } else {

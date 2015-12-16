@@ -349,18 +349,18 @@ class Module_admin_zones
             $current_zone = is_null($redirecting_to) ? $id : $redirecting_to;
             $default_parsed = null;
             if ($is_comcode) {
-                $fullpath = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $lang . '/' . $current_for . '.txt');
-                if (!file_exists($fullpath)) {
-                    $fullpath = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . get_site_default_lang() . '/' . $current_for . '.txt');
+                $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $lang . '/' . $current_for . '.txt');
+                if (!file_exists($full_path)) {
+                    $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . get_site_default_lang() . '/' . $current_for . '.txt');
                 }
-                if (file_exists($fullpath)) {
-                    $tmp = fopen($fullpath, 'rb');
+                if (file_exists($full_path)) {
+                    $tmp = fopen($full_path, 'rb');
                     @flock($tmp, LOCK_SH);
-                    $comcode = file_get_contents($fullpath);
+                    $comcode = file_get_contents($full_path);
                     @flock($tmp, LOCK_UN);
                     fclose($tmp);
 
-                    if (strpos($fullpath, '_custom/') === false) {
+                    if (strpos($full_path, '_custom/') === false) {
                         global $LANG_FILTER_OB;
                         $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
                     }
@@ -512,25 +512,25 @@ class Module_admin_zones
             $comcode = post_param_string($for, null);
             if (!is_null($comcode)) {
                 // Where to save to
-                $fullpath = zone_black_magic_filterer(get_custom_file_base() . (((is_null($redirect) ? $id : $redirect) == '') ? '' : '/') . (is_null($redirect) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
+                $full_path = zone_black_magic_filterer(get_custom_file_base() . (((is_null($redirect) ? $id : $redirect) == '') ? '' : '/') . (is_null($redirect) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
 
                 // Make dir if needed
-                if (!file_exists(dirname($fullpath))) {
+                if (!file_exists(dirname($full_path))) {
                     require_code('files2');
-                    make_missing_directory(dirname($fullpath));
+                    make_missing_directory(dirname($full_path));
                 }
 
                 // TODO: Revisions
                 // Store revision
-                if ((file_exists($fullpath)) && (get_option('store_revisions') == '1')) {
+                if ((file_exists($full_path)) && (get_option('store_revisions') == '1')) {
                     $time = time();
-                    @copy($fullpath, $fullpath . '.' . strval($time)) or intelligent_write_error($fullpath . '.' . strval($time));
-                    fix_permissions($fullpath . '.' . strval($time));
-                    sync_file($fullpath . '.' . strval($time));
+                    @copy($full_path, $full_path . '.' . strval($time)) or intelligent_write_error($full_path . '.' . strval($time));
+                    fix_permissions($full_path . '.' . strval($time));
+                    sync_file($full_path . '.' . strval($time));
                 }
 
                 // Save
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($fullpath);
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($full_path);
                 @flock($myfile, LOCK_EX);
                 if (!GOOGLE_APPENGINE) {
                     ftruncate($myfile, 0);
@@ -540,8 +540,8 @@ class Module_admin_zones
                 }
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);
-                fix_permissions($fullpath);
-                sync_file($fullpath);
+                fix_permissions($full_path);
+                sync_file($full_path);
 
                 // De-cache
                 $caches = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array('the_zone' => is_null($redirect) ? $id : $redirect, 'the_page' => $for));

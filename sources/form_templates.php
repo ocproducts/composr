@@ -1406,11 +1406,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     if ((addon_installed('filedump')) && (has_actual_page_access(null, 'filedump'))) {
         require_code('files2');
-        $fullpath = get_custom_file_base() . '/uploads/filedump';
-        $files = get_directory_contents($fullpath, '', false, false);
+        $full_path = get_custom_file_base() . '/uploads/filedump';
+        $files = get_directory_contents($full_path, '', false, false);
         $has_image_or_dir = false;
         foreach ($files as $file) {
-            if (is_image($file) || is_dir($fullpath . '/' . $file)) {
+            if (is_image($file) || is_dir($full_path . '/' . $file)) {
                 $has_image_or_dir = true;
                 break;
             }

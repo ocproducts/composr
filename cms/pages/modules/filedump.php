@@ -280,12 +280,12 @@ class Module_filedump
         $GLOBALS['FEED_URL'] = find_script('backend') . '?mode=filedump&select=' . $place;
 
         // Check directory exists
-        $fullpath = get_custom_file_base() . '/uploads/filedump' . $place;
+        $full_path = get_custom_file_base() . '/uploads/filedump' . $place;
         if (!file_exists(get_custom_file_base() . '/uploads/filedump' . $place)) {
             if (has_privilege(get_member(), 'upload_filedump')) {
-                @mkdir($fullpath, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($fullpath), escape_html(dirname($fullpath))));
-                fix_permissions($fullpath, 0777);
-                sync_file($fullpath);
+                @mkdir($full_path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($full_path), escape_html(dirname($full_path))));
+                fix_permissions($full_path, 0777);
+                sync_file($full_path);
             }
         }
 

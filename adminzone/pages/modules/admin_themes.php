@@ -1904,38 +1904,38 @@ class Module_admin_themes
 
             $directory = dirname($_file);
             $file = str_replace($directory . '/', $directory . '_custom/', $_file);
-            $fullpath = get_custom_file_base() . '/themes/' . $theme . '/' . $file;
-            if (!file_exists(dirname($fullpath))) {
+            $full_path = get_custom_file_base() . '/themes/' . $theme . '/' . $file;
+            if (!file_exists(dirname($full_path))) {
                 require_code('files2');
-                make_missing_directory(dirname($fullpath));
+                make_missing_directory(dirname($full_path));
             }
 
             // Make backup
-            if (file_exists($fullpath)) {
-                @copy($fullpath, $fullpath . '.' . strval(time())) or intelligent_write_error($fullpath . '.' . strval(time()));
-                fix_permissions($fullpath . '.' . strval(time()));
-                sync_file($fullpath . '.' . strval(time()));
+            if (file_exists($full_path)) {
+                @copy($full_path, $full_path . '.' . strval(time())) or intelligent_write_error($full_path . '.' . strval(time()));
+                fix_permissions($full_path . '.' . strval(time()));
+                sync_file($full_path . '.' . strval(time()));
             }
 
             // Save
             $new = post_param_string('f' . $i . '_new', false, true);
-            $fullpath_orig = preg_replace('#/themes/[^/]*/(.*)(\_custom)?/#U', '/themes/default/${1}/', $fullpath);
-            if ((file_exists($fullpath_orig)) && ($new == file_get_contents($fullpath_orig))) {
-                if (file_exists($fullpath)) {
-                    unlink($fullpath);
-                    sync_file($fullpath);
+            $full_path_orig = preg_replace('#/themes/[^/]*/(.*)(\_custom)?/#U', '/themes/default/${1}/', $full_path);
+            if ((file_exists($full_path_orig)) && ($new == file_get_contents($full_path_orig))) {
+                if (file_exists($full_path)) {
+                    unlink($full_path);
+                    sync_file($full_path);
                 }
-                if (file_exists($fullpath . '.editfrom')) {
-                    unlink($fullpath . '.editfrom');
-                    sync_file($fullpath . '.editfrom');
+                if (file_exists($full_path . '.editfrom')) {
+                    unlink($full_path . '.editfrom');
+                    sync_file($full_path . '.editfrom');
                 }
                 $_file = preg_replace('#[^/]*/(.*)(\_custom)?/#U', 'default/${1}/', $_file);
 
                 $file = $_file;
             } else {
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'at');
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at');
                 if ($myfile === false) {
-                    intelligent_write_error($fullpath);
+                    intelligent_write_error($full_path);
                 }
                 @flock($myfile, LOCK_EX);
                 if (!GOOGLE_APPENGINE) {
@@ -1943,19 +1943,19 @@ class Module_admin_themes
                 }
                 if (fwrite($myfile, $new) < strlen($new)) {
                     fclose($myfile);
-                    unlink($fullpath);
+                    unlink($full_path);
                     warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                 }
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);
-                fix_permissions($fullpath);
-                sync_file($fullpath);
+                fix_permissions($full_path);
+                sync_file($full_path);
 
                 if (file_exists(get_file_base() . '/themes/default/' . post_param_string('f' . $i . 'file'))) {
                     // Make base-hash-thingy
-                    $myfile = @fopen($fullpath . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
+                    $myfile = @fopen($full_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
                     if ($myfile === false) {
-                        intelligent_write_error($fullpath);
+                        intelligent_write_error($full_path);
                     }
                     @flock($myfile, LOCK_EX);
                     if (!GOOGLE_APPENGINE) {
@@ -1967,8 +1967,8 @@ class Module_admin_themes
                     }
                     @flock($myfile, LOCK_UN);
                     fclose($myfile);
-                    fix_permissions($fullpath . '.editfrom');
-                    sync_file($fullpath . '.editfrom');
+                    fix_permissions($full_path . '.editfrom');
+                    sync_file($full_path . '.editfrom');
                 }
             }
             log_it('EDIT_TEMPLATES', $directory . '/' . $file, $theme);

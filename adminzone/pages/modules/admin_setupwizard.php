@@ -1042,24 +1042,24 @@ class Module_admin_setupwizard
 
         // Rules
         if (post_param_integer('skip_7', 0) == 0) {
-            $fullpath = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt';
-            if (!file_exists(dirname($fullpath))) {
+            $full_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt';
+            if (!file_exists(dirname($full_path))) {
                 require_code('files2');
-                make_missing_directory(dirname($fullpath));
+                make_missing_directory(dirname($full_path));
             }
-            if (file_exists($fullpath)) {
-                @copy($fullpath, $fullpath . '.' . strval(time()));
-                fix_permissions($fullpath . '.' . strval(time()));
-                sync_file($fullpath . '.' . strval(time()));
+            if (file_exists($full_path)) {
+                @copy($full_path, $full_path . '.' . strval(time()));
+                fix_permissions($full_path . '.' . strval(time()));
+                sync_file($full_path . '.' . strval(time()));
             }
-            $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt');
+            $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt');
             $rf = $this->get_rules_file(post_param_string('rules'));
             if (fwrite($myfile, $rf) < strlen($rf)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
             fclose($myfile);
-            fix_permissions($fullpath);
-            sync_file($fullpath);
+            fix_permissions($full_path);
+            sync_file($full_path);
         }
 
         $block_options = mixed();
@@ -1074,15 +1074,15 @@ class Module_admin_setupwizard
 
             foreach ($page_structure as $zone => $zone_pages) {
                 // Start
-                $fullpath = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
-                if (!file_exists(dirname($fullpath))) {
+                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
+                if (!file_exists(dirname($full_path))) {
                     require_code('files2');
-                    make_missing_directory(dirname($fullpath));
+                    make_missing_directory(dirname($full_path));
                 }
-                if (file_exists($fullpath)) {
-                    @copy($fullpath, $fullpath . '.' . strval(time()));
+                if (file_exists($full_path)) {
+                    @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($fullpath);
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['start']) == 0) {
                         if ($zone_pages['start'] != '') {
@@ -1090,16 +1090,16 @@ class Module_admin_setupwizard
                         }
                     }
                     fclose($myfile);
-                    fix_permissions($fullpath);
-                    sync_file($fullpath);
+                    fix_permissions($full_path);
+                    sync_file($full_path);
                 }
 
                 // Left
-                $fullpath = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
-                if (file_exists($fullpath)) {
-                    @copy($fullpath, $fullpath . '.' . strval(time()));
+                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
+                if (file_exists($full_path)) {
+                    @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['left']) == 0) {
                         if ($zone_pages['left'] != '') {
@@ -1107,16 +1107,16 @@ class Module_admin_setupwizard
                         }
                     }
                     fclose($myfile);
-                    fix_permissions($fullpath);
-                    sync_file($fullpath);
+                    fix_permissions($full_path);
+                    sync_file($full_path);
                 }
 
                 // Right
-                $fullpath = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_right.txt';
-                if (file_exists($fullpath)) {
-                    @copy($fullpath, $fullpath . '.' . strval(time()));
+                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_right.txt';
+                if (file_exists($full_path)) {
+                    @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['right']) == 0) {
                         if ($zone_pages['right'] != '') {
@@ -1124,8 +1124,8 @@ class Module_admin_setupwizard
                         }
                     }
                     fclose($myfile);
-                    fix_permissions($fullpath);
-                    sync_file($fullpath);
+                    fix_permissions($full_path);
+                    sync_file($full_path);
                 }
             }
         }

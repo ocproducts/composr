@@ -536,16 +536,16 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     ));
 
     // Store page on disk
-    $fullpath = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
-    if ((!file_exists($fullpath)) || ($text != file_get_contents($fullpath))) {
-        if (!file_exists(dirname($fullpath))) {
+    $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
+    if ((!file_exists($full_path)) || ($text != file_get_contents($full_path))) {
+        if (!file_exists(dirname($full_path))) {
             require_code('files2');
-            make_missing_directory(dirname($fullpath));
+            make_missing_directory(dirname($full_path));
         }
 
-        $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at');
         if ($myfile === false) {
-            intelligent_write_error($fullpath);
+            intelligent_write_error($full_path);
         }
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
@@ -556,8 +556,8 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);
-        sync_file($fullpath);
-        fix_permissions($fullpath);
+        sync_file($full_path);
+        fix_permissions($full_path);
 
         $file_changed = true;
     } else {
@@ -601,7 +601,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         true
     );
 
-    return $fullpath;
+    return $full_path;
 }
 
 /**

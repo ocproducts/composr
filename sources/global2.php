@@ -1695,17 +1695,17 @@ function javascript_enforce($j, $theme = null, $minify = null)
             return '';
         }
         $theme = $found[0];
-        $fullpath = get_custom_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
-        if (!is_file($fullpath)) {
-            $fullpath = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
+        $full_path = get_custom_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
+        if (!is_file($full_path)) {
+            $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         }
 
-        if (($j == 'javascript') && (!isset($SITE_INFO['dependency__' . $fullpath]))) {
-            $SITE_INFO['dependency__' . $fullpath] = str_replace('default/javascript/javascript.js', filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme()) . '/javascript_custom/custom_globals.js', $fullpath);
+        if (($j == 'javascript') && (!isset($SITE_INFO['dependency__' . $full_path]))) {
+            $SITE_INFO['dependency__' . $full_path] = str_replace('default/javascript/javascript.js', filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme()) . '/javascript_custom/custom_globals.js', $full_path);
         }
     }
 
-    if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($fullpath)) && (@filemtime($fullpath) < time())) || ((!empty($SITE_INFO['dependency__' . $fullpath])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $fullpath]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
+    if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time())) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
         require_code('css_and_js');
         js_compile($j, $js_cache_path, $minify);
     }
@@ -1914,22 +1914,22 @@ function css_enforce($c, $theme = null, $minify = null)
             return '';
         }
         $theme = $found[0];
-        $fullpath = get_custom_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
-        if (!is_file($fullpath)) {
-            $fullpath = get_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
+        $full_path = get_custom_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
+        if (!is_file($full_path)) {
+            $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $c . $found[2];
         }
-        if (($text_only) && (!is_file($fullpath))) {
+        if (($text_only) && (!is_file($full_path))) {
             return '';
         }
     }
 
-    if (((!$is_cached) || (($support_smart_decaching) && ((@(filemtime($css_cache_path) < filemtime($fullpath)) && (@filemtime($fullpath) < time()) || ((!empty($SITE_INFO['dependency__' . $fullpath])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $fullpath]), filemtime($css_cache_path))))))))) {
-        if (filesize($fullpath) == 0) {
+    if (((!$is_cached) || (($support_smart_decaching) && ((@(filemtime($css_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time()) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($css_cache_path))))))))) {
+        if (filesize($full_path) == 0) {
             return '';
         }
 
         require_code('css_and_js');
-        css_compile($active_theme, $theme, $c, $fullpath, $css_cache_path, $minify);
+        css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $minify);
     }
 
     if (@filesize($css_cache_path) == 0/*Race condition?*/) {

@@ -266,7 +266,7 @@ class Hook_task_import_rss
                 $zone = 'site';
                 $lang = fallback_lang();
                 $file = preg_replace('#[^\w\-]#', '_', $post_name); // Filter non alphanumeric charactors
-                $fullpath = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . $lang . '/' . $file . '.txt');
+                $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . $lang . '/' . $file . '.txt');
 
                 // Content
                 $_content = "[title]" . comcode_escape($item['title']) . "[/title]\n\n";
@@ -297,19 +297,19 @@ class Hook_task_import_rss
                 ));
 
                 // Save to disk
-                if (!file_exists(dirname($fullpath))) {
+                if (!file_exists(dirname($full_path))) {
                     require_code('files2');
-                    make_missing_directory(dirname($fullpath));
+                    make_missing_directory(dirname($full_path));
                 }
-                $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
                 if ($myfile === false) {
-                    intelligent_write_error($fullpath);
+                    intelligent_write_error($full_path);
                 }
                 if (fwrite($myfile, $_content) < strlen($_content)) {
                     return array(null, do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                 }
                 fclose($myfile);
-                sync_file($fullpath);
+                sync_file($full_path);
 
                 // Meta
                 require_code('seo2');
@@ -331,7 +331,7 @@ class Hook_task_import_rss
                     'contents' => $_content,
                     'zone' => $zone,
                     'page' => $file,
-                    'path' => $fullpath,
+                    'path' => $full_path,
                     'parent_page' => $parent_page,
                     'id' => $page_id,
                 );
