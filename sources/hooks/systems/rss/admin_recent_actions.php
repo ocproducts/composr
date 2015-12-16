@@ -70,7 +70,7 @@ class Hook_rss_admin_recent_actions
             $category = $type;
             $category_raw = $type;
 
-            $view_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'mode' => 'cms', 'id' => $row['id']), 'adminzone');
+            $view_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'mode' => 'cms', 'id' => $row['id']), get_module_zone('admin_actionlog'));
 
             if ($prefix == 'RSS_') {
                 $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => 'c237ee93e6ff879b09eb93048a1f539b', 'COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');

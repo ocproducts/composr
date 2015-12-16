@@ -268,6 +268,7 @@ class Module_admin
             array('choose', 'set', 'specify', 'pick'),
             array('add', 'submit', 'create', 'make', 'publish', 'upload'),
             array('edit', 'modify', 'manage', 'change', 'control', 'moderate', 'update'),
+            array('changes', 'revisions', 'diff', 'history', 'undelete', 'version'),
             array('delete', 'erase', 'remove', 'discard', 'prune', 'trash'),
             array('restore', 'revert', 'undo'),
             array('news', 'story', 'stories', 'article'),

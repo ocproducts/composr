@@ -3368,8 +3368,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__calculate {
 	background-image: url('{$IMG,icons/24x24/buttons/calculate}') !important;
 }
-.buttons__changes {
-	background-image: url('{$IMG,icons/24x24/buttons/changes}') !important;
+.buttons__revisions {
+	background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 }
 .buttons__choose {
 	background-image: url('{$IMG,icons/24x24/buttons/choose}') !important;
@@ -3440,8 +3440,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-.buttons__restore {
-	background-image: url('{$IMG,icons/24x24/buttons/restore}') !important;
+.buttons__undo {
+	background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
 }
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
@@ -3553,8 +3553,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__calculate {
 		background-image: url('{$IMG,icons/48x48/buttons/calculate}') !important;
 	}
-	.buttons__changes {
-		background-image: url('{$IMG,icons/48x48/buttons/changes}') !important;
+	.buttons__revisions {
+		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
 	}
 	.buttons__choose {
 		background-image: url('{$IMG,icons/48x48/buttons/choose}') !important;
@@ -3622,8 +3622,8 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	.buttons__restore {
-		background-image: url('{$IMG,icons/48x48/buttons/restore}') !important;
+	.buttons__undo {
+		background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
 	}
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;

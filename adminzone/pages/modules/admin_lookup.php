@@ -173,7 +173,7 @@ class Module_admin_lookup
                 }
                 $all_ips[] = $mask;
             }
-            if (strtolower(cms_srv('REQUEST_METHOD')) == 'post') {
+            if (cms_srv('REQUEST_METHOD') == 'POST') {
                 if (!array_key_exists('banned', $_POST)) {
                     $_POST['banned'] = array();
                 }

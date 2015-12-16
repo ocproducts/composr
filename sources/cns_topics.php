@@ -267,18 +267,18 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
         }
     }
 
-    $post_history_days_ago = time() - 60 * 60 * 24 * intval(get_option('post_history_days'));
+    $post_read_history_days_ago = time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'));
 
-    if ((get_option('post_history_days') != '0') && (get_value('avoid_normal_topic_history') !== '1')) {
+    if ((get_option('post_read_history_days') != '0') && (get_value('avoid_normal_topic_read_history') !== '1')) {
         // Occasionally we need to delete old entries
         if (mt_rand(0, 1000) == 123) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
-                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs WHERE l_time<' . strval($post_history_days_ago) . ' AND l_time<>0');
+                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs WHERE l_time<' . strval($post_read_history_days_ago) . ' AND l_time<>0');
             }
         }
     }
 
-    if ($topic_last_time < $post_history_days_ago) {
+    if ($topic_last_time < $post_read_history_days_ago) {
         return true; // We don't store that old
     }
     if (is_null($member_last_time)) {

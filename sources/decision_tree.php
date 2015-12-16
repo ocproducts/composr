@@ -266,7 +266,7 @@ class DecisionTree
             }
         }
 
-        $form_method = empty($details['form_method']) ? 'post' : strtolower($details['form_method']);
+        $form_method = empty($details['form_method']) ? 'POST' : $details['form_method'];
 
         if ((is_object($details['next'])) || ((is_string($details['next'])) && (looks_like_url($details['next'])))) {
             $next_url = $details['next'];
@@ -284,7 +284,7 @@ class DecisionTree
             'TITLE' => $title,
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'GET' => ($form_method == 'get'),
+            'GET' => ($form_method == 'GET'),
             'URL' => $next_url,
             'SUBMIT_ICON' => 'buttons__next',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),

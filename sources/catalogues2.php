@@ -1156,7 +1156,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
                 if ($type == 'posting_field') {
                     require_code('attachments2');
                     require_code('attachments3');
-                    $smap += update_lang_comcode_attachments('cv_value', $_val, $val, 'catalogue_entry', strval($id), null, false, $original_submitter);
+                    $smap += update_lang_comcode_attachments('cv_value', $_val, $val, 'catalogue_entry', strval($id), null, $original_submitter);
                 } else {
                     $smap += lang_remap_comcode('cv_value', $_val, $val);
                 }

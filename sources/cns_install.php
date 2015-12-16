@@ -128,7 +128,6 @@ function uninstall_cns()
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_forum_intro_member');
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_topics');
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_posts');
-    $GLOBALS['FORUM_DB']->drop_table_if_exists('f_post_history');
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_polls');
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_poll_answers');
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_poll_votes');
@@ -170,7 +169,7 @@ function uninstall_cns()
  */
 function install_cns($upgrade_from = null)
 {
-    if (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST') {
+    if (cms_srv('REQUEST_METHOD') != 'POST') {
         exit(); // Needed as YSlow can load as GET's in background and cause horrible results
     }
 
@@ -194,61 +193,7 @@ function install_cns($upgrade_from = null)
         uninstall_cns(); // Remove if already installed
     }
 
-    // Upgrade code for making changes (<7 not supported) lots of LEGACY code below
-    if ((!is_null($upgrade_from)) && ($upgrade_from < 7.2)) {
-        $rows = $GLOBALS['FORUM_DB']->query('SELECT m_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'db_meta WHERE (' . db_string_equal_to('m_type', '?INTEGER') . ' OR ' . db_string_equal_to('m_type', 'BINARY') . ') AND ' . db_string_equal_to('m_table', 'f_member_custom_fields'));
-        foreach ($rows as $row) {
-            $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', $row['m_name'], 'SHORT_TEXT');
-        }
-
-        $i = 0;
-        do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), null, '', 100, $i);
-            foreach ($rows as $j => $row) {
-                foreach ($row as $key => $val) {
-                    if ((preg_match('#^field\_\d+$#', $key) != 0) && (is_string($val))) {
-                        $val = str_replace('|', "\n", $val);
-                        $row[$key] = $val;
-                    }
-                }
-                if ($rows[$j] != $row) {
-                    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('mf_member_id' => $row['mf_member_id']), $row, '', 1);
-                }
-            }
-            $i += 100;
-        } while (count($rows) != 0);
-
-        $GLOBALS['FORUM_DB']->alter_table_field('f_members', 'm_track_contributed_topics', 'BINARY', 'm_auto_monitor_contrib_content');
-    }
-    if ((!is_null($upgrade_from)) && ($upgrade_from < 8.0)) {
-        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_allow_emails_from_staff', 'BINARY');
-        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_show_on_join_form', 'BINARY');
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_is_threaded', 'BINARY', 0);
-        $GLOBALS['FORUM_DB']->add_table_field('f_posts', 'p_parent_id', '?AUTO_LINK', null);
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields SET cf_show_on_join_form=cf_required');
-        delete_config_option('send_staff_message_post_validation');
-
-        require_code('notifications');
-        $start = 0;
-        do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_forum_tracking', array('r_forum_id', 'r_member_id'), null, '', 100, $start);
-            foreach ($rows as $row) {
-                enable_notifications('cns_topic', 'forum:' . strval($row['r_forum_id']), $row['r_member_id']);
-            }
-            $start += 100;
-        } while (count($rows) == 100);
-        $start = 0;
-        do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_topic_tracking', array('r_topic_id', 'r_member_id'), null, '', 100, $start);
-            foreach ($rows as $row) {
-                enable_notifications('cns_topic', strval($row['r_topic_id']), $row['r_member_id']);
-            }
-            $start += 100;
-        } while (count($rows) == 100);
-
-        $GLOBALS['FORUM_DB']->drop_table_if_exists('f_forum_tracking');
-        $GLOBALS['FORUM_DB']->drop_table_if_exists('f_topic_tracking');
-    }
+    // Upgrade code for making changes (<8 not supported) lots of LEGACY code below
     if ((is_null($upgrade_from)) || ($upgrade_from < 10.0)) {
         $GLOBALS['FORUM_DB']->create_table('f_group_join_log', array(
             'id' => '*AUTO',
@@ -330,6 +275,10 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('is_on_anonymous_posts')));
 
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_auto_mark_read', 'BINARY');
+
+        $GLOBALS['FORUM_DB']->drop_table_if_exists('f_post_history');
+
+        rename_config_option('post_history_days', 'post_read_history_days');
     }
 
     // If we have the forum installed to this db already, leave
@@ -758,19 +707,6 @@ function install_cns($upgrade_from = null)
             's_message' => 'LONG_TEXT',
         ), false, false, true);
 
-        $GLOBALS['FORUM_DB']->create_table('f_post_history', array(
-            'id' => '*AUTO',
-            'h_create_date_and_time' => 'TIME',
-            'h_action_date_and_time' => 'TIME',
-            'h_owner_member_id' => 'MEMBER',
-            'h_alterer_member_id' => 'MEMBER',
-            'h_post_id' => 'AUTO_LINK',
-            'h_topic_id' => 'AUTO_LINK',
-            'h_before' => 'LONG_TEXT',
-            'h_action' => 'ID_TEXT'
-        ));
-        $GLOBALS['FORUM_DB']->create_index('f_post_history', 'phistorylookup', array('h_post_id'));
-
         $GLOBALS['FORUM_DB']->create_table('f_forum_intro_ip', array(
             'i_forum_id' => '*AUTO_LINK',
             'i_ip' => '*IP'
@@ -909,7 +845,6 @@ function install_cns($upgrade_from = null)
         // Has to be done after f_groups is added
         add_privilege('SECTION_FORUMS', 'exceed_post_edit_time_limit', false);
         add_privilege('SECTION_FORUMS', 'exceed_post_delete_time_limit', false);
-
         add_privilege('SECTION_FORUMS', 'bypass_required_cpfs');
         add_privilege('SECTION_FORUMS', 'bypass_required_cpfs_if_already_empty');
         add_privilege('SECTION_FORUMS', 'bypass_email_address');

@@ -54,7 +54,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     $unread_clause = '';
     if ($unread) {
         $unread_clause = '
-            t_cache_last_time > ' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' AND
+            t_cache_last_time > ' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' AND
             (l_time IS NULL OR l_time < p.p_time) AND
         ';
     }

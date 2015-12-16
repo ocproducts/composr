@@ -126,8 +126,6 @@ class Hook_addon_registry_cns_forum
             'themes/default/images/icons/48x48/buttons/mark_unread.png',
             'themes/default/images/icons/24x24/buttons/forum.png',
             'themes/default/images/icons/48x48/buttons/forum.png',
-            'themes/default/images/icons/24x24/buttons/history.png',
-            'themes/default/images/icons/48x48/buttons/history.png',
             'themes/default/images/icons/24x24/buttons/linear.png',
             'themes/default/images/icons/48x48/buttons/linear.png',
             'themes/default/images/icons/24x24/buttons/threaded.png',
@@ -187,8 +185,6 @@ class Hook_addon_registry_cns_forum
             'themes/default/templates/CNS_FORUM_TOPIC_WRAPPER.tpl',
             'themes/default/templates/CNS_GUEST_BAR.tpl',
             'themes/default/templates/CNS_GUEST_DETAILS.tpl',
-            'themes/default/templates/CNS_HISTORY_SCREEN.tpl',
-            'themes/default/templates/CNS_HISTORY_POST.tpl',
             'themes/default/templates/CNS_POST_BOX.tpl',
             'themes/default/templates/CNS_MEMBER_BAR.tpl',
             'themes/default/templates/MEMBER_BAR_SEARCH.tpl',
@@ -252,7 +248,6 @@ class Hook_addon_registry_cns_forum
             'forum/pages/modules_custom/index.html',
             'adminzone/pages/modules/admin_cns_forum_groupings.php',
             'adminzone/pages/modules/admin_cns_forums.php',
-            'adminzone/pages/modules/admin_cns_history.php',
             'themes/default/images/cns_general/index.html',
             'themes/default/images/cns_general/new_posts.png',
             'themes/default/images/cns_general/new_posts_redirect.png',
@@ -335,7 +330,7 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/config/seq_post_ids.php',
             'sources/hooks/systems/config/threaded_buttons.php',
             'sources/hooks/systems/config/overt_whisper_suggestion.php',
-            'sources/hooks/systems/config/post_history_days.php',
+            'sources/hooks/systems/config/post_read_history_days.php',
             'sources/hooks/systems/config/is_on_topic_descriptions.php',
             'sources/hooks/systems/config/is_on_topic_emoticons.php',
             'sources/hooks/systems/config/is_on_post_titles.php',
@@ -367,8 +362,6 @@ class Hook_addon_registry_cns_forum
             'templates/CNS_MEMBER_BOX.tpl' => 'cns_topic_not_voted_checkboxes_wrap',
             'templates/CNS_EDIT_FORUM_SCREEN_FORUM.tpl' => 'administrative__cns_edit_forum_screen',
             'templates/CNS_EDIT_FORUM_SCREEN.tpl' => 'administrative__cns_edit_forum_screen',
-            'templates/CNS_HISTORY_POST.tpl' => 'administrative__cns_history_screen',
-            'templates/CNS_HISTORY_SCREEN.tpl' => 'administrative__cns_history_screen',
             'templates/CNS_RANK_IMAGE.tpl' => 'cns_rank_image',
             'templates/CNS_POST_BOX.tpl' => 'cns_isolated_post',
             'templates/BLOCK_MAIN_CNS_INVOLVED_TOPICS.tpl' => 'block_main_cns_involved_topics',
@@ -529,42 +522,6 @@ class Hook_addon_registry_cns_forum
                 'REORDER_URL' => placeholder_url(),
                 'TITLE' => lorem_title(),
                 'ROOT_FORUM' => $root_forum,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__cns_history_screen()
-    {
-        require_css('cns');
-
-        require_lang('cns');
-
-        $content = do_lorem_template('CNS_HISTORY_POST', array(
-            'LABEL' => lorem_phrase(),
-            'LINK' => placeholder_url(),
-            'BUTTONS' => lorem_phrase(),
-            'ACTION' => lorem_phrase(),
-            'ACTION_DATE_AND_TIME' => placeholder_date(),
-            'ACTION_DATE_AND_TIME_RAW' => placeholder_date_raw(),
-            'CREATE_DATE_AND_TIME_RAW' => placeholder_date_raw(),
-            'CREATE_DATE_AND_TIME' => placeholder_date(),
-            'OWNER_MEMBER' => lorem_phrase(),
-            'ALTERER_MEMBER' => lorem_phrase(),
-            'BEFORE' => lorem_phrase(),
-        ));
-
-        return array(
-            lorem_globalise(do_lorem_template('CNS_HISTORY_SCREEN', array(
-                'PAGINATION' => placeholder_pagination(),
-                'TITLE' => lorem_title(),
-                'CONTENT' => $content,
             )), null, '', true)
         );
     }

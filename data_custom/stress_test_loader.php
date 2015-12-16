@@ -58,7 +58,7 @@ function do_work()
     $num_wanted = 200;
 
     require_code('config2');
-    set_option('post_history_days', '0'); // Needed for a little sanity in recent post retrieval
+    set_option('post_read_history_days', '0'); // Needed for a little sanity in recent post retrieval
     set_option('enable_sunk', '0');
 
     set_mass_import_mode();

@@ -43,7 +43,7 @@ function xml_dump_script()
 
     safe_ini_set('ocproducts.xss_detect', '0');
 
-    if (strtolower(cms_srv('REQUEST_METHOD')) == 'get') { // Interface
+    if (cms_srv('REQUEST_METHOD') == 'GET') { // Interface
         $from = get_param_string('from', null);
         $skip = get_param_string('skip', null);
         $only = get_param_string('only', null);

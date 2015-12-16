@@ -312,12 +312,11 @@ function _insert_lang($field_name, $text, $level, $connection = null, $comcode =
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $for_member The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
- * @param  boolean $backup_string Whether to backup the language string before changing it
  * @param  boolean $leave_source_user Whether to leave the source member as-is (as opposed to resetting it to the current member)
  * @return array The language string ID save fields
  * @ignore
  */
-function _lang_remap($field_name, $id, $text, $connection = null, $comcode = false, $pass_id = null, $for_member = null, $as_admin = false, $backup_string = false, $leave_source_user = false)
+function _lang_remap($field_name, $id, $text, $connection = null, $comcode = false, $pass_id = null, $for_member = null, $as_admin = false, $leave_source_user = false)
 {
     if ($id === 0) {
         return insert_lang($field_name, $text, 3, $connection, $comcode, null, null, $as_admin, $pass_id);
@@ -362,22 +361,6 @@ function _lang_remap($field_name, $id, $text, $connection = null, $comcode = fal
         $text_parsed = $_text_parsed->to_assembly();
     } else {
         $text_parsed = '';
-    }
-
-    if (($backup_string) && (multi_lang_content())) {
-        $current = $connection->query_select('translate', array('*'), array('id' => $id, 'language' => $lang), '', 1);
-        if (!array_key_exists(0, $current)) {
-            $current = $connection->query_select('translate', array('*'), array('id' => $id), '', 1);
-        }
-
-        $connection->query_insert('translate_history', array(
-            'lang_id' => $id,
-            'language' => $current[0]['language'],
-            'text_original' => $current[0]['text_original'],
-            'broken' => $current[0]['broken'],
-            'action_member' => get_member(),
-            'action_time' => time()
-        ));
     }
 
     if (!multi_lang_content()) {
@@ -480,7 +463,7 @@ function parse_translated_text($table, &$row, $field_name, $connection, $lang, $
 
             $temp = $LAX_COMCODE;
             $LAX_COMCODE = true;
-            _lang_remap($field_name, $entry, ($result === null) ? '' : $result['text_original'], $connection, true, null, $result['source_user'], $as_admin, false, true);
+            _lang_remap($field_name, $entry, ($result === null) ? '' : $result['text_original'], $connection, true, null, $result['source_user'], $as_admin, true);
             if ($SEARCH__CONTENT_BITS !== null) {
                 $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $connection, false, false, false, false, false, $SEARCH__CONTENT_BITS);
                 $LAX_COMCODE = $temp;
@@ -503,7 +486,7 @@ function parse_translated_text($table, &$row, $field_name, $connection, $lang, $
         $LAX_COMCODE = true;
 
         if (multi_lang_content()) {
-            _lang_remap($field_name, $entry, $result['text_original'], $connection, true, null, $result['source_user'], $as_admin, false, true);
+            _lang_remap($field_name, $entry, $result['text_original'], $connection, true, null, $result['source_user'], $as_admin, true);
 
             if ($SEARCH__CONTENT_BITS !== null) {
                 $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $connection, false, false, false, false, false, $SEARCH__CONTENT_BITS);
@@ -512,7 +495,7 @@ function parse_translated_text($table, &$row, $field_name, $connection, $lang, $
                 return $ret;
             }
         } else {
-            $map = _lang_remap($field_name, $entry, $row[$field_name], $connection, true, null, $row[$field_name . '__source_user'], $as_admin, false, true);
+            $map = _lang_remap($field_name, $entry, $row[$field_name], $connection, true, null, $row[$field_name . '__source_user'], $as_admin, true);
 
             $connection->query_update($table, $map, $row, '', 1);
             $row = $map + $row;

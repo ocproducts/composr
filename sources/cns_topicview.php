@@ -74,7 +74,7 @@ function find_first_unread_url($id)
     $last_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $id));
     if (is_null($last_read_time)) {
         // Assumes that everything made in the last two weeks has not been read
-        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' ORDER BY id', 1);
+        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' ORDER BY id', 1);
         if (array_key_exists(0, $unread_details)) {
             $last_read_time = $unread_details[0]['p_time'] - 1;
         } else {
@@ -144,8 +144,16 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         'is_emphasised' => $_postdetails['p_is_emphasised'],
         'poster_username' => $_postdetails['p_poster_name_if_guest'],
         'poster' => $_postdetails['p_poster'],
-        'has_history' => !is_null($_postdetails['h_post_id'])
     );
+
+    $post['has_revisions'] = false;
+    if (addon_installed('actionlog')) {
+        require_code('revisions_engine_database');
+        $revisions = new RevisionEngineDatabase(true);
+        if ($revisions->has_revisions(array('post'), strval($_postdetails['id']))) {
+            $post['has_revisions'] = true;
+        }
+    }
 
     if (array_key_exists('message_comcode', $_postdetails)) {
         $post['message_comcode'] = $_postdetails['message_comcode'];
@@ -371,11 +379,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
         // Post query
         $where = cns_get_topic_where($topic_id);
-        if (!db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
-            $query = 'SELECT p.*,h.h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time WHERE ' . $where . ' ORDER BY p_time,p.id';
-        } else { // Can use subquery to avoid having to assume p_last_edit_time was not chosen as null during avoidance of duplication of rows
-            $query = 'SELECT p.*, (SELECT h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h WHERE (h.h_post_id=p.id) LIMIT 1) AS h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
-        }
+        $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
     } else {
         $out = array(
             'num_views' => 0,
@@ -399,7 +403,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
         // Post query
         $where = 'p_intended_solely_for=' . strval(get_member());
-        $query = 'SELECT p.*,h.h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time WHERE ' . $where . ' ORDER BY p_time,p.id';
+        $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
     }
 
     // Posts
@@ -838,13 +842,13 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         }
     }
 
-    if ((has_privilege(get_member(), 'view_content_history')) && ($_postdetails['has_history'])) {
-        $action_url = build_url(array('page' => 'admin_cns_history', 'type' => 'browse', 'post_id' => $_postdetails['id']), 'adminzone');
+    if ($_postdetails['has_revisions']) {
+        $action_url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'post', 'resource_id' => $_postdetails['id']), get_module_zone('admin_revisions'));
         $_title = do_lang_tempcode('POST_HISTORY');
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__history', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__revisions', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
     }
 
     if ($rendering_context != 'tickets') {

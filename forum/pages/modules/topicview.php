@@ -528,7 +528,7 @@ class Module_topicview
             }
 
             if (!is_guest()) {
-                $too_old = $topic_info['last_time'] < time() - 60 * 60 * 24 * intval(get_option('post_history_days'));
+                $too_old = $topic_info['last_time'] < time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'));
 
                 require_code('users');
 
@@ -868,8 +868,12 @@ class Module_topicview
             if (array_key_exists('may_attach_poll', $topic_info)) {
                 $moderator_actions .= '<option value="add_poll">' . do_lang('ADD_TOPIC_POLL') . '</option>';
             }
-            if ((has_privilege(get_member(), 'view_content_history')) && ($GLOBALS['FORUM_DB']->query_select_value('f_post_history', 'COUNT(*)', array('h_topic_id' => $id)) != 0)) {
-                $moderator_actions .= '<option value="topic_history">' . do_lang('POST_HISTORY') . '</option>';
+            if (addon_installed('actionlog')) {
+                require_code('revisions_engine_database');
+                $revisions = new RevisionEngineDatabase(true);
+                if ($revisions->has_revisions(array('post'), null, strval($id))) {
+                    $moderator_actions .= '<option value="topic_history">' . do_lang('actionlog:REVISIONS') . '</option>';
+                }
             }
             if ((array_key_exists('may_make_private', $topic_info)) && (!is_null($topic_info['forum_id']))) {
                 $moderator_actions .= '<option value="make_private">' . do_lang('MAKE_PERSONAL') . '</option>';
@@ -987,7 +991,7 @@ class Module_topicview
     public function _update_read_status()
     {
         if (!is_guest()) {
-            if ((get_option('post_history_days') != '0') && ((get_value('avoid_normal_topic_history') !== '1') || (is_null($this->forum_id)))) {
+            if ((get_option('post_read_history_days') != '0') && ((get_value('avoid_normal_topic_read_history') !== '1') || (is_null($this->forum_id)))) {
                 cns_ping_topic_read($this->id);
                 if ($GLOBALS['IS_ACTUALLY'] !== null) { // If posting with SU, mark the SUing user as read too, otherwise it is annoying
                     cns_ping_topic_read($this->id, $GLOBALS['IS_ACTUALLY']);

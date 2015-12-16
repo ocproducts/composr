@@ -159,7 +159,7 @@ class Module_admin_notifications
                         }
                     }
 
-                    $_checked = post_param_integer('notification_' . $notification_code . '_' . $ntype, ((strtoupper(cms_srv('REQUEST_METHOD')) != 'POST') && $checked) ? 1 : 0);
+                    $_checked = post_param_integer('notification_' . $notification_code . '_' . $ntype, ((cms_srv('REQUEST_METHOD') != 'POST') && $checked) ? 1 : 0);
 
                     $notification_types[] = array(
                         'NTYPE' => $ntype,
@@ -188,7 +188,7 @@ class Module_admin_notifications
         }
 
         // Save
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+        if (cms_srv('REQUEST_METHOD') == 'POST') {
             $GLOBALS['SITE_DB']->query_delete('notification_lockdown');
 
             foreach ($notification_sections as $notification_section) {

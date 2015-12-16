@@ -261,8 +261,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/48x48/buttons/new_reply.png',
             'themes/default/images/icons/24x24/buttons/report.png',
             'themes/default/images/icons/48x48/buttons/report.png',
-            'themes/default/images/icons/24x24/buttons/restore.png',
-            'themes/default/images/icons/48x48/buttons/restore.png',
             'themes/default/images/icons/24x24/menu/pages/rules.png',
             'themes/default/images/icons/48x48/menu/pages/rules.png',
             'themes/default/images/icons/24x24/buttons/search.png',

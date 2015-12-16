@@ -528,7 +528,9 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 {
     require_code('database_relations');
 
-    // Work out what addons everything belongs to
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+
+    // Work out what addons everything belongs to...
 
     $table_addons = array();
     $index_addons = array();
@@ -584,43 +586,45 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
         }
     }
 
-    // Check we have found everything the database knows about
+    // Check we have found everything the database knows about...
 
-    $all_tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_table')));
-    foreach ($all_tables as $table_name) {
-        if (!array_key_exists($table_name, $table_addons)) {
-            if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
-                warn_exit('Table ' . $table_name . ' in meta database could not be sourced.');
-            }
-        }
-    }
-
-    $all_indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_table'));
-    foreach ($all_indices as $index) {
-        $table_name = $index['i_table'];
-        $index_name = $index['i_name'];
-
-        $universal_index_key = $table_name . '__' . $index_name;
-
-        if (!isset($index_addons[$universal_index_key])) {
+    if (get_param_integer('skip_errors', 0) != 1) {
+        $all_tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_table')));
+        foreach ($all_tables as $table_name) {
             if (!array_key_exists($table_name, $table_addons)) {
                 if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
-                    warn_exit('Index ' . $index_name . ' in meta database could not be sourced.');
+                    warn_exit('Table ' . $table_name . ' in meta database could not be sourced.');
                 }
-            } else {
-                $index_addons[$universal_index_key] = $table_addons[$table_name];
+            }
+        }
+
+        $all_indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_table'));
+        foreach ($all_indices as $index) {
+            $table_name = $index['i_table'];
+            $index_name = $index['i_name'];
+
+            $universal_index_key = $table_name . '__' . $index_name;
+
+            if (!isset($index_addons[$universal_index_key])) {
+                if (!array_key_exists($table_name, $table_addons)) {
+                    if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                        warn_exit('Index ' . $index_name . ' in meta database could not be sourced.');
+                    }
+                } else {
+                    $index_addons[$universal_index_key] = $table_addons[$table_name];
+                }
+            }
+        }
+
+        $all_privileges = collapse_1d_complexity('the_name', $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name')));
+        foreach ($all_privileges as $privilege_name) {
+            if (!array_key_exists($privilege_name, $privilege_addons)) {
+                warn_exit('Privilege ' . $privilege_name . ' in meta database could not be sourced.');
             }
         }
     }
 
-    $all_privileges = collapse_1d_complexity('the_name', $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name')));
-    foreach ($all_privileges as $privilege_name) {
-        if (!array_key_exists($privilege_name, $privilege_addons)) {
-            warn_exit('Privilege ' . $privilege_name . ' in meta database could not be sourced.');
-        }
-    }
-
-    // Build up db_meta.dat structure
+    // Build up db_meta.dat structure...
 
     $field_details = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
     $tables = array();
@@ -664,6 +668,10 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
     $privilege_details = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'));
     $privileges = array();
     foreach ($privilege_details as $privilege) {
+        if (!isset($privilege_addons[$privilege['the_name']])) {
+            continue;
+        }
+
         $privileges[$privilege['the_name']] = array(
             'addon' => $privilege_addons[$privilege['the_name']],
             'section' => $privilege['p_section'],
@@ -678,11 +686,12 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
     );
 
     // Save
-
     $path = get_file_base() . '/data/db_meta.dat';
     $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
     fwrite($myfile, serialize($data));
     fclose($myfile);
     fix_permissions($path);
     sync_file($path);
+
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 }

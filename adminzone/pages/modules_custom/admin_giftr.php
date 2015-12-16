@@ -249,7 +249,7 @@ class Module_admin_giftr extends Standard_crud_module
         }
 
         require_code('templates_map_table');
-        return map_table(get_screen_title('VIEW_GIFT'), array('NAME' => $name, 'IMAGE' => $image, 'PRICE' => integer_format($price), 'CATEGORY' => $category, 'ENABLED' => $enabled));
+        return map_table_screen(get_screen_title('VIEW_GIFT'), array('NAME' => $name, 'IMAGE' => $image, 'PRICE' => integer_format($price), 'CATEGORY' => $category, 'ENABLED' => $enabled));
     }
 
     public function get_form_fields($id = null, $name = '', $category = '', $image = '', $price = 10, $enabled = 1)

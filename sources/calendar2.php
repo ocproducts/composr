@@ -310,7 +310,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
     );
     $update_map += $scheduling_map;
     $update_map += lang_remap_comcode('e_title', $myrow['e_title'], $title);
-    $update_map += update_lang_comcode_attachments('e_content', $myrow['e_content'], $content, 'calendar', strval($id), null, false, $myrow['e_submitter']);
+    $update_map += update_lang_comcode_attachments('e_content', $myrow['e_content'], $content, 'calendar', strval($id), null, $myrow['e_submitter']);
 
     if (!is_null($validated)) {
         $update_map['validated'] = $validated;

@@ -629,7 +629,7 @@ class Module_admin_config
 
         $category = get_param_string('id', 'MAIN');
 
-        if (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST') {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 

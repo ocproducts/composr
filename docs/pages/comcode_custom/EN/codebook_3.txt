@@ -483,7 +483,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]no_block_timeout[/tt] -- set this to '1' if blocks should never timeout (stops stuttered performance if a site is not used regularly)
   - [tt]disable_sitemap_for__*[/tt] -- disable sitemap generation for a particular page (e.g. if there's too much data in it and the server can't cope, and the data isn't so important anyway). Replace '*' with the page name
   - [tt]no_view_counts[/tt] -- set this to '1' if you don't want view counts to be maintained (reduces database writes). You will probably want to disable the normal "Reveal usage figures" option too, to hide all the zero counts
-  - [tt]avoid_normal_topic_history[/tt] -- set this to '1' if you don't want topic-read history to be maintained for things other than private topics
+  - [tt]avoid_normal_topic_read_history[/tt] -- set this to '1' if you don't want topic-read history to be maintained for things other than private topics
   - [tt]no_member_tracking[/tt] -- set this to '1' if you want to disable the member tracking feature where it's supported (it shows who is viewing a forum topic, for example)
   - [tt]min_lastvisit_frequency[/tt] -- set this to the number of seconds waited between the last-visit time being updated (performance tweak, minimises database writes)
   - [tt]no_flood_control[/tt] -- set this to '1' if you will not have flood control

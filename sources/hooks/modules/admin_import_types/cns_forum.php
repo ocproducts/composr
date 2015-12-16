@@ -31,7 +31,6 @@ class Hook_admin_import_types_cns_forum
     public function run()
     {
         return array(
-            'cns_post_history' => 'POST_HISTORY',
             'cns_post_templates' => 'POST_TEMPLATES',
             'cns_announcements' => 'ANNOUNCEMENTS',
             'cns_forum_groupings' => 'MODULE_TRANS_NAME_admin_cns_forum_groupings',

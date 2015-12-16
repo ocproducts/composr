@@ -992,13 +992,12 @@ function lang_remap_comcode($field_name, $id, $text, $connection = null, $pass_i
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $source_user The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
- * @param  boolean $backup_string Whether to backup the language string before changing it
  * @return array The language string ID save fields
  */
-function lang_remap($field_name, $id, $text, $connection = null, $comcode = false, $pass_id = null, $source_user = null, $as_admin = false, $backup_string = false)
+function lang_remap($field_name, $id, $text, $connection = null, $comcode = false, $pass_id = null, $source_user = null, $as_admin = false)
 {
     require_code('lang3');
-    return _lang_remap($field_name, $id, $text, $connection, $comcode, $pass_id, $source_user, $as_admin, $backup_string);
+    return _lang_remap($field_name, $id, $text, $connection, $comcode, $pass_id, $source_user, $as_admin);
 }
 
 /**

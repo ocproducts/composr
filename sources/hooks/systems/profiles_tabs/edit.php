@@ -73,7 +73,7 @@ class Hook_profiles_tabs_edit
 
         $only_tab = get_param_string('only_subtab', null);
 
-        if (($leave_to_ajax_if_possible) && (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST')) {
+        if (($leave_to_ajax_if_possible) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             return array($title, null, $order, 'tabs/settings');
         }
 

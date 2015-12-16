@@ -263,6 +263,7 @@ function cns_get_forum_multi_code_field($forum_multi_code)
  * @param  LONG_TEXT $reason The reason for the moderation (may be blank).
  * @param  ?MEMBER $by The member performing the moderation (null: current member).
  * @param  ?TIME $date_and_time The time of the moderation (null: just now).
+ * @return AUTO_LINK The log ID.
  */
 function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $by = null, $date_and_time = null)
 {
@@ -273,12 +274,12 @@ function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $
         $by = get_member();
     }
 
-    $GLOBALS['FORUM_DB']->query_insert('f_moderator_logs', array(
+    return $GLOBALS['FORUM_DB']->query_insert('f_moderator_logs', array(
         'l_the_type' => $the_type,
         'l_param_a' => $param_a,
         'l_param_b' => $param_b,
         'l_date_and_time' => $date_and_time,
         'l_reason' => $reason,
         'l_by' => $by
-    ));
+    ), true);
 }

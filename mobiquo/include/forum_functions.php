@@ -70,7 +70,7 @@ function get_num_unread_topics($forum_id, $subscribed_only = false, $member_id =
         $sql .= ' ' . cns_get_all_subordinate_forums($forum_id, 't.t_forum_id');
     }
     $sql .= ' AND (l_time IS NULL OR l_time<t_cache_last_time)'; // Cannot get join match OR gets one and it is behind of last post
-    $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))); // Within tracking range
+    $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))); // Within tracking range
     if (addon_installed('unvalidated')) {
         $sql .= ' AND t_validated=1';
     }

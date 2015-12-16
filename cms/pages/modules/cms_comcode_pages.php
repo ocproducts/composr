@@ -736,8 +736,8 @@ class Module_cms_comcode_pages
         $filesarray = $this->get_comcode_revisions($zone, 'comcode_custom/' . $lang, $file . '.txt');
         rsort($filesarray);
         $i = 0;
-        $revision_history = new Tempcode();
-        $max = intval(get_option('number_revisions_show'));
+        $revisions = new Tempcode();
+        $max = TODO;
         $last_path = $file_base . '/' . $restore_from;
         if (is_file($last_path)) {
             foreach ($filesarray as $iterator => $stuff) {
@@ -745,7 +745,7 @@ class Module_cms_comcode_pages
 
                 // Find who did the revision
                 $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'COMCODE_PAGE_EDIT', 'param_a' => $file));
-                if ((has_privilege(get_member(), 'view_revision_history')) || ($editor == get_member())) {
+                if ((has_privilege(get_member(), 'view_revisions')) || ($editor == get_member())) {
                     if (is_null($editor)) {
                         $editor = do_lang('UNKNOWN');
                     } else {
@@ -766,7 +766,7 @@ class Module_cms_comcode_pages
                         if (($rendered_diff == '') && ($iterator == 0)) {
                             continue; // the version records are often saved on create not replace
                         }
-                        $revision_history->attach(do_template('REVISION_HISTORY_LINE', array('_GUID' => '57e2c81fd621d1c8d6e283a5a4991001', 'REFERENCE_POINT_EXACT' => true, 'RENDERED_DIFF' => $rendered_diff, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => strval($time), 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
+                        $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => '57e2c81fd621d1c8d6e283a5a4991001', 'REFERENCE_POINT_EXACT' => true, 'RENDERED_DIFF' => $rendered_diff, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => strval($time), 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
                         $i++;
                     }
 
@@ -782,15 +782,15 @@ class Module_cms_comcode_pages
                 require_code('diff');
                 if (function_exists('diff_simple')) {
                     $rendered_diff = diff_simple(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/' . 'pages/comcode/' . $lang . '/' . $file . '.txt'), $last_path);
-                    $revision_history->attach(do_template('REVISION_HISTORY_LINE', array('_GUID' => 'ed0b29f26cf93d4d6e0348a7e75d259d', 'REFERENCE_POINT_EXACT' => true, 'RENDERED_DIFF' => $rendered_diff, 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
+                    $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => 'ed0b29f26cf93d4d6e0348a7e75d259d', 'REFERENCE_POINT_EXACT' => true, 'RENDERED_DIFF' => $rendered_diff, 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
                     $i++;
                 }
             }
         }
-        if ((!$revision_history->is_empty()) && (get_param_string('restore_from', '') == '')) {
-            $revision_history = do_template('REVISION_HISTORY_WRAP', array('_GUID' => '2349ee62cae037ec3cf1766403c92b39', 'CONTENT' => $revision_history));
-        } elseif (!$revision_history->is_empty()) {
-            $revision_history = do_template('REVISION_RESTORE');
+        if ((!$revisions->is_empty()) && (get_param_string('restore_from', '') == '')) {
+            $revisions = do_template('REVISIONS_WRAP', array('_GUID' => '2349ee62cae037ec3cf1766403c92b39', 'CONTENT' => $revisions));
+        } elseif (!$revisions->is_empty()) {
+            $revisions = do_template('REVISION_RESTORE');
         }
 
         $meta_keywords = post_param_string('meta_keywords', '');
@@ -928,7 +928,7 @@ class Module_cms_comcode_pages
             'ZONE' => $zone,
             'FILE' => $file,
             'POSTING_FORM' => $posting_form,
-            'REVISION_HISTORY' => $revision_history,
+            'REVISIONS' => $revisions,
         ));
     }
 

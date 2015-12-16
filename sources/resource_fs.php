@@ -127,6 +127,27 @@ function resourcefs_logging__end()
 }
 
 /**
+ * Get a Resource-fs record.
+ *
+ * @param  ID_TEXT $resource_type The resource type
+ * @param  ID_TEXT $resource_id The resource ID
+ * @return ?array A pair: the JSON data, the path (null: could not find)
+ */
+function get_resourcefs_record($resource_type, $resource_id)
+{
+    $resource_fs_ob = get_resource_commandrfs_object($resource_type);
+
+    $resource_fs_path = find_commandrfs_filename_via_id($resource_type, $resource_id, true);
+    if (is_null($resource_fs_path)) {
+        return null;
+    }
+
+    $resource_fs_data = $resource_fs_ob->resource_load($resource_type, basename($resource_fs_path), dirname($resource_fs_path));
+
+    return array(json_encode($resource_fs_data), $resource_fs_path);
+}
+
+/**
  * Get the Commandr-fs object for a resource type.
  *
  * @param  ID_TEXT $resource_type The resource type

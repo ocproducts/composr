@@ -225,7 +225,7 @@ class Module_admin_disastr extends Standard_crud_module
         }
 
         require_code('templates_map_table');
-        return map_table(get_screen_title('VIEW_DISEASE'), array('NAME' => $name, 'IMAGE' => $image, 'CURE' => $cure, 'CURE_PRICE' => integer_format($cure_price), 'IMMUNIZATION' => $immunization, 'IMMUNIZATION_PRICE' => integer_format($immunization_price), 'SPREAD_RATE' => integer_format($spread_rate), 'POINTS_PER_SPREAD' => integer_format($points_per_spread), 'ENABLED' => $enabled));
+        return map_table_screen(get_screen_title('VIEW_DISEASE'), array('NAME' => $name, 'IMAGE' => $image, 'CURE' => $cure, 'CURE_PRICE' => integer_format($cure_price), 'IMMUNIZATION' => $immunization, 'IMMUNIZATION_PRICE' => integer_format($immunization_price), 'SPREAD_RATE' => integer_format($spread_rate), 'POINTS_PER_SPREAD' => integer_format($points_per_spread), 'ENABLED' => $enabled));
     }
 
     public function get_form_fields($id = null, $name = '', $image = '', $cure = '', $cure_price = 10, $immunization = '', $immunization_price = 5, $spread_rate = 12, $points_per_spread = 10, $enabled = 0)

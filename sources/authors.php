@@ -142,7 +142,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
             'member_id' => $member_id,
         );
         $map += lang_remap('skills', $_skills, $skills);
-        $map += update_lang_comcode_attachments('description', $_description, $description, 'author', $author, null, false, $member_id);
+        $map += update_lang_comcode_attachments('description', $_description, $description, 'author', $author, null, $member_id);
 
         $GLOBALS['SITE_DB']->query_update('authors', $map, array('author' => $author), '', 1);
     } else {

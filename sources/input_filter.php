@@ -120,7 +120,7 @@ function check_posted_field($name, $val)
         cms_setcookie('has_referers', '1'); // So we know for later requests that "blank" means a malicious external request (from third-party HTTPS URL, or a local file being executed)
     }
 
-    if ((strtolower(cms_srv('REQUEST_METHOD')) == 'post') && (!is_guest())) {
+    if ((cms_srv('REQUEST_METHOD') == 'POST') && (!is_guest())) {
         if ($is_true_referer) {
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
             $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());

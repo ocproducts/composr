@@ -115,6 +115,7 @@ The following special POST fields are supported:
  - [tt]redirect[/tt]: URL to redirect to after the relay is done (if non-set then it will show a success message)
 
 Any other fields (except certain special reserved names) you pass will become part of the post body. Pass [tt]label_for__<field_name>[/tt] to label the fields for a neater e-mail (optional).
+You can of course have hidden fields ([tt]type="hidden"[/tt] in HTML), to pass special values through automatically. This is useful for customised tracking.
 
 Here is an example blob of HTML+Tempcode to demonstrate the functionality:
 [code="HTML"]

@@ -46,7 +46,7 @@ class Hook_rss_cns_unread_topics
             return null;
         }
 
-        $condition = 'l_time<t_cache_last_time OR (l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ')';
+        $condition = 'l_time<t_cache_last_time OR (l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ')';
         $query = 'SELECT *,top.id AS t_id';
         if (multi_lang_content()) {
             $query .= ',t_cache_first_post AS p_post';

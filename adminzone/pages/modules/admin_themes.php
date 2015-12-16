@@ -1116,8 +1116,8 @@ class Module_admin_themes
         rsort($filesarray);
 
         $i = 0;
-        $revision_history = new Tempcode();
-        $max = intval(get_option('number_revisions_show'));
+        $revisions = new Tempcode();
+        $max = TODO;
         $last_path = $path;
         foreach ($filesarray as $time) {
             // Find who did the revision
@@ -1139,7 +1139,7 @@ class Module_admin_themes
             if (function_exists('diff_simple')) {
                 $rendered_diff = diff_simple($old_file, $last_path);
                 $last_path = $old_file;
-                $revision_history->attach(do_template('REVISION_HISTORY_LINE', array('_GUID' => 'dba0110692775615152be1da850bc1d4', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => $time, 'RESTORE_URL' => $restore_url, 'URL' => $url2, 'SIZE' => clean_file_size($size))));
+                $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => 'dba0110692775615152be1da850bc1d4', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => $time, 'RESTORE_URL' => $restore_url, 'URL' => $url2, 'SIZE' => clean_file_size($size))));
                 $i++;
             }
 
@@ -1148,9 +1148,9 @@ class Module_admin_themes
             }
         }
         if (($i != 0) && (get_param_string('restore_from', '') == '')) {
-            $revision_history = do_template('REVISION_HISTORY_WRAP', array('_GUID' => '330a153101f131ff63445a694aa149c4', 'CONTENT' => $revision_history));
+            $revisions = do_template('REVISIONS_WRAP', array('_GUID' => '330a153101f131ff63445a694aa149c4', 'CONTENT' => $revisions));
         } elseif ($i != 0) {
-            $revision_history = do_template('REVISION_RESTORE');
+            $revisions = do_template('REVISION_RESTORE');
         }
 
         require_code('form_templates');
@@ -1161,7 +1161,7 @@ class Module_admin_themes
             'PING_URL' => $ping_url,
             'OLD_CONTENTS' => $old_contents,
             'WARNING_DETAILS' => $warning_details,
-            'REVISION_HISTORY' => $revision_history,
+            'REVISIONS' => $revisions,
             'SWITCH_ICON' => $switch_icon,
             'SWITCH_STRING' => $switch_string,
             'SWITCH_URL' => $switch_url,
@@ -1609,7 +1609,7 @@ class Module_admin_themes
             $filesarray = $this->get_template_files_array($theme, $directory, '.' . get_file_extension($file), basename($file));
             rsort($filesarray);
             $j = 0;
-            $revision_history = new Tempcode();
+            $revisions = new Tempcode();
             $max = intval(get_option('number_revisions_show'));
             foreach ($filesarray as $time) {
                 // Find who did the revision
@@ -1639,7 +1639,7 @@ class Module_admin_themes
                 if (function_exists('diff_simple')) {
                     $rendered_diff = is_null($last_path) ? '' : diff_simple($old_file, $last_path);
                     $last_path = $old_file;
-                    $revision_history->attach(do_template('REVISION_HISTORY_LINE', array('_GUID' => 'f0cb02bfa3692ed431b69b8d9dc0b2f8', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => strval($time), 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
+                    $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => 'f0cb02bfa3692ed431b69b8d9dc0b2f8', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => strval($time), 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
                     $j++;
                 }
 
@@ -1659,14 +1659,14 @@ class Module_admin_themes
                 require_code('diff');
                 if (function_exists('diff_simple')) {
                     $rendered_diff = diff_simple(get_file_base() . '/themes/' . $orig_version, $last_path);
-                    $revision_history->attach(do_template('REVISION_HISTORY_LINE', array('_GUID' => '7ba03fe98a20330fc64ad742d2fb74fa', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
+                    $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => '7ba03fe98a20330fc64ad742d2fb74fa', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
                     $j++;
                 }
             }
             if (($j != 0) && (get_param_string('restore_from', '') == '')) {
-                $revision_history = do_template('REVISION_HISTORY_WRAP', array('_GUID' => '435e050dd2f38187d757e792ceb2f2f5', 'CONTENT' => $revision_history));
+                $revisions = do_template('REVISIONS_WRAP', array('_GUID' => '435e050dd2f38187d757e792ceb2f2f5', 'CONTENT' => $revisions));
             } elseif ($j != 0) {
-                $revision_history = do_template('REVISION_RESTORE');
+                $revisions = do_template('REVISION_RESTORE');
             }
 
             $_path = get_file_base() . '/themes/default/' . $file;
@@ -1825,7 +1825,7 @@ class Module_admin_themes
                 'FILE_SAVE_TARGET' => $file_save_target,
                 'OLD_CONTENTS' => $old_contents,
                 'CONTENTS' => $contents,
-                'REVISION_HISTORY' => $revision_history
+                'REVISIONS' => $revisions
             )));
 
             $count++;
@@ -1905,7 +1905,7 @@ class Module_admin_themes
             }
 
             // Make backup
-            if ((file_exists($fullpath)) && (get_option('templates_store_revisions') == '1')) {
+            if (file_exists($fullpath)) {
                 @copy($fullpath, $fullpath . '.' . strval(time())) or intelligent_write_error($fullpath . '.' . strval(time()));
                 fix_permissions($fullpath . '.' . strval(time()));
                 sync_file($fullpath . '.' . strval(time()));

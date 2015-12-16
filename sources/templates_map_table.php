@@ -25,7 +25,7 @@
  * @param  array $fields An array of mappings between title and value (each mapping being a field)
  * @return Tempcode The generated view space
  */
-function map_table($title, $fields)
+function map_table_screen($title, $fields)
 {
     $_fields = new Tempcode();
     foreach ($fields as $key => $val) {

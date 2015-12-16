@@ -4365,7 +4365,10 @@ function ecv_SELF_URL($lang, $escaped, $param)
             $i++;
         }
     }
-    $value = get_self_url(true, (isset($param[0])) && ($param[0] == '1'), $extra_params, (isset($param[1])) && ($param[1] == '1'), (isset($param[2])) && ($param[2] == '1'));
+    $root_if_posted = (isset($param[0])) && ($param[0] == '1');
+    $posted_too = (isset($param[1])) && ($param[1] == '1');
+    $avoid_remap = (isset($param[2])) && ($param[2] == '1');
+    $value = get_self_url(true, $root_if_posted, $extra_params, $posted_too, $avoid_remap);
 
     if ($escaped != array()) {
         apply_tempcode_escaping($escaped, $value);

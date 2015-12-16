@@ -117,11 +117,10 @@ function delete_lang_comcode_attachments($lang_id, $type, $id, $connection = nul
  * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
  * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
  * @param  ?object $connection The database connection to use (null: standard site connection)
- * @param  boolean $backup_string Whether to backup the language string before changing it
  * @param  ?MEMBER $for_member The member that owns the content this is for (null: current member)
  * @return array The language string save fields
  */
-function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $id, $connection = null, $backup_string = false, $for_member = null)
+function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $id, $connection = null, $for_member = null)
 {
     if ($lang_id === 0) {
         return insert_lang_comcode_attachments($field_name, 3, $text, $type, $id, $connection, false, $for_member);
@@ -138,30 +137,6 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
     require_lang('comcode');
 
     _check_attachment_count();
-
-    if (($backup_string) && (multi_lang_content())) {
-        if (multi_lang()) {
-            $current = $connection->query_select('translate', array('*'), array('id' => $lang_id, 'language' => user_lang()));
-            if (!array_key_exists(0, $current)) {
-                $current = $connection->query_select('translate', array('*'), array('id' => $lang_id));
-            }
-        } else {
-            $current = array(array(
-                                 'language' => user_lang(),
-                                 'text_original' => $lang_id,
-                                 'broken' => 0,
-                             ));
-        }
-
-        $connection->query_insert('translate_history', array(
-            'lang_id' => $lang_id,
-            'language' => $current[0]['language'],
-            'text_original' => $current[0]['text_original'],
-            'broken' => $current[0]['broken'],
-            'action_member' => get_member(),
-            'action_time' => time()
-        ));
-    }
 
     $member = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 

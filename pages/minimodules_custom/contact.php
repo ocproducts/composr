@@ -5,7 +5,7 @@
 $decision_tree = array(
     'start' => array(
         'title' => 'Support request - step 1',
-        'form_method' => 'get',
+        'form_method' => 'GET',
         'questions' => array(
             'service_class' => array(
                 'label' => 'What service class are you looking for?',

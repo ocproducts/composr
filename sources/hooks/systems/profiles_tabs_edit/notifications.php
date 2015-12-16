@@ -50,7 +50,7 @@ class Hook_profiles_tabs_edit_notifications
 
         $order = 100;
 
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+        if (cms_srv('REQUEST_METHOD') == 'POST') {
             $auto_monitor_contrib_content = post_param_integer('auto_monitor_contrib_content', 0);
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_auto_monitor_contrib_content' => $auto_monitor_contrib_content), array('id' => $member_id_of), '', 1);
 
@@ -62,7 +62,7 @@ class Hook_profiles_tabs_edit_notifications
             unset($GLOBALS['MEMBER_CACHE_FIELD_MAPPINGS'][$member_id_of]);
         }
 
-        if (($leave_to_ajax_if_possible) && (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST')) {
+        if (($leave_to_ajax_if_possible) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             return null;
         }
 

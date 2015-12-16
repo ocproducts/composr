@@ -85,8 +85,8 @@ class Hook_profiles_tabs_about
             $modules[] = array('audit', do_lang_tempcode('WARN_MEMBER'), build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $member_id_of, 'redirect' => $redir_url), get_module_zone('warnings')), 'links/warning_add');
             $modules[] = array('audit', do_lang_tempcode('PUNITIVE_HISTORY'), build_url(array('page' => 'warnings', 'type' => 'history', 'member_id' => $member_id_of), get_module_zone('warnings')), 'tabs/member_account/warnings');
         }
-        if ((has_privilege($member_id_viewing, 'view_content_history')) && (has_actual_page_access($member_id_viewing, 'admin_cns_history'))) {
-            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('POST_HISTORY'), build_url(array('page' => 'admin_cns_history', 'member_id' => $member_id_of), get_module_zone('admin_cns_history')), 'buttons/history');
+        if ((addon_installed('actionlog')) && (has_privilege($member_id_viewing, 'view_revisions')) && (has_actual_page_access($member_id_viewing, 'admin_revisions'))) {
+            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('POST_HISTORY'), build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'username' => $username), get_module_zone('admin_revisions')), 'buttons/revisions');
         }
         if ((addon_installed('securitylogging')) && (has_actual_page_access($member_id_viewing, 'admin_lookup'))) {
             require_lang('lookup');

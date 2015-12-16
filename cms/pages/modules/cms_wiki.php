@@ -238,7 +238,13 @@ class Module_cms_wiki
         }
 
         require_lang('notifications');
-        $notify = ($page_id == -1) || ($GLOBALS['SITE_DB']->query_select_value_if_there('wiki_changes', 'MAX(date_and_time)', array('the_page' => $page_id)) < time() - 60 * 10);
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_database');
+            $revisions = new RevisionEngineDatabase(false);
+            $notify = ($page_id == -1) || ($revisions->find_most_recent_category_change('wiki_page', strval($page_id)) < time() - 60 * 10);
+        } else {
+            $notify = true;
+        }
         $radios = form_input_radio_entry('send_notification', '0', !$notify, do_lang_tempcode('NO'));
         $radios->attach(form_input_radio_entry('send_notification', '1', $notify, do_lang_tempcode('YES')));
         $fields2->attach(form_input_radio(do_lang_tempcode('SEND_NOTIFICATION'), do_lang_tempcode('DESCRIPTION_SEND_NOTIFICATION'), 'send_notification', $radios));
@@ -419,34 +425,12 @@ class Module_cms_wiki
             $fields2->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
         }
 
-        $revision_history = new Tempcode();
-        if (multi_lang_content()) {
-            $restore_from = get_param_integer('restore_from', -1);
-            if ($restore_from != -1) {
-                $description = $GLOBALS['SITE_DB']->query_select_value('translate_history', 'text_original', array('id' => $restore_from, 'lang_id' => $page['description'])); // Double selection to stop hacking
-                $_description = null;
-            }
-
-            // Revision history
-            require_code('files');
-            $revisions = $GLOBALS['SITE_DB']->query_select('translate_history', array('*'), array('lang_id' => $page['description']), 'ORDER BY action_time DESC');
-            $last_description = $description;
-            foreach ($revisions as $revision) {
-                $time = $revision['action_time'];
-                $date = get_timezoned_date($time);
-                $editor = $GLOBALS['FORUM_DRIVER']->get_username($revision['action_member']);
-                $restore_url = build_url(array('page' => '_SELF', 'type' => 'edit_page', 'id' => get_param_string('id', false, true), 'restore_from' => $revision['id']), '_SELF');
-                $size = strlen($revision['text_original']);
-                require_code('diff');
-                $rendered_diff = diff_simple_2($revision['text_original'], $last_description);
-                $last_description = $revision['text_original'];
-                $revision_history->attach(do_template('REVISION_HISTORY_LINE', array('_GUID' => 'a46de8a930ecfb814695a50b1c4931ac', 'RENDERED_DIFF' => $rendered_diff, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => strval($time), 'RESTORE_URL' => $restore_url, 'URL' => '', 'SIZE' => clean_file_size($size))));
-            }
-            if ((!$revision_history->is_empty()) && ($restore_from == -1)) {
-                $revision_history = do_template('REVISION_HISTORY_WRAP', array('_GUID' => '1fc38d9d7ec57af110759352446e533d', 'CONTENT' => $revision_history));
-            } elseif (!$revision_history->is_empty()) {
-                $revision_history = do_template('REVISION_RESTORE');
-            }
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_database');
+            $revisions = new RevisionEngineDatabase();
+            $revisions = $revisions->ui_revision_undoer('wiki_page', strval($id), $description);
+        } else {
+            $revisions = new Tempcode();
         }
 
         $posting_form = get_posting_form(do_lang('SAVE'), 'menu___generic_admin__edit_this_category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, null, null, false);
@@ -457,7 +441,7 @@ class Module_cms_wiki
             '_GUID' => 'de53b8902ab1431e0d2d676f7d5471d3',
             'PING_URL' => $ping_url,
             'WARNING_DETAILS' => $warning_details,
-            'REVISION_HISTORY' => $revision_history,
+            'REVISIONS' => $revisions,
             'POSTING_FORM' => $posting_form,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
@@ -600,6 +584,7 @@ class Module_cms_wiki
         check_privilege('wiki_manage_tree', array('wiki_page', $id));
 
         $hide_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'hide_posts', array('id' => $id));
+        $page_title = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'page_title', array('id' => $id));
         if (get_option('wiki_enable_content_posts') == '0') {
             $hide_posts = 1;
         }
@@ -668,7 +653,7 @@ class Module_cms_wiki
             }
         }
 
-        $GLOBALS['SITE_DB']->query_insert('wiki_changes', array('the_action' => 'WIKI_EDIT_TREE', 'the_page' => $id, 'date_and_time' => time(), 'ip' => get_ip_address(), 'member_id' => $member));
+        log_it('WIKI_EDIT_TREE', strval($id), $page_title);
 
         // Show it worked / Refresh
         $url = get_param_string('redirect');

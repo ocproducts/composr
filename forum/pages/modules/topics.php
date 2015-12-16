@@ -188,7 +188,6 @@ class Module_topics
             'open_topic',
             'close_topic',
             'validate_post',
-            'topic_history',
             'birthday',
             'make_private',
             '_make_private',
@@ -207,6 +206,9 @@ class Module_topics
             'invite_member',
             '_invite_member',
         );
+        if (addon_installed('actionlog')) {
+            $valid_types[] = 'topic_history';
+        }
         if (addon_installed('cns_reported_posts')) {
             $valid_types[] = 'report_post';
         }
@@ -670,7 +672,7 @@ class Module_topics
     public function cns_ping_topic_unread($topic_id)
     {
         $last_time = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_last_time', array('id' => $topic_id));
-        $too_old = $last_time < time() - 60 * 60 * 24 * intval(get_option('post_history_days'));
+        $too_old = $last_time < time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'));
         if (!$too_old) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
                 $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_topic_id' => $topic_id, 'l_member_id' => get_member()), '', 1);
@@ -704,7 +706,7 @@ class Module_topics
         }
 
         if ($success != count($topics)) {
-            attach_message(do_lang_tempcode('MARK_UNREAD_TOO_OLD', escape_html(integer_format(count($topics) - $success)), escape_html(integer_format(intval(get_option('post_history_days'))))), 'warn');
+            attach_message(do_lang_tempcode('MARK_UNREAD_TOO_OLD', escape_html(integer_format(count($topics) - $success)), escape_html(integer_format(intval(get_option('post_read_history_days'))))), 'warn');
         }
 
         if (is_null($forum_id)) {
@@ -4088,7 +4090,7 @@ END;
         $title = get_screen_title('POST_HISTORY');
 
         // We should be somewhere else entirely - it's just our moderator action list took us here
-        $url = build_url(array('page' => 'admin_cns_history', 'type' => 'browse', 'topic_id' => get_param_integer('id')), 'adminzone');
+        $url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'topic,post', 'category_id' => get_param_integer('id')), get_module_zone('admin_revisions'));
         return redirect_screen($title, $url);
     }
 

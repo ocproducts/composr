@@ -506,7 +506,7 @@ class Hook_addon_registry_core_rich_media
                 'FILE' => lorem_phrase(),
                 'EXPORT_URL' => placeholder_url(),
                 'POSTING_FORM' => placeholder_form(),
-                'REVISION_HISTORY' => lorem_phrase(),
+                'REVISIONS' => lorem_phrase(),
             )), null, '', true)
         );
     }

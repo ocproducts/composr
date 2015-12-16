@@ -263,7 +263,7 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/COLUMNED_TABLE_ROW_CELL_SELECT.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE_ROW_CELL_TICK.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE_ROW_CELL_LINE.tpl' => 'full_table_screen',
-            'templates/COLUMNED_TABLE_SCREEN.tpl' => 'administrative__columned_table_screen'
+            'templates/COLUMNED_TABLE_SCREEN.tpl' => 'administrative__columned_table_screen',
         );
     }
 

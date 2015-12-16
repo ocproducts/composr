@@ -107,9 +107,6 @@ class Hook_addon_registry_core_abstract_components
             'themes/default/templates/BUTTON_SCREEN_ITEM.tpl',
             'themes/default/templates/STANDARDBOX_default.tpl',
             'themes/default/templates/STANDARDBOX_accordion.tpl',
-            'themes/default/templates/REVISION_HISTORY_LINE.tpl',
-            'themes/default/templates/REVISION_HISTORY_WRAP.tpl',
-            'themes/default/templates/REVISION_RESTORE.tpl',
             'themes/default/templates/HANDLE_CONFLICT_RESOLUTION.tpl',
             'themes/default/templates/FRACTIONAL_EDIT.tpl',
             'themes/default/javascript/fractional_edit.js',
@@ -132,9 +129,6 @@ class Hook_addon_registry_core_abstract_components
     public function tpl_previews()
     {
         return array(
-            'templates/REVISION_HISTORY_LINE.tpl' => 'administrative__show_revision_history',
-            'templates/REVISION_HISTORY_WRAP.tpl' => 'administrative__show_revision_history',
-            'templates/REVISION_RESTORE.tpl' => 'administrative__revision_restore',
             'templates/BUTTON_SCREEN_ITEM.tpl' => 'button_screen_item',
             'templates/FRACTIONAL_EDIT.tpl' => 'administrative__fractional_edit',
             'templates/CROP_TEXT_MOUSE_OVER_INLINE.tpl' => 'crop_text_mouse_over_inline',
@@ -145,32 +139,6 @@ class Hook_addon_registry_core_abstract_components
             'templates/STANDARDBOX_accordion.tpl' => 'standardbox_accordion',
             'templates/HANDLE_CONFLICT_RESOLUTION.tpl' => 'administrative__handle_conflict_resolution',
             'templates/STAFF_ACTIONS.tpl' => 'staff_actions'
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__show_revision_history()
-    {
-        $revision_history = do_lorem_template('REVISION_HISTORY_LINE', array(
-            'RENDERED_DIFF' => lorem_phrase(),
-            'EDITOR' => lorem_phrase(),
-            'DATE' => placeholder_date(),
-            'DATE_RAW' => placeholder_date_raw(),
-            'RESTORE_URL' => placeholder_url(),
-            'URL' => placeholder_url(),
-            'SIZE' => placeholder_filesize(),
-        ));
-
-        return array(
-            lorem_globalise(do_lorem_template('REVISION_HISTORY_WRAP', array(
-                'CONTENT' => $revision_history,
-            )), null, '', true)
         );
     }
 
@@ -194,20 +162,6 @@ class Hook_addon_registry_core_abstract_components
                 '4_TITLE' => lorem_phrase(),
                 '4_URL' => placeholder_url(),
             )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__revision_restore()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('REVISION_RESTORE', array()), null, '', true)
         );
     }
 

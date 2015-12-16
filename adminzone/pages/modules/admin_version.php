@@ -56,7 +56,6 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('menu_items');
         $GLOBALS['SITE_DB']->drop_table_if_exists('values_elective');
         $GLOBALS['SITE_DB']->drop_table_if_exists('tutorial_links');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('translate_history');
         $GLOBALS['SITE_DB']->drop_table_if_exists('edit_pings');
         $GLOBALS['SITE_DB']->drop_table_if_exists('webstandards_checked_once');
         $GLOBALS['SITE_DB']->drop_table_if_exists('member_privileges');
@@ -193,16 +192,6 @@ class Module_admin_version
                 'the_member' => 'MEMBER'
             ));
             $GLOBALS['SITE_DB']->create_index('edit_pings', 'edit_pings_on', array('the_page', 'the_type', 'the_id'));
-
-            $GLOBALS['SITE_DB']->create_table('translate_history', array(
-                'id' => '*AUTO',
-                'lang_id' => 'AUTO_LINK',
-                'language' => '*LANGUAGE_NAME',
-                'text_original' => 'LONG_TEXT',
-                'broken' => 'BINARY',
-                'action_member' => 'MEMBER',
-                'action_time' => 'TIME'
-            ));
 
             $GLOBALS['SITE_DB']->create_table('values_elective', array(
                 'the_name' => '*ID_TEXT',
@@ -771,6 +760,8 @@ class Module_admin_version
             while (count($keywords) > 0);
 
             $GLOBALS['SITE_DB']->delete_table_field('seo_meta', 'meta_keywords');
+
+            $GLOBALS['SITE_DB']->drop_table_if_exists('translate_history');
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {

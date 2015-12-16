@@ -373,15 +373,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
                 if ($listener['rem_protocol'] == 'xml-rpc') {
                     require_code('xmlrpc');
                     xml_rpc('http://' . $listener['rem_ip'] . ':' . strval($listener['rem_port']) . '/' . $listener['rem_path'], $listener['rem_procedure'], $data, true);
-                } else {
-                    $errno = 0;
-                    $errstr = '';
-                    $mysock = @fsockopen($listener['rem_ip'], $listener['rem_port'], $errno, $errstr, 6.0);
-                    if ($mysock !== false) {
-                        @fwrite($mysock, $packet);
-                        @fclose($mysock);
-                    }
-                }
+                } // Other protocols not supported
             }
             $start += 100;
         } while (array_key_exists(0, $listeners));
@@ -521,7 +513,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
         'validated' => $validated,
         'author' => $author,
     );
-    $update_map += update_lang_comcode_attachments('news_article', $_news_article, $news_article, 'news', strval($id), null, false, $rows[0]['submitter']);
+    $update_map += update_lang_comcode_attachments('news_article', $_news_article, $news_article, 'news', strval($id), null, $rows[0]['submitter']);
     $update_map += lang_remap_comcode('title', $_title, $title);
     $update_map += lang_remap_comcode('news', $_news, $news);
 

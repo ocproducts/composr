@@ -477,19 +477,12 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
         $select = 'p.id,p.p_parent_id,p.p_intended_solely_for,p.p_poster';
     } else {
         $select = 'p.*';
-        if (!db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
-            $select .= ',h.h_post_id';
-        }
     }
     if ((($is_threaded) || ($sort == 'compound_rating') || ($sort == 'average_rating')) && (db_has_subqueries($this_ref->connection->connection_read))) {
         $select .= ',COALESCE((SELECT AVG(rating) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),5) AS average_rating';
         $select .= ',COALESCE((SELECT SUM(rating-1) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),0) AS compound_rating';
     }
-    if (!db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
-        $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON (h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time) WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
-    } else { // Can use subquery to avoid having to assume p_last_edit_time was not chosen as null during avoidance of duplication of rows
-        $rows = $this_ref->connection->query('SELECT ' . $select . ', (SELECT h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h WHERE (h.h_post_id=p.id) LIMIT 1) AS h_post_id FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
-    }
+    $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
     $count = $this_ref->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
 
     $out = array();
@@ -519,7 +512,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
 
     if ($mark_read) {
         require_code('cns_topics');
-        if ((get_option('post_history_days') != '0') && (get_value('avoid_normal_topic_history') !== '1')) {
+        if ((get_option('post_read_history_days') != '0') && (get_value('avoid_normal_topic_read_history') !== '1')) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
                 cns_ping_topic_read($topic_id);
             }

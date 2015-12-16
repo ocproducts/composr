@@ -631,7 +631,6 @@ $featuretree = array(
                 array('Mass-moderation', 'Perform actions on many posts and topics at once'),
                 array('Post templates', 'Use your forum as a database for record gathering <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post Templates" href="http://shareddemo.composr.info/adminzone/index.php?admin_cns_post_templates"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Post preview', 'Read a topics first post directly from the forum-view'),
-                array('Records post edit/delete history <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post History" href="http://shareddemo.composr.info/adminzone/index.php?admin_cns_history"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Highlight posts as &lsquo;important&rsquo; <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Highlighted Posts" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;type=findpost&amp;id=13#post_13"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>', 'Your posts will be <a href="http://www.youtube.com/watch?v=lul-Y8vSr0I" target="_blank" title="(Opens in new window)">high as a kite by then</a>'),
             ),
             'Conversr-only',

@@ -43,7 +43,7 @@ if (strpos($git_result, 'git: command not found') !== false) {
 // Actualisation
 // =============
 
-if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+if (cms_srv('REQUEST_METHOD') == 'POST') {
     $git_commit_id = post_param_string('git_commit_id', '');
 
     $done = array();

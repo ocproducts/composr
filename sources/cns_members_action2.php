@@ -1502,7 +1502,7 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
             if ($type == 'posting_field') {
                 require_code('attachments2');
                 require_code('attachments3');
-                $map += update_lang_comcode_attachments($db_fieldname, $current, $value, 'null', strval($member_id), $GLOBALS['FORUM_DB'], false, $member_id);
+                $map += update_lang_comcode_attachments($db_fieldname, $current, $value, 'null', strval($member_id), $GLOBALS['FORUM_DB'], $member_id);
             } else {
                 $map += lang_remap_comcode($db_fieldname, $current, $value, $GLOBALS['FORUM_DB']);
             }
@@ -1746,7 +1746,7 @@ function cns_member_choose_signature($new_signature, $member_id = null)
     require_code('attachments2');
     require_code('attachments3');
     $map = array();
-    $map += update_lang_comcode_attachments('m_signature', $_signature, $new_signature, 'cns_signature', strval($member_id), $GLOBALS['FORUM_DB'], false, $member_id);
+    $map += update_lang_comcode_attachments('m_signature', $_signature, $new_signature, 'cns_signature', strval($member_id), $GLOBALS['FORUM_DB'], $member_id);
     $GLOBALS['FORUM_DB']->query_update('f_members', $map, array('id' => $member_id), '', 1);
 
     require_code('notifications');

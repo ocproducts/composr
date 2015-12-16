@@ -433,16 +433,17 @@ function prevent_double_submit($type, $a = null, $b = null)
  * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
  * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. ID) (null: none)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none)
+ * @return ?AUTO_LINK Log ID (null: did not save a log)
  * @ignore
  */
 function _log_it($type, $a = null, $b = null)
 {
     if (!function_exists('get_member')) {
-        return; // If this is during installation
+        return null; // If this is during installation
     }
 
     if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '0')) {
-        return;
+        return null;
     }
 
     // Run hooks, if any exist
@@ -456,10 +457,18 @@ function _log_it($type, $a = null, $b = null)
         $ob->run($type, $a, $b);
     }
 
+    $log_id = mixed();
     global $ADMIN_LOGGING_ON;
     if ($ADMIN_LOGGING_ON) {
         $ip = get_ip_address();
-        $GLOBALS['SITE_DB']->query_insert('adminlogs', array('the_type' => $type, 'param_a' => is_null($a) ? '' : substr($a, 0, 80), 'param_b' => is_null($b) ? '' : substr($b, 0, 80), 'date_and_time' => time(), 'member_id' => get_member(), 'ip' => $ip));
+        $log_id = $GLOBALS['SITE_DB']->query_insert('adminlogs', array(
+            'the_type' => $type,
+            'param_a' => is_null($a) ? '' : substr($a, 0, 80),
+            'param_b' => is_null($b) ? '' : substr($b, 0, 80),
+            'date_and_time' => time(),
+            'member_id' => get_member(),
+            'ip' => $ip,
+        ), true);
     }
 
     static $logged = 0;
@@ -489,12 +498,15 @@ function _log_it($type, $a = null, $b = null)
                     $a = do_lang('NA');
                 }
                 require_code('notifications');
+                require_lang('actionlog');
                 $subject = do_lang('ACTIONLOG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), do_lang($type), array($a, $b));
                 $mail = do_notification_lang('ACTIONLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(do_lang($type)), array(is_null($a) ? '' : comcode_escape($a), is_null($b) ? '' : comcode_escape($b)));
                 dispatch_notification('actionlog', $type, $subject, $mail, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
             }
         }
     }
+
+    return $log_id;
 }
 
 /**

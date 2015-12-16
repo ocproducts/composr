@@ -1534,19 +1534,79 @@ class Hook_cms_merge
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'wiki_post', 'wiki_post');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'wiki_changes');
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'WIKI_MAKE_POST') . ' OR ' . db_string_equal_to('the_type', 'WIKI_EDIT_PAGE'));
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            $page_id = import_id_remap_get('wiki_page', $row['the_page'], true);
-            if (is_null($page_id)) {
-                continue;
+            $old_id = $row['id'];
+            unset($row['id']);
+
+            if (strpos($row['the_type'], 'PAGE') !== false) {
+                $param_a = import_id_remap_get('wiki_page', $row['param_a'], true);
+                if (is_null($param_a)) {
+                    continue;
+                }
+                $row['param_a'] = $param_a;
+            } else {
+                $param_a = import_id_remap_get('wiki_post', $row['param_a'], true);
+                if (is_null($param_a)) {
+                    continue;
+                }
+                $row['param_a'] = $param_a;
+
+                $param_b = import_id_remap_get('wiki_page', $row['param_b'], true);
+                if (is_null($param_b)) {
+                    continue;
+                }
+                $row['param_b'] = $param_b;
             }
 
-            $member = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
-            if (is_null($member)) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            $row['member_id'] = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
+            if (is_null($row['member_id'])) {
+                $row['member_id'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
-            $GLOBALS['SITE_DB']->query_insert('wiki_changes', array('the_action' => $row['the_action'], 'the_page' => $page_id, 'ip' => $row['ip'], 'member_id' => $member, 'date_and_time' => $row['date_and_time']));
+
+            $id_new = $GLOBALS['SITE_DB']->query_insert('adminlogs', $row, true);
+
+            import_id_remap_put('wiki_post', strval($old_id), $id_new);
+        }
+
+        if ($db->table_exists('revisions') && addon_installed('actionlog')) {
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'revisions WHERE ' . db_string_equal_to('r_resource_type', strval($row['the_page'])));
+            $this->_fix_comcode_ownership($rows);
+            foreach ($rows as $row) {
+                unset($row['id']);
+
+                $actionlog_id = import_id_remap_get('wiki_page', $row['r_actionlog_id'], true);
+                if (is_null($actionlog_id)) {
+                    continue;
+                }
+                $row['r_actionlog_id'] = $actionlog_id;
+
+                $category_id = import_id_remap_get('wiki_page', $row['r_category_id'], true);
+                if (is_null($category_id)) {
+                    continue;
+                }
+                $row['r_category_id'] = $category_id;
+
+                if (strpos($row['log_action'], 'PAGE') !== false) {
+                    $row['r_resource_id'] = import_id_remap_get('wiki_page', $row['r_resource_id'], true);
+                    if (is_null($row['r_resource_id'])) {
+                        continue;
+                    }
+                } else {
+                    $row['r_resource_id'] = import_id_remap_get('wiki_post', $row['r_resource_id'], true);
+                    if (is_null($row['r_resource_id'])) {
+                        continue;
+                    }
+                }
+
+                $row['r_original_content_owner'] = $on_same_msn ? $row['r_original_content_owner'] : import_id_remap_get('member', $row['r_original_content_owner'], true);
+                if (is_null($row['r_original_content_owner'])) {
+                    $row['r_original_content_owner'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+                }
+
+                $GLOBALS['SITE_DB']->query_insert('revisions', $row);
+            }
         }
 
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'wiki_children');

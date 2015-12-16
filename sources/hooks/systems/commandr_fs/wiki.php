@@ -247,12 +247,11 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $member = $this->_default_property_member($properties, 'poster');
-        $send_notification = $this->_default_property_int($properties, 'send_notification');
+        $member = $this->_default_property_member($properties, 'member_id');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
-        $id = wiki_add_post($page_id, $label, $validated, $member, $send_notification, $add_time, $views, $edit_date);
+        $id = wiki_add_post($page_id, $label, $validated, $member, true, $add_time, $views, $edit_date);
         return strval($id);
     }
 
@@ -276,9 +275,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         return array(
             'label' => $row['the_message'],
             'validated' => $row['validated'],
-            'send_notification' => $row['send_notification'],
             'views' => $row['wiki_views'],
-            'poster' => remap_resource_id_as_portable('member', $row['poster']),
+            'member_id' => remap_resource_id_as_portable('member', $row['member_id']),
             'add_date' => remap_time_as_portable($row['date_and_time']),
             'edit_date' => remap_time_as_portable($row['edit_date']),
         );
@@ -310,8 +308,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $member = $this->_default_property_member($properties, 'poster');
-        $send_notification = $this->_default_property_int($properties, 'send_notification');
+        $member = $this->_default_property_member($properties, 'member_id');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_time = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');

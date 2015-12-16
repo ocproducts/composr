@@ -343,6 +343,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/catalogues.php',
             '_tests/tests/unit_tests/catalogues_category.php',
             '_tests/tests/unit_tests/wiki.php',
+            '_tests/tests/unit_tests/database_integrity.php',
             '_tests/tests/unit_tests/chatroom.php',
             '_tests/tests/unit_tests/comcode.php',
             '_tests/tests/unit_tests/comcode_to_text.php',

@@ -147,6 +147,11 @@ class Module_admin_permissions
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
             rename_privilege('bypass_word_filter', 'bypass_wordfilter');
+
+            delete_privilege('view_revision_history');
+            delete_privilege('view_content_history');
+            delete_privilege('restore_content_history');
+            delete_privilege('delete_content_history');
         }
     }
 
@@ -990,7 +995,7 @@ class Module_admin_permissions
     {
         require_all_lang();
 
-        if ((count($_POST) == 0) && (strtolower(cms_srv('REQUEST_METHOD')) != 'post')) {
+        if ((count($_POST) == 0) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             warn_exit(do_lang_tempcode('PERMISSION_TRAGEDY_PREVENTED'));
         }
 

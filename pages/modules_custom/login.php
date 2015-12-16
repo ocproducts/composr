@@ -43,7 +43,7 @@ class Mx_login extends Module_login
      */
     public function run()
     {
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'GET') {
+        if (cms_srv('REQUEST_METHOD') == 'GET') {
             $redirect_url = get_value('external_login_url', null, true);
             if (!empty($redirect_url)) {
                 header('Location: ' . $redirect_url);

@@ -577,30 +577,33 @@ class DatabaseConnector
     /**
      * Check if a table exists.
      *
-     * @param  ID_TEXT $tablename The table name
+     * @param  ID_TEXT $table_name The table name
+     * @param  boolean $really Check direct, not using meta-table (if possible)
      * @return boolean Whether it exists
      */
-    public function table_exists($tablename)
+    public function table_exists($table_name, $really = false)
     {
-        /*
-        // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
-
-        $full_tablename = $this->get_table_prefix() . $tablename;
-
-        $rows = $this->query("SHOW TABLES LIKE '" . $full_tablename . "'");
-        foreach ($rows as $row)
-            foreach ($row as $field)
-                if ($field == $full_tablename) return true;
-        return false;
-        */
-
-        if (array_key_exists($tablename, $this->table_exists_cache)) {
-            return $this->table_exists_cache[$tablename];
+        if ($really && strpos(get_db_type(), 'mysql') !== false) {
+            // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
+            $full_table_name = $this->get_table_prefix() . $table_name;
+            $rows = $this->query("SHOW TABLES LIKE '" . $full_table_name . "'");
+            foreach ($rows as $row) {
+                foreach ($row as $field) {
+                    if ($field == $full_table_name) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
-        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $tablename));
-        $this->table_exists_cache[$tablename] = ($test !== null);
-        return $this->table_exists_cache[$tablename];
+        if (array_key_exists($table_name, $this->table_exists_cache)) {
+            return $this->table_exists_cache[$table_name];
+        }
+
+        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $table_name));
+        $this->table_exists_cache[$table_name] = ($test !== null);
+        return $this->table_exists_cache[$table_name];
     }
 
     /**
