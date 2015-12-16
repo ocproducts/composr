@@ -1049,11 +1049,6 @@ class Module_admin_themes
 
         $url = build_url(array('page' => '_SELF', 'file' => $file, 'type' => '_edit_css'), '_SELF');
 
-        // TODO: Revisions: any restore_from references)
-        // TODO: Revisions
-        if (get_param_string('restore_from', '') != '') {
-            $file .= '.' . get_param_string('restore_from');
-        }
         $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
         if (!file_exists($path)) {
             $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css/' . $file;
@@ -1069,7 +1064,14 @@ class Module_admin_themes
         $css = unixify_line_format(file_get_contents($path));
         @flock($tmp, LOCK_UN);
         fclose($tmp);
-        $file = preg_replace('#\.\d+#', '', $file);
+
+        if (addon_installed('actionlog')) {
+            require_code('revisions_engine_files');
+            $revisions_engine = new RevisionEngineDatabase();
+            $revisions = $revisions_engine->ui_revision_undoer('themes/' . $theme . '/css_custom', $file, 'css', 'EDIT_CSS', $css, null);
+        } else {
+            $revisions = new Tempcode();
+        }
 
         $old_contents = @file_get_contents(get_file_base() . '/themes/default/css/' . $file);
         if ($old_contents === false) {
@@ -1113,48 +1115,6 @@ class Module_admin_themes
         $switch_icon = ($advanced_mode == 1) ? 'buttons__simple' : 'buttons__advanced';
         $switch_url = build_url(array('page' => '_SELF', 'type' => 'edit_css', 'file' => $file, 'theme' => $theme, 'advanced_mode' => 1 - $advanced_mode), '_SELF');
 
-        // TODO: Revisions
-        // Revision history
-        $files_list = $this->get_css_revisions($theme, get_param_string('file', 'global.css'));
-        rsort($files_list);
-        $i = 0;
-        $revisions = new Tempcode();
-        $max = TODO;
-        $last_path = $path;
-        foreach ($files_list as $time) {
-            // Find who did the revision
-            $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_CSS', 'param_a' => $theme));
-            if (is_null($editor)) {
-                $editor = do_lang('UNKNOWN');
-            } else {
-                $editor = $GLOBALS['FORUM_DRIVER']->get_username($editor);
-                if (is_null($editor)) {
-                    $editor = do_lang('UNKNOWN');
-                }
-            }
-            $date = is_null($time) ? do_lang('UNKNOWN') : get_timezoned_date(intval($time));
-            $url2 = get_custom_base_url() . '/themes/' . $theme . '/css_custom/' . $file . '.' . $time;
-            $old_file = get_custom_file_base() . '/themes/' . $theme . '/css_custom/' . $file . '.' . $time;
-            $size = filesize($old_file);
-            $restore_url = build_url(array('page' => '_SELF', 'type' => 'edit_css', 'file' => $file, 'theme' => $theme, 'restore_from' => $time), '_SELF');
-            require_code('diff');
-            if (function_exists('diff_simple')) {
-                $rendered_diff = diff_simple($old_file, $last_path);
-                $last_path = $old_file;
-                $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => 'dba0110692775615152be1da850bc1d4', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => $time, 'RESTORE_URL' => $restore_url, 'URL' => $url2, 'SIZE' => clean_file_size($size))));
-                $i++;
-            }
-
-            if ($i == $max) {
-                break;
-            }
-        }
-        if (($i != 0) && (get_param_string('restore_from', '') == '')) {
-            $revisions = do_template('REVISIONS_WRAP', array('_GUID' => '330a153101f131ff63445a694aa149c4', 'CONTENT' => $revisions));
-        } elseif ($i != 0) {
-            $revisions = do_template('REVISION_RESTORE');
-        }
-
         require_code('form_templates');
         list($warning_details, $ping_url) = handle_conflict_resolution($file);
 
@@ -1189,6 +1149,7 @@ class Module_admin_themes
 
         $theme = post_param_string('theme');
 
+        // Apply colour selections (special colour picking mode)
         $i = 0;
         $color = post_param_string('c' . strval($i), '');
         while ($color != '') {
@@ -1198,17 +1159,25 @@ class Module_admin_themes
             $color = post_param_string('c' . strval($i), '');
         }
 
+        // Convert from current path to save path
         $custom_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
         if (!file_exists(dirname($custom_path))) {
             require_code('files2');
             make_missing_directory(dirname($custom_path));
         }
-        $path_backup = $custom_path . '.' . strval(time());
-        if (file_exists($custom_path)) {
-            @copy($custom_path, $path_backup) or intelligent_write_error($custom_path);
-            sync_file($path_backup);
+
+        // Store revision
+        if (file_exists($full_path)) {
+            require_code('revisions_engine_files');
+            $revisions_engine = new RevisionEngineFiles();
+            $existing_path = $custom_path;
+            if (!file_exists($existing_path)) {
+                $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
+            }
+            $revisions_engine->add_revision($full_path, basename($_file, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
         }
-        fix_permissions($path_backup);
+
+        // Save
         $myfile = @fopen($custom_path, GOOGLE_APPENGINE ? 'wb' : 'at');
         if ($myfile === false) {
             intelligent_write_error($custom_path);
@@ -1254,108 +1223,60 @@ class Module_admin_themes
 
         if (get_param_integer('save_and_stay', 0) == 1) {
             return inform_screen($this->title, protect_from_escaping('
-                    <script>// <![CDATA[
-                            window.fauxmodal_alert(\'' . addslashes(do_lang('SUCCESS')) . '\');
-                    //]]></script>
+                <script>// <![CDATA[
+                        window.fauxmodal_alert(\'' . addslashes(do_lang('SUCCESS')) . '\');
+                //]]></script>
             '));
         }
 
         return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $theme, '', 'css', $file);
     }
 
-    // TODO: Revisions
     /**
-     * Get all the revisions for a CSS file in a certain theme.
-     *
-     * @param  ID_TEXT $theme The theme to find for
-     * @param  string $find_for The file to find revisions of
-     * @return array A map of the revisions (file=>timestamp)
-     */
-    private function get_css_revisions($theme, $find_for)
-    {
-        $files_list = array();
-        $dir = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom';
-        if (!file_exists($dir)) {
-            return array();
-        }
-        $_dir = opendir($dir);
-
-        // Find all the comcode pages
-        while (false !== ($file = readdir($_dir))) {
-            if ((substr($file, 0, strlen($find_for) + 1) == $find_for . '.') && (substr($file, -9) != '.editfrom')) {
-                $temp = explode('.', $file, 3);
-                $files_list[$file] = $temp[2];
-            }
-        }
-
-        closedir($_dir);
-        return $files_list;
-    }
-
-    // TODO: Revisions
-    /**
-     * Get all the templates for a theme (optionally, revisions of a single template).
+     * Get all the templates for a theme.
      *
      * @param  ID_TEXT $theme The theme to search for
      * @param  string $directory Subdirectory type to look in
      * @set    templates javascript xml text css
      * @param  string $suffix File type suffix of template file (e.g. .tpl)
      * @set    .tpl .js .xml .txt .css
-     * @param  string $find_for The file to find revisions of (blank: we're not looking for revisions)
      * @param  boolean $this_theme_only Just for this theme
      * @return array A map of the files (for revisions, file=>timestamp, generally, file=>path)
      */
-    private function get_template_files_list($theme, $directory, $suffix, $find_for = '', $this_theme_only = false)
+    private function get_template_files_list($theme, $directory, $suffix, $this_theme_only = false)
     {
         $out = array();
         if (($theme == 'default') || (!$this_theme_only)) {
-            if ($find_for == '') {
-                $out = array_merge($out, $this->_get_template_files_list(get_file_base(), 'default/' . $directory, $suffix, $find_for));
-            }
-            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), 'default/' . $directory . '_custom', $suffix, $find_for));
+            $out = array_merge($out, $this->_get_template_files_list(get_file_base(), 'default/' . $directory, $suffix));
+            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), 'default/' . $directory . '_custom', $suffix));
         }
         if ($theme != 'default') {
-            if ($find_for == '') {
-                $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory, $suffix, $find_for));
-            }
-            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory . '_custom', $suffix, $find_for));
+            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory, $suffix));
+            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory . '_custom', $suffix));
         }
         ksort($out);
 
         return $out;
     }
 
-    // TODO: Revisions
     /**
      * Get all the template files / revisions for a template file, in a certain directory.
      *
      * @param  PATH $base_dir The path to search relative to
      * @param  PATH $subdir The subdirectory to search
-     * @param  string $suffix The file to find revisions of
-     * @param  string $find_for File type suffix of template file (e.g. .tpl)
+     * @param  string $suffix File type suffix of template file (e.g. .tpl)
      * @set    .tpl .js .xml .txt .css
      * @return array A map of the revisions (file=>timestamp)
      */
-    private function _get_template_files_list($base_dir, $subdir, $suffix, $find_for)
+    private function _get_template_files_list($base_dir, $subdir, $suffix)
     {
         $_dir = @opendir($base_dir . '/themes/' . $subdir);
         if ($_dir !== false) {
             // Find all the themes
             $files_list = array();
             while (false !== ($file = readdir($_dir))) {
-                if ($find_for == '') {
-                    if (strtolower(substr($file, -strlen($suffix))) == $suffix) {
-                        $files_list[$file] = $subdir . '/' . $file;
-                    }
-                } else {
-                    if (((substr($file, 0, strlen($find_for) + 1) == $find_for . '.') || ($file == $find_for)) && (substr($file, -9) != '.editfrom')) {
-                        $temp = explode('.', $file, 3);
-                        if (array_key_exists(2, $temp)) {
-                            if (is_numeric($temp[2])) {
-                                $files_list[$file] = intval($temp[2]);
-                            }
-                        }
-                    }
+                if (strtolower(substr($file, -strlen($suffix))) == $suffix) {
+                    $files_list[$file] = $subdir . '/' . $file;
                 }
             }
             closedir($_dir);
@@ -1545,7 +1466,11 @@ class Module_admin_themes
             if ($file == '') {
                 continue;
             }
+            if ($file[0] == '!') {
+                warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
+            }
 
+            // Screen preview feature
             if (get_param_string('preview_url', '') == '') {
                 require_code('lorem');
                 $all_previews = find_all_previews__by_template();
@@ -1555,14 +1480,13 @@ class Module_admin_themes
                 }
             }
 
+            // De-dupe
             if (in_array($file, $files_seen)) {
                 continue;
             }
             $files_seen[] = $file;
-            if ($file[0] == '!') {
-                warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
-            }
 
+            // Syntax highlighting
             $syntax = 'html';
             if (substr($file, -3) == '.js') {
                 $syntax = 'js';
@@ -1573,7 +1497,6 @@ class Module_admin_themes
             } elseif (substr($file, -4) == '.css') {
                 $syntax = 'css';
             }
-
             if (get_option('editarea') == '1') {
                 attach_to_screen_footer('
                     <script>// <![CDATA[
@@ -1591,90 +1514,30 @@ class Module_admin_themes
 
             $codename = basename($file);
 
-            // The file we're LOADING from for edit (maybe $file, maybe some old versions being restored)
-            $_default_load_path = find_template_place(basename($file, '.' . get_file_extension($file)), null, $theme, '.' . get_file_extension($file), dirname($file));
-            $default_load_path = $_default_load_path[0] . $_default_load_path[1] . '/' . basename($file);
-            $restore_from = filter_naughty(get_param_string('restore_from', $default_load_path));
-            if (file_exists(get_file_base() . '/themes/' . $restore_from)) {
-                $path = get_file_base() . '/themes/' . $restore_from;
-                $contents = file_get_contents($path);
-                $last_path = $path;
-            } elseif (file_exists(get_custom_file_base() . '/themes/' . $restore_from)) {
-                $path = get_custom_file_base() . '/themes/' . $restore_from;
-                $contents = file_get_contents($path);
-                $last_path = $path;
-            } else {
+            // The file we're LOADING from for edit
+            $ext = get_file_extension($file);
+            $_default_load_path = find_template_place(basename($file, '.' . $ext), null, $theme, '.' . $ext, dirname($file));
+            $default_load_path = 'themes/' . $_default_load_path[0] . $_default_load_path[1] . '/' . $codename;
+            $full_path = get_custom_file_base() . '/' . $default_load_path;
+            if (!is_file($full_path)) {
+                $full_path = get_file_base() . '/' . $default_load_path;
+            }
+            if (file_exists($full_path) {
+                $contents = file_get_contents($full_path);
+            } else) {
                 $contents = '';
-                $last_path = null;
             }
 
-            $directory = dirname($file);
-
-            // TODO: Revisions
-            // Revision history
-            $files_list = $this->get_template_files_list($theme, $directory, '.' . get_file_extension($file), basename($file));
-            rsort($files_list);
-            $j = 0;
-            $revisions = new Tempcode();
-            $max = intval(get_option('number_revisions_show'));
-            foreach ($files_list as $time) {
-                // Find who did the revision
-                $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_TEMPLATES', 'param_a' => $file));
-                if (is_null($editor)) {
-                    $editor = do_lang('UNKNOWN');
-                } else {
-                    $editor = $GLOBALS['FORUM_DRIVER']->get_username($editor);
-                    if (is_null($editor)) {
-                        $editor = do_lang('UNKNOWN');
-                    }
-                }
-                $date = is_null($time) ? do_lang('UNKNOWN') : get_timezoned_date($time);
-                $url = get_custom_base_url() . '/themes/' . str_replace($directory . '/', $directory . '_custom/', $file) . '.' . strval($time);
-                $old_file = get_custom_file_base() . '/themes/' . str_replace($directory . '/', $directory . '_custom/', $file) . '.' . strval($time);
-                if (!file_exists($old_file)) { // Probably restoring the default theme file into our custom theme
-                    $url = get_custom_base_url() . '/themes/' . str_replace('default/', $theme . '/', str_replace($directory . '/', $directory . '_custom/', $file)) . '.' . strval($time);
-                    $old_file = get_custom_file_base() . '/themes/' . str_replace('default/', $theme . '/', str_replace($directory . '/', $directory . '_custom/', $file)) . '.' . strval($time);
-                }
-                if (!file_exists($old_file)) { // Maybe have a revision in the default theme rather than the custom theme
-                    $url = get_custom_base_url() . '/themes/' . str_replace($theme . '/', 'default/', str_replace($directory . '/', $directory . '_custom/', $file)) . '.' . strval($time);
-                    $old_file = get_custom_file_base() . '/themes/' . str_replace($theme . '/', 'default/', str_replace($directory . '/', $directory . '_custom/', $file)) . '.' . strval($time);
-                }
-                $size = filesize($old_file);
-                $restore_url = build_url(array('page' => '_SELF', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $file, 'restore_from' => substr($old_file, strlen(get_custom_file_base() . '/themes/'))), '_SELF');
-                require_code('diff');
-                if (function_exists('diff_simple')) {
-                    $rendered_diff = is_null($last_path) ? '' : diff_simple($old_file, $last_path);
-                    $last_path = $old_file;
-                    $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => 'f0cb02bfa3692ed431b69b8d9dc0b2f8', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'EDITOR' => $editor, 'DATE' => $date, 'DATE_RAW' => strval($time), 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
-                    $j++;
-                }
-
-                if ($j == $max) {
-                    break;
-                }
-            }
-            $orig_version = str_replace('/templates_custom/', '/templates/', $file);
-            $orig_version = str_replace('/css_custom/', '/css/', $orig_version);
-            if (!file_exists(get_file_base() . '/themes/' . $orig_version)) {
-                $orig_version = 'default' . substr($orig_version, strpos($orig_version, '/'));
-            }
-            if (((strpos($file, '/templates_custom/') !== false) || (strpos($file, '/css_custom/') !== false)) && (file_exists(get_file_base() . '/themes/' . $orig_version))) {
-                $restore_url = build_url(array('page' => '_SELF', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $file, 'restore_from' => $orig_version), '_SELF');
-                $url = get_base_url() . '/themes/' . $orig_version;
-                $size = filesize(get_custom_file_base() . '/themes/' . $file);
-                require_code('diff');
-                if (function_exists('diff_simple')) {
-                    $rendered_diff = diff_simple(get_file_base() . '/themes/' . $orig_version, $last_path);
-                    $revisions->attach(do_template('REVISIONS_LINE', array('_GUID' => '7ba03fe98a20330fc64ad742d2fb74fa', 'RENDERED_DIFF' => $rendered_diff, 'REFERENCE_POINT_EXACT' => true, 'RESTORE_URL' => $restore_url, 'URL' => $url, 'SIZE' => clean_file_size($size))));
-                    $j++;
-                }
-            }
-            if (($j != 0) && (get_param_string('restore_from', '') == '')) {
-                $revisions = do_template('REVISIONS_WRAP', array('_GUID' => '435e050dd2f38187d757e792ceb2f2f5', 'CONTENT' => $revisions));
-            } elseif ($j != 0) {
-                $revisions = do_template('REVISION_RESTORE');
+            // Revisions
+            if (addon_installed('actionlog')) {
+                require_code('revisions_engine_files');
+                $revisions_engine = new RevisionEngineDatabase();
+                $revisions = $revisions_engine->ui_revision_undoer(dirname($default_load_path), $file, get_file_extension($file), 'EDIT_TEMPLATES', $contents, null);
+            } else {
+                $revisions = new Tempcode();
             }
 
+            // Old contents (for very easy compare to base file in default theme)
             $_path = get_file_base() . '/themes/default/' . $file;
             if (file_exists($_path)) {
                 $tmp = fopen($_path, 'rb');
@@ -1685,6 +1548,8 @@ class Module_admin_themes
             } else {
                 $old_contents = '';
             }
+
+            // Lots of UI stuff...
 
             $matches = array();
             $cnt = preg_match_all('#\{([\w][\w\_]*)\}#', $old_contents, $matches);
@@ -1902,19 +1767,24 @@ class Module_admin_themes
                 continue;
             }
 
+            // Convert from current path to save path
             $directory = dirname($_file);
             $file = str_replace($directory . '/', $directory . '_custom/', $_file);
-            $full_path = get_custom_file_base() . '/themes/' . $theme . '/' . $file;
+            $full_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $file;
             if (!file_exists(dirname($full_path))) {
                 require_code('files2');
                 make_missing_directory(dirname($full_path));
             }
 
-            // Make backup
+            // Store revision
             if (file_exists($full_path)) {
-                @copy($full_path, $full_path . '.' . strval(time())) or intelligent_write_error($full_path . '.' . strval(time()));
-                fix_permissions($full_path . '.' . strval(time()));
-                sync_file($full_path . '.' . strval(time()));
+                require_code('revisions_engine_files');
+                $revisions_engine = new RevisionEngineFiles();
+                $existing_path = $full_path;
+                if (!file_exists($existing_path)) {
+                    $existing_path = get_custom_file_base() . '/themes/default/' . $_file;
+                }
+                $revisions_engine->add_revision($full_path, basename($_file, '.tpl'), 'tpl', file_get_contents($existing_path), filemtime($existing_path));
             }
 
             // Save
@@ -1982,9 +1852,9 @@ class Module_admin_themes
 
         if (get_param_integer('save_and_stay', 0) == 1) {
             return inform_screen($this->title, protect_from_escaping('
-                    <script>// <![CDATA[
-                            window.fauxmodal_alert(\'' . addslashes(do_lang('SUCCESS')) . '\');
-                    //]]></script>
+                <script>// <![CDATA[
+                        window.fauxmodal_alert(\'' . addslashes(do_lang('SUCCESS')) . '\');
+                //]]></script>
             '));
         }
 
