@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_newsletter_subscriber
             'commandr_filesystem_hook' => 'newsletter_subscribers',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => 'IMPORT_NEWSLETTER_SUBSCRIBERS',

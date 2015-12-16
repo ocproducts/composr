@@ -87,6 +87,8 @@ class Hook_content_meta_aware_event
             'commandr_filesystem_hook' => 'calendar',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'calendar',
 
             'actionlog_regexp' => '\w+_EVENT',

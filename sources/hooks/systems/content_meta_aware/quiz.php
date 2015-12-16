@@ -87,6 +87,8 @@ class Hook_content_meta_aware_quiz
             'commandr_filesystem_hook' => 'quizzes',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_QUIZ',

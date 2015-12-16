@@ -4418,7 +4418,7 @@ function ecv_REVIEW_STATUS($lang, $escaped, $param)
  */
 function ecv__POSTED($lang, $escaped, $param)
 {
-    return (count($_POST) == 0) ? '0' : '1';
+    return (cms_srv('REQUEST_METHOD') == 'POST') ? '1' : '0';
 }
 
 /**

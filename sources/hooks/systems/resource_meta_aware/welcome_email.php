@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_welcome_email
             'commandr_filesystem_hook' => 'welcome_emails',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_WELCOME_EMAIL',

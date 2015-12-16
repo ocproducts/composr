@@ -87,6 +87,8 @@ class Hook_content_meta_aware_chat
             'commandr_filesystem_hook' => 'chat',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_CHAT',

@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_custom_comcode_tag
             'commandr_filesystem_hook' => 'custom_comcode_tags',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_CUSTOM_COMCODE_TAG',

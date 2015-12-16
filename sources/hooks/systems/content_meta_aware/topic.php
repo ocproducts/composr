@@ -96,6 +96,8 @@ class Hook_content_meta_aware_topic
             'commandr_filesystem_hook' => 'forums',
             'commandr_filesystem__is_folder' => true,
 
+            'support_revisions' => true,
+
             'rss_hook' => 'cns_forumview',
 
             'actionlog_regexp' => '\w+_TOPIC',

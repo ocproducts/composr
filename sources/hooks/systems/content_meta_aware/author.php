@@ -87,6 +87,8 @@ class Hook_content_meta_aware_author
             'commandr_filesystem_hook' => 'authors',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'authors',
 
             'actionlog_regexp' => '\w+_AUTHOR',

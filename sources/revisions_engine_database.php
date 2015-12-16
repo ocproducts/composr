@@ -102,8 +102,8 @@ class RevisionEngineDatabase
             'r_original_text' => $original_text,
             'r_original_content_owner' => $original_content_owner,
             'r_original_content_timestamp' => $original_content_timestamp,
-            'r_original_resource_fs_path' => $original_data_resource_fs_record,
-            'r_original_resource_fs_record' => $original_data_resource_fs_path,
+            'r_original_resource_fs_path' => $original_data_resource_fs_path,
+            'r_original_resource_fs_record' => $original_data_resource_fs_record,
             'r_actionlog_id' => $this->is_log_mod ? null : $log_id,
             'r_moderatorlog_id' => $this->is_log_mod ? $log_id : null,
         ));
@@ -128,7 +128,7 @@ class RevisionEngineDatabase
             return array();
         }
 
-        if ((count($resource_types) == 0) && (is_null($revision_id))) {
+        if ((!is_null($resource_types)) && (count($resource_types) == 0) && (is_null($revision_id))) {
             return array();
         }
 
@@ -146,7 +146,7 @@ class RevisionEngineDatabase
 
         if (!is_null($revision_id)) {
             $extra_where .= ' AND ';
-            $extra_where .= 'id=' . strval($revision_id);
+            $extra_where .= 'r.id=' . strval($revision_id);
         }
 
         if (!is_null($resource_types)) {
@@ -256,7 +256,7 @@ class RevisionEngineDatabase
         }
 
         $map = array();
-        if (!is_null($this->is_log_mod)) {
+        if ($this->is_log_mod) {
             $map['r_moderatorlog_id'] = $log_id;
         } else {
             $map['r_actionlog_id'] = $log_id;
@@ -364,9 +364,6 @@ class RevisionEngineDatabase
                 $field_rows->attach($field_row);
             }
         }
-        if ($field_rows->is_empty()) {
-            return inform_screen($title, do_lang_tempcode('NO_ENTRIES'));
-        }
 
         $fields_titles = results_field_title($_fields_titles, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
         $results = results_table(
@@ -384,12 +381,25 @@ class RevisionEngineDatabase
             'revisions_sort'
         );
 
+        $_resource_types = array_keys(find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware'));
+        $resource_types = array();
+        require_code('content');
+        foreach ($_resource_types as $resource_type) {
+            $cma_ob = get_content_object($resource_type);
+            if (!is_null($cma_ob)) {
+                $cma_info = $cma_ob->info();
+                if ($cma_info['support_revisions']) {
+                    $resource_types[$resource_type] = do_lang_tempcode($cma_info['content_type_label']);
+                }
+            }
+        }
+
         $tpl = do_template('REVISIONS_SCREEN', array(
             '_GUID' => '0dea1ed9d31a818cba60f56fc1c8f68f',
             'TITLE' => $title,
             'RESULTS' => $results,
             'INCLUDE_FILTER_FORM' => $include_filter_form,
-            'RESOURCE_TYPES' => array_keys(find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware')),
+            'RESOURCE_TYPES' => $resource_types,
         ));
 
         require_code('templates_internalise_screen');
@@ -474,7 +484,7 @@ class RevisionEngineDatabase
                 $undo_link = hyperlink($undo_url, do_lang_tempcode('UNDO'), false, false, $date);
 
                 if (is_null($revision['r_moderatorlog_id'])) {
-                    $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id']), get_module_zone('admin_actionlog'));
+                    $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id'], 'mode' => 'cms'), get_module_zone('admin_actionlog'));
                     $actionlog_link = hyperlink($actionlog_url, do_lang_tempcode('LOG'), false, false, strval($revision['r_actionlog_id']));
                 } else {
                     $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_moderatorlog_id'], 'mode' => 'cns'), get_module_zone('admin_actionlog'));

@@ -88,6 +88,8 @@ class Hook_content_meta_aware_news_category
             'commandr_filesystem_hook' => 'news',
             'commandr_filesystem__is_folder' => true,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_NEWS_CATEGORY',

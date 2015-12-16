@@ -91,6 +91,8 @@ class Hook_content_meta_aware_post
             'commandr_filesystem_hook' => 'forums',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => true,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_POST',

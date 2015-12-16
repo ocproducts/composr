@@ -87,6 +87,8 @@ class Hook_content_meta_aware_wiki_post
             'commandr_filesystem_hook' => 'wiki',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => true,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_WIKI_POST',

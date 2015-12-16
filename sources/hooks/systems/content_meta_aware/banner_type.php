@@ -87,6 +87,8 @@ class Hook_content_meta_aware_banner_type
             'commandr_filesystem_hook' => 'banners',
             'commandr_filesystem__is_folder' => true,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_BANNER',

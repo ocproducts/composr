@@ -52,7 +52,7 @@ function init__failure()
 function suggest_fatalistic()
 {
     if ((may_see_stack_dumps()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
-        if (count($_POST) == 0) {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
         } elseif (count($_FILES) == 0) {

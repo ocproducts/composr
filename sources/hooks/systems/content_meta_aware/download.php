@@ -88,6 +88,8 @@ class Hook_content_meta_aware_download
             'commandr_filesystem_hook' => 'downloads',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'downloads',
 
             'actionlog_regexp' => '\w+_DOWNLOAD',

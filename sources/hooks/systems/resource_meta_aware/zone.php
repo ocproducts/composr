@@ -87,6 +87,8 @@ class Hook_resource_meta_aware_zone
             'commandr_filesystem_hook' => 'comcode_pages',
             'commandr_filesystem__is_folder' => true,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_ZONE',

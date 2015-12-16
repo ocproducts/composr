@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_aggregate_type_instance
             'commandr_filesystem_hook' => 'aggregate_type_instances',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_AGGREGATE_TYPE_INSTANCE',

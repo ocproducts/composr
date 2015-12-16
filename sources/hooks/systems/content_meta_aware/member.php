@@ -94,6 +94,8 @@ class Hook_content_meta_aware_member
             'commandr_filesystem_hook' => 'groups',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'cns_members',
 
             'actionlog_regexp' => '\w+_MEMBER',

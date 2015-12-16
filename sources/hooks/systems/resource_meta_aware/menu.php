@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_menu
             'commandr_filesystem_hook' => 'menus',
             'commandr_filesystem__is_folder' => true,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_MENU',

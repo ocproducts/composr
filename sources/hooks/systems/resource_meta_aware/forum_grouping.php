@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_forum_grouping
             'commandr_filesystem_hook' => 'forum_groupings',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_FORUM_GROUPING',

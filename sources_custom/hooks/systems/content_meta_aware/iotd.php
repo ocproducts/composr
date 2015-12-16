@@ -83,6 +83,8 @@ class Hook_content_meta_aware_iotd
             'commandr_filesystem_hook' => 'iotds',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'iotds',
 
             'actionlog_regexp' => '\w+_IOTD',

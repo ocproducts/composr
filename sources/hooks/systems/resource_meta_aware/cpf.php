@@ -86,6 +86,8 @@ class Hook_resource_meta_aware_cpf
             'commandr_filesystem_hook' => 'cpfs',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_CUSTOM_PROFILE_FIELD',

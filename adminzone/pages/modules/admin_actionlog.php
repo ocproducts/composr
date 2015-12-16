@@ -498,9 +498,9 @@ class Module_admin_actionlog
 
             $fields['TEXT_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_text']));
 
-            $fields['RESOURCEFS_PATH'] = $revision['r_original_resource_fs_path'];
+            $fields['RESOURCEFS_PATH_PRIOR_TO_REVISION'] = $revision['r_original_resource_fs_path'];
 
-            $fields['RESOURCEFS_RECORD'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_resource_fs_record']));
+            $fields['RESOURCEFS_RECORD_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_resource_fs_record']));
 
             if (has_privilege(get_member(), 'delete_revisions')) {
                 $delete_url = build_url(array('page' => 'admin_revisions', 'type' => 'delete', 'id' => $revision['id']), get_module_zone('admin_revisions'));

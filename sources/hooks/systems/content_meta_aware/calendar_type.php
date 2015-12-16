@@ -88,6 +88,8 @@ class Hook_content_meta_aware_calendar_type
             'commandr_filesystem_hook' => 'calendar',
             'commandr_filesystem__is_folder' => true,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_CALENDAR_TYPE',

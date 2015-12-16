@@ -139,7 +139,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
     $skip = array();
     foreach ($extra_params as $key => $val) {
         if ($val === null) {
-            $skip[$key] = 1;
+            $skip[$key] = true;
         } else {
             $params[$key] = $val;
         }
@@ -308,7 +308,7 @@ function can_try_mod_rewrite($avoid_remap = false)
  *
  * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or NULL. NULL indicates "skip this". 'page' cannot be NULL.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
- * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1. (null: don't skip any)
+ * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are true. (null: don't skip any)
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
  * @param  boolean $avoid_remap Whether to avoid mod_rewrite (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)

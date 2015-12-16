@@ -338,7 +338,7 @@ class RevisionEngineFiles
                 if (is_null($revision['r_actionlog_id'])) {
                     $actionlog_link = do_lang_tempcode('UNKNOWN_EM');
                 } else {
-                    $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id']), get_module_zone('admin_actionlog'));
+                    $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id'], 'mode' => 'cms'), get_module_zone('admin_actionlog'));
                     $actionlog_link = hyperlink($actionlog_url, do_lang_tempcode('LOG'), false, false, strval($revision['r_actionlog_id']));
                 }
 

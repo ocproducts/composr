@@ -88,6 +88,8 @@ class Hook_content_meta_aware_comcode_page
             'commandr_filesystem_hook' => 'comcode_pages',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'comcode_pages',
 
             'actionlog_regexp' => '\w+_COMCODE_PAGE',

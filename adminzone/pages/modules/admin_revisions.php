@@ -18,6 +18,11 @@
  * @package    actionlog
  */
 
+/*
+Revision management. Note that this is a simple browse UI with some actions.
+Full revision details are actually shown in the action log, against the associated revision action.
+*/
+
 /**
  * Module page class.
  */
@@ -135,6 +140,8 @@ class Module_admin_revisions
     {
         check_privilege('view_revisions');
 
+        require_css('adminzone');
+
         require_lang('actionlog');
 
         $type = get_param_string('type', 'browse');
@@ -162,13 +169,22 @@ class Module_admin_revisions
      */
     public function gui()
     {
-        $resource_types = get_param_string('resource_types', null);
-        if ($resource_types === '') {
+        $resource_types = get_param_string('resource_types', '');
+        if ($resource_types == '') {
             $resource_types = null;
         }
-        $resource_id = get_param_string('resource_id', null);
-        $category_id = get_param_string('category_id', null);
-        $username = get_param_string('username', null);
+        $resource_id = get_param_string('resource_id', '');
+        if ($resource_id == '') {
+            $resource_id = null;
+        }
+        $category_id = get_param_string('category_id', '');
+        if ($category_id == '') {
+            $category_id = null;
+        }
+        $username = get_param_string('username', '');
+        if ($username == '') {
+            $username = null;
+        }
         $member_id = null;
         if (!is_null($username)) {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
@@ -219,7 +235,7 @@ class Module_admin_revisions
         $action = do_lang_tempcode($revision['log_action']);
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
         if ($do_actionlog) {
-            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : null), get_module_zone('admin_actionlog'));
+            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
             $action = hyperlink($actionlog_url, $action, false, false, strval($revision['r_actionlog_id']));
         }
 
@@ -233,14 +249,14 @@ class Module_admin_revisions
         );
 
         if (has_privilege(get_member(), 'delete_revisions')) {
-            $delete_url = build_url(array('page' => '_SELF', 'type' => 'delete', 'id' => $revision['id']), '_SELF');
-            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'delete', 'IMMEDIATE' => false, 'URL' => $delete_url, 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'), 'TITLE' => do_lang_tempcode('DELETE'), 'IMG' => 'buttons__delete'));
+            $delete_url = get_self_url(false, false, array('type' => 'delete', 'id' => $revision['id']));
+            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'delete', 'IMMEDIATE' => true, 'URL' => $delete_url, 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'), 'TITLE' => do_lang_tempcode('DELETE'), 'IMG' => 'menu___generic_admin__delete'));
             $_revision[] = $delete;
         }
 
         /*if (has_privilege(get_member(), 'undo_revisions')) {
             $undo_url = build_url(array('page' => '_SELF', 'type' => 'undo', 'id' => $revision['id']), '_SELF');
-            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'undo', 'IMMEDIATE' => false, 'URL' => $undo_url, 'FULL_TITLE' => do_lang_tempcode('UNDO_REVISION'), 'TITLE' => do_lang_tempcode('UNDO'), 'IMG' => 'buttons__undo'));
+            $delete = do_template('BUTTON_SCREEN_ITEM', array('REL' => 'undo', 'IMMEDIATE' => true, 'URL' => $undo_url, 'FULL_TITLE' => do_lang_tempcode('UNDO_REVISION'), 'TITLE' => do_lang_tempcode('UNDO'), 'IMG' => 'buttons__undo'));
             $_revision[] = $delete;
         }*/
 
@@ -260,9 +276,11 @@ class Module_admin_revisions
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('revisions', array('id' => post_param_integer('id')));
-
         $url = get_self_url(false, false, array('type' => 'browse'));
+        @exit($url->evaluate()); // TODO
+
+        $GLOBALS['SITE_DB']->query_delete('revisions', array('id' => get_param_integer('id')));
+
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 

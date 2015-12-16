@@ -88,6 +88,8 @@ class Hook_content_meta_aware_image
             'commandr_filesystem_hook' => 'galleries',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'galleries',
 
             'actionlog_regexp' => '\w+_IMAGE',

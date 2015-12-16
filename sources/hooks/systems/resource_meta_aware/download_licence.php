@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_download_licence
             'commandr_filesystem_hook' => 'download_licences',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_DOWNLOAD_LICENCE',

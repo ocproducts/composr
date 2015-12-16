@@ -719,7 +719,7 @@ class Module_wiki
         $action = do_lang_tempcode($revision['log_action']);
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
         if ($do_actionlog) {
-            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : null), get_module_zone('admin_actionlog'));
+            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
             $action = hyperlink($actionlog_url, $action, false, false, strval($revision['r_actionlog_id']));
         }
 

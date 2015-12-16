@@ -91,6 +91,8 @@ class Hook_content_meta_aware_catalogue_entry
             'commandr_filesystem_hook' => 'catalogues',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => 'catalogues',
 
             'actionlog_regexp' => '\w+_CATALOGUE_ENTRY',

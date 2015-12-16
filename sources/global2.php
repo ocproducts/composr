@@ -229,7 +229,7 @@ function init__global2()
         static_cache((($bot_type !== null) ? STATIC_CACHE__FAST_SPIDER : 0) | STATIC_CACHE__FAILOVER_MODE);
     }
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for bots and possibly guests
-        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (count($_POST) == 0)) {
+        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             $bot_type = get_bot_type();
             if (($bot_type !== null) && (!empty($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0')) {
                 require_code('static_cache');
@@ -272,7 +272,7 @@ function init__global2()
     }
     require_code('users'); // Users are important due to permissions
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
-        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (count($_POST) == 0)) {
+        if (((running_script('index')) || (running_script('backend')) || (running_script('iframe'))) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
@@ -442,7 +442,7 @@ function init__global2()
         register_shutdown_function('memory_tracking');
     }
 
-    if (count($_POST) > 0) {
+    if (cms_srv('REQUEST_METHOD') == 'POST') {
         // Detect and deal with spammers that triggered the spam blackhole
         if (get_option('spam_blackhole_detection') == '1') {
             $blackhole = post_param_string('y' . md5(get_site_name() . ': antispam'), '');

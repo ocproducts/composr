@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_post_template
             'commandr_filesystem_hook' => 'post_templates',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_POST_TEMPLATE',

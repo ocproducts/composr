@@ -85,6 +85,8 @@ class Hook_resource_meta_aware_usergroup_subscription
             'commandr_filesystem_hook' => 'usergroup_subscriptions',
             'commandr_filesystem__is_folder' => false,
 
+            'support_revisions' => false,
+
             'rss_hook' => null,
 
             'actionlog_regexp' => '\w+_USERGROUP_SUBSCRIPTION',
