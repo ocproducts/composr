@@ -431,7 +431,7 @@ class RevisionEngineDatabase
             require_code('templates_results_table');
 
             $start = get_param_integer('revisions_start', 0);
-            $max = get_param_integer('revisions_max', 25);
+            $max = get_param_integer('revisions_max', 5);
 
             $sortables = array('log_time' => do_lang_tempcode('DATE'));
             $test = explode(' ', get_param_string('revisions_sort', 'log_time DESC'), 2);
@@ -493,8 +493,8 @@ class RevisionEngineDatabase
 
                 $_revision = array(
                     escape_html($date),
-                    escape_html($size_change),
                     $member_link,
+                    escape_html(clean_file_size($size_change)),
                     $diff_icon,
                     $undo_link,
                 );
@@ -522,7 +522,7 @@ class RevisionEngineDatabase
                 'revisions_sort'
             );
 
-            $revisions = do_template('REVISIONS_WRAP', array(
+            $revisions_tpl = do_template('REVISIONS_WRAP', array(
                 '_GUID' => '1fc38d9d7ec57af110759352446e533d',
                 'RESULTS' => $results,
             ));
@@ -532,12 +532,12 @@ class RevisionEngineDatabase
             if (!is_null($_text)) {
                 $text = $_text;
 
-                $revisions = do_template('REVISION_UNDO');
+                $revisions_tpl = do_template('REVISION_UNDO');
             } else {
-                return new Tempcode();
+                $revisions_tpl = new Tempcode();
             }
         }
 
-        return $revisions;
+        return $revisions_tpl;
     }
 }

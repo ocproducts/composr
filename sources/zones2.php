@@ -147,7 +147,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
                            'pages/html', 'pages/html/EN', 'pages/html_custom', 'pages/html_custom/EN',
                            'pages/modules', 'pages/modules_custom', 'pages');
         foreach ($index_php as $i) {
-            afm_make_file($zone . '/' . $i . '/index.html', '', false);
+            afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/index.html', '', false);
         }
         afm_make_file($zone . '/pages/comcode_custom/EN/panel_right.txt', '', true);
         $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(

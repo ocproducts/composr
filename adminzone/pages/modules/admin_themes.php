@@ -1049,6 +1049,8 @@ class Module_admin_themes
 
         $url = build_url(array('page' => '_SELF', 'file' => $file, 'type' => '_edit_css'), '_SELF');
 
+        // TODO: Revisions: any restore_from references)
+        // TODO: Revisions
         if (get_param_string('restore_from', '') != '') {
             $file .= '.' . get_param_string('restore_from');
         }
@@ -1111,10 +1113,10 @@ class Module_admin_themes
         $switch_icon = ($advanced_mode == 1) ? 'buttons__simple' : 'buttons__advanced';
         $switch_url = build_url(array('page' => '_SELF', 'type' => 'edit_css', 'file' => $file, 'theme' => $theme, 'advanced_mode' => 1 - $advanced_mode), '_SELF');
 
+        // TODO: Revisions
         // Revision history
         $filesarray = $this->get_css_revisions($theme, get_param_string('file', 'global.css'));
         rsort($filesarray);
-
         $i = 0;
         $revisions = new Tempcode();
         $max = TODO;
@@ -1261,6 +1263,7 @@ class Module_admin_themes
         return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $theme, '', 'css', $file);
     }
 
+    // TODO: Revisions
     /**
      * Get all the revisions for a CSS file in a certain theme.
      *
@@ -1289,6 +1292,7 @@ class Module_admin_themes
         return $filesarray;
     }
 
+    // TODO: Revisions
     /**
      * Get all the templates for a theme (optionally, revisions of a single template).
      *
@@ -1321,6 +1325,7 @@ class Module_admin_themes
         return $out;
     }
 
+    // TODO: Revisions
     /**
      * Get all the template files / revisions for a template file, in a certain directory.
      *
@@ -1605,6 +1610,7 @@ class Module_admin_themes
 
             $directory = dirname($file);
 
+            // TODO: Revisions
             // Revision history
             $filesarray = $this->get_template_files_array($theme, $directory, '.' . get_file_extension($file), basename($file));
             rsort($filesarray);

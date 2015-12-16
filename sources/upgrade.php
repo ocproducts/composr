@@ -1419,7 +1419,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
                         preg_match('#(.*)pages/modules#', $rela, $matches);
                         $current_zone = str_replace('/', '', $matches[1]);
                         foreach ($zones as $zone) {
-                            if (array_key_exists(str_replace($current_zone . '/', $zone . '/', $rela . $file), $files)) {
+                            if (array_key_exists(str_replace($current_zone . '/', $zone . (($zone == '') ? '' : '/'), $rela . $file), $files)) {
                                 continue 2;
                             }
                         }

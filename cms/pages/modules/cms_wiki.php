@@ -240,8 +240,8 @@ class Module_cms_wiki
         require_lang('notifications');
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_database');
-            $revisions = new RevisionEngineDatabase(false);
-            $notify = ($page_id == -1) || ($revisions->find_most_recent_category_change('wiki_page', strval($page_id)) < time() - 60 * 10);
+            $revisions_engine = new RevisionEngineDatabase(false);
+            $notify = ($page_id == -1) || ($revisions_engine->find_most_recent_category_change('wiki_page', strval($page_id)) < time() - 60 * 10);
         } else {
             $notify = true;
         }
@@ -427,8 +427,8 @@ class Module_cms_wiki
 
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_database');
-            $revisions = new RevisionEngineDatabase();
-            $revisions = $revisions->ui_revision_undoer('wiki_page', strval($id), $description);
+            $revisions_engine = new RevisionEngineDatabase();
+            $revisions = $revisions_engine->ui_revision_undoer('wiki_page', strval($id), $description);
         } else {
             $revisions = new Tempcode();
         }

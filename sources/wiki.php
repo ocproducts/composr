@@ -243,8 +243,8 @@ function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id
     $log_id = log_it('WIKI_EDIT_POST', strval($post_id), strval($page_id));
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
-        $revisions->add_revision(
+        $revisions_engine = new RevisionEngineDatabase();
+        $revisions_engine->add_revision(
             'wiki_post',
             strval($post_id),
             strval($page_id),
@@ -316,8 +316,8 @@ function wiki_delete_post($post_id, $member = null)
     $log_id = log_it('WIKI_DELETE_POST', strval($post_id), strval($page_id));
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
-        $revisions->add_revision(
+        $revisions_engine = new RevisionEngineDatabase();
+        $revisions_engine->add_revision(
             'wiki_post',
             strval($post_id),
             strval($page_id),
@@ -472,8 +472,8 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
     $log_id = log_it('WIKI_EDIT_PAGE', strval($page_id), $_title);
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
-        $revisions->add_revision(
+        $revisions_engine = new RevisionEngineDatabase();
+        $revisions_engine->add_revision(
             'wiki_page',
             strval($page_id),
             strval($page_id),
@@ -561,8 +561,8 @@ function wiki_delete_page($page_id)
     $log_id = log_it('WIKI_DELETE_PAGE', strval($page_id), $_title);
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
-        $revisions->add_revision(
+        $revisions_engine = new RevisionEngineDatabase();
+        $revisions_engine->add_revision(
             'wiki_page',
             strval($page_id),
             strval($page_id),

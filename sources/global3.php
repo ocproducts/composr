@@ -2877,7 +2877,7 @@ function get_tutorial_url($tutorial)
  */
 function get_brand_page_url($params, $zone)
 {
-    //$value = get_brand_base_url() . '/' . $zone . '/' . urlencode($params['page']) . '.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
+    //$value = get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode($params['page']) . '.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
     return str_replace(get_base_url(), get_brand_base_url(), static_evaluate_tempcode(build_url($params, $zone, null, false, false, true)));
 }
 

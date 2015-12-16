@@ -73,8 +73,8 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
     $log_id = cns_mod_log_it('EDIT_TOPIC', strval($topic_id), $name, $reason);
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
-        $revisions->add_revision(
+        $revisions_engine = new RevisionEngineDatabase();
+        $revisions_engine->add_revision(
             'topic',
             strval($topic_id),
             strval($topic_id),
@@ -217,8 +217,8 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     $log_id = cns_mod_log_it('DELETE_TOPIC', strval($topic_id), $name, $reason);
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
-        $revisions->add_revision(
+        $revisions_engine = new RevisionEngineDatabase();
+        $revisions_engine->add_revision(
             'topic',
             strval($topic_id),
             strval($topic_id),

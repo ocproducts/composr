@@ -57,8 +57,8 @@ class RevisionEngineFiles
      * @param  PATH $directory Directory where revisions are stored.
      * @param  string $id ID of what is being revised (=base filename, no extension).
      * @param  string $ext File extension for revisable files.
-     * @param  string $original_text Text before revision.
-     * @param  TIME $original_timestamp The creation timestamp for what was just replaced.
+     * @param  ?string $original_text Text before revision (null: work out from disk).
+     * @param  ?TIME $original_timestamp The creation timestamp for what was just replaced (null: work out from disk).
      */
     public function add_revision($directory, $id, $ext, $original_text, $original_timestamp)
     {
@@ -66,11 +66,32 @@ class RevisionEngineFiles
             return;
         }
 
-        $full_path = get_custom_file_base() . '/' . $directory . '/' . $id . '.' . $ext . '.' . strval($original_timestamp);
+        if (is_null($original_text) || is_null($original_timestamp)) {
+            $existing_path = get_custom_file_base() . '/' . filter_naughty($directory . '/' . $id . '.' . $ext);
+            $existing_path = zone_black_magic_filterer($existing_path);
+            if (!is_file($existing_path)) {
+                $existing_path = get_file_base() . '/' . filter_naughty($directory . '/' . $id . '.' . $ext);
+                $existing_path = zone_black_magic_filterer($existing_path);
+            }
+            if (!is_file($existing_path)) {
+                return;
+            }
 
-        file_put_contents($full_path, $original_text);
-        fix_permissions($full_path);
-        sync_file($full_path);
+            if (is_null($original_text)) {
+                $original_text = file_get_contents($existing_path);
+            }
+
+            if (is_null($original_timestamp)) {
+                $original_timestamp = filemtime($existing_path);
+            }
+        }
+
+        $revision_path = get_custom_file_base() . '/' . filter_naughty($directory . '/' . $id . '.' . $ext . '.' . strval($original_timestamp));
+        $revision_path = zone_black_magic_filterer($revision_path);
+
+        @file_put_contents($revision_path, $original_text) or intelligent_write_error($revision_path);
+        fix_permissions($revision_path);
+        sync_file($revision_path);
     }
 
     /**
@@ -261,9 +282,10 @@ class RevisionEngineFiles
      * @param  string $ext File extension for revisable files.
      * @param  string $action The action the revision is for, a language string.
      * @param  string $text Current resource text (may be altered by reference).
+     * @param  ?Tempcode $parsed Parsed Tempcode of what is being edited, optional for performance (may be altered by reference) (null: not set).
      * @return Tempcode UI.
      */
-    public function ui_revision_undoer($directory, $id, $ext, $action, &$text)
+    public function ui_revision_undoer($directory, $id, $ext, $action, &$text, &$parsed)
     {
         if (!$this->enabled(true)) {
             return new Tempcode();
@@ -273,13 +295,14 @@ class RevisionEngineFiles
 
         // Revisions
         $undo_revision = get_param_integer('undo_revision', null);
-        if ($undo_revision === null) {
+        $restore_from_path = get_param_string('restore_from_path', null);
+        if ($undo_revision === null && $restore_from_path === null) {
             require_code('files');
             require_code('diff');
             require_code('templates_results_table');
 
             $start = get_param_integer('revisions_start', 0);
-            $max = get_param_integer('revisions_max', 25);
+            $max = get_param_integer('revisions_max', 5);
 
             $sortables = array('r_time' => do_lang_tempcode('DATE'));
             $test = explode(' ', get_param_string('revisions_sort', 'r_time DESC'), 2);
@@ -344,8 +367,8 @@ class RevisionEngineFiles
 
                 $_revision = array(
                     escape_html($date),
-                    escape_html($size_change),
                     $member_link,
+                    escape_html(clean_file_size($size_change)),
                     $diff_icon,
                     $undo_link,
                 );
@@ -373,22 +396,38 @@ class RevisionEngineFiles
                 'revisions_sort'
             );
 
-            $revisions = do_template('REVISIONS_WRAP', array(
+            $revisions_tpl = do_template('REVISIONS_WRAP', array(
                 '_GUID' => '2fc38d9d7ec57af110759352446e533d',
                 'RESULTS' => $results,
             ));
 
         } else {
-            $revisions = $this->find_revisions($directory, $id, $ext, $action, $undo_revision);
-            if (array_key_exists(0, $revisions)) {
-                $text = $GLOBALS['SITE_DB']->query_select_value('revisions', 'r_original_text', array('id' => $undo_revision));
+            $revisions_tpl = new Tempcode();
 
-                $revisions = do_template('REVISION_UNDO');
-            } else {
-                return new Tempcode(); // Should not happen
+            if ($restore_from_path !== null) {
+                if (dirname(filter_naughty($restore_from_path)) == $directory && file_exists(get_custom_file_base() . '/' . filter_naughty($restore_from_path))) {
+                    $text = file_get_contents(get_custom_file_base() . '/' . filter_naughty($restore_from_path));
+                    $parsed = null;
+
+                    $revisions_tpl = do_template('REVISION_UNDO');
+                } else {
+                    // Should not happen
+                }
+            }
+
+            if ($undo_revision !== null) {
+                $revisions = $this->find_revisions($directory, $id, $ext, $action, $undo_revision);
+                if (array_key_exists(0, $revisions)) {
+                    $text = $revisions[0]['r_original_text'];
+                    $parsed = null;
+
+                    $revisions_tpl = do_template('REVISION_UNDO');
+                } else {
+                    // Should not happen
+                }
             }
         }
 
-        return $revisions;
+        return $revisions_tpl;
     }
 }

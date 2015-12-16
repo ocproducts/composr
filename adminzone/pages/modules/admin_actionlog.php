@@ -476,8 +476,8 @@ class Module_admin_actionlog
 
         // Is there a revision here?
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase($mode == 'cns');
-        $revision = $revisions->find_revision_for_log($id);
+        $revisions_engine = new RevisionEngineDatabase($mode == 'cns');
+        $revision = $revisions_engine->find_revision_for_log($id);
         if (!is_null($revision)) {
             require_code('content');
             list($content_title, , , , $content_url) = content_get_details($revision['r_resource_type'], $revision['r_resource_id']);

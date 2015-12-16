@@ -520,6 +520,7 @@ class Module_admin_zones
                     make_missing_directory(dirname($fullpath));
                 }
 
+                // TODO: Revisions
                 // Store revision
                 if ((file_exists($fullpath)) && (get_option('store_revisions') == '1')) {
                     $time = time();

@@ -154,8 +154,8 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         $ticket_forum = get_option('ticket_forum_name', true);
         if ((is_null($ticket_forum)) || ($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum))) {
             require_code('revisions_engine_database');
-            $revisions = new RevisionEngineDatabase(true);
-            $revisions->add_revision(
+            $revisions_engine = new RevisionEngineDatabase(true);
+            $revisions_engine->add_revision(
                 'post',
                 strval($post_id),
                 strval($topic_id),
@@ -281,8 +281,8 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
         foreach ($_postdetails as $post) {
-            $revisions = new RevisionEngineDatabase(true);
-            $revisions->add_revision(
+            $revisions_engine = new RevisionEngineDatabase(true);
+            $revisions_engine->add_revision(
                 'post',
                 strval($post['id']),
                 strval($topic_id),
@@ -473,9 +473,9 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
     // Update caching
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
+        $revisions_engine = new RevisionEngineDatabase();
         foreach ($posts as $post) {
-            $revisions->recategorise_old_revisions('post', strval($post), strval($to_topic_id));
+            $revisions_engine->recategorise_old_revisions('post', strval($post), strval($to_topic_id));
         }
     }
     require_code('cns_posts_action2');

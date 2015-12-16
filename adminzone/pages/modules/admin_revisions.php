@@ -190,9 +190,6 @@ class Module_admin_revisions
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
         }
 
-        require_code('revisions_engine_database');
-        $revisions = new RevisionEngineDatabase();
-
         $row_renderer = array($this, '_render_revision');
         $_fields_titles = array(
             do_lang_tempcode('VIEW'),
@@ -206,7 +203,9 @@ class Module_admin_revisions
             $_fields_titles[] = do_lang_tempcode('DELETE');
         }
 
-        return $revisions->ui_browse_revisions($this->title, $_fields_titles, is_null($resource_types) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
+        require_code('revisions_engine_database');
+        $revisions_engine = new RevisionEngineDatabase();
+        return $revisions_engine->ui_browse_revisions($this->title, $_fields_titles, is_null($resource_types) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
     }
 
     /**

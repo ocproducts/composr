@@ -469,9 +469,9 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         $langs = find_all_langs(true);
         $rename_map = array();
         foreach (array_keys($langs) as $lang) {
-            $old_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt', true);
+            $old_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt', true);
             if (file_exists(get_file_base() . '/' . $old_path)) {
-                $new_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/comcode_custom/' . $lang . '/' . $new_file . '.txt', true);
+                $new_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $new_file . '.txt', true);
                 if ((file_exists($new_path)) && (fileinode($new_path) != fileinode($old_path)/*avoid issue on case insensitive file systems while changing case*/)) {
                     warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($zone . ':' . $new_file)));
                 }
@@ -564,12 +564,11 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         $file_changed = false;
     }
 
-    // Save backup
-    if ((file_exists($fullpath)) && (get_option('store_revisions') == '1') && ($file_changed)) {
-        $time = time();
-        @copy($fullpath, $fullpath . '.' . strval($time)) or intelligent_write_error($fullpath . '.' . strval($time));
-        fix_permissions($fullpath . '.' . strval($time));
-        sync_file($fullpath . '.' . strval($time));
+    // Save revision
+    if ($file_changed) {
+        require_code('revisions_engine_files');
+        $revisions_engine = new RevisionEngineFiles();
+        $revisions_engine->add_revision($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, $file, 'txt');
     }
 
     // Empty caching
@@ -634,18 +633,17 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
     if ((substr($type, 0, 7) == 'comcode') || (substr($type, 0, 4) == 'html')) {
         $type_shortened = preg_replace('#/.+#', '', $type);
 
-        if ((substr($type, 0, 7) == 'comcode') && (get_option('store_revisions') == '1')) {
-            $time = time();
-            $fullpath = zone_black_magic_filterer(((strpos($type, 'comcode/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page);
-            $bs_path = zone_black_magic_filterer(str_replace('/comcode/', '/comcode_custom/', $fullpath) . '.' . strval($time));
-            @copy($fullpath, $bs_path) or intelligent_write_error($fullpath);
-            sync_file($bs_path);
-            fix_permissions($bs_path);
+        if (substr($type, 0, 7) == 'comcode') {
+            if (addon_installed('actionlog')) {
+                require_code('revisions_engine_files');
+                $revisions_engine = new RevisionEngineFiles();
+                $revisions_engine->add_revision($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, $page, 'txt');
+            }
         }
 
         $langs = find_all_langs(true);
         foreach (array_keys($langs) as $lang) {
-            $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type_shortened) . '/' . $lang . '/' . $_page, true);
+            $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty($type_shortened) . '/' . $lang . '/' . $_page, true);
             $path = ((strpos($type, 'comcode/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . $_path;
             if (file_exists($path)) {
                 if ($use_afm) {
@@ -670,7 +668,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
             seo_meta_erase_storage('comcode_page', $zone . ':' . $page);
         }
     } else {
-        $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone != '') ? '/' : '') . 'pages/' . filter_naughty($type) . '/' . $_page, true);
+        $_path = zone_black_magic_filterer(filter_naughty($zone) . (($zone == '') ? '' : '/') . 'pages/' . filter_naughty($type) . '/' . $_page, true);
         $path = ((strpos($type, '_custom') === false) ? get_file_base() : get_custom_file_base()) . '/' . $_path;
         if (file_exists($path)) {
             if ($use_afm) {
