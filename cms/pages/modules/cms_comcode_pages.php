@@ -744,7 +744,7 @@ class Module_cms_comcode_pages
                 list($filepath, $time) = $stuff;
 
                 // Find who did the revision
-                $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'COMCODE_PAGE_EDIT', 'param_a' => $file));
+                $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'COMCODE_PAGE_EDIT', 'param_a' => $file));
                 if ((has_privilege(get_member(), 'view_revisions')) || ($editor == get_member())) {
                     if (is_null($editor)) {
                         $editor = do_lang('UNKNOWN');

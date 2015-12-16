@@ -42,7 +42,7 @@ class Hook_rss_admin_recent_actions
 
         $filters = selectcode_to_sqlfragment($_filters, 'member_id', 'f_members', null, 'member_id', 'id');
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'adminlogs WHERE date_and_time>' . strval($cutoff) . ' AND ' . $filters . ' ORDER BY date_and_time DESC', $max);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'actionlogs WHERE date_and_time>' . strval($cutoff) . ' AND ' . $filters . ' ORDER BY date_and_time DESC', $max);
 
         require_all_lang();
 

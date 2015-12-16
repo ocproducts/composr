@@ -83,7 +83,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_EVENT_TYPE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_EVENT_TYPE') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_EVENT_TYPE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_EVENT_TYPE') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -183,7 +183,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CALENDAR_EVENT') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CALENDAR_EVENT') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CALENDAR_EVENT') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CALENDAR_EVENT') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 

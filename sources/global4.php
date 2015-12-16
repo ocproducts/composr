@@ -421,7 +421,7 @@ function prevent_double_submit($type, $a = null, $b = null)
         );
     }
     $time_window = 60 * 5; // 5 minutes seems reasonable
-    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'date_and_time', $where, ' AND date_and_time>' . strval(time() - $time_window));
+    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'date_and_time', $where, ' AND date_and_time>' . strval(time() - $time_window));
     if (!is_null($test)) {
         warn_exit(do_lang_tempcode('DOUBLE_SUBMISSION_PREVENTED', display_time_period($time_window), display_time_period($time_window - (time() - $test))));
     }
@@ -461,7 +461,7 @@ function _log_it($type, $a = null, $b = null)
     global $ADMIN_LOGGING_ON;
     if ($ADMIN_LOGGING_ON) {
         $ip = get_ip_address();
-        $log_id = $GLOBALS['SITE_DB']->query_insert('adminlogs', array(
+        $log_id = $GLOBALS['SITE_DB']->query_insert('actionlogs', array(
             'the_type' => $type,
             'param_a' => is_null($a) ? '' : substr($a, 0, 80),
             'param_b' => is_null($b) ? '' : substr($b, 0, 80),

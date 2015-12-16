@@ -161,7 +161,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     protected function _get_folder_edit_date($row, $category)
     {
         if (substr($category, 0, 6) == 'FORUM-') {
-            $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_FORUM') . ' OR ' . db_string_equal_to('the_type', 'EDIT_FORUM') . ')';
+            $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_FORUM') . ' OR ' . db_string_equal_to('the_type', 'EDIT_FORUM') . ')';
             return $GLOBALS['SITE_DB']->query_value_if_there($query);
         }
 

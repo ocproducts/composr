@@ -49,7 +49,7 @@ function get_table_purpose_flags()
         'addons' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'addons_dependencies' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__SUBDATA/*under addons*/,
         'addons_files' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__SUBDATA/*under addons*/,
-        'adminlogs' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
+        'actionlogs' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
         'aggregate_type_instances' => TABLE_PURPOSE__NORMAL,
         'alternative_ids' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__SUBDATA/*under <content>*/,
         'attachment_refs' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under <content> (implied)*/,
@@ -284,7 +284,7 @@ function table_has_purpose_flag($table, $flag)
 function get_table_descriptions()
 {
     return array(
-        'adminlogs' => 'stores logs of actions performed on the website',
+        'actionlogs' => 'stores logs of actions performed on the website',
         'alternative_ids' => 'different sets of IDs for a database ID, allowing more robust cross-site or label based content referencing',
         'attachments' => 'attachments referenced by Comcode (images, downloads, videos, etc)',
         'attachment_refs' => 'stores references of what content uses what attachments (it allows attachment permissions to work, as it tells Composr what \'owner\' content to verify permissions against)',

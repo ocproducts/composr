@@ -89,7 +89,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_GROUP') . ' OR ' . db_string_equal_to('the_type', 'EDIT_GROUP') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_GROUP') . ' OR ' . db_string_equal_to('the_type', 'EDIT_GROUP') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -258,7 +258,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
         $time = $GLOBALS['SITE_DB']->query_value_if_there($query);
         //if (is_null($time)) $time = $row['m_join_time']; This will be picked up naturally
         return $time;

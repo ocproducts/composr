@@ -1534,7 +1534,7 @@ class Hook_cms_merge
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'wiki_post', 'wiki_post');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'WIKI_MAKE_POST') . ' OR ' . db_string_equal_to('the_type', 'WIKI_EDIT_PAGE'));
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'WIKI_MAKE_POST') . ' OR ' . db_string_equal_to('the_type', 'WIKI_EDIT_PAGE'));
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             $old_id = $row['id'];
@@ -1565,7 +1565,7 @@ class Hook_cms_merge
                 $row['member_id'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
-            $id_new = $GLOBALS['SITE_DB']->query_insert('adminlogs', $row, true);
+            $id_new = $GLOBALS['SITE_DB']->query_insert('actionlogs', $row, true);
 
             import_id_remap_put('wiki_post', strval($old_id), $id_new);
         }

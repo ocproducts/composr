@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__https_settings
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'SSL_CONFIGURATION');
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'SSL_CONFIGURATION');
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 

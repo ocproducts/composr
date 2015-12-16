@@ -47,7 +47,7 @@ class Hook_commandr_fs_members
 
             $users = $GLOBALS['SITE_DB']->query_select('f_members', array('id', 'm_username', 'm_join_time'));
             foreach ($users as $user) {
-                $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($user['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
+                $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($user['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
                 $modification_time = $GLOBALS['SITE_DB']->query_value_if_there($query);
                 if (is_null($modification_time)) {
                     $modification_time = $user['m_join_time'];

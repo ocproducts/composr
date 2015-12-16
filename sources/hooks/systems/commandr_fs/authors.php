@@ -59,7 +59,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', $row['author']) . ' AND  (' . db_string_equal_to('the_type', 'DEFINE_AUTHOR') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['author']) . ' AND  (' . db_string_equal_to('the_type', 'DEFINE_AUTHOR') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 

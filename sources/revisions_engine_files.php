@@ -134,7 +134,7 @@ class RevisionEngineFiles
                 );
 
                 if (!is_null($action)) {
-                    $test = $GLOBALS['SITE_DB']->query_select('adminlogs', array('*'), array('date_and_time' => $time, 'the_type' => $action), '', 1);
+                    $test = $GLOBALS['SITE_DB']->query_select('actionlogs', array('*'), array('date_and_time' => $time, 'the_type' => $action), '', 1);
                     if (array_key_exists(0, $test)) {
                         $ret[$time] = array(
                             'r_actionlog_id' => $test[0]['id'],
@@ -210,7 +210,7 @@ class RevisionEngineFiles
             return null;
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('adminlogs', array('date_and_time', 'the_type', 'param_a', 'param_b'), array('id' => $actionlog_id), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('date_and_time', 'the_type', 'param_a', 'param_b'), array('id' => $actionlog_id), '', 1);
         if (!array_key_exists(0, $rows)) {
             return null;
         }

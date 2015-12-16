@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__match_key_messages
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'PAGE_MATCH_KEY_ACCESS');
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'PAGE_MATCH_KEY_ACCESS');
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 

@@ -530,11 +530,11 @@ class Module_admin_stats
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('adminlogs', array('date_and_time', 'COUNT(*) AS cnt'), null, 'GROUP BY date_and_time ORDER BY ' . $sortable . ' ' . $sort_order, 3000/*reasonable limit*/);
+        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('date_and_time', 'COUNT(*) AS cnt'), null, 'GROUP BY date_and_time ORDER BY ' . $sortable . ' ' . $sort_order, 3000/*reasonable limit*/);
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
         }
-        //$max_rows = $GLOBALS['SITE_DB']->query_select_value('adminlogs', 'COUNT(DISTINCT date_and_time)');   Cannot do this as the DB does not do all the processing
+        //$max_rows = $GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(DISTINCT date_and_time)');   Cannot do this as the DB does not do all the processing
 
         $data = array();
         $base = $rows[0]['date_and_time'];

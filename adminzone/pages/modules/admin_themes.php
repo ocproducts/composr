@@ -1121,7 +1121,7 @@ class Module_admin_themes
         $last_path = $path;
         foreach ($filesarray as $time) {
             // Find who did the revision
-            $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_CSS', 'param_a' => $theme));
+            $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_CSS', 'param_a' => $theme));
             if (is_null($editor)) {
                 $editor = do_lang('UNKNOWN');
             } else {
@@ -1613,7 +1613,7 @@ class Module_admin_themes
             $max = intval(get_option('number_revisions_show'));
             foreach ($filesarray as $time) {
                 // Find who did the revision
-                $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_TEMPLATES', 'param_a' => $file));
+                $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_TEMPLATES', 'param_a' => $file));
                 if (is_null($editor)) {
                     $editor = do_lang('UNKNOWN');
                 } else {

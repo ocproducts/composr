@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__wordfilter
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'ADD_WORDFILTER') . ' OR ' . db_string_equal_to('the_type', 'DELETE_WORDFILTER');
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'ADD_WORDFILTER') . ' OR ' . db_string_equal_to('the_type', 'DELETE_WORDFILTER');
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 

@@ -59,7 +59,7 @@ class Block_main_staff_actions
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('adminlogs');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('actionlogs');
     }
 
     /**
@@ -70,7 +70,7 @@ class Block_main_staff_actions
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('adminlogs', array(
+        $GLOBALS['SITE_DB']->create_table('actionlogs', array(
             'id' => '*AUTO',
             'the_type' => 'ID_TEXT',
             'param_a' => 'ID_TEXT',
@@ -80,10 +80,10 @@ class Block_main_staff_actions
             'date_and_time' => 'TIME'
         ));
 
-        $GLOBALS['SITE_DB']->create_index('adminlogs', 'xas', array('member_id'));
-        $GLOBALS['SITE_DB']->create_index('adminlogs', 'ts', array('date_and_time'));
-        $GLOBALS['SITE_DB']->create_index('adminlogs', 'aip', array('ip'));
-        $GLOBALS['SITE_DB']->create_index('adminlogs', 'athe_type', array('the_type'));
+        $GLOBALS['SITE_DB']->create_index('actionlogs', 'xas', array('member_id'));
+        $GLOBALS['SITE_DB']->create_index('actionlogs', 'ts', array('date_and_time'));
+        $GLOBALS['SITE_DB']->create_index('actionlogs', 'aip', array('ip'));
+        $GLOBALS['SITE_DB']->create_index('actionlogs', 'athe_type', array('the_type'));
     }
 
     /**
@@ -118,8 +118,8 @@ class Block_main_staff_actions
         $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'),/* do_lang_tempcode('IP_ADDRESS'),*/
                                                   do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B')), $sortables, 'sa_sort', $sortable . ' ' . $sort_order);
 
-        $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('adminlogs','COUNT(*)');
-        $rows = $GLOBALS['SITE_DB']->query_select('adminlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+        $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
+        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
         foreach ($rows as $myrow) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);

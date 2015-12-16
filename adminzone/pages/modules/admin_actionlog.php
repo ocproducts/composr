@@ -145,8 +145,8 @@ class Module_admin_actionlog
                 }
             }
         }
-        if ($GLOBALS['SITE_DB']->query_select_value('adminlogs', 'COUNT(DISTINCT member_id)') < 5000) {
-            $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('adminlogs', array('member_id', 'COUNT(*) AS cnt'), null, 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
+        if ($GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(DISTINCT member_id)') < 5000) {
+            $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('actionlogs', array('member_id', 'COUNT(*) AS cnt'), null, 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
             foreach ($_staff as $staff) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($staff['member_id']);
                 if (is_null($username)) {
@@ -170,7 +170,7 @@ class Module_admin_actionlog
         // Possible selections for action type filter
         $_action_type_list = array();
         $rows1 = (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('DISTINCT l_the_type')) : array();
-        $rows2 = $GLOBALS['SITE_DB']->query_select('adminlogs', array('DISTINCT the_type'));
+        $rows2 = $GLOBALS['SITE_DB']->query_select('actionlogs', array('DISTINCT the_type'));
         foreach ($rows1 as $row) {
             $lang = do_lang($row['l_the_type'], null, null, null, null, false);
             if (!is_null($lang)) {
@@ -301,8 +301,8 @@ class Module_admin_actionlog
         }
 
         // Fetch
-        $rows2 = $GLOBALS['SITE_DB']->query('SELECT id,member_id,date_and_time,the_type,param_a,param_b,ip FROM ' . get_table_prefix() . 'adminlogs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, null, false, true);
-        $max_rows += $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . $where, false, true);
+        $rows2 = $GLOBALS['SITE_DB']->query('SELECT id,member_id,date_and_time,the_type,param_a,param_b,ip FROM ' . get_table_prefix() . 'actionlogs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, null, false, true);
+        $max_rows += $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . $where, false, true);
         $rows = array_merge($rows1, $rows2);
 
         // Render...
@@ -404,7 +404,7 @@ class Module_admin_actionlog
         if ($mode == 'cns') {
             $rows = $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('l_reason AS reason', 'id', 'l_by AS member_id', 'l_date_and_time AS date_and_time', 'l_the_type AS the_type', 'l_param_a AS param_a', 'l_param_b AS param_b'), array('id' => $id), '', 1);
         } else {
-            $rows = $GLOBALS['SITE_DB']->query_select('adminlogs', array('id', 'member_id', 'date_and_time', 'the_type', 'param_a', 'param_b', 'ip'), array('id' => $id), '', 1);
+            $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('id', 'member_id', 'date_and_time', 'the_type', 'param_a', 'param_b', 'ip'), array('id' => $id), '', 1);
         }
 
         if (!array_key_exists(0, $rows)) {

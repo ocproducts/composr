@@ -508,7 +508,7 @@ class Module_admin_cns_members
                         continue 2;
                     }
                 }
-                $num_actions = $GLOBALS['SITE_DB']->query_select_value('adminlogs', 'COUNT(*)', array('member_id' => $row['id']));
+                $num_actions = $GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(*)', array('member_id' => $row['id']));
                 if ($num_actions > $max_logged_actions) {
                     continue;
                 }

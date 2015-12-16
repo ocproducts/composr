@@ -521,7 +521,7 @@ function referrer_report_script($ret = false)
 
         $deleted = false;
         if (is_null($ref['referee'])) {
-            $deleted = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'id', array('the_type' => 'DELETE_MEMBER', 'param_a' => strval($ref['referee']))));
+            $deleted = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'DELETE_MEMBER', 'param_a' => strval($ref['referee']))));
         }
         if ($csv) {
             $data_row[do_lang('REFEREE')] = is_null($ref['referee']) ? do_lang($deleted ? 'REFEREE_DELETED' : 'REFEREE_NOT_SIGNED_UP') : $ref['referee'];

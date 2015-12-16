@@ -83,7 +83,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS_CATEGORY') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS_CATEGORY') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -186,7 +186,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_NEWS') . ' OR ' . db_string_equal_to('the_type', 'EDIT_NEWS') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 

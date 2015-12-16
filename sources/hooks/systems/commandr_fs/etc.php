@@ -42,7 +42,7 @@ class Hook_commandr_fs_etc
         }
         load_config_options();
 
-        $query = 'SELECT param_a,MAX(date_and_time) AS date_and_time FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'CONFIGURATION') . ' GROUP BY param_a';
+        $query = 'SELECT param_a,MAX(date_and_time) AS date_and_time FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'CONFIGURATION') . ' GROUP BY param_a';
         $modification_times = collapse_2d_complexity('param_a', 'date_and_time', $GLOBALS['SITE_DB']->query($query));
 
         $listing = array();

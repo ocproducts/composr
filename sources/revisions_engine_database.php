@@ -198,7 +198,7 @@ class RevisionEngineDatabase
             if (!$limited_data) {
                 $select .= ',r.*';
             }
-            $table = $this->db->get_table_prefix() . 'revisions r JOIN ' . $this->db->get_table_prefix() . 'adminlogs l ON r.r_actionlog_id=l.id';
+            $table = $this->db->get_table_prefix() . 'revisions r JOIN ' . $this->db->get_table_prefix() . 'actionlogs l ON r.r_actionlog_id=l.id';
             $query = 'SELECT ' . $select . ' FROM ' . $table . ' WHERE ' . $where;
 
             if ($combined_query != '') {
@@ -283,7 +283,7 @@ class RevisionEngineDatabase
      */
     public function find_most_recent_category_change($resource_type, $category_id)
     {
-        $join_table = ($this->is_log_mod) ? 'f_moderator_logs' : 'adminlogs';
+        $join_table = ($this->is_log_mod) ? 'f_moderator_logs' : 'actionlogs';
         $join_field = ($this->is_log_mod) ? 'r_moderatorlog_id' : 'r_actionlog_id';
         $time_field = ($this->is_log_mod) ? 'l_date_and_time' : 'date_and_time';
         $test = $this->db->query_select_value_if_there('revisions r JOIN ' . $this->db->get_table_prefix() . $join_table . ' l ON l.id=r.' . $join_field, 'MAX(' . $time_field . ')', array('r_category_id' => $category_id));

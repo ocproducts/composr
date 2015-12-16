@@ -235,7 +235,7 @@ class Module_chat
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
-            $GLOBALS['SITE_DB']->query_update('adminlogs', array('the_type' => 'DELETE_CHATROOM'), array('the_type' => 'DELETE_ROOM'));
+            $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'DELETE_CHATROOM'), array('the_type' => 'DELETE_ROOM'));
         }
     }
 

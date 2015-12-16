@@ -1303,7 +1303,7 @@ class Hook_vb3
          Thread edited. (visible: ?; open: ?; sticky: ?)
          Thread moved to '*'.
          Thread Removed
-        adminlog
+        actionlog
         */
     }
 

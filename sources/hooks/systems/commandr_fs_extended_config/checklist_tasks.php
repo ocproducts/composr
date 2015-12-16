@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__checklist_tasks
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ';
         $query .= db_string_equal_to('the_type', 'CHECK_LIST_ADD') . ' OR ';
         $query .= db_string_equal_to('the_type', 'CHECK_LIST_DELETE') . ' OR ';
         $query .= db_string_equal_to('the_type', 'CHECK_LIST_MARK_DONE') . ' OR ';

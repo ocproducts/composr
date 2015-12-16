@@ -320,7 +320,7 @@ function upgrade_script()
                             //  - it's some file not in an addon (shouldn't actually happen)
                             //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported mod file, and not showing up as uninstalled in log)
                             //  - it's a file in an addon we have installed
-                            if ((is_null($found)) || ((!file_exists(get_file_base() . '/imports/addons/' . $found . '.tar')) && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'id', array('the_type' => 'UNINSTALL_ADDON', 'param_a' => $found))))) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            if ((is_null($found)) || ((!file_exists(get_file_base() . '/imports/addons/' . $found . '.tar')) && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'UNINSTALL_ADDON', 'param_a' => $found))))) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     afm_make_directory($upgrade_file['path'], false, true);
                                 } else {
@@ -1507,6 +1507,8 @@ function version_specific()
             $GLOBALS['SITE_DB']->add_table_field('config', 'c_value_trans', '?LONG_TRANS');
             $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'config SET c_value_trans=config_value,config_value=\'\' WHERE ' . db_string_not_equal_to('config_value', '') . ' AND (' . db_string_equal_to('the_type', 'transtext') . ' OR ' . db_string_equal_to('the_type', 'transline') . ')');
 
+            $GLOBALS['SITE_DB']->rename_table('adminlogs', 'actionlogs');
+
             $modules_renamed = array(
                 'cedi' => 'wiki',
                 'contactmember' => 'contact_member',
@@ -1530,7 +1532,7 @@ function version_specific()
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_type' => 'USER'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '?MEMBER'), array('m_type' => '?USER'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*MEMBER'), array('m_type' => '*USER'));
-            $GLOBALS['SITE_DB']->alter_table_field('adminlogs', 'the_user', 'MEMBER', 'member_id');
+            $GLOBALS['SITE_DB']->alter_table_field('actionlogs', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_session', '*ID_TEXT');
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'FORUMS_AND_MEMBERS'), array('p_section' => 'SECTION_FORUMS'));
