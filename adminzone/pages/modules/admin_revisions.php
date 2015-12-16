@@ -236,7 +236,7 @@ class Module_admin_revisions
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
         if ($do_actionlog) {
             $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
-            $action = hyperlink($actionlog_url, $action, false, false, strval($revision['r_actionlog_id']));
+            $action = hyperlink($actionlog_url, $action, false, false, '#' . strval(is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id']));
         }
 
         $_revision = array(
@@ -276,10 +276,9 @@ class Module_admin_revisions
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
-        $url = get_self_url(false, false, array('type' => 'browse'));
-        @exit($url->evaluate()); // TODO
-
         $GLOBALS['SITE_DB']->query_delete('revisions', array('id' => get_param_integer('id')));
+
+        $url = get_self_url(false, false, array('type' => 'browse'));
 
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }

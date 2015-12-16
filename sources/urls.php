@@ -332,7 +332,7 @@ function build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avo
         ($SITE_INFO['no_keep_params'] == '1') &&
         ((get_option('url_monikers_enabled') == '0') || (!is_numeric($id)/*i.e. not going to trigger a URL moniker query*/) && ((is_null($id)) || (strpos($id, '/') !== false)))
     ) {
-        if (($id === null) && (isset($vars['type'])) && ($vars['type'] == 'browse')) {
+        if (($id === null) && (isset($vars['type'])) && ($vars['type'] == 'browse') && (!$keep_all)) {
             unset($vars['type']); // Redundant, let it default, this is our convention
         }
 
@@ -486,10 +486,6 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
     $stub = get_base_url(is_page_https($zone_name, $has_page ? $vars['page'] : ''), $zone_name);
     $stub .= '/';
 
-    if ((!isset($vars['id'])) && (isset($vars['type'])) && ($vars['type'] == 'browse')) {
-        unset($vars['type']); // Redundant, let it default, this is our convention
-    }
-
     // For bots we explicitly unset skippable injected 'keep_' params because it bloats the crawl-space
     if (($BOT_TYPE_CACHE !== null) && (get_bot_type() !== null)) {
         foreach ($vars as $key => $val) {
@@ -548,6 +544,10 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         }
 
         $vars += $keep_actual;
+    }
+
+    if ((!isset($vars['id'])) && (isset($vars['type'])) && ($vars['type'] == 'browse') && (!$keep_all)) {
+        unset($vars['type']); // Redundant, let it default, this is our convention
     }
 
     global $URL_MONIKERS_ENABLED_CACHE;

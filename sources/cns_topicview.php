@@ -844,7 +844,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
 
     if ($_postdetails['has_revisions']) {
         $action_url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'post', 'resource_id' => $_postdetails['id']), get_module_zone('admin_revisions'));
-        $_title = do_lang_tempcode('POST_HISTORY');
+        $_title = do_lang_tempcode('actionlog:REVISIONS');
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
