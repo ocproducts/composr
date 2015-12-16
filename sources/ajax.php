@@ -520,8 +520,8 @@ function load_template_script()
     safe_ini_set('ocproducts.xss_detect', '0');
 
     $theme = filter_naughty(get_param_string('theme'));
-    $id = filter_naughty(get_param_string('id'));
-    $directory = filter_naughty(get_param_string('directory', 'templates'));
+    $id = filter_naughty(basename(get_param_string('id')));
+    $directory = filter_naughty(get_param_string('directory', dirname(get_param_string('id'))));
 
     $x = get_custom_file_base() . '/themes/' . $theme . '/' . $directory . '_custom/' . $id;
     if (!file_exists($x)) {
@@ -533,6 +533,7 @@ function load_template_script()
     if (!file_exists($x)) {
         $x = get_file_base() . '/themes/default/' . $directory . '/' . $id;
     }
+
     if (file_exists($x)) {
         echo file_get_contents($x);
     }

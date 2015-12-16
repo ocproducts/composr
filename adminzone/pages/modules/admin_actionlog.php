@@ -478,38 +478,55 @@ class Module_admin_actionlog
         require_code('revisions_engine_database');
         $revisions_engine = new RevisionEngineDatabase($mode == 'cns');
         $revision = $revisions_engine->find_revision_for_log($id);
+        if (is_null($revision)) {
+            require_code('revisions_engine_files');
+            $revisions_engine = new RevisionEngineFiles();
+            $revision = $revisions_engine->find_revision_for_log($id);
+        }
         if (!is_null($revision)) {
-            require_code('content');
-            list($content_title, , , , $content_url) = content_get_details($revision['r_resource_type'], $revision['r_resource_id']);
-            if (empty($content_title)) {
-                $content_title = $revision['r_original_title'];
+            if (isset($revision['r_resource_type']) && isset($revision['r_resource_id'])) {
+                require_code('content');
+                list($content_title, , , , $content_url) = content_get_details($revision['r_resource_type'], $revision['r_resource_id']);
+                if (empty($content_title)) {
+                    $content_title = $revision['r_original_title'];
+                }
+                if (!is_null($content_url)) {
+                    $fields['VIEW'] = hyperlink($content_url, $content_title, false, true);
+                }
             }
-            if (!is_null($content_url)) {
-                $fields['VIEW'] = hyperlink($content_url, $content_title, false, true);
+
+            if (isset($revision['r_original_content_owner'])) {
+                $fields['CONTENT_OWNER'] = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['r_original_content_owner']);
             }
 
-            $fields['CONTENT_OWNER'] = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['r_original_content_owner']);
+            if (isset($revision['r_original_content_timestamp'])) {
+                $fields['CONTENT_DATE_AND_TIME'] = get_timezoned_date($revision['r_original_content_timestamp']);
+            }
 
-            $fields['CONTENT_DATE_AND_TIME'] = get_timezoned_date($revision['r_original_content_timestamp']);
-
-            if ($revision['r_original_title'] != '') {
-                $fields['TITLE_PRIOR_TO_REVISION'] = $revision['r_original_title'];
+            if (isset($revision['r_original_title'])) {
+                if ($revision['r_original_title'] != '') {
+                    $fields['TITLE_PRIOR_TO_REVISION'] = $revision['r_original_title'];
+                }
             }
 
             $fields['TEXT_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_text']));
 
-            $fields['RESOURCEFS_PATH_PRIOR_TO_REVISION'] = $revision['r_original_resource_fs_path'];
+            if (isset($revision['r_original_resource_fs_path'])) {
+                $fields['RESOURCEFS_PATH_PRIOR_TO_REVISION'] = $revision['r_original_resource_fs_path'];
+            }
 
-            $fields['RESOURCEFS_RECORD_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_resource_fs_record']));
+            if (isset($revision['r_original_resource_fs_record']) && strlen($revision['r_original_resource_fs_record'] < 1024 * 50/*50kb reasonable limit*/)) {
+                $fields['RESOURCEFS_RECORD_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_resource_fs_record']));
+            }
 
             if (has_privilege(get_member(), 'delete_revisions')) {
-                $delete_url = build_url(array('page' => 'admin_revisions', 'type' => 'delete', 'id' => $revision['id']), get_module_zone('admin_revisions'));
+                $delete_url = build_url(array('page' => 'admin_revisions', 'type' => 'delete', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => get_self_url(true)), get_module_zone('admin_revisions'));
                 $delete = hyperlink($delete_url, do_lang_tempcode('DELETE'), false, false, do_lang_tempcode('DELETE_REVISION'), null, new Tempcode());
                 $fields['DELETE_REVISION'] = $delete;
             }
 
             /*if (has_privilege(get_member(), 'undo_revisions')) {
-                $undo_url = build_url(array('page' => 'admin_revisions', 'type' => 'undo', 'id' => $revision['id']), get_module_zone('admin_revisions'));
+                $undo_url = build_url(array('page' => 'admin_revisions', 'type' => 'undo', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => get_self_url(true)), get_module_zone('admin_revisions'));
                 $delete = hyperlink($delete_url, do_lang_tempcode('UNDO'), false, false, do_lang_tempcode('UNDO_REVISION'), null, new Tempcode());
                 $fields['UNDO_REVISION'] = $delete;
             }*/

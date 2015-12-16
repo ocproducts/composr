@@ -103,7 +103,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
         $order_list->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
     }
     $order_list->attach(form_input_list_entry('', $current_order == ORDER_AUTOMATED_CRITERIA, do_lang_tempcode('ORDER_AUTOMATED_CRITERIA')));
-    return form_input_list(do_lang_tempcode('ORDER'), $description, $order_field, $order_list);
+    return form_input_list(do_lang_tempcode('ORDER'), $description, $order_field, $order_list, null, false, false);
 }
 
 /**

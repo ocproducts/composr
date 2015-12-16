@@ -110,6 +110,16 @@ class RevisionEngineDatabase
     }
 
     /**
+     * Delete a particular revision.
+     *
+     * @param  AUTO_LINK $id Revision ID.
+     */
+    function delete_revision($id)
+    {
+        $GLOBALS['SITE_DB']->query_delete('revisions', array('id' => $id), '', 1);
+    }
+
+    /**
      * Retrieve revisions of something.
      *
      * @param  ?array $resource_types Allowed resource types (null: no filter).
@@ -173,7 +183,7 @@ class RevisionEngineDatabase
                 $where .= 'l_by=' . strval($member_id);
             }
 
-            $select = 'r.id,l_the_type AS log_action,l_param_a AS log_param_a,l_param_b AS log_param_b,l_by AS log_member_id,\'\' AS log_ip,l_date_and_time AS log_time,l_reason AS log_reason';
+            $select = 'r.id,\'database\' AS revision_type,l_the_type AS log_action,l_param_a AS log_param_a,l_param_b AS log_param_b,l_by AS log_member_id,\'\' AS log_ip,l_date_and_time AS log_time,l_reason AS log_reason';
             if (!$limited_data) {
                 $select .= ',r.*';
             }
@@ -194,7 +204,7 @@ class RevisionEngineDatabase
                 $where .= 'member_id=' . strval($member_id);
             }
 
-            $select = 'r.id,the_type AS log_action,param_a AS log_param_a,param_b AS log_param_b,member_id AS log_member_id,ip AS log_ip,date_and_time AS log_time,\'\' AS log_reason';
+            $select = 'r.id,\'database\' AS revision_type,the_type AS log_action,param_a AS log_param_a,param_b AS log_param_b,member_id AS log_member_id,ip AS log_ip,date_and_time AS log_time,\'\' AS log_reason';
             if (!$limited_data) {
                 $select .= ',r.*';
             }
@@ -507,6 +517,10 @@ class RevisionEngineDatabase
                 $field_rows->attach(results_entry($_revision, false));
 
                 $more_recent_text = $revision['r_original_text']; // For next iteration
+            }
+
+            if ($field_rows->is_empty()) {
+                return new Tempcode();
             }
 
             $fields_titles = results_field_title($_fields_titles, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);

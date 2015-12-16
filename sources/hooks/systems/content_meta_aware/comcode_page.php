@@ -88,7 +88,7 @@ class Hook_content_meta_aware_comcode_page
             'commandr_filesystem_hook' => 'comcode_pages',
             'commandr_filesystem__is_folder' => false,
 
-            'support_revisions' => false,
+            'support_revisions' => false, // Supports the file-based engine, which is a somewhat separate implementation
 
             'rss_hook' => 'comcode_pages',
 

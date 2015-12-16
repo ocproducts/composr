@@ -275,9 +275,24 @@ class Module_admin_revisions
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('revisions', array('id' => get_param_integer('id')));
+        $revision_type = get_param_string('revision_type', 'database', true);
+        $id = get_param_integer('id');
 
-        $url = get_self_url(false, false, array('type' => 'browse'));
+        if ($revision_type == 'database') {
+            require_code('revisions_engine_database');
+            $revisions_engine = new RevisionEngineDatabase();
+
+            $revisions_engine->delete_revision($id);
+        } else {
+            require_code('revisions_engine_files');
+            $revisions_engine = new RevisionEngineFiles();
+
+            list($directory, $filename_id, $ext) = unserialize($revision_type);
+
+            $revisions_engine->delete_revision($directory, $filename_id, $ext, $id);
+        }
+
+        $url = get_param_string('redirect', get_self_url(true, false, array('type' => 'browse')));
 
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }

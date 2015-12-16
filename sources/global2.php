@@ -1391,7 +1391,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         $ret = cms_url_decode_post_process($ret);
     }
 
-    check_input_field_string($name, $ret);
+    check_input_field_string($name, $ret, true);
 
     return $ret;
 }

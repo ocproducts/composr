@@ -1069,7 +1069,7 @@ class Module_admin_themes
             require_code('revisions_engine_files');
             $revisions_engine = new RevisionEngineFiles();
             $revision_loaded = mixed();
-            $revisions = $revisions_engine->ui_revision_undoer('themes/' . $theme . '/css_custom', $file, 'css', 'EDIT_CSS', $css, $revision_loaded);
+            $revisions = $revisions_engine->ui_revision_undoer('themes/' . $theme . '/css_custom', basename($file, '.css'), 'css', 'EDIT_CSS', $css, $revision_loaded);
         } else {
             $revisions = new Tempcode();
         }
@@ -1410,7 +1410,7 @@ class Module_admin_themes
                 $full_path = ((strpos($file, '/default/templates/') !== false) ? get_file_base() : get_custom_file_base()) . '/themes/' . $file;
                 $contents = file_get_contents($full_path);
                 if ((stripos($contents, $search) !== false) || (stripos($file, $search) !== false)) {
-                    $_url = build_url(array('page' => '_SELF', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . $file), '_SELF');
+                    $_url = build_url(array('page' => '_SELF', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . basename($file)), '_SELF');
                     $results->attach(do_template('INDEX_SCREEN_ENTRY', array('_GUID' => 'ed744a45728f3d7c1082a3dda893f352', 'URL' => $_url, 'NAME' => $file)));
                 }
             }
@@ -1516,6 +1516,9 @@ class Module_admin_themes
             // The file we're LOADING from for edit
             $ext = get_file_extension($file);
             $_default_load_path = find_template_place(basename($file, '.' . $ext), null, $theme, '.' . $ext, dirname($file));
+            if (is_null($_default_load_path[0])) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            }
             $default_load_path = 'themes/' . $_default_load_path[0] . $_default_load_path[1] . '/' . $codename;
             $full_path = get_custom_file_base() . '/' . $default_load_path;
             if (!is_file($full_path)) {
@@ -1532,7 +1535,7 @@ class Module_admin_themes
                 require_code('revisions_engine_files');
                 $revisions_engine = new RevisionEngineFiles();
                 $revision_loaded = mixed();
-                $revisions = $revisions_engine->ui_revision_undoer(dirname($default_load_path), $file, get_file_extension($file), 'EDIT_TEMPLATES', $contents, $revision_loaded);
+                $revisions = $revisions_engine->ui_revision_undoer(dirname($default_load_path), basename($file, '.' . $ext), $ext, 'EDIT_TEMPLATES', $contents, $revision_loaded);
             } else {
                 $revisions = new Tempcode();
             }
@@ -1841,7 +1844,7 @@ class Module_admin_themes
                     sync_file($full_path . '.editfrom');
                 }
             }
-            log_it('EDIT_TEMPLATES', $directory . '/' . $file, $theme);
+            log_it('EDIT_TEMPLATES', $file, $theme);
         }
 
         // Erase cache
