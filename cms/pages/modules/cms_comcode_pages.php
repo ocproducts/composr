@@ -192,7 +192,7 @@ class Module_cms_comcode_pages
      * @param  LANGUAGE_NAME $lang The language we are searching for pages of
      * @return array The map (page name => path/time)
      */
-    public function get_comcode_files_array($lang)
+    public function get_comcode_files_list($lang)
     {
         $zones = find_all_zones();
         $out = array();
@@ -315,8 +315,8 @@ class Module_cms_comcode_pages
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 25);
 
-        $filesarray = $this->get_comcode_files_array($lang);
-        if (count($filesarray) >= 300) { // Oh dear, limits reached, try another tact
+        $files_list = $this->get_comcode_files_list($lang);
+        if (count($files_list) >= 300) { // Oh dear, limits reached, try another tact
             $orderer = 'p_add_date ASC';
             switch ($sortable) {
                 case 'page_title':
@@ -367,11 +367,11 @@ class Module_cms_comcode_pages
             $page_rows = $GLOBALS['SITE_DB']->query('SELECT c.*,cc_page_title FROM ' . $ttable . ' WHERE ' . $where_map . $group_by . ' ORDER BY ' . $orderer, $max, $start, false, false, array('cc_page_title' => '?SHORT_TRANS'));
             $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(DISTINCT c.the_zone,c.the_page) FROM ' . $ttable . ' WHERE ' . $where_map);
 
-            $filesarray = array();
+            $files_list = array();
             foreach ($page_rows as $row) {
                 $located = _request_page($row['the_page'], $row['the_zone'], null, $lang);
                 if ($located !== false) {
-                    $filesarray[$row['the_zone'] . ':' . $row['the_page']] = array(
+                    $files_list[$row['the_zone'] . ':' . $row['the_page']] = array(
                         $row['the_zone'] . '/pages/' . strtolower($located[0]) . '/' . $row['the_page'],
                         null,
                         $row
@@ -382,14 +382,14 @@ class Module_cms_comcode_pages
             $found_via_query = true;
         } else {
             $max_rows = 0;
-            ksort($filesarray);
+            ksort($files_list);
 
             $found_via_query = false;
         }
 
         // Render table rows
         $_table_rows = array();
-        foreach ($filesarray as $page_link => $path_bits) {
+        foreach ($files_list as $page_link => $path_bits) {
             list($zone, $page) = explode(':', $page_link, 2);
             if (!is_string($page)) {
                 $page = strval($page);
@@ -546,33 +546,6 @@ class Module_cms_comcode_pages
     }
 
     /**
-     * Find the filebase-relative path of a Comcode page.
-     *
-     * @param  LANGUAGE_NAME $lang The language most preferable
-     * @param  ID_TEXT $file The page name
-     * @param  ID_TEXT $zone The zone
-     * @return array A pair: The file base, The path (blank: not found)
-     */
-    public function find_comcode_page($lang, $file, $zone)
-    {
-        $file_path = zone_black_magic_filterer(filter_naughty($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt'), true);
-        if ((!is_file(get_file_base() . '/' . $file_path)) && (!is_file(get_custom_file_base() . '/' . $file_path))) {
-            $page_request = _request_page($file, $zone);
-            if ($page_request === false || strpos($page_request[0], 'COMCODE') === false) {
-                return array(get_file_base(), '');
-            }
-            $file_path = $page_request[count($page_request) - 1];
-        }
-
-        $file_base = get_custom_file_base();
-        if (!is_file($file_base . '/' . $file_path)) {
-            $file_base = get_file_base();
-        }
-
-        return array($file_base, $file_path);
-    }
-
-    /**
      * The UI to edit a page.
      *
      * @return Tempcode The UI
@@ -610,7 +583,7 @@ class Module_cms_comcode_pages
             }
         }
 
-        list($file_base, $file_path) = $this->find_comcode_page($lang, $file, $zone);
+        list($file_base, $file_path) = find_comcode_page($lang, $file, $zone);
 
         // Check no redirects in our way
         if (addon_installed('redirects_editor')) {

@@ -91,7 +91,11 @@ class Hook_rss_comcode_pages
                 if (strpos($page_request[0], 'COMCODE') === false) {
                     continue;
                 }
-                $path = $page_request[count($page_request) - 1];
+                $path = get_custom_file_base() . '/' . $page_request[count($page_request) - 1];
+                if (!file_exists($path)) {
+                    continue;
+                }
+
                 $news_date = date($date_string, filectime($path));
                 $edit_date = date($date_string, filemtime($path));
                 if ($news_date == $edit_date) {
@@ -113,8 +117,8 @@ class Hook_rss_comcode_pages
                     $summary = xmlentities(get_translated_text($rows2[$id]['meta_description']));
                 }
                 if (array_key_exists($id, $rows3)) {
-					if ((!has_privilege(get_member(), 'see_unvalidated')) && ($rows3[$id]['p_validated'] == 0) && (addon_installed('unvalidated'))) {
-						continue;
+                    if ((!has_privilege(get_member(), 'see_unvalidated')) && ($rows3[$id]['p_validated'] == 0) && (addon_installed('unvalidated'))) {
+                        continue;
                     }
 
                     $author = $GLOBALS['FORUM_DRIVER']->get_username($rows3[$id]['p_submitter']);

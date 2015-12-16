@@ -1115,13 +1115,13 @@ class Module_admin_themes
 
         // TODO: Revisions
         // Revision history
-        $filesarray = $this->get_css_revisions($theme, get_param_string('file', 'global.css'));
-        rsort($filesarray);
+        $files_list = $this->get_css_revisions($theme, get_param_string('file', 'global.css'));
+        rsort($files_list);
         $i = 0;
         $revisions = new Tempcode();
         $max = TODO;
         $last_path = $path;
-        foreach ($filesarray as $time) {
+        foreach ($files_list as $time) {
             // Find who did the revision
             $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_CSS', 'param_a' => $theme));
             if (is_null($editor)) {
@@ -1273,7 +1273,7 @@ class Module_admin_themes
      */
     private function get_css_revisions($theme, $find_for)
     {
-        $filesarray = array();
+        $files_list = array();
         $dir = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom';
         if (!file_exists($dir)) {
             return array();
@@ -1284,12 +1284,12 @@ class Module_admin_themes
         while (false !== ($file = readdir($_dir))) {
             if ((substr($file, 0, strlen($find_for) + 1) == $find_for . '.') && (substr($file, -9) != '.editfrom')) {
                 $temp = explode('.', $file, 3);
-                $filesarray[$file] = $temp[2];
+                $files_list[$file] = $temp[2];
             }
         }
 
         closedir($_dir);
-        return $filesarray;
+        return $files_list;
     }
 
     // TODO: Revisions
@@ -1305,20 +1305,20 @@ class Module_admin_themes
      * @param  boolean $this_theme_only Just for this theme
      * @return array A map of the files (for revisions, file=>timestamp, generally, file=>path)
      */
-    private function get_template_files_array($theme, $directory, $suffix, $find_for = '', $this_theme_only = false)
+    private function get_template_files_list($theme, $directory, $suffix, $find_for = '', $this_theme_only = false)
     {
         $out = array();
         if (($theme == 'default') || (!$this_theme_only)) {
             if ($find_for == '') {
-                $out = array_merge($out, $this->_get_template_files_array(get_file_base(), 'default/' . $directory, $suffix, $find_for));
+                $out = array_merge($out, $this->_get_template_files_list(get_file_base(), 'default/' . $directory, $suffix, $find_for));
             }
-            $out = array_merge($out, $this->_get_template_files_array(get_custom_file_base(), 'default/' . $directory . '_custom', $suffix, $find_for));
+            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), 'default/' . $directory . '_custom', $suffix, $find_for));
         }
         if ($theme != 'default') {
             if ($find_for == '') {
-                $out = array_merge($out, $this->_get_template_files_array(get_custom_file_base(), $theme . '/' . $directory, $suffix, $find_for));
+                $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory, $suffix, $find_for));
             }
-            $out = array_merge($out, $this->_get_template_files_array(get_custom_file_base(), $theme . '/' . $directory . '_custom', $suffix, $find_for));
+            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory . '_custom', $suffix, $find_for));
         }
         ksort($out);
 
@@ -1336,30 +1336,30 @@ class Module_admin_themes
      * @set    .tpl .js .xml .txt .css
      * @return array A map of the revisions (file=>timestamp)
      */
-    private function _get_template_files_array($base_dir, $subdir, $suffix, $find_for)
+    private function _get_template_files_list($base_dir, $subdir, $suffix, $find_for)
     {
         $_dir = @opendir($base_dir . '/themes/' . $subdir);
         if ($_dir !== false) {
             // Find all the themes
-            $filesarray = array();
+            $files_list = array();
             while (false !== ($file = readdir($_dir))) {
                 if ($find_for == '') {
                     if (strtolower(substr($file, -strlen($suffix))) == $suffix) {
-                        $filesarray[$file] = $subdir . '/' . $file;
+                        $files_list[$file] = $subdir . '/' . $file;
                     }
                 } else {
                     if (((substr($file, 0, strlen($find_for) + 1) == $find_for . '.') || ($file == $find_for)) && (substr($file, -9) != '.editfrom')) {
                         $temp = explode('.', $file, 3);
                         if (array_key_exists(2, $temp)) {
                             if (is_numeric($temp[2])) {
-                                $filesarray[$file] = intval($temp[2]);
+                                $files_list[$file] = intval($temp[2]);
                             }
                         }
                     }
                 }
             }
             closedir($_dir);
-            return $filesarray;
+            return $files_list;
         }
         return array();
     }
@@ -1391,13 +1391,13 @@ class Module_admin_themes
         foreach ($types as $i => $type) {
             list($directory, $suffix, $lang_string) = $type;
 
-            $filesarray = $this->get_template_files_array($theme, $directory, $suffix);
+            $files_list = $this->get_template_files_list($theme, $directory, $suffix);
             $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
             $files = '';
             $files_tmp = '';
             $stub = '';
             $new_stub = '';
-            foreach ($filesarray as $file) {
+            foreach ($files_list as $file) {
                 $new_stub = dirname($file);
                 if ($stub != $new_stub) {
                     if ($files_tmp != '') {
@@ -1484,9 +1484,9 @@ class Module_admin_themes
 
             $suffix = get_param_string('suffix');
 
-            $filesarray = $this->get_template_files_array($theme, $directory, $suffix);
+            $files_list = $this->get_template_files_list($theme, $directory, $suffix);
             $results = new Tempcode();
-            foreach ($filesarray as $file) {
+            foreach ($files_list as $file) {
                 $full_path = ((strpos($file, '/default/templates/') !== false) ? get_file_base() : get_custom_file_base()) . '/themes/' . $file;
                 $contents = file_get_contents($full_path);
                 if ((stripos($contents, $search) !== false) || (stripos($file, $search) !== false)) {
@@ -1612,12 +1612,12 @@ class Module_admin_themes
 
             // TODO: Revisions
             // Revision history
-            $filesarray = $this->get_template_files_array($theme, $directory, '.' . get_file_extension($file), basename($file));
-            rsort($filesarray);
+            $files_list = $this->get_template_files_list($theme, $directory, '.' . get_file_extension($file), basename($file));
+            rsort($files_list);
             $j = 0;
             $revisions = new Tempcode();
             $max = intval(get_option('number_revisions_show'));
-            foreach ($filesarray as $time) {
+            foreach ($files_list as $time) {
                 // Find who did the revision
                 $editor = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'member_id', array('date_and_time' => $time, 'the_type' => 'EDIT_TEMPLATES', 'param_a' => $file));
                 if (is_null($editor)) {

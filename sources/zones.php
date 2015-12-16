@@ -299,6 +299,33 @@ function zone_black_magic_filterer($path, $relative = false)
 }
 
 /**
+ * Find the filebase-relative path of a Comcode page.
+ *
+ * @param  LANGUAGE_NAME $lang The language most preferable
+ * @param  ID_TEXT $file The page name
+ * @param  ID_TEXT $zone The zone
+ * @return array A pair: The file base, The path (blank: not found)
+ */
+function find_comcode_page($lang, $file, $zone)
+{
+    $file_path = zone_black_magic_filterer(filter_naughty($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt'), true);
+    if ((!is_file(get_file_base() . '/' . $file_path)) && (!is_file(get_custom_file_base() . '/' . $file_path))) {
+        $page_request = _request_page($file, $zone);
+        if ($page_request === false || strpos($page_request[0], 'COMCODE') === false) {
+            return array(get_file_base(), '');
+        }
+        $file_path = $page_request[count($page_request) - 1];
+    }
+
+    $file_base = get_custom_file_base();
+    if (!is_file($file_base . '/' . $file_path)) {
+        $file_base = get_file_base();
+    }
+
+    return array($file_base, $file_path);
+}
+
+/**
  * Get the name of the zone the current page request is coming from.
  *
  * @return ID_TEXT The current zone

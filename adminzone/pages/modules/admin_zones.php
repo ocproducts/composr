@@ -520,14 +520,11 @@ class Module_admin_zones
                     make_missing_directory(dirname($full_path));
                 }
 
-                // TODO: Revisions
                 // Store revision
-                if ((file_exists($full_path)) && (get_option('store_revisions') == '1')) {
-                    $time = time();
-                    @copy($full_path, $full_path . '.' . strval($time)) or intelligent_write_error($full_path . '.' . strval($time));
-                    fix_permissions($full_path . '.' . strval($time));
-                    sync_file($full_path . '.' . strval($time));
-                }
+                require_code('revisions_engine_files');
+                $revisions_engine = new RevisionEngineFiles();
+                $existing_path = find_comcode_page($lang, $for, $id);
+                $revisions_engine->add_revision($id . (($id == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, $for, 'txt', file_get_contents($existing_path), filemtime($existing_path));
 
                 // Save
                 $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($full_path);

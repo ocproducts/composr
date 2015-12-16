@@ -113,13 +113,14 @@ class RevisionEngineFiles
             return array();
         }
 
-        $dh = @opendir(get_custom_file_base() . '/' . $directory);
-        if ($dh === false) {
-            return array();
-        }
+        $base = get_custom_file_base() . '/' . $directory;
 
-        $ret = array();
-        while (($f = readdir($dh)) !== false) {
+        $times = array();
+        $quick_match = @glob(get_custom_file_base() . '/' . $directory . '/' . $id . '*');
+        if ($quick_match === false) {
+            $quick_match = array();
+        }
+        foreach ($quick_match as $f) {
             $_ext = get_file_extension($f);
             if ((is_numeric($_ext)) && (basename($f) == $id . '.' . $ext)) {
                 $time = intval($_ext);
@@ -127,57 +128,61 @@ class RevisionEngineFiles
                     continue;
                 }
 
-                $full_path = get_custom_file_base() . '/' . $directory . '/' . $f;
-
-                $original_text = file_get_contents($full_path);
-
-                if ($limited_data) {
-                    $ret[$time] = array(
-                        'r_time' => $time,
-                    );
-
-                    continue;
-                }
-
-                $ret[$time] = array(
-                    'r_original_text' => $original_text,
-                    'r_time' => $time,
-
-                    'r_actionlog_id' => null,
-
-                    'log_action' => $action,
-                    'log_param_a' => null,
-                    'log_param_b' => null,
-                    'log_member_id' => null,
-                    'log_ip' => null,
-                    //'log_time' => null, Same as r_time
-                    'log_reason' => '',
-                );
-
-                if (!is_null($action)) {
-                    $test = $GLOBALS['SITE_DB']->query_select('actionlogs', array('*'), array('date_and_time' => $time, 'the_type' => $action), '', 1);
-                    if (array_key_exists(0, $test)) {
-                        $ret[$time] = array(
-                            'r_actionlog_id' => $test[0]['id'],
-
-                            'log_action' => $test[0]['the_type'],
-                            'log_param_a' => $test[0]['param_a'],
-                            'log_param_b' => $test[0]['param_b'],
-                            'log_member_id' => $test[0]['member_id'],
-                            'log_ip' => $test[0]['ip'],
-                            //'log_time' => $test[0]['date_and_time'], Same as r_time
-                            'log_reason' => '',
-                        ) + $ret[$time];
-                    }
-                }
+                $times[] = $time;
             }
         }
-        closedir($dh);
 
-        rsort($ret); // Sort into reverse time order
-        array_splice($ret, 0, $start, array()); // Remove before start
+        rsort($times); // Sort into reverse time order
+        array_splice($times, 0, $start, array()); // Remove before start
         if (!is_null($max)) {
-            array_splice($ret, $max, count($ret), array()); // Remove after max
+            array_splice($times, $max, count($times), array()); // Remove after max
+        }
+
+        $ret = array();
+        foreach ($times as $time) {
+            $full_path = $base . '/' . $f;
+
+            if ($limited_data) {
+                $ret[$time] = array(
+                    'r_time' => $time,
+                );
+
+                continue;
+            }
+
+            $original_text = file_get_contents($full_path);
+
+            $ret[$time] = array(
+                'r_original_text' => $original_text,
+                'r_time' => $time,
+
+                'r_actionlog_id' => null,
+
+                'log_action' => $action,
+                'log_param_a' => null,
+                'log_param_b' => null,
+                'log_member_id' => null,
+                'log_ip' => null,
+                //'log_time' => null, Same as r_time
+                'log_reason' => '',
+            );
+
+            if (!is_null($action)) {
+                $test = $GLOBALS['SITE_DB']->query_select('actionlogs', array('*'), array('date_and_time' => $time, 'the_type' => $action), '', 1);
+                if (array_key_exists(0, $test)) {
+                    $ret[$time] = array(
+                        'r_actionlog_id' => $test[0]['id'],
+
+                        'log_action' => $test[0]['the_type'],
+                        'log_param_a' => $test[0]['param_a'],
+                        'log_param_b' => $test[0]['param_b'],
+                        'log_member_id' => $test[0]['member_id'],
+                        'log_ip' => $test[0]['ip'],
+                        //'log_time' => $test[0]['date_and_time'], Same as r_time
+                        'log_reason' => '',
+                    ) + $ret[$time];
+                }
+            }
         }
 
         return array_values($ret);

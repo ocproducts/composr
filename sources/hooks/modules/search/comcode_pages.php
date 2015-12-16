@@ -296,7 +296,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             if (strpos($page_request[0], 'COMCODE') === false) {
                 return new Tempcode();
             }
-            $comcode_file = $page_request[count($page_request)-1];
+            $comcode_file = get_custom_file_base() . '/' . $page_request[count($page_request) - 1];
 
             if (file_exists($comcode_file)) {
                 global $LAX_COMCODE;

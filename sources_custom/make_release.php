@@ -68,7 +68,7 @@ function make_installers($skip_file_grab = false)
 
         // Get file data array
         $out .= '<ul>';
-        $out .= populate_build_files_array();
+        $out .= populate_build_files_list();
         $out .= '</ul>';
 
         make_files_manifest();
@@ -405,7 +405,7 @@ function do_build_zip_output($file, $new_output)
         </div>';
 }
 
-function populate_build_files_array($dir = '', $pretend_dir = '')
+function populate_build_files_list($dir = '', $pretend_dir = '')
 {
     require_code('files');
 
@@ -442,7 +442,7 @@ function populate_build_files_array($dir = '', $pretend_dir = '')
             $MAKE_INSTALLERS__DIR_ARRAY[] = $pretend_dir . $file;
             @mkdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
             fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
-            $_out = populate_build_files_array($dir . $file . '/', $pretend_dir . $file . '/');
+            $_out = populate_build_files_list($dir . $file . '/', $pretend_dir . $file . '/');
             if ($num_files == count($MAKE_INSTALLERS__FILE_ARRAY)) { // Empty, effectively (maybe was from a non-bundled addon) - don't use it
                 array_pop($MAKE_INSTALLERS__DIR_ARRAY);
                 rmdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
@@ -489,7 +489,7 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     require_code('version2');
 
     if (count($MAKE_INSTALLERS__FILE_ARRAY) == 0) {
-        populate_build_files_array();
+        populate_build_files_list();
     }
 
     $files = array();
