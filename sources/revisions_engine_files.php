@@ -86,7 +86,13 @@ class RevisionEngineFiles
             }
         }
 
-        $revision_path = get_custom_file_base() . '/' . filter_naughty($directory . '/' . $id . '.' . $ext . '.' . strval($original_timestamp));
+        $stub = get_custom_file_base() . '/';
+
+        if (substr($directory, 0, strlen($stub)) == $stub) {
+            $directory = substr($directory, strlen($stub));
+        }
+
+        $revision_path = $stub . filter_naughty($directory . '/' . $id . '.' . $ext . '.' . strval($original_timestamp));
         $revision_path = zone_black_magic_filterer($revision_path);
 
         @file_put_contents($revision_path, $original_text) or intelligent_write_error($revision_path);
@@ -287,11 +293,13 @@ class RevisionEngineFiles
      * @param  string $ext File extension for revisable files.
      * @param  string $action The action the revision is for, a language string.
      * @param  string $text Current resource text (may be altered by reference).
-     * @param  ?Tempcode $parsed Parsed Tempcode of what is being edited, optional for performance (may be altered by reference) (null: not set).
+     * @param  ?boolean $revision_loaded Whether a revision was loaded, passed by reference (null: initial value).
      * @return Tempcode UI.
      */
-    public function ui_revision_undoer($directory, $id, $ext, $action, &$text, &$parsed)
+    public function ui_revision_undoer($directory, $id, $ext, $action, &$text, &$revision_loaded = null)
     {
+        $revision_loaded = false;
+
         if (!$this->enabled(true)) {
             return new Tempcode();
         }
@@ -412,7 +420,7 @@ class RevisionEngineFiles
             if ($restore_from_path !== null) {
                 if (dirname(filter_naughty($restore_from_path)) == $directory && file_exists(get_custom_file_base() . '/' . filter_naughty($restore_from_path))) {
                     $text = file_get_contents(get_custom_file_base() . '/' . filter_naughty($restore_from_path));
-                    $parsed = null;
+                    $revision_loaded = true;
 
                     $revisions_tpl = do_template('REVISION_UNDO');
                 } else {
@@ -424,7 +432,7 @@ class RevisionEngineFiles
                 $revisions = $this->find_revisions($directory, $id, $ext, $action, $undo_revision);
                 if (array_key_exists(0, $revisions)) {
                     $text = $revisions[0]['r_original_text'];
-                    $parsed = null;
+                    $revision_loaded = true;
 
                     $revisions_tpl = do_template('REVISION_UNDO');
                 } else {

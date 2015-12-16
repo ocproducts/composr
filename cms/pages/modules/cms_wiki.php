@@ -428,7 +428,8 @@ class Module_cms_wiki
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_database');
             $revisions_engine = new RevisionEngineDatabase();
-            $revisions = $revisions_engine->ui_revision_undoer('wiki_page', strval($id), $description);
+            $revision_loaded = mixed();
+            $revisions = $revisions_engine->ui_revision_undoer('wiki_page', strval($id), $description, $revision_loaded);
         } else {
             $revisions = new Tempcode();
         }

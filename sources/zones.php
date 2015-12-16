@@ -304,7 +304,7 @@ function zone_black_magic_filterer($path, $relative = false)
  * @param  LANGUAGE_NAME $lang The language most preferable
  * @param  ID_TEXT $file The page name
  * @param  ID_TEXT $zone The zone
- * @return array A pair: The file base, The path (blank: not found)
+ * @return array A triple: The file base, The path (blank: not found), Combined path (blank: not found)
  */
 function find_comcode_page($lang, $file, $zone)
 {
@@ -322,7 +322,7 @@ function find_comcode_page($lang, $file, $zone)
         $file_base = get_file_base();
     }
 
-    return array($file_base, $file_path);
+    return array($file_base, $file_path, ($file_path == '') ? '' : ($file_base . '/' . $file_path));
 }
 
 /**

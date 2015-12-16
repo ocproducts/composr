@@ -1067,8 +1067,9 @@ class Module_admin_themes
 
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_files');
-            $revisions_engine = new RevisionEngineDatabase();
-            $revisions = $revisions_engine->ui_revision_undoer('themes/' . $theme . '/css_custom', $file, 'css', 'EDIT_CSS', $css, null);
+            $revisions_engine = new RevisionEngineFiles();
+            $revision_loaded = mixed();
+            $revisions = $revisions_engine->ui_revision_undoer('themes/' . $theme . '/css_custom', $file, 'css', 'EDIT_CSS', $css, $revision_loaded);
         } else {
             $revisions = new Tempcode();
         }
@@ -1167,15 +1168,13 @@ class Module_admin_themes
         }
 
         // Store revision
-        if (file_exists($full_path)) {
-            require_code('revisions_engine_files');
-            $revisions_engine = new RevisionEngineFiles();
-            $existing_path = $custom_path;
-            if (!file_exists($existing_path)) {
-                $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
-            }
-            $revisions_engine->add_revision($full_path, basename($_file, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
+        require_code('revisions_engine_files');
+        $revisions_engine = new RevisionEngineFiles();
+        $existing_path = $custom_path;
+        if (!file_exists($existing_path)) {
+            $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
         }
+        $revisions_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
 
         // Save
         $myfile = @fopen($custom_path, GOOGLE_APPENGINE ? 'wb' : 'at');
@@ -1522,17 +1521,18 @@ class Module_admin_themes
             if (!is_file($full_path)) {
                 $full_path = get_file_base() . '/' . $default_load_path;
             }
-            if (file_exists($full_path) {
+            if (file_exists($full_path)) {
                 $contents = file_get_contents($full_path);
-            } else) {
+            } else {
                 $contents = '';
             }
 
             // Revisions
             if (addon_installed('actionlog')) {
                 require_code('revisions_engine_files');
-                $revisions_engine = new RevisionEngineDatabase();
-                $revisions = $revisions_engine->ui_revision_undoer(dirname($default_load_path), $file, get_file_extension($file), 'EDIT_TEMPLATES', $contents, null);
+                $revisions_engine = new RevisionEngineFiles();
+                $revision_loaded = mixed();
+                $revisions = $revisions_engine->ui_revision_undoer(dirname($default_load_path), $file, get_file_extension($file), 'EDIT_TEMPLATES', $contents, $revision_loaded);
             } else {
                 $revisions = new Tempcode();
             }
@@ -1784,7 +1784,7 @@ class Module_admin_themes
                 if (!file_exists($existing_path)) {
                     $existing_path = get_custom_file_base() . '/themes/default/' . $_file;
                 }
-                $revisions_engine->add_revision($full_path, basename($_file, '.tpl'), 'tpl', file_get_contents($existing_path), filemtime($existing_path));
+                $revisions_engine->add_revision(dirname($full_path), basename($_file, '.tpl'), 'tpl', file_get_contents($existing_path), filemtime($existing_path));
             }
 
             // Save

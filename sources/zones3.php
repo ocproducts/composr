@@ -535,17 +535,20 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         'p_order' => $order,
     ));
 
+    // Find file
+    $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
+    $file_changed = ((!file_exists($full_path)) || ($text != file_get_contents($full_path)));
+
     // Save revision
     if ($file_changed) {
         require_code('revisions_engine_files');
         $revisions_engine = new RevisionEngineFiles();
-        $existing_path = find_comcode_page($lang, $file, $zone);
-        $revisions_engine->add_revision($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, $file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+        list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
+        $revisions_engine->add_revision(dirname($full_path), $new_file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
     }
 
     // Store page on disk
-    $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . filter_naughty($zone) . '/pages/comcode_custom/' . filter_naughty($lang) . '/' . filter_naughty($new_file) . '.txt');
-    if ((!file_exists($full_path)) || ($text != file_get_contents($full_path))) {
+    if ($file_changed) {
         if (!file_exists(dirname($full_path))) {
             require_code('files2');
             make_missing_directory(dirname($full_path));
@@ -566,10 +569,6 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         fclose($myfile);
         sync_file($full_path);
         fix_permissions($full_path);
-
-        $file_changed = true;
-    } else {
-        $file_changed = false;
     }
 
     // Empty caching
@@ -638,8 +637,8 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
             if (addon_installed('actionlog')) {
                 require_code('revisions_engine_files');
                 $revisions_engine = new RevisionEngineFiles();
-                $existing_path = find_comcode_page($lang, $file, $zone);
-                $revisions_engine->add_revision($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                list(, , $existing_path) = find_comcode_page(user_lang(), $page, $zone);
+                $revisions_engine->add_revision(dirname($existing_path), $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
             }
         }
 

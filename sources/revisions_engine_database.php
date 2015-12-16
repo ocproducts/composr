@@ -413,10 +413,13 @@ class RevisionEngineDatabase
      * @param  string $resource_type Resource type.
      * @param  string $resource_id Resource ID.
      * @param  string $text Current resource text (may be altered by reference).
+     * @param  ?boolean $revision_loaded Whether a revision was loaded, passed by reference (null: initial value).
      * @return Tempcode UI.
      */
-    public function ui_revision_undoer($resource_type, $resource_id, &$text)
+    public function ui_revision_undoer($resource_type, $resource_id, &$text, &$revision_loaded)
     {
+        $revision_loaded = false;
+
         if (!$this->enabled(true)) {
             return new Tempcode();
         }
@@ -531,6 +534,7 @@ class RevisionEngineDatabase
             $_text = $GLOBALS['SITE_DB']->query_select_value_if_there('revisions', 'r_original_text', array('id' => $undo_revision));
             if (!is_null($_text)) {
                 $text = $_text;
+                $revision_loaded = true;
 
                 $revisions_tpl = do_template('REVISION_UNDO');
             } else {

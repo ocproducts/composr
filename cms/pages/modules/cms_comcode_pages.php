@@ -647,8 +647,12 @@ class Module_cms_comcode_pages
 
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_files');
-            $revisions_engine = new RevisionEngineDatabase();
-            $revisions = $revisions_engine->ui_revision_undoer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, $file, 'txt', 'COMCODE_PAGE_EDIT', $contents, $parsed);
+            $revisions_engine = new RevisionEngineFiles();
+            $revision_loaded = mixed();
+            $revisions = $revisions_engine->ui_revision_undoer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang, $file, 'txt', 'COMCODE_PAGE_EDIT', $contents, $revision_loaded);
+            if ($revision_loaded) {
+                $parsed = null;
+            }
         } else {
             $revisions = new Tempcode();
         }
