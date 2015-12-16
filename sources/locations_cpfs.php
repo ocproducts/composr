@@ -47,6 +47,7 @@ function autofill_geo_cpfs($member_id = null) {
  * Automatically populate member geo CPFs (worker function).
  *
  * @param  array $row Member row
+ *
  * @ignore
  */
 function _autofill_geo_cpfs($row) {

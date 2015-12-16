@@ -33,6 +33,7 @@ function init__comcode_from_html()
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _img_tag_fixup($matches)
@@ -71,6 +72,7 @@ function _img_tag_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _img_tag_fixup_raw($matches)
@@ -96,6 +98,7 @@ function _img_tag_fixup_raw($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _a_tag_link_fixup($matches)
@@ -111,6 +114,7 @@ function _a_tag_link_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _css_color_fixup($matches)
@@ -136,6 +140,7 @@ function _css_color_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _css_quot_fixup($matches)
@@ -148,6 +153,7 @@ function _css_quot_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _cdata_protect($matches)
@@ -167,6 +173,7 @@ function _cdata_protect($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _codetag_protect($matches)
@@ -182,6 +189,7 @@ function _codetag_protect($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _codetag_unprotect($matches)
@@ -197,6 +205,7 @@ function _codetag_unprotect($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _reorder_xhtml_attributes($matches)
@@ -232,6 +241,7 @@ function _reorder_xhtml_attributes($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
  * @ignore
  */
 function _reorder_css_properties($matches)

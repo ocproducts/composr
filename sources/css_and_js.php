@@ -279,6 +279,7 @@ function css_compile($active_theme, $theme, $c, $fullpath, $css_cache_path, $min
  *
  * @param  array $matches Matched variables
  * @return array A pair: success status, The text of the compiled file
+ *
  * @ignore
  */
 function _css_cms_include($matches)
@@ -310,6 +311,7 @@ function _css_cms_include($matches)
  * @param  PATH $fullpath Full path to CSS file (file is in uncompiled Tempcode format)
  * @param  boolean $minify Whether to also do minification
  * @return array A pair: success status, The text of the compiled file
+ *
  * @ignore
  */
 function _css_compile($active_theme, $theme, $c, $fullpath, $minify = true)

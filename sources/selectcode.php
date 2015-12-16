@@ -243,6 +243,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
  * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
  * @param  ?object $db Database connection to use (null: website)
  * @return array A list of ID numbers
+ *
  * @ignore
  */
 function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_parents, $ids_and_parents_callback, $parent_spec__table_name, $parent_spec__parent_name, $category_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db)
@@ -409,6 +410,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
  * @param  boolean $has_no_parents Whether there are parents in the filter
  * @param  ?object $db Database connection to use (null: website)
  * @return array A list of ID numbers
+ *
  * @ignore
  */
 function _selectcode_to_generic_callback($table_name, $field_name, $category_field_name, $has_no_parents, $db)
@@ -428,6 +430,7 @@ function _selectcode_to_generic_callback($table_name, $field_name, $category_fie
  * @param  string $var The string value (may actually hold an integer, if $numeric)
  * @param  boolean $numeric Whether the value is numeric
  * @return string SQL fragment
+ *
  * @ignore
  */
 function _selectcode_neq($field_name, $var, $numeric)
@@ -446,6 +449,7 @@ function _selectcode_neq($field_name, $var, $numeric)
  * @param  string $var The string value (may actually hold an integer, if $numeric)
  * @param  boolean $numeric Whether the value is numeric
  * @return string SQL fragment
+ *
  * @ignore
  */
 function _selectcode_eq($field_name, $var, $numeric)
@@ -470,6 +474,7 @@ function _selectcode_eq($field_name, $var, $numeric)
  * @param  boolean $first Whether this is the base call to this recursive function (just leave it as the default, true)
  * @param  boolean $recurse Whether to run recursively
  * @return array Subtree: list of IDs in category-set
+ *
  * @ignore
  */
 function _selectcode_subtree_fetch($look_under, $table_name, $parent_name, $field_name, $numeric_ids, $db, &$cached_mappings, $first = true, $recurse = true)
@@ -527,6 +532,7 @@ function _selectcode_subtree_fetch($look_under, $table_name, $parent_name, $fiel
  * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
  * @param  object $db Database connection to use
  * @return array A map between record-set IDs and record-set parent-category-IDs
+ *
  * @ignore
  */
 function _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db)

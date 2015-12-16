@@ -1146,6 +1146,7 @@ function get_catalogue_entry_field_values($catalogue_name, $entry_id, $only_fiel
  * @param  mixed $entry_id The ID of the entry we are getting OR the row
  * @param  ?array $only_field_ids A list of field IDs that we are limiting ourselves to (null: get ALL fields)
  * @param  array $target Save the result into here
+ *
  * @ignore
  */
 function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$target)

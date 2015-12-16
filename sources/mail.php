@@ -37,6 +37,7 @@ function init__mail()
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _mail_img_rep_callback($matches)
@@ -56,6 +57,7 @@ function _mail_img_rep_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _mail_css_rep_callback($matches)
@@ -74,6 +76,7 @@ function _mail_css_rep_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _indent_callback($matches)
@@ -86,6 +89,7 @@ function _indent_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _title_callback($matches)
@@ -108,6 +112,7 @@ function _title_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _box_callback($matches)
@@ -120,6 +125,7 @@ function _box_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _page_callback($matches)
@@ -134,6 +140,7 @@ function _page_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _random_callback($matches)
@@ -148,6 +155,7 @@ function _random_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _shocker_callback($matches)
@@ -169,6 +177,7 @@ function _shocker_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
  * @ignore
  */
 function _comcode_callback($matches)

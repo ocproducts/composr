@@ -316,6 +316,7 @@ function is_non_human_email($subject, $body, $full_header)
  *
  * @param  array $matches preg Matches
  * @return string The result
+ *
  * @ignore
  */
 function _convert_text_quote_to_comcode($matches)
@@ -328,6 +329,7 @@ function _convert_text_quote_to_comcode($matches)
  *
  * @param  object $structure Structure
  * @return string Mime type
+ *
  * @ignore
  */
 function _imap_get_mime_type($structure)

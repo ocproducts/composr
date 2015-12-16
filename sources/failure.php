@@ -280,6 +280,7 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
  * @param  boolean $provide_back Whether to provide a back button
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
  * @return Tempcode The warn page
+ *
  * @ignore
  */
 function _warn_screen($title, $text, $provide_back = true, $support_match_key_messages = false)
@@ -310,6 +311,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
  *
  * @param  string $text The error message
  * @return string Sanitised error message
+ *
  * @ignore
  */
 function _sanitise_error_msg($text)
@@ -440,6 +442,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
  *
  * @param  IP $ip IP address
  * @return IP Normalised address
+ *
  * @ignore
  */
 function _inet_pton($ip)

@@ -24,6 +24,7 @@
  *
  * @param  URLPATH $url The URL to enforce results in session persistence for the user
  * @return URLPATH The fixed URL
+ *
  * @ignore
  */
 function _enforce_sessioned_url($url)

@@ -739,6 +739,7 @@ DIRECT WORDPRESS DATABASE IMPORT (imports more than RSS import can)
  * Get data from the Wordpress DB
  *
  * @return array Result structure
+ *
  * @ignore
  */
 function _get_wordpress_db_data()
@@ -882,6 +883,7 @@ function _news_import_grab_images_and_fix_links($download_images, &$data, $impor
  *
  * @param  string $data HTML (passed by reference)
  * @param  URLPATH $url URL
+ *
  * @ignore
  */
 function _news_import_grab_image(&$data, $url)

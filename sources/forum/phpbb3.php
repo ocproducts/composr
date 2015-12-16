@@ -25,6 +25,7 @@
  * @param  integer $count How many chars to encode
  * @param  string $itoa64 Lookup table used internally
  * @return string The encoded output
+ *
  * @ignore
  */
 function _hash_encode64($input, $count, &$itoa64)

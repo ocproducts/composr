@@ -28,6 +28,7 @@ Editing/deleting attachments.
  * @param  AUTO_LINK $id The attachment ID to delete
  * @param  object $connection The database connection to use
  * @set    cms forum
+ *
  * @ignore
  */
 function _delete_attachment($id, $connection)

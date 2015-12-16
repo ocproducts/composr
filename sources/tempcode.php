@@ -2029,6 +2029,7 @@ class Tempcode
  * @param  string $parameters Parameters
  * @param  string $code Function code
  * @return string The function reference
+ *
  * @ignore
  */
 function recall_named_function($id, $parameters, $code)
@@ -2070,6 +2071,7 @@ function tempcode_include($filepath)
  * @param  ?array $parameters Evaluation parameters (null: N/A)
  * @param  ?ID_TEXT $cl Language (null: N/A)
  * @return string Result
+ *
  * @ignore
  */
 function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
@@ -2102,6 +2104,7 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
  * @param  ?mixed $b Second parameter (null: null/none)
  * @param  ?mixed $c Third parameter (null: null/none)
  * @return string Result
+ *
  * @ignore
  */
 function debug_call_user_func($function, $a, $b = null, $c = null)

@@ -833,6 +833,7 @@ function init__webstandards2()
  * @param  boolean $close Whether this is a closing tag
  * @param  list $errors Errors detected so far. We will add to these and return
  * @return array Array of error information
+ *
  * @ignore
  */
 function __check_tag($tag, $attributes, $self_close, $close, $errors)

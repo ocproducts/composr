@@ -264,6 +264,7 @@ function build_sitemap_cache_table()
  * Callback for reference a Sitemap node in the cache.
  *
  * @param  array $node The Sitemap node
+ *
  * @ignore
  */
 function _sitemap_cache_node($node)

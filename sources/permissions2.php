@@ -25,6 +25,7 @@
  * @param  ID_TEXT $op The function that was called to check a permission
  * @param  array $params Parameters to this permission-checking function
  * @param  boolean $result Whether the permission was held
+ *
  * @ignore
  */
 function _handle_permission_check_logging($member, $op, $params, $result)

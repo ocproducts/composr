@@ -656,6 +656,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
  * @param  boolean $raw Whether to not do a lang lookup
  * @param  integer $rel_pos Offset position
  * @return map A map of the error information
+ *
  * @ignore
  */
 function _xhtml_error($error, $param_a = '', $param_b = '', $param_c = '', $raw = false, $rel_pos = 0)
@@ -1209,6 +1210,7 @@ function _get_next_tag()
  * @param  boolean $close Whether this is a closing tag
  * @param  list $errors Errors detected so far. We will add to these and return
  * @return mixed String for tag basis form, or array of error information
+ *
  * @ignore
  */
 function _check_tag($tag, $attributes, $self_close, $close, $errors)
@@ -1249,6 +1251,7 @@ function _check_tag($tag, $attributes, $self_close, $close, $errors)
  *
  * @param  string $full The full tag
  * @return string The basis of the tag
+ *
  * @ignore
  */
 function _get_tag_basis($full)

@@ -113,6 +113,7 @@ function parse_quiz_question_line($question, $answers, $question_extra_text = ''
  * @param  string $text Text for questions
  * @param  ID_TEXT $type The type
  * @set COMPETITION TEST SURVEY
+ *
  * @ignore
  */
 function _save_available_quiz_answers($id, $text, $type)

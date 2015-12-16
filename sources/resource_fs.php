@@ -429,6 +429,7 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
  * @param  ID_TEXT $resource_id The resource ID
  * @param  ?string $subpath The subpath (null: don't care). It may end in "/*" if you want to look for a match under a certain directory
  * @return boolean Whether it matches
+ *
  * @ignore
  */
 function _check_id_match($commandrfs_ob, $resource_type, $resource_id, $subpath)

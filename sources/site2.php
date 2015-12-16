@@ -332,6 +332,7 @@ function page_not_found($codename, $zone)
  * @param  array $new_comcode_page_row New row for database, used if necessary (holds submitter etc)
  * @param  boolean $being_included Whether the page is being included from another
  * @return array A tuple: The page HTML (as Tempcode), New Comcode page row, Title, Raw Comcode
+ *
  * @ignore
  */
 function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $comcode_page_row, $new_comcode_page_row, $being_included = false)
@@ -484,6 +485,7 @@ function apply_comcode_page_substitutions(&$comcode)
  * @param  array $new_comcode_page_row New row for database, used if nesessary (holds submitter etc)
  * @param  boolean $being_included Whether the page is being included from another
  * @return array A tuple: The page HTML (as Tempcode), New Comcode page row, Title, Raw Comcode
+ *
  * @ignore
  */
 function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $new_comcode_page_row, $being_included = false)

@@ -656,6 +656,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
  * @param  ID_TEXT $key Primary field name
  * @param  array $val Array
  * @param  array $vars Flat array to write into
+ *
  * @ignore
  */
 function _handle_array_var_append($key, $val, &$vars)

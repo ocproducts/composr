@@ -26,6 +26,7 @@
  * @param  object $this_ref Link to the real forum driver
  * @param  ?MEMBER $member_id Only emoticons the given member can see (null: don't care)
  * @return array The map
+ *
  * @ignore
  */
 function _helper_apply_emoticons($this_ref, $member_id = null)
@@ -90,6 +91,7 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
  * @param  ?TIME $time_post The post time (null: use current time)
  * @param  ?MEMBER $spacer_post_member_id Owner of comment topic (null: Guest)
  * @return array Topic ID (may be NULL), and whether a hidden post has been made
+ *
  * @ignore
  */
 function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier, $member_id, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url, $time, $ip, $validated, $topic_validated, $skip_post_checks, $poster_name_if_guest, $parent_id, $staff_only, $no_notify_for__notification_code, $no_notify_for__code_category, $time_post, $spacer_post_member_id)
@@ -529,6 +531,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
  * @param  AUTO_LINK $topic_id Topic the posts come from
  * @param  array $post_ids List of post IDs
  * @return array Extra details
+ *
  * @ignore
  */
 function _helper_get_post_remaining_details($this_ref, $topic_id, $post_ids)
@@ -547,6 +550,7 @@ function _helper_get_post_remaining_details($this_ref, $topic_id, $post_ids)
  * @param  object $this_ref Link to the real forum driver
  * @param  string $field_name The ID of the form field the emoticon chooser adds to
  * @return Tempcode The emoticon chooser template
+ *
  * @ignore
  */
 function _helper_get_emoticon_chooser($this_ref, $field_name)

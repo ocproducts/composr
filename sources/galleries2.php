@@ -1262,6 +1262,7 @@ function watermark_gallery_image($gallery, $file_path, $filename)
  * @param  URLPATH $watermark_url The (local) URL to the watermark file
  * @param  BINARY $x Whether a right hand side corner is being watermarked
  * @param  BINARY $y Whether a bottom edge corner is being watermarked
+ *
  * @ignore
  */
 function _watermark_corner($source, $watermark_url, $x, $y)

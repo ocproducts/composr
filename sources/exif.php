@@ -57,6 +57,7 @@ function get_exif_data($path, $filename = null)
  *
  * @param  array $exif EXIF data
  * @return array Extra derived EXIF data
+ *
  * @ignore
  */
 function _get_simple_gps($exif)

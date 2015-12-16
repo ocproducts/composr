@@ -143,6 +143,7 @@ function seo_meta_set_for_explicit($type, $id, $keywords, $description)
  * @param  array $keyword_sources Array of content strings to summarise from
  * @param  SHORT_TEXT $description The description to use
  * @return array A pair: Keyword string generated, Description generated
+ *
  * @ignore
  */
 function _seo_meta_find_data($keyword_sources, $description = '')

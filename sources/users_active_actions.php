@@ -224,6 +224,7 @@ function handle_active_logout()
  * Make sure temporary passwords restrict you to the edit account page. May not return, if it needs to do a redirect.
  *
  * @param  MEMBER $member The current member
+ *
  * @ignore
  */
 function _enforce_temporary_passwords($member)

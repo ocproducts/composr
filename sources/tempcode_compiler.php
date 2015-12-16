@@ -101,6 +101,7 @@ function init__tempcode_compiler()
  * @param  array $bits Compiler tokens
  * @param  integer $i How far we are through the token list
  * @return integer The sum length of tokens passed
+ *
  * @ignore
  */
 function _length_so_far($bits, $i)
@@ -831,6 +832,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  ?ID_TEXT $theme_orig The theme to cache in (null: main theme)
  * @return Tempcode The compiled Tempcode
+ *
  * @ignore
  */
 function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $theme_orig = null)

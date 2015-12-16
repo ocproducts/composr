@@ -594,6 +594,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return array A pair: the URL and the filename
+ *
  * @ignore
  */
 function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_type = 15, $accept_errors = false)
@@ -691,6 +692,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return boolean Success status
+ *
  * @ignore
  */
 function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_errors = false)
@@ -781,6 +783,7 @@ function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_er
  * @param  boolean $accept_errors Whether to accept upload errors
  * @param  ?string $filename Filename to use (null: choose one)
  * @return array A pair: the URL and the filename
+ *
  * @ignore
  */
 function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folder_full, $enforce_type = 15, $obfuscate = 0, $accept_errors = false, $filename = null)

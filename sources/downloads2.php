@@ -826,6 +826,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
  *
  * @param  string $ch Character to test
  * @return boolean Whether the character is valid
+ *
  * @ignore
  */
 function _is_valid_data_mash_char(&$ch)

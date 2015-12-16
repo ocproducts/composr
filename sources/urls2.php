@@ -107,6 +107,7 @@ function page_link_as_url($url)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
  * @param  ?array $exclude A list of parameters to exclude (null: don't exclude any)
  * @return Tempcode The builtup hidden form fields
+ *
  * @ignore
  */
 function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
@@ -151,6 +152,7 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
  * @param  ID_TEXT $key Key name to put value under
  * @param  mixed $value Value (string or array)
  * @return string The builtup hidden form fields
+ *
  * @ignore
  */
 function _fixed_post_parser($key, $value)
@@ -185,6 +187,7 @@ function _fixed_post_parser($key, $value)
  *
  * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
  * @return Tempcode The builtup hidden form fields
+ *
  * @ignore
  */
 function _build_keep_post_fields($exclude = null)
@@ -218,6 +221,7 @@ function _build_keep_post_fields($exclude = null)
  *
  * @param  URLPATH $url_full The URL to convert to an encoded filename
  * @return string A usable filename based on the URL
+ *
  * @ignore
  */
 function _url_to_filename($url_full)
@@ -249,6 +253,7 @@ function _url_to_filename($url_full)
  * @param  URLPATH $url The URL to fully qualified
  * @param  URLPATH $url_base The base-URL
  * @return URLPATH Fully qualified URL
+ *
  * @ignore
  */
 function _qualify_url($url, $url_base)

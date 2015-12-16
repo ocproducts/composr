@@ -51,6 +51,7 @@ function init__database_helper()
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
  * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+ *
  * @ignore
  */
 function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
@@ -165,6 +166,7 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
  * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+ *
  * @ignore
  */
 function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
@@ -233,6 +235,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
  * @param  ID_TEXT $index_name The index name
  * @param  array $fields The fields
  * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+ *
  * @ignore
  */
 function _helper_create_index($this_ref, $table_name, $index_name, $fields, $unique_key_field = 'id')
@@ -312,6 +315,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $table_name The table name
  * @param  ID_TEXT $index_name The index name
+ *
  * @ignore
  */
 function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
@@ -336,6 +340,7 @@ function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
  *
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $table The table name
+ *
  * @ignore
  */
 function _helper_drop_table_if_exists($this_ref, $table)
@@ -372,6 +377,7 @@ function _helper_drop_table_if_exists($this_ref, $table)
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $old The old table name
  * @param  ID_TEXT $new The new table name
+ *
  * @ignore
  */
 function _helper_rename_table($this_ref, $old, $new)
@@ -471,6 +477,7 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
  * @param  ID_TEXT $_type The field type
  * @param  ?mixed $default The default value (null: no default)
  * @return array A pair: SQL, default value for fields
+ *
  * @ignore
  */
 function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $default = null)
@@ -595,6 +602,7 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
  * @param  ID_TEXT $_type The new field type
  * @param  ?ID_TEXT $new_name The new field name (null: leave name)
  * @return string SQL
+ *
  * @ignore
  */
 function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $new_name = null)
@@ -653,6 +661,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $table_name The name of the table to create the index on
  * @param  array $new_key A list of fields to put in the new key
+ *
  * @ignore
  */
 function _helper_change_primary_key($this_ref, $table_name, $new_key)
@@ -674,6 +683,7 @@ function _helper_change_primary_key($this_ref, $table_name, $new_key)
  * @param  integer $level The translation level to use
  * @set    1 2 3 4
  * @param  boolean $in_assembly Whether our data is already stored in Tempcode assembly format
+ *
  * @ignore
  */
 function _helper_promote_text_field_to_comcode($this_ref, $table_name, $name, $key = 'id', $level = 2, $in_assembly = false)
@@ -701,6 +711,7 @@ function _helper_promote_text_field_to_comcode($this_ref, $table_name, $name, $k
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $table_name The table name
  * @param  ID_TEXT $name The field name
+ *
  * @ignore
  */
 function _helper_delete_table_field($this_ref, $table_name, $name)
@@ -746,6 +757,7 @@ function _helper_delete_table_field($this_ref, $table_name, $name)
  *
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $type The field type
+ *
  * @ignore
  */
 function _helper_refresh_field_definition($this_ref, $type)

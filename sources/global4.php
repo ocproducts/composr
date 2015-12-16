@@ -69,6 +69,7 @@ function attach_message_su(&$messages_bottom)
  * @set .css .js
  * @param  PATH $write_path Write path
  * @return boolean If the merge happened
+ *
  * @ignore
  */
 function _save_web_resource_merging($resources, $type, $write_path)

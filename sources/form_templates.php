@@ -2044,6 +2044,7 @@ function form_input_date($pretty_name, $description, $name, $required, $null_def
  * @param  ?ID_TEXT $timezone Timezone to input in (null: current user's timezone)
  * @param  boolean $handle_timezone Convert $default_time to $timezone
  * @return Tempcode The input field
+ *
  * @ignore
  */
 function _form_input_date($name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true)
@@ -2337,6 +2338,7 @@ function form_input_na($pretty_name, $tabindex = null)
  * @param  mixed $description_side A secondary side description for this input field
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
  * @return Tempcode The field
+ *
  * @ignore
  */
 function _form_input($name, $pretty_name, $description, $input, $required, $comcode = false, $tabindex = null, $w = false, $skip_label = false, $description_side = '', $pattern_error = null)

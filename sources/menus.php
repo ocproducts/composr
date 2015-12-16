@@ -88,6 +88,7 @@ function build_menu($type, $menu, $silent_failure = false)
  *
  * @param  SHORT_TEXT $menu The menu identifier to use (the name of a stored menu)
  * @return array The menu branch structure
+ *
  * @ignore
  */
 function _build_stored_menu($menu)
@@ -246,6 +247,7 @@ function _build_sitemap_menu($menu)
  * Get root branch (an empty shell).
  *
  * @return array The root branch
+ *
  * @ignore
  */
 function _get_menu_root_wrapper()
@@ -274,6 +276,7 @@ function _get_menu_root_wrapper()
  * @param  array $item The database row
  * @param  array $items List of all the database rows for this menu
  * @return array A list of menu branches
+ *
  * @ignore
  */
 function _build_stored_menu_branch($item, $items)
@@ -356,6 +359,7 @@ function _build_stored_menu_branch($item, $items)
  *
  * @param  array $branches Branches
  * @param  string $page_link_append What to append to the page-links
+ *
  * @ignore
  */
 function _append_to_page_links(&$branches, $page_link_append)
@@ -376,6 +380,7 @@ function _append_to_page_links(&$branches, $page_link_append)
  * @param  ID_TEXT $type The menu type (determines what templates get used)
  * @param  boolean $as_admin Whether to generate Comcode with admin privilege
  * @return Tempcode The generated Tempcode of the menu
+ *
  * @ignore
  */
 function _render_menu($menu, $source_member, $type, $as_admin = false)
@@ -433,6 +438,7 @@ function _render_menu($menu, $source_member, $type, $as_admin = false)
  * @param  array $all_branches Array of all other branches
  * @param  integer $the_level The level
  * @return array A pair: array of parameters of the menu branch (or NULL if unrenderable, or Tempcode of something to attach), and whether it is expanded
+ *
  * @ignore
  */
 function _render_menu_branch($branch, $codename, $source_member, $level, $type, $as_admin, $all_branches, $the_level = 1)

@@ -231,6 +231,7 @@ function check_js($data, $raw_errors = false)
  * Do the actual code check on the parse structure.
  *
  * @param  map $structure Parse structure
+ *
  * @ignore
  */
 function _check_js($structure)

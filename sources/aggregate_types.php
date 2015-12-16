@@ -216,6 +216,7 @@ function find_aggregate_type_parameters($aggregate_type)
  *
  * @param  string $src_text Text
  * @param  array $parameters Reference to our parameter list
+ *
  * @ignore
  */
 function _find_parameters_in($src_text, &$parameters)

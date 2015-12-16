@@ -136,6 +136,7 @@ function _intelligent_write_error($path)
  *
  * @param  PATH $path File path that could not be written
  * @return Tempcode Message
+ *
  * @ignore
  */
 function _intelligent_write_error_inline($path)
@@ -262,6 +263,7 @@ function _sync_file_move($old, $new)
  * @param  PATH $dir The pathname to the directory to delete
  * @param  boolean $default_preserve Whether to preserve files there by default
  * @param  boolean $just_files Whether to just delete files
+ *
  * @ignore
  */
 function _deldir_contents($dir, $default_preserve = false, $just_files = false)
@@ -1748,6 +1750,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
  * Read in any HTTP headers from an HTTP line, that we probe for.
  *
  * @param  string $line The line
+ *
  * @ignore
  */
 function _read_in_headers($line)
@@ -1913,6 +1916,7 @@ function get_webpage_meta_details($url)
  *
  * @param  string $out The HTTP stream we will look through
  * @return string Same as $out
+ *
  * @ignore
  */
 function _detect_character_encoding($out)

@@ -66,6 +66,7 @@ END;
  *
  * @param  mixed $_value Data
  * @return string XML-RPC format version
+ *
  * @ignore
  */
 function _xml_rpc_type_convert($_value)

@@ -1536,6 +1536,7 @@ function load_comcode_page_from_cache($codename, $zone, $theme)
  *
  * @param  array $pages Details of pages to load
  * @return array Database rows
+ *
  * @ignore
  */
 function _load_comcodes_page_from_cache($pages)

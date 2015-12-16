@@ -48,6 +48,7 @@ function init__comcode_renderer()
  *
  * @param  string $text The text to add emoticons to (assumption: that this is XHTML)
  * @return string The XHTML with the image-substitution of emoticons
+ *
  * @ignore
  */
 function _apply_emoticons($text)
@@ -174,6 +175,7 @@ function check_naughty_javascript_url($source_member, $url, $as_admin)
  * Load up Custom Comcode tags so that we may parse them.
  *
  * @param  object $connection The database connection to use
+ *
  * @ignore
  */
 function _custom_comcode_import($connection)
@@ -267,6 +269,7 @@ function _custom_comcode_import($connection)
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @return Tempcode The Tempcode generated
+ *
  * @ignore
  */
 function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
@@ -546,6 +549,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
  * @return Tempcode The Tempcode for the Comcode
+ *
  * @ignore
  */
 function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_id, $marker, $source_member, $as_admin, $connection, &$comcode, $structure_sweep, $semiparse_mode, $highlight_bits = null, $on_behalf_of_member = null, $in_semihtml = false, $is_all_semihtml = false)

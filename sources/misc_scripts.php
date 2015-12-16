@@ -230,6 +230,7 @@ function preview_script()
  * Script to perform Composr CRON jobs called by the real CRON.
  *
  * @param  PATH $caller File path of the cron_bridge.php script
+ *
  * @ignore
  */
 function cron_bridge_script($caller)

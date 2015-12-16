@@ -62,6 +62,7 @@ function init__svg()
  * @param  integer $end_x The X position of the end vertex
  * @param  integer $end_y The Y position of the end vertex
  * @return string The SVG markup for the described segment
+ *
  * @ignore
  */
 function _draw_segment($colour, $angle, $radius, $start_x, $start_y, $end_x, $end_y)
@@ -82,6 +83,7 @@ function _draw_segment($colour, $angle, $radius, $start_x, $start_y, $end_x, $en
  * @param   integer $start_y The starting Y position
  * @param   string $units The units (e.g. %)
  * @return  string         The SVG markup for the described key
+ *
  * @ignore
  */
 function _draw_key($data, $start_colour, $start_x, $start_y, $units = '')
@@ -125,6 +127,7 @@ function _draw_key($data, $start_colour, $start_x, $start_y, $units = '')
  *
  * @param   string $current_colour The hexadecimal-format colour to be incremented
  * @return  string         The incremented hexadecimal colour
+ *
  * @ignore
  */
 function _get_next_colour($current_colour)
@@ -143,6 +146,7 @@ function _get_next_colour($current_colour)
  * Get the markup required to start a new SVG document
  *
  * @return string The markup
+ *
  * @ignore
  */
 function _start_svg()
@@ -198,6 +202,7 @@ if (typeof window.addEventListenerAbstract==\'undefined\') addEventListenerAbstr
  *
  * @param  string $plot The plot markup to insert first
  * @return string The markup
+ *
  * @ignore
  */
 function _finish_svg($plot = '')
@@ -210,6 +215,7 @@ function _finish_svg($plot = '')
  *
  * @param  string $plot The SVG
  * @return string ... made to have inline styles
+ *
  * @ignore
  */
 function _filter_svg_css($plot)
@@ -225,6 +231,7 @@ function _filter_svg_css($plot)
  * @param   string $x_label X axis label
  * @param   string $y_label Y axis label
  * @return  string         The markup
+ *
  * @ignore
  */
 function _draw_axes($max_y, $y_scale, $x_label = 'X axis', $y_label = 'Y axis')
@@ -264,6 +271,7 @@ function _draw_axes($max_y, $y_scale, $x_label = 'X axis', $y_label = 'Y axis')
  * @param  float $average Average value
  * @param  float $y_scale Y scale
  * @return string The markup
+ *
  * @ignore
  */
 function _draw_average($average, $y_scale)

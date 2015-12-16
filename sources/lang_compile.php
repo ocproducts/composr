@@ -248,6 +248,7 @@ function get_lang_file_map($lang, $file, $non_custom = false)
  * @param  string $section The section to get
  * @param  boolean $given_whole_file Whether $b is in fact not a path, but the actual file contents
  * @param  boolean $apply_filter Apply the language pack filter
+ *
  * @ignore
  */
 function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false, $apply_filter = true)

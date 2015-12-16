@@ -90,6 +90,7 @@ function cms_profile_is_enabled()
  * Start a profiling block, for a specified identifier (of your own choosing).
  *
  * @param  ID_TEXT $identifier Identifier
+ *
  * @ignore
  */
 function _cms_profile_start_for($identifier)
@@ -151,6 +152,7 @@ function _cms_profile_end_for($identifier, $specifics = null)
  * @param  array $at The signature for what we just profiled
  * @param  integer $cnt This will be the nth of this identifier to be logged
  * @return string Log line
+ *
  * @ignore
  */
 function _cms_profile_generate_line($identifier, $at, $cnt)
@@ -168,6 +170,7 @@ function _cms_profile_generate_line($identifier, $at, $cnt)
  * Store a line in the profiling log.
  *
  * @param  string $line Log line
+ *
  * @ignore
  */
 function _cms_profile_log_line($line)

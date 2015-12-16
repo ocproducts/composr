@@ -57,6 +57,7 @@ function backend_cloud_script()
  * @param  integer $port The port to connect to them on
  * @param  string $watching_channel The channel they are interested in
  * @return boolean Success status
+ *
  * @ignore
  */
 function _cloud_register_them($path, $procedure, $protocol, $port, $watching_channel)

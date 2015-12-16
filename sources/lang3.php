@@ -169,6 +169,7 @@ function _find_all_langs($even_empty_langs = false)
  * @param  ?LANGUAGE_NAME $select_lang The language to have selected by default (null: uses the current language)
  * @param  boolean $show_unset Whether to show languages that have no language details currently defined for them
  * @return Tempcode The language selector
+ *
  * @ignore
  */
 function _create_selection_list_langs($select_lang = null, $show_unset = false)
@@ -221,6 +222,7 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
  * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
  * @return array The language string ID save fields
+ *
  * @ignore
  */
 function _insert_lang($field_name, $text, $level, $connection = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
@@ -314,6 +316,7 @@ function _insert_lang($field_name, $text, $level, $connection = null, $comcode =
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
  * @param  boolean $leave_source_user Whether to leave the source member as-is (as opposed to resetting it to the current member)
  * @return array The language string ID save fields
+ *
  * @ignore
  */
 function _lang_remap($field_name, $id, $text, $connection = null, $comcode = false, $pass_id = null, $for_member = null, $as_admin = false, $leave_source_user = false)
@@ -520,6 +523,7 @@ function parse_translated_text($table, &$row, $field_name, $connection, $lang, $
  *
  * @param  ID_TEXT $lang_code The language string ID
  * @return Tempcode The parsed Comcode
+ *
  * @ignore
  */
 function _comcode_lang_string($lang_code)

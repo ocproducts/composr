@@ -24,6 +24,7 @@
  * @param  string $codename The file name (without .txt)
  * @param  ?LANGUAGE_NAME $lang The language to load from (null: none) (blank: search)
  * @return string The path to the file
+ *
  * @ignore
  */
 function _find_text_file_path($codename, $lang)

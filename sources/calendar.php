@@ -412,6 +412,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
  * @param  integer $dif_day Jump in days that just happened
  * @param  integer $dif_month Jump in month that just happened
  * @param  integer $dif_year Jump in year that just happened
+ *
  * @ignore
  */
 function _compensate_for_dst_change(&$hour, &$minute, $day_of_month, $month, $year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year)
