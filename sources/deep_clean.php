@@ -61,7 +61,7 @@ function deep_clean($d, $heading = '')
             $d = preg_replace('#^\s*<h\d[^<>]*>\s*' . preg_quote($heading, '') . '\s*</h\d>#', '', $d);
             $d = preg_replace('#^\s*' . preg_quote($heading, '') . '\s*([^\w])#', '$1', $d);
         } else {
-            $d = preg_replace('#^\s*' . preg_quote($heading, '') . '\s*\n#', '', $d);
+            $d = preg_replace('#^\s*' . preg_quote($heading, '') . '\s*\r?\n#', '', $d);
         }
     }
 

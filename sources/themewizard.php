@@ -632,11 +632,18 @@ function themewizard_script()
             header('Location: ' . find_theme_image($show));
             exit();
         }
+
         header('Content-type: image/png');
         require_code('images_png');
-        _png_compress($image);
-        imagepng($image);
+        $saveat = cms_tempnam('themegen');
+        @imagepng($image, $saveat, 9) or intelligent_write_error($saveat);
         imagedestroy($image);
+        fix_permissions($saveat);
+        sync_file($saveat);
+        require_code('images_png');
+        png_compress($saveat);
+        readfile($saveat);
+        @unlink($saveat);
     }
 }
 

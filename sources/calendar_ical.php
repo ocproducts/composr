@@ -327,7 +327,7 @@ function ical_import($file_name)
     $calendar_nodes = array();
 
     foreach ($events as $key => $items) {
-        $items = preg_replace('#(.+)\n +(.*)\n#', '${1}${2}' . "\n", $items); // Merge split lines
+        $items = preg_replace('#(.+)\n +(.*)\r?\n#', '${1}${2}' . "\n", $items); // Merge split lines
 
         $nodes = explode("\n", $items);
 

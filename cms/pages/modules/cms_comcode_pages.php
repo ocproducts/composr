@@ -901,7 +901,7 @@ class Module_cms_comcode_pages
                 attach_message(do_lang_tempcode('NO_LEVEL_1_HEADERS'), 'notice');
             }
             $matches = array();
-            if ((strpos($_text['html'], '<h2') === false) && (preg_match_all('#\n\[(b|font|size)\][^\.]+\[/(b|font|size)\]\n#', $_text['comcode'], $matches) >= 2)) {
+            if ((strpos($_text['html'], '<h2') === false) && (preg_match_all('#\n\[(b|font|size)\][^\.]+\[/(b|font|size)\]\r?\n#', $_text['comcode'], $matches) >= 2)) {
                 attach_message(do_lang_tempcode('NO_LEVEL_2_HEADERS'), 'inform');
             }
         }

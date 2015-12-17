@@ -545,7 +545,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
         $contents = file_get_contents(get_file_base() . '/' . $file);
         $matches = array();
-        if (preg_match('#@package\s+(\w+)\n#', $contents, $matches) != 0) {
+        if (preg_match('#@package\s+(\w+)\r?\n#', $contents, $matches) != 0) {
             $addon = $matches[1];
             if ($addon == 'installer') {
                 $addon = 'core';

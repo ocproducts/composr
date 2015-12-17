@@ -59,7 +59,7 @@ function png_compress($path, $lossy = false)
         }
     }
 
-    // Product JPEG version, if relevant
+    // Produce JPEG version, if relevant
     $trying_jpeg = (!$has_alpha) && ($lossy) && (get_value('save_jpegs_as_png') === '1');
     if ($trying_jpeg) {
         imagejpeg($img, $path . '.jpeg_tmp', intval(get_option('jpeg_quality'))); // We will ultimately save as a .png which is actually the JPEG. We rely on Composr, and browsers, doing their magic detection of images (not just relying on mime types)
@@ -101,7 +101,7 @@ function png_compress($path, $lossy = false)
     // Try as 8-bit...
 
     if ($has_alpha) {
-        $alphabg = imagecolorallocatealpha($img, 255, 0, 255, 127);
+        $alphabg = imagecolorallocate($img, 255, 0, 255);
         imagecolortransparent($img, $alphabg);
         for ($y = 0; $y < $height; $y++) {
             for ($x = 0; $x < $width; $x++) {
@@ -136,70 +136,4 @@ function png_compress($path, $lossy = false)
     sync_file($path);
 
     imagedestroy($img);
-}
-
-/**
- * Try to further compress a PNG file, via palette tricks and maximum gzip compression.
- *
- * @param  resource $img GD image.
- * @param  boolean $lossy Whether to do a lossy convert.
- *
- * @ignore
- */
-function _png_compress(&$img, $lossy = false)
-{
-    // Has alpha?
-    $width = imagesx($img);
-    $height = imagesy($img);
-    $has_alpha = false;
-    for ($y = 0; $y < $height; $y++) {
-        for ($x = 0; $x < $width; $x++) {
-            $at = imagecolorat($img, $x, $y);
-            $parsed_colour = imagecolorsforindex($img, $at);
-            if ((isset($parsed_colour['alpha'])) && ($parsed_colour['alpha'] != 0)) {
-                $has_alpha = true;
-                if ($parsed_colour['alpha'] != 127) {
-                    // Blended alpha, cannot handle as anything other than a proper 32-bit PNG
-                    return;
-                }
-            }
-        }
-    }
-
-    // Check we don't have too many colours for 8-bit
-    $colours = array();
-    for ($y = 0; $y < $height; $y++) {
-        for ($x = 0; $x < $width; $x++) {
-            $at = imagecolorat($img, $x, $y);
-            if ($lossy) {
-                $at = $at & ~bindec('00001111' . '00001111' . '00001111' . '00111111'); // Reduce to a colour resolution of 16 distinct values on each of RGB, and 4 on A
-            }
-            $colours[$at] = true;
-            if (count($colours) > 300) { // Give some grace, but >300 is unworkable (at least 44 too many)
-                // Too many colours for 8-bit...
-
-                return;
-            }
-        }
-    }
-
-    // Try as 8-bit...
-
-    if ($has_alpha) {
-        $alphabg = imagecolorallocatealpha($img, 255, 0, 255, 127);
-        imagecolortransparent($img, $alphabg);
-        for ($y = 0; $y < $height; $y++) {
-            for ($x = 0; $x < $width; $x++) {
-                $at = imagecolorat($img, $x, $y);
-                $parsed_colour = imagecolorsforindex($img, $at);
-                if ((isset($parsed_colour['alpha'])) && ($parsed_colour['alpha'] != 0)) {
-                    imagesetpixel($img, $x, $y, $alphabg);
-                }
-            }
-        }
-    }
-
-    imagetruecolortopalette($img, true, 256);
-
-    imagesavealpha($img, false); // No alpha, only transparency
 }

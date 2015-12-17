@@ -2002,5 +2002,5 @@ function log_stats($string, $pg_time)
  */
 /*f unction _compress_html_output($data)
 {
-    return preg_replace(array('#>[ \t]+#', '#[ \t]+<#', '#\n[ \t]+\n#', '#\n+#'), array('> ', ' <', "\n", "\n"), $data);
+    return preg_replace(array('#>[ \t]+#', '#[ \t]+<#', '#\n[ \t]+\r?\n#', '#\n+#'), array('> ', ' <', "\n", "\n"), $data);
 }*/
