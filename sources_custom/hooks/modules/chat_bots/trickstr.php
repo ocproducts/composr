@@ -137,7 +137,7 @@ class Hook_chat_bot_trickstr
 				  input text,
 				  response text,
 				  uid varchar(255) default NULL,
-				  enteredtime timestamp(6) NOT NULL,
+				  enteredtime timestamp NOT NULL,
 				  PRIMARY KEY  (id),
 				  KEY botid (bot)
 				) ENGINE=MyISAM");
@@ -145,7 +145,7 @@ class Hook_chat_bot_trickstr
 				  uid varchar(255) default NULL,
 				  name text,
 				  value text,
-				  enteredtime timestamp(6) NOT NULL,
+				  enteredtime timestamp NOT NULL,
 				  id int(11) NOT NULL auto_increment,
 				  PRIMARY KEY  (id),
 				  KEY nameidx (name(40))
@@ -193,7 +193,7 @@ class Hook_chat_bot_trickstr
 				) ENGINE=MyISAM");
                 $GLOBALS['SITE_DB']->query("CREATE TABLE thatindex (
 				  uid varchar(255) default NULL,
-				  enteredtime timestamp(6) NOT NULL,
+				  enteredtime timestamp NOT NULL,
 				  id int(11) NOT NULL auto_increment,
 				  PRIMARY KEY  (id)
 				) ENGINE=MyISAM");
@@ -201,7 +201,7 @@ class Hook_chat_bot_trickstr
 				  thatid int(11) NOT NULL default '0',
 				  id int(11) NOT NULL auto_increment,
 				  value varchar(255) default NULL,
-				  enteredtime timestamp(6) NOT NULL,
+				  enteredtime timestamp NOT NULL,
 				  PRIMARY KEY  (id)
 				) ENGINE=MyISAM");
 

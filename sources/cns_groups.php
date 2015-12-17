@@ -126,11 +126,11 @@ function cns_get_all_default_groups($include_primary = false, $include_all_confi
         return $ALL_DEFAULT_GROUPS_CACHE[$include_primary ? 1 : 0];
     }
 
-    $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id'), array('g_is_default' => 1, 'g_is_presented_at_install' => 0), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
+    $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_default' => 1, 'g_is_presented_at_install' => 0), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
     $groups = collapse_1d_complexity('id', $rows);
 
     if ($include_primary) {
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_presented_at_install' => 1), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
         if (($include_all_configured_default_groups) || (count($rows) == 1) || (get_option('show_first_join_page') == '0')) { // If just 1 then we won't have presented a choice on the join form, so should inject that 1 as the default group as it is implied
             $groups = array_merge($groups, collapse_1d_complexity('id', $rows));
         }

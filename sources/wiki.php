@@ -695,7 +695,12 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
  */
 function wiki_derive_chain($id, $root = null)
 {
-    static $parent_details = array();
+    static $parent_details = null;
+    if ($parent_details === null) {
+        $parent_details = array(
+            db_get_first_id() => array(null, do_lang('WIKI')),
+        );
+    }
 
     if (is_null($root)) {
         $root = get_param_integer('keep_wiki_root', db_get_first_id());
@@ -706,8 +711,8 @@ function wiki_derive_chain($id, $root = null)
     $page_id = $id;
     $chain = '';
     $seen_before = array();
-    while ($page_id > $root) {
-        $seen_before[$page_id] = 1;
+    while (true) {
+        $seen_before[$page_id] = true;
 
         if (!array_key_exists($page_id, $parent_details)) {
             $parent_rows = $GLOBALS['SITE_DB']->query_select('wiki_children', array('parent_id', 'title'), array('child_id' => $page_id), '', 1);
@@ -729,11 +734,17 @@ function wiki_derive_chain($id, $root = null)
         }
         $chain = $page_moniker . $chain;
 
+        if ($page_id === null || $page_id == $root || $page_id <= db_get_first_id()) {
+            break; // Natural termination
+        }
+
         $page_id = $parent_details[$page_id][0]; // For next time
+
         if (array_key_exists($page_id, $seen_before)) {
             break; // Stop loops
         }
     }
+
     if ($chain == '') {
         $chain = strval($page_id);
     }

@@ -260,7 +260,7 @@ class Module_admin
             array('bbcode', 'wikicode', 'comcode', 'shortcode'),
             array('html', 'xhtml'),
             array('wysiwyg', 'rte'),
-            array('addon', 'add-on', 'mod', 'hack', 'extension', 'plugin', 'app', 'core_addon_management', 'module', 'system'),
+            array('addon', 'add-on', 'mod', 'hack', 'extension', 'plugin', 'app', 'core_addon_management', 'module', 'system', 'package', 'install'),
             array('name', 'title', 'label', ''/*May be a stop word*/),
             array('analytics', 'statistics', 'hits', 'stats'),
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),

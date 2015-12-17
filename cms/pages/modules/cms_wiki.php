@@ -380,12 +380,8 @@ class Module_cms_wiki
     public function edit_page()
     {
         $__id = get_param_string('id', '', true);
-        if (($__id == '') || (strpos($__id, '/') !== false)) {
-            $_id = get_param_wiki_chain('id');
-            $id = intval($_id[0]);
-        } else {
-            $id = intval($__id);
-        }
+        $_id = get_param_wiki_chain('id');
+        $id = intval($_id[0]);
 
         check_edit_permission('cat_low', null, array('wiki_page', $id));
 
@@ -585,7 +581,7 @@ class Module_cms_wiki
         check_privilege('wiki_manage_tree', array('wiki_page', $id));
 
         $hide_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'hide_posts', array('id' => $id));
-        $page_title = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'page_title', array('id' => $id));
+        $page_title = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'title', array('id' => $id));
         if (get_option('wiki_enable_content_posts') == '0') {
             $hide_posts = 1;
         }

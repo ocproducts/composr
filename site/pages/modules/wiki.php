@@ -475,18 +475,21 @@ class Module_wiki
         $description = get_translated_tempcode('wiki_pages', $page, 'description');
         $description_comcode = get_translated_text($page['description']);
 
-        // Children Links
+        // Child Links
         $num_children = 0;
         $children = new Tempcode();
         if (get_option('wiki_enable_children') == '1') {
             $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'hide_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
+
                 if (get_option('wiki_enable_content_posts') == '0') {
                     $myrow['hide_posts'] = 1;
                 }
+
                 $_child_title = $myrow['title'];
                 $child_title = get_translated_text($_child_title);
+
                 $child_description = get_translated_text($myrow['description']);
 
                 $my_child_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $child_id));

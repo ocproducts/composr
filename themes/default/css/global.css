@@ -2557,7 +2557,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	{$BETA_CSS_PROPERTY,opacity: 0.1;} display: inline-block;/*Needed for IE8*/
 	{$BETA_CSS_PROPERTY,transition-property : opacity;}
 	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 .post_buttons>*[rel="add reply"], .post_buttons>a[rel="back_to_top"] {
@@ -2854,7 +2854,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	{$BETA_CSS_PROPERTY,opacity: 0.4;}
 	{$BETA_CSS_PROPERTY,transition: opacity 0.6s linear;}
 	margin-top: 3em;
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 .quick_self_edit_link img, .quick_self_edit_link span {
 	vertical-align: middle;
@@ -2874,7 +2874,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	background: url('{$IMG_INLINE;,icons/24x24/tabs/settings}') right 4px no-repeat;
 	padding-right: 5px;
 	background-origin: content-box;
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
@@ -3253,7 +3253,7 @@ div .button_micro {
 
 .button_screen, .button_screen_item, .button_micro, .toggleable_tray_button img {
 	{$BETA_CSS_PROPERTY,opacity: 0.85;}
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
 .button_micro:hover, .button_screen:hover, .button_screen_item:hover {
@@ -3877,7 +3877,7 @@ ul.nl, .nl ul {
 .edit_menu_link_inline, .edit_page_link_inline {
 	{$BETA_CSS_PROPERTY,opacity: 0 !important;} display: inline-block;/*Needed for IE8*/
 	{$BETA_CSS_PROPERTY,transition: opacity 0.5s linear;}
-	{$BETA_CSS_PROPERTY,transform: translateZ(0);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;} display: inline-block;/*Needed for IE8*/

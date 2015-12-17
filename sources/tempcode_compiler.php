@@ -847,6 +847,9 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     }
 
     global $CACHE_TEMPLATES, $FILE_ARRAY, $IS_TEMPLATE_PREVIEW_OP_CACHE;
+    if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
+        fill_template_preview_op_cache();
+    }
 
     //$final_css_path = null;
 

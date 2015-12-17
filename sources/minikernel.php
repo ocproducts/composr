@@ -114,6 +114,17 @@ function sync_file($filename)
 }
 
 /**
+ * Find whether a particular PHP function is blocked.
+ *
+ * @param  string $function Function name.
+ * @return boolean Whether it is.
+ */
+function php_function_allowed($function)
+{
+    return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+}
+
+/**
  * Return a debugging back-trace of the current execution stack. Use this for debugging purposes.
  *
  * @return Tempcode Debugging backtrace

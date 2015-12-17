@@ -639,6 +639,15 @@ function kid_gloves_html_escaping_singular(&$param)
 }
 
 /**
+ * Work out if we're doing a template preview op.
+ */
+function fill_template_preview_op_cache()
+{
+    global $IS_TEMPLATE_PREVIEW_OP_CACHE;
+    $IS_TEMPLATE_PREVIEW_OP_CACHE = array_key_exists('template_preview_op', $_POST) && ($_POST['template_preview_op'] == '1') && ((get_page_name() != 'admin_themes') || (get_param_string('type', '') == 'view'));
+}
+
+/**
  * Get a Tempcoded version of a Composr template. It is perhaps the most common Composr function to load up templates using do_template, and then attach them together either as parameters to each other, or via the Tempcode attach method.
  *
  * @param  ID_TEXT $codename The codename of the template being loaded
@@ -678,7 +687,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
 
     global $IS_TEMPLATE_PREVIEW_OP_CACHE, $RECORD_TEMPLATES_USED, $RECORD_TEMPLATES_TREE, $RECORDED_TEMPLATES_USED, $FILE_ARRAY, $KEEP_MARKERS, $SHOW_EDIT_LINKS, $XHTML_SPIT_OUT, $CACHE_TEMPLATES, $FORUM_DRIVER, $POSSIBLY_IN_SAFE_MODE_CACHE, $USER_THEME_CACHE, $TEMPLATE_DISK_ORIGIN_CACHE, $LOADED_TPL_CACHE;
     if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
-        $IS_TEMPLATE_PREVIEW_OP_CACHE = array_key_exists('template_preview_op', $_POST) && ($_POST['template_preview_op'] == '1') && ((get_page_name() != 'admin_themes') || (get_param_string('type', '') == 'view'));
+        fill_template_preview_op_cache();
     }
     $special_treatment = ((($KEEP_MARKERS) || ($SHOW_EDIT_LINKS)) && ($XHTML_SPIT_OUT === null));
 

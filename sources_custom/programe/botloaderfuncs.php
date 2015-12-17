@@ -134,7 +134,7 @@ function flushcache()
 function upperkeysarray($testa)
 {
     $newtesta=array();
-    $newkeys=array_keys($testa);
+    $newkeys=@array_keys($testa);
     for ($x=0;$x<sizeof($newkeys);$x++){
         $newtesta[strtoupper($newkeys[$x])]=$testa[$newkeys[$x]];
     }
