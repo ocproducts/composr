@@ -166,6 +166,7 @@ class Hook_addon_registry_composr_homesite
             'uploads/website_specific/compo.sr/logos/index.html',
             'uploads/website_specific/compo.sr/scripts/addon_manifest.php',
             'uploads/website_specific/compo.sr/scripts/errorservice.php',
+            'uploads/website_specific/compo.sr/scripts/goto_release_notes.php',
             'uploads/website_specific/compo.sr/scripts/fetch_release_details.php',
             'uploads/website_specific/compo.sr/scripts/newsletter_join.php',
             'uploads/website_specific/compo.sr/scripts/user.php',

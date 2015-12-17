@@ -31,7 +31,7 @@ $version_dotted = get_param_string('version');
 require_code('version2');
 $version_pretty = get_version_pretty__from_dotted(get_version_dotted__from_anything($version_dotted));
 
-$is_substantial = (substr($version_dotted, -2) == '.0') || (strpos($version_dotted, 'beta1') !== false) || (strpos($version_dotted, 'RC1') !== false);
+$is_substantial = is_substantial_release($version_dotted);
 
 $is_old_tree = get_param_integer('is_old_tree') == 1;
 

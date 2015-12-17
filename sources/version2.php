@@ -156,3 +156,14 @@ function get_version_pretty__from_dotted($pretty)
 {
     return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $pretty);
 }
+
+/**
+ * Whether it is a substantial release (i.e. major new version).
+ *
+ * @param  string $pretty Pretty version number
+ * @return boolean Whether it is
+ */
+function is_substantial_release($dotted)
+{
+    return (substr($dotted, -2) == '.0') || (strpos($dotted, 'beta1') !== false) || (strpos($dotted, 'RC1') !== false);
+}
