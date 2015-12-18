@@ -60,58 +60,6 @@ function server__close_tracker_issue($tracker_id)
     close_tracker_issue(intval($tracker_id));
 }
 
-function server__post_in_bugs_catalogue($version_pretty, $ce_title, $ce_description, $ce_affects, $ce_fix)
-{
-    require_code('catalogues2');
-
-    $bug_category_id = get_bug_category_id($version_pretty);
-
-    $map = array(
-        // FUDGE: Hard-coded IDs
-        35 => $ce_title,
-        36 => $ce_description,
-        32 => $ce_affects,
-        34 => $ce_fix,
-    );
-
-    $entry_id = actual_add_catalogue_entry($bug_category_id, 1, '', 0, 0, 0, $map);
-
-    echo strval($entry_id);
-}
-
-function get_bug_category_id($version_pretty)
-{
-    require_code('catalogues');
-    require_code('catalogues2');
-
-    if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'bugs')))) {
-        actual_add_catalogue('bugs', 'Bugs', '', C_DT_FIELDMAPS, 0, '', 0);
-        $fields = array(
-            array('Title', 'short_trans', 1, 1, 1),
-            array('Description', 'long_trans', 0, 1, 0),
-            array('Fix', 'long_trans', 0, 0, 0),
-        );
-        foreach ($fields as $i => $field) {
-            actual_add_catalogue_field('projects', $field[0], '', $field[1], $i, $field[2], 1, 1, '', $field[3], $field[4]);
-        }
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        foreach (array_keys($groups) as $group_id) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'bugs', 'group_id' => $group_id));
-        }
-    }
-
-    $bug_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cc_title') => strval($version_pretty)));
-    if (is_null($bug_category_id)) {
-        $bug_category_id = actual_add_catalogue_category('bugs', strval($version_pretty), '', '', null);
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        foreach (array_keys($groups) as $group_id) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($bug_category_id), 'group_id' => $group_id));
-        }
-    }
-
-    return $bug_category_id;
-}
-
 function server__create_forum_post($_replying_to_post, $post_reply_title, $post_reply_message, $_post_important)
 {
     $replying_to_post = intval($_replying_to_post);

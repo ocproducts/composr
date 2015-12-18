@@ -69,7 +69,12 @@ function phase_0()
 
     $changes = 'All reported bugs since the last release have been fixed.';
     if (strpos($release_description, 'patch release') !== false) {
-        $changes .= ' For a list of the more important fixes, see the [page="site:catalogues:index:bugs"]bugs catalogue[/page]. For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/' . $on_disk_version . '[/url].';
+        $on_disk_version_parts = explode('.', $on_disk_version);
+        $last = count($on_disk_version_parts) - 1;
+        $on_disk_version_parts[$last] = strval(intval($on_disk_version_parts[$last]) - 1);
+        $on_disk_version_previous = implode('.', $on_disk_version_parts);
+
+        $changes .= ' For a list of the more important fixes, see the [url="bugs catalogue"]http://compo.sr/tracker/search.php?project_id=1&product_version=' . $on_disk_version_previous . '[/url]. For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/' . $on_disk_version_previous . '[/url].';
     }
     if (strpos($release_description, 'gold') !== false) {
         $changes = 'TODO';

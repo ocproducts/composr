@@ -135,18 +135,6 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
     close_tracker_issue($tracker_id);
     $done[(post_param_string('tracker_id', '') == '') ? 'Created new tracker issue' : 'Responded to existing tracker issue'] = $tracker_url;
 
-    // A bug is posted in the bugs catalogue, linking to the tracker
-    $post_to_bug_catalogue = !is_null(post_param_string('post_to_bug_catalogue', null));
-    if ($post_to_bug_catalogue) {
-        $ce_title = $title;
-        $ce_description = $notes;
-        $ce_affects = $affects;
-        $ce_fix = 'This issue is properly filed (and managed) on the tracker. See issue [url="#' . strval($tracker_id) . '"]' . $tracker_url . '[/url].';
-        $entry_id = post_in_bugs_catalogue(get_version_pretty__from_dotted($version_dotted), $ce_title, $ce_description, $ce_affects, $ce_fix);
-        $ce_url = $REMOTE_BASE_URL . '/site/catalogues/entry/' . strval($entry_id) . '.htm';
-        $done['Added to bugs catalogue'] = $ce_url;
-    }
-
     // If a forum post ID was given, an automatic reply is given pointing to the tracker issue
     $post_id = post_param_integer('post_id', null);
     if ($post_id !== null) {
@@ -291,11 +279,6 @@ echo <<<END
         </div>
 
         <div>
-            <label for="post_to_bug_catalogue">Post to bug catalogue <span style="font-size: 0.8em">(if hotfix is worth advertising and issue is new)</span></label>
-            <input checked="checked" type="checkbox" id="post_to_bug_catalogue" name="post_to_bug_catalogue" />
-        </div>
-
-        <div>
             <label for="git_commit_id">{$git_status_3}{$git_status_2}</label>
             <input onchange="document.getElementById('fixed_files').required=(this.value=='');" name="git_commit_id" id="git_commit_id" type="text" value="" {$git_status} />
         </div>
@@ -420,12 +403,6 @@ function create_hotfix_tar($tracker_id, $files)
     }
     echo '<!--' . shell_exec($cmd . ' 2>&1') . '-->';
     return $tar_path;
-}
-
-function post_in_bugs_catalogue($version_pretty, $ce_title, $ce_description, $ce_affects, $ce_fix)
-{
-    $args = func_get_args();
-    return intval(make_call(__FUNCTION__, array('parameters' => $args)));
 }
 
 function create_forum_post($replying_to_post, $post_reply_title, $post_reply_message, $post_important)

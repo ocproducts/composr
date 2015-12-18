@@ -304,7 +304,7 @@ if ($has_jump) {
 
             // Output upgrader link
             $out = '';
-            $upgrade_script = (($bits[0] >= 4) ? 'upgrader.php' : 'force_upgrade.php');
+            $upgrade_script = 'upgrader.php';
             if (isset($found['news_id'])) {
                 $upgrade_script .= '?news_id=' . strval($higher_versions[$i]['news_id']);
             }
