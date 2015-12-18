@@ -156,7 +156,7 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('poll', strval($id), null, null, true);
+        generate_resource_fs_moniker('poll', strval($id), null, null, true);
     }
 
     require_code('sitemap_xml');
@@ -203,7 +203,7 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('poll', strval($id));
+        generate_resource_fs_moniker('poll', strval($id));
     }
 
     persistent_cache_delete('POLL');
@@ -304,7 +304,7 @@ function delete_poll($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('poll', strval($id));
+        expunge_resource_fs_moniker('poll', strval($id));
     }
 
     require_code('sitemap_xml');

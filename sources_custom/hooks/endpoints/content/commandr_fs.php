@@ -59,7 +59,7 @@ class Hook_endpoint_content_commandr_fs
         $exists = $is_file || $is_dir;
         /*if ($is_dir) {    Actually it's best to force being explicit, allows us to then serve directory listings (no ambiguity)
             require_code('resource_fs');
-            $path_arr[] = RESOURCEFS_SPECIAL_DIRECTORY_FILE;
+            $path_arr[] = RESOURCE_FS_SPECIAL_DIRECTORY_FILE;
         }*/
 
         switch ($type) {
@@ -111,7 +111,7 @@ class Hook_endpoint_content_commandr_fs
                 } else {
                     list($resource_type, $resource_id) = explode('/', $id, 2);
                 }
-                $id = find_commandrfs_filename_via_id($resource_type, $resource_id, true);
+                $id = find_commandr_fs_filename_via_id($resource_type, $resource_id, true);
                 if (is_null($id)) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }

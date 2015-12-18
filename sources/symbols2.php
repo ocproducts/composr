@@ -1528,7 +1528,7 @@ function ecv2_FIND_ID_VIA_LABEL($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
-function ecv2_FIND_ID_VIA_COMMANDRFS_FILENAME($lang, $escaped, $param)
+function ecv2_FIND_ID_VIA_COMMANDR_FS_FILENAME($lang, $escaped, $param)
 {
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
@@ -1537,7 +1537,7 @@ function ecv2_FIND_ID_VIA_COMMANDRFS_FILENAME($lang, $escaped, $param)
 
     if (isset($param[1])) {
         require_code('resource_fs');
-        $value = find_id_via_commandrfs_filename($param[0], $param[1]);
+        $value = find_id_via_commandr_fs_filename($param[0], $param[1]);
         if ($value === null) {
             $value = '';
         }
@@ -1618,7 +1618,7 @@ function ecv2_FIND_LABEL_VIA_ID($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
-function ecv2_FIND_COMMANDRFS_FILENAME_VIA_ID($lang, $escaped, $param)
+function ecv2_FIND_COMMANDR_FS_FILENAME_VIA_ID($lang, $escaped, $param)
 {
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
@@ -1627,7 +1627,7 @@ function ecv2_FIND_COMMANDRFS_FILENAME_VIA_ID($lang, $escaped, $param)
 
     if (isset($param[1])) {
         require_code('resource_fs');
-        $value = find_commandrfs_filename_via_id($param[0], $param[1]);
+        $value = find_commandr_fs_filename_via_id($param[0], $param[1]);
         if ($value === null) {
             $value = '';
         }

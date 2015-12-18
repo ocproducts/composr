@@ -72,7 +72,7 @@ class Hook_commandr_fs_filedump
                 if (($file != '.') && ($file != '..') && ($file != '.git')) {
                     $listing[] = array(
                         $file,
-                        is_dir($path . '/' . $file) ? COMMANDRFS_DIR : COMMANDRFS_FILE,
+                        is_dir($path . '/' . $file) ? COMMANDR_FS_DIR : COMMANDR_FS_FILE,
                         is_dir($path . '/' . $file) ? null : filesize($path . '/' . $file),
                         filemtime($path . '/' . $file),
                     );
@@ -81,8 +81,8 @@ class Hook_commandr_fs_filedump
 
             // Folder meta
             $listing[] = array(
-                RESOURCEFS_SPECIAL_DIRECTORY_FILE,
-                COMMANDRFS_FILE,
+                RESOURCE_FS_SPECIAL_DIRECTORY_FILE,
+                COMMANDR_FS_FILE,
                 null,
                 filemtime($path),
             );
@@ -167,7 +167,7 @@ class Hook_commandr_fs_filedump
 
         list($path, $place) = $this->get_complete_path($meta_dir);
 
-        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+        if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             // What if folder meta...
 
             $dir_name = basename($place);
@@ -215,7 +215,7 @@ class Hook_commandr_fs_filedump
 
         list($path, $place) = $this->get_complete_path($meta_dir);
 
-        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+        if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             // What if folder meta...
 
             $dir_name = basename($place);
@@ -264,7 +264,7 @@ class Hook_commandr_fs_filedump
 
         list($path, $place) = $this->get_complete_path($meta_dir);
 
-        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+        if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             // What if folder meta...
 
             $dir_name = basename($place);

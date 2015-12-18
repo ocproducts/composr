@@ -338,7 +338,7 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('chat', strval($id), null, null, true);
+        generate_resource_fs_moniker('chat', strval($id), null, null, true);
     }
 
     decache('side_shoutbox');
@@ -389,7 +389,7 @@ function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('chat', strval($id));
+        generate_resource_fs_moniker('chat', strval($id));
     }
 
     require_code('xml_sitemap');
@@ -426,7 +426,7 @@ function delete_chatroom($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('chat', strval($id));
+        expunge_resource_fs_moniker('chat', strval($id));
     }
 
     require_code('xml_sitemap');

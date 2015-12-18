@@ -66,7 +66,7 @@ function user_sync__inbound($since = null)
 
     @ignore_user_abort(false);
 
-    resourcefs_logging__start('inform');
+    resource_fs_logging__start('inform');
 
     // Load import scheme
     require_code('user_sync__customise');
@@ -129,13 +129,13 @@ function user_sync__inbound($since = null)
         // Handle each user
         while (($user = $sth->fetch(PDO::FETCH_ASSOC)) !== false) {
             if (($USER_SYNC_IMPORT_LIMIT !== null) && ($i2 - $DO_USER_SYNC_OFFSET >= $USER_SYNC_IMPORT_LIMIT)) {
-                resourcefs_logging('Partial, got to ' . strval($i2) . ' members', 'inform');
+                resource_fs_logging('Partial, got to ' . strval($i2) . ' members', 'inform');
                 break;
             }
             $i2++;
 
             if ($i != 0 && $i % $PROGRESS_UPDATE_GAP == 0) {
-                resourcefs_logging('Progress update: imported ' . strval($i) . ' members', 'inform');
+                resource_fs_logging('Progress update: imported ' . strval($i) . ' members', 'inform');
             }
 
             // Work out username
@@ -148,7 +148,7 @@ function user_sync__inbound($since = null)
             }
             //cns_check_name_valid($username, null, null, true); // Not really needed
             if ($username == '') {
-                resourcefs_logging('Blank username cannot be imported.', 'warn');
+                resource_fs_logging('Blank username cannot be imported.', 'warn');
                 continue;
             }
 
@@ -219,7 +219,7 @@ function user_sync__inbound($since = null)
                     $cpf_value = is_string($value) ? $value : strval($value);
                     $cpf_values[$cpf_id] = $cpf_value;
                 } else {
-                    resourcefs_logging('Could not bind ' . $key . ' to CPF.', 'warn');
+                    resource_fs_logging('Could not bind ' . $key . ' to CPF.', 'warn');
                 }
             }
 
@@ -305,14 +305,14 @@ function user_sync__inbound($since = null)
         }
         $time_end = time();
         if ($user === false) {
-            resourcefs_logging('Imported ' . strval($i - $DO_USER_SYNC_OFFSET) . ' members in ' . strval($time_end - $time_start) . ' seconds', 'notice');
+            resource_fs_logging('Imported ' . strval($i - $DO_USER_SYNC_OFFSET) . ' members in ' . strval($time_end - $time_start) . ' seconds', 'notice');
         }
     }
 
     // Customised end code
     get_user_sync__finish($dbh, $since);
 
-    resourcefs_logging__end();
+    resource_fs_logging__end();
 }
 
 function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, $dbh, $member_id)
@@ -332,7 +332,7 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
                 $remap_scheme[1] = $field_name; // Identity map, by default
             }
             if (!array_key_exists($remap_scheme[1], $remote_data)) { // Not found!
-                resourcefs_logging('Requested to import missing remote field, ' . $remap_scheme[1] . '.', 'warn');
+                resource_fs_logging('Requested to import missing remote field, ' . $remap_scheme[1] . '.', 'warn');
                 return user_sync_get_field_default($field_name);
             }
             $remote_value = $remote_data[$remap_scheme[1]];
@@ -347,7 +347,7 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
             break;
 
         default: // ???
-            resourcefs_logging('Unknown lookup type (' . $remap_scheme[0] . ').', 'warn');
+            resource_fs_logging('Unknown lookup type (' . $remap_scheme[0] . ').', 'warn');
             return user_sync_get_field_default($field_name);
     }
 
@@ -371,8 +371,8 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
                     if (is_numeric($_data)) {
                         $data[$i] = intval($_data);
                     } else { // By name
-                        $resourcefs_ob = get_resource_commandrfs_object('group');
-                        $data[$i] = intval($resourcefs_ob->convert_label_to_id($_data, '', 'group')); // Will be created if it doesn't already exist
+                        $resource_fs_ob = get_resource_commandr_fs_object('group');
+                        $data[$i] = intval($resource_fs_ob->convert_label_to_id($_data, '', 'group')); // Will be created if it doesn't already exist
                     }
                 }
             }
@@ -461,7 +461,7 @@ function user_sync_get_field_default($field_name)
         case 'groups':
             return array();
     }
-    resourcefs_logging('Requested to import unknown field. ' . $field_name . '.', 'warn');
+    resource_fs_logging('Requested to import unknown field. ' . $field_name . '.', 'warn');
     return null; // Should not get here
 }
 

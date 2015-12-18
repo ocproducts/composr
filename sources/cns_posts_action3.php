@@ -218,7 +218,7 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('post', strval($post_id));
+        generate_resource_fs_moniker('post', strval($post_id));
     }
 
     return $topic_id; // We may want this
@@ -364,7 +364,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
         foreach ($posts as $post) {
-            expunge_resourcefs_moniker('post', strval($post));
+            expunge_resource_fs_moniker('post', strval($post));
         }
     }
 

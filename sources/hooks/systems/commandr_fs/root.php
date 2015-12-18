@@ -45,7 +45,7 @@ class Hook_commandr_fs_root
                     if (($file != '.') && ($file != '..') && ($file != '.git') && ((strpos($file, '_custom') === false) || (!file_exists($path . str_replace('_custom', '', $file))))) {
                         $listing[] = array(
                             $file,
-                            is_dir($path . $file) ? COMMANDRFS_DIR : COMMANDRFS_FILE,
+                            is_dir($path . $file) ? COMMANDR_FS_DIR : COMMANDR_FS_FILE,
                             is_dir($path . $file) ? null : filesize($path . $file),
                             filemtime($path . $file),
                         );

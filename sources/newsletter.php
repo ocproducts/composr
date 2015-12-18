@@ -422,7 +422,7 @@ function add_newsletter($title, $description)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('newsletter', strval($id), null, null, true);
+        generate_resource_fs_moniker('newsletter', strval($id), null, null, true);
     }
 
     log_it('ADD_NEWSLETTER', strval($id), $title);
@@ -450,7 +450,7 @@ function edit_newsletter($id, $title, $description)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('newsletter', strval($id));
+        generate_resource_fs_moniker('newsletter', strval($id));
     }
 
     log_it('EDIT_NEWSLETTER', strval($id), $_title);
@@ -475,7 +475,7 @@ function delete_newsletter($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('newsletter', strval($id));
+        expunge_resource_fs_moniker('newsletter', strval($id));
     }
 
     log_it('DELETE_NEWSLETTER', strval($id), get_translated_text($_title));
@@ -531,7 +531,7 @@ function add_periodic_newsletter($subject, $message, $lang, $send_details, $html
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('periodic_newsletter', strval($id), null, null, true);
+        generate_resource_fs_moniker('periodic_newsletter', strval($id), null, null, true);
     }
 
     log_it('ADD_PERIODIC_NEWSLETTER', strval($id), $subject);
@@ -583,7 +583,7 @@ function edit_periodic_newsletter($id, $subject, $message, $lang, $send_details,
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('periodic_newsletter', strval($id));
+        generate_resource_fs_moniker('periodic_newsletter', strval($id));
     }
 
     log_it('EDIT_PERIODIC_NEWSLETTER', strval($id), $subject);
@@ -602,7 +602,7 @@ function delete_periodic_newsletter($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('periodic_newsletter', strval($id));
+        expunge_resource_fs_moniker('periodic_newsletter', strval($id));
     }
 
     log_it('DELETE_PERIODIC_NEWSLETTER', strval($id), $subject);
@@ -636,7 +636,7 @@ function add_newsletter_subscriber($email, $join_time, $code_confirm, $password,
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('newsletter_subscriber', strval($id), null, null, true);
+        generate_resource_fs_moniker('newsletter_subscriber', strval($id), null, null, true);
     }
 
     return $id;
@@ -687,7 +687,7 @@ function edit_newsletter_subscriber($id, $email = null, $join_time = null, $code
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('newsletter_subscriber', strval($id));
+        generate_resource_fs_moniker('newsletter_subscriber', strval($id));
     }
 }
 
@@ -702,6 +702,6 @@ function delete_newsletter_subscriber($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('newsletter_subscriber', strval($id));
+        expunge_resource_fs_moniker('newsletter_subscriber', strval($id));
     }
 }

@@ -140,7 +140,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('catalogue', $name, null, null, true);
+        generate_resource_fs_moniker('catalogue', $name, null, null, true);
     }
 
     require_code('member_mentions');
@@ -333,7 +333,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         if ($old_name != $name) { // We want special stability in catalogue addressing
             require_code('resource_fs');
-            generate_resourcefs_moniker('catalogue', $name);
+            generate_resource_fs_moniker('catalogue', $name);
         }
     }
 
@@ -397,7 +397,7 @@ function actual_delete_catalogue($name)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('catalogue', $name);
+        expunge_resource_fs_moniker('catalogue', $name);
     }
 
     if (substr($name, 0, 1) == '_') {
@@ -567,7 +567,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('catalogue_category', strval($id), null, null, true);
+        generate_resource_fs_moniker('catalogue_category', strval($id), null, null, true);
     }
 
     if (function_exists('get_member')) {
@@ -786,7 +786,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('catalogue_category', strval($id));
+        generate_resource_fs_moniker('catalogue_category', strval($id));
     }
 
     require_code('sitemap_xml');
@@ -875,7 +875,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('catalogue_category', strval($id));
+        expunge_resource_fs_moniker('catalogue_category', strval($id));
     }
 
     require_code('sitemap_xml');
@@ -1038,7 +1038,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
 
         if ((addon_installed('commandr')) && (!running_script('install'))) {
             require_code('resource_fs');
-            generate_resourcefs_moniker('catalogue_entry', strval($id), null, null, true);
+            generate_resource_fs_moniker('catalogue_entry', strval($id), null, null, true);
         }
     }
 
@@ -1196,7 +1196,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
 
         if ((addon_installed('commandr')) && (!running_script('install'))) {
             require_code('resource_fs');
-            generate_resourcefs_moniker('catalogue_entry', strval($id));
+            generate_resource_fs_moniker('catalogue_entry', strval($id));
         }
 
         if ($just_validated) {
@@ -1307,7 +1307,7 @@ function actual_delete_catalogue_entry($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('catalogue_entry', strval($id));
+        expunge_resource_fs_moniker('catalogue_entry', strval($id));
     }
 
     require_code('sitemap_xml');

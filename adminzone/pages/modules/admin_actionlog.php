@@ -512,11 +512,11 @@ class Module_admin_actionlog
             $fields['TEXT_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_text']));
 
             if (isset($revision['r_original_resource_fs_path'])) {
-                $fields['RESOURCEFS_PATH_PRIOR_TO_REVISION'] = $revision['r_original_resource_fs_path'];
+                $fields['RESOURCE_FS_PATH_PRIOR_TO_REVISION'] = $revision['r_original_resource_fs_path'];
             }
 
             if (isset($revision['r_original_resource_fs_record']) && strlen($revision['r_original_resource_fs_record'] < 1024 * 50/*50kb reasonable limit*/)) {
-                $fields['RESOURCEFS_RECORD_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_resource_fs_record']));
+                $fields['RESOURCE_FS_RECORD_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('CONTENT' => $revision['r_original_resource_fs_record']));
             }
 
             if (has_privilege(get_member(), 'delete_revisions')) {

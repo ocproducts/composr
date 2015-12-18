@@ -425,10 +425,10 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     }
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
-        cms_profile_start_for('cns_make_post:generate_resourcefs_moniker');
+        cms_profile_start_for('cns_make_post:generate_resource_fs_moniker');
         require_code('resource_fs');
-        generate_resourcefs_moniker('post', strval($post_id), null, null, true);
-        cms_profile_end_for('cns_make_post:generate_resourcefs_moniker');
+        generate_resource_fs_moniker('post', strval($post_id), null, null, true);
+        cms_profile_end_for('cns_make_post:generate_resource_fs_moniker');
     }
 
     cms_profile_start_for('cns_make_post:dispatch_member_mention_notifications');

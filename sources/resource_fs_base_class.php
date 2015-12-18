@@ -94,7 +94,7 @@ abstract class Resource_fs_base
      */
     public function can_accept_filetype($filetype)
     {
-        if ($filetype != RESOURCEFS_DEFAULT_EXTENSION) {
+        if ($filetype != RESOURCE_FS_DEFAULT_EXTENSION) {
             return array();
         }
 
@@ -259,7 +259,7 @@ abstract class Resource_fs_base
      */
     protected function _file_magic_filter($filename, $path, $properties)
     {
-        $label = basename($filename, '.' . RESOURCEFS_DEFAULT_EXTENSION); // Default implementation is simply to assume the stub of the filename (or may be a raw label already, with no file type) is the resource label
+        $label = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION); // Default implementation is simply to assume the stub of the filename (or may be a raw label already, with no file type) is the resource label
         if (array_key_exists('label', $properties)) {
             $label = $properties['label']; // ...unless the label was explicitly given
         }
@@ -292,7 +292,7 @@ abstract class Resource_fs_base
         if (is_null($moniker)) {
             return null;
         }
-        return $moniker . '.' . RESOURCEFS_DEFAULT_EXTENSION;
+        return $moniker . '.' . RESOURCE_FS_DEFAULT_EXTENSION;
     }
 
     /**
@@ -322,7 +322,7 @@ abstract class Resource_fs_base
 
         $filename = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
 
-        $moniker = basename($filename, '.' . RESOURCEFS_DEFAULT_EXTENSION); // Remove file extension from filename
+        $moniker = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION); // Remove file extension from filename
         $resource_id = find_id_via_moniker($resource_type, $moniker);
         return array($resource_type, $resource_id);
     }
@@ -695,8 +695,8 @@ abstract class Resource_fs_base
             return;
         }
 
-        global $RESOURCEFS_LOGGER;
-        if ($RESOURCEFS_LOGGER === null) {
+        global $RESOURCE_FS_LOGGER;
+        if ($RESOURCE_FS_LOGGER === null) {
             return; // Too much unnecessarily work if the logger is not on
         }
 
@@ -710,7 +710,7 @@ abstract class Resource_fs_base
         $found_filename = $this->convert_id_to_filename($resource_type, $resource_id);
         $found_path = $this->search($resource_type, $resource_id, true);
         if ($found_path !== $path) {
-            resourcefs_logging('Path mismatch for what was saved (actual ' . $found_path . ' vs intended ' . $path . ')', 'warn');
+            resource_fs_logging('Path mismatch for what was saved (actual ' . $found_path . ' vs intended ' . $path . ')', 'warn');
             $ok = false;
         }
 
@@ -718,11 +718,11 @@ abstract class Resource_fs_base
         foreach (array_keys($properties) as $p) {
             if (array_key_exists($p, $actual_properties)) {
                 if (str_replace(do_lang('NA'), '', @strval($actual_properties[$p])) != str_replace(do_lang('NA'), '', @strval($properties[$p]))) {
-                    resourcefs_logging('Property (' . $p . ') value mismatch for ' . $found_filename . ' (actual ' . str_replace(do_lang('NA'), '', @strval($actual_properties[$p])) . ' vs intended ' . str_replace(do_lang('NA'), '', @strval($properties[$p])) . ').', 'warn');
+                    resource_fs_logging('Property (' . $p . ') value mismatch for ' . $found_filename . ' (actual ' . str_replace(do_lang('NA'), '', @strval($actual_properties[$p])) . ' vs intended ' . str_replace(do_lang('NA'), '', @strval($properties[$p])) . ').', 'warn');
                     $ok = false;
                 }
             } else {
-                resourcefs_logging('Property (' . $p . ') not applicable for ' . $found_filename . '.', 'warn');
+                resource_fs_logging('Property (' . $p . ') not applicable for ' . $found_filename . '.', 'warn');
                 $ok = false;
             }
         }
@@ -826,7 +826,7 @@ abstract class Resource_fs_base
         if (is_null($resource_id)) {
             return null;
         }
-        return find_commandrfs_filename_via_id($resource_type, $resource_id);
+        return find_commandr_fs_filename_via_id($resource_type, $resource_id);
     }
 
     /**
@@ -847,7 +847,7 @@ abstract class Resource_fs_base
         if (is_null($resource_id)) {
             if (!$must_already_exist) {
                 // Not found, create...
-                resourcefs_logging('Auto-creating an unmatched ' . $resource_type . ' label reference, "' . $_label . '", under "' . $subpath . '"', 'notice');
+                resource_fs_logging('Auto-creating an unmatched ' . $resource_type . ' label reference, "' . $_label . '", under "' . $subpath . '"', 'notice');
 
                 // Create subpath
                 if ($subpath != '') {
@@ -896,7 +896,7 @@ abstract class Resource_fs_base
                     return null;
                 }
                 if (!is_null($use_guid_for_new)) {
-                    generate_resourcefs_moniker($resource_type, $resource_id, $label, $use_guid_for_new);
+                    generate_resource_fs_moniker($resource_type, $resource_id, $label, $use_guid_for_new);
                 }
             }
         }
@@ -1040,11 +1040,11 @@ abstract class Resource_fs_base
     public function resource_delete($resource_type, $filename, $path)
     {
         if ($this->is_folder_type($resource_type)) {
-            resourcefs_logging('Deleted the ' . $path . '/' . $filename . ' folder as requested', 'notice');
+            resource_fs_logging('Deleted the ' . $path . '/' . $filename . ' folder as requested', 'notice');
 
             $status = $this->folder_delete($filename, $path);
         } else {
-            resourcefs_logging('Deleted the ' . $path . '/' . $filename . ' file as requested', 'notice');
+            resource_fs_logging('Deleted the ' . $path . '/' . $filename . ' file as requested', 'notice');
 
             $status = $this->file_delete($filename, $path);
         }
@@ -1591,7 +1591,7 @@ abstract class Resource_fs_base
             $filename = $this->convert_label_to_filename($label, $search_path, $search_label_as, true);
         }
 
-        if (($GLOBALS['RESOURCEFS_ADD_ONLY']) && ($filename !== null)) {
+        if (($GLOBALS['RESOURCE_FS_ADD_ONLY']) && ($filename !== null)) {
             $resource_id = $this->file_convert_filename_to_id($filename);
             if ($resource_id !== null) {
                 return $resource_id;
@@ -1601,7 +1601,7 @@ abstract class Resource_fs_base
         $existing = mixed();
         $existing = ($filename === null) ? false : $this->file_load($filename, $search_path); // NB: Even if it has a wildcard path, it should be acceptable to file_load, as the path is not used for search, only for identifying resource type
         if ($existing === false) {
-            resourcefs_logging('Added a new ' . $path . '/' . $label . ' file record (i.e. not an edit)', 'inform');
+            resource_fs_logging('Added a new ' . $path . '/' . $label . ' file record (i.e. not an edit)', 'inform');
 
             $resource_id = $this->file_add($label, $path, $properties, $search_label_as);
             $this->_log_if_save_matchup($search_label_as, $resource_id, $path, $properties);
@@ -1651,7 +1651,7 @@ abstract class Resource_fs_base
             $filename = $this->convert_label_to_filename($label, $search_path, $search_label_as, true);
         }
 
-        if (($GLOBALS['RESOURCEFS_ADD_ONLY']) && ($filename !== null)) {
+        if (($GLOBALS['RESOURCE_FS_ADD_ONLY']) && ($filename !== null)) {
             $resource_id = $this->folder_convert_filename_to_id($filename);
             if ($resource_id !== null) {
                 return $resource_id;
@@ -1661,7 +1661,7 @@ abstract class Resource_fs_base
         $existing = mixed();
         $existing = ($filename === null) ? false : $this->folder_load($filename, $search_path); // NB: Even if it has a wildcard path, it should be acceptable to file_load, as the path is not used for search, only for identifying resource type
         if ($existing === false) {
-            resourcefs_logging('Added a new ' . $path . '/' . $label . ' folder record (i.e. not an edit)', 'inform');
+            resource_fs_logging('Added a new ' . $path . '/' . $label . ' folder record (i.e. not an edit)', 'inform');
 
             $resource_id = $this->folder_add($label, $path, $properties, $search_label_as);
             $this->_log_if_save_matchup($search_label_as, $resource_id, $path, $properties);
@@ -1923,7 +1923,7 @@ abstract class Resource_fs_base
 
                 $listing[] = array(
                     $filename,
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     $filetime,
                 );
@@ -1978,7 +1978,7 @@ abstract class Resource_fs_base
 
                 $listing[] = array(
                     $filename,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     null/*don't calculate a filesize*/,
                     $filetime,
                 );
@@ -2007,8 +2007,8 @@ abstract class Resource_fs_base
             }
 
             $listing[] = array(
-                RESOURCEFS_SPECIAL_DIRECTORY_FILE,
-                COMMANDRFS_FILE,
+                RESOURCE_FS_SPECIAL_DIRECTORY_FILE,
+                COMMANDR_FS_FILE,
                 null/*don't calculate a filesize*/,
                 $filetime,
             );
@@ -2062,7 +2062,7 @@ abstract class Resource_fs_base
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+        if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             return $this->folder_load__flat(array_pop($meta_dir), implode('/', $meta_dir));
         }
         return $this->file_load__flat($file_name, implode('/', $meta_dir));
@@ -2080,7 +2080,7 @@ abstract class Resource_fs_base
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+        if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             return $this->folder_save__flat(array_pop($meta_dir), implode('/', $meta_dir), $contents) !== false;
         }
         return $this->file_save__flat($file_name, implode('/', $meta_dir), $contents) !== false;
@@ -2097,7 +2097,7 @@ abstract class Resource_fs_base
      */
     public function remove_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        if ($file_name == RESOURCEFS_SPECIAL_DIRECTORY_FILE) {
+        if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             return true; // Fake success, as needs to do so when deleting folder contents
         }
         return $this->file_delete($file_name, implode('/', $meta_dir));

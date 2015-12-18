@@ -52,7 +52,7 @@ function add_news_category($title, $img, $notes, $owner = null, $id = null)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('news_category', strval($id), null, null, true);
+        generate_resource_fs_moniker('news_category', strval($id), null, null, true);
     }
 
     decache('side_news_categories');
@@ -104,7 +104,7 @@ function edit_news_category($id, $title, $img, $notes, $owner)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('news_category', strval($id));
+        generate_resource_fs_moniker('news_category', strval($id));
     }
 
     if (is_null($title)) {
@@ -196,7 +196,7 @@ function delete_news_category($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('news_category', strval($id));
+        expunge_resource_fs_moniker('news_category', strval($id));
     }
 
     require_code('sitemap_xml');
@@ -353,7 +353,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('news', strval($id), null, null, true);
+        generate_resource_fs_moniker('news', strval($id), null, null, true);
     }
 
     if ((function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
@@ -551,7 +551,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('news', strval($id));
+        generate_resource_fs_moniker('news', strval($id));
     }
 
     $GLOBALS['SITE_DB']->query_update('news', $update_map, array('id' => $id), '', 1);
@@ -686,7 +686,7 @@ function delete_news($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('news', strval($id));
+        expunge_resource_fs_moniker('news', strval($id));
     }
 
     require_code('sitemap_xml');

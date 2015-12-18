@@ -192,7 +192,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('zone', $zone, null, null, true);
+        generate_resource_fs_moniker('zone', $zone, null, null, true);
     }
 
     save_zone_base_url($zone, $base_url);

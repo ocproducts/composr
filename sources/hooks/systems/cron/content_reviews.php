@@ -90,7 +90,7 @@ class Hook_cron_content_reviews
 
                 case 'delete':
                     require_code('resource_fs');
-                    $object_fs = get_resource_commandrfs_object($content_type);
+                    $object_fs = get_resource_commandr_fs_object($content_type);
                     if (!is_null($object_fs)) {
                         $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
                         if (!is_null($filename)) {

@@ -133,7 +133,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('topic', strval($topic_id), null, null, true);
+        generate_resource_fs_moniker('topic', strval($topic_id), null, null, true);
     }
 
     require_code('member_mentions');

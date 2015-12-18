@@ -36,9 +36,9 @@ class commandr_fs_test_set extends cms_test_case
         // Check top-level 'var' works
         $var_files = $ob->listing(array('var'));
         $cnt = 0;
-        $commandrfs_hooks = find_all_hooks('systems', 'commandr_fs');
-        foreach ($commandrfs_hooks as $commandrfs_hook => $dir) {
-            $_path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandrfs_hook . '.php';
+        $commandr_fs_hooks = find_all_hooks('systems', 'commandr_fs');
+        foreach ($commandr_fs_hooks as $commandr_fs_hook => $dir) {
+            $_path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
             $contents = file_get_contents($_path);
             if (strpos($contents, ' extends Resource_fs_base') !== false) {
                 $cnt++;
@@ -52,14 +52,14 @@ class commandr_fs_test_set extends cms_test_case
         $files = $ob->listing(array('var', 'banners', 'untitled'));
         $this->assertTrue(count($files[0]) == 0);
         $this->assertTrue(count($files[1]) != 0);
-        $path = array('var', 'banners', 'untitled', 'advertise_here.' . RESOURCEFS_DEFAULT_EXTENSION);
+        $path = array('var', 'banners', 'untitled', 'advertise_here.' . RESOURCE_FS_DEFAULT_EXTENSION);
         $data1 = $ob->read_file($path);
         $ob->write_file($path, $data1);
         $data2 = $ob->read_file($path);
         $this->assertTrue($data1 == $data2);
 
         // Check folder property editing works
-        $path = array('var', 'banners', 'untitled', '_folder.' . RESOURCEFS_DEFAULT_EXTENSION);
+        $path = array('var', 'banners', 'untitled', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
         $data1 = $ob->read_file($path);
         $ob->write_file($path, $data1);
         $data2 = $ob->read_file($path);
@@ -79,7 +79,7 @@ class commandr_fs_test_set extends cms_test_case
         $this->assertTrue(intval($in) == db_get_first_id());
 
         // Test importing to something - something that does not exist
-        $ob = get_resource_commandrfs_object('download');
+        $ob = get_resource_commandr_fs_object('download');
         $port = array(
             'guid' => 'a-b-c-d-e-f',
             'label' => 'My Test Download',
@@ -99,7 +99,7 @@ class commandr_fs_test_set extends cms_test_case
     public function testFullVarCoverage()
     {
         $cma_hooks = find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware');
-        $commandrfs_hooks = find_all_hooks('systems', 'commandr_fs');
+        $commandr_fs_hooks = find_all_hooks('systems', 'commandr_fs');
 
         $referenced_in_cma = array();
 
@@ -109,17 +109,17 @@ class commandr_fs_test_set extends cms_test_case
             if (!is_null($info)) {
                 $fs_hook = $info['commandr_filesystem_hook'];
                 if (!is_null($fs_hook)) {
-                    $this->assertTrue(array_key_exists($fs_hook, $commandrfs_hooks), 'Commandr-FS hook with broken Resource-FS reference: ' . $fs_hook);
+                    $this->assertTrue(array_key_exists($fs_hook, $commandr_fs_hooks), 'Commandr-FS hook with broken Resource-FS reference: ' . $fs_hook);
                     $referenced_in_cma[$fs_hook] = true;
                 }
             }
         }
 
-        foreach ($commandrfs_hooks as $commandrfs_hook => $dir) {
-            $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandrfs_hook . '.php';
+        foreach ($commandr_fs_hooks as $commandr_fs_hook => $dir) {
+            $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
             $contents = file_get_contents($path);
             if (strpos($contents, ' extends Resource_fs_base') !== false) {
-                $this->assertTrue(array_key_exists($commandrfs_hook, $referenced_in_cma), 'Resource-FS hook not referenced: ' . $commandrfs_hook);
+                $this->assertTrue(array_key_exists($commandr_fs_hook, $referenced_in_cma), 'Resource-FS hook not referenced: ' . $commandr_fs_hook);
             }
         }
     }
@@ -130,7 +130,7 @@ class commandr_fs_test_set extends cms_test_case
         $ob = new Commandr_fs();
         $files = $ob->listing(array('etc'));
         foreach ($files[1] as $file) {
-            if (strpos($file[0], '.' . RESOURCEFS_DEFAULT_EXTENSION) !== false) {
+            if (strpos($file[0], '.' . RESOURCE_FS_DEFAULT_EXTENSION) !== false) {
                 $path = array('etc', $file[0]);
                 $data1 = $ob->read_file($path);
                 $ob->write_file($path, $data1);

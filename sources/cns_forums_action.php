@@ -41,7 +41,7 @@ function cns_make_forum_grouping($title, $description, $expanded_by_default = 1)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('forum_grouping', strval($forum_grouping_id), null, null, true);
+        generate_resource_fs_moniker('forum_grouping', strval($forum_grouping_id), null, null, true);
     }
 
     return $forum_grouping_id;
@@ -148,7 +148,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('forum', strval($forum_id), null, null, true);
+        generate_resource_fs_moniker('forum', strval($forum_id), null, null, true);
     }
 
     if ((!is_null($parent_forum)) && (!running_script('install'))) {

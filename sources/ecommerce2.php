@@ -80,7 +80,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('usergroup_subscription', strval($id), null, null, true);
+        generate_resource_fs_moniker('usergroup_subscription', strval($id), null, null, true);
     }
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -197,7 +197,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('usergroup_subscription', strval($id));
+        generate_resource_fs_moniker('usergroup_subscription', strval($id));
     }
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -271,7 +271,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('usergroup_subscription', strval($id));
+        expunge_resource_fs_moniker('usergroup_subscription', strval($id));
     }
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;

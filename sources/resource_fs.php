@@ -49,18 +49,18 @@ function init__resource_fs()
     require_code('json');
     require_code('content');
 
-    define('RESOURCEFS_DEFAULT_EXTENSION', 'cms');
+    define('RESOURCE_FS_DEFAULT_EXTENSION', 'cms');
 
-    define('RESOURCEFS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCEFS_DEFAULT_EXTENSION);
+    define('RESOURCE_FS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-    global $RESOURCEFS_LOGGER, $RESOURCEFS_LOGGER_LEVEL;
-    $RESOURCEFS_LOGGER = null;
-    $RESOURCEFS_LOGGER_LEVEL = 'notice';
+    global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
+    $RESOURCE_FS_LOGGER = null;
+    $RESOURCE_FS_LOGGER_LEVEL = 'notice';
 
-    global $RESOURCEFS_ADD_ONLY;
-    $RESOURCEFS_ADD_ONLY = false;
+    global $RESOURCE_FS_ADD_ONLY;
+    $RESOURCE_FS_ADD_ONLY = false;
 
     define('TABLE_REPLACE_MODE_NONE', 0);
     define('TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA', 1);
@@ -73,14 +73,14 @@ function init__resource_fs()
  * @param  string $level The minimum logging level
  * @set inform notice warn
  */
-function resourcefs_logging__start($level = 'notice')
+function resource_fs_logging__start($level = 'notice')
 {
-    global $RESOURCEFS_LOGGER, $RESOURCEFS_LOGGER_LEVEL;
-    if ($RESOURCEFS_LOGGER !== null) {
-        fclose($RESOURCEFS_LOGGER);
+    global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
+    if ($RESOURCE_FS_LOGGER !== null) {
+        fclose($RESOURCE_FS_LOGGER);
     }
-    $RESOURCEFS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resourcefs.log', 'at');
-    $RESOURCEFS_LOGGER_LEVEL = $level;
+    $RESOURCE_FS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resource_fs.log', 'at');
+    $RESOURCE_FS_LOGGER_LEVEL = $level;
 }
 
 /**
@@ -90,22 +90,22 @@ function resourcefs_logging__start($level = 'notice')
  * @param  ID_TEXT $type The template to use
  * @set    inform notice warn
  */
-function resourcefs_logging($message, $type = 'warn')
+function resource_fs_logging($message, $type = 'warn')
 {
-    global $RESOURCEFS_LOGGER, $RESOURCEFS_LOGGER_LEVEL;
-    if (!is_null($RESOURCEFS_LOGGER)) {
-        if (($type == 'inform') && ($RESOURCEFS_LOGGER_LEVEL != 'inform')) {
+    global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
+    if (!is_null($RESOURCE_FS_LOGGER)) {
+        if (($type == 'inform') && ($RESOURCE_FS_LOGGER_LEVEL != 'inform')) {
             return;
         }
-        if (($type == 'notice') && ($RESOURCEFS_LOGGER_LEVEL != 'inform') && ($RESOURCEFS_LOGGER_LEVEL != 'notice')) {
+        if (($type == 'notice') && ($RESOURCE_FS_LOGGER_LEVEL != 'inform') && ($RESOURCE_FS_LOGGER_LEVEL != 'notice')) {
             return;
         }
-        if (($type == 'warn') && ($RESOURCEFS_LOGGER_LEVEL != 'inform') && ($RESOURCEFS_LOGGER_LEVEL != 'notice') && ($RESOURCEFS_LOGGER_LEVEL != 'warn')) {
+        if (($type == 'warn') && ($RESOURCE_FS_LOGGER_LEVEL != 'inform') && ($RESOURCE_FS_LOGGER_LEVEL != 'notice') && ($RESOURCE_FS_LOGGER_LEVEL != 'warn')) {
             return;
         }
 
         $message = date('d/m/Y H:i:s') . ': ' . $type . ': ' . $message . "\n";
-        fwrite($RESOURCEFS_LOGGER, $message);
+        fwrite($RESOURCE_FS_LOGGER, $message);
         if (running_script('execute_temp')) {
             print($message);
         }
@@ -115,15 +115,15 @@ function resourcefs_logging($message, $type = 'warn')
 /**
  * Disengage logging.
  */
-function resourcefs_logging__end()
+function resource_fs_logging__end()
 {
-    global $RESOURCEFS_LOGGER;
-    if ($RESOURCEFS_LOGGER !== null) {
-        fclose($RESOURCEFS_LOGGER);
+    global $RESOURCE_FS_LOGGER;
+    if ($RESOURCE_FS_LOGGER !== null) {
+        fclose($RESOURCE_FS_LOGGER);
     }
-    $RESOURCEFS_LOGGER = null;
-    sync_file(get_custom_file_base() . '/data_custom/resourcefs.log');
-    fix_permissions(get_custom_file_base() . '/data_custom/resourcefs.log');
+    $RESOURCE_FS_LOGGER = null;
+    sync_file(get_custom_file_base() . '/data_custom/resource_fs.log');
+    fix_permissions(get_custom_file_base() . '/data_custom/resource_fs.log');
 }
 
 /**
@@ -133,11 +133,11 @@ function resourcefs_logging__end()
  * @param  ID_TEXT $resource_id The resource ID
  * @return ?array A pair: the JSON data, the path (null: could not find)
  */
-function get_resourcefs_record($resource_type, $resource_id)
+function get_resource_fs_record($resource_type, $resource_id)
 {
-    $resource_fs_ob = get_resource_commandrfs_object($resource_type);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
 
-    $resource_fs_path = find_commandrfs_filename_via_id($resource_type, $resource_id, true);
+    $resource_fs_path = find_commandr_fs_filename_via_id($resource_type, $resource_id, true);
     if (is_null($resource_fs_path)) {
         return null;
     }
@@ -153,7 +153,7 @@ function get_resourcefs_record($resource_type, $resource_id)
  * @param  ID_TEXT $resource_type The resource type
  * @return ?object The object (null: could not get one)
  */
-function get_resource_commandrfs_object($resource_type)
+function get_resource_commandr_fs_object($resource_type)
 {
     $fs_hook = convert_composr_type_codes('content_type', $resource_type, 'commandr_filesystem_hook');
     if (is_null($fs_hook)) {
@@ -171,7 +171,7 @@ function get_resource_commandrfs_object($resource_type)
 /*
 ADDRESSING SPACE POPULATION AND LOOKUP CAN HAPPEN OUTSIDE RESOURCE-FS OBJECTS;
 THIS INCLUDES FILENAME STUFF, ALTHOUGH DELEGATED INTERNALLY TO THE RESOURCE-FS OBJECT WHICH HANDLES THE ACTUAL NAMING RULES;
-ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via the get_resource_commandrfs_object function)
+ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via the get_resource_commandr_fs_object function)
 */
 
 /**
@@ -184,7 +184,7 @@ ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via t
  * @param  ?ID_TEXT $new_guid GUID to forcibly assign (null: don't force)
  * @param  boolean $definitely_new If we know this is new, i.e. has no existing moniker
  */
-function generate_resourcefs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
+function generate_resource_fs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
 {
     if (!is_null($label)) {
         $label = substr($label, 0, 255);
@@ -202,7 +202,7 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
         fatal_exit('Cannot load content object for ' . $resource_type);
     }
     $resource_info = $resource_object->info();
-    $resourcefs_hook = $resource_info['commandr_filesystem_hook'];
+    $resource_fs_hook = $resource_info['commandr_filesystem_hook'];
 
     if (is_null($label)) {
         list($label) = content_get_details($resource_type, $resource_id, true);
@@ -244,7 +244,7 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
             }
         }
 
-        $where = array('resource_resourcefs_hook' => $resourcefs_hook, 'resource_moniker' => $moniker);
+        $where = array('resource_resource_fs_hook' => $resource_fs_hook, 'resource_moniker' => $moniker);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', $where);
         $ok = (is_null($test)) && ($moniker != '_folder'/*reserved*/);
         if (!$ok) { // Oh dear, will pass to next iteration, but trying a new moniker
@@ -262,7 +262,7 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
             'resource_moniker' => $moniker,
             'resource_label' => $label,
             'resource_guid' => $guid,
-            'resource_resourcefs_hook' => $resourcefs_hook,
+            'resource_resource_fs_hook' => $resource_fs_hook,
         ));
     }
 
@@ -277,7 +277,7 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
  * @param  ID_TEXT $resource_type The resource type
  * @param  ID_TEXT $resource_id The resource ID
  */
-function expunge_resourcefs_moniker($resource_type, $resource_id)
+function expunge_resource_fs_moniker($resource_type, $resource_id)
 {
     $GLOBALS['SITE_DB']->query_delete('alternative_ids', array('resource_type' => $resource_type, 'resource_id' => $resource_id), '', 1);
 }
@@ -291,7 +291,7 @@ function expunge_resourcefs_moniker($resource_type, $resource_id)
  */
 function find_guid_via_id($resource_type, $resource_id)
 {
-    list(, $guid) = generate_resourcefs_moniker($resource_type, $resource_id);
+    list(, $guid) = generate_resource_fs_moniker($resource_type, $resource_id);
     return $guid;
 }
 
@@ -303,16 +303,16 @@ function find_guid_via_id($resource_type, $resource_id)
  * @param  boolean $include_subpath Whether to include the subpath
  * @return ?ID_TEXT The filename (null: no match)
  */
-function find_commandrfs_filename_via_id($resource_type, $resource_id, $include_subpath = false)
+function find_commandr_fs_filename_via_id($resource_type, $resource_id, $include_subpath = false)
 {
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
-    if (is_null($resourcefs_ob)) {
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if (is_null($resource_fs_ob)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    $filename = $resourcefs_ob->convert_id_to_filename($resource_type, $resource_id);
+    $filename = $resource_fs_ob->convert_id_to_filename($resource_type, $resource_id);
     if (!is_null($filename)) {
         if ($include_subpath) {
-            $subpath = $resourcefs_ob->search($resource_type, $resource_id, true);
+            $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
             if (is_null($subpath)) {
                 return null;
             }
@@ -333,7 +333,7 @@ function find_commandrfs_filename_via_id($resource_type, $resource_id, $include_
  */
 function find_moniker_via_id($resource_type, $resource_id)
 {
-    list($moniker) = generate_resourcefs_moniker($resource_type, $resource_id);
+    list($moniker) = generate_resource_fs_moniker($resource_type, $resource_id);
     return $moniker;
 }
 
@@ -346,7 +346,7 @@ function find_moniker_via_id($resource_type, $resource_id)
  */
 function find_label_via_id($resource_type, $resource_id)
 {
-    list(, , $label) = generate_resourcefs_moniker($resource_type, $resource_id);
+    list(, , $label) = generate_resource_fs_moniker($resource_type, $resource_id);
     return $label;
 }
 
@@ -391,8 +391,8 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
         return $cache[$resource_type][$resource_label][$subpath];
     }
 
-    $commandrfs_ob = get_resource_commandrfs_object($resource_type);
-    if (is_null($commandrfs_ob)) {
+    $commandr_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if (is_null($commandr_fs_ob)) {
         fatal_exit('Cannot load resource-fs object for ' . $resource_type);
     }
 
@@ -402,16 +402,16 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
     ));
     $resource_ids = collapse_1d_complexity('resource_id', $ids);
     foreach ($resource_ids as $resource_id) {
-        if (_check_id_match($commandrfs_ob, $resource_type, $resource_id, $subpath)) {
+        if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
             $cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
     }
 
     // No valid match, do a direct DB search without the benefit of the alternative_ids table
-    $ids = $commandrfs_ob->find_resource_by_label($resource_type, $_resource_label);
+    $ids = $commandr_fs_ob->find_resource_by_label($resource_type, $_resource_label);
     foreach ($ids as $resource_id) {
-        if (_check_id_match($commandrfs_ob, $resource_type, $resource_id, $subpath)) {
+        if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
             $cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
@@ -424,7 +424,7 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
 /**
  * Find if a resource matches search parameters.
  *
- * @param  object $commandrfs_ob Commandr-fs/Resource-fs object
+ * @param  object $commandr_fs_ob Commandr-fs/Resource-fs object
  * @param  ID_TEXT $resource_type The resource type
  * @param  ID_TEXT $resource_id The resource ID
  * @param  ?string $subpath The subpath (null: don't care). It may end in "/*" if you want to look for a match under a certain directory
@@ -432,12 +432,12 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
  *
  * @ignore
  */
-function _check_id_match($commandrfs_ob, $resource_type, $resource_id, $subpath)
+function _check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)
 {
     if ($subpath === null) {
         return true;
     } else {
-        $this_subpath = $commandrfs_ob->search($resource_type, $resource_id, true);
+        $this_subpath = $commandr_fs_ob->search($resource_type, $resource_id, true);
         if (substr($subpath, -2) == '/*') {
             if (substr($this_subpath . '/', 0, strlen($subpath) - 1) == substr($subpath, 0, strlen($subpath) - 1)) {
                 return true;
@@ -498,10 +498,10 @@ function find_ids_via_guids($guids)
  * @param  ID_TEXT $filename The filename
  * @return ?ID_TEXT The ID (null: no match)
  */
-function find_id_via_commandrfs_filename($resource_type, $filename)
+function find_id_via_commandr_fs_filename($resource_type, $filename)
 {
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
-    $test = $resourcefs_ob->convert_filename_to_id($filename, $resource_type);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    $test = $resource_fs_ob->convert_filename_to_id($filename, $resource_type);
     if (is_null($test)) {
         return null;
     }
@@ -947,10 +947,10 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
         $resource_id = strval($resource_id);
     }
 
-    list($moniker, $guid, $label) = generate_resourcefs_moniker($resource_type, $resource_id);
+    list($moniker, $guid, $label) = generate_resource_fs_moniker($resource_type, $resource_id);
 
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
-    $subpath = $resourcefs_ob->search($resource_type, $resource_id, true);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
     if (is_null($subpath)) {
         $subpath = '';
     }
@@ -986,9 +986,9 @@ function remap_portable_as_resource_id($resource_type, $portable_data)
     }
 
     // Otherwise, use the label
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
     $subpath = array_key_exists('subpath', $portable_data) ? $portable_data['subpath'] : '';
-    $resource_id = $resourcefs_ob->convert_label_to_id($portable_data['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable_data) ? $portable_data['guid'] : null);
+    $resource_id = $resource_fs_ob->convert_label_to_id($portable_data['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable_data) ? $portable_data['guid'] : null);
 
     return $resource_id;
 }

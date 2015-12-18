@@ -304,7 +304,7 @@ class Hook_addon_registry_webdav
             'data_custom/modules/webdav/locks/index.html',
             'data_custom/modules/webdav/locks/locks.dat',
             'data_custom/modules/webdav/tmp/index.html',
-            'sources_custom/webdav_commandrfs.php',
+            'sources_custom/webdav_commandr_fs.php',
         );
     }
 }

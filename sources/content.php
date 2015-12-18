@@ -209,10 +209,10 @@ function convert_composr_type_codes_multiple($type_has, $type_id)
  *
  * @param  ID_TEXT $content_type Content type
  * @param  ID_TEXT $content_id Content ID
- * @param  boolean $resourcefs_style Whether to use the content API as resource-fs requires (may be slightly different)
+ * @param  boolean $resource_fs_style Whether to use the content API as resource-fs requires (may be slightly different)
  * @return array Tuple: title, submitter, content hook info, the content row, URL (for use within current browser session), URL (for use in emails / sharing)
  */
-function content_get_details($content_type, $content_id, $resourcefs_style = false)
+function content_get_details($content_type, $content_id, $resource_fs_style = false)
 {
     $cma_ob = get_content_object($content_type);
     if (!is_object($cma_ob)) {
@@ -224,7 +224,7 @@ function content_get_details($content_type, $content_id, $resourcefs_style = fal
 
     $content_row = content_get_row($content_id, $cma_info);
     if (is_null($content_row)) {
-        if (($content_type == 'comcode_page') && (strpos($content_id, ':') !== false) && (!$resourcefs_style)) {
+        if (($content_type == 'comcode_page') && (strpos($content_id, ':') !== false) && (!$resource_fs_style)) {
             list($zone, $page) = explode(':', $content_id, 2);
 
             $members = $GLOBALS['FORUM_DRIVER']->member_group_query($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), 1);
@@ -263,7 +263,7 @@ function content_get_details($content_type, $content_id, $resourcefs_style = fal
 
     $title_field = $cma_info['title_field'];
     $title_field_dereference = $cma_info['title_field_dereference'];
-    if (($resourcefs_style) && (array_key_exists('title_field__resource_fs', $cma_info))) {
+    if (($resource_fs_style) && (array_key_exists('title_field__resource_fs', $cma_info))) {
         $title_field = $cma_info['title_field__resource_fs'];
         $title_field_dereference = $cma_info['title_field_dereference__resource_fs'];
     }
@@ -271,11 +271,11 @@ function content_get_details($content_type, $content_id, $resourcefs_style = fal
         $content_title = do_lang($cma_info['content_type_label']);
     } else {
         if (strpos($title_field, 'CALL:') !== false) {
-            $content_title = call_user_func(trim(substr($title_field, 5)), array('id' => $content_id), $resourcefs_style);
+            $content_title = call_user_func(trim(substr($title_field, 5)), array('id' => $content_id), $resource_fs_style);
         } else {
             $_content_title = $content_row[$title_field];
             $content_title = $title_field_dereference ? get_translated_text($_content_title, $db) : $_content_title;
-            if (($content_title == '') && (!$resourcefs_style)) {
+            if (($content_title == '') && (!$resource_fs_style)) {
                 $content_title = do_lang($cma_info['content_type_label']) . ' (#' . (is_string($content_id) ? $content_id : strval($content_id)) . ')';
                 if ($content_type == 'image' || $content_type == 'video') { // A bit of a fudge, but worth doing
                     require_lang('galleries');

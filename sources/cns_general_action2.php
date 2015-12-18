@@ -40,7 +40,7 @@ function cns_edit_post_template($id, $title, $text, $forum_multi_code, $use_defa
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('post_template', strval($id));
+        generate_resource_fs_moniker('post_template', strval($id));
     }
 }
 
@@ -57,7 +57,7 @@ function cns_delete_post_template($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('post_template', strval($id));
+        expunge_resource_fs_moniker('post_template', strval($id));
     }
 }
 
@@ -138,7 +138,7 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('emoticon', $code);
+        generate_resource_fs_moniker('emoticon', $code);
     }
 
     log_it('EDIT_EMOTICON', $code, $theme_img_code);
@@ -163,7 +163,7 @@ function cns_delete_emoticon($code)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('emoticon', $code);
+        expunge_resource_fs_moniker('emoticon', $code);
     }
 
     log_it('DELETE_EMOTICON', $code);
@@ -202,7 +202,7 @@ function cns_edit_welcome_email($id, $name, $subject, $text, $send_time, $newsle
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('welcome_email', strval($id));
+        generate_resource_fs_moniker('welcome_email', strval($id));
     }
 
     log_it('EDIT_WELCOME_EMAIL', strval($id), get_translated_text($_subject));
@@ -227,7 +227,7 @@ function cns_delete_welcome_email($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('welcome_email', strval($id));
+        expunge_resource_fs_moniker('welcome_email', strval($id));
     }
 
     log_it('DELETE_WELCOME_EMAIL', strval($id), get_translated_text($_subject));

@@ -15,7 +15,7 @@
 
 /*CQC: No check*/
 
-namespace webdav_commandrfs {
+namespace webdav_commandr_fs {
     /**
      * Base node-class
      *
@@ -39,7 +39,7 @@ namespace webdav_commandrfs {
          *
          * @var object
          */
-        protected $commandrfs;
+        protected $commandr_fs;
 
         /**
          * Sets up the node, expects a full path name
@@ -51,7 +51,7 @@ namespace webdav_commandrfs {
             $this->path = $path;
 
             require_code('commandr_fs');
-            $this->commandrfs = new \commandr_fs();
+            $this->commandr_fs = new \commandr_fs();
         }
 
         /**
@@ -76,17 +76,17 @@ namespace webdav_commandrfs {
             list($parentPath,) = \Sabre\DAV\URLUtil::splitPath($this->path);
             list(, $newName) = \Sabre\DAV\URLUtil::splitPath($name);
 
-            $parsedOldPath = $this->commandrfs->_pwd_to_array($this->path);
+            $parsedOldPath = $this->commandr_fs->_pwd_to_array($this->path);
 
             $newPath = $parentPath . '/' . $newName;
-            $parsedNewPath = $this->commandrfs->_pwd_to_array($newPath);
+            $parsedNewPath = $this->commandr_fs->_pwd_to_array($newPath);
 
-            if ($this->commandrfs->_is_file($parsedOldPath)) {
+            if ($this->commandr_fs->_is_file($parsedOldPath)) {
                 // File
-                $test = $this->commandrfs->move_file($parsedOldPath, $parsedNewPath);
-            } elseif ($this->commandrfs->_is_dir($parsedOldPath)) {
+                $test = $this->commandr_fs->move_file($parsedOldPath, $parsedNewPath);
+            } elseif ($this->commandr_fs->_is_dir($parsedOldPath)) {
                 // Directory
-                $test = $this->commandrfs->move_directory($parsedOldPath, $parsedNewPath);
+                $test = $this->commandr_fs->move_directory($parsedOldPath, $parsedNewPath);
             } else {
                 throw new \Sabre\DAV\Exception\NotFound('Error renaming/moving ' . $name);
             }
@@ -95,7 +95,7 @@ namespace webdav_commandrfs {
                 throw new \Sabre\DAV\Exception\Forbidden('Error renaming/moving ' . $name);
             }
 
-            $GLOBALS['COMMANDRFS_LISTING_CACHE'] = array();
+            $GLOBALS['COMMANDR_FS_LISTING_CACHE'] = array();
 
             $this->path = $newPath;
         }
@@ -112,7 +112,7 @@ namespace webdav_commandrfs {
             }
 
             list($currentPath, $currentName) = \Sabre\DAV\URLUtil::splitPath($this->path);
-            $parsedCurrentPath = $this->commandrfs->_pwd_to_array($currentPath);
+            $parsedCurrentPath = $this->commandr_fs->_pwd_to_array($currentPath);
 
             $listing = $this->_listingWrap($parsedCurrentPath);
             foreach ($listing[0] + $listing[1] as $l) {
@@ -136,11 +136,11 @@ namespace webdav_commandrfs {
         protected function _listingWrap($parsedPath)
         {
             $sz = serialize($parsedPath);
-            if (isset($GLOBALS['COMMANDRFS_LISTING_CACHE'][$sz])) {
-                return $GLOBALS['COMMANDRFS_LISTING_CACHE'][$sz];
+            if (isset($GLOBALS['COMMANDR_FS_LISTING_CACHE'][$sz])) {
+                return $GLOBALS['COMMANDR_FS_LISTING_CACHE'][$sz];
             }
-            $GLOBALS['COMMANDRFS_LISTING_CACHE'][$sz] = $this->commandrfs->listing($parsedPath);
-            return $GLOBALS['COMMANDRFS_LISTING_CACHE'][$sz];
+            $GLOBALS['COMMANDR_FS_LISTING_CACHE'][$sz] = $this->commandr_fs->listing($parsedPath);
+            return $GLOBALS['COMMANDR_FS_LISTING_CACHE'][$sz];
         }
     }
 
@@ -164,20 +164,20 @@ namespace webdav_commandrfs {
         {
             $newPath = $this->path . '/' . $name;
 
-            $parsedNewPath = $this->commandrfs->_pwd_to_array($newPath);
+            $parsedNewPath = $this->commandr_fs->_pwd_to_array($newPath);
 
             if (is_resource($data)) {
                 ob_start();
                 fpassthru($data);
                 $data = ob_get_clean();
             }
-            $test = $this->commandrfs->write_file($parsedNewPath, is_null($data) ? '' : $data);
+            $test = $this->commandr_fs->write_file($parsedNewPath, is_null($data) ? '' : $data);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\Forbidden('Could not create ' . $name);
             }
 
-            $GLOBALS['COMMANDRFS_LISTING_CACHE'] = array();
+            $GLOBALS['COMMANDR_FS_LISTING_CACHE'] = array();
         }
 
         /**
@@ -190,15 +190,15 @@ namespace webdav_commandrfs {
         {
             $newPath = $this->path . '/' . $name;
 
-            $parsedNewPath = $this->commandrfs->_pwd_to_array($newPath);
+            $parsedNewPath = $this->commandr_fs->_pwd_to_array($newPath);
 
-            $test = $this->commandrfs->make_directory($parsedNewPath);
+            $test = $this->commandr_fs->make_directory($parsedNewPath);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\Forbidden('Could not create ' . $name);
             }
 
-            $GLOBALS['COMMANDRFS_LISTING_CACHE'] = array();
+            $GLOBALS['COMMANDR_FS_LISTING_CACHE'] = array();
         }
 
         /**
@@ -214,15 +214,15 @@ namespace webdav_commandrfs {
         {
             $path = $this->path . '/' . $name;
 
-            $parsedPath = $this->commandrfs->_pwd_to_array($path);
+            $parsedPath = $this->commandr_fs->_pwd_to_array($path);
 
             if ($name == '') {
                 return new Directory('');
             }
 
-            if ($this->commandrfs->_is_dir($parsedPath)) {
+            if ($this->commandr_fs->_is_dir($parsedPath)) {
                 return new Directory($path);
-            } elseif ($this->commandrfs->_is_file($parsedPath)) {
+            } elseif ($this->commandr_fs->_is_file($parsedPath)) {
                 return new File($path);
             }
 
@@ -236,7 +236,7 @@ namespace webdav_commandrfs {
          */
         public function getChildren()
         {
-            $listing = $this->_listingWrap($this->commandrfs->_pwd_to_array($this->path));
+            $listing = $this->_listingWrap($this->commandr_fs->_pwd_to_array($this->path));
 
             $nodes = array();
             foreach ($listing[0] as $l) {
@@ -265,7 +265,7 @@ namespace webdav_commandrfs {
          */
         public function childExists($name)
         {
-            $listing = $this->_listingWrap($this->commandrfs->_pwd_to_array($this->path));
+            $listing = $this->_listingWrap($this->commandr_fs->_pwd_to_array($this->path));
 
             $nodes = array();
             foreach ($listing[0] + $listing[1] as $l) {
@@ -286,15 +286,15 @@ namespace webdav_commandrfs {
          */
         public function delete()
         {
-            $parsedPath = $this->commandrfs->_pwd_to_array($this->path);
+            $parsedPath = $this->commandr_fs->_pwd_to_array($this->path);
 
-            $test = $this->commandrfs->remove_directory($parsedPath);
+            $test = $this->commandr_fs->remove_directory($parsedPath);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\Forbidden('Could not delete ' . $this->path);
             }
 
-            $GLOBALS['COMMANDRFS_LISTING_CACHE'] = array();
+            $GLOBALS['COMMANDR_FS_LISTING_CACHE'] = array();
         }
     }
 
@@ -315,7 +315,7 @@ namespace webdav_commandrfs {
          */
         public function put($data)
         {
-            $parsedPath = $this->commandrfs->_pwd_to_array($this->path);
+            $parsedPath = $this->commandr_fs->_pwd_to_array($this->path);
 
             if (is_resource($data)) {
                 ob_start();
@@ -323,7 +323,7 @@ namespace webdav_commandrfs {
                 $data = ob_get_clean();
             }
 
-            $test = $this->commandrfs->write_file($parsedPath, is_null($data) ? '' : $data);
+            $test = $this->commandr_fs->write_file($parsedPath, is_null($data) ? '' : $data);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\Forbidden('Could not save ' . $this->path);
@@ -337,9 +337,9 @@ namespace webdav_commandrfs {
          */
         public function get()
         {
-            $parsedPath = $this->commandrfs->_pwd_to_array($this->path);
+            $parsedPath = $this->commandr_fs->_pwd_to_array($this->path);
 
-            $test = $this->commandrfs->read_file($parsedPath);
+            $test = $this->commandr_fs->read_file($parsedPath);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\NotFound('Could not find ' . $this->path);
@@ -355,15 +355,15 @@ namespace webdav_commandrfs {
          */
         public function delete()
         {
-            $parsedPath = $this->commandrfs->_pwd_to_array($this->path);
+            $parsedPath = $this->commandr_fs->_pwd_to_array($this->path);
 
-            $test = $this->commandrfs->remove_file($parsedPath);
+            $test = $this->commandr_fs->remove_file($parsedPath);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\Forbidden('Could not delete ' . $this->path);
             }
 
-            $GLOBALS['COMMANDRFS_LISTING_CACHE'] = array();
+            $GLOBALS['COMMANDR_FS_LISTING_CACHE'] = array();
         }
 
         /**
@@ -374,7 +374,7 @@ namespace webdav_commandrfs {
         public function getSize()
         {
             list($currentPath, $currentName) = \Sabre\DAV\URLUtil::splitPath($this->path);
-            $parsedCurrentPath = $this->commandrfs->_pwd_to_array($currentPath);
+            $parsedCurrentPath = $this->commandr_fs->_pwd_to_array($currentPath);
 
             $listing = $this->_listingWrap($parsedCurrentPath);
             foreach ($listing[1] as $l) {

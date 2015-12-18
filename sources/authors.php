@@ -159,7 +159,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
 
         if ((addon_installed('commandr')) && (!running_script('install'))) {
             require_code('resource_fs');
-            generate_resourcefs_moniker('author', $author, null, null, true);
+            generate_resource_fs_moniker('author', $author, null, null, true);
         }
 
         require_code('sitemap_xml');
@@ -202,7 +202,7 @@ function delete_author($author)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('author', $author);
+        expunge_resource_fs_moniker('author', $author);
     }
 
     require_code('sitemap_xml');

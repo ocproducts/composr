@@ -191,7 +191,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('wiki_post', strval($post_id), null, null, true);
+        generate_resource_fs_moniker('wiki_post', strval($post_id), null, null, true);
     }
 
     @ignore_user_abort(false);
@@ -288,7 +288,7 @@ function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('wiki_post', strval($post_id));
+        generate_resource_fs_moniker('wiki_post', strval($post_id));
     }
 }
 
@@ -345,7 +345,7 @@ function wiki_delete_post($post_id, $member = null)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('wiki_post', strval($post_id));
+        expunge_resource_fs_moniker('wiki_post', strval($post_id));
     }
 }
 
@@ -430,7 +430,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('wiki_page', strval($page_id), null, null, true);
+        generate_resource_fs_moniker('wiki_page', strval($page_id), null, null, true);
     }
 
     require_code('sitemap_xml');
@@ -520,7 +520,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('wiki_page', strval($page_id));
+        generate_resource_fs_moniker('wiki_page', strval($page_id));
     }
 
     require_code('sitemap_xml');
@@ -588,7 +588,7 @@ function wiki_delete_page($page_id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('wiki_page', strval($page_id));
+        expunge_resource_fs_moniker('wiki_page', strval($page_id));
     }
 
     require_code('sitemap_xml');

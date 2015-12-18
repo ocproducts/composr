@@ -71,7 +71,7 @@ function add_ticket_type($ticket_type_name, $guest_emails_mandatory = 0, $search
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('ticket_type', strval($ticket_type_id), null, null, true);
+        generate_resource_fs_moniker('ticket_type', strval($ticket_type_id), null, null, true);
     }
 
     return $ticket_type_id;
@@ -100,7 +100,7 @@ function edit_ticket_type($ticket_type_id, $ticket_type_name, $guest_emails_mand
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('ticket_type', strval($ticket_type_id), $ticket_type_name);
+        generate_resource_fs_moniker('ticket_type', strval($ticket_type_id), $ticket_type_name);
     }
 }
 
@@ -125,7 +125,7 @@ function delete_ticket_type($ticket_type_id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('ticket_type', strval($ticket_type_id));
+        expunge_resource_fs_moniker('ticket_type', strval($ticket_type_id));
     }
 }
 

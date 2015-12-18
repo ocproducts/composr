@@ -185,7 +185,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('event', strval($id), null, null, true);
+        generate_resource_fs_moniker('event', strval($id), null, null, true);
     }
 
     require_code('member_mentions');
@@ -388,7 +388,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('event', strval($id));
+        generate_resource_fs_moniker('event', strval($id));
     }
 
     require_code('sitemap_xml');
@@ -468,7 +468,7 @@ function delete_calendar_event($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('event', strval($id));
+        expunge_resource_fs_moniker('event', strval($id));
     }
 
     require_code('sitemap_xml');
@@ -499,7 +499,7 @@ function add_event_type($title, $logo, $external_feed = '')
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('calendar_type', strval($id), null, null, true);
+        generate_resource_fs_moniker('calendar_type', strval($id), null, null, true);
     }
 
     require_code('member_mentions');
@@ -542,7 +542,7 @@ function edit_event_type($id, $title, $logo, $external_feed)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('calendar_type', strval($id));
+        generate_resource_fs_moniker('calendar_type', strval($id));
     }
 
     log_it('EDIT_EVENT_TYPE', strval($id), $title);
@@ -589,7 +589,7 @@ function delete_event_type($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('calendar_type', strval($id));
+        expunge_resource_fs_moniker('calendar_type', strval($id));
     }
 
     require_code('sitemap_xml');

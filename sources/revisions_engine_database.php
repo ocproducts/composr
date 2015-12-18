@@ -88,7 +88,7 @@ class RevisionEngineDatabase
 
         require_code('resource_fs');
 
-        $test = get_resourcefs_record($resource_type, $resource_id);
+        $test = get_resource_fs_record($resource_type, $resource_id);
         if (is_null($test)) {
             return; // It's gone already, somehow
         }

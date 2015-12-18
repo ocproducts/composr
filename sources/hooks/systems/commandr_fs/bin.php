@@ -45,7 +45,7 @@ class Hook_commandr_fs_bin
                 if ($file[0] != '.') {
                     $listing[] = array(
                         $file,
-                        is_dir($path . '/' . $file) ? COMMANDRFS_DIR : COMMANDRFS_FILE,
+                        is_dir($path . '/' . $file) ? COMMANDR_FS_DIR : COMMANDR_FS_FILE,
                         is_dir($path . '/' . $file) ? null : filesize($path . '/' . $file),
                         filemtime($path . '/' . $file),
                     );

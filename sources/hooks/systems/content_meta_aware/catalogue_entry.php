@@ -125,16 +125,16 @@ class Hook_content_meta_aware_catalogue_entry
  * Find a catalogue entry title.
  *
  * @param  array $url_parts The URL parts to search from.
- * @param  boolean $resourcefs_style Whether to get the field title using resource-fs style.
+ * @param  boolean $resource_fs_style Whether to get the field title using resource-fs style.
  * @return string The field title.
  */
-function generate_catalogue_entry_title($url_parts, $resourcefs_style = false)
+function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
 {
     $catalogue_name = mixed();
     $fields = mixed();
 
     $unique_key_num = 0;
-    if ($resourcefs_style) {
+    if ($resource_fs_style) {
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         foreach ($fields as $i => $f) {

@@ -123,7 +123,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         if ((addon_installed('commandr')) && (!running_script('install'))) {
             require_code('resource_fs');
-            generate_resourcefs_moniker('menu', $menu, null, null, true);
+            generate_resource_fs_moniker('menu', $menu, null, null, true);
         }
 
         log_it('ADD_MENU', $menu);

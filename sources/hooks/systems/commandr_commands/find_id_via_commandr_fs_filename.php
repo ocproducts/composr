@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_commandr_command_find_id_via_commandrfs_filename
+class Hook_commandr_command_find_id_via_commandr_fs_filename
 {
     /**
      * Run function for Commandr hooks.
@@ -34,18 +34,18 @@ class Hook_commandr_command_find_id_via_commandrfs_filename
     public function run($options, $parameters, &$commandr_fs)
     {
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
-            return array('', do_command_help('find_id_via_commandrfs_filename', array('h'), array(true, true)), '', '');
+            return array('', do_command_help('find_id_via_commandr_fs_filename', array('h'), array(true, true)), '', '');
         } else {
             if (!array_key_exists(0, $parameters)) {
-                return array('', '', '', do_lang('MISSING_PARAM', '1', 'find_id_via_commandrfs_filename'));
+                return array('', '', '', do_lang('MISSING_PARAM', '1', 'find_id_via_commandr_fs_filename'));
             }
             if (!array_key_exists(1, $parameters)) {
-                return array('', '', '', do_lang('MISSING_PARAM', '2', 'find_id_via_commandrfs_filename'));
+                return array('', '', '', do_lang('MISSING_PARAM', '2', 'find_id_via_commandr_fs_filename'));
             }
 
             require_code('resource_fs');
 
-            $result = find_id_via_commandrfs_filename($parameters[0], $parameters[1]);
+            $result = find_id_via_commandr_fs_filename($parameters[0], $parameters[1]);
             if ($result !== null) {
                 return array('', '', $result, '');
             } else {

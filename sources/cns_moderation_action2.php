@@ -51,7 +51,7 @@ function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state,
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('multi_moderation', strval($id));
+        generate_resource_fs_moniker('multi_moderation', strval($id));
     }
 }
 
@@ -71,7 +71,7 @@ function cns_delete_multi_moderation($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('multi_moderation', strval($id));
+        expunge_resource_fs_moniker('multi_moderation', strval($id));
     }
 }
 

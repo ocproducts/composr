@@ -369,7 +369,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner', $name, null, null, true);
+        generate_resource_fs_moniker('banner', $name, null, null, true);
     }
 
     require_code('member_mentions');
@@ -496,7 +496,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner', $name);
+        generate_resource_fs_moniker('banner', $name);
     }
 
     return $name;
@@ -537,7 +537,7 @@ function delete_banner($name)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('banner', $name);
+        expunge_resource_fs_moniker('banner', $name);
     }
 }
 
@@ -577,7 +577,7 @@ function add_banner_type($id, $is_textual, $image_width, $image_height, $max_fil
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner_type', $id);
+        generate_resource_fs_moniker('banner_type', $id);
     }
 
     require_code('member_mentions');
@@ -630,7 +630,7 @@ function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('banner_type', $id);
+        generate_resource_fs_moniker('banner_type', $id);
     }
 
     return $id;
@@ -655,6 +655,6 @@ function delete_banner_type($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('banner_type', $id);
+        expunge_resource_fs_moniker('banner_type', $id);
     }
 }

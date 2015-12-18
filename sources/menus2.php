@@ -249,7 +249,7 @@ function add_menu_item($menu, $order, $parent, $caption, $url, $check_permission
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('menu_item', strval($id), null, null, true);
+        generate_resource_fs_moniker('menu_item', strval($id), null, null, true);
     }
 
     return $id;
@@ -296,7 +296,7 @@ function edit_menu_item($id, $menu, $order, $parent, $caption, $url, $check_perm
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('menu_item', strval($id));
+        generate_resource_fs_moniker('menu_item', strval($id));
     }
 }
 
@@ -318,7 +318,7 @@ function delete_menu_item($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('menu_item', strval($id));
+        expunge_resource_fs_moniker('menu_item', strval($id));
     }
 }
 
@@ -358,7 +358,7 @@ function delete_menu($menu_id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('menu', $menu_id);
+        expunge_resource_fs_moniker('menu', $menu_id);
     }
 }
 

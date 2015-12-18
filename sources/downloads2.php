@@ -340,7 +340,7 @@ function add_download_category($category, $parent_id, $description, $notes, $rep
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('download_category', strval($id), null, null, true);
+        generate_resource_fs_moniker('download_category', strval($id), null, null, true);
     }
 
     require_code('seo2');
@@ -424,7 +424,7 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('download_category', strval($category_id));
+        generate_resource_fs_moniker('download_category', strval($category_id));
     }
 
     require_code('sitemap_xml');
@@ -474,7 +474,7 @@ function delete_download_category($category_id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('download_category', strval($category_id));
+        expunge_resource_fs_moniker('download_category', strval($category_id));
     }
 
     require_code('sitemap_xml');
@@ -976,7 +976,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('download', strval($id), null, null, true);
+        generate_resource_fs_moniker('download', strval($id), null, null, true);
     }
 
     require_code('member_mentions');
@@ -1156,7 +1156,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('download', strval($id));
+        generate_resource_fs_moniker('download', strval($id));
     }
 
     if (addon_installed('galleries')) {
@@ -1237,7 +1237,7 @@ function delete_download($id, $leave = false)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('download', strval($id));
+        expunge_resource_fs_moniker('download', strval($id));
     }
 
     require_code('sitemap_xml');
@@ -1262,7 +1262,7 @@ function add_download_licence($title, $text)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('download_licence', strval($id), null, null, true);
+        generate_resource_fs_moniker('download_licence', strval($id), null, null, true);
     }
 
     return $id;
@@ -1283,7 +1283,7 @@ function edit_download_licence($id, $title, $text)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('download_licence', strval($id));
+        generate_resource_fs_moniker('download_licence', strval($id));
     }
 }
 
@@ -1308,7 +1308,7 @@ function delete_download_licence($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('download_licence', strval($id));
+        expunge_resource_fs_moniker('download_licence', strval($id));
     }
 }
 

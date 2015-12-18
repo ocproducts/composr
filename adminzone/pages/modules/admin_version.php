@@ -771,13 +771,13 @@ class Module_admin_version
                                                                         'resource_moniker' => 'ID_TEXT',
                                                                         'resource_label' => 'SHORT_TEXT',
                                                                         'resource_guid' => 'ID_TEXT',
-                                                                        'resource_resourcefs_hook' => 'ID_TEXT',
+                                                                        'resource_resource_fs_hook' => 'ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_guid', array('resource_guid'));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label', array('resource_label'/*, 'resource_type'key would be too long*/));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker', array('resource_moniker', 'resource_type'));
-            //$GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label_uniqueness', array('resource_label', 'resource_resourcefs_hook'));key would be too long
-            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker_uniq', array('resource_moniker', 'resource_resourcefs_hook'));
+            //$GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label_uniqueness', array('resource_label', 'resource_resource_fs_hook'));key would be too long
+            $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_moniker_uniq', array('resource_moniker', 'resource_resource_fs_hook'));
 
             add_privilege('SUBMISSION', 'edit_meta_fields');
             add_privilege('SUBMISSION', 'perform_webstandards_check_by_default');

@@ -391,7 +391,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('member', strval($member_id), null, null, true);
+        generate_resource_fs_moniker('member', strval($member_id), null, null, true);
     }
 
     $password_change_days = get_option('password_change_days');
@@ -627,7 +627,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('cpf', strval($id), null, null, true);
+        generate_resource_fs_moniker('cpf', strval($id), null, null, true);
     }
 
     if (function_exists('decache')) {

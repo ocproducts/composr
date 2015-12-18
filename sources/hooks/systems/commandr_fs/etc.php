@@ -57,7 +57,7 @@ class Hook_commandr_fs_etc
 
             $listing[] = array(
                 $option,
-                COMMANDRFS_FILE,
+                COMMANDR_FS_FILE,
                 strlen($value),
                 $modification_time,
             );
@@ -71,8 +71,8 @@ class Hook_commandr_fs_etc
             $modification_time = $ob->get_edit_date();
 
             $listing[] = array(
-                '_' . $hook . 's' . '.' . RESOURCEFS_DEFAULT_EXTENSION,
-                COMMANDRFS_FILE,
+                '_' . $hook . 's' . '.' . RESOURCE_FS_DEFAULT_EXTENSION,
+                COMMANDR_FS_FILE,
                 null/*don't calculate a filesize*/,
                 $modification_time,
             );
@@ -144,7 +144,7 @@ class Hook_commandr_fs_etc
 
         require_code('resource_fs');
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
-        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCEFS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
+        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCE_FS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {
             require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($extended_config_filename));
             $ob = object_factory('Hook_commandr_fs_extended_config__' . $extended_config_filename);
@@ -178,7 +178,7 @@ class Hook_commandr_fs_etc
 
         require_code('resource_fs');
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
-        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCEFS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
+        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCE_FS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {
             require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($extended_config_filename));
             $ob = object_factory('Hook_commandr_fs_extended_config__' . $extended_config_filename);

@@ -98,7 +98,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('zone', $zone);
+        generate_resource_fs_moniker('zone', $zone);
     }
 
     return $zone;
@@ -233,7 +233,7 @@ function actual_delete_zone_lite($zone)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('zone', $zone);
+        expunge_resource_fs_moniker('zone', $zone);
     }
 }
 
@@ -587,7 +587,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('comcode_page', $zone . ':' . $new_file);
+        generate_resource_fs_moniker('comcode_page', $zone . ':' . $new_file);
     }
 
     $zone_default_page = get_zone_default_page($zone);

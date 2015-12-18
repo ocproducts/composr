@@ -318,7 +318,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
             $id = cns_make_topic($forum_id, $description, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, false, $num_views, null, $description_link);
             $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_cache_first_title' => $label), array('id' => $id), '', 1);
-            generate_resourcefs_moniker('topic', strval($id));
+            generate_resource_fs_moniker('topic', strval($id));
             if ((array_key_exists('poll', $properties)) && (!empty($properties['poll']))) {
                 require_code('cns_polls_action');
 

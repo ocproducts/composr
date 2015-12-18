@@ -54,7 +54,7 @@ class Hook_commandr_fs_database
 
                 $listing[] = array(
                     $table_name,
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     $modification_time,
                 );
@@ -92,7 +92,7 @@ class Hook_commandr_fs_database
                 }
                 $listing[] = array(
                     $x,
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     null/*don't specify a modification time*/,
                 );
@@ -111,7 +111,7 @@ class Hook_commandr_fs_database
             foreach ($row as $field_name => $field_value) {
                 $listing[] = array(
                     $field_name,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     null/*don't calculate a filesize*/,
                     null/*don't specify a modification time*/,
                 );

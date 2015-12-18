@@ -70,7 +70,7 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('aggregate_type_instance', strval($id), null, null, true);
+        generate_resource_fs_moniker('aggregate_type_instance', strval($id), null, null, true);
     }
 
     return $id;
@@ -127,7 +127,7 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('aggregate_type_instance', strval($id));
+        generate_resource_fs_moniker('aggregate_type_instance', strval($id));
     }
 }
 
@@ -167,7 +167,7 @@ function delete_aggregate_type_instance($id, $delete_matches = false)
                 $resource['label'] = $tempcode->evaluate();
 
                 // Can we bind to an existing resource? (using subpath and label)
-                $object_fs = get_resource_commandrfs_object($resource['type']);
+                $object_fs = get_resource_commandr_fs_object($resource['type']);
                 $filename = $object_fs->convert_label_to_filename($resource['label'], $resource['subpath'], $resource['type'], true);
 
                 // If bound, delete resource
@@ -184,7 +184,7 @@ function delete_aggregate_type_instance($id, $delete_matches = false)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('aggregate_type_instance', strval($id));
+        expunge_resource_fs_moniker('aggregate_type_instance', strval($id));
     }
 }
 
@@ -515,7 +515,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
 
         // Can we bind to an existing resource? (using subpath and label)
         $is_new = false;
-        $object_fs = get_resource_commandrfs_object($resource['type']);
+        $object_fs = get_resource_commandr_fs_object($resource['type']);
         if (is_null($object_fs)) {
             warn_exit(do_lang_tempcode('MISSING_CONTENT_TYPE', escape_html($resource['type'])));
         }

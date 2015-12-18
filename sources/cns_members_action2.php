@@ -1157,7 +1157,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('member', strval($member_id));
+        generate_resource_fs_moniker('member', strval($member_id));
     }
 
     decache('main_members');
@@ -1236,7 +1236,7 @@ function cns_delete_member($member_id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('member', strval($member_id));
+        expunge_resource_fs_moniker('member', strval($member_id));
     }
 
     decache('main_members');
@@ -1379,7 +1379,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('cpf', strval($id));
+        generate_resource_fs_moniker('cpf', strval($id));
     }
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
@@ -1425,7 +1425,7 @@ function cns_delete_custom_field($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('cpf', strval($id));
+        expunge_resource_fs_moniker('cpf', strval($id));
     }
 
     if (function_exists('persistent_cache_delete')) {

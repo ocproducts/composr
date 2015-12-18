@@ -79,7 +79,7 @@ function add_custom_comcode_tag($tag, $title, $description, $replace, $example, 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('custom_comcode_tag', $tag, null, null, true);
+        generate_resource_fs_moniker('custom_comcode_tag', $tag, null, null, true);
     }
 
     return $tag;
@@ -149,7 +149,7 @@ function edit_custom_comcode_tag($old_tag, $tag, $title, $description, $replace,
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('custom_comcode_tag', $tag);
+        generate_resource_fs_moniker('custom_comcode_tag', $tag);
     }
 
     return $tag;
@@ -179,6 +179,6 @@ function delete_custom_comcode_tag($tag)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('custom_comcode_tag', $tag);
+        expunge_resource_fs_moniker('custom_comcode_tag', $tag);
     }
 }

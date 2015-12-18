@@ -55,7 +55,7 @@ class Hook_commandr_fs_members
 
                 $listing[] = array(
                     $user['m_username'],
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     $modification_time,
                 );
@@ -99,14 +99,14 @@ class Hook_commandr_fs_members
             foreach ($props as $prop) {
                 $listing[] = array(
                     $prop,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     strlen($member_data['m_' . $prop]),
                     $member_data['m_join_time'],
                 );
             }
             $listing[] = array(
                 'groups',
-                COMMANDRFS_DIR,
+                COMMANDR_FS_DIR,
                 null/*don't calculate a filesize*/,
                 $member_data['m_join_time'],
             );
@@ -124,7 +124,7 @@ class Hook_commandr_fs_members
                 $cpf_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('f_custom_fields', 'cf_name', array('id' => $i)), $GLOBALS['FORUM_DB']);
                 $listing[] = array(
                     $cpf_name,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     strlen($cpf_value),
                     $member_data['m_join_time'],
                 );
@@ -141,7 +141,7 @@ class Hook_commandr_fs_members
                 if (array_key_exists($group, $group_names)) {
                     $listing[] = array(
                         $group_names[$group],
-                        COMMANDRFS_FILE,
+                        COMMANDR_FS_FILE,
                         0,
                         null,
                     );
