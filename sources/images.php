@@ -504,6 +504,9 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
                     if (!@file_exists($imagemagick)) {
                         $imagemagick = '/opt/local/bin/convert';
                     }
+                    if (!@file_exists($imagemagick)) {
+                        $imagemagick = '/opt/cloudlinux/bin/convert';
+                    }
                     if (@file_exists($imagemagick)) {
                         $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
                         $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
