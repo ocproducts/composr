@@ -13,7 +13,6 @@ id,i_menu,i_order,i_parent,i_url,i_check_permissions,i_expanded,i_new_window,i_p
 524,composr_website_header,3,508,site:vision,0,0,0,,,Our vision,,
 525,composr_website_header,4,508,site:antifeatures,0,0,0,,,What we're not,,
 526,composr_website_header,5,508,site:demo,0,0,0,,,Demo,,
-543,composr_website_header,14,511,site:catalogues:index:bugs,0,0,0,,,Bugs database,,
 529,composr_website_header,8,511,site:support,0,0,0,,,Index,,
 530,composr_website_header,9,511,docs:tutorials,0,0,0,,,Official docs,,
 531,composr_website_header,10,511,site:cedi,0,0,0,,,Community docs,,
