@@ -1,0 +1,40 @@
+User-Agent: *
+
+Disallow: /ClientFiles/
+Disallow: /temp
+Disallow: /crm
+
+# Version-specific docs
+Disallow: /docs10
+Disallow: /docs11
+Disallow: /docs12
+Disallow: /docs13
+Disallow: /docs14
+Disallow: /docs15
+Disallow: /docs16
+Disallow: /docs17
+
+# Security
+Disallow: /config_editor.php
+Disallow: /code_editor.php
+Disallow: /upgrader.php
+Disallow: /uninstall.php
+
+# Performance
+Disallow: /trackback.php
+Disallow: /data/iframe.php?zone=&wide_high=1&page=search&type=results
+Disallow: /search.htm
+Disallow: /search/
+Disallow: /forum/topics/report_post/
+Disallow: /forum/topics/new_post/
+Disallow: /data/securityimage.php
+Disallow: /forum/topicview/findpost/
+Disallow: *gift_start*
+Disallow: *act_start*
+
+# Weird baidu
+Disallow: /chat/buddy_add.htm
+
+Crawl-Delay: 5
+
+Sitemap: http://ocportal.com/ocp_sitemap.xml

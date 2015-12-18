@@ -6,13 +6,17 @@
 		<div class="cntL_Row">
 			[title]Download Composr[/title]
 
+			<!--
 			<p>If you don't have hosting yet, we recommend <a href="#">Arvixe</a>. Arvixe hosting comes with Composr pre-installed.</p>
 
 			<p class="text-center"><a href="#"><img alt="Arvixe hosting preloaded with Composr" src="{$IMG*,composr_homesite/download/arvixe-banner}" /></a></p>
 
-            <p>If you do already have hosting, the next step is to transfer the installation files to your server.</p>
+			<p>If you do already have hosting, the next step is to transfer the installation files to your server.</p>
+			-->
 
-            [block]composr_homesite_download[/block]
+			<p>The first step is to transfer the installation files to your server.</p>
+
+			[block]composr_homesite_download[/block]
 
 			<h1>Cloud &amp; <acronym title="Software as a Service">SaaS</acronym> hosting</h1>
 
@@ -103,9 +107,7 @@
 				</div>
 
 				<div class="quoteCst">
-					<!--<div class="rdMore"><a href="#">Read more</a></div>-->
-
-					<p>Go to our <a href="#">community section</a>.</p>
+					<p>Go to our <a href="{$PAGE_LINK*,site:community}">community section</a>.</p>
 				</div>
 			</div>
 		</div>
@@ -120,17 +122,18 @@
 					<ul class="liRcol">
 						<li>Apache or IIS or nginx</li>
 						<li>50MB of disk space</li>
-						<li>MySQL 5 or higher</li>
+						<li>MySQL 5.5.3 or higher</li>
 						<li>PHP 5.1 or higher, with the following supported:
 							<ul>
 								<li>GD2</li>
 								<li>Memory limit 32MB or higher</li>
-								<li>File uploads 5MB or higher</li>
 							</ul>
 						</li>
-					</ul><!--<div class="rdMore"><a href="#">Read more</a></div>-->
+					</ul>
 
+					<!--
 					<p>We recommended [url="Arvixe Composr hosting"]http://www.arvixe.com/5256-223-3-122.html[/url]. It's great quality hosting and they'll even install Composr for you.</p>
+					-->
 
 					<p>For more information and recommendations, see our [page="docs:tut_web_hosting"]web hosting[/page].</p>
 				</div>
