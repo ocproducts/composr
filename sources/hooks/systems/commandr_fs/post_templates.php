@@ -87,7 +87,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action');
 
@@ -96,6 +96,9 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
         $use_default_forums = $this->_default_property_int($properties, 'use_default_forums');
 
         $id = cns_make_post_template($label, $text, $forum_multi_code, $use_default_forums);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -116,12 +119,14 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['t_title'],
             'text' => $row['t_text'],
             'forum_multi_code' => $row['t_forum_multi_code'],
             'use_default_forums' => $row['t_use_default_forums'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -135,7 +140,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action2');
 
@@ -145,6 +150,8 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
         $use_default_forums = $this->_default_property_int($properties, 'use_default_forums');
 
         cns_edit_post_template(intval($resource_id), $label, $text, $forum_multi_code, $use_default_forums);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

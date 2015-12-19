@@ -1664,7 +1664,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         $cma_ob = get_content_object($content_type);
         if (!is_null($cma_ob)) {
             $cma_info = $cma_ob->info();
-            if (isset($cma_info['parent_category_meta_aware_type'])) {
+            if (!is_null($cma_info['parent_category_meta_aware_type'])) {
                 $content_type = $cma_info['parent_category_meta_aware_type'];
             }
         }

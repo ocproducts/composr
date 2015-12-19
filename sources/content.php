@@ -142,10 +142,10 @@ function get_content_object($content_type)
  * Find a different content type code from the one had.
  *
  * @param  ID_TEXT $type_has Content type type we know
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook attachment_hook unvalidated_hook notification_hook sitemap_hook
  * @param  ID_TEXT $type_id Content type ID we know
  * @param  ID_TEXT $type_wanted Desired content type
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook attachment_hook unvalidated_hook notification_hook sitemap_hook
  * @return ID_TEXT Corrected content type type (blank: could not find)
  */
 function convert_composr_type_codes($type_has, $type_id, $type_wanted)
@@ -179,7 +179,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
  * Find content type info, for a particular content type type we know.
  *
  * @param  ID_TEXT $type_has Content type type we know
- * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook
+ * @set addon content_type meta_hook search_hook seo_type_code feedback_type_code permissions_type_code module table commandr_filesystem_hook rss_hook attachment_hook unvalidated_hook notification_hook sitemap_hook
  * @param  ID_TEXT $type_id Content type ID we know
  * @return array Content type info list (blank: could not find)
  */
@@ -288,7 +288,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         }
     }
 
-    if (isset($cma_info['submitter_field'])) {
+    if (!is_null($cma_info['submitter_field'])) {
         if (strpos($cma_info['submitter_field'], ':') !== false) {
             $bits = explode(':', $cma_info['submitter_field']);
             $matches = array();

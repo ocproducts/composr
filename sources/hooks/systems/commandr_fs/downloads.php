@@ -102,7 +102,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             $category = strval(db_get_first_id());
         }/*return false;*/ // Can't create more than one root
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('downloads2');
 
@@ -114,6 +114,9 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $id = add_download_category($label, $parent_id, $description, $notes, $rep_image, null, $add_time, $meta_keywords, $meta_description);
+
+        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -136,7 +139,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('downloads_category', strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['category'],
             'description' => $row['description'],
             'notes' => $row['notes'],
@@ -145,6 +148,8 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             'meta_description' => $meta_description,
             'add_date' => remap_time_as_portable($row['add_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -159,6 +164,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('downloads2');
 
@@ -172,6 +178,8 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         edit_download_category(intval($resource_id), $label, $parent_id, $description, $notes, $rep_image, $meta_keywords, $meta_description, $add_time);
+
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }
@@ -216,7 +224,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -261,6 +269,9 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             $default_pic = 1;
         }
         $id = add_download($category_id, $label, $url, $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $add_date, $num_downloads, $views, $submitter, $edit_date, null, $meta_keywords, $meta_description, $default_pic);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -283,7 +294,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('downloads_download', strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['name'],
             'url' => remap_urlpath_as_portable($row['url']),
             'description' => $row['description'],
@@ -308,6 +319,8 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['add_date']),
             'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -322,7 +335,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -369,6 +382,8 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         }
 
         edit_download(intval($resource_id), $category_id, $label, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $num_downloads, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

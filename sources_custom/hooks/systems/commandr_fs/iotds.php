@@ -60,7 +60,7 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('iotds2');
 
@@ -79,6 +79,9 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
         $views = $this->_default_property_int($properties, 'views');
         $edit_date = $this->_default_property_int_null($properties, 'edit_date');
         $id = add_iotd($url, $label, $caption, $thumb_url, $current, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $time, $submitter, $used, $use_time, $views, $edit_date);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -99,7 +102,7 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['i_title'],
             'url' => $row['url'],
             'caption' => $row['caption'],
@@ -116,6 +119,8 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
             'add_date' => $row['add_date'],
             'edit_date' => $row['edit_date'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -129,7 +134,7 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('iotds2');
 
@@ -150,6 +155,8 @@ class Hook_commandr_fs_iotds extends Resource_fs_base
         $edit_time = $this->_default_property_int_null($properties, 'edit_date');
 
         edit_iotd(intval($resource_id), $label, $caption, $thumb_url, $url, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

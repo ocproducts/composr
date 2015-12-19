@@ -157,6 +157,11 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
     }
 
+    if ($is_starter && $title == '') {
+        // Probably some weird API usage (e.g. Resource-fs) where title came in with topic not first post
+        $title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => $topic_id));
+    }
+
     if (!running_script('install')) {
         require_code('antispam');
         inject_action_spamcheck($poster_name_if_guest, get_param_string('email', null));

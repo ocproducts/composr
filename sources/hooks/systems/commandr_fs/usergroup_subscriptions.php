@@ -87,7 +87,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('ecommerce2');
 
@@ -110,6 +110,8 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
             table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => $id), TABLE_REPLACE_MODE_NONE);
         }
 
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -130,7 +132,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['s_title'],
             'description' => $row['s_description'],
             'cost' => $row['s_cost'],
@@ -144,6 +146,8 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
             'uses_primary' => $row['s_uses_primary'],
             'mails' => table_to_portable_rows('f_usergroup_sub_mails', array('id', 'm_usergroup_sub_id'), array('m_usergroup_sub_id' => intval($resource_id))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -157,7 +161,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('ecommerce2');
 
@@ -180,6 +184,8 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         if (isset($properties['mails'])) {
             table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

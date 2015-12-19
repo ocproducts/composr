@@ -87,7 +87,7 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_moderation_action');
 
@@ -100,6 +100,9 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
         $title_suffix = $this->_default_property_str($properties, 'title_suffix');
 
         $id = cns_make_multi_moderation($label, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -120,7 +123,7 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['mm_name'],
             'post_text' => $row['mm_post_text'],
             'move_to' => $row['mm_move_to'],
@@ -130,6 +133,8 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
             'forum_multi_code' => $row['mm_forum_multi_code'],
             'title_suffix' => $row['mm_title_suffix']
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -143,7 +148,7 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_moderation_action2');
 
@@ -157,6 +162,8 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
         $title_suffix = $this->_default_property_str($properties, 'title_suffix');
 
         cns_edit_multi_moderation(intval($resource_id), $label, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

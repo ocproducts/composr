@@ -32,7 +32,7 @@ class Hook_content_meta_aware_author
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'AUTHORS',
 
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_author
             'title_field_dereference' => false,
             'description_field' => 'description',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:authors:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_authors:_add:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_author
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -78,6 +81,11 @@ class Hook_content_meta_aware_author
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => 'authors',
+            'attachment_hook' => 'author',
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'author',
 
             'addon_name' => 'authors',
 
@@ -89,7 +97,9 @@ class Hook_content_meta_aware_author
 
             'support_revisions' => false,
 
-            'rss_hook' => 'authors',
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_AUTHOR',
         );

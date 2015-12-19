@@ -274,11 +274,11 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      */
     public function folder_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
-
         require_code('catalogues2');
 
         if ($path != '') { // Category
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'catalogue_category');
+
             $_properties = $this->__folder_read_in_properties_category($path, $properties, false);
             if ($_properties === false) {
                 return false;
@@ -287,10 +287,12 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
             $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, null, $meta_keywords, $meta_description);
 
-            $this->_custom_fields_save('catalogue_category', strval($id), $properties);
+            $this->_resource_save_extend('catalogue_category', strval($id));
 
             return strval($id);
         } else { // Catalogue
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'catalogue');
+
             list($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time) = $this->__folder_read_in_properties_catalogue($path, $properties);
 
             $name = $this->_create_name_from_label($label);
@@ -328,6 +330,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 actual_add_catalogue_field($name, do_lang('TITLE'), '', 'short_text', 0, 1, 1, 1, '', 1, 1, 1);
             }
 
+            $this->_resource_save_extend('catalogue', $name, $properties);
+
             return $name;
         }
     }
@@ -354,7 +358,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
             list($meta_keywords, $meta_description) = seo_meta_get_for('catalogue_category', strval($row['id']));
 
-            return array(
+            $properties = array(
                 'label' => $row['cc_title'],
                 'description' => $row['cc_description'],
                 'notes' => $row['cc_notes'],
@@ -366,7 +370,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 'meta_keywords' => $meta_keywords,
                 'meta_description' => $meta_description,
                 'add_date' => remap_time_as_portable($row['cc_add_date']),
-            ) + $this->_custom_fields_load('catalogue_category', strval($row['id']));
+            );
+            $this->_resource_load_extend('catalogue_category', $resource_id, $properties, $filename, $path);
+            return $properties;
         }
 
         // Catalogue
@@ -397,7 +403,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             );
         }
 
-        return array(
+        $properties = array(
             'label' => $row['c_title'],
             'description' => $row['c_description'],
             'display_type' => $row['c_display_type'],
@@ -410,6 +416,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'fields' => $fields,
             'add_date' => remap_time_as_portable($row['c_add_date']),
         );
+        $this->_resource_load_extend('catalogue', $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -425,6 +433,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
 
         require_code('catalogues2');
+
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $resource_type);
 
         if ($resource_type == 'catalogue') {
             $label = $this->_default_property_str($properties, 'label');
@@ -483,6 +493,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                     }
                 }
             }
+
+            $this->_resource_save_extend('catalogue', $name, $properties);
         } else {
             $label = $this->_default_property_str($properties, 'label');
 
@@ -494,7 +506,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
             actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $catalogue_name);
 
-            $this->_custom_fields_save('catalogue_category', $resource_id, $properties);
+            $this->_resource_save_extend('catalogue_category', $resource_id, $properties);
         }
 
         return $resource_id;
@@ -619,7 +631,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue_category');
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if ($category == '') {
             return false;
@@ -635,6 +647,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
 
         $id = actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, null, $meta_keywords, $meta_description);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -657,7 +672,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('catalogue_entry', strval($row['id']));
 
-        $ret = array(
+        $properties = array(
             'validated' => $row['ce_validated'],
             'notes' => $row['notes'],
             'allow_rating' => $row['allow_rating'],
@@ -670,6 +685,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['ce_add_date']),
             'edit_date' => remap_time_as_portable($row['ce_edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
 
         require_code('catalogues');
         $fields = get_catalogue_entry_field_values($row['c_name'], intval($resource_id));
@@ -686,21 +702,21 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             }
 
             if ($field_num == $unique_key_num) {
-                $ret['label'] = $val;
+                $properties['label'] = $val;
             } else {
                 $cf_name = get_translated_text($field['cf_name']);
                 $fixed_id = fix_id($cf_name);
-                if (!array_key_exists($fixed_id, $ret)) {
+                if (!array_key_exists($fixed_id, $properties)) {
                     $key = $fixed_id;
                 } else {
                     $key = 'field_' . strval($field['id']);
                 }
 
-                $ret[$key] = $val;
+                $properties[$key] = $val;
             }
         }
 
-        return $ret;
+        return $properties;
     }
 
     /**
@@ -715,7 +731,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue_category');
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if ($category == '') {
             return false;
@@ -732,6 +748,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $edit_date = $this->_default_property_time($properties, 'edit_date');
 
         actual_edit_catalogue_entry(intval($resource_id), $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_keywords, $meta_description, $edit_date, $time, $views, $submitter, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

@@ -162,7 +162,7 @@ class CMSPtWrite
         require_code('cns_topics_action2');
 
         $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_pt_from', 't_pt_to', 't_pt_from_category', 't_pt_to_category'), array('id' => $topic_id), '', 1);
-        if (!isset($topic_info[0])) {
+        if (!array_key_exists(0, $topic_info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
 

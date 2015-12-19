@@ -288,7 +288,7 @@ function manage_custom_fields_donext_link($content_type)
         $ob = get_content_object($content_type);
         $info = $ob->info();
 
-        if ((array_key_exists('supports_custom_fields', $info)) && ($info['supports_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
+        if (($info['support_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
             $exists = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type)));
 
             return array(
@@ -315,7 +315,7 @@ function manage_custom_fields_entry_points($content_type)
         $ob = get_content_object($content_type);
         $info = $ob->info();
 
-        if ((array_key_exists('supports_custom_fields', $info)) && ($info['supports_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
+        if (($info['support_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
             $count = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'COUNT(*)', array('c_name' => '_' . $content_type));
             $exists = ($count != 0);
 
@@ -343,7 +343,7 @@ function has_tied_catalogue($content_type)
         require_code('content');
         $ob = get_content_object($content_type);
         $info = $ob->info();
-        if ((array_key_exists('supports_custom_fields', $info)) && ($info['supports_custom_fields'])) {
+        if ((array_key_exists('support_custom_fields', $info)) && ($info['support_custom_fields'])) {
             $exists = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type)));
             if ($exists) {
                 $first_cat = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $content_type));

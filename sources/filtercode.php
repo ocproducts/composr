@@ -117,7 +117,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         require_code('content');
         $ob2 = get_content_object($content_type);
         $info2 = $ob2->info();
-        if ((isset($info2['supports_custom_fields'])) && ($info2['supports_custom_fields'])) {
+        if ($info2['support_custom_fields']) {
             require_code('fields');
             $catalogue_fields = list_to_map('id', get_catalogue_fields(($content_type == 'catalogue_entry') ? $catalogue_name : '_' . $content_type));
             foreach ($catalogue_fields as $catalogue_field) {
@@ -740,7 +740,7 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
         $info = $ob->info();
         $info['content_type'] = $content_type; // We'll need this later, so add it in
 
-        if (isset($info['filtercode'])) {
+        if (array_key_exists('filtercode', $info)) {
             if (strpos($info['filtercode'], '::') !== false) {
                 list($code_file, $conv_func) = explode('::', $info['filtercode']);
                 require_code($code_file);

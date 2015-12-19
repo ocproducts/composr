@@ -154,10 +154,22 @@ You may also see a file modification time of 1970. This happens when no file mod
 
 If you manually specify the name of a folder or a file, you may find it changes when the directory refreshes. This is because it will be treated as a new label, and the moniker (and thus filename) will then be generated from that. For example, spaces would be stripped.
 
-[title="2"]Known omissions[/title]
+[title="2"]Known omissions / limitations[/title]
 
 These are the current known omissions for the repository:
  - If you add content via the repository, no syndication will be performed for it. E.g. if you add a news article, it won't be syndicated to Facebook if you've configured such syndication. This is normal within Composr, as syndication is an automated assistant built into the CMS modules, not the underlying framework. You can always syndicate things manually if required.
+ - Multi-language-content translations are not retained (http://ocportal.com/tracker/view.php?id=2111)
+ - Staging site limitations
+  - If importing point-store configuration, the IDs for custom permission products can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2113)
+  - For custom fields representing IDs, the IDs can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2125)
+  - For config option values representing IDs, the IDs can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2126) -- but in most cases names (e.g. forum names) can be used instead of IDs, mitigating the problem
+  - Transferring members
+   - For an imported member's category-level notifications, the IDs can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2114)
+   - Member signature attachments cannot transfer (http://ocportal.com/tracker/view.php?id=2127)
+
+These limitations only affect particularly advanced/fringe usage, mainly those wanting perfect automatic staging site transference on complex data schemas. If you are an enterprise pushing things to the very edge, you'll likely want to sponsor some continued development. This cost would be tiny compared to normal enterprise CMS licensing costs.
+
+Generally Resource-fs is not designed for merging separate websites into one. There is a separate merge importer in Composr to handle this use case.
 
 [concepts
  1_key="Repository"           1_value="The user-friendly feature name for the way of accessing Composr data as folders/files"

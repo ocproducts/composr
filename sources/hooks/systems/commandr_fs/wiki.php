@@ -90,7 +90,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             $category = strval(db_get_first_id());
         }/*return false;*/ // Can't create more than one root
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('wiki');
 
@@ -115,6 +115,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             $GLOBALS['SITE_DB']->query_insert('wiki_children', array('parent_id' => $parent_id, 'child_id' => $id, 'the_order' => $the_order, 'title' => $label));
         }
 
+        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -137,7 +139,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('wiki_page', strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['title'],
             'description' => $row['description'],
             'notes' => $row['notes'],
@@ -149,6 +151,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['add_date']),
             'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -164,6 +168,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('wiki');
 
@@ -203,6 +208,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             }
         }
 
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+
         return $resource_id;
     }
 
@@ -234,7 +241,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -252,6 +259,9 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $id = wiki_add_post($page_id, $label, $validated, $member, true, $add_time, $views, $edit_date);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -272,7 +282,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['the_message'],
             'validated' => $row['validated'],
             'views' => $row['wiki_views'],
@@ -280,6 +290,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['date_and_time']),
             'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -294,7 +306,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -314,6 +326,8 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $views = $this->_default_property_int($properties, 'views');
 
         wiki_edit_post(intval($resource_id), $label, $validated, $member, $page_id, $edit_time, $add_time, $views, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

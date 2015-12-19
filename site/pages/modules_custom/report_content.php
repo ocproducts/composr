@@ -259,7 +259,7 @@ class Module_report_content
         ));
         if ($count >= intval(get_option('reported_times'))) {
             // Mark as unvalidated
-            if ((isset($cma_info['validated_field'])) && (strpos($cma_info['table'], '(') === false)) {
+            if ((!is_null($cma_info['validated_field'])) && (strpos($cma_info['table'], '(') === false)) {
                 $db = $GLOBALS[(substr($cma_info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
                 $db->query_update($cma_info['table'], array($cma_info['validated_field'] => 0), get_content_where_for_str_id($content_id, $cma_info));
             }

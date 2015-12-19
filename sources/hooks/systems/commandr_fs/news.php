@@ -101,7 +101,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('news2');
 
@@ -109,6 +109,9 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $notes = $this->_default_property_str($properties, 'notes');
         $owner = $this->_default_property_member_null($properties, 'owner');
         $id = add_news_category($label, $img, $notes, $owner);
+
+        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -129,12 +132,14 @@ class Hook_commandr_fs_news extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['nc_title'],
             'rep_image' => remap_urlpath_as_portable($row['nc_img']),
             'notes' => $row['notes'],
             'owner' => remap_resource_id_as_portable('member', $row['nc_owner']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -148,6 +153,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('news2');
 
@@ -157,6 +163,8 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $owner = $this->_default_property_member_null($properties, 'owner');
 
         edit_news_category(intval($resource_id), $label, $img, $notes, $owner);
+
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }
@@ -201,7 +209,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -235,6 +243,9 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         $id = add_news($label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $time, $submitter, $views, $edit_date, null, $image, $meta_keywords, $meta_description, $regions);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -257,7 +268,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('news', strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['title'],
             'summary' => $row['news'],
             'article' => $row['news_article'],
@@ -277,6 +288,8 @@ class Hook_commandr_fs_news extends Resource_fs_base
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'news', 'content_id' => strval($row['id'])))),
             'categories' => collapse_1d_complexity('news_entry_category', $GLOBALS['SITE_DB']->query_select('news_category_entries', array('news_entry_category'), array('news_entry' => $row['id']))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -291,7 +304,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -326,6 +339,8 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         edit_news(intval($resource_id), $label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_keywords, $meta_description, $image, $add_time, $edit_time, $views, $submitter, $regions, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

@@ -1685,11 +1685,6 @@ class Module_topics
         require_code('content2');
         $specialisation2->attach(meta_data_get_fields('topic', null, false, array('submitter', 'add_time', 'edit_time')));
 
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            $specialisation2->attach(content_review_get_fields('topic', is_null($clone_id) ? null : strval($clone_id)));
-        }
-
         if (is_null($text)) {
             $text = new Tempcode();
         }
@@ -2022,11 +2017,6 @@ class Module_topics
 
         require_code('content2');
         $specialisation2->attach(meta_data_get_fields('post', null));
-
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            $specialisation2->attach(content_review_get_fields('post'));
-        }
 
         $topic_posts = new Tempcode();
         $posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE p_topic_id=' . strval($topic_id) . ' AND (p_intended_solely_for IS NULL OR p_intended_solely_for=' . strval(get_member()) . ' OR p_poster=' . strval(get_member()) . ') AND p_validated=1 ORDER BY p_time DESC,p.id DESC', 20);
@@ -2369,11 +2359,6 @@ END;
             if (has_tied_catalogue('topic')) {
                 save_form_custom_fields('topic', strval($topic_id));
             }
-
-            if (addon_installed('content_reviews')) {
-                require_code('content_reviews2');
-                content_review_set('topic', strval($topic_id));
-            }
         } else {
             $_title = get_screen_title('ADD_POST');
             $first_post = false;
@@ -2487,11 +2472,6 @@ END;
         require_code('fields');
         if (has_tied_catalogue('post')) {
             save_form_custom_fields('post', strval($post_id));
-        }
-
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            content_review_set('post', strval($post_id));
         }
 
         $validated = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_validated', array('id' => $post_id));
@@ -3123,11 +3103,6 @@ END;
         require_code('content2');
         $specialisation2->attach(meta_data_get_fields('post', strval($post_id)));
 
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            $specialisation2->attach(content_review_get_fields('post', strval($post_id)));
-        }
-
         if (count($moderation_options) != 0) {
             $specialisation2->attach(form_input_various_ticks($moderation_options, '', null, do_lang_tempcode('MODERATION_OPTIONS')));
         }
@@ -3284,11 +3259,6 @@ END;
         $meta_data = actual_meta_data_get_fields('post', strval($post_id));
 
         $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $meta_data['edit_time'], $meta_data['add_time'], $meta_data['submitter'], true);
-
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            content_review_set('post', strval($post_id));
-        }
 
         require_code('fields');
         if (has_tied_catalogue('post')) {
@@ -3447,11 +3417,6 @@ END;
         require_code('content2');
         $fields->attach(meta_data_get_fields('topic', strval($topic_id), false, array('submitter', 'add_time', 'edit_time')));
 
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            $fields->attach(content_review_get_fields('topic', strval($topic_id)));
-        }
-
         $title = get_screen_title('EDIT_TOPIC');
         $submit_name = do_lang_tempcode('SAVE');
         return do_template('FORM_SCREEN', array(
@@ -3489,11 +3454,6 @@ END;
         $meta_data = actual_meta_data_get_fields('topic', strval($topic_id), array('submitter', 'add_time', 'edit_time'));
 
         cns_edit_topic($topic_id, post_param_string('description', STRING_MAGIC_NULL), post_param_string('emoticon', STRING_MAGIC_NULL), $validated, $open, $pinned, $sunk, $cascading, post_param_string('reason', STRING_MAGIC_NULL), $title, null, true, $meta_data['views']);
-
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            content_review_set('topic', strval($topic_id));
-        }
 
         require_code('fields');
         if (has_tied_catalogue('topic')) {

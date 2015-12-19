@@ -77,13 +77,16 @@ class Hook_commandr_fs_download_licences extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('downloads2');
 
         $text = $this->_default_property_str($properties, 'text');
 
         $id = add_download_licence($label, $text);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -104,10 +107,12 @@ class Hook_commandr_fs_download_licences extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['l_title'],
             'text' => $row['l_text'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -121,7 +126,7 @@ class Hook_commandr_fs_download_licences extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('downloads2');
 
@@ -129,6 +134,8 @@ class Hook_commandr_fs_download_licences extends Resource_fs_base
         $text = $this->_default_property_str($properties, 'text');
 
         edit_download_licence(intval($resource_id), $label, $text);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

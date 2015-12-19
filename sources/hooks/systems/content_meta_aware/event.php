@@ -32,7 +32,7 @@ class Hook_content_meta_aware_event
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'calendar:EVENT',
 
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_event
             'title_field_dereference' => true,
             'description_field' => 'e_content',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:calendar:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_calendar:_edit:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_event
             'support_url_monikers' => true,
 
             'views_field' => 'e_views',
+            'order_field' => null,
             'submitter_field' => 'e_submitter',
+            'author_field' => null,
             'add_time_field' => 'e_add_date',
             'edit_time_field' => 'e_edit_date',
             'date_field' => 'e_add_date',
@@ -78,6 +81,11 @@ class Hook_content_meta_aware_event
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => 'calendar',
+            'rss_hook' => 'calendar',
+            'attachment_hook' => 'calendar',
+            'unvalidated_hook' => 'calendar',
+            'notification_hook' => 'calendar_event',
+            'sitemap_hook' => 'event',
 
             'addon_name' => 'calendar',
 
@@ -89,11 +97,11 @@ class Hook_content_meta_aware_event
 
             'support_revisions' => false,
 
-            'rss_hook' => 'calendar',
+            'support_privacy' => true,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_EVENT',
-
-            'supports_privacy' => true,
         );
     }
 

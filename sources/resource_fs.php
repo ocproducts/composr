@@ -731,6 +731,14 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $connection 
             $row[$db_field_name] = remap_urlpath_as_portable($row[$db_field_name]);
         }
 
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_topics.id')) {
+            $row[$db_field_name] = remap_resource_id_as_portable('topic', $row[$db_field_name]);
+        }
+
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_posts.id')) {
+            $row[$db_field_name] = remap_resource_id_as_portable('post', $row[$db_field_name]);
+        }
+
         elseif (isset($relation_map[$db_field_name])) {
             $row[$db_field_name] = remap_foreign_key_as_portable($relation_map[$db_field_name], $row[$db_field_name]);
         }
@@ -779,6 +787,14 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $connectio
 
         elseif ($db_field_type == 'URLPATH') {
             $row[$db_field_name] = remap_portable_as_urlpath($row[$db_field_name]);
+        }
+
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_topics.id')) {
+            $row[$db_field_name] = remap_portable_as_resource_id('topic', $row[$db_field_name]);
+        }
+
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_posts.id')) {
+            $row[$db_field_name] = remap_portable_as_resource_id('post', $row[$db_field_name]);
         }
 
         elseif (isset($relation_map[$db_field_name])) {

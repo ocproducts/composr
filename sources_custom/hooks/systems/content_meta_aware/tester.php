@@ -27,7 +27,7 @@ class Hook_content_meta_aware_tester
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'tester:TEST_SECTION',
 
@@ -41,12 +41,16 @@ class Hook_content_meta_aware_tester
             'is_entry' => true,
             'category_field' => null, // For category permissions
             'category_type' => null, // For category permissions
+            'parent_spec__table_name' => null,
+            'parent_spec__parent_name' => null,
+            'parent_spec__field_name' => null,
             'category_is_string' => false,
 
             'title_field' => null,
             'title_field_dereference' => false,
             'description_field' => null,
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:tester:report:_WILD',
             'edit_page_link_pattern' => '_SEARCH:tester:_edit:_WILD',
@@ -57,7 +61,9 @@ class Hook_content_meta_aware_tester
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => 't_assigned_to',
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -70,6 +76,11 @@ class Hook_content_meta_aware_tester
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'tester',
 
@@ -81,7 +92,9 @@ class Hook_content_meta_aware_tester
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_TEST',
         );

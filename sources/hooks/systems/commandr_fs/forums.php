@@ -281,9 +281,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      */
     public function folder_add($filename, $path, $properties, $force_type = null)
     {
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
-
         if ((($path == '') || (substr($filename, 0, 6) == 'FORUM-') || ($force_type === 'forum')) && ($force_type !== 'topic')) {
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'forum');
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'forum');
 
             if ($category_resource_type != 'forum') {
@@ -300,7 +299,10 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             $parent_forum = $this->_integer_category($category);
 
             $id = cns_make_forum($label, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded);
+
+            $this->_resource_save_extend('forum', strval($id));
         } else {
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'topic');
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'forum');
 
             if ($category_resource_type != 'forum') {
@@ -343,6 +345,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             }
 
             $this->save_ticket_associations($properties, $id);
+
+            $this->_resource_save_extend('topic', strval($id));
         }
 
         return strval($id);
@@ -392,7 +396,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             }
             $row = $rows[0];
 
-            return array(
+            $properties = array(
                 'label' => $row['f_name'],
                 'description' => $row['f_description'],
                 'forum_grouping_id' => remap_resource_id_as_portable('forum_grouping', $row['f_forum_grouping_id']),
@@ -405,6 +409,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 'order' => $row['f_order'],
                 'is_threaded' => $row['f_is_threaded'],
             );
+            $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+            return $properties;
         }
 
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename, 'topic');
@@ -437,7 +443,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             $poll_data = null;
         }
 
-        $ret = array(
+        $properties = array(
             'label' => $row['t_cache_first_title'],
             'description' => $row['t_description'],
             'emoticon' => $row['t_emoticon'],
@@ -452,9 +458,10 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             'description_link' => $row['t_description_link'],
             'poll' => $poll_data,
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
 
         if (!is_null($row['t_forum_id'])) {
-            $ret['special_pt_access'] = table_to_portable_rows('f_special_pt_access', /*skip*/array(), array('s_topic_id' => intval($resource_id)));
+            $properties['special_pt_access'] = table_to_portable_rows('f_special_pt_access', /*skip*/array(), array('s_topic_id' => intval($resource_id)));
         }
 
         if (addon_installed('tickets')) {
@@ -462,10 +469,10 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             foreach ($ticket_associations as &$ticket_association) {
                 $ticket_association['extra_access'] = table_to_portable_rows('ticket_extra_access', /*skip*/array(), array('ticket_id' => $ticket_association['ticket_id']));
             }
-            $ret['ticket_associations'] = $ticket_associations;
+            $properties['ticket_associations'] = $ticket_associations;
         }
 
-        return $ret;
+        return $properties;
     }
 
     /**
@@ -481,6 +488,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         if (substr($filename, 0, 6) == 'FORUM-') {
             list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename, 'forum');
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'forum');
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'forum');
 
             require_code('cns_forums_action2');
 
@@ -493,6 +501,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         } else {
             list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename, 'topic');
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'forum');
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'topic');
 
             require_code('cns_topics_action2');
 
@@ -542,6 +551,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             $this->save_ticket_associations($properties, intval($resource_id));
         }
 
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+
         return $resource_id;
     }
 
@@ -578,7 +589,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'topic');
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if ($category == '') {
             return false;
@@ -606,6 +617,9 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $last_edit_by = $this->_default_property_member_null($properties, 'last_edit_by');
         $parent_id = $this->_default_property_resource_id_null('post', $properties, 'parent_id');
         $id = cns_make_post($topic_id, $label, $post, $skip_sig, null, $validated, $is_emphasised, $poster_name_if_guest, $ip_address, $time, $poster, $intended_solely_for, $last_edit_time, $last_edit_by, false, true, null, false, null, 0, null, false, true, null, false, $parent_id);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -626,7 +640,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['p_title'],
             'post' => $row['p_post'],
             'skip_sig' => $row['p_skip_sig'],
@@ -641,6 +655,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['p_time']),
             'edit_date' => remap_time_as_portable($row['p_last_edit_time']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -655,7 +671,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'topic');
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if ($category == '') {
             return false;
@@ -682,6 +698,8 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $parent_id = $this->_default_property_resource_id_null('post', $properties, 'parent_id');
 
         cns_edit_post(intval($resource_id), $validated, $label, $post, $skip_sig, $is_emphasised, $intended_solely_for, true, false, '', false, $last_edit_time, $add_time, $poster, true, false);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

@@ -65,7 +65,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         $message = $this->_default_property_str($properties, 'message');
         $lang = $this->_default_property_str($properties, 'lang');
@@ -84,6 +84,8 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
         require_code('newsletter');
 
         $id = add_periodic_newsletter($label, $message, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $frequency, $day, $in_full, $template, $last_sent);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
 
         return strval($id);
     }
@@ -105,7 +107,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['np_subject'],
             'message' => $row['np_message'],
             'lang' => $row['np_lang'],
@@ -121,6 +123,8 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
             'template' => $row['np_template'],
             'last_sent' => remap_time_as_portable($row['np_last_sent']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -134,7 +138,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         $label = $this->_default_property_str($properties, 'label');
         $message = $this->_default_property_str($properties, 'message');
@@ -154,6 +158,8 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
         require_code('newsletter');
 
         edit_periodic_newsletter(intval($resource_id), $label, $message, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $frequency, $day, $in_full, $template, $last_sent);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

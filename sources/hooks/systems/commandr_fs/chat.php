@@ -144,13 +144,16 @@ class Hook_commandr_fs_chat extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('chat2');
 
         list($welcome, $room_owner, $allow, $allow_groups, $disallow, $disallow_groups, $roomlang, $is_im) = $this->__file_read_in_properties($path, $properties);
 
         $id = add_chatroom($welcome, $label, $room_owner, $allow, $allow_groups, $disallow, $disallow_groups, $roomlang, $is_im);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -211,7 +214,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
             }
         }
 
-        return array(
+        $properties = array(
             'label' => $row['room_name'],
             'welcome_message' => $row['c_welcome'],
             'room_owner' => remap_resource_id_as_portable('member', $row['room_owner']),
@@ -222,6 +225,8 @@ class Hook_commandr_fs_chat extends Resource_fs_base
             'room_lang' => $row['room_language'],
             'is_im' => $row['is_im'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -235,7 +240,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('chat2');
 
@@ -243,6 +248,8 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         list($welcome, $room_owner, $allow, $allow_groups, $disallow, $disallow_groups, $roomlang, $is_im) = $this->__file_read_in_properties($path, $properties);
 
         edit_chatroom(intval($resource_id), $welcome, $label, $room_owner, $allow, $allow_groups, $disallow, $disallow_groups, $roomlang);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

@@ -32,7 +32,7 @@ class Hook_resource_meta_aware_award_type
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'AWARDS',
 
@@ -53,6 +53,9 @@ class Hook_resource_meta_aware_award_type
 
             'title_field' => 'a_title',
             'title_field_dereference' => true,
+            'description_field' => null,
+            'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_awards:add:_WILD',
@@ -63,7 +66,9 @@ class Hook_resource_meta_aware_award_type
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -76,6 +81,11 @@ class Hook_resource_meta_aware_award_type
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'awards',
 
@@ -87,7 +97,9 @@ class Hook_resource_meta_aware_award_type
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_AWARD_TYPE',
         );

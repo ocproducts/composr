@@ -940,7 +940,7 @@ function report_post($post_id, $reason = '')
     $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
 
     $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t on t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
-    if (!isset($post_info[0])) {
+    if (!array_key_exists(0, $post_info)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
 

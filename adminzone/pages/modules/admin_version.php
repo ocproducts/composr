@@ -79,7 +79,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('unbannable_ip');
         $GLOBALS['SITE_DB']->drop_table_if_exists('alternative_ids');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_privacy');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('content_primary__members');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('content_privacy__members');
         $GLOBALS['SITE_DB']->drop_table_if_exists('task_queue');
         $GLOBALS['SITE_DB']->drop_table_if_exists('comcode_pages');
         $GLOBALS['SITE_DB']->drop_table_if_exists('cached_comcode_pages');
@@ -803,7 +803,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'guest_view', array('guest_view'));
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'member_view', array('member_view'));
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'friend_view', array('friend_view'));
-            $GLOBALS['SITE_DB']->create_table('content_primary__members', array(
+            $GLOBALS['SITE_DB']->create_table('content_privacy__members', array(
                 'content_type' => '*ID_TEXT',
                 'content_id' => '*ID_TEXT',
                 'member_id' => '*MEMBER',

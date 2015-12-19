@@ -65,7 +65,7 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('aggregate_types');
 
@@ -78,6 +78,9 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
         $edit_time = $this->_default_property_time_null($properties, 'edit_date');
 
         $id = add_aggregate_type_instance($label, $aggregate_type, $other_parameters, $add_time, $edit_time, true, true);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -98,13 +101,15 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['aggregate_label'],
             'aggregate_type' => $row['aggregate_type'],
             'other_parameters' => $row['other_parameters'],
             'add_date' => remap_time_as_portable($row['add_time']),
             'edit_date' => remap_time_as_portable($row['edit_time']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -118,7 +123,7 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('aggregate_types');
 
@@ -132,6 +137,8 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
         $edit_time = $this->_default_property_time($properties, 'edit_date');
 
         edit_aggregate_type_instance(intval($resource_id), $label, $aggregate_type, $other_parameters, true, $add_time, $edit_time);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

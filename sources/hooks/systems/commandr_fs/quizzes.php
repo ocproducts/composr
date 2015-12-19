@@ -77,7 +77,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('quiz2');
 
@@ -120,6 +120,8 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         }
 
         $this->add_quiz_entries($properties, $id);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
 
         return strval($id);
     }
@@ -173,7 +175,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
             unset($entry['id']);
         }
 
-        return array(
+        $properties = array(
             'label' => $row['q_name'],
             'timeout' => $row['q_timeout'],
             'start_text' => $row['q_start_text'],
@@ -200,6 +202,8 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
             'winners' => table_to_portable_rows('quiz_winner', /*skip*/array(), array('q_entry' => intval($resource_id))),
             'entries' => $entries,
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -213,7 +217,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('quiz2');
 
@@ -257,6 +261,8 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         }
 
         $this->add_quiz_entries($properties, intval($resource_id));
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

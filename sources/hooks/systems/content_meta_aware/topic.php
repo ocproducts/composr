@@ -36,7 +36,7 @@ class Hook_content_meta_aware_topic
         }
 
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM_TOPIC',
 
@@ -74,7 +74,9 @@ class Hook_content_meta_aware_topic
             'support_url_monikers' => true,
 
             'views_field' => 't_num_views',
+            'order_field' => null,
             'submitter_field' => 't_cache_first_member_id',
+            'author_field' => null,
             'add_time_field' => 't_cache_first_time',
             'edit_time_field' => 't_cache_last_time',
             'date_field' => 't_cache_first_time',
@@ -87,6 +89,11 @@ class Hook_content_meta_aware_topic
             'permissions_type_code' => 'forums', // NULL if has no permissions
 
             'search_hook' => 'cns_posts',
+            'rss_hook' => 'cns_forumview',
+            'attachment_hook' => null,
+            'unvalidated_hook' => 'cns_topics',
+            'notification_hook' => 'cns_topic',
+            'sitemap_hook' => 'topic',
 
             'addon_name' => 'cns_forum',
 
@@ -98,7 +105,9 @@ class Hook_content_meta_aware_topic
 
             'support_revisions' => true,
 
-            'rss_hook' => 'cns_forumview',
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_TOPIC',
         );

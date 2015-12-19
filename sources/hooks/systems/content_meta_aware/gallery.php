@@ -32,7 +32,7 @@ class Hook_content_meta_aware_gallery
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'galleries:GALLERY',
 
@@ -56,6 +56,7 @@ class Hook_content_meta_aware_gallery
             'title_field_dereference' => true,
             'description_field' => 'description',
             'thumb_field' => 'rep_image',
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:galleries:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_galleries:_edit_category:_WILD',
@@ -66,7 +67,9 @@ class Hook_content_meta_aware_gallery
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => 'add_date',
             'edit_time_field' => null,
             'date_field' => 'add_date',
@@ -79,6 +82,11 @@ class Hook_content_meta_aware_gallery
             'permissions_type_code' => 'galleries', // NULL if has no permissions
 
             'search_hook' => 'galleries',
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'gallery',
 
             'addon_name' => 'galleries',
 
@@ -90,7 +98,9 @@ class Hook_content_meta_aware_gallery
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_GALLERY',
         );

@@ -97,7 +97,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('menus2');
 
@@ -128,6 +128,8 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         log_it('ADD_MENU', $menu);
 
+        $this->_resource_save_extend($this->folder_resource_type, $menu, $properties);
+
         return $menu;
     }
 
@@ -142,9 +144,11 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
 
-        return array(
+        $properties = array(
             'label' => $resource_id,
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -157,7 +161,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
      */
     public function folder_edit($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         $menu = $this->_create_name_from_label($label);
 
@@ -165,6 +169,8 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         if (is_null($test)) {
             return false;
         }
+
+        $this->_resource_save_extend($this->folder_resource_type, $menu, $properties);
 
         return $menu;
     }
@@ -209,7 +215,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -229,6 +235,9 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         $include_sitemap = $this->_default_property_int($properties, 'include_sitemap');
 
         $id = add_menu_item($category, $order, $parent, $label, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -249,7 +258,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['i_caption'],
             'order' => $row['i_order'],
             'parent' => $row['i_parent'],
@@ -262,6 +271,8 @@ class Hook_commandr_fs_menus extends Resource_fs_base
             'theme_img_code' => $row['i_theme_img_code'],
             'include_sitemap' => $row['i_include_sitemap'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -276,7 +287,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -297,6 +308,8 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         $include_sitemap = $this->_default_property_int($properties, 'include_sitemap');
 
         edit_menu_item(intval($resource_id), $category, $order, $parent, $label, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

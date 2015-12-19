@@ -149,7 +149,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('cns_groups_action');
 
@@ -157,7 +157,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         $id = cns_make_group($label, $is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club, true, false);
 
-        $this->_custom_fields_save('group', strval($id), $properties);
+        $this->_resource_save_extend($this->folder_resource_type, strval($id));
 
         return strval($id);
     }
@@ -179,7 +179,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['g_name'],
             'is_default' => $row['g_is_default'],
             'is_super_admin' => $row['g_is_super_admin'],
@@ -206,7 +206,9 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'rank_image_pri_only' => $row['g_rank_image_pri_only'],
             'open_membership' => $row['g_open_membership'],
             'is_private_club' => $row['g_is_private_club'],
-        ) + $this->_custom_fields_load('group', strval($row['id']));
+        );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -220,6 +222,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('cns_groups_action2');
 
@@ -228,7 +231,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         cns_edit_group(intval($resource_id), $label, $is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club, true);
 
-        $this->_custom_fields_save('group', $resource_id, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }
@@ -352,7 +355,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -375,6 +378,8 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $ob->write_property($id);
         }
 
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -395,7 +400,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         }
         $row = $rows[0];
 
-        $ret = array(
+        $properties = array(
             'label' => $row['m_username'],
             'password_hashed' => $row['m_pass_hash_salted'],
             'salt' => $row['m_pass_salt'],
@@ -431,27 +436,28 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'pt_allow' => $row['m_pt_allow'],
             'pt_rules_text' => $row['m_pt_rules_text'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
 
         require_code('cns_members');
         $cpfs = cns_get_all_custom_fields_match_member(intval($resource_id));
         foreach ($cpfs as $cf_name => $cpf) {
             $fixed_id = fix_id($cf_name);
-            if (!array_key_exists($fixed_id, $ret)) {
+            if (!array_key_exists($fixed_id, $properties)) {
                 $key = $fixed_id;
             } else {
                 $key = 'field_' . strval($cpf['FIELD_ID']);
             }
-            $ret[$key] = $cpf['RAW'];
+            $properties[$key] = $cpf['RAW'];
         }
 
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
             $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
-            $ret[$hook] = $ob->read_property(intval($resource_id));
+            $properties[$hook] = $ob->read_property(intval($resource_id));
         }
 
-        return $ret;
+        return $properties;
     }
 
     /**
@@ -466,7 +472,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -489,6 +495,8 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
             $ob->write_property(intval($resource_id));
         }
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

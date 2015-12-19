@@ -87,7 +87,7 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_members_action');
 
@@ -116,6 +116,9 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
         $options = $this->_default_property_str($properties, 'options');
 
         $id = cns_make_custom_field($label, $locked, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $show_on_join_form, $options, false);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -136,7 +139,7 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
         }
         $row = $rows[0];
 
-        $ret = array(
+        $properties = array(
             'label' => $row['cf_name'],
             'description' => $row['cf_description'],
             'locked' => $row['cf_locked'],
@@ -153,11 +156,15 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
             'show_on_join_form' => $row['cf_show_on_join_form'],
             'options' => $row['cf_options'],
         );
+
         require_code('encryption');
         if (is_encryption_enabled()) {
-            $ret['encryption'] = $row['cf_encryption'];
+            $properties['encryption'] = $row['cf_encryption'];
         }
-        return $ret;
+
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+
+        return $properties;
     }
 
     /**
@@ -171,7 +178,7 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_members_action2');
 
@@ -201,6 +208,8 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
         $options = $this->_default_property_str($properties, 'options');
 
         cns_edit_custom_field(intval($resource_id), $label, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

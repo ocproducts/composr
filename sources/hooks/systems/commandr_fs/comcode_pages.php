@@ -105,7 +105,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('zones2');
 
@@ -132,6 +132,8 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
+        $this->_resource_save_extend($this->folder_resource_type, $zone, $properties);
+
         return $zone;
     }
 
@@ -152,7 +154,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['zone_name'],
             'human_title' => $row['zone_title'],
             'default_page' => $row['zone_default_page'],
@@ -162,6 +164,8 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             'group_access' => table_to_portable_rows('group_zone_access', /*skip*/array(), array('zone_name' => $resource_id)),
             'member_access' => table_to_portable_rows('member_zone_access', /*skip*/array(), array('zone_name' => $resource_id)),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -175,6 +179,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('zones3');
 
@@ -201,7 +206,9 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
-        return $resource_id;
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+
+        return $zone;
     }
 
     /**
@@ -245,7 +252,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -286,6 +293,8 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         require_code('zones3');
         $full_path = save_comcode_page($zone, $page, $lang, $text, $validated, $parent_page, $order, $add_time, $edit_time, $show_as_edit, $submitter, null, $meta_keywords, $meta_description);
         $page = basename($full_path, '.txt');
+
+        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $properties);
 
         return $zone . ':' . $page;
     }
@@ -328,7 +337,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('comcode_page', $row['the_zone'] . ':' . $row['the_page']);
 
-        return array(
+        $properties = array(
             'label' => $row['the_zone'] . ':' . $row['the_page'],
             'text' => $text,
             'parent_page' => $row['p_parent_page'],
@@ -341,6 +350,8 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['p_add_date']),
             'edit_date' => remap_time_as_portable($row['p_edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -355,7 +366,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         list($resource_type, $old_page) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -399,6 +410,8 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         require_code('zones3');
         $full_path = save_comcode_page($zone, $page, $lang, $text, $validated, $parent_page, $order, $add_time, $edit_time, $show_as_edit, $submitter, $old_page, $meta_keywords, $meta_description);
         $page = basename($full_path, '.txt');
+
+        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $properties);
 
         return $zone . ':' . $page;
     }

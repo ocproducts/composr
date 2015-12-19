@@ -73,7 +73,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('authors');
 
@@ -85,6 +85,8 @@ class Hook_commandr_fs_authors extends Resource_fs_base
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         add_author($label, $url, $member_id, $description, $skills, $meta_keywords, $meta_description);
+
+        $this->_resource_save_extend($this->file_resource_type, $label, $properties);
 
         return $label;
     }
@@ -108,7 +110,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('authors', $row['author']);
 
-        return array(
+        $properties = array(
             'label' => $row['author'],
             'url' => $row['url'],
             'member_id' => remap_resource_id_as_portable('member', $row['member_id']),
@@ -117,6 +119,8 @@ class Hook_commandr_fs_authors extends Resource_fs_base
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -130,7 +134,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('authors');
 
@@ -147,6 +151,8 @@ class Hook_commandr_fs_authors extends Resource_fs_base
             delete_author($resource_id); // Delete old one if we renamed
         }
         add_author($label, $url, $member_id, $description, $skills, $meta_keywords, $meta_description);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

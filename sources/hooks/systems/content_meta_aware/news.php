@@ -32,7 +32,7 @@ class Hook_content_meta_aware_news
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
             'content_type_label' => 'news:NEWS_ARTICLE',
 
             'connection' => $GLOBALS['SITE_DB'],
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_news
             'title_field_supports_comcode' => true,
             'description_field' => 'news',
             'thumb_field' => 'news_image',
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:news:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_news:_edit:_WILD',
@@ -65,6 +66,7 @@ class Hook_content_meta_aware_news
             'support_url_monikers' => true,
 
             'views_field' => 'news_views',
+            'order_field' => null,
             'submitter_field' => 'submitter',
             'author_field' => 'author',
             'add_time_field' => 'date_and_time',
@@ -79,6 +81,11 @@ class Hook_content_meta_aware_news
             'permissions_type_code' => 'news', // NULL if has no permissions
 
             'search_hook' => 'news',
+            'rss_hook' => 'news',
+            'attachment_hook' => 'news',
+            'unvalidated_hook' => 'news',
+            'notification_hook' => 'news_entry',
+            'sitemap_hook' => 'news',
 
             'addon_name' => 'news',
 
@@ -90,11 +97,11 @@ class Hook_content_meta_aware_news
 
             'support_revisions' => false,
 
-            'rss_hook' => 'news',
+            'support_privacy' => true,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_NEWS',
-
-            'supports_privacy' => true,
         );
     }
 

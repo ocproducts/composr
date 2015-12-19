@@ -32,7 +32,7 @@ class Hook_content_meta_aware_news_category
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'news:NEWS_CATEGORY',
 
@@ -66,7 +66,9 @@ class Hook_content_meta_aware_news_category
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -79,6 +81,11 @@ class Hook_content_meta_aware_news_category
             'permissions_type_code' => 'news', // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'news_category',
 
             'addon_name' => 'news',
 
@@ -90,7 +97,9 @@ class Hook_content_meta_aware_news_category
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_NEWS_CATEGORY',
         );

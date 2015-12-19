@@ -65,7 +65,7 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action');
 
@@ -75,6 +75,9 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
         $is_special = $this->_default_property_int($properties, 'is_special');
 
         cns_make_emoticon($label, $theme_img_code, $relevance_level, $use_topics, $is_special);
+
+        $this->_resource_save_extend($this->file_resource_type, $label, $properties);
+
         return $label;
     }
 
@@ -95,13 +98,15 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['e_code'],
             'theme_img_code' => $row['e_theme_img_code'],
             'relevance_level' => $row['e_relevance_level'],
             'use_topics' => $row['e_use_topics'],
             'is_special' => $row['e_is_special'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -115,7 +120,7 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action2');
 
@@ -126,6 +131,8 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
         $is_special = $this->_default_property_int($properties, 'is_special');
 
         cns_edit_emoticon($resource_id, $label, $theme_img_code, $relevance_level, $use_topics, $is_special);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

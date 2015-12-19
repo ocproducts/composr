@@ -65,7 +65,7 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('newsletter');
 
@@ -80,6 +80,8 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
         if (isset($properties['subscribers'])) {
             table_from_portable_rows('newsletter_subscribe', $properties['subscribers'], array('newsletter_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
 
         return strval($id);
     }
@@ -101,12 +103,14 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => get_translated_text($row['title']),
             'description' => get_translated_text($row['description']),
             'archive' => table_to_portable_rows('newsletter_archive', /*skip*/array('id'), array('newsletter' => intval($resource_id))),
             'subscribers' => table_to_portable_rows('newsletter_subscribe', /*skip*/array(), array('newsletter_id' => intval($resource_id))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -120,7 +124,7 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('newsletter');
 
@@ -136,6 +140,8 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
         if (isset($properties['subscribers'])) {
             table_from_portable_rows('newsletter_subscribe', $properties['subscribers'], array('newsletter_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

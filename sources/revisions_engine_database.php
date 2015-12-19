@@ -114,7 +114,7 @@ class RevisionEngineDatabase
      *
      * @param  AUTO_LINK $id Revision ID.
      */
-    function delete_revision($id)
+    public function delete_revision($id)
     {
         $GLOBALS['SITE_DB']->query_delete('revisions', array('id' => $id), '', 1);
     }

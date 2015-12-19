@@ -33,7 +33,7 @@ class Hook_content_meta_aware_catalogue_entry
     public function info($zone = null, $catalogue_name = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'catalogues:CATALOGUE_ENTRY',
 
@@ -56,6 +56,7 @@ class Hook_content_meta_aware_catalogue_entry
             'title_field_dereference' => false,
             'description_field' => null,
             'thumb_field' => 'CALL: generate_catalogue_thumb_field',
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:catalogues:entry:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit:_WILD',
@@ -66,7 +67,9 @@ class Hook_content_meta_aware_catalogue_entry
             'support_url_monikers' => true,
 
             'views_field' => 'ce_views',
+            'order_field' => null,
             'submitter_field' => 'ce_submitter',
+            'author_field' => null,
             'add_time_field' => 'ce_add_date',
             'edit_time_field' => 'ce_edit_date',
             'date_field' => 'ce_add_date',
@@ -79,6 +82,11 @@ class Hook_content_meta_aware_catalogue_entry
             'permissions_type_code' => (get_value('disable_cat_cat_perms') === '1') ? null : 'catalogues_category', // NULL if has no permissions
 
             'search_hook' => 'catalogue_entries',
+            'rss_hook' => 'catalogues',
+            'attachment_hook' => 'catalogue_entry',
+            'unvalidated_hook' => 'catalogue_entry',
+            'notification_hook' => 'catalogue_entry',
+            'sitemap_hook' => 'catalogue_entry',
 
             'addon_name' => 'catalogues',
 
@@ -93,11 +101,11 @@ class Hook_content_meta_aware_catalogue_entry
 
             'support_revisions' => false,
 
-            'rss_hook' => 'catalogues',
+            'support_privacy' => true,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_CATALOGUE_ENTRY',
-
-            'supports_privacy' => true,
         );
     }
 

@@ -77,7 +77,7 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('tickets2');
 
@@ -85,6 +85,9 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
         $search_faq = $this->_default_property_int($properties, 'search_faq');
 
         $id = add_ticket_type($label, $guest_emails_mandatory, $search_faq);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -105,11 +108,13 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => get_translated_text($row['ticket_type_name']),
             'guest_emails_mandatory' => $row['guest_emails_mandatory'],
             'search_faq' => $row['search_faq'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -123,7 +128,7 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('tickets2');
 
@@ -132,6 +137,8 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
         $search_faq = $this->_default_property_int($properties, 'search_faq');
 
         edit_ticket_type(intval($resource_id), $label, $guest_emails_mandatory, $search_faq);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

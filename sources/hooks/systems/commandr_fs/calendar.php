@@ -101,13 +101,17 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('calendar2');
 
         $logo = $this->_default_property_str($properties, 'logo');
         $external_feed = $this->_default_property_str($properties, 'external_feed');
+
         $id = add_event_type($label, $logo, $external_feed);
+
+        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -128,11 +132,13 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['t_title'],
             'logo' => $row['t_logo'],
             'external_feed' => $row['t_external_feed'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -146,6 +152,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('calendar2');
 
@@ -154,6 +161,8 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $external_feed = $this->_default_property_str($properties, 'external_feed');
 
         edit_event_type(intval($resource_id), $label, $logo, $external_feed);
+
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }
@@ -198,7 +207,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -267,6 +276,8 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -289,7 +300,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('events', strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['e_title'],
             'description' => $row['e_content'],
             'start_year' => $row['e_start_year'],
@@ -325,6 +336,8 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => strval($row['id'])))),
             'reminders' => table_to_portable_rows('calendar_reminders', /*skip*/array('id'), array('e_id' => intval($resource_id))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -339,7 +352,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -408,6 +421,8 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         if (isset($properties['reminders'])) {
             table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

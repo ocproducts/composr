@@ -39,7 +39,7 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
         $cma_ob = get_content_object($content_type);
         $cma_info = $cma_ob->info();
 
-        if ((!isset($cma_info['supports_privacy'])) || (!$cma_info['supports_privacy'])) {
+        if (!$cma_info['support_privacy']) {
             return array('', '', '', '');
         }
 
@@ -64,7 +64,7 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
         $where .= ' OR priv.member_view=1';
         $where .= ' OR priv.friend_view=1 AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'chat_friends f WHERE f.member_liked=' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . ' AND f.member_likes=' . strval($viewing_member_id) . ')';
         $where .= ' OR ' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . '=' . strval($viewing_member_id);
-        $where .= ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_primary__members pm WHERE pm.member_id=' . strval($viewing_member_id) . ' AND pm.content_id=' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['id_field']) : strval($submitter)) . ' AND ' . db_string_equal_to('pm.content_type', $content_type) . ')';
+        $where .= ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_privacy__members pm WHERE pm.member_id=' . strval($viewing_member_id) . ' AND pm.content_id=' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['id_field']) : strval($submitter)) . ' AND ' . db_string_equal_to('pm.content_type', $content_type) . ')';
         if ($additional_or != '') {
             $where .= ' OR ' . $additional_or;
         }
@@ -115,7 +115,7 @@ function has_privacy_access($content_type, $content_id, $viewing_member_id = nul
     $cma_ob = get_content_object($content_type);
     $cma_info = $cma_ob->info();
 
-    if ((!isset($cma_info['supports_privacy'])) || (!$cma_info['supports_privacy'])) {
+    if (!$cma_info['support_privacy']) {
         return true;
     }
 
@@ -191,7 +191,7 @@ function privacy_limits_for($content_type, $content_id, $strict_all = false)
         }
     }
 
-    $GLOBALS['SITE_DB']->query_select('content_primary__members', array('member_id'), array('content_type' => $content_type, 'content_id' => $content_id));
+    $GLOBALS['SITE_DB']->query_select('content_privacy__members', array('member_id'), array('content_type' => $content_type, 'content_id' => $content_id));
     $members = array_merge($members, collapse_1d_complexity('member_id', $friends));
 
     return $members;

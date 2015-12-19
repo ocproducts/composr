@@ -32,7 +32,7 @@ class Hook_resource_meta_aware_cpf
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'CUSTOM_PROFILE_FIELD',
 
@@ -53,6 +53,9 @@ class Hook_resource_meta_aware_cpf
 
             'title_field' => 'cf_name',
             'title_field_dereference' => true,
+            'description_field' => null,
+            'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_cns_customprofilefields:_edit:_WILD',
@@ -65,6 +68,7 @@ class Hook_resource_meta_aware_cpf
             'views_field' => null,
             'order_field' => 'cf_order',
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -77,6 +81,11 @@ class Hook_resource_meta_aware_cpf
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'cns_cpfs',
 
@@ -88,7 +97,9 @@ class Hook_resource_meta_aware_cpf
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_CUSTOM_PROFILE_FIELD',
         );

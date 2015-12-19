@@ -100,7 +100,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             $category = 'root';
         }/*return false;*/ // Can't create more than one root
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('galleries2');
 
@@ -127,6 +127,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $name = add_gallery($name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $allow_rating, $allow_comments, false, $add_date, $g_owner, $meta_keywords, $meta_description, true);
+
+        $this->_resource_save_extend($this->folder_resource_type, $name, $properties);
+
         return $name;
     }
 
@@ -149,7 +152,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for($resource_type, strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['fullname'],
             'name' => $row['name'],
             'description' => $row['description'],
@@ -170,6 +173,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -184,6 +189,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('galleries2');
 
@@ -213,7 +219,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         $name = edit_gallery($resource_id, $name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $meta_keywords, $meta_description, $allow_rating, $allow_comments, $g_owner, $add_time, true, true);
 
-        return $resource_id;
+        $this->_resource_save_extend($this->folder_resource_type, $name, $properties);
+
+        return $name;
     }
 
     /**
@@ -276,13 +284,16 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     public function file_add($filename, $path, $properties, $force_type = null)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
 
         if (is_null($category)) {
             return false; // Folder not found
         }
 
         require_code('galleries2');
+
+        $is_image = (((empty($properties['url'])) || (is_image($properties['url']))) && (empty($properties['video_length'])) || ($force_type === 'image')) && ($force_type !== 'video');
+
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $is_image ? 'image' : 'video');
 
         $description = $this->_default_property_str($properties, 'description');
         $url = $this->_default_property_urlpath($properties, 'url');
@@ -301,7 +312,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         require_code('images');
-        if ((((is_image($url)) || ($url == '')) && ((!array_key_exists('video_length', $properties)) || ($properties['video_length'] == '')) || ($force_type === 'image')) && ($force_type !== 'video')) {
+        if ($is_image) {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'images', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'images', 1);
             $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'images', 1);
@@ -335,6 +346,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             $id = add_video($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description, $regions);
         }
 
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -357,7 +370,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for($resource_type, strval($row['id']));
 
-        $ret = array(
+        $properties = array(
             'label' => $row['title'],
             'description' => $row['description'],
             'url' => remap_urlpath_as_portable($row['url']),
@@ -374,19 +387,22 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             'edit_date' => remap_time_as_portable($row['edit_date']),
             'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => $resource_type, 'content_id' => strval($row['id'])))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+
         if ($resource_type == 'video') {
-            $ret += array(
+            $properties += array(
                 'views' => $row['video_views'],
                 'video_length' => $row['video_length'],
                 'video_width' => $row['video_width'],
                 'video_height' => $row['video_height'],
             );
         } else {
-            $ret += array(
+            $properties += array(
                 'views' => $row['image_views'],
             );
         }
-        return $ret;
+
+        return $properties;
     }
 
     /**
@@ -401,7 +417,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -437,6 +454,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             }
 
             edit_image(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $regions, true);
+
+            $this->_resource_save_extend('image', $resource_id, $properties);
         } else {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'videos', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'videos', 1);
@@ -458,6 +477,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             }
 
             edit_video(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $regions, true);
+
+            $this->_resource_save_extend('video', $resource_id, $properties);
         }
 
         return $resource_id;

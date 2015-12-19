@@ -77,7 +77,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('newsletter');
 
@@ -97,6 +97,8 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
         $surname = $this->_default_property_str($properties, 'surname');
 
         $id = add_newsletter_subscriber($email, $join_time, $code_confirm, $password, $salt, $language, $forename, $surname);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
 
         return strval($id);
     }
@@ -118,7 +120,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['email'],
             'join_time' => $row['join_time'],
             'code_confirm' => $row['code_confirm'],
@@ -128,6 +130,8 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
             'forename' => $row['n_forename'],
             'surname' => $row['n_surname'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -141,7 +145,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('newsletter');
 
@@ -161,6 +165,8 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
         $surname = $this->_default_property_str($properties, 'surname');
 
         edit_newsletter_subscriber(intval($resource_id), $email, $join_time, $code_confirm, $password, $salt, $language, $forename, $surname);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

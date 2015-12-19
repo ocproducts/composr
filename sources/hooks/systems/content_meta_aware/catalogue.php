@@ -32,7 +32,7 @@ class Hook_content_meta_aware_catalogue
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'CATALOGUES',
 
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_catalogue
             'title_field_dereference' => true,
             'description_field' => 'c_description',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:catalogues:index:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit_catalogue:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_catalogue
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => 'c_add_date',
             'edit_time_field' => null,
             'date_field' => 'c_add_date',
@@ -78,6 +81,11 @@ class Hook_content_meta_aware_catalogue
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'catalogue',
 
             'addon_name' => 'catalogues',
 
@@ -89,7 +97,9 @@ class Hook_content_meta_aware_catalogue
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_CATALOGUE',
         );

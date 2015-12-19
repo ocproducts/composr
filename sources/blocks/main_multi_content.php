@@ -386,7 +386,7 @@ class Block_main_multi_content
                         foreach (array_keys($hooks) as $hook) {
                             $other_ob = get_content_object($hook);
                             $other_info = $other_ob->info();
-                            if (($hook != $content_type) && (isset($other_info['parent_category_meta_aware_type'])) && ($other_info['parent_category_meta_aware_type'] == $content_type) && (is_string($other_info['parent_category_field'])) && (isset($other_info['add_time_field']))) {
+                            if (($hook != $content_type) && (!is_null($other_info['parent_category_meta_aware_type'])) && ($other_info['parent_category_meta_aware_type'] == $content_type) && (is_string($other_info['parent_category_field'])) && (!is_null($other_info['add_time_field']))) {
                                 $sort_combos[] = array($other_info['table'], $other_info['add_time_field'], $other_info['parent_category_field']);
                             }
                         }

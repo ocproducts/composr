@@ -255,14 +255,18 @@ abstract class Resource_fs_base
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties
+     * @param  ID_TEXT $resource_type The resource type
      * @return array A pair: the resource label, Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
      */
-    protected function _file_magic_filter($filename, $path, $properties)
+    protected function _file_magic_filter($filename, $path, $properties, $resource_type)
     {
         $label = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION); // Default implementation is simply to assume the stub of the filename (or may be a raw label already, with no file type) is the resource label
         if (array_key_exists('label', $properties)) {
             $label = $properties['label']; // ...unless the label was explicitly given
         }
+
+        $this->_resource_save_extend_pre($properties, $resource_type);
+
         return array($properties, $label); // Leave properties alone
     }
 
@@ -359,11 +363,7 @@ abstract class Resource_fs_base
      */
     protected function _default_property_str($properties, $property)
     {
-        $ret = array_key_exists($property, $properties) ? $properties[$property] : '';
-        if (is_integer($ret)) {
-            $ret = get_translated_text($ret);
-        }
-        return $ret;
+        return array_key_exists($property, $properties) ? $properties[$property] : '';
     }
 
     /**
@@ -375,11 +375,7 @@ abstract class Resource_fs_base
      */
     protected function _default_property_str_null($properties, $property)
     {
-        $ret = array_key_exists($property, $properties) ? $properties[$property] : null;
-        if (is_integer($ret)) {
-            $ret = get_translated_text($ret);
-        }
-        return $ret;
+        return array_key_exists($property, $properties) ? $properties[$property] : null;
     }
 
     /**
@@ -1054,11 +1050,20 @@ abstract class Resource_fs_base
     /**
      * Reset resource privileges on the resource for all usergroups.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function reset_resource_access($filename)
+    public function reset_resource_access($filename, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1084,12 +1089,21 @@ abstract class Resource_fs_base
     /**
      * Set resource view access on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  array $groups A mapping from group ID to view access
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function set_resource_access($filename, $groups)
+    public function set_resource_access($filename, $groups, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1141,12 +1155,21 @@ abstract class Resource_fs_base
     /**
      * Get resource view access on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      * @return array A mapping from group ID to view access
      */
-    public function get_resource_access($filename)
+    public function get_resource_access($filename, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1183,12 +1206,21 @@ abstract class Resource_fs_base
     /**
      * Set resource view access on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  array $members A mapping from member ID to view access
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function set_resource_access__members($filename, $members)
+    public function set_resource_access__members($filename, $members, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1234,12 +1266,21 @@ abstract class Resource_fs_base
     /**
      * Get resource view access on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      * @return array A mapping from member ID to view access
      */
-    public function get_resource_access__members($filename)
+    public function get_resource_access__members($filename, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1267,17 +1308,27 @@ abstract class Resource_fs_base
     /**
      * Reset resource privileges on the resource for all usergroups.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function reset_resource_privileges($filename)
+    public function reset_resource_privileges($filename, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         if ($resource_type == 'zone') {
             return; // Can not be done
         }
         if ($resource_type == 'comcode_page') {
             return; // Can not be done
         }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1288,18 +1339,28 @@ abstract class Resource_fs_base
     /**
      * Work out what a privilege preset means for a kind of resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      * @return ?array A mapping from privilege to minimum preset level required for privilege activation (null: unworkable)
      */
-    protected function _compute_privilege_preset_scheme($filename)
+    protected function _compute_privilege_preset_scheme($filename, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         if ($resource_type == 'zone') {
             return null; // Can not be done
         }
         if ($resource_type == 'comcode_page') {
             return null; // Can not be done
         }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1331,12 +1392,18 @@ abstract class Resource_fs_base
     /**
      * Set resource privileges from a preset on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  array $group_presets A mapping from group ID to preset value. Preset values are 0 (read only) to 3 (moderation)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function set_resource_privileges_from_preset($filename, $group_presets)
+    public function set_resource_privileges_from_preset($filename, $group_presets, $resource_type = null, $category = null)
     {
-        $privileges_scheme = $this->_compute_privilege_preset_scheme($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        $privileges_scheme = $this->_compute_privilege_preset_scheme($filename, $resource_type, $category);
         if (is_null($privileges_scheme)) {
             return;
         }
@@ -1356,18 +1423,28 @@ abstract class Resource_fs_base
     /**
      * Set resource privileges on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  array $group_settings A map between group ID, and a map of privilege to setting
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function set_resource_privileges($filename, $group_settings)
+    public function set_resource_privileges($filename, $group_settings, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         if ($resource_type == 'zone') {
             return; // Can not be done
         }
         if ($resource_type == 'comcode_page') {
             return; // Can not be done
         }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1391,18 +1468,28 @@ abstract class Resource_fs_base
     /**
      * Get the resource privileges for the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      * @return array A map between group ID, and a map of privilege to setting
      */
-    public function get_resource_privileges($filename)
+    public function get_resource_privileges($filename, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         if ($resource_type == 'zone') {
             return array(); // Can not be done
         }
         if ($resource_type == 'comcode_page') {
             return array(); // Can not be done
         }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1441,12 +1528,18 @@ abstract class Resource_fs_base
     /**
      * Set resource privileges from a preset so that a member has custom privileges on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  array $member_presets A mapping from member ID to preset value. Preset values are 0 (read only) to 3 (moderation)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function set_resource_privileges_from_preset__members($filename, $member_presets)
+    public function set_resource_privileges_from_preset__members($filename, $member_presets, $resource_type = null, $category = null)
     {
-        $privileges_scheme = $this->_compute_privilege_preset_scheme($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        $privileges_scheme = $this->_compute_privilege_preset_scheme($filename, $resource_type, $category);
         if (is_null($privileges_scheme)) {
             return;
         }
@@ -1466,18 +1559,28 @@ abstract class Resource_fs_base
     /**
      * Set a resource privilege so that a member has a custom privilege on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  array $member_settings A map between member ID, and a map of privilege to setting
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      */
-    public function set_resource_privileges__members($filename, $member_settings)
+    public function set_resource_privileges__members($filename, $member_settings, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         if ($resource_type == 'zone') {
             return; // Can not be done
         }
         if ($resource_type == 'comcode_page') {
             return; // Can not be done
         }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1494,18 +1597,28 @@ abstract class Resource_fs_base
     /**
      * Get the resource privileges for all members that have custom privileges on the resource.
      *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
+     * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
+     * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
+     * @param  ?ID_TEXT $category The resource ID (null: $filename specified instead)
      * @return array A map between member ID, and a map of privilege to setting
      */
-    public function get_resource_privileges__members($filename)
+    public function get_resource_privileges__members($filename, $resource_type = null, $category = null)
     {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        if (is_null($resource_type)) {
+            list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
+        }
+
         if ($resource_type == 'zone') {
             return array(); // Can not be done
         }
         if ($resource_type == 'comcode_page') {
             return array(); // Can not be done
         }
+
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
@@ -1674,8 +1787,296 @@ abstract class Resource_fs_base
     }
 
     /*
-    CUSTOM FIELDS BINDING
+    STANDARD FEATURE INCORPORATION
     */
+
+    /**
+     * Extend a resource with extra properties from standard features a resource type supports.
+     *
+     * @param  ID_TEXT $resource_type The resource type
+     * @param  ID_TEXT $resource_id The resource ID
+     * @param  array $properties Details of properties
+     * @param  SHORT_TEXT $filename Filename
+     * @param  string $path The path (blank: root / not applicable)
+     */
+    protected function _resource_load_extend($resource_type, $resource_id, &$properties, $filename, $path)
+    {
+        $cma_info = $this->_get_cma_info($resource_type);
+        $connection = $cma_info['connection'];
+
+        $reserved_fields = array(
+            'alternative_ids',
+            'url_id_monikers',
+            'attachments',
+            'content_privacy',
+            'content_privacy__members',
+            'content_reviews',
+            'comments',
+            'reviews',
+            'ratings',
+            'trackbacks',
+            'access',
+            'access__members',
+            'privileges',
+            'privileges__members',
+        );
+        if (array_intersect(array_keys($properties), $reserved_fields) != array()) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        // Alternative IDs
+        $properties['alternative_ids'] = table_to_portable_rows('alternative_ids', /*skip*/array('resource_moniker', 'resource_label'), array('resource_type' => $resource_type, 'resource_id' => $resource_id), $connection);
+
+        // URL monikers
+        if ($cma_info['support_url_monikers']) {
+            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_type' => $resource_type, 'm_resource_id' => $resource_id), $connection);
+        }
+
+        // Attachments
+        if (!is_null($cma_info['attachment_hook'])) {
+            $attachment_refs_rows = collapse_1d_complexity('a_id', $connection->query_select('attachment_refs', array('a_id'), array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id), $connection));
+            $properties['attachments'] = array();
+            foreach ($attachment_refs_rows as $attachment_id) {
+                $attachment_rows = table_to_portable_rows('attachments', /*skip*/array(), array('id' => $attachment_id), $connection);
+                if (isset($attachment_rows[0])) {
+                    $properties['attachments'][] = $attachment_rows[0] + array('_foreign_id' => $attachment_id);
+                }
+            }
+        }
+
+        // Content privacy
+        if ($cma_info['support_privacy']) {
+            $properties['content_privacy'] = table_to_portable_rows('content_privacy', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
+            $properties['content_privacy__members'] = table_to_portable_rows('content_privacy__members', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
+        }
+
+        // Content reviews (by staff)
+        if ($cma_info['support_content_reviews']) {
+            $properties['content_reviews'] = table_to_portable_rows('content_reviews', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
+        }
+
+        if (!is_null($cma_info['feedback_type_code'])) {
+            if (get_forum_type() == 'cns') {
+                // Comments & Reviews
+                $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(find_overridden_comment_forum($cma_info['feedback_type_code']), $cma_info['feedback_type_code'] . '_' . $resource_id);
+                if (!is_null($topic_id)) {
+                    $comments = get_resource_fs_record('topic', strval($topic_id));
+                    if (!is_null($comments)) {
+                        list($properties['comments'], ) = $comments;
+                    }
+                }
+
+                $properties['reviews'] = table_to_portable_rows('review_supplement', /*skip*/array('id'), array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), $connection);
+                // NB: r_topic_id and r_post_id will automatically be made portable, so associated with the correct comment
+            }
+
+            // Ratings
+            $properties['ratings'] = table_to_portable_rows('rating', /*skip*/array('id'), array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $resource_id), $connection);
+
+            // Trackbacks
+            $properties['trackbacks'] = table_to_portable_rows('trackbacks', /*skip*/array('id'), array('trackback_for_type' => $cma_info['feedback_type_code'], 'trackback_for_id' => $resource_id), $connection);
+        }
+
+        // Custom fields
+        if ($cma_info['support_custom_fields']) {
+            $properties += $this->_custom_fields_load($resource_type, $resource_id);
+        }
+
+        // Permissions
+        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category']) {
+            $properties['access'] = $this->get_resource_access(null, $resource_type, $resource_id);
+
+            $properties['access__members'] = $this->get_resource_access__members(null, $resource_type, $resource_id);
+
+            $properties['privileges'] = $this->get_resource_privileges(null, $resource_type, $resource_id);
+
+            $properties['privileges__members'] = $this->get_resource_privileges__members(null, $resource_type, $resource_id);
+        }
+
+        // Properties not used for anything, but interesting
+        $properties['comment__resource_type'] = $resource_type;
+        $properties['comment__resource_id'] = $resource_id;
+        $properties['comment__path'] = $path;
+        $properties['comment__filename'] = $filename;
+        $properties['comment__generation_time'] = remap_time_as_portable(time());
+        if (isset($properties['edit_date'])) {
+            $properties['comment__edit_date_note'] = 'You may remove the edit_date if you want it to auto-generate to the current-time when saving';
+        }
+    }
+
+    /**
+     * Modify standard properties as may be needed by implications of extra properties.
+     *
+     * @param  array $properties Details of properties (returned by reference)
+     * @param  ID_TEXT $resource_type The resource type
+     */
+    protected function _resource_save_extend_pre(&$properties, $resource_type)
+    {
+        $cma_info = $this->_get_cma_info($resource_type);
+        $connection = $cma_info['connection'];
+
+        // New Attachment IDs need generating and substituting
+        if (!is_null($cma_info['attachment_hook'])) {
+            if (isset($properties['attachments'])) {
+                $new_id = $connection->query_select_value_if_there('attachments', 'MAX(id)');
+                if (is_null($new_id)) {
+                    $new_id = db_get_first_id();
+                } else {
+                    $new_id++;
+                }
+
+                $attachments = $properties['attachments'];
+                foreach ($attachments as &$attachment) {
+                    $foreign_id = $attachment['_foreign_id'];
+
+                    foreach ($properties as &$val) {
+                        if (is_string($val)) {
+                            $val = preg_replace('#\([attachment( .*)?\])' . strval($foreign_id) . '(\[/attachment\])#U', '$1' . strval($new_id) . '$3', $val);
+                            $val = preg_replace('#\([attachment_safe( .*)?\])' . strval($foreign_id) . '(\[/attachment_safe\])#U', '$1' . strval($new_id) . '$3', $val);
+                        }
+                    }
+
+                    $attachment['_new_id'] = $new_id;
+                    $new_id++;
+                }
+            }
+        }
+    }
+
+    /**
+     * Save extra properties from standard features a resource type supports.
+     *
+     * @param  ID_TEXT $resource_type The resource type
+     * @param  ID_TEXT $resource_id The resource ID
+     * @param  array $properties Details of properties
+     */
+    protected function _resource_save_extend($resource_type, $resource_id, $properties)
+    {
+        $cma_info = $this->_get_cma_info($resource_type);
+        $connection = $cma_info['connection'];
+
+        // Alternative IDs
+        if (isset($properties['alternative_ids'])) {
+            table_from_portable_rows('alternative_ids', $properties['alternative_ids'], array('m_resource_type' => $resource_type, 'm_resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+        }
+
+        // URL monikers
+        if ($cma_info['support_url_monikers']) {
+            if (isset($properties['url_id_monikers'])) {
+                table_from_portable_rows('url_id_monikers', $properties['url_id_monikers'], array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            }
+        }
+
+        // Attachments
+        if (!is_null($cma_info['attachment_hook'])) {
+            if (isset($properties['attachments'])) {
+                $attachments = $properties['attachments'];
+
+                // Delete old attachments
+                require_code('attachments3');
+                delete_comcode_attachments($cma_info['attachment_hook'], $resource_id, $connection);
+
+                // Meta-data
+                $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => 'attachments')));
+                $relation_map = get_relation_map_for_table('attachments');
+
+                // Insert new attachments
+                foreach ($attachments as $attachment) {
+                    $foreign_id = $attachment['_foreign_id'];
+                    unset($attachment['_foreign_id']);
+                    $new_attachment_id = $attachment['_new_id'];
+                    unset($attachment['_new_id']);
+
+                    $attachment_row = table_row_from_portable_row($attachment, $db_fields, $relation_map);
+                    $attachment_row['id'] = $new_attachment_id;
+                    $connection->query_insert('attachments', $attachment_row);
+                    $connection->query_insert('attachment_refs', array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id, 'a_id' => $new_attachment_id));
+                }
+            }
+        }
+
+        // Content privacy
+        if ($cma_info['support_privacy']) {
+            if (isset($properties['content_privacy'])) {
+                table_from_portable_rows('content_privacy', $properties['content_privacy'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            }
+
+            if (isset($properties['content_privacy__members'])) {
+                table_from_portable_rows('content_privacy__members', $properties['content_privacy__members'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            }
+        }
+
+        // Content reviews (by staff)
+        if ($cma_info['support_content_reviews']) {
+            if (isset($properties['content_reviews'])) {
+                table_from_portable_rows('content_reviews', $properties['content_reviews'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            }
+        }
+
+        if (!is_null($cma_info['feedback_type_code'])) {
+            if (get_forum_type() == 'cns') {
+                // Comments & Reviews
+                if (isset($properties['comments'])) {
+                    $comments = $properties['comments'];
+                    $comments['description'] = preg_replace('#^(.*: ) .*$#', '$1 ' . $cma_info['feedback_type_code'] . '_' . $resource_id, $comments['description']);
+
+                    $forum_name = find_overridden_comment_forum($cma_info['feedback_type_code']);
+                    $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $cma_info['feedback_type_code'] . '_' . $resource_id);
+                    if (is_null($topic_id)) {
+                        $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
+                        require_code('crypt'); // Will use a random filename, which will immediately change to new one based on the label
+                        $resource_fs_path = find_commandr_fs_filename_via_id('forum', strval($forum_id), true) . '/' . get_rand_password() . '.' . RESOURCE_FS_DEFAULT_EXTENSION;
+                    } else {
+                        $resource_fs_path = find_commandr_fs_filename_via_id('topic', strval($topic_id), true);
+                    }
+
+                    $resource_fs_ob = get_resource_commandr_fs_object('topic');
+                    $resource_fs_data = $resource_fs_ob->resource_save('topic', basename($resource_fs_path), dirname($resource_fs_path), $properties);
+                }
+                if (isset($properties['reviews'])) {
+                    table_from_portable_rows('review_supplement', $properties['comments'], array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                }
+            }
+
+            // Ratings
+            if (isset($properties['ratings'])) {
+                table_from_portable_rows('rating', $properties['ratings'], array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            }
+
+            // Trackbacks
+            if (isset($properties['trackbacks'])) {
+                table_from_portable_rows('trackbacks', $properties['trackbacks'], array('trackback_for_type' => $cma_info['feedback_type_code'], 'trackback_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            }
+        }
+
+        // Custom fields
+        if ($cma_info['support_custom_fields']) {
+            $this->_custom_fields_save($resource_type, $resource_id, $properties);
+        }
+
+        // Permissions
+        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category']) {
+            if (isset($properties['access'])) {
+                $groups = $properties['access'];
+                $this->set_resource_access(null, $groups, $resource_type, $resource_id);
+            }
+
+            if (isset($properties['access__members'])) {
+                $members = $properties['access__members'];
+                $this->set_resource_access__members(null, $members, $resource_type, $resource_id);
+            }
+
+            if (isset($properties['privileges'])) {
+                $group_settings = $properties['privileges'];
+                $this->set_resource_privileges(null, $group_settings, $resource_type, $resource_id);
+            }
+
+            if (isset($properties['privileges__members'])) {
+                $member_settings = $properties['privileges__members'];
+                $this->set_resource_privileges__members(null, $member_settings, $resource_type, $resource_id);
+            }
+        }
+    }
 
     /**
      * Find details of custom properties.
@@ -1690,6 +2091,9 @@ abstract class Resource_fs_base
             return $cache[$type];
         }
 
+        $cma_info = $this->_get_cma_info($type);
+        $connection = $cma_info['connection'];
+
         require_code('fields');
         if (!has_tied_catalogue($type)) {
             return array();
@@ -1699,7 +2103,7 @@ abstract class Resource_fs_base
 
         $fields = get_catalogue_fields('_' . $type);
         foreach ($fields as $field_bits) {
-            $cf_name = get_translated_text($field_bits['cf_name']);
+            $cf_name = get_translated_text($field_bits['cf_name'], $connection);
             $fixed_id = 'custom__' . fix_id($cf_name);
             if (!array_key_exists($fixed_id, $props)) {
                 $key = $fixed_id;
@@ -1750,6 +2154,9 @@ abstract class Resource_fs_base
             return array();
         }
 
+        $cma_info = $this->_get_cma_info($type);
+        $connection = $cma_info['connection'];
+
         $properties = array();
 
         require_code('catalogues');
@@ -1758,7 +2165,7 @@ abstract class Resource_fs_base
         if (!is_null($catalogue_entry_id)) {
             $special_fields = get_catalogue_entry_field_values('_' . $type, $catalogue_entry_id);
         } else {
-            $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+            $special_fields = $connection->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         }
 
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
@@ -1791,12 +2198,15 @@ abstract class Resource_fs_base
             return;
         }
 
+        $cma_info = $this->_get_cma_info($type);
+        $connection = $cma_info['connection'];
+
         $existing = get_bound_content_entry($type, $id);
 
         require_code('catalogues');
 
         // Get field values
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $connection->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         $map = array();
         require_code('fields');
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
@@ -1808,7 +2218,7 @@ abstract class Resource_fs_base
             $map[$field['id']] = $properties[$prop_name];
         }
 
-        $first_cat = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $type));
+        $first_cat = $connection->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $type));
 
         require_code('catalogues2');
 
@@ -1817,7 +2227,7 @@ abstract class Resource_fs_base
         } else {
             $catalogue_entry_id = actual_add_catalogue_entry($first_cat, 1, '', 0, 0, 0, $map);
 
-            $GLOBALS['SITE_DB']->query_insert('catalogue_entry_linkage', array(
+            $connection->query_insert('catalogue_entry_linkage', array(
                 'catalogue_entry_id' => $catalogue_entry_id,
                 'content_type' => $type,
                 'content_id' => $id,

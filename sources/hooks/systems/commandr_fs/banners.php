@@ -93,7 +93,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('banners2');
 
@@ -112,7 +112,11 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         }
         $comcode_inline = $this->_default_property_int($properties, 'comcode_inline');
         $name = ($label == '') ? ''/*blank names allowed*/ : $this->_create_name_from_label($label);
+
         $name = add_banner_type($name, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline, true);
+
+        $this->_resource_save_extend($this->folder_resource_type, $name, $properties);
+
         return $name;
     }
 
@@ -133,7 +137,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['id'],
             'is_textual' => $row['t_is_textual'],
             'image_width' => $row['t_image_width'],
@@ -141,6 +145,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             'max_file_size' => $row['t_max_file_size'],
             'comcode_inline' => $row['t_comcode_inline'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -154,6 +160,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('banners2');
 
@@ -175,6 +182,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $name = ($label == '') ? ''/*blank names allowed*/ : $this->_create_name_from_label($label);
 
         $name = edit_banner_type($resource_id, $name, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline, true);
+
+        $this->_resource_save_extend($this->folder_resource_type, $name, $properties);
 
         return $resource_id;
     }
@@ -219,7 +228,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -252,7 +261,11 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $views_from = $this->_default_property_int($properties, 'views_from');
         $views_to = $this->_default_property_int($properties, 'views_to');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
+
         $name = add_banner($name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $name, $properties);
+
         return $name;
     }
 
@@ -273,7 +286,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['name'],
             'img_url' => remap_urlpath_as_portable($row['img_url']),
             'title_text' => $row['b_title_text'],
@@ -295,6 +308,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
             'add_date' => remap_time_as_portable($row['add_date']),
             'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -309,7 +324,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -344,6 +359,8 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $edit_date = $this->_default_property_time($properties, 'edit_date');
 
         $name = edit_banner($resource_id, $name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $name, $properties);
 
         return $resource_id;
     }

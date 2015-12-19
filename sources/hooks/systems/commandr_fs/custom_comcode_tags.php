@@ -73,7 +73,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         $tag = $this->_create_name_from_label($label);
         $title = $this->_default_property_str($properties, 'title');
@@ -88,6 +88,8 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
 
         require_code('custom_comcode');
         $tag = add_custom_comcode_tag($tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $tag, $properties);
 
         return $tag;
     }
@@ -109,7 +111,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['tag_tag'],
             'title' => $row['tag_title'],
             'description' => $row['tag_description'],
@@ -121,6 +123,8 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
             'block_tag' => $row['tag_block_tag'],
             'textual_tag' => $row['tag_textual_tag']
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -134,7 +138,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         $label = $this->_default_property_str($properties, 'label');
         $tag = $this->_create_name_from_label($label);
@@ -149,6 +153,8 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
         $textual_tag = $this->_default_property_int($properties, 'textual_tag');
 
         $tag = edit_custom_comcode_tag($resource_id, $tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }

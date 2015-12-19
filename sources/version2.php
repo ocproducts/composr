@@ -160,7 +160,7 @@ function get_version_pretty__from_dotted($pretty)
 /**
  * Whether it is a substantial release (i.e. major new version).
  *
- * @param  string $pretty Pretty version number
+ * @param  string $dotted Pretty version number
  * @return boolean Whether it is
  */
 function is_substantial_release($dotted)

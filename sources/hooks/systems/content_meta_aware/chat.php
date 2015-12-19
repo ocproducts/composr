@@ -32,7 +32,7 @@ class Hook_content_meta_aware_chat
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'chat:CHATROOM',
 
@@ -55,6 +55,7 @@ class Hook_content_meta_aware_chat
             'title_field_dereference' => false,
             'description_field' => null,
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:chat:room:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_chat:room:_WILD',
@@ -65,7 +66,9 @@ class Hook_content_meta_aware_chat
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -78,6 +81,11 @@ class Hook_content_meta_aware_chat
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'chat',
 
             'addon_name' => 'chat',
 
@@ -89,7 +97,9 @@ class Hook_content_meta_aware_chat
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_CHAT',
         );

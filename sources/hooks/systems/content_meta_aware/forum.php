@@ -36,7 +36,7 @@ class Hook_content_meta_aware_forum
         }
 
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM',
 
@@ -59,6 +59,7 @@ class Hook_content_meta_aware_forum
             'title_field_dereference' => false,
             'description_field' => 'f_description',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:admin_cns_forums:_edit_category:_WILD',
@@ -71,6 +72,7 @@ class Hook_content_meta_aware_forum
             'views_field' => null,
             'order_field' => 'f_position',
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -83,6 +85,11 @@ class Hook_content_meta_aware_forum
             'permissions_type_code' => 'forums', // NULL if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'forum',
 
             'addon_name' => 'cns_forum',
 
@@ -94,7 +101,9 @@ class Hook_content_meta_aware_forum
 
             'support_revisions' => false,
 
-            'rss_hook' => null,
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_FORUM',
         );

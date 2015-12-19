@@ -36,7 +36,7 @@ class Hook_content_meta_aware_member
         }
 
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'MEMBER',
 
@@ -60,6 +60,7 @@ class Hook_content_meta_aware_member
             'title_field_dereference' => false,
             'description_field' => 'm_title',
             'thumb_field' => 'm_avatar_url',
+            'thumb_field_is_theme_image' => false,
 
             'view_page_link_pattern' => '_SEARCH:members:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:members:view:_WILD',
@@ -72,7 +73,9 @@ class Hook_content_meta_aware_member
             'support_url_monikers' => (get_option('username_profile_links') == '0'),
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => 'id',
+            'author_field' => null,
             'add_time_field' => 'm_join_time',
             'edit_time_field' => null,
             'date_field' => 'm_join_time',
@@ -85,6 +88,11 @@ class Hook_content_meta_aware_member
             'permissions_type_code' => null, // NULL if has no permissions
 
             'search_hook' => 'cns_members',
+            'rss_hook' => 'cns_members',
+            'attachment_hook' => null,
+            'unvalidated_hook' => 'cns_members',
+            'notification_hook' => 'cns_new_member',
+            'sitemap_hook' => 'member',
 
             'addon_name' => 'core_cns',
 
@@ -96,7 +104,9 @@ class Hook_content_meta_aware_member
 
             'support_revisions' => false,
 
-            'rss_hook' => 'cns_members',
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_MEMBER',
 

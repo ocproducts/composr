@@ -555,7 +555,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 
     // Top rating / liked
     if (($rating === 10) && ($type == '') && ($past_rating !== $rating)) {
-        if ((!is_null($cma_info)) && (isset($cma_info['content_type_label']))) {
+        if (!is_null($cma_info)) {
             $content_type_title = do_lang($cma_info['content_type_label']);
 
             // Special case. Would prefer not to hard-code, but important for usability
@@ -861,7 +861,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
 
         $content_type_title = $content_type;
-        if ((!is_null($cma_info)) && (isset($cma_info['content_type_label']))) {
+        if (!is_null($cma_info)) {
             $content_type_title = do_lang($cma_info['content_type_label']);
         }
 

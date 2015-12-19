@@ -65,7 +65,7 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action');
 
@@ -77,6 +77,9 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 
         $id = cns_make_welcome_email($label, $subject, $text, $send_time, $newsletter, $usergroup, $usergroup_type);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id));
+
         return strval($id);
     }
 
@@ -97,7 +100,7 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['w_name'],
             'subject' => get_translated_text($row['w_subject'], $GLOBALS['FORUM_DB']),
             'text' => get_translated_text($row['w_text'], $GLOBALS['FORUM_DB']),
@@ -106,6 +109,8 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
             'usergroup' => remap_resource_id_as_portable('group', $row['w_usergroup']),
             'usergroup_type' => $row['w_usergroup_type'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
@@ -119,7 +124,7 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('cns_general_action2');
 
@@ -132,6 +137,8 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 
         cns_edit_welcome_email(intval($resource_id), $label, $subject, $text, $send_time, $newsletter, $usergroup, $usergroup_type);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
 
         return $resource_id;
     }
