@@ -476,12 +476,12 @@ class Module_admin_actionlog
 
         // Is there a revision here?
         require_code('revisions_engine_database');
-        $revisions_engine = new RevisionEngineDatabase($mode == 'cns');
-        $revision = $revisions_engine->find_revision_for_log($id);
+        $revision_engine = new RevisionEngineDatabase($mode == 'cns');
+        $revision = $revision_engine->find_revision_for_log($id);
         if (is_null($revision)) {
             require_code('revisions_engine_files');
-            $revisions_engine = new RevisionEngineFiles();
-            $revision = $revisions_engine->find_revision_for_log($id);
+            $revision_engine = new RevisionEngineFiles();
+            $revision = $revision_engine->find_revision_for_log($id);
         }
         if (!is_null($revision)) {
             if (isset($revision['r_resource_type']) && isset($revision['r_resource_id'])) {

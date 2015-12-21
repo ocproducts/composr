@@ -487,6 +487,8 @@ function get_relation_map()
         'review_supplement.r_post_id' => 'f_posts.id',
         'review_supplement.r_rating_for_id' => 'modules.module_the_name',
         'review_supplement.r_topic_id' => 'f_topics.id',
+        'revisions.r_actionlog_id' => 'actionlog.id',
+        'revisions.r_moderatorlog_id' => 'f_moderator_logs.id',
         'sales.purcase_type' => 'prices.name',
         'seo_meta.meta_for_id' => null,
         'sessions.zone_name' => 'zones.zone_name',

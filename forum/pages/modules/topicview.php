@@ -870,8 +870,8 @@ class Module_topicview
             }
             if (addon_installed('actionlog')) {
                 require_code('revisions_engine_database');
-                $revisions_engine = new RevisionEngineDatabase(true);
-                if ($revisions_engine->has_revisions(array('post'), null, strval($id))) {
+                $revision_engine = new RevisionEngineDatabase(true);
+                if ($revision_engine->has_revisions(array('post'), null, strval($id))) {
                     $moderator_actions .= '<option value="topic_history">' . do_lang('actionlog:REVISIONS') . '</option>';
                 }
             }

@@ -40,7 +40,7 @@ class Hook_config_store_revisions
             'list_options' => '',
             'order_in_category_group' => 1,
 
-            'addon' => 'core',
+            'addon' => 'actionlog',
         );
     }
 

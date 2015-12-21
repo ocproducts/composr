@@ -204,8 +204,8 @@ class Module_admin_revisions
         }
 
         require_code('revisions_engine_database');
-        $revisions_engine = new RevisionEngineDatabase();
-        return $revisions_engine->ui_browse_revisions($this->title, $_fields_titles, is_null($resource_types) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
+        $revision_engine = new RevisionEngineDatabase();
+        return $revision_engine->ui_browse_revisions($this->title, $_fields_titles, is_null($resource_types) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
     }
 
     /**
@@ -280,16 +280,16 @@ class Module_admin_revisions
 
         if ($revision_type == 'database') {
             require_code('revisions_engine_database');
-            $revisions_engine = new RevisionEngineDatabase();
+            $revision_engine_database = new RevisionEngineDatabase();
 
-            $revisions_engine->delete_revision($id);
+            $revision_engine_database->delete_revision($id);
         } else {
             require_code('revisions_engine_files');
-            $revisions_engine = new RevisionEngineFiles();
+            $revision_engine_files = new RevisionEngineFiles();
 
             list($directory, $filename_id, $ext) = unserialize($revision_type);
 
-            $revisions_engine->delete_revision($directory, $filename_id, $ext, $id);
+            $revision_engine_files->delete_revision($directory, $filename_id, $ext, $id);
         }
 
         $url = get_param_string('redirect', get_self_url(true, false, array('type' => 'browse')));

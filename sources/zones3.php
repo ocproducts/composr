@@ -542,9 +542,9 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     // Save revision
     if ($file_changed) {
         require_code('revisions_engine_files');
-        $revisions_engine = new RevisionEngineFiles();
+        $revision_engine = new RevisionEngineFiles();
         list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
-        $revisions_engine->add_revision(dirname($full_path), $new_file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+        $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
     }
 
     // Store page on disk
@@ -636,9 +636,9 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
         if (substr($type, 0, 7) == 'comcode') {
             if (addon_installed('actionlog')) {
                 require_code('revisions_engine_files');
-                $revisions_engine = new RevisionEngineFiles();
+                $revision_engine = new RevisionEngineFiles();
                 list(, , $existing_path) = find_comcode_page(user_lang(), $page, $zone);
-                $revisions_engine->add_revision(dirname($existing_path), $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                $revision_engine->add_revision(dirname($existing_path), $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
             }
         }
 

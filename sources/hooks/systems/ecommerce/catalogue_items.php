@@ -648,7 +648,9 @@ class Hook_ecommerce_catalogue_items
             stock_maintain_warn_mail($product_name, $entry_id);
         }
 
-        $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field, 'ce_id' => $entry_id));
+        if (array_key_exists(3, $fields)) { // Stock level
+            $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field, 'ce_id' => $entry_id));
+        }
     }
 
     /**

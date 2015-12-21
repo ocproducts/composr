@@ -108,7 +108,7 @@ class RevisionEngineFiles
      * @param  string $ext File extension for revisable files.
      * @param  TIME $id Revision ID.
      */
-    function delete_revision($directory, $filename_id, $ext, $id)
+    public function delete_revision($directory, $filename_id, $ext, $id)
     {
         $revisions = $this->find_revisions($directory, $filename_id, $ext, null, $id);
         if (!isset($revisions[0])) {

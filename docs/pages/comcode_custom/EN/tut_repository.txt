@@ -160,7 +160,7 @@ These are the current known omissions for the repository:
  - If you add content via the repository, no syndication will be performed for it. E.g. if you add a news article, it won't be syndicated to Facebook if you've configured such syndication. This is normal within Composr, as syndication is an automated assistant built into the CMS modules, not the underlying framework. You can always syndicate things manually if required.
  - Multi-language-content translations are not retained (http://ocportal.com/tracker/view.php?id=2111)
  - Staging site limitations
-  - If importing point-store configuration, the IDs for custom permission products can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2113)
+  - If importing Point Store configuration, the IDs for custom permission products can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2113)
   - For custom fields representing IDs, the IDs can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2125)
   - For config option values representing IDs, the IDs can't be automatically remapped (http://ocportal.com/tracker/view.php?id=2126) -- but in most cases names (e.g. forum names) can be used instead of IDs, mitigating the problem
   - Transferring members

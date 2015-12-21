@@ -99,10 +99,8 @@ class Hook_addon_registry_wiki
     {
         return array(
             'themes/default/images/icons/24x24/menu/rich_content/wiki.png',
-            'themes/default/images/icons/24x24/buttons/revisions.png',
             'themes/default/images/icons/24x24/menu/rich_content/wiki/random_page.png',
             'themes/default/images/icons/48x48/menu/rich_content/wiki.png',
-            'themes/default/images/icons/48x48/buttons/revisions.png',
             'themes/default/images/icons/48x48/menu/rich_content/wiki/random_page.png',
             'themes/default/images/icons/24x24/buttons/edit_tree.png',
             'themes/default/images/icons/48x48/buttons/edit_tree.png',

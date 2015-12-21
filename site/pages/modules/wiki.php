@@ -678,8 +678,8 @@ class Module_wiki
         );
 
         require_code('revisions_engine_database');
-        $revisions_engine = new RevisionEngineDatabase();
-        return $revisions_engine->ui_browse_revisions(
+        $revision_engine = new RevisionEngineDatabase();
+        return $revision_engine->ui_browse_revisions(
             $this->title,
             $_fields_titles,
             array('wiki_page', 'wiki_post'),
@@ -921,8 +921,8 @@ class Module_wiki
 
             if (addon_installed('actionlog')) {
                 require_code('revisions_engine_database');
-                $revisions_engine = new RevisionEngineDatabase();
-                $revisions_engine->recategorise_old_revisions('wiki_post', strval($post_id), strval($target));
+                $revision_engine = new RevisionEngineDatabase();
+                $revision_engine->recategorise_old_revisions('wiki_post', strval($post_id), strval($target));
             }
 
             log_it('WIKI_MOVE_POST', strval($post_id), strval($target));
@@ -1030,8 +1030,8 @@ class Module_wiki
         require_lang('notifications');
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_database');
-            $revisions_engine = new RevisionEngineDatabase(false);
-            $notify = ($revisions_engine->find_most_recent_category_change('wiki_post', strval($page_id)) < time() - 60 * 10);
+            $revision_engine = new RevisionEngineDatabase(false);
+            $notify = ($revision_engine->find_most_recent_category_change('wiki_post', strval($page_id)) < time() - 60 * 10);
         } else {
             $notify = true;
         }

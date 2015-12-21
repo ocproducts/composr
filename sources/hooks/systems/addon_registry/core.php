@@ -181,8 +181,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/48x48/menu/adminzone/setup/config/base_config.png',
             'themes/default/images/icons/24x24/buttons/cancel.png',
             'themes/default/images/icons/48x48/buttons/cancel.png',
-            'themes/default/images/icons/24x24/buttons/changes.png',
-            'themes/default/images/icons/48x48/buttons/changes.png',
             'themes/default/images/icons/24x24/buttons/choose.png',
             'themes/default/images/icons/48x48/buttons/choose.png',
             'themes/default/images/icons/24x24/buttons/clear.png',
