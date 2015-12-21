@@ -30,7 +30,7 @@ class database_integrity_test_set extends cms_test_case
         $ob = new DatabaseRepair();
         list($phase, $sql) = $ob->search_for_database_issues();
         $this->assertTrue($phase == 2);
-        $this->assertTrue($sql == '');
+        $this->assertTrue($sql == '', $sql);
     }
 
     public function tearDown()

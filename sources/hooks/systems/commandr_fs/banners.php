@@ -115,7 +115,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         $name = add_banner_type($name, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline, true);
 
-        $this->_resource_save_extend($this->folder_resource_type, $name, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $name, $filename, $label, $properties);
 
         return $name;
     }
@@ -183,7 +183,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         $name = edit_banner_type($resource_id, $name, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline, true);
 
-        $this->_resource_save_extend($this->folder_resource_type, $name, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $name, $filename, $label, $properties);
 
         return $resource_id;
     }
@@ -264,7 +264,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         $name = add_banner($name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $time, $hits_from, $hits_to, $views_from, $views_to, $edit_date, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $name, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $name, $filename, $label, $properties);
 
         return $name;
     }
@@ -360,7 +360,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
 
         $name = edit_banner($resource_id, $name, $img_url, $title_text, $label, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $edit_date, $add_time, true, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $name, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $name, $filename, $label, $properties);
 
         return $resource_id;
     }

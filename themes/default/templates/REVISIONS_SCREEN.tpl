@@ -6,7 +6,7 @@
 	</p>
 
 	<div class="box_revisions_screen box"><div class="box_inner">
-		<form action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get">
+		<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,0,0,resource_types=<null>,resource_id=<null>,category_id=<null>,username=<null>}}
 
 			{$REQUIRE_CSS,widget_select2}

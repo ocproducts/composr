@@ -54,6 +54,7 @@ class Hook_commandr_fs_extended_config__privileges
             'group_page_access' => array(),
             'member_page_access' => array(),
         );
+
         $all = array();
         foreach ($tables as $table => $map) {
             $all[$table] = table_to_portable_rows($table, null, $map);
@@ -78,9 +79,16 @@ class Hook_commandr_fs_extended_config__privileges
             return false;
         }
 
+        $tables = array(
+            'group_privileges' => array('category_name' => ''),
+            'member_privileges' => array('category_name' => ''),
+            'group_page_access' => array(),
+            'member_page_access' => array(),
+        );
+
         $ret = true;
         foreach ($all as $table => $rows) {
-            $ret = $ret && table_from_json($table, $rows, null, TABLE_REPLACE_MODE_SEVERE);
+            $ret = $ret && table_from_portable_rows($table, $rows, $tables[$table], TABLE_REPLACE_MODE_SEVERE);
         }
         return $ret;
     }

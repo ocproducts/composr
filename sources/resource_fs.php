@@ -198,7 +198,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     }
 
     $resource_object = get_content_object($resource_type);
-    if (is_null($resource_type)) {
+    if (is_null($resource_object)) {
         fatal_exit('Cannot load content object for ' . $resource_type);
     }
     $resource_info = $resource_object->info();
@@ -580,7 +580,7 @@ function table_from_json($table, $json, $extra_field_data, $replace_mode)
 {
     $rows = @json_decode($json, true);
 
-    return table_from_portable_rows($table, $json, $extra_field_data, $replace_mode);
+    return table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode);
 }
 
 /**
@@ -619,7 +619,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
             $delete_where = $extra_field_data;
         }
         elseif ($replace_mode == TABLE_REPLACE_MODE_SEVERE) {
-            $delete_where = array();
+            $delete_where = null;
         }
 
         if (count($lang_fields) != 0 || count($upload_fields) != 0) {
@@ -930,6 +930,10 @@ function remap_foreign_key_as_portable($_table_referenced, $id)
 
     $resource_type = convert_composr_type_codes('table', $table_referenced, 'content_type');
 
+    if (empty($resource_type)) {
+        return $id;
+    }
+
     return remap_resource_id_as_portable($resource_type, $id);
 }
 
@@ -949,6 +953,10 @@ function remap_portable_as_foreign_key($_table_referenced, $portable_data)
     list($table_referenced, $field_referenced/*not actually used, we assume it's the primary key*/) = $_table_referenced;
 
     $resource_type = convert_composr_type_codes('table', $table_referenced, 'content_type');
+
+    if (empty($resource_type)) {
+        return $id;
+    }
 
     return remap_portable_as_resource_id($resource_type, $portable_data);
 }

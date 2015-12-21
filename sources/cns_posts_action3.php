@@ -257,7 +257,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     }
 
     // Check access
-    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT id,p_post,p_poster,p_time,p_intended_solely_for,p_validated FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
+    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
     $num_posts_counted = 0;
     foreach ($_postdetails as $post) {
         if ((is_null($post['p_intended_solely_for'])) && ($post['p_validated'] == 1)) {

@@ -19,7 +19,8 @@
  */
 
 /**
- * Hook class.
+ * Provide advice for repairing database issues.
+ * @package core
  */
 class DatabaseRepair
 {
@@ -371,9 +372,9 @@ class DatabaseRepair
                 }
 
                 // Fields alien in DB?
-                foreach ($existent_tables[$table_name] as $field_name => $field_type) {
+                foreach ($existent_tables[$table_name] as $field_name => $existent_details) {
                     if (!isset($expected_tables[$table_name][$field_name]) && strpos($field_name, '__text_parsed') === false && strpos($field_name, '__source_user') === false) {
-                        $this->fix_table_inconsistent_in_db__delete_field($table_name, $field_name, $field_type, isset($meta_tables[$table_name][$field_name]));
+                        $this->fix_table_inconsistent_in_db__delete_field($table_name, $field_name, $existent_details['type'], isset($meta_tables[$table_name][$field_name]));
                         $needs_changes = true;
                     }
                 }

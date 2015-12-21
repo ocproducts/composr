@@ -20,6 +20,7 @@
 
 /**
  * Revisions via database.
+ * @package actionlog
  */
 class RevisionEngineDatabase
 {
@@ -98,8 +99,8 @@ class RevisionEngineDatabase
             'r_resource_type' => $resource_type,
             'r_resource_id' => $resource_id,
             'r_category_id' => $category_id,
-            'r_original_title' => $original_title,
-            'r_original_text' => $original_text,
+            'r_original_title' => is_null($original_title) ? '' : $original_title,
+            'r_original_text' => is_null($original_text) ? '' : $original_text,
             'r_original_content_owner' => is_null($original_content_owner) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $original_content_owner,
             'r_original_content_timestamp' => is_null($original_content_timestamp) ? time() : $original_content_timestamp,
             'r_original_resource_fs_path' => $original_data_resource_fs_path,
