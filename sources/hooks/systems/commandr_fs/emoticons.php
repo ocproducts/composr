@@ -132,7 +132,7 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
 
         cns_edit_emoticon($resource_id, $label, $theme_img_code, $relevance_level, $use_topics, $is_special);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

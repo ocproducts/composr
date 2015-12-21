@@ -157,7 +157,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         $id = cns_make_group($label, $is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club, true, false);
 
-        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -231,7 +231,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         cns_edit_group(intval($resource_id), $label, $is_default, $is_super_admin, $is_super_moderator, $rank_title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club, true);
 
-        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
@@ -378,7 +378,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $ob->write_property($id);
         }
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -496,7 +496,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $ob->write_property(intval($resource_id));
         }
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

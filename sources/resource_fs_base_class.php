@@ -265,7 +265,7 @@ abstract class Resource_fs_base
             $label = $properties['label']; // ...unless the label was explicitly given
         }
 
-        $this->_resource_save_extend_pre($properties, $resource_type);
+        $this->_resource_save_extend_pre($properties, $resource_type, $filename, $label);
 
         return array($properties, $label); // Leave properties alone
     }
@@ -543,7 +543,11 @@ abstract class Resource_fs_base
             return $properties[$property];
         }
 
-        return remap_portable_as_resource_id('member', $properties[$property]);
+        $test = remap_portable_as_resource_id('member', $properties[$property]);
+        if (is_null($test)) {
+            return $test;
+        }
+        return intval($test);
     }
 
     /**
@@ -575,7 +579,11 @@ abstract class Resource_fs_base
             return $properties[$property];
         }
 
-        return remap_portable_as_resource_id('group', $properties[$property]);
+        $test = remap_portable_as_resource_id('group', $properties[$property]);
+        if (is_null($test)) {
+            return $test;
+        }
+        return intval($test);
     }
 
     /**
@@ -1918,8 +1926,10 @@ abstract class Resource_fs_base
      *
      * @param  array $properties Details of properties (returned by reference)
      * @param  ID_TEXT $resource_type The resource type
+     * @param  ID_TEXT $filename Filename
+     * @param  LONG_TEXT $label Resource label
      */
-    protected function _resource_save_extend_pre(&$properties, $resource_type)
+    protected function _resource_save_extend_pre(&$properties, $resource_type, $filename, $label)
     {
         $cma_info = $this->_get_cma_info($resource_type);
         $connection = $cma_info['connection'];
@@ -1934,14 +1944,14 @@ abstract class Resource_fs_base
                     $new_id++;
                 }
 
-                $attachments = $properties['attachments'];
+                $attachments = &$properties['attachments'];
                 foreach ($attachments as &$attachment) {
                     $foreign_id = $attachment['_foreign_id'];
 
                     foreach ($properties as &$val) {
                         if (is_string($val)) {
-                            $val = preg_replace('#\([attachment( .*)?\])' . strval($foreign_id) . '(\[/attachment\])#U', '$1' . strval($new_id) . '$3', $val);
-                            $val = preg_replace('#\([attachment_safe( .*)?\])' . strval($foreign_id) . '(\[/attachment_safe\])#U', '$1' . strval($new_id) . '$3', $val);
+                            $val = preg_replace('#(\[attachment( .*)?\])' . strval($foreign_id) . '(\[/attachment\])#U', '$1' . strval($new_id) . '$3', $val);
+                            $val = preg_replace('#(\[attachment_safe( .*)?\])' . strval($foreign_id) . '(\[/attachment_safe\])#U', '$1' . strval($new_id) . '$3', $val);
                         }
                     }
 
@@ -1957,22 +1967,29 @@ abstract class Resource_fs_base
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  ID_TEXT $resource_id The resource ID
+     * @param  ID_TEXT $filename Filename
+     * @param  LONG_TEXT $label Resource label
      * @param  array $properties Details of properties
      */
-    protected function _resource_save_extend($resource_type, $resource_id, $properties)
+    protected function _resource_save_extend($resource_type, $resource_id, $filename, $label, $properties)
     {
         $cma_info = $this->_get_cma_info($resource_type);
         $connection = $cma_info['connection'];
 
         // Alternative IDs
         if (isset($properties['alternative_ids'])) {
-            table_from_portable_rows('alternative_ids', $properties['alternative_ids'], array('m_resource_type' => $resource_type, 'm_resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            foreach ($properties['alternative_ids'] as &$alternative_id) {
+                $alternative_id['resource_moniker'] = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION);
+                $alternative_id['resource_label'] = $label;
+            }
+            table_from_portable_rows('alternative_ids', $properties['alternative_ids'], array('resource_type' => $resource_type, 'resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
         }
 
         // URL monikers
         if ($cma_info['support_url_monikers']) {
             if (isset($properties['url_id_monikers'])) {
-                table_from_portable_rows('url_id_monikers', $properties['url_id_monikers'], array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                $page_bits = explode(':', $cma_info['view_page_link_pattern']);
+                table_from_portable_rows('url_id_monikers', $properties['url_id_monikers'], array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
             }
         }
 
@@ -1983,7 +2000,7 @@ abstract class Resource_fs_base
 
                 // Delete old attachments
                 require_code('attachments3');
-                delete_comcode_attachments($cma_info['attachment_hook'], $resource_id, $connection);
+                delete_comcode_attachments($cma_info['attachment_hook'], $resource_id, $connection, true);
 
                 // Meta-data
                 $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => 'attachments')));
@@ -2034,24 +2051,31 @@ abstract class Resource_fs_base
                     $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $cma_info['feedback_type_code'] . '_' . $resource_id);
                     if (is_null($topic_id)) {
                         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
-                        $resource_fs_path = $properties['comment__path'];
+                        $resource_fs_path = $comments['comment__path'] . '/' . $comments['comment__filename'];
                     } else {
                         $resource_fs_path = find_commandr_fs_filename_via_id('topic', strval($topic_id), true);
                     }
 
                     // Save topic
                     $resource_fs_ob = get_resource_commandr_fs_object('topic');
-                    $resource_fs_data = $resource_fs_ob->resource_save('topic', basename($resource_fs_path), dirname($resource_fs_path), $comments);
+                    $_topic_id = $resource_fs_ob->resource_save('topic', basename($resource_fs_path), dirname($resource_fs_path), $comments);
+                    if ($_topic_id === false) {
+                        fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                    }
+                    $resource_fs_path_topic = find_commandr_fs_filename_via_id('topic', $_topic_id, true);
 
                     // Save each post
                     $resource_fs_ob = get_resource_commandr_fs_object('post');
                     foreach ($comments['posts'] as $post) {
-                        $resource_fs_path = $post['comment__path'];
-                        $resource_fs_data = $resource_fs_ob->resource_save('post', basename($resource_fs_path), dirname($resource_fs_path), $post);
+                        $resource_fs_path_post = $resource_fs_path_topic . '/' . $post['comment__filename'];
+                        $test = $resource_fs_ob->resource_save('post', basename($resource_fs_path_post), dirname($resource_fs_path_post), $post);
+                        if ($test === false) {
+                            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                        }
                     }
                 }
                 if (isset($properties['reviews'])) {
-                    table_from_portable_rows('review_supplement', $properties['comments'], array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                    table_from_portable_rows('review_supplement', $properties['reviews'], array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
                 }
             }
 
@@ -2068,7 +2092,7 @@ abstract class Resource_fs_base
 
         // Custom fields
         if ($cma_info['support_custom_fields']) {
-            $this->_custom_fields_save($resource_type, $resource_id, $properties);
+            $this->_custom_fields_save($resource_type, $resource_id, $filename, $label, $properties);
         }
 
         // Permissions
@@ -2206,9 +2230,11 @@ abstract class Resource_fs_base
      *
      * @param  ID_TEXT $type The resource type
      * @param  ID_TEXT $id The content ID
+     * @param  ID_TEXT $filename Filename
+     * @param  LONG_TEXT $label Resource label
      * @param  array $properties Properties to save
      */
-    protected function _custom_fields_save($type, $id, $properties)
+    protected function _custom_fields_save($type, $id, $filename, $label, $properties)
     {
         require_code('fields');
         if (!has_tied_catalogue($type)) {

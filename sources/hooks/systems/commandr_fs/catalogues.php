@@ -330,7 +330,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 actual_add_catalogue_field($name, do_lang('TITLE'), '', 'short_text', 0, 1, 1, 1, '', 1, 1, 1);
             }
 
-            $this->_resource_save_extend('catalogue', $name, $properties);
+            $this->_resource_save_extend('catalogue', $name, $filename, $label, $properties);
 
             return $name;
         }
@@ -494,7 +494,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 }
             }
 
-            $this->_resource_save_extend('catalogue', $name, $properties);
+            $this->_resource_save_extend('catalogue', $name, $filename, $label, $properties);
         } else {
             $label = $this->_default_property_str($properties, 'label');
 
@@ -506,7 +506,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
             actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $catalogue_name);
 
-            $this->_resource_save_extend('catalogue_category', $resource_id, $properties);
+            $this->_resource_save_extend('catalogue_category', $resource_id, $filename, $label, $properties);
         }
 
         return $resource_id;
@@ -648,7 +648,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         $id = actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, null, $meta_keywords, $meta_description);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -749,7 +749,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         actual_edit_catalogue_entry(intval($resource_id), $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_keywords, $meta_description, $edit_date, $time, $views, $submitter, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

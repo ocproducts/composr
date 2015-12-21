@@ -20,6 +20,7 @@
 
 /*
 Adding attachments.
+(Editing/deleting is in attachments3.php)
 */
 
 /**
@@ -116,6 +117,13 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     $ATTACHMENTS_ALREADY_REFERENCED = $old_already;
     if (!array_key_exists($id, $COMCODE_ATTACHMENTS)) {
         $COMCODE_ATTACHMENTS[$id] = array();
+    }
+
+    // Also the WYSIWYG-edited ones, which the Comcode parser won't find
+    $matches = array();
+    $num_matches = preg_match_all('#attachment.php\?id=(\d+)#', $comcode, $matches);
+    for ($i = 0; $i < $num_matches; $i++) {
+        $COMCODE_ATTACHMENTS[$id][] = $matches[1][$i];
     }
 
     // Put in our new attachment IDs (replacing the new_* markers)

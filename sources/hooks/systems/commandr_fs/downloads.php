@@ -115,7 +115,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $id = add_download_category($label, $parent_id, $description, $notes, $rep_image, null, $add_time, $meta_keywords, $meta_description);
 
-        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -179,7 +179,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         edit_download_category(intval($resource_id), $label, $parent_id, $description, $notes, $rep_image, $meta_keywords, $meta_description, $add_time);
 
-        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
@@ -270,7 +270,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         }
         $id = add_download($category_id, $label, $url, $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $add_date, $num_downloads, $views, $submitter, $edit_date, null, $meta_keywords, $meta_description, $default_pic);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -383,7 +383,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         edit_download(intval($resource_id), $category_id, $label, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $num_downloads, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

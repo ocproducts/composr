@@ -573,7 +573,7 @@ function table_to_portable_rows($table, $fields_to_skip = null, $where_map = nul
  * @param  string $table Table name
  * @param  mixed $json JSON data OR rows that are already decoded
  * @param  ?array $extra_field_data Extra data to add to each row (null: none)
- * @param  boolean $replace_mode Whether to fully replace the current table contents
+ * @param  integer $replace_mode Whether to fully replace the current table contents
  * @return boolean Success status
  */
 function table_from_json($table, $json, $extra_field_data, $replace_mode)
@@ -589,7 +589,7 @@ function table_from_json($table, $json, $extra_field_data, $replace_mode)
  * @param  string $table Table name
  * @param  array $rows Portable rows
  * @param  ?array $extra_field_data Extra data to add to each row (null: none)
- * @param  boolean $replace_mode Whether to fully replace the current table contents
+ * @param  integer $replace_mode Whether to fully replace the current table contents
  * @param  ?object $connection Database connection to look up from (null: work out from table name)
  * @return boolean Success status
  */
@@ -614,9 +614,16 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
         }
     }
 
-    if ($replace_mode) {
+    if ($replace_mode != TABLE_REPLACE_MODE_NONE) {
+        if ($replace_mode == TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA) {
+            $delete_where = $extra_field_data;
+        }
+        elseif ($replace_mode == TABLE_REPLACE_MODE_SEVERE) {
+            $delete_where = array();
+        }
+
         if (count($lang_fields) != 0 || count($upload_fields) != 0) {
-            $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields));
+            $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields), $delete_where);
 
             foreach ($old_rows as $old_row) {
                 // Cleanup old language fields
@@ -633,7 +640,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
         }
 
         // Delete old rows
-        $connection->query_delete($table);
+        $connection->query_delete($table, $delete_where);
     } else {
         // For a poor-mans REPLACE INTO (which is a MySQL extension)
         $keys = array();
@@ -731,11 +738,11 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $connection 
             $row[$db_field_name] = remap_urlpath_as_portable($row[$db_field_name]);
         }
 
-        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_topics.id')) {
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_topics', 'id'))) {
             $row[$db_field_name] = remap_resource_id_as_portable('topic', $row[$db_field_name]);
         }
 
-        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_posts.id')) {
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_posts', 'id'))) {
             $row[$db_field_name] = remap_resource_id_as_portable('post', $row[$db_field_name]);
         }
 
@@ -789,11 +796,11 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $connectio
             $row[$db_field_name] = remap_portable_as_urlpath($row[$db_field_name]);
         }
 
-        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_topics.id')) {
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_topics', 'id'))) {
             $row[$db_field_name] = remap_portable_as_resource_id('topic', $row[$db_field_name]);
         }
 
-        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == 'f_posts.id')) {
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_posts', 'id'))) {
             $row[$db_field_name] = remap_portable_as_resource_id('post', $row[$db_field_name]);
         }
 

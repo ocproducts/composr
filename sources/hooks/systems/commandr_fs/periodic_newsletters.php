@@ -85,7 +85,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
 
         $id = add_periodic_newsletter($label, $message, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $frequency, $day, $in_full, $template, $last_sent);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -159,7 +159,7 @@ class Hook_commandr_fs_periodic_newsletters extends Resource_fs_base
 
         edit_periodic_newsletter(intval($resource_id), $label, $message, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $frequency, $day, $in_full, $template, $last_sent);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

@@ -98,7 +98,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
 
         $id = add_newsletter_subscriber($email, $join_time, $code_confirm, $password, $salt, $language, $forename, $surname);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -166,7 +166,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
 
         edit_newsletter_subscriber(intval($resource_id), $email, $join_time, $code_confirm, $password, $salt, $language, $forename, $surname);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $email, $properties);
 
         return $resource_id;
     }

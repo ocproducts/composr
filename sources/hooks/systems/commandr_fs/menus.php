@@ -128,7 +128,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         log_it('ADD_MENU', $menu);
 
-        $this->_resource_save_extend($this->folder_resource_type, $menu, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $menu, $filename, $label, $properties);
 
         return $menu;
     }
@@ -170,7 +170,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
             return false;
         }
 
-        $this->_resource_save_extend($this->folder_resource_type, $menu, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $menu, $filename, $label, $properties);
 
         return $menu;
     }
@@ -236,7 +236,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         $id = add_menu_item($category, $order, $parent, $label, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -309,7 +309,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         edit_menu_item(intval($resource_id), $category, $order, $parent, $label, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

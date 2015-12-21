@@ -89,7 +89,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
         require_code('custom_comcode');
         $tag = add_custom_comcode_tag($tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $tag, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $tag, $filename, $label, $properties);
 
         return $tag;
     }
@@ -154,7 +154,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
 
         $tag = edit_custom_comcode_tag($resource_id, $tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

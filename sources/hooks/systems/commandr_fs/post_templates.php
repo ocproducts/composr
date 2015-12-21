@@ -97,7 +97,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
 
         $id = cns_make_post_template($label, $text, $forum_multi_code, $use_default_forums);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -151,7 +151,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
 
         cns_edit_post_template(intval($resource_id), $label, $text, $forum_multi_code, $use_default_forums);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

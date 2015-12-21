@@ -79,7 +79,7 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
 
         $id = add_aggregate_type_instance($label, $aggregate_type, $other_parameters, $add_time, $edit_time, true, true);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -138,7 +138,7 @@ class Hook_commandr_fs_aggregate_type_instances extends Resource_fs_base
 
         edit_aggregate_type_instance(intval($resource_id), $label, $aggregate_type, $other_parameters, true, $add_time, $edit_time);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

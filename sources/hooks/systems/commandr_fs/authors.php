@@ -152,7 +152,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
         }
         add_author($label, $url, $member_id, $description, $skills, $meta_keywords, $meta_description);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

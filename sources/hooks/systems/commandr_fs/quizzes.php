@@ -121,7 +121,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
 
         $this->add_quiz_entries($properties, $id);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -262,7 +262,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
 
         $this->add_quiz_entries($properties, intval($resource_id));
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

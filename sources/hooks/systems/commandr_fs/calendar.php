@@ -110,7 +110,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
 
         $id = add_event_type($label, $logo, $external_feed);
 
-        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -162,7 +162,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
 
         edit_event_type(intval($resource_id), $label, $logo, $external_feed);
 
-        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
@@ -276,7 +276,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -422,7 +422,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

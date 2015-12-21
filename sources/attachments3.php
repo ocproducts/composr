@@ -20,94 +20,8 @@
 
 /*
 Editing/deleting attachments.
+(Adding is in attachments2.php)
 */
-
-/**
- * Delete the specified attachment
- *
- * @param  AUTO_LINK $id The attachment ID to delete
- * @param  object $connection The database connection to use
- * @set    cms forum
- *
- * @ignore
- */
-function _delete_attachment($id, $connection)
-{
-    $connection->query_delete('attachment_refs', array('a_id' => $id));
-
-    // Get attachment details
-    $_attachment_info = $connection->query_select('attachments', array('a_url', 'a_thumb_url'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $_attachment_info)) {
-        return; // Already gone
-    }
-    $attachment_info = $_attachment_info[0];
-
-    // Delete url and thumb_url if local
-    if ((url_is_local($attachment_info['a_url'])) && (substr($attachment_info['a_url'], 0, 19) == 'uploads/attachments')) {
-        $url = rawurldecode($attachment_info['a_url']);
-        @unlink(get_custom_file_base() . '/' . $url);
-        sync_file($url);
-        if (($attachment_info['a_thumb_url'] != '') && (strpos($attachment_info['a_thumb_url'], 'uploads/filedump/') === false)) {
-            $thumb_url = rawurldecode($attachment_info['a_thumb_url']);
-            @unlink(get_custom_file_base() . '/' . $thumb_url);
-            sync_file($thumb_url);
-        }
-    }
-
-    // Delete attachment
-    $connection->query_delete('attachments', array('id' => $id), '', 1);
-}
-
-/**
- * Deletes all the attachments a given language string holds. Well, not quite! It deletes all references, and any attachments have through it, run out of references.
- *
- * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
- * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
- * @param  ?object $connection The database connection to use (null: standard site connection)
- */
-function delete_comcode_attachments($type, $id, $connection = null)
-{
-    if (get_option('attachment_cleanup') == '0') {
-        return;
-    }
-
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
-    }
-
-    require_lang('comcode');
-
-    $refs = $connection->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type, 'r_referer_id' => $id));
-    $connection->query_delete('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id));
-    foreach ($refs as $ref) {
-        // Was that the last reference to this attachment? (if so -- delete attachment)
-        $test = $connection->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
-        if (is_null($test)) {
-            _delete_attachment($ref['a_id'], $connection);
-        }
-    }
-}
-
-/**
- * This function is the same as delete_comcode_attachments, except that it deletes the language string as well.
- *
- * @param  mixed $lang_id The language string
- * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
- * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
- * @param  ?object $connection The database connection to use (null: standard site connection)
- */
-function delete_lang_comcode_attachments($lang_id, $type, $id, $connection = null)
-{
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
-    }
-
-    delete_comcode_attachments($type, $id, $connection);
-
-    if (multi_lang_content()) {
-        $connection->query_delete('translate', array('id' => $lang_id), '', 1);
-    }
-}
 
 /**
  * Update a language string, in such a way that new attachments are created if they were specified.
@@ -158,7 +72,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
     }
 
     $_info = do_comcode_attachments($text, $type, $id, false, $connection, null, $source_user);
-    $text_parsed = '';//Actually we'll let it regenerate with the correct permissions ($member, not $for_member) $_info['tempcode']->to_assembly();
+    $text_parsed = ''; //Actually we'll let it regenerate with the correct permissions ($member, not $for_member) $_info['tempcode']->to_assembly();
 
     if (multi_lang_content()) {
         $remap = array(
@@ -184,4 +98,92 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
     return array(
         $field_name => $lang_id,
     );
+}
+
+/**
+ * Delete the specified attachment
+ *
+ * @param  AUTO_LINK $id The attachment ID to delete
+ * @param  object $connection The database connection to use
+ * @set    cms forum
+ *
+ * @ignore
+ */
+function _delete_attachment($id, $connection)
+{
+    $connection->query_delete('attachment_refs', array('a_id' => $id));
+
+    // Get attachment details
+    $_attachment_info = $connection->query_select('attachments', array('a_url', 'a_thumb_url'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $_attachment_info)) {
+        return; // Already gone
+    }
+    $attachment_info = $_attachment_info[0];
+
+    // Delete url and thumb_url if local
+    if ((url_is_local($attachment_info['a_url'])) && (substr($attachment_info['a_url'], 0, 19) == 'uploads/attachments')) {
+        $url = rawurldecode($attachment_info['a_url']);
+        @unlink(get_custom_file_base() . '/' . $url);
+        sync_file($url);
+        if (($attachment_info['a_thumb_url'] != '') && (strpos($attachment_info['a_thumb_url'], 'uploads/filedump/') === false)) {
+            $thumb_url = rawurldecode($attachment_info['a_thumb_url']);
+            @unlink(get_custom_file_base() . '/' . $thumb_url);
+            sync_file($thumb_url);
+        }
+    }
+
+    // Delete attachment
+    $connection->query_delete('attachments', array('id' => $id), '', 1);
+}
+
+/**
+ * Deletes all the attachments a given language string holds. Well, not quite! It deletes all references, and any attachments have through it, run out of references.
+ *
+ * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
+ * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
+ * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  boolean $force Whether to force this, regardless of config
+ */
+function delete_comcode_attachments($type, $id, $connection = null, $force = false)
+{
+    if (get_option('attachment_cleanup') == '0' && !$force) {
+        return;
+    }
+
+    if (is_null($connection)) {
+        $connection = $GLOBALS['SITE_DB'];
+    }
+
+    require_lang('comcode');
+
+    $refs = $connection->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type, 'r_referer_id' => $id));
+    $connection->query_delete('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id));
+    foreach ($refs as $ref) {
+        // Was that the last reference to this attachment? (if so -- delete attachment)
+        $test = $connection->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
+        if (is_null($test)) {
+            _delete_attachment($ref['a_id'], $connection);
+        }
+    }
+}
+
+/**
+ * This function is the same as delete_comcode_attachments, except that it deletes the language string as well.
+ *
+ * @param  mixed $lang_id The language string
+ * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
+ * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
+ * @param  ?object $connection The database connection to use (null: standard site connection)
+ */
+function delete_lang_comcode_attachments($lang_id, $type, $id, $connection = null)
+{
+    if (is_null($connection)) {
+        $connection = $GLOBALS['SITE_DB'];
+    }
+
+    delete_comcode_attachments($type, $id, $connection);
+
+    if (multi_lang_content()) {
+        $connection->query_delete('translate', array('id' => $lang_id), '', 1);
+    }
 }

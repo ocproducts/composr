@@ -115,7 +115,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             $GLOBALS['SITE_DB']->query_insert('wiki_children', array('parent_id' => $parent_id, 'child_id' => $id, 'the_order' => $the_order, 'title' => $label));
         }
 
-        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -208,7 +208,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             }
         }
 
-        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
@@ -260,7 +260,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $views = $this->_default_property_int($properties, 'views');
         $id = wiki_add_post($page_id, $label, $validated, $member, true, $add_time, $views, $edit_date);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -327,7 +327,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
 
         wiki_edit_post(intval($resource_id), $label, $validated, $member, $page_id, $edit_time, $add_time, $views, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

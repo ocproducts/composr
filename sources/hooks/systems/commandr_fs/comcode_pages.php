@@ -132,7 +132,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
-        $this->_resource_save_extend($this->folder_resource_type, $zone, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $zone, $filename, $label, $properties);
 
         return $zone;
     }
@@ -206,7 +206,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
-        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
 
         return $zone;
     }
@@ -294,7 +294,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $full_path = save_comcode_page($zone, $page, $lang, $text, $validated, $parent_page, $order, $add_time, $edit_time, $show_as_edit, $submitter, null, $meta_keywords, $meta_description);
         $page = basename($full_path, '.txt');
 
-        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $filename, $label, $properties);
 
         return $zone . ':' . $page;
     }
@@ -411,7 +411,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $full_path = save_comcode_page($zone, $page, $lang, $text, $validated, $parent_page, $order, $add_time, $edit_time, $show_as_edit, $submitter, $old_page, $meta_keywords, $meta_description);
         $page = basename($full_path, '.txt');
 
-        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $filename, $label, $properties);
 
         return $zone . ':' . $page;
     }

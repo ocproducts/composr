@@ -117,7 +117,7 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
 
         $id = cns_make_custom_field($label, $locked, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $show_on_join_form, $options, false);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -209,7 +209,7 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
 
         cns_edit_custom_field(intval($resource_id), $label, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

@@ -101,7 +101,7 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
 
         $id = cns_make_multi_moderation($label, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -163,7 +163,7 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
 
         cns_edit_multi_moderation(intval($resource_id), $label, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

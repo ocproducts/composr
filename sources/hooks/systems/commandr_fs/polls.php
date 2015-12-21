@@ -129,7 +129,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $id = add_poll($label, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $current, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $time, $submitter, $use_time, $v1, $v2, $v3, $v4, $v5, $v6, $v7, $v8, $v9, $v10, $views, $edit_date);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -265,7 +265,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
 
         edit_poll(intval($resource_id), $label, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

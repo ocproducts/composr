@@ -164,7 +164,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
 
         edit_news_category(intval($resource_id), $label, $img, $notes, $owner);
 
-        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
@@ -244,7 +244,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
 
         $id = add_news($label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $time, $submitter, $views, $edit_date, null, $image, $meta_keywords, $meta_description, $regions);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -340,7 +340,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
 
         edit_news(intval($resource_id), $label, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $meta_keywords, $meta_description, $image, $add_time, $edit_time, $views, $submitter, $regions, true);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

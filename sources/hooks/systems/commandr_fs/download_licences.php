@@ -85,7 +85,7 @@ class Hook_commandr_fs_download_licences extends Resource_fs_base
 
         $id = add_download_licence($label, $text);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -135,7 +135,7 @@ class Hook_commandr_fs_download_licences extends Resource_fs_base
 
         edit_download_licence(intval($resource_id), $label, $text);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }

@@ -68,7 +68,6 @@ class Hook_content_meta_aware_download
             'views_field' => 'download_views',
             'order_field' => null,
             'submitter_field' => 'submitter',
-            'author_field' => null,
             'author_field' => 'author',
             'add_time_field' => 'add_date',
             'edit_time_field' => 'edit_date',

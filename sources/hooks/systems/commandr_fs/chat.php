@@ -152,7 +152,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
 
         $id = add_chatroom($welcome, $label, $room_owner, $allow, $allow_groups, $disallow, $disallow_groups, $roomlang, $is_im);
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id));
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }
@@ -249,7 +249,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
 
         edit_chatroom(intval($resource_id), $welcome, $label, $room_owner, $allow, $allow_groups, $disallow, $disallow_groups, $roomlang);
 
-        $this->_resource_save_extend($this->file_resource_type, $resource_id, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
