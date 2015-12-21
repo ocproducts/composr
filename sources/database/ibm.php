@@ -68,7 +68,7 @@ class Database_Static_ibm
         if ($index_name[0] == '#') {
             return;
         }
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, 10000)) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
     /**

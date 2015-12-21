@@ -484,7 +484,7 @@ class Forum_driver_smf2 extends Forum_driver_base
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);
         $is_new = is_null($topic_id);
         if ($is_new) {
-            $topic_id = $this->connection->query_insert('topics', array('id_board' => $forum_id, 'id_first_msg' => mt_rand(0, 100000), 'id_last_msg' => mt_rand(0, 100000), 'id_member_started' => $member, 'id_member_updated' => $member, 'num_replies' => 2), true);
+            $topic_id = $this->connection->query_insert('topics', array('id_board' => $forum_id, 'id_first_msg' => mt_rand(0, mt_getrandmax()), 'id_last_msg' => mt_rand(0, mt_getrandmax()), 'id_member_started' => $member, 'id_member_updated' => $member, 'num_replies' => 2), true);
             $home_link = hyperlink($content_url, $content_title, false, true);
             $post_id = $this->connection->query_insert('messages', array('id_topic' => $topic_id, 'id_board' => $forum_id, 'poster_time' => $time, 'id_member' => $this->get_guest_id(), 'subject' => $content_title . ', ' . $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, 'poster_name' => do_lang('SYSTEM', '', '', '', get_site_default_lang()), 'poster_email' => get_option('staff_address'), 'poster_ip' => '127.0.0.1', 'modified_name' => '', 'body' => do_lang('SPACER_POST', $home_link->evaluate(), '', '', get_site_default_lang())), true);
 

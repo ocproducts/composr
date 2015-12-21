@@ -46,7 +46,7 @@ class Hook_preview_wiki_post
 
         $original_comcode = post_param_string('post');
 
-        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, 100000));
+        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, mt_getrandmax() - 1));
         $post_bits = do_comcode_attachments($original_comcode, 'wiki_post', strval(-$posting_ref_id), true, $GLOBALS['SITE_DB']);
         $post_comcode = $post_bits['comcode'];
         $post_html = $post_bits['tempcode'];

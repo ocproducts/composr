@@ -75,7 +75,8 @@ class Hook_worldpay
      */
     public function generate_trans_id()
     {
-        return md5(uniqid(strval(mt_rand(0, 1000)), true));
+        require_code('crypt');
+        return get_rand_password();
     }
 
     /**

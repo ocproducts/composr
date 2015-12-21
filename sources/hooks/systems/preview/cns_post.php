@@ -48,7 +48,7 @@ class Hook_preview_cns_post
         require_code('cns_posts_action');
         require_code('cns_posts_action2');
         cns_check_post($original_comcode, post_param_integer('topic_id', null), get_member());
-        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, 100000));
+        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, mt_getrandmax() - 1));
         if ($posting_ref_id < 0) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

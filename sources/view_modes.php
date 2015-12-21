@@ -419,12 +419,12 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             global $CSSS, $JAVASCRIPTS;
             foreach (array_keys($CSSS) as $c) {
                 if (substr($c, 0, 8) != 'merged__') {
-                    $hidden->attach(form_input_hidden('f' . strval(mt_rand(0, 100000)) . 'file', 'css/' . $c . '.css'));
+                    $hidden->attach(form_input_hidden('f' . strval(mt_rand(0, mt_getrandmax())) . 'file', 'css/' . $c . '.css'));
                 }
             }
             foreach (array_keys($JAVASCRIPTS) as $c) {
                 if (substr($c, 0, 8) != 'merged__') {
-                    $hidden->attach(form_input_hidden('f' . strval(mt_rand(0, 100000)) . 'file', 'javascript/' . $c . '.js'));
+                    $hidden->attach(form_input_hidden('f' . strval(mt_rand(0, mt_getrandmax())) . 'file', 'javascript/' . $c . '.js'));
                 }
             }
 
@@ -545,7 +545,7 @@ function find_template_tree_nice($codename, $children, $fresh, $cache_started = 
             'EDIT_URL' => $edit_url,
             'CODENAME' => $codename,
             'GUID' => $guid,
-            'ID' => strval(mt_rand(0, 100000)),
+            'ID' => strval(mt_rand(0, mt_getrandmax())),
         ));
     }
     $out = $source->evaluate();

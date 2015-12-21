@@ -56,6 +56,7 @@
 }
 .command_output, .past_command .results_table td {
 	color: {$GET,slightly_seeded_text}; /* Undoes the above td rule as needed */
+	background-color: {$GET,main_background};
 }
 
 .commandr_dir {

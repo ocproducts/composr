@@ -46,7 +46,7 @@ class Hook_preview_comcode_page
 
         $original_comcode = post_param_string('post');
 
-        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, 100000));
+        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, mt_getrandmax() - 1));
         $post_bits = do_comcode_attachments($original_comcode, 'comcode_page', strval(-$posting_ref_id), true, $GLOBALS['SITE_DB']);
         $post_comcode = $post_bits['comcode'];
         $post_html = $post_bits['tempcode'];

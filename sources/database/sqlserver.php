@@ -79,14 +79,14 @@ class Database_Static_sqlserver
         if ($index_name[0] == '#') {
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
-                $unique_index_name = 'index' . $index_name . '_' . strval(mt_rand(0, 10000));
+                $unique_index_name = 'index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax()));
                 $this->db_query('CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_field . ')', $db);
                 $this->db_query('CREATE FULLTEXT CATALOG ft AS DEFAULT', $db, null, null, true); // Might already exist
                 $this->db_query('CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name, $db, null, null, true);
             }
             return;
         }
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, 10000)) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
     /**

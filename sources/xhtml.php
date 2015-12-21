@@ -393,8 +393,8 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                     require_code('images');
                     list($width, $height) = _symbol_image_dims(array(html_entity_decode($matches[1], ENT_QUOTES, get_charset()))); // Safe way to grab image dimensions
                     if ($width == '') {
-                        $width = strval(get_option('thumb_width'));
-                        $height = strval(get_option('thumb_width'));
+                        $width = get_option('thumb_width');
+                        $height = get_option('thumb_width');
                     }
                     $pixels = intval($width) * intval($height);
                     $pixels_per_character = 15 * 15;

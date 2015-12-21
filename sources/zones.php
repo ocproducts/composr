@@ -1602,7 +1602,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
 
     global $ARB_COUNTER;
 
-    $r = preg_replace('#[^\w]#', '', basename($path, '.php')) . strval(mt_rand(0, 100000)) . '_' . strval($ARB_COUNTER);
+    $r = preg_replace('#[^\w]#', '', basename($path, '.php')) . strval(mt_rand(0, mt_getrandmax())) . '_' . strval($ARB_COUNTER);
     $ARB_COUNTER++;
     $out = array();
     $_params = '';

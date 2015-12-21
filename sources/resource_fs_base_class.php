@@ -1829,12 +1829,13 @@ abstract class Resource_fs_base
 
         // URL monikers
         if ($cma_info['support_url_monikers']) {
-            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_type' => $resource_type, 'm_resource_id' => $resource_id), $connection);
+            $page_bits = explode(':', $cma_info['view_page_link_pattern']);
+            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), $connection);
         }
 
         // Attachments
         if (!is_null($cma_info['attachment_hook'])) {
-            $attachment_refs_rows = collapse_1d_complexity('a_id', $connection->query_select('attachment_refs', array('a_id'), array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id), $connection));
+            $attachment_refs_rows = collapse_1d_complexity('a_id', $connection->query_select('attachment_refs', array('a_id'), array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id)));
             $properties['attachments'] = array();
             foreach ($attachment_refs_rows as $attachment_id) {
                 $attachment_rows = table_to_portable_rows('attachments', /*skip*/array(), array('id' => $attachment_id), $connection);
@@ -1858,11 +1859,19 @@ abstract class Resource_fs_base
         if (!is_null($cma_info['feedback_type_code'])) {
             if (get_forum_type() == 'cns') {
                 // Comments & Reviews
+                require_code('feedback');
                 $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(find_overridden_comment_forum($cma_info['feedback_type_code']), $cma_info['feedback_type_code'] . '_' . $resource_id);
                 if (!is_null($topic_id)) {
                     $comments = get_resource_fs_record('topic', strval($topic_id));
                     if (!is_null($comments)) {
-                        list($properties['comments'], ) = $comments;
+                        $properties['comments'] = json_decode($comments[0], true);
+
+                        $properties['comments']['posts'] = array();
+                        $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id'), array('p_topic_id' => $topic_id), 'ORDER BY p_time ASC,id ASC');
+                        foreach ($posts as $_post) {
+                            $post = get_resource_fs_record('post', strval($_post['id']));
+                            $properties['comments']['posts'][] = json_decode($post[0], true);
+                        }
                     }
                 }
 
@@ -1883,7 +1892,7 @@ abstract class Resource_fs_base
         }
 
         // Permissions
-        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category']) {
+        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category'] && $cma_info['category_field'] == $cma_info['id_field']) {
             $properties['access'] = $this->get_resource_access(null, $resource_type, $resource_id);
 
             $properties['access__members'] = $this->get_resource_access__members(null, $resource_type, $resource_id);
@@ -2021,17 +2030,25 @@ abstract class Resource_fs_base
                     $comments['description'] = preg_replace('#^(.*: ) .*$#', '$1 ' . $cma_info['feedback_type_code'] . '_' . $resource_id, $comments['description']);
 
                     $forum_name = find_overridden_comment_forum($cma_info['feedback_type_code']);
+                    require_code('feedback');
                     $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $cma_info['feedback_type_code'] . '_' . $resource_id);
                     if (is_null($topic_id)) {
                         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
-                        require_code('crypt'); // Will use a random filename, which will immediately change to new one based on the label
-                        $resource_fs_path = find_commandr_fs_filename_via_id('forum', strval($forum_id), true) . '/' . get_rand_password() . '.' . RESOURCE_FS_DEFAULT_EXTENSION;
+                        $resource_fs_path = $properties['comment__path'];
                     } else {
                         $resource_fs_path = find_commandr_fs_filename_via_id('topic', strval($topic_id), true);
                     }
 
+                    // Save topic
                     $resource_fs_ob = get_resource_commandr_fs_object('topic');
-                    $resource_fs_data = $resource_fs_ob->resource_save('topic', basename($resource_fs_path), dirname($resource_fs_path), $properties);
+                    $resource_fs_data = $resource_fs_ob->resource_save('topic', basename($resource_fs_path), dirname($resource_fs_path), $comments);
+
+                    // Save each post
+                    $resource_fs_ob = get_resource_commandr_fs_object('post');
+                    foreach ($comments['posts'] as $post) {
+                        $resource_fs_path = $post['comment__path'];
+                        $resource_fs_data = $resource_fs_ob->resource_save('post', basename($resource_fs_path), dirname($resource_fs_path), $post);
+                    }
                 }
                 if (isset($properties['reviews'])) {
                     table_from_portable_rows('review_supplement', $properties['comments'], array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
@@ -2055,7 +2072,7 @@ abstract class Resource_fs_base
         }
 
         // Permissions
-        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category']) {
+        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category'] && $cma_info['category_field'] == $cma_info['id_field']) {
             if (isset($properties['access'])) {
                 $groups = $properties['access'];
                 $this->set_resource_access(null, $groups, $resource_type, $resource_id);

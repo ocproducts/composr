@@ -1361,10 +1361,12 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             $real_session_cookie = preg_replace('#\_u$#', '_sid', $real_member_cookie);
         }
 
-        $hash = substr(uniqid(strval(mt_rand(0, 32000)), true), 0, 17);
+        require_code('crypt');
+        $hash = substr(get_rand_password(), 0, 17);
         $this->connection->query_insert('sessions_keys', array('key_id' => md5($hash), 'user_id' => $id, 'last_ip' => ip2long(get_ip_address()), 'last_login' => time()));
 
-        $session_id = uniqid(strval(mt_rand(0, 32000)), true);
+        require_code('crypt');
+        $session_id = get_rand_password();
         $this->connection->query_insert('sessions', array(
             'session_id' => $session_id,
             'session_user_id' => $id,
