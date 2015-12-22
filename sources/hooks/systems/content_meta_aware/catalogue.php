@@ -34,7 +34,7 @@ class Hook_content_meta_aware_catalogue
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'CATALOGUES',
+            'content_type_label' => 'catalogues:CATALOGUE',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'catalogues',

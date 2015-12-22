@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_usergroup_subscription
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'USERGROUP_SUBSCRIPTIONS',
+            'content_type_label' => 'ecommerce:USERGROUP_SUBSCRIPTION',
 
             'connection' => (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'],
             'table' => 'f_usergroup_subs',

@@ -524,7 +524,9 @@ class Module_admin_zones
                 require_code('revisions_engine_files');
                 $revision_engine = new RevisionEngineFiles();
                 list(, , $existing_path) = find_comcode_page($lang, $for, $id);
-                $revision_engine->add_revision(dirname($existing_path), $for, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                if ($existing_path != '') {
+                    $revision_engine->add_revision(dirname($existing_path), $for, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                }
 
                 // Save
                 $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($full_path);

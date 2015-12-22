@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_custom_comcode_tag
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'CUSTOM_COMCODE',
+            'content_type_label' => 'custom_comcode:CUSTOM_COMCODE',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'custom_comcode',

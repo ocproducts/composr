@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_menu
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'MENUS',
+            'content_type_label' => 'global:MENU',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'menu_items',

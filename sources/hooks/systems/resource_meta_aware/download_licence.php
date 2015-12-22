@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_download_licence
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'DOWNLOAD_LICENCES',
+            'content_type_label' => 'downloads:DOWNLOAD_LICENCE',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'download_licences',

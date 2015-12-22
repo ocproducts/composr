@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_award_type
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'AWARDS',
+            'content_type_label' => 'awards:AWARD',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'award_types',

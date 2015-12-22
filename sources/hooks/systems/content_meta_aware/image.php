@@ -34,7 +34,7 @@ class Hook_content_meta_aware_image
         return array(
             'support_custom_fields' => true,
 
-            'content_type_label' => 'IMAGE',
+            'content_type_label' => 'global:IMAGE',
 
             'connection' => $GLOBALS['SITE_DB'],
             'where' => 'cat NOT LIKE \'' . db_encode_like('download\_%') . '\'',

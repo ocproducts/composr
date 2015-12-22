@@ -44,7 +44,7 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'id', array('aggregate_type' => $aggregate_type, 'aggregate_label' => $aggregate_label));
     if (!is_null($test)) {
         if ($uniqify) {
-            $aggregate_label .= '_' . uniqid('', true);
+            $aggregate_label .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('DUPLICATE_AGGREGATE_INSTANCE', escape_html($aggregate_label)));
         }
@@ -104,7 +104,7 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'id', array('aggregate_type' => $aggregate_type, 'aggregate_label' => $aggregate_label));
     if ((!is_null($test)) && ($test != $id)) {
         if ($uniqify) {
-            $aggregate_label .= '_' . uniqid('', true);
+            $aggregate_label .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('DUPLICATE_AGGREGATE_INSTANCE', escape_html($aggregate_label)));
         }

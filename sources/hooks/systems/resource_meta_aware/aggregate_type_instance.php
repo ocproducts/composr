@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_aggregate_type_instance
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'AGGREGATE_TYPE_INSTANCES',
+            'content_type_label' => 'aggregate_type_instances:AGGREGATE_TYPE_INSTANCE',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'aggregate_type_instances',

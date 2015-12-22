@@ -85,7 +85,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => $name));
     if (!is_null($test)) {
         if ($uniqify) {
-            $name .= '_' . uniqid('', true);
+            $name .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
         }
@@ -269,7 +269,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }

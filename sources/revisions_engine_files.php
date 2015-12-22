@@ -96,6 +96,7 @@ class RevisionEngineFiles
         $revision_path = $stub . filter_naughty($directory . '/' . $filename_id . '.' . $ext . '.' . strval($original_timestamp));
         $revision_path = zone_black_magic_filterer($revision_path);
 
+        @unlink($revision_path);
         @file_put_contents($revision_path, $original_text) or intelligent_write_error($revision_path);
         fix_permissions($revision_path);
         sync_file($revision_path);

@@ -47,7 +47,7 @@ function add_custom_comcode_tag($tag, $title, $description, $replace, $example, 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $tag));
     if ((array_key_exists($tag, $VALID_COMCODE_TAGS)) || (!is_null($test))) {
         if ($uniqify) {
-            $tag .= '_' . uniqid('', true);
+            $tag .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($tag)));
         }
@@ -118,7 +118,7 @@ function edit_custom_comcode_tag($old_tag, $tag, $title, $description, $replace,
     }
     if ((array_key_exists($tag, $VALID_COMCODE_TAGS)) || (!is_null($test))) {
         if ($uniqify) {
-            $tag .= '_' . uniqid('', true);
+            $tag .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($tag)));
         }

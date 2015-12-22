@@ -899,7 +899,7 @@ abstract class Resource_fs_base
                 }
 
                 // Create main resource
-                $resource_id = $this->resource_add($resource_type, $_label, $subpath, array());
+                $resource_id = $this->resource_add($resource_type, is_null($_label) ? uniqid('arbitrary', true) : $_label, $subpath, array());
                 if ($resource_id === false) {
                     return null;
                 }

@@ -1345,7 +1345,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }
@@ -1471,7 +1471,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }

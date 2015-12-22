@@ -120,6 +120,10 @@ function make_missing_directory($dir)
 function _intelligent_write_error($path)
 {
     if (file_exists($path)) {
+        if (filesize($path) == 0) {
+            return; // Probably was OR'd where 0 casted to false
+        }
+
         warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)));
     } elseif (file_exists(dirname($path))) {
         if (strpos($path, '/templates_cached/') !== false) {

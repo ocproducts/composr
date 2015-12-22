@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_post_template
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'POST_TEMPLATES',
+            'content_type_label' => 'cns_post_templates:POST_TEMPLATE',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_post_templates',

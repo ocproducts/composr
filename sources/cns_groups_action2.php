@@ -69,7 +69,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $name));
     if ((!is_null($test)) && ($test != $group_id)) {
         if ($uniqify) {
-            $name .= '_' . uniqid('', true);
+            $name .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
         }

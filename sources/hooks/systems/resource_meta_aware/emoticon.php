@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_emoticon
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'EMOTICON',
+            'content_type_label' => 'global:EMOTICON',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_emoticons',

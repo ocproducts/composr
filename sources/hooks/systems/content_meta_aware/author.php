@@ -34,7 +34,7 @@ class Hook_content_meta_aware_author
         return array(
             'support_custom_fields' => true,
 
-            'content_type_label' => 'AUTHORS',
+            'content_type_label' => 'global:AUTHOR',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'authors',

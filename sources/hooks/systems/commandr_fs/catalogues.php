@@ -261,7 +261,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $order, $move_target, $add_date, $meta_keywords, $meta_description);
+        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description);
     }
 
     /**
@@ -388,8 +388,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $resource_id), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         foreach ($_fields as $_field) {
             $fields[] = array(
-                'field_title' => $this->_get_translated_text($_field['cf_name'], $GLOBALS['SITE_DB']),
-                'description' => $this->_get_translated_text($_field['cf_description'], $GLOBALS['SITE_DB']),
+                'field_title' => get_translated_text($_field['cf_name']),
+                'description' => get_translated_text($_field['cf_description']),
                 'type' => $_field['cf_type'],
                 'order' => $_field['cf_order'],
                 'defines_order' => $_field['cf_defines_order'],
@@ -461,34 +461,14 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                     $put_in_search = $field_data['put_in_search'];
                     $options = $field_data['options'];
 
-                    $_field_title = $field_data['field_title'];
-                    $_description = $field_data['description'];
+                    $field_title = $field_data['field_title'];
+                    $description = $field_data['description'];
 
                     if (array_key_exists($i, $_fields)) {
                         $id = $_fields[$i]['id'];
 
-                        $field_title = mixed();
-                        foreach ($_field_title as $lang => $val) {
-                            delete_lang($_fields[$i]['cf_name']);
-                            $field_title = insert_lang('cf_name', $val, 2, null, false, $_fields[$i]['cf_name'], $lang);
-                        }
-                        $description = mixed();
-                        foreach ($_description as $lang => $val) {
-                            delete_lang($_fields[$i]['cf_description']);
-                            $description = insert_lang('cf_description', $val, 2, null, false, $_fields[$i]['cf_description'], $lang);
-                        }
-
                         actual_edit_catalogue_field($id, $name, $field_title, $description, $order, $defines_order, $visible, $searchable, $default, $required, $put_in_category, $put_in_search, $options, $type);
                     } else {
-                        $field_title = mixed();
-                        foreach ($_field_title as $lang => $val) {
-                            $field_title = insert_lang('cf_name', $val, 2, null, false, $field_title, $lang);
-                        }
-                        $description = mixed();
-                        foreach ($_description as $lang => $val) {
-                            $description = insert_lang('cf_decription', $val, 2, null, false, $description, $lang);
-                        }
-
                         actual_add_catalogue_field($name, $field_title, $description, $type, $order, $defines_order, $visible, $searchable, $default, $required, $put_in_category, $put_in_search, $options);
                     }
                 }

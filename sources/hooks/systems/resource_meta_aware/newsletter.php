@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_newsletter
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'NEWSLETTER',
+            'content_type_label' => 'newsletter:NEWSLETTER',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'newsletters',

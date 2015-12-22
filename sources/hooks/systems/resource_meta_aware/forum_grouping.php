@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_forum_grouping
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'FORUM_GROUPING',
+            'content_type_label' => 'cns:FORUM_GROUPING',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_forum_groupings',

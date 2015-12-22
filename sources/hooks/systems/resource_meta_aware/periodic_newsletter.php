@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_periodic_newsletter
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'PERIODIC_CREATE',
+            'content_type_label' => 'newsletter:PERIODIC_CREATE',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'newsletter_periodic',

@@ -34,7 +34,7 @@ class Hook_resource_meta_aware_multi_moderation
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'MULTI_MODERATIONS',
+            'content_type_label' => 'cns_multi_moderations:MULTI_MODERATION',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_multi_moderations',

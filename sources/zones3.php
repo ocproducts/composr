@@ -640,7 +640,9 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
                 require_code('revisions_engine_files');
                 $revision_engine = new RevisionEngineFiles();
                 list(, , $existing_path) = find_comcode_page(user_lang(), $page, $zone);
-                $revision_engine->add_revision(dirname($existing_path), $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                if ($existing_path != '') {
+                    $revision_engine->add_revision(dirname($existing_path), $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                }
             }
         }
 

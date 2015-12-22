@@ -38,7 +38,7 @@ class Hook_content_meta_aware_member
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'MEMBER',
+            'content_type_label' => 'global:MEMBER',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_members',

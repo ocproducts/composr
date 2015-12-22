@@ -321,7 +321,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
     if (!is_null($test)) {
         if ($uniqify) {
-            $name .= '_' . uniqid('', true);
+            $name .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
         }
@@ -420,7 +420,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
         if (!is_null($test)) {
             if ($uniqify) {
-                $name .= '_' . uniqid('', true);
+                $name .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
             }
@@ -558,7 +558,7 @@ function add_banner_type($id, $is_textual, $image_width, $image_height, $max_fil
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $id));
     if (!is_null($test)) {
         if ($uniqify) {
-            $id .= '_' . uniqid('', true);
+            $id .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
         }
@@ -605,7 +605,7 @@ function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $id));
         if (!is_null($test)) {
             if ($uniqify) {
-                $id .= '_' . uniqid('', true);
+                $id .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
             }
