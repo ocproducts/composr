@@ -59,7 +59,7 @@ class Block_main_contact_us
         $subject_prefix = array_key_exists('subject_prefix', $map) ? $map['subject_prefix'] : '';
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
 
-        $id = uniqid('', true);
+        $id = uniqid('', false);
         $_self_url = build_url(array('page' => 'admin_messaging', 'type' => 'view', 'id' => $id, 'message_type' => $type), get_module_zone('admin_messaging'));
         $self_url = $_self_url->evaluate();
         $self_title = post_param_string('title', do_lang('CONTACT_US_MESSAGING'));

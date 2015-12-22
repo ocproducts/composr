@@ -575,6 +575,10 @@ abstract class Resource_fs_base
      */
     protected function _default_property_group($properties, $property)
     {
+        if (!isset($properties[$property])) {
+            $properties[$property] = db_get_first_id();
+        }
+
         if (is_integer($properties[$property])) {
             return $properties[$property];
         }

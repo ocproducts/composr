@@ -49,7 +49,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => $new_zone));
         if (!is_null($test)) {
             if ($uniqify) {
-                $new_zone .= '_' . uniqid('', true);
+                $new_zone .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($new_zone)));
             }
@@ -544,7 +544,9 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         require_code('revisions_engine_files');
         $revision_engine = new RevisionEngineFiles();
         list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
-        $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+        if ($existing_path != '') {
+            $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+        }
     }
 
     // Store page on disk

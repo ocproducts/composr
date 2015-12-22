@@ -119,6 +119,9 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $header_text = $this->_default_property_str($properties, 'header_text');
         $theme = $this->_default_property_str($properties, 'theme');
+        if ($theme == '') {
+            $theme = '-1';
+        }
         $require_session = $this->_default_property_int($properties, 'require_session');
 
         $zone = $this->_create_name_from_label($label);
@@ -194,6 +197,9 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $header_text = $this->_default_property_str($properties, 'header_text');
         $theme = $this->_default_property_str($properties, 'theme');
+        if ($theme == '') {
+            $theme = '-1';
+        }
         $require_session = $this->_default_property_int($properties, 'require_session');
         $zone = $this->_create_name_from_label($label);
 
@@ -287,7 +293,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
 
         $test = _request_page($page, $zone, null, null, true);
         if ($test !== false) {
-            $page .= '_' . uniqid('', true); // Uniqify
+            $page .= '_' . uniqid('', false); // Uniqify
         }
 
         require_code('zones3');
@@ -403,7 +409,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         if ($page != $old_page) {
             $test = _request_page($page, $zone, null, null, true);
             if ($test !== false) {
-                $page .= '_' . uniqid('', true); // Uniqify
+                $page .= '_' . uniqid('', false); // Uniqify
             }
         }
 

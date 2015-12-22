@@ -100,6 +100,8 @@ function render_comcode_page_box($row, $give_context = true, $include_breadcrumb
  */
 function actual_add_zone($zone, $title, $default_page = 'start', $header_text = '', $theme = 'default', $require_session = 0, $uniqify = false, $base_url = '')
 {
+    require_lang('zones');
+
     require_code('type_sanitisation');
     if (!is_alphanumeric($zone, true)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
@@ -114,7 +116,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
     if (!is_null($test)) {
         if (file_exists(get_file_base() . '/' . $zone)) { // Ok it's here completely, so we can't create
             if ($uniqify) {
-                $zone .= '_' . uniqid('', true);
+                $zone .= '_' . uniqid('', false);
             } else {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($zone)));
             }

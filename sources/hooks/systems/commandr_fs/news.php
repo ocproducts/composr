@@ -110,7 +110,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $owner = $this->_default_property_member_null($properties, 'owner');
         $id = add_news_category($label, $img, $notes, $owner);
 
-        $this->_resource_save_extend($this->folder_resource_type, strval($id));
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
 
         return strval($id);
     }

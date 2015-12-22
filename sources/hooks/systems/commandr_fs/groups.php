@@ -373,9 +373,11 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-            $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
-            $ob->write_property($id);
+            if (isset($properties[$hook])) {
+                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
+                $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+                $ob->write_property($id, $properties[$hook]);
+            }
         }
 
         $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
@@ -491,9 +493,11 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
         foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-            $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
-            $ob->write_property(intval($resource_id));
+            if (isset($properties[$hook])) {
+                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
+                $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+                $ob->write_property(intval($resource_id), $properties[$hook]);
+            }
         }
 
         $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);

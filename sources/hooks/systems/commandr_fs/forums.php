@@ -361,18 +361,20 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     private function save_ticket_associations($properties, $topic_id)
     {
         if (addon_installed('tickets')) {
-            $GLOBALS['SITE_DB']->query_delete('tickets', array('topic_id' => $topic_id));
-            foreach ($properties['ticket_associations'] as $ticket_association) {
-                $extra_access = $ticket_association['extra_access'];
-                unset($ticket_association['extra_access']);
+            if (isset($properties['ticket_associations'])) {
+                $GLOBALS['SITE_DB']->query_delete('tickets', array('topic_id' => $topic_id));
+                foreach ($properties['ticket_associations'] as $ticket_association) {
+                    $extra_access = $ticket_association['extra_access'];
+                    unset($ticket_association['extra_access']);
 
-                $GLOBALS['SITE_DB']->query_delete('ticket_extra_access', array('ticket_id' => $ticket_association['ticket_id']));
+                    $GLOBALS['SITE_DB']->query_delete('ticket_extra_access', array('ticket_id' => $ticket_association['ticket_id']));
 
-                foreach ($extra_access as $_extra_access) {
-                    $GLOBALS['SITE_DB']->query_insert('ticket_extra_access', $_extra_access + array('ticket_id' => $ticket_association['ticket_id']));
+                    foreach ($extra_access as $_extra_access) {
+                        $GLOBALS['SITE_DB']->query_insert('ticket_extra_access', $_extra_access + array('ticket_id' => $ticket_association['ticket_id']));
+                    }
+
+                    $GLOBALS['SITE_DB']->query_insert('tickets', $ticket_association + array('topic_id' => $topic_id));
                 }
-
-                $GLOBALS['SITE_DB']->query_insert('tickets', $ticket_association + array('topic_id' => $topic_id));
             }
         }
     }

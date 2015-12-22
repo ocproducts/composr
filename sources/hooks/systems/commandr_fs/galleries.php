@@ -323,6 +323,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             }
 
             $id = add_image($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description, $regions);
+
+            $this->_resource_save_extend('image', strval($id), $filename, $label, $properties);
         } else {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'videos', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'videos', 1);
@@ -344,9 +346,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             }
 
             $id = add_video($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description, $regions);
-        }
 
-        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+            $this->_resource_save_extend('video', strval($id), $filename, $label, $properties);
+        }
 
         return strval($id);
     }

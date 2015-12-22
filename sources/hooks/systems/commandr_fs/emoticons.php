@@ -76,7 +76,7 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
 
         cns_make_emoticon($label, $theme_img_code, $relevance_level, $use_topics, $is_special);
 
-        $this->_resource_save_extend($this->file_resource_type, $label, $properties);
+        $this->_resource_save_extend($this->file_resource_type, $label, $filename, $label, $properties);
 
         return $label;
     }

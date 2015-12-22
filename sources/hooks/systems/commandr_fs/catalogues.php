@@ -287,7 +287,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
             $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, null, $meta_keywords, $meta_description);
 
-            $this->_resource_save_extend('catalogue_category', strval($id));
+            $this->_resource_save_extend('catalogue_category', strval($id), $filename, $label, $properties);
 
             return strval($id);
         } else { // Catalogue

@@ -312,7 +312,7 @@ function find_comcode_page($lang, $file, $zone)
     if ((!is_file(get_file_base() . '/' . $file_path)) && (!is_file(get_custom_file_base() . '/' . $file_path))) {
         $page_request = _request_page($file, $zone);
         if ($page_request === false || strpos($page_request[0], 'COMCODE') === false) {
-            return array(get_file_base(), '');
+            return array(get_file_base(), '', '');
         }
         $file_path = $page_request[count($page_request) - 1];
     }

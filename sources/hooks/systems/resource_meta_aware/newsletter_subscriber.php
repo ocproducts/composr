@@ -51,7 +51,7 @@ class Hook_resource_meta_aware_newsletter_subscriber
             'parent_spec__field_name' => null,
             'category_is_string' => false,
 
-            'title_field' => 'l_title',
+            'title_field' => 'email',
             'title_field_dereference' => false,
             'description_field' => null,
             'thumb_field' => null,
