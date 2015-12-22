@@ -4,7 +4,7 @@ The Composr repository is a shadow representation of Composr's data.
 
 In most cases, Composr data is stored in the database, which is not a particular user-friendly form, given databases are generally designed with a special set of rules that lead to data being split up across multiple tables. Sometimes data is also stored on the filesystem (i.e. the disk); for example, file uploads.
 
-The Composr repository represents the data into a form that feels far more naturally and integrates with many kinds of tools you may want to use on it.
+The Composr repository represents the data into a form that feels far more naturally and integrates with many kinds of tools you may want to use on it. Most of the data is encoded using the JSON standard.
 
 Through WebDAV (needed for most of the use cases below) you can access the repository as a folder on your own computer.
 
@@ -15,8 +15,11 @@ Specifically, the following use-cases are served by the repository:
  - Integration with normal [b]desktop applications[/b] -- use your favourite text editors or file-search tools to achieve things such as mass search & replace
  - [b]Configuration management[/b] -- track what options have been changed, and transfer them between sites
  - [b]Backups[/b] -- copy portions of the repository to another location for backup; for example, if you are about to make major changes to the catalogue structure, take a backup of the catalogues
+ - [b]Revision control[/b] (built-in) -- content types supporting the revisions system can save the full data of any edited or deleted resource, for retrieval later
  - [b]Revision control[/b] (advanced) -- hook up git to the repository directory, either locally, on your server, or both, to backup content as it is modified
+ - A [b]file system[/b] for the Composr command line (Commandr)
  - Creating an abstract [b]resource API[/b] (for programmers) -- by having a resource model that is abstract (i.e. it's a single model that can be used for manipulating any kind of content/resource), programmers can come up with some clever functionality; Aggregate Content Types is an example of Composr functionality that is built on top of the repository
+ - An [b]API[/b] for separate apps (e.g. mobile apps) to connect through to
 
 And the following work-in-progress use-cases:
  - Making content/resource [b]import and export[/b] very easy -- we are able to code up import/export support into the repository by coding in additional views of the same data; for example, we would be able to allow automatic import of images into galleries via just copying in JPEG files
@@ -102,7 +105,7 @@ The label is too free-form to be used for file names, so we actually convert it 
 
 [title="4"]Filename[/title]
 
-Once we have a moniker, this essentially then is combined with the file extension (if applicable -- not for folders), to form the filename. Usually the file extension is [tt].xml[/tt], as the meta-filesystems use XML for encoding data. Because monikers are unique, filenames are actually unique and we know we will never get conflicting names.
+Once we have a moniker, this essentially then is combined with the file extension (if applicable -- not for folders), to form the filename. Usually the file extension is [tt].cms[/tt]. Because monikers are unique, filenames are actually unique and we know we will never get conflicting names.
 
 Because entries are usually represented as files within folders (categories), we can therefore think of resources as being identified via a full file path, which is essentially a combination of monikers and slashes ([tt]/[/tt] on Mac/Linux, [tt]\[/tt] on Windows).
 
