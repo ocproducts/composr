@@ -2,8 +2,6 @@
 .vision-list ul li { line-height:25px; font-size:14px; padding-left:6px; color:#000; margin:12px 0; overflow:hidden; }
 .vision-list ul li span { color:#fff; background:#95A6C0; border-radius:50%; width:30px; height:30px; display:block; float:left; text-align:center; margin-right:40px; line-height:30px; }
 .vision-list ul li p { width:90%; float:left; }
-.vision-box1 { width:234px; float:left; min-height:420px; border:#667ea4 solid 1px; border-radius:7px; margin:15px 0; margin-right:4px; }
-.vision-box1 h2 { margin:0; border-radius:5px 5px 0 0; background:#667ea4; color:#fff; text-align:center; padding:3px 0; font-size:15px; min-height:41px; }
 .vision-box-list ul { margin:0; list-style:none; float:left; width:220px; padding:7px; }
 .vision-box-list ul li { color:#666; border-bottom:#d6d6d6 solid 1px; padding:5px 0; line-height:20px; font-size:14px; }
 .vision-box-list ul li:last-child { border-bottom:0 }
