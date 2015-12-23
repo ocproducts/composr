@@ -126,8 +126,6 @@
 			<div class="thumbHead">
 				Stats and facts:
 			</div>
-
-			<p>Blinded by tech? See our <a href="#">glossary</a>.</p><br />
 		</div>
 
 		<div class="cntL_Row">
