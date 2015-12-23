@@ -108,7 +108,7 @@ The Composr "Cookie notice" configuration option implements this. It isn't on by
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_how_internet_works"]How the Internet works[/page]
- - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
+ - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
 
 {$SET,tutorial_tags,Internet Technology,Development,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Want to know everything there is to know about cookies and sessions? You probably don't, but if you do, read this!}[block]main_tutorial_rating[/block]

@@ -1244,6 +1244,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/sup_choosing_a_developer.txt',
             'docs/pages/comcode_custom/EN/sup_marketing.txt',
             'docs/pages/comcode_custom/EN/sup_making_tutorials.txt',
+            'docs/pages/comcode_custom/EN/sup_glossary.txt',
 
             'docs/composr-api-template/README.md',
             'docs/composr-api-template/class.xsl',

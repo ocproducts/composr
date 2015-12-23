@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Reporting problems and providing feedback[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Problem and feedback reports, and development policies[/title]
 
 This tutorial will provide you some advice for reporting different kinds of feedback for Composr. It will teach you how to do it the right way, specifically:
  - Comprehensively (you don't want to provide vague non-actionable feedback)
@@ -496,5 +496,61 @@ That said, please don't let it stop you giving feedback. The critical difference
 6) Don't take backups, then blame bugs if anything happens to stop your site working, expecting free support to get it fixed
 7) Sponsor a feature, then try and use that to leverage free support in other areas (a sponsorship payment would go directly to fund the work involved implementing the feature, so would not be a donation)
 8) Try to negotiate the lowering of professional hourly rates to that of independent freelancers, or companies operating from developing countries
+
+[title="2"]Maintenance Policies[/title]
+
+It is an unfortunate but inevitable fact that computer software has bugs. Composr is no exception, and although we work to make sure every single bug gets fixed, we aren't able to make sure every past version ever released is kept bug-free. It is essential that users understand our maintenance policy, and perform upgrades as we suggest.
+
+[title="3"]Flaw policy[/title]
+
+Bugs and security issues are both classified as 'flaws'. There are two classifications of flaw:
+ - [b]Major[/b]. A major security or integrity issue, or a bug so significant that it cuts off major functionality.
+ - [b]Minor[/b]. Any flaw that is not major.
+
+ocProducts has a rolling support status for versions of Composr (aka/formerly ocPortal). Versions may be classified as: [b]beta[/b], [b]stable[/b], [b]supported[/b], [b]defunct[/b].
+A [b]supported[/b] version is a previous major version where the initial release of a subsequent new major version was made only in the past 8 months. A [b]defunct[/b] version is older than that. Flaws are handled for the different support statuses as follows:
+ - [b]Beta[/b] version. ocProducts will typically release the next new beta version with all bugs up to the major flaw fixed, but there are no guarantees.
+ - [b]Stable[/b] version. ocProducts will release a new version with all bugs fixed.
+ - [b]Supported[/b] version. ocProducts will release a new version with only the major flaws fixed, as any minor bugs truly will be minor as a whole new version had been developed before they were found. Note that any installation issues or compatibility issues with new software are degraded to minor flaws when considering the [b]supported[/b] version, and hence not fixed in it.
+ - [b]Defunct[/b] version. No flaws are handled except when there is an active support contract with particular customers (in which case fixes would only be sent to those customers and to the git repository).
+
+Please note that we don't usually immediately release a new version when there is a flaw. We usually put out a hotfix, then a new patch release every few months.
+
+Please note that if Composr is installed by a hosting-control-panel, it is very unlikely that it will be up-to-date. Thus, hosting-control-panel installs will need immediate upgrade.
+
+[title="4"]Example[/title]
+
+At the time of writing, the support statuses for Composr/ocPortal versions are:
+ - 10.x.x - this is [b]beta[/b]
+ - 9.x.x - this is [b]supported[/b]
+ - 8.x.x - this is [b]stable[/b] (normally this would be defunct, as v9 has been out far longer than 8 months -- but v8 is/was being maintained longer due to the theme compatibility break in v9)
+ - 7.x.x - this is [b]defunct[/b]
+
+If a major flaw was found that exists in 10.x.x, 9.x.x, 8.x.x, then ocProducts would:
+ - fix 10.x.x silently (as it is in beta)
+ - release a new 9.x.x release
+ - release a new 8.x.x release
+
+If a minor flaw was found that exists in 10.x.x, 9.x.x, 8.x.x, then ocProducts would:
+ - fix 10.x.x silently (as it is in beta)
+ - release a new 9.x.x release
+ - [i]no change to 8.x.x[/i]
+
+[title="3"]Security policy[/title]
+
+ocProducts believes in being open about how we treat security issues. By explaining how we deal with security issues and why we deal with them in the way we do, we hope that you can better understand how to keep your site patched up. Unfortunately it is virtually impossible to write computer code that doesn't have security issues, because even the smallest mistake or unintended-consequence can lead to them -- ocProducts has very strong standards for writing code to minimalise security holes, as well as in-house developed automatic scanning technology, and layers of redundant security built in to Composr itself. Even with all this though, problems will inevitably by found.
+
+There is a security philosophy known as 'full disclosure'. The basis of this is that vulnerabilities are specified in the open soon after they are found. Whilst implementing this would be an act of openness from us, we have decided to not implement it because we have large numbers of users who do not have the expertise and funds to rapidly react to such public disclosures. By not giving full details of security holes, we make it harder for hackers to find them -- reducing the threat by increasing the investment a hacker needs to make. However, we strongly encourage users to keep up to date with all patch releases, because we may have fixed vulnerabilities. The idea is that we make it harder for hackers by not disclosing vulnerabilities, but we quickly release patches and thus don't leave conscientious users vulnerable to persistent hackers. If less-conscientious users don't patch then at least the vulnerabilities aren't disclosed, and if they were disclosed the users would not likely have patched anyway and therefore be in even greater danger. We never sit on vulnerabilities.
+
+Security researchers sometimes find vulnerabilities, and usually they do follow full disclosure processes. Therefore it is very possible security holes do get disclosed by third-parties. However, these researchers usually only do their full disclosure after a reasonable time window.
+
+ocProducts reacts to vulnerabilities different depending on whether we classify them as 'major' or 'minor'.
+ - Major vulnerabilities are considered a 'major flaw', and hence new versions for [b]supported[/b], [b]stable[/b] and [b]beta[/b] are released quickly after the flaw is found. The vulnerabilities are mentioned as existing (along with the severity) in the notes accompanying a new release, the 'version notes' for the prior version, and in a newsletter; there is one exception to this: if the vulnerability is obscure enough to only affect a small proportion of users, it may not be mentioned (keep reading this section for more details on this).
+ - Minor vulnerabilities either have a low risk or are so inherently commonplace in all similar software that making new releases to fix each of them is unfeasible. These vulnerabilities are silently fixed, and if there are enough of them or if they are borderline cases, the next minor release mentions their existance. Sometimes a minor vulnerability will be treated as a major one if it has already been disclosed by a third-party (due to an elevated risk).
+
+As stated, we will not always disclose the existence of low-risk vulnerabilities. We appreciate that some might consider this a 'cover up' on ocProduct's part, but the reality is that the decision is made for two reasons:
+ - to avoid alarming users
+ - and most importantly, to avoid alerting hackers
+We hope by being up-front, our users will appreciate this and keep their version of Composr up-to-date with the latest stable version of the major version they are using (and within 8 months of release, the latest major version). If users do this, their sites will stay patched for all vulnerabilities ocProducts knows of.
 
 {$SET,tutorial_tags,Contributing,Advice & Guidance,novice,pinned}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,Providing feedback and making contributions to Composr.}[block]main_tutorial_rating[/block]

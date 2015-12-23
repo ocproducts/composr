@@ -578,5 +578,6 @@ Open Source: Systems tend to be more light-weight, focused on the core behaviour
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]
+ - [page="_SEARCH:sup_glossary"]Web design glossary[/page]
 
 {$SET,tutorial_tags,core,Introduction,Internet Technology,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Background into the different kinds of solutions that are out there for creating websites - and where Composr fits in.}[block]main_tutorial_rating[/block]

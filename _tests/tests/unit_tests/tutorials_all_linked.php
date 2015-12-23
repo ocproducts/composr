@@ -107,6 +107,36 @@ class tutorials_all_linked_test_set extends cms_test_case
         closedir($dh);
     }
 
+    public function testHasCorrectTitle()
+    {
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, 0, 4) == 'sup_') {
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), 'Composr Supplementary: ') !== false, $f . ' has wrong title stub');
+            }
+
+            elseif (substr($f, 0, 4) == 'tut_') {
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), 'Composr Tutorial: ') !== false, $f . ' has wrong title stub');
+            }
+        }
+    }
+
+    public function testNotSelfLinking()
+    {
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.txt') {
+                if ($f == 'panel_top.txt') {
+                    continue;
+                }
+
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), '"_SEARCH:' . $f . '"') === false, $f . ' is self linking');
+            }
+        }
+    }
+
     public function testHasStandardParts()
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
