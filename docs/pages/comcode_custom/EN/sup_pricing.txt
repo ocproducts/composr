@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts CEO)"]Composr Supplementary: Project pricing[/title]
 
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_pricing/image.jpg[/media]
 This tutorial is written to give an idea of how the web design industry is structured. It should be of interest to web design companies, as well as to people looking for a web design company to get a better idea of what kind of company to be talking to, what kind of process to go through, and the kind of price range you should plan to receive quotes for when you put out a website RFP (request for proposals).
 
 You may intend to implement your website yourself, in which case this tutorial isn't really for you (the [page="_SEARCH:sup_complex_projects"]How to approach complex projects tutorial[/page] may be more appropriate). We love DIYers within the Composr community.
@@ -30,6 +31,7 @@ The market for websites is highly distorted for many reasons:
 
 [title="2"]Kinds of company[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_pricing/image3.jpg[/media]
 There are eight main kinds of web design company, ordered roughly by price:[list]
 [*][b]Offshore[/b]: an individual or team working offshore for low rates, usually as virtual employees.[/*]
 [*][b]Individuals[/b]:[list]
@@ -88,6 +90,7 @@ Most people go for a happy balance of quality that puts the price around the ave
 
 [title="3"]The low end ($500-$5,000)[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_pricing/image5.jpg[/media]
 The low end of the web design market works with a very "street smart" kind of attitude. It is price-sensitive, with a high focus on driving straight-forward sale conversions, to build straight-forward websites. There tends to only be basic design focus, enough to make things tidy, and very little focus on branding; sometimes use of templates can make this a bit harder to detect. However, there is a great focus on SEO, and providing websites that (like the web designer themselves) work via driving straight-forward sales conversions. In other words, the web design company and the client typically have a similar kind of mindset:[list]
 [*]keep things simple[/*]
 [*]concentrate on SEO[/*]
@@ -127,6 +130,7 @@ On the high end, things almost always will start with a website RFP. In fact, Go
 
 [title="2"]Agile[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/sup_pricing/image2.jpg[/media]
 It may well be best to not think of a website having a particular cost, but of it being an ongoing investment. See the [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products tutorial[/page] for details on the project management approach; read on for details of how this affects pricing.
 
 Project costing is notoriously difficult. Essentially any time a new custom project is being done, it's a process of invention, and it's impossible to work out how long it will really take. All people can do is make their best guess by trying to pull out the right key points from the project and intuitively understanding how hard each will be. You can only know how long it will [i]really[/i] take if you have an [i]exact[/i] knowledge of every tiny task that will be required, and whether your particular implementation of that task will be considered acceptable. The only point which you know this is when the project is actually completed.
@@ -204,6 +208,7 @@ There are 4 main costs to consider when pricing a project:
 
 [title="2"]My company (the Composr company, ocProducts)[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_pricing/image4.jpg[/media]
 ocProducts tends to operate in the mid-market. We certainly don't work too deep into the low end because our staff are too skilled to compete just on price, and we have a brand that creates high expectations and too much of a reputation at stake to risk lowering our design standards. We can work on the high end, but because we're an innovative engineering-lead company, it doesn't tend to fit too well to the risk-adversity of the buyers (it's such a shame, so often on the high end organisations guarantee themselves mediocrity, missing out on quality and innovation).
 
 [title="2"]How much would Composr cost to make from scratch?[/title]

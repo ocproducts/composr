@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham"]Composr Supplementary: How to approach complex projects[/title]
 
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_complex_projects/image.jpg[/media]
 Composr is designed as a tool to lower the investment (be it time or money) needed for making advanced websites. Typically it might reduce that investment by around 50%, but it varies greatly from one project to another.
 
 [title="2"]Complex projects[/title]
@@ -34,6 +35,7 @@ You've built a basic catalogue, and imported 100k records into it, and you decid
 
 [title="2"]What Open Source really means: how commerce and community connect[/title]
 
+[media description="" width="400" float="right" framed="0"]data_custom/images/docs/sup_complex_projects/image3.jpg[/media]
 Let's take a step back and focus on DIY users again, because they are important, nay, vital. They are a minority when it comes to implementing complex projects, but they are also the life-blood of Composr.
 
 In our opening paragraph we talked about your website being an investment. In many cases the investment users make in their website is just in time -- our users spending time learning the Composr software, and taking advantage of the great features it has to offer. These are the DIY users, suited to basic personal sites, or advanced sites when these users are very skilled and/or willing to learn and invest a lot of time.
@@ -65,6 +67,7 @@ Open Source web developers often get a situation where people come looking to pu
 
 [title="2"]A good approach[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_complex_projects/image2.jpg[/media]
 So, what I would advise is at the start of any complicated project, really question how you're going to approach it. Here are some key questions you should have answers to:
 1) How popular is this expected to be?
 2) Am I willing to learn programming myself?

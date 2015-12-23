@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts CEO)"]Composr Supplementary: Minimum Viable Products[/title]
 
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_minimum_viable_products/image.jpg[/media]
 At the time of writing, Composr has approximately half a million lines of code. Our code is actually some of the most compact out there -- if it was written less tersely, it would be millions of lines. Composr has been created with roughly 12 man-years of non-stop development, to very high standards. We have created new programming languages, new compilers, our own fork of PHP, and done plenty of other crazy things -- all in the name of building and maintaining a huge codebase on a limited budget, and making it easy for people to use. I'm fairly sure we have more functionality in Composr than any other website building system.
 
 As a result of the strength of Composr, and the expertise within it all, commercial projects result in a constant churn of new functionality for new versions of Composr.
@@ -32,6 +33,7 @@ It's easy to imagine how some feature can be improved a little bit. How about we
 
 [title="2"]Programming is hard[/title]
 
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_minimum_viable_products/image2.jpg[/media]
 Computer programming is an incredibly focused activity, often telling the computer what to do down to details that a layman never even realised existed. Computers are dumb, things rarely can connect together automatically, everything has to be explicitly defined.
 
 Unfortunately programmers often are pretty guilty of underestimating their work too. Good programmers have to be quite optimistic about code writing, otherwise it would be hard to stay motivated -- but they often don't notice the hours ticking away on the clock as they are getting stuff done.

@@ -10,6 +10,7 @@ There are other ways of releasing information in Composr not mentioned here, suc
 
 [title="2"]The ways[/title]
 
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/tut_information/image.jpg[/media]
 The main ways to release information in Composr are:
  - Comcode pages
  - News articles
@@ -275,6 +276,7 @@ Downloads may be used to release information indirectly, essentially via storing
 
 [title="2"]Content type terminology[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/tut_information/image2.jpg[/media]
 We use 4 generic words in Composr for describing content:
 1) Content type (plural: content types)
 2) Resource (plural: resources)

@@ -1,5 +1,6 @@
 [title sub="Written by Chris Graham"]Composr Supplementary: Choosing a software company for your project[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image.jpg[/media]
 This tutorial explains how to choose a developer.
 
 It's really important to select a company that does much more than just tell you what they know you expect to hear as an outside buyer.
@@ -24,6 +25,7 @@ You may also hear terms like "web designer". A designer typically is closer to t
 
 [title="2"]How to evaluate a software company[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image2.jpg[/media]
 At ocProducts we often find that prospective clients don't know how to evaluate a software company. It's understandable: a lot of web businesses are first-time-businesses, and they are often started by people who are expert in the subject matter, but not web technology. People can't know everything.
 
 It becomes a problem in two particular scenarios:
@@ -56,6 +58,7 @@ You should not expect the company to be able to show another project they have d
 
 [title="3"]Evaluating Security[/title]
 
+[media description="" width="200" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image3.jpg[/media]
 Ask what particular process is used to ensure new code is secure. Ask them on the phone (i.e. without giving them to prepare) what a "CSRF vulnerability" is. Of course, your phone contact may be a manager, but you can ask them to connect you to a developer. If they cannot connect you to a developer, the "we don't actually do programming in-house" flag should raise.
 
 CSRF stands for "cross site request forgery" and is a vulnerability where a hacker creates an 'evil' third party website and persuades an administrator to go to it, and that 'evil' website redirects a request over to the administrators website to instruct it to do something on it like delete something. If they cannot explain this clearly, you should be extremely concerned that the programmer is not experienced (there are a lot of programmers who have a very focused/limited knowledge of things). Don't let them come crawling back later about how they have "learnt new things", because this will just be illustrative of hundreds of critical holes in their knowledge and a lack of competency and professional integrity: CSRF is just one of dozens of areas of important security consideration a developer should know of.
@@ -96,6 +99,7 @@ Here are 10 more things to consider:
 
 [title="3"]Evaluating [i]yourself[/i][/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image4.jpg[/media]
 I can't stress enough how important it is for you to consider a business model for your website.
 
 You need to perform a market review and come up with some kind of plan on how you will differentiate yourselves against your competitors, how you can beat them without them just copying your innovations, and how you will reach your future customers. If your differentiation is weak, you also need to consider how you will be able to create a superior solution than your competitors on the budget you have.
@@ -124,6 +128,7 @@ Here are a few things I would not expect a web designer to suggest, but if you c
 
 [title="2"]Offshoring[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image5.jpg[/media]
 A very large proportion of web development on Western websites is secretly done in Eastern countries. It's the elephant in the room, or in this case, the Indian Elephant in the room.
 
 There's a huge advantage to offshoring PHP development: cost. The numbers seem extraordinary, $15 per hour vs $100 per hour.
@@ -141,6 +146,7 @@ That's a big drop, but it's still cheaper to offshore, and when you run a busine
 
 People in India (or Pakistan, or Russia, or any other country) are not inherently any more or less smart than people in, say, America or the UK. To say that is pure xenophobia and I find it highly distasteful.
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image7.jpg[/media]
 So, where can offshoring go wrong? Here's a list from my own experience:[list]
 [*]An issue called [url="power difference"]http://www.lessonsoffailure.com/developers/real-reason-outsourcing-fails/[/url] comes into play. Developing countries usually have a culture where it is considered highly unprofessional to ever question someone who is a superior. Managers in Western countries usually thrive on feedback from people under them, and ask for all their decisions to be questioned, and I think this is vital to success. You really don't want people to be "yes men". Don't underestimate the seriousness of this problem, a manager never has the time and perspective needed to perfectly explain a task, but if employees don't ask questions when they start to explore out the task in it's full detail, those tasks don't get done right. This kind of culture is inherent to countries where labour is very cheap, because it's more about power structures than cost.[/*]
 [*]Time-zone differences: either you need to wait for a developer to come on-shift, or the developer is asked to work horrible hours and then sleep in a noisy city during day time (Indian cities are notoriously noisy).[/*]
@@ -158,6 +164,7 @@ So, where can offshoring go wrong? Here's a list from my own experience:[list]
 
 As you can see, the situation is far more complex than just the "communication issues" clich&eacute;, and it is not an issue with core skill.
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_choosing_a_developer/image6.jpg[/media]
 But even after all this, you cannot deny the difference in price, it still often works out cheaper when you take everything into account. Consider these counter-arguments:[list]
 [*]It is cheaper per-hour regardless of the above factors[/*]
 [*]The great Western developer you hire may not be available to you either. I mentioned $100/hr above, but you could find that the developers you really need charge $200/hr because the $100/hr are fully booked or don't have the decade of practical experience you need. There is a significant shortage of skilled software developers and salaries have gotten very high.[/*]
