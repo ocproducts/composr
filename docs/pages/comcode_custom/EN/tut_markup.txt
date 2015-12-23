@@ -20,44 +20,61 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 
 	<tbody>
 		<tr>
-			<td>[abbr="Transfer Control Protocol / Internet Protocol"]TCP/IP[/abbr]</td>
+			<th colspan="3"><em>Miscellaneous protocols</em></th>
+		</tr>
+		<tr>
+			<td>[abbr="File Transfer Protocol"][url="http://www.w3.org/Protocols/rfc959/"]FTP[/url][/abbr] and [abbr="Security File Transfer Protocol"][url="https://tools.ietf.org/html/draft-ietf-secsh-filexfer-02"]SFTP[/url][/abbr]</td>
+			<td>This is the standard for uploading files to a server.</td>
+			<td>It is good to set up an SFTP client (FTP is not secure, so best avoided) and use that for uploading/downloading files. It is more convenient and reliable than using a web hosting control panel's file manager.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Internet Message Access Protocol"][url="https://tools.ietf.org/html/rfc3501"]IMAP[/url][/abbr] and [abbr="Post Office Protocol 3"][url="https://tools.ietf.org/html/rfc1939"]POP3[/url][/abbr]</td>
+			<td>These are the common protocols for accessing e-mail.</td>
+			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of them.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Transfer Control Protocol / Internet Protocol"][url="https://tools.ietf.org/html/rfc793"]TCP[/url]/[url="https://tools.ietf.org/html/rfc1700"]IP[/url][/abbr]</td>
 			<td>This is the protocol for transmitting Internet data.</td>
 			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users tutorial[/page]).</td>
 		</tr>
 		<tr>
-			<td>[abbr="HyperText Transfer Protocol"]HTTP[/abbr]</td>
+			<td>[abbr="Domain Name System"][url="https://tools.ietf.org/html/rfc1101"]DNS[/url][/abbr]</td>
+			<td>This is the protocol for looking up the IP address for a domain name.</td>
+			<td>When you buy and configure a domain name, you are using DNS.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Simple Mail Transfer Protocol"][url="https://tools.ietf.org/html/rfc2821"]SMTP[/url][/abbr]</td>
+			<td>This is the protocol for sending e-mail.</td>
+			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of it.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Multipurpose Internet Mail Extensions"][url="https://tools.ietf.org/html/rfc2045"]MIME[/url][/abbr]</td>
+			<td>This is the standard for the composition of e-mails.</td>
+			<td>You don't need to know anything about MIME specifically, but a basic awareness that e-mails can have dual text and HTML versions, and contain both attachments and inline images, is useful.</td>
+		</tr>
+
+		<tr>
+			<th colspan="3"><em>Web</em></th>
+		</tr>
+		<tr>
+			<td>[abbr="HyperText Transfer Protocol"][url="http://tools.ietf.org/html/rfc2616"]HTTP[/url][/abbr]</td>
 			<td>This is the protocol for transmitting web data.</td>
 			<td>You won't need much awareness that web [abbr="Uniform Resource Locator"]URL[/abbr]s come from the HTTP standard, as do cookies, as does HTTP authentication (not used on many sites, but sometimes useful).</td>
 		</tr>
 		<tr>
-			<td>[abbr="eXtensible Markup Language"]XML[/abbr] (including [abbr="Really Simple Syndication"]RSS[/abbr], Atom, [abbr="Outline Processor Markup Language"]OPML[/abbr], [abbr="Extensible Stylesheet Language Transformations"]XSLT[/abbr], [abbr="Scalable Vector Graphics"]SVG[/abbr] and use in [abbr="Asynchronous JavaScript and XML"]AJAX[/abbr])</td>
-			<td>XML is a standard for structuring data, used for many web formats that Composr supports, as well as a few configurable parts of Composr. RSS, Atom and OPML are feed technology, to export Composr news. XSLT is a technology we use to make RSS, Atom and OPML display in a web browser.</td>
-			<td>You won't need much awareness of XML unless doing particular advanced configuration.</td>
+			<td>Web server</td>
+			<td>This is the software application that serves data over HTTP, and ties into PHP; Apache and [abbr="Internet Information Server"]IIS[/abbr] are examples of the web server applications Composr can use.</td>
+			<td>An awareness of web server configuration may be important. For example, how to configure Apache via [tt].htaccess[/tt] files.</td>
 		</tr>
 		<tr>
-			<td>[abbr="JavaScript Object Notation"]JSON[/abbr]</td>
-			<td>This is a popular alternative to XML and is commonly used for web APIs between servers or between servers and web browsers.</td>
-			<td>You won't need to know JSON.</td>
-		</tr>
-		<tr>
-			<td>[abbr="eXtensible HyperText Markup Language 5"]XHTML5[/abbr], [abbr="HyperText Markup Language 5"]HTML5[/abbr] (and microformats)</td>
+			<td>[abbr="eXtensible HyperText Markup Language 5"]XHTML5[/abbr], [abbr="HyperText Markup Language 5"][url="http://www.w3.org/TR/html5/"]HTML5[/url][/abbr] (and microformats)</td>
 			<td>This is the standard for web pages. XHTML is (for all intents and purposes) a more formal version of HTML, and we ensure Composr is written to this to make things clear and consistent. You will usually hear people talk about HTML rather than XHTML, and practically you can consider them the same.</td>
 			<td>Knowing (X)HTML is crucial to defining layouts and general template editing.</td>
 		</tr>
 		<tr>
-			<td>[abbr="Cascading Style Sheets"]CSS[/abbr]</td>
+			<td>[abbr="Cascading Style Sheets"][url="http://www.w3.org/Style/CSS/Overview.en.html"]CSS[/url][/abbr]</td>
 			<td>This is the standard for styling web pages; it ties into the (X)HTML.</td>
 			<td>Knowing CSS is crucial for adjusting theme styles.</td>
-		</tr>
-		<tr>
-			<td>JavaScript (aka ECMA-Script) [i](optional)[/i] and [abbr="Document Object Model"]DOM[/abbr]</td>
-			<td>This is the standard to make web pages interactive; it ties into the (X)HTML.</td>
-			<td>You will only need to know JavaScript if doing particularly advanced themeing.</td>
-		</tr>
-		<tr>
-			<td>Dublin Core</td>
-			<td>This is the standard for adding meta-data to web pages; it ties into the XHTML.</td>
-			<td>You are unlikely to need any awareness of this.</td>
 		</tr>
 		<tr>
 			<td>PHP</td>
@@ -65,49 +82,127 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>Knowledge of PHP is only required if changing core Composr code.</td>
 		</tr>
 		<tr>
-			<td>Web server</td>
-			<td>this is the software application that serves data over HTTP, and ties into PHP; Apache and [abbr="Internet Information Server"]IIS[/abbr] are examples of the web server applications Composr can use.</td>
-			<td>An awareness of web server configuration may be important. For example, how to configure Apache via [tt].htaccess[/tt] files.</td>
+			<td>JavaScript (aka [url="http://www.ecma-international.org/publications/standards/Ecma-290.htm"]ECMAScript[/url]) [i](optional)[/i], [abbr="Document Object Model"][url="http://www.w3.org/DOM/DOMTR"]DOM[/url][/abbr], and [url="http://www.w3.org/TR/XMLHttpRequest/"]XMLHttpRequest[/url]</td>
+			<td>This is the standard to make web pages interactive; it ties into the (X)HTML.</td>
+			<td>You will only need to know JavaScript if doing particularly advanced themeing.</td>
 		</tr>
 		<tr>
-			<td>[abbr="Structured Query Language"]SQL[/abbr]</td>
-			<td>This is the standard for accessing/manipulating data inside databases; Composr uses it to talk to the database (e.g. [tt]SELECT * FROM table WHERE something='somevalue'[/tt]), which is usually the MySQL database application.</td>
-			<td>A basic understanding of SQL is useful. Sometimes going down to the database level, bypassing Composr, is useful. For example, to make a bulk text change across the system you could write some queries to do so.</td>
+			<td>[abbr="Scalable Vector Graphics"][url="http://www.w3.org/Graphics/SVG/"]SVG[/url][/abbr]</td>
+			<td>Vector graphics standard, used for drawing statistics graphs.</td>
+			<td>You are unlikely to need any awareness of this.</td>
+		</tr>
+
+		<tr>
+			<th colspan="3"><em>Accessibility and Internationalisation</em></th>
 		</tr>
 		<tr>
-			<td>[abbr="File Transfer Protocol"]FTP[/abbr] or [abbr="Security File Transfer Protocol"]SFTP[/abbr]</td>
-			<td>This is the standard for uploading files to a server.</td>
-			<td>It is good to set up an SFTP client (FTP is not secure, so best avoided) and use that for uploading/downloading files. It is more convenient and reliable than using a web hosting control panel's file manager.</td>
+			<td>[url="http://www.w3.org/TR/WAI-WEBCONTENT/"]WCAG 1.0[/url] and [url="http://www.w3.org/TR/WCAG20/"]2.0[/url] and [url="http://www.w3.org/WAI/intro/aria"]WAI-ARIA[/url]</td>
+			<td>Accessibility standards, particularly for blind users.</td>
+			<td>We support the highest levels of compliance (AAA).</td>
 		</tr>
 		<tr>
-			<td>[abbr="Internet Message Access Protocol"]IMAP[/abbr] and [abbr="Post Office Protocol 3"]POP3[/abbr]</td>
-			<td>These are the common protocols for accessing e-mail.</td>
-			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of them.</td>
-		</tr>
+			<td>[url="http://en.wikipedia.org/wiki/Access_key#UK_Government_recommendation_for_access_keys"]UK Gov. recommendation for access keys[/url] and [url="http://www.webrichtlijnen.nl/besluit/tekst-besluit-en-toelichting/"]Besluit Kwaliteit Rijksoverheidswebsites[/url] and [url="http://www.section508.gov"]Section 508[/url]</td>
+			<td>Detailed accessibility standards from particular countries.</td>
+			<td>We support these standards.</td>
+		</td>
 		<tr>
-			<td>[abbr="Simple Mail Transfer Protocol"]SMTP[/abbr]</td>
-			<td>This is the protocol for sending e-mail.</td>
-			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of it.</td>
-		</tr>
-		<tr>
-			<td>File formats like iCalendar, CSV files, JPEG, PNG, Zip, Tar, Gzip</td>
-			<td>These are used in specific areas of Composr, for reading and writing special file types. PNG is an image file format. PNG is used in favour to GIF, as it supports images more than 256 colours, 'alpha transparency' (blended transparency that is not tied to background colour) and is not encumbered by software patents.</td>
-			<td>The ability to use image editors, and choose appropriate image file types, is definitely useful. Being able to import and export appropriately-structured CSV files (spreadsheets) is also useful.</td>
+			<td>[url="http://www.w3.org/WAI/intro/atag.php"]ATAG[/url]</td>
+			<td>Accessibility standards for site authors.</td>
+			<td>We are fully compliant.</td>
 		</tr>
 		<tr>
 			<td>ISO character sets and Unicode (UTF-8)</td>
 			<td>These are the alternative standards for Internationalisation support; Composr supports both.</td>
 			<td>By default Composr uses UTF-8 which means you don't really need much awareness of character sets. It is useful to know how UTF-8 works (particular how some character use more than one byte)</td>
 		</tr>
+
 		<tr>
-			<td>[abbr="Multipurpose Internet Mail Extensions"]MIME[/abbr]</td>
-			<td>This is the standard for the composition of e-mails.</td>
-			<td>You don't need to know anything about MIME specifically, but a basic awareness that e-mails can have dual text and HTML versions, and contain both attachments and inline images, is useful.</td>
+			<th colspan="3"><em>Data &amp; Feeds</em></th>
 		</tr>
 		<tr>
-			<td>[abbr="Lightweight Directory Access Protocol"]LDAP[/abbr]</td>
+			<td>[abbr="eXtensible Markup Language"][url="http://www.w3.org/TR/2008/REC-xml-20081126/"]XML[/url][/abbr] (including [abbr="Really Simple Syndication"][url="http://cyber.law.harvard.edu/rss/rss.html"]RSS[/url][/abbr], [url="http://tools.ietf.org/html/rfc4287"]Atom[/url], [abbr="Outline Processor Markup Language"][url="http://www.opml.org/spec1"]OPML[/url][/abbr], [abbr="Extensible Stylesheet Language Transformations"][url="http://www.w3.org/TR/xslt20/"]XSLT[/url][/abbr], [url="http://www.sitemaps.org/"]XML Sitemaps[/url] and [url="https://support.google.com/news/publisher/answer/74288?hl=en"]Google News Sitemaps[/url], and use in [abbr="Asynchronous JavaScript and XML"]AJAX[/abbr])</td>
+			<td>XML is a standard for structuring data, used for many web formats that Composr supports, as well as a few configurable parts of Composr. RSS, Atom and OPML are feed technology, to export Composr news. XSLT is a technology we use to make RSS, Atom and OPML display in a web browser.</td>
+			<td>You won't need much awareness of XML unless doing particular advanced configuration.</td>
+		</tr>
+		<tr>
+			<td>File formats like [url="http://tools.ietf.org/html/rfc5545"]iCalendar 2.0[/url], CSV files, JPEG, PNG, Zip, Tar, Gzip</td>
+			<td>These are used in specific areas of Composr, for reading and writing special file types. PNG is an image file format. PNG is used in favour to GIF, as it supports images more than 256 colours, 'alpha transparency' (blended transparency that is not tied to background colour) and is not encumbered by software patents.</td>
+			<td>The ability to use image editors, and choose appropriate image file types, is definitely useful. Being able to import and export appropriately-structured CSV files (spreadsheets) is also useful.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Lightweight Directory Access Protocol"][url="http://tools.ietf.org/html/rfc4510"]LDAP 3[/url][/abbr]</td>
 			<td>This is the standard for having shared logins on a computer network, which Composr can use.</td>
 			<td>This is only relevant if you are setting up a corporate Intranet.</td>
+		</tr>
+		<tr>
+			<td>[url="http://www.webdav.org/"]WebDav[/url]</td>
+			<td>A network file system.</td>
+			<td>This can be used with [page="_SEARCH:tut_repository"]The Repository[/page] for accessing the Commandr-fs filesystem.</td>
+		</tr>
+		<tr>
+			<td>[abbr="JavaScript Object Notation"][url="http://www.json.org/"]JSON[/url][/abbr]</td>
+			<td>This is a popular alternative to XML and is commonly used for web APIs between servers or between servers and web browsers.</td>
+			<td>You won't need to know JSON.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Structured Query Language"][url="http://en.wikipedia.org/wiki/Sql"]SQL[/url][/abbr]</td>
+			<td>This is the standard for accessing/manipulating data inside databases; Composr uses it to talk to the database (e.g. [tt]SELECT * FROM table WHERE something='somevalue'[/tt]), which is usually the MySQL database application.</td>
+			<td>A basic understanding of SQL is useful. Sometimes going down to the database level, bypassing Composr, is useful. For example, to make a bulk text change across the system you could write some queries to do so.</td>
+		</tr>
+		<tr>
+			<td>[url="http://www.opensearch.org/Home"]OpenSearch 1.0[/url]</td>
+			<td>This allows site searching (with auto-completion) integrated direct into web browsers.</td>
+			<td>You are unlikely to need any awareness of this.</td>
+		</tr>
+
+		<tr>
+			<th colspan="3"><em>Meta-data</em></th>
+		</tr>
+
+		<tr>
+			<td>[url="http://developers.facebook.com/docs/opengraph/"]OpenGraph[/url]</td>
+			<td>Facebook-originated meta-data standard, with data being embedded into normal web pages.</td>
+			<td>This is automatically included in Composr's templates. Further documentation is in the [page="_SEARCH:tut_facebook"]Facebook Support[/page] tutorial.</td>
+		</tr>
+		<tr>
+			<td>[url="http://schema.org/"]schema.org[/url]</td>
+			<td>Search Engine originating standard for providing extra data about objects within web pages.</td>
+			<td>This is automatically included in Composr's templates.</td>
+		</tr>
+		<tr>
+			<td>[url="http://dublincore.org/"]Dublin Core[/url] and <a href="{$BASE_URL}/cmscore.rdf" title="Composr Core is a simple extension to Dublin Core, extending it to encapsulate social-networking data.">Composr Core</a></td>
+			<td>This is the standard for adding meta-data to web pages; it ties into the XHTML.</td>
+			<td>This is automatically included in Composr's templates.</td>
+		</tr>
+		<tr>
+			<td>[url="http://microformats.org/wiki/hcalendar"]hCalendar[/url]</td>
+			<td>Standard for embedding calendar data within web pages.</td>
+			<td>This is automatically included in Composr's templates (calendar).</td>
+		</tr>
+		<tr>
+			<td>[url="http://microformats.org/wiki/hcard"]hCard[/url]</td>
+			<td>Standard for embedding contacts data within web pages.</td>
+			<td>This is automatically included in Composr's templates (member profiles).</td>
+		</tr>
+		<tr>
+			<td>[url="http://microformats.org/wiki/hreview"]hReview[/url]</td>
+			<td>Standard for embedding user review data within web pages.</td>
+			<td>This is automatically included in Composr's templates (content comments/reviews).</td>
+		</tr>
+		<tr>
+			<td>[url="http://microformats.org/wiki/rel-nofollow"]rel-nofollow[/url], [url="http://microformats.org/wiki/rel-enclosure"]rel-enclosure[/url], [url="http://microformats.org/wiki/rel-license"]rel-license[/url], [url="http://microformats.org/wiki/rel-tag"]rel-tag[/url]</td>
+			<td>Standards for describing linking behaviour.</td>
+			<td>This is automatically included in Composr's templates.</td>
+		</tr>
+		<tr>
+			<td>[url="http://gmpg.org/xfn/"]XFN[/url]</td>
+			<td>Standard for showing how website users are friends of each other.</td>
+			<td>This is automatically included in Composr's templates [size=".85"](limited support)[/size].</td>
+		</tr>
+		<tr>
+			<td>[url="http://oembed.com/"]oEmbed[/url]</td>
+			<td>Provide extra information (e.g. thumbnails) for a link to a page on a site.</td>
+			<td>Composr can automatically locate oEmbed data for included links.</td>
 		</tr>
 	</tbody>
 </table>
@@ -148,6 +243,10 @@ Composr itself provides the following protocols and languages...
 		<tr>
 			<td>[page="_SELF:tut_selectcode"]Selectcode[/page]</td>
 			<td>For selecting particular results based on ID/category/tree-position.</td>
+		</tr>
+		<tr>
+			<td>Language packs</td>
+			<td>Translation of a site into different/multiple languages</td>
 		</tr>
 	</tbody>
 </table>
