@@ -365,7 +365,7 @@ Now, some HTML elements...
 	</thead>
 
 	<tbody>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;a&gt;</kbd></p>
 			</td>
@@ -375,7 +375,7 @@ Now, some HTML elements...
 				(text to display when hovered-over).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;body&gt;</kbd></p>
 			</td>
@@ -384,7 +384,7 @@ Now, some HTML elements...
 				<strong>Required</strong>.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;div&gt;</kbd></p>
 			</td>
@@ -393,7 +393,7 @@ Now, some HTML elements...
 				below.)</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;em&gt;</kbd></p>
 			</td>
@@ -401,7 +401,7 @@ Now, some HTML elements...
 				<p>Adds emphasis to the text it surrounds.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;fieldset&gt;</kbd></p>
 			</td>
@@ -411,7 +411,7 @@ Now, some HTML elements...
 				tag below.)</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;form&gt;</kbd></p>
 			</td>
@@ -423,7 +423,7 @@ Now, some HTML elements...
 				or <kbd>post</kbd>)</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;h1&gt;</kbd>
 				to <kbd>&lt;h6&gt;</kbd></p>
@@ -435,7 +435,7 @@ Now, some HTML elements...
 				is the least important.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;head&gt;</kbd></p>
 			</td>
@@ -445,7 +445,7 @@ Now, some HTML elements...
 				used by the browser in other ways. <strong>Required</strong>.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;html&gt;</kbd></p>
 			</td>
@@ -453,7 +453,7 @@ Now, some HTML elements...
 				<p>The main tag in an XHTML document. <strong>Required</strong>.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;img
 				/&gt;</kbd></p>
@@ -468,7 +468,7 @@ Now, some HTML elements...
 				(text to display when hovered-over).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;input
 				/&gt;</kbd></p>
@@ -493,7 +493,7 @@ Now, some HTML elements...
 				(see CSS and JavaScript sections below)).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;label&gt;</kbd></p>
 			</td>
@@ -503,7 +503,7 @@ Now, some HTML elements...
 				(the ID of the form element associated with this <kbd>&lt;label&gt;</kbd>).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;legend&gt;</kbd></p>
 			</td>
@@ -511,7 +511,7 @@ Now, some HTML elements...
 				<p>A caption for a <kbd>&lt;fieldset&gt;</kbd>.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;li&gt;</kbd></p>
 			</td>
@@ -520,7 +520,7 @@ Now, some HTML elements...
 				and <kbd>&lt;ol&gt;</kbd>).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;ol&gt;</kbd></p>
 			</td>
@@ -529,7 +529,7 @@ Now, some HTML elements...
 				list.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;optgroup&gt;</kbd></p>
 			</td>
@@ -540,7 +540,7 @@ Now, some HTML elements...
 				(the label for the option group).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;option&gt;</kbd></p>
 			</td>
@@ -550,7 +550,7 @@ Now, some HTML elements...
 				(the value to be sent to the server when the form is submitted).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;p&gt;</kbd></p>
 			</td>
@@ -559,7 +559,7 @@ Now, some HTML elements...
 				used.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;select&gt;</kbd></p>
 			</td>
@@ -570,7 +570,7 @@ Now, some HTML elements...
 				(see CSS and JavaScript sections below)).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;span&gt;</kbd></p>
 			</td>
@@ -579,7 +579,7 @@ Now, some HTML elements...
 				below.)</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;strong&gt;</kbd></p>
 			</td>
@@ -588,7 +588,7 @@ Now, some HTML elements...
 				<strong>bold</strong>).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;sub&gt;</kbd></p>
 			</td>
@@ -596,7 +596,7 @@ Now, some HTML elements...
 				<p>Designates text as subscript.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;sup&gt;</kbd></p>
 			</td>
@@ -604,7 +604,7 @@ Now, some HTML elements...
 				<p>Designates text as superscript.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;table&gt;</kbd></p>
 			</td>
@@ -616,7 +616,7 @@ Now, some HTML elements...
 				non-visual browsers).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;td&gt;</kbd></p>
 			</td>
@@ -624,7 +624,7 @@ Now, some HTML elements...
 				<p>A table cell.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;textarea&gt;</kbd></p>
 			</td>
@@ -638,7 +638,7 @@ Now, some HTML elements...
 				(see CSS and JavaScript sections below)).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;th&gt;</kbd></p>
 			</td>
@@ -646,7 +646,7 @@ Now, some HTML elements...
 				<p>A table header cell.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;title&gt;</kbd></p>
 			</td>
@@ -655,7 +655,7 @@ Now, some HTML elements...
 				browser&rsquo;s title bar, for example). <strong>Required</strong>.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>&lt;tr&gt;</kbd></p>
 			</td>
@@ -663,7 +663,7 @@ Now, some HTML elements...
 				<p>A table row.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>&lt;ul&gt;</kbd></p>
 			</td>
@@ -692,7 +692,7 @@ Although the above table doesn't list all of the XHTML elements (it lists approx
 		</thead>
 
 		<tbody>
-			<tr>
+			<tr class="zebra_0">
 				<td>
 					<p><kbd>class</kbd></p>
 				</td>
@@ -701,7 +701,7 @@ Although the above table doesn't list all of the XHTML elements (it lists approx
 					and jazz-up appearances. (See CSS section below.)</p>
 				</td>
 			</tr>
-			<tr>
+			<tr class="zebra_1">
 				<td>
 					<p><kbd>id</kbd></p>
 				</td>
@@ -710,7 +710,7 @@ Although the above table doesn't list all of the XHTML elements (it lists approx
 					(see CSS and JavaScript sections below).</p>
 				</td>
 			</tr>
-			<tr>
+			<tr class="zebra_0">
 				<td>
 					<p><kbd>style</kbd></p>
 				</td>
@@ -722,7 +722,7 @@ Although the above table doesn't list all of the XHTML elements (it lists approx
 					CSS section below.)</p>
 				</td>
 			</tr>
-			<tr>
+			<tr class="zebra_1">
 				<td>
 					<p><kbd>title</kbd></p>
 				</td>
@@ -896,7 +896,7 @@ Some commonly used properties are listed below...
 	</thead>
 
 	<tbody>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>background</kbd></p>
 			</td>
@@ -904,7 +904,7 @@ Some commonly used properties are listed below...
 				<p>The background colour and image.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>border</kbd></p>
 			</td>
@@ -913,7 +913,7 @@ Some commonly used properties are listed below...
 				borders (in a box) the specified element.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>display</kbd></p>
 			</td>
@@ -922,7 +922,7 @@ Some commonly used properties are listed below...
 				element (i.e. change it from a block-level to an inline element).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>position</kbd></p>
 			</td>
@@ -930,7 +930,7 @@ Some commonly used properties are listed below...
 				<p>The mode with which to place the element.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>height</kbd></p>
 			</td>
@@ -938,7 +938,7 @@ Some commonly used properties are listed below...
 				<p>The height.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>width</kbd></p>
 			</td>
@@ -946,7 +946,7 @@ Some commonly used properties are listed below...
 				<p>The width.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>font</kbd></p>
 			</td>
@@ -954,7 +954,7 @@ Some commonly used properties are listed below...
 				<p>Font options and configuration.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>list-style</kbd></p>
 			</td>
@@ -962,7 +962,7 @@ Some commonly used properties are listed below...
 				<p>How to layout and draw a list.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>margin</kbd></p>
 			</td>
@@ -972,7 +972,7 @@ Some commonly used properties are listed below...
 				(think of it as a &ldquo;moat&rdquo; for an element).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>padding</kbd></p>
 			</td>
@@ -982,7 +982,7 @@ Some commonly used properties are listed below...
 				it as the cavity in a cavity wall).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>bottom</kbd></p>
 			</td>
@@ -991,7 +991,7 @@ Some commonly used properties are listed below...
 				element&rsquo;s parent&rsquo;s border.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>left</kbd></p>
 			</td>
@@ -1000,7 +1000,7 @@ Some commonly used properties are listed below...
 				right of the element&rsquo;s parent&rsquo;s border.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>right</kbd></p>
 			</td>
@@ -1009,7 +1009,7 @@ Some commonly used properties are listed below...
 				the left of the element&rsquo;s parent&rsquo;s border.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>top</kbd></p>
 			</td>
@@ -1018,7 +1018,7 @@ Some commonly used properties are listed below...
 				element&rsquo;s parent&rsquo;s border.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>color</kbd></p>
 			</td>
@@ -1026,7 +1026,7 @@ Some commonly used properties are listed below...
 				<p>The colour of <strong>text</strong>.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>text-align</kbd></p>
 			</td>
@@ -1034,7 +1034,7 @@ Some commonly used properties are listed below...
 				<p>The horizontal alignment of text.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>text-decoration</kbd></p>
 			</td>
@@ -1043,7 +1043,7 @@ Some commonly used properties are listed below...
 				or overline.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>text-indent</kbd></p>
 			</td>
@@ -1128,7 +1128,7 @@ Another feature of JavaScript is its event model. You can specify JavaScript fun
 	</thead>
 
 	<tbody>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>onload</kbd></p>
 			</td>
@@ -1139,7 +1139,7 @@ Another feature of JavaScript is its event model. You can specify JavaScript fun
 				tags.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>onchange</kbd></p>
 			</td>
@@ -1150,7 +1150,7 @@ Another feature of JavaScript is its event model. You can specify JavaScript fun
 				etc.).</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>onsubmit</kbd></p>
 			</td>
@@ -1160,7 +1160,7 @@ Another feature of JavaScript is its event model. You can specify JavaScript fun
 				tag.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_1">
 			<td>
 				<p><kbd>onkeypress</kbd></p>
 			</td>
@@ -1170,7 +1170,7 @@ Another feature of JavaScript is its event model. You can specify JavaScript fun
 				exceptions.</p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="zebra_0">
 			<td>
 				<p><kbd>onclick</kbd></p>
 			</td>

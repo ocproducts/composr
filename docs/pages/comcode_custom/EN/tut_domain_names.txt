@@ -10,6 +10,7 @@ Before we get into explaining domain names, I wanted to quickly talk about host 
 
 [title="2"]The business relationships of an actual domain name[/title]
 
+[media width="150" description="Registering a domain name (rough illustration)" float="right"]data_custom/images/docs/tut_domain_names/register.png[/media]
 Domain names are purchased from a domain name registrar (aka "agent"), which is an independent company which uses their prearranged relationship with a high level authority to get a domain name set up. The registrar then provides the commercial services for that domain, and the technical services to be able to set things up against it. The high level authorities differ depending on what kind of domain it is (all these authorities are chosen by the highest level authority, ICANN):
  - The high level authority for uk domains is Nominet
  - The high level authority for com, org, etc (usually Verisign)
@@ -21,6 +22,7 @@ Matters are made complicated in the case of a domain where Tucows is the registr
 
 [title="2"]How domain names direct traffic to servers[/title]
 
+[media width="150" description="A DNS lookup in action (rough illustration)" float="right"]data_custom/images/docs/tut_domain_names/lookup.png[/media]
 Note that domains names are not a "web" technology, they are an "Internet" technology. So at the level of domain names we are not considering websites yet, merely how traffic is directed on the Internet. (The web refers to the multimedia experience, while the Internet is the networking technology)
 
 Every domain name has basically one setting involved in the process of directing traffic: the nameserver for that domain name.

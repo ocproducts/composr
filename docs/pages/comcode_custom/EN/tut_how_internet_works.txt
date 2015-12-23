@@ -86,6 +86,7 @@ Reliable message transfer on the Internet is done via 'TCP'. You may have heard 
 
 [title="2"]Names, not numbers[/title]
 
+[media width="150" description="" float="right"]data_custom/images/docs/tut_how_internet_works/image.png[/media]
 When most people think of an 'Internet Address' they think of something like [tt]www.example.com[/tt] rather than [tt]12.34.156.78[/tt]. People relate to names with greater ease than numbers, so special computers that humans need to access are typically assigned names ('domain names') using a system known as 'DNS' (the 'domain name system').
 
 All Internet communication is still done using IP addresses (recall [tt]69.60.115.116[/tt] is an IP address). The 'domain names' are therefore translated to IP addresses behind the scenes, before the main communication starts.

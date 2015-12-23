@@ -20,12 +20,15 @@ If you wish to change your password to something more memorable you can do so by
 
 You can see it is fed with various parameters, and is written in [page="_SEARCH:tut_comcode"]Comcode[/page].
 
-Interesting configuration options:
+[title="2"]Configuration options[/title]
+
+Pertinent configuration options are:
  - "Link to images in e-mails rather than embed" -- by default this option is disabled, and when disabled makes Composr embed all images directly within e-mails rather than remotely linking to them. This means that users will see images immediately without having to grant permission for their e-mail client to download them.
  - "Use true 'from' address" -- by default this option is disabled, because Composr sends e-mails from a separate address to the reply-to address, to reduce chance of e-mails being considered fradulent.
 
 [title="2"]Mail server overview[/title]
 
+[media width="150" description="" float="right"]data_custom/images/docs/tut_email/image.png[/media]
 First, I will start with a brief overview of how e-mail works. This section may be far more than you ever need to know, so don't worry if you don't follow it all.
 
 Consider that an e-mail address is composed of two parts: an account name, and a domain name (with an '@' symbol to separate them).
