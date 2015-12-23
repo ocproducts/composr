@@ -226,6 +226,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_information/image.jpg',
             'data_custom/images/docs/tut_information/image2.jpg',
             'data_custom/images/docs/tut_users/image.png',
+            'data_custom/images/docs/sup_hardcore_blocks/standard_nerd.jpg',
             'data_custom/images/docs/sup_a_detailed_look_at_the_composr_calendar_system/e09738906e7828fc1c82ca46bd7aec2d.png',
             'data_custom/images/docs/sup_a_detailed_look_at_the_composr_calendar_system/ff3fd3210c6203e28031557498b92a49.png',
             'data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/1fc0bd5af2a80d643b83038ccf3d6b9e.jpg',

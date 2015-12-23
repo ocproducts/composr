@@ -11,6 +11,7 @@ This section is a short example-driven tutorial on creating a new Composr block 
 
 [title="3"]Who Is This Aimed At?[/title]
 
+[media description="" width="300" float="right" framed="0"]data_custom/images/docs/sup_hardcore_blocks/standard_nerd.jpg[/media]
  - Those with little to no programming experience, but with a willingness to learn
  - Composr webmasters who want a little more integration with their favourite sites and services
  - Programmers wanting to learn how to code for Composr
