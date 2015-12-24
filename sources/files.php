@@ -272,6 +272,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'parameters.xml' => '',
                                              'manifest.xml' => '',
 
+                                             // APS packaging files directory
+                                             'aps' => '',
+
                                              // IDE projects
                                              'nbproject' => '', // Netbeans
                                              '.project' => '', // Eclipse

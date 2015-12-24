@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://apstandard.com/ns/1" packaged="2015-12-24T01:24:17+00:00" version="1.2">
+  <id>http://compo.sr/</id>
+  <name>Composr</name>
+  <version>10.alpha1</version>
+  <release>1</release>
+  <homepage>http://compo.sr/</homepage>
+  <vendor>
+    <name>Composr</name>
+    <homepage>http://compo.sr/</homepage>
+    <!-- @TODO: Update -->
+    <icon path="images/icon.gif"/>
+  </vendor>
+  <packager>
+    <name>ocProducts</name>
+    <homepage>http://ocproducts.com/</homepage>
+    <icon path="images/icon.gif"/>
+    <uri>uuid:ba037922-5e0f-46bc-b94f-9772d7b9706a</uri>
+  </packager>
+  <presentation>
+    <summary>Cutting-edge CMS with advanced content, community, interactive and dynamic features.</summary>
+    <description>
+      A powerful and flexible CMS, with an emphasis on building online communities, and dynamic
+      and interactive websites. Composr provides features for blogging, running a forum, providing
+      downloads, hosting galleries, serving your own databases, eCommerce, and much more. Everything
+      is customisable, done to high standards, and easy to use.
+    </description>
+    <!-- @TODO: Update -->
+    <icon path="images/icon.gif"/>
+    <screenshot path="images/screenshot.png">
+      <description>
+        Homepage
+      </description>
+    </screenshot>
+    <changelog>
+      <version release="1" version="10.alpha1">
+        <entry>Composr 10.alpha1 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.alpha1</entry>
+      </version>
+      <version release="1" version="10.alpha0">
+        <entry>Composr 10.alpha0 Release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.alpha0
+        </entry>
+      </version>
+    </changelog>
+    <categories>
+      <category>Collaboration/Portal</category>
+      <category>Web/Content management</category>
+      <category>Web/Forum</category>
+      <category>Web/Blog</category>
+      <category>Web/Wiki</category>
+    </categories>
+    <languages>
+      <language>en</language>
+    </languages>
+  </presentation>
+  <service xmlns:php="http://apstandard.com/ns/1/php" id="composr">
+    <license must-accept="true">
+      <free/>
+      <text>
+        <name>CPAL</name>
+        <file>htdocs/text/EN/licence.txt</file>
+      </text>
+    </license>
+    <presentation>
+      <name>Composr</name>
+      <summary>Composr CMS</summary>
+      <infolinks>
+        <link class="official" href="http://compo.sr">Official Site</link>
+        <link class="support" href="http://ocportal.com/site/support.htm">Composr Support</link>
+      </infolinks>
+      <entry-points>
+        <entry class="frontpage" dst="/index.php?page=login&amp;type=login" method="POST">
+          <label>Homepage</label>
+          <variable class="login" name="login_username" value-of-setting="admin_name"/>
+          <variable class="password" name="password" value-of-setting="admin_password"/>
+          <variable name="redirect">index.php?page=start</variable>
+          <variable name="APS">ON</variable>
+        </entry>
+        <entry class="control-panel" dst="/index.php?page=login&amp;type=login" method="POST">
+          <label>Admin Zone</label>
+          <variable class="login" name="login_username" value-of-setting="admin_name"/>
+          <variable class="password" name="password" value-of-setting="admin_password"/>
+          <variable name="redirect">adminzone/index.php</variable>
+          <variable name="APS">ON</variable>
+        </entry>
+      </entry-points>
+    </presentation>
+    <settings>
+      <group class="authn">
+        <name>Administrator's preferences</name>
+        <setting class="login" default-value="admin" id="admin_name" max-length="32" min-length="1" regex="^[a-zA-Z][0-9a-zA-Z_\-]*" type="string">
+          <name>Administrator's login</name>
+          <error-message>
+            Please make sure the text you entered starts with a letter
+            and continues with either numbers, letters, underscores or hyphens.
+          </error-message>
+        </setting>
+        <setting class="password" id="admin_password" type="password">
+          <name>Password</name>
+        </setting>
+      </group>
+      <group class="vcard">
+        <name>Main configuration</name>
+        <group class="email">
+          <setting class="value" default-value="email@example.com" id="admin_email" type="email">
+            <name>Administrator's email</name>
+          </setting>
+        </group>
+        <group class="fn n">
+          <setting class="title" default-value="Composr site" id="title" min-length="1" type="string">
+            <name>Site name</name>
+          </setting>
+        </group>
+      </group>
+    </settings>
+    <requirements>
+      <php:version min="5.0.0"/>
+      <!-- mysqli is needed to run the "configure" script -->
+      <php:extension>mysqli</php:extension>
+      <php:extension>gd</php:extension>
+      <php:safe-mode>false</php:safe-mode>
+      <!-- Minimum 20 MiB memory -->
+      <php:memory-limit>20971520</php:memory-limit>
+      <!-- Minimum 5 MiB post_max_size -->
+      <php:post_max_size>5242880</php:post_max_size>
+      <db:db xmlns:db="http://apstandard.com/ns/1/db">
+        <db:id>MAIN</db:id>
+        <db:default-name>composr</db:default-name>
+        <db:can-use-tables-prefix>false</db:can-use-tables-prefix>
+        <db:server-type>mysql</db:server-type>
+        <db:server-min-version>4.1</db:server-min-version>
+      </db:db>
+    </requirements>
+    <provision>
+      <configuration-script name="configure">
+        <script-language>php</script-language>
+        <status-control/>
+      </configuration-script>
+      <url-mapping>
+        <!-- Default directory to be installed in -->
+        <default-prefix>composr</default-prefix>
+        <!-- Minimum 50 MiB free disk space is required -->
+        <installed-size>52428800</installed-size>
+        <mapping path="htdocs" url="/">
+          <!-- Writable directories and files -->
+          <mapping url="themes">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="text_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="safe_mode_temp">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="caches/lang">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="caches/self_learning">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="caches/guest_pages">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="data_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="imports/addons">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="exports/backups">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="exports/file_backups">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="exports/addons">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/banners">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/catalogues">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/downloads">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/filedump">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/galleries">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/galleries_thumbs">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/attachments">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/attachments_thumbs">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/auto_thumbs">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_photos">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_photos_thumbs">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_avatars">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/cns_cpf_upload">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/repimages">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/watermarks">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/incoming">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/website_specific">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="uploads/personal_sound_effects">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="pages/comcode_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="forum/pages/comcode_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="cms/pages/comcode_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="site/pages/comcode_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="adminzone/pages/comcode_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="collaboration/pages/comcode_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="pages/html_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="forum/pages/html_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="cms/pages/html_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="site/pages/html_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="adminzone/pages/html_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="collaboration/pages/html_custom">
+            <php:permissions writable="true"/>
+          </mapping>
+          <mapping url="_config.php">
+            <php:permissions writable="true"/>
+          </mapping>
+        </mapping>
+      </url-mapping>
+    </provision>
+  </service>
+</application>

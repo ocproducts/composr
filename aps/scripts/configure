@@ -1,0 +1,191 @@
+<?php
+
+error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
+
+// Error handler function
+set_error_handler(function ($errno, $errstr, $errfile = '', $errline = 0) {
+    if (!(error_reporting() & $errno)) {
+        // This error code is not included in error_reporting
+        return;
+    }
+
+    print "Error: [$errno] $errstr on line $errline in $errfile\n";
+    exit(1);
+});
+
+
+if (count($argv) < 2) {
+    print 'Usage: configure (install | upgrade <version> | configure | remove)' . PHP_EOL;
+    exit(1);
+}
+
+$command = $argv[1];
+
+if ($command === 'configure') {
+    configure();
+    exit(0);
+}
+
+if ($command === 'install') {
+    install();
+    exit(0);
+}
+
+if ($command === 'upgrade') {
+    print 'Error: upgrade function not implemented.' . PHP_EOL;
+    exit(1);
+}
+
+if ($command === 'remove') {
+    remove_app();
+    exit(0);
+}
+
+if ($command === 'enable') {
+    enable_app();
+    exit(0);
+}
+
+if ($command === 'disable') {
+    disable_app();
+    exit(0);
+}
+
+print 'Error: unknown command ' . $command . PHP_EOL;
+exit(1);
+
+function get_env($var, $or = null) {
+    $res = getenv($var);
+
+    return $res !== false ? $res : $or;
+}
+
+function db_link() {
+    static $link;
+
+    if ($link === null) {
+        $db_host = get_env('DB_MAIN_HOST');
+        $db_port = get_env('DB_MAIN_PORT');
+        $db_name = get_env('DB_MAIN_NAME');
+        $db_username = get_env('DB_MAIN_LOGIN');
+        $db_password = get_env('DB_MAIN_PASSWORD');
+
+        $link = mysqli_connect($db_host, $db_username, $db_password, $db_name, $db_port);
+
+        if (!$link) {
+            print 'Unable to connect to DB: ' . mysqli_error($link) . PHP_EOL;
+            exit(1);
+        }
+
+        if (get_env('DB_MAIN_TYPE') !== 'mysql') {
+            print 'Database type ' . get_env('DB_MAIN_TYPE') . ' is not supported.' . PHP_EOL;
+            exit(1);
+        }
+
+        mysqli_report(MYSQLI_REPORT_ALL); // Enable error reporting
+    }
+
+    return $link;
+}
+
+// Ported from Composr
+function set_option($name, $value, $will_be_formally_set = 1) {
+    $link = db_link();
+    $name  = mysqli_real_escape_string($link, $name);
+    $value = mysqli_real_escape_string($link, $value);
+
+    $query = "UPDATE cms10_config SET c_value='$value', c_set='$will_be_formally_set' WHERE c_name='$name'";
+    mysqli_query($link, $query);
+}
+
+function import_sql() {
+    $link = db_link();
+    $sql  = file_get_contents(__DIR__ . '/install.sql');
+
+    mysqli_multi_query($link, $sql);
+    while(mysqli_next_result($link)); // Flush multi_query results
+}
+
+function build_files(array $files = array(), array $vars = array()) {
+    foreach ($files as $source => $dest) {
+        $file_content = file_get_contents($source);
+
+        foreach ($vars as $name => $value) {
+            $file_content = str_replace('@@' . $name . '@@', $value, $file_content);
+        }
+
+        file_put_contents($dest, $file_content);
+    }
+}
+
+function configure() {
+    $vars = array(
+        'BASE_URL_SCHEME'  => get_env('BASE_URL_SCHEME'), // URL scheme. Allowed values: http, https
+        'BASE_URL_HOST'    => get_env('BASE_URL_HOST'), // URL host: example.com
+        'BASE_URL_PORT'    => get_env('BASE_URL_PORT'), // URL port (may be omitted if default port for protocol is used: 80 for http, 443 for https)
+        'BASE_URL_PATH'    => get_env('BASE_URL_PATH'), // URL path without leading slash but including trailing slash, e.g.: phpBB/
+        'WEB___DIR'        => get_env('WEB___DIR'), // Absolute path to the htdocs directory, no trailing slash
+        'DB_MAIN_TYPE'     => get_env('DB_MAIN_TYPE'), // e.g.: mysql
+        'DB_MAIN_HOST'     => get_env('DB_MAIN_HOST'),
+        'DB_MAIN_PORT'     => get_env('DB_MAIN_PORT'),
+        'DB_MAIN_NAME'     => get_env('DB_MAIN_NAME'),
+        'DB_MAIN_LOGIN'    => get_env('DB_MAIN_LOGIN'),
+        'DB_MAIN_PASSWORD' => get_env('DB_MAIN_PASSWORD'),
+
+        'SETTINGS_title'   => get_env('SETTINGS_title'), // Website title, default value: Composr site
+
+        'SETTINGS_admin_email'    => get_env('SETTINGS_admin_email'),   // Plesk user's email (unless specified), e.g.: john25@example.com
+        'SETTINGS_admin_name'     => get_env('SETTINGS_admin_name'),    // Auto-generated (unless specified) username from email, e.g.: john25_zguofr1d
+        'SETTINGS_admin_password' => get_env('SETTINGS_admin_password') // Auto-generated (unless specified) password, e.g.: nWA4R1y3ja
+    );
+
+    $base_url_path_fixed = substr($vars['BASE_URL_PATH'], 0, -1); // Remove trailing slash
+    $base_url_path_fixed = ($base_url_path_fixed !== '') ? '/'.$base_url_path_fixed : ''; // Add leading slash if not empty
+
+    $vars['domain']          = $vars['BASE_URL_HOST'].(strval($vars['BASE_URL_PORT']) === '' ? '' : ':'.$vars['BASE_URL_PORT']);
+    $vars['base_url']        = $vars['BASE_URL_SCHEME'].'://'.$vars['domain'].$base_url_path_fixed;
+    $vars['master_password'] = '!'.md5($vars['SETTINGS_admin_password'].'cms');
+
+    // Write configuration files
+    $files_to_build = array(
+        __DIR__ . '/templates/_config.php.in' => $vars['WEB___DIR'] . '/_config.php'
+    );
+
+    build_files($files_to_build, $vars);
+
+    // Make database changes
+    $link = db_link();
+
+    $site_name = $vars['SETTINGS_title'];
+    set_option('site_name', $site_name);
+    set_option('copyright', 'Copyright &copy; ' . $site_name . ' ' . date('Y'));
+
+    $admin_email    = mysqli_real_escape_string($link, $vars['SETTINGS_admin_email']);
+    $admin_username = mysqli_real_escape_string($link, $vars['SETTINGS_admin_name']);
+    $admin_password = mysqli_real_escape_string($link, $vars['SETTINGS_admin_password']);
+    $query = "UPDATE cms10_f_members SET m_email_address='$admin_email', m_username='$admin_username', m_pass_hash_salted='$admin_password', m_pass_salt='', m_password_compat_scheme='plain' WHERE id=2;";
+    mysqli_query($link, $query);
+
+    // Used during debugging for viewing all the available environment variables.
+    // file_put_contents($vars['WEB___DIR'].'/server.arr', var_export($_SERVER, true));
+}
+
+function install() {
+    import_sql();
+    configure();
+
+    // For security and preventing the Composr error: "You must delete the install.php file immediately, or your installation is open to erasure by anyone"
+    @rename(get_env('WEB___DIR').'/install.php', get_env('WEB___DIR').'/install._hp');
+}
+
+function remove_app() {
+    import_sql();
+}
+
+function enable_app() {
+    set_option('site_closed', '0');
+}
+
+function disable_app() {
+    set_option('site_closed', '1');
+}
