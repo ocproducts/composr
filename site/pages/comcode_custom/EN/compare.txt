@@ -28,7 +28,7 @@
 </div>
 
 <div class="headlineRow cntRow">
-	<p>This page aims shows many of Composr's benefits. We have many innovative features, but also do a lot of important things as-standard that a lot of the common CMSs don't really do (at least not in an official capacity).</p>
+	<p>This page aims shows many of Composr's benefits. We have many innovative features, but also do a lot of important things as-standard that a lot of the common CMSs don't really do (at least not in an official capacity). A deeper philosophical discussion is in the <a href="{$PAGE_LINK*,docs:tut_webapp}">Web-applications, Composr, and PHP tutorial</a></p>
 </div>
 
 <div class="cntRow">
