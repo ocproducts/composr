@@ -524,10 +524,10 @@ There are some situations where Composr is not the most appropriate product. You
 [title="2"]Why not product-X?[/title]
 
 Most of the competitors to Composr are, like Composr, Open Source. However there is one critical difference that sets us apart from most of them -- Composr is commercially backed. There are many reasons to avoid (most) Open Source software that is not commercially backed, especially:
- - the developers expect you to 'fix it yourself', or quite possibly, the developers have disappeared leaving the project stagnant
- - the developers think that 'you have to install it manually, because having an installer would just leave users ignorant to the projects internal workings'
+ - the developers expect you to "fix it yourself", or quite possibly, the developers have disappeared leaving the project stagnant
+ - the developers think that "you have to install it manually, because having an installer would just leave users ignorant to the projects internal workings"
  - the developers greet suggestions with fury: they don't get paid, and don't tolerate negative feedback for their efforts. Features are added on developer whim, rather than according to a plan that benefits the end users
- - the product reflects far from a stream-lined vision
+ - the product does not reflect any kind of streamlined vision
  - while the developers are happy to code for free, they will not do the dull stuff like write documentation, or design user-friendly interfaces
  - there is great infighting and rivalry between developers
  - many features are only available within non-bundled addons. You'd spend half your time trying to smooth over the cracks between the various addons, or you'd need to tolerate the lack of full integration. Being able to search the various kinds of content on a website at once is a pretty basic thing, right? We don't know of any of our competitors that provide this kind of thing.
@@ -549,6 +549,36 @@ Composr provides the best of all the main competing kinds of system, seamlessly 
  - you do not need to mess around with individual files on your server to configure functionality: everything has a live interface as a part of the system itself
  - interfaces are consistent; for example, the same user data input system is used throughout
  - the system supports your roles in multiple different disciplines, from design, to programming, to marketing, and tries to make them all as accessible as possible
+
+[title="2"]Composr vs third party services[/title]
+
+[media float="right" framed="0" thumb="0"]data_custom/images/docs/dont.png[/media]
+ocProducts takes pride in developing integrated systems that provide as much functionality as possible without relying upon external services. Many of our competitors provide a content management framework, however their users often have to rely upon external services or third-party developers to produce embedded code or "plug-in" packages that provide advanced or interactive functions.
+
+Whilst Composr fully supports embedded code and provides a plug-in architecture, ocProducts believes that users should be able to construct (and extend) fully featured sites without relying upon external service providers or searching through an archive of unreliable/unsupported plug-ins. Thus, Composr comes with the most comprehensive feature set in its class, maximising site functionality straight "out of the box". This holistic design philosophy aims to ensure that all features on a site work harmoniously, whilst maintaining maximum design fidelity and providing a unified administration interface. This ensures that you retain full control over your data and guarantees room for your site to grow as and when your needs change.
+
+If your CMS has a limited range of features, utilising external services to provide added functionality may seem like an attractive option for extending your website. Unfortunately, there are a number of risks inherent with third-party dependencies, which can be avoided by hosting your required features directly.
+
+Firstly, every external service provider may have outages that can affect their ability to serve customers. As each third-party service can fail independently, this will naturally increase the amount of time that your site is unable to operate at full functionality. Hosting these features directly through your chosen CMS will ensure that your site will be fully operational for as long as your site remains online.
+
+Secondly, third-party services may go out of business, change their terms and conditions or be targeted for a buyout, any of which can cause a permanent disruption to the service you had previously been able to utilise. When you do not control the means for providing site functions, there can be no guarantee that your chosen service provider will continue to operate under the same conditions of business or even continue trading as a viable concern (either of which could impact upon functionality that you may wish to provide). Any features hosted directly through Composr will be available for use whenever your site is active, ensuring that you are always free to make full use of your site.
+
+Thirdly, there are frequently service limitations that aim to encourage subscription-based upgrades to premium services. This appears on the surface to be a relatively cheap option, however ongoing service charges will quickly add up to a significant cost. Without subscribing to a premium service, you may find that your features are subject to the following restrictions:
+1)	Embedded advertising (e.g. YouTube adverts)
+2)	Limited user-access (e.g. Free surveys on SurveyMonkey only accept the first 100 answers)
+3)	Limited bandwidth (e.g. PhotoBucket accounts limit daily bandwidth for viewing images/videos)
+4)	Limited customisation options (if any)
+5)	Existing integration code may break if the service provider upgrades/changes their service
+
+For example, many sites utilise the popular service "SurveyMonkey" to incorporate survey forms into their sites. Although this is a useful feature, it is extremely limited unless you are willing to pay to use the premium service. Utilising this service also means that a third party organisation has access to the data that you are gathering and you have become dependent upon a third party for a potentially sensitive business operation.
+
+As an alternative, Composr provides a fully featured Survey system that can be integrated into any page you see fit, including forum posts and comment threads. As this system is a core part of your website, it can be used without any restriction or additional charge, the styling & fonts will always match that of your site, there is no requirement for you to display another company's branding on your site and there is no need to log in to a separate web-service to view and analyse your data.
+
+When building an interactive site, it is vitally important to ensure a consistent interface that is free of third-party branding. This provides a more professional appearance, which improves the user experience and increases the user's perception of value and quality. Rather than building your site and picking from a range of service providers à la carte, combining multiple brands and user interfaces (which can appear cheap), Composr provides all of the tools required to provide a professional quality web presence.
+
+Composr has been designed to provide integrated alternatives to the most common cloud-based services; Instead of embedding Youtube videos (with branding and advertising), Composr allows you to upload videos directly to your site. Rather than hosting images using Flickr and posting them to your blog, you can upload and incorporate images without ever leaving the Composr blog editor.
+
+In terms of both risk and cost, there are significant advantages to hosting all of your features directly; Composr makes it easy to add new functions over time, often without any complex coding.
 
 [title="2"]PHP[/title]
 

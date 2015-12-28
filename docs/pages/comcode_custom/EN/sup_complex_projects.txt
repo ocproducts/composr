@@ -104,5 +104,6 @@ I hope I haven't stamped on too many people's dreams. I want to re-iterate that 
  - [page="_SEARCH:sup_pricing"]Project pricing[/page]
  - [page="_SEARCH:sup_developer_relationships"]Maintaining a good agency relationship[/page]
  - [page="_SEARCH:sup_choosing_a_developer"]Choosing a software company for your project[/page]
+ - [page="_SEARCH:sup_running_agency"]Guide to running a web agency[/page]
 
 {$SET,tutorial_tags,Business Development,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,A sensible process for deciding how to approach complex web projects.}[block]main_tutorial_rating[/block]
