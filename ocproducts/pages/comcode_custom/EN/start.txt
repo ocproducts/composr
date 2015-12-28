@@ -91,7 +91,7 @@
 	</div>
 
 	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img2}" /></div><span>Cost-effectiveness, by leveraging Composr's features and avoid reinventing the wheel.</span>
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img2}" /></div><span>Cost-effectiveness, by leveraging Composr's features and avoid reinventing the wheel. We know the software best because we made it.</span>
 	</div>
 
 	<div class="comp_box_hold">
@@ -99,15 +99,15 @@
 	</div>
 
 	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img4}" /></div><span>An integrated web solution with advanced functionality and features.</span>
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img4}" /></div><span>An integrated web solution with advanced functionality and features. When people compare what Composr does to what other Open Source CMS's can do, they are amazed &ndash; commercial CMS's that do what Composr can do can easily cost $10,000.</span>
 	</div>
 
 	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img5}" /></div><span>Software that has passed the tests of time.</span>
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img5}" /></div><span>Software that has passed the tests of time. Composr's technology has been developed over more than a decade.</span>
 	</div>
 
 	<div class="comp_box_hold">
-		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img6}" /></div><span>Reduced reliance on third-party software/technology: avoid buck-passing.</span>
+		<div class="comp_pic"><img alt="" src="{$IMG*,composr_homesite/ocproducts/comp_img6}" /></div><span>Reduced reliance on third-party software/technology: avoid buck-passing. We're not just a practitioner of other people's technology.</span>
 	</div>
 </div>
 
